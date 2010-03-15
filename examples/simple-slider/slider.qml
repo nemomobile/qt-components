@@ -8,7 +8,7 @@ Image {
     property int maximum: 75
     width: 200; height: 50
     fillMode: Image.Tile
-    source: "stripes.png"
+    source: "images/stripes.png"
     BorderImage {
         id: grip
         x: 0; y: 0; width: 50; height: 50
@@ -16,7 +16,7 @@ Image {
         border.right: 10; border.bottom: 10
         horizontalTileMode: BorderImage.Stretch
         verticalTileMode: BorderImage.Stretch
-        source: "toolbutton.png"
+        source: "images/toolbutton.png"
         Text {
             id: text
             anchors.centerIn: parent
