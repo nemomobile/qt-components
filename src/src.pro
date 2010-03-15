@@ -4,5 +4,8 @@ DESTDIR = $$OUT_PWD/../lib
 DEFINES += QT_BUILD_COMPONENTS_LIB
 
 HEADERS += qrangemodel.h \
-           qrangemodel_p.h
-SOURCES += qrangemodel.cpp
+           qrangemodel_p.h \
+           # qbuttonmodel.h \
+           # qbuttonmodel_p.h \
+SOURCES += qrangemodel.cpp \
+           # qbuttonmodel.cpp \
