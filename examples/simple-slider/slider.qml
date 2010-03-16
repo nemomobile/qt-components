@@ -23,7 +23,7 @@ Image {
             text: model.value
             color: "white"
         }
-        MouseRegion {
+        MouseArea {
              anchors.fill: parent
              drag.target: grip
              drag.axis: "XAxis"
