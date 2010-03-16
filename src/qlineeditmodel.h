@@ -21,23 +21,11 @@
 **
 ****************************************************************************/
 
-#ifndef QLINEEDITMODEL_P_H
-#define QLINEEDITMODEL_P_H
-
-//
-//  W A R N I N G
-//  -------------
-//
-// This file is not part of the Qt API.  It exists purely as an
-// implementation detail.  This header file may change from version to
-// version without notice, or even be removed.
-//
-// We mean it.
-//
+#ifndef QLINEEDITMODEL_H
+#define QLINEEDITMODEL_H
 
 #include "QtCore/qglobal.h"
 
-#ifndef QT_NO_LINEEDIT
 #include "private/qwidget_p.h"
 #include "QtGui/qlineedit.h"
 #include "QtGui/qtextlayout.h"
@@ -46,24 +34,31 @@
 #include "QtGui/qlineedit.h"
 #include "QtGui/qclipboard.h"
 #include "QtCore/qpoint.h"
-#include "QtGui/qcompleter.h"
 
-QT_BEGIN_HEADER
+#include "QtDeclarative/qdeclarativeitem.h"
 
-QT_BEGIN_NAMESPACE
 
-QT_MODULE(Gui)
-
-class Q_GUI_EXPORT QLineEditModel : public QObject
+class QLineEditModel : public QObject
 {
     Q_OBJECT
 
+    Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
+    Q_PROPERTY(QString displayText READ displayText NOTIFY displayTextChanged)
+    Q_PROPERTY(int cursorPosition READ cursorPosition WRITE setCursorPosition NOTIFY cursorPositionChanged)
+    Q_PROPERTY(int maxLength READ maxLength WRITE setMaxLength)
+    Q_PROPERTY(QChar passwordCharacter READ passwordCharacter WRITE setPasswordCharacter)
+
+    // ### TextLayout stuff
+    Q_PROPERTY(qreal cursorX READ cursorToX WRITE setCursorX_helper NOTIFY cursorPositionChanged)
+    Q_PROPERTY(QFont font READ font WRITE setFont)
+    // ### end of TextLayout stuff
+
 public:
     QLineEditModel(const QString &txt = QString())
-        : m_cursor(0), m_preeditCursor(0), m_cursorWidth(0), m_layoutDirection(Qt::LeftToRight),
-        m_hideCursor(false), m_separator(0), m_readOnly(0),
+        : m_cursor(0), m_layoutDirection(Qt::LeftToRight),
+        m_separator(0), m_readOnly(0),
         m_dragEnabled(0), m_echoMode(0), m_textDirty(0), m_selDirty(0),
-        m_validInput(1), m_blinkStatus(0), m_blinkPeriod(0), m_blinkTimer(0), m_deleteAllTimer(0),
+        m_validInput(1), m_deleteAllTimer(0),
         m_ascent(0), m_maxLength(32767), m_lastCursorPos(-1),
         m_tripleClickTimer(0), m_maskData(0), m_modifiedState(0), m_undoState(0),
         m_selstart(0), m_selend(0), m_passwordEchoEditing(false)
@@ -88,10 +83,26 @@ public:
     bool allSelected() const;
     bool hasSelectedText() const;
 
+    // ### TextLayout stuff
     int width() const;
     int height() const;
     int ascent() const;
     qreal naturalTextWidth() const;
+
+    int xToPos(int x, QTextLine::CursorPosition = QTextLine::CursorBetweenCharacters) const;
+
+    void setCursorX_helper(int x) {
+        setCursorPosition(xToPos(x));
+    }
+
+    qreal cursorToX(int cursor) const;
+    qreal cursorToX() const;
+
+    Qt::LayoutDirection layoutDirection() const;
+    void setLayoutDirection(Qt::LayoutDirection direction);
+    void setFont(const QFont &font);
+    QFont font() const;
+    // ### end of TextLayout stuff
 
     void setSelection(int start, int length);
 
@@ -113,25 +124,9 @@ public:
     void paste();
 #endif
 
-    int cursor() const;
     int preeditCursor() const;
 
-    int cursorWidth() const;
-    void setCursorWidth(int value);
-
-    void moveCursor(int pos, bool mark = false);
-    void cursorForward(bool mark, int steps);
-    void cursorWordForward(bool mark);
-    void cursorWordBackward(bool mark);
-    void home(bool mark);
-    void end(bool mark);
-
-    int xToPos(int x, QTextLine::CursorPosition = QTextLine::CursorBetweenCharacters) const;
-    QRect cursorRect() const;
-
-    qreal cursorToX(int cursor) const;
-    qreal cursorToX() const;
-
+    // ### needed?
     bool isReadOnly() const;
     void setReadOnly(bool enable);
 
@@ -140,16 +135,7 @@ public:
 
     QString displayText() const;
 
-    void backspace();
-    void del();
-    void deselect();
-    void selectAll();
-    void insert(const QString &);
-    void clear();
-    void undo();
-    void redo();
-    void selectWordAtPos(int);
-
+    // ### enum
     uint echoMode() const;
     void setEchoMode(uint mode);
 
@@ -161,12 +147,6 @@ public:
     void setValidator(const QValidator *);
 #endif
 
-#ifndef QT_NO_COMPLETER
-    QCompleter *completer() const;
-    void setCompleter(const QCompleter*);
-    void complete(int key);
-#endif
-
     void setCursorPosition(int pos);
     int cursorPosition() const;
 
@@ -176,46 +156,32 @@ public:
     QString inputMask() const;
     void setInputMask(const QString &mask);
 
-    // input methods
-#ifndef QT_NO_IM
-    bool composeMode() const;
-    void setPreeditArea(int cursor, const QString &text);
-#endif
-
-    QString preeditAreaText() const;
-
     void updatePasswordEchoEditing(bool editing);
     bool passwordEchoEditing() const;
 
     QChar passwordCharacter() const;
     void setPasswordCharacter(const QChar &character);
 
-    Qt::LayoutDirection layoutDirection() const;
-    void setLayoutDirection(Qt::LayoutDirection direction);
-    void setFont(const QFont &font);
-
-    void processInputMethodEvent(QInputMethodEvent *event);
-    void processMouseEvent(QMouseEvent* ev);
-    void processKeyEvent(QKeyEvent* ev);
-
-    int cursorBlinkPeriod() const;
-    void setCursorBlinkPeriod(int msec);
-
     QString cancelText() const;
     void setCancelText(const QString &text);
 
-    const QPalette &palette() const;
-    void setPalette(const QPalette &);
+public Q_SLOTS:
+    void moveCursor(int pos, bool mark = false);
+    void cursorForward(bool mark, int steps);
+    void cursorWordForward(bool mark);
+    void cursorWordBackward(bool mark);
+    void home(bool mark);
+    void end(bool mark);
 
-    enum DrawFlags {
-        DrawText = 0x01,
-        DrawSelections = 0x02,
-        DrawCursor = 0x04,
-        DrawAll = DrawText | DrawSelections | DrawCursor
-    };
-    void draw(QPainter *, const QPoint &, const QRect &, int flags = DrawAll);
-
-    bool processEvent(QEvent *ev);
+    void backspace();
+    void del();
+    void deselect();
+    void selectAll();
+    void insert(const QString &);
+    void clear();
+    void undo();
+    void redo();
+    void selectWordAtPos(int);
 
 private:
     void init(const QString &txt);
@@ -237,12 +203,9 @@ private:
     void internalRedo();
 
     QString m_text;
-    QPalette m_palette;
     int m_cursor;
     int m_preeditCursor;
-    int m_cursorWidth;
     Qt::LayoutDirection m_layoutDirection;
-    uint m_hideCursor : 1; // used to hide the m_cursor inside preedit areas
     uint m_separator : 1;
     uint m_readOnly : 1;
     uint m_dragEnabled : 1;
@@ -250,9 +213,6 @@ private:
     uint m_textDirty : 1;
     uint m_selDirty : 1;
     uint m_validInput : 1;
-    uint m_blinkStatus : 1;
-    int m_blinkPeriod; // 0 for non-blinking cursor
-    int m_blinkTimer;
     int m_deleteAllTimer;
     int m_ascent;
     int m_maxLength;
@@ -268,10 +228,6 @@ private:
 
 #ifndef QT_NO_VALIDATOR
     QPointer<QValidator> m_validator;
-#endif
-    QPointer<QCompleter> m_completer;
-#ifndef QT_NO_COMPLETER
-    bool advanceToEnabledItem(int dir);
 #endif
 
     struct MaskInputData {
@@ -326,18 +282,6 @@ Q_SIGNALS:
     void displayTextChanged(const QString &);
     void textChanged(const QString &);
     void textEdited(const QString &);
-
-    void resetInputContext();
-
-    void accepted();
-    void editingFinished();
-    void updateNeeded(const QRect &);
-
-#ifdef QT_KEYPAD_NAVIGATION
-    void editFocusChange(bool);
-#endif
-protected:
-    virtual void timerEvent(QTimerEvent *event);
 
 private Q_SLOTS:
     void _q_clipboardChanged();
@@ -471,24 +415,9 @@ inline bool QLineEditModel::inSelection(int x) const
     return pos >= m_selstart && pos < m_selend;
 }
 
-inline int QLineEditModel::cursor() const
-{
-    return m_cursor;
-}
-
 inline int QLineEditModel::preeditCursor() const
 {
     return m_preeditCursor;
-}
-
-inline int QLineEditModel::cursorWidth() const
-{
-    return m_cursorWidth;
-}
-
-inline void QLineEditModel::setCursorWidth(int value)
-{
-    m_cursorWidth = value;
 }
 
 inline void QLineEditModel::cursorForward(bool mark, int steps)
@@ -621,19 +550,6 @@ inline void QLineEditModel::setValidator(const QValidator *v)
 }
 #endif
 
-#ifndef QT_NO_COMPLETER
-inline QCompleter *QLineEditModel::completer() const
-{
-    return m_completer;
-}
-
-/* Note that you must set the widget for the completer seperately */
-inline void QLineEditModel::setCompleter(const QCompleter* c)
-{
-    m_completer = const_cast<QCompleter*>(c);
-}
-#endif
-
 inline void QLineEditModel::setCursorPosition(int pos)
 {
     if (pos < 0)
@@ -662,24 +578,6 @@ inline void QLineEditModel::setInputMask(const QString &mask)
     parseInputMask(mask);
     if (m_maskData)
         moveCursor(nextMaskBlank(0));
-}
-
-// input methods
-#ifndef QT_NO_IM
-inline bool QLineEditModel::composeMode() const
-{
-    return !m_textLayout.preeditAreaText().isEmpty();
-}
-
-inline void QLineEditModel::setPreeditArea(int cursor, const QString &text)
-{
-    m_textLayout.setPreeditArea(cursor, text);
-}
-#endif
-
-inline QString QLineEditModel::preeditAreaText() const
-{
-    return m_textLayout.preeditAreaText();
 }
 
 inline bool QLineEditModel::passwordEchoEditing() const
@@ -717,9 +615,9 @@ inline void QLineEditModel::setFont(const QFont &font)
     updateDisplayText();
 }
 
-inline int QLineEditModel::cursorBlinkPeriod() const
+inline QFont QLineEditModel::font() const
 {
-    return m_blinkPeriod;
+    return m_textLayout.font();
 }
 
 inline QString QLineEditModel::cancelText() const
@@ -732,20 +630,33 @@ inline void QLineEditModel::setCancelText(const QString &text)
     m_cancelText = text;
 }
 
-inline const QPalette & QLineEditModel::palette() const
+QML_DECLARE_TYPE(QLineEditModel);
+
+
+class QLineEditEventHelper : public QDeclarativeItem
 {
-    return m_palette;
-}
+    Q_OBJECT;
 
-inline void QLineEditModel::setPalette(const QPalette &p)
-{
-    m_palette = p;
-}
+    Q_PROPERTY(QLineEditModel *model READ model WRITE setModel);
 
-QT_END_NAMESPACE
+public:
+    QLineEditEventHelper(QDeclarativeItem *parent = 0);
+    virtual ~QLineEditEventHelper();
 
-QT_END_HEADER
+    QLineEditModel *model() { return m_model; }
+    void setModel(QLineEditModel *model) { m_model = model; }
 
-#endif // QT_NO_LINEEDIT
+Q_SIGNALS:
+    void accepted();
+    void editingFinished();
 
-#endif // QLINEEDITMODEL_P_H
+protected:
+    virtual void keyPressEvent(QKeyEvent *event);
+
+private:
+    QPointer<QLineEditModel> m_model;
+};
+
+QML_DECLARE_TYPE(QLineEditEventHelper);
+
+#endif // QLINEEDITMODEL_H

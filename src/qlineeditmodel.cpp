@@ -21,23 +21,12 @@
 **
 ****************************************************************************/
 
-#include "qlineeditmodel_p.h"
+#include "qlineeditmodel.h"
 
 #ifndef QT_NO_LINEEDIT
 
-#include "qabstractitemview.h"
 #include "qclipboard.h"
-#ifndef QT_NO_ACCESSIBILITY
-#include "qaccessible.h"
-#endif
-#ifndef QT_NO_IM
-#include "qinputcontext.h"
-#include "qlist.h"
-#endif
 #include "qapplication.h"
-#ifndef QT_NO_GRAPHICSVIEW
-#include "qgraphicssceneevent.h"
-#endif
 
 QT_BEGIN_NAMESPACE
 
@@ -257,7 +246,6 @@ void QLineEditModel::_q_deleteSelected()
         return;
 
     int priorState = m_undoState;
-    emit resetInputContext();
     removeSelectedText();
     separate();
     finishChange(priorState);
@@ -299,25 +287,6 @@ void QLineEditModel::updatePasswordEchoEditing(bool editing)
 int QLineEditModel::xToPos(int x, QTextLine::CursorPosition betweenOrOn) const
 {
     return m_textLayout.lineAt(0).xToCursor(x, betweenOrOn);
-}
-
-/*!
-    \internal
-
-    Returns the bounds of the current cursor, as defined as a
-    between characters cursor.
-*/
-QRect QLineEditModel::cursorRect() const
-{
-    QTextLine l = m_textLayout.lineAt(0);
-    int c = m_cursor;
-    if (m_preeditCursor != -1)
-        c += m_preeditCursor;
-    int cix = qRound(l.cursorToX(c));
-    int w = m_cursorWidth;
-    int ch = l.height() + 1;
-
-    return QRect(cix-5, 0, w+9, ch);
 }
 
 /*!
@@ -377,136 +346,6 @@ void QLineEditModel::moveCursor(int pos, bool mark)
         emit selectionChanged();
     }
     emitCursorPositionChanged();
-}
-
-/*!
-    \internal
-
-    Applies the given input method event \a event to the text of the line
-    control
-*/
-void QLineEditModel::processInputMethodEvent(QInputMethodEvent *event)
-{
-    int priorState = 0;
-    bool isGettingInput = !event->commitString().isEmpty()
-            || event->preeditString() != preeditAreaText()
-            || event->replacementLength() > 0;
-    bool cursorPositionChanged = false;
-
-    if (isGettingInput) {
-        // If any text is being input, remove selected text.
-        priorState = m_undoState;
-        removeSelectedText();
-    }
-
-
-    int c = m_cursor; // cursor position after insertion of commit string
-    if (event->replacementStart() == 0)
-        c += event->commitString().length() + qMin(-event->replacementStart(), event->replacementLength());
-
-    m_cursor += event->replacementStart();
-
-    // insert commit string
-    if (event->replacementLength()) {
-        m_selstart = m_cursor;
-        m_selend = m_selstart + event->replacementLength();
-        removeSelectedText();
-    }
-    if (!event->commitString().isEmpty()) {
-        insert(event->commitString());
-        cursorPositionChanged = true;
-    }
-
-    m_cursor = qMin(c, m_text.length());
-
-    for (int i = 0; i < event->attributes().size(); ++i) {
-        const QInputMethodEvent::Attribute &a = event->attributes().at(i);
-        if (a.type == QInputMethodEvent::Selection) {
-            m_cursor = qBound(0, a.start + a.length, m_text.length());
-            if (a.length) {
-                m_selstart = qMax(0, qMin(a.start, m_text.length()));
-                m_selend = m_cursor;
-                if (m_selend < m_selstart) {
-                    qSwap(m_selstart, m_selend);
-                }
-            } else {
-                m_selstart = m_selend = 0;
-            }
-            cursorPositionChanged = true;
-        }
-    }
-#ifndef QT_NO_IM
-    setPreeditArea(m_cursor, event->preeditString());
-#endif //QT_NO_IM
-    m_preeditCursor = event->preeditString().length();
-    m_hideCursor = false;
-    QList<QTextLayout::FormatRange> formats;
-    for (int i = 0; i < event->attributes().size(); ++i) {
-        const QInputMethodEvent::Attribute &a = event->attributes().at(i);
-        if (a.type == QInputMethodEvent::Cursor) {
-            m_preeditCursor = a.start;
-            m_hideCursor = !a.length;
-        } else if (a.type == QInputMethodEvent::TextFormat) {
-            QTextCharFormat f = qvariant_cast<QTextFormat>(a.value).toCharFormat();
-            if (f.isValid()) {
-                QTextLayout::FormatRange o;
-                o.start = a.start + m_cursor;
-                o.length = a.length;
-                o.format = f;
-                formats.append(o);
-            }
-        }
-    }
-    m_textLayout.setAdditionalFormats(formats);
-    updateDisplayText();
-    if (cursorPositionChanged)
-        emitCursorPositionChanged();
-    if (isGettingInput)
-        finishChange(priorState);
-}
-
-/*!
-    \internal
-
-    Draws the display text for the line control using the given 
-    \a painter, \a clip, and \a offset.  Which aspects of the display text
-    are drawn is specified by the given \a flags.
-
-    If the flags contain DrawSelections, then the selection or input mask
-    backgrounds and foregrounds will be applied before drawing the text.
-
-    If the flags contain DrawCursor a cursor of the current cursorWidth()
-    will be drawn after drawing the text.
-
-    The display text will only be drawn if the flags contain DrawText
-*/
-void QLineEditModel::draw(QPainter *painter, const QPoint &offset, const QRect &clip, int flags)
-{
-    QVector<QTextLayout::FormatRange> selections;
-    if (flags & DrawSelections) {
-        QTextLayout::FormatRange o;
-        if (m_selstart < m_selend) {
-            o.start = m_selstart;
-            o.length = m_selend - m_selstart;
-            o.format.setBackground(m_palette.brush(QPalette::Highlight));
-            o.format.setForeground(m_palette.brush(QPalette::HighlightedText));
-        } else {
-            // mask selection
-            o.start = m_cursor;
-            o.length = 1;
-            o.format.setBackground(m_palette.brush(QPalette::Text));
-            o.format.setForeground(m_palette.brush(QPalette::Window));
-        }
-        selections.append(o);
-    }
-
-    if (flags & DrawText)
-        m_textLayout.draw(painter, offset, selections, clip);
-
-    if (flags & DrawCursor){
-        if(!m_blinkPeriod || m_blinkStatus)
-            m_textLayout.drawCursor(painter, offset, m_cursor, m_cursorWidth);
-    }
 }
 
 /*!
@@ -598,7 +437,6 @@ bool QLineEditModel::finishChange(int validateFromState, bool update, bool edite
 void QLineEditModel::internalSetText(const QString &txt, int pos, bool edited)
 {
     internalDeselect();
-    emit resetInputContext();
     QString oldText = m_text;
     if (m_maskData) {
         m_text = maskString(0, txt, true);
@@ -1200,334 +1038,41 @@ void QLineEditModel::emitCursorPositionChanged()
     }
 }
 
-#ifndef QT_NO_COMPLETER
-// iterating forward(dir=1)/backward(dir=-1) from the
-// current row based. dir=0 indicates a new completion prefix was set.
-bool QLineEditModel::advanceToEnabledItem(int dir)
+QLineEditEventHelper::QLineEditEventHelper(QDeclarativeItem *parent)
+    : QDeclarativeItem(parent), m_model(0)
 {
-    int start = m_completer->currentRow();
-    if (start == -1)
-        return false;
-    int i = start + dir;
-    if (dir == 0) dir = 1;
-    do {
-        if (!m_completer->setCurrentRow(i)) {
-            if (!m_completer->wrapAround())
-                break;
-            i = i > 0 ? 0 : m_completer->completionCount() - 1;
-        } else {
-            QModelIndex currentIndex = m_completer->currentIndex();
-            if (m_completer->completionModel()->flags(currentIndex) & Qt::ItemIsEnabled)
-                return true;
-            i += dir;
-        }
-    } while (i != start);
-
-    m_completer->setCurrentRow(start); // restore
-    return false;
 }
 
-void QLineEditModel::complete(int key)
+QLineEditEventHelper::~QLineEditEventHelper()
 {
-    if (!m_completer || isReadOnly() || echoMode() != QLineEdit::Normal)
-        return;
-
-    QString text = this->text();
-    if (m_completer->completionMode() == QCompleter::InlineCompletion) {
-        if (key == Qt::Key_Backspace)
-            return;
-        int n = 0;
-        if (key == Qt::Key_Up || key == Qt::Key_Down) {
-            if (textAfterSelection().length())
-                return;
-            QString prefix = hasSelectedText() ? textBeforeSelection()
-                : text;
-            if (text.compare(m_completer->currentCompletion(), m_completer->caseSensitivity()) != 0
-                || prefix.compare(m_completer->completionPrefix(), m_completer->caseSensitivity()) != 0) {
-                m_completer->setCompletionPrefix(prefix);
-            } else {
-                n = (key == Qt::Key_Up) ? -1 : +1;
-            }
-        } else {
-            m_completer->setCompletionPrefix(text);
-        }
-        if (!advanceToEnabledItem(n))
-            return;
-    } else {
-#ifndef QT_KEYPAD_NAVIGATION
-        if (text.isEmpty()) {
-            m_completer->popup()->hide();
-            return;
-        }
-#endif
-        m_completer->setCompletionPrefix(text);
-    }
-
-    m_completer->complete();
-}
-#endif
-
-void QLineEditModel::setCursorBlinkPeriod(int msec)
-{
-    if (msec == m_blinkPeriod)
-        return;
-    if (m_blinkTimer) {
-        killTimer(m_blinkTimer);
-    }
-    if (msec) {
-        m_blinkTimer = startTimer(msec / 2);
-        m_blinkStatus = 1;
-    } else {
-        m_blinkTimer = 0;
-        if (m_blinkStatus == 1)
-            emit updateNeeded(inputMask().isEmpty() ? cursorRect() : QRect());
-    }
-    m_blinkPeriod = msec;
 }
 
-void QLineEditModel::timerEvent(QTimerEvent *event)
+
+// ### extracted from QLineControl...
+void QLineEditEventHelper::keyPressEvent(QKeyEvent *event)
 {
-    if (event->timerId() == m_blinkTimer) {
-        m_blinkStatus = !m_blinkStatus;
-        emit updateNeeded(inputMask().isEmpty() ? cursorRect() : QRect());
-    } else if (event->timerId() == m_deleteAllTimer) {
-        killTimer(m_deleteAllTimer);
-        m_deleteAllTimer = 0;
-        clear();
-    } else if (event->timerId() == m_tripleClickTimer) {
-        killTimer(m_tripleClickTimer);
-        m_tripleClickTimer = 0;
-    }
-}
-
-bool QLineEditModel::processEvent(QEvent* ev)
-{
-#ifdef QT_KEYPAD_NAVIGATION
-    if (QApplication::keypadNavigationEnabled()) {
-        if ((ev->type() == QEvent::KeyPress) || (ev->type() == QEvent::KeyRelease)) {
-            QKeyEvent *ke = (QKeyEvent *)ev;
-            if (ke->key() == Qt::Key_Back) {
-                if (ke->isAutoRepeat()) {
-                    // Swallow it. We don't want back keys running amok.
-                    ke->accept();
-                    return true;
-                }
-                if ((ev->type() == QEvent::KeyRelease)
-                    && !isReadOnly()
-                    && m_deleteAllTimer) {
-                    killTimer(m_deleteAllTimer);
-                    m_deleteAllTimer = 0;
-                    backspace();
-                    ke->accept();
-                    return true;
-                }
-            }
-        }
-    }
-#endif
-    switch(ev->type()){
-#ifndef QT_NO_GRAPHICSVIEW
-        case QEvent::GraphicsSceneMouseMove:
-        case QEvent::GraphicsSceneMouseRelease:
-        case QEvent::GraphicsSceneMousePress:{
-               QGraphicsSceneMouseEvent *gvEv = static_cast<QGraphicsSceneMouseEvent*>(ev);
-               QMouseEvent* mouse = new QMouseEvent(ev->type(),
-                    gvEv->pos().toPoint(), gvEv->button(), gvEv->buttons(), gvEv->modifiers());
-               processMouseEvent(mouse); break;
-        }
-#endif
-        case QEvent::MouseButtonPress:
-        case QEvent::MouseButtonRelease:
-        case QEvent::MouseButtonDblClick:
-        case QEvent::MouseMove:
-            processMouseEvent(static_cast<QMouseEvent*>(ev)); break;
-        case QEvent::KeyPress:
-        case QEvent::KeyRelease:
-            processKeyEvent(static_cast<QKeyEvent*>(ev)); break;
-        case QEvent::InputMethod:
-            processInputMethodEvent(static_cast<QInputMethodEvent*>(ev)); break;
-#ifndef QT_NO_SHORTCUT
-        case QEvent::ShortcutOverride:{
-            QKeyEvent* ke = static_cast<QKeyEvent*>(ev);
-            if (ke == QKeySequence::Copy
-                || ke == QKeySequence::Paste
-                || ke == QKeySequence::Cut
-                || ke == QKeySequence::Redo
-                || ke == QKeySequence::Undo
-                || ke == QKeySequence::MoveToNextWord
-                || ke == QKeySequence::MoveToPreviousWord
-                || ke == QKeySequence::MoveToStartOfDocument
-                || ke == QKeySequence::MoveToEndOfDocument
-                || ke == QKeySequence::SelectNextWord
-                || ke == QKeySequence::SelectPreviousWord
-                || ke == QKeySequence::SelectStartOfLine
-                || ke == QKeySequence::SelectEndOfLine
-                || ke == QKeySequence::SelectStartOfBlock
-                || ke == QKeySequence::SelectEndOfBlock
-                || ke == QKeySequence::SelectStartOfDocument
-                || ke == QKeySequence::SelectAll
-                || ke == QKeySequence::SelectEndOfDocument) {
-                ke->accept();
-            } else if (ke->modifiers() == Qt::NoModifier || ke->modifiers() == Qt::ShiftModifier
-                       || ke->modifiers() == Qt::KeypadModifier) {
-                if (ke->key() < Qt::Key_Escape) {
-                    ke->accept();
-                } else {
-                    switch (ke->key()) {
-                    case Qt::Key_Delete:
-                    case Qt::Key_Home:
-                    case Qt::Key_End:
-                    case Qt::Key_Backspace:
-                    case Qt::Key_Left:
-                    case Qt::Key_Right:
-                        ke->accept();
-                    default:
-                        break;
-                    }
-                }
-            }
-        }
-#endif
-        default:
-            return false;
-    }
-    return true;
-}
-
-void QLineEditModel::processMouseEvent(QMouseEvent* ev)
-{
-
-    switch (ev->type()) {
-        case QEvent::GraphicsSceneMousePress:
-        case QEvent::MouseButtonPress:{
-            if (m_tripleClickTimer
-                && (ev->pos() - m_tripleClick).manhattanLength()
-                    < QApplication::startDragDistance()) {
-                selectAll();
-                return;
-            }
-            if (ev->button() == Qt::RightButton)
-                return;
-
-            bool mark = ev->modifiers() & Qt::ShiftModifier;
-            int cursor = xToPos(ev->pos().x());
-            moveCursor(cursor, mark);
-            break;
-        }
-        case QEvent::MouseButtonDblClick:
-            if (ev->button() == Qt::LeftButton) {
-                selectWordAtPos(xToPos(ev->pos().x()));
-                if (m_tripleClickTimer)
-                    killTimer(m_tripleClickTimer);
-                m_tripleClickTimer = startTimer(QApplication::doubleClickInterval());
-                m_tripleClick = ev->pos();
-            }
-            break;
-        case QEvent::GraphicsSceneMouseRelease:
-        case QEvent::MouseButtonRelease:
-#ifndef QT_NO_CLIPBOARD
-            if (QApplication::clipboard()->supportsSelection()) {
-                if (ev->button() == Qt::LeftButton) {
-                    copy(QClipboard::Selection);
-                } else if (!isReadOnly() && ev->button() == Qt::MidButton) {
-                    deselect();
-                    insert(QApplication::clipboard()->text(QClipboard::Selection));
-                }
-            }
-#endif
-            break;
-        case QEvent::GraphicsSceneMouseMove:
-        case QEvent::MouseMove:
-            if (ev->buttons() & Qt::LeftButton) {
-                moveCursor(xToPos(ev->pos().x()), true);
-            }
-            break;
-        default:
-            break;
-    }
-}
-
-void QLineEditModel::processKeyEvent(QKeyEvent* event)
-{
-    bool inlineCompletionAccepted = false;
-
-#ifndef QT_NO_COMPLETER
-    if (m_completer) {
-        QCompleter::CompletionMode completionMode = m_completer->completionMode();
-        if ((completionMode == QCompleter::PopupCompletion
-             || completionMode == QCompleter::UnfilteredPopupCompletion)
-            && m_completer->popup()
-            && m_completer->popup()->isVisible()) {
-            // The following keys are forwarded by the completer to the widget
-            // Ignoring the events lets the completer provide suitable default behavior
-            switch (event->key()) {
-            case Qt::Key_Escape:
-                event->ignore();
-                return;
-            case Qt::Key_Enter:
-            case Qt::Key_Return:
-            case Qt::Key_F4:
-#ifdef QT_KEYPAD_NAVIGATION
-            case Qt::Key_Select:
-                if (!QApplication::keypadNavigationEnabled())
-                    break;
-#endif
-                m_completer->popup()->hide(); // just hide. will end up propagating to parent
-            default:
-                break; // normal key processing
-            }
-        } else if (completionMode == QCompleter::InlineCompletion) {
-            switch (event->key()) {
-            case Qt::Key_Enter:
-            case Qt::Key_Return:
-            case Qt::Key_F4:
-#ifdef QT_KEYPAD_NAVIGATION
-            case Qt::Key_Select:
-                if (!QApplication::keypadNavigationEnabled())
-                    break;
-#endif
-                if (!m_completer->currentCompletion().isEmpty() && hasSelectedText()
-                    && textAfterSelection().isEmpty()) {
-                    setText(m_completer->currentCompletion());
-                    inlineCompletionAccepted = true;
-                }
-            default:
-                break; // normal key processing
-            }
-        }
-    }
-#endif // QT_NO_COMPLETER
-
     if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
-        if (hasAcceptableInput() || fixup()) {
+        if (m_model->hasAcceptableInput() || m_model->fixup()) {
             emit accepted();
             emit editingFinished();
         }
-        if (inlineCompletionAccepted)
-            event->accept();
-        else
-            event->ignore();
+        event->ignore();
         return;
     }
 
-    if (echoMode() == QLineEdit::PasswordEchoOnEdit
-        && !passwordEchoEditing()
-        && !isReadOnly()
+    // ### ???
+    if (m_model->echoMode() == QLineEdit::PasswordEchoOnEdit
+        && !m_model->passwordEchoEditing()
+        && !m_model->isReadOnly()
         && !event->text().isEmpty()
-#ifdef QT_KEYPAD_NAVIGATION
-        && event->key() != Qt::Key_Select
-        && event->key() != Qt::Key_Up
-        && event->key() != Qt::Key_Down
-        && event->key() != Qt::Key_Back
-#endif
         && !(event->modifiers() & Qt::ControlModifier)) {
         // Clear the edit and reset to normal echo mode while editing; the
         // echo mode switches back when the edit loses focus
         // ### resets current content.  dubious code; you can
         // navigate with keys up, down, back, and select(?), but if you press
         // "left" or "right" it clears?
-        updatePasswordEchoEditing(true);
-        clear();
+        m_model->updatePasswordEchoEditing(true);
+        m_model->clear();
     }
 
     bool unknown = false;
@@ -1536,119 +1081,109 @@ void QLineEditModel::processKeyEvent(QKeyEvent* event)
     }
 #ifndef QT_NO_SHORTCUT
     else if (event == QKeySequence::Undo) {
-        if (!isReadOnly())
-            undo();
+        if (!m_model->isReadOnly())
+            m_model->undo();
     }
     else if (event == QKeySequence::Redo) {
-        if (!isReadOnly())
-            redo();
+        if (!m_model->isReadOnly())
+            m_model->redo();
     }
     else if (event == QKeySequence::SelectAll) {
-        selectAll();
+        m_model->selectAll();
     }
 #ifndef QT_NO_CLIPBOARD
     else if (event == QKeySequence::Copy) {
-        copy();
+        m_model->copy();
     }
     else if (event == QKeySequence::Paste) {
-        if (!isReadOnly())
-            paste();
+        if (!m_model->isReadOnly())
+            m_model->paste();
     }
     else if (event == QKeySequence::Cut) {
-        if (!isReadOnly()) {
-            copy();
-            del();
+        if (!m_model->isReadOnly()) {
+            m_model->copy();
+            m_model->del();
         }
     }
     else if (event == QKeySequence::DeleteEndOfLine) {
-        if (!isReadOnly()) {
-            setSelection(cursor(), end());
-            copy();
-            del();
+        if (!m_model->isReadOnly()) {
+            m_model->setSelection(m_model->cursorPosition(), m_model->end());
+            m_model->copy();
+            m_model->del();
         }
     }
 #endif //QT_NO_CLIPBOARD
     else if (event == QKeySequence::MoveToStartOfLine || event == QKeySequence::MoveToStartOfBlock) {
-        home(0);
+        m_model->home(0);
     }
     else if (event == QKeySequence::MoveToEndOfLine || event == QKeySequence::MoveToEndOfBlock) {
-        end(0);
+        m_model->end(0);
     }
     else if (event == QKeySequence::SelectStartOfLine || event == QKeySequence::SelectStartOfBlock) {
-        home(1);
+        m_model->home(1);
     }
     else if (event == QKeySequence::SelectEndOfLine || event == QKeySequence::SelectEndOfBlock) {
-        end(1);
+        m_model->end(1);
     }
     else if (event == QKeySequence::MoveToNextChar) {
-#if !defined(Q_WS_WIN) || defined(QT_NO_COMPLETER)
-        if (hasSelectedText()) {
-#else
-        if (hasSelectedText() && m_completer
-            && m_completer->completionMode() == QCompleter::InlineCompletion) {
-#endif
-            moveCursor(selectionEnd(), false);
+        if (m_model->hasSelectedText()) {
+            m_model->moveCursor(m_model->selectionEnd(), false);
         } else {
-            cursorForward(0, layoutDirection() == Qt::LeftToRight ? 1 : -1);
+            m_model->cursorForward(0, m_model->layoutDirection() == Qt::LeftToRight ? 1 : -1);
         }
     }
     else if (event == QKeySequence::SelectNextChar) {
-        cursorForward(1, layoutDirection() == Qt::LeftToRight ? 1 : -1);
+        m_model->cursorForward(1, m_model->layoutDirection() == Qt::LeftToRight ? 1 : -1);
     }
     else if (event == QKeySequence::MoveToPreviousChar) {
-#if !defined(Q_WS_WIN) || defined(QT_NO_COMPLETER)
-        if (hasSelectedText()) {
-#else
-        if (hasSelectedText() && m_completer
-            && m_completer->completionMode() == QCompleter::InlineCompletion) {
-#endif
-            moveCursor(selectionStart(), false);
+        if (m_model->hasSelectedText()) {
+            m_model->moveCursor(m_model->selectionStart(), false);
         } else {
-            cursorForward(0, layoutDirection() == Qt::LeftToRight ? -1 : 1);
+            m_model->cursorForward(0, m_model->layoutDirection() == Qt::LeftToRight ? -1 : 1);
         }
     }
     else if (event == QKeySequence::SelectPreviousChar) {
-        cursorForward(1, layoutDirection() == Qt::LeftToRight ? -1 : 1);
+        m_model->cursorForward(1, m_model->layoutDirection() == Qt::LeftToRight ? -1 : 1);
     }
     else if (event == QKeySequence::MoveToNextWord) {
-        if (echoMode() == QLineEdit::Normal)
-            layoutDirection() == Qt::LeftToRight ? cursorWordForward(0) : cursorWordBackward(0);
+        if (m_model->echoMode() == QLineEdit::Normal)
+            m_model->layoutDirection() == Qt::LeftToRight ? m_model->cursorWordForward(0) : m_model->cursorWordBackward(0);
         else
-            layoutDirection() == Qt::LeftToRight ? end(0) : home(0);
+            m_model->layoutDirection() == Qt::LeftToRight ? m_model->end(0) : m_model->home(0);
     }
     else if (event == QKeySequence::MoveToPreviousWord) {
-        if (echoMode() == QLineEdit::Normal)
-            layoutDirection() == Qt::LeftToRight ? cursorWordBackward(0) : cursorWordForward(0);
-        else if (!isReadOnly()) {
-            layoutDirection() == Qt::LeftToRight ? home(0) : end(0);
+        if (m_model->echoMode() == QLineEdit::Normal)
+            m_model->layoutDirection() == Qt::LeftToRight ? m_model->cursorWordBackward(0) : m_model->cursorWordForward(0);
+        else if (!m_model->isReadOnly()) {
+            m_model->layoutDirection() == Qt::LeftToRight ? m_model->home(0) : m_model->end(0);
         }
     }
     else if (event == QKeySequence::SelectNextWord) {
-        if (echoMode() == QLineEdit::Normal)
-            layoutDirection() == Qt::LeftToRight ? cursorWordForward(1) : cursorWordBackward(1);
+        if (m_model->echoMode() == QLineEdit::Normal)
+            m_model->layoutDirection() == Qt::LeftToRight ? m_model->cursorWordForward(1) : m_model->cursorWordBackward(1);
         else
-            layoutDirection() == Qt::LeftToRight ? end(1) : home(1);
+            m_model->layoutDirection() == Qt::LeftToRight ? m_model->end(1) : m_model->home(1);
     }
     else if (event == QKeySequence::SelectPreviousWord) {
-        if (echoMode() == QLineEdit::Normal)
-            layoutDirection() == Qt::LeftToRight ? cursorWordBackward(1) : cursorWordForward(1);
+        if (m_model->echoMode() == QLineEdit::Normal)
+            m_model->layoutDirection() == Qt::LeftToRight ? m_model->cursorWordBackward(1) : m_model->cursorWordForward(1);
         else
-            layoutDirection() == Qt::LeftToRight ? home(1) : end(1);
+            m_model->layoutDirection() == Qt::LeftToRight ? m_model->home(1) : m_model->end(1);
     }
     else if (event == QKeySequence::Delete) {
-        if (!isReadOnly())
-            del();
+        if (!m_model->isReadOnly())
+            m_model->del();
     }
     else if (event == QKeySequence::DeleteEndOfWord) {
-        if (!isReadOnly()) {
-            cursorWordForward(true);
-            del();
+        if (!m_model->isReadOnly()) {
+            m_model->cursorWordForward(true);
+            m_model->del();
         }
     }
     else if (event == QKeySequence::DeleteStartOfWord) {
-        if (!isReadOnly()) {
-            cursorWordBackward(true);
-            del();
+        if (!m_model->isReadOnly()) {
+            m_model->cursorWordBackward(true);
+            m_model->del();
         }
     }
 #endif // QT_NO_SHORTCUT
@@ -1662,13 +1197,13 @@ void QLineEditModel::processKeyEvent(QKeyEvent* event)
                         || myModifiers == (Qt::AltModifier|Qt::ShiftModifier)
                         || myModifiers == Qt::ShiftModifier) {
 
-                    event->key() == Qt::Key_Up ? home(1) : end(1);
+                    event->key() == Qt::Key_Up ? m_model->home(1) : m_model->end(1);
                 }
             } else {
                 if ((myModifiers == Qt::ControlModifier
                      || myModifiers == Qt::AltModifier
                      || myModifiers == Qt::NoModifier)) {
-                    event->key() == Qt::Key_Up ? home(0) : end(0);
+                    event->key() == Qt::Key_Up ? m_model->home(0) : m_model->end(0);
                 }
             }
             handled = true;
@@ -1677,29 +1212,23 @@ void QLineEditModel::processKeyEvent(QKeyEvent* event)
         if (event->modifiers() & Qt::ControlModifier) {
             switch (event->key()) {
             case Qt::Key_Backspace:
-                if (!isReadOnly()) {
-                    cursorWordBackward(true);
-                    del();
+                if (!m_model->isReadOnly()) {
+                    m_model->cursorWordBackward(true);
+                    m_model->del();
                 }
                 break;
-#ifndef QT_NO_COMPLETER
-            case Qt::Key_Up:
-            case Qt::Key_Down:
-                complete(event->key());
-                break;
-#endif
 #if defined(Q_WS_X11)
             case Qt::Key_E:
-                end(0);
+                m_model->end(0);
                 break;
 
             case Qt::Key_U:
-                if (!isReadOnly()) {
-                    setSelection(0, text().size());
+                if (!m_model->isReadOnly()) {
+                    m_model->setSelection(0, m_model->text().size());
 #ifndef QT_NO_CLIPBOARD
-                    copy();
+                    m_model->copy();
 #endif
-                    del();
+                    m_model->del();
                 }
             break;
 #endif
@@ -1710,32 +1239,10 @@ void QLineEditModel::processKeyEvent(QKeyEvent* event)
         } else { // ### check for *no* modifier
             switch (event->key()) {
             case Qt::Key_Backspace:
-                if (!isReadOnly()) {
-                    backspace();
-#ifndef QT_NO_COMPLETER
-                    complete(Qt::Key_Backspace);
-#endif
+                if (!m_model->isReadOnly()) {
+                    m_model->backspace();
                 }
                 break;
-#ifdef QT_KEYPAD_NAVIGATION
-            case Qt::Key_Back:
-                if (QApplication::keypadNavigationEnabled() && !event->isAutoRepeat()
-                    && !isReadOnly()) {
-                    if (text().length() == 0) {
-                        setText(m_cancelText);
-
-                        if (passwordEchoEditing())
-                            updatePasswordEchoEditing(false);
-
-                        emit editFocusChange(false);
-                    } else if (!m_deleteAllTimer) {
-                        m_deleteAllTimer = startTimer(750);
-                    }
-                } else {
-                    unknown = true;
-                }
-                break;
-#endif
 
             default:
                 if (!handled)
@@ -1744,18 +1251,16 @@ void QLineEditModel::processKeyEvent(QKeyEvent* event)
         }
     }
 
+    // ### layout direction :-P
     if (event->key() == Qt::Key_Direction_L || event->key() == Qt::Key_Direction_R) {
-        setLayoutDirection((event->key() == Qt::Key_Direction_L) ? Qt::LeftToRight : Qt::RightToLeft);
+        m_model->setLayoutDirection((event->key() == Qt::Key_Direction_L) ? Qt::LeftToRight : Qt::RightToLeft);
         unknown = false;
     }
 
-    if (unknown && !isReadOnly()) {
+    if (unknown && !m_model->isReadOnly()) {
         QString t = event->text();
         if (!t.isEmpty() && t.at(0).isPrint()) {
-            insert(t);
-#ifndef QT_NO_COMPLETER
-            complete(event->key());
-#endif
+            m_model->insert(t);
             event->accept();
             return;
         }
