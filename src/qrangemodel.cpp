@@ -53,17 +53,11 @@ void QRangeModelPrivate::init()
     pos = 0;
     minpos = 0;
     maxpos = 0;
-    pressValue = -1;
-    offset_accumulated = 0;
     tracking = true;
     blocktracking = false;
     pressed = false;
     wrapping = false;
     repeatAction = QRangeModel::SliderNoAction;
-#ifdef QT_KEYPAD_NAVIGATION
-    isAutoRepeating = false;
-    repeatMultiplier = 1;
-#endif
 }
 
 QRangeModel::QRangeModel(QObject *parent)
@@ -318,18 +312,6 @@ void QRangeModel::setValue(int value)
     emit valueChanged(value);
 }
 
-void QRangeModel::setPressValue(int value)
-{
-    Q_D(QRangeModel);
-    d->pressValue = value;
-}
-
-int QRangeModel::pressValue() const
-{
-    Q_D(const QRangeModel);
-    return d->pressValue;
-}
-
 void QRangeModel::setWrapping(bool b)
 {
     Q_D(QRangeModel);
@@ -340,18 +322,6 @@ bool QRangeModel::wrapping() const
 {
     Q_D(const QRangeModel);
     return d->wrapping;
-}
-
-void QRangeModel::setStopMouseOverSlider(bool b)
-{
-    Q_D(QRangeModel);
-    d->stopMouseOverSlider = b;
-}
-
-bool QRangeModel::stopMouseOverSlider() const
-{
-    Q_D(const QRangeModel);
-    return d->stopMouseOverSlider;
 }
 
 void QRangeModel::triggerAction(SliderAction action)
@@ -420,12 +390,7 @@ void QRangeModel::timerEvent(QTimerEvent *e)
             d->repeatActionTimer.start(d->repeatActionTime, this);
             d->repeatActionTime = 0;
         }
-        if (d->repeatAction == SliderPageStepAdd)
-            d->setAdjustedSliderPosition(d->overflowSafeAdd(d->pageStep));
-        else if (d->repeatAction == SliderPageStepSub)
-            d->setAdjustedSliderPosition(d->overflowSafeAdd(-d->pageStep));
-        else
-            triggerAction(d->repeatAction);
+        triggerAction(d->repeatAction);
     }
 }
 

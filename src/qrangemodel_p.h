@@ -82,12 +82,10 @@ public:
      */
     int singleStep;
 
-    float offset_accumulated;
     uint tracking : 1;
     uint blocktracking :1;
     uint pressed : 1;
     uint wrapping : 1;
-    uint stopMouseOverSlider : 1;
 
     QBasicTimer repeatActionTimer;
     int repeatActionTime;
@@ -95,7 +93,7 @@ public:
 
     inline int effectiveSingleStep() const
     {
-        return singleStep;//* repeatMultiplier;
+        return singleStep;
     }
 
     inline int overflowSafeAdd(int add) const
@@ -111,14 +109,9 @@ public:
     inline void setAdjustedSliderPosition(int position)
     {
         Q_Q(QRangeModel);
-        if (stopMouseOverSlider && (position > pressValue - 2 * pageStep)
-            && (position < pressValue + 2 * pageStep)) {
-            repeatAction = QRangeModel::SliderNoAction;
-            q->setSliderPosition(pressValue);
-            return;
-        }
         q->triggerAction(repeatAction);
     }
+
 };
 
 QT_END_NAMESPACE

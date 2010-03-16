@@ -91,15 +91,8 @@ public:
     void setPosition(int position);
     int position() const;
 
-    void setPressValue(int);
-    int pressValue() const;
-
     void setWrapping(bool);
     bool wrapping() const;
-
-    // Control property linked to the QStyle::SH_Slider_StopMouseOverSlider style hint.
-    void setStopMouseOverSlider(bool);
-    bool stopMouseOverSlider() const;
 
     void startRepeatActionTimer(int ms);
     bool repeatActionTimerActive() const;
