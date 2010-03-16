@@ -117,10 +117,6 @@ public:
 
     int value() const;
 
-#ifdef QT_KEYPAD_NAVIGATION
-    void saveValue();
-#endif
-
     void triggerAction(SliderAction action);
 
 public Q_SLOTS:
@@ -143,15 +139,7 @@ Q_SIGNALS:
 public:
     void setRepeatAction(SliderAction action, int thresholdTime = 500, int repeatTime = 50);
     SliderAction repeatAction() const;
-/*
-    enum SliderChange {
-        SliderRangeChange,
-        SliderOrientationChange,
-        SliderStepsChange,
-        SliderValueChange
-    };
-    virtual void sliderChange(SliderChange change);
-*/
+
 protected:
     QRangeModel(QRangeModelPrivate &dd, QObject *parent);
     void timerEvent(QTimerEvent *e);

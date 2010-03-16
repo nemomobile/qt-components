@@ -139,7 +139,6 @@ bool QRangeModel::hasNullRange() const
 
 void QRangeModelPrivate::setSteps(int single, int page)
 {
-    Q_Q(QRangeModel);
     singleStep = qAbs(single);
     pageStep = qAbs(page);
 }
