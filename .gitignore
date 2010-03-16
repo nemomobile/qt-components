@@ -1,0 +1,7 @@
+Makefile
+moc_*.cpp
+qrc_*.cpp
+*.o
+*.moc
+*.so
+lib
