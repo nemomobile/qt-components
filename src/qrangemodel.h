@@ -45,21 +45,14 @@ class QRangeModel : public QObject
     Q_PROPERTY(int minimumPosition READ minimumPosition WRITE setMinimumPosition NOTIFY positionRangeChanged) // ###
     Q_PROPERTY(int maximumPosition READ maximumPosition WRITE setMaximumPosition NOTIFY positionRangeChanged) // ###
     Q_PROPERTY(bool tracking READ hasTracking WRITE setTracking)
-    Q_PROPERTY(Qt::Orientation orientation READ orientation WRITE setOrientation)
-    Q_PROPERTY(bool invertedAppearance READ invertedAppearance WRITE setInvertedAppearance)
-    Q_PROPERTY(bool invertedControls READ invertedControls WRITE setInvertedControls)
-    Q_PROPERTY(bool sliderDown READ isSliderDown WRITE setSliderDown DESIGNABLE false)
     Q_PROPERTY(bool wrapping READ wrapping WRITE setWrapping)
 
 public:
-    QRangeModel(QAbstractSlider *widget = 0);
-    QRangeModel(QGraphicsObject *graphicsObject);
+    QRangeModel(QObject *parent = 0);
     virtual ~QRangeModel();
 
     void sedate();
     void awake();
-
-    Qt::Orientation orientation() const;
 
     void setMinimum(int);
     int minimum() const;
@@ -101,12 +94,6 @@ public:
     void setPressValue(int);
     int pressValue() const;
 
-    void setInvertedAppearance(bool);
-    bool invertedAppearance() const;
-
-    void setInvertedControls(bool);
-    bool invertedControls() const;
-
     void setWrapping(bool);
     bool wrapping() const;
 
@@ -138,7 +125,6 @@ public:
 
 public Q_SLOTS:
     void setValue(int);
-    void setOrientation(Qt::Orientation);
 
 Q_SIGNALS:
     void valueChanged(int value);
@@ -157,7 +143,7 @@ Q_SIGNALS:
 public:
     void setRepeatAction(SliderAction action, int thresholdTime = 500, int repeatTime = 50);
     SliderAction repeatAction() const;
-
+/*
     enum SliderChange {
         SliderRangeChange,
         SliderOrientationChange,
@@ -165,16 +151,10 @@ public:
         SliderValueChange
     };
     virtual void sliderChange(SliderChange change);
-
-    void keyPressEvent(QEvent *ev);
-    void timerEvent(QTimerEvent *);
-#ifndef QT_NO_WHEELEVENT
-    void wheelEvent(QEvent *e);
-#endif
-    void changeEvent(QEvent *e);
-
+*/
 protected:
     QRangeModel(QRangeModelPrivate &dd, QObject *parent);
+    void timerEvent(QTimerEvent *e);
 
 private:
     Q_DISABLE_COPY(QRangeModel)

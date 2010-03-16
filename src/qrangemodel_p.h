@@ -64,35 +64,13 @@ class QRangeModelPrivate : public QObjectPrivate
 public:
     Q_DECLARE_PUBLIC(QRangeModel)
 
-    QRangeModelPrivate(QAbstractSlider *slider);
-    QRangeModelPrivate(QGraphicsObject *graphicsObject);
+    QRangeModelPrivate();
 
     ~QRangeModelPrivate();
 
     void init();
     bool isSedated;
     bool signalsBlocked;
-
-    QAbstractSlider *slider;
-    QGraphicsObject *graphicsObject;
-
-    void update()
-    {
-        if (isSedated)
-            return;
-        if (slider)
-            slider->update();
-        else if (graphicsObject)
-            graphicsObject->update();
-    }
-
-    bool isRightToLeft() { return slider && slider->isRightToLeft(); }
-
-    bool isEnabled()
-    {
-        return slider ? slider->isEnabled() :
-                    graphicsObject ? graphicsObject->isEnabled() : false;
-    }
 
     void setSteps(int single, int page);
 
@@ -108,59 +86,16 @@ public:
     uint tracking : 1;
     uint blocktracking :1;
     uint pressed : 1;
-    uint invertedAppearance : 1;
-    uint invertedControls : 1;
     uint wrapping : 1;
     uint stopMouseOverSlider : 1;
-    Qt::Orientation orientation;
 
     QBasicTimer repeatActionTimer;
     int repeatActionTime;
     QRangeModel::SliderAction repeatAction;
 
-    void wheelEventHandler(QEvent * e, int delta, Qt::KeyboardModifiers modifiers);
-
-    void keyPressEventHandler(QKeyEvent *ev);
-    void keyPressEventHandler(QGraphicsSceneEvent *ev);
-
-#ifdef QT_KEYPAD_NAVIGATION
-    bool hasEditFocus()
-    {
-        return slider && slider->hasEditFocus();
-    }
-
-    void setEditFocus(bool b)
-    {
-        if (slider)
-            slider->setEditFocus(b);
-    }
-
-    int origValue;
-
-    /**
-     */
-    bool isAutoRepeating;
-
-    /**
-     * When we're auto repeating, we multiply singleStep with this value to
-     * get our effective step.
-     */
-    qreal repeatMultiplier;
-
-    /**
-     * The time of when the first auto repeating key press event occurs.
-     */
-    QTime firstRepeat;
-
-#endif
-
     inline int effectiveSingleStep() const
     {
-        return singleStep
-#ifdef QT_KEYPAD_NAVIGATION
-        * repeatMultiplier
-#endif
-        ;
+        return singleStep;//* repeatMultiplier;
     }
 
     inline int overflowSafeAdd(int add) const
