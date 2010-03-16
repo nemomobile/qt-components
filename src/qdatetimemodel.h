@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2008-2009 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2008-2010 Nokia Corporation and/or its subsidiary(-ies).
 ** Contact: Qt Software Information (qt-info@nokia.com)
 **
 ** This file is part of the Qt Components project on Trolltech Labs.
@@ -26,23 +26,50 @@
 
 #include <QtCore/qdatetime.h>
 #include <QtCore/qvariant.h>
+#include <QtDeclarative/qdeclarative.h>
+
+class QDateTimeModelPrivate;
 
 class Q_GUI_EXPORT QDateTimeModel : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QDate date READ date WRITE setDate NOTIFY dateTimeChanged)
+    Q_PROPERTY(QTime time READ time WRITE setTime NOTIFY dateTimeChanged)
     Q_PROPERTY(QDateTime dateTime READ dateTime WRITE setDateTime NOTIFY dateTimeChanged)
+    Q_PROPERTY(int weekNumber READ weekNumber WRITE setWeekNumber NOTIFY dateTimeChanged)
+    Q_PROPERTY(int dayOfWeek READ dayOfWeek NOTIFY dateTimeChanged)
+    Q_PROPERTY(int dayOfYear READ dayOfYear NOTIFY dateTimeChanged)
+    Q_PROPERTY(int daysInMonth READ daysInMonth NOTIFY dateTimeChanged)
+    Q_PROPERTY(int daysInYear READ daysInYear NOTIFY dateTimeChanged)
+    Q_PROPERTY(QDateTime utc READ toUTC NOTIFY dateTimeChanged)
+    Q_PROPERTY(QDate firstDayOfWeek READ firstDayOfWeek NOTIFY dateTimeChanged)
+    Q_PROPERTY(QString longDayName READ longDayName NOTIFY dateTimeChanged)
+    Q_PROPERTY(QString longMonthName READ longMonthName NOTIFY dateTimeChanged)
+    Q_PROPERTY(QString shortDayName READ shortDayName NOTIFY dateTimeChanged)
+    Q_PROPERTY(QString shortMonthName READ shortMonthName NOTIFY dateTimeChanged)
     Q_PROPERTY(QDateTime maximumDateTime READ maximumDateTime WRITE setMaximumDateTime RESET clearMaximumDateTime)
     Q_PROPERTY(QDateTime minimumDateTime READ minimumDateTime WRITE setMinimumDateTime RESET clearMinimumDateTime)
-    Q_PROPERTY(QString displayFormat READ displayFormat WRITE setDisplayFormat)
-    Q_PROPERTY(QString displayString READ displayString WRITE setDisplayString)
     Q_PROPERTY(Qt::TimeSpec timeSpec READ timeSpec WRITE setTimeSpec)
 
 public:
-    QDateTimeEdit(QObject *parent = 0);
+    QDateTimeModel(QObject *parent = 0);
 
-    QDateTime dateTime() const;
     QDate date() const;
     QTime time() const;
+    QDateTime dateTime() const;
+
+    int weekNumber() const;
+    int dayOfWeek() const;
+    int dayOfYear() const;
+    int daysInMonth() const;
+    int daysInYear() const;
+    QDateTime toUTC() const;
+    QDate firstDayOfWeek();
+
+    QString longDayName() const;
+    QString longMonthName() const;
+    QString shortDayName() const;
+    QString shortMonthName() const;
 
     QDateTime minimumDateTime() const;
     void clearMinimumDateTime();
@@ -54,24 +81,29 @@ public:
 
     void setDateTimeRange(const QDateTime &min, const QDateTime &max);
 
-    QString displayFormat() const;
-    void setDisplayFormat(const QString &format);
-
-    QString displayString() const;
-    void setDisplayString(const QString &dateTime);
-
     Qt::TimeSpec timeSpec() const;
     void setTimeSpec(Qt::TimeSpec spec);
 
 Q_SIGNALS:
-    void dateTimeChanged(const QDateTime &date);
-    void timeChanged(const QTime &date);
-    void dateChanged(const QDate &date);
+    void dateTimeChanged(const QDateTime &dateTime);
 
 public Q_SLOTS:
-    void setDateTime(const QDateTime &dateTime);
+    QString localeFormat() const;
+    QDateTime currentTime() const;
+
     void setDate(const QDate &date);
     void setTime(const QTime &time);
+    void setDateTime(const QDateTime &dateTime);
+    void setWeekNumber(int week);
+
+    bool addDays(int ndays);
+    bool addMonths(int nmonths);
+    bool addYears(int nyears);
+    bool addMSecs(qint64 ms);
+    bool addSecs(int s);
+
+    int daysTo(const QDateTime &date) const;
+    int	secsTo(const QDateTime &time) const;
 
 protected:
     QDateTimeModel(const QVariant &val, QVariant::Type parserType, QObject *parent = 0);
@@ -80,5 +112,7 @@ private:
     Q_DECLARE_PRIVATE(QDateTimeModel)
     Q_DISABLE_COPY(QDateTimeModel)
 };
+
+QML_DECLARE_TYPE(QDateTimeModel);
 
 #endif // QDATETIMEMODEL_H

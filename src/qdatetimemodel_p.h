@@ -35,9 +35,12 @@
 // We mean it.
 //
 
+#include "private/qobject_p.h"
+#include "QtCore/qdatetime.h"
 #include "QtCore/private/qdatetime_p.h"
 
-#include "qdebug.h"
+
+QT_BEGIN_NAMESPACE
 
 class QDateTimeModelPrivate : public QObjectPrivate, public QDateTimeParser
 {
@@ -45,43 +48,17 @@ class QDateTimeModelPrivate : public QObjectPrivate, public QDateTimeParser
 public:
     QDateTimeModelPrivate();
 
-    void init(const QVariant &variant);
     void readLocaleSettings();
-
-    void emitSignals(EmitPolicy ep, const QVariant &old);
-
-    QString textFromValue(const QVariant &value) const;
-    QVariant valueFromText(const QString &text) const;
-
-    virtual void interpret(EmitPolicy ep);
-    virtual void clearCache() const;
-
-    QDateTime validateAndInterpret(QString &input, int &, QValidator::State &state, bool fixup = false) const;
-    void clearSection(int index);
-
-    //virtual QString displayText() const { return edit->text(); } // this is from QDateTimeParser
-
-    void updateCache(const QVariant &val, const QString &str) const;
-
     void updateTimeSpec();
-    virtual QDateTime getMinimum() const { return minimum.toDateTime(); }
-    virtual QDateTime getMaximum() const { return maximum.toDateTime(); }
-    virtual QLocale locale() const { return q_func()->locale(); }
-    QString valueToText(const QVariant &var) const { return textFromValue(var); }
-    QString getAmPmText(AmPm ap, Case cs) const;
-    int cursorPosition() const { return edit ? edit->cursorPosition() : -1; }
+    void setRange(const QDateTime &min, const QDateTime &max);
 
     virtual QVariant getZeroVariant() const;
-    virtual void setRange(const QVariant &min, const QVariant &max);
 
-    mutable bool cacheGuard;
-
-    QString defaultDateFormat;
-    QString defaultTimeFormat;
-    QString defaultDateTimeFormat;
-    QString unreversedFormat;
-
-    mutable QVariant conflictGuard;
+    QDateTime value;
+    QDateTime minimum;
+    QDateTime maximum;
 };
+
+QT_END_NAMESPACE
 
 #endif // QDATETIMEMODEL_P_H

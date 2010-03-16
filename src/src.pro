@@ -9,9 +9,11 @@ HEADERS += qrangemodel.h \
            qbuttonmodel.h \
            qbuttonmodel_p.h \
            qlineeditmodel.h \
+           qdatetimemodel.h \
            qprogressbarmodel.h
 
 SOURCES += qrangemodel.cpp \
            qbuttonmodel.cpp \
            qlineeditmodel.cpp \
+           qdatetimemodel.cpp \
            qprogressbarmodel.cpp
