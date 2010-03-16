@@ -1,2 +1,2 @@
 TEMPLATE = subdirs
-SUBDIRS += simple-slider
+SUBDIRS += simple-slider simple-button
