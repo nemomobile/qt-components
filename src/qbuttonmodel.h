@@ -26,43 +26,86 @@
 
 #include <QtGui/qwidget.h>
 #include <QtGui/qgraphicsitem.h>
-#include <QtGui/qabstractbutton.h>
-
-QT_BEGIN_HEADER
-
-QT_BEGIN_NAMESPACE
-
-QT_MODULE(Gui)
 
 class QButtonModelPrivate;
 
 class Q_GUI_EXPORT QButtonModel : public QObject
 {
     Q_OBJECT
+
+    Q_PROPERTY(bool checkable READ isCheckable WRITE setCheckable)
+    Q_PROPERTY(bool checked READ isChecked WRITE setChecked DESIGNABLE isCheckable NOTIFY toggled USER true)
+    Q_PROPERTY(bool autoRepeat READ autoRepeat WRITE setAutoRepeat)
+    Q_PROPERTY(bool autoExclusive READ autoExclusive WRITE setAutoExclusive)
+    Q_PROPERTY(int autoRepeatDelay READ autoRepeatDelay WRITE setAutoRepeatDelay)
+    Q_PROPERTY(int autoRepeatInterval READ autoRepeatInterval WRITE setAutoRepeatInterval)
+    Q_PROPERTY(bool buttonDown READ buttonDown WRITE setButtonDown DESIGNABLE false NOTIFY buttonDownChanged)
+    Q_PROPERTY(bool mouseOver READ mouseOver WRITE setMouseOver DESIGNABLE false NOTIFY mouseOverChanged);
+    Q_PROPERTY(bool mousePressed READ mousePressed WRITE setMousePressed DESIGNABLE false NOTIFY mousePressedChange);
+
 public:
-    QButtonModel(QAbstractButton *parent);
-    QButtonModel(QGraphicsObject *parent);
+    QButtonModel(QObject *parent = 0);
     virtual ~QButtonModel();
 
-    void mousePressEventHandler(QEvent *event);
-    void mouseReleaseEventHandler(QEvent *event);
-    void mouseMoveEventHandler(QEvent *event);
+#ifndef QT_NO_SHORTCUT
+    void setShortcut(const QKeySequence &key);
+    QKeySequence shortcut() const;
+#endif
+
+    void setCheckable(bool);
+    bool isCheckable() const;
+
+    void setChecked(bool);
+    bool isChecked() const;
+
+    void setButtonDown(bool);
+    bool buttonDown() const;
+
+    void setAutoRepeat(bool);
+    bool autoRepeat() const;
+
+    void setAutoRepeatDelay(int);
+    int autoRepeatDelay() const;
+
+    void setAutoRepeatInterval(int);
+    int autoRepeatInterval() const;
+
+    void setAutoExclusive(bool);
+    bool autoExclusive() const;
+
+    void setMousePressed(bool);
+    bool mousePressed() const;
+
+    void setMouseOver(bool);
+    bool mouseOver() const;
+
+#ifndef QT_NO_BUTTONGROUP
+    QButtonGroup *group() const;
+#endif
+
+    // void mousePressEventHandler(QEvent *event);
+    // void mouseReleaseEventHandler(QEvent *event);
+    // void mouseMoveEventHandler(QEvent *event);
 
 Q_SIGNALS:
     void released();
     void pressed();
     void clicked(bool checked = false);
+    void toggled(bool checked = false);
+
+    // Notify signals
+    void buttonDownChanged();
+    void mouseOverChanged();
+    void mousePressedChanged();
 
 protected:
     QButtonModel(QButtonModelPrivate &dd, QObject* parent = 0);
-    
+
+    virtual void nextCheckState();
+
 private:
     Q_DECLARE_PRIVATE(QButtonModel)
     Q_DISABLE_COPY(QButtonModel)
 };
-
-QT_END_NAMESPACE
-
-QT_END_HEADER
 
 #endif // QBUTTONMODEL_H

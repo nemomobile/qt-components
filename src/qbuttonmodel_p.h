@@ -45,8 +45,7 @@ class QButtonModelPrivate : public QObjectPrivate
 {
     Q_DECLARE_PUBLIC(QButtonModel)
 public:
-    QButtonModelPrivate(QAbstractButton *button, QSizePolicy::ControlType type = QSizePolicy::DefaultType);
-    QButtonModelPrivate(QGraphicsObject *graphicsObject);
+    QButtonModelPrivate();
     void init();
 
     void emitPressed();
@@ -54,10 +53,6 @@ public:
     void emitClicked();
 
     void click();
-    void refresh();
-
-    QAbstractButton *button;
-    QGraphicsObject *graphicsObject;
 
 #ifndef QT_NO_SHORTCUT
     QKeySequence shortcut;
@@ -68,9 +63,9 @@ public:
     uint checked :1;
     uint autoRepeat :1;
     uint autoExclusive :1;
-    uint down :1;
-    uint blockRefresh :1;
-    uint pressed : 1;
+    uint buttonDown :1;
+    uint mousePressed :1;
+    uint mouseOver :1;
 
 #ifndef QT_NO_BUTTONGROUP
     QButtonGroup* group;
@@ -79,11 +74,9 @@ public:
 
     int autoRepeatDelay, autoRepeatInterval;
 
-    QSizePolicy::ControlType controlType;
-    mutable QSize sizeHint;
-
-    QAbstractButton *queryCheckedButton() const;
-    QList<QAbstractButton *>queryButtonList() const;
+    QButtonModel *queryCheckedButton() const;
+    QList<QButtonModel *>queryButtonList() const;
+    void notifyChecked() const;
 };
 
 #ifndef QT_NO_BUTTONGROUP

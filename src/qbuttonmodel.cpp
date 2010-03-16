@@ -24,7 +24,6 @@
 #include "qbuttonmodel.h"
 #include "qapplication.h"
 #include "qbuttonmodel_p.h"
-#include "private/qabstractbutton_p.h"
 #include "qevent.h"
 #include "qdebug.h"
 #ifndef QT_NO_ACCESSIBILITY
@@ -39,26 +38,17 @@ QT_BEGIN_NAMESPACE
 /*!
     \internal
 */
-QButtonModelPrivate::QButtonModelPrivate(QAbstractButton *button, QSizePolicy::ControlType type) :
-    button(button),
+QButtonModelPrivate::QButtonModelPrivate() :
 #ifndef QT_NO_SHORTCUT
     shortcutId(0),
 #endif
     checkable(false), checked(false), autoRepeat(false), autoExclusive(false),
-    down(false), blockRefresh(false), pressed(false),
+    buttonDown(false), mousePressed(false), mouseOver(false),
 #ifndef QT_NO_BUTTONGROUP
     group(0),
 #endif
     autoRepeatDelay(AUTO_REPEAT_DELAY),
-    autoRepeatInterval(AUTO_REPEAT_INTERVAL),
-    controlType(type)
-{
-}
-
-/*!
-    \internal
-*/
-QButtonModelPrivate::QButtonModelPrivate(QGraphicsObject *graphicsObject) : graphicsObject(graphicsObject)
+    autoRepeatInterval(AUTO_REPEAT_INTERVAL)
 {
 }
 
@@ -108,55 +98,90 @@ void QButtonModelPrivate::emitReleased()
 #endif
 }
 
-QList<QAbstractButton *>QButtonModelPrivate::queryButtonList() const
+QList<QButtonModel *>QButtonModelPrivate::queryButtonList() const
 {
+    Q_Q(const QButtonModel);
+
 #ifndef QT_NO_BUTTONGROUP
     if (group)
         return group->d_func()->buttonList;
 #endif
 
-    QList<QAbstractButton*>candidates = qFindChildren<QAbstractButton *>(parent);
-    if (autoExclusive) {
-        for (int i = candidates.count() - 1; i >= 0; --i) {
-            QAbstractButton *candidate = candidates.at(i);
-            if (!candidate->autoExclusive()
-#ifndef QT_NO_BUTTONGROUP
-                || candidate->group()
-#endif
-                )
-                candidates.removeAt(i);
+    // ##### this relies on the assumption that the following
+    //       _QObject_ tree exists:
+    //
+    //                    (Parent Canvas Item)
+    //        (CanvasButton 1) --/   \-- (CanvasButton 2)
+    //  (Model 1) --/                             \-- (Model 2)
+
+    QList<QButtonModel *> candidates;
+
+    // Go up
+    const QObject *canvasButton = q->parent();
+    if (!canvasButton)
+        return candidates;
+
+    const QObject *canvasParent = canvasButton->parent();
+    if (!canvasParent)
+        return candidates;
+
+    // Go down
+    const QObjectList otherItems = canvasParent->children();
+    foreach (QObject *item, otherItems) {
+        const QObjectList itemChildren = item->children();
+        foreach(QObject *childItem, itemChildren) {
+            QButtonModel *otherModel = qobject_cast<QButtonModel *>(childItem);
+            if (otherModel && otherModel->autoExclusive())
+                candidates << otherModel;
         }
     }
     return candidates;
 }
 
-QAbstractButton *QButtonModelPrivate::queryCheckedButton() const
+QButtonModel *QButtonModelPrivate::queryCheckedButton() const
 {
 #ifndef QT_NO_BUTTONGROUP
     if (group)
         return group->d_func()->checkedButton;
 #endif
 
-    QList<QAbstractButton *> buttonList = queryButtonList();
+    Q_Q(const QButtonModel);
+    QList<QButtonModel *> buttonList = queryButtonList();
     if (!autoExclusive || buttonList.count() == 1) // no group
         return 0;
 
     for (int i = 0; i < buttonList.count(); ++i) {
-        QAbstractButton *b = buttonList.at(i);
-        if (b->d_func()->checked && b != button)
+        QButtonModel *b = buttonList.at(i);
+        if (b->d_func()->checked && b != q)
             return b;
     }
-    return checked  ? const_cast<QAbstractButton *>(button) : 0;
+    return checked ? const_cast<QButtonModel *>(q) : 0;
+}
+
+void QButtonModelPrivate::notifyChecked() const
+{
+#ifndef QT_NO_BUTTONGROUP
+    Q_Q(QButtonModel);
+    if (group) {
+        QButtonModel *previous = group->d_func()->checkedButton;
+        group->d_func()->checkedButton = q;
+        if (group->d_func()->exclusive && previous && previous != q)
+            previous->nextCheckState();
+    } else
+#endif
+    if (autoExclusive) {
+        if (QButtonModel *b = queryCheckedButton())
+            b->setChecked(false);
+    }
 }
 
 void QButtonModelPrivate::click()
 {
     Q_Q(QButtonModel);
 
-    down = false;
-    blockRefresh = true;
+    buttonDown = false;
     bool changeState = true;
-    if (checked && queryCheckedButton() == button) {
+    if (checked && queryCheckedButton() == q) {
         // the checked button of an exclusive or autoexclusive group cannot be unchecked
 #ifndef QT_NO_BUTTONGROUP
         if (group ? group->d_func()->exclusive : autoExclusive)
@@ -167,46 +192,24 @@ void QButtonModelPrivate::click()
     }
 
     QPointer<QButtonModel> guard(q);
+
     if (changeState) {
-        button->nextCheckState();
+        q->nextCheckState();
         if (!guard)
             return;
     }
-    blockRefresh = false;
-    refresh();
-    button->repaint(); //flush paint event before invoking potentially expensive operation
-    QApplication::flush();
+
     if (guard)
         emitReleased();
     if (guard)
         emitClicked();
 }
 
-void QButtonModelPrivate::refresh()
-{
-    if (blockRefresh)
-        return;
-    button->update();
-#ifndef QT_NO_ACCESSIBILITY
-    QAccessible::updateAccessibility(button, 0, QAccessible::StateChanged);
-#endif
-}
-
 /*!
     Constructs an button control with a \a parent.
 */
-QButtonModel::QButtonModel(QAbstractButton *parent)
-    : QObject(*new QButtonModelPrivate(parent), parent)
-{
-    Q_D(QButtonModel);
-    d->init();
-}
-
-/*!
-    Constructs an button control with a \a parent.
-*/
-QButtonModel::QButtonModel(QGraphicsObject *parent)
-    : QObject(*new QButtonModelPrivate(parent), parent)
+QButtonModel::QButtonModel(QObject *parent)
+    : QObject(*new QButtonModelPrivate(), parent)
 {
     Q_D(QButtonModel);
     d->init();
@@ -229,85 +232,398 @@ QButtonModel::~QButtonModel()
 {
 }
 
-void QButtonModel::mousePressEventHandler(QEvent *event)
+#ifndef QT_NO_SHORTCUT
+/*!
+\property QButtonModel::shortcut
+\brief the mnemonic associated with the button
+*/
+
+void QButtonModel::setShortcut(const QKeySequence &key)
 {
     Q_D(QButtonModel);
-    if (event->type() == QEvent::MouseButtonPress) {
-        QMouseEvent *e = static_cast<QMouseEvent *>(event);
-        if (e->button() != Qt::LeftButton) {
-            e->ignore();
-            return;
-        }
+    if (d->shortcutId != 0)
+        releaseShortcut(d->shortcutId);
+    d->shortcut = key;
+    d->shortcutId = grabShortcut(key);
+}
 
-        if (d->button->hitButton(e->pos())) {
-            d->button->setDown(true);
-            d->pressed = true;
-            d->button->repaint(); //flush paint event before invoking potentially expensive operation
-            QApplication::flush();
+QKeySequence QButtonModel::shortcut() const
+{
+    Q_D(const QButtonModel);
+    return d->shortcut;
+}
+#endif // QT_NO_SHORTCUT
+
+/*!
+\property QButtonModel::checkable
+\brief whether the button is checkable
+
+By default, the button is not checkable.
+
+\sa checked
+*/
+void QButtonModel::setCheckable(bool checkable)
+{
+    Q_D(QButtonModel);
+    if (d->checkable == checkable)
+        return;
+
+    d->checkable = checkable;
+    d->checked = false;
+}
+
+bool QButtonModel::isCheckable() const
+{
+    Q_D(const QButtonModel);
+    return d->checkable;
+}
+
+/*!
+\property QButtonModel::checked
+\brief whether the button is checked
+
+Only checkable buttons can be checked. By default, the button is unchecked.
+
+\sa checkable
+*/
+void QButtonModel::setChecked(bool checked)
+{
+    Q_D(QButtonModel);
+    if (!d->checkable || d->checked == checked) {
+//################################
+//        if (!d->blockRefresh)
+//            checkStateSet();
+        return;
+    }
+
+    if (!checked && d->queryCheckedButton() == this) {
+        // the checked button of an exclusive or autoexclusive group cannot be  unchecked
+#ifndef QT_NO_BUTTONGROUP
+        if (d->group ? d->group->d_func()->exclusive : d->autoExclusive)
+            return;
+        if (d->group)
+            d->group->d_func()->detectCheckedButton();
+#else
+        if (d->autoExclusive)
+            return;
+#endif
+    }
+
+    QPointer<QButtonModel> guard(this);
+
+    d->checked = checked;
+    //##############################################
+    // if (!d->blockRefresh)
+    //     checkStateSet();
+
+    if (guard && checked)
+        d->notifyChecked();
+    if (guard)
+        emit toggled(checked);
+}
+
+bool QButtonModel::isChecked() const
+{
+    Q_D(const QButtonModel);
+    return d->checked;
+}
+
+/*!
+  \property QButtonModel::down
+  \brief whether the button is pressed down
+
+  If this property is true, the button is pressed down. The signals
+  pressed() and clicked() are not emitted if you set this property
+  to true. The default is false.
+*/
+
+void QButtonModel::setButtonDown(bool down)
+{
+    Q_D(QButtonModel);
+    if (d->buttonDown == down)
+        return;
+    d->buttonDown = down;
+    if (d->autoRepeat && d->buttonDown)
+        d->repeatTimer.start(d->autoRepeatDelay, this);
+    else
+        d->repeatTimer.stop();
+    emit buttonDownChanged();
+}
+
+bool QButtonModel::buttonDown() const
+{
+    Q_D(const QButtonModel);
+    return d->buttonDown;
+}
+
+/*!
+\property QButtonModel::autoRepeat
+\brief whether autoRepeat is enabled
+
+If autoRepeat is enabled, then the pressed(), released(), and clicked() signals are emitted at
+regular intervals when the button is down. autoRepeat is off by default.
+The initial delay and the repetition interval are defined in milliseconds by \l
+autoRepeatDelay and \l autoRepeatInterval.
+
+Note: If a button is pressed down by a shortcut key, then auto-repeat is enabled and timed by the
+system and not by this class. The pressed(), released(), and clicked() signals will be emitted
+like in the normal case.
+*/
+
+void QButtonModel::setAutoRepeat(bool autoRepeat)
+{
+    Q_D(QButtonModel);
+    if (d->autoRepeat == autoRepeat)
+        return;
+    d->autoRepeat = autoRepeat;
+    if (d->autoRepeat && d->buttonDown)
+        d->repeatTimer.start(d->autoRepeatDelay, this);
+    else
+        d->repeatTimer.stop();
+}
+
+bool QButtonModel::autoRepeat() const
+{
+    Q_D(const QButtonModel);
+    return d->autoRepeat;
+}
+
+/*!
+    \property QButtonModel::autoRepeatDelay
+    \brief the initial delay of auto-repetition
+    \since 4.2
+
+    If \l autoRepeat is enabled, then autoRepeatDelay defines the initial
+    delay in milliseconds before auto-repetition kicks in.
+
+    \sa autoRepeat, autoRepeatInterval
+*/
+
+void QButtonModel::setAutoRepeatDelay(int autoRepeatDelay)
+{
+    Q_D(QButtonModel);
+    d->autoRepeatDelay = autoRepeatDelay;
+}
+
+int QButtonModel::autoRepeatDelay() const
+{
+    Q_D(const QButtonModel);
+    return d->autoRepeatDelay;
+}
+
+/*!
+    \property QButtonModel::autoRepeatInterval
+    \brief the interval of auto-repetition
+    \since 4.2
+
+    If \l autoRepeat is enabled, then autoRepeatInterval defines the
+    length of the auto-repetition interval in millisecons.
+
+    \sa autoRepeat, autoRepeatDelay
+*/
+
+void QButtonModel::setAutoRepeatInterval(int autoRepeatInterval)
+{
+    Q_D(QButtonModel);
+    d->autoRepeatInterval = autoRepeatInterval;
+}
+
+int QButtonModel::autoRepeatInterval() const
+{
+    Q_D(const QButtonModel);
+    return d->autoRepeatInterval;
+}
+
+
+
+/*!
+\property QButtonModel::autoExclusive
+\brief whether auto-exclusivity is enabled
+
+If auto-exclusivity is enabled, checkable buttons that belong to the
+same parent widget behave as if they were part of the same
+exclusive button group. In an exclusive button group, only one button
+can be checked at any time; checking another button automatically
+unchecks the previously checked one.
+
+The property has no effect on buttons that belong to a button
+group.
+
+autoExclusive is off by default, except for radio buttons.
+
+\sa QRadioButton
+*/
+void QButtonModel::setAutoExclusive(bool autoExclusive)
+{
+    Q_D(QButtonModel);
+    d->autoExclusive = autoExclusive;
+}
+
+bool QButtonModel::autoExclusive() const
+{
+    Q_D(const QButtonModel);
+    return d->autoExclusive;
+}
+
+#ifndef QT_NO_BUTTONGROUP
+/*!
+  Returns the group that this button belongs to.
+
+  If the button is not a member of any QButtonGroup, this function
+  returns 0.
+
+  \sa QButtonGroup
+*/
+QButtonGroup *QButtonModel::group() const
+{
+    Q_D(const QButtonModel);
+    return d->group;
+}
+#endif // QT_NO_BUTTONGROUP
+
+void QButtonModel::setMousePressed(bool mousePressed)
+{
+    Q_D(QButtonModel);
+
+    if (d->mousePressed == mousePressed)
+        return;
+    d->mousePressed = mousePressed;
+
+    // We don't care about clicks outside the button
+    if (d->mouseOver) {
+        if (mousePressed) {
+            // Press event
+            setButtonDown(true);
             d->emitPressed();
-            e->accept();
         } else {
-            e->ignore();
-        }
-    } else if (event->type() == QEvent::GraphicsSceneMousePress) {
-        //QGV IMPLEMENTATION
-    }
-}
-
-void QButtonModel::mouseReleaseEventHandler(QEvent *event)
-{
-    Q_D(QButtonModel);
-    if (event->type() == QEvent::MouseButtonRelease) {
-        d->pressed = false;
-        QMouseEvent *e = static_cast<QMouseEvent *>(event);
-        if (e->button() != Qt::LeftButton) {
-            e->ignore();
-            return;
-        }
-
-        if (!d->down) {
-            e->ignore();
-            return;
-        }
-
-        if (d->button->hitButton(e->pos())) {
-            d->repeatTimer.stop();
+            // Release event
+            setButtonDown(false);
             d->click();
-            e->accept();
-        } else {
-            d->button->setDown(false);
-            e->ignore();
         }
-    } else if(event->type() == QEvent::GraphicsSceneMouseRelease) {
-        //QGV IMPLEMENTATION
     }
+    emit mousePressedChanged();
 }
 
-void QButtonModel::mouseMoveEventHandler(QEvent *event)
+bool QButtonModel::mousePressed() const
+{
+    Q_D(const QButtonModel);
+    return d->mousePressed;
+}
+
+void QButtonModel::setMouseOver(bool mouseOver)
 {
     Q_D(QButtonModel);
-    if (event->type() == QEvent::MouseMove) {
-        QMouseEvent *e = static_cast<QMouseEvent *>(event);
-        if (!(e->buttons() & Qt::LeftButton) || !d->pressed) {
-            e->ignore();
-            return;
-        }
 
-        if (d->button->hitButton(e->pos()) != d->down) {
-            d->button->setDown(!d->down);
-            d->button->repaint(); //flush paint event before invoking potentially expensive operation
-            QApplication::flush();
-            if (d->down)
-                d->emitPressed();
-            else
-                d->emitReleased();
-            e->accept();
-        } else if (!d->button->hitButton(e->pos())) {
-            e->ignore();
+    if (d->mouseOver == mouseOver)
+        return;
+    d->mouseOver = mouseOver;
+
+    // We don't care about hover with mouse released
+    if (d->mousePressed) {
+        if (mouseOver) {
+            // HoverIn event
+            setButtonDown(true);
+            d->emitPressed();
+        } else {
+            // HoverOut event
+            setButtonDown(false);
+            d->emitReleased();
         }
-    } else if(event->type() == QEvent::GraphicsSceneMouseMove) {
-        //QGV IMPLEMENTATION
     }
+    emit mouseOverChanged();
 }
+
+bool QButtonModel::mouseOver() const
+{
+    Q_D(const QButtonModel);
+    return d->mouseOver;
+}
+
+void QButtonModel::nextCheckState()
+{
+    if (isCheckable())
+        setChecked(!isChecked());
+}
+
+// void QButtonModel::mousePressEventHandler(QEvent *event)
+// {
+//     Q_D(QButtonModel);
+//     if (event->type() == QEvent::MouseButtonPress) {
+//         QMouseEvent *e = static_cast<QMouseEvent *>(event);
+//         if (e->button() != Qt::LeftButton) {
+//             e->ignore();
+//             return;
+//         }
+
+//         if (d->button->hitButton(e->pos())) {
+//             d->button->setDown(true);
+//             d->pressed = true;
+//             d->button->repaint(); //flush paint event before invoking potentially expensive operation
+//             QApplication::flush();
+//             d->emitPressed();
+//             e->accept();
+//         } else {
+//             e->ignore();
+//         }
+//     } else if (event->type() == QEvent::GraphicsSceneMousePress) {
+//         //QGV IMPLEMENTATION
+//     }
+// }
+
+// void QButtonModel::mouseReleaseEventHandler(QEvent *event)
+// {
+//     Q_D(QButtonModel);
+//     if (event->type() == QEvent::MouseButtonRelease) {
+//         d->pressed = false;
+//         QMouseEvent *e = static_cast<QMouseEvent *>(event);
+//         if (e->button() != Qt::LeftButton) {
+//             e->ignore();
+//             return;
+//         }
+
+//         if (!d->down) {
+//             e->ignore();
+//             return;
+//         }
+
+//         if (d->button->hitButton(e->pos())) {
+//             d->repeatTimer.stop();
+//             d->click();
+//             e->accept();
+//         } else {
+//             d->button->setDown(false);
+//             e->ignore();
+//         }
+//     } else if(event->type() == QEvent::GraphicsSceneMouseRelease) {
+//         //QGV IMPLEMENTATION
+//     }
+// }
+
+// void QButtonModel::mouseMoveEventHandler(QEvent *event)
+// {
+//     Q_D(QButtonModel);
+//     if (event->type() == QEvent::MouseMove) {
+//         QMouseEvent *e = static_cast<QMouseEvent *>(event);
+//         if (!(e->buttons() & Qt::LeftButton) || !d->pressed) {
+//             e->ignore();
+//             return;
+//         }
+
+//         if (d->button->hitButton(e->pos()) != d->down) {
+//             d->button->setDown(!d->down);
+//             d->button->repaint(); //flush paint event before invoking potentially expensive operation
+//             QApplication::flush();
+//             if (d->down)
+//                 d->emitPressed();
+//             else
+//                 d->emitReleased();
+//             e->accept();
+//         } else if (!d->button->hitButton(e->pos())) {
+//             e->ignore();
+//         }
+//     } else if(event->type() == QEvent::GraphicsSceneMouseMove) {
+//         //QGV IMPLEMENTATION
+//     }
+// }
 
 QT_END_NAMESPACE
