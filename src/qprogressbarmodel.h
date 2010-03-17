@@ -25,40 +25,37 @@
 #define QPROGRESSBARMODEL_H
 
 #include <QtCore/qobject.h>
-#include <QtCore/qpropertyanimation.h>
 #include <QtDeclarative/qdeclarative.h>
 
 class Q_GUI_EXPORT QProgressBarModel : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(int currentValue READ currentValue WRITE setCurrentValue NOTIFY currentValueChanged);
+    Q_PROPERTY(int value READ value WRITE setValue NOTIFY valueChanged);
 
 public:
     QProgressBarModel(QObject *parent = 0);
     ~QProgressBarModel();
-    int currentValue();
-    void setCurrentValue(int value);
 
-    // methods to configure the property animation?
+    int value() const;
 
-signals:
+Q_SIGNALS:
     void running();
     void paused();
     //void resumed();
     void canceled();
     void finished();
-    void currentValueChanged(); // =running?
+    void valueChanged(); //### ==running?
 
-public slots:
+public Q_SLOTS:
     void start();
     void pause();
     void resume();
-    void cancel(); // delete
+    void reset();
+    void setValue(int value);
 
 private:
     qreal m_progressValue;
 
-    QPropertyAnimation m_progressAnimation;
 };
 
 QML_DECLARE_TYPE(QProgressBarModel)

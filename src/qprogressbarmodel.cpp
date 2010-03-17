@@ -27,53 +27,41 @@ QProgressBarModel::QProgressBarModel(QObject *parent) :
     QObject(parent),
     m_progressValue(0)
 {
-    m_progressAnimation.setTargetObject(this);
-    m_progressAnimation.setPropertyName("currentValue");
-    m_progressAnimation.setStartValue(0);
-    m_progressAnimation.setEndValue(100);
-    m_progressAnimation.setDuration(5000);
-
-    connect(&m_progressAnimation, SIGNAL(finished()), SIGNAL(finished()));
 }
 
 QProgressBarModel::~QProgressBarModel()
 {}
 
-int QProgressBarModel::currentValue()
+int QProgressBarModel::value() const
 {
     return m_progressValue;
 }
 
-void QProgressBarModel::setCurrentValue(int value)
+void QProgressBarModel::setValue(int value)
 {
     if (m_progressValue == value)
         return;
     m_progressValue = value;
-    emit currentValueChanged();
+    emit valueChanged();
 }
 
 void QProgressBarModel::start()
 {
-    m_progressAnimation.start();
     emit running();
 }
 
 void QProgressBarModel::pause()
 {
-    m_progressAnimation.pause();
     emit paused();
 }
 
 void QProgressBarModel::resume()
 {
-    m_progressAnimation.resume();
     emit running();
 }
 
-void QProgressBarModel::cancel()
+void QProgressBarModel::reset()
 {
-    m_progressAnimation.stop(); // needed?
-    m_progressAnimation.setCurrentTime(0);
     m_progressValue = 0;
     emit canceled();
 }
