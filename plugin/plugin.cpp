@@ -3,6 +3,7 @@
 #include "qbuttonmodel.h"
 #include "qlineeditmodel.h"
 #include "qrangemodel.h"
+#include "qprogressbarmodel.h"
 
 class ComponentsQmlPlugin : public QDeclarativeExtensionPlugin
 {
@@ -15,6 +16,7 @@ public:
         qmlRegisterType<QLineEditModel>(uri, 1, 0, "LineEditModel");
         qmlRegisterType<QLineEditEventHelper>(uri, 1, 0, "LineEditEventHelper");
         qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
+        qmlRegisterType<QProgressBarModel>(uri, 1, 0, "ProgressBarModel");
     }
 };
 
