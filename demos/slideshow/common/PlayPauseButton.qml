@@ -31,6 +31,9 @@ Item {
     MouseArea {
         id: mouseArea;
         anchors.fill: parent;
-        onClicked: button.clicked();
+        onClicked: {
+            button.playing = !button.playing
+            button.clicked();
+        }
     }
 }
