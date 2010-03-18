@@ -69,6 +69,7 @@ public:
     ~QRangeModelPrivate();
 
     void init();
+
     bool isSedated;
     bool signalsBlocked;
 
@@ -76,42 +77,37 @@ public:
 
     int minimum, maximum, pageStep, value, position, pressValue;
     int pos, minpos, maxpos;
-
-    /**
-     * Call effectiveSingleStep() when changing the slider value.
-     */
     int singleStep;
 
     uint tracking : 1;
     uint blocktracking :1;
-    uint pressed : 1;
     uint wrapping : 1;
 
+    /*
+    enum SliderAction {
+        SliderNoAction,
+        SliderSingleStepAdd,
+        SliderSingleStepSub,
+        SliderPageStepAdd,
+        SliderPageStepSub,
+        SliderToMinimum,
+        SliderToMaximum,
+        SliderMove
+    };
     QBasicTimer repeatActionTimer;
     int repeatActionTime;
     QRangeModel::SliderAction repeatAction;
+    */
 
-    inline int effectiveSingleStep() const
-    {
-        return singleStep;
+    inline int positionFromValue() {
+        qreal scale =  qreal(maximum - minimum) / qreal(maxpos - minpos);
+        return minpos + int(value / scale); // ###
     }
 
-    inline int overflowSafeAdd(int add) const
-    {
-        int newValue = value + add;
-        if (add > 0 && newValue < value)
-            newValue = maximum;
-        else if (add < 0 && newValue > value)
-            newValue = minimum;
-        return newValue;
+    inline int valueFromPosition() {
+        qreal scale = qreal(maximum - minimum) / qreal(maxpos - minpos);
+        return minimum + int(pos * scale); // ###
     }
-
-    inline void setAdjustedSliderPosition(int position)
-    {
-        Q_Q(QRangeModel);
-        q->triggerAction(repeatAction);
-    }
-
 };
 
 QT_END_NAMESPACE

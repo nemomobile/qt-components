@@ -40,10 +40,9 @@ class QRangeModel : public QObject
     Q_PROPERTY(int singleStep READ singleStep WRITE setSingleStep)
     Q_PROPERTY(int pageStep READ pageStep WRITE setPageStep)
     Q_PROPERTY(int value READ value WRITE setValue NOTIFY valueChanged USER true)
-    Q_PROPERTY(int sliderPosition READ sliderPosition WRITE setSliderPosition NOTIFY sliderMoved)
-    Q_PROPERTY(int position READ position WRITE setPosition NOTIFY positionChanged) // ###
-    Q_PROPERTY(int minimumPosition READ minimumPosition WRITE setMinimumPosition NOTIFY positionRangeChanged) // ###
-    Q_PROPERTY(int maximumPosition READ maximumPosition WRITE setMaximumPosition NOTIFY positionRangeChanged) // ###
+    Q_PROPERTY(int position READ position WRITE setPosition NOTIFY positionChanged)
+    Q_PROPERTY(int minimumPosition READ minimumPosition WRITE setMinimumPosition NOTIFY positionRangeChanged)
+    Q_PROPERTY(int maximumPosition READ maximumPosition WRITE setMaximumPosition NOTIFY positionRangeChanged)
     Q_PROPERTY(bool tracking READ hasTracking WRITE setTracking)
     Q_PROPERTY(bool wrapping READ wrapping WRITE setWrapping)
 
@@ -61,9 +60,6 @@ public:
     int maximum() const;
 
     void setRange(int min, int max);
-    bool hasNullRange() const;  // min == max
-
-    int bound(int val) const;
 
     void setSingleStep(int);
     int singleStep() const;
@@ -73,9 +69,6 @@ public:
 
     void setTracking(bool enable);
     bool hasTracking() const;
-
-    void setSliderDown(bool);
-    bool isSliderDown() const;
 
     void setSliderPosition(int);
     int sliderPosition() const;
@@ -94,48 +87,30 @@ public:
     void setWrapping(bool);
     bool wrapping() const;
 
-    void startRepeatActionTimer(int ms);
-    bool repeatActionTimerActive() const;
-
-    enum SliderAction {
-        SliderNoAction,
-        SliderSingleStepAdd,
-        SliderSingleStepSub,
-        SliderPageStepAdd,
-        SliderPageStepSub,
-        SliderToMinimum,
-        SliderToMaximum,
-        SliderMove
-    };
-
+    void setValue(int);
     int value() const;
 
-    void triggerAction(SliderAction action);
-
 public Q_SLOTS:
-    void setValue(int);
+    void singleStepAdd();
+    void singleStepSub();
+    void pageStepAdd();
+    void pageStepSub();
+    void toMinimum();
+    void toMaximum();
+    //void startRepeatAction();
 
 Q_SIGNALS:
-    void valueChanged(int value);
-
-    void sliderPressed();
     void sliderMoved(int position);
-    void sliderReleased();
 
+    void valueChanged(int value);
     void positionChanged(int position);
 
     void rangeChanged(int min, int max);
     void positionRangeChanged(int min, int max);
 
-    void actionTriggered(int action);
-
-public:
-    void setRepeatAction(SliderAction action, int thresholdTime = 500, int repeatTime = 50);
-    SliderAction repeatAction() const;
-
 protected:
     QRangeModel(QRangeModelPrivate &dd, QObject *parent);
-    void timerEvent(QTimerEvent *e);
+    //void timerEvent(QTimerEvent *e);
 
 private:
     Q_DISABLE_COPY(QRangeModel)

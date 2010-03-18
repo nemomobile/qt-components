@@ -55,9 +55,7 @@ void QRangeModelPrivate::init()
     maxpos = 0;
     tracking = true;
     blocktracking = false;
-    pressed = false;
     wrapping = false;
-    repeatAction = QRangeModel::SliderNoAction;
 }
 
 QRangeModel::QRangeModel(QObject *parent)
@@ -108,7 +106,7 @@ void QRangeModel::setPositionRange(int min, int max)
     d->maxpos = max;
     if (oldMin != d->minpos || oldMax != d->maxpos) {
         emit positionRangeChanged(d->minpos, d->maxpos);
-        setSliderPosition(d->position); // re-bound
+        setPosition(d->pos); // re-bound
     }
 }
 
@@ -123,12 +121,6 @@ void QRangeModel::setRange(int min, int max)
         emit rangeChanged(d->minimum, d->maximum);
         setValue(d->value); // re-bound
     }
-}
-
-bool QRangeModel::hasNullRange() const
-{
-    Q_D(const QRangeModel);
-    return d->maximum == d->minimum;
 }
 
 void QRangeModelPrivate::setSteps(int single, int page)
@@ -161,11 +153,6 @@ int QRangeModel::maximum() const
     return d->maximum;
 }
 
-int QRangeModel::bound(int val) const
-{
-    Q_D(const QRangeModel);
-    return qBound(d->minimum, val, d->maximum);
-}
 
 void QRangeModel::setSingleStep(int step)
 {
@@ -205,60 +192,28 @@ bool QRangeModel::hasTracking() const
     return d->tracking;
 }
 
-void QRangeModel::setSliderDown(bool down)
-{
-    Q_D(QRangeModel);
-    bool doEmit = d->pressed != down;
-
-    d->pressed = down;
-
-    if (doEmit) {
-        if (down)
-            emit sliderPressed();
-        else
-            emit sliderReleased();
-    }
-
-    if (!down && d->position != d->value)
-        triggerAction(SliderMove);
-}
-
-bool QRangeModel::isSliderDown() const
-{
-    Q_D(const QRangeModel);
-    return d->pressed;
-}
-
 void QRangeModel::setSliderPosition(int position)
 {
-    Q_D(QRangeModel);
-    position = bound(position);
-    if (position == d->position)
-        return;
-    d->position = position;
-    if (d->pressed)
-        emit sliderMoved(position);
-    if (d->tracking && !d->blocktracking)
-        triggerAction(SliderMove);
+    setPosition(position);
 }
 
 int QRangeModel::sliderPosition() const
 {
-    Q_D(const QRangeModel);
-    return d->position;
+    return position();
 }
 
 void QRangeModel::setPosition(int pos)
 {
     Q_D(QRangeModel);
+
     pos = qBound(d->minpos, pos, d->maxpos);
     if (pos == d->pos)
         return;
     d->pos = pos;
     emit positionChanged(d->pos);
 
-    qreal scale = qreal(d->maximum - d->minimum) / qreal(d->maxpos - d->minpos);
-    setSliderPosition(scale * d->pos + d->minimum);
+    d->value = d->valueFromPosition();
+    emit valueChanged(d->value);
 }
 
 int QRangeModel::position() const
@@ -300,16 +255,16 @@ int QRangeModel::value() const
 void QRangeModel::setValue(int value)
 {
     Q_D(QRangeModel);
-    value = bound(value);
-    if (d->value == value && d->position == value)
+
+    value = qBound(d->minimum, value, d->maximum);
+    if (value == d->value)
         return;
     d->value = value;
-    if (d->position != value) {
-        d->position = value; // ###
-        if (d->pressed)
-            emit sliderMoved((d->position = value));
-    }
-    emit valueChanged(value);
+    if (!d->tracking && !d->blocktracking)
+        emit valueChanged(value);
+
+    d->pos = d->positionFromValue();
+    emit positionChanged(d->pos);
 }
 
 void QRangeModel::setWrapping(bool b)
@@ -324,74 +279,40 @@ bool QRangeModel::wrapping() const
     return d->wrapping;
 }
 
-void QRangeModel::triggerAction(SliderAction action)
+void QRangeModel::singleStepAdd()
 {
     Q_D(QRangeModel);
-    d->blocktracking = true;
-    switch (action) {
-    case SliderSingleStepAdd:
-        setSliderPosition(d->overflowSafeAdd(d->effectiveSingleStep()));
-        break;
-    case SliderSingleStepSub:
-        setSliderPosition(d->overflowSafeAdd(-d->effectiveSingleStep()));
-        break;
-    case SliderPageStepAdd:
-        setSliderPosition(d->overflowSafeAdd(d->pageStep));
-        break;
-    case SliderPageStepSub:
-        setSliderPosition(d->overflowSafeAdd(-d->pageStep));
-        break;
-    case SliderToMinimum:
-        setSliderPosition(d->minimum);
-        break;
-    case SliderToMaximum:
-        setSliderPosition(d->maximum);
-        break;
-    case SliderMove:
-    case SliderNoAction:
-        break;
-    };
-    emit actionTriggered(action);
-    d->blocktracking = false;
-    setValue(d->position);
+    setValue(d->value + d->singleStep);
 }
 
-void QRangeModel::setRepeatAction(SliderAction action, int thresholdTime, int repeatTime)
+void QRangeModel::singleStepSub()
 {
     Q_D(QRangeModel);
-    if ((d->repeatAction = action) == SliderNoAction) {
-        d->repeatActionTimer.stop();
-    } else {
-        d->repeatActionTime = repeatTime;
-        d->repeatActionTimer.start(thresholdTime, this);
-    }
+    setValue(d->value - d->singleStep);
 }
 
-QRangeModel::SliderAction QRangeModel::repeatAction() const
-{
-    return d_func()->repeatAction;
-}
-
-void QRangeModel::startRepeatActionTimer(int ms)
-{
-    d_func()->repeatActionTimer.start(ms, this);
-}
-
-bool QRangeModel::repeatActionTimerActive() const
-{
-    return d_func()->repeatActionTimer.isActive();
-}
-
-void QRangeModel::timerEvent(QTimerEvent *e)
+void QRangeModel::pageStepAdd()
 {
     Q_D(QRangeModel);
-    if (e->timerId() == d->repeatActionTimer.timerId()) {
-        if (d->repeatActionTime) { // was threshold time, use repeat time next time
-            d->repeatActionTimer.start(d->repeatActionTime, this);
-            d->repeatActionTime = 0;
-        }
-        triggerAction(d->repeatAction);
-    }
+    setValue(d->value + d->pageStep);
+}
+
+void QRangeModel::pageStepSub()
+{
+    Q_D(QRangeModel);
+    setValue(d->value - d->pageStep);
+}
+
+void QRangeModel::toMinimum()
+{
+    Q_D(QRangeModel);
+    setValue(d->minimum);
+}
+
+void QRangeModel::toMaximum()
+{
+    Q_D(QRangeModel);
+    setValue(d->maximum);
 }
 
 QT_END_NAMESPACE
