@@ -1,3 +1,5 @@
+// dui theme slider
+
 import Qt 4.6
 import Components 1.0
 
@@ -27,8 +29,8 @@ Item {
         }
         Item {
             id: knob
-            x: model.position - (knob_normal.width / 2);
-            y: (background.height - knob_normal.height) / 2
+            x: /*model.position*/ - (knob_normal.width / 2);
+            y: (parent.height - knob_normal.height) / 2
             width: knob_normal.width
             height: knob_normal.height
             Image {

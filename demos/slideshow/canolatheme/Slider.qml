@@ -1,5 +1,7 @@
+// canola theme slider
+
 import Qt 4.6
-//import Components 1.0
+import Components 1.0
 
 Item {
     id: slider
@@ -10,7 +12,7 @@ Item {
     BorderImage {
         id: background
         x: 0
-        y: (parent.height - 27) / 2
+        y: (parent.height - height) / 2
         width: parent.width
         border.left: 12;
         border.top: 12;
@@ -19,16 +21,16 @@ Item {
         source: "images/slide_background.png"
         Image {
             id: knob
-            x: model.position;
-            y: (parent.height - 83) / 2
+            x: /*model.position*/ - (width / 2)
+            y: (parent.height - height) / 2
             source: "images/slide_knob.png"
             MouseArea {
                  id: mouseArea
                  anchors.fill: parent
                  drag.target: knob
                  drag.axis: "XAxis"
-                 drag.minimumX: 0
-                 drag.maximumX: background.width - knob.width
+                 drag.minimumX: -(knob.width / 2)
+                 drag.maximumX: background.width - (knob.width / 2)
             }
         }
     }
@@ -37,8 +39,7 @@ Item {
         minimumValue: 0
         maximumValue: 100
         minimumPosition: 0
-        maximumPosition: background.width - knob.width
-        position: knob.x
-        sliderDown: mouseArea.pressed
+        maximumPosition: background.width - (knob.width / 2)
+        position: knob.x + (knob.width / 2)
     }
 }
