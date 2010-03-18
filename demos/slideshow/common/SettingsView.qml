@@ -21,7 +21,10 @@ Item {
     MouseArea {
         id: backArea;
         enabled: false;
-        anchors.fill: parent;
+        anchors.top: parent.top;
+        anchors.bottom: dialog.top;
+        anchors.left: parent.left;
+        anchors.right: parent.right;
         onClicked: settingsView.back();
     }
 
