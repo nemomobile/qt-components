@@ -1,4 +1,5 @@
 import Qt 4.6
+import "../canolatheme"
 
 Item {
     id: settingsView;
@@ -28,10 +29,8 @@ Item {
         onClicked: settingsView.back();
     }
 
-    // ###: Change by the theme dialog
-    Rectangle {
+    Settings {
         id: dialog;
-        color: "blue";
         height: parent.height * 0.8;
         anchors.left: parent.left;
         anchors.right: parent.right;
