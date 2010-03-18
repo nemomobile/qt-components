@@ -23,5 +23,13 @@ Item {
         id: settingsbutton;
         anchors.right: parent.right;
         anchors.bottom: parent.bottom;
+        onClicked: settingsDialog.state = "show";
     }
+
+    SettingsView {
+        id: settingsDialog;
+        state: "hide";
+        onBack: settingsDialog.state = "hide";
+    }
+
 }
