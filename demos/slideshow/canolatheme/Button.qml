@@ -9,12 +9,7 @@ Item {
     property alias checkable: model.checkable;
     property alias autoExclusive: model.autoExclusive;
     property alias text: label.text;
-
-    // BorderImage {
-    //     id: backgroundImage;
-    //     anchors.fill: parent;
-    //     source: "images/button_background.png";
-    // }
+    signal clicked;
 
     BorderImage {
         id: releasedImage;
@@ -71,5 +66,6 @@ Item {
 
         mousePressed: mouseArea.pressed;
         mouseOver: mouseArea.containsMouse;
+        onClicked: button.clicked;
     }
 }

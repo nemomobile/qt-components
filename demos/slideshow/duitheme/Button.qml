@@ -9,6 +9,7 @@ Item {
     property alias checkable: model.checkable;
     property alias autoExclusive: model.autoExclusive;
     property alias text: label.text;
+    signal clicked;
 
     BorderImage {
         id: releasedImage;
@@ -80,10 +81,8 @@ Item {
     ButtonModel {
         id: model;
 
-        checkable: true;
-        // autoExclusive: true;
-
         mousePressed: mouseArea.pressed;
         mouseOver: mouseArea.containsMouse;
+        onClicked: button.clicked();
     }
 }
