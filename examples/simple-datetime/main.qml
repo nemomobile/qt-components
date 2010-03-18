@@ -8,13 +8,13 @@ Item {
 
     Text {
         id: text;
-        anchors.horizontalCenter: parent.center;
+        anchors.horizontalCenter: parent.horizontalCenter;
         text: "Using as initial date: " + Qt.formatDateTime(model.dateTime, "dd/MM/yyyy - hh:mm:ss");
         color: "black";
     }
     Text {
         id: text2;
-        anchors.horizontalCenter: parent.center;
+        anchors.horizontalCenter: parent.horizontalCenter;
         anchors.top: text.bottom;
         text: "First day of Week: " + Qt.formatDate(model.firstDayOfWeek, "dd/MM/yyyy");
         color: "black";
