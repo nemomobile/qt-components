@@ -4,9 +4,6 @@ BorderImage {
     id: settingsDialog;
     source: "images/settings_background.png";
 
-    width: 800;
-    height: parent.height * 0.83;
-
     border.left: 15;
     border.right: 15;
     border.top: 15;
