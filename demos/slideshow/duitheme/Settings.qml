@@ -32,7 +32,7 @@ BorderImage {
         }
 
         Row {
-            id: buttons1;
+            id: lineEditRow;
             spacing: 10;
             anchors.horizontalCenter: parent.horizontalCenter;
 
@@ -61,23 +61,28 @@ BorderImage {
         }
 
         Row {
-            id: buttons2;
-            spacing: 5;
+            id: sliderRow;
+            spacing: 20;
             anchors.horizontalCenter: parent.horizontalCenter;
 
-            Button {
-                id: button21;
-                text: "Effects";
+            Label {
+                id: sliderLabel;
+                text: "Value:";
+                anchors.verticalCenter: parent.verticalCenter;
             }
 
-            Button {
-                id: button22;
-                text: "Effects";
+            Slider {
+                id: slider;
+                width: 300;
+                height: 50;
+                minimum: 0;
+                maximum: 100;
             }
 
-            Button {
-                id: button23;
-                text: "Effects";
+            Label {
+                id: sliderValue;
+                text: slider.value;
+                anchors.verticalCenter: parent.verticalCenter;
             }
         }
 
@@ -90,23 +95,29 @@ BorderImage {
         }
 
         Row {
-            id: buttons;
+            id: buttonsRow;
             spacing: 5;
             anchors.horizontalCenter: parent.horizontalCenter;
 
             Button {
                 id: button1;
                 text: "Effects";
+                checkable: true;
+                autoExclusive: true;
             }
 
             Button {
                 id: button2;
                 text: "Effects";
+                checkable: true;
+                autoExclusive: true;
             }
 
             Button {
                 id: button3;
                 text: "Effects";
+                checkable: true;
+                autoExclusive: true;
             }
         }
 
