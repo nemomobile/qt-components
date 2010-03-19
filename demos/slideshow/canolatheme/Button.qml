@@ -6,6 +6,7 @@ Item {
     width: 166;
     height: 62;
 
+    property alias checked: model.checked;
     property alias checkable: model.checkable;
     property alias autoExclusive: model.autoExclusive;
     property alias text: label.text;
