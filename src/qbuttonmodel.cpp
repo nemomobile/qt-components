@@ -39,6 +39,7 @@ QT_BEGIN_NAMESPACE
     \internal
 */
 QButtonModelPrivate::QButtonModelPrivate() :
+    QObjectPrivate(),
 #ifndef QT_NO_SHORTCUT
     shortcutId(0),
 #endif

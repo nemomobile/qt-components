@@ -14,7 +14,9 @@ HEADERS += qrangemodel.h \
            style.h \
            teststyle.h \
            qmlstyle.h \
-           button.h
+           button.h \
+	   qdeclarativebutton.h \
+	   qdeclarativebutton_p.h
 
 SOURCES += qrangemodel.cpp \
            qbuttonmodel.cpp \
@@ -24,4 +26,5 @@ SOURCES += qrangemodel.cpp \
            style.cpp \
            teststyle.cpp \
            qmlstyle.cpp \
-           button.cpp
+           button.cpp \
+	   qdeclarativebutton.cpp

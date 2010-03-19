@@ -5,6 +5,7 @@
 #include "qrangemodel.h"
 #include "qdatetimemodel.h"
 #include "qprogressbarmodel.h"
+#include "qdeclarativebutton.h"
 
 #include "qmlstyle.h"
 #include "teststyle.h"
@@ -35,8 +36,8 @@ public:
         qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
         qmlRegisterType<QDateTimeModel>(uri, 1, 0, "DateTimeModel");
         qmlRegisterType<QProgressBarModel>(uri, 1, 0, "ProgressBarModel");
-
         qmlRegisterType<Button>(uri, 1, 0, "Botao");
+        qmlRegisterType<QDeclarativeButton>(uri, 1, 0, "StyleButton");
     }
 };
 
