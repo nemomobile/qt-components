@@ -62,18 +62,18 @@ BorderImage {
 
         Row {
             id: sliderRow;
-            spacing: 20;
+            spacing: 35;
             anchors.horizontalCenter: parent.horizontalCenter;
 
             Label {
                 id: sliderLabel;
-                text: "Value:";
+                text: "Slower";
                 anchors.verticalCenter: parent.verticalCenter;
             }
 
             Slider {
                 id: slider;
-                width: 300;
+                width: 400;
                 height: 50;
                 minimum: 0;
                 maximum: 100;
@@ -81,7 +81,7 @@ BorderImage {
 
             Label {
                 id: sliderValue;
-                text: slider.value;
+                text: "Faster";
                 anchors.verticalCenter: parent.verticalCenter;
             }
         }
