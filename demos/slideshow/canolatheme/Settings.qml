@@ -102,6 +102,7 @@ BorderImage {
             Button {
                 id: button1;
                 text: "Effects";
+                checked: true;
                 checkable: true;
                 autoExclusive: true;
             }
