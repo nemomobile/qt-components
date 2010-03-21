@@ -26,12 +26,18 @@ Item {
         id: settingsbutton;
         anchors.right: parent.right;
         anchors.bottom: parent.bottom;
-        onClicked: settingsDialog.state = "show";
+        onClicked: {
+            viewer.running = false;
+            settingsDialog.state = "show";
+        }
     }
 
     SettingsView {
         id: settingsDialog;
         state: "hide";
-        onBack: settingsDialog.state = "hide";
+        onBack: {
+            viewer.running = true;
+            settingsDialog.state = "hide";
+        }
     }
 }
