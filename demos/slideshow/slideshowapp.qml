@@ -6,17 +6,20 @@ Item {
     width: 800;
     height: 480;
 
-    //###
-    property alias view: viewer.source
-
     Viewer {
         id: viewer;
+        interval: 2000;
+        running: false;
+        Component.onCompleted: animator = "common/FadeAnimator.qml";
     }
 
     PlayPauseButton {
         id: playpausebutton;
         anchors.left: parent.left;
         anchors.bottom: parent.bottom;
+        onClicked: {
+            viewer.running = !viewer.running;
+        }
     }
 
     SettingsButton {
@@ -31,5 +34,4 @@ Item {
         state: "hide";
         onBack: settingsDialog.state = "hide";
     }
-
 }
