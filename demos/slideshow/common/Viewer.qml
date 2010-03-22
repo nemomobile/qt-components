@@ -1,4 +1,5 @@
 import Qt 4.6
+import PhotoModel 1.0
 
 //Picture View
 Item {
@@ -9,6 +10,7 @@ Item {
     property alias running: timer.running;
     property alias animator: loader.source;
     property alias animItem: loader.item;
+    property string path;
 
     property int index: 0;
 
@@ -47,15 +49,8 @@ Item {
 
     Script {
         function musicas() {
-            //### s/hardcoded stuff/model/
-            var list = ["/home/anselmo/Pictures/Oslo/DSC07202.JPG",
-                           "/home/anselmo/Pictures/Oslo/DSC07203.JPG",
-                           "/home/anselmo/Pictures/Oslo/DSC07204.JPG",
-                           "/home/anselmo/Pictures/Oslo/DSC07205.JPG",
-                           "/home/anselmo/Pictures/Oslo/DSC07207.JPG"
-                           ];
-
-             return list;
+            photoModel.path = root.path;
+            return photoModel.list;
         }
 
         function init()
@@ -70,7 +65,7 @@ Item {
         function getNext()
         {
             var list = musicas();
-            index = (index + 1) % 5; //### photos list size
+            index = (index + 1) % photoModel.size;
             animItem.nextImage = list[index];
         }
     }

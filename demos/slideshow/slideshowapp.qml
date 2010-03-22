@@ -10,7 +10,10 @@ Item {
         id: viewer;
         interval: 2000;
         running: false;
-        Component.onCompleted: animator = "common/FadeAnimator.qml";
+        Component.onCompleted: {
+            path = "photos/";
+            animator = "common/FadeAnimator.qml";
+        }
     }
 
     PlayPauseButton {
