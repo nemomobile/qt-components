@@ -78,7 +78,7 @@ public:
         return m_photosFiles;
     }
 
-    int size() {
+    int size() const {
         return m_photosFiles.size();
     }
 
