@@ -25,6 +25,7 @@
 #define QDECLARATIVEBUTTON_H
 
 #include <QtDeclarative/qdeclarativeitem.h>
+#include "style.h"
 
 class QDeclarativeButtonPrivate;
 
@@ -75,5 +76,10 @@ private:
     Q_DISABLE_COPY(QDeclarativeButton);
 };
 
-#endif
+class QDeclarativeButtonPopulator : public ComponentPopulator
+{
+public:
+    virtual void populate(QGraphicsObject *component, QObject *model);
+};
 
+#endif

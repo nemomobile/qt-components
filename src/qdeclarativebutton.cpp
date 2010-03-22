@@ -24,6 +24,8 @@
 #include "qdeclarativebutton.h"
 #include "qdeclarativebutton_p.h"
 #include "qbuttonmodel.h"
+#include <QPushButton>
+#include <QGraphicsProxyWidget>
 
 QDeclarativeButtonPrivate::QDeclarativeButtonPrivate() :
     QDeclarativeItemPrivate(),
@@ -49,8 +51,7 @@ QDeclarativeButton::QDeclarativeButton(QDeclarativeItem *parent) :
     Q_D(QDeclarativeButton);
     d->createModel();
 
-    // #####
-    // style->populate(this, d->model);
+    Style::instance()->populate(this, d->model);
 }
 
 QDeclarativeButton::QDeclarativeButton(QDeclarativeButtonPrivate &dd, QDeclarativeItem *parent) :
@@ -59,8 +60,7 @@ QDeclarativeButton::QDeclarativeButton(QDeclarativeButtonPrivate &dd, QDeclarati
     Q_D(QDeclarativeButton);
     d->createModel();
 
-    // #####
-    // style->populate(this, d->model);
+    Style::instance()->populate(this, d->model);
 }
 
 QDeclarativeButton::~QDeclarativeButton()
@@ -138,3 +138,16 @@ int QDeclarativeButton::autoRepeatInterval() const
     Q_D(const QDeclarativeButton);
     return d->model->autoRepeatInterval();
 }
+
+void QDeclarativeButtonPopulator::populate(QGraphicsObject *component, QObject *model)
+{
+    QPushButton *button = new QPushButton("Button");
+    QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget(component);
+    proxy->setWidget(button);
+    model->connect(button, SIGNAL(clicked()), SIGNAL(clicked()));
+
+    // ### Create event grabber primitive instead of QPushButton
+    // ### Access info from model (pressed) and/or component (text)
+}
+
+STYLE_REGISTER_COMPONENT_POPULATOR(QDeclarativeButton, QDeclarativeButtonPopulator);
