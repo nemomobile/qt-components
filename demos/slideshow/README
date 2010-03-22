@@ -1,0 +1,11 @@
+How to run the demo:
+
+* Using run-qml.sh:
+
+    ./run-qml.sh -L demos/slideshow/model/ demos/slideshow/slideshowapp.qml
+
+* With run-slideshow.sh is easier =)
+
+    ./run-slideshow
+
+* ATM, the directory used by the demo is "$PWD/photos/"
