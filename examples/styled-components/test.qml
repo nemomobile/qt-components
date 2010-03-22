@@ -13,24 +13,34 @@ Item {
         color: "chocolate"
     }
 
-    Botao {
+    StyleButton {
         x: 50
         y: 50
         width: 100
         height: 100
+
+        onClicked: console.log("cliquei!!");
+        checkable: true;
+        autoExclusive: true;
     }
 
-    Botao {
+    StyleButton {
         x: 50
         y: 200
         width: 67
         height: 67
+
+        checkable: true;
+        autoExclusive: true;
     }
 
-    Botao {
+    StyleButton {
         anchors.bottom: parent.bottom
         height: 67
         anchors.left: parent.left
         anchors.right: parent.right
+
+        checkable: true;
+        autoExclusive: true;
     }
 }
