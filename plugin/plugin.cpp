@@ -22,10 +22,13 @@ public:
     void initializeEngine(QDeclarativeEngine *engine, const char *uri) {
         // ###
         QString style(qgetenv("COMPSTYLE"));
-        if (style == "qml")
-            new QmlStyle(engine, "data/qmlstyle");
-        else
+        if (style == "") {
             new TestStyle;
+        } else {
+            QString path = QString("data/qmlstyle/%1").arg(style);
+            qWarning() << "Loading theme from: " << path;
+            new QmlStyle(engine, path);
+        }
     }
 
     void registerTypes(const char *uri) {
