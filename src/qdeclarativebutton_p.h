@@ -48,6 +48,7 @@ public:
     void createModel();
 
     QButtonModel *model;
+    QString text;
 };
 
 #endif

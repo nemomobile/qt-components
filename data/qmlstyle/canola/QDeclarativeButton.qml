@@ -39,7 +39,7 @@ Item {
         font.pixelSize: 28;
         color: sunken() ? "#242424" : "#504F4F";
 
-        text: "Effect";
+        text: component.text;
     }
 
     Script {

@@ -19,6 +19,8 @@ Item {
         width: 100
         height: 100
 
+        text: "These"
+
         onClicked: console.log("cliquei!!");
         checkable: true;
         autoExclusive: true;
@@ -30,6 +32,8 @@ Item {
         width: 67
         height: 67
 
+        text: "are"
+
         checkable: true;
         autoExclusive: true;
     }
@@ -39,6 +43,8 @@ Item {
         height: 67
         anchors.left: parent.left
         anchors.right: parent.right
+
+        text: "buttons"
 
         checkable: true;
         autoExclusive: true;

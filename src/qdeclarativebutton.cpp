@@ -67,6 +67,22 @@ QDeclarativeButton::~QDeclarativeButton()
 {
 }
 
+void QDeclarativeButton::setText(const QString &text)
+{
+    Q_D(QDeclarativeButton);
+    if (d->text == text)
+        return;
+
+    d->text = text;
+    emit textChanged(d->text);
+}
+
+QString QDeclarativeButton::text() const
+{
+    Q_D(const QDeclarativeButton);
+    return d->text;
+}
+
 void QDeclarativeButton::setCheckable(bool c)
 {
     Q_D(QDeclarativeButton);
@@ -141,13 +157,14 @@ int QDeclarativeButton::autoRepeatInterval() const
 
 void QDeclarativeButtonPopulator::populate(QGraphicsObject *component, QObject *model)
 {
-    QPushButton *button = new QPushButton("Button");
-    QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget(component);
+    QDeclarativeButton *declarativebutton = static_cast<QDeclarativeButton *>(component);
+    QPushButton *button = new QPushButton(declarativebutton->text());
+    QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget(declarativebutton);
     proxy->setWidget(button);
     model->connect(button, SIGNAL(clicked()), SIGNAL(clicked()));
 
     // ### Create event grabber primitive instead of QPushButton
-    // ### Access info from model (pressed) and/or component (text)
+    // ### Create data binding between component->text() and the right primitive
 }
 
 STYLE_REGISTER_COMPONENT_POPULATOR(QDeclarativeButton, QDeclarativeButtonPopulator);

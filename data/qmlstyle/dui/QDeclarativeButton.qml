@@ -63,7 +63,7 @@ Item {
         font.pixelSize: 24;
         color: releasedImage.visible ? "#000000" : "#FFFFFF";
 
-        text: "Effect";
+        text: component.text;
     }
 
     MouseArea {
