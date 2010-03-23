@@ -27,6 +27,7 @@
 #include <QtDeclarative/QDeclarativeItem>
 #include <QtDeclarative/private/qdeclarativeitemchangelistener_p.h>
 #include <QtDeclarative/private/qdeclarativeitem_p.h>
+#include <QtGui/QGraphicsAnchorLayout>
 #include <QtGui/QGraphicsObject>
 #include <QtGui/QGraphicsWidget>
 #include <QtGui/private/qgraphicsitem_p.h>
@@ -127,15 +128,32 @@ void ComponentStyle::bindChildrenGeometry(QGraphicsObject *component)
     // This function will bind the geometry of the QGraphicsWidget
     // children. The case for QDeclarativeItem children is treated in QmlStyle.
 
-
     // The parent is a QGraphicsWidget
     if (component->isWidget()) {
-        qWarning("Bind for a QGraphicsWidget parent not implemented yet...");
-        // ### Not there yet
+        QGraphicsWidget *widget = static_cast<QGraphicsWidget *>(component);
 
-        // ### If the widget already has a layout, nothing is needed
-        // (populate added the layout)... if not add a "stacked
-        // layout" with all the toplevel children inside.
+        // If a layout is there, we assume the populator added it, and
+        // configured the children objects inside.
+        if (widget->layout()) {
+            qWarning("LAYOUT OK!");
+            return;
+        }
+
+        // If not, we we'll automatically make all toplevel children
+        // have the parent's geometry.
+
+        // ###
+        QGraphicsAnchorLayout *l = new QGraphicsAnchorLayout;
+        l->setSpacing(0);
+        widget->setLayout(l);
+        QList<QGraphicsItem *> children = widget->childItems();
+        for (int i = 0; i < children.count(); i++) {
+            if (!children[i]->isWidget())
+                continue;
+
+            QGraphicsWidget *child = static_cast<QGraphicsWidget *>(children[i]);
+            l->addAnchors(child, l);
+        }
 
         return;
     }

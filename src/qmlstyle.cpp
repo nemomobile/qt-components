@@ -28,8 +28,10 @@
 #include <QtDeclarative/QDeclarativeContext>
 #include <QtDeclarative/QDeclarativeEngine>
 #include <QtDeclarative/QDeclarativeItem>
+#include <QtGui/QGraphicsAnchorLayout>
+#include <QtGui/QGraphicsLayoutItem>
 #include <QtGui/QGraphicsObject>
-
+#include <QtGui/QGraphicsWidget>
 
 QmlStyle::QmlStyle(QDeclarativeEngine *engine, const QString &path, QObject *parent)
     : ComponentStyle("qml", parent), m_engine(engine), m_path(path)
@@ -124,15 +126,46 @@ QDeclarativeComponent *QmlStyle::lookupQmlComponent(const char *componentType)
     return c;
 }
 
+class LayoutItemWrapper : public QObject, public QGraphicsLayoutItem
+{
+public:
+    LayoutItemWrapper(QDeclarativeItem *item, QGraphicsLayoutItem *parent)
+        : QObject(item), QGraphicsLayoutItem(), m_item(item) {
+    }
+
+    virtual void setGeometry(const QRectF &rect) {
+        m_item->setPos(rect.x(), rect.y());
+        m_item->setSize(rect.size());
+    }
+
+    virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF &constraint = QSizeF()) const {
+        // ###
+        if (which == Qt::MinimumSize)
+            return QSizeF(0, 0);
+        else if (which == Qt::MaximumSize)
+            return QSizeF(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
+
+        // ### Preferred case, try to use QML information
+        return QSizeF(m_item->implicitWidth(), m_item->implicitHeight());
+    }
+
+private:
+    QDeclarativeItem *m_item;
+};
+
 void QmlStyle::bindQmlChildGeometry(QGraphicsObject *component, QDeclarativeItem *child)
 {
     // The parent is a QGraphicsWidget
     if (component->isWidget()) {
-        qWarning("Bind for a QGraphicsWidget parent not implemented yet...");
-        // ### Not there yet
+        QGraphicsWidget *widget = static_cast<QGraphicsWidget *>(component);
 
-        // ### make a QGraphicsLayoutItem to bridge the geometry and
-        // use a 1-child only layout.
+        // ### Implement something lightweighter than QGAL :)
+        QGraphicsAnchorLayout *l = new QGraphicsAnchorLayout;
+        l->setSpacing(0);
+        widget->setLayout(l);
+        LayoutItemWrapper *wrapper = new LayoutItemWrapper(child, l);
+        l->addAnchors(wrapper, l);
+        return;
     }
 
     QDeclarativeItem *item = qobject_cast<QDeclarativeItem *>(component);
