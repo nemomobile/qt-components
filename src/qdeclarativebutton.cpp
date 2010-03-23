@@ -163,6 +163,18 @@ void QDeclarativeButtonPopulator::populate(QGraphicsObject *component, QObject *
     proxy->setWidget(button);
     model->connect(button, SIGNAL(clicked()), SIGNAL(clicked()));
 
+    // ### How could I set the default size for a populated component?
+    QDeclarativeItem *item = qobject_cast<QDeclarativeItem *>(component);
+    if (!item)
+        return;
+
+    item->setWidth(200);
+    item->setHeight(60);
+
+    // ### QProxyWidget bug ??
+    button->resize(200, 60);
+
+
     // ### Create event grabber primitive instead of QPushButton
     // ### Create data binding between component->text() and the right primitive
 }
