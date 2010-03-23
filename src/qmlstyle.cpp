@@ -67,6 +67,15 @@ void QmlStyle::populate(QGraphicsObject *component, QObject *model)
         obj->setParent(component);
         static_cast<QGraphicsItem *>(child)->setParentItem(component);
 
+        if (child->width() == 0) {
+            qWarning() << "Warning: No default width in" << qmlComponent->url().path();
+            child->setWidth(50);
+        }
+        if (child->height() == 0) {
+            qWarning() << "Warning: No default height in" << qmlComponent->url().path();
+            child->setHeight(50);
+        }
+
         bindQmlChildGeometry(component, child);
 
     } else {
@@ -128,6 +137,8 @@ void QmlStyle::bindQmlChildGeometry(QGraphicsObject *component, QDeclarativeItem
 
     QDeclarativeItem *item = qobject_cast<QDeclarativeItem *>(component);
     if (item) {
+        item->setWidth(child->width());
+        item->setHeight(child->height());
         child->anchors()->setFill(item);
     }
 
