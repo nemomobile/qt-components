@@ -3,6 +3,8 @@ import Components 1.0
 
 Item {
     id: button;
+    width: 166;
+    height: 62;
 
     BorderImage {
         id: releasedImage;
