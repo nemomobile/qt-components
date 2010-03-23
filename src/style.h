@@ -58,22 +58,22 @@ struct ComponentPopulatorInitializer { };
     static const ComponentPopulatorInitializer<W, P> componentPopulatorInitializer ## W ## __ ## P;
 
 
-class Style : public QObject
+class ComponentStyle : public QObject
 {
     Q_OBJECT
 
 public:
-    static Style *instance() { return self; }
+    static ComponentStyle *instance() { return self; }
     virtual void populate(QGraphicsObject *component, QObject *model);
 
 protected:
-    Style(const QString &name, QObject *parent = 0);
+    ComponentStyle(const QString &name, QObject *parent = 0);
 
     ComponentPopulator *lookupComponentPopulator(const char *componentType, const QString &styleName);
     void bindChildrenGeometry(QGraphicsObject *component);
 
 private:
-    static Style *self;
+    static ComponentStyle *self;
     QString m_name;
 };
 

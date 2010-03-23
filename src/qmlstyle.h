@@ -32,7 +32,7 @@
 class QDeclarativeEngine;
 class QDeclarativeComponent;
 
-class QmlStyle : public Style
+class QmlStyle : public ComponentStyle
 {
     Q_OBJECT
 

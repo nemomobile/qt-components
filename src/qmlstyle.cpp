@@ -32,7 +32,7 @@
 
 
 QmlStyle::QmlStyle(QDeclarativeEngine *engine, const QString &path, QObject *parent)
-    : Style("qml", parent), m_engine(engine), m_path(path)
+    : ComponentStyle("qml", parent), m_engine(engine), m_path(path)
 {
     //
 }

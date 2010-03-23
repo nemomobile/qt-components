@@ -29,7 +29,7 @@
 
 
 TestStyle::TestStyle(QObject *parent)
-    : Style("test", parent)
+    : ComponentStyle("test", parent)
 {
 }
 

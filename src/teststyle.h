@@ -31,7 +31,7 @@
 class QGraphicsItem;
 class QGraphicsWidget;
 
-class TestStyle : public Style
+class TestStyle : public ComponentStyle
 {
     Q_OBJECT
 

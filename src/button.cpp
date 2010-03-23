@@ -30,7 +30,7 @@ Button::Button(QColor color, QDeclarativeItem *parent)
     : QDeclarativeItem(parent), m_color(color)
 {
     // ### knowing style vs. Widget::populate()
-    Style::instance()->populate(this, 0);
+    ComponentStyle::instance()->populate(this, 0);
 }
 
 QML_DECLARE_TYPE(Button);

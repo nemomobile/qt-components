@@ -52,9 +52,9 @@ void _q_registerComponentPopulator(const char *componentType,
 }
 
 
-Style *Style::self = 0;
+ComponentStyle *ComponentStyle::self = 0;
 
-void Style::populate(QGraphicsObject *component, QObject *model)
+void ComponentStyle::populate(QGraphicsObject *component, QObject *model)
 {
     const char *type = component->metaObject()->className();
 
@@ -77,13 +77,13 @@ void Style::populate(QGraphicsObject *component, QObject *model)
 
 };
 
-Style::Style(const QString &name, QObject *parent)
+ComponentStyle::ComponentStyle(const QString &name, QObject *parent)
     : QObject(parent), m_name(name)
 {
-    Style::self = this;
+    ComponentStyle::self = this;
 }
 
-ComponentPopulator *Style::lookupComponentPopulator(const char *componentType, const QString &name)
+ComponentPopulator *ComponentStyle::lookupComponentPopulator(const char *componentType, const QString &name)
 {
     Key key(componentType, name);
     StylePopulatorData *table = stylePopulatorData();
@@ -122,7 +122,7 @@ public:
 };
 
 
-void Style::bindChildrenGeometry(QGraphicsObject *component)
+void ComponentStyle::bindChildrenGeometry(QGraphicsObject *component)
 {
     // This function will bind the geometry of the QGraphicsWidget
     // children. The case for QDeclarativeItem children is treated in QmlStyle.
