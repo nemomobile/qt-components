@@ -1,125 +1,105 @@
 import Qt 4.6
 
-BorderImage {
-    id: settingsDialog;
-    source: "images/settings_background.png";
+Item {
+    id: settings;
 
-    border.left: 15;
-    border.right: 15;
-    border.top: 15;
+    x: 0;
+    y: 0;
 
-    Column {
-        id: settings;
+    width: parent.width;
+    height: parent.height;
+    anchors.fill: parent;
+
+    signal back;
+
+    Rectangle {
+        id: background;
+        color: "black";
         anchors.fill: parent;
-        spacing: 23;
-
-        Label {
-            id: title;
-            anchors.top: parent.top;
-            anchors.topMargin: 15;
-            anchors.horizontalCenter: parent.horizontalCenter;
-            text: "<b>SETTINGS</b>";
-            font.pixelSize: 30;
-            color: "black";
-        }
-
-        Image {
-            id: separator;
-            height: 2;
-            anchors.left: parent.left;
-            anchors.right: parent.right;
-            source: "images/splitter.png";
-        }
-
-        Row {
-            id: buttons1;
-            spacing: 10;
-            anchors.horizontalCenter: parent.horizontalCenter;
-
-            Button {
-                id: button11;
-                text: "Effects";
-            }
-
-            Button {
-                id: button12;
-                text: "Effects";
-            }
-
-            Button {
-                id: button13;
-                text: "Effects";
-            }
-        }
-
-        Image {
-            id: separator2;
-            height: 2;
-            anchors.left: parent.left;
-            anchors.right: parent.right;
-            source: "images/splitter.png";
-        }
-
-        Row {
-            id: sliderRow;
-            spacing: 35;
-            anchors.horizontalCenter: parent.horizontalCenter;
-
-            Label {
-                id: sliderLabel;
-                text: "Slower";
-                anchors.verticalCenter: parent.verticalCenter;
-            }
-
-            Slider {
-                id: slider;
-                width: 400;
-                height: 50;
-                minimum: 0;
-                maximum: 100;
-            }
-
-            Label {
-                id: sliderValue;
-                text: "Faster";
-                anchors.verticalCenter: parent.verticalCenter;
-            }
-        }
-
-        Image {
-            id: separator3;
-            height: 2;
-            anchors.left: parent.left;
-            anchors.right: parent.right;
-            source: "images/splitter.png";
-        }
-
-        Row {
-            id: buttonsRow;
-            spacing: 5;
-            anchors.horizontalCenter: parent.horizontalCenter;
-
-            Button {
-                id: button1;
-                text: "Effects";
-                checked: true;
-                checkable: true;
-                autoExclusive: true;
-            }
-
-            Button {
-                id: button2;
-                text: "Effects";
-                checkable: true;
-                autoExclusive: true;
-            }
-
-            Button {
-                id: button3;
-                text: "Effects";
-                checkable: true;
-                autoExclusive: true;
-            }
-        }
     }
+
+    MouseArea {
+        id: backArea;
+        enabled: false;
+        anchors.top: parent.top;
+        anchors.bottom: dialog.top;
+        anchors.left: parent.left;
+        anchors.right: parent.right;
+        onClicked: settings.back();
+    }
+
+    SettingsDialog {
+        id: dialog;
+        height: parent.height * 0.8;
+        anchors.left: parent.left;
+        anchors.right: parent.right;
+    }
+
+    states: [
+        State {
+            name: "hide";
+            PropertyChanges {
+                target: background;
+                opacity: 0;
+            }
+            PropertyChanges {
+                target: dialog;
+                y: parent.height;
+            }
+            PropertyChanges {
+                target: backArea;
+                enabled: false;
+            }
+        },
+        State {
+            name: "show";
+            PropertyChanges {
+                target: background;
+                opacity: 0.7;
+            }
+            PropertyChanges {
+                target: dialog;
+                y: 0.2 * parent.height;
+            }
+            PropertyChanges {
+                target: backArea;
+                enabled: true;
+            }
+        }
+    ]
+
+    transitions: [
+        Transition {
+            from: "hide";
+            to: "show";
+            SequentialAnimation {
+                NumberAnimation {
+                    properties: "opacity";
+                    easing.type: "OutCubic";
+                    duration: 100;
+                }
+                NumberAnimation {
+                    properties: "y";
+                    easing.type: "OutCubic";
+                    duration: 800;
+                }
+            }
+        },
+        Transition {
+            from: "show";
+            to: "hide";
+            SequentialAnimation {
+                NumberAnimation {
+                    properties: "y";
+                    easing.type: "OutCubic";
+                    duration: 800;
+                }
+                NumberAnimation {
+                    properties: "opacity";
+                    easing.type: "OutCubic";
+                    duration: 100;
+                }
+            }
+        }
+    ]
 }
