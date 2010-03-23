@@ -28,7 +28,7 @@ BorderImage {
             height: 6;
             anchors.left: parent.left;
             anchors.right: parent.right;
-            source: "images/separator.svg";
+            source: "images/separator.png";
         }
 
         Row {
@@ -57,7 +57,7 @@ BorderImage {
             height: 6;
             anchors.left: parent.left;
             anchors.right: parent.right;
-            source: "images/separator.svg";
+            source: "images/separator.png";
         }
 
         Row {
@@ -68,6 +68,7 @@ BorderImage {
             Label {
                 id: sliderLabel;
                 text: "Slower";
+                color: "white";
                 anchors.verticalCenter: parent.verticalCenter;
             }
 
@@ -82,6 +83,7 @@ BorderImage {
             Label {
                 id: sliderValue;
                 text: "Faster";
+                color: "white";
                 anchors.verticalCenter: parent.verticalCenter;
             }
         }
@@ -91,7 +93,7 @@ BorderImage {
             height: 6;
             anchors.left: parent.left;
             anchors.right: parent.right;
-            source: "images/separator.svg";
+            source: "images/separator.png";
         }
 
         Row {
