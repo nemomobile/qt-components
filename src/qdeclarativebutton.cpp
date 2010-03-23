@@ -51,7 +51,7 @@ QDeclarativeButton::QDeclarativeButton(QDeclarativeItem *parent) :
     Q_D(QDeclarativeButton);
     d->createModel();
 
-    Style::instance()->populate(this, d->model);
+    ComponentStyle::instance()->populate(this, d->model);
 }
 
 QDeclarativeButton::QDeclarativeButton(QDeclarativeButtonPrivate &dd, QDeclarativeItem *parent) :
@@ -60,7 +60,7 @@ QDeclarativeButton::QDeclarativeButton(QDeclarativeButtonPrivate &dd, QDeclarati
     Q_D(QDeclarativeButton);
     d->createModel();
 
-    Style::instance()->populate(this, d->model);
+    ComponentStyle::instance()->populate(this, d->model);
 }
 
 QDeclarativeButton::~QDeclarativeButton()
