@@ -5,6 +5,8 @@ Item {
     width: 200
     height: 400
 
+    property int value: 0
+
     Rectangle {
         x: 10
         y: 10
@@ -21,7 +23,12 @@ Item {
 
         text: "These"
 
-        onClicked: console.log("cliquei!!");
+        onClicked: {
+            text = value;
+            value += 1;
+            console.log("cliquei!!");
+        }
+
         checkable: true;
         autoExclusive: true;
     }

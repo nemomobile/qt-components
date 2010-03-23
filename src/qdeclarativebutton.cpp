@@ -155,13 +155,69 @@ int QDeclarativeButton::autoRepeatInterval() const
     return d->model->autoRepeatInterval();
 }
 
+// ### Just an experiment of connecting properties in C++
+class PropertyBinder : public QObject
+{
+    Q_OBJECT
+
+public:
+    // We store the 'to' value as the parent() and the 'from' will be
+    // the sender.
+
+    PropertyBinder(QObject *from, const char *fromProperty,
+                   QObject *to, const char *toProperty)
+        : QObject(to)
+        {
+            // If 'to' (parent) or 'from' are destroyed, the binder will be as well.
+            QObject::connect(from, SIGNAL(destroyed()), this, SLOT(deleteLater()));
+
+            const int fromIndex = from->metaObject()->indexOfProperty(fromProperty);
+            m_fromProp = from->metaObject()->property(fromIndex);
+
+            const int toIndex = to->metaObject()->indexOfProperty(toProperty);
+            m_toProp = to->metaObject()->property(toIndex);
+
+            QMetaObject::connect(from, m_fromProp.notifySignalIndex(),
+                                 this, metaObject()->indexOfSlot("updateValue()"));
+
+            m_toProp.write(to, m_fromProp.read(from));
+        }
+
+private Q_SLOTS:
+    // ### :-P
+    void updateValue() {
+        QObject *to = parent();
+        QObject *from = QObject::sender();
+        m_toProp.write(to, m_fromProp.read(from));
+    }
+
+private:
+    QMetaProperty m_fromProp;
+    QMetaProperty m_toProp;
+};
+
 void QDeclarativeButtonPopulator::populate(QGraphicsObject *component, QObject *model)
 {
     QDeclarativeButton *declarativebutton = static_cast<QDeclarativeButton *>(component);
     QPushButton *button = new QPushButton(declarativebutton->text());
     QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget(declarativebutton);
     proxy->setWidget(button);
-    model->connect(button, SIGNAL(clicked()), SIGNAL(clicked()));
+
+    // NOTE: this uses the proxied QPushButton as a "primitive", and
+    // the PropertyBinders connect the properties providing a similar
+    // way to construct components as Qml.
+    //
+    // One could simply build a custom class that connected to the
+    // proper NOTIFY signals for the properties in the model/component
+    // pair.
+
+    new PropertyBinder(component, "text", button, "text");
+
+    new PropertyBinder(button, "down", model, "mousePressed");
+    new PropertyBinder(button, "down", model, "mouseOver");
+
+    new PropertyBinder(model, "checkable", button, "checkable");
+    new PropertyBinder(model, "checked", button, "checked");
 
     // ### How could I set the default size for a populated component?
     QDeclarativeItem *item = qobject_cast<QDeclarativeItem *>(component);
@@ -178,5 +234,8 @@ void QDeclarativeButtonPopulator::populate(QGraphicsObject *component, QObject *
     // ### Create event grabber primitive instead of QPushButton
     // ### Create data binding between component->text() and the right primitive
 }
+
+// ###
+#include "qdeclarativebutton.moc"
 
 STYLE_REGISTER_COMPONENT_POPULATOR(QDeclarativeButton, QDeclarativeButtonPopulator);
