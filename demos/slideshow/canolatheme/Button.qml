@@ -67,6 +67,6 @@ Item {
 
         mousePressed: mouseArea.pressed;
         mouseOver: mouseArea.containsMouse;
-        onClicked: button.clicked;
+        onClicked: button.clicked();
     }
 }
