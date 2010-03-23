@@ -5,7 +5,7 @@ qrc_*.cpp
 *.moc
 *.so
 lib
-*.user
+*.user*
 *~
 examples/simple-button/simple-button
 examples/simple-slider/simple-slider
