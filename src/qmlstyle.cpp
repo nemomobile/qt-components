@@ -44,15 +44,18 @@ void QmlStyle::populate(QGraphicsObject *component, QObject *model)
     QDeclarativeComponent *qmlComponent = lookupQmlComponent(type);
     if (qmlComponent) {
 
-        // If there's a model, we want to enhance the context by exposing it to the
-        // component.
-        QDeclarativeContext *context = 0;
+        // We expose the component and the model to the QML context. The QML implementation
+        // will bind properties of its primitives and that model/component.
+        // ### TO DO: Do we need to expose the component? Should we decorate or subclass the
+        //            model to add any information that is missing?
+        Q_ASSERT(component);
+        QDeclarativeContext *context = new QDeclarativeContext(m_engine->rootContext(), component);
+        context->setContextProperty("component", component);
+
         if (model) {
             // ### should we always set the model, or only when there's one? I rather set only when exists, so
             // we can spot bugs earlier in qml code that depends on unexisting model or a null model in
             // widget creation.
-
-            context = new QDeclarativeContext(m_engine->rootContext(), model);
             context->setContextProperty("model", model);
         }
 
@@ -63,6 +66,15 @@ void QmlStyle::populate(QGraphicsObject *component, QObject *model)
         // ### That's what QDeclarativeItem::setParent does...
         obj->setParent(component);
         static_cast<QGraphicsItem *>(child)->setParentItem(component);
+
+        if (child->width() == 0) {
+            qWarning() << "Warning: No default width in" << qmlComponent->url().path();
+            child->setWidth(50);
+        }
+        if (child->height() == 0) {
+            qWarning() << "Warning: No default height in" << qmlComponent->url().path();
+            child->setHeight(50);
+        }
 
         bindQmlChildGeometry(component, child);
 
@@ -125,6 +137,8 @@ void QmlStyle::bindQmlChildGeometry(QGraphicsObject *component, QDeclarativeItem
 
     QDeclarativeItem *item = qobject_cast<QDeclarativeItem *>(component);
     if (item) {
+        item->setWidth(child->width());
+        item->setHeight(child->height());
         child->anchors()->setFill(item);
     }
 

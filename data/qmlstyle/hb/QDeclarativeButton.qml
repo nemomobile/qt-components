@@ -3,6 +3,8 @@ import Components 1.0
 
 Item {
     id: button;
+    width: 200;
+    height: 64;
 
     BorderImage {
         id: releasedImage;
@@ -51,7 +53,7 @@ Item {
         font.pixelSize: 24;
         color: pressedImage.visible ? "#125987" : "#FFFFFF";
 
-        text: "Effect";
+        text: component.text;
     }
 
     MouseArea {

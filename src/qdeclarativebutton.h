@@ -33,6 +33,7 @@ class QDeclarativeButton : public QDeclarativeItem
 {
     Q_OBJECT;
 
+    Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged);
     Q_PROPERTY(bool checkable READ isCheckable WRITE setCheckable)
     Q_PROPERTY(bool checked READ isChecked WRITE setChecked DESIGNABLE isCheckable NOTIFY toggled USER true)
     Q_PROPERTY(bool autoRepeat READ autoRepeat WRITE setAutoRepeat)
@@ -43,6 +44,9 @@ class QDeclarativeButton : public QDeclarativeItem
 public:
     QDeclarativeButton(QDeclarativeItem *parent = 0);
     virtual ~QDeclarativeButton();
+
+    void setText(const QString &text);
+    QString text() const;
 
     void setCheckable(bool);
     bool isCheckable() const;
@@ -67,6 +71,7 @@ Q_SIGNALS:
     void pressed();  // ###
     void clicked(bool checked = false);
     void toggled(bool checked = false);
+    void textChanged(const QString &text);
 
 protected:
     QDeclarativeButton(QDeclarativeButtonPrivate &dd, QDeclarativeItem *parent = 0);

@@ -3,6 +3,8 @@ import Components 1.0
 
 Item {
     id: button;
+    width: 166;
+    height: 62;
 
     BorderImage {
         id: releasedImage;
@@ -39,7 +41,7 @@ Item {
         font.pixelSize: 28;
         color: sunken() ? "#242424" : "#504F4F";
 
-        text: "Effect";
+        text: component.text;
     }
 
     Script {
