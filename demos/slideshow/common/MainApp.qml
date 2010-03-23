@@ -15,7 +15,7 @@ Item {
         running: false;
         Component.onCompleted: {
             path = "photos/";
-            animator = "common/FadeAnimator.qml";
+            animator = "FadeAnimator.qml";
         }
     }
 
