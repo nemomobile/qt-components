@@ -7,6 +7,7 @@ qrc_*.cpp
 lib
 *.user*
 *~
+examples/styled-components-cpp/styled-components-cpp
 examples/simple-button/simple-button
 examples/simple-slider/simple-slider
 utils/merge-svg-grid/merge-svg-grid
