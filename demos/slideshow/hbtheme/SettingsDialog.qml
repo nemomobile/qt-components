@@ -32,35 +32,6 @@ BorderImage {
         }
 
         Row {
-            id: lineEditRow;
-            spacing: 10;
-            anchors.horizontalCenter: parent.horizontalCenter;
-
-            Button {
-                id: button11;
-                text: "Effects";
-            }
-
-            Button {
-                id: button12;
-                text: "Effects";
-            }
-
-            Button {
-                id: button13;
-                text: "Effects";
-            }
-        }
-
-        Image {
-            id: separator2;
-            height: 6;
-            anchors.left: parent.left;
-            anchors.right: parent.right;
-            source: "images/separator.png";
-        }
-
-        Row {
             id: sliderRow;
             spacing: 35;
             anchors.horizontalCenter: parent.horizontalCenter;
@@ -101,21 +72,26 @@ BorderImage {
 
             Button {
                 id: button1;
-                text: "Effects";
+                text: "Fade";
                 checked: true;
                 autoExclusive: true;
+                onClicked: viewer.state = "fade";
             }
 
             Button {
                 id: button2;
-                text: "Effects";
+                text: "Sliding";
+                checkable: true;
                 autoExclusive: true;
+                onClicked: viewer.state = "sliding";
             }
 
             Button {
                 id: button3;
-                text: "Effects";
+                text: "Transform";
+                checkable: true;
                 autoExclusive: true;
+                onClicked: viewer.state = "transform";
             }
         }
 
