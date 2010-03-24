@@ -75,8 +75,6 @@ BorderImage {
                 id: slider;
                 width: 400;
                 height: 50;
-                minimum: 0;
-                maximum: 100;
             }
 
             Label {
@@ -103,21 +101,18 @@ BorderImage {
                 id: button1;
                 text: "Effects";
                 checked: true;
-                checkable: true;
                 autoExclusive: true;
             }
 
             Button {
                 id: button2;
                 text: "Effects";
-                checkable: true;
                 autoExclusive: true;
             }
 
             Button {
                 id: button3;
                 text: "Effects";
-                checkable: true;
                 autoExclusive: true;
             }
         }

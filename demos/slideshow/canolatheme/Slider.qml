@@ -3,6 +3,8 @@
 import Qt 4.6
 import Components 1.0
 
+import "../common/model"
+
 Item {
     id: slider
     property alias value: model.value
@@ -34,12 +36,9 @@ Item {
             }
         }
     }
-    RangeModel {
+
+    MyRangeModel {
         id: model
-        minimumValue: 0
-        maximumValue: 100
-        minimumPosition: 0
-        maximumPosition: background.width - (knob.width / 2)
-        position: knob.x + (knob.width / 2)
+        maximumPosition: background.width - knob.width
     }
 }
