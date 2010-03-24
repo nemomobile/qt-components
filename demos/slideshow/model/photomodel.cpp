@@ -62,7 +62,7 @@ public:
         context->setContextProperty("photoModel", this);
     }
 
-    QString path() {
+    QString path() const {
         return m_path;
     }
 
@@ -74,7 +74,7 @@ public:
         reloadPhotos(path);
     }
 
-    QStringList list() {
+    QStringList list() const {
         return m_photosFiles;
     }
 
@@ -87,7 +87,7 @@ protected:
         m_photosFiles.clear();
         QDir dir(path);
 
-        dir.setNameFilters(QStringList() << "*.jpg");
+        dir.setNameFilters(QStringList() << "*.jpg" << "*.png");
         dir.setFilter(QDir::Files);
 
         QList<QFileInfo> list = dir.entryInfoList();
