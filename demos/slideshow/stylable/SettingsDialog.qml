@@ -33,35 +33,6 @@ BorderImage {
         }
 
         Row {
-            id: buttons1;
-            spacing: 10;
-            anchors.horizontalCenter: parent.horizontalCenter;
-
-            StyleButton {
-                id: button11;
-                text: "Effects";
-            }
-
-            StyleButton {
-                id: button12;
-                text: "Effects";
-            }
-
-            StyleButton {
-                id: button13;
-                text: "Effects";
-            }
-        }
-
-        Image {
-            id: separator2;
-            height: 2;
-            anchors.left: parent.left;
-            anchors.right: parent.right;
-            source: "images/splitter.png";
-        }
-
-        Row {
             id: sliderRow;
             spacing: 35;
             anchors.horizontalCenter: parent.horizontalCenter;
@@ -76,8 +47,6 @@ BorderImage {
                 id: slider;
                 width: 400;
                 height: 50;
-                minimumValue: 0;
-                maximumValue: 100;
             }
 
             Label {
@@ -102,24 +71,27 @@ BorderImage {
 
             StyleButton {
                 id: button1;
-                text: "Effects";
+                text: "Fade";
                 checked: true;
                 checkable: true;
                 autoExclusive: true;
+                onClicked: viewer.state = "fade";
             }
 
             StyleButton {
                 id: button2;
-                text: "Effects";
+                text: "Sliding";
                 checkable: true;
                 autoExclusive: true;
+                onClicked: viewer.state = "sliding";
             }
 
             StyleButton {
                 id: button3;
-                text: "Effects";
+                text: "Transform";
                 checkable: true;
                 autoExclusive: true;
+                onClicked: viewer.state = "transform";
             }
         }
     }

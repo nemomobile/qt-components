@@ -7,7 +7,7 @@ MainApp {
         id: settingsDialog;
         state: "hide";
         onBack: {
-            viewer.running = true;
+            viewer.running = playpausebutton.playing;
             settingsDialog.state = "hide";
         }
     }
