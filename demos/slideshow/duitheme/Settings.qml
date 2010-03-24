@@ -16,13 +16,18 @@ Item {
         id: background;
         color: "black";
         anchors.fill: parent;
+
+        effect: Blur {
+            id: blureffect;
+            blurRadius: 10;
+        }
     }
 
     MouseArea {
         id: backArea;
         enabled: false;
-        anchors.top: parent.top;
-        anchors.bottom: dialog.top;
+        anchors.top: dialog.bottom;
+        anchors.bottom: parent.bottom;
         anchors.left: parent.left;
         anchors.right: parent.right;
         onClicked: settings.back();
@@ -44,7 +49,7 @@ Item {
             }
             PropertyChanges {
                 target: dialog;
-                y: parent.height;
+                y: -parent.height;
             }
             PropertyChanges {
                 target: backArea;
@@ -59,7 +64,7 @@ Item {
             }
             PropertyChanges {
                 target: dialog;
-                y: 0.4 * parent.height;
+                y: 0;
             }
             PropertyChanges {
                 target: backArea;
