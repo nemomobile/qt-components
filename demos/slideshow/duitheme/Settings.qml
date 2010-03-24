@@ -3,9 +3,6 @@ import Qt 4.6
 Item {
     id: settings;
 
-    x: 0;
-    y: 0;
-
     width: parent.width;
     height: parent.height;
     anchors.fill: parent;

@@ -13,12 +13,10 @@ Item {
     width: 300; height: 100
     Item {
         id: background
-        x: 0
         y: (parent.height - height) / 2
         width: parent.width
         BorderImage {
             id: background_normal
-            x: 0
             y: (parent.height - height) / 2
             width: parent.width
             border.left: 10;
@@ -28,7 +26,6 @@ Item {
         }
         BorderImage {
             id: background_pressed
-            x: 0
             y: (parent.height - height) / 2
             width: parent.width
             border.left: 10;
@@ -39,7 +36,6 @@ Item {
         BorderImage {
             id: elapsed
             source: "images/slider-filled.png"
-            x: 0
             y: (parent.height - height) / 2
             width: knob.x + (knob.width / 2)
             border.left: 10;

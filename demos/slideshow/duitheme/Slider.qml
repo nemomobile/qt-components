@@ -13,7 +13,6 @@ Item {
     width: 300; height: 100
     BorderImage {
         id: background
-        x: 0
         y: (parent.height - height) / 2
         width: parent.width
         border.left: 6;

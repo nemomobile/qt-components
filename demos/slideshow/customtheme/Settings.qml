@@ -42,7 +42,6 @@ Item {
             name: "show";
             PropertyChanges {
                 target: dialog;
-                x: 0;
             }
             PropertyChanges {
                 target: backArea;
