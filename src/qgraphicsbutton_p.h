@@ -35,10 +35,14 @@
 // We mean it.
 //
 
+#include <QtGui/QGraphicsWidget>
+#include <QtGui/QPainter>
+
 // ### QGraphicsWidgetPrivate is not exported
 //#include <QtGui/private/qgraphicswidget_p.h>
 
 class QButtonModel;
+class QGraphicsButton;
 
 class QGraphicsButtonPrivate
 {
@@ -56,9 +60,60 @@ public:
     QButtonModel *model;
     QString text;
 
-
 private:
     Q_DECLARE_PUBLIC(QGraphicsButton)
+};
+
+class ButtonPrimitive : public QGraphicsWidget
+{
+    Q_OBJECT
+
+public:
+    ButtonPrimitive(int border, QColor color, QGraphicsItem *parent = 0)
+        : QGraphicsWidget(parent), m_color(color), m_border(border), m_down(false) { }
+
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+    {
+        Q_UNUSED(option);
+        Q_UNUSED(widget);
+
+        QColor c = m_down ? m_color.darker() : m_color;
+        painter->fillRect(rect().adjusted(m_border, m_border, -m_border, -m_border), c);
+        painter->drawText(rect(), Qt::AlignCenter, m_text);
+    }
+
+public Q_SLOTS:
+    void setText(const QString &text) {
+        if (text != m_text) {
+            m_text = text;
+            update();
+        }
+    }
+
+protected:
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) {
+        m_down = true;
+        emit buttonDown(true);
+        update();
+    }
+
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
+        m_down = false;
+        emit buttonDown(false);
+        update();
+    }
+
+Q_SIGNALS:
+    // ### just a convenient signal for experimenting with model, compare with
+    // the usage of PropertyBinder helper class in QDeclarativeButton.
+    void buttonDown(bool);
+
+private:
+    QColor m_color;
+    int m_border;
+    QString m_text;
+
+    bool m_down;
 };
 
 #endif

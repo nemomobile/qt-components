@@ -73,10 +73,7 @@ public:
     void setAutoExclusive(bool);
     bool autoExclusive() const;
 
-    void setMousePressed(bool);
     bool mousePressed() const;
-
-    void setMouseOver(bool);
     bool mouseOver() const;
 
 #ifndef QT_NO_BUTTONGROUP
@@ -86,6 +83,11 @@ public:
     // void mousePressEventHandler(QEvent *event);
     // void mouseReleaseEventHandler(QEvent *event);
     // void mouseMoveEventHandler(QEvent *event);
+
+public Q_SLOTS:
+    // ### Those are convenient for C++ connections but may clutter the API exported to QML...
+    void setMousePressed(bool);
+    void setMouseOver(bool);
 
 Q_SIGNALS:
     void released();

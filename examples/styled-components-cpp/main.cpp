@@ -7,6 +7,17 @@
 #include "qgraphicsbutton.h"
 #include "qmlstyle.h"
 
+class Test : public QObject
+{
+    Q_OBJECT
+
+public:
+    Test() : QObject(0) { };
+
+public Q_SLOTS:
+    void hello() { qWarning("Hello world!"); }
+};
+
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
@@ -26,8 +37,16 @@ int main(int argc, char *argv[])
     w->setLayout(l);
 
     QGraphicsButton *a = new QGraphicsButton;
+    a->setText("Hello!");
+
     QGraphicsButton *b = new QGraphicsButton;
+    b->setText("BBB");
+
     QGraphicsButton *c = new QGraphicsButton;
+    c->setText("CCC");
+
+    Test t;
+    QObject::connect(a, SIGNAL(clicked()), &t, SLOT(hello()));
 
     // ### hack doesn't work...
     // a->setCheckable(true);
@@ -62,3 +81,4 @@ int main(int argc, char *argv[])
     return app.exec();
 }
 
+#include "main.moc"

@@ -26,10 +26,6 @@
 #include "qbuttonmodel.h"
 #include "style.h"
 
-#include <QtGui/QPainter>
-#include <QtGui/QPushButton>
-#include <QtGui/QGraphicsProxyWidget>
-
 
 QGraphicsButtonPrivate::QGraphicsButtonPrivate(QGraphicsButton *qq) :
     q_ptr(qq), model(0)
@@ -163,39 +159,23 @@ int QGraphicsButton::autoRepeatInterval() const
     return d->model->autoRepeatInterval();
 }
 
-class RectWidget : public QGraphicsWidget
-{
-public:
-    RectWidget(int border, QColor color, QGraphicsItem *parent = 0)
-        : QGraphicsWidget(parent), m_color(color), m_border(border) { }
-
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-    {
-        Q_UNUSED(option);
-        Q_UNUSED(widget);
-        painter->fillRect(rect().adjusted(m_border, m_border, -m_border, -m_border), m_color);
-    }
-
-private:
-    QColor m_color;
-    int m_border;
-};
-
 
 void QGraphicsButtonPopulator::populate(QGraphicsObject *component, QObject *model)
 {
     Q_UNUSED(model);
 
-    // ### ProxyWidget is not playing nice with the layouting or vice-versa. :-P
-    // QPushButton *button = new QPushButton("Button");
-    // QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget(component);
-    // proxy->setWidget(button);
-    // model->connect(button, SIGNAL(clicked()), SIGNAL(clicked()));
+    // In this example, we created a big button primitive that does all the painting
+    // instead of creating it with smaller primitives...
+    ButtonPrimitive *p = new ButtonPrimitive(0, Qt::yellow, component);
+    QObject::connect(component, SIGNAL(textChanged(const QString &)),
+                     p, SLOT(setText(const QString &)));
 
-    new RectWidget(0, Qt::red, component);
-
-    // ### Create event grabber primitive instead of QPushButton
-    // ### Access info from model (pressed) and/or component (text)
+    // ###
+    QObject::connect(p, SIGNAL(buttonDown(bool)),
+                     model, SLOT(setMousePressed(bool)));
+    QObject::connect(p, SIGNAL(buttonDown(bool)),
+                     model, SLOT(setMouseOver(bool)));
 }
 
 STYLE_REGISTER_COMPONENT_POPULATOR(QGraphicsButton, QGraphicsButtonPopulator);
+
