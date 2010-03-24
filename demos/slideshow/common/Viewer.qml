@@ -46,27 +46,21 @@ Item {
         }
     }
 
-    Script {
-        function musicas() {
-            photoModel.path = root.path;
-            return photoModel.list;
-        }
+    Binding { target: photoModel; property: "path"; value: root.path; }
 
-        function init()
-        {
-            var list = musicas();
-            animItem.currentImage = list[0];
-            animItem.nextImage = list[1];
-            index = 1;
-            animItem.finished.connect(getNext);
-        }
+    function init()
+    {
+        animItem.currentImage = photoModel.list[index];
+        animItem.nextImage = photoModel.list[(index + 1) % photoModel.size];
+        animItem.finished.connect(getNext);
+    }
 
-        function getNext()
-        {
-            var list = musicas();
-            index = (index + 1) % photoModel.size;
-            animItem.nextImage = list[index];
-        }
+    function getNext()
+    {
+        index = (index + 1) % photoModel.size;
+        // Note that animator will move old nextImage to currentImage,
+        // so just update nextImage.
+        animItem.nextImage = photoModel.list[(index + 1) % photoModel.size];
     }
 
     states: [

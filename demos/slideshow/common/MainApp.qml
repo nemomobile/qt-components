@@ -13,10 +13,8 @@ Item {
         id: viewer;
         interval: 2000;
         running: false;
-        Component.onCompleted: {
-            path = "photos/";
-            state = "fade";
-        }
+        path: "photos/"
+        state: "fade"
     }
 
     PlayPauseButton {
