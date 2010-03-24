@@ -6,4 +6,5 @@ RangeModel {
     minimumValue: 0
     maximumValue: 120
     position: knob.x + (knob.width / 2)
+    onValueChanged: viewer.interval = 11000 - 100*value;
 }
