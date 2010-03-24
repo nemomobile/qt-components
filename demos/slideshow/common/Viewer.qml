@@ -7,7 +7,7 @@ Item {
     anchors.fill: parent;
 
     property alias interval: timer.interval;
-    property alias running: timer.running;
+    property bool running;
     property alias animItem: loader.item;
     property string path;
     property int index: 0;
@@ -16,7 +16,8 @@ Item {
     // default interval: 1000 milliseconds
     Timer {
         id: timer;
-        repeat: true;
+        running: root.running && !animItem.running;
+        repeat: false;
         onTriggered: {
             animItem.start();
         }
