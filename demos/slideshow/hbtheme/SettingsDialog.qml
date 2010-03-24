@@ -38,7 +38,7 @@ BorderImage {
 
             Label {
                 id: sliderLabel;
-                text: slider.value; //"Slower";
+                text: "Slower";
                 color: "white";
                 anchors.verticalCenter: parent.verticalCenter;
             }
