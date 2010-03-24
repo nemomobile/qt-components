@@ -6,6 +6,7 @@
 #include "qdatetimemodel.h"
 #include "qprogressbarmodel.h"
 #include "qdeclarativebutton.h"
+#include "qdeclarativeslider.h"
 
 #include "qmlstyle.h"
 #include "teststyle.h"
@@ -37,6 +38,7 @@ public:
         qmlRegisterType<QDateTimeModel>(uri, 1, 0, "DateTimeModel");
         qmlRegisterType<QProgressBarModel>(uri, 1, 0, "ProgressBarModel");
         qmlRegisterType<QDeclarativeButton>(uri, 1, 0, "StyleButton");
+        qmlRegisterType<QDeclarativeSlider>(uri, 1, 0, "StyleSlider");
     }
 };
 

@@ -24,6 +24,8 @@
 #include "qdeclarativeslider.h"
 #include "qdeclarativeslider_p.h"
 #include "qrangemodel.h"
+#include <QSlider>
+#include <QGraphicsProxyWidget>
 
 QDeclarativeSliderPrivate::QDeclarativeSliderPrivate() :
     QDeclarativeItemPrivate(),
@@ -37,8 +39,8 @@ void QDeclarativeSliderPrivate::createModel()
     Q_Q(QDeclarativeSlider);
 
     model = new QRangeModel(q);
-    q->connect(model, SIGNAL(valueChanged()), SIGNAL(valueChanged()));
-    q->connect(model, SIGNAL(rangeChanged()), SIGNAL(rangeChanged()));
+    q->connect(model, SIGNAL(valueChanged(int)), SIGNAL(valueChanged(int)));
+    q->connect(model, SIGNAL(rangeChanged(int, int)), SIGNAL(rangeChanged(int, int)));
 }
 
 QDeclarativeSlider::QDeclarativeSlider(QDeclarativeItem *parent) :
@@ -47,8 +49,7 @@ QDeclarativeSlider::QDeclarativeSlider(QDeclarativeItem *parent) :
     Q_D(QDeclarativeSlider);
     d->createModel();
 
-    // #####
-    // style->populate(this, d->model);
+    ComponentStyle::instance()->populate(this, d->model);
 }
 
 QDeclarativeSlider::QDeclarativeSlider(QDeclarativeSliderPrivate &dd, QDeclarativeItem *parent) :
@@ -57,8 +58,7 @@ QDeclarativeSlider::QDeclarativeSlider(QDeclarativeSliderPrivate &dd, QDeclarati
     Q_D(QDeclarativeSlider);
     d->createModel();
 
-    // #####
-    // style->populate(this, d->model);
+    ComponentStyle::instance()->populate(this, d->model);
 }
 
 QDeclarativeSlider::~QDeclarativeSlider()
@@ -142,3 +142,25 @@ bool QDeclarativeSlider::hasTracking() const
     Q_D(const QDeclarativeSlider);
     return d->model->hasTracking();
 }
+
+void QDeclarativeSliderPopulator::populate(QGraphicsObject *component, QObject *model)
+{
+    QSlider *slider = new QSlider(Qt::Horizontal);
+    QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget(component);
+    proxy->setWidget(slider);
+
+    // ### Create event grabber primitive instead of QSlider
+    model->connect(slider, SIGNAL(sliderMoved(int)), SIGNAL(sliderMoved(int)));
+    model->connect(slider, SIGNAL(valueChanged(int)), SIGNAL(valueChanged(int)));
+    model->connect(slider, SIGNAL(rangeChanged(int, int)), SIGNAL(rangeChanged(int, int)));
+
+    // ### How could I set the default size for a populated component?
+    QDeclarativeItem *item = qobject_cast<QDeclarativeItem *>(component);
+    if (!item)
+        return;
+
+    item->setWidth(300);
+    item->setHeight(50);
+}
+
+STYLE_REGISTER_COMPONENT_POPULATOR(QDeclarativeSlider, QDeclarativeSliderPopulator);

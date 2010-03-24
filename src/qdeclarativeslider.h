@@ -25,6 +25,7 @@
 #define QDECLARATIVESLIDER_H
 
 #include <QtDeclarative/qdeclarativeitem.h>
+#include "style.h"
 
 class QDeclarativeSliderPrivate;
 
@@ -73,6 +74,12 @@ protected:
 private:
     Q_DECLARE_PRIVATE_D(QGraphicsItem::d_ptr.data(), QDeclarativeSlider);
     Q_DISABLE_COPY(QDeclarativeSlider);
+};
+
+class QDeclarativeSliderPopulator : public ComponentPopulator
+{
+public:
+    virtual void populate(QGraphicsObject *component, QObject *model);
 };
 
 #endif
