@@ -77,7 +77,9 @@ protected:
     QGraphicsButton(QGraphicsButtonPrivate &dd, QGraphicsWidget *parent = 0);
 
 private:
-    Q_DECLARE_PRIVATE_D(QGraphicsItem::d_ptr.data(), QGraphicsButton);
+    // ### QGraphicsWidgetPrivate is not exported
+    QGraphicsButtonPrivate *m_dptr;
+    Q_DECLARE_PRIVATE_D(m_dptr, QGraphicsButton);
     Q_DISABLE_COPY(QGraphicsButton);
 };
 

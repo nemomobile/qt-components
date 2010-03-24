@@ -26,15 +26,19 @@
 #include "qbuttonmodel.h"
 #include "style.h"
 
+#include <QtGui/QPainter>
 #include <QtGui/QPushButton>
 #include <QtGui/QGraphicsProxyWidget>
 
 
-QGraphicsButtonPrivate::QGraphicsButtonPrivate() :
-    QGraphicsWidgetPrivate(),
-    model(0)
+QGraphicsButtonPrivate::QGraphicsButtonPrivate(QGraphicsButton *qq) :
+    q_ptr(qq), model(0)
 {
 
+}
+
+QGraphicsButtonPrivate::~QGraphicsButtonPrivate()
+{
 }
 
 void QGraphicsButtonPrivate::createModel()
@@ -49,7 +53,7 @@ void QGraphicsButtonPrivate::createModel()
 }
 
 QGraphicsButton::QGraphicsButton(QGraphicsWidget *parent) :
-    QGraphicsWidget(*new QGraphicsButtonPrivate, parent, 0)
+    QGraphicsWidget(parent, 0), m_dptr(new QGraphicsButtonPrivate(this))
 {
     Q_D(QGraphicsButton);
     d->createModel();
@@ -58,7 +62,7 @@ QGraphicsButton::QGraphicsButton(QGraphicsWidget *parent) :
 }
 
 QGraphicsButton::QGraphicsButton(QGraphicsButtonPrivate &dd, QGraphicsWidget *parent) :
-    QGraphicsWidget(dd, parent, 0)
+    QGraphicsWidget(parent, 0), m_dptr(&dd)
 {
     Q_D(QGraphicsButton);
     d->createModel();
@@ -68,6 +72,7 @@ QGraphicsButton::QGraphicsButton(QGraphicsButtonPrivate &dd, QGraphicsWidget *pa
 
 QGraphicsButton::~QGraphicsButton()
 {
+    delete m_dptr;
 }
 
 void QGraphicsButton::setText(const QString &text)

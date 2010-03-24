@@ -35,13 +35,19 @@
 // We mean it.
 //
 
-#include <QtGui/private/qgraphicswidget_p.h>
+// ### QGraphicsWidgetPrivate is not exported
+//#include <QtGui/private/qgraphicswidget_p.h>
 
 class QButtonModel;
 
-class QGraphicsButtonPrivate : public QGraphicsWidgetPrivate
+class QGraphicsButtonPrivate
 {
-    Q_DECLARE_PUBLIC(QGraphicsButton)
+    // ### QGraphicsWidgetPrivate is not exported
+public:
+    QGraphicsButtonPrivate(QGraphicsButton *qq);
+    virtual ~QGraphicsButtonPrivate();
+protected:
+    QGraphicsButton *q_ptr;
 
 public:
     QGraphicsButtonPrivate();
@@ -49,6 +55,10 @@ public:
 
     QButtonModel *model;
     QString text;
+
+
+private:
+    Q_DECLARE_PUBLIC(QGraphicsButton)
 };
 
 #endif
