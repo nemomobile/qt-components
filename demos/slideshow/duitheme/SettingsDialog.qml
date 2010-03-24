@@ -8,65 +8,40 @@ BorderImage {
     border.right: 15;
     border.top: 15;
 
-    Column {
-        id: settings;
-        anchors.fill: parent;
-        spacing: 23;
+    Label {
+        id: title;
+        anchors.top: parent.top;
+        anchors.topMargin: 15;
+        anchors.horizontalCenter: parent.horizontalCenter;
+        text: "<b>SETTINGS</b>";
+        font.pixelSize: 30;
+        color: "white";
+    }
 
-        Label {
-            id: title;
-            anchors.top: parent.top;
-            anchors.topMargin: 15;
-            anchors.horizontalCenter: parent.horizontalCenter;
-            text: "<b>SETTINGS</b>";
-            font.pixelSize: 30;
-            color: "white";
-        }
+    Image {
+        id: separator;
+        height: 6;
+        anchors.top: title.bottom;
+        anchors.left: parent.left;
+        anchors.right: parent.right;
+        source: "images/separator.svg";
+    }
 
-        Image {
-            id: separator;
-            height: 6;
-            anchors.left: parent.left;
-            anchors.right: parent.right;
-            source: "images/separator.svg";
-        }
+    Row {
+        id: row;
+        spacing: 20;
 
-        Row {
-            id: sliderRow;
-            spacing: 35;
-            anchors.horizontalCenter: parent.horizontalCenter;
+        anchors.top: separator.bottom
+        anchors.bottom: settingsDialog.bottom;
+        anchors.left: parent.left;
+        anchors.leftMargin: 10;
+        anchors.right: parent.right;
+        anchors.rightMargin: 10;
 
-            Label {
-                id: sliderLabel;
-                text: "Slower";
-                anchors.verticalCenter: parent.verticalCenter;
-            }
-
-            Slider {
-                id: slider;
-                width: 400;
-                height: 50;
-            }
-
-            Label {
-                id: sliderValue;
-                text: "Faster";
-                anchors.verticalCenter: parent.verticalCenter;
-            }
-        }
-
-        Image {
-            id: separator3;
-            height: 6;
-            anchors.left: parent.left;
-            anchors.right: parent.right;
-            source: "images/separator.svg";
-        }
-
-        Row {
-            id: buttonsRow;
+        Column {
+            id: buttonsColumn;
+            anchors.verticalCenter: row.verticalCenter;
             spacing: 5;
-            anchors.horizontalCenter: parent.horizontalCenter;
 
             Button {
                 id: button1;
@@ -93,5 +68,33 @@ BorderImage {
             }
         }
 
+        Column {
+            id: sliderColumn;
+            anchors.verticalCenter: row.verticalCenter;
+
+            Row {
+                spacing: 25;
+
+                Label {
+                    id: sliderLabel;
+                    text: "Slower";
+                    anchors.verticalCenter: parent.verticalCenter;
+                }
+
+                Slider {
+                    id: slider;
+                    width: 350;
+                    height: 50;
+                    minimum: 0;
+                    maximum: 100;
+                }
+
+                Label {
+                    id: sliderValue;
+                    text: "Faster";
+                    anchors.verticalCenter: parent.verticalCenter;
+                }
+            }
+        }
     }
 }
