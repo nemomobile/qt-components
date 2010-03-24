@@ -1,13 +1,9 @@
 // canola theme slider
 
 import Qt 4.6
-import Components 1.0
 
 Item {
     id: slider
-    property alias value: model.value
-    property alias minimum: model.minimumValue
-    property alias maximum: model.maximumValue
     width: 300; height: 100
     BorderImage {
         id: background
@@ -34,12 +30,10 @@ Item {
             }
         }
     }
-    RangeModel {
-        id: model
-        minimumValue: 0
-        maximumValue: 100
-        minimumPosition: 0
-        maximumPosition: background.width - (knob.width / 2)
-        position: knob.x + (knob.width / 2)
-    }
+
+    Binding { target: model; property: "minimumValue"; value: 0 }
+    Binding { target: model; property: "maximumValue"; value: 100 }
+    Binding { target: model; property: "minimumPosition"; value: 0 }
+    Binding { target: model; property: "maximumPosition"; value: background.width - (knob.width / 2) }
+    Binding { target: model; property: "position"; value: knob.x + (knob.width / 2) }
 }

@@ -72,12 +72,12 @@ BorderImage {
                 anchors.verticalCenter: parent.verticalCenter;
             }
 
-            Slider {
+            StyleSlider {
                 id: slider;
                 width: 400;
                 height: 50;
-                minimum: 0;
-                maximum: 100;
+                minimumValue: 0;
+                maximumValue: 100;
             }
 
             Label {
