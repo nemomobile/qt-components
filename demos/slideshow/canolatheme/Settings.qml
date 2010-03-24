@@ -30,7 +30,7 @@ Item {
 
     SettingsDialog {
         id: dialog;
-        height: parent.height * 0.8;
+        height: parent.height * 0.6;
         anchors.left: parent.left;
         anchors.right: parent.right;
     }
@@ -59,7 +59,7 @@ Item {
             }
             PropertyChanges {
                 target: dialog;
-                y: 0.2 * parent.height;
+                y: 0.4 * parent.height;
             }
             PropertyChanges {
                 target: backArea;

@@ -8,10 +8,8 @@ Item {
 
     property alias interval: timer.interval;
     property alias running: timer.running;
-    property alias animator: loader.source;
     property alias animItem: loader.item;
     property string path;
-
     property int index: 0;
 
     // Triggers the animator transitions
@@ -69,4 +67,19 @@ Item {
             animItem.nextImage = list[index];
         }
     }
+
+    states: [
+    State {
+        name: "fade";
+        PropertyChanges {target: loader; source: "FadeAnimator.qml";}
+    },
+    State {
+        name: "sliding";
+        PropertyChanges {target: loader; source: "SlidingAnimator.qml";}
+    },
+    State {
+        name: "transform";
+        PropertyChanges {target: loader; source: "TransformAnimator.qml";}
+    }
+    ]
 }
