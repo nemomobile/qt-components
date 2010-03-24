@@ -37,7 +37,7 @@ class QmlStyle : public ComponentStyle
     Q_OBJECT
 
 public:
-    QmlStyle(QDeclarativeEngine *engine, const QString &path, QObject *parent = 0);
+    QmlStyle(const QString &path, QDeclarativeEngine *engine = 0, QObject *parent = 0);
 
     virtual void populate(QGraphicsObject *component, QObject *model);
 

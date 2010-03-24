@@ -21,11 +21,11 @@ public:
         // ###
         QString style(qgetenv("COMPSTYLE"));
         if (style == "") {
-            new TestStyle;
+            new TestStyle(engine);
         } else {
             QString path = QString("data/qmlstyle/%1").arg(style);
             qWarning() << "Loading theme from: " << path;
-            new QmlStyle(engine, path);
+            new QmlStyle(path, engine, engine);
         }
     }
 

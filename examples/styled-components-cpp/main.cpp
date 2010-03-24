@@ -1,4 +1,3 @@
-#include <QtDeclarative/QDeclarativeEngine>
 #include <QtGui/QApplication>
 #include <QtGui/QGraphicsAnchorLayout>
 #include <QtGui/QGraphicsScene>
@@ -12,11 +11,10 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    // ### Engine creation inside the style if no engine given...
-    QDeclarativeEngine engine;
-    QString style(qgetenv("COMPSTYLE"));
-    QString path = QString("data/qmlstyle/%1").arg(style);
-    new QmlStyle(&engine, path);
+    // Load the style
+    QString styleName(qgetenv("COMPSTYLE"));
+    QString path = QString("data/qmlstyle/%1").arg(styleName);
+    QmlStyle style(path);
 
     QGraphicsScene scene;
     scene.setSceneRect(0, 0, 800, 480);

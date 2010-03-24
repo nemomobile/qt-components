@@ -33,10 +33,12 @@
 #include <QtGui/QGraphicsObject>
 #include <QtGui/QGraphicsWidget>
 
-QmlStyle::QmlStyle(QDeclarativeEngine *engine, const QString &path, QObject *parent)
+QmlStyle::QmlStyle(const QString &path, QDeclarativeEngine *engine, QObject *parent)
     : ComponentStyle("qml", parent), m_engine(engine), m_path(path)
 {
-    //
+    if (!m_engine) {
+        m_engine = new QDeclarativeEngine;
+    }
 }
 
 void QmlStyle::populate(QGraphicsObject *component, QObject *model)
