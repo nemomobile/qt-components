@@ -6,6 +6,8 @@ Item {
     height: 480;
     property string currentImage;
     property string nextImage;
+    property bool running: animation.running;
+
     signal finished();
 
     function start()
@@ -45,7 +47,7 @@ Item {
             width: root.width;
             height: root.height;
 
-            asynchronous: true;
+            asynchronous: false;
 //            smooth: true;
             source: nextImage
         }

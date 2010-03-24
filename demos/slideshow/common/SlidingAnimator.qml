@@ -6,6 +6,8 @@ Item {
     height: 200;
     property string currentImage;
     property string nextImage;
+    property bool running: animation.running;
+
     signal finished();
 
     function start()
@@ -30,7 +32,7 @@ Item {
         anchors.left: leftImage.right;
         anchors.leftMargin: 10;
 
-        asynchronous: true;
+        asynchronous: false;
         smooth: true;
         source: nextImage
     }

@@ -6,6 +6,8 @@ Item {
     height: 200;
     property string currentImage;
     property string nextImage;
+    property bool running: animation.running;
+
     signal finished();
 
     function start()
@@ -26,7 +28,7 @@ Item {
         anchors.fill: parent;
         opacity: 0;
 
-        asynchronous: true;
+        asynchronous: false;
         source: nextImage
     }
 
