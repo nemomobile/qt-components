@@ -1,4 +1,5 @@
 import Qt 4.6
+import "../pushbutton"
 
 Item {
     id: basicSlider;
@@ -7,42 +8,27 @@ Item {
     anchors.rightMargin: 10
     anchors.verticalCenter: parent.verticalCenter
     width:parent.width
-    BorderImage {
+    Rectangle {
         id: sliderBase
-        source: "images/SliderBase.png"
-        width:parent.width
+        color: '#dadada'
+        width: parent.width
         anchors.verticalCenter: parent.verticalCenter
-        border.left: 5
-        border.right: 5
-        border.top: 1
-        border.bottom: 1
-        height: 7
-
-        BorderImage {
+        height: 8
+        Rectangle {
             id: sliderBar
-            source: "images/SliderGreenBar.png"
+            color: '#84dbf5'
             anchors.left: parent.left
             anchors.right : nob.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
-            border.left: 5
-            border.right: 5
-            border.top: 1
-            border.bottom: 1
+            height: 8
         }
-        Image {
+        PushButton {
             id: nob
-            source: "images/SliderThumb" + (mouseRegion.pressed ? "Pressed" :
-            parent.state=="Highlighted" ? "Highlighted" : "Normal") + ".png"
-            x:parent.width/2 - nob.width/2
+            x: parent.width/2 - nob.width/2
             anchors.verticalCenter: parent.verticalCenter
-        }
-        Bubble {
-            id: bubble
-            state:mouseRegion.pressed ? "Pressed" : ""
-            anchors.bottom:nob.top
-            anchors.bottomMargin:7
-            anchors.horizontalCenter: nob.horizontalCenter
-            label:Math.floor(100 * ((nob.x+nob.width/2 - sliderEdgeOffset)/(sliderBase.width - 2*sliderEdgeOffset)))
+            text:""
+            width: 40
+            height: 40
         }
         MouseArea {
             function handleRelease(x) {nob.x = x}
