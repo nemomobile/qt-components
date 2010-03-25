@@ -1,7 +1,19 @@
 import Qt 4.6
 
 Rectangle {
-    id: settingsDialog;
+    property int interval: 11000 - 100 * slider.value;
+    property string animatorName;
+
+    animatorName: {
+        // ### Button group could help.
+        if (button1.checked)
+            "fade";
+        else if (button2.checked)
+            "sliding";
+        else if (button3.checked)
+            "transform";
+    }
+
     color: "black";
     opacity: 0.7;
 
@@ -28,14 +40,13 @@ Rectangle {
         spacing: 30;
 
         anchors.top: separator.bottom
-        anchors.bottom: settingsDialog.bottom;
+        anchors.bottom: parent.bottom;
         anchors.left: parent.left;
         anchors.leftMargin: 10;
         anchors.right: parent.right;
         anchors.rightMargin: 10;
 
         Column {
-            id: buttonsColumn;
             anchors.verticalCenter: row.verticalCenter;
             spacing: 5;
 
@@ -45,7 +56,6 @@ Rectangle {
                 checked: true;
                 checkable: true;
                 autoExclusive: true;
-                onClicked: viewer.state = "fade";
             }
 
             Button {
@@ -53,7 +63,6 @@ Rectangle {
                 text: "Sliding";
                 checkable: true;
                 autoExclusive: true;
-                onClicked: viewer.state = "sliding";
             }
 
             Button {
@@ -61,7 +70,6 @@ Rectangle {
                 text: "Transform";
                 checkable: true;
                 autoExclusive: true;
-                onClicked: viewer.state = "transform";
             }
         }
 

@@ -3,19 +3,14 @@ import Qt 4.6
 Item {
     id: settings;
 
-    x: 0;
-    y: 0;
-
-    width: parent.width;
-    height: parent.height;
-    anchors.fill: parent;
-
-    signal back;
+    property alias interval: dialog.interval;
+    property string animatorName: "fade";
 
     Rectangle {
         id: background;
         color: "black";
         anchors.fill: parent;
+        opacity: 0;
     }
 
     MouseArea {
@@ -25,7 +20,7 @@ Item {
         anchors.bottom: dialog.top;
         anchors.left: parent.left;
         anchors.right: parent.right;
-        onClicked: settings.back();
+        onClicked: { settings.state = ""; }
     }
 
     SettingsDialog {
@@ -33,26 +28,12 @@ Item {
         height: parent.height * 0.6;
         anchors.left: parent.left;
         anchors.right: parent.right;
+        y: parent.height;
     }
 
     states: [
         State {
-            name: "hide";
-            PropertyChanges {
-                target: background;
-                opacity: 0;
-            }
-            PropertyChanges {
-                target: dialog;
-                y: parent.height;
-            }
-            PropertyChanges {
-                target: backArea;
-                enabled: false;
-            }
-        },
-        State {
-            name: "show";
+            name: "shown";
             PropertyChanges {
                 target: background;
                 opacity: 0.7;
@@ -70,8 +51,8 @@ Item {
 
     transitions: [
         Transition {
-            from: "hide";
-            to: "show";
+            from: "";
+            to: "shown";
             SequentialAnimation {
                 NumberAnimation {
                     properties: "opacity";
@@ -86,8 +67,8 @@ Item {
             }
         },
         Transition {
-            from: "show";
-            to: "hide";
+            from: "shown";
+            to: "";
             SequentialAnimation {
                 NumberAnimation {
                     properties: "y";
@@ -98,6 +79,12 @@ Item {
                     properties: "opacity";
                     easing.type: "OutCubic";
                     duration: 100;
+                }
+                ScriptAction {
+                    // This delays the actual change of the animator to after
+                    // the animation end. Avoids multiple loading and unloading
+                    // of animators in the button click handler.
+                    script: { animatorName = dialog.animatorName; }
                 }
             }
         }

@@ -1,7 +1,19 @@
 import Qt 4.6
 
 BorderImage {
-    id: settingsDialog;
+    property int interval: 11000 - 100 * slider.value;
+    property string animatorName;
+
+    animatorName: {
+        // ### Button group could help.
+        if (button1.checked)
+            "fade";
+        else if (button2.checked)
+            "sliding";
+        else if (button3.checked)
+            "transform";
+    }
+
     source: "images/settings_background.png";
 
     border.left: 15;
@@ -48,9 +60,6 @@ BorderImage {
                 width: 400;
                 height: 50;
                 value: 42;
-
-                // ###
-                onValueChanged: { viewer.interval = 11000 - 100*value; }
             }
 
             Label {
@@ -80,7 +89,6 @@ BorderImage {
                 checked: true;
                 checkable: true;
                 autoExclusive: true;
-                onClicked: viewer.state = "fade";
             }
 
             Button {
@@ -88,7 +96,6 @@ BorderImage {
                 text: "Sliding";
                 checkable: true;
                 autoExclusive: true;
-                onClicked: viewer.state = "sliding";
             }
 
             Button {
@@ -96,7 +103,6 @@ BorderImage {
                 text: "Transform";
                 checkable: true;
                 autoExclusive: true;
-                onClicked: viewer.state = "transform";
             }
         }
 

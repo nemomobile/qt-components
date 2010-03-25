@@ -2,9 +2,20 @@ import Qt 4.6
 import Components 1.0
 
 BorderImage {
-    id: settingsDialog;
-    source: "images/settings_background.png";
+    property int interval: 11000 - 100 * slider.value;
+    property string animatorName;
 
+    animatorName: {
+        // ### Button group could help.
+        if (button1.checked)
+            "fade";
+        else if (button2.checked)
+            "sliding";
+        else if (button3.checked)
+            "transform";
+    }
+
+    source: "images/settings_background.png";
     border.left: 15;
     border.right: 15;
     border.top: 15;
@@ -47,6 +58,7 @@ BorderImage {
                 id: slider;
                 width: 400;
                 height: 50;
+                value: 42;
             }
 
             Label {
@@ -75,7 +87,6 @@ BorderImage {
                 checked: true;
                 checkable: true;
                 autoExclusive: true;
-                onClicked: viewer.state = "fade";
             }
 
             StyleButton {
@@ -83,7 +94,6 @@ BorderImage {
                 text: "Sliding";
                 checkable: true;
                 autoExclusive: true;
-                onClicked: viewer.state = "sliding";
             }
 
             StyleButton {
@@ -91,7 +101,6 @@ BorderImage {
                 text: "Transform";
                 checkable: true;
                 autoExclusive: true;
-                onClicked: viewer.state = "transform";
             }
         }
     }
