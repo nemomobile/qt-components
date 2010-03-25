@@ -106,7 +106,7 @@ void QRangeModel::setPositionRange(int min, int max)
     d->maxpos = max;
     if (oldMin != d->minpos || oldMax != d->maxpos) {
         emit positionRangeChanged(d->minpos, d->maxpos);
-        setPosition(d->pos); // re-bound
+        setPosition(d->positionFromValue()); // re-bound
     }
 }
 
@@ -119,7 +119,7 @@ void QRangeModel::setRange(int min, int max)
     d->maximum = qMax(min, max);
     if (oldMin != d->minimum || oldMax != d->maximum) {
         emit rangeChanged(d->minimum, d->maximum);
-        setValue(d->value); // re-bound
+        setPosition(d->positionFromValue()); // re-bound
     }
 }
 
@@ -212,7 +212,10 @@ void QRangeModel::setPosition(int pos)
     d->pos = pos;
     emit positionChanged(d->pos);
 
-    d->value = d->valueFromPosition();
+    const int newValue = d->valueFromPosition();
+    if (d->value == newValue)
+        return;
+    d->value = newValue;
     emit valueChanged(d->value);
 }
 
@@ -260,10 +263,13 @@ void QRangeModel::setValue(int value)
     if (value == d->value)
         return;
     d->value = value;
-    if (!d->tracking && !d->blocktracking)
+    if (d->tracking && !d->blocktracking)
         emit valueChanged(value);
 
-    d->pos = d->positionFromValue();
+    const int newPosition = d->positionFromValue();
+    if (d->pos == newPosition)
+        return;
+    d->pos = newPosition;
     emit positionChanged(d->pos);
 }
 

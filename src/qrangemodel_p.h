@@ -101,12 +101,12 @@ public:
 
     inline int positionFromValue() {
         qreal scale =  qreal(maximum - minimum) / qreal(maxpos - minpos);
-        return minpos + int((value - minimum) / scale); // ###
+        return minpos + qRound((value - minimum) / scale); // ###
     }
 
     inline int valueFromPosition() {
         qreal scale = qreal(maximum - minimum) / qreal(maxpos - minpos);
-        return minimum + int((pos - minpos) * scale); // ###
+        return minimum + qRound((pos - minpos) * scale); // ###
     }
 };
 
