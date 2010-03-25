@@ -34,7 +34,7 @@ Item {
         text:"Some random text"
         horizontalAlignment: TextEdit.AlignLeft
         font.pointSize:12
-        //font.family: "Nokia Sans TitleSmBd S60"
+        font.family: droidBold.name
         focusOnPress:true
     }
     states: [

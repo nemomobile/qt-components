@@ -84,7 +84,7 @@ Rectangle {
                 anchors.left: parent.left
                 anchors.leftMargin: 11
                 anchors.right: parent.right
-                font.family: nokiaSansTitleRegular.name
+                font.family: droid.name
                 font.pointSize: 36
             }
             Image {
@@ -165,7 +165,7 @@ Rectangle {
                 Text {
                     text: action
                     font.pointSize: 24
-                    font.family: nokiaSansS60Regular.name
+                    font.family: droid.name
                     anchors.fill: parent
                     verticalAlignment: Text.AlignVCenter
                     anchors.leftMargin: 15

@@ -11,7 +11,7 @@ ListView {
                 width: parent.width
                 anchors.top: parent.top; anchors.left: parent.left; anchors.right: parent.right
                 anchors.topMargin: 5; anchors.leftMargin: 5; anchors.rightMargin: 5
-                font.family: nokiaSansS60Regular.name
+                font.family: droidSans.name
                 font.pointSize: 18
                 font.bold: true
             }
@@ -19,7 +19,7 @@ ListView {
                 text: "index " + index
                 anchors.top: parent.top; anchors.right: parent.right;
                 anchors.topMargin: 5; anchors.leftMargin: 5; anchors.rightMargin: 5
-                font.family: nokiaSansS60Regular.name
+                font.family: droidSans.name
                 font.pointSize: 12
                 font.bold: true
             }
@@ -28,7 +28,7 @@ ListView {
                 width: parent.width
                 anchors.bottom: parent.bottom; anchors.left: parent.left; anchors.right: parent.right
                 anchors.bottomMargin: 5; anchors.leftMargin: 5; anchors.rightMargin: 5
-                font.family: nokiaSansS60Regular.name
+                font.family: droidSans.name
                 font.pointSize: 18
             }
             Rectangle { width: parent.width; height: 0.5; anchors.bottom:parent.bottom }
