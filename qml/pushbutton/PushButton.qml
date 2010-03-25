@@ -11,63 +11,64 @@ Item {
 
     BorderImage {
         id: buttonImage
-        source: "images/PushButton" + (parent.state=="Highlighted" ?
-                                       "Highligted": "Normal") + ".png"
+        source: "../mx-style/button.png"
         anchors.fill:parent
-        border.left:5;
-        border.top:5;
-        border.right:5;
-        border.bottom:5;
+        border.left:10;
+        border.top:10;
+        border.right:10;
+        border.bottom:10;
 
     }
     BorderImage {
-        id: buttonPressedImage
+        id: buttonHoveredImage
         opacity:0
-        source: "images/PushButtonPressed.png"
+        source: "../mx-style/button-" + (mouseRegion.pressed
+            ? "active" : "hover") + ".png"
         anchors.fill:parent
-        border.left:5;
-        border.top:5;
-        border.right:5;
-        border.bottom:5;
+        border.left:10;
+        border.top:10;
+        border.right:10;
+        border.bottom:10;
     }
     Label {
         id: text
-        anchors.centerIn:parent
+        anchors.verticalCenter:parent.verticalCenter
+        anchors.horizontalCenter:parent.horizontalCenter
+        anchors.verticalCenterOffset: mouseRegion.pressed?1:0
         text: pushbutton.text
     }
 
     MouseArea {
         id: mouseRegion
+        hoverEnabled: true
         anchors.fill: parent
         onClicked: { pushbutton.clicked(); }
     }
 
     states: [
+
         State {
-            name: "Highlighted"
-            },
-            State {
                 name: "Disabled"
             },
             State {
-                when: mouseRegion.pressed
-                name: "Pressed"
-                PropertyChanges { target: buttonPressedImage; opacity: "1"}
-                PropertyChanges { target: text; color: "white"}
+            name: "Highlighted"
+            when: mouseRegion.containsMouse
+                PropertyChanges { target: buttonHoveredImage; opacity: "1"}
+                PropertyChanges { target: buttonImage; opacity: "0"}
+                //PropertyChanges { target: text; color: "white"}
             }
     ]
     transitions: [
-        Transition {
+        /*Transition {
             from: "";
             to: "Pressed"
             NumberAnimation { properties: "opacity"; duration: 30 }
             ColorAnimation { properties: "color"; duration: 30 }
-        },
+        },*/
         Transition {
-            from: "Pressed";
+            from: "Highlighted";
             to: ""
-            NumberAnimation { properties: "opacity"; duration: 150 }
-            ColorAnimation { properties: "color"; duration: 150 }
+            NumberAnimation { properties: "opacity"; duration: 130 }
         }
     ]
 
