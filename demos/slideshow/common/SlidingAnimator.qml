@@ -42,8 +42,14 @@ Item {
         PropertyAnimation {
             target: leftImage;
             property: "x";
-            to: -root.width + rightImage.anchors.leftMargin;
+            to: -root.width - rightImage.anchors.leftMargin;
             duration: 500;
+        }
+        // ### We think this will give room for the mainloop to run
+        // and the last frame be painted (when "x" reaches the 'to'
+        // value).
+        PauseAnimation {
+            duration: 50
         }
         ScriptAction {
             script: resetContainerPosition();
