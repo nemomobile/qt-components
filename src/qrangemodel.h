@@ -87,7 +87,6 @@ public:
     void setWrapping(bool);
     bool wrapping() const;
 
-    void setValue(int);
     int value() const;
 
 public Q_SLOTS:
@@ -98,6 +97,8 @@ public Q_SLOTS:
     void toMinimum();
     void toMaximum();
     //void startRepeatAction();
+
+    void setValue(int);
 
 Q_SIGNALS:
     void sliderMoved(int position);

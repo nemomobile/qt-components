@@ -150,9 +150,8 @@ void QDeclarativeSliderPopulator::populate(QGraphicsObject *component, QObject *
     proxy->setWidget(slider);
 
     // ### Create event grabber primitive instead of QSlider
-    model->connect(slider, SIGNAL(sliderMoved(int)), SIGNAL(sliderMoved(int)));
-    model->connect(slider, SIGNAL(valueChanged(int)), SIGNAL(valueChanged(int)));
-    model->connect(slider, SIGNAL(rangeChanged(int, int)), SIGNAL(rangeChanged(int, int)));
+    model->connect(slider, SIGNAL(sliderMoved(int)), SLOT(setValue(int)));
+    model->connect(slider, SIGNAL(valueChanged(int)), SLOT(setValue(int)));
 
     // ### How could I set the default size for a populated component?
     QDeclarativeItem *item = qobject_cast<QDeclarativeItem *>(component);
