@@ -43,6 +43,7 @@ Rectangle {
                 id: button1;
                 text: "Fade";
                 checked: true;
+                checkable: true;
                 autoExclusive: true;
                 onClicked: viewer.state = "fade";
             }
@@ -80,13 +81,6 @@ Rectangle {
                 id: slider;
                 width: 200;
                 height: 200;
-            }
-
-            Label {
-                id: value;
-                color: "white";
-                text: slider.value;
-                anchors.horizontalCenter: slider.horizontalCenter;
             }
         }
     }

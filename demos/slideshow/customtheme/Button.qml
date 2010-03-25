@@ -1,8 +1,6 @@
 import Qt 4.6
 import Components 1.0
 
-import "../common/model"
-
 Item {
     id: button;
     width: 166;
@@ -64,7 +62,7 @@ Item {
         anchors.fill: parent;
     }
 
-    MyButtonModel {
+    ButtonModel {
         id: model;
 
         onClicked: button.clicked();

@@ -46,6 +46,10 @@ BorderImage {
                 id: slider;
                 width: 400;
                 height: 50;
+                value: 42;
+
+                // ###
+                onValueChanged: { viewer.interval = 11000 - 100*value; }
             }
 
             Label {
@@ -71,6 +75,7 @@ BorderImage {
             Button {
                 id: button1;
                 text: "Fade";
+                checkable: true;
                 checked: true;
                 autoExclusive: true;
                 onClicked: viewer.state = "fade";

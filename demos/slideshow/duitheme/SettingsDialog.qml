@@ -47,6 +47,7 @@ BorderImage {
                 id: button1;
                 text: "Fade";
                 checked: true;
+                checkable: true;
                 autoExclusive: true;
                 onClicked: viewer.state = "fade";
             }
@@ -87,6 +88,10 @@ BorderImage {
                     height: 50;
                     minimum: 0;
                     maximum: 100;
+                    value: 42;
+
+                    // ###
+                    onValueChanged: { viewer.interval = 11000 - 100*value; }
                 }
 
                 Label {

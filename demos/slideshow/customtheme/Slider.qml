@@ -1,8 +1,6 @@
 import Qt 4.6
 import Components 1.0
 
-import "../common/model"
-
 Item {
     id: slider
 
@@ -73,18 +71,19 @@ Item {
 
             if (ang >= -42 && ang <= 222) {
                 knob.rotation = ang;
-                model.position = ang;
             }
         }
     }
 
-
-    MyRangeModel {
+    RangeModel {
         id: model
         maximumPosition: 221;
         minimumPosition: -42;
-        minimumValue: 0;
-        maximumValue: 120;
-        position: 0;
+        position: knob.rotation;
+
+        value: 42;
+
+        // ###
+        onValueChanged: { viewer.interval = 11000 - 100*value; }
     }
 }
