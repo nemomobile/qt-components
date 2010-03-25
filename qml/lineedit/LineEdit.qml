@@ -4,11 +4,11 @@ Item {
     id:lineedit
     property string label: "label"
 
-    width: Math.min(260, Math.max(text.width + 24, 260))
-    height: Math.max(text.height + 18, 50)
+    width: text.width + 11
+    height: 13 + 11 
 
     BorderImage {
-        source: "images/LineEditNormal.png"
+        source: "../mx-style/entry.png"
         anchors.fill:parent
         border.left:5; border.top:5;
         border.right:5; border.bottom:5;
@@ -16,24 +16,31 @@ Item {
     BorderImage {
         id: focusframe
         opacity:0
-        source: "images/LineEditHighlighted.png"
+        source: "../mx-style/entry-active.png"
         anchors.fill:parent
         border.left:5; border.top:5;
         border.right:5; border.bottom:5;
     }
     clip: true
-    TextEdit{
+    TextInput{
         id:text
-        anchors.fill:parent
-        anchors.left:parent.left
-        anchors.leftMargin:15
-        anchors.topMargin:15
-        anchors.bottomMargin:15
-        anchors.rightMargin:15
-        //wrap: true
+        cursorDelegate: Item{
+            Rectangle{
+                visible: text.focus
+                color: "#009BCE"
+                height: 13
+                width: 2
+                y: 1
+            }
+        }
+        anchors.centerIn: parent
+        anchors.topMargin:5
+        anchors.rightMargin:6
+        anchors.bottomMargin:6
+        anchors.leftMargin:5
         text:"Some random text"
         horizontalAlignment: TextEdit.AlignLeft
-        font.pointSize:12
+        font.pixelSize:13
         font.family: droidBold.name
         focusOnPress:true
     }
