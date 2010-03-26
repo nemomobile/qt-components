@@ -1,5 +1,4 @@
-import Qt 4.6
-import "../label"
+import Qt 4.7
 
 Item {
     id:pushbutton
@@ -11,7 +10,7 @@ Item {
 
     BorderImage {
         id: buttonImage
-        source: "../mx-style/button.png"
+        source: "images/button.png"
         anchors.fill:parent
         border.left:10;
         border.top:10;
@@ -22,7 +21,7 @@ Item {
     BorderImage {
         id: buttonHoveredImage
         opacity:0
-        source: "../mx-style/button-" + (mouseRegion.pressed
+        source: "images/button-" + (mouseRegion.pressed
             ? "active" : "hover") + ".png"
         anchors.fill:parent
         border.left:10;
@@ -30,7 +29,7 @@ Item {
         border.right:10;
         border.bottom:10;
     }
-    Label {
+    Text {
         id: text
         anchors.verticalCenter:parent.verticalCenter
         anchors.horizontalCenter:parent.horizontalCenter
