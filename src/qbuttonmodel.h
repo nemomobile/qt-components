@@ -33,7 +33,7 @@ class Q_GUI_EXPORT QButtonModel : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(bool checkable READ isCheckable WRITE setCheckable)
+    Q_PROPERTY(bool checkable READ isCheckable WRITE setCheckable NOTIFY checkableChanged)
     Q_PROPERTY(bool checked READ isChecked WRITE setChecked DESIGNABLE isCheckable NOTIFY toggled USER true)
     Q_PROPERTY(bool autoRepeat READ autoRepeat WRITE setAutoRepeat)
     Q_PROPERTY(bool autoExclusive READ autoExclusive WRITE setAutoExclusive)
@@ -97,6 +97,7 @@ Q_SIGNALS:
 
     // Notify signals
     void buttonDownChanged();
+    void checkableChanged();
     void mouseOverChanged();
     void mousePressedChanged();
 

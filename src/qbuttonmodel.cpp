@@ -270,7 +270,12 @@ void QButtonModel::setCheckable(bool checkable)
         return;
 
     d->checkable = checkable;
+
+    // ### Forcing an order on how properties should be set cause
+    // trouble to declarative. If we do both "checkable: true" and
+    // "checked: true" and the other is reverse, we lose information.
     d->checked = false;
+    emit checkableChanged();
 }
 
 bool QButtonModel::isCheckable() const
