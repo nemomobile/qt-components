@@ -24,5 +24,16 @@ Rectangle {
         Mx.Entry{hint: 'Fixed Width Entry'; width: 240;}
         Mx.Entry{hint: 'Crazy Icons!'; secret: true}//TODO
         Mx.Entry{hint: 'Secret Mode'; secret: true}
+        Mx.ProgressBar {
+            width: 279;
+            SequentialAnimation on value {
+                loops: Animation.Infinite;
+                NumberAnimation {
+                    from: 0;
+                    to: 100;
+                    duration: 5000;
+                }
+            }
+        }
     }
 }
