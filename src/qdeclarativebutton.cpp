@@ -165,23 +165,43 @@ public:
     // the sender.
 
     PropertyBinder(QObject *from, const char *fromProperty,
-                   QObject *to, const char *toProperty)
-        : QObject(to)
-        {
-            // If 'to' (parent) or 'from' are destroyed, the binder will be as well.
-            QObject::connect(from, SIGNAL(destroyed()), this, SLOT(deleteLater()));
+                   QObject *to, const char *toProperty) {
+        bind(from, fromProperty, NULL, to, toProperty);
+    }
 
-            const int fromIndex = from->metaObject()->indexOfProperty(fromProperty);
-            m_fromProp = from->metaObject()->property(fromIndex);
+    PropertyBinder(QObject *from, const char *fromProperty, const char *fromSignal,
+                   QObject *to, const char *toProperty) {
+        bind(from, fromProperty, fromSignal, to, toProperty);
+    }
 
-            const int toIndex = to->metaObject()->indexOfProperty(toProperty);
-            m_toProp = to->metaObject()->property(toIndex);
+    void bind(QObject *from, const char *fromProperty, const char *fromSignal,
+              QObject *to, const char *toProperty) {
+        // If 'to' (parent) or 'from' are destroyed, the binder will be as well.
+        setParent(to);
+        QObject::connect(from, SIGNAL(destroyed()), this, SLOT(deleteLater()));
 
-            QMetaObject::connect(from, m_fromProp.notifySignalIndex(),
-                                 this, metaObject()->indexOfSlot("updateValue()"));
+        const int fromIndex = from->metaObject()->indexOfProperty(fromProperty);
+        m_fromProp = from->metaObject()->property(fromIndex);
 
-            m_toProp.write(to, m_fromProp.read(from));
+        const int toIndex = to->metaObject()->indexOfProperty(toProperty);
+        m_toProp = to->metaObject()->property(toIndex);
+
+        int notifySignal;
+        if (fromSignal) {
+            notifySignal = from->metaObject()->indexOfSignal(fromSignal);
+        } else if (m_fromProp.hasNotifySignal()) {
+            notifySignal = m_fromProp.notifySignalIndex();
+        } else {
+            qWarning("PropertyBinder: '%s' of '%s' has no NOTIFY signal.",
+                     m_fromProp.name(), from->metaObject()->className());
+            return;
         }
+
+        QMetaObject::connect(from, notifySignal,
+                             this, metaObject()->indexOfSlot("updateValue()"));
+
+        m_toProp.write(to, m_fromProp.read(from));
+    }
 
 private Q_SLOTS:
     // ### :-P
@@ -189,6 +209,8 @@ private Q_SLOTS:
         QObject *to = parent();
         QObject *from = QObject::sender();
         m_toProp.write(to, m_fromProp.read(from));
+
+        //qWarning() << "In " << int(to) <<  " Changing " << m_toProp.name() << " to " << m_fromProp.read(from);
     }
 
 private:
@@ -213,8 +235,12 @@ void QDeclarativeButtonPopulator::populate(QGraphicsObject *component, QObject *
 
     new PropertyBinder(component, "text", button, "text");
 
-    new PropertyBinder(button, "down", model, "mousePressed");
-    new PropertyBinder(button, "down", model, "mouseOver");
+    // ### down doesn't have a NOTIFY :-(, so we work around by propagating
+    // its value when related signals are emitted.
+    new PropertyBinder(button, "down", "pressed", model, "mousePressed");
+    new PropertyBinder(button, "down", "released", model, "mousePressed");
+    new PropertyBinder(button, "down", "pressed", model, "mouseOver");
+    new PropertyBinder(button, "down", "released", model, "mouseOver");
 
     new PropertyBinder(model, "checkable", button, "checkable");
     new PropertyBinder(model, "checked", button, "checked");
