@@ -15,5 +15,10 @@ Rectangle {
         Mx.Button {
             text: 'Button';
         }
+        Row{
+            spacing: 2
+            Mx.Slider{width: 128; id: slider}
+            Text{y: 2; text:'Slider'; opacity: slider.value}
+        }
     }
 }
