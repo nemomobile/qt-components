@@ -9,11 +9,11 @@ Rectangle {
     FontLoader { id: droidSans; source: "mx/fonts/Droid-Sans/DroidSans.ttf" }
     FontLoader { id: droidSansBold; source: "mx/fonts/Droid-Sans/DroidSans-Bold.ttf" }
     Column {
-
-
-    Mx.Button {
-        text: 'Click me!';
-    }
-
+        Mx.Label {
+            text: 'Label';
+        }
+        Mx.Button {
+            text: 'Button';
+        }
     }
 }

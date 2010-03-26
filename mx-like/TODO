@@ -1,8 +1,8 @@
 Name           - Status - Who
-MxButton       - WIP    - Alan
+MxButton       - DONE   - Alan
 MxEntry        - WIP    - Alan
-MxLabel        - WIP    - Alan
-MxSlider       - TBD    -
+MxLabel        - DONE   - Alan
+MxSlider       - WIP    - Alan
 MxComboBox     - TBD    -
 MxProgressBar  - TBD    -
 MxTooltip      - TBD    -
