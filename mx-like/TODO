@@ -4,11 +4,13 @@ MxEntry        - WIP    - Alan
 MxLabel        - DONE   - Alan
 MxSlider       - DONE   - Alan
 MxComboBox     - TBD    -
-MxProgressBar  - TBD    -
-MxTooltip      - TBD    -
-MxToggle       - TBD    -
+MxProgressBar  - WIP    - Artur
+MxTooltip      - WIP    - Fleury
+MxToggle       - WIP    - Caio
 MxExpander     - WIP    - Alan
-MxScrollBar    - TBD    -
+MxScrollBar    - WIP    - Anselmo
 MxScrollView   - TBD    -
 "MxScrollGrid" - TBD    -
 MxTest         - TBD    -
+MxTitlebar     - TBD    -
+MxToolbar      - TBD    -
