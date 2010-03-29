@@ -6,8 +6,12 @@ Item {
     property string hint: "Entry"
     property alias text: textInp.text
     property bool secret: false
+    property alias leftIconSource: leftIcon.source 
+    property alias rightIconSource: rightIcon.source 
+    signal rightIconClicked
+    signal leftIconClicked
 
-    width: (hintText.state=='hinting'?hintText.width:textInp.width) + 11
+    width: (hintText.state=='hinting'?hintText.width:textInp.width) + 11 + leftIcon.width + rightIcon.width
     height: 13 + 11 
 
     BorderImage {
@@ -29,9 +33,9 @@ Item {
         id:hintText
         anchors.centerIn: parent
         anchors.topMargin:5
-        anchors.rightMargin:6
+        anchors.rightMargin:6+rightIcon.width
         anchors.bottomMargin:6
-        anchors.leftMargin:5
+        anchors.leftMargin:5+leftIcon.width
         font.pixelSize:13
         font.family: droidSansBold.name
         color: '#A2A2A2'
@@ -60,15 +64,16 @@ Item {
         anchors.bottomMargin:6
         anchors.leftMargin:5
         */
-        property int leftMargin: 6
+        property int leftMargin: 6 + leftIcon.width
+        property int rightMargin: 6 + rightIcon.width
         x: leftMargin
         y: 5
         //Below function implements all scrolling logic
         onCursorPositionChanged: {
             if(cursorRect.x < leftMargin - textInp.x){//Cursor went off the front
                 textInp.x = leftMargin - Math.max(0, cursorRect.x);
-            }else if(cursorRect.x > parent.width - leftMargin - textInp.x){//Cusor went off the end
-                textInp.x = leftMargin - Math.max(0, cursorRect.x - (parent.width - 2*leftMargin));
+            }else if(cursorRect.x > parent.width - leftMargin - rightMargin - textInp.x){//Cusor went off the end
+                textInp.x = leftMargin - Math.max(0, cursorRect.x - (parent.width - leftMargin - rightMargin));
             }
         }
 
@@ -83,6 +88,25 @@ Item {
         //Forward events to TextInput, and claim focus for the LineEdit
         anchors.fill: parent; forwardTo: textInp;
         onPressed: {mouse.accepted=false;}
+    }
+
+    Image{id:rightIcon
+        anchors.right: parent.right
+        anchors.rightMargin: 6
+        anchors.verticalCenter: parent.verticalCenter
+        MouseArea{
+            anchors.fill: parent
+            onClicked: lineedit.rightIconClicked();
+        }
+    }
+    Image{id:leftIcon
+        anchors.left: parent.left
+        anchors.leftMargin: 6
+        anchors.verticalCenter: parent.verticalCenter
+        MouseArea{
+            anchors.fill: parent
+            onClicked: lineedit.leftIconClicked();
+        }
     }
 
     states: [
