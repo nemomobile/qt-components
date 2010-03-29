@@ -3,11 +3,11 @@ MxButton       - DONE   - Alan
 MxEntry        - WIP    - Alan
 MxLabel        - DONE   - Alan
 MxSlider       - DONE   - Alan
-MxComboBox     - TBD    -
-MxProgressBar  - WIP    - Artur
+MxComboBox     - WIP    - Artur
+MxProgressBar  - DONE   - Artur
 MxTooltip      - WIP    - Fleury
-MxToggle       - WIP    - Caio
 MxExpander     - DONE   - Alan
+MxToggle       - DONE   - Caio
 MxScrollBar    - WIP    - Anselmo
 MxScrollView   - TBD    -
 "MxScrollGrid" - TBD    -
