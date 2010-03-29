@@ -11,8 +11,6 @@ Item {
         id: background;
         source: "images/progress-bar-background.png";
         anchors.fill: parent;
-        border.top:5;
-        border.bottom:5;
         border.left:5;
         border.right:5;
     }

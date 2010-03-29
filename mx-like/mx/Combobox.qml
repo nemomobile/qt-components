@@ -16,8 +16,6 @@ Item {
         id: background;
         source: "images/combobox.png";
         anchors.fill: parent;
-        border.top:5;
-        border.bottom:5;
         border.left:5;
         border.right:5;
     }
@@ -33,6 +31,8 @@ Item {
     BorderImage {
         id: marker;
         source: "images/combobox-marker.png";
+        border.left:5;
+        border.right:5;
         anchors.verticalCenter: background.verticalCenter;
         anchors.right: background.right;
         anchors.rightMargin: 10;
@@ -69,6 +69,7 @@ Item {
                 Row {
                     x: 5;
                     y: 5;
+                    spacing: 5;
                     Text {
                         text: content;
                     }
