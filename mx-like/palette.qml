@@ -58,5 +58,50 @@ Rectangle {
         Mx.Toggle {
             onActiveChanged: { console.log("Toggle active is " + active); }
         }
+
+        Mx.ButtonGroup {
+            id: group
+            width: col.width
+            height: col.height
+            // allowNoChecked: true
+
+            Column {
+                id: col
+
+                Mx.Button {
+                    text: "test1"
+                    checkable: true
+                    checked: true
+                }
+                Mx.Button {
+                    text: "test2"
+                    checkable: true
+                }
+
+                Row {
+                    Mx.Button {
+                        text: "test3"
+                        checkable: true
+                    }
+                    Mx.Button {
+                        text: "test4"
+                        checkable: true
+                        checked: true
+                    }
+                }
+
+                Mx.Button {
+                    text: "Which one is checked?"
+                    onClicked: {
+                        if (group.checkedItem) {
+                            print(group.checkedItem.text);
+                        } else {
+                            print("No one is checked!");
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }
