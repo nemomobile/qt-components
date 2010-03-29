@@ -19,6 +19,15 @@ Rectangle {
             text: 'Button';
             tooltipText: 'This is a button that you should not click as it does nothing.'
         }
+
+        Mx.Button {
+            text: 'Toggle Button'
+            checkable: true
+            onClicked: {
+                console.log("Toggle Button " + (checked ? '(checked)' : '(not checked)'));
+            }
+        }
+
         Row{
             spacing: 2
             height: slider.height
