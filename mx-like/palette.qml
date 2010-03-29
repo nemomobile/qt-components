@@ -17,6 +17,7 @@ Rectangle {
         }
         Mx.Button {
             text: 'Button';
+            tooltipText: 'This is a button that you should not click as it does nothing.'
         }
         Row{
             spacing: 2

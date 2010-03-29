@@ -3,6 +3,7 @@ import Qt 4.7
 Item {
     id:pushbutton
     property string text: "Text"
+    property alias tooltipText: tooltip.text;
     signal clicked
 
     width:Math.max(text.width + 20, 200)
@@ -37,10 +38,22 @@ Item {
         text: pushbutton.text
     }
 
+    // ### I wish to have that as a separate item
+    Tooltip {
+        id: tooltip;
+        anchors.top: pushbutton.bottom;
+        anchors.horizontalCenter: pushbutton.horizontalCenter;
+
+        property bool pressDismiss: false;
+        shown: (mouseRegion.containsMouse && !pressDismiss);
+    }
+
     MouseArea {
         id: mouseRegion
         hoverEnabled: true
         anchors.fill: parent
+        onPressed: { tooltip.pressDismiss = true; }
+        onExited: { tooltip.pressDismiss = false; }
         onClicked: { pushbutton.clicked(); }
     }
 
