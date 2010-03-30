@@ -22,7 +22,7 @@
 ****************************************************************************/
 import Qt 4.7
 
-Item {
+TopLevelItem {
     id: tooltip;
     property alias text: label.text;
     property bool shown: false;

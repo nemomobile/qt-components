@@ -69,7 +69,7 @@ Item {
         }
     }
 
-    Item {
+    TopLevelItem {
         id: list;
         property int lastIndex;
 
