@@ -30,6 +30,9 @@ Item {
     state: "horizontal"
     property real value: currentValue()
     property bool vertical: false;
+    property int stepIncrement: 1
+    property int pageIncrement: 10
+    property int pageSize: 10
 
     height: 50
     width: 50
@@ -38,7 +41,7 @@ Item {
         if (!vertical)
             return handle.x / (scrollbarPath.width - handle.width);
         else
-            return handle.y / (scrollbarPath.height - handle.height)
+            return handle.y / (scrollbarPath.height - handle.height);
     }
 
     Rectangle  {
@@ -49,19 +52,19 @@ Item {
         MouseArea {
             anchors.fill: parent
             onPressed: {
-                handleRelease(mouseX, mouseY);
+                handleRelease();
                 scrollbar.scrollStart();
             }
             onReleased: {
                 scrollbar.scrollStop();
             }
 
-            //###
-            function handleRelease(x, y) {
-                if (!scrollbar.vertical)
-                    handle.x = (x + handle.width <= scrollbarPath.width ? x : x - handle.width)
-                else
-                    handle.y = (y + handle.height <= scrollbarPath.height ? y : y - handle.height)
+            function handleRelease() {
+                if (!scrollbar.vertical) {
+                    handle.x = handle.x + ( mouseX > handle.x ? pageIncrement : -1 * pageIncrement);
+                } else {
+                    handle.y = handle.y + ( mouseY > handle.y ? pageIncrement : -1 * pageIncrement);
+                }
             }
         }
 
@@ -192,11 +195,11 @@ Item {
             anchors.fill: parent
             onPressed: {
                 if (scrollbarPath.state == "horizontal") {
-                    if (handle.x >= 10)
-                        handle.x = handle.x - 10; // ### step size
+                    if (handle.x >= stepIncrement)
+                        handle.x = handle.x - stepIncrement;
                 } else {
-                    if (handle.y >= 10)
-                        handle.y = handle.y - 10; // ### step size
+                    if (handle.y >= stepIncrement)
+                        handle.y = handle.y - stepIncrement;
                 }
                 scrollbar.scrollStart();
                 scrollbar.scrollStop();
@@ -219,11 +222,11 @@ Item {
             anchors.fill: parent
             onPressed: {
                 if (scrollbarPath.state == "horizontal") {
-                    if (handle.x + handle.width <= scrollbarPath.width - 10)
-                        handle.x = handle.x + 10;  //### step size
+                    if (handle.x + handle.width <= scrollbarPath.width - stepIncrement)
+                        handle.x = handle.x + stepIncrement;
                 } else {
-                    if (handle.y + handle.height <= scrollbarPath.height - 10)
-                        handle.y = handle.y + 10;  //### step size
+                    if (handle.y + handle.height <= scrollbarPath.height - stepIncrement)
+                        handle.y = handle.y + stepIncrement;
                 }
                 scrollbar.scrollStart();
                 scrollbar.scrollStop();
