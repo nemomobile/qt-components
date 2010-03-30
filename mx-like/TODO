@@ -11,10 +11,10 @@ MxToggle       - DONE   - Caio
 MxScrollBar    - WIP    - Anselmo
 MxScrollView   - WIP    - Fleury
 "MxScrollGrid" - TBD    -
-MxTest         - TBD    -
+MxTest         - WIP    - Caio
 MxTitlebar     - WIP    - Alan
 MxButtonGroup  - DONE   - Caio
 
 
 == BUGS ==
-Tooltip&Combo  - TBD    -
+Tooltip&Combo  - WIP    - Artur & Fleury
