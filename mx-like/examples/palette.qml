@@ -1,13 +1,13 @@
 import Qt 4.7
-import "mx" as Mx
+import Mx 1.0 as Mx
 
 Mx.Window {
 
     width: 480
     height: 800
 
-    FontLoader { id: droidSans; source: "mx/fonts/Droid-Sans/DroidSans.ttf" }
-    FontLoader { id: droidSansBold; source: "mx/fonts/Droid-Sans/DroidSans-Bold.ttf" }
+    FontLoader { id: droidSans; source: "fonts/Droid-Sans/DroidSans.ttf" }
+    FontLoader { id: droidSansBold; source: "fonts/Droid-Sans/DroidSans-Bold.ttf" }
     Column {
         spacing: 10
         x: 10
