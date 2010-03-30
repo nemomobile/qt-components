@@ -660,3 +660,9 @@ void MxLikeTextInput::updateSize(bool needsRedraw)
         update();
     }
 }
+
+void MxLikeTextInput::moveCursor(int pos, bool mark)
+{
+    Q_D(MxLikeTextInput);
+    d->control->moveCursor(pos,mark);
+}

@@ -84,6 +84,7 @@ public:
     //### Should we have this function, x based properties,
     //### or copy TextEdit with x instead of QTextCursor?
     Q_INVOKABLE int xToPos(int x);
+    Q_INVOKABLE void moveCursor(int pos, bool mark=false);
 
     QString text() const;
     void setText(const QString &);

@@ -21,7 +21,6 @@
 **
 ****************************************************************************/
 import Qt 4.6
-/*This won't work without mouse proxy support. It was/will be recently pushed*/
 
 Item {
     id:lineedit
@@ -103,13 +102,24 @@ Item {
         horizontalAlignment: TextInput.AlignLeft
         font.pixelSize:15
         font.family: droidSansBold.name
-        focusOnPress:true
         echoMode: secret?TextInput.Password:TextInput.Normal
     }
     MouseArea{
-        //Forward events to TextInput, and claim focus for the LineEdit
-        anchors.fill: parent; forwardTo: textInp;
-        onPressed: {mouse.accepted=false;}
+        //Implements all line edit mouse handling
+        anchors.fill: parent;
+        function translateX(x){
+            return x + textInput.x
+        }
+        onPressed: {
+            textInp.focus = true;
+            textInp.moveCursor(textInp.xToPos(translateX(mouse.x)), false);
+        }
+        onPositionChanged: {
+            textInp.moveCursor(textInp.xToPos(translateX(mouse.x)), true);
+        }
+        onReleased: {
+        }
+        z: textInp.z + 1
     }
 
     Image{id:rightIcon
