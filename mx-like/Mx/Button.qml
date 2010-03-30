@@ -31,8 +31,10 @@ Item {
     property bool checked: false
     signal clicked
 
-    width: Math.max(text.width + 20, 200)
-    height: Math.max(text.height + 12, 50)
+    // width: Math.max(text.width + 20, 200)
+    // height: Math.max(text.height + 12, 50)
+    width: Math.max(text.width + 20, 110)
+    height: Math.max(text.height + 12, 35)
 
     BorderImage {
         id: buttonImage
@@ -70,6 +72,7 @@ Item {
 
     Text {
         id: text
+        font.pixelSize: 13
         anchors.verticalCenter:parent.verticalCenter
         anchors.horizontalCenter:parent.horizontalCenter
         anchors.verticalCenterOffset: pushbutton.state === "pressed" ? 1 : 0
