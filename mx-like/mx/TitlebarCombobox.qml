@@ -27,6 +27,7 @@ Item {
         anchors.left: background.left;
         anchors.right: marker.left;
         anchors.leftMargin: 5;
+        font.pixelSize: 15
     }
 
     BorderImage {
@@ -68,17 +69,13 @@ Item {
                 height: background.height;
 
                 Row {
-                    x: 5;
-                    y: 5;
-                    spacing: 5;
+                    x: 11;
+                    y: 11;
+                    spacing: 11;
                     Text {
                         text: content;
-                        color: 'white'
-                    }
-                    Image {
-                        source: icon==undefined?'':icon;
-                        anchors.verticalCenter: parent.verticalCenter;
-                        height: wrapper.height - 10;
+                        color: currentIndex==index?'#44b6e8':'white'
+                       font.pixelSize: 15
                     }
                 }
 
@@ -108,18 +105,11 @@ Item {
             }
         }
 
-        Component {
-            id: highlight
-            Rectangle {
-                color: "#84dbf5";
-            }
-        }
-
-
         Rectangle {
             id: listBackground;
-            border.color: "#8e8e8e";
+            border.color: "#dadada";
             color: '#434343'
+            radius: 5
             anchors.fill: parent;
         }
 
