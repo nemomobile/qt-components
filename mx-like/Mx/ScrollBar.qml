@@ -35,6 +35,7 @@ Item {
     property int pageSize: 10
     property int lower: 0
     property int upper: scrollbarPath.maximum
+    property int documentSize: 100
 
     height: 50
     width: 50
@@ -126,7 +127,7 @@ Item {
 
                 PropertyChanges {
                     target: handle
-
+                    width: scrollbarPath.width * pageSize / documentSize;
                     border.left: 10
                     border.right: 10
 
@@ -173,7 +174,7 @@ Item {
                 }
                 PropertyChanges {
                     target: handle
-
+                    height: scrollbarPath.height * pageSize / documentSize;
                     border.top: 10
                     border.bottom: 10
 
