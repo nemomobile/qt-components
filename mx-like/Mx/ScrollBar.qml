@@ -33,6 +33,8 @@ Item {
     property int stepIncrement: 1
     property int pageIncrement: 10
     property int pageSize: 10
+    property int lower: 0
+    property int upper: scrollbarPath.maximum
 
     height: 50
     width: 50
@@ -48,7 +50,7 @@ Item {
         id: scrollbarPath
 
         color: '#dee2e5'
-
+        property int maximum: (scrollbar.vertical == false ? width : height)
         MouseArea {
             anchors.fill: parent
             onPressed: {
@@ -61,9 +63,21 @@ Item {
 
             function handleRelease() {
                 if (!scrollbar.vertical) {
-                    handle.x = handle.x + ( mouseX > handle.x ? pageIncrement : -1 * pageIncrement);
+                    var newx = handle.x + ( mouseX > handle.x ? pageIncrement : -1 * pageIncrement);
+                    if (newx < scrollbar.lower)
+                        handle.x = scrollbar.lower
+                    else if (newx + handle.width> scrollbar.upper)
+                        handle.x = scrollbar.upper - handle.width
+                    else
+                        handle.x = newx
                 } else {
-                    handle.y = handle.y + ( mouseY > handle.y ? pageIncrement : -1 * pageIncrement);
+                    newy = handle.y + ( mouseY > handle.y ? pageIncrement : -1 * pageIncrement);
+                    if (newy < scrollbar.lower)
+                        handle.y = scrollbar.lower
+                    else if (newy + handle.height > scrollbar.upper)
+                        handle.y = scrollbar.upper - handle.height
+                    else
+                        handle.y = newy
                 }
             }
         }
@@ -197,9 +211,13 @@ Item {
                 if (scrollbarPath.state == "horizontal") {
                     if (handle.x >= stepIncrement)
                         handle.x = handle.x - stepIncrement;
+                    else
+                        handle.x = lower;
                 } else {
                     if (handle.y >= stepIncrement)
                         handle.y = handle.y - stepIncrement;
+                    else
+                        handle.y = lower;
                 }
                 scrollbar.scrollStart();
                 scrollbar.scrollStop();
@@ -224,9 +242,13 @@ Item {
                 if (scrollbarPath.state == "horizontal") {
                     if (handle.x + handle.width <= scrollbarPath.width - stepIncrement)
                         handle.x = handle.x + stepIncrement;
+                    else
+                        handle.x = upper - handle.width;
                 } else {
                     if (handle.y + handle.height <= scrollbarPath.height - stepIncrement)
                         handle.y = handle.y + stepIncrement;
+                    else
+                        handle.y = upper - handle.height;
                 }
                 scrollbar.scrollStart();
                 scrollbar.scrollStop();
