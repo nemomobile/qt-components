@@ -163,5 +163,14 @@ Rectangle {
                 }
             }
         }
+
+        Mx.ScrollBar {
+            state: "horizontal"
+            width: 200
+        }
+        Mx.ScrollBar {
+            state: "vertical"
+            height: 200
+        }
     }
 }
