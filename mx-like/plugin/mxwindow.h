@@ -9,10 +9,13 @@ class QmlMxLikeScreen : public QDeclarativeItem
         QmlMxLikeScreen(QDeclarativeItem * parent=0);
 
     public slots:
-        void dragPointMove(int x, int y, bool first=false);
-        void dragPointResize(int x, int y, bool first=false);
+        void resetMove();
+        void resetResize();
+        void dragPointMove(int x, int y);
+        void dragPointResize(int x, int y);
 
     private:
+        bool moveValid, resizeValid;
         QPoint lastMovePoint;
         QPoint lastResizePoint;
 };

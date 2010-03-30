@@ -2,8 +2,9 @@ import Qt 4.7
 
 Item{//This should be ROOT element in a QML/MX app
     property int headerBottom: header.height //Children should have at least this y
-    WindowModel{}
+    WindowModel{id:wm}
     Rectangle{
+            z:10
         id:header
         width: parent.width
         height:64
@@ -20,8 +21,9 @@ Item{//This should be ROOT element in a QML/MX app
                     content: 'World'
                 }
             }
+            z:1
         }
-        Image{
+        Image{id:closeImg
             anchors.right:parent.right
             anchors.rightMargin: 8
             anchors.verticalCenter: parent.verticalCenter
@@ -31,6 +33,24 @@ Item{//This should be ROOT element in a QML/MX app
                 hoverEnabled:true
                 onClicked: Qt.quit()
             }
+            z:1
         }
+        MouseArea{
+            anchors.fill: parent
+            onReleased: wm.resetMove();
+            onPositionChanged: wm.dragPointMove(mouse.x, mouse.y);
+            z:0
+        }
+    }
+    Image{id:resizeImg
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        source: 'images/resize-grip.png'
+        MouseArea{ id: resizeMA
+            anchors.fill: parent
+            onReleased: wm.resetResize();
+            onPositionChanged: {wm.dragPointResize(mouse.x, mouse.y);console.log(mouse.x, mouse.y)}
+        }
+        z:10
     }
 }
