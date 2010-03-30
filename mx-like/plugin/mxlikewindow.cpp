@@ -20,7 +20,7 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-#include "mxwindow.h"
+#include "mxlikewindow.h"
 #include <QPoint>
 #include <QApplication>
 #include <QSize>

@@ -69,7 +69,7 @@ Item {
         }//No cool animated transition, because mx doesn't do that
         
     }
-    TextInput{
+    EntryControl{
         id:textInp
         cursorDelegate: Item{
             Rectangle{
