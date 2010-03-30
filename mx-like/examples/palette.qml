@@ -51,7 +51,7 @@ Mx.Window {
                 loops: Animation.Infinite;
                 NumberAnimation {
                     from: 0;
-                    to: 100;
+                    to: 1;
                     duration: 5000;
                 }
             }

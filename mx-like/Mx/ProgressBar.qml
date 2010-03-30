@@ -24,7 +24,7 @@ import Qt 4.6
 
 Item {
     id: basicProgressBar;
-    property int value;
+    property real value;
 
     width: 160;
     height: 22;
@@ -42,12 +42,12 @@ Item {
         x: 3;
 
         function handleWidth(x) {
-            if (x < 0) {
+            if (x <= 0) {
                 return 0;
-            } else if (x > 100) {
+            } else if (x >= 1) {
                 return parent.width - 6;
             } else {
-                return value * (parent.width - 6) / 100;
+                return value * (parent.width - 6);
             }
         }
 
