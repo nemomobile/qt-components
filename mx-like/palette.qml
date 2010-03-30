@@ -1,7 +1,7 @@
 import Qt 4.7
 import "mx" as Mx
 
-Rectangle {
+Mx.Window {
 
     width: 480
     height: 800
@@ -11,6 +11,7 @@ Rectangle {
     Column {
         spacing: 10
         x: 10
+        y: parent.headerBottom
 
         Mx.Label {
             text: 'Label';
@@ -18,6 +19,7 @@ Rectangle {
         Mx.Button {
             text: 'Button';
             tooltipText: 'This is a button that you should not click as it does nothing.'
+            z:2
         }
 
         Mx.Button {
@@ -106,13 +108,10 @@ Rectangle {
         Mx.Combobox {
             model: cityModel;
             current: "London";
+            z:2
 
             ListModel {
                 id: cityModel;
-                ListElement {
-                    content: "London";
-                    icon: "";
-                }
                 ListElement {
                     content: "Strand";
                     icon: "";
@@ -163,7 +162,7 @@ Rectangle {
                 }
             }
         }
-
+/*
         Mx.ScrollBar {
             state: "horizontal"
             width: 200
@@ -172,5 +171,6 @@ Rectangle {
             state: "vertical"
             height: 200
         }
+*/
     }
 }
