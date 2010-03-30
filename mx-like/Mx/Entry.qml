@@ -58,7 +58,7 @@ Item {
         anchors.rightMargin:6+rightIcon.width
         anchors.bottomMargin:6
         anchors.leftMargin:5+leftIcon.width
-        font.pixelSize:13
+        font.pixelSize:15
         font.family: droidSansBold.name
         color: '#A2A2A2'
         text: ''
@@ -101,7 +101,7 @@ Item {
 
         text:""
         horizontalAlignment: TextInput.AlignLeft
-        font.pixelSize:13
+        font.pixelSize:15
         font.family: droidSansBold.name
         focusOnPress:true
         echoMode: secret?TextInput.Password:TextInput.Normal

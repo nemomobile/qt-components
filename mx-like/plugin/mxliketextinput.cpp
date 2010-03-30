@@ -556,7 +556,6 @@ void MxLikeTextInputPrivate::init()
 {
     Q_Q(MxLikeTextInput);
     control->setCursorWidth(1);
-    control->setPasswordCharacter(QLatin1Char('*'));
     control->setLayoutDirection(Qt::LeftToRight);
     q->setSmooth(smooth);
     q->setAcceptedMouseButtons(Qt::LeftButton);
@@ -584,6 +583,7 @@ void MxLikeTextInputPrivate::init()
     QPalette p = control->palette();
     selectedTextColor = p.color(QPalette::HighlightedText);
     selectionColor = p.color(QPalette::Highlight);
+    control->setPasswordCharacter(QChar(0x2219));
 }
 
 void MxLikeTextInput::cursorPosChanged()
