@@ -4,6 +4,14 @@ Item{//This should be ROOT element in a QML/MX app
     property int headerBottom: header.height //Children should have at least this y
     WindowModel{id:wm}
     Rectangle{
+        id:background
+        anchors.fill: parent
+        anchors.rightMargin: 1
+        anchors.bottomMargin: 1
+        color: "white"
+        border.color: "black"
+    }
+    Rectangle{
             z:10
         id:header
         width: parent.width
@@ -45,11 +53,12 @@ Item{//This should be ROOT element in a QML/MX app
     Image{id:resizeImg
         anchors.right: parent.right
         anchors.bottom: parent.bottom
+        anchors.margins: 1
         source: 'images/resize-grip.png'
         MouseArea{ id: resizeMA
             anchors.fill: parent
             onReleased: wm.resetResize();
-            onPositionChanged: {wm.dragPointResize(mouse.x, mouse.y);console.log(mouse.x, mouse.y)}
+            onPositionChanged: wm.dragPointResize(mouse.x, mouse.y);
         }
         z:10
     }
