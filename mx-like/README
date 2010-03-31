@@ -1,9 +1,18 @@
-This is a set of widgets written in QML to mimic the Moblin user eXperience (MX widgets).
+This is a set of widgets written in QML to mimic the Moblin user
+eXperience (MX widgets).
 
-The QML examples in the examples directory require the MX qml module to be built and installed. To do this, execute
+The QML examples in the examples directory require the MX qml module
+to be built and installed. To do this, execute
 
-qmake
-make
-make install
+    qmake
+    make
+    make install
 
-from this directory. You will need to use Qt 4.7 (use the qmake from a 4.7 build) from qt.gitorious.org. The 4.7 technical preview is too old, but the upcoming beta should be new enough.
+from this directory. You will need to use Qt 4.7 (use the qmake from a
+4.7 build) from qt.gitorious.org. The 4.7 technical preview is too
+old, but the upcoming beta should be new enough.
+
+To run the examples, you can either install the plugin or use
+
+    qml -L . examples/test-mx.qml
+
