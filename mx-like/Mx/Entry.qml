@@ -106,9 +106,10 @@ Item {
     }
     MouseArea{
         //Implements all line edit mouse handling
+        id: mainMouseArea
         anchors.fill: parent;
         function translateX(x){
-            return x + textInput.x
+            return x - textInp.x
         }
         onPressed: {
             textInp.focus = true;
@@ -119,6 +120,10 @@ Item {
         }
         onReleased: {
         }
+        onDoubleClicked: {
+            textInp.selectionStart=0;
+            textInp.selectionEnd=textInp.text.length;
+        }
         z: textInp.z + 1
     }
 
@@ -126,6 +131,7 @@ Item {
         anchors.right: parent.right
         anchors.rightMargin: 6
         anchors.verticalCenter: parent.verticalCenter
+        z: mainMouseArea.z+1
         MouseArea{
             anchors.fill: parent
             onClicked: lineedit.rightIconClicked();
@@ -135,6 +141,7 @@ Item {
         anchors.left: parent.left
         anchors.leftMargin: 6
         anchors.verticalCenter: parent.verticalCenter
+        z: mainMouseArea.z+1
         MouseArea{
             anchors.fill: parent
             onClicked: lineedit.leftIconClicked();
