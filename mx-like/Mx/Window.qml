@@ -24,6 +24,8 @@ import Qt 4.7
 
 Item{//This should be ROOT element in a QML/MX app
     property int headerBottom: header.height //Children should have at least this y
+    property alias comboModel: combo.model
+    property alias comboCurrent: combo.current
     WindowModel{id:wm}
     Rectangle{
         id:background
