@@ -25,9 +25,11 @@ import Mx 1.0
 
 Item {
     Column {
+        x: 50;
+        y: 50;
         spacing: 10;
 
-        Mx.Combobox {
+        Combobox {
             model: cityModel;
             current: "London";
 
@@ -60,7 +62,7 @@ Item {
             }
         }
 
-        Mx.Combobox {
+        Combobox {
             model: weatherModel;
 
             ListModel {
