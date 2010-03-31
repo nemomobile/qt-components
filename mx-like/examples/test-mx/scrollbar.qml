@@ -30,12 +30,17 @@ Item {
         spacing: 10;
 
         ScrollBar {
-            width: 200;
+            width: 200
+            height: 30
+            value: 50
+            viewSize: 20
         }
 
         ScrollBar {
-            vertical: true;
-            height: 200;
+            vertical: true
+            height: 200
+            width: 30
+            value: 50
         }
     }
 }
