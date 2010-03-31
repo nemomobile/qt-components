@@ -72,7 +72,7 @@ Item {
                     else
                         handle.x = newx
                 } else {
-                    newy = handle.y + ( mouseY > handle.y ? pageIncrement : -1 * pageIncrement);
+                    var newy = handle.y + ( mouseY > handle.y ? pageIncrement : -1 * pageIncrement);
                     if (newy < scrollbar.lower)
                         handle.y = scrollbar.lower
                     else if (newy + handle.height > scrollbar.upper)
@@ -85,6 +85,14 @@ Item {
 
         BorderImage {
             id: handle
+
+            Behavior on x {
+                PropertyAnimation { easing.type: "OutCubic"; duration: 250; }
+            }
+
+            Behavior on y {
+                PropertyAnimation { easing.type: "OutCubic";  duration: 250; }
+            }
 
             MouseArea {
                 id: handleMouseRegion
