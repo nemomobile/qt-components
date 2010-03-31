@@ -25,6 +25,9 @@ import Mx 1.0 as Mx
 
 Item {
     Column {
+        x: 50;
+        y: 50;
+
         spacing: 10;
 
         Mx.Entry {
