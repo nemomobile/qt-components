@@ -26,14 +26,14 @@ Window {
                 Button { text: "Entry"; checkable: true }
                 Button { text: "Button"; checkable: true }
                 Button { text: "Button group"; checkable: true }
-                Button { text: "Combo Box"; checkable: true }
+                Button { text: "ComboBox"; checkable: true }
                 Button { text: "Progress Bar"; checkable: true }
                 Button { text: "Slider"; checkable: true }
                 Button { text: "Toggle"; checkable: true }
                 Button { text: "Tooltips"; checkable: true }
                 Button { text: "Expander"; checkable: true }
                 Button { text: "Scroll Grid"; checkable: true }
-                Button { text: "Scroll Bar"; checkable: true }
+                Button { text: "ScrollBar"; checkable: true }
                 Button { text: "Scroll View"; checkable: true }
                 Button { text: "Styles"; checkable: true }
             }
