@@ -52,13 +52,25 @@ Item {
 
         color: '#dee2e5'
         property int maximum: (scrollbar.vertical == false ? width : height)
+        property bool hold: false
+
+        Timer {
+            interval: 50
+            repeat: true
+            running: scrollbarPath.hold
+            onTriggered: { scrollbarPathMouseRegion.handleRelease(); }
+        }
+
         MouseArea {
+            id: scrollbarPathMouseRegion
             anchors.fill: parent
             onPressed: {
+                scrollbarPath.hold = true;
                 handleRelease();
                 scrollbar.scrollStart();
             }
             onReleased: {
+                scrollbarPath.hold = false;
                 scrollbar.scrollStop();
             }
 
@@ -203,20 +215,43 @@ Item {
         ]
     }
 
+    /*
+     * ### Yes, button1 and button2 have too much code repeated...
+     */
     Image {
         id: button1
+        property bool hold: false
 
         // XXX That shouldn't be necessary as I'm already setting the
         //     source in the state. My impression is that once the Image
         //     is created without source (and size) it will never have a
         //     proper size.
-        source: "images/scroll-button-left.png";
+        source: "images/scroll-button-left.png"
+
+        Timer {
+            interval: 100
+            repeat: true;
+            running: button1.hold
+
+            onTriggered: { button1MouseRegion.buttonPressed(); }
+        }
 
         MouseArea {
             id: button1MouseRegion
             hoverEnabled: true
             anchors.fill: parent
             onPressed: {
+                button1.hold = true;
+                buttonPressed();
+                scrollbar.scrollStart();
+                scrollbar.scrollStop();
+            }
+
+            onReleased: {
+                button1.hold = false;
+            }
+
+            function buttonPressed() {
                 if (scrollbarPath.state == "horizontal") {
                     if (handle.x >= stepIncrement)
                         handle.x = handle.x - stepIncrement;
@@ -228,26 +263,43 @@ Item {
                     else
                         handle.y = lower;
                 }
-                scrollbar.scrollStart();
-                scrollbar.scrollStop();
             }
         }
     }
 
     Image {
         id: button2
+        property bool hold: false;
 
         // XXX That shouldn't be necessary as I'm already setting the
         //     source in the state. My impression is that once the Image
         //     is created without source (and size) it will never have a
         //     proper size.
-        source: "images/scroll-button-right.png";
+        source: "images/scroll-button-right.png"
+
+        Timer {
+            interval: 50
+            repeat: true
+            running: button2.hold
+            onTriggered: { button2MouseRegion.buttonPressed(); }
+        }
 
         MouseArea {
             id: button2MouseRegion
             hoverEnabled: true
             anchors.fill: parent
             onPressed: {
+                button2.hold = true;
+                buttonPressed();
+                scrollbar.scrollStart();
+                scrollbar.scrollStop();
+            }
+
+            onReleased: {
+                button2.hold = false;
+            }
+
+            function buttonPressed() {
                 if (scrollbarPath.state == "horizontal") {
                     if (handle.x + handle.width <= scrollbarPath.width - stepIncrement)
                         handle.x = handle.x + stepIncrement;
@@ -259,8 +311,6 @@ Item {
                     else
                         handle.y = upper - handle.height;
                 }
-                scrollbar.scrollStart();
-                scrollbar.scrollStop();
             }
         }
     }
