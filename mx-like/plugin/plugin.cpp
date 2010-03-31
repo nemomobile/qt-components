@@ -39,4 +39,4 @@ public:
 };
 
 #include "plugin.moc"
-Q_EXPORT_PLUGIN2(qmlmxlikemodule, QmlMxLikeModule);
+Q_EXPORT_PLUGIN2(mxlikeplugin, QmlMxLikeModule);

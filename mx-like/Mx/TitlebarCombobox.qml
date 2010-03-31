@@ -90,16 +90,13 @@ Item {
                 width: background.width;
                 height: background.height;
 
-                Row {
-                    x: 11;
-                    y: 11;
-                    spacing: 11;
                     Text {
+                        x: 11;
+                        y: 11;
                         text: content;
                         color: currentIndex==index?'#44b6e8':'white'
-                       font.pixelSize: 15
+                        font.pixelSize: 15
                     }
-                }
 
                 function selectItem(index) {
                     combobox.current = elements.model.get(index).content;
@@ -129,7 +126,7 @@ Item {
 
         Rectangle {
             id: listBackground;
-            border.color: "#dadada";
+            border.color: "#333333";
             color: '#434343'
             radius: 5
             anchors.fill: parent;
