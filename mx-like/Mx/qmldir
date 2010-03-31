@@ -1,7 +1,6 @@
 plugin mxlikeplugin
 #plugin contains WindowModel and EntryControl - but should be internal use only
 Button 1.0 Button.qml
-ButtonGroup 1.0 ButtonGroup.qml
 Combobox 1.0 Combobox.qml
 Entry 1.0 Entry.qml
 Expander 1.0 Expander.qml

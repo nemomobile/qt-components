@@ -95,7 +95,8 @@ Mx.Window {
                 Mx.Button {
                     text: "Which one is checked?"
                     onClicked: {
-                        if (group.checkedItem) {
+                        // ### find proper way to identify NULL pointers in C++ pointer properties
+                        if (group.checkedItem.toString() !== "null") {
                             print(group.checkedItem.text);
                         } else {
                             print("No one is checked!");

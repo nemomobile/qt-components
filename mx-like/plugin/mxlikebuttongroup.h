@@ -20,27 +20,48 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-#include <QtDeclarative/qdeclarativeextensionplugin.h>
-#include <QtDeclarative/qdeclarative.h>
 
-#include "mxlikewindow.h"
-#include "mxliketextinput.h"
-#include "mxlikebuttongroup.h"
+#ifndef MXLIKEBUTTONGROUP_H
+#define MXLIKEBUTTONGROUP_H
 
-class QmlMxLikeModule : public QDeclarativeExtensionPlugin
+#include <QtDeclarative/QDeclarativeItem>
+
+class Q_DECLARATIVE_EXPORT MxLikeButtonGroup : public QDeclarativeItem
 {
     Q_OBJECT
-public:
-    virtual void registerTypes(const char *uri)
-    {
-        Q_UNUSED(uri);
-        qmlRegisterType<QmlMxLikeScreen>("Mx",1,0,"WindowModel");
-        qmlRegisterType<MxLikeTextInput>("Mx",1,0,"EntryControl");
 
-        // ### Temporary solution until we can access children items inside QML
-        qmlRegisterType<MxLikeButtonGroup>("Mx", 1,0, "ButtonGroup");
+    Q_PROPERTY(QDeclarativeItem *checkedItem READ checkedItem NOTIFY checkedItemChanged)
+    Q_PROPERTY(bool allowNoChecked READ allowNoChecked WRITE setAllowNoChecked) // ### NOTIFY
+
+public:
+    MxLikeButtonGroup(QDeclarativeItem *parent = 0);
+    virtual ~MxLikeButtonGroup();
+
+    QDeclarativeItem *checkedItem() {
+        return m_checkedItem;
     }
+
+    bool allowNoChecked() const {
+        return m_allowNoChecked;
+    }
+
+    void setAllowNoChecked(bool allow) {
+        m_allowNoChecked = allow;
+    }
+
+    virtual void componentComplete();
+
+signals:
+    void checkedItemChanged(QDeclarativeItem *item);
+
+private Q_SLOTS:
+    void onItemChecked();
+
+private:
+    void connectChildrenItems(QDeclarativeItem *item);
+
+    QDeclarativeItem *m_checkedItem;
+    bool m_allowNoChecked;
 };
 
-#include "plugin.moc"
-Q_EXPORT_PLUGIN2(mxlikeplugin, QmlMxLikeModule);
+#endif
