@@ -73,11 +73,7 @@ Window {
             anchors.bottom: parent.bottom
             opacity: 1.0
 
-            onStatusChanged: {
-                if (loader.status === Loader.Ready) {
-                    loader.item.anchors.fill = loader;
-                }
-            }
+            resizeMode: Loader.SizeItemToLoader
 
             MouseArea {
                 anchors.fill: parent;
