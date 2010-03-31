@@ -21,17 +21,19 @@
 **
 ****************************************************************************/
 import Qt 4.7
-import Mx 1.0 as Mx
+import Mx 1.0
 
 Item {
     Column {
+        x: 50;
+        y: 50;
         spacing: 10;
 
-        Mx.ScrollBar {
+        ScrollBar {
             width: 200;
         }
 
-        Mx.ScrollBar {
+        ScrollBar {
             vertical: true;
             height: 200;
         }
