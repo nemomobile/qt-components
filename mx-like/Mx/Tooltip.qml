@@ -24,15 +24,20 @@ import Qt 4.7
 
 TopLevelItem {
     id: tooltip;
-    property alias text: label.text;
+    property string text;
     property bool shown: false;
 
-    width: label.width + 22;
-    height: label.height + 16;
+    width: model.width + 22;
+    height: model.height + 16;
 
     transformOrigin: Item.Top;
     scale: 0;
     visible: false;
+
+    // Visible items bellow should anchor / be sized in relation to
+    // 'parent'. They'll be reparented to a proper positioned and
+    // resized toplevel item.
+    keepInside: true;
 
     BorderImage {
         id: background;
@@ -44,17 +49,32 @@ TopLevelItem {
         border.right: 11;
     }
 
+    // ### This Label is used to get the "preferred size" information, that
+    // will be considered when calculating the toplevel item geometry. This
+    // could be replaced by having this information available in a regular Text
+    // item. Similar issue of trying to know the "real image size" inside an
+    // Image item.
     Label {
-        id: label;
+        id: model;
+        text: tooltip.text;
+        visible: false;
+    }
+
+    Label {
         anchors.centerIn: parent;
         anchors.verticalCenterOffset: -4;
+        width: parent.width - 22;
+        horizontalAlignment: Text.AlignHCenter;
+
+        text: tooltip.text;
         color: "#ffffff";
+        elide: Text.ElideRight
     }
 
     states: [
         State {
             name: "shown";
-            when: tooltip.shown && (label.text !== "");
+            when: tooltip.shown && (tooltip.text !== "");
             PropertyChanges { target: tooltip; scale: 1; visible: true }
         }
     ]
