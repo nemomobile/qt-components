@@ -103,16 +103,16 @@ Item {
                 name: "horizontal"
                 AnchorChanges {
                     target: scrollbarPath
-                    left: button1.right
-                    right: button2.left
+                    anchors.left: button1.right
+                    anchors.right: button2.left
                 }
                 AnchorChanges {
                     target: button1
-                    left: scrollbar.left
+                    anchors.left: scrollbar.left
                 }
                 AnchorChanges {
                     target: button2
-                    right: scrollbar.right
+                    anchors.right: scrollbar.right
                 }
                 PropertyChanges {
                     target: scrollbarPath
@@ -151,16 +151,16 @@ Item {
                 when: scrollbar.vertical
                 AnchorChanges {
                     target: scrollbarPath
-                    top: button1.bottom
-                    bottom: button2.top
+                    anchors.top: button1.bottom
+                    anchors.bottom: button2.top
                 }
                 AnchorChanges {
                     target: button1
-                    top: scrollbar.top
+                    anchors.top: scrollbar.top
                 }
                 AnchorChanges {
                     target: button2
-                    bottom: scrollbar.bottom
+                    anchors.bottom: scrollbar.bottom
                 }
                 PropertyChanges {
                     target: scrollbarPath
