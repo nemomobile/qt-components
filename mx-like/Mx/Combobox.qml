@@ -147,7 +147,6 @@ Item {
             anchors.fill: parent;
 
             clip:true;
-            focus: true;
             overShoot: false;
             keyNavigationWraps: true;
 

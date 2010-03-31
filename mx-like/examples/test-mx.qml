@@ -66,13 +66,12 @@ Window {
         }
 
         Loader {
-            id: loader
-
+            id: loader;
+            focus: true;
             anchors.left: group.right
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-
             opacity: 1.0
 
             onStatusChanged: {
