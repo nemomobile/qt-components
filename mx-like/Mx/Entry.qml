@@ -31,6 +31,7 @@ Item {
     property alias rightIconSource: rightIcon.source 
     signal rightIconClicked
     signal leftIconClicked
+    signal enterPressed
 
     width: (hintText.state=='hinting'?hintText.width:textInp.width) + 11 + leftIcon.width + rightIcon.width
     height: 13 + 11 
@@ -96,6 +97,10 @@ Item {
                 textInp.x = leftMargin - Math.max(0, cursorRect.x - (parent.width - leftMargin - rightMargin));
             }
         }
+
+        Keys.onPressed: { if ((event.key == Qt.Key_Enter) || (event.key == Qt.Key_Return))
+                              lineedit.enterPressed()
+                        }
 
         text:""
         horizontalAlignment: TextInput.AlignLeft
