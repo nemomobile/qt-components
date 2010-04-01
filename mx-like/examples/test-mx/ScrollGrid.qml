@@ -8,6 +8,8 @@ ScrollView {
     property int maxstride: 4;
     property int cellWidth: 90;
     property int cellHeight: 35;
+    property alias count: grid.count;
+
     contentWidth: grid.width;
     contentHeight: grid.height;
 
