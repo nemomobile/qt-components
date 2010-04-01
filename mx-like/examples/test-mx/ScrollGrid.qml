@@ -13,6 +13,22 @@ ScrollView {
     contentWidth: grid.width;
     contentHeight: grid.height;
 
+    Behavior on contentX {
+        id: xBehavior;
+        enabled: false;
+        NumberAnimation {
+            duration: 300
+        }
+    }
+
+    Behavior on contentY {
+        id: yBehavior;
+        enabled: false;
+        NumberAnimation {
+            duration: 300
+        }
+    }
+
     // [0 - count) range
     function ensureVisible(index)
     {
@@ -20,20 +36,24 @@ ScrollView {
             var row = Math.floor(index / maxstride);
             var atTopY = -row * cellHeight;
             var atBottomY = atTopY + height - cellHeight;
+            yBehavior.enabled = true;
             if (contentY < atTopY) {
                 contentY = atTopY;
             } else if (contentY > atBottomY) {
                 contentY = atBottomY;
             }
+            yBehavior.enabled = false;
         } else {
             var column = Math.floor(index / maxstride);
             var atLeftX = -column * cellWidth;
             var atRightX = atLeftX + width - cellWidth;
+            xBehavior.enabled = true;
             if (contentX < atLeftX) {
                 contentX = atLeftX;
             } else if (contentX > atRightX) {
                 contentX = atRightX;
             }
+            xBehavior.enabled = false;
         }
     }
 
