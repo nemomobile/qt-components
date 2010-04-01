@@ -51,16 +51,21 @@ public:
 
     virtual void componentComplete();
 
+public Q_SLOTS:
+    void refresh();
+
 signals:
     void checkedItemChanged(QDeclarativeItem *item);
 
 private Q_SLOTS:
     void onItemChecked();
+    void onItemDestroyed();
 
 private:
     void connectChildrenItems(QDeclarativeItem *item);
 
     QDeclarativeItem *m_checkedItem;
+    QList<QDeclarativeItem *> m_items;
     bool m_allowNoChecked;
 };
 

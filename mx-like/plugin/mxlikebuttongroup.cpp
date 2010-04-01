@@ -34,6 +34,26 @@ MxLikeButtonGroup::~MxLikeButtonGroup()
 
 }
 
+void MxLikeButtonGroup::refresh()
+{
+    // ### Using brute-force here, we could do better...
+    for (int i = 0; i < m_items.count(); i++) {
+        QObject::disconnect(m_items[i], SIGNAL(clicked()), this, SLOT(onItemChecked()));
+        QObject::disconnect(m_items[i], SIGNAL(destroyed()), this, SLOT(onItemDestroyed()));
+    }
+    m_items.clear();
+
+    QDeclarativeItem *oldCheckedItem = m_checkedItem;
+    m_checkedItem = 0;
+
+    // Reconnect everyone
+    connectChildrenItems(this);
+
+    if (m_checkedItem != oldCheckedItem) {
+        emit checkedItemChanged(m_checkedItem);
+    }
+}
+
 void MxLikeButtonGroup::componentComplete()
 {
     QDeclarativeItem::componentComplete();
@@ -73,6 +93,8 @@ void MxLikeButtonGroup::connectChildrenItems(QDeclarativeItem *item) {
 
         if (isCheckableButton(child)) {
             QObject::connect(child, SIGNAL(clicked()), this, SLOT(onItemChecked()));
+            QObject::connect(child, SIGNAL(destroyed()), this, SLOT(onItemDestroyed()));
+            m_items.append(child);
 
             // ### When multiple checked, the last will be the one used
             if (child->property("checked").toBool()) {
@@ -120,5 +142,17 @@ void MxLikeButtonGroup::onItemChecked()
         } else {
             m_checkedItem->setProperty("checked", true);
         }
+    }
+}
+
+void MxLikeButtonGroup::onItemDestroyed()
+{
+    // Just we connected in this slot, and we just connected QDItem
+    QDeclarativeItem *item = static_cast<QDeclarativeItem *>(QObject::sender());
+    m_items.removeOne(item);
+
+    if (item == m_checkedItem) {
+        m_checkedItem = 0;
+        emit checkedItemChanged(m_checkedItem);
     }
 }
