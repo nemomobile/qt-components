@@ -68,7 +68,7 @@ Item{//This should be ROOT element in a QML/MX app
                 anchors.right:parent.right
                 anchors.rightMargin: 8
                 anchors.verticalCenter: parent.verticalCenter
-                source: 'images/close' + (closeMA.containsMouse?'-hover':'') + '.png'
+                source: Qt.resolvedUrl('images/close' + (closeMA.containsMouse?'-hover':'') + '.png')
                 MouseArea{
                     id: closeMA
                     anchors.fill: parent

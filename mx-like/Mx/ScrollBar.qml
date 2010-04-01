@@ -153,19 +153,19 @@ Item {
                     border.left: 10
                     border.right: 10
 
-                    source: "images/scroll-hhandle"
-                    + (handleMouseRegion.containsMouse ? "-hover" : "") + ".png"
+                    source: Qt.resolvedUrl("images/scroll-hhandle"
+                                           + (handleMouseRegion.containsMouse ? "-hover" : "") + ".png")
                 }
 
                 PropertyChanges {
                     target: button1;
-                    source: "images/scroll-button-left"
-                          + (button1MouseRegion.containsMouse ? "-hover" : "") + ".png"
+                    source: Qt.resolvedUrl("images/scroll-button-left"
+                                           + (button1MouseRegion.containsMouse ? "-hover" : "") + ".png")
                 }
                 PropertyChanges {
                     target: button2;
-                    source: "images/scroll-button-right"
-                          + (button2MouseRegion.containsMouse ? "-hover" : "") + ".png"
+                    source: Qt.resolvedUrl("images/scroll-button-right"
+                                           + (button2MouseRegion.containsMouse ? "-hover" : "") + ".png")
                 }
             },
             State {
@@ -201,18 +201,18 @@ Item {
                     border.top: 10
                     border.bottom: 10
 
-                    source: "images/scroll-vhandle"
-                    + (handleMouseRegion.containsMouse ? "-hover" : "") + ".png"
+                    source: Qt.resolvedUrl("images/scroll-vhandle"
+                                           + (handleMouseRegion.containsMouse ? "-hover" : "") + ".png")
                 }
                 PropertyChanges {
                     target: button1;
-                    source: "images/scroll-button-up"
-                          + (button1MouseRegion.containsMouse ? "-hover" : "") + ".png"
+                    source: Qt.resolvedUrl("images/scroll-button-up"
+                                           + (button1MouseRegion.containsMouse ? "-hover" : "") + ".png")
                 }
                 PropertyChanges {
                     target: button2;
-                    source: "images/scroll-button-down"
-                          + (button2MouseRegion.containsMouse ? "-hover" : "") + ".png"
+                    source: Qt.resolvedUrl("images/scroll-button-down"
+                                           + (button2MouseRegion.containsMouse ? "-hover" : "") + ".png")
                 }
             }
         ]

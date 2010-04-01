@@ -41,7 +41,7 @@ Item{
         property string subStr: 'up'
         anchors.left: image.left
         anchors.leftMargin: 8
-        source: 'images/expander-arrow-'+ subStr + (mr.containsMouse?'-hover':'') + '.png'
+           source: Qt.resolvedUrl('images/expander-arrow-'+ subStr + (mr.containsMouse?'-hover':'') + '.png')
         y: 6
         z:2
     },
@@ -58,7 +58,7 @@ Item{
     },
     BorderImage{ id:image
         anchors.fill: parent
-        source: 'images/expander-'+ (mr.containsMouse?'hover':'closed') + '.png'
+        source: Qt.resolvedUrl('images/expander-'+ (mr.containsMouse?'hover':'closed') + '.png')
         border.bottom: 8
         border.left: 8
         border.right: 8

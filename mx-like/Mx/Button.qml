@@ -43,7 +43,7 @@ Item {
     BorderImage {
         id: buttonImage
         anchors.fill:parent
-        source: backgroundImage == "" ? "images/button.png" : backgroundImage;
+        source: Qt.resolvedUrl(backgroundImage == "" ? "images/button.png" : backgroundImage);
         border.left:10;
         border.top:10;
         border.right:10;
@@ -52,7 +52,7 @@ Item {
 
     BorderImage {
         id: buttonActiveImage
-        source: activeImage == "" ? "images/button-active.png" : activeImage;
+        source: Qt.resolvedUrl(activeImage == "" ? "images/button-active.png" : activeImage);
         opacity: 0
 
         anchors.fill: parent
@@ -64,7 +64,7 @@ Item {
 
     BorderImage {
         id: buttonHoverImage
-        source: hoverImage == "" ? "images/button-hover.png" : hoverImage;
+        source: Qt.resolvedUrl(hoverImage == "" ? "images/button-hover.png" : hoverImage);
         opacity: 0
 
         anchors.fill: parent
