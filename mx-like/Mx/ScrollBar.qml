@@ -116,6 +116,22 @@ Item {
                 onPressed: { scrollbar.scrollStart(); }
                 onReleased: { scrollbar.scrollStop(); }
             }
+
+            function handleSize() {
+                var size1;
+                if (!scrollbar.vertical)
+                    size1 = scrollbarPath.width;
+                else
+                    size1 = scrollbarPath.height;
+                var size = (size1 * viewSize) / documentSize;
+
+                if (size < 0)
+                    return 0;
+                if (size > size1)
+                    return size1;
+
+                return size;
+            }
         }
 
         state: "horizontal";
@@ -152,8 +168,8 @@ Item {
 
                 PropertyChanges {
                     target: handle
-                    x: value
-                    width: scrollbar.width * viewSize / documentSize; // ### bound
+                    width: handleSize()
+
                     border.left: 10
                     border.right: 10
 
@@ -204,8 +220,7 @@ Item {
                 }
                 PropertyChanges {
                     target: handle
-                    y: value
-                    height: scrollbar.height * viewSize / documentSize; // ###bound
+                    height: handleSize()
                     border.top: 10
                     border.bottom: 10
 
