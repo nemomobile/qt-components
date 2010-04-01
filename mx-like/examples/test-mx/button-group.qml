@@ -23,35 +23,36 @@
 import Qt 4.7
 import Mx 1.0
 
+import "button-group.js" as Helper
+
 Item {
     Row {
         id: control
         x: 100
         y: 100
 
-        property int count: 0;
-
         Button {
             text: "Add button"
             onClicked: {
-                var button = createQmlObject("import Mx 1.0; Button { checkable: true; text: 'Button " + control.count + "' }", row);
-                control.count += 1;
+                Helper.addButton(row);
                 group.refresh();
             }
         }
 
-        // ### Not implemented yet...
-        // Button {
-        //     text: "Remove button"
-        //     onClicked: {
-        //     }
-        // }
+        Button {
+            text: "Remove button"
+
+            onClicked: {
+                Helper.removeLastButton();
+            }
+        }
 
         Button {
             text: "Destroy active"
             onClicked: {
+                // ### better way to check for valid item?
                 if (group.checkedItem.toString() !== "null") {
-                    group.checkedItem.destroy();
+                    Helper.removeButton(group.checkedItem);
                 }
             }
         }
