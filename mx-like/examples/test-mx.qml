@@ -67,7 +67,6 @@ Window {
 
         Loader {
             id: loader;
-            focus: true;
             anchors.left: group.right
             anchors.right: parent.right
             anchors.top: parent.top
@@ -77,6 +76,15 @@ Window {
             onStatusChanged: {
                 if (loader.status === Loader.Ready) {
                     loader.item.anchors.fill = loader;
+                }
+            }
+
+            MouseArea {
+                anchors.fill: parent;
+                z: 2;
+                onPressed: {
+                    loader.focus = true;
+                    mouse.accepted = false;
                 }
             }
         }

@@ -137,7 +137,6 @@ Item {
             anchors.fill: parent;
 
             clip:true;
-            focus: true;
             overShoot: false;
             keyNavigationWraps: true;
 
@@ -151,6 +150,10 @@ Item {
                 PropertyChanges {
                     target: list;
                     opacity: 1;
+                }
+                PropertyChanges {
+                    target: elements;
+                    focus: true;
                 }
             }
         ]

@@ -161,6 +161,10 @@ Item {
                     target: list;
                     opacity: 1;
                 }
+                PropertyChanges {
+                    target: elements;
+                    focus: true;
+                }
             }
         ]
 
