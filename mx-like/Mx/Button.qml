@@ -26,20 +26,24 @@ Item {
     id: pushbutton
 
     property string text: "Text"
-    property alias tooltipText: tooltip.text;
     property bool checkable: false
     property bool checked: false
+    property string backgroundImage: "";
+    property alias backgroundImageBorder: buttonImage.border;
+    property string activeImage: "";
+    property alias activeImageBorder: buttonActiveImage.border;
+    property string hoverImage: "";
+    property alias hoverImageBorder: buttonHoverImage.border;
+    property alias tooltipText: tooltip.text;
     signal clicked
 
-    // width: Math.max(text.width + 20, 200)
-    // height: Math.max(text.height + 12, 50)
     width: Math.max(text.width + 20, 110)
     height: Math.max(text.height + 12, 35)
 
     BorderImage {
         id: buttonImage
-        source: "images/button.png"
         anchors.fill:parent
+        source: backgroundImage == "" ? "images/button.png" : backgroundImage;
         border.left:10;
         border.top:10;
         border.right:10;
@@ -48,7 +52,7 @@ Item {
 
     BorderImage {
         id: buttonActiveImage
-        source: "images/button-active.png"
+        source: activeImage == "" ? "images/button-active.png" : activeImage;
         opacity: 0
 
         anchors.fill: parent
@@ -59,8 +63,8 @@ Item {
     }
 
     BorderImage {
-        id: buttonHoveredImage
-        source: "images/button-hover.png"
+        id: buttonHoverImage
+        source: hoverImage == "" ? "images/button-hover.png" : hoverImage;
         opacity: 0
 
         anchors.fill: parent
@@ -110,14 +114,14 @@ Item {
             when: mouseRegion.pressed || pushbutton.checked
             PropertyChanges { target: buttonImage; opacity: 0 }
             PropertyChanges { target: buttonActiveImage; opacity: 1 }
-            PropertyChanges { target: buttonHoveredImage; opacity: 0 }
+            PropertyChanges { target: buttonHoverImage; opacity: 0 }
         },
         State {
             name: "highlighted"
             when: mouseRegion.containsMouse && !pushbutton.checked
             PropertyChanges { target: buttonImage; opacity: 0 }
             PropertyChanges { target: buttonActiveImage; opacity: 0 }
-            PropertyChanges { target: buttonHoveredImage; opacity: 1 }
+            PropertyChanges { target: buttonHoverImage; opacity: 1 }
         }
     ]
 
