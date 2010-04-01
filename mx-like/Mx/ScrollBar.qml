@@ -136,6 +136,10 @@ Item {
                     anchors.right: scrollbar.right
                 }
                 PropertyChanges {
+                    target: scrollbar;
+                    height: button1.height;
+                }
+                PropertyChanges {
                     target: scrollbarPath
                     height: button1.height
                 }
@@ -183,6 +187,10 @@ Item {
                 AnchorChanges {
                     target: button2
                     anchors.bottom: scrollbar.bottom
+                }
+                PropertyChanges {
+                    target: scrollbar;
+                    width: button1.width;
                 }
                 PropertyChanges {
                     target: scrollbarPath
