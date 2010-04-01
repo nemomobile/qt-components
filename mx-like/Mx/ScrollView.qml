@@ -69,6 +69,8 @@ Item {
         anchors.bottom: bottomSlider.top;
         visible: false;
         vertical: true;
+        documentSize: contentHeight;
+        viewSize: root.height;
 
         states: [
             State {
@@ -94,6 +96,8 @@ Item {
         anchors.left: parent.left;
         anchors.right: rightSlider.left;
         visible: false;
+        documentSize: contentWidth;
+        viewSize: root.width;
 
         states: [
             State {
