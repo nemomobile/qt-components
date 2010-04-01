@@ -92,10 +92,10 @@ private:
     QPropertyAnimation *m_fadeIn;
 
     QGraphicsView *m_view;
-    QmlEngine m_engine;
+    QDeclarativeEngine m_engine;
 
-    QmlComponent *m_themeComponent;
-    QmlGraphicsItem *m_currentItem;
+    QDeclarativeComponent *m_themeComponent;
+    QDeclarativeItem *m_currentItem;
 };
 
 QML_DECLARE_TYPE(QmlPlayerView)

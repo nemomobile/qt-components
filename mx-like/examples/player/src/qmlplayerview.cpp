@@ -2,7 +2,6 @@
 #include <QDebug>
 #include <QDir>
 #include <QEasingCurve>
-
 #include "qmlplayerview.h"
 
 QmlPlayerView::QmlPlayerView(QObject *parent)
@@ -23,7 +22,7 @@ QmlPlayerView::QmlPlayerView(QObject *parent)
       m_themesList(m_themesDir.entryList()),
       m_currentItem(0)
 {
-    QGraphicsScene *scene = new QGraphicsScene;
+    QGraphicsScene *scene = new QGraphicsScene(this);
     m_view = new QGraphicsView(scene);
 
     m_view->setWindowFlags(Qt::FramelessWindowHint);
@@ -33,6 +32,7 @@ QmlPlayerView::QmlPlayerView(QObject *parent)
     m_view->setAttribute(Qt::WA_TranslucentBackground);
     m_view->setFrameStyle(0);
 
+    m_engine.setImportPathList(QStringList() << "../../");
     m_engine.rootContext()->setContextProperty("view", this);
 
     m_fadeOut = new QPropertyAnimation(m_view, "windowOpacity", this);
@@ -49,7 +49,7 @@ QmlPlayerView::QmlPlayerView(QObject *parent)
     connect(this, SIGNAL(changeThemeClicked()), SLOT(changeTheme()));
     connect(m_fadeOut, SIGNAL(finished()), this, SLOT(showNewTheme()));
 
-    setTheme("basic");
+    setTheme("mx");
     m_view->show();
 }
 
@@ -72,14 +72,14 @@ bool QmlPlayerView::setTheme(const QString &themeName)
     } else {
         m_currentTheme = themeName;
 
-        m_themeComponent = new QmlComponent(&m_engine, QUrl(theme), this);
+        m_themeComponent = new QDeclarativeComponent(&m_engine, QUrl(theme), this);
 
         // First setTheme is not animated
         if (!m_currentItem) {
             if (!m_themeComponent->isLoading()) {
                 execute();
             } else {
-                connect(m_themeComponent, SIGNAL(statusChanged(QmlComponent::Status)), this, SLOT(execute()));
+                connect(m_themeComponent, SIGNAL(statusChanged(QDeclarativeComponent::Status)), this, SLOT(execute()));
             }
         }
 
@@ -89,12 +89,12 @@ bool QmlPlayerView::setTheme(const QString &themeName)
 
 void QmlPlayerView::execute()
 {
-    disconnect(m_themeComponent, SIGNAL(statusChanged(QmlComponent::Status)), this, SLOT(execute()));
+    disconnect(m_themeComponent, SIGNAL(statusChanged(QDeclarativeComponent::Status)), this, SLOT(execute()));
 
     QObject *obj = m_themeComponent->create();
 
     if (obj) {
-        if (QmlGraphicsItem *newItem = qobject_cast<QmlGraphicsItem *>(obj)) {
+        if (QDeclarativeItem *newItem = qobject_cast<QDeclarativeItem *>(obj)) {
             if (m_currentItem) {
                 m_view->scene()->removeItem(m_currentItem);
                 delete m_currentItem;
