@@ -35,7 +35,10 @@
 class PhotoProvider : public QDeclarativeImageProvider
 {
 public:
-    QImage request(const QString &id) {
+    QImage request(const QString &id, QSize *size, const QSize &req_size) {
+        Q_UNUSED(size);
+        Q_UNUSED(req_size);
+
         QPixmap pixmap(id);
         return pixmap.toImage();
     }
