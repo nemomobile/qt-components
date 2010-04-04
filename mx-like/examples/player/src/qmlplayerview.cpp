@@ -32,7 +32,7 @@ QmlPlayerView::QmlPlayerView(QObject *parent)
     m_view->setAttribute(Qt::WA_TranslucentBackground);
     m_view->setFrameStyle(0);
 
-    m_engine.setImportPathList(QStringList() << "../../");
+    m_engine.addImportPath("../../");
     m_engine.rootContext()->setContextProperty("view", this);
 
     m_fadeOut = new QPropertyAnimation(m_view, "windowOpacity", this);
@@ -102,7 +102,6 @@ void QmlPlayerView::execute()
 
             m_view->scene()->addItem(newItem);
             m_view->resize(m_view->scene()->itemsBoundingRect().size().toSize());
-            m_view->scene()->setSceneRect(m_view->rect());
             m_currentItem = newItem;
         }
     }
