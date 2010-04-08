@@ -4,18 +4,30 @@ import Components 1.0
 Image {
     id: groove
     property alias value: model.value
-    property int minimum: 25
-    property int maximum: 75
+    property alias minimum: model.minimumValue
+    property alias maximum: model.maximumValue
     width: 200; height: 50
     fillMode: Image.Tile
     source: "images/stripes.png"
+    MouseRegion {
+        anchors.fill: parent
+        onClicked: {
+             if (mouse.x < grip.x)
+                 model.singleStepSub();
+             else if (mouse.x > (grip.x + grip.width))
+                 model.singleStepAdd();
+        }
+    }
     BorderImage {
         id: grip
-        x: 0; y: 0; width: 50; height: 50
-        border.left: 10; border.top: 10
-        border.right: 10; border.bottom: 10
-        horizontalTileMode: BorderImage.Stretch
-        verticalTileMode: BorderImage.Stretch
+        x: model.position;
+        y: 0;
+        width: 50;
+        height: 50
+        border.left: 10;
+        border.top: 10
+        border.right: 10;
+        border.bottom: 10
         source: "images/toolbutton.png"
         Text {
             id: text
@@ -33,8 +45,8 @@ Image {
     }
     RangeModel {
         id: model
-        minimumValue: groove.minimum
-        maximumValue: groove.maximum
+        minimumValue: 25
+        maximumValue: 75
         minimumPosition: 0
         maximumPosition: groove.width - grip.width
         position: grip.x
