@@ -1,7 +1,7 @@
 TEMPLATE = subdirs
 CONFIG += ordered
 SUBDIRS = src \
-          plugin \
+          modules \
           tests \
           examples \
           demos 

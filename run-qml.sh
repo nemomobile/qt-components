@@ -1,3 +1,3 @@
 #!/bin/sh
 LD_LIBRARY_PATH=lib:$LD_LIBRARY_PATH
-qml -L plugin $@
+qml -L modules/components $@

@@ -1,4 +1,4 @@
-include (../qt-components.pri)
+include (../../qt-components.pri)
 
 TEMPLATE = lib
 TARGET = componentsqmlplugin
