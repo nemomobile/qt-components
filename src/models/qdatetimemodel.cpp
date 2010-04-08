@@ -28,7 +28,7 @@
 #include <qlocale.h>
 
 // ### FIX THIS INCLUDE ###
-#include "qdatetime_p.h"
+#include <QtCore/private/qdatetime_p.h>
 
 QDateTimeModel::QDateTimeModel(QObject *parent)
     : QObject(*new QDateTimeModelPrivate, parent)
