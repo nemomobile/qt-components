@@ -45,7 +45,6 @@ class QRangeModel : public QObject
     Q_PROPERTY(int minimumPosition READ minimumPosition WRITE setMinimumPosition NOTIFY positionRangeChanged)
     Q_PROPERTY(int maximumPosition READ maximumPosition WRITE setMaximumPosition NOTIFY positionRangeChanged)
     Q_PROPERTY(bool tracking READ hasTracking WRITE setTracking)
-    Q_PROPERTY(bool wrapping READ wrapping WRITE setWrapping)
 
 public:
     QRangeModel(QObject *parent = 0);
@@ -85,9 +84,6 @@ public:
     void setPosition(int position);
     int position() const;
 
-    void setWrapping(bool);
-    bool wrapping() const;
-
     int value() const;
 
 public Q_SLOTS:
@@ -97,8 +93,6 @@ public Q_SLOTS:
     void pageStepSub();
     void toMinimum();
     void toMaximum();
-    //void startRepeatAction();
-
     void setValue(int);
 
 Q_SIGNALS:
@@ -112,7 +106,7 @@ Q_SIGNALS:
 
 protected:
     QRangeModel(QRangeModelPrivate &dd, QObject *parent);
-    //void timerEvent(QTimerEvent *e);
+    QRangeModelPrivate* d_ptr;
 
 private:
     Q_DISABLE_COPY(QRangeModel)

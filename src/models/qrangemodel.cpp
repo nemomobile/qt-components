@@ -22,19 +22,21 @@
 **
 ****************************************************************************/
 
-#include "qrangemodel.h"
-#include "qrangemodel_p.h"
-#include "qevent.h"
-#include "QtGui/qgraphicssceneevent.h"
-#include "qapplication.h"
-#include "qdebug.h"
+#include <QEvent>
+#include <QApplication>
+#include <QGraphicsSceneEvent>
+#include <QDebug>
+
 #ifndef QT_NO_ACCESSIBILITY
-#include "qaccessible.h"
+#include <QAccessible>
 #endif
 
-QT_BEGIN_NAMESPACE
+#include "qrangemodel.h"
+#include "qrangemodel_p.h"
 
-QRangeModelPrivate::QRangeModelPrivate()
+QT_BEGIN_NAMESPACE
+QRangeModelPrivate::QRangeModelPrivate(QRangeModel *qq)
+    : q_ptr(qq)
 {
 }
 
@@ -56,18 +58,17 @@ void QRangeModelPrivate::init()
     maxpos = 0;
     tracking = true;
     blocktracking = false;
-    wrapping = false;
 }
 
 QRangeModel::QRangeModel(QObject *parent)
-    : QObject(*new QRangeModelPrivate(), parent)
+    : QObject(parent), d_ptr(new QRangeModelPrivate(this))
 {
     Q_D(QRangeModel);
     d->init();
 }
 
 QRangeModel::QRangeModel(QRangeModelPrivate &dd, QObject *parent)
-    : QObject(dd, parent)
+    : QObject(parent), d_ptr(&dd)
 {
     Q_D(QRangeModel);
     d->init();
@@ -75,6 +76,8 @@ QRangeModel::QRangeModel(QRangeModelPrivate &dd, QObject *parent)
 
 QRangeModel::~QRangeModel()
 {
+    delete d_ptr;
+    d_ptr = 0;
 }
 
 void QRangeModel::sedate()
@@ -272,18 +275,6 @@ void QRangeModel::setValue(int value)
         return;
     d->pos = newPosition;
     emit positionChanged(d->pos);
-}
-
-void QRangeModel::setWrapping(bool b)
-{
-    Q_D(QRangeModel);
-    d->wrapping = b;
-}
-
-bool QRangeModel::wrapping() const
-{
-    Q_D(const QRangeModel);
-    return d->wrapping;
 }
 
 void QRangeModel::singleStepAdd()

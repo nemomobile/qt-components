@@ -36,20 +36,17 @@
 // We mean it.
 //
 
-#include "private/qobject_p.h"
-#include "QtCore/qbasictimer.h"
-
+#include "qrangemodel.h"
 
 QT_BEGIN_NAMESPACE
 
-class QRangeModelPrivate : public QObjectPrivate
+class QRangeModelPrivate : public QObject
 {
 public:
     Q_DECLARE_PUBLIC(QRangeModel)
 
-    QRangeModelPrivate();
-
-    ~QRangeModelPrivate();
+    QRangeModelPrivate(QRangeModel *qq);
+    virtual ~QRangeModelPrivate();
 
     void init();
 
@@ -64,23 +61,8 @@ public:
 
     uint tracking : 1;
     uint blocktracking :1;
-    uint wrapping : 1;
 
-    /*
-    enum SliderAction {
-        SliderNoAction,
-        SliderSingleStepAdd,
-        SliderSingleStepSub,
-        SliderPageStepAdd,
-        SliderPageStepSub,
-        SliderToMinimum,
-        SliderToMaximum,
-        SliderMove
-    };
-    QBasicTimer repeatActionTimer;
-    int repeatActionTime;
-    QRangeModel::SliderAction repeatAction;
-    */
+    QRangeModel *q_ptr;
 
     inline int positionFromValue() {
         qreal scale =  qreal(maximum - minimum) / qreal(maxpos - minpos);
