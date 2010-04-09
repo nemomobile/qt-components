@@ -9,7 +9,7 @@ Image {
     width: 200; height: 50
     fillMode: Image.Tile
     source: "images/stripes.png"
-    MouseRegion {
+    MouseArea {
         anchors.fill: parent
         onClicked: {
              if (mouse.x < grip.x)
