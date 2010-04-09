@@ -52,7 +52,7 @@ Item {
 
     Binding { target: model; property: "minimumValue"; value: 0 }
     Binding { target: model; property: "maximumValue"; value: 100 }
-    Binding { target: model; property: "minimumPosition"; value: 0 }
-    Binding { target: model; property: "maximumPosition"; value: background.width - knob.width }
+    Binding { target: model; property: "positionAtMinimum"; value: 0 }
+    Binding { target: model; property: "positionAtMaximum"; value: background.width - knob.width }
     Binding { target: model; property: "position"; value: knob.x + (knob.width / 2) }
 }

@@ -32,7 +32,7 @@ Image {
         Text {
             id: text
             anchors.centerIn: parent
-            text: model.value
+            text: model.value.toFixed(0)
             color: "white"
         }
         MouseArea {
@@ -47,8 +47,8 @@ Image {
         id: model
         minimumValue: 25
         maximumValue: 75
-        minimumPosition: 0
-        maximumPosition: groove.width - grip.width
+        positionAtMinimum: 0
+        positionAtMaximum: groove.width - grip.width
         position: grip.x
     }
 }

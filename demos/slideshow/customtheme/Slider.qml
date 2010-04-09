@@ -77,8 +77,8 @@ Item {
 
     RangeModel {
         id: model
-        maximumPosition: 221;
-        minimumPosition: -42;
+        positionAtMaximum: 221;
+        positionAtMinimum: -42;
         position: knob.rotation;
 
         value: 42;
