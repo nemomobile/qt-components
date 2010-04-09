@@ -234,25 +234,25 @@ qreal QRangeModel::position() const
     return d->pos;
 }
 
-void QRangeModel::setMinimumPosition(qreal min)
+void QRangeModel::setPositionAtMinimum(qreal min)
 {
     Q_D(QRangeModel);
     setPositionRange(min, d->maxpos);
 }
 
-qreal QRangeModel::minimumPosition() const
+qreal QRangeModel::positionAtMinimum() const
 {
     Q_D(const QRangeModel);
-    return d->maxpos;
+    return d->minpos;
 }
 
-void QRangeModel::setMaximumPosition(qreal max)
+void QRangeModel::setPositionAtMaximum(qreal max)
 {
     Q_D(QRangeModel);
     setPositionRange(d->minpos, max);
 }
 
-qreal QRangeModel::maximumPosition() const
+qreal QRangeModel::positionAtMaximum() const
 {
     Q_D(const QRangeModel);
     return d->maxpos;

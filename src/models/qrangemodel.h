@@ -42,8 +42,8 @@ class QRangeModel : public QObject
     Q_PROPERTY(qreal pageStep READ pageStep WRITE setPageStep)
     Q_PROPERTY(qreal value READ value WRITE setValue NOTIFY valueChanged USER true)
     Q_PROPERTY(qreal position READ position WRITE setPosition NOTIFY positionChanged)
-    Q_PROPERTY(qreal minimumPosition READ minimumPosition WRITE setMinimumPosition NOTIFY positionRangeChanged)
-    Q_PROPERTY(qreal maximumPosition READ maximumPosition WRITE setMaximumPosition NOTIFY positionRangeChanged)
+    Q_PROPERTY(qreal positionAtMinimum READ positionAtMinimum WRITE setPositionAtMinimum NOTIFY positionRangeChanged)
+    Q_PROPERTY(qreal positionAtMaximum READ positionAtMaximum WRITE setPositionAtMaximum NOTIFY positionRangeChanged)
     Q_PROPERTY(bool tracking READ hasTracking WRITE setTracking)
 
 public:
@@ -73,11 +73,11 @@ public:
     void setSliderPosition(qreal);
     qreal sliderPosition() const;
 
-    void setMinimumPosition(qreal);
-    qreal minimumPosition() const;
+    void setPositionAtMinimum(qreal);
+    qreal positionAtMinimum() const;
 
-    void setMaximumPosition(qreal);
-    qreal maximumPosition() const;
+    void setPositionAtMaximum(qreal);
+    qreal positionAtMaximum() const;
 
     void setPositionRange(qreal min, qreal max);
 
