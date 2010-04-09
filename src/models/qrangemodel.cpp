@@ -101,11 +101,11 @@ void QRangeModel::awake()
         blockSignals(false);
 }
 
-void QRangeModel::setPositionRange(int min, int max)
+void QRangeModel::setPositionRange(qreal min, qreal max)
 {
     Q_D(QRangeModel);
-    int oldMin = d->minpos;
-    int oldMax = d->maxpos;
+    qreal oldMin = d->minpos;
+    qreal oldMax = d->maxpos;
     d->minpos = min;
     d->maxpos = max;
     if (oldMin != d->minpos || oldMax != d->maxpos) {
@@ -114,11 +114,11 @@ void QRangeModel::setPositionRange(int min, int max)
     }
 }
 
-void QRangeModel::setRange(int min, int max)
+void QRangeModel::setRange(qreal min, qreal max)
 {
     Q_D(QRangeModel);
-    int oldMin = d->minimum;
-    int oldMax = d->maximum;
+    qreal oldMin = d->minimum;
+    qreal oldMax = d->maximum;
     d->minimum = min;
     d->maximum = qMax(min, max);
     if (oldMin != d->minimum || oldMax != d->maximum) {
@@ -127,58 +127,58 @@ void QRangeModel::setRange(int min, int max)
     }
 }
 
-void QRangeModelPrivate::setSteps(int single, int page)
+void QRangeModelPrivate::setSteps(qreal single, qreal page)
 {
     singleStep = qAbs(single);
     pageStep = qAbs(page);
 }
 
-void QRangeModel::setMinimum(int min)
+void QRangeModel::setMinimum(qreal min)
 {
     Q_D(QRangeModel);
     setRange(min, qMax(d->maximum, min));
 }
 
-int QRangeModel::minimum() const
+qreal QRangeModel::minimum() const
 {
     Q_D(const QRangeModel);
     return d->minimum;
 }
 
-void QRangeModel::setMaximum(int max)
+void QRangeModel::setMaximum(qreal max)
 {
     Q_D(QRangeModel);
     setRange(qMin(d->minimum, max), max);
 }
 
-int QRangeModel::maximum() const
+qreal QRangeModel::maximum() const
 {
     Q_D(const QRangeModel);
     return d->maximum;
 }
 
 
-void QRangeModel::setSingleStep(int step)
+void QRangeModel::setSingleStep(qreal step)
 {
     Q_D(QRangeModel);
     if (step != d->singleStep)
         d->setSteps(step, d->pageStep);
 }
 
-int QRangeModel::singleStep() const
+qreal QRangeModel::singleStep() const
 {
     Q_D(const QRangeModel);
     return d->singleStep;
 }
 
-void QRangeModel::setPageStep(int step)
+void QRangeModel::setPageStep(qreal step)
 {
     Q_D(QRangeModel);
     if (step != d->pageStep)
         d->setSteps(d->singleStep, step);
 }
 
-int QRangeModel::pageStep() const
+qreal QRangeModel::pageStep() const
 {
     Q_D(const QRangeModel);
     return d->pageStep;
@@ -196,70 +196,75 @@ bool QRangeModel::hasTracking() const
     return d->tracking;
 }
 
-void QRangeModel::setSliderPosition(int position)
+void QRangeModel::setSliderPosition(qreal position)
 {
     setPosition(position);
 }
 
-int QRangeModel::sliderPosition() const
+qreal QRangeModel::sliderPosition() const
 {
     return position();
 }
 
-void QRangeModel::setPosition(int pos)
+void QRangeModel::setPosition(qreal pos)
 {
     Q_D(QRangeModel);
 
-    pos = qBound(d->minpos, pos, d->maxpos);
+    if (d->minpos < d->maxpos) {
+        pos = qBound(d->minpos, pos, d->maxpos);
+    } else {
+        pos = qBound(d->maxpos, pos, d->minpos);
+    }
+
     if (pos == d->pos)
         return;
     d->pos = pos;
     emit positionChanged(d->pos);
 
-    const int newValue = d->valueFromPosition();
+    const qreal newValue = d->valueFromPosition();
     if (d->value == newValue)
         return;
     d->value = newValue;
     emit valueChanged(d->value);
 }
 
-int QRangeModel::position() const
+qreal QRangeModel::position() const
 {
     Q_D(const QRangeModel);
     return d->pos;
 }
 
-void QRangeModel::setMinimumPosition(int min)
+void QRangeModel::setMinimumPosition(qreal min)
 {
     Q_D(QRangeModel);
     setPositionRange(min, d->maxpos);
 }
 
-int QRangeModel::minimumPosition() const
+qreal QRangeModel::minimumPosition() const
 {
     Q_D(const QRangeModel);
     return d->maxpos;
 }
 
-void QRangeModel::setMaximumPosition(int max)
+void QRangeModel::setMaximumPosition(qreal max)
 {
     Q_D(QRangeModel);
     setPositionRange(d->minpos, max);
 }
 
-int QRangeModel::maximumPosition() const
+qreal QRangeModel::maximumPosition() const
 {
     Q_D(const QRangeModel);
     return d->maxpos;
 }
 
-int QRangeModel::value() const
+qreal QRangeModel::value() const
 {
     Q_D(const QRangeModel);
     return d->value;
 }
 
-void QRangeModel::setValue(int value)
+void QRangeModel::setValue(qreal value)
 {
     Q_D(QRangeModel);
 
@@ -270,7 +275,7 @@ void QRangeModel::setValue(int value)
     if (d->tracking && !d->blocktracking)
         emit valueChanged(value);
 
-    const int newPosition = d->positionFromValue();
+    const qreal newPosition = d->positionFromValue();
     if (d->pos == newPosition)
         return;
     d->pos = newPosition;

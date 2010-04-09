@@ -53,25 +53,25 @@ public:
     bool isSedated;
     bool signalsBlocked;
 
-    void setSteps(int single, int page);
+    void setSteps(qreal single, qreal page);
 
-    int minimum, maximum, pageStep, value, position, pressValue;
-    int pos, minpos, maxpos;
-    int singleStep;
+    qreal minimum, maximum, pageStep, value, position, pressValue;
+    qreal pos, minpos, maxpos;
+    qreal singleStep;
 
     uint tracking : 1;
     uint blocktracking :1;
 
     QRangeModel *q_ptr;
 
-    inline int positionFromValue() {
+    inline qreal positionFromValue() {
         qreal scale =  qreal(maximum - minimum) / qreal(maxpos - minpos);
-        return minpos + qRound((value - minimum) / scale); // ###
+        return minpos + ((value - minimum) / scale); // ###
     }
 
-    inline int valueFromPosition() {
+    inline qreal valueFromPosition() {
         qreal scale = qreal(maximum - minimum) / qreal(maxpos - minpos);
-        return minimum + qRound((pos - minpos) * scale); // ###
+        return minimum + ((pos - minpos) * scale); // ###
     }
 };
 
