@@ -1,0 +1,5 @@
+This plugin contains the native code needed to implement Mx like behaviour. It requires you to have installed the private headers of your Qt version (which must be a recent version of 4.7)
+
+It includes a modified version of QDeclarativeTextInput. This is due to some limitations with the current TextInput, and the solutions to these limitations need to go through a more rigorous QA process before being included in Qt - so they would not be integrated in time for this demo.
+
+It is expected that 4.7 will have fixed this limitations in the same or a better way, and porting to the correct method should be easy.

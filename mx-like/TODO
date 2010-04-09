@@ -1,0 +1,20 @@
+Name           - Status - Who
+MxButton       - DONE   - Alan
+MxEntry        - DONE   - Alan
+MxLabel        - DONE   - Alan
+MxSlider       - DONE   - Alan
+MxComboBox     - DONE   - Artur
+MxProgressBar  - DONE   - Artur
+MxTooltip      - DONE   - Fleury
+MxExpander     - DONE   - Alan
+MxToggle       - DONE   - Caio
+MxScrollBar    - DONE    - Anselmo
+MxScrollView   - DONE   - Fleury
+"MxScrollGrid" - TBD    -
+MxTest         - WIP    - Caio
+MxTitlebar     - DONE   - Alan
+MxButtonGroup  - DONE   - Caio
+
+
+== BUGS ==
+Tooltip&Combo  - WIP    - Artur & Fleury
