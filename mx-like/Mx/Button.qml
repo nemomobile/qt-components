@@ -4,7 +4,7 @@
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
-** This file is part of the FOO module of the Qt Toolkit.
+** This file is part of the Qt Components project on Trolltech Labs.
 **
 ** $QT_BEGIN_LICENSE:LGPL-ONLY$
 ** GNU Lesser General Public License Usage
