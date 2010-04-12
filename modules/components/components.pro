@@ -2,7 +2,7 @@ include (../../qt-components.pri)
 
 TEMPLATE = lib
 TARGET = componentsqmlplugin
-DESTDIR = ../../plugin/Components
+DESTDIR = Components
 CONFIG += qt plugin
 QT += declarative
 
