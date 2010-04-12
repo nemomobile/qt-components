@@ -49,7 +49,7 @@ public:
     QButtonModel(QObject *parent = 0);
     virtual ~QButtonModel();
 
-#ifndef QT_NO_SHORTCUT
+#if 0 //ndef QT_NO_SHORTCUT
     void setShortcut(const QKeySequence &key);
     QKeySequence shortcut() const;
 #endif

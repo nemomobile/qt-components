@@ -55,7 +55,7 @@ public:
 
     void click();
 
-#ifndef QT_NO_SHORTCUT
+#if 0 //ndef QT_NO_SHORTCUT
     QKeySequence shortcut;
     int shortcutId;
 #endif
