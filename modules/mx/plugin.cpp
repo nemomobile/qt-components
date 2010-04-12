@@ -24,7 +24,6 @@
 #include <QtDeclarative/qdeclarative.h>
 
 #include "mxlikewindow.h"
-#include "mxliketextinput.h"
 #include "mxlikebuttongroup.h"
 
 class QmlMxLikeModule : public QDeclarativeExtensionPlugin
@@ -33,12 +32,10 @@ class QmlMxLikeModule : public QDeclarativeExtensionPlugin
 public:
     virtual void registerTypes(const char *uri)
     {
-        Q_UNUSED(uri);
-        qmlRegisterType<QmlMxLikeScreen>("Mx",1,0,"WindowModel");
-        qmlRegisterType<MxLikeTextInput>("Mx",1,0,"EntryControl");
+        qmlRegisterType<QmlMxLikeScreen>(uri,1,0,"WindowModel");
 
         // ### Temporary solution until we can access children items inside QML
-        qmlRegisterType<MxLikeButtonGroup>("Mx", 1,0, "ButtonGroup");
+        qmlRegisterType<MxLikeButtonGroup>(uri, 1,0, "ButtonGroup");
     }
 };
 

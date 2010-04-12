@@ -68,7 +68,7 @@ Item {
         }//No cool animated transition, because mx doesn't do that
         
     }
-    EntryControl{
+    TextInput{
         id:textInp
         cursorDelegate: Item{
             Rectangle{
@@ -116,10 +116,10 @@ Item {
         }
         onPressed: {
             textInp.focus = true;
-            textInp.moveCursor(textInp.xToPos(translateX(mouse.x)), false);
+            textInp.cursorPosition = textInp.xToPosition(translateX(mouse.x));
         }
         onPositionChanged: {
-            textInp.moveCursor(textInp.xToPos(translateX(mouse.x)), true);
+            textInp.moveCursorSelection(textInp.xToPosition(translateX(mouse.x)));
         }
         onReleased: {
         }
