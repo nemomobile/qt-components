@@ -22,60 +22,647 @@
 **
 ****************************************************************************/
 
+#include "qlineeditmodel_p.h"
 #include "qlineeditmodel.h"
 
 #ifndef QT_NO_LINEEDIT
 
-#include "qclipboard.h"
-#include "qapplication.h"
+#include <QtGui/qclipboard.h>
+#include <QtGui/qapplication.h>
 
 QT_BEGIN_NAMESPACE
+
+QLineEditModel::QLineEditModel(const QString &txt, QObject *parent)
+    : QObject(parent), d_ptr(new QLineEditModelPrivate(this))
+{
+    Q_D(QLineEditModel);
+    d->init(txt);
+}
+
+QLineEditModel::QLineEditModel(QLineEditModelPrivate &dd, QObject *parent)
+    : QObject(parent), d_ptr(&dd)
+{
+
+}
+
+QLineEditModel::~QLineEditModel()
+{
+    delete d_ptr;
+}
+
+
+QString QLineEditModel::text() const
+{
+    Q_D(const QLineEditModel);
+    QString res = d->maskData ? d->stripString(d->text) : d->text;
+    return (res.isNull() ? QString::fromLatin1("") : res);
+}
+
+void QLineEditModel::setText(const QString &txt)
+{
+    Q_D(QLineEditModel);
+    d->internalSetText(txt, -1, false);
+}
+
+QString QLineEditModel::displayText() const
+{
+    Q_D(const QLineEditModel);
+    return d->textLayout.text();
+}
+
+QFont QLineEditModel::font() const
+{
+    Q_D(const QLineEditModel);
+    return d->textLayout.font();
+}
+
+void QLineEditModel::setFont(const QFont &font)
+{
+    Q_D(QLineEditModel);
+    if (font != d->textLayout.font()) {
+        d->textLayout.setFont(font);
+        d->updateDisplayText();
+        emit fontChanged(font);
+    }
+}
+
+int QLineEditModel::cursorPosition() const
+{
+    Q_D(const QLineEditModel);
+    return d->cursor;
+}
+
+void QLineEditModel::setCursorPosition(int pos)
+{
+    Q_D(QLineEditModel);
+    if (pos < 0)
+        pos = 0;
+    if (pos <= d->text.length())
+        moveCursor(pos);
+}
+
+qreal QLineEditModel::cursorX() const
+{
+    Q_D(const QLineEditModel);
+    return positionToX(d->cursor);
+}
+
+void QLineEditModel::setCursorX(qreal x)
+{
+    setCursorPosition(xToPosition(x));
+}
+
+QString QLineEditModel::selectedText() const
+{
+    Q_D(const QLineEditModel);
+    if (hasSelectedText())
+        return d->text.mid(d->selstart, d->selend - d->selstart);
+    return QString();
+}
+
+int QLineEditModel::selectionStart() const
+{
+    Q_D(const QLineEditModel);
+    return hasSelectedText() ? d->selstart : -1;
+}
+
+void QLineEditModel::setSelectionStart(int s)
+{
+    Q_D(QLineEditModel);
+    if (d->selstart == s)
+        return;
+    setSelection(s, d->selend);
+}
+
+int QLineEditModel::selectionEnd() const
+{
+    Q_D(const QLineEditModel);
+    return hasSelectedText() ? d->selend : -1;
+}
+
+void QLineEditModel::setSelectionEnd(int e)
+{
+    Q_D(QLineEditModel);
+    if (d->selend == e)
+        return;
+    setSelection(d->selstart, e);
+}
+
+int QLineEditModel::maximumLength() const
+{
+    Q_D(const QLineEditModel);
+    return d->maxLength;
+}
+
+void QLineEditModel::setMaximumLength(int maximumLength)
+{
+    Q_D(QLineEditModel);
+    if (d->maskData)
+        return;
+    if (d->maxLength != maximumLength) {
+        d->maxLength = maximumLength;
+        setText(d->text);
+        emit maximumLengthChanged(d->maxLength);
+    }
+}
+
+#ifndef QT_NO_VALIDATOR
+QValidator *QLineEditModel::validator() const
+{
+    Q_D(const QLineEditModel);
+    return d->validator;
+}
+
+// ### Why this was a const pointer to QValidator?
+void QLineEditModel::setValidator(QValidator *v)
+{
+    Q_D(QLineEditModel);
+    if (d->validator != v) {
+        d->validator = v;
+        emit validatorChanged(d->validator);
+    }
+}
+#endif
+
+QString QLineEditModel::inputMask() const
+{
+    Q_D(const QLineEditModel);
+    return d->maskData ? d->inputMask + QLatin1Char(';') + d->blank : QString();
+}
+
+void QLineEditModel::setInputMask(const QString &mask)
+{
+    Q_D(QLineEditModel);
+    d->parseInputMask(mask);
+    if (d->maskData)
+        moveCursor(nextMaskBlank(0));
+}
+
+bool QLineEditModel::hasAcceptableInput() const
+{
+    Q_D(const QLineEditModel);
+    return d->hasAcceptableInput(d->text);
+}
+
+QLineEditModel::EchoMode QLineEditModel::echoMode() const
+{
+    Q_D(const QLineEditModel);
+    return EchoMode(d->echoMode);
+}
+
+void QLineEditModel::setEchoMode(QLineEditModel::EchoMode mode)
+{
+    Q_D(QLineEditModel);
+    if (EchoMode(d->echoMode) != mode) {
+        d->echoMode = mode;
+        d->updateDisplayText();
+        emit echoModeChanged(EchoMode(d->echoMode));
+    }
+}
+
+QChar QLineEditModel::passwordCharacter() const
+{
+    Q_D(const QLineEditModel);
+    return d->passwordCharacter;
+}
+
+void QLineEditModel::setPasswordCharacter(const QChar &character)
+{
+    Q_D(QLineEditModel);
+    if (d->passwordCharacter != character) {
+        d->passwordCharacter = character;
+        d->updateDisplayText();
+        emit passwordCharacterChanged(character);
+    }
+}
+
+int QLineEditModel::nextMaskBlank(int pos)
+{
+    Q_D(QLineEditModel);
+    int c = d->findInMask(pos, true, false);
+    d->separator |= (c != pos);
+    return (c != -1 ?  c : d->maxLength);
+}
+
+int QLineEditModel::prevMaskBlank(int pos)
+{
+    Q_D(QLineEditModel);
+    int c = d->findInMask(pos, false, false);
+    d->separator |= (c != pos);
+    return (c != -1 ? c : 0);
+}
+
+bool QLineEditModel::isUndoAvailable() const
+{
+    Q_D(const QLineEditModel);
+    // return !m_readOnly && m_undoState;
+    return d->undoState;
+}
+
+bool QLineEditModel::isRedoAvailable() const
+{
+    Q_D(const QLineEditModel);
+    // return !m_readOnly && m_undoState < (int)m_history.size();
+    return d->undoState < (int)d->history.size();
+}
+
+void QLineEditModel::clearUndo()
+{
+    Q_D(QLineEditModel);
+    d->history.clear();
+    d->modifiedState = d->undoState = 0;
+}
+
+bool QLineEditModel::isModified() const
+{
+    Q_D(const QLineEditModel);
+    return d->modifiedState != d->undoState;
+}
+
+void QLineEditModel::setModified(bool modified)
+{
+    Q_D(QLineEditModel);
+    d->modifiedState = modified ? -1 : d->undoState;
+}
+
+bool QLineEditModel::allSelected() const
+{
+    Q_D(const QLineEditModel);
+    return !d->text.isEmpty() && d->selstart == 0 && d->selend == (int)d->text.length();
+}
+
+bool QLineEditModel::hasSelectedText() const
+{
+    Q_D(const QLineEditModel);
+    return !d->text.isEmpty() && d->selend > d->selstart;
+}
 
 /*!
     \internal
 
-    Updates the display text based of the current edit text
-    If the text has changed will emit displayTextChanged()
+    Sets \a length characters from the given \a start position as selected.
+    The given \a start position must be within the current text for
+    the line control.  If \a length characters cannot be selected, then
+    the selection will extend to the end of the current text.
 */
-void QLineEditModel::updateDisplayText()
+void QLineEditModel::setSelection(int start, int length)
 {
-    QString orig = m_textLayout.text();
-    QString str;
-    if (m_echoMode == QLineEdit::NoEcho)
-        str = QString::fromLatin1("");
-    else
-        str = m_text;
-
-    if (m_echoMode == QLineEdit::Password || (m_echoMode == QLineEdit::PasswordEchoOnEdit
-                && !m_passwordEchoEditing))
-        str.fill(m_passwordCharacter);
-
-    // replace certain non-printable characters with spaces (to avoid
-    // drawing boxes when using fonts that don't have glyphs for such
-    // characters)
-    QChar* uc = str.data();
-    for (int i = 0; i < (int)str.length(); ++i) {
-        if ((uc[i] < 0x20 && uc[i] != 0x09)
-            || uc[i] == QChar::LineSeparator
-            || uc[i] == QChar::ParagraphSeparator
-            || uc[i] == QChar::ObjectReplacementCharacter)
-            uc[i] = QChar(0x0020);
+    Q_D(QLineEditModel);
+    if(start < 0 || start > (int)d->text.length()){
+        qWarning("QLineEditModel::setSelection: Invalid start position");
+        return;
     }
 
-    m_textLayout.setText(str);
+    if (length > 0) {
+        if (start == d->selstart && start + length == d->selend)
+            return;
+        d->selstart = start;
+        d->selend = qMin(start + length, (int)d->text.length());
+        d->cursor = d->selend;
+    } else {
+        if (start == d->selend && start + length == d->selstart)
+            return;
+        d->selstart = qMax(start + length, 0);
+        d->selend = start;
+        d->cursor = d->selstart;
+    }
+    emit selectionChanged();
+    d->emitCursorPositionChanged();
+}
 
-    QTextOption option;
-    option.setTextDirection(m_layoutDirection);
-    option.setFlags(QTextOption::IncludeTrailingSpaces);
-    m_textLayout.setTextOption(option);
+QString QLineEditModel::textBeforeSelection() const
+{
+    Q_D(const QLineEditModel);
+    if (hasSelectedText())
+        return d->text.left(d->selstart);
+    return QString();
+}
 
-    m_textLayout.beginLayout();
-    QTextLine l = m_textLayout.createLine();
-    m_textLayout.endLayout();
-    m_ascent = qRound(l.ascent());
+QString QLineEditModel::textAfterSelection() const
+{
+    Q_D(const QLineEditModel);
+    if (hasSelectedText())
+        return d->text.mid(d->selend);
+    return QString();
+}
 
-    if (str != orig)
-        emit displayTextChanged(str);
+bool QLineEditModel::inSelection(int x) const
+{
+    Q_D(const QLineEditModel);
+    if (d->selstart >= d->selend)
+        return false;
+    int pos = xToPosition(x, QTextLine::CursorOnCharacter);
+    return pos >= d->selstart && pos < d->selend;
+}
+
+int QLineEditModel::width() const
+{
+    Q_D(const QLineEditModel);
+    return qRound(d->textLayout.lineAt(0).width()) + 1;
+}
+
+int QLineEditModel::height() const
+{
+    Q_D(const QLineEditModel);
+    return qRound(d->textLayout.lineAt(0).height()) + 1;
+}
+
+int QLineEditModel::ascent() const
+{
+    Q_D(const QLineEditModel);
+    return d->ascent;
+}
+
+qreal QLineEditModel::naturalTextWidth() const
+{
+    Q_D(const QLineEditModel);
+    return d->textLayout.lineAt(0).naturalTextWidth();
+}
+
+/*!
+    \internal
+
+    Returns the cursor position of the given \a x pixel value in relation
+    to the displayed text.  The given \a betweenOrOn specified what kind
+    of cursor position is requested.
+*/
+int QLineEditModel::xToPosition(int x, QTextLine::CursorPosition betweenOrOn) const
+{
+    Q_D(const QLineEditModel);
+    return d->textLayout.lineAt(0).xToCursor(x, betweenOrOn);
+}
+
+int QLineEditModel::positionToX(int pos) const
+{
+    Q_D(const QLineEditModel);
+    return d->textLayout.lineAt(0).cursorToX(pos);
+}
+
+Qt::LayoutDirection QLineEditModel::layoutDirection() const
+{
+    Q_D(const QLineEditModel);
+    return d->layoutDirection;
+}
+
+void QLineEditModel::setLayoutDirection(Qt::LayoutDirection direction)
+{
+    Q_D(QLineEditModel);
+    if (direction != d->layoutDirection) {
+        d->layoutDirection = direction;
+        d->updateDisplayText();
+    }
+}
+
+int QLineEditModel::start() const
+{
+    return 0;
+}
+
+int QLineEditModel::end() const
+{
+    Q_D(const QLineEditModel);
+    return d->text.length();
+}
+
+/*!
+    \internal
+
+    Fixes the current text so that it is valid given any set validators.
+
+    Returns true if the text was changed.  Otherwise returns false.
+*/
+bool QLineEditModel::fixup() // this function assumes that validate currently returns != Acceptable
+{
+#ifndef QT_NO_VALIDATOR
+    Q_D(QLineEditModel);
+    if (d->validator) {
+        QString textCopy = d->text;
+        int cursorCopy = d->cursor;
+        d->validator->fixup(textCopy);
+        if (d->validator->validate(textCopy, cursorCopy) == QValidator::Acceptable) {
+            if (textCopy != d->text || cursorCopy != d->cursor)
+                d->internalSetText(textCopy, cursorCopy);
+            return true;
+        }
+    }
+#endif
+    return false;
+}
+
+/*!
+    \internal
+
+    Moves the cursor to the given position \a pos.   If \a mark is true will
+    adjust the currently selected text.
+*/
+void QLineEditModel::moveCursor(int pos, bool mark)
+{
+    Q_D(QLineEditModel);
+    if (pos != d->cursor) {
+        d->separate();
+        if (d->maskData)
+            pos = pos > d->cursor ? nextMaskBlank(pos) : prevMaskBlank(pos);
+    }
+    if (mark) {
+        int anchor;
+        if (d->selend > d->selstart && d->cursor == d->selstart)
+            anchor = d->selend;
+        else if (d->selend > d->selstart && d->cursor == d->selend)
+            anchor = d->selstart;
+        else
+            anchor = d->cursor;
+        d->selstart = qMin(anchor, pos);
+        d->selend = qMax(anchor, pos);
+        d->updateDisplayText();
+    } else {
+        d->internalDeselect();
+    }
+    d->cursor = pos;
+    if (mark || d->selDirty) {
+        d->selDirty = false;
+        emit selectionChanged();
+    }
+    d->emitCursorPositionChanged();
+}
+
+void QLineEditModel::moveCursorStart(bool mark)
+{
+    moveCursor(0, mark);
+}
+
+void QLineEditModel::moveCursorEnd(bool mark)
+{
+    moveCursor(text().length(), mark);
+}
+
+void QLineEditModel::cursorForward(bool mark, int steps)
+{
+    Q_D(QLineEditModel);
+    int c = d->cursor;
+    if (steps > 0) {
+        while (steps--)
+            c = d->textLayout.nextCursorPosition(c);
+    } else if (steps < 0) {
+        while (steps++)
+            c = d->textLayout.previousCursorPosition(c);
+    }
+    moveCursor(c, mark);
+}
+
+void QLineEditModel::cursorWordForward(bool mark)
+{
+    Q_D(QLineEditModel);
+    moveCursor(d->textLayout.nextCursorPosition(d->cursor, QTextLayout::SkipWords), mark);
+}
+
+void QLineEditModel::cursorWordBackward(bool mark)
+{
+    Q_D(QLineEditModel);
+    moveCursor(d->textLayout.previousCursorPosition(d->cursor, QTextLayout::SkipWords), mark);
+}
+
+/*!
+    \internal
+
+    Handles the behavior for the backspace key or function.
+    Removes the current selection if there is a selection, otherwise
+    removes the character prior to the cursor position.
+
+    \sa del()
+*/
+void QLineEditModel::backspace()
+{
+    Q_D(QLineEditModel);
+    int priorState = d->undoState;
+    if (hasSelectedText()) {
+        d->removeSelectedText();
+    } else if (d->cursor) {
+            --d->cursor;
+            if (d->maskData)
+                d->cursor = prevMaskBlank(d->cursor);
+            QChar uc = d->text.at(d->cursor);
+            if (d->cursor > 0 && uc.unicode() >= 0xdc00 && uc.unicode() < 0xe000) {
+                // second half of a surrogate, check if we have the first half as well,
+                // if yes delete both at once
+                uc = d->text.at(d->cursor - 1);
+                if (uc.unicode() >= 0xd800 && uc.unicode() < 0xdc00) {
+                    d->internalDelete(true);
+                    --d->cursor;
+                }
+            }
+            d->internalDelete(true);
+    }
+    d->finishChange(priorState);
+}
+
+/*!
+    \internal
+
+    Handles the behavior for the delete key or function.
+    Removes the current selection if there is a selection, otherwise
+    removes the character after the cursor position.
+
+    \sa del()
+*/
+void QLineEditModel::del()
+{
+    Q_D(QLineEditModel);
+    int priorState = d->undoState;
+    if (hasSelectedText()) {
+        d->removeSelectedText();
+    } else {
+        int n = d->textLayout.nextCursorPosition(d->cursor) - d->cursor;
+        while (n--)
+            d->internalDelete();
+    }
+    d->finishChange(priorState);
+}
+
+/*!
+    \internal
+
+    Inserts the given \a newText at the current cursor position.
+    If there is any selected text it is removed prior to insertion of
+    the new text.
+*/
+void QLineEditModel::insert(const QString &newText)
+{
+    Q_D(QLineEditModel);
+    int priorState = d->undoState;
+    d->removeSelectedText();
+    d->internalInsert(newText);
+    d->finishChange(priorState);
+}
+
+/*!
+    \internal
+
+    Clears the line control text.
+*/
+void QLineEditModel::clear()
+{
+    Q_D(QLineEditModel);
+    int priorState = d->undoState;
+    d->selstart = 0;
+    d->selend = d->text.length();
+    d->removeSelectedText();
+    d->separate();
+    d->finishChange(priorState, /*update*/false, /*edited*/false);
+}
+
+void QLineEditModel::undo()
+{
+    Q_D(QLineEditModel);
+    d->internalUndo();
+    d->finishChange(-1, true);
+}
+
+void QLineEditModel::redo()
+{
+    Q_D(QLineEditModel);
+    d->internalRedo();
+    d->finishChange();
+}
+
+void QLineEditModel::selectAll()
+{
+    Q_D(QLineEditModel);
+    d->selstart = d->selend = d->cursor = 0;
+    moveCursor(d->text.length(), true);
+}
+
+void QLineEditModel::deselect()
+{
+    Q_D(QLineEditModel);
+    d->internalDeselect();
+    d->finishChange();
+}
+
+/*!
+    \internal
+
+    Sets the selection to cover the word at the given cursor position.
+    The word boundries is defined by the behavior of QTextLayout::SkipWords
+    cursor mode.
+*/
+void QLineEditModel::selectWordAtPos(int cursor)
+{
+    Q_D(QLineEditModel);
+    int c = d->textLayout.previousCursorPosition(cursor, QTextLayout::SkipWords);
+    moveCursor(c, false);
+    // ## text layout should support end of words.
+    int end = d->textLayout.nextCursorPosition(cursor, QTextLayout::SkipWords);
+    while (end > cursor && d->text[end-1].isSpace())
+        --end;
+    moveCursor(end, true);
+}
+
+void QLineEditModel::removeSelection()
+{
+    Q_D(QLineEditModel);
+    int priorState = d->undoState;
+    d->removeSelectedText();
+    d->finishChange(priorState);
 }
 
 #ifndef QT_NO_CLIPBOARD
@@ -84,15 +671,16 @@ void QLineEditModel::updateDisplayText()
 
     Copies the currently selected text into the clipboard using the given
     \a mode.
-  
+
     \note If the echo mode is set to a mode other than Normal then copy
     will not work.  This is to prevent using copy as a method of bypassing
     password features of the line control.
 */
 void QLineEditModel::copy(QClipboard::Mode mode) const
 {
+    Q_D(const QLineEditModel);
     QString t = selectedText();
-    if (!t.isEmpty() && m_echoMode == QLineEdit::Normal) {
+    if (!t.isEmpty() && d->echoMode == Normal) {
         disconnect(QApplication::clipboard(), SIGNAL(selectionChanged()), this, 0);
         QApplication::clipboard()->setText(t, mode);
         connect(QApplication::clipboard(), SIGNAL(selectionChanged()),
@@ -110,146 +698,31 @@ void QLineEditModel::copy(QClipboard::Mode mode) const
 */
 void QLineEditModel::paste()
 {
+    Q_D(QLineEditModel);
     QString clip = QApplication::clipboard()->text(QClipboard::Clipboard);
     if (!clip.isEmpty() || hasSelectedText()) {
-        separate(); //make it a separate undo/redo command
+        d->separate(); //make it a separate undo/redo command
         insert(clip);
-        separate();
+        d->separate();
     }
 }
 
 #endif // !QT_NO_CLIPBOARD
 
-/*!
-    \internal
 
-    Handles the behavior for the backspace key or function.
-    Removes the current selection if there is a selection, otherwise
-    removes the character prior to the cursor position.
-
-    \sa del()
-*/
-void QLineEditModel::backspace()
-{
-    int priorState = m_undoState;
-    if (hasSelectedText()) {
-        removeSelectedText();
-    } else if (m_cursor) {
-            --m_cursor;
-            if (m_maskData)
-                m_cursor = prevMaskBlank(m_cursor);
-            QChar uc = m_text.at(m_cursor);
-            if (m_cursor > 0 && uc.unicode() >= 0xdc00 && uc.unicode() < 0xe000) {
-                // second half of a surrogate, check if we have the first half as well,
-                // if yes delete both at once
-                uc = m_text.at(m_cursor - 1);
-                if (uc.unicode() >= 0xd800 && uc.unicode() < 0xdc00) {
-                    internalDelete(true);
-                    --m_cursor;
-                }
-            }
-            internalDelete(true);
-    }
-    finishChange(priorState);
-}
-
-/*!
-    \internal
-
-    Handles the behavior for the delete key or function.
-    Removes the current selection if there is a selection, otherwise
-    removes the character after the cursor position.
-
-    \sa del()
-*/
-void QLineEditModel::del()
-{
-    int priorState = m_undoState;
-    if (hasSelectedText()) {
-        removeSelectedText();
-    } else {
-        int n = m_textLayout.nextCursorPosition(m_cursor) - m_cursor;
-        while (n--)
-            internalDelete();
-    }
-    finishChange(priorState);
-}
-
-/*!
-    \internal
-
-    Inserts the given \a newText at the current cursor position.
-    If there is any selected text it is removed prior to insertion of
-    the new text.
-*/
-void QLineEditModel::insert(const QString &newText)
-{
-    int priorState = m_undoState;
-    removeSelectedText();
-    internalInsert(newText);
-    finishChange(priorState);
-}
-
-/*!
-    \internal
-
-    Clears the line control text.
-*/
-void QLineEditModel::clear()
-{
-    int priorState = m_undoState;
-    m_selstart = 0;
-    m_selend = m_text.length();
-    removeSelectedText();
-    separate();
-    finishChange(priorState, /*update*/false, /*edited*/false);
-}
-
-/*!
-    \internal
-
-    Sets \a length characters from the given \a start position as selected.
-    The given \a start position must be within the current text for
-    the line control.  If \a length characters cannot be selected, then
-    the selection will extend to the end of the current text.
-*/
-void QLineEditModel::setSelection(int start, int length)
-{
-    if(start < 0 || start > (int)m_text.length()){
-        qWarning("QLineEditModel::setSelection: Invalid start position");
-        return;
-    }
-
-    if (length > 0) {
-        if (start == m_selstart && start + length == m_selend)
-            return;
-        m_selstart = start;
-        m_selend = qMin(start + length, (int)m_text.length());
-        m_cursor = m_selend;
-    } else {
-        if (start == m_selend && start + length == m_selstart)
-            return;
-        m_selstart = qMax(start + length, 0);
-        m_selend = start;
-        m_cursor = m_selstart;
-    }
-    emit selectionChanged();
-    emitCursorPositionChanged();
-}
-
-void QLineEditModel::_q_clipboardChanged()
+QLineEditModelPrivate::QLineEditModelPrivate(QLineEditModel *qq)
+    : q_ptr(qq), cursor(0), layoutDirection(Qt::LeftToRight),
+      separator(0), dragEnabled(0), echoMode(QLineEditModel::Normal),
+      textDirty(0), selDirty(0), validInput(1), deleteAllTimer(0),
+      ascent(0), maxLength(32767), lastCursorPos(-1),
+      maskData(0), modifiedState(0), undoState(0),
+      selstart(0), selend(0), passwordCharacter('*')
 {
 }
 
-void QLineEditModel::_q_deleteSelected()
+QLineEditModelPrivate::~QLineEditModelPrivate()
 {
-    if (!hasSelectedText())
-        return;
-
-    int priorState = m_undoState;
-    removeSelectedText();
-    separate();
-    finishChange(priorState);
+    delete [] maskData;
 }
 
 /*!
@@ -257,114 +730,58 @@ void QLineEditModel::_q_deleteSelected()
 
     Initializes the line control with a starting text value of \a txt.
 */
-void QLineEditModel::init(const QString &txt)
+void QLineEditModelPrivate::init(const QString &txt)
 {
-    m_text = txt;
+    text = txt;
     updateDisplayText();
-    m_cursor = m_text.length();
+    cursor = text.length();
 }
 
 /*!
     \internal
 
-    Sets the password echo editing to \a editing.  If password echo editing
-    is true, then the text of the password is displayed even if the echo
-    mode is set to QLineEdit::PasswordEchoOnEdit.  Password echoing editing
-    does not affect other echo modes.
+    Updates the display text based of the current edit text
+    If the text has changed will emit displayTextChanged()
 */
-void QLineEditModel::updatePasswordEchoEditing(bool editing)
+void QLineEditModelPrivate::updateDisplayText()
 {
-    m_passwordEchoEditing = editing;
-    updateDisplayText();
-}
+    Q_Q(QLineEditModel);
+    QString orig = textLayout.text();
+    QString str;
+    if (echoMode == QLineEditModel::NoEcho)
+        str = QString::fromLatin1("");
+    else
+        str = text;
 
-/*!
-    \internal
+    if (echoMode == QLineEditModel::Password)
+        str.fill(passwordCharacter);
 
-    Returns the cursor position of the given \a x pixel value in relation
-    to the displayed text.  The given \a betweenOrOn specified what kind
-    of cursor position is requested.
-*/
-int QLineEditModel::xToPos(int x, QTextLine::CursorPosition betweenOrOn) const
-{
-    return m_textLayout.lineAt(0).xToCursor(x, betweenOrOn);
-}
-
-/*!
-    \internal
-
-    Fixes the current text so that it is valid given any set validators.
-
-    Returns true if the text was changed.  Otherwise returns false.
-*/
-bool QLineEditModel::fixup() // this function assumes that validate currently returns != Acceptable
-{
-#ifndef QT_NO_VALIDATOR
-    if (m_validator) {
-        QString textCopy = m_text;
-        int cursorCopy = m_cursor;
-        m_validator->fixup(textCopy);
-        if (m_validator->validate(textCopy, cursorCopy) == QValidator::Acceptable) {
-            if (textCopy != m_text || cursorCopy != m_cursor)
-                internalSetText(textCopy, cursorCopy);
-            return true;
-        }
+    // replace certain non-printable characters with spaces (to avoid
+    // drawing boxes when using fonts that don't have glyphs for such
+    // characters)
+    QChar* uc = str.data();
+    for (int i = 0; i < (int)str.length(); ++i) {
+        if ((uc[i] < 0x20 && uc[i] != 0x09)
+            || uc[i] == QChar::LineSeparator
+            || uc[i] == QChar::ParagraphSeparator
+            || uc[i] == QChar::ObjectReplacementCharacter)
+            uc[i] = QChar(0x0020);
     }
-#endif
-    return false;
-}
 
-/*!
-    \internal
+    textLayout.setText(str);
 
-    Moves the cursor to the given position \a pos.   If \a mark is true will
-    adjust the currently selected text.
-*/
-void QLineEditModel::moveCursor(int pos, bool mark)
-{
-    if (pos != m_cursor) {
-        separate();
-        if (m_maskData)
-            pos = pos > m_cursor ? nextMaskBlank(pos) : prevMaskBlank(pos);
-    }
-    if (mark) {
-        int anchor;
-        if (m_selend > m_selstart && m_cursor == m_selstart)
-            anchor = m_selend;
-        else if (m_selend > m_selstart && m_cursor == m_selend)
-            anchor = m_selstart;
-        else
-            anchor = m_cursor;
-        m_selstart = qMin(anchor, pos);
-        m_selend = qMax(anchor, pos);
-        updateDisplayText();
-    } else {
-        internalDeselect();
-    }
-    m_cursor = pos;
-    if (mark || m_selDirty) {
-        m_selDirty = false;
-        emit selectionChanged();
-    }
-    emitCursorPositionChanged();
-}
+    QTextOption option;
+    option.setTextDirection(layoutDirection);
+    option.setFlags(QTextOption::IncludeTrailingSpaces);
+    textLayout.setTextOption(option);
 
-/*!
-    \internal
+    textLayout.beginLayout();
+    QTextLine l = textLayout.createLine();
+    textLayout.endLayout();
+    ascent = qRound(l.ascent());
 
-    Sets the selection to cover the word at the given cursor position.
-    The word boundries is defined by the behavior of QTextLayout::SkipWords
-    cursor mode.
-*/
-void QLineEditModel::selectWordAtPos(int cursor)
-{
-    int c = m_textLayout.previousCursorPosition(cursor, QTextLayout::SkipWords);
-    moveCursor(c, false);
-    // ## text layout should support end of words.
-    int end = m_textLayout.nextCursorPosition(cursor, QTextLayout::SkipWords);
-    while (end > cursor && m_text[end-1].isSpace())
-        --end;
-    moveCursor(end, true);
+    if (str != orig)
+        emit q->displayTextChanged(str);
 }
 
 /*!
@@ -379,52 +796,53 @@ void QLineEditModel::selectWordAtPos(int cursor)
 
     The \a update value is currently unused.
 */
-bool QLineEditModel::finishChange(int validateFromState, bool update, bool edited)
+bool QLineEditModelPrivate::finishChange(int validateFromState, bool update, bool edited)
 {
-    Q_UNUSED(update)
-    bool lineDirty = m_selDirty;
-    if (m_textDirty) {
+    Q_Q(QLineEditModel);
+    Q_UNUSED(update);
+    bool lineDirty = selDirty;
+    if (textDirty) {
         // do validation
-        bool wasValidInput = m_validInput;
-        m_validInput = true;
+        bool wasValidInput = validInput;
+        validInput = true;
 #ifndef QT_NO_VALIDATOR
-        if (m_validator) {
-            m_validInput = false;
-            QString textCopy = m_text;
-            int cursorCopy = m_cursor;
-            m_validInput = (m_validator->validate(textCopy, cursorCopy) != QValidator::Invalid);
-            if (m_validInput) {
-                if (m_text != textCopy) {
+        if (validator) {
+            validInput = false;
+            QString textCopy = text;
+            int cursorCopy = cursor;
+            validInput = (validator->validate(textCopy, cursorCopy) != QValidator::Invalid);
+            if (validInput) {
+                if (text != textCopy) {
                     internalSetText(textCopy, cursorCopy);
                     return true;
                 }
-                m_cursor = cursorCopy;
+                cursor = cursorCopy;
             }
         }
 #endif
-        if (validateFromState >= 0 && wasValidInput && !m_validInput) {
-            if (m_transactions.count())
+        if (validateFromState >= 0 && wasValidInput && !validInput) {
+            if (transactions.count())
                 return false;
             internalUndo(validateFromState);
-            m_history.resize(m_undoState);
-            if (m_modifiedState > m_undoState)
-                m_modifiedState = -1;
-            m_validInput = true;
-            m_textDirty = false;
+            history.resize(undoState);
+            if (modifiedState > undoState)
+                modifiedState = -1;
+            validInput = true;
+            textDirty = false;
         }
         updateDisplayText();
-        lineDirty |= m_textDirty;
-        if (m_textDirty) {
-            m_textDirty = false;
-            QString actualText = text();
+        lineDirty |= textDirty;
+        if (textDirty) {
+            textDirty = false;
+            QString actualText = q->text();
             if (edited)
-                emit textEdited(actualText);
-            emit textChanged(actualText);
+                emit q->textEdited(actualText);
+            emit q->textChanged(actualText);
         }
     }
-    if (m_selDirty) {
-        m_selDirty = false;
-        emit selectionChanged();
+    if (selDirty) {
+        selDirty = false;
+        emit q->selectionChanged();
     }
     emitCursorPositionChanged();
     return true;
@@ -435,20 +853,20 @@ bool QLineEditModel::finishChange(int validateFromState, bool update, bool edite
 
     An internal function for setting the text of the line control.
 */
-void QLineEditModel::internalSetText(const QString &txt, int pos, bool edited)
+void QLineEditModelPrivate::internalSetText(const QString &txt, int pos, bool edited)
 {
     internalDeselect();
-    QString oldText = m_text;
-    if (m_maskData) {
-        m_text = maskString(0, txt, true);
-        m_text += clearString(m_text.length(), m_maxLength - m_text.length());
+    QString oldText = text;
+    if (maskData) {
+        text = maskString(0, txt, true);
+        text += clearString(text.length(), maxLength - text.length());
     } else {
-        m_text = txt.isEmpty() ? txt : txt.left(m_maxLength);
+        text = txt.isEmpty() ? txt : txt.left(maxLength);
     }
-    m_history.clear();
-    m_modifiedState =  m_undoState = 0;
-    m_cursor = (pos < 0 || pos > m_text.length()) ? m_text.length() : pos;
-    m_textDirty = (oldText != m_text);
+    history.clear();
+    modifiedState =  undoState = 0;
+    cursor = (pos < 0 || pos > text.length()) ? text.length() : pos;
+    textDirty = (oldText != text);
     finishChange(-1, true, edited);
 }
 
@@ -459,16 +877,16 @@ void QLineEditModel::internalSetText(const QString &txt, int pos, bool edited)
     Adds the given \a command to the undo history
     of the line control.  Does not apply the command.
 */
-void QLineEditModel::addCommand(const Command &cmd)
+void QLineEditModelPrivate::addCommand(const Command &cmd)
 {
-    if (m_separator && m_undoState && m_history[m_undoState - 1].type != Separator) {
-        m_history.resize(m_undoState + 2);
-        m_history[m_undoState++] = Command(Separator, m_cursor, 0, m_selstart, m_selend);
+    if (separator && undoState && history[undoState - 1].type != Separator) {
+        history.resize(undoState + 2);
+        history[undoState++] = Command(Separator, cursor, 0, selstart, selend);
     } else {
-        m_history.resize(m_undoState + 1);
+        history.resize(undoState + 1);
     }
-    m_separator = false;
-    m_history[m_undoState++] = cmd;
+    separator = false;
+    history[undoState++] = cmd;
 }
 
 /*!
@@ -481,27 +899,28 @@ void QLineEditModel::addCommand(const Command &cmd)
     This function does not call finishChange(), and may leave the text
     in an invalid state.
 */
-void QLineEditModel::internalInsert(const QString &s)
+void QLineEditModelPrivate::internalInsert(const QString &s)
 {
-    if (hasSelectedText())
-        addCommand(Command(SetSelection, m_cursor, 0, m_selstart, m_selend));
-    if (m_maskData) {
-        QString ms = maskString(m_cursor, s);
+    Q_Q(QLineEditModel);
+    if (q->hasSelectedText())
+        addCommand(Command(SetSelection, cursor, 0, selstart, selend));
+    if (maskData) {
+        QString ms = maskString(cursor, s);
         for (int i = 0; i < (int) ms.length(); ++i) {
-            addCommand (Command(DeleteSelection, m_cursor + i, m_text.at(m_cursor + i), -1, -1));
-            addCommand(Command(Insert, m_cursor + i, ms.at(i), -1, -1));
+            addCommand (Command(DeleteSelection, cursor + i, text.at(cursor + i), -1, -1));
+            addCommand(Command(Insert, cursor + i, ms.at(i), -1, -1));
         }
-        m_text.replace(m_cursor, ms.length(), ms);
-        m_cursor += ms.length();
-        m_cursor = nextMaskBlank(m_cursor);
-        m_textDirty = true;
+        text.replace(cursor, ms.length(), ms);
+        cursor += ms.length();
+        cursor = q->nextMaskBlank(cursor);
+        textDirty = true;
     } else {
-        int remaining = m_maxLength - m_text.length();
+        int remaining = maxLength - text.length();
         if (remaining != 0) {
-            m_text.insert(m_cursor, s.left(remaining));
+            text.insert(cursor, s.left(remaining));
             for (int i = 0; i < (int) s.left(remaining).length(); ++i)
-               addCommand(Command(Insert, m_cursor++, s.at(i), -1, -1));
-            m_textDirty = true;
+               addCommand(Command(Insert, cursor++, s.at(i), -1, -1));
+            textDirty = true;
         }
     }
 }
@@ -517,20 +936,21 @@ void QLineEditModel::internalInsert(const QString &s)
     This function does not call finishChange(), and may leave the text
     in an invalid state.
 */
-void QLineEditModel::internalDelete(bool wasBackspace)
+void QLineEditModelPrivate::internalDelete(bool wasBackspace)
 {
-    if (m_cursor < (int) m_text.length()) {
-        if (hasSelectedText())
-            addCommand(Command(SetSelection, m_cursor, 0, m_selstart, m_selend));
-        addCommand(Command((CommandType)((m_maskData ? 2 : 0) + (wasBackspace ? Remove : Delete)),
-                   m_cursor, m_text.at(m_cursor), -1, -1));
-        if (m_maskData) {
-            m_text.replace(m_cursor, 1, clearString(m_cursor, 1));
-            addCommand(Command(Insert, m_cursor, m_text.at(m_cursor), -1, -1));
+    Q_Q(QLineEditModel);
+    if (cursor < (int) text.length()) {
+        if (q->hasSelectedText())
+            addCommand(Command(SetSelection, cursor, 0, selstart, selend));
+        addCommand(Command((CommandType)((maskData ? 2 : 0) + (wasBackspace ? Remove : Delete)),
+                   cursor, text.at(cursor), -1, -1));
+        if (maskData) {
+            text.replace(cursor, 1, clearString(cursor, 1));
+            addCommand(Command(Insert, cursor, text.at(cursor), -1, -1));
         } else {
-            m_text.remove(m_cursor, 1);
+            text.remove(cursor, 1);
         }
-        m_textDirty = true;
+        textDirty = true;
     }
 }
 
@@ -543,34 +963,34 @@ void QLineEditModel::internalDelete(bool wasBackspace)
     This function does not call finishChange(), and may leave the text
     in an invalid state.
 */
-void QLineEditModel::removeSelectedText()
+void QLineEditModelPrivate::removeSelectedText()
 {
-    if (m_selstart < m_selend && m_selend <= (int) m_text.length()) {
+    if (selstart < selend && selend <= (int) text.length()) {
         separate();
         int i ;
-        addCommand(Command(SetSelection, m_cursor, 0, m_selstart, m_selend));
-        if (m_selstart <= m_cursor && m_cursor < m_selend) {
+        addCommand(Command(SetSelection, cursor, 0, selstart, selend));
+        if (selstart <= cursor && cursor < selend) {
             // cursor is within the selection. Split up the commands
             // to be able to restore the correct cursor position
-            for (i = m_cursor; i >= m_selstart; --i)
-                addCommand (Command(DeleteSelection, i, m_text.at(i), -1, 1));
-            for (i = m_selend - 1; i > m_cursor; --i)
-                addCommand (Command(DeleteSelection, i - m_cursor + m_selstart - 1, m_text.at(i), -1, -1));
+            for (i = cursor; i >= selstart; --i)
+                addCommand (Command(DeleteSelection, i, text.at(i), -1, 1));
+            for (i = selend - 1; i > cursor; --i)
+                addCommand (Command(DeleteSelection, i - cursor + selstart - 1, text.at(i), -1, -1));
         } else {
-            for (i = m_selend-1; i >= m_selstart; --i)
-                addCommand (Command(RemoveSelection, i, m_text.at(i), -1, -1));
+            for (i = selend-1; i >= selstart; --i)
+                addCommand (Command(RemoveSelection, i, text.at(i), -1, -1));
         }
-        if (m_maskData) {
-            m_text.replace(m_selstart, m_selend - m_selstart,  clearString(m_selstart, m_selend - m_selstart));
-            for (int i = 0; i < m_selend - m_selstart; ++i)
-                addCommand(Command(Insert, m_selstart + i, m_text.at(m_selstart + i), -1, -1));
+        if (maskData) {
+            text.replace(selstart, selend - selstart,  clearString(selstart, selend - selstart));
+            for (int i = 0; i < selend - selstart; ++i)
+                addCommand(Command(Insert, selstart + i, text.at(selstart + i), -1, -1));
         } else {
-            m_text.remove(m_selstart, m_selend - m_selstart);
+            text.remove(selstart, selend - selstart);
         }
-        if (m_cursor > m_selstart)
-            m_cursor -= qMin(m_cursor, m_selend) - m_selstart;
+        if (cursor > selstart)
+            cursor -= qMin(cursor, selend) - selstart;
         internalDeselect();
-        m_textDirty = true;
+        textDirty = true;
     }
 }
 
@@ -580,58 +1000,58 @@ void QLineEditModel::removeSelectedText()
     Parses the input mask specified by \a maskFields to generate
     the mask data used to handle input masks.
 */
-void QLineEditModel::parseInputMask(const QString &maskFields)
+void QLineEditModelPrivate::parseInputMask(const QString &maskFields)
 {
     int delimiter = maskFields.indexOf(QLatin1Char(';'));
     if (maskFields.isEmpty() || delimiter == 0) {
-        if (m_maskData) {
-            delete [] m_maskData;
-            m_maskData = 0;
-            m_maxLength = 32767;
+        if (maskData) {
+            delete [] maskData;
+            maskData = 0;
+            maxLength = 32767;
             internalSetText(QString());
         }
         return;
     }
 
     if (delimiter == -1) {
-        m_blank = QLatin1Char(' ');
-        m_inputMask = maskFields;
+        blank = QLatin1Char(' ');
+        inputMask = maskFields;
     } else {
-        m_inputMask = maskFields.left(delimiter);
-        m_blank = (delimiter + 1 < maskFields.length()) ? maskFields[delimiter + 1] : QLatin1Char(' ');
+        inputMask = maskFields.left(delimiter);
+        blank = (delimiter + 1 < maskFields.length()) ? maskFields[delimiter + 1] : QLatin1Char(' ');
     }
 
-    // calculate m_maxLength / m_maskData length
-    m_maxLength = 0;
+    // calculate maxLength / maskData length
+    maxLength = 0;
     QChar c = 0;
-    for (int i=0; i<m_inputMask.length(); i++) {
-        c = m_inputMask.at(i);
-        if (i > 0 && m_inputMask.at(i-1) == QLatin1Char('\\')) {
-            m_maxLength++;
+    for (int i=0; i<inputMask.length(); i++) {
+        c = inputMask.at(i);
+        if (i > 0 && inputMask.at(i-1) == QLatin1Char('\\')) {
+            maxLength++;
             continue;
         }
         if (c != QLatin1Char('\\') && c != QLatin1Char('!') &&
              c != QLatin1Char('<') && c != QLatin1Char('>') &&
              c != QLatin1Char('{') && c != QLatin1Char('}') &&
              c != QLatin1Char('[') && c != QLatin1Char(']'))
-            m_maxLength++;
+            maxLength++;
     }
 
-    delete [] m_maskData;
-    m_maskData = new MaskInputData[m_maxLength];
+    delete [] maskData;
+    maskData = new MaskInputData[maxLength];
 
     MaskInputData::Casemode m = MaskInputData::NoCaseMode;
     c = 0;
     bool s;
     bool escape = false;
     int index = 0;
-    for (int i = 0; i < m_inputMask.length(); i++) {
-        c = m_inputMask.at(i);
+    for (int i = 0; i < inputMask.length(); i++) {
+        c = inputMask.at(i);
         if (escape) {
             s = true;
-            m_maskData[index].maskChar = c;
-            m_maskData[index].separator = s;
-            m_maskData[index].caseMode = m;
+            maskData[index].maskChar = c;
+            maskData[index].separator = s;
+            maskData[index].caseMode = m;
             index++;
             escape = false;
         } else if (c == QLatin1Char('<')) {
@@ -667,14 +1087,14 @@ void QLineEditModel::parseInputMask(const QString &maskFields)
             }
 
             if (!escape) {
-                m_maskData[index].maskChar = c;
-                m_maskData[index].separator = s;
-                m_maskData[index].caseMode = m;
+                maskData[index].maskChar = c;
+                maskData[index].separator = s;
+                maskData[index].caseMode = m;
                 index++;
             }
         }
     }
-    internalSetText(m_text);
+    internalSetText(text);
 }
 
 
@@ -683,7 +1103,7 @@ void QLineEditModel::parseInputMask(const QString &maskFields)
 
     checks if the key is valid compared to the inputMask
 */
-bool QLineEditModel::isValidInput(QChar key, QChar mask) const
+bool QLineEditModelPrivate::isValidInput(QChar key, QChar mask) const
 {
     switch (mask.unicode()) {
     case 'A':
@@ -691,7 +1111,7 @@ bool QLineEditModel::isValidInput(QChar key, QChar mask) const
             return true;
         break;
     case 'a':
-        if (key.isLetter() || key == m_blank)
+        if (key.isLetter() || key == blank)
             return true;
         break;
     case 'N':
@@ -699,7 +1119,7 @@ bool QLineEditModel::isValidInput(QChar key, QChar mask) const
             return true;
         break;
     case 'n':
-        if (key.isLetterOrNumber() || key == m_blank)
+        if (key.isLetterOrNumber() || key == blank)
             return true;
         break;
     case 'X':
@@ -707,7 +1127,7 @@ bool QLineEditModel::isValidInput(QChar key, QChar mask) const
             return true;
         break;
     case 'x':
-        if (key.isPrint() || key == m_blank)
+        if (key.isPrint() || key == blank)
             return true;
         break;
     case '9':
@@ -715,7 +1135,7 @@ bool QLineEditModel::isValidInput(QChar key, QChar mask) const
             return true;
         break;
     case '0':
-        if (key.isNumber() || key == m_blank)
+        if (key.isNumber() || key == blank)
             return true;
         break;
     case 'D':
@@ -723,11 +1143,11 @@ bool QLineEditModel::isValidInput(QChar key, QChar mask) const
             return true;
         break;
     case 'd':
-        if ((key.isNumber() && key.digitValue() > 0) || key == m_blank)
+        if ((key.isNumber() && key.digitValue() > 0) || key == blank)
             return true;
         break;
     case '#':
-        if (key.isNumber() || key == QLatin1Char('+') || key == QLatin1Char('-') || key == m_blank)
+        if (key.isNumber() || key == QLatin1Char('+') || key == QLatin1Char('-') || key == blank)
             return true;
         break;
     case 'B':
@@ -735,7 +1155,7 @@ bool QLineEditModel::isValidInput(QChar key, QChar mask) const
             return true;
         break;
     case 'b':
-        if (key == QLatin1Char('0') || key == QLatin1Char('1') || key == m_blank)
+        if (key == QLatin1Char('0') || key == QLatin1Char('1') || key == blank)
             return true;
         break;
     case 'H':
@@ -743,7 +1163,7 @@ bool QLineEditModel::isValidInput(QChar key, QChar mask) const
             return true;
         break;
     case 'h':
-        if (key.isNumber() || (key >= QLatin1Char('a') && key <= QLatin1Char('f')) || (key >= QLatin1Char('A') && key <= QLatin1Char('F')) || key == m_blank)
+        if (key.isNumber() || (key >= QLatin1Char('a') && key <= QLatin1Char('f')) || (key >= QLatin1Char('A') && key <= QLatin1Char('F')) || key == blank)
             return true;
         break;
     default:
@@ -760,28 +1180,28 @@ bool QLineEditModel::isValidInput(QChar key, QChar mask) const
 
     Otherwise returns false
 */
-bool QLineEditModel::hasAcceptableInput(const QString &str) const
+bool QLineEditModelPrivate::hasAcceptableInput(const QString &str) const
 {
 #ifndef QT_NO_VALIDATOR
     QString textCopy = str;
-    int cursorCopy = m_cursor;
-    if (m_validator && m_validator->validate(textCopy, cursorCopy)
+    int cursorCopy = cursor;
+    if (validator && validator->validate(textCopy, cursorCopy)
         != QValidator::Acceptable)
         return false;
 #endif
 
-    if (!m_maskData)
+    if (!maskData)
         return true;
 
-    if (str.length() != m_maxLength)
+    if (str.length() != maxLength)
         return false;
 
-    for (int i=0; i < m_maxLength; ++i) {
-        if (m_maskData[i].separator) {
-            if (str.at(i) != m_maskData[i].maskChar)
+    for (int i=0; i < maxLength; ++i) {
+        if (maskData[i].separator) {
+            if (str.at(i) != maskData[i].maskChar)
                 return false;
         } else {
-            if (!isValidInput(str.at(i), m_maskData[i].maskChar))
+            if (!isValidInput(str.at(i), maskData[i].maskChar))
                 return false;
         }
     }
@@ -796,27 +1216,27 @@ bool QLineEditModel::hasAcceptableInput(const QString &str) const
     that blanks will be used, false that previous input is used.
     Calling this when no inputMask is set is undefined.
 */
-QString QLineEditModel::maskString(uint pos, const QString &str, bool clear) const
+QString QLineEditModelPrivate::maskString(uint pos, const QString &str, bool clear) const
 {
-    if (pos >= (uint)m_maxLength)
+    if (pos >= (uint)maxLength)
         return QString::fromLatin1("");
 
     QString fill;
-    fill = clear ? clearString(0, m_maxLength) : m_text;
+    fill = clear ? clearString(0, maxLength) : text;
 
     int strIndex = 0;
     QString s = QString::fromLatin1("");
     int i = pos;
-    while (i < m_maxLength) {
+    while (i < maxLength) {
         if (strIndex < str.length()) {
-            if (m_maskData[i].separator) {
-                s += m_maskData[i].maskChar;
-                if (str[(int)strIndex] == m_maskData[i].maskChar)
+            if (maskData[i].separator) {
+                s += maskData[i].maskChar;
+                if (str[(int)strIndex] == maskData[i].maskChar)
                     strIndex++;
                 ++i;
             } else {
-                if (isValidInput(str[(int)strIndex], m_maskData[i].maskChar)) {
-                    switch (m_maskData[i].caseMode) {
+                if (isValidInput(str[(int)strIndex], maskData[i].maskChar)) {
+                    switch (maskData[i].caseMode) {
                     case MaskInputData::Upper:
                         s += str[(int)strIndex].toUpper();
                         break;
@@ -831,16 +1251,16 @@ QString QLineEditModel::maskString(uint pos, const QString &str, bool clear) con
                     // search for separator first
                     int n = findInMask(i, true, true, str[(int)strIndex]);
                     if (n != -1) {
-                        if (str.length() != 1 || i == 0 || (i > 0 && (!m_maskData[i-1].separator || m_maskData[i-1].maskChar != str[(int)strIndex]))) {
+                        if (str.length() != 1 || i == 0 || (i > 0 && (!maskData[i-1].separator || maskData[i-1].maskChar != str[(int)strIndex]))) {
                             s += fill.mid(i, n-i+1);
                             i = n + 1; // update i to find + 1
                         }
                     } else {
-                        // search for valid m_blank if not
+                        // search for valid blank if not
                         n = findInMask(i, true, false, str[(int)strIndex]);
                         if (n != -1) {
                             s += fill.mid(i, n-i);
-                            switch (m_maskData[n].caseMode) {
+                            switch (maskData[n].caseMode) {
                             case MaskInputData::Upper:
                                 s += str[(int)strIndex].toUpper();
                                 break;
@@ -871,18 +1291,18 @@ QString QLineEditModel::maskString(uint pos, const QString &str, bool clear) con
     Returns a "cleared" string with only separators and blank chars.
     Calling this when no inputMask is set is undefined.
 */
-QString QLineEditModel::clearString(uint pos, uint len) const
+QString QLineEditModelPrivate::clearString(uint pos, uint len) const
 {
-    if (pos >= (uint)m_maxLength)
+    if (pos >= (uint)maxLength)
         return QString();
 
     QString s;
-    int end = qMin((uint)m_maxLength, pos + len);
+    int end = qMin((uint)maxLength, pos + len);
     for (int i = pos; i < end; ++i)
-        if (m_maskData[i].separator)
-            s += m_maskData[i].maskChar;
+        if (maskData[i].separator)
+            s += maskData[i].maskChar;
         else
-            s += m_blank;
+            s += blank;
 
     return s;
 }
@@ -893,18 +1313,18 @@ QString QLineEditModel::clearString(uint pos, uint len) const
     Strips blank parts of the input in a QLineEditModel when an inputMask is set,
     separators are still included. Typically "127.0__.0__.1__" becomes "127.0.0.1".
 */
-QString QLineEditModel::stripString(const QString &str) const
+QString QLineEditModelPrivate::stripString(const QString &str) const
 {
-    if (!m_maskData)
+    if (!maskData)
         return str;
 
     QString s;
-    int end = qMin(m_maxLength, (int)str.length());
+    int end = qMin(maxLength, (int)str.length());
     for (int i = 0; i < end; ++i)
-        if (m_maskData[i].separator)
-            s += m_maskData[i].maskChar;
+        if (maskData[i].separator)
+            s += maskData[i].maskChar;
         else
-            if (str[i] != m_blank)
+            if (str[i] != blank)
                 s += str[i];
 
     return s;
@@ -912,26 +1332,26 @@ QString QLineEditModel::stripString(const QString &str) const
 
 /*!
     \internal
-    searches forward/backward in m_maskData for either a separator or a m_blank
+    searches forward/backward in d->maskData for either a separator or a d->blank
 */
-int QLineEditModel::findInMask(int pos, bool forward, bool findSeparator, QChar searchChar) const
+int QLineEditModelPrivate::findInMask(int pos, bool forward, bool findSeparator, QChar searchChar) const
 {
-    if (pos >= m_maxLength || pos < 0)
+    if (pos >= maxLength || pos < 0)
         return -1;
 
-    int end = forward ? m_maxLength : -1;
+    int end = forward ? maxLength : -1;
     int step = forward ? 1 : -1;
     int i = pos;
 
     while (i != end) {
         if (findSeparator) {
-            if (m_maskData[i].separator && m_maskData[i].maskChar == searchChar)
+            if (maskData[i].separator && maskData[i].maskChar == searchChar)
                 return i;
         } else {
-            if (!m_maskData[i].separator) {
+            if (!maskData[i].separator) {
                 if (searchChar.isNull())
                     return i;
-                else if (isValidInput(searchChar, m_maskData[i].maskChar))
+                else if (isValidInput(searchChar, maskData[i].maskChar))
                     return i;
             }
         }
@@ -940,87 +1360,89 @@ int QLineEditModel::findInMask(int pos, bool forward, bool findSeparator, QChar 
     return -1;
 }
 
-void QLineEditModel::internalUndo(int until)
+void QLineEditModelPrivate::internalUndo(int until)
 {
-    if (!isUndoAvailable())
+    Q_Q(QLineEditModel);
+    if (!q->isUndoAvailable())
         return;
     internalDeselect();
-    while (m_undoState && m_undoState > until) {
-        Command& cmd = m_history[--m_undoState];
+    while (undoState && undoState > until) {
+        Command& cmd = history[--undoState];
         switch (cmd.type) {
         case Insert:
-            m_text.remove(cmd.pos, 1);
-            m_cursor = cmd.pos;
+            text.remove(cmd.pos, 1);
+            cursor = cmd.pos;
             break;
         case SetSelection:
-            m_selstart = cmd.selStart;
-            m_selend = cmd.selEnd;
-            m_cursor = cmd.pos;
+            selstart = cmd.selStart;
+            selend = cmd.selEnd;
+            cursor = cmd.pos;
             break;
         case Remove:
         case RemoveSelection:
-            m_text.insert(cmd.pos, cmd.uc);
-            m_cursor = cmd.pos + 1;
+            text.insert(cmd.pos, cmd.uc);
+            cursor = cmd.pos + 1;
             break;
         case Delete:
         case DeleteSelection:
-            m_text.insert(cmd.pos, cmd.uc);
-            m_cursor = cmd.pos;
+            text.insert(cmd.pos, cmd.uc);
+            cursor = cmd.pos;
             break;
         case Separator:
             continue;
         }
-        if (until < 0 && m_undoState) {
-            Command& next = m_history[m_undoState-1];
+        if (until < 0 && undoState) {
+            Command& next = history[undoState-1];
             if (next.type != cmd.type && next.type < RemoveSelection
                  && (cmd.type < RemoveSelection || next.type == Separator))
                 break;
         }
     }
-    m_textDirty = true;
+    textDirty = true;
     emitCursorPositionChanged();
 }
 
-void QLineEditModel::internalRedo()
+void QLineEditModelPrivate::internalRedo()
 {
-    if (!isRedoAvailable())
+    Q_Q(QLineEditModel);
+    if (!q->isRedoAvailable())
         return;
     internalDeselect();
-    while (m_undoState < (int)m_history.size()) {
-        Command& cmd = m_history[m_undoState++];
+    while (undoState < (int)history.size()) {
+        Command& cmd = history[undoState++];
         switch (cmd.type) {
         case Insert:
-            m_text.insert(cmd.pos, cmd.uc);
-            m_cursor = cmd.pos + 1;
+            text.insert(cmd.pos, cmd.uc);
+            cursor = cmd.pos + 1;
             break;
         case SetSelection:
-            m_selstart = cmd.selStart;
-            m_selend = cmd.selEnd;
-            m_cursor = cmd.pos;
+            selstart = cmd.selStart;
+            selend = cmd.selEnd;
+            cursor = cmd.pos;
             break;
         case Remove:
         case Delete:
         case RemoveSelection:
         case DeleteSelection:
-            m_text.remove(cmd.pos, 1);
-            m_selstart = cmd.selStart;
-            m_selend = cmd.selEnd;
-            m_cursor = cmd.pos;
+            text.remove(cmd.pos, 1);
+            selstart = cmd.selStart;
+            selend = cmd.selEnd;
+            cursor = cmd.pos;
             break;
         case Separator:
-            m_selstart = cmd.selStart;
-            m_selend = cmd.selEnd;
-            m_cursor = cmd.pos;
+            selstart = cmd.selStart;
+            selend = cmd.selEnd;
+            cursor = cmd.pos;
             break;
         }
-        if (m_undoState < (int)m_history.size()) {
-            Command& next = m_history[m_undoState];
+        if (undoState < (int)history.size()) {
+            Command& next = history[undoState];
             if (next.type != cmd.type && cmd.type < RemoveSelection && next.type != Separator
                  && (next.type < RemoveSelection || cmd.type == Separator))
                 break;
         }
     }
-    m_textDirty = true;
+    textDirty = true;
     emitCursorPositionChanged();
 }
 
@@ -1030,17 +1452,38 @@ void QLineEditModel::internalRedo()
     If the current cursor position differs from the last emited cursor
     position, emits cursorPositionChanged().
 */
-void QLineEditModel::emitCursorPositionChanged()
+void QLineEditModelPrivate::emitCursorPositionChanged()
 {
-    if (m_cursor != m_lastCursorPos) {
-        const int oldLast = m_lastCursorPos;
-        m_lastCursorPos = m_cursor;
-        cursorPositionChanged(oldLast, m_cursor);
+    Q_Q(QLineEditModel);
+    if (cursor != lastCursorPos) {
+        const int oldLast = lastCursorPos;
+        lastCursorPos = cursor;
+        emit q->cursorPositionChanged(oldLast, cursor);
     }
 }
 
+void QLineEditModelPrivate::_q_clipboardChanged()
+{
+}
+
+void QLineEditModelPrivate::_q_deleteSelected()
+{
+    Q_Q(QLineEditModel);
+    if (!q->hasSelectedText())
+        return;
+
+    int priorState = undoState;
+    removeSelectedText();
+    separate();
+    finishChange(priorState);
+}
+
+
+
+////////////////////////////////////
+
 QLineEditEventHelper::QLineEditEventHelper(QDeclarativeItem *parent)
-    : QDeclarativeItem(parent), m_model(0)
+    : QDeclarativeItem(parent), m_model(0), m_readOnly(false)
 {
 }
 
@@ -1061,32 +1504,17 @@ void QLineEditEventHelper::keyPressEvent(QKeyEvent *event)
         return;
     }
 
-    // ### ???
-    if (m_model->echoMode() == QLineEdit::PasswordEchoOnEdit
-        && !m_model->passwordEchoEditing()
-        && !m_model->isReadOnly()
-        && !event->text().isEmpty()
-        && !(event->modifiers() & Qt::ControlModifier)) {
-        // Clear the edit and reset to normal echo mode while editing; the
-        // echo mode switches back when the edit loses focus
-        // ### resets current content.  dubious code; you can
-        // navigate with keys up, down, back, and select(?), but if you press
-        // "left" or "right" it clears?
-        m_model->updatePasswordEchoEditing(true);
-        m_model->clear();
-    }
-
     bool unknown = false;
 
     if (false) {
     }
 #ifndef QT_NO_SHORTCUT
     else if (event == QKeySequence::Undo) {
-        if (!m_model->isReadOnly())
+        if (!m_readOnly)
             m_model->undo();
     }
     else if (event == QKeySequence::Redo) {
-        if (!m_model->isReadOnly())
+        if (!m_readOnly)
             m_model->redo();
     }
     else if (event == QKeySequence::SelectAll) {
@@ -1097,17 +1525,17 @@ void QLineEditEventHelper::keyPressEvent(QKeyEvent *event)
         m_model->copy();
     }
     else if (event == QKeySequence::Paste) {
-        if (!m_model->isReadOnly())
+        if (!m_readOnly)
             m_model->paste();
     }
     else if (event == QKeySequence::Cut) {
-        if (!m_model->isReadOnly()) {
+        if (!m_readOnly) {
             m_model->copy();
             m_model->del();
         }
     }
     else if (event == QKeySequence::DeleteEndOfLine) {
-        if (!m_model->isReadOnly()) {
+        if (!m_readOnly) {
             m_model->setSelection(m_model->cursorPosition(), m_model->end());
             m_model->copy();
             m_model->del();
@@ -1115,16 +1543,16 @@ void QLineEditEventHelper::keyPressEvent(QKeyEvent *event)
     }
 #endif //QT_NO_CLIPBOARD
     else if (event == QKeySequence::MoveToStartOfLine || event == QKeySequence::MoveToStartOfBlock) {
-        m_model->home(0);
+        m_model->moveCursorStart(0);
     }
     else if (event == QKeySequence::MoveToEndOfLine || event == QKeySequence::MoveToEndOfBlock) {
-        m_model->end(0);
+        m_model->moveCursorEnd(0);
     }
     else if (event == QKeySequence::SelectStartOfLine || event == QKeySequence::SelectStartOfBlock) {
-        m_model->home(1);
+        m_model->moveCursorStart(1);
     }
     else if (event == QKeySequence::SelectEndOfLine || event == QKeySequence::SelectEndOfBlock) {
-        m_model->end(1);
+        m_model->moveCursorEnd(1);
     }
     else if (event == QKeySequence::MoveToNextChar) {
         if (m_model->hasSelectedText()) {
@@ -1147,42 +1575,42 @@ void QLineEditEventHelper::keyPressEvent(QKeyEvent *event)
         m_model->cursorForward(1, m_model->layoutDirection() == Qt::LeftToRight ? -1 : 1);
     }
     else if (event == QKeySequence::MoveToNextWord) {
-        if (m_model->echoMode() == QLineEdit::Normal)
+        if (m_model->echoMode() == QLineEditModel::Normal)
             m_model->layoutDirection() == Qt::LeftToRight ? m_model->cursorWordForward(0) : m_model->cursorWordBackward(0);
         else
-            m_model->layoutDirection() == Qt::LeftToRight ? m_model->end(0) : m_model->home(0);
+            m_model->layoutDirection() == Qt::LeftToRight ? m_model->moveCursorEnd(0) : m_model->moveCursorStart(0);
     }
     else if (event == QKeySequence::MoveToPreviousWord) {
-        if (m_model->echoMode() == QLineEdit::Normal)
+        if (m_model->echoMode() == QLineEditModel::Normal)
             m_model->layoutDirection() == Qt::LeftToRight ? m_model->cursorWordBackward(0) : m_model->cursorWordForward(0);
-        else if (!m_model->isReadOnly()) {
-            m_model->layoutDirection() == Qt::LeftToRight ? m_model->home(0) : m_model->end(0);
+        else if (!m_readOnly) {
+            m_model->layoutDirection() == Qt::LeftToRight ? m_model->moveCursorStart(0) : m_model->moveCursorEnd(0);
         }
     }
     else if (event == QKeySequence::SelectNextWord) {
-        if (m_model->echoMode() == QLineEdit::Normal)
+        if (m_model->echoMode() == QLineEditModel::Normal)
             m_model->layoutDirection() == Qt::LeftToRight ? m_model->cursorWordForward(1) : m_model->cursorWordBackward(1);
         else
-            m_model->layoutDirection() == Qt::LeftToRight ? m_model->end(1) : m_model->home(1);
+            m_model->layoutDirection() == Qt::LeftToRight ? m_model->moveCursorEnd(1) : m_model->moveCursorStart(1);
     }
     else if (event == QKeySequence::SelectPreviousWord) {
-        if (m_model->echoMode() == QLineEdit::Normal)
+        if (m_model->echoMode() == QLineEditModel::Normal)
             m_model->layoutDirection() == Qt::LeftToRight ? m_model->cursorWordBackward(1) : m_model->cursorWordForward(1);
         else
-            m_model->layoutDirection() == Qt::LeftToRight ? m_model->home(1) : m_model->end(1);
+            m_model->layoutDirection() == Qt::LeftToRight ? m_model->moveCursorStart(1) : m_model->moveCursorEnd(1);
     }
     else if (event == QKeySequence::Delete) {
-        if (!m_model->isReadOnly())
+        if (!m_readOnly)
             m_model->del();
     }
     else if (event == QKeySequence::DeleteEndOfWord) {
-        if (!m_model->isReadOnly()) {
+        if (!m_readOnly) {
             m_model->cursorWordForward(true);
             m_model->del();
         }
     }
     else if (event == QKeySequence::DeleteStartOfWord) {
-        if (!m_model->isReadOnly()) {
+        if (!m_readOnly) {
             m_model->cursorWordBackward(true);
             m_model->del();
         }
@@ -1213,18 +1641,18 @@ void QLineEditEventHelper::keyPressEvent(QKeyEvent *event)
         if (event->modifiers() & Qt::ControlModifier) {
             switch (event->key()) {
             case Qt::Key_Backspace:
-                if (!m_model->isReadOnly()) {
+                if (!m_readOnly) {
                     m_model->cursorWordBackward(true);
                     m_model->del();
                 }
                 break;
 #if defined(Q_WS_X11)
             case Qt::Key_E:
-                m_model->end(0);
+                m_model->moveCursorEnd(0);
                 break;
 
             case Qt::Key_U:
-                if (!m_model->isReadOnly()) {
+                if (!m_readOnly) {
                     m_model->setSelection(0, m_model->text().size());
 #ifndef QT_NO_CLIPBOARD
                     m_model->copy();
@@ -1240,7 +1668,7 @@ void QLineEditEventHelper::keyPressEvent(QKeyEvent *event)
         } else { // ### check for *no* modifier
             switch (event->key()) {
             case Qt::Key_Backspace:
-                if (!m_model->isReadOnly()) {
+                if (!m_readOnly) {
                     m_model->backspace();
                 }
                 break;
@@ -1258,7 +1686,7 @@ void QLineEditEventHelper::keyPressEvent(QKeyEvent *event)
         unknown = false;
     }
 
-    if (unknown && !m_model->isReadOnly()) {
+    if (unknown && !m_readOnly) {
         QString t = event->text();
         if (!t.isEmpty() && t.at(0).isPrint()) {
             m_model->insert(t);
@@ -1273,7 +1701,9 @@ void QLineEditEventHelper::keyPressEvent(QKeyEvent *event)
         event->accept();
 }
 
-
 QT_END_NAMESPACE
+
+// For private slots
+#include "moc_qlineeditmodel.cpp"
 
 #endif

@@ -1,4 +1,5 @@
-import Qt 4.6
+import Qt 4.7
+import Components 1.0
 
 Item {
     width: 400
@@ -15,8 +16,9 @@ Item {
             onAccepted: print("your favorite color is " + text)
         }
         LineEdit {
-            emptyText: "Favorite editor"
+            emptyText: "Favorite editor (secret!)"
             font.family: "Inconsolata"
+            password: true
         }
         LineEdit {}
     }

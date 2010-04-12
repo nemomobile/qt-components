@@ -2,6 +2,7 @@ HEADERS += \
         models/qbuttonmodel.h \
         models/qdatetimemodel.h \
         models/qlineeditmodel.h \
+        models/qlineeditmodel_p.h \
         models/qrangemodel.h \
         models/qbuttonmodel_p.h \
         models/qdatetimemodel_p.h \

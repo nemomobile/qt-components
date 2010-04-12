@@ -1,10 +1,12 @@
-import Qt 4.6
+import Qt 4.7
 import Components 1.0
 
 FocusScope {
+    id: component
     property string emptyText: "Type some text..."
     property alias font: contents.font
     property alias text: contents.text
+    property bool password: false
 
     signal accepted
 
@@ -63,6 +65,9 @@ FocusScope {
 
     LineEditModel {
         id: model
+
+        // This simulates PasswordEchoOnEdit
+        echoMode: (!component.password || keyHandler.focus) ? LineEditModel.Normal : LineEditModel.Password
 
         // ### TextLayout stuff
         font: contents.font
