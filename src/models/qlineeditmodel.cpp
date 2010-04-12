@@ -70,22 +70,6 @@ QString QLineEditModel::displayText() const
     return d->textLayout.text();
 }
 
-QFont QLineEditModel::font() const
-{
-    Q_D(const QLineEditModel);
-    return d->textLayout.font();
-}
-
-void QLineEditModel::setFont(const QFont &font)
-{
-    Q_D(QLineEditModel);
-    if (font != d->textLayout.font()) {
-        d->textLayout.setFont(font);
-        d->updateDisplayText();
-        emit fontChanged(font);
-    }
-}
-
 int QLineEditModel::cursorPosition() const
 {
     Q_D(const QLineEditModel);
@@ -99,17 +83,6 @@ void QLineEditModel::setCursorPosition(int pos)
         pos = 0;
     if (pos <= d->text.length())
         moveCursor(pos);
-}
-
-qreal QLineEditModel::cursorX() const
-{
-    Q_D(const QLineEditModel);
-    return positionToX(d->cursor);
-}
-
-void QLineEditModel::setCursorX(qreal x)
-{
-    setCursorPosition(xToPosition(x));
 }
 
 QString QLineEditModel::selectedText() const
@@ -344,58 +317,6 @@ QString QLineEditModel::textAfterSelection() const
     if (hasSelectedText())
         return d->text.mid(d->selend);
     return QString();
-}
-
-bool QLineEditModel::inSelection(int x) const
-{
-    Q_D(const QLineEditModel);
-    if (d->selstart >= d->selend)
-        return false;
-    int pos = xToPosition(x, QTextLine::CursorOnCharacter);
-    return pos >= d->selstart && pos < d->selend;
-}
-
-int QLineEditModel::width() const
-{
-    Q_D(const QLineEditModel);
-    return qRound(d->textLayout.lineAt(0).width()) + 1;
-}
-
-int QLineEditModel::height() const
-{
-    Q_D(const QLineEditModel);
-    return qRound(d->textLayout.lineAt(0).height()) + 1;
-}
-
-int QLineEditModel::ascent() const
-{
-    Q_D(const QLineEditModel);
-    return d->ascent;
-}
-
-qreal QLineEditModel::naturalTextWidth() const
-{
-    Q_D(const QLineEditModel);
-    return d->textLayout.lineAt(0).naturalTextWidth();
-}
-
-/*!
-    \internal
-
-    Returns the cursor position of the given \a x pixel value in relation
-    to the displayed text.  The given \a betweenOrOn specified what kind
-    of cursor position is requested.
-*/
-int QLineEditModel::xToPosition(int x, QTextLine::CursorPosition betweenOrOn) const
-{
-    Q_D(const QLineEditModel);
-    return d->textLayout.lineAt(0).xToCursor(x, betweenOrOn);
-}
-
-int QLineEditModel::positionToX(int pos) const
-{
-    Q_D(const QLineEditModel);
-    return d->textLayout.lineAt(0).cursorToX(pos);
 }
 
 Qt::LayoutDirection QLineEditModel::layoutDirection() const
@@ -714,7 +635,7 @@ QLineEditModelPrivate::QLineEditModelPrivate(QLineEditModel *qq)
     : q_ptr(qq), cursor(0), layoutDirection(Qt::LeftToRight),
       separator(0), dragEnabled(0), echoMode(QLineEditModel::Normal),
       textDirty(0), selDirty(0), validInput(1), deleteAllTimer(0),
-      ascent(0), maxLength(32767), lastCursorPos(-1),
+      maxLength(32767), lastCursorPos(-1),
       maskData(0), modifiedState(0), undoState(0),
       selstart(0), selend(0), passwordCharacter('*')
 {
@@ -778,7 +699,6 @@ void QLineEditModelPrivate::updateDisplayText()
     textLayout.beginLayout();
     QTextLine l = textLayout.createLine();
     textLayout.endLayout();
-    ascent = qRound(l.ascent());
 
     if (str != orig)
         emit q->displayTextChanged(str);
@@ -1478,6 +1398,164 @@ void QLineEditModelPrivate::_q_deleteSelected()
     finishChange(priorState);
 }
 
+////////////////////////////////////
+
+QLineEditLayoutHelper::QLineEditLayoutHelper(QObject *parent)
+    : QObject(parent), m_model(0), m_x(0), m_xWasSet(false)
+{
+    updateTextLayout();
+}
+
+void QLineEditLayoutHelper::setModel(QLineEditModel *model)
+{
+    if (m_model == model)
+        return;
+
+    // Disconnect from old model if there was one
+    QLineEditModel *oldModel = m_model;
+    if (oldModel) {
+        textLayout.setText(QString());
+        model->disconnect(this);
+    }
+
+    m_model = model;
+
+    // Connect to new model if there is one
+    if (model) {
+        textLayout.setText(model->displayText());
+
+        // ### reset x?
+        if (m_xWasSet)
+            model->setCursorPosition(xToPosition(m_x));
+
+        QObject::connect(model, SIGNAL(displayTextChanged(const QString &)),
+                         this, SLOT(onDisplayTextChanged(const QString &)));
+        QObject::connect(model, SIGNAL(cursorPositionChanged(int, int)),
+                         this, SIGNAL(cursorXChanged()));
+    }
+
+    emit modelChanged(model);
+}
+
+QFont QLineEditLayoutHelper::font() const
+{
+    return textLayout.font();
+}
+
+void QLineEditLayoutHelper::setFont(const QFont &font)
+{
+    if (textLayout.font() == font)
+        return;
+
+    textLayout.setFont(font);
+
+    qreal oldX = cursorX();
+    updateTextLayout();
+    emit fontChanged(font);
+
+    // CursorX changed due to a font change that we just did
+    if (!qFuzzyCompare(oldX, cursorX()))
+        emit cursorXChanged();
+}
+
+qreal QLineEditLayoutHelper::cursorX() const
+{
+    if (m_model)
+        return positionToX(m_model->cursorPosition());
+
+    return 0;
+}
+
+// ### Maybe we do not want to have setter for cursorX?
+void QLineEditLayoutHelper::setCursorX(qreal x)
+{
+    if (qFuzzyCompare(x, m_x))
+        return;
+
+    // Used to store the value for the case of 'cursorX' being set
+    // before the model.
+    m_x = x;
+    m_xWasSet = true;
+
+
+    if (m_model)
+        m_model->setCursorPosition(xToPosition(x));
+    emit cursorXChanged();
+}
+
+bool QLineEditLayoutHelper::inSelection(int x) const
+{
+    if (!m_model || m_model->selectionStart() >= m_model->selectionEnd())
+        return false;
+
+    int pos = xToPosition(x, QTextLine::CursorOnCharacter);
+    return pos >= m_model->selectionStart() && pos < m_model->selectionEnd();
+}
+
+int QLineEditLayoutHelper::width() const
+{
+    return qRound(textLayout.lineAt(0).width()) + 1;
+}
+
+int QLineEditLayoutHelper::height() const
+{
+    return qRound(textLayout.lineAt(0).height()) + 1;
+}
+
+int QLineEditLayoutHelper::ascent() const
+{
+    return qRound(textLayout.lineAt(0).ascent());
+}
+
+qreal QLineEditLayoutHelper::naturalTextWidth() const
+{
+    return textLayout.lineAt(0).naturalTextWidth();
+}
+
+/*!
+    \internal
+
+    Returns the cursor position of the given \a x pixel value in relation
+    to the displayed text.  The given \a betweenOrOn specified what kind
+    of cursor position is requested.
+*/
+int QLineEditLayoutHelper::xToPosition(int x, QTextLine::CursorPosition betweenOrOn) const
+{
+    if (textLayout.text().isEmpty())
+        return 0;
+    return textLayout.lineAt(0).xToCursor(x, betweenOrOn);
+}
+
+int QLineEditLayoutHelper::positionToX(int pos) const
+{
+    if (textLayout.text().isEmpty())
+        return 0;
+    return textLayout.lineAt(0).cursorToX(pos);
+}
+
+void QLineEditLayoutHelper::onDisplayTextChanged(const QString &displayText)
+{
+    qreal oldX = cursorX();
+    textLayout.setText(displayText);
+    updateTextLayout();
+    if (!qFuzzyCompare(oldX, cursorX()))
+        emit cursorXChanged();
+}
+
+void QLineEditLayoutHelper::updateTextLayout()
+{
+    textLayout.clearLayout();
+
+    QTextOption option;
+    if (m_model)
+        option.setTextDirection(m_model->layoutDirection());
+    option.setFlags(QTextOption::IncludeTrailingSpaces);
+    textLayout.setTextOption(option);
+
+    textLayout.beginLayout();
+    QTextLine l = textLayout.createLine();
+    textLayout.endLayout();
+}
 
 
 ////////////////////////////////////

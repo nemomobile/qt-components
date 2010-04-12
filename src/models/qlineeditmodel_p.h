@@ -49,9 +49,13 @@ public:
     QLineEditModelPrivate(QLineEditModel *qq);
     virtual ~QLineEditModelPrivate();
 
+    static QLineEditModelPrivate *get(QLineEditModel *q) { return q ? q->d_func() : 0; }
+    static const QLineEditModelPrivate *get(const QLineEditModel *q) { return q ? q->d_func() : 0; }
+
     QLineEditModel *q_ptr;
 
     QString text;
+    QString displayText;
     int cursor;
     Qt::LayoutDirection layoutDirection;
     uint separator : 1;
@@ -61,7 +65,6 @@ public:
     uint selDirty : 1;
     uint validInput : 1;
     int deleteAllTimer;
-    int ascent;
     int maxLength;
     int lastCursorPos;
     QList<int> transactions;
@@ -97,7 +100,9 @@ public:
     int selstart;
     int selend;
 
-    // complex text layout
+    // ### We use a QTextLayout to extract information from Harfbuzz that we need,
+    // this possibly could be implemented accessing directly this information. The point
+    // here is that this should not depend on font information.
     QTextLayout textLayout;
 
     QChar passwordCharacter;

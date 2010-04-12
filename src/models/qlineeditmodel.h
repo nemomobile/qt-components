@@ -47,10 +47,8 @@ class QLineEditModel : public QObject
 
     Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
     Q_PROPERTY(QString displayText READ displayText NOTIFY displayTextChanged)
-    Q_PROPERTY(QFont font READ font WRITE setFont NOTIFY fontChanged)
 
     Q_PROPERTY(int cursorPosition READ cursorPosition WRITE setCursorPosition NOTIFY cursorPositionChanged)
-    Q_PROPERTY(qreal cursorX READ cursorX WRITE setCursorX NOTIFY cursorPositionChanged) // ### NOTIFY is not right
     Q_PROPERTY(QString selectedText READ selectedText NOTIFY selectionChanged) // ### proper NOTIFY
     Q_PROPERTY(int selectionStart READ selectionStart WRITE setSelectionStart NOTIFY selectionChanged) // ### proper NOTIFY
     Q_PROPERTY(int selectionEnd READ selectionEnd WRITE setSelectionEnd NOTIFY selectionChanged) // ### proper NOTIFY
@@ -65,10 +63,6 @@ class QLineEditModel : public QObject
     Q_PROPERTY(EchoMode echoMode READ echoMode WRITE setEchoMode NOTIFY echoModeChanged)
     Q_PROPERTY(QChar passwordCharacter READ passwordCharacter WRITE setPasswordCharacter NOTIFY passwordCharacterChanged) // ### QML has no QChar
 
-    // ### QTextLayout: we would like to share our textlayout calculations with QML, but for that
-    // we will need that QML's Text item or other item "use" our textlayout calculations to paint.
-    // Might require some changes in QTextLayout or QML's Text.
-
 public:
     QLineEditModel(const QString &txt = QString(), QObject *parent = 0);
     virtual ~QLineEditModel();
@@ -78,15 +72,8 @@ public:
 
     QString displayText() const;
 
-    QFont font() const;
-    void setFont(const QFont &font);
-
     int cursorPosition() const;
     void setCursorPosition(int pos);
-
-    // ###
-    qreal cursorX() const;
-    void setCursorX(qreal x);
 
     QString selectedText() const;
 
@@ -119,7 +106,6 @@ public:
 Q_SIGNALS:
     void textChanged(const QString &text);
     void displayTextChanged(const QString &displayText);
-    void fontChanged(const QFont &font);
 
     void cursorPositionChanged(int, int); // ### two values?
     void selectionChanged(); // ### Being reused by many properties.
@@ -152,20 +138,8 @@ public:
     void setSelection(int start, int length);
     QString textBeforeSelection() const;
     QString textAfterSelection() const;
-    bool inSelection(int x) const; // ###
 
-    // ### Text layout
-    int width() const;
-    int height() const;
-    int ascent() const;
-    qreal naturalTextWidth() const;
-
-    // ### 'qreal x'?
-    Q_INVOKABLE int xToPosition(int x, QTextLine::CursorPosition = QTextLine::CursorBetweenCharacters) const;
-
-    // ### qreal?
-    Q_INVOKABLE int positionToX(int pos) const;
-
+    // ### Do we need this for our calculations?
     void setLayoutDirection(Qt::LayoutDirection direction);
     Qt::LayoutDirection layoutDirection() const;
 
@@ -215,6 +189,62 @@ private:
 };
 
 QML_DECLARE_TYPE(QLineEditModel)
+
+
+// Helper class to do layout calculation
+class QLineEditLayoutHelper : public QObject
+{
+    Q_OBJECT
+
+    Q_PROPERTY(QLineEditModel *model READ model WRITE setModel NOTIFY modelChanged)
+    Q_PROPERTY(qreal cursorX READ cursorX WRITE setCursorX NOTIFY cursorXChanged)
+    Q_PROPERTY(QFont font READ font WRITE setFont NOTIFY fontChanged)
+
+public:
+    QLineEditLayoutHelper(QObject *parent = 0);
+
+    QLineEditModel *model() { return m_model; }
+    void setModel(QLineEditModel *model);
+
+    QFont font() const;
+    void setFont(const QFont &font);
+
+    qreal cursorX() const;
+    void setCursorX(qreal x);
+
+    // ### Turn into properties or remove.
+    int width() const;
+    int height() const;
+    int ascent() const; // ### ???
+    qreal naturalTextWidth() const;
+
+    // ### should 'x' be qreal?
+    Q_INVOKABLE int xToPosition(int x, QTextLine::CursorPosition = QTextLine::CursorBetweenCharacters) const;
+    Q_INVOKABLE int positionToX(int pos) const;
+
+    // ### Helper for mouse handling
+    bool inSelection(int x) const;
+
+Q_SIGNALS:
+    void modelChanged(QLineEditModel *);
+    void fontChanged(const QFont &);
+    void cursorXChanged();
+
+private Q_SLOTS:
+    void onDisplayTextChanged(const QString &);
+
+private:
+    Q_DISABLE_COPY(QLineEditLayoutHelper)
+    QTextLayout textLayout;
+    QPointer<QLineEditModel> m_model;
+    qreal m_x;
+
+    bool m_xWasSet;
+
+    void updateTextLayout();
+};
+
+QML_DECLARE_TYPE(QLineEditLayoutHelper)
 
 
 // Helper class to do key event handling
