@@ -55,23 +55,24 @@ public:
 
     void setSteps(qreal single, qreal page);
 
-    qreal minimum, maximum, pageStep, value, position, pressValue;
-    qreal pos, minpos, maxpos;
-    qreal singleStep;
+    qreal pos, posatmin, posatmax;
+    qreal minimum, maximum, pageStep, singleStep, value;
 
     uint tracking : 1;
-    uint blocktracking :1;
+    uint inverted : 1;
 
     QRangeModel *q_ptr;
 
-    inline qreal positionFromValue() {
-        qreal scale =  qreal(maximum - minimum) / qreal(maxpos - minpos);
-        return minpos + ((value - minimum) / scale); // ###
+    inline qreal positionFromValue(qreal value) {
+        const qreal scale = qreal(maximum - minimum) /
+            qreal(posatmax - posatmin);
+        return value / scale;
     }
 
-    inline qreal valueFromPosition() {
-        qreal scale = qreal(maximum - minimum) / qreal(maxpos - minpos);
-        return minimum + ((pos - minpos) * scale); // ###
+    inline qreal valueFromPosition(qreal pos) {
+        const qreal scale = qreal(maximum - minimum) /
+            qreal(posatmax - posatmin);
+        return pos * scale;
     }
 };
 

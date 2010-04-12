@@ -36,14 +36,15 @@ class QRangeModel : public QObject
 {
     Q_OBJECT
 
+    Q_PROPERTY(qreal value READ value WRITE setValue NOTIFY valueChanged USER true)
     Q_PROPERTY(qreal minimumValue READ minimum WRITE setMinimum NOTIFY rangeChanged)
     Q_PROPERTY(qreal maximumValue READ maximum WRITE setMaximum NOTIFY rangeChanged)
     Q_PROPERTY(qreal singleStep READ singleStep WRITE setSingleStep)
     Q_PROPERTY(qreal pageStep READ pageStep WRITE setPageStep)
-    Q_PROPERTY(qreal value READ value WRITE setValue NOTIFY valueChanged USER true)
     Q_PROPERTY(qreal position READ position WRITE setPosition NOTIFY positionChanged)
     Q_PROPERTY(qreal positionAtMinimum READ positionAtMinimum WRITE setPositionAtMinimum NOTIFY positionRangeChanged)
     Q_PROPERTY(qreal positionAtMaximum READ positionAtMaximum WRITE setPositionAtMaximum NOTIFY positionRangeChanged)
+    Q_PROPERTY(bool inverted READ inverted WRITE setInverted)
     Q_PROPERTY(bool tracking READ hasTracking WRITE setTracking)
 
 public:
@@ -53,13 +54,8 @@ public:
     void sedate();
     void awake();
 
-    void setMinimum(qreal);
-    qreal minimum() const;
-
-    void setMaximum(qreal);
-    qreal maximum() const;
-
     void setRange(qreal min, qreal max);
+    void setPositionRange(qreal min, qreal max);
 
     void setSingleStep(qreal);
     qreal singleStep() const;
@@ -70,8 +66,11 @@ public:
     void setTracking(bool enable);
     bool hasTracking() const;
 
-    void setSliderPosition(qreal);
-    qreal sliderPosition() const;
+    void setMinimum(qreal);
+    qreal minimum() const;
+
+    void setMaximum(qreal);
+    qreal maximum() const;
 
     void setPositionAtMinimum(qreal);
     qreal positionAtMinimum() const;
@@ -79,10 +78,11 @@ public:
     void setPositionAtMaximum(qreal);
     qreal positionAtMaximum() const;
 
-    void setPositionRange(qreal min, qreal max);
-
     void setPosition(qreal position);
     qreal position() const;
+
+    void setInverted(bool);
+    bool inverted() const;
 
     qreal value() const;
 
@@ -96,8 +96,6 @@ public Q_SLOTS:
     void setValue(qreal);
 
 Q_SIGNALS:
-    void sliderMoved(qreal position);
-
     void valueChanged(qreal value);
     void positionChanged(qreal position);
 
