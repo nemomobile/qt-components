@@ -20,14 +20,18 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import Qt 4.6
+import Qt 4.7
+import Components 1.0
 
 Item {
     id: basicProgressBar;
-    property real value;
+    property alias progress: model.value
+    property alias inverted: model.inverted
+    property alias minimum: model.minimumValue
+    property alias maximum: model.maximumValue
 
-    width: 160;
-    height: 22;
+    width: 160
+    height: 22
 
     BorderImage {
         id: background;
@@ -41,17 +45,7 @@ Item {
         id: progressbar;
         x: 3;
 
-        function handleWidth(x) {
-            if (x <= 0) {
-                return 0;
-            } else if (x >= 1) {
-                return parent.width - 6;
-            } else {
-                return value * (parent.width - 6);
-            }
-        }
-
-        width: handleWidth(value);
+        width: model.position
         color: '#84dbf5';
 
         anchors.top: background.top;
@@ -84,6 +78,13 @@ Item {
         }
     }
 
+    RangeModel {
+        id: model
+        minimumValue: 0
+        maximumValue: 100
+        positionAtMinimum: 0
+        positionAtMaximum: background.width - 6
+    }
 
     states: [
         State {

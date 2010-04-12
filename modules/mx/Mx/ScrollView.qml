@@ -69,6 +69,11 @@ Item {
         anchors.bottom: bottomSlider.top;
         visible: false;
         vertical: true;
+        inverted: true
+
+        minimum: -contentHeight + clipper.height
+        maximum: 0
+
         documentSize: contentHeight;
         viewSize: root.height;
 
@@ -78,7 +83,7 @@ Item {
                 when: !container.fitsCompletely() && (container.height > clipper.height);
                 PropertyChanges {
                     target: container;
-                    y: -rightSlider.value * (container.height - clipper.height);
+                    y: rightSlider.value
                 }
                 PropertyChanges {
                     target: rightSlider;
@@ -96,6 +101,11 @@ Item {
         anchors.left: parent.left;
         anchors.right: rightSlider.left;
         visible: false;
+        inverted: true
+
+        minimum: -contentWidth + clipper.width
+        maximum: 0
+
         documentSize: contentWidth;
         viewSize: root.width;
 
@@ -105,7 +115,7 @@ Item {
                 when: !container.fitsCompletely() && (container.width > clipper.width);
                 PropertyChanges {
                     target: container;
-                    x: -bottomSlider.value * (container.width - clipper.width);
+                    x: bottomSlider.value
                 }
                 PropertyChanges {
                     target: bottomSlider;

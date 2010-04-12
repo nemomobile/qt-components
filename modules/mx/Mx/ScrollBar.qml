@@ -21,42 +21,72 @@
 **
 ****************************************************************************/
 import Qt 4.7
+import Components 1.0
 
 Item {
     id: scrollbar
 
     signal scrollStart
     signal scrollStop
-    state: "horizontal"
-    property real value: currentValue()
+
+    property alias value: model.value
+    property alias inverted: model.inverted
+    property alias minimum: model.minimumValue
+    property alias maximum: model.maximumValue
+    property alias singleStep: model.singleStep
+    property alias pageStep: model.pageStep
+
     property bool vertical: false
-    property int stepIncrement: 1
-    property int pageIncrement: 10
-    property int pageSize: 10
-    property int lower: 0
-    property int upper: scrollbarPath.maximum
     property int documentSize: 100
     property int viewSize: 20
 
     height: 50
     width: 50
 
-    function currentValue() {
-        if (!vertical)
-            return handle.x / (scrollbarPath.width - handle.width);
+    function addSingleStep() {
+        // dont use the convenience API to trigger the
+        // behavior on value specified on rangemodel
+        if (!inverted)
+            model.value += model.singleStep;
         else
-            return handle.y / (scrollbarPath.height - handle.height);
+            model.value -= model.singleStep;
+    }
+
+    function subSingleStep() {
+        // dont use the convenience API to trigger the
+        // behavior on value specified on rangemodel
+        if (!inverted)
+            model.value -= model.singleStep;
+        else
+            model.value += model.singleStep;
+    }
+
+    function addPageStep() {
+        // dont use the convenience API to trigger the
+        // behavior on value specified on rangemodel
+        if (!inverted)
+            model.value += model.pageStep;
+        else
+            model.value -= model.pageStep;
+    }
+
+    function subPageStep() {
+        // dont use the convenience API to trigger the
+        // behavior on value specified on rangemodel
+        if (!inverted)
+            model.value -= model.pageStep;
+        else
+            model.value += model.pageStep;
     }
 
     Rectangle  {
         id: scrollbarPath
 
         color: '#dee2e5'
-        property int maximum: (scrollbar.vertical == false ? width : height)
         property bool hold: false
 
         Timer {
-            interval: 50
+            interval: 150
             repeat: true
             running: scrollbarPath.hold
             onTriggered: { scrollbarPathMouseRegion.handleRelease(); }
@@ -76,36 +106,25 @@ Item {
             }
 
             function handleRelease() {
+                var pos;
                 if (!scrollbar.vertical) {
-                    var newx = handle.x + ( mouseX > handle.x ? pageIncrement : -1 * pageIncrement);
-                    if (newx < scrollbar.lower)
-                        handle.x = scrollbar.lower
-                    else if (newx + handle.width> scrollbar.upper)
-                        handle.x = scrollbar.upper - handle.width
-                    else
-                        handle.x = newx
+                    if (mouseX > (handle.x + handle.width)) {
+                        addPageStep();
+                    } else {
+                        subPageStep();
+                    }
                 } else {
-                    var newy = handle.y + ( mouseY > handle.y ? pageIncrement : -1 * pageIncrement);
-                    if (newy < scrollbar.lower)
-                        handle.y = scrollbar.lower
-                    else if (newy + handle.height > scrollbar.upper)
-                        handle.y = scrollbar.upper - handle.height
-                    else
-                        handle.y = newy
+                    if (mouseY > (handle.y + handle.height)) {
+                        addPageStep();
+                    } else {
+                        subPageStep();
+                    }
                 }
             }
         }
 
         BorderImage {
             id: handle
-
-            Behavior on x {
-                PropertyAnimation { easing.type: "OutCubic"; duration: 250; }
-            }
-
-            Behavior on y {
-                PropertyAnimation { easing.type: "OutCubic";  duration: 250; }
-            }
 
             MouseArea {
                 id: handleMouseRegion
@@ -123,8 +142,8 @@ Item {
                     size1 = scrollbarPath.width;
                 else
                     size1 = scrollbarPath.height;
-                var size = (size1 * viewSize) / documentSize;
 
+                var size = (size1 * viewSize) / documentSize;
                 if (size < 0)
                     return 0;
                 if (size > size1)
@@ -165,18 +184,20 @@ Item {
                     drag.minimumX: 0
                     drag.maximumX: scrollbarPath.width - handle.width
                 }
-
+                PropertyChanges {
+                    target: model
+                    position: handle.x
+                    positionAtMaximum: scrollbarPath.width - handle.width
+                }
                 PropertyChanges {
                     target: handle
+                    x: model.position
                     width: handleSize()
-
                     border.left: 10
                     border.right: 10
-
                     source: Qt.resolvedUrl("images/scroll-hhandle"
                                            + (handleMouseRegion.containsMouse ? "-hover" : "") + ".png")
                 }
-
                 PropertyChanges {
                     target: button1;
                     source: Qt.resolvedUrl("images/scroll-button-left"
@@ -219,11 +240,16 @@ Item {
                     drag.maximumY: scrollbarPath.height - handle.height
                 }
                 PropertyChanges {
+                    target: model
+                    position: handle.y
+                    positionAtMaximum: scrollbarPath.height - handle.height
+                }
+                PropertyChanges {
                     target: handle
+                    y: model.position
                     height: handleSize()
                     border.top: 10
                     border.bottom: 10
-
                     source: Qt.resolvedUrl("images/scroll-vhandle"
                                            + (handleMouseRegion.containsMouse ? "-hover" : "") + ".png")
                 }
@@ -255,11 +281,10 @@ Item {
         source: "images/scroll-button-left.png"
 
         Timer {
-            interval: 100
+            interval: 150
             repeat: true;
             running: button1.hold
-
-            onTriggered: { button1MouseRegion.buttonPressed(); }
+            onTriggered: { subSingleStep(); }
         }
 
         MouseArea {
@@ -268,27 +293,13 @@ Item {
             anchors.fill: parent
             onPressed: {
                 button1.hold = true;
-                buttonPressed();
+                subSingleStep();
                 scrollbar.scrollStart();
                 scrollbar.scrollStop();
             }
 
             onReleased: {
                 button1.hold = false;
-            }
-
-            function buttonPressed() {
-                if (scrollbarPath.state == "horizontal") {
-                    if (handle.x >= stepIncrement)
-                        handle.x = handle.x - stepIncrement;
-                    else
-                        handle.x = lower;
-                } else {
-                    if (handle.y >= stepIncrement)
-                        handle.y = handle.y - stepIncrement;
-                    else
-                        handle.y = lower;
-                }
             }
         }
     }
@@ -304,10 +315,10 @@ Item {
         source: "images/scroll-button-right.png"
 
         Timer {
-            interval: 50
+            interval: 150
             repeat: true
             running: button2.hold
-            onTriggered: { button2MouseRegion.buttonPressed(); }
+            onTriggered: { addSingleStep(); }
         }
 
         MouseArea {
@@ -316,7 +327,7 @@ Item {
             anchors.fill: parent
             onPressed: {
                 button2.hold = true;
-                buttonPressed();
+                addSingleStep();
                 scrollbar.scrollStart();
                 scrollbar.scrollStop();
             }
@@ -324,20 +335,23 @@ Item {
             onReleased: {
                 button2.hold = false;
             }
+        }
+    }
 
-            function buttonPressed() {
-                if (scrollbarPath.state == "horizontal") {
-                    if (handle.x + handle.width <= scrollbarPath.width - stepIncrement)
-                        handle.x = handle.x + stepIncrement;
-                    else
-                        handle.x = upper - handle.width;
-                } else {
-                    if (handle.y + handle.height <= scrollbarPath.height - stepIncrement)
-                        handle.y = handle.y + stepIncrement;
-                    else
-                        handle.y = upper - handle.height;
-                }
+    RangeModel {
+        id: model
+
+        Behavior on value {
+            PropertyAnimation {
+                easing.type: "OutCubic";
+                duration: 250;
             }
         }
+
+        singleStep: 1
+        pageStep: 10
+        minimumValue: 0
+        maximumValue: 100
+        positionAtMinimum: 0
     }
 }

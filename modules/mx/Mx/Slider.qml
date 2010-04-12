@@ -20,55 +20,78 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import Qt 4.6
+import Qt 4.7
+import Components 1.0
 
 Item {
     id: basicSlider;
-    property var sliderEdgeOffset: 6;
-    property real value: nob.x/(sliderBase.width-nob.width)
+
+    property variant sliderEdgeOffset: 6
+    property alias value: model.value
+    property alias inverted: model.inverted
+    property alias minimum: model.minimumValue
+    property alias maximum: model.maximumValue
+
     height: 22
     width: 108
+
     Rectangle {
         id: sliderBase
         color: '#dadada'
         width: parent.width - 12
-        x:6
+        x: 6
         anchors.verticalCenter: parent.verticalCenter
         height: 8
+
         Rectangle {
             id: sliderBar
             color: '#84dbf5'
             anchors.left: parent.left
-            anchors.right : nob.horizontalCenter
+            anchors.right: knob.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             height: 8
         }
+
         Button {
-            id: nob
-            x: parent.width/2 - nob.width/2
+            id: knob
+            x: model.position
             anchors.verticalCenter: parent.verticalCenter
-            text:""
+            text: ""
             width: 22
             height: 16
         }
+
         MouseArea {
-            function handleRelease(x) {nob.x = x}
-            anchors.verticalCenter:parent.verticalCenter
-            anchors.left:parent.left;
-            anchors.right:parent.right;
-            height:20
-            onPressed: { handleRelease(mouseX);}
+            function handleRelease(x) {
+                knob.x = x
+            }
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: 20
+            onPressed: { handleRelease(mouseX); }
         }
+
         MouseArea {
             id:mouseRegion
-            anchors.verticalCenter:nob.verticalCenter
-            anchors.horizontalCenter:nob.horizontalCenter
-            width:50
-            height:50
-            drag.target: nob
+            anchors.fill: knob
+            anchors.verticalCenter: knob.verticalCenter
+            anchors.horizontalCenter: knob.horizontalCenter
+            width: 50
+            height: 50
+            drag.target: knob
             drag.axis: "XAxis"
-            drag.minimumX:-sliderEdgeOffset
-            drag.maximumX:sliderBase.width-nob.width/2 - sliderEdgeOffset
+            drag.minimumX: -sliderEdgeOffset
+            drag.maximumX: sliderBase.width - knob.width / 2 - sliderEdgeOffset
         }
+    }
+
+    RangeModel {
+        id: model
+        minimumValue: 0
+        maximumValue: 100
+        positionAtMinimum: -sliderEdgeOffset
+        positionAtMaximum: sliderBase.width - knob.width / 2 - sliderEdgeOffset
+        position: knob.x
     }
 }
