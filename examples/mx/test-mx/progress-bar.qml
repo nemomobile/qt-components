@@ -29,11 +29,11 @@ Item {
         y: 20
         width: 280
 
-        SequentialAnimation on value {
+        SequentialAnimation on progress {
             loops: Animation.Infinite
             NumberAnimation {
                 from: 0
-                to: 1
+                to: 100
                 duration: 5000
             }
         }

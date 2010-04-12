@@ -31,6 +31,8 @@ Item {
         x: 20
         y: 20
         width: 280
+        minimum: 0;
+        maximum: 1;
     }
 
     Rectangle {

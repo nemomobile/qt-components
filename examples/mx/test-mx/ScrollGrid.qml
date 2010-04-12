@@ -13,8 +13,7 @@ Item {
     property int cellHeight: 35;
     property alias count: grid.count;
 
-    function ensureVisible(index)
-    {
+    function ensureVisible(index) {
         grid.positionViewAtIndex(index, GridView.Contain);
     }
 
@@ -25,10 +24,10 @@ Item {
         cellWidth: parent.cellWidth;
         cellHeight: parent.cellHeight;
         overShoot: false;
-        //        interactive: false;
+
         clip: true;
-        contentX: bottomBar.value * (contentWidth - width);
-        contentY: rightBar.value * (contentHeight - height);
+        contentX: bottomBar.value
+        contentY: rightBar.value
 
         delegate: Button {
             width: scrollview.cellWidth;
@@ -47,6 +46,8 @@ Item {
         anchors.bottom: parent.bottom;
         anchors.left: parent.right;
 
+        minimum: 0
+        maximum: Math.max(0, (grid.contentHeight - grid.height))
         vertical: true;
         visible: false;
     }
@@ -57,6 +58,8 @@ Item {
         anchors.right: parent.right;
         anchors.top: parent.bottom;
 
+        minimum: 0
+        maximum: Math.max(0, (grid.contentWidth - grid.width))
         visible: false;
     }
 
