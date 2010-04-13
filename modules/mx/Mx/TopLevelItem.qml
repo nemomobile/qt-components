@@ -25,67 +25,10 @@ import Qt 4.7
 Item {
     id: placeholder;
     default property alias data: topLevelItem.data;
-    property alias transformOrigin: topLevelItem.transformOrigin;
-    property alias scale: topLevelItem.scale;
-    property alias rotation: topLevelItem.rotation;
 
     // If true, the toplevel item will be constrained to be inside the
     // topLevelParent.
-    property bool keepInside: false;
+    property alias keepInside: topLevelItem.keepInside;
 
-    Item {
-        id: topLevelItem;
-        parent: topLevelParent(placeholder);
-        x: mappedX(placeholder);
-        y: mappedY(placeholder);
-        width: placeholder.width;
-        height: placeholder.height;
-
-        opacity: placeholder.opacity;
-        visible: placeholder.visible;
-
-        function bound(min, value, max) {
-            return Math.min(Math.max(min, value), max);
-        }
-
-        states: [
-            State {
-                name: "keepInside";
-                when: placeholder.keepInside;
-                PropertyChanges {
-                    target: topLevelItem;
-                    x: bound(0, mappedX(placeholder), parent.width - width);
-                    y: bound(0, mappedY(placeholder), parent.height - height);
-                    width: Math.min(parent.width, placeholder.width);
-                    height: Math.min(parent.height, placeholder.height);
-                }
-            }
-        ]
-    }
-
-    function topLevelParent(item)
-    {
-        while (item.parent.toString() != "null")
-            item = item.parent;
-        return item;
-    }
-
-    function mappedX(item)
-    {
-        var x = item.x;
-        while (item.parent.toString() != "null") {
-            item = item.parent;
-            x += item.x;
-        }
-        return x;
-    }
-    function mappedY(item)
-    {
-        var y = item.y;
-        while (item.parent.toString() != "null") {
-            item = item.parent;
-            y += item.y;
-        }
-        return y;
-    }
+    TopLevelItemHelper { id: topLevelItem; }
 }
