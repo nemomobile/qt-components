@@ -8,10 +8,13 @@ QT += declarative
 
 HEADERS += \
         mxlikewindow.h \
-        mxlikebuttongroup.h 
+        mxlikebuttongroup.h \
+	mxtoplevelitem.h \
+	mxtoplevelitem_p.h
 
 SOURCES += \
         mxlikewindow.cpp \
         mxlikebuttongroup.cpp \
+	mxtoplevelitem.cpp \
         plugin.cpp
 

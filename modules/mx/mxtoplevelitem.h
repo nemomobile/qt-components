@@ -20,26 +20,40 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-#include <QtDeclarative/qdeclarativeextensionplugin.h>
-#include <QtDeclarative/qdeclarative.h>
+#ifndef MXTOPLEVELITEM_H
+#define MXTOPLEVELITEM_H
 
-#include "mxlikewindow.h"
-#include "mxlikebuttongroup.h"
-#include "mxtoplevelitem.h"
+#include <QtDeclarative/qdeclarativeitem.h>
 
-class QmlMxLikeModule : public QDeclarativeExtensionPlugin
+class MxTopLevelItemPrivate;
+class MxTopLevelItem : public QDeclarativeItem
 {
     Q_OBJECT
-public:
-    virtual void registerTypes(const char *uri)
-    {
-        qmlRegisterType<QmlMxLikeScreen>(uri,1,0,"WindowModel");
-        qmlRegisterType<MxTopLevelItem>(uri,1,0,"TopLevelItemHelper");
 
-        // ### Temporary solution until we can access children items inside QML
-        qmlRegisterType<MxLikeButtonGroup>(uri, 1,0, "ButtonGroup");
-    }
+    Q_PROPERTY(bool keepInside READ keepInside WRITE setKeepInside NOTIFY keepInsideChanged);
+
+public:
+    MxTopLevelItem(QDeclarativeItem *parent = 0);
+    virtual ~MxTopLevelItem();
+
+    bool keepInside() const;
+    void setKeepInside(bool keepInside);
+
+Q_SIGNALS:
+    void keepInsideChanged(bool keepInside);
+
+protected:
+    MxTopLevelItem(MxTopLevelItemPrivate &dd, QDeclarativeItem *parent = 0);
+
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+
+    QScopedPointer<MxTopLevelItemPrivate> d_ptr;
+
+private:
+    Q_DISABLE_COPY(MxTopLevelItem);
+    Q_DECLARE_PRIVATE(MxTopLevelItem);
 };
 
-#include "plugin.moc"
-Q_EXPORT_PLUGIN2(mxlikeplugin, QmlMxLikeModule);
+QML_DECLARE_TYPE(MxTopLevelItem)
+
+#endif // MXTOPLEVELITEM_H

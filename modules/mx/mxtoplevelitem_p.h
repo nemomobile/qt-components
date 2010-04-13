@@ -20,26 +20,47 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-#include <QtDeclarative/qdeclarativeextensionplugin.h>
-#include <QtDeclarative/qdeclarative.h>
+#ifndef MXTOPLEVELITEM_P_H
+#define MXTOPLEVELITEM_P_H
 
-#include "mxlikewindow.h"
-#include "mxlikebuttongroup.h"
-#include "mxtoplevelitem.h"
+#include <QObject>
+#include <QPointer>
 
-class QmlMxLikeModule : public QDeclarativeExtensionPlugin
+class QDeclarativeItem;
+class MxTopLevelItem;
+class MxTopLevelItemPrivate : public QObject
 {
     Q_OBJECT
-public:
-    virtual void registerTypes(const char *uri)
-    {
-        qmlRegisterType<QmlMxLikeScreen>(uri,1,0,"WindowModel");
-        qmlRegisterType<MxTopLevelItem>(uri,1,0,"TopLevelItemHelper");
 
-        // ### Temporary solution until we can access children items inside QML
-        qmlRegisterType<MxLikeButtonGroup>(uri, 1,0, "ButtonGroup");
-    }
+public:
+    MxTopLevelItemPrivate();
+    virtual ~MxTopLevelItemPrivate();
+
+    void clearDependencyList();
+    void setZFromSiblings();
+
+    QDeclarativeItem *targetItem;
+    QList<QDeclarativeItem *> dependencyList;
+    uint transformDirty : 1;
+    uint keepInside: 1;
+
+protected:
+    MxTopLevelItem *q_ptr;
+
+private Q_SLOTS:
+    void initDependencyList();
+    void scheduleUpdateTransform();
+    void updateTransform();
+    void updateOpacity();
+    void updateVisible();
+    void updateWidthFromTarget();
+    void updateHeightFromTarget();
+
+    void updateParent();
+    // void itemDestroyed();
+
+private:
+    Q_DECLARE_PUBLIC(MxTopLevelItem);
 };
 
-#include "plugin.moc"
-Q_EXPORT_PLUGIN2(mxlikeplugin, QmlMxLikeModule);
+#endif // MXTOPLEVELITEM_P_H
