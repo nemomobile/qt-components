@@ -26,6 +26,7 @@
 #define QBUTTONMODEL_H
 
 #include <QtGui/qwidget.h>
+#include <QtGui/qbuttongroup.h>
 #include <QtGui/qgraphicsitem.h>
 
 class QButtonModelPrivate;
