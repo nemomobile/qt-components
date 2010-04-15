@@ -64,9 +64,9 @@ public:
     uint checked :1;
     uint autoRepeat :1;
     uint autoExclusive :1;
-    uint buttonDown :1;
-    uint mousePressed :1;
-    uint mouseOver :1;
+    uint down :1;
+    uint pressed :1;
+    uint highlighted :1;
 
 #ifndef QT_NO_BUTTONGROUP
     QButtonGroup* group;

@@ -80,9 +80,9 @@ void tst_QButtonModel::getSetCheck()
     QCOMPARE(model->autoExclusive(), false);
     QCOMPARE(model->autoRepeatDelay(), 300);
     QCOMPARE(model->autoRepeatInterval(), 100);
-    QCOMPARE(model->buttonDown(), false);
-    QCOMPARE(model->mouseOver(), false);
-    QCOMPARE(model->mousePressed(), false);
+    QCOMPARE(model->isDown(), false);
+    QCOMPARE(model->isHighlighted(), false);
+    QCOMPARE(model->isPressed(), false);
 
     // checkable
     model->setCheckable(true);
@@ -128,23 +128,23 @@ void tst_QButtonModel::getSetCheck()
     model->setAutoRepeatInterval(100);
     QCOMPARE(model->autoRepeatInterval(), 100);
 
-    // buttonDown
-    model->setButtonDown(true);
-    QCOMPARE(model->buttonDown(), true);
-    model->setButtonDown(false);
-    QCOMPARE(model->buttonDown(), false);
+    // down
+    model->setDown(true);
+    QCOMPARE(model->isDown(), true);
+    model->setDown(false);
+    QCOMPARE(model->isDown(), false);
 
-    // mouseOver
-    model->setMouseOver(true);
-    QCOMPARE(model->mouseOver(), true);
-    model->setMouseOver(false);
-    QCOMPARE(model->mouseOver(), false);
+    // highlight
+    model->setHighlighted(true);
+    QCOMPARE(model->isHighlighted(), true);
+    model->setHighlighted(false);
+    QCOMPARE(model->isHighlighted(), false);
 
-    // mousePressed
-    model->setMousePressed(true);
-    QCOMPARE(model->mousePressed(), true);
-    model->setMousePressed(false);
-    QCOMPARE(model->mousePressed(), false);
+    // pressed
+    model->setPressed(true);
+    QCOMPARE(model->isPressed(), true);
+    model->setPressed(false);
+    QCOMPARE(model->isPressed(), false);
 }
 
 QTEST_MAIN(tst_QButtonModel)

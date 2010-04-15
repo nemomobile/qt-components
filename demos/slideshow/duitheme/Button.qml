@@ -15,7 +15,7 @@ Item {
     BorderImage {
         id: releasedImage;
         anchors.fill: parent;
-        visible: !model.buttonDown && !model.checked;
+        visible: !model.down && !model.checked;
         source: "images/button.svg"
 
         border.left: 10;
@@ -27,7 +27,7 @@ Item {
     BorderImage {
         id: pressedImage;
         anchors.fill: parent;
-        visible: model.buttonDown && !model.checked;
+        visible: model.down && !model.checked;
         source: "images/button-pressed.svg"
 
         border.left: 10;
@@ -39,7 +39,7 @@ Item {
     BorderImage {
         id: releasedSelectedImage;
         anchors.fill: parent;
-        visible: !model.buttonDown && model.checked;
+        visible: !model.down && model.checked;
         source: "images/button-selected.svg"
 
         border.left: 10;
@@ -51,7 +51,7 @@ Item {
     BorderImage {
         id: pressedSelectedImage;
         anchors.fill: parent;
-        visible: model.buttonDown && model.checked;
+        visible: model.down && model.checked;
         source: "images/button-selected-pressed.svg"
 
         border.left: 10;
@@ -82,8 +82,8 @@ Item {
     ButtonModel {
         id: model;
 
-        mousePressed: mouseArea.pressed;
-        mouseOver: mouseArea.containsMouse;
+        pressed: mouseArea.pressed;
+        highlighted: mouseArea.containsMouse;
         onClicked: button.clicked();
     }
 }

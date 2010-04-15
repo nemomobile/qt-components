@@ -53,7 +53,7 @@ Item {
     Script {
         function sunken()
         {
-            return model.buttonDown || model.checked;
+            return model.down || model.checked;
         }
     }
 
@@ -66,7 +66,7 @@ Item {
         id: model;
 
         onClicked: button.clicked();
-        mousePressed: mouseArea.pressed;
-        mouseOver: mouseArea.containsMouse;
+        pressed: mouseArea.pressed;
+        highlighted: mouseArea.containsMouse;
     }
 }

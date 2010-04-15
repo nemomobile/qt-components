@@ -41,9 +41,9 @@ class Q_GUI_EXPORT QButtonModel : public QObject
     Q_PROPERTY(bool autoExclusive READ autoExclusive WRITE setAutoExclusive)
     Q_PROPERTY(int autoRepeatDelay READ autoRepeatDelay WRITE setAutoRepeatDelay)
     Q_PROPERTY(int autoRepeatInterval READ autoRepeatInterval WRITE setAutoRepeatInterval)
-    Q_PROPERTY(bool buttonDown READ buttonDown WRITE setButtonDown DESIGNABLE false NOTIFY buttonDownChanged)
-    Q_PROPERTY(bool mouseOver READ mouseOver WRITE setMouseOver DESIGNABLE false NOTIFY mouseOverChanged);
-    Q_PROPERTY(bool mousePressed READ mousePressed WRITE setMousePressed DESIGNABLE false NOTIFY mousePressedChange);
+    Q_PROPERTY(bool down READ isDown WRITE setDown DESIGNABLE false NOTIFY downChanged) // ### change to down
+    Q_PROPERTY(bool highlighted READ isHighlighted WRITE setHighlighted DESIGNABLE false NOTIFY highlightChanged); // ### change to highlighted
+    Q_PROPERTY(bool pressed READ isPressed WRITE setPressed DESIGNABLE false NOTIFY pressedChange); // ### change to pressed
 
 public:
     QButtonModel(QObject *parent = 0);
@@ -60,8 +60,8 @@ public:
     void setChecked(bool);
     bool isChecked() const;
 
-    void setButtonDown(bool);
-    bool buttonDown() const;
+    void setDown(bool);
+    bool isDown() const;
 
     void setAutoRepeat(bool);
     bool autoRepeat() const;
@@ -75,21 +75,17 @@ public:
     void setAutoExclusive(bool);
     bool autoExclusive() const;
 
-    bool mousePressed() const;
-    bool mouseOver() const;
+    bool isPressed() const;
+    bool isHighlighted() const;
 
 #ifndef QT_NO_BUTTONGROUP
     QButtonGroup *group() const;
 #endif
 
-    // void mousePressEventHandler(QEvent *event);
-    // void mouseReleaseEventHandler(QEvent *event);
-    // void mouseMoveEventHandler(QEvent *event);
-
 public Q_SLOTS:
     // ### Those are convenient for C++ connections but may clutter the API exported to QML...
-    void setMousePressed(bool);
-    void setMouseOver(bool);
+    void setPressed(bool);
+    void setHighlighted(bool);
 
 Q_SIGNALS:
     void released();
@@ -98,10 +94,10 @@ Q_SIGNALS:
     void toggled(bool checked = false);
 
     // Notify signals
-    void buttonDownChanged();
+    void downChanged();
     void checkableChanged();
-    void mouseOverChanged();
-    void mousePressedChanged();
+    void highlightChanged();
+    void pressedChanged();
 
 protected:
     QButtonModel(QButtonModelPrivate &dd, QObject* parent = 0);
