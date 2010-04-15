@@ -41,9 +41,9 @@ class Q_GUI_EXPORT QButtonModel : public QObject
     Q_PROPERTY(bool autoExclusive READ autoExclusive WRITE setAutoExclusive)
     Q_PROPERTY(int autoRepeatDelay READ autoRepeatDelay WRITE setAutoRepeatDelay)
     Q_PROPERTY(int autoRepeatInterval READ autoRepeatInterval WRITE setAutoRepeatInterval)
-    Q_PROPERTY(bool down READ isDown WRITE setDown DESIGNABLE false NOTIFY downChanged) // ### change to down
-    Q_PROPERTY(bool highlighted READ isHighlighted WRITE setHighlighted DESIGNABLE false NOTIFY highlightChanged); // ### change to highlighted
-    Q_PROPERTY(bool pressed READ isPressed WRITE setPressed DESIGNABLE false NOTIFY pressedChange); // ### change to pressed
+    Q_PROPERTY(bool down READ isDown WRITE setDown DESIGNABLE false NOTIFY downChanged)
+    Q_PROPERTY(bool highlighted READ isHighlighted WRITE setHighlighted DESIGNABLE false NOTIFY highlightChanged);
+    Q_PROPERTY(bool pressed READ isPressed WRITE setPressed DESIGNABLE false NOTIFY pressedChange);
 
 public:
     QButtonModel(QObject *parent = 0);
