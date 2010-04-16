@@ -45,7 +45,7 @@ class QRangeModel : public QObject
     Q_PROPERTY(qreal positionAtMinimum READ positionAtMinimum WRITE setPositionAtMinimum NOTIFY positionRangeChanged)
     Q_PROPERTY(qreal positionAtMaximum READ positionAtMaximum WRITE setPositionAtMaximum NOTIFY positionRangeChanged)
     Q_PROPERTY(bool inverted READ inverted WRITE setInverted)
-    Q_PROPERTY(bool tracking READ hasTracking WRITE setTracking)
+    Q_PROPERTY(bool tracking READ isTracking WRITE setTracking)
 
 public:
     QRangeModel(QObject *parent = 0);
@@ -64,7 +64,7 @@ public:
     qreal pageStep() const;
 
     void setTracking(bool enable);
-    bool hasTracking() const;
+    bool isTracking() const;
 
     void setMinimum(qreal);
     qreal minimum() const;

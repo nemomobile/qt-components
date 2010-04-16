@@ -221,7 +221,7 @@ void QRangeModel::setTracking(bool enable)
     d->tracking = enable;
 }
 
-bool QRangeModel::hasTracking() const
+bool QRangeModel::isTracking() const
 {
     Q_D(const QRangeModel);
     return d->tracking;
