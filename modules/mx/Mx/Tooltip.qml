@@ -47,20 +47,62 @@ TopLevelItem {
         border.left: 11;
         border.bottom: 12;
         border.right: 11;
+
+        states: State {
+            name: "shown";
+            when: tooltip.shown && (tooltip.text !== "");
+            PropertyChanges { target: tooltip; scale: 1; visible: true }
+        }
+
+        transitions: [
+            Transition {
+                from: "";
+                to: "shown";
+                SequentialAnimation {
+                    PropertyAction {
+                        target: tooltip;
+                        property: "visible";
+                    }
+                    NumberAnimation {
+                        duration: 500;
+                        target: tooltip;
+                        easing.type: "OutElastic";
+                        easing.period: 0.25;
+                        property: "scale";
+                    }
+                }
+            },
+            Transition {
+                from: "shown";
+                to: "";
+                SequentialAnimation {
+                    NumberAnimation {
+                        duration: 150;
+                        target: tooltip;
+                        easing.type: "InSine";
+                        property: "scale";
+                    }
+                    PropertyAction {
+                        target: tooltip;
+                        property: "visible";
+                    }
+                }
+            }
+        ]
     }
 
-    // ### This Label is used to get the "preferred size" information, that
+    // ### This Text is used to get the "preferred size" information, that
     // will be considered when calculating the toplevel item geometry. This
     // could be replaced by having this information available in a regular Text
     // item. Similar issue of trying to know the "real image size" inside an
     // Image item.
-    Label {
+    Text {
         id: model;
         text: tooltip.text;
         visible: false;
     }
 
-    Label {
+    Text {
         anchors.centerIn: parent;
         anchors.verticalCenterOffset: -4;
         width: parent.width - 22;
@@ -70,48 +112,4 @@ TopLevelItem {
         color: "#ffffff";
         elide: Text.ElideRight
     }
-
-    states: [
-        State {
-            name: "shown";
-            when: tooltip.shown && (tooltip.text !== "");
-            PropertyChanges { target: tooltip; scale: 1; visible: true }
-        }
-    ]
-
-    transitions: [
-        Transition {
-            from: "";
-            to: "shown";
-            SequentialAnimation {
-                PropertyAction {
-                    target: tooltip;
-                    property: "visible";
-                }
-                NumberAnimation {
-                    duration: 500;
-                    target: tooltip;
-                    easing.type: "OutElastic";
-                    easing.period: 0.25;
-                    property: "scale";
-                }
-            }
-        },
-        Transition {
-            from: "shown";
-            to: "";
-            SequentialAnimation {
-                NumberAnimation {
-                    duration: 150;
-                    target: tooltip;
-                    easing.type: "InSine";
-                    property: "scale";
-                }
-                PropertyAction {
-                    target: tooltip;
-                    property: "visible";
-                }
-            }
-        }
-    ]
 }
