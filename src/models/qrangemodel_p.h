@@ -53,8 +53,6 @@ public:
     bool isSedated;
     bool signalsBlocked;
 
-    void setSteps(qreal single, qreal page);
-
     qreal pos, posatmin, posatmax;
     qreal minimum, maximum, pageStep, singleStep, value;
 

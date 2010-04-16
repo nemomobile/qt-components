@@ -59,12 +59,6 @@ void QRangeModelPrivate::init()
     inverted = false;
 }
 
-void QRangeModelPrivate::setSteps(qreal single, qreal page)
-{
-    singleStep = qAbs(single);
-    pageStep = qAbs(page);
-}
-
 QRangeModel::QRangeModel(QObject *parent)
     : QObject(parent), d_ptr(new QRangeModelPrivate(this))
 {
@@ -192,8 +186,9 @@ qreal QRangeModel::maximum() const
 void QRangeModel::setSingleStep(qreal step)
 {
     Q_D(QRangeModel);
-    if (step != d->singleStep)
-        d->setSteps(step, d->pageStep);
+    const qreal newStep = qAbs(step);
+    if (newStep != d->singleStep)
+        d->singleStep = newStep;
 }
 
 qreal QRangeModel::singleStep() const
@@ -205,8 +200,9 @@ qreal QRangeModel::singleStep() const
 void QRangeModel::setPageStep(qreal step)
 {
     Q_D(QRangeModel);
+    const qreal newPageStep = qAbs(step);
     if (step != d->pageStep)
-        d->setSteps(d->singleStep, step);
+        d->pageStep = newPageStep;
 }
 
 qreal QRangeModel::pageStep() const
