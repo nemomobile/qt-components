@@ -5,6 +5,7 @@ Combobox 1.0 Combobox.qml
 Entry 1.0 Entry.qml
 Expander 1.0 Expander.qml
 Label 1.0 Label.qml
+PathBar 1.0 PathBar.qml
 ProgressBar 1.0 ProgressBar.qml
 ScrollBar 1.0 ScrollBar.qml
 ScrollView 1.0 ScrollView.qml

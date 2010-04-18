@@ -58,6 +58,7 @@ Window {
                 Button { text: "ScrollBar"; checkable: true }
                 Button { text: "Scroll View"; checkable: true }
                 Button { text: "Styles"; checkable: true }
+                Button { text: "Pathbar"; checkable: true }
             }
 
             onCheckedItemChanged: {
