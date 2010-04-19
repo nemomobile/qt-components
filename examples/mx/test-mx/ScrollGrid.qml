@@ -11,7 +11,7 @@ Item {
     property int maxstride: 3;
     property int cellWidth: 90;
     property int cellHeight: 35;
-    property alias count: grid.count;
+    property int count: 200;
 
     function ensureVisible(index) {
         grid.positionViewAtIndex(index, GridView.Contain);
@@ -37,7 +37,7 @@ Item {
             onClicked: { scrollview.vertical = !scrollview.vertical }
         }
 
-        model: 200;
+        model: scrollview.count;
     }
 
     ScrollBar {
