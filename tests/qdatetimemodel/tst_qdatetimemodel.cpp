@@ -73,6 +73,24 @@ void tst_QDateTimeModel::cleanup()
 
 void tst_QDateTimeModel::getSetCheck()
 {
+    // initial state
+    QCOMPARE(model->date(), QDate());
+    QCOMPARE(model->time(), QTime());
+    QCOMPARE(model->dateTime(), QDateTime());
+    QCOMPARE(model->weekNumber(), 0);
+    QCOMPARE(model->dayOfWeek(), 1);
+    QCOMPARE(model->dayOfYear(), 1);
+    QCOMPARE(model->daysInMonth(), 31);
+    QCOMPARE(model->daysInYear(), 366);
+    QCOMPARE(model->toUTC(), QDateTime());
+    QCOMPARE(model->firstDayOfWeek(), QDate());
+    QCOMPARE(model->longDayName(), QString("Monday"));
+    QCOMPARE(model->longMonthName(), QString("January"));
+    QCOMPARE(model->shortDayName(), QString("Mon"));
+    QCOMPARE(model->shortMonthName(), QString("Jan"));
+    //QCOMPARE(model->maximumDateTime(), QDATETIMEEDIT_DATETIME_MAX);
+    //QCOMPARE(model->minimumDateTime(), QDATETIMEEDIT_DATETIME_MIN);
+    QCOMPARE(model->timeSpec(), Qt::LocalTime);
 
 }
 
