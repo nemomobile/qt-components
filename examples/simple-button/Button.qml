@@ -32,13 +32,13 @@ Item {
         checkable: true;
         // autoExclusive: true;
 
-        mousePressed: mouseArea.pressed;
-        mouseOver: mouseArea.containsMouse;
+        pressed: mouseArea.pressed;
+        highlighted: mouseArea.containsMouse;
     }
 
     Script {
         function sunken() {
-            return model.buttonDown || model.checked;
+            return model.down || model.checked;
         }
     }
 }

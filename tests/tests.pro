@@ -1,5 +1,10 @@
 TEMPLATE = subdirs
-SUBDIRS =
+SUBDIRS += \
+    qbuttonmodel \
+    qdatetimemodel \
+    qlineeditmodel \
+    qprogressbarmodel \
+    qrangemodel \
 
 test.CONFIG = recursive
 test.recurse = $$SUBDIRS

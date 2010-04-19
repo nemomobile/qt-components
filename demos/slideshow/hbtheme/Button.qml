@@ -15,7 +15,7 @@ Item {
     BorderImage {
         id: releasedImage;
         anchors.fill: parent;
-        visible: !model.buttonDown && !model.checked;
+        visible: !model.down && !model.checked;
         source: "images/button-normal.png"
 
         border.left: 10;
@@ -27,7 +27,7 @@ Item {
     BorderImage {
         id: pressedImage;
         anchors.fill: parent;
-        visible: model.buttonDown;
+        visible: model.down;
         source: "images/button-pressed.png"
 
         border.left: 10;
@@ -39,7 +39,7 @@ Item {
     BorderImage {
         id: selectedImage;
         anchors.fill: parent;
-        visible: !model.buttonDown && model.checked;
+        visible: !model.down && model.checked;
         source: "images/button-latched.png"
 
         border.left: 10;
@@ -70,8 +70,8 @@ Item {
     ButtonModel {
         id: model;
 
-        mousePressed: mouseArea.pressed;
-        mouseOver: mouseArea.containsMouse;
+        pressed: mouseArea.pressed;
+        highlighted: mouseArea.containsMouse;
         onClicked: button.clicked();
     }
 }
