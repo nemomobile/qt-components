@@ -62,14 +62,11 @@ Item {
         }
 
         MouseArea {
-            function handleRelease(x) {
-                knob.x = x
-            }
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
             anchors.right: parent.right
             height: 20
-            onPressed: { handleRelease(mouseX); }
+            onPressed: { model.setPosition(mouseX); }
         }
 
         MouseArea {
