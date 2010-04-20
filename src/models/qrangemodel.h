@@ -36,16 +36,16 @@ class QRangeModel : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(int minimumValue READ minimum WRITE setMinimum NOTIFY rangeChanged)
-    Q_PROPERTY(int maximumValue READ maximum WRITE setMaximum NOTIFY rangeChanged)
-    Q_PROPERTY(int singleStep READ singleStep WRITE setSingleStep)
-    Q_PROPERTY(int pageStep READ pageStep WRITE setPageStep)
-    Q_PROPERTY(int value READ value WRITE setValue NOTIFY valueChanged USER true)
-    Q_PROPERTY(int position READ position WRITE setPosition NOTIFY positionChanged)
-    Q_PROPERTY(int minimumPosition READ minimumPosition WRITE setMinimumPosition NOTIFY positionRangeChanged)
-    Q_PROPERTY(int maximumPosition READ maximumPosition WRITE setMaximumPosition NOTIFY positionRangeChanged)
-    Q_PROPERTY(bool tracking READ hasTracking WRITE setTracking)
-    Q_PROPERTY(bool wrapping READ wrapping WRITE setWrapping)
+    Q_PROPERTY(qreal value READ value WRITE setValue NOTIFY valueChanged USER true)
+    Q_PROPERTY(qreal minimumValue READ minimum WRITE setMinimum NOTIFY rangeChanged)
+    Q_PROPERTY(qreal maximumValue READ maximum WRITE setMaximum NOTIFY rangeChanged)
+    Q_PROPERTY(qreal singleStep READ singleStep WRITE setSingleStep)
+    Q_PROPERTY(qreal pageStep READ pageStep WRITE setPageStep)
+    Q_PROPERTY(qreal position READ position WRITE setPosition NOTIFY positionChanged)
+    Q_PROPERTY(qreal positionAtMinimum READ positionAtMinimum WRITE setPositionAtMinimum NOTIFY positionRangeChanged)
+    Q_PROPERTY(qreal positionAtMaximum READ positionAtMaximum WRITE setPositionAtMaximum NOTIFY positionRangeChanged)
+    Q_PROPERTY(bool inverted READ inverted WRITE setInverted)
+    Q_PROPERTY(bool tracking READ isTracking WRITE setTracking)
 
 public:
     QRangeModel(QObject *parent = 0);
@@ -54,41 +54,37 @@ public:
     void sedate();
     void awake();
 
-    void setMinimum(int);
-    int minimum() const;
+    void setRange(qreal min, qreal max);
+    void setPositionRange(qreal min, qreal max);
 
-    void setMaximum(int);
-    int maximum() const;
+    void setSingleStep(qreal);
+    qreal singleStep() const;
 
-    void setRange(int min, int max);
-
-    void setSingleStep(int);
-    int singleStep() const;
-
-    void setPageStep(int);
-    int pageStep() const;
+    void setPageStep(qreal);
+    qreal pageStep() const;
 
     void setTracking(bool enable);
-    bool hasTracking() const;
+    bool isTracking() const;
 
-    void setSliderPosition(int);
-    int sliderPosition() const;
+    void setMinimum(qreal);
+    qreal minimum() const;
 
-    void setMinimumPosition(int);
-    int minimumPosition() const;
+    void setMaximum(qreal);
+    qreal maximum() const;
 
-    void setMaximumPosition(int);
-    int maximumPosition() const;
+    void setPositionAtMinimum(qreal);
+    qreal positionAtMinimum() const;
 
-    void setPositionRange(int min, int max);
+    void setPositionAtMaximum(qreal);
+    qreal positionAtMaximum() const;
 
-    void setPosition(int position);
-    int position() const;
+    void setPosition(qreal position);
+    qreal position() const;
 
-    void setWrapping(bool);
-    bool wrapping() const;
+    void setInverted(bool);
+    bool inverted() const;
 
-    int value() const;
+    qreal value() const;
 
 public Q_SLOTS:
     void singleStepAdd();
@@ -97,22 +93,18 @@ public Q_SLOTS:
     void pageStepSub();
     void toMinimum();
     void toMaximum();
-    //void startRepeatAction();
-
-    void setValue(int);
+    void setValue(qreal);
 
 Q_SIGNALS:
-    void sliderMoved(int position);
+    void valueChanged(qreal value);
+    void positionChanged(qreal position);
 
-    void valueChanged(int value);
-    void positionChanged(int position);
-
-    void rangeChanged(int min, int max);
-    void positionRangeChanged(int min, int max);
+    void rangeChanged(qreal min, qreal max);
+    void positionRangeChanged(qreal min, qreal max);
 
 protected:
     QRangeModel(QRangeModelPrivate &dd, QObject *parent);
-    //void timerEvent(QTimerEvent *e);
+    QRangeModelPrivate* d_ptr;
 
 private:
     Q_DISABLE_COPY(QRangeModel)

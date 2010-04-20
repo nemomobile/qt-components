@@ -36,60 +36,41 @@
 // We mean it.
 //
 
-#include "private/qobject_p.h"
-#include "QtCore/qbasictimer.h"
-
+#include "qrangemodel.h"
 
 QT_BEGIN_NAMESPACE
 
-class QRangeModelPrivate : public QObjectPrivate
+class QRangeModelPrivate : public QObject
 {
 public:
     Q_DECLARE_PUBLIC(QRangeModel)
 
-    QRangeModelPrivate();
-
-    ~QRangeModelPrivate();
+    QRangeModelPrivate(QRangeModel *qq);
+    virtual ~QRangeModelPrivate();
 
     void init();
 
     bool isSedated;
     bool signalsBlocked;
 
-    void setSteps(int single, int page);
-
-    int minimum, maximum, pageStep, value, position, pressValue;
-    int pos, minpos, maxpos;
-    int singleStep;
+    qreal pos, posatmin, posatmax;
+    qreal minimum, maximum, pageStep, singleStep, value;
 
     uint tracking : 1;
-    uint blocktracking :1;
-    uint wrapping : 1;
+    uint inverted : 1;
 
-    /*
-    enum SliderAction {
-        SliderNoAction,
-        SliderSingleStepAdd,
-        SliderSingleStepSub,
-        SliderPageStepAdd,
-        SliderPageStepSub,
-        SliderToMinimum,
-        SliderToMaximum,
-        SliderMove
-    };
-    QBasicTimer repeatActionTimer;
-    int repeatActionTime;
-    QRangeModel::SliderAction repeatAction;
-    */
+    QRangeModel *q_ptr;
 
-    inline int positionFromValue() {
-        qreal scale =  qreal(maximum - minimum) / qreal(maxpos - minpos);
-        return minpos + qRound((value - minimum) / scale); // ###
+    inline qreal positionFromValue(qreal value) {
+        const qreal scale = qreal(maximum - minimum) /
+            qreal(posatmax - posatmin);
+        return value / scale;
     }
 
-    inline int valueFromPosition() {
-        qreal scale = qreal(maximum - minimum) / qreal(maxpos - minpos);
-        return minimum + qRound((pos - minpos) * scale); // ###
+    inline qreal valueFromPosition(qreal pos) {
+        const qreal scale = qreal(maximum - minimum) /
+            qreal(posatmax - posatmin);
+        return pos * scale;
     }
 };
 

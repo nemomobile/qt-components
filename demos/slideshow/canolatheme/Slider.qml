@@ -36,7 +36,7 @@ Item {
 
     RangeModel {
         id: model
-        maximumPosition: background.width - knob.width
+        positionAtMaximum: background.width - knob.width
         position: knob.x + (knob.width / 2)
     }
 }
