@@ -22,4 +22,33 @@
 ****************************************************************************/
 import Qt 4.7
 
-Text{}
+Text {
+    id: label;
+    property alias tooltipText: tooltipLoader.text;
+
+    TooltipLoader {
+        id: tooltipLoader;
+        anchors.fill: parent;
+
+        // Label does not have a MouseArea so we need our own delegate
+        // that includes it.
+        delegate: MouseArea {
+            id: area;
+            anchors.fill: parent;
+
+            hoverEnabled: true;
+            onPressed: tooltip.pressDismiss = true;
+            onExited: tooltip.pressDismiss = false;
+
+            Tooltip {
+                id: tooltip;
+                anchors.top: parent.bottom;
+                anchors.horizontalCenter: parent.horizontalCenter;
+
+                property bool pressDismiss: false;
+                shown: (area.containsMouse && !pressDismiss);
+                text: tooltipLoader.text;
+            }
+        }
+    }
+}
