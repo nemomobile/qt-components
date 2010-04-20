@@ -39,6 +39,7 @@ Item {
     property bool vertical: false
     property int documentSize: 100
     property int viewSize: 20
+    property alias tooltipText: tooltip.text
 
     height: 50
     width: 50
@@ -95,6 +96,7 @@ Item {
         MouseArea {
             id: scrollbarPathMouseRegion
             anchors.fill: parent
+            hoverEnabled: tooltip.text
             onPressed: {
                 scrollbarPath.hold = true;
                 handleRelease();
@@ -353,5 +355,46 @@ Item {
         minimumValue: 0
         maximumValue: 100
         positionAtMinimum: 0
+    }
+
+    TooltipLoader {
+        id: tooltip;
+        anchors.fill: parent;
+
+        property bool pressDismiss: false;
+        property bool containsMouse: scrollbarPathMouseRegion.containsMouse
+                                  || handleMouseRegion.containsMouse
+                                  || button1MouseRegion.containsMouse
+                                  || button2MouseRegion.containsMouse
+        property bool mousePressed: scrollbarPathMouseRegion.pressed
+                                 || handleMouseRegion.pressed
+                                 || button1MouseRegion.pressed
+                                 || button2MouseRegion.pressed;
+        property bool resetState: !containsMouse && !mousePressed
+
+        // Dismiss on press
+        onMousePressedChanged: {
+            if (mousePressed)
+                pressDismiss = true;
+        }
+
+        // Reset on leave and release
+        // ### Ugly: We use this timer to debounce the value of this property when the
+        //     mouse moves from one area to another
+        onResetStateChanged: {
+            if (resetState)
+                dismissTimer.start();
+        }
+        Timer {
+            id: dismissTimer;
+            interval: 10;
+            onTriggered: {
+                // Condition for "onExited" event
+                if (tooltip.resetState)
+                    tooltip.pressDismiss = false;
+            }
+        }
+
+        shown: containsMouse && !pressDismiss;
     }
 }

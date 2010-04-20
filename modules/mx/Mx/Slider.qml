@@ -31,6 +31,7 @@ Item {
     property alias inverted: model.inverted
     property alias minimum: model.minimumValue
     property alias maximum: model.maximumValue
+    property alias tooltipText: tooltip.text
 
     height: 22
     width: 108
@@ -52,6 +53,7 @@ Item {
             height: 8
         }
 
+        // XXX Maybe use image primitives rather than a real Button ?
         Button {
             id: knob
             x: model.position
@@ -62,20 +64,19 @@ Item {
         }
 
         MouseArea {
+            id: grooveArea
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
             anchors.right: parent.right
             height: 20
-            onPressed: { model.setPosition(mouseX); }
+            onPressed: { model.setPosition(mouseX - knob.width/2); }
+            hoverEnabled: tooltip.text;
         }
 
         MouseArea {
-            id:mouseRegion
+            id: knobArea
             anchors.fill: knob
-            anchors.verticalCenter: knob.verticalCenter
-            anchors.horizontalCenter: knob.horizontalCenter
-            width: 50
-            height: 50
+            hoverEnabled: tooltip.text
             drag.target: knob
             drag.axis: "XAxis"
             drag.minimumX: -sliderEdgeOffset
@@ -90,5 +91,42 @@ Item {
         positionAtMinimum: -sliderEdgeOffset
         positionAtMaximum: sliderBase.width - knob.width / 2 - sliderEdgeOffset
         position: knob.x
+    }
+
+    TooltipLoader {
+        id: tooltip;
+        anchors.fill: parent;
+
+        property bool pressDismiss: false;
+        property bool containsMouse: grooveArea.containsMouse
+                                  || knobArea.containsMouse
+        property bool mousePressed: grooveArea.pressed
+                                 || knobArea.pressed;
+        property bool resetState: !containsMouse && !mousePressed
+
+        // Dismiss on press
+        onMousePressedChanged: {
+            if (mousePressed)
+                pressDismiss = true;
+        }
+
+        // Reset on leave and release
+        // ### Ugly: We use this timer to debounce the value of this property when the
+        //     mouse moves from one area to another
+        onResetStateChanged: {
+            if (resetState)
+                dismissTimer.start();
+        }
+        Timer {
+            id: dismissTimer;
+            interval: 10;
+            onTriggered: {
+                // Condition for "onExited" event
+                if (tooltip.resetState)
+                    tooltip.pressDismiss = false;
+            }
+        }
+
+        shown: containsMouse && !pressDismiss;
     }
 }

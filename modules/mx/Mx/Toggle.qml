@@ -26,6 +26,7 @@ Item {
     id: toggle
 
     property bool active: state == "activated"
+    property alias tooltipText: tooltip.text;
 
     width: 105
     height: 39
@@ -43,8 +44,11 @@ Item {
     }
 
     MouseArea {
+        id: backMouse
         anchors.fill: parent
+        hoverEnabled: tooltip.text
         onClicked: { active = !active; }
+        onPressed: { tooltip.pressDismiss = true; }
     }
 
     Image {
@@ -65,12 +69,14 @@ Item {
             property bool userPressed;
 
             anchors.fill: parent
+            hoverEnabled: tooltip.text
             drag.target: handle
             drag.axis: "XAxis"
             drag.minimumX: 4
             drag.maximumX: toggle.width - handle.width - 4
 
             onPressed: {
+                tooltip.pressDismiss = true;
                 userPressed = true;
                 dragged = false;
                 lastPosition = handle.x;
@@ -104,6 +110,34 @@ Item {
                 userPressed = false;
             }
         }
+    }
+
+    TooltipLoader {
+        id: tooltip;
+        anchors.fill: parent;
+
+        property bool pressDismiss: false;
+        property bool containsMouse: backMouse.containsMouse
+                                  || handleMouse.containsMouse;
+
+        // When the mouse moves from one MouseArea to another we get two
+        // mouseChanged events (to false and back to true). To debounce that
+        // we use a 10 msec timer.
+        onContainsMouseChanged: {
+            if (!containsMouse)
+                dismissTimer.start();
+        }
+        Timer {
+            id: dismissTimer;
+            interval: 10;
+            onTriggered: {
+                // Condition for "onExited" event
+                if (!tooltip.containsMouse)
+                    tooltip.pressDismiss = false;
+            }
+        }
+
+        shown: containsMouse && !pressDismiss;
     }
 
     states: [
