@@ -53,16 +53,6 @@ Item {
             height: 8
         }
 
-        // XXX Maybe use image primitives rather than a real Button ?
-        Button {
-            id: knob
-            x: model.position
-            anchors.verticalCenter: parent.verticalCenter
-            text: ""
-            width: 22
-            height: 16
-        }
-
         MouseArea {
             id: grooveArea
             anchors.verticalCenter: parent.verticalCenter
@@ -73,14 +63,42 @@ Item {
             hoverEnabled: tooltip.text;
         }
 
-        MouseArea {
-            id: knobArea
-            anchors.fill: knob
-            hoverEnabled: tooltip.text
-            drag.target: knob
-            drag.axis: "XAxis"
-            drag.minimumX: -sliderEdgeOffset
-            drag.maximumX: sliderBase.width - knob.width / 2 - sliderEdgeOffset
+        BorderImage {
+            id: knob
+            x: model.position
+            anchors.verticalCenter: parent.verticalCenter
+            width: 22
+            height: 16
+
+            border.left: 10
+            border.top: 10
+            border.right: 10
+            border.bottom: 10
+
+            source: Qt.resolvedUrl("images/button.png");
+
+            MouseArea {
+                id: knobArea
+                anchors.fill: knob
+                hoverEnabled: tooltip.text
+                drag.target: knob
+                drag.axis: "XAxis"
+                drag.minimumX: -sliderEdgeOffset
+                drag.maximumX: sliderBase.width - knob.width / 2 - sliderEdgeOffset
+            }
+
+            states: [
+                State {
+                    name: "hover"
+                    when: !knobArea.pressed && knobArea.containsMouse
+                    PropertyChanges { target: knob; source: Qt.resolvedUrl("images/button-hover.png"); }
+                },
+                State {
+                    name: "pressed"
+                    when: knobArea.pressed
+                    PropertyChanges { target: knob; source: Qt.resolvedUrl("images/button-active.png"); }
+                }
+            ]
         }
     }
 
