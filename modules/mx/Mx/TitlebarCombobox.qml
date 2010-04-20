@@ -29,6 +29,7 @@ Item {
     property alias current: value.text;
     property alias model: elements.model;
     property alias currentIndex: elements.currentIndex;
+    property alias tooltipText: tooltip.text;
 
     width: 161;
     height: 42;
@@ -65,10 +66,13 @@ Item {
     MouseArea {
         id: markerArea;
         anchors.fill: background;
+        hoverEnabled: tooltip.text;
         onClicked: {
             list.state == "" ? list.state = "shown" : list.state = "";
             elements.currentIndex = list.lastIndex;
         }
+        onPressed: { tooltip.pressDismiss = true; }
+        onExited: { tooltip.pressDismiss = false; }
     }
 
     TopLevelItem {
@@ -170,5 +174,13 @@ Item {
                 }
             }
         ]
+    }
+
+    TooltipLoader {
+        id: tooltip;
+        anchors.fill: parent;
+
+        property bool pressDismiss: false;
+        shown: !pressDismiss && markerArea.containsMouse && (list.state == "");
     }
 }

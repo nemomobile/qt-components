@@ -84,14 +84,12 @@ Item {
         text: pushbutton.text
     }
 
-    // ### I wish to have that as a separate item
-    Tooltip {
+    TooltipLoader {
         id: tooltip;
-        anchors.top: pushbutton.bottom;
-        anchors.horizontalCenter: pushbutton.horizontalCenter;
+        anchors.fill: parent;
 
         property bool pressDismiss: false;
-        shown: (mouseRegion.containsMouse && !pressDismiss);
+        shown: !pressDismiss && mouseRegion.containsMouse;
     }
 
     MouseArea {

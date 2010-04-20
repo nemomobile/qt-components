@@ -27,14 +27,15 @@ Item {
     property string hint: "Entry"
     property alias text: textInp.text
     property bool secret: false
-    property alias leftIconSource: leftIcon.source 
-    property alias rightIconSource: rightIcon.source 
+    property alias leftIconSource: leftIcon.source
+    property alias rightIconSource: rightIcon.source
+    property alias tooltipText: tooltip.text
     signal rightIconClicked
     signal leftIconClicked
     signal enterPressed
 
     width: (hintText.state=='hinting'?hintText.width:textInp.width) + 11 + leftIcon.width + rightIcon.width
-    height: 13 + 11 
+    height: 13 + 11
 
     BorderImage {
         source: "images/entry.png"
@@ -66,7 +67,7 @@ Item {
             when: textInp.text=="" && textInp.focus==false
             PropertyChanges{target: hintText; text: lineedit.hint}
         }//No cool animated transition, because mx doesn't do that
-        
+
     }
     TextInput{
         id:textInp
@@ -111,6 +112,7 @@ Item {
         //Implements all line edit mouse handling
         id: mainMouseArea
         anchors.fill: parent;
+        hoverEnabled: tooltip.text;
         function translateX(x){
             return x - textInp.x
         }
@@ -119,6 +121,8 @@ Item {
             textInp.cursorPosition = textInp.xToPosition(translateX(mouse.x));
         }
         onPositionChanged: {
+            if (!mainMouseArea.pressed)
+                return;
             textInp.moveCursorSelection(textInp.xToPosition(translateX(mouse.x)));
         }
         onReleased: {
@@ -149,6 +153,13 @@ Item {
             anchors.fill: parent
             onClicked: lineedit.leftIconClicked();
         }
+    }
+
+    TooltipLoader {
+        id: tooltip;
+        anchors.fill: parent;
+
+        shown: mainMouseArea.containsMouse && (lineedit.state != "Highlighted");
     }
 
     states: [

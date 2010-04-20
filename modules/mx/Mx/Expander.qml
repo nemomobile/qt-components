@@ -35,6 +35,7 @@ Item{
         containee.y = 32;
     }
     property alias text: label.text
+    property alias tooltipText: tooltip.text
 
     children:[//not the default property anymore
     Image{ id: button
@@ -55,6 +56,8 @@ Item{
         anchors.fill: parent
         hoverEnabled: true
         onClicked: if(container.state=="open"){container.state="";}else{container.state="open";}
+        onPressed: tooltip.pressDismiss = true;
+        onExited: tooltip.pressDismiss = false;
     },
     BorderImage{ id:image
         anchors.fill: parent
@@ -64,6 +67,13 @@ Item{
         border.right: 8
         border.top: 8
         z:0
+    },
+    TooltipLoader {
+        id: tooltip;
+        anchors.fill: parent;
+
+        property bool pressDismiss: false;
+        shown: !pressDismiss && mr.containsMouse && (container.state == "");
     }
     ]
     states: [
