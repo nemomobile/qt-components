@@ -57,34 +57,32 @@ public:
     void setRange(qreal min, qreal max);
     void setPositionRange(qreal min, qreal max);
 
-    void setSingleStep(qreal);
+    void setSingleStep(qreal step);
     qreal singleStep() const;
 
-    void setPageStep(qreal);
+    void setPageStep(qreal step);
     qreal pageStep() const;
 
     void setTracking(bool enable);
     bool isTracking() const;
 
-    void setMinimum(qreal);
+    void setMinimum(qreal min);
     qreal minimum() const;
 
-    void setMaximum(qreal);
+    void setMaximum(qreal max);
     qreal maximum() const;
 
-    void setPositionAtMinimum(qreal);
+    void setPositionAtMinimum(qreal posAtMin);
     qreal positionAtMinimum() const;
 
-    void setPositionAtMaximum(qreal);
+    void setPositionAtMaximum(qreal posAtMax);
     qreal positionAtMaximum() const;
 
-    void setPosition(qreal position);
-    qreal position() const;
-
-    void setInverted(bool);
+    void setInverted(bool inverted);
     bool inverted() const;
 
     qreal value() const;
+    qreal position() const;
 
 public Q_SLOTS:
     void singleStepAdd();
@@ -93,7 +91,8 @@ public Q_SLOTS:
     void pageStepSub();
     void toMinimum();
     void toMaximum();
-    void setValue(qreal);
+    void setValue(qreal value);
+    void setPosition(qreal position);
 
 Q_SIGNALS:
     void valueChanged(qreal value);

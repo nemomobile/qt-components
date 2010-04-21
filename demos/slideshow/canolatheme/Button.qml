@@ -50,11 +50,9 @@ Item {
         text: "Effect";
     }
 
-    Script {
-        function sunken()
-        {
-            return model.down || model.checked;
-        }
+    function sunken()
+    {
+        return model.down || model.checked;
     }
 
     MouseArea {

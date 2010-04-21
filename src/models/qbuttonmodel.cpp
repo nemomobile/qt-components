@@ -41,7 +41,7 @@ QT_BEGIN_NAMESPACE
 */
 QButtonModelPrivate::QButtonModelPrivate() :
     QObjectPrivate(),
-#ifndef QT_NO_SHORTCUT
+#if 0 //ndef QT_NO_SHORTCUT
     shortcutId(0),
 #endif
     checkable(false), checked(false), autoRepeat(false), autoExclusive(false),
@@ -234,7 +234,7 @@ QButtonModel::~QButtonModel()
 {
 }
 
-#ifndef QT_NO_SHORTCUT
+#if 0 //ndef QT_NO_SHORTCUT
 /*!
 \property QButtonModel::shortcut
 \brief the mnemonic associated with the button

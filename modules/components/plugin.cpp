@@ -16,6 +16,7 @@ public:
         Q_ASSERT(uri == QLatin1String("Components"));
         qmlRegisterType<QButtonModel>(uri, 1, 0, "ButtonModel");
         qmlRegisterType<QLineEditModel>(uri, 1, 0, "LineEditModel");
+        qmlRegisterType<QLineEditLayoutHelper>(uri, 1, 0, "LineEditLayoutHelper");
         qmlRegisterType<QLineEditEventHelper>(uri, 1, 0, "LineEditEventHelper");
         qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
         qmlRegisterType<QDateTimeModel>(uri, 1, 0, "DateTimeModel");

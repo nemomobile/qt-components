@@ -1,10 +1,13 @@
-import Qt 4.6
+import Qt 4.7
 import Components 1.0
 
 FocusScope {
+    id: component
+
     property string emptyText: "Type some text..."
     property alias font: contents.font
-    property alias text: contents.text
+    property alias text: model.text
+    property bool password: false
 
     signal accepted
 
@@ -30,7 +33,8 @@ FocusScope {
 
         color: keyHandler.focus ? "tomato" : "gray"
 
-        x: contents.x + model.cursorX
+        // ###
+        x: contents.x + layout.cursorX
         Behavior on x { NumberAnimation { duration: 100 } }
 
         visible: keyHandler.focus || model.displayText
@@ -49,22 +53,27 @@ FocusScope {
         anchors.fill: parent
         onClicked: {
             parent.focus = true
-            // ### we should be doing some calc and then setposition
-            model.cursorX = mouse.x
+            model.cursorPosition = layout.xToPosition(mouse.x)
+            print(layout.cursorX)
         }
     }
 
     LineEditEventHelper {
         id: keyHandler
-        focus: true
         model: model
+        focus: true
         onAccepted: parent.accepted()
+    }
+
+    LineEditLayoutHelper {
+        id: layout
+        model: model
+        font: contents.font
     }
 
     LineEditModel {
         id: model
-
-        // ### TextLayout stuff
-        font: contents.font
+        // This simulates PasswordEchoOnEdit
+        echoMode: (!component.password || keyHandler.focus) ? LineEditModel.Normal : LineEditModel.Password
     }
 }

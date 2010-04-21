@@ -24,6 +24,9 @@
 #include <QtTest/QtTest>
 #include "qdatetimemodel.h"
 
+// ### FIX THIS INCLUDE ###
+#include <QtCore/private/qdatetime_p.h>
+
 class tst_QDateTimeModel : public QObject
 {
     Q_OBJECT
@@ -88,8 +91,8 @@ void tst_QDateTimeModel::getSetCheck()
     QCOMPARE(model->longMonthName(), QString("January"));
     QCOMPARE(model->shortDayName(), QString("Mon"));
     QCOMPARE(model->shortMonthName(), QString("Jan"));
-    //QCOMPARE(model->maximumDateTime(), QDATETIMEEDIT_DATETIME_MAX);
-    //QCOMPARE(model->minimumDateTime(), QDATETIMEEDIT_DATETIME_MIN);
+    QCOMPARE(model->maximumDateTime(), QDATETIMEEDIT_DATETIME_MAX);
+    QCOMPARE(model->minimumDateTime(), QDATETIMEEDIT_COMPAT_DATETIME_MIN);
     QCOMPARE(model->timeSpec(), Qt::LocalTime);
 
 }

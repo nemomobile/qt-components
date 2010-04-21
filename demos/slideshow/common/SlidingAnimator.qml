@@ -56,12 +56,10 @@ Item {
         }
     }
 
-    Script {
-        function resetContainerPosition() {
-            currentImage = nextImage;
-            leftImage.x = 0;
-            nextImage = "";
-            root.finished();
-        }
+    function resetContainerPosition() {
+        currentImage = nextImage;
+        leftImage.x = 0;
+        nextImage = "";
+        root.finished();
     }
 }
