@@ -32,34 +32,38 @@ Item{
         containee.parent = container;
         containee.opacity = 0;
         containee.x = 8;
-        containee.y = 32;
+        containee.y = 34;
     }
     property alias text: label.text
     property alias tooltipText: tooltip.text
 
     children:[//not the default property anymore
-    Image{ id: button
+    Image {
+        id: button
         property string subStr: 'up'
         anchors.left: image.left
         anchors.leftMargin: 8
-           source: Qt.resolvedUrl('images/expander-arrow-'+ subStr + (mr.containsMouse?'-hover':'') + '.png')
+        source: Qt.resolvedUrl('images/expander-arrow-' + subStr + (mr.containsMouse?'-hover':'') + '.png')
         y: 6
         z:2
     },
-    Text{ id: label
+    Text {
+        id: label
         anchors.left: button.right
         anchors.leftMargin: 8
         y:8 //doesn't look to be verticalCenter aligned to button (but should be)
         z:2
     },
-    MouseArea{ id:mr
+    MouseArea {
+        id:mr
         anchors.fill: parent
         hoverEnabled: true
         onClicked: if(container.state=="open"){container.state="";}else{container.state="open";}
         onPressed: tooltip.pressDismiss = true;
         onExited: tooltip.pressDismiss = false;
     },
-    BorderImage{ id:image
+    BorderImage {
+        id:image
         anchors.fill: parent
         source: Qt.resolvedUrl('images/expander-'+ (mr.containsMouse?'hover':'closed') + '.png')
         border.bottom: 8
@@ -79,15 +83,18 @@ Item{
     states: [
         State{
             name: "open" //Closed is the default state
-            PropertyChanges{target: container; height: 34 + containee.height + 12;}
+            PropertyChanges{target: container; height: 34 + containee.height + 7;}
             PropertyChanges{target: container.containee; parent: container; opacity: 1}
             PropertyChanges{target: button; subStr: 'down';}
-            PropertyChanges{target: image; source: 'images/expander-open.png'; border.top: 32}
+            PropertyChanges{target: image; source: 'images/expander-open.png'; border.top: 33}
         }
     ]
-    transitions: Transition{
-        from: ''; to: "open"; reversible: true
+    transitions: Transition {
+        from: ""; to: "open";
+        reversible: true;
         SequentialAnimation{
+            PropertyAction{target: button; property: 'subStr'}
+            PropertyAction{property: 'border.top'}
             NumberAnimation{properties:'height'; duration:256}
             NumberAnimation{properties:'opacity'; duration:120}
         }
