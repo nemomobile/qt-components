@@ -4,4 +4,9 @@ if [ $(uname) == "Darwin" ]; then
 else
   LD_LIBRARY_PATH=lib:$LD_LIBRARY_PATH
 fi
-qml -I modules/components -I demos/slideshow/model demos/slideshow/$1/main.qml
+if [ -z $1 ]; then
+THEME="canolatheme"
+else
+THEME=$1
+fi
+qml -I modules/components -I demos/slideshow/model demos/slideshow/$THEME/main.qml
