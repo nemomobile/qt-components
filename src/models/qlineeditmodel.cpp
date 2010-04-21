@@ -1704,13 +1704,13 @@ void QLineEditEventHelper::keyPressEvent(QKeyEvent *event)
                         || myModifiers == (Qt::AltModifier|Qt::ShiftModifier)
                         || myModifiers == Qt::ShiftModifier) {
 
-                    event->key() == Qt::Key_Up ? m_model->home(1) : m_model->end(1);
+                    event->key() == Qt::Key_Up ? m_model->moveCursorStart(1) : m_model->moveCursorEnd(1);
                 }
             } else {
                 if ((myModifiers == Qt::ControlModifier
                      || myModifiers == Qt::AltModifier
                      || myModifiers == Qt::NoModifier)) {
-                    event->key() == Qt::Key_Up ? m_model->home(0) : m_model->end(0);
+                    event->key() == Qt::Key_Up ? m_model->moveCursorStart(0) : m_model->moveCursorEnd(0);
                 }
             }
             handled = true;
