@@ -56,13 +56,11 @@ Item {
         }
     }
 
-    Script {
-        function resetContainerPosition() {
-            currentImage = nextImage;
-            oldImage.opacity = 1;
-            newImage.opacity = 0;
-            nextImage = "";
-            root.finished();
-        }
+    function resetContainerPosition() {
+        currentImage = nextImage;
+        oldImage.opacity = 1;
+        newImage.opacity = 0;
+        nextImage = "";
+        root.finished();
     }
 }
