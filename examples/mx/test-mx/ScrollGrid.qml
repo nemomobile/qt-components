@@ -23,7 +23,7 @@ Item {
         height: bottomBar.y;
         cellWidth: parent.cellWidth;
         cellHeight: parent.cellHeight;
-        overShoot: false;
+        boundsBehavior: "StopAtBounds";
 
         clip: true;
         contentX: bottomBar.value

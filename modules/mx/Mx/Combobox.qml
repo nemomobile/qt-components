@@ -151,7 +151,7 @@ Item {
             anchors.fill: parent;
 
             clip:true;
-            overShoot: false;
+            boundsBehavior: "StopAtBounds";
             keyNavigationWraps: true;
 
             delegate: delegate;
