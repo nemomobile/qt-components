@@ -1,4 +1,4 @@
-import Qt 4.6
+import Qt 4.7
 import Components 1.0
 
 Item {
@@ -36,9 +36,7 @@ Item {
         highlighted: mouseArea.containsMouse;
     }
 
-    Script {
-        function sunken() {
-            return model.down || model.checked;
-        }
+    function sunken() {
+        return model.down || model.checked;
     }
 }

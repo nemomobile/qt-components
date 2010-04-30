@@ -1,4 +1,4 @@
-import Qt 4.6
+import Qt 4.7
 import Components 1.0
 
 Item {
@@ -44,11 +44,9 @@ Item {
         text: component.text;
     }
 
-    Script {
-        function sunken()
-        {
-            return model.buttonDown || model.checked;
-        }
+    function sunken()
+    {
+        return model.buttonDown || model.checked;
     }
 
     MouseArea {

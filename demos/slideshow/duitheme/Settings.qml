@@ -1,4 +1,4 @@
-import Qt 4.6
+import Qt 4.7
 
 Item {
     id: settings;
@@ -12,10 +12,11 @@ Item {
         anchors.fill: parent;
         opacity: 0;
 
+        /* effects are not in 4.7, have to expose the C++ class to qml
         effect: Blur {
             id: blureffect;
             blurRadius: 10;
-        }
+        }*/
     }
 
     MouseArea {

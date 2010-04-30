@@ -1,4 +1,4 @@
-import Qt 4.6
+import Qt 4.7
 
 Item {
     width: 640;
@@ -21,30 +21,27 @@ Item {
 
         Component.onCompleted: init();
 
-        Script {
+        function musicas() {
+            var musicas = ["/home/fleury/Downloads/ancora.jpg",
+                           "/home/fleury/Desktop/2975263571_a8ef7f0aec_o.jpg",
+                           "/home/fleury/Desktop/ComprovanteUNICAMP34.jpg",
+                           "/home/fleury/Downloads/akademy-eduardo.jpg"]
+            return musicas;
+        }
 
-            function musicas() {
-                var musicas = ["/home/fleury/Downloads/ancora.jpg",
-                               "/home/fleury/Desktop/2975263571_a8ef7f0aec_o.jpg",
-                               "/home/fleury/Desktop/ComprovanteUNICAMP34.jpg",
-                               "/home/fleury/Downloads/akademy-eduardo.jpg"]
-                return musicas;
-            }
+        function init()
+        {
+            var list = musicas();
+            anim1.currentImage = list[0];
+            anim1.nextImage = list[1];
+            index = 1;
+        }
 
-            function init()
-            {
-                var list = musicas();
-                anim1.currentImage = list[0];
-                anim1.nextImage = list[1];
-                index = 1;
-            }
-
-            function getNext()
-            {
-                var list = musicas();
-                index = (index + 1) % 4;
-                anim1.nextImage = list[index];
-            }
+        function getNext()
+        {
+            var list = musicas();
+            index = (index + 1) % 4;
+            anim1.nextImage = list[index];
         }
     }
 }
