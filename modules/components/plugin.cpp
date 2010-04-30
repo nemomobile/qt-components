@@ -5,6 +5,7 @@
 #include "qrangemodel.h"
 #include "qdatetimemodel.h"
 #include "qprogressbarmodel.h"
+#include "qanglemodel.h"
 
 
 class ComponentsQmlPlugin : public QDeclarativeExtensionPlugin
@@ -21,6 +22,7 @@ public:
         qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
         qmlRegisterType<QDateTimeModel>(uri, 1, 0, "DateTimeModel");
         qmlRegisterType<QProgressBarModel>(uri, 1, 0, "ProgressBarModel");
+        qmlRegisterType<QAngleModel>(uri, 1, 0, "AngleModel");
     }
 };
 
