@@ -1,4 +1,4 @@
-import Qt 4.6 as Qt
+import Qt 4.7 as Qt
 import Mx 1.0 as Mx
 import "calculator.js" as CalcEngine
 
