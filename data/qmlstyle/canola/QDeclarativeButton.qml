@@ -44,11 +44,9 @@ Item {
         text: component.text;
     }
 
-    Script {
-        function sunken()
-        {
-            return model.buttonDown || model.checked;
-        }
+    function sunken()
+    {
+        return model.buttonDown || model.checked;
     }
 
     MouseArea {

@@ -36,9 +36,7 @@ Item {
         highlighted: mouseArea.containsMouse;
     }
 
-    Script {
-        function sunken() {
-            return model.down || model.checked;
-        }
+    function sunken() {
+        return model.down || model.checked;
     }
 }
