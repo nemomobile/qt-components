@@ -38,20 +38,23 @@ Mx.Window {
         }
         Mx.Entry{hint: 'Fixed Width Entry'; width: 240;}
         Mx.Entry{hint: 'Search...'; 
-            leftIconSource: 'images/edit-find.png'; 
+            leftIconSource: '../../modules/mx/Mx/images/edit-find.png';
             onLeftIconClicked: text='Hello world';
-            rightIconSource: 'images/edit-clear.png';
+            rightIconSource: '../../modules/mx/Mx/images/edit-clear.png';
             onRightIconClicked: text='';
         }
         Mx.Entry{hint: 'Secret Mode'; secret: true}
-	Mx.Expander{text: 'Expander'; Mx.Label {width: 240; text: "I am the very model of a modern major general. I've information vegetable animal and mineral. I know the kings of England and I quote the fights historical, from matathon to waterloo in order categorical."; wrap:true}}
+        Mx.Expander{text: 'Expander'; Mx.Label {width: 240; text: "I am the very model of a modern major general. I've information vegetable animal and mineral. I know the kings of England and I quote the fights historical, from matathon to waterloo in order categorical.";
+            wrapMode:Text.WordWrap}}
         Mx.ProgressBar {
             width: 279;
-            SequentialAnimation on value {
+            minimum: 0
+            maximum:100
+            SequentialAnimation on progress {
                 loops: Animation.Infinite;
                 NumberAnimation {
                     from: 0;
-                    to: 1;
+                    to: 100;
                     duration: 5000;
                 }
             }
