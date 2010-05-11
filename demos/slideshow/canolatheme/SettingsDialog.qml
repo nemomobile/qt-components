@@ -24,10 +24,13 @@ BorderImage {
         anchors.fill: parent;
         spacing: 23;
 
+        Item { // A spacer because vertical anchoring gives an error inside Column
+            height: 10
+            anchors.left: parent.left
+            anchors.right: parent.right
+        }
         Label {
             id: title;
-            anchors.top: parent.top;
-            anchors.topMargin: 15;
             anchors.horizontalCenter: parent.horizontalCenter;
             text: "<b>SETTINGS</b>";
             font.pixelSize: 30;
