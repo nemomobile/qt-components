@@ -49,6 +49,7 @@ Item {
         anchors.left: background.left;
         anchors.right: marker.left;
         anchors.leftMargin: 5;
+        font.pixelSize: 15
     }
 
     BorderImage {

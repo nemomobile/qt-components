@@ -76,7 +76,7 @@ Item {
 
     Text {
         id: text
-        font.pixelSize: 13
+        font.pixelSize: 15
         anchors.verticalCenter:parent.verticalCenter
         anchors.horizontalCenter:parent.horizontalCenter
         anchors.verticalCenterOffset: pushbutton.state === "pressed" ? 1 : 0
