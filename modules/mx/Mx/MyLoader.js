@@ -14,9 +14,8 @@ function handleLoadedChange()
 
 function createDynamicObject()
 {
-    if (delegate.isReady) {
-        dynamicObject = delegate.createObject();
-        dynamicObject.parent = tooltipLoader;
+    if (delegate.status == Component.Ready) {
+        dynamicObject = delegate.createObject(tooltipLoader);
     } else {
         print(delegate.errorsString());
     }
