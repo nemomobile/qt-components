@@ -4,6 +4,7 @@ LIBS += -L../../lib -lcomponents
 QMAKE_RPATHDIR = $$OUT_PWD/../../lib
 CONFIG += qtestlib
 CONFIG -= app_bundle
+QT += declarative
 
 test.files =
 test.path = .
