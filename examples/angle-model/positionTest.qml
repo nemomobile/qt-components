@@ -1,9 +1,11 @@
 import Qt 4.7
 import Components 1.0
-
+Rectangle {
+    height: 200; width: 50
 Column {
     id: root;
-    width: 50;
+    anchors.left: parent.left
+    anchors.right: parent.right
 
     spacing: 10;
 
@@ -90,4 +92,5 @@ Column {
             maximumValue: 1440;
         }
     }
+}
 }
