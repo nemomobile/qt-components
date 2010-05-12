@@ -7,3 +7,6 @@ CONFIG += qt plugin
 QT += declarative
 
 SOURCES += plugin.cpp
+
+OTHER_FILES += \
+    Components/qmldir
