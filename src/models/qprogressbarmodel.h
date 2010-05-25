@@ -28,7 +28,9 @@
 #include <QtCore/qobject.h>
 #include <QtDeclarative/qdeclarative.h>
 
-class Q_GUI_EXPORT QProgressBarModel : public QObject
+class QProgressBarModelPrivate;
+
+class QProgressBarModel : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int value READ value WRITE setValue NOTIFY valueChanged);
@@ -54,9 +56,13 @@ public Q_SLOTS:
     void reset();
     void setValue(int value);
 
-private:
-    qreal m_progressValue;
+protected:
+    QProgressBarModel(QProgressBarModelPrivate &dd, QObject *parent);
+    QProgressBarModelPrivate *d_ptr;
 
+private:
+    Q_DISABLE_COPY(QProgressBarModel)
+    Q_DECLARE_PRIVATE(QProgressBarModel)
 };
 
 QML_DECLARE_TYPE(QProgressBarModel)

@@ -35,7 +35,6 @@ class QRangeModelPrivate;
 class QRangeModel : public QObject
 {
     Q_OBJECT
-
     Q_PROPERTY(qreal value READ value WRITE setValue NOTIFY valueChanged USER true)
     Q_PROPERTY(qreal minimumValue READ minimum WRITE setMinimum NOTIFY rangeChanged)
     Q_PROPERTY(qreal maximumValue READ maximum WRITE setMaximum NOTIFY rangeChanged)
@@ -111,6 +110,6 @@ private:
 
 };
 
-QML_DECLARE_TYPE(QRangeModel);
+QML_DECLARE_TYPE(QRangeModel)
 
 #endif // QRANGEMODEL_H

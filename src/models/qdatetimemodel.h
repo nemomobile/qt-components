@@ -27,11 +27,12 @@
 
 #include <QtCore/qdatetime.h>
 #include <QtCore/qvariant.h>
+#include <QtCore/qscopedpointer.h>
 #include <QtDeclarative/qdeclarative.h>
 
 class QDateTimeModelPrivate;
 
-class Q_GUI_EXPORT QDateTimeModel : public QObject
+class QDateTimeModel : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QDate date READ date WRITE setDate NOTIFY dateTimeChanged)
@@ -54,6 +55,7 @@ class Q_GUI_EXPORT QDateTimeModel : public QObject
 
 public:
     QDateTimeModel(QObject *parent = 0);
+    ~QDateTimeModel();
 
     QDate date() const;
     QTime time() const;
@@ -108,12 +110,14 @@ public Q_SLOTS:
 
 protected:
     QDateTimeModel(const QVariant &val, QVariant::Type parserType, QObject *parent = 0);
+    QDateTimeModel(QDateTimeModelPrivate &dd, QObject *parent = 0);
+    QDateTimeModelPrivate *d_ptr;
 
 private:
     Q_DECLARE_PRIVATE(QDateTimeModel)
     Q_DISABLE_COPY(QDateTimeModel)
 };
 
-QML_DECLARE_TYPE(QDateTimeModel);
+QML_DECLARE_TYPE(QDateTimeModel)
 
 #endif // QDATETIMEMODEL_H

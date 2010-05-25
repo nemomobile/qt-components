@@ -195,7 +195,6 @@ QML_DECLARE_TYPE(QLineEditModel)
 class QLineEditLayoutHelper : public QObject
 {
     Q_OBJECT
-
     Q_PROPERTY(QLineEditModel *model READ model WRITE setModel NOTIFY modelChanged)
     Q_PROPERTY(qreal cursorX READ cursorX WRITE setCursorX NOTIFY cursorXChanged)
     Q_PROPERTY(QFont font READ font WRITE setFont NOTIFY fontChanged)
@@ -245,7 +244,6 @@ private:
 };
 
 QML_DECLARE_TYPE(QLineEditLayoutHelper)
-
 
 // Helper class to do key event handling
 class QLineEditEventHelper : public QDeclarativeItem

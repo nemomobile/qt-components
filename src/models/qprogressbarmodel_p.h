@@ -22,8 +22,8 @@
 **
 ****************************************************************************/
 
-#ifndef QANGLEMODEL_P_H
-#define QANGLEMODEL_P_H
+#ifndef QPROGRESSBARMODEL_P_H
+#define QPROGRESSBARMODEL_P_H
 
 //
 //  W A R N I N G
@@ -36,27 +36,16 @@
 // We mean it.
 //
 
-#include "qanglemodel.h"
-#include <QPointF>
+#include "qprogressbarmodel.h"
 
-class QAngleModelPrivate
+class QProgressBarModelPrivate
 {
+    Q_DECLARE_PUBLIC(QProgressBarModel)
 public:
-    Q_DECLARE_PUBLIC(QAngleModel)
+    QProgressBarModelPrivate();
 
-    QAngleModelPrivate(QAngleModel *qq);
-    virtual ~QAngleModelPrivate();
-
-    void calculatePosition();
-    void calculateAngleAndRadius();
-
-    QAngleModel *q_ptr;
-
-    QPointF origin;
-    QPointF position;
-    qreal radius;
-    qreal angle;
-    qreal rotation;
+    qreal m_progressValue;
+    QProgressBarModel *q_ptr;
 };
 
-#endif // QANGLEMODEL_P_H
+#endif // QPROGRESSBARMODEL_P_H

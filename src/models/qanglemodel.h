@@ -30,10 +30,10 @@
 #include <QtDeclarative/qdeclarative.h>
 
 class QAngleModelPrivate;
+
 class QAngleModel : public QObject
 {
     Q_OBJECT
-
     Q_PROPERTY(qreal originX READ originX WRITE setOriginX NOTIFY originXChanged)
     Q_PROPERTY(qreal originY READ originY WRITE setOriginY NOTIFY originYChanged)
     Q_PROPERTY(qreal x READ x WRITE setX NOTIFY xChanged)
@@ -79,11 +79,12 @@ Q_SIGNALS:
     void rotationChanged(qreal rotation);
 
 protected:
+    QAngleModel(QAngleModelPrivate &dd, QObject *parent = 0);
     QScopedPointer<QAngleModelPrivate> d_ptr;
 
 private:
-    Q_DISABLE_COPY(QAngleModel)
     Q_DECLARE_PRIVATE(QAngleModel)
+    Q_DISABLE_COPY(QAngleModel)
 };
 
 QML_DECLARE_TYPE(QAngleModel)

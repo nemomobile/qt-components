@@ -24,16 +24,61 @@
 
 #include "qdatetimemodel.h"
 #include "qdatetimemodel_p.h"
+
 #include <math.h>
-#include <qdebug.h>
-#include <qlocale.h>
+#include <QtCore/qdebug.h>
+#include <QtCore/qlocale.h>
 
 // ### FIX THIS INCLUDE ###
 #include <QtCore/private/qdatetime_p.h>
 
-QDateTimeModel::QDateTimeModel(QObject *parent)
-    : QObject(*new QDateTimeModelPrivate, parent)
+/*!
+  \internal
+  Constructs a QDateTimeModelPrivate object
+*/
+
+
+QDateTimeModelPrivate::QDateTimeModelPrivate(QDateTimeModel *qq)
+    : QDateTimeParser(QVariant::DateTime, QDateTimeParser::DateTimeEdit),
+      q_ptr(qq)
 {
+    minimum = QDATETIMEEDIT_COMPAT_DATETIME_MIN;
+    maximum = QDATETIMEEDIT_DATETIME_MAX;
+}
+
+void QDateTimeModelPrivate::setRange(const QDateTime &min, const QDateTime &max)
+{
+    minimum = min.toTimeSpec(spec);
+    maximum = max.toTimeSpec(spec);
+}
+
+void QDateTimeModelPrivate::updateTimeSpec()
+{
+    minimum = minimum.toTimeSpec(spec);
+    maximum = maximum.toTimeSpec(spec);
+    value = value.toTimeSpec(spec);
+}
+
+QVariant QDateTimeModelPrivate::getZeroVariant() const
+{
+    return QDateTime(QDATETIMEEDIT_DATE_INITIAL, QTime(), spec);
+}
+
+// QDateTimeModel
+
+QDateTimeModel::QDateTimeModel(QObject *parent)
+    : QObject(parent), d_ptr(new QDateTimeModelPrivate(this))
+{
+}
+
+QDateTimeModel::QDateTimeModel(QDateTimeModelPrivate &dd, QObject *parent)
+    : QObject(parent), d_ptr(&dd)
+{
+}
+
+QDateTimeModel::~QDateTimeModel()
+{
+    delete d_ptr;
 }
 
 QDateTime QDateTimeModel::dateTime() const
@@ -308,39 +353,3 @@ int QDateTimeModel::secsTo(const QDateTime &time) const
     Q_D(const QDateTimeModel);
     return d->value.secsTo(time);
 }
-
-// --- QDateTimeModelPrivate ---
-
-/*!
-  \internal
-  Constructs a QDateTimeModelPrivate object
-*/
-
-
-QDateTimeModelPrivate::QDateTimeModelPrivate()
-    : QObjectPrivate(),
-      QDateTimeParser(QVariant::DateTime, QDateTimeParser::DateTimeEdit)
-{
-    minimum = QDATETIMEEDIT_COMPAT_DATETIME_MIN;
-    maximum = QDATETIMEEDIT_DATETIME_MAX;
-}
-
-void QDateTimeModelPrivate::setRange(const QDateTime &min, const QDateTime &max)
-{
-    minimum = min.toTimeSpec(spec);
-    maximum = max.toTimeSpec(spec);
-}
-
-void QDateTimeModelPrivate::updateTimeSpec()
-{
-    minimum = minimum.toTimeSpec(spec);
-    maximum = maximum.toTimeSpec(spec);
-    value = value.toTimeSpec(spec);
-}
-
-QVariant QDateTimeModelPrivate::getZeroVariant() const
-{
-    return QDateTime(QDATETIMEEDIT_DATE_INITIAL, QTime(), spec);
-}
-
-#include "moc_qdatetimemodel.cpp"

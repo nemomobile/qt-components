@@ -34,7 +34,6 @@
 #include "qrangemodel.h"
 #include "qrangemodel_p.h"
 
-QT_BEGIN_NAMESPACE
 QRangeModelPrivate::QRangeModelPrivate(QRangeModel *qq)
     : q_ptr(qq)
 {
@@ -413,5 +412,3 @@ void QRangeModel::toMaximum()
     Q_D(const QRangeModel);
     setValue(d->maximum);
 }
-
-QT_END_NAMESPACE

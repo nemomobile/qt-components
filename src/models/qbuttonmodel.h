@@ -31,10 +31,9 @@
 
 class QButtonModelPrivate;
 
-class Q_GUI_EXPORT QButtonModel : public QObject
+class QButtonModel : public QObject
 {
     Q_OBJECT
-
     Q_PROPERTY(bool checkable READ isCheckable WRITE setCheckable NOTIFY checkableChanged)
     Q_PROPERTY(bool checked READ isChecked WRITE setChecked DESIGNABLE isCheckable NOTIFY toggled USER true)
     Q_PROPERTY(bool autoRepeat READ autoRepeat WRITE setAutoRepeat)
@@ -101,12 +100,15 @@ Q_SIGNALS:
 
 protected:
     QButtonModel(QButtonModelPrivate &dd, QObject* parent = 0);
+    QScopedPointer<QButtonModelPrivate> d_ptr;
 
-    virtual void nextCheckState();
+    virtual void nextCheckState(); // ###
 
 private:
     Q_DECLARE_PRIVATE(QButtonModel)
     Q_DISABLE_COPY(QButtonModel)
 };
+
+//QML_DECLARE_TYPE(QButtonModel)
 
 #endif // QBUTTONMODEL_H

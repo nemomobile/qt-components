@@ -23,15 +23,15 @@
 ****************************************************************************/
 
 #include "qbuttonmodel.h"
-#include "qapplication.h"
 #include "qbuttonmodel_p.h"
-#include "qevent.h"
-#include "qdebug.h"
-#ifndef QT_NO_ACCESSIBILITY
-#include "qaccessible.h"
-#endif
 
-QT_BEGIN_NAMESPACE
+#include <qapplication.h>
+#include <qevent.h>
+#include <qdebug.h>
+#include <qpointer.h>
+#ifndef QT_NO_ACCESSIBILITY
+#include <qaccessible.h>
+#endif
 
 #define AUTO_REPEAT_DELAY  300
 #define AUTO_REPEAT_INTERVAL 100
@@ -39,8 +39,7 @@ QT_BEGIN_NAMESPACE
 /*!
     \internal
 */
-QButtonModelPrivate::QButtonModelPrivate() :
-    QObjectPrivate(),
+QButtonModelPrivate::QButtonModelPrivate(QButtonModel *qq) :
 #if 0 //ndef QT_NO_SHORTCUT
     shortcutId(0),
 #endif
@@ -50,7 +49,8 @@ QButtonModelPrivate::QButtonModelPrivate() :
     group(0),
 #endif
     autoRepeatDelay(AUTO_REPEAT_DELAY),
-    autoRepeatInterval(AUTO_REPEAT_INTERVAL)
+    autoRepeatInterval(AUTO_REPEAT_INTERVAL),
+    q_ptr(qq)
 {
 }
 
@@ -211,7 +211,7 @@ void QButtonModelPrivate::click()
     Constructs an button control with a \a parent.
 */
 QButtonModel::QButtonModel(QObject *parent)
-    : QObject(*new QButtonModelPrivate(), parent)
+    : QObject(parent), d_ptr(new QButtonModelPrivate(this))
 {
     Q_D(QButtonModel);
     d->init();
@@ -221,7 +221,7 @@ QButtonModel::QButtonModel(QObject *parent)
     \internal
 */
 QButtonModel::QButtonModel(QButtonModelPrivate &dd, QObject *parent)
-    : QObject(dd, parent)
+    : QObject(parent), d_ptr(&dd)
 {
     Q_D(QButtonModel);
     d->init();
@@ -551,5 +551,3 @@ void QButtonModel::nextCheckState()
     if (isCheckable())
         setChecked(!isChecked());
 }
-
-QT_END_NAMESPACE

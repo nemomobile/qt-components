@@ -123,6 +123,11 @@ QAngleModel::QAngleModel(QObject *parent)
 {
 }
 
+QAngleModel::QAngleModel(QAngleModelPrivate &dd, QObject *parent)
+    : QObject(parent), d_ptr(&dd)
+{
+}
+
 QAngleModel::~QAngleModel()
 {
 }

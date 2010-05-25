@@ -29,24 +29,21 @@
 //  W A R N I N G
 //  -------------
 //
-// This file is not part of the Qt API.  It exists purely as an
+// This file is not part of the Qt Components API.  It exists purely as an
 // implementation detail.  This header file may change from version to
 // version without notice, or even be removed.
 //
 // We mean it.
 //
 
-#include "private/qobject_p.h"
-#include "qbuttongroup.h"
-#include "QtCore/qbasictimer.h"
+#include <QtGui/qbuttongroup.h>
+#include <QtCore/qbasictimer.h>
 
-QT_BEGIN_NAMESPACE
-
-class QButtonModelPrivate : public QObjectPrivate
+class QButtonModelPrivate
 {
     Q_DECLARE_PUBLIC(QButtonModel)
 public:
-    QButtonModelPrivate();
+    QButtonModelPrivate(QButtonModel *qq);
     void init();
 
     void emitPressed();
@@ -76,16 +73,17 @@ public:
     int autoRepeatDelay, autoRepeatInterval;
 
     QButtonModel *queryCheckedButton() const;
-    QList<QButtonModel *>queryButtonList() const;
+    QList<QButtonModel*>queryButtonList() const;
     void notifyChecked() const;
+
+    QButtonModel *q_ptr;
 };
 
 #ifndef QT_NO_BUTTONGROUP
 
-class QButtonGroupPrivate: public QObjectPrivate
+class QButtonGroupPrivate
 {
     Q_DECLARE_PUBLIC(QButtonGroup)
-
 public:
     QButtonGroupPrivate():exclusive(true){}
     QList<QAbstractButton *> buttonList;
@@ -94,11 +92,11 @@ public:
     void notifyChecked(QAbstractButton *button);
     bool exclusive;
     QMap<QAbstractButton*, int> mapping;
+
+    QButtonGroup *q_ptr;
 };
 
 #endif
-
-QT_END_NAMESPACE
 
 #endif // QBUTTONMODEL_P_H
 

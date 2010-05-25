@@ -29,7 +29,7 @@
 //  W A R N I N G
 //  -------------
 //
-// This file is not part of the Qt API.  It exists purely as an
+// This file is not part of the Qt Components API.  It exists purely as an
 // implementation detail.  This header file may change from version to
 // version without notice, or even be removed.
 //
@@ -38,13 +38,10 @@
 
 #include "qrangemodel.h"
 
-QT_BEGIN_NAMESPACE
-
-class QRangeModelPrivate : public QObject
+class QRangeModelPrivate
 {
-public:
     Q_DECLARE_PUBLIC(QRangeModel)
-
+public:
     QRangeModelPrivate(QRangeModel *qq);
     virtual ~QRangeModelPrivate();
 
@@ -73,7 +70,5 @@ public:
         return pos * scale;
     }
 };
-
-QT_END_NAMESPACE
 
 #endif // QRANGEMODEL_P_H

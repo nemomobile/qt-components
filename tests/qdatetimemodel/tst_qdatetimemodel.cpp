@@ -95,6 +95,18 @@ void tst_QDateTimeModel::getSetCheck()
     QCOMPARE(model->minimumDateTime(), QDATETIMEEDIT_COMPAT_DATETIME_MIN);
     QCOMPARE(model->timeSpec(), Qt::LocalTime);
 
+    // date
+    QCOMPARE(model->date(), QDate());
+    model->setDate(QDate(1999, 12, 30));
+    QCOMPARE(model->date(), QDate(1999, 12, 30));
+
+    // time
+    QCOMPARE(model->time(), QTime());
+    model->setTime(QTime(23, 59, 59, 999));
+    QCOMPARE(model->time(), QTime(23, 59, 59, 999));
+
+    // dateTime
+    QCOMPARE(model->dateTime(), QDateTime(QDate(1999, 12, 30), QTime(23, 59, 59, 999)));
 }
 
 QTEST_MAIN(tst_QDateTimeModel)

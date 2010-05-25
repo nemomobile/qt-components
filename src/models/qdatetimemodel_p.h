@@ -29,25 +29,24 @@
 //  W A R N I N G
 //  -------------
 //
-// This file is not part of the Qt API.  It exists purely as an
+// This file is not part of the Qt Components API.  It exists purely as an
 // implementation detail.  This header file may change from version to
 // version without notice, or even be removed.
 //
 // We mean it.
 //
 
-#include "private/qobject_p.h"
-#include "QtCore/qdatetime.h"
-#include "QtCore/private/qdatetime_p.h"
+#include <QtCore/qdatetime.h>
+#include <QtCore/private/qdatetime_p.h>
 
 
 QT_BEGIN_NAMESPACE
 
-class QDateTimeModelPrivate : public QObjectPrivate, public QDateTimeParser
+class QDateTimeModelPrivate : public QDateTimeParser
 {
     Q_DECLARE_PUBLIC(QDateTimeModel)
 public:
-    QDateTimeModelPrivate();
+    QDateTimeModelPrivate(QDateTimeModel *qq);
 
     void readLocaleSettings();
     void updateTimeSpec();
@@ -58,6 +57,8 @@ public:
     QDateTime value;
     QDateTime minimum;
     QDateTime maximum;
+
+    QDateTimeModel *q_ptr;
 };
 
 QT_END_NAMESPACE

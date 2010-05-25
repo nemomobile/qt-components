@@ -23,26 +23,39 @@
 ****************************************************************************/
 
 #include "qprogressbarmodel.h"
+#include "qprogressbarmodel_p.h"
 
-QProgressBarModel::QProgressBarModel(QObject *parent) :
-    QObject(parent),
-    m_progressValue(0)
+QProgressBarModelPrivate::QProgressBarModelPrivate()
+    : m_progressValue(0), q_ptr(0)
+{
+}
+
+QProgressBarModel::QProgressBarModel(QObject *parent)
+    : QObject(parent), d_ptr(new QProgressBarModelPrivate)
+{
+}
+
+QProgressBarModel::QProgressBarModel(QProgressBarModelPrivate &dd, QObject *parent)
+    : QObject(parent), d_ptr(&dd)
 {
 }
 
 QProgressBarModel::~QProgressBarModel()
-{}
+{
+}
 
 int QProgressBarModel::value() const
 {
-    return m_progressValue;
+    Q_D(const QProgressBarModel);
+    return d->m_progressValue;
 }
 
 void QProgressBarModel::setValue(int value)
 {
-    if (m_progressValue == value)
+    Q_D(QProgressBarModel);
+    if (d->m_progressValue == value)
         return;
-    m_progressValue = value;
+    d->m_progressValue = value;
     emit valueChanged();
 }
 
@@ -63,6 +76,7 @@ void QProgressBarModel::resume()
 
 void QProgressBarModel::reset()
 {
-    m_progressValue = 0;
+    Q_D(QProgressBarModel);
+    d->m_progressValue = 0;
     emit canceled();
 }
