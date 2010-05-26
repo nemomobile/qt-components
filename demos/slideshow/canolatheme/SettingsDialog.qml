@@ -22,16 +22,19 @@ BorderImage {
     Column {
         id: settings;
         anchors.fill: parent;
-        spacing: 23;
+        spacing: 20;
 
-        Label {
-            id: title;
-            anchors.top: parent.top;
-            anchors.topMargin: 15;
+        Row {
+            id: labelRow;
+            height: 70;
             anchors.horizontalCenter: parent.horizontalCenter;
-            text: "<b>SETTINGS</b>";
-            font.pixelSize: 30;
-            color: "black";
+            Label {
+                id: title;
+                anchors.bottom: parent.bottom;
+                text: "<b>SETTINGS</b>";
+                font.pixelSize: 30;
+                color: "black";
+            }
         }
 
         Image {

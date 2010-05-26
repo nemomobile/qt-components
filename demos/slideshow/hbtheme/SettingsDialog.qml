@@ -20,91 +20,98 @@ BorderImage {
     border.right: 15;
     border.top: 15;
 
-    Column {
-        id: settings;
-        anchors.fill: parent;
-        spacing: 23;
+    Label {
+        id: title;
+        anchors.top: parent.top;
+        anchors.topMargin: 15;
+        anchors.horizontalCenter: parent.horizontalCenter;
+        text: "<b>SETTINGS</b>";
+        font.pixelSize: 30;
+        color: "white";
+    }
 
-        Label {
-            id: title;
-            anchors.top: parent.top;
-            anchors.topMargin: 15;
-            anchors.horizontalCenter: parent.horizontalCenter;
-            text: "<b>SETTINGS</b>";
-            font.pixelSize: 30;
-            color: "white";
+    Image {
+        id: separator;
+        height: 6;
+        anchors.left: parent.left;
+        anchors.right: parent.right;
+        source: "images/separator.png";
+    }
+
+    Row {
+        id: row;
+        spacing: 20;
+        anchors.horizontalCenter: parent.horizontalCenter;
+        anchors.top: separator.bottom
+        anchors.bottom: parent.bottom;
+
+        Column {
+            id: settings;
+            anchors.verticalCenter: parent.verticalCenter;
+            spacing: 20;
+
+            Row {
+                id: sliderRow;
+                spacing: 35;
+                anchors.horizontalCenter: parent.horizontalCenter;
+
+                Label {
+                    id: sliderLabel;
+                    text: "Slower";
+                    color: "white";
+                    anchors.verticalCenter: parent.verticalCenter;
+                }
+
+                Slider {
+                    id: slider;
+                    width: 400;
+                    height: 50;
+                    value: 42;
+                }
+
+                Label {
+                    id: sliderValue;
+                    text: "Faster";
+                    color: "white";
+                    anchors.verticalCenter: parent.verticalCenter;
+                }
+            }
+
+            Image {
+                id: separator3;
+                height: 6;
+                anchors.left: parent.left;
+                anchors.right: parent.right;
+                source: "images/separator.png";
+            }
+
+            Row {
+                id: buttonsRow;
+                spacing: 5;
+                anchors.horizontalCenter: parent.horizontalCenter;
+
+                Button {
+                    id: button1;
+                    text: "Fade";
+                    checked: true;
+                    checkable: true;
+                    autoExclusive: true;
+                }
+
+                Button {
+                    id: button2;
+                    text: "Sliding";
+                    checkable: true;
+                    autoExclusive: true;
+                }
+
+                Button {
+                    id: button3;
+                    text: "Transform";
+                    checkable: true;
+                    autoExclusive: true;
+                }
+            }
         }
-
-        Image {
-            id: separator;
-            height: 6;
-            anchors.left: parent.left;
-            anchors.right: parent.right;
-            source: "images/separator.png";
-        }
-
-        Row {
-            id: sliderRow;
-            spacing: 35;
-            anchors.horizontalCenter: parent.horizontalCenter;
-
-            Label {
-                id: sliderLabel;
-                text: "Slower";
-                color: "white";
-                anchors.verticalCenter: parent.verticalCenter;
-            }
-
-            Slider {
-                id: slider;
-                width: 400;
-                height: 50;
-                value: 42;
-            }
-
-            Label {
-                id: sliderValue;
-                text: "Faster";
-                color: "white";
-                anchors.verticalCenter: parent.verticalCenter;
-            }
-        }
-
-        Image {
-            id: separator3;
-            height: 6;
-            anchors.left: parent.left;
-            anchors.right: parent.right;
-            source: "images/separator.png";
-        }
-
-        Row {
-            id: buttonsRow;
-            spacing: 5;
-            anchors.horizontalCenter: parent.horizontalCenter;
-
-            Button {
-                id: button1;
-                text: "Fade";
-                checked: true;
-                checkable: true;
-                autoExclusive: true;
-            }
-
-            Button {
-                id: button2;
-                text: "Sliding";
-                checkable: true;
-                autoExclusive: true;
-            }
-
-            Button {
-                id: button3;
-                text: "Transform";
-                checkable: true;
-                autoExclusive: true;
-            }
-        }
-
     }
 }

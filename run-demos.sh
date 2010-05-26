@@ -9,4 +9,4 @@ THEME="canolatheme"
 else
 THEME=$1
 fi
-qml -I modules/components -I demos/slideshow/model demos/slideshow/$THEME/main.qml
+$QT_BUILD/bin/QMLViewer.app/Contents/MacOS/QMLViewer -I modules/components -I demos/slideshow/model demos/slideshow/$THEME/main.qml
