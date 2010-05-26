@@ -1,12 +1,14 @@
 import Qt 4.7
 import Components 1.0
 
+Rectangle {
+    width: 200; height: 50
 Image {
     id: groove
+    anchors.fill: parent
     property alias value: model.value
     property alias minimum: model.minimumValue
     property alias maximum: model.maximumValue
-    width: 200; height: 50
     fillMode: Image.Tile
     source: "images/stripes.png"
     MouseArea {
@@ -51,4 +53,5 @@ Image {
         positionAtMaximum: groove.width - grip.width
         position: grip.x
     }
+}
 }
