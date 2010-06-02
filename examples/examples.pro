@@ -1,2 +1,2 @@
 TEMPLATE = subdirs
-SUBDIRS = 
+SUBDIRS += styled-components-cpp
