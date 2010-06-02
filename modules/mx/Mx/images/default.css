@@ -1,0 +1,357 @@
+*
+{
+  font-size: 13;
+}
+
+MxIcon.ResizeGrip
+{
+  -mx-content-image: url('resize-grip.png');
+}
+
+MxButton
+{
+  -mx-border-image-transition-duration: 120;
+  padding: 10;
+  border-image: url("button.png") 10;
+}
+
+MxButton:hover
+{
+  -mx-border-image-transition-duration: 0;
+  border-image: url("button-hover.png") 10;
+}
+
+MxButton:active, MxButton:checked
+{
+  -mx-border-image-transition-duration: 0;
+  padding: 11 9 9 11;
+  border-image: url("button-active.png") 10;
+}
+
+MxEntry
+{
+  padding: 5 6 6 5;
+  border-image: url("entry.png") 5;
+}
+
+MxEntry:focus
+{
+  border-image: url("entry-active.png") 5;
+}
+
+MxEntry:indeterminate
+{
+  color: #8e8e8e;
+}
+
+
+MxScrollBar
+{
+  background-color: #dee2e5;
+  padding: 0;
+}
+
+MxScrollView
+{
+  -mx-scrollbar-width: 28;
+  -mx-scrollbar-height: 28;
+}
+
+MxButton#backward-stepper
+{
+  border-image: url("scroll-button-left.png") 5;
+}
+
+MxButton#backward-stepper:hover,
+MxButton#backward-stepper:active
+{
+  border-image: url("scroll-button-left-hover.png") 5;
+}
+
+MxButton#forward-stepper
+{
+  border-image: url("scroll-button-right.png") 5;
+}
+
+MxButton#forward-stepper:hover,
+MxButton#forward-stepper:active
+{
+  border-image: url("scroll-button-right-hover.png") 5;
+}
+
+MxButton#up-stepper
+{
+  border-image: url("scroll-button-up.png") 5;
+}
+
+MxButton#up-stepper:hover,
+MxButton#up-stepper:active
+{
+  border-image: url("scroll-button-up-hover.png") 5;
+}
+
+MxButton#down-stepper
+{
+  border-image: url("scroll-button-down.png") 5;
+}
+
+MxButton#down-stepper:hover,
+MxButton#down-stepper:active
+{
+  border-image: url("scroll-button-down-hover.png") 5;
+}
+
+MxScrollBar MxButton#vhandle
+{
+  border-image: url("scroll-vhandle.png") 5;
+}
+
+MxScrollBar MxButton#vhandle:hover
+{
+  border-image: url("scroll-vhandle-hover.png") 5;
+}
+
+MxScrollBar MxButton#hhandle
+{
+  border-image: url("scroll-hhandle.png") 5;
+}
+
+MxScrollBar MxButton#hhandle:hover
+{
+  border-image: url("scroll-hhandle-hover.png") 5;
+}
+
+
+/*
+ * Expander
+ */
+
+MxExpander {
+  font-size: 15;
+  border-image: url('expander-closed.png') 6;
+  padding: 6 12;
+}
+
+MxExpander:hover {
+  border-image: url('expander-hover.png') 6;
+}
+
+MxExpander:active {
+  border-image: url('expander-open.png') 36 6 6 6;
+}
+
+MxExpander > *#mx-expander-arrow-closed {
+    padding: 0;
+    -mx-content-image: url('expander-arrow-up.png');
+}
+
+MxExpander > *#mx-expander-arrow-closed:hover {
+    -mx-content-image: url('expander-arrow-up-hover.png');
+}
+
+MxExpander > *#mx-expander-arrow-open {
+    -mx-content-image: url('expander-arrow-down.png');
+}
+
+MxExpander > *#mx-expander-arrow-open:hover {
+    -mx-content-image: url('expander-arrow-down-hover.png');
+}
+
+MxTooltip {
+  color: white;
+  padding: 4 10 12 10;
+  border-image: url('tooltip-background.png') 4 11 12 11;
+  font-size: 15;
+}
+
+
+MxProgressBar {
+  padding: 3;
+  border-image: url('progress-bar-background.png') 2;
+}
+
+MxProgressBar MxProgressBarFill {
+  border-image: url('progress-bar-bar.png') 2;
+  height: 16;
+}
+
+MxComboBox {
+  padding: 5 11 5 5;
+  border-image: url('combobox.png') 4 32 4 4;
+  -mx-marker-image: url('combobox-marker.png');
+}
+
+MxComboBox MxIcon {
+  -mx-icon-size: 16;
+}
+
+MxMenu {
+  padding: 3;
+  border-image: url('menu.png') 2;
+}
+
+MxMenu > MxBoxLayout {
+  padding: 3;
+  border-image: none;
+}
+
+MxMenu > MxBoxLayout:hover,
+MxMenu > MxBoxLayout:active {
+  border-image: url('menu-item.png') 2;
+}
+
+MxMenu > MxBoxLayout:hover > MxLabel,
+MxMenu > MxBoxLayout:active > MxLabel {
+  color: white;
+}
+
+MxMenu MxIcon {
+  -mx-icon-size: 16;
+}
+
+MxToggle {
+  padding: 4;
+  background-image: url("toggle-background.png");
+}
+
+MxToggle:checked {
+  background-image: url("toggle-background-active.png");
+}
+
+MxToggleHandle {
+  background-image: url("toggle-handle.png");
+}
+
+MxToolbar {
+  background-color: #333;
+  padding: 6;
+}
+
+MxToolbar MxButton {
+  border-image: none;
+  padding: 2 4;
+}
+
+MxToolbar MxButton:hover {
+  border-image: url('toolbar-button-hover.png') 5;
+  padding: 2 4;
+}
+
+MxToolbar MxButton:active {
+  border-image: url('toolbar-button-hover.png') 5;
+  padding: 3 3 1 5;
+}
+
+MxToolbar MxButton#close-button {
+  -mx-icon-name: window-close-normal;
+  -mx-icon-size: 48;
+}
+
+MxToolbar MxButton#close-button:hover {
+  -mx-icon-name: window-close-hover;
+  -mx-icon-size: 48;
+}
+
+MxToolbar MxButton#close-button:active {
+  -mx-icon-name: window-close-active;
+  -mx-icon-size: 48;
+}
+
+/* The following two rules would restore the old-style close-button
+ * styling (if the above three are commented out)
+ */
+/*
+MxToolbar MxButton#close-button {
+  border-image: url('close.png') 0;
+  padding: 51 57 0 0;
+}
+
+MxToolbar MxButton#close-button:hover, MxToolbar MxButton#close-button:active {
+  border-image: url('close-hover.png') 0;
+  padding: 51 57 0 0;
+}*/
+
+MxToolbar MxComboBox {
+  color: #dadada;
+  border-image: url('combobox-toolbar.png') 4 32 4 4;
+  -mx-marker-image: url('combobox-toolbar-marker.png');
+  padding: 12 14;
+  font-size: 15;
+}
+
+MxToolbar MxMenu {
+  font-size: 15;
+  border-image: url('menu-toolbar.png') 4 4 7 4;
+  padding: 12;
+}
+
+MxToolbar MxMenu > MxBoxLayout > MxLabel {
+  font-size: 15;
+  color: #dadada;
+}
+
+MxToolbar MxMenu > MxBoxLayout:hover,
+MxToolbar MxMenu > MxBoxLayout:active {
+  border-image: none;
+}
+
+MxToolbar MxMenu > MxBoxLayout:hover > MxLabel,
+MxToolbar MxMenu > MxBoxLayout:active > MxLabel
+{
+  font-size: 15;
+  color: #44b6e8;
+}
+
+MxSlider {
+  -mx-trough-height: 8;
+}
+
+MxSlider *#trough-background {
+  background-color: #dadada;
+}
+
+MxSlider *#fill {
+  background-color: #84dbf5;
+}
+
+MxPathBar {
+  -mx-overlap: 19;
+}
+
+MxPathBar > MxEntry {
+  padding: 4 10 4 24;
+}
+
+MxPathBarButton,
+MxToolbar MxPathBarButton {
+  border-image: url('pathbar-button.png') 4 19 3 3;
+  padding: 4 24;
+}
+
+MxPathBarButton:hover,
+MxToolbar MxPathBarButton:hover {
+  border-image: url('pathbar-button-hover.png') 4 19 3 3;
+  padding: 4 24;
+}
+
+MxPathBarButton:active,
+MxToolbar MxPathBarButton:active {
+  border-image: url('pathbar-button-active.png') 4 19 3 3;
+  padding: 4 24;
+}
+
+MxPathBarButton.End,
+MxToolbar MxPathBarButton.End {
+  border-image: url('pathbar-button-last.png') 5;
+}
+
+MxPathBarButton.End:hover,
+MxToolbar MxPathBarButton.End:hover {
+  border-image: url('pathbar-button-last-hover.png') 5;
+}
+
+MxPathBarButton.End:active,
+MxToolbar MxPathBarButton.End:active {
+  border-image: url('pathbar-button-last-active.png') 5;
+}
+

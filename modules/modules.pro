@@ -1,2 +1,2 @@
 TEMPLATE = subdirs
-SUBDIRS = components
+SUBDIRS = components mx
