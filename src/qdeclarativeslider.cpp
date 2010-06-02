@@ -140,7 +140,7 @@ void QDeclarativeSlider::setTracking(bool autoRepeat)
 bool QDeclarativeSlider::hasTracking() const
 {
     Q_D(const QDeclarativeSlider);
-    return d->model->hasTracking();
+    return d->model->isTracking();
 }
 
 void QDeclarativeSliderPopulator::populate(QGraphicsObject *component, QObject *model)

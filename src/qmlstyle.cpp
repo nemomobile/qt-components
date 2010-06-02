@@ -174,7 +174,7 @@ void QmlStyle::bindQmlChildGeometry(QGraphicsObject *component, QDeclarativeItem
     if (item) {
         item->setWidth(child->width());
         item->setHeight(child->height());
-        child->anchors()->setFill(item);
+        //child->anchors()->setFill(item); // ### FIXME: anchors is a private property
     }
 
     // Only parents that are QGW and QDI are supported right now.
