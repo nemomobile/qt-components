@@ -74,8 +74,6 @@ Window {
             anchors.bottom: parent.bottom
             opacity: 1.0
 
-            resizeMode: Loader.SizeItemToLoader
-
             MouseArea {
                 anchors.fill: parent;
                 z: 2;

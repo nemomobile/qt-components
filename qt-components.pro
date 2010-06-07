@@ -4,4 +4,4 @@ SUBDIRS = src \
           modules \
           tests \
           examples \
-          demos 
+          demos

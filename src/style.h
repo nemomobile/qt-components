@@ -49,9 +49,9 @@ struct ComponentPopulatorInitializer { };
     struct ComponentPopulatorInitializer<W, P>                          \
     {                                                                   \
         ComponentPopulatorInitializer() {                               \
-            qWarning("Registering '%s' for component '%s'.", #P, #W); \
             const char *compType = W::staticMetaObject.className();     \
             const char *styleName = P::styleName;                       \
+            qWarning("Registering '%s' with '%s' style for component '%s'.", #P, styleName, #W);   \
             _q_registerComponentPopulator(compType, styleName, new P);  \
         }                                                               \
     };                                                                  \
