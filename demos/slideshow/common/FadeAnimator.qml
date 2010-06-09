@@ -1,6 +1,6 @@
 import Qt 4.7
 
-Item {
+Rectangle {
     id: root;
     width: 300;
     height: 200;
@@ -18,18 +18,22 @@ Item {
     Image {
         id: oldImage;
         anchors.fill: parent;
+        fillMode: Image.PreserveAspectFit
 
         asynchronous: false;
         source: currentImage;
+        sourceSize.width: parent.width
     }
 
     Image {
         id: newImage;
         anchors.fill: parent;
         opacity: 0;
+        fillMode: Image.PreserveAspectFit
 
         asynchronous: false;
         source: nextImage
+        sourceSize.width: parent.width
     }
 
     SequentialAnimation {

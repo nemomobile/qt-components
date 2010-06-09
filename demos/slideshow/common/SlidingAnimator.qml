@@ -19,10 +19,12 @@ Item {
         id: leftImage;
         width: parent.width;
         height: parent.height;
+        fillMode: Image.PreserveAspectFit
 
         asynchronous: false;
         smooth: true;
         source: currentImage;
+        sourceSize.width: parent.width
     }
 
     Image {
@@ -31,10 +33,12 @@ Item {
         height: parent.height;
         anchors.left: leftImage.right;
         anchors.leftMargin: 10;
+        fillMode: Image.PreserveAspectFit
 
         asynchronous: false;
         smooth: true;
         source: nextImage
+        sourceSize.width: parent.width
     }
 
     SequentialAnimation {
