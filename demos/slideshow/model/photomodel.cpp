@@ -28,6 +28,7 @@
 #include <QDeclarativeContext>
 #include <QDeclarativeItem>
 #include <QDeclarativeImageProvider>
+#include <QImageReader>
 #include <QPixmap>
 #include <QFileInfo>
 #include <QDir>
@@ -36,11 +37,16 @@ class PhotoProvider : public QDeclarativeImageProvider
 {
 public:
     QImage request(const QString &id, QSize *size, const QSize &req_size) {
-        Q_UNUSED(size);
-        Q_UNUSED(req_size);
 
-        QPixmap pixmap(id);
-        return pixmap.toImage();
+        //QPixmap pixmap(id);
+        //return pixmap.toImage();
+        qDebug() << "request: " << id;
+        QImageReader imgReader(id);
+        *size = imgReader.size();
+        size->scale (req_size, Qt::KeepAspectRatio);
+        imgReader.setScaledSize (*size);
+        return imgReader.read();
+
     }
 };
 
