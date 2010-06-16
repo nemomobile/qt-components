@@ -1,7 +1,7 @@
 import Qt 4.7
 import Components 1.0
 
-Item {
+Rectangle {
     width: 400
     height: 500
 

@@ -26,10 +26,12 @@ Item {
             x: -parent.x; // Absolute 0
             width: root.width;
             height: root.height;
+            fillMode: Image.PreserveAspectFit
 
             asynchronous: false;
 //            smooth: true;
             source: currentImage;
+            sourceSize.width: parent.width
         }
     }
 
@@ -46,10 +48,12 @@ Item {
             x: -parent.x; // Absolute 0
             width: root.width;
             height: root.height;
+            fillMode: Image.PreserveAspectFit
 
             asynchronous: false;
 //            smooth: true;
             source: nextImage
+            sourceSize.width: parent.width
         }
     }
 

@@ -18,3 +18,23 @@ SOURCES += \
 	mxtoplevelitem.cpp \
         plugin.cpp
 
+OTHER_FILES += \
+    Mx/Button.qml \
+    Mx/Window.qml \
+    Mx/TopLevelItem.qml \
+    Mx/TooltipLoader.qml \
+    Mx/Tooltip.qml \
+    Mx/Toggle.qml \
+    Mx/TitlebarCombobox.qml \
+    Mx/Slider.qml \
+    Mx/ScrollView.qml \
+    Mx/ScrollBar.qml \
+    Mx/ProgressBar.qml \
+    Mx/PathBar.qml \
+    Mx/PathBar.js \
+    Mx/MyLoader.qml \
+    Mx/MyLoader.js \
+    Mx/Label.qml \
+    Mx/Expander.qml \
+    Mx/Entry.qml \
+    Mx/Combobox.qml
