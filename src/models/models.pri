@@ -1,6 +1,4 @@
 HEADERS += \
-        models/qanglemodel.h \
-        models/qanglemodel_p.h \
         models/qbuttonmodel.h \
         models/qbuttonmodel_p.h \
         models/qdatetimemodel.h \
@@ -13,12 +11,10 @@ HEADERS += \
         models/qrangemodel_p.h \
 
 SOURCES += \
-        models/qanglemodel.cpp \
         models/qbuttonmodel.cpp \
         models/qdatetimemodel.cpp \
         models/qlineeditmodel.cpp \
         models/qprogressbarmodel.cpp \
         models/qrangemodel.cpp \
 
-# ###
 INCLUDEPATH += models/
