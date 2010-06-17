@@ -25,18 +25,17 @@
 #ifndef QLINEEDITMODEL_H
 #define QLINEEDITMODEL_H
 
-#include "QtCore/qglobal.h"
+#include <QtCore/qglobal.h>
+#include <QtCore/qpointer.h>
+#include <QtCore/qpoint.h>
 
-#include "private/qwidget_p.h"
-#include "QtGui/qlineedit.h"
-#include "QtGui/qtextlayout.h"
-#include "QtGui/qstyleoption.h"
-#include "QtCore/qpointer.h"
-#include "QtGui/qlineedit.h"
-#include "QtGui/qclipboard.h"
-#include "QtCore/qpoint.h"
+#include <QtGui/qlineedit.h>
+#include <QtGui/qtextlayout.h>
+#include <QtGui/qstyleoption.h>
+#include <QtGui/qlineedit.h>
+#include <QtGui/qclipboard.h>
 
-#include "QtDeclarative/qdeclarativeitem.h"
+#include <QtDeclarative/qdeclarativeitem.h>
 
 class QLineEditModelPrivate;
 
