@@ -24,17 +24,17 @@
 **
 ****************************************************************************/
 
-import Qt 4.7 as Qt
-import QtComponents 1.0 as QtComponents
+import Qt 4.7
+import QtComponents 1.0
 import "calculator.js" as CalcEngine
 
-QtComponents.Window {
+Window {
     width: 320; height: 240+headerBottom; 
-    comboModel: Qt.ListModel{
-        Qt.ListElement{
+    comboModel: ListModel{
+        ListElement{
             content: 'Normal'
         }
-        Qt.ListElement{
+        ListElement{
             content: 'Advanced'
         }
     }
@@ -42,18 +42,18 @@ QtComponents.Window {
 
     function doOp(operation) { CalcEngine.doOperation(operation); }
 
-    Qt.SystemPalette { id: palette }
+    SystemPalette { id: palette }
 
-    Qt.Column {
+    Column {
         x: 3; spacing: 10;
         y: headerBottom + 4
 
-        Qt.Rectangle {
+        Rectangle {
             id: container
             width: 314; height: 50
             border.color: palette.dark; color: palette.base
 
-            QtComponents.Label {
+            Label {
                 id: curNum
                 font.bold: true; font.pointSize: 16
                 color: palette.text
@@ -62,7 +62,7 @@ QtComponents.Window {
                 anchors.verticalCenter: container.verticalCenter
             }
 
-            QtComponents.Label {
+            Label {
                 id: currentOperation
                 color: palette.text
                 font.bold: true; font.pointSize: 16
@@ -72,10 +72,10 @@ QtComponents.Window {
             }
         }
 
-        Qt.Item {
+        Item {
             width: 314; height: 160
 
-            Qt.Item {
+            Item {
                 id: basicButtons
                 x: 55; width: 160; height: 160
 
@@ -83,7 +83,7 @@ QtComponents.Window {
                 CalcButton { operation: "C"; id: c; width: 76 }
                 CalcButton { operation: "AC"; id: ac; x: 78; width: 76 }
 
-                Qt.Grid {
+                Grid {
                     id: numKeypad; y: 32; spacing: 2; columns: 3
 
                     CalcButton { operation: "7" }
@@ -97,7 +97,7 @@ QtComponents.Window {
                     CalcButton { operation: "3" }
                 }
 
-                Qt.Row {
+                Row {
                     y: 128; spacing: 2
 
                     CalcButton { operation: "0"; width: 50 }
@@ -105,7 +105,7 @@ QtComponents.Window {
                     CalcButton { operation: "="; id: equals; x: 77;  width: 102 }
                 }
 
-                Qt.Column {
+                Column {
                     id: simpleOperations
                     x: 156; y: 0; spacing: 2
 
@@ -116,7 +116,7 @@ QtComponents.Window {
                 }
             }
 
-            Qt.Grid {
+            Grid {
                 id: advancedButtons
                 x: 350; spacing: 2; columns: 2; opacity: 0
 
@@ -134,19 +134,19 @@ QtComponents.Window {
         }
     }
 
-    states: Qt.State {
+    states: State {
         name: "Advanced"; when: comboCurrent == 'Advanced'
-        Qt.PropertyChanges { target: basicButtons; x: 0 }
-        Qt.PropertyChanges { target: simpleOperations; y: 32 }
-        Qt.PropertyChanges { target: bksp; opacity: 1 }
-        Qt.PropertyChanges { target: c; x: 69; width: 67 }
-        Qt.PropertyChanges { target: ac; x: 138; width: 67 }
-        Qt.PropertyChanges { target: equals; width: 50 }
-        Qt.PropertyChanges { target: advancedButtons; x: 210; opacity: 1 }
+        PropertyChanges { target: basicButtons; x: 0 }
+        PropertyChanges { target: simpleOperations; y: 32 }
+        PropertyChanges { target: bksp; opacity: 1 }
+        PropertyChanges { target: c; x: 69; width: 67 }
+        PropertyChanges { target: ac; x: 138; width: 67 }
+        PropertyChanges { target: equals; width: 50 }
+        PropertyChanges { target: advancedButtons; x: 210; opacity: 1 }
     }
 
-    transitions: Qt.Transition {
-        Qt.NumberAnimation { properties: "x,y,width"; easing.type: "OutBounce"; duration: 500 }
-        Qt.NumberAnimation { properties: "opacity"; easing.type: "InOutQuad"; duration: 500 }
+    transitions: Transition {
+        NumberAnimation { properties: "x,y,width"; easing.type: "OutBounce"; duration: 500 }
+        NumberAnimation { properties: "opacity"; easing.type: "InOutQuad"; duration: 500 }
     }
 }

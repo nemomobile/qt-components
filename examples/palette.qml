@@ -25,30 +25,30 @@
 ****************************************************************************/
 
 import Qt 4.7
-import QtComponents 1.0 as QtComponents
+import QtComponents 1.0
 
-QtComponents.Window {
+Window {
 
     width: 480
     height: 800
 
-    FontLoader { id: droidSans; source: "fonts/Droid-Sans/DroidSans.ttf" }
-    FontLoader { id: droidSansBold; source: "fonts/Droid-Sans/DroidSans-Bold.ttf" }
+    //FontLoader { id: droidSans; source: "fonts/Droid-Sans/DroidSans.ttf" }
+    //FontLoader { id: droidSansBold; source: "fonts/Droid-Sans/DroidSans-Bold.ttf" }
     Column {
         spacing: 10
         x: 10
         y: parent.headerBottom
 
-        QtComponents.Label {
+        Label {
             text: 'Label';
         }
-        QtComponents.Button {
+        Button {
             text: 'Button';
             tooltipText: 'This is a button that you should not click as it does nothing.'
             z:2
         }
 
-        QtComponents.Button {
+        Button {
             text: 'Toggle Button'
             checkable: true
             onClicked: {
@@ -62,17 +62,17 @@ QtComponents.Window {
             QtComponents.Slider{width: 128; id: slider}
             Text{y: 2; text:'Slider'; opacity: slider.value}
         }
-        QtComponents.Entry{hint: 'Fixed Width Entry'; width: 240;}
-        QtComponents.Entry{hint: 'Search...';
-            leftIconSource: '../../modules/mx/Mx/images/edit-find.png'; //###
+        Entry{hint: 'Fixed Width Entry'; width: 240;}
+        Entry{hint: 'Search...';
+            //leftIconSource: '../../modules/mx/Mx/images/edit-find.png'; //###
             onLeftIconClicked: text='Hello world';
-            rightIconSource: '../../modules/mx/Mx/images/edit-clear.png'; //###
+            //rightIconSource: '../../modules/mx/Mx/images/edit-clear.png'; //###
             onRightIconClicked: text='';
         }
-        QtComponents.Entry{hint: 'Secret Mode'; secret: true}
-        QtComponents.Expander{text: 'Expander'; QtComponents.Label {width: 240; text: "I am the very model of a modern major general. I've information vegetable animal and mineral. I know the kings of England and I quote the fights historical, from matathon to waterloo in order categorical.";
+        Entry{hint: 'Secret Mode'; secret: true}
+        Expander{text: 'Expander'; Label {width: 240; text: "I am the very model of a modern major general. I've information vegetable animal and mineral. I know the kings of England and I quote the fights historical, from matathon to waterloo in order categorical.";
             wrapMode:Text.WordWrap}}
-        QtComponents.ProgressBar {
+        ProgressBar {
             width: 279;
             minimum: 0
             maximum:100
@@ -86,11 +86,11 @@ QtComponents.Window {
             }
         }
 
-        QtComponents.Toggle {
+        Toggle {
             onActiveChanged: { console.log("Toggle active is " + active); }
         }
 
-        QtComponents.ButtonGroup {
+        ButtonGroup {
             id: group
             width: col.width
             height: col.height
@@ -99,29 +99,29 @@ QtComponents.Window {
             Column {
                 id: col
 
-                QtComponents.Button {
+                Button {
                     text: "test1"
                     checkable: true
                     checked: true
                 }
-                QtComponents.Button {
+                Button {
                     text: "test2"
                     checkable: true
                 }
 
                 Row {
-                    QtComponents.Button {
+                    Button {
                         text: "test3"
                         checkable: true
                     }
-                    QtComponents.Button {
+                    Button {
                         text: "test4"
                         checkable: true
                         checked: true
                     }
                 }
 
-                QtComponents.Button {
+                Button {
                     text: "Which one is checked?"
                     onClicked: {
                         // ### find proper way to identify NULL pointers in C++ pointer properties
@@ -135,7 +135,7 @@ QtComponents.Window {
             }
         }
 
-        QtComponents.Combobox {
+        Combobox {
             model: cityModel;
             current: "London";
             z:2
@@ -169,7 +169,7 @@ QtComponents.Window {
             }
         }
 
-        QtComponents.Combobox {
+        Combobox {
             model: weatherModel;
 
             ListModel {
@@ -193,11 +193,11 @@ QtComponents.Window {
             }
         }
 /*
-        QtComponents.ScrollBar {
+        ScrollBar {
             state: "horizontal"
             width: 200
         }
-        QtComponents.ScrollBar {
+        ScrollBar {
             state: "vertical"
             height: 200
         }
