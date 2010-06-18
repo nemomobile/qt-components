@@ -32,6 +32,10 @@
 #include "qprogressbarmodel.h"
 #include "qrangemodel.h"
 
+#include "qdeclarativewindow.h"
+#include "qdeclarativetoplevelitem.h"
+#include "qdeclarativebuttongroup.h"
+
 class QtComponentsPlugin : public QDeclarativeExtensionPlugin
 {
     Q_OBJECT
@@ -59,6 +63,13 @@ public:
         qmlRegisterType<QLineEditEventHelper>(uri, 1, 0, "LineEditEventHelper");
         qmlRegisterType<QProgressBarModel>(uri, 1, 0, "ProgressBarModel");
         qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
+
+        // ### Common high level style items
+        qmlRegisterType<QtDeclarativeWindow>(uri,1,0,"WindowModel");
+        qmlRegisterType<QtDeclarativeTopLevelItem>(uri,1,0,"TopLevelItemHelper");
+
+        // ### Temporary solution until we can access children items inside QML
+        qmlRegisterType<QtDeclarativeButtonGroup>(uri, 1,0, "ButtonGroup");
     }
 };
 

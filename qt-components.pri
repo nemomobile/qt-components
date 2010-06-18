@@ -1,4 +1,4 @@
-INCLUDEPATH += $$PWD/src $$PWD/src/models
+INCLUDEPATH += $$PWD/src $$PWD/src/models $$PWD/src/styles
 LIBRARYPATH += $$PWD/lib
 QMAKE_RPATHDIR = $$OUT_PWD/lib
 
