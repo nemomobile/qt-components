@@ -26,16 +26,16 @@
 
 #include <QtDeclarative>
 
-#ifndef QTDECLARATIVESCREEN_H
-#define QTDECLARATIVESCREEN_H
+#ifndef QTDECLARATIVEWINDOW_H
+#define QTDECLARATIVEWINDOW_H
 
 //QDI so we're in the scene and associated with a window
-class QtDeclarativeScreen : public QDeclarativeItem
+class QtDeclarativeWindow : public QDeclarativeItem
 {
 
     Q_OBJECT
     public:
-        QtDeclarativeScreen(QDeclarativeItem * parent=0);
+        QtDeclarativeWindow(QDeclarativeItem * parent=0);
 
     public slots:
         void resetMove();
@@ -49,6 +49,6 @@ class QtDeclarativeScreen : public QDeclarativeItem
         QPoint lastResizePoint;
 };
 
-QML_DECLARE_TYPE(QtDeclarativeScreen);
+QML_DECLARE_TYPE(QtDeclarativeWindow);
 
-#endif // QTDECLARATIVESCREEN_H
+#endif // QTDECLARATIVEWINDOW_H

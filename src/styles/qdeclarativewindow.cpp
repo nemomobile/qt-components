@@ -31,24 +31,24 @@
 #include <QWidget>
 #include <QDebug>
 
-QtDeclarativeScreen::QtDeclarativeScreen(QDeclarativeItem* parent)
+QtDeclarativeWindow::QtDeclarativeWindow(QDeclarativeItem* parent)
     : QDeclarativeItem(parent), moveValid(false), resizeValid(true)
 {
     foreach (QWidget *widget, QApplication::topLevelWidgets())
         widget->setWindowFlags(widget->windowFlags() | Qt::FramelessWindowHint);
 }
 
-void QtDeclarativeScreen::resetMove()
+void QtDeclarativeWindow::resetMove()
 {
     moveValid = false;
 }
 
-void QtDeclarativeScreen::resetResize()
+void QtDeclarativeWindow::resetResize()
 {
     resizeValid = false;
 }
 
-void QtDeclarativeScreen::dragPointMove(int x, int y)
+void QtDeclarativeWindow::dragPointMove(int x, int y)
 {
     QPoint newPoint(x,y);
     if(moveValid){
@@ -62,7 +62,7 @@ void QtDeclarativeScreen::dragPointMove(int x, int y)
     lastMovePoint = newPoint;
 }
 
-void QtDeclarativeScreen::dragPointResize(int x, int y)
+void QtDeclarativeWindow::dragPointResize(int x, int y)
 {
     QPoint newPoint(x,y);
     if(resizeValid){
