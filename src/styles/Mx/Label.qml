@@ -35,9 +35,9 @@ Text {
         id: tooltipLoader;
         anchors.fill: parent;
 
-        // Label does not have a MouseArea so we need our own delegate
+        // Label does not have a MouseArea so we need our own tooltip component
         // that includes it.
-        delegate: MouseArea {
+        realComponent: MouseArea {
             id: area;
             anchors.fill: parent;
 
