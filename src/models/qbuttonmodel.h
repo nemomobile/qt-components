@@ -31,7 +31,7 @@
 #include <QtGui/qbuttongroup.h>
 #include <QtGui/qgraphicsitem.h>
 
-#include <common.h>
+#include <kernel/common.h>
 
 class QButtonModelPrivate;
 

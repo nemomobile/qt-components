@@ -32,7 +32,7 @@
 #include <QtCore/qscopedpointer.h>
 #include <QtDeclarative/qdeclarative.h>
 
-#include <common.h>
+#include <kernel/common.h>
 
 class QDateTimeModelPrivate;
 

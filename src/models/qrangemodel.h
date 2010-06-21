@@ -32,7 +32,7 @@
 #include <QtGui/qabstractslider.h>
 #include <QtDeclarative/qdeclarative.h>
 
-#include <common.h>
+#include <kernel/common.h>
 
 class QRangeModelPrivate;
 

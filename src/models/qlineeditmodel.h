@@ -39,7 +39,7 @@
 
 #include <QtDeclarative/qdeclarativeitem.h>
 
-#include <common.h>
+#include <kernel/common.h>
 
 class QLineEditModelPrivate;
 
