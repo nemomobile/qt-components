@@ -30,7 +30,7 @@
 #include <QtCore/qobject.h>
 #include <QtDeclarative/qdeclarative.h>
 
-#include <common.h>
+#include <kernel/common.h>
 
 class QProgressBarModelPrivate;
 

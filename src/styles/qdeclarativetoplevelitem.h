@@ -29,7 +29,7 @@
 
 #include <QtDeclarative/qdeclarativeitem.h>
 
-#include <common.h>
+#include <kernel/common.h>
 
 class QtDeclarativeTopLevelItemPrivate;
 class Q_COMPONENTS_EXPORT QtDeclarativeTopLevelItem : public QDeclarativeItem
