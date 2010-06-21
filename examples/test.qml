@@ -66,7 +66,7 @@ Window {
             }
 
             onCheckedItemChanged: {
-                loader.source = "../src/styles/mx/" + checkedItem.text.toLowerCase().replace(" ", "") + ".qml";
+                loader.source = "test/" + checkedItem.text.toLowerCase().replace(" ", "") + ".qml";
             }
         }
 
