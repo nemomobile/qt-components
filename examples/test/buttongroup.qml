@@ -27,7 +27,7 @@
 import Qt 4.7
 import QtComponents 1.0
 
-import "button-group.js" as Helper
+import "buttongroup.js" as Helper
 
 Item {
     Row {
