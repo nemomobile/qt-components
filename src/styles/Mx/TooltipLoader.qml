@@ -26,20 +26,19 @@
 
 import Qt 4.7
 
-MyLoader {
+Loader {
     id: tooltipLoader;
 
     property string text: "";
     property bool shown: false;
-    loaded: text != "";
-
-    delegate: Tooltip {
-        id: tooltipDelegate;
-
-        anchors.top: parent.bottom;
-        anchors.horizontalCenter: parent.horizontalCenter;
-
+    anchors.top: parent.bottom;
+    anchors.horizontalCenter: parent.horizontalCenter;
+    property Component realComponent: Tooltip {
         text: tooltip.text;
         shown: tooltip.shown;
     }
+
+    //### I don't know why they don't just make the tooltip invisible when the text is ""
+    //### But I'm not fixing that now.
+    sourceComponent: text == "" ? null : realComponent
 }
