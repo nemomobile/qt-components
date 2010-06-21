@@ -25,6 +25,7 @@
 ****************************************************************************/
 
 import Qt 4.7
+import QtComponents 1.0
 
 Item{//This should be ROOT element in a QML/MX app
     property int headerBottom: header.height //Children should have at least this y

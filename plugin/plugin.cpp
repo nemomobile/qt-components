@@ -65,11 +65,11 @@ public:
         qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
 
         // ### Common high level style items
-        qmlRegisterType<QtDeclarativeWindow>(uri,1,0,"WindowModel");
-        qmlRegisterType<QtDeclarativeTopLevelItem>(uri,1,0,"TopLevelItemHelper");
+        qmlRegisterType<QtDeclarativeWindow>(uri, 1, 0, "WindowModel");
+        qmlRegisterType<QtDeclarativeTopLevelItem>(uri, 1, 0, "TopLevelItemHelper");
 
         // ### Temporary solution until we can access children items inside QML
-        qmlRegisterType<QtDeclarativeButtonGroup>(uri, 1,0, "ButtonGroup");
+        qmlRegisterType<QtDeclarativeButtonGroup>(uri, 1, 0, "ButtonGroup");
     }
 };
 
