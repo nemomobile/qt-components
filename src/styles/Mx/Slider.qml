@@ -25,7 +25,7 @@
 ****************************************************************************/
 
 import Qt 4.7
-import Components 1.0
+import QtComponents 1.0
 
 Item {
     id: basicSlider;
