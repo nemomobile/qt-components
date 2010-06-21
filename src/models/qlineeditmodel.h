@@ -39,9 +39,11 @@
 
 #include <QtDeclarative/qdeclarativeitem.h>
 
+#include <common.h>
+
 class QLineEditModelPrivate;
 
-class QLineEditModel : public QObject
+class Q_COMPONENTS_EXPORT QLineEditModel : public QObject
 {
     Q_OBJECT
     Q_ENUMS(EchoMode)
@@ -193,7 +195,7 @@ QML_DECLARE_TYPE(QLineEditModel)
 
 
 // Helper class to do layout calculation
-class QLineEditLayoutHelper : public QObject
+class Q_COMPONENTS_EXPORT QLineEditLayoutHelper : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QLineEditModel *model READ model WRITE setModel NOTIFY modelChanged)
@@ -247,7 +249,7 @@ private:
 QML_DECLARE_TYPE(QLineEditLayoutHelper)
 
 // Helper class to do key event handling
-class QLineEditEventHelper : public QDeclarativeItem
+class Q_COMPONENTS_EXPORT QLineEditEventHelper : public QDeclarativeItem
 {
     Q_OBJECT
 

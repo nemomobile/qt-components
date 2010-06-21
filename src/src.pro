@@ -6,3 +6,6 @@ QT += declarative
 
 include(models/models.pri)
 include(styles/styles.pri)
+include(kernel/kernel.pri)
+
+DEFINES += QT_BUILD_COMPONENTS_LIB

@@ -30,9 +30,11 @@
 #include <QtCore/qobject.h>
 #include <QtDeclarative/qdeclarative.h>
 
+#include <common.h>
+
 class QProgressBarModelPrivate;
 
-class QProgressBarModel : public QObject
+class Q_COMPONENTS_EXPORT QProgressBarModel : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int value READ value WRITE setValue NOTIFY valueChanged);

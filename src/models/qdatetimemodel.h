@@ -32,9 +32,11 @@
 #include <QtCore/qscopedpointer.h>
 #include <QtDeclarative/qdeclarative.h>
 
+#include <common.h>
+
 class QDateTimeModelPrivate;
 
-class QDateTimeModel : public QObject
+class Q_COMPONENTS_EXPORT QDateTimeModel : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QDate date READ date WRITE setDate NOTIFY dateTimeChanged)

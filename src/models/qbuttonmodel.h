@@ -31,9 +31,11 @@
 #include <QtGui/qbuttongroup.h>
 #include <QtGui/qgraphicsitem.h>
 
+#include <common.h>
+
 class QButtonModelPrivate;
 
-class QButtonModel : public QObject
+class Q_COMPONENTS_EXPORT QButtonModel : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool checkable READ isCheckable WRITE setCheckable NOTIFY checkableChanged)

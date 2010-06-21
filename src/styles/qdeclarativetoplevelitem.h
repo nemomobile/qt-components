@@ -29,8 +29,10 @@
 
 #include <QtDeclarative/qdeclarativeitem.h>
 
+#include <common.h>
+
 class QtDeclarativeTopLevelItemPrivate;
-class QtDeclarativeTopLevelItem : public QDeclarativeItem
+class Q_COMPONENTS_EXPORT QtDeclarativeTopLevelItem : public QDeclarativeItem
 {
     Q_OBJECT
     Q_PROPERTY(bool keepInside READ keepInside WRITE setKeepInside NOTIFY keepInsideChanged);

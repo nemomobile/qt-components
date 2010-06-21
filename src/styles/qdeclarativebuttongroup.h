@@ -29,7 +29,9 @@
 
 #include <QtDeclarative/QDeclarativeItem>
 
-class Q_DECLARATIVE_EXPORT QtDeclarativeButtonGroup : public QDeclarativeItem
+#include <common.h>
+
+class Q_COMPONENTS_EXPORT QtDeclarativeButtonGroup : public QDeclarativeItem
 {
     Q_OBJECT
 

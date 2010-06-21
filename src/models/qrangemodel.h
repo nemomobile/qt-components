@@ -32,9 +32,11 @@
 #include <QtGui/qabstractslider.h>
 #include <QtDeclarative/qdeclarative.h>
 
+#include <common.h>
+
 class QRangeModelPrivate;
 
-class QRangeModel : public QObject
+class Q_COMPONENTS_EXPORT QRangeModel : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(qreal value READ value WRITE setValue NOTIFY valueChanged USER true)

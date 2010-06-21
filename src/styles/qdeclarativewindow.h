@@ -29,8 +29,10 @@
 #ifndef QTDECLARATIVEWINDOW_H
 #define QTDECLARATIVEWINDOW_H
 
+#include <common.h>
+
 //QDI so we're in the scene and associated with a window
-class QtDeclarativeWindow : public QDeclarativeItem
+class Q_COMPONENTS_EXPORT QtDeclarativeWindow : public QDeclarativeItem
 {
 
     Q_OBJECT
