@@ -46,8 +46,10 @@ TopLevelItem {
 
     BorderImage {
         id: background;
-        anchors.fill: parent;
+        anchors.top: parent.bottom;
+        anchors.horizontalCenter: parent.horizontalCenter
         source: "images/tooltip-background.png";
+        width: text.width + 22
         border.top: 4;
         border.left: 11;
         border.bottom: 12;
@@ -108,9 +110,9 @@ TopLevelItem {
     }
 
     Text {
-        anchors.centerIn: parent;
+        id:text
+        anchors.centerIn: background;
         anchors.verticalCenterOffset: -4;
-        width: parent.width - 22;
         horizontalAlignment: Text.AlignHCenter;
 
         text: tooltip.text;
