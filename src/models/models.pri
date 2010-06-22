@@ -14,4 +14,3 @@ SOURCES += models/qbuttonmodel.cpp \
     models/qlineeditmodel.cpp \
     models/qprogressbarmodel.cpp \
     models/qrangemodel.cpp
-INCLUDEPATH += models/

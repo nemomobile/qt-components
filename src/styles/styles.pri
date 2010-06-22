@@ -9,8 +9,6 @@ SOURCES += \
            styles/qdeclarativetoplevelitem.cpp \
            styles/qdeclarativewindow.cpp
 
-INCLUDEPATH += styles/
-
 OTHER_FILES += \
     styles/Mx/Button.qml \
     styles/Mx/Combobox.qml \

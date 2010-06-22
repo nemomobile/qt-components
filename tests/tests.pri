@@ -1,7 +1,6 @@
-INCLUDEPATH += $$PWD/../src $$PWD/../src/models
+include (../qt-components.pri)
+
 DEPENDPATH  += $$INCLUDEPATH .
-LIBS += -L../../lib -lqtcomponents
-QMAKE_RPATHDIR = $$OUT_PWD/../../lib
 CONFIG += qtestlib
 CONFIG -= app_bundle
 QT += declarative
