@@ -29,6 +29,7 @@ import QtComponents 1.0
 
 Item {
     id: pushbutton
+    Common {id: mx}
 
     property string text: "Text"
     property bool checkable: false
@@ -43,7 +44,7 @@ Item {
     signal clicked
 
     width: Math.max(text.width + 20, 110)
-    height: Math.max(text.height + 12, 35)
+    height: Math.max(text.height + 12, 23)
 
     BorderImage {
         id: buttonImage
@@ -81,12 +82,14 @@ Item {
 
     Text {
         id: text
-        font.pixelSize: 15
+        font.pixelSize: mx.fontSize
         anchors.verticalCenter:parent.verticalCenter
         anchors.horizontalCenter:parent.horizontalCenter
         anchors.verticalCenterOffset: pushbutton.state === "pressed" ? 1 : 0
         anchors.horizontalCenterOffset: pushbutton.state === "pressed" ? 1 : 0
         text: pushbutton.text
+        color: "#616261";
+
     }
 
     TooltipLoader {

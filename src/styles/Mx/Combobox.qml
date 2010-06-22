@@ -29,6 +29,7 @@ import QtComponents 1.0
 
 Item {
     id: combobox;
+    Common{id:mx}
 
     property int elementsToShow;
     property alias current: value.text;
@@ -54,7 +55,7 @@ Item {
         anchors.left: background.left;
         anchors.right: marker.left;
         anchors.leftMargin: 5;
-        font.pixelSize: 15
+        font.pixelSize: mx.fontSize
     }
 
     BorderImage {

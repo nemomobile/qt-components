@@ -27,39 +27,24 @@
 import Qt 4.7
 import QtComponents 1.0
 
-Item {
+Image {
     id: toggle
 
-    property bool active: state == "activated"
+    property bool active: false
     property alias tooltipText: tooltip.text;
 
-    width: 105
-    height: 39
-
-    Image {
-        source: "images/toggle-background.png"
-        anchors.fill: parent
-        visible: !active
-    }
-
-    Image {
-        source: "images/toggle-background-active.png"
-        anchors.fill: parent
-        visible: active
-    }
+    source: active ? "images/toggle-background-active.png" : "images/toggle-background.png"
 
     MouseArea {
         id: backMouse
         anchors.fill: parent
         hoverEnabled: tooltip.text
-        onClicked: { active = !active; }
-        onPressed: { tooltip.pressDismiss = true; }
+        onClicked: { active = !active;}
+        onPressed: { tooltip.pressDismiss = true;}
     }
 
     Image {
         id: handle
-        x: 4
-        y: 4
         source: "images/toggle-handle.png"
 
         MouseArea {
@@ -77,8 +62,8 @@ Item {
             hoverEnabled: tooltip.text
             drag.target: handle
             drag.axis: "XAxis"
-            drag.minimumX: 4
-            drag.maximumX: toggle.width - handle.width - 4
+            drag.minimumX: 0
+            drag.maximumX: toggle.width - handle.width
 
             onPressed: {
                 tooltip.pressDismiss = true;
@@ -108,7 +93,7 @@ Item {
                 } else if (handle.x == drag.maximumX || handle.x > secondLastPosition) {
                     active = true;
                 } else {
-                    active = handle.x > (toggle.width - handle.width - 4) ? true : false;
+                    active = handle.x > (toggle.width - handle.width) ? true : false;
                 }
 
                 dragged = false;
@@ -152,7 +137,7 @@ Item {
             PropertyChanges {
                 target: handle
                 restoreEntryValues: false
-                x: 4
+                x: 0
             }
         },
         State {
@@ -161,7 +146,7 @@ Item {
             PropertyChanges {
                 target: handle
                 restoreEntryValues: false
-                x: toggle.width - handle.width - 4
+                x: toggle.width - handle.width
             }
         }
     ]

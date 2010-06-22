@@ -29,4 +29,5 @@ OTHER_FILES += \
     styles/Mx/Tooltip.qml \
     styles/Mx/TooltipLoader.qml \
     styles/Mx/TopLevelItem.qml \
-    styles/Mx/Window.qml
+    styles/Mx/Window.qml \
+    styles/Mx/Common.qml

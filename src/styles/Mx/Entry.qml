@@ -29,6 +29,7 @@ import QtComponents 1.0
 
 Item {
     id:lineedit
+    Common{id:mx}
     property string hint: "Entry"
     property alias text: textInp.text
     property bool secret: false
@@ -64,7 +65,7 @@ Item {
         anchors.rightMargin:6+rightIcon.width
         anchors.bottomMargin:6
         anchors.leftMargin:5+leftIcon.width
-        font.pixelSize:15
+        font.pixelSize:mx.fontSize
         color: '#A2A2A2'
         text: ''
         states: State{
@@ -110,7 +111,7 @@ Item {
 
         text:""
         horizontalAlignment: TextInput.AlignLeft
-        font.pixelSize:15
+        font.pixelSize:mx.fontSize
         echoMode: secret?TextInput.Password:TextInput.Normal
     }
     MouseArea{

@@ -40,13 +40,19 @@ Item {
     height: 22
     width: 108
 
-    Rectangle {
+
+        BorderImage {
         id: sliderBase
-        color: '#dadada'
         width: parent.width - 12
         x: 6
         anchors.verticalCenter: parent.verticalCenter
         height: 8
+        source: Qt.resolvedUrl("images/button.png");
+
+        border.left: 10
+        border.top: 10
+        border.right: 10
+        border.bottom: 10
 
         Rectangle {
             id: sliderBar
