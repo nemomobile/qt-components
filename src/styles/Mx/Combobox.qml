@@ -54,8 +54,9 @@ Item {
         anchors.verticalCenter: parent.verticalCenter;
         anchors.left: background.left;
         anchors.right: marker.left;
-        anchors.leftMargin: 5;
+        anchors.leftMargin: 12;
         font.pixelSize: mx.fontSize
+        color: mx.fontColor
     }
 
     BorderImage {
@@ -104,6 +105,8 @@ Item {
                     y: 5;
                     spacing: 5;
                     Text {
+                        font.pixelSize: mx.fontSize
+                        color: mx.fontColor
                         text: content;
                     }
                     Image {
@@ -142,14 +145,17 @@ Item {
         Component {
             id: highlight
             Rectangle {
-                color: "#84dbf5";
+                color: "#cccccc";
+                x:1
+                width:parent.width-2
             }
         }
 
-
-        Rectangle {
+        BorderImage {
             id: listBackground;
-            border.color: "#8e8e8e";
+            source: "images/menu.png"
+            border.left: 6; border.top: 6
+            border.right: 6; border.bottom: 6
             anchors.fill: parent;
         }
 

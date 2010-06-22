@@ -84,10 +84,15 @@ Item {
             model.value += model.pageStep;
     }
 
-    Rectangle  {
+    BorderImage {
         id: scrollbarPath
+        source: Qt.resolvedUrl("images/scroll-hbackground.png")
 
-        color: '#dee2e5'
+        border.left: 8;
+        border.top: 8
+        border.right: 8;
+        border.bottom: 8
+
         property bool hold: false
 
         Timer {
@@ -183,6 +188,7 @@ Item {
                 PropertyChanges {
                     target: scrollbarPath
                     height: button1.height
+                    source: Qt.resolvedUrl("images/scroll-hbackground.png")
                 }
                 PropertyChanges {
                     target: handleMouseRegion
@@ -238,6 +244,7 @@ Item {
                 PropertyChanges {
                     target: scrollbarPath
                     width: button1.width
+                    source: Qt.resolvedUrl("images/scroll-vbackground.png")
                 }
                 PropertyChanges {
                     target: handleMouseRegion

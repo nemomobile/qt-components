@@ -89,7 +89,6 @@ Item {
         anchors.horizontalCenterOffset: pushbutton.state === "pressed" ? 1 : 0
         text: pushbutton.text
         color: "#616261";
-
     }
 
     TooltipLoader {

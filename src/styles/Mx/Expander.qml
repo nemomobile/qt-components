@@ -29,6 +29,7 @@ import QtComponents 1.0
 
 Item{
     id: container
+    Common{id:mx}
     height: 34
     width: Math.max(containee.width,label.width+label.x) + 16
     default property Item containee
@@ -54,6 +55,8 @@ Item{
     },
     Text {
         id: label
+        color: mx.fontColor
+        font.bold: true
         anchors.left: button.right
         anchors.leftMargin: 8
         y:8 //doesn't look to be verticalCenter aligned to button (but should be)
