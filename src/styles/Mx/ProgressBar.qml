@@ -41,22 +41,21 @@ Item {
     BorderImage {
         id: background;
         source: "images/progress-bar-background.png";
-        anchors.fill: parent;
+        width: parent.width;
+        anchors.verticalCenter: parent.verticalCenter
         border.left:5;
         border.right:5;
     }
 
-    Rectangle {
+    BorderImage {
         id: progressbar;
-        x: 3;
-
+        source: "images/progress-bar-bar.png";
+        border.left:5;
+        border.right:5;
+        height: background.height
+        anchors.verticalCenter: parent.verticalCenter
+        opacity: model.position == model.minimumValue ? 0 : 1
         width: model.position
-        color: '#84dbf5';
-
-        anchors.top: background.top;
-        anchors.topMargin: 3;
-        anchors.bottom: background.bottom;
-        anchors.bottomMargin: 3;
     }
 
     Rectangle {
@@ -88,7 +87,7 @@ Item {
         minimumValue: 0
         maximumValue: 100
         positionAtMinimum: 0
-        positionAtMaximum: background.width - 6
+        positionAtMaximum: background.width
     }
 
     TooltipLoader {
