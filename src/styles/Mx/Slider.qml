@@ -41,27 +41,18 @@ Item {
     width: 108
 
 
-        BorderImage {
+    BorderImage {
         id: sliderBase
         width: parent.width - 12
         x: 6
         anchors.verticalCenter: parent.verticalCenter
-        height: 8
-        source: Qt.resolvedUrl("images/button.png");
+        source: Qt.resolvedUrl("images/slider-background.png");
 
         border.left: 10
-        border.top: 10
+        border.top: 0
         border.right: 10
-        border.bottom: 10
+        border.bottom: 0
 
-        Rectangle {
-            id: sliderBar
-            color: '#84dbf5'
-            anchors.left: parent.left
-            anchors.right: knob.horizontalCenter
-            anchors.verticalCenter: parent.verticalCenter
-            height: 8
-        }
 
         MouseArea {
             id: grooveArea
@@ -85,7 +76,7 @@ Item {
             border.right: 10
             border.bottom: 10
 
-            source: Qt.resolvedUrl("images/button.png");
+            source: Qt.resolvedUrl("images/slider-handle.png");
 
             MouseArea {
                 id: knobArea
@@ -101,12 +92,12 @@ Item {
                 State {
                     name: "hover"
                     when: !knobArea.pressed && knobArea.containsMouse
-                    PropertyChanges { target: knob; source: Qt.resolvedUrl("images/button-hover.png"); }
+                    PropertyChanges { target: knob; source: Qt.resolvedUrl("images/slider-handle-hover.png"); }
                 },
                 State {
                     name: "pressed"
                     when: knobArea.pressed
-                    PropertyChanges { target: knob; source: Qt.resolvedUrl("images/button-active.png"); }
+                    PropertyChanges { target: knob; source: Qt.resolvedUrl("images/slider-handle-active.png"); }
                 }
             ]
         }
@@ -127,9 +118,9 @@ Item {
 
         property bool pressDismiss: false;
         property bool containsMouse: grooveArea.containsMouse
-                                  || knobArea.containsMouse
+        || knobArea.containsMouse
         property bool mousePressed: grooveArea.pressed
-                                 || knobArea.pressed;
+        || knobArea.pressed;
         property bool resetState: !containsMouse && !mousePressed
 
         // Dismiss on press
