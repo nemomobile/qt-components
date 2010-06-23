@@ -30,7 +30,7 @@ var buttonList = [];
 var count = 0;
 
 function addButton(parent) {
-    var button = createQmlObject("import QtComponents 1.0; Button { id: me; checkable: true; text: 'Button " + count + "' }", parent);
+    var button = Qt.createQmlObject("import QtComponents 1.0; Button { id: me; checkable: true; text: 'Button " + count + "' }", parent);
     count += 1;
     buttonList.push(button);
 }

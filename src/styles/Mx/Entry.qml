@@ -124,12 +124,12 @@ Item {
         }
         onPressed: {
             textInp.focus = true;
-            textInp.cursorPosition = textInp.xToPosition(translateX(mouse.x));
+            textInp.cursorPosition = textInp.positionAt(translateX(mouse.x));
         }
         onPositionChanged: {
             if (!mainMouseArea.pressed)
                 return;
-            textInp.moveCursorSelection(textInp.xToPosition(translateX(mouse.x)));
+            textInp.moveCursorSelection(textInp.positionAt(translateX(mouse.x)));
         }
         onReleased: {
         }
