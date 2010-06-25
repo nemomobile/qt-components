@@ -9,6 +9,7 @@ PathBar 1.0 ../../src/styles/Mx/PathBar.qml
 ProgressBar 1.0 ../../src/styles/Mx/ProgressBar.qml
 ScrollBar 1.0 ../../src/styles/Mx/ScrollBar.qml
 ScrollView 1.0 ../../src/styles/Mx/ScrollView.qml
+ScrollGrid 1.0 ../../src/styles/Mx/ScrollGrid.qml
 Slider 1.0 ../../src/styles/Mx/Slider.qml
 Toggle 1.0 ../../src/styles/Mx/Toggle.qml
 Tooltip 1.0 ../../src/styles/Mx/Tooltip.qml
