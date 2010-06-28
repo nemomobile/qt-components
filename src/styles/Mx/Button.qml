@@ -34,11 +34,11 @@ Item {
     property string text: "Text"
     property bool checkable: false
     property bool checked: false
-    property string backgroundImage: "";
+    property url backgroundImage: "";
     property alias backgroundImageBorder: buttonImage.border;
-    property string activeImage: "";
+    property url activeImage: "";
     property alias activeImageBorder: buttonActiveImage.border;
-    property string hoverImage: "";
+    property url hoverImage: "";
     property alias hoverImageBorder: buttonHoverImage.border;
     property alias tooltipText: tooltip.text;
     signal clicked

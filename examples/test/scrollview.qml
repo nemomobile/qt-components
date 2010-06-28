@@ -39,7 +39,7 @@ Item {
 
         Image {
             id: image
-            source: "qt_color.png"
+            source: "images/qt_color.png"
             fillMode: Image.Tile
             width: 800
             height: 639
