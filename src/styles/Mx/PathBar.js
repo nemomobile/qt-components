@@ -29,9 +29,8 @@
 var path = [];
 
 function push(name, parent) {
-    var b = component.buttonDelegate.createObject();
+    var b = component.buttonDelegate.createObject(parent);
     b.text = name;
-    b.parent = parent;
     b.z = -path.length; // First items stay on top
     b.clicked.connect(function() { popUntil(b) });
     path.push(b);
