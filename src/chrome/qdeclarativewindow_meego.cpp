@@ -24,24 +24,44 @@
 **
 ****************************************************************************/
 
-#include "quickwindow.h"
+#include "qdeclarativewindow.h"
 
 #include <QApplication>
+#include <MApplicationPage>
+#include <MApplicationWindow>
+#include <MComponentData>
+#include <MScene>
+#include <MButton>
+#include <MTheme>
 #include <QtDeclarative>
 
-
-class QuickWindowPrivate
+class QuickMApplicationWindow : public MApplicationWindow
 {
 public:
-    QuickWindowPrivate(QuickWindow *qq);
-    ~QuickWindowPrivate();
+    QuickMApplicationWindow(QWidget *parent) : MApplicationWindow(parent) {}
+protected:
+    virtual void closeEvent(QCloseEvent *event);
+};
+
+void QuickMApplicationWindow::closeEvent(QCloseEvent *event)
+{
+    topLevelWidget()->close();
+    event->accept();
+}
+
+
+class QDeclarativeWindowPrivate
+{
+public:
+    QDeclarativeWindowPrivate(QDeclarativeWindow *qq);
+    ~QDeclarativeWindowPrivate();
     void execute();
 
-    QuickWindow *q;
+    QDeclarativeWindow *q;
 
-    QVBoxLayout *layout;
-    QGraphicsView *view;
-    QGraphicsScene scene;
+    MApplicationWindow *mWindow;
+    MApplicationPage *mPage;
+
     QUrl source;
 
     QDeclarativeEngine engine;
@@ -50,36 +70,29 @@ public:
 
 };
 
-QuickWindowPrivate::QuickWindowPrivate(QuickWindow *qq)
-    : q(qq), view(0), component(0)
+QDeclarativeWindowPrivate::QDeclarativeWindowPrivate(QDeclarativeWindow *qq)
+    : q(qq), mWindow(0), mPage(0), component(0)
 {
-    layout = new QVBoxLayout(q);
+    if(!MComponentData::instance()) {
+        int argc = QApplication::instance()->argc();
+        (void) new MComponentData(argc, QApplication::instance()->argv());
+    }
 
-    view = new QGraphicsView(q);
-    view->setScene(&scene);
-    layout->addWidget(view);
-
-    view->setOptimizationFlags(QGraphicsView::DontSavePainterState);
-    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    view->setFrameStyle(0);
-
-    // These seem to give the best performance
-    view->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
-    scene.setItemIndexMethod(QGraphicsScene::NoIndex);
-    view->viewport()->setFocusPolicy(Qt::NoFocus);
-    view->setFocusPolicy(Qt::StrongFocus);
-
-    scene.setStickyFocus(true);  //### needed for correct focus handling
+    mWindow = new QuickMApplicationWindow(q);
+    mPage = new MApplicationPage;
+    mPage->setPannable(false);
+    mPage->appear();
 }
 
 
-QuickWindowPrivate::~QuickWindowPrivate()
+QDeclarativeWindowPrivate::~QDeclarativeWindowPrivate()
 {
     delete component;
+    delete mPage;
+    delete mWindow;
 }
 
-void QuickWindowPrivate::execute()
+void QDeclarativeWindowPrivate::execute()
 {
     if (root) {
         delete root;
@@ -102,7 +115,7 @@ void QuickWindowPrivate::execute()
 /*!
   \internal
  */
-void QuickWindow::continueExecute()
+void QDeclarativeWindow::continueExecute()
 {
     disconnect(d->component, SIGNAL(statusChanged(QDeclarativeComponent::Status)), this, SLOT(continueExecute()));
 
@@ -135,25 +148,25 @@ void QuickWindow::continueExecute()
 
 
 
-QuickWindow::QuickWindow()
+QDeclarativeWindow::QDeclarativeWindow()
 {
-    d = new QuickWindowPrivate(this);
+    d = new QDeclarativeWindowPrivate(this);
 }
 
-QuickWindow::QuickWindow(const QUrl &source)
+QDeclarativeWindow::QDeclarativeWindow(const QUrl &source)
 {
-    d = new QuickWindowPrivate(this);
+    d = new QDeclarativeWindowPrivate(this);
     setSource(source);
 }
 
-QuickWindow::~QuickWindow()
+QDeclarativeWindow::~QDeclarativeWindow()
 {
     delete d;
     d = 0;
 }
 
 
-/*! \property QuickWindow::source
+/*! \property QDeclarativeWindow::source
   \brief The URL of the source of the QML component.
 
   Changing this property causes the QML component to be reloaded.
@@ -171,7 +184,7 @@ QuickWindow::~QuickWindow()
     Calling this methods multiple times with the same url will result
     in the QML being reloaded.
  */
-void QuickWindow::setSource(const QUrl& url)
+void QDeclarativeWindow::setSource(const QUrl& url)
 {
     d->source = url;
     d->execute();
@@ -182,7 +195,7 @@ void QuickWindow::setSource(const QUrl& url)
 
   \sa setSource()
  */
-QUrl QuickWindow::source() const
+QUrl QDeclarativeWindow::source() const
 {
     return d->source;
 }
@@ -191,7 +204,7 @@ QUrl QuickWindow::source() const
   Returns a pointer to the QDeclarativeEngine used for instantiating
   QML Components.
  */
-QDeclarativeEngine* QuickWindow::engine()
+QDeclarativeEngine* QDeclarativeWindow::engine()
 {
     return &d->engine;
 }
@@ -203,7 +216,7 @@ QDeclarativeEngine* QuickWindow::engine()
   arranged hierarchically and this hierarchy is managed by the
   QDeclarativeEngine.
  */
-QDeclarativeContext* QuickWindow::rootContext()
+QDeclarativeContext* QDeclarativeWindow::rootContext()
 {
     return d->engine.rootContext();
 }
@@ -212,31 +225,31 @@ QDeclarativeContext* QuickWindow::rootContext()
 /*!
   Returns the view's root \l {QGraphicsObject} {item}.
  */
-QGraphicsObject *QuickWindow::rootObject() const
+QGraphicsObject *QDeclarativeWindow::rootObject() const
 {
     return d->root;
 }
 
-/*! \fn void QuickWindow::statusChanged(QDeclarativeView::Status status)
+/*! \fn void QDeclarativeWindow::statusChanged(QDeclarativeView::Status status)
     This signal is emitted when the component's current \a status changes.
 */
 
 /*!
-    \property QuickWindow::status
-    The component's current \l{QuickWindow::Status} {status}.
+    \property QDeclarativeWindow::status
+    The component's current \l{QDeclarativeWindow::Status} {status}.
 */
-QuickWindow::Status QuickWindow::status() const
+QDeclarativeWindow::Status QDeclarativeWindow::status() const
 {
     if (!d->component)
-        return QuickWindow::Null;
+        return QDeclarativeWindow::Null;
 
-    return QuickWindow::Status(d->component->status());
+    return QDeclarativeWindow::Status(d->component->status());
 }
 
 /*!
   \internal
 */
-void QuickWindow::setRootObject(QObject *obj)
+void QDeclarativeWindow::setRootObject(QObject *obj)
 {
     if (d->root == obj)
         return;
@@ -246,9 +259,11 @@ void QuickWindow::setRootObject(QObject *obj)
         return;
     }
 
-    d->view->scene()->addItem(d->root);
+    QGraphicsWidget *centralWidget = d->mPage->centralWidget();
+    d->root->QGraphicsObject::setParentItem(centralWidget);
+    d->mWindow->scene()->addItem(d->root);
 
-    QRect rect = this->rect();
+    QRectF rect = d->mPage->exposedContentRect();
     if (!qFuzzyCompare(rect.width(), d->root->width()))
         d->root->setWidth(rect.width());
     if (!qFuzzyCompare(rect.height(), d->root->height()))

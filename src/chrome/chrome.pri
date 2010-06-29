@@ -1,8 +1,8 @@
-HEADERS += chrome/quickwindow.h
+HEADERS += chrome/qdeclarativewindow.h
 
 meego {
-    SOURCES += chrome/quickwindow_meego.cpp
+    SOURCES += chrome/qdeclarativewindow_meego.cpp
 } else {
-    SOURCES += chrome/quickwindow_desktop.cpp
+    SOURCES += chrome/qdeclarativewindow_desktop.cpp
 }
 

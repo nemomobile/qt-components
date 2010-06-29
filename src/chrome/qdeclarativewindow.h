@@ -24,18 +24,18 @@
 **
 ****************************************************************************/
 
-#ifndef QUICKWINDOW_H
-#define QUICKWINDOW_H
+#ifndef QDECLARATIVEWINDOW_H
+#define QDECLARATIVEWINDOW_H
 
 #include <qwidget.h>
 #include <qurl.h>
 
-class QuickWindowPrivate;
+class QDeclarativeWindowPrivate;
 class QDeclarativeEngine;
 class QDeclarativeContext;
 class QGraphicsObject;
 
-class QuickWindow : public QWidget
+class QDeclarativeWindow : public QWidget
 {
     Q_OBJECT
 
@@ -43,9 +43,9 @@ class QuickWindow : public QWidget
     Q_ENUMS(Status)
 
 public:
-    QuickWindow();
-    QuickWindow(const QUrl &source);
-    ~QuickWindow();
+    QDeclarativeWindow();
+    QDeclarativeWindow(const QUrl &source);
+    ~QDeclarativeWindow();
 
     QUrl source() const;
     void setSource(const QUrl &url);
@@ -59,7 +59,7 @@ public:
     Status status() const;
 
 Q_SIGNALS:
-    void statusChanged(QuickWindow::Status);
+    void statusChanged(QDeclarativeWindow::Status);
 
 protected:
     virtual void setRootObject(QObject *obj);
@@ -68,8 +68,8 @@ private Q_SLOTS:
     void continueExecute();
 
 private:
-    friend class QuickWindowPrivate;
-    QuickWindowPrivate *d;
+    friend class QDeclarativeWindowPrivate;
+    QDeclarativeWindowPrivate *d;
 };
 
 #endif

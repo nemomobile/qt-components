@@ -25,13 +25,13 @@
 ****************************************************************************/
 
 #include <qapplication.h>
-#include "quickwindow.h"
+#include "qdeclarativewindow.h"
 
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 
-    QuickWindow window(QUrl::fromLocalFile("calculator.qml"));
+    QDeclarativeWindow window(QUrl::fromLocalFile("calculator.qml"));
 
     window.show();
     return app.exec();
