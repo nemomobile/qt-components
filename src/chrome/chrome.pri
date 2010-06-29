@@ -1,4 +1,4 @@
-HEADERS += chrome/qdeclarativewindow.h
+PUBLIC_HEADERS += chrome/qdeclarativewindow.h
 
 meego {
     SOURCES += chrome/qdeclarativewindow_meego.cpp

@@ -25,35 +25,21 @@
 ****************************************************************************/
 
 import Qt 4.7
-import QtComponents 1.0
+import Qt.labs.components 1.0
 
-Text {
-    id: label;
-    property alias tooltipText: tooltipLoader.text;
+Loader {
+    id: tooltipLoader;
 
-    TooltipLoader {
-        id: tooltipLoader;
-        anchors.fill: parent;
-
-        // Label does not have a MouseArea so we need our own tooltip component
-        // that includes it.
-        realComponent: MouseArea {
-            id: area;
-            anchors.fill: parent;
-
-            hoverEnabled: true;
-            onPressed: tooltip.pressDismiss = true;
-            onExited: tooltip.pressDismiss = false;
-
-            Tooltip {
-                id: tooltip;
-                anchors.top: parent.bottom;
-                anchors.horizontalCenter: parent.horizontalCenter;
-
-                property bool pressDismiss: false;
-                shown: (area.containsMouse && !pressDismiss);
-                text: tooltipLoader.text;
-            }
-        }
+    property string text: "";
+    property bool shown: false;
+    anchors.top: parent.bottom;
+    anchors.horizontalCenter: parent.horizontalCenter;
+    property Component realComponent: Tooltip {
+        text: tooltip.text;
+        shown: tooltip.shown;
     }
+
+    //### I don't know why they don't just make the tooltip invisible when the text is ""
+    //### But I'm not fixing that now.
+    sourceComponent: text == "" ? null : realComponent
 }

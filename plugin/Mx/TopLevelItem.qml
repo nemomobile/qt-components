@@ -25,21 +25,15 @@
 ****************************************************************************/
 
 import Qt 4.7
-import QtComponents 1.0
+import Qt.labs.components 1.0
 
-Loader {
-    id: tooltipLoader;
+Item {
+    id: placeholder;
+    default property alias data: topLevelItem.data;
 
-    property string text: "";
-    property bool shown: false;
-    anchors.top: parent.bottom;
-    anchors.horizontalCenter: parent.horizontalCenter;
-    property Component realComponent: Tooltip {
-        text: tooltip.text;
-        shown: tooltip.shown;
-    }
+    // If true, the toplevel item will be constrained to be inside the
+    // topLevelParent.
+    property alias keepInside: topLevelItem.keepInside;
 
-    //### I don't know why they don't just make the tooltip invisible when the text is ""
-    //### But I'm not fixing that now.
-    sourceComponent: text == "" ? null : realComponent
+    TopLevelItemHelper { id: topLevelItem; }
 }

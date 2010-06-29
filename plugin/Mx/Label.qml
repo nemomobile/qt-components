@@ -25,15 +25,35 @@
 ****************************************************************************/
 
 import Qt 4.7
-import QtComponents 1.0
+import Qt.labs.components 1.0
 
-Item {
-    id: placeholder;
-    default property alias data: topLevelItem.data;
+Text {
+    id: label;
+    property alias tooltipText: tooltipLoader.text;
 
-    // If true, the toplevel item will be constrained to be inside the
-    // topLevelParent.
-    property alias keepInside: topLevelItem.keepInside;
+    TooltipLoader {
+        id: tooltipLoader;
+        anchors.fill: parent;
 
-    TopLevelItemHelper { id: topLevelItem; }
+        // Label does not have a MouseArea so we need our own tooltip component
+        // that includes it.
+        realComponent: MouseArea {
+            id: area;
+            anchors.fill: parent;
+
+            hoverEnabled: true;
+            onPressed: tooltip.pressDismiss = true;
+            onExited: tooltip.pressDismiss = false;
+
+            Tooltip {
+                id: tooltip;
+                anchors.top: parent.bottom;
+                anchors.horizontalCenter: parent.horizontalCenter;
+
+                property bool pressDismiss: false;
+                shown: (area.containsMouse && !pressDismiss);
+                text: tooltipLoader.text;
+            }
+        }
+    }
 }

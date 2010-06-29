@@ -25,7 +25,7 @@
 ****************************************************************************/
 
 import Qt 4.7
-import QtComponents 1.0
+import Qt.labs.components 1.0
 
 Window {
     width: 800
