@@ -24,31 +24,31 @@
 **
 ****************************************************************************/
 
-#include "qdeclarativewindow.h"
+#include "qmxwindow.h"
 #include <QPoint>
 #include <QApplication>
 #include <QSize>
 #include <QWidget>
 #include <QDebug>
 
-QtDeclarativeWindow::QtDeclarativeWindow(QDeclarativeItem* parent)
+QMxWindow::QMxWindow(QDeclarativeItem* parent)
     : QDeclarativeItem(parent), moveValid(false), resizeValid(true)
 {
     foreach (QWidget *widget, QApplication::topLevelWidgets())
         widget->setWindowFlags(widget->windowFlags() | Qt::FramelessWindowHint);
 }
 
-void QtDeclarativeWindow::resetMove()
+void QMxWindow::resetMove()
 {
     moveValid = false;
 }
 
-void QtDeclarativeWindow::resetResize()
+void QMxWindow::resetResize()
 {
     resizeValid = false;
 }
 
-void QtDeclarativeWindow::dragPointMove(int x, int y)
+void QMxWindow::dragPointMove(int x, int y)
 {
     QPoint newPoint(x,y);
     if(moveValid){
@@ -62,7 +62,7 @@ void QtDeclarativeWindow::dragPointMove(int x, int y)
     lastMovePoint = newPoint;
 }
 
-void QtDeclarativeWindow::dragPointResize(int x, int y)
+void QMxWindow::dragPointResize(int x, int y)
 {
     QPoint newPoint(x,y);
     if(resizeValid){

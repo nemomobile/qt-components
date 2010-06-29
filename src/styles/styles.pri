@@ -1,13 +1,11 @@
 HEADERS += \
            styles/qdeclarativebuttongroup.h \
            styles/qdeclarativetoplevelitem.h \
-           styles/qdeclarativetoplevelitem_p.h \
-           styles/qdeclarativewindow.h
+           styles/qdeclarativetoplevelitem_p.h 
 
 SOURCES += \
            styles/qdeclarativebuttongroup.cpp \
-           styles/qdeclarativetoplevelitem.cpp \
-           styles/qdeclarativewindow.cpp
+           styles/qdeclarativetoplevelitem.cpp 
 
 OTHER_FILES += \
     styles/Mx/Button.qml \
@@ -31,3 +29,9 @@ OTHER_FILES += \
     styles/Mx/TopLevelItem.qml \
     styles/Mx/Window.qml \
     styles/Mx/Common.qml
+
+
+mx {
+    SOURCES += styles/Mx/qmxwindow.cpp
+    HEADERS += styles/Mx/qmxwindow.h
+}

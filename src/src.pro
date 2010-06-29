@@ -4,6 +4,7 @@ DESTDIR = $$OUT_PWD/../lib
 DEFINES += QT_BUILD_COMPONENTS_LIB QT_NO_BUTTONGROUP
 QT += declarative
 
+include(../qt-components.pri)
 
 include(models/models.pri)
 include(styles/styles.pri)

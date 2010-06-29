@@ -31,7 +31,9 @@
 #include "qlineeditmodel.h"
 #include "qrangemodel.h"
 
-#include "qdeclarativewindow.h"
+#ifdef Q_COMPONENTS_MX
+#include "qmxwindow.h"
+#endif
 #include "qdeclarativetoplevelitem.h"
 #include "qdeclarativebuttongroup.h"
 
@@ -63,7 +65,9 @@ public:
         qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
 
         // ### Common high level style items
-        qmlRegisterType<QtDeclarativeWindow>(uri, 1, 0, "WindowModel");
+#ifdef Q_COMPONENTS_MX
+        qmlRegisterType<QMxWindow>(uri, 1, 0, "WindowModel");
+#endif
         qmlRegisterType<QtDeclarativeTopLevelItem>(uri, 1, 0, "TopLevelItemHelper");
 
         // ### Temporary solution until we can access children items inside QML

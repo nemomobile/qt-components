@@ -26,18 +26,18 @@
 
 #include <QtDeclarative>
 
-#ifndef QTDECLARATIVEWINDOW_H
-#define QTDECLARATIVEWINDOW_H
+#ifndef QMXWINDOW_H
+#define QMXWINDOW_H
 
 #include <kernel/common.h>
 
 //QDI so we're in the scene and associated with a window
-class Q_COMPONENTS_EXPORT QtDeclarativeWindow : public QDeclarativeItem
+class Q_COMPONENTS_EXPORT QMxWindow : public QDeclarativeItem
 {
 
     Q_OBJECT
     public:
-        QtDeclarativeWindow(QDeclarativeItem * parent=0);
+        QMxWindow(QDeclarativeItem * parent=0);
 
     public slots:
         void resetMove();
@@ -51,6 +51,6 @@ class Q_COMPONENTS_EXPORT QtDeclarativeWindow : public QDeclarativeItem
         QPoint lastResizePoint;
 };
 
-QML_DECLARE_TYPE(QtDeclarativeWindow);
+QML_DECLARE_TYPE(QMxWindow);
 
-#endif // QTDECLARATIVEWINDOW_H
+#endif // QMXWINDOW_H
