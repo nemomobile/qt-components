@@ -30,8 +30,3 @@ OTHER_FILES += \
     styles/Mx/Window.qml \
     styles/Mx/Common.qml
 
-
-mx {
-    SOURCES += styles/Mx/qmxwindow.cpp
-    HEADERS += styles/Mx/qmxwindow.h
-}
