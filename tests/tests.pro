@@ -3,8 +3,7 @@ SUBDIRS += \
     qbuttonmodel \
     qdatetimemodel \
     qlineeditmodel \
-    qprogressbarmodel \
-    qrangemodel \
+    qrangemodel
 
 test.CONFIG = recursive
 test.recurse = $$SUBDIRS
