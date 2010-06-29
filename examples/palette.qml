@@ -59,7 +59,7 @@ Window {
         Row{
             spacing: 2
             height: slider.height
-            QtComponents.Slider{width: 128; id: slider}
+            Slider{width: 128; id: slider}
             Text{y: 2; text:'Slider'; opacity: slider.value}
         }
         Entry{hint: 'Fixed Width Entry'; width: 240;}
