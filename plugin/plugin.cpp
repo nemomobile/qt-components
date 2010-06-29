@@ -29,7 +29,6 @@
 #include "qbuttonmodel.h"
 #include "qdatetimemodel.h"
 #include "qlineeditmodel.h"
-#include "qprogressbarmodel.h"
 #include "qrangemodel.h"
 
 #include "qdeclarativewindow.h"
@@ -61,7 +60,6 @@ public:
         qmlRegisterType<QLineEditModel>(uri, 1, 0, "LineEditModel");
         qmlRegisterType<QLineEditLayoutHelper>(uri, 1, 0, "LineEditLayoutHelper");
         qmlRegisterType<QLineEditEventHelper>(uri, 1, 0, "LineEditEventHelper");
-        qmlRegisterType<QProgressBarModel>(uri, 1, 0, "ProgressBarModel");
         qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
 
         // ### Common high level style items
