@@ -1,8 +1,5 @@
 include (../qt-components.pri)
 
-# hack for now to get something
-CONFIG += mx
-
 TEMPLATE = lib
 TARGET = qtcomponentsplugin
 CONFIG += qt plugin
@@ -11,6 +8,7 @@ QT += declarative
 SOURCES += plugin.cpp
 
 mx:include(Mx/Mx.pri)
+else:meego:include(MeeGo/MeeGo.pri)
 
 TARGETPATH = Qt/labs/components
 
