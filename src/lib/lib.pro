@@ -1,11 +1,3 @@
-PUBLIC_HEADERS += qdeclarativewindow.h
-
-meego {
-    SOURCES += qdeclarativewindow_meego.cpp
-} else {
-    SOURCES += qdeclarativewindow_desktop.cpp
-}
-
 TEMPLATE = lib
 TARGET = QtComponents
 
@@ -16,6 +8,23 @@ CONFIG += build_lib
 
 include(../../qt-components.pri)
 
+PUBLIC_HEADERS += qdeclarativewindow.h
+
+meego {
+    SOURCES += qdeclarativewindow_meego.cpp
+} else {
+    SOURCES += qdeclarativewindow_desktop.cpp
+}
+
+HEADERS += \
+    qdeclarativeruntime_p.h deviceorientation_p.h
+
+maemo5 {
+    QT += dbus
+    SOURCES += deviceorientation_maemo5.cpp
+} else {
+    SOURCES += deviceorientation.cpp
+}
 
 HEADERS += $$PUBLIC_HEADERS
 

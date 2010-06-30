@@ -35,13 +35,27 @@
 #include <MTheme>
 #include <QtDeclarative>
 
+#include "deviceorientation_p.h"
+#include "qdeclarativeruntime_p.h"
+
+
 class QuickMApplicationWindow : public MApplicationWindow
 {
+    Q_OBJECT
 public:
-    QuickMApplicationWindow(QWidget *parent) : MApplicationWindow(parent) {}
+    QuickMApplicationWindow(QWidget *parent);
 protected:
     virtual void closeEvent(QCloseEvent *event);
+
+protected slots:
+    void slotOrientationAngleChanged(M::OrientationAngle);
 };
+
+QuickMApplicationWindow::QuickMApplicationWindow(QWidget *parent)
+    : MApplicationWindow(parent)
+{
+    connect(this, SIGNAL(orientationAngleChanged(M::OrientationAngle)), this, SLOT(slotOrientationAngleChanged(M::OrientationAngle)));
+}
 
 void QuickMApplicationWindow::closeEvent(QCloseEvent *event)
 {
@@ -49,6 +63,25 @@ void QuickMApplicationWindow::closeEvent(QCloseEvent *event)
     event->accept();
 }
 
+void QuickMApplicationWindow::slotOrientationAngleChanged(M::OrientationAngle angle)
+{
+    DeviceOrientation::Orientation o = DeviceOrientation::UnknownOrientation;
+    switch (angle) {
+    case M::Angle0:
+        o = DeviceOrientation::Landscape;
+        break;
+    case M::Angle90:
+        o = DeviceOrientation::Portrait;
+        break;
+    case M::Angle180:
+        o = DeviceOrientation::LandscapeInverted;
+        break;
+    case M::Angle270:
+        o = DeviceOrientation::PortraitInverted;
+        break;
+    }
+    DeviceOrientation::instance()->setOrientation(o);
+}
 
 class QDeclarativeWindowPrivate
 {
@@ -82,6 +115,10 @@ QDeclarativeWindowPrivate::QDeclarativeWindowPrivate(QDeclarativeWindow *qq)
     mPage = new MApplicationPage;
     mPage->setPannable(false);
     mPage->appear();
+
+    QDeclarativeContext *ctxt = engine.rootContext();
+    ctxt->setContextProperty("runtime", QDeclarativeRuntime::instance());
+    qmlRegisterUncreatableType<DeviceOrientation>("Qt",4,7,"Orientation","");
 }
 
 
@@ -140,6 +177,7 @@ void QDeclarativeWindow::continueExecute()
     }
 
     setRootObject(obj);
+
     emit statusChanged(status());
 }
 
@@ -269,3 +307,5 @@ void QDeclarativeWindow::setRootObject(QObject *obj)
     if (!qFuzzyCompare(rect.height(), d->root->height()))
         d->root->setHeight(rect.height());
 }
+
+#include "qdeclarativewindow_meego.moc"

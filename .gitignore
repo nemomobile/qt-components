@@ -4,7 +4,6 @@ qrc_*.cpp
 *.o
 *.moc
 *.so
-lib
 *.user*
 *~
 examples/styled-components-cpp/styled-components-cpp
