@@ -31,7 +31,7 @@
 #include "deviceorientation_p.h"
 
 
-class QDeclarativeRuntime : public QObject
+class QWindowObject : public QObject
 {
     Q_OBJECT
 
@@ -39,11 +39,11 @@ class QDeclarativeRuntime : public QObject
     Q_PROPERTY(DeviceOrientation::Orientation orientation READ orientation NOTIFY orientationChanged)
 
 public:
-    static QDeclarativeRuntime* instance()
+    static QWindowObject* instance()
     {
-        static QDeclarativeRuntime *instance = 0;
+        static QWindowObject *instance = 0;
         if (!instance)
-            instance = new QDeclarativeRuntime;
+            instance = new QWindowObject;
         return instance;
     }
 
@@ -63,7 +63,7 @@ Q_SIGNALS:
     void orientationChanged();
 
 private:
-    QDeclarativeRuntime(QObject *parent=0) : QObject(parent), activeWindow(false)
+    QWindowObject(QObject *parent=0) : QObject(parent), activeWindow(false)
     {
         connect(DeviceOrientation::instance(), SIGNAL(orientationChanged()),
                 this, SIGNAL(orientationChanged()));

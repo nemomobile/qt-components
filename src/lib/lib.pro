@@ -17,7 +17,7 @@ meego {
 }
 
 HEADERS += \
-    qdeclarativeruntime_p.h deviceorientation_p.h
+    qwindowobject_p.h deviceorientation_p.h
 
 maemo5 {
     QT += dbus

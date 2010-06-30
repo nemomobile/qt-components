@@ -63,6 +63,7 @@ Q_SIGNALS:
 
 protected:
     virtual void setRootObject(QObject *obj);
+    virtual bool event(QEvent *event);
 
 private Q_SLOTS:
     void continueExecute();

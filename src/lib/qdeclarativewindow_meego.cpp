@@ -36,7 +36,7 @@
 #include <QtDeclarative>
 
 #include "deviceorientation_p.h"
-#include "qdeclarativeruntime_p.h"
+#include "qwindowobject_p.h"
 
 
 class QuickMApplicationWindow : public MApplicationWindow
@@ -51,19 +51,7 @@ protected slots:
     void slotOrientationAngleChanged(M::OrientationAngle);
 };
 
-QuickMApplicationWindow::QuickMApplicationWindow(QWidget *parent)
-    : MApplicationWindow(parent)
-{
-    connect(this, SIGNAL(orientationAngleChanged(M::OrientationAngle)), this, SLOT(slotOrientationAngleChanged(M::OrientationAngle)));
-}
-
-void QuickMApplicationWindow::closeEvent(QCloseEvent *event)
-{
-    topLevelWidget()->close();
-    event->accept();
-}
-
-void QuickMApplicationWindow::slotOrientationAngleChanged(M::OrientationAngle angle)
+static DeviceOrientation::Orientation convertOrientation(M::OrientationAngle angle)
 {
     DeviceOrientation::Orientation o = DeviceOrientation::UnknownOrientation;
     switch (angle) {
@@ -80,7 +68,26 @@ void QuickMApplicationWindow::slotOrientationAngleChanged(M::OrientationAngle an
         o = DeviceOrientation::PortraitInverted;
         break;
     }
-    DeviceOrientation::instance()->setOrientation(o);
+    return o;
+}
+
+
+QuickMApplicationWindow::QuickMApplicationWindow(QWidget *parent)
+    : MApplicationWindow(parent)
+{
+    connect(this, SIGNAL(orientationAngleChanged(M::OrientationAngle)), this, SLOT(slotOrientationAngleChanged(M::OrientationAngle)));
+    DeviceOrientation::instance()->setOrientation(convertOrientation(orientationAngle()));
+}
+
+void QuickMApplicationWindow::closeEvent(QCloseEvent *event)
+{
+    topLevelWidget()->close();
+    event->accept();
+}
+
+void QuickMApplicationWindow::slotOrientationAngleChanged(M::OrientationAngle angle)
+{
+    DeviceOrientation::instance()->setOrientation(convertOrientation(angle));
 }
 
 class QDeclarativeWindowPrivate
@@ -116,8 +123,14 @@ QDeclarativeWindowPrivate::QDeclarativeWindowPrivate(QDeclarativeWindow *qq)
     mPage->setPannable(false);
     mPage->appear();
 
+    // default orientation in DUI is Landscape, we assume portrait
+    QGraphicsWidget *centralWidget = mPage->centralWidget();
+    centralWidget->rotate(90);
+    QRectF rect = mPage->exposedContentRect();
+    centralWidget->translate(0, -rect.width());
+
     QDeclarativeContext *ctxt = engine.rootContext();
-    ctxt->setContextProperty("runtime", QDeclarativeRuntime::instance());
+    ctxt->setContextProperty("window", QWindowObject::instance());
     qmlRegisterUncreatableType<DeviceOrientation>("Qt",4,7,"Orientation","");
 }
 
@@ -302,10 +315,23 @@ void QDeclarativeWindow::setRootObject(QObject *obj)
     d->mWindow->scene()->addItem(d->root);
 
     QRectF rect = d->mPage->exposedContentRect();
-    if (!qFuzzyCompare(rect.width(), d->root->width()))
-        d->root->setWidth(rect.width());
-    if (!qFuzzyCompare(rect.height(), d->root->height()))
-        d->root->setHeight(rect.height());
+    // width and height are swapped here due to the differing coordinate systems between
+    // dui and qtcomponents
+    if (!qFuzzyCompare(rect.height(), d->root->width()))
+        d->root->setWidth(rect.height());
+    if (!qFuzzyCompare(rect.width(), d->root->height()))
+        d->root->setHeight(rect.width());
 }
+
+bool QDeclarativeWindow::event(QEvent *event)
+{
+    if (event->type() == QEvent::WindowActivate) {
+        QWindowObject::instance()->setActiveWindow(true);
+    } else if (event->type() == QEvent::WindowDeactivate) {
+        QWindowObject::instance()->setActiveWindow(false);
+    }
+    return QWidget::event(event);
+}
+
 
 #include "qdeclarativewindow_meego.moc"
