@@ -5,9 +5,11 @@ TARGET = qtcomponentsplugin
 CONFIG += qt plugin
 QT += declarative
 
-DEFINES += QT_NO_BUTTONGROUP
+DEFINES += QT_NO_BUTTONGROUP QT_BUILD_COMPONENTS_LIB
 
 SOURCES += plugin.cpp
+
+include(kernel/kernel.pri)
 
 include(models/models.pri)
 INCLUDEPATH += $$PWD/models

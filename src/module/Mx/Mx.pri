@@ -1,4 +1,4 @@
-SOURCES += \ 
+SOURCES += \
 	Mx/qmxbuttongroup.cpp  \
 	Mx/qmxtoplevelitem.cpp \
 	Mx/qmxwindow.cpp
@@ -6,10 +6,10 @@ SOURCES += \
 HEADERS += \
 	Mx/qmxbuttongroup.h  \
 	Mx/qmxtoplevelitem.h \
-	Mx/qmxtoplevelitem_p.h \ 
+	Mx/qmxtoplevelitem_p.h \
 	Mx/qmxwindow.h
 
-DEFINES += Q_COMPONENTS_MEEGO
+DEFINES += Q_COMPONENTS_MX
 INCLUDEPATH += $$PWD
 
 QML_FILES = \
