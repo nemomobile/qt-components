@@ -24,47 +24,41 @@
 **
 ****************************************************************************/
 
-#ifndef QTDECLARATIVETOPLEVELITEM_P_H
-#define QTDECLARATIVETOPLEVELITEM_P_H
+#ifndef QTDECLARATIVETOPLEVELITEM_H
+#define QTDECLARATIVETOPLEVELITEM_H
 
-#include <QObject>
-#include <QPointer>
+#include <QtDeclarative/qdeclarativeitem.h>
 
-class QDeclarativeItem;
-class QtDeclarativeTopLevelItem;
-class QtDeclarativeTopLevelItemPrivate : public QObject
+#include <kernel/common.h>
+
+class QMxTopLevelItemPrivate;
+class Q_COMPONENTS_EXPORT QMxTopLevelItem : public QDeclarativeItem
 {
     Q_OBJECT
+    Q_PROPERTY(bool keepInside READ keepInside WRITE setKeepInside NOTIFY keepInsideChanged);
 
 public:
-    QtDeclarativeTopLevelItemPrivate();
-    virtual ~QtDeclarativeTopLevelItemPrivate();
+    QMxTopLevelItem(QDeclarativeItem *parent = 0);
+    virtual ~QMxTopLevelItem();
 
-    void clearDependencyList();
-    void setZFromSiblings();
+    bool keepInside() const;
+    void setKeepInside(bool keepInside);
 
-    QDeclarativeItem *targetItem;
-    QList<QDeclarativeItem *> dependencyList;
-    uint transformDirty : 1;
-    uint keepInside: 1;
+Q_SIGNALS:
+    void keepInsideChanged(bool keepInside);
 
 protected:
-    QtDeclarativeTopLevelItem *q_ptr;
+    QMxTopLevelItem(QMxTopLevelItemPrivate &dd, QDeclarativeItem *parent = 0);
 
-private Q_SLOTS:
-    void initDependencyList();
-    void scheduleUpdateTransform();
-    void updateTransform();
-    void updateOpacity();
-    void updateVisible();
-    void updateWidthFromTarget();
-    void updateHeightFromTarget();
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
-    void updateParent();
-    // void itemDestroyed();
+    QScopedPointer<QMxTopLevelItemPrivate> d_ptr;
 
 private:
-    Q_DECLARE_PUBLIC(QtDeclarativeTopLevelItem);
+    Q_DISABLE_COPY(QMxTopLevelItem);
+    Q_DECLARE_PRIVATE(QMxTopLevelItem);
 };
 
-#endif // QTDECLARATIVETOPLEVELITEM_P_H
+QML_DECLARE_TYPE(QMxTopLevelItem)
+
+#endif // QTDECLARATIVETOPLEVELITEM_H

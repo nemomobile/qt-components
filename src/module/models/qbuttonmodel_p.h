@@ -40,6 +40,7 @@
 
 #include <QtGui/qbuttongroup.h>
 #include <QtCore/qbasictimer.h>
+#include <QtCore/QPointer>
 
 class QButtonModelPrivate
 {

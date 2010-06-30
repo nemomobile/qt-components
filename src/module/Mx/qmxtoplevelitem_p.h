@@ -24,41 +24,47 @@
 **
 ****************************************************************************/
 
-#ifndef QTDECLARATIVETOPLEVELITEM_H
-#define QTDECLARATIVETOPLEVELITEM_H
+#ifndef QTDECLARATIVETOPLEVELITEM_P_H
+#define QTDECLARATIVETOPLEVELITEM_P_H
 
-#include <QtDeclarative/qdeclarativeitem.h>
+#include <QObject>
+#include <QPointer>
 
-#include <kernel/common.h>
-
-class QtDeclarativeTopLevelItemPrivate;
-class Q_COMPONENTS_EXPORT QtDeclarativeTopLevelItem : public QDeclarativeItem
+class QDeclarativeItem;
+class QMxTopLevelItem;
+class QMxTopLevelItemPrivate : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(bool keepInside READ keepInside WRITE setKeepInside NOTIFY keepInsideChanged);
 
 public:
-    QtDeclarativeTopLevelItem(QDeclarativeItem *parent = 0);
-    virtual ~QtDeclarativeTopLevelItem();
+    QMxTopLevelItemPrivate();
+    virtual ~QMxTopLevelItemPrivate();
 
-    bool keepInside() const;
-    void setKeepInside(bool keepInside);
+    void clearDependencyList();
+    void setZFromSiblings();
 
-Q_SIGNALS:
-    void keepInsideChanged(bool keepInside);
+    QDeclarativeItem *targetItem;
+    QList<QDeclarativeItem *> dependencyList;
+    uint transformDirty : 1;
+    uint keepInside: 1;
 
 protected:
-    QtDeclarativeTopLevelItem(QtDeclarativeTopLevelItemPrivate &dd, QDeclarativeItem *parent = 0);
+    QMxTopLevelItem *q_ptr;
 
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+private Q_SLOTS:
+    void initDependencyList();
+    void scheduleUpdateTransform();
+    void updateTransform();
+    void updateOpacity();
+    void updateVisible();
+    void updateWidthFromTarget();
+    void updateHeightFromTarget();
 
-    QScopedPointer<QtDeclarativeTopLevelItemPrivate> d_ptr;
+    void updateParent();
+    // void itemDestroyed();
 
 private:
-    Q_DISABLE_COPY(QtDeclarativeTopLevelItem);
-    Q_DECLARE_PRIVATE(QtDeclarativeTopLevelItem);
+    Q_DECLARE_PUBLIC(QMxTopLevelItem);
 };
 
-QML_DECLARE_TYPE(QtDeclarativeTopLevelItem)
-
-#endif // QTDECLARATIVETOPLEVELITEM_H
+#endif // QTDECLARATIVETOPLEVELITEM_P_H

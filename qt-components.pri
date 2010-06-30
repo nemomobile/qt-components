@@ -1,4 +1,4 @@
-INCLUDEPATH += $$PWD/src $$PWD/src/models $$PWD/src/styles $$PWD/src/chrome
+INCLUDEPATH += $$PWD/src/lib
 !build_lib:LIBS += -L$$PWD/lib -lQtComponents
 QMAKE_RPATHDIR = $$OUT_PWD/lib
 

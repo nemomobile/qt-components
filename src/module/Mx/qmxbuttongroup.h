@@ -31,7 +31,7 @@
 
 #include <kernel/common.h>
 
-class Q_COMPONENTS_EXPORT QtDeclarativeButtonGroup : public QDeclarativeItem
+class Q_COMPONENTS_EXPORT QMxButtonGroup : public QDeclarativeItem
 {
     Q_OBJECT
 
@@ -39,8 +39,8 @@ class Q_COMPONENTS_EXPORT QtDeclarativeButtonGroup : public QDeclarativeItem
     Q_PROPERTY(bool allowNoChecked READ allowNoChecked WRITE setAllowNoChecked) // ### NOTIFY
 
 public:
-    QtDeclarativeButtonGroup(QDeclarativeItem *parent = 0);
-    virtual ~QtDeclarativeButtonGroup();
+    QMxButtonGroup(QDeclarativeItem *parent = 0);
+    virtual ~QMxButtonGroup();
 
     QDeclarativeItem *checkedItem() {
         return m_checkedItem;

@@ -24,20 +24,20 @@
 **
 ****************************************************************************/
 
-#include "qdeclarativebuttongroup.h"
+#include "qmxbuttongroup.h"
 
-QtDeclarativeButtonGroup::QtDeclarativeButtonGroup(QDeclarativeItem *parent)
+QMxButtonGroup::QMxButtonGroup(QDeclarativeItem *parent)
     : QDeclarativeItem(parent), m_checkedItem(0), m_allowNoChecked(false)
 {
 
 }
 
-QtDeclarativeButtonGroup::~QtDeclarativeButtonGroup()
+QMxButtonGroup::~QMxButtonGroup()
 {
 
 }
 
-void QtDeclarativeButtonGroup::refresh()
+void QMxButtonGroup::refresh()
 {
     // ### Using brute-force here, we could do better...
     for (int i = 0; i < m_items.count(); i++) {
@@ -57,7 +57,7 @@ void QtDeclarativeButtonGroup::refresh()
     }
 }
 
-void QtDeclarativeButtonGroup::componentComplete()
+void QMxButtonGroup::componentComplete()
 {
     QDeclarativeItem::componentComplete();
     connectChildrenItems(this);
@@ -77,7 +77,7 @@ static bool isCheckableButton(QDeclarativeItem *item)
         && (item->metaObject()->indexOfSignal("clicked()") != -1);
 }
 
-void QtDeclarativeButtonGroup::connectChildrenItems(QDeclarativeItem *item) {
+void QMxButtonGroup::connectChildrenItems(QDeclarativeItem *item) {
     // ### We could do things in a different way, see related discussion in "ButtonModel"
 
     // Iterate through all graphics children, this includes QDeclarativeItem's.
@@ -115,7 +115,7 @@ void QtDeclarativeButtonGroup::connectChildrenItems(QDeclarativeItem *item) {
     }
 }
 
-void QtDeclarativeButtonGroup::onItemChecked()
+void QMxButtonGroup::onItemChecked()
 {
     // Just we connected in this slot, and we just connected QDItem
     QDeclarativeItem *item = static_cast<QDeclarativeItem *>(QObject::sender());
@@ -148,7 +148,7 @@ void QtDeclarativeButtonGroup::onItemChecked()
     }
 }
 
-void QtDeclarativeButtonGroup::onItemDestroyed()
+void QMxButtonGroup::onItemDestroyed()
 {
     // Just we connected in this slot, and we just connected QDItem
     QDeclarativeItem *item = static_cast<QDeclarativeItem *>(QObject::sender());

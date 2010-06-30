@@ -24,23 +24,23 @@
 **
 ****************************************************************************/
 
-#include "qdeclarativetoplevelitem.h"
-#include "qdeclarativetoplevelitem_p.h"
+#include "qmxtoplevelitem.h"
+#include "qmxtoplevelitem_p.h"
 
 #include <QGraphicsScene>
 
-QtDeclarativeTopLevelItemPrivate::QtDeclarativeTopLevelItemPrivate() :
+QMxTopLevelItemPrivate::QMxTopLevelItemPrivate() :
     targetItem(0), transformDirty(0), keepInside(0)
 {
 }
 
-QtDeclarativeTopLevelItemPrivate::~QtDeclarativeTopLevelItemPrivate()
+QMxTopLevelItemPrivate::~QMxTopLevelItemPrivate()
 {
 }
 
-void QtDeclarativeTopLevelItemPrivate::clearDependencyList()
+void QMxTopLevelItemPrivate::clearDependencyList()
 {
-    Q_Q(QtDeclarativeTopLevelItem);
+    Q_Q(QMxTopLevelItem);
     for (int i = dependencyList.count() - 1; i >= 0; --i) {
         dependencyList.takeAt(i)->disconnect(this);
     }
@@ -55,9 +55,9 @@ void QtDeclarativeTopLevelItemPrivate::clearDependencyList()
   Set data bindings between the TopLevelItem and all the items it depend upon,
   including the targetItem and its ancestors.
 */
-void QtDeclarativeTopLevelItemPrivate::initDependencyList()
+void QMxTopLevelItemPrivate::initDependencyList()
 {
-    Q_Q(QtDeclarativeTopLevelItem);
+    Q_Q(QMxTopLevelItem);
 
     if (!targetItem || !targetItem->parentItem())
         return;
@@ -126,7 +126,7 @@ void QtDeclarativeTopLevelItemPrivate::initDependencyList()
     updateVisible();
 }
 
-void QtDeclarativeTopLevelItemPrivate::scheduleUpdateTransform()
+void QMxTopLevelItemPrivate::scheduleUpdateTransform()
 {
     if (transformDirty)
         return;
@@ -135,40 +135,40 @@ void QtDeclarativeTopLevelItemPrivate::scheduleUpdateTransform()
     QMetaObject::invokeMethod(this, "updateTransform", Qt::QueuedConnection);
 }
 
-void QtDeclarativeTopLevelItemPrivate::updateTransform()
+void QMxTopLevelItemPrivate::updateTransform()
 {
     Q_ASSERT(targetItem);
-    Q_Q(QtDeclarativeTopLevelItem);
+    Q_Q(QMxTopLevelItem);
     q->setTransform(targetItem->itemTransform(q->parentItem()));
     updateWidthFromTarget();
     transformDirty = 0;
 }
 
-void QtDeclarativeTopLevelItemPrivate::updateOpacity()
+void QMxTopLevelItemPrivate::updateOpacity()
 {
     Q_ASSERT(targetItem);
-    Q_Q(QtDeclarativeTopLevelItem);
+    Q_Q(QMxTopLevelItem);
     q->setOpacity(targetItem->effectiveOpacity());
 }
 
-void QtDeclarativeTopLevelItemPrivate::updateVisible()
+void QMxTopLevelItemPrivate::updateVisible()
 {
     Q_ASSERT(targetItem);
-    Q_Q(QtDeclarativeTopLevelItem);
+    Q_Q(QMxTopLevelItem);
     q->setVisible(targetItem->isVisibleTo(q->parentItem()));
 }
 
-void QtDeclarativeTopLevelItemPrivate::updateParent()
+void QMxTopLevelItemPrivate::updateParent()
 {
     Q_ASSERT(targetItem);
     clearDependencyList();
     initDependencyList();
 }
 
-void QtDeclarativeTopLevelItemPrivate::updateWidthFromTarget()
+void QMxTopLevelItemPrivate::updateWidthFromTarget()
 {
     Q_ASSERT(targetItem);
-    Q_Q(QtDeclarativeTopLevelItem);
+    Q_Q(QMxTopLevelItem);
 
     // Reset position and size to those of the targetItem
     qreal newX = 0;
@@ -184,7 +184,7 @@ void QtDeclarativeTopLevelItemPrivate::updateWidthFromTarget()
     const QTransform itemToParentTransform = q->QGraphicsItem::transform();
 
     if (screenToParentTransform.isRotating() || itemToParentTransform.isRotating()) {
-        qWarning() << "QtDeclarativeTopLevelItem: KeepInside feature is not supported together with rotation transforms";
+        qWarning() << "QMxTopLevelItem: KeepInside feature is not supported together with rotation transforms";
         q->setX(newX);
         q->setWidth(newWidth);
         return;
@@ -226,23 +226,23 @@ void QtDeclarativeTopLevelItemPrivate::updateWidthFromTarget()
     q->setWidth(newWidth);
 }
 
-void QtDeclarativeTopLevelItemPrivate::updateHeightFromTarget()
+void QMxTopLevelItemPrivate::updateHeightFromTarget()
 {
     Q_ASSERT(targetItem);
-    Q_Q(QtDeclarativeTopLevelItem);
+    Q_Q(QMxTopLevelItem);
     q->setHeight(targetItem->height());
 }
 
-void QtDeclarativeTopLevelItemPrivate::setZFromSiblings()
+void QMxTopLevelItemPrivate::setZFromSiblings()
 {
-    Q_Q(QtDeclarativeTopLevelItem);
+    Q_Q(QMxTopLevelItem);
     int maxZ = 0;
 
     const QList<QGraphicsItem *> siblings = q->parentItem()->childItems();
     for (int i = siblings.count() - 1; i >= 0; --i) {
         // Skip other topLevelItems
         QGraphicsObject *obj = siblings[i]->toGraphicsObject();
-        if (qobject_cast<QtDeclarativeTopLevelItem *>(obj))
+        if (qobject_cast<QMxTopLevelItem *>(obj))
             continue;
 
         if (siblings[i]->zValue() > maxZ)
@@ -252,32 +252,32 @@ void QtDeclarativeTopLevelItemPrivate::setZFromSiblings()
     q->setZValue(maxZ + 1);
 }
 
-QtDeclarativeTopLevelItem::QtDeclarativeTopLevelItem(QDeclarativeItem *parent) :
-    QDeclarativeItem(parent), d_ptr(new QtDeclarativeTopLevelItemPrivate)
+QMxTopLevelItem::QMxTopLevelItem(QDeclarativeItem *parent) :
+    QDeclarativeItem(parent), d_ptr(new QMxTopLevelItemPrivate)
 {
     d_ptr->q_ptr = this;
 }
 
-QtDeclarativeTopLevelItem::QtDeclarativeTopLevelItem(QtDeclarativeTopLevelItemPrivate &dd, QDeclarativeItem *parent) :
+QMxTopLevelItem::QMxTopLevelItem(QMxTopLevelItemPrivate &dd, QDeclarativeItem *parent) :
     QDeclarativeItem(parent), d_ptr(&dd)
 {
     d_ptr->q_ptr = this;
 }
 
-QtDeclarativeTopLevelItem::~QtDeclarativeTopLevelItem()
+QMxTopLevelItem::~QMxTopLevelItem()
 {
 
 }
 
-bool QtDeclarativeTopLevelItem::keepInside() const
+bool QMxTopLevelItem::keepInside() const
 {
-    Q_D(const QtDeclarativeTopLevelItem);
+    Q_D(const QMxTopLevelItem);
     return d->keepInside;
 }
 
-void QtDeclarativeTopLevelItem::setKeepInside(bool keepInside)
+void QMxTopLevelItem::setKeepInside(bool keepInside)
 {
-    Q_D(QtDeclarativeTopLevelItem);
+    Q_D(QMxTopLevelItem);
     if (keepInside == d->keepInside)
         return;
 
@@ -288,9 +288,9 @@ void QtDeclarativeTopLevelItem::setKeepInside(bool keepInside)
     emit keepInsideChanged(keepInside);
 }
 
-QVariant QtDeclarativeTopLevelItem::itemChange(GraphicsItemChange change, const QVariant &value)
+QVariant QMxTopLevelItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    Q_D(QtDeclarativeTopLevelItem);
+    Q_D(QMxTopLevelItem);
 
     if (d->targetItem == 0) {
         // The original parent of this item (declared in QML) will be our

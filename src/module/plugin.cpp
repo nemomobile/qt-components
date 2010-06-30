@@ -33,9 +33,9 @@
 
 #ifdef Q_COMPONENTS_MX
 #include "qmxwindow.h"
+#include "qmxtoplevelitem.h"
+#include "qmxbuttongroup.h"
 #endif
-#include "qdeclarativetoplevelitem.h"
-#include "qdeclarativebuttongroup.h"
 
 class QtComponentsPlugin : public QDeclarativeExtensionPlugin
 {
@@ -67,11 +67,11 @@ public:
         // ### Common high level style items
 #ifdef Q_COMPONENTS_MX
         qmlRegisterType<QMxWindow>(uri, 1, 0, "WindowModel");
-#endif
         qmlRegisterType<QtDeclarativeTopLevelItem>(uri, 1, 0, "TopLevelItemHelper");
 
         // ### Temporary solution until we can access children items inside QML
         qmlRegisterType<QtDeclarativeButtonGroup>(uri, 1, 0, "ButtonGroup");
+#endif
     }
 };
 

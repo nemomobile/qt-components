@@ -1,11 +1,16 @@
-include (../qt-components.pri)
+include (../../qt-components.pri)
 
 TEMPLATE = lib
 TARGET = qtcomponentsplugin
 CONFIG += qt plugin
 QT += declarative
 
+DEFINES += QT_NO_BUTTONGROUP
+
 SOURCES += plugin.cpp
+
+include(models/models.pri)
+INCLUDEPATH += $$PWD/models
 
 mx:include(Mx/Mx.pri)
 else:meego:include(MeeGo/MeeGo.pri)
