@@ -14,5 +14,5 @@ QMAKE_LIBDIR += $$LIBRARYPATH
 
 meego {
     DEFINES += Q_COMPONENTS_MEEGO
-    CONFIG += meegotouchcore
+    CONFIG += meegotouch
 }
