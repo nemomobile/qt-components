@@ -1,0 +1,19 @@
+This source tree contains the Qt Components project.
+
+Building
+========
+qmake (for choosing a specific platform do 'qmake -config mx' or 'qmake -config meego')
+make
+make install
+
+The project is divided into one lib, libQtComponents, and one qml module: Qt.labs.components.
+The qml module depends on the qtcomponentsplugin. The lib will install in QTDIR/lib, while
+the module will go to QTDIR/imports.
+
+Build dependencies
+==================
+- Qt 4.7
+
+Optional dependencies
+==================
+- Meegotouch
