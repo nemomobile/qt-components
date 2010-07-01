@@ -35,7 +35,7 @@ class QDeclarativeEngine;
 class QDeclarativeContext;
 class QGraphicsObject;
 
-class QDeclarativeWindow : public QWidget
+class QDeclarativeWindow : public QObject
 {
     Q_OBJECT
 
@@ -58,12 +58,13 @@ public:
     enum Status { Null, Ready, Loading, Error };
     Status status() const;
 
+    QWidget *window();
+
 Q_SIGNALS:
     void statusChanged(QDeclarativeWindow::Status);
 
 protected:
     virtual void setRootObject(QObject *obj);
-    virtual bool event(QEvent *event);
 
 private Q_SLOTS:
     void continueExecute();

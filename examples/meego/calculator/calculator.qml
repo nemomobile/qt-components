@@ -61,7 +61,7 @@ Rectangle {
 
     Item {
         id: main
-        state: (window.orientation == Orientation.Portrait) ? '' : 'rotated'
+        state: (device.orientation == Orientation.Portrait) ? '' : 'rotated'
         width: parent.width; height: parent.height; anchors.centerIn: parent
 
         Column {

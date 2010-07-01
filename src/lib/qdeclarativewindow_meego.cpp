@@ -46,6 +46,7 @@ public:
     QuickMApplicationWindow(QWidget *parent);
 protected:
     virtual void closeEvent(QCloseEvent *event);
+    virtual bool event(QEvent *event);
 
 protected slots:
     void slotOrientationAngleChanged(M::OrientationAngle);
@@ -90,6 +91,18 @@ void QuickMApplicationWindow::slotOrientationAngleChanged(M::OrientationAngle an
     DeviceOrientation::instance()->setOrientation(convertOrientation(angle));
 }
 
+bool QuickMApplicationWindow::event(QEvent *event)
+{
+    if (event->type() == QEvent::WindowActivate) {
+        QWindowObject::instance()->setActiveWindow(true);
+    } else if (event->type() == QEvent::WindowDeactivate) {
+        QWindowObject::instance()->setActiveWindow(false);
+    }
+    return QWidget::event(event);
+}
+
+
+
 class QDeclarativeWindowPrivate
 {
 public:
@@ -118,19 +131,13 @@ QDeclarativeWindowPrivate::QDeclarativeWindowPrivate(QDeclarativeWindow *qq)
         (void) new MComponentData(argc, QApplication::instance()->argv());
     }
 
-    mWindow = new QuickMApplicationWindow(q);
+    mWindow = new QuickMApplicationWindow(0);
     mPage = new MApplicationPage;
     mPage->setPannable(false);
     mPage->appear();
 
-    // default orientation in DUI is Landscape, we assume portrait
-    QGraphicsWidget *centralWidget = mPage->centralWidget();
-    centralWidget->rotate(90);
-    QRectF rect = mPage->exposedContentRect();
-    centralWidget->translate(0, -rect.width());
-
     QDeclarativeContext *ctxt = engine.rootContext();
-    ctxt->setContextProperty("window", QWindowObject::instance());
+    ctxt->setContextProperty("device", QWindowObject::instance());
     qmlRegisterUncreatableType<DeviceOrientation>("Qt",4,7,"Orientation","");
 }
 
@@ -312,25 +319,17 @@ void QDeclarativeWindow::setRootObject(QObject *obj)
 
     QGraphicsWidget *centralWidget = d->mPage->centralWidget();
     d->root->QGraphicsObject::setParentItem(centralWidget);
-    d->mWindow->scene()->addItem(d->root);
 
     QRectF rect = d->mPage->exposedContentRect();
-    // width and height are swapped here due to the differing coordinate systems between
-    // dui and qtcomponents
-    if (!qFuzzyCompare(rect.height(), d->root->width()))
-        d->root->setWidth(rect.height());
-    if (!qFuzzyCompare(rect.width(), d->root->height()))
-        d->root->setHeight(rect.width());
+    if (!qFuzzyCompare(rect.width(), d->root->width()))
+        d->root->setWidth(rect.width());
+    if (!qFuzzyCompare(rect.height(), d->root->height()))
+        d->root->setHeight(rect.height());
 }
 
-bool QDeclarativeWindow::event(QEvent *event)
+QWidget *QDeclarativeWindow::window()
 {
-    if (event->type() == QEvent::WindowActivate) {
-        QWindowObject::instance()->setActiveWindow(true);
-    } else if (event->type() == QEvent::WindowDeactivate) {
-        QWindowObject::instance()->setActiveWindow(false);
-    }
-    return QWidget::event(event);
+    return d->mWindow;
 }
 
 

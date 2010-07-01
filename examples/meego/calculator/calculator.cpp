@@ -33,6 +33,6 @@ int main(int argc, char **argv)
 
     QDeclarativeWindow window(QUrl::fromLocalFile("calculator.qml"));
 
-    window.show();
+    window.window()->show();
     return app.exec();
 }

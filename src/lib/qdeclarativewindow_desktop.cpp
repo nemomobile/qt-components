@@ -29,6 +29,8 @@
 #include <QApplication>
 #include <QtDeclarative>
 
+#include "deviceorientation_p.h"
+#include "qwindowobject_p.h"
 
 class QDeclarativeWindowPrivate
 {
@@ -39,7 +41,6 @@ public:
 
     QDeclarativeWindow *q;
 
-    QVBoxLayout *layout;
     QGraphicsView *view;
     QGraphicsScene scene;
     QUrl source;
@@ -53,11 +54,7 @@ public:
 QDeclarativeWindowPrivate::QDeclarativeWindowPrivate(QDeclarativeWindow *qq)
     : q(qq), view(0), component(0)
 {
-    layout = new QVBoxLayout(q);
-
-    view = new QGraphicsView(q);
-    view->setScene(&scene);
-    layout->addWidget(view);
+    view = new QGraphicsView(&scene, 0);
 
     view->setOptimizationFlags(QGraphicsView::DontSavePainterState);
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -71,6 +68,10 @@ QDeclarativeWindowPrivate::QDeclarativeWindowPrivate(QDeclarativeWindow *qq)
     view->setFocusPolicy(Qt::StrongFocus);
 
     scene.setStickyFocus(true);  //### needed for correct focus handling
+
+    QDeclarativeContext *ctxt = engine.rootContext();
+    ctxt->setContextProperty("device", QWindowObject::instance());
+    qmlRegisterUncreatableType<DeviceOrientation>("Qt",4,7,"Orientation","");
 }
 
 
@@ -248,17 +249,14 @@ void QDeclarativeWindow::setRootObject(QObject *obj)
 
     d->view->scene()->addItem(d->root);
 
-    QRect rect = this->rect();
+    QRect rect = d->view->rect();
     if (!qFuzzyCompare(rect.width(), d->root->width()))
         d->root->setWidth(rect.width());
     if (!qFuzzyCompare(rect.height(), d->root->height()))
         d->root->setHeight(rect.height());
 }
 
-/*!
-  \internal
-*/
-bool QDeclarativeWindow::event(QEvent *event)
+QWidget *QDeclarativeWindow::window()
 {
-    return QWidget::event(event);
+    return d->view;
 }
