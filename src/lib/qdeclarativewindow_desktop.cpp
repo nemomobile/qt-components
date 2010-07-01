@@ -262,4 +262,3 @@ bool QDeclarativeWindow::event(QEvent *event)
 {
     return QWidget::event(event);
 }
-
