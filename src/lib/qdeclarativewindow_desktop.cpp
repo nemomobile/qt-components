@@ -254,3 +254,12 @@ void QDeclarativeWindow::setRootObject(QObject *obj)
     if (!qFuzzyCompare(rect.height(), d->root->height()))
         d->root->setHeight(rect.height());
 }
+
+/*!
+  \internal
+*/
+bool QDeclarativeWindow::event(QEvent *event)
+{
+    return QWidget::event(event);
+}
+
