@@ -27,7 +27,6 @@
 #include <QtDeclarative>
 
 #include "qbuttonmodel.h"
-#include "qdatetimemodel.h"
 #include "qlineeditmodel.h"
 #include "qrangemodel.h"
 
@@ -58,7 +57,6 @@ public:
     void registerTypes(const char *uri) {
         Q_ASSERT(uri == QLatin1String("Qt.labs.components"));
         qmlRegisterType<QButtonModel>(uri, 1, 0, "ButtonModel");
-        qmlRegisterType<QDateTimeModel>(uri, 1, 0, "DateTimeModel");
         qmlRegisterType<QLineEditModel>(uri, 1, 0, "LineEditModel");
         qmlRegisterType<QLineEditLayoutHelper>(uri, 1, 0, "LineEditLayoutHelper");
         qmlRegisterType<QLineEditEventHelper>(uri, 1, 0, "LineEditEventHelper");
