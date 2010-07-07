@@ -1,6 +1,6 @@
 import Qt 4.7
 
-Item{//plain text edit, can be multi-line - rich text edit may or may not come later.
+Item{//plain text edit, can be multi-line
     property string text: ''
     property int maxLines: 1//0 means unlimited
     property int maxLength: 0 //0 means unlimited
@@ -9,6 +9,6 @@ Item{//plain text edit, can be multi-line - rich text edit may or may not come l
     property TextInput.EchoMode echoMode
 
     property validator validator: null
-    property bool acceptableInput: true
     property Qt.InputMethodHints inputMethodHints
+    signal onAccepted(text)//only emitted when validator says okay and they tap/return/whatever
 }
