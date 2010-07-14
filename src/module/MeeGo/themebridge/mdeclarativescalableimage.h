@@ -51,6 +51,7 @@ public:
 
 protected Q_SLOTS:
     void updateImage();
+    void checkPendingPixmap();
 
 protected:
     virtual void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
@@ -58,6 +59,7 @@ protected:
     QString m_imageProperty;
     MStyleWrapper * m_style;
     const MScalableImage *m_image;
+    int m_pendingPixmap : 1;
 };
 
 #endif //MDECLARATIVESCALABLEIMAGE_H

@@ -27,13 +27,14 @@
 #include "mdeclarativescalableimage.h"
 #include "mstylewrapper.h"
 
+#include <MTheme>
 #include <MScalableImage>
 #include <MWidgetStyle>
 
 Q_DECLARE_METATYPE(const MScalableImage *)
 
 MDeclarativeScalableImage::MDeclarativeScalableImage(QDeclarativeItem *parent) :
-    QDeclarativeItem(parent), m_style(0), m_image(0)
+    QDeclarativeItem(parent), m_style(0), m_image(0), m_pendingPixmap(0)
 {
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
     setFlag(QGraphicsItem::ItemHasNoContents, false);
@@ -93,7 +94,40 @@ void MDeclarativeScalableImage::updateImage()
     const QVariant imageVariant = (*styleContainer)->property(m_imageProperty.toAscii());
     m_image = imageVariant.value<const MScalableImage *>();
 
-    update();
+    if (!m_image) {
+        m_pendingPixmap = 0;
+        MTheme::instance()->disconnect(this);
+        update();
+    } else {
+        checkPendingPixmap();
+    }
+}
+
+void MDeclarativeScalableImage::checkPendingPixmap()
+{
+    // In MeeGo the themeserver may run in a separate process. In that case MScalableImages
+    // may be created without a proper pixmap, instead a gray 1x1 pixmap is provided.
+    // We must account for that situation and then listen for the pixmapRequestFinished signal
+    // in order to repaint the primitive.
+    // Note that we assume that a 1x1 pixmap means an unloaded pixmap. This will fail if there
+    // are actual 1x1 pixmaps in the theme.
+
+    if (m_image->pixmap()->size() == QSize(1, 1)) {
+        // Pixmap is pending
+        if (!m_pendingPixmap) {
+            // If not yet connected to MTheme, connect and wait for update
+            connect(MTheme::instance(), SIGNAL(pixmapRequestsFinished()), SLOT(checkPendingPixmap()));
+            m_pendingPixmap = 1;
+        }
+    } else {
+        if (m_pendingPixmap) {
+            printf("disconnecting");
+            // If still connected to MTheme, disconnect.
+            MTheme::instance()->disconnect(this);
+            m_pendingPixmap = 0;
+        }
+        update();
+    }
 }
 
 void MDeclarativeScalableImage::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
