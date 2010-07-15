@@ -50,10 +50,11 @@ public:
     void setStyle(MStyleWrapper *style);
 
 protected Q_SLOTS:
-    void updateImage();
+    void updateStyleData();
     void checkPendingPixmap();
 
 protected:
+    void clearOldStyleData();
     virtual void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 
     QString m_imageProperty;

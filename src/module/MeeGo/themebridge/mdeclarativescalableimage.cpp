@@ -57,7 +57,7 @@ void MDeclarativeScalableImage::setImageProperty(const QString &imageProperty)
     m_imageProperty = imageProperty;
 
     if (m_style)
-        updateImage();
+        updateStyleData();
 }
 
 MStyleWrapper *MDeclarativeScalableImage::style() const
@@ -72,35 +72,41 @@ void MDeclarativeScalableImage::setStyle(MStyleWrapper *style)
 
     if (m_style) {
         m_style->disconnect(this);
-        m_image = 0;
+        clearOldStyleData();
     }
 
     m_style = style;
 
     if (m_style) {
-        connect(m_style, SIGNAL(modeChanged(const QString &)), SLOT(updateImage()));
-        updateImage();
+        connect(m_style, SIGNAL(modeChanged(const QString &)), SLOT(updateStyleData()));
+        updateStyleData();
     }
 }
 
-void MDeclarativeScalableImage::updateImage()
+void MDeclarativeScalableImage::clearOldStyleData()
 {
     m_image = 0;
 
+    if (m_pendingPixmap) {
+        MTheme::instance()->disconnect(this);
+        m_pendingPixmap = 0;
+    }
+}
+
+void MDeclarativeScalableImage::updateStyleData()
+{
+    Q_ASSERT(m_style);
+
     const MWidgetStyleContainer *styleContainer = m_style->styleContainer();
-    if (!styleContainer)
+    if (!styleContainer) {
+        clearOldStyleData();
         return;
+    }
 
     const QVariant imageVariant = (*styleContainer)->property(m_imageProperty.toAscii());
     m_image = imageVariant.value<const MScalableImage *>();
 
-    if (!m_image) {
-        m_pendingPixmap = 0;
-        MTheme::instance()->disconnect(this);
-        update();
-    } else {
-        checkPendingPixmap();
-    }
+    checkPendingPixmap();
 }
 
 void MDeclarativeScalableImage::checkPendingPixmap()
@@ -112,8 +118,9 @@ void MDeclarativeScalableImage::checkPendingPixmap()
     // Note that we assume that a 1x1 pixmap means an unloaded pixmap. This will fail if there
     // are actual 1x1 pixmaps in the theme.
 
-    if (m_image->pixmap()->size() == QSize(1, 1)) {
-        // Pixmap is pending
+    const bool imagePixmapPending = m_image && (m_image->pixmap()->size() == QSize(1, 1));
+
+    if (imagePixmapPending) {
         if (!m_pendingPixmap) {
             // If not yet connected to MTheme, connect and wait for update
             connect(MTheme::instance(), SIGNAL(pixmapRequestsFinished()), SLOT(checkPendingPixmap()));
@@ -121,7 +128,6 @@ void MDeclarativeScalableImage::checkPendingPixmap()
         }
     } else {
         if (m_pendingPixmap) {
-            printf("disconnecting");
             // If still connected to MTheme, disconnect.
             MTheme::instance()->disconnect(this);
             m_pendingPixmap = 0;
