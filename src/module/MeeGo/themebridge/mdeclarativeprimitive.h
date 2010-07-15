@@ -24,32 +24,43 @@
 **
 ****************************************************************************/
 
-#ifndef MDECLARATIVEBACKGROUND_H
-#define MDECLARATIVEBACKGROUND_H
+#ifndef MDECLARATIVEPRIMITIVE_H
+#define MDECLARATIVEPRIMITIVE_H
 
-#include "mdeclarativeprimitive.h"
-#include <MBackgroundTiles>
+#include <QDeclarativeItem>
 
-class MScalableImage;
+class MWidgetStyleContainer;
+class MStyleWrapper;
 
-class MDeclarativeBackground : public MDeclarativePrimitive
+class MDeclarativePrimitive : public QDeclarativeItem
 {
     Q_OBJECT
 
+    Q_PROPERTY(MStyleWrapper *style READ style WRITE setStyle);
+
 public:
-    MDeclarativeBackground(QDeclarativeItem *parent = 0);
-    virtual ~MDeclarativeBackground();
+    MDeclarativePrimitive(QDeclarativeItem *parent = 0);
+    virtual ~MDeclarativePrimitive();
+
+    MStyleWrapper *style() const;
+    void setStyle(MStyleWrapper *style);
+
+protected Q_SLOTS:
+    void updateStyleData();
 
 protected:
     virtual void clearStyleData();
     virtual void fetchStyleData(const MWidgetStyleContainer &styleContainer);
     virtual bool hasPendingPixmap();
-    virtual void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 
-    const MScalableImage *m_image;
-    const MScalableImage *m_tiles;
-    QColor m_color;
-    qreal m_opacity;
+private Q_SLOTS:
+    void checkPendingPixmap();
+
+private:
+    void internalClearStyleData();
+
+    MStyleWrapper * m_style;
+    int m_pendingPixmap : 1;
 };
 
-#endif //MDECLARATIVEBACKGROUND_H
+#endif //MDECLARATIVEPRIMITIVE_H

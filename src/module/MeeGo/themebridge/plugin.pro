@@ -7,10 +7,12 @@ QT += declarative
 
 SOURCES += plugin.cpp \
            mstylewrapper.cpp \
+           mdeclarativeprimitive.cpp \
            mdeclarativescalableimage.cpp \
            mdeclarativebackground.cpp
 
 HEADERS += mstylewrapper.h \
+           mdeclarativeprimitive.h \
            mdeclarativescalableimage.h \
            mdeclarativebackground.h
 

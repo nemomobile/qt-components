@@ -27,17 +27,15 @@
 #ifndef MDECLARATIVESCALABLEIMAGE_H
 #define MDECLARATIVESCALABLEIMAGE_H
 
-#include <QDeclarativeItem>
+#include "mdeclarativeprimitive.h"
 
 class MScalableImage;
-class MStyleWrapper;
 
-class MDeclarativeScalableImage : public QDeclarativeItem
+class MDeclarativeScalableImage : public MDeclarativePrimitive
 {
     Q_OBJECT
 
     Q_PROPERTY(QString imageProperty READ imageProperty WRITE setImageProperty);
-    Q_PROPERTY(MStyleWrapper *style READ style WRITE setStyle);
 
 public:
     MDeclarativeScalableImage(QDeclarativeItem *parent = 0);
@@ -46,21 +44,14 @@ public:
     QString imageProperty() const;
     void setImageProperty(const QString &image);
 
-    MStyleWrapper *style() const;
-    void setStyle(MStyleWrapper *style);
-
-protected Q_SLOTS:
-    void updateStyleData();
-    void checkPendingPixmap();
-
 protected:
-    void clearOldStyleData();
+    virtual void clearStyleData();
+    virtual void fetchStyleData(const MWidgetStyleContainer &styleContainer);
+    virtual bool hasPendingPixmap();
     virtual void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 
     QString m_imageProperty;
-    MStyleWrapper * m_style;
     const MScalableImage *m_image;
-    int m_pendingPixmap : 1;
 };
 
 #endif //MDECLARATIVESCALABLEIMAGE_H

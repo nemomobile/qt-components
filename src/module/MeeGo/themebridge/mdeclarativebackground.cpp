@@ -25,112 +25,48 @@
 ****************************************************************************/
 
 #include "mdeclarativebackground.h"
-#include "mstylewrapper.h"
 
 #include <QPainter>
-#include <MTheme>
 #include <MScalableImage>
 #include <MWidgetStyle>
 
 MDeclarativeBackground::MDeclarativeBackground(QDeclarativeItem *parent) :
-    QDeclarativeItem(parent), m_style(0), m_image(0), m_tiles(0), m_pendingPixmap(0)
+    MDeclarativePrimitive(parent), m_image(0), m_tiles(0), m_opacity(1)
 {
-    setCacheMode(QGraphicsItem::DeviceCoordinateCache);
-    setFlag(QGraphicsItem::ItemHasNoContents, false);
 }
 
 MDeclarativeBackground::~MDeclarativeBackground()
 {
 }
 
-MStyleWrapper *MDeclarativeBackground::style() const
-{
-    return m_style;
-}
-
-void MDeclarativeBackground::setStyle(MStyleWrapper *style)
-{
-    if (style == m_style)
-        return;
-
-    if (m_style) {
-        m_style->disconnect(this);
-        clearOldStyleData();
-    }
-
-    m_style = style;
-
-    if (m_style) {
-        connect(m_style, SIGNAL(modeChanged(const QString &)), SLOT(updateStyleData()));
-        updateStyleData();
-    }
-}
-
-void MDeclarativeBackground::clearOldStyleData()
+void MDeclarativeBackground::clearStyleData()
 {
     m_image = 0;
     m_tiles = 0;
     m_color = QColor();
     m_opacity = 1;
-
-    if (m_pendingPixmap) {
-        MTheme::instance()->disconnect(this);
-        m_pendingPixmap = 0;
-    }
 }
 
-void MDeclarativeBackground::updateStyleData()
+void MDeclarativeBackground::fetchStyleData(const MWidgetStyleContainer &styleContainer)
 {
-    Q_ASSERT(m_style);
-
-    const MWidgetStyleContainer *styleContainer = m_style->styleContainer();
-    if (!styleContainer) {
-        clearOldStyleData();
-        return;
-    }
-
-    // Since it's kind of easy to get info from styleContainer in our case
-    // we may consider leaving this task to the paint() method instead and
-    // avoid caching the info.
-
-    if ((*styleContainer)->backgroundTiles().isValid())
-        m_tiles = (*styleContainer)->backgroundTiles()[/* layout position */ M::HorizontalLeftPosition];
+    if (styleContainer->backgroundTiles().isValid())
+        m_tiles = styleContainer->backgroundTiles()[/* layout position */ M::HorizontalLeftPosition];
     else
         m_tiles = 0;
 
-    m_image = (*styleContainer)->backgroundImage();
-    m_color = (*styleContainer)->backgroundColor();
-    m_opacity = (*styleContainer)->backgroundOpacity();
-
-    checkPendingPixmap();
+    m_image = styleContainer->backgroundImage();
+    m_color = styleContainer->backgroundColor();
+    m_opacity = styleContainer->backgroundOpacity();
 }
 
-void MDeclarativeBackground::checkPendingPixmap()
+bool MDeclarativeBackground::hasPendingPixmap()
 {
-    // In MeeGo the themeserver may run in a separate process. In that case MScalableImages
-    // may be created without a proper pixmap, instead a gray 1x1 pixmap is provided.
-    // We must account for that situation and then listen for the pixmapRequestFinished signal
-    // in order to repaint the primitive.
     // Note that we assume that a 1x1 pixmap means an unloaded pixmap. This will fail if there
     // are actual 1x1 pixmaps in the theme.
-
     const bool imagePixmapPending = m_image && (m_image->pixmap()->size() == QSize(1, 1));
     const bool tilesPixmapPending = m_tiles && (m_tiles->pixmap()->size() == QSize(1, 1));
 
-    if (imagePixmapPending || tilesPixmapPending) {
-        if (!m_pendingPixmap) {
-            // If not yet connected to MTheme, connect and wait for update
-            connect(MTheme::instance(), SIGNAL(pixmapRequestsFinished()), SLOT(checkPendingPixmap()));
-            m_pendingPixmap = 1;
-        }
-    } else {
-        if (m_pendingPixmap) {
-            // If still connected to MTheme, disconnect.
-            MTheme::instance()->disconnect(this);
-            m_pendingPixmap = 0;
-        }
-        update();
-    }
+    return imagePixmapPending || tilesPixmapPending;
 }
 
 void MDeclarativeBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
