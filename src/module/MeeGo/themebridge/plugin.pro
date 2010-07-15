@@ -7,9 +7,11 @@ QT += declarative
 
 SOURCES += plugin.cpp \
            mstylewrapper.cpp \
-           mdeclarativescalableimage.cpp
+           mdeclarativescalableimage.cpp \
+           mdeclarativebackground.cpp
 
 HEADERS += mstylewrapper.h \
-           mdeclarativescalableimage.h
+           mdeclarativescalableimage.h \
+           mdeclarativebackground.h
 
 OTHER_FILES += ../qmldir

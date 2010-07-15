@@ -24,42 +24,42 @@
 **
 ****************************************************************************/
 
-#include <QtDeclarative>
-#include <QScopedPointer>
+#ifndef MDECLARATIVEBACKGROUND_H
+#define MDECLARATIVEBACKGROUND_H
 
-#include "mcomponentdata.h"
-#include "mdeclarativescalableimage.h"
-#include "mdeclarativebackground.h"
-#include "mstylewrapper.h"
+#include <QDeclarativeItem>
+#include <MBackgroundTiles>
 
-class MeegoTouchPlugin : public QDeclarativeExtensionPlugin
+class MScalableImage;
+class MStyleWrapper;
+
+class MDeclarativeBackground : public QDeclarativeItem
 {
     Q_OBJECT
+
+    Q_PROPERTY(MStyleWrapper *style READ style WRITE setStyle);
+
 public:
-    void initializeEngine(QDeclarativeEngine *engine, const char *uri) {
-        QDeclarativeExtensionPlugin::initializeEngine(engine, uri);
+    MDeclarativeBackground(QDeclarativeItem *parent = 0);
+    virtual ~MDeclarativeBackground();
 
-        // This is a workaround because we can't use a default
-        // constructor for MComponentData
-        int argc = 1;
-        char *argv0 = "meegotouch";
-        componentData.reset(new MComponentData(argc, &argv0));
-    }
+    MStyleWrapper *style() const;
+    void setStyle(MStyleWrapper *style);
 
-    void registerTypes(const char *uri) {
-//        Q_ASSERT(uri == QLatin1String("MeegoTouch"));
-        // Custom primitives
-        qmlRegisterType<MDeclarativeScalableImage>(uri, 1, 0, "ScalableImage");
-        qmlRegisterType<MDeclarativeBackground>(uri, 1, 0, "Background");
+protected Q_SLOTS:
+    void updateStyleData();
+    void checkPendingPixmap();
 
-        // Theme info
-        qmlRegisterType<MStyleWrapper>(uri, 1, 0, "Style");
-    }
+protected:
+    void clearOldStyleData();
+    virtual void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 
-private:
-    QScopedPointer<MComponentData> componentData;
+    MStyleWrapper * m_style;
+    const MScalableImage *m_image;
+    const MScalableImage *m_tiles;
+    QColor m_color;
+    qreal m_opacity;
+    int m_pendingPixmap : 1;
 };
 
-#include "plugin.moc"
-
-Q_EXPORT_PLUGIN2(meegotouchplugin, MeegoTouchPlugin);
+#endif //MDECLARATIVEBACKGROUND_H

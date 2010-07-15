@@ -81,16 +81,22 @@ void MStyleWrapper::setStyleType(const QString &styletype)
     if (styletype == m_styletype)
         return;
 
-    delete m_stylecontainer;
+    m_styletype = styletype;
+
+    MStyleContainer *oldStyleContainer = m_stylecontainer;
+
     m_stylecontainer = 0;
 
-    if (styletype == "button") {
+    if (m_styletype == "button") {
         m_stylecontainer = new MButtonStyleContainer();
-    } else {
-        return;
+        m_stylecontainer->initialize("", "", 0);
+    } else if (m_styletype == "groupbutton") {
+        m_stylecontainer = new MButtonStyleContainer();
+        m_stylecontainer->initialize("", "group", 0);
     }
 
-    m_stylecontainer->initialize("", "", 0);
+    updateStyleMode();
+    delete oldStyleContainer;
 }
 
 QColor MStyleWrapper::textColor() const

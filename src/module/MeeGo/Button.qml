@@ -48,7 +48,7 @@ Item {
 
     Style {
         id: meegostyle
-        styleType: "button"
+        styleType: "groupbutton"
         mode: {
             if (model.down)
                 return "pressed"
@@ -59,11 +59,10 @@ Item {
         }
     }
 
-    ScalableImage {
-        id: image
+    Background {
+        id: background
         anchors.fill: parent
         style: meegostyle
-        imageProperty: "backgroundImage"
     }
 
     Item {
