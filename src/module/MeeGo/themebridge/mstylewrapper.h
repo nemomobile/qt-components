@@ -36,23 +36,34 @@ class MStyleWrapper : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString mode READ mode WRITE setMode);
-    Q_PROPERTY(QString styleType READ styleType WRITE setStyleType);
+    Q_ENUMS(StyleType)
 
-    Q_PROPERTY(QColor textColor READ textColor NOTIFY modeChanged);
+    // To be set from QML
+    Q_PROPERTY(QString mode READ mode WRITE setMode)
+    Q_PROPERTY(StyleType styleType READ styleType WRITE setStyleType)
 
-    // Needs patch in libmeegotouch
+    // To expose data from current StyleContainer
+    Q_PROPERTY(QColor textColor READ textColor NOTIFY modeChanged)
+
+    // XXX Were not "MStyleContainer::currentStyle()" private, we could consider
+    // replacing the above properties by the single one below
     // Q_PROPERTY(QObject * internalStyle READ internalStyle);
 
 public:
     MStyleWrapper(QObject *parent = 0);
     virtual ~MStyleWrapper();
 
+    enum StyleType {
+        None = 0,
+        Button,
+        GroupButton
+    };
+
     QString mode() const;
     void setMode(const QString &mode);
 
-    QString styleType() const;
-    void setStyleType(const QString &styleType);
+    StyleType styleType() const;
+    void setStyleType(const StyleType styleType);
 
     QColor textColor() const;
 
@@ -68,7 +79,7 @@ protected:
     void updateStyleMode();
 
     QString m_mode;
-    QString m_styletype;
+    StyleType m_styletype;
     MWidgetStyleContainer *m_stylecontainer;
 };
 

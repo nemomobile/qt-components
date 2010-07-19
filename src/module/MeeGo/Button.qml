@@ -48,7 +48,7 @@ Item {
 
     Style {
         id: meegostyle
-        styleType: "groupbutton"
+        styleType: Style.GroupButton
         mode: {
             if (model.down)
                 return "pressed"

@@ -30,7 +30,8 @@
 #include <mwidgetstyle.h>
 #include <mbuttonstyle.h>
 
-MStyleWrapper::MStyleWrapper(QObject *parent) : QObject(parent), m_mode("default"),  m_stylecontainer(0)
+MStyleWrapper::MStyleWrapper(QObject *parent)
+  : QObject(parent), m_mode("default"), m_styletype(None), m_stylecontainer(0)
 {
 }
 
@@ -71,12 +72,12 @@ void MStyleWrapper::updateStyleMode()
     emit modeChanged(m_mode);
 }
 
-QString MStyleWrapper::styleType() const
+MStyleWrapper::StyleType MStyleWrapper::styleType() const
 {
     return m_styletype;
 }
 
-void MStyleWrapper::setStyleType(const QString &styletype)
+void MStyleWrapper::setStyleType(const StyleType styletype)
 {
     if (styletype == m_styletype)
         return;
@@ -87,12 +88,18 @@ void MStyleWrapper::setStyleType(const QString &styletype)
 
     m_stylecontainer = 0;
 
-    if (m_styletype == "button") {
+    switch (m_styletype) {
+    case Button:
         m_stylecontainer = new MButtonStyleContainer();
         m_stylecontainer->initialize("", "", 0);
-    } else if (m_styletype == "groupbutton") {
+        break;
+    case GroupButton:
         m_stylecontainer = new MButtonStyleContainer();
         m_stylecontainer->initialize("", "group", 0);
+        break;
+    default:
+        m_stylecontainer = new MWidgetStyleContainer();
+        m_stylecontainer->initialize("", "", 0);
     }
 
     updateStyleMode();
