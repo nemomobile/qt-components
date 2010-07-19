@@ -41,6 +41,9 @@ Item {
     property string iconSource //: "images/sample-icon.svg"
     property string checkedIconSource //: "images/sample-icon-2.svg"
 
+    property bool groupButton: false;
+    property alias groupPosition: background.tilePosition
+
     property alias iconVisible: iconImage.visible
     property alias textVisible: label.visible
 
@@ -48,7 +51,7 @@ Item {
 
     Style {
         id: meegostyle
-        styleType: Style.GroupButton
+        styleType: button.groupButton ? Style.GroupButton : Style.Button
         mode: {
             if (model.down)
                 return "pressed"

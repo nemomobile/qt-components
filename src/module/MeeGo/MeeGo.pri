@@ -5,6 +5,7 @@ INCLUDEPATH += $$PWD
 QML_FILES = \
         MeeGo/qmldir \
         MeeGo/Button.qml \
+        MeeGo/ButtonGroup.qml \
         MeeGo/Window.qml
 
 // QML_IMAGES +=

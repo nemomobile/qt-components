@@ -31,12 +31,26 @@
 #include <MWidgetStyle>
 
 MDeclarativeBackground::MDeclarativeBackground(QDeclarativeItem *parent) :
-    MDeclarativePrimitive(parent), m_image(0), m_tiles(0), m_opacity(1)
+    MDeclarativePrimitive(parent), m_image(0), m_tiles(0), m_opacity(1), m_tileposition(DefaultPosition)
 {
 }
 
 MDeclarativeBackground::~MDeclarativeBackground()
 {
+}
+
+MDeclarativeBackground::Position MDeclarativeBackground::tilePosition() const
+{
+    return m_tileposition;
+}
+
+void MDeclarativeBackground::setTilePosition(const Position tilePosition)
+{
+    if (m_tileposition == tilePosition)
+        return;
+
+    m_tileposition = tilePosition;
+    updateStyleData();
 }
 
 void MDeclarativeBackground::clearStyleData()
@@ -50,7 +64,7 @@ void MDeclarativeBackground::clearStyleData()
 void MDeclarativeBackground::fetchStyleData(const MWidgetStyleContainer &styleContainer)
 {
     if (styleContainer->backgroundTiles().isValid())
-        m_tiles = styleContainer->backgroundTiles()[/* layout position */ M::HorizontalLeftPosition];
+        m_tiles = styleContainer->backgroundTiles()[static_cast<M::Position>(m_tileposition)];
     else
         m_tiles = 0;
 

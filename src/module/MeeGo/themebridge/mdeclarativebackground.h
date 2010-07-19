@@ -36,9 +36,39 @@ class MDeclarativeBackground : public MDeclarativePrimitive
 {
     Q_OBJECT
 
+    Q_ENUMS(Position)
+
+    Q_PROPERTY(Position tilePosition READ tilePosition WRITE setTilePosition)
+
 public:
     MDeclarativeBackground(QDeclarativeItem *parent = 0);
     virtual ~MDeclarativeBackground();
+
+    // XXX Ugly... Is there someway to export the M::Position type directly?
+    enum Position {
+        DefaultPosition = M::DefaultPosition,
+
+        TopLeftPosition,
+        TopCenterPosition,
+        TopRightPosition,
+        CenterLeftPosition,
+        CenterPosition,
+        CenterRightPosition,
+        BottomLeftPosition,
+        BottomCenterPosition,
+        BottomRightPosition,
+
+        HorizontalLeftPosition,
+        HorizontalCenterPosition,
+        HorizontalRightPosition,
+
+        VerticalTopPosition,
+        VerticalCenterPosition,
+        VerticalBottomPosition
+    };
+
+    Position tilePosition() const;
+    void setTilePosition(const Position position);
 
 protected:
     virtual void clearStyleData();
@@ -50,6 +80,7 @@ protected:
     const MScalableImage *m_tiles;
     QColor m_color;
     qreal m_opacity;
+    Position m_tileposition;
 };
 
 #endif //MDECLARATIVEBACKGROUND_H
