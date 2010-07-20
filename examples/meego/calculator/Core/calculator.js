@@ -84,7 +84,7 @@ function doOperation(op) {
     }
 
     if (op == rotateLeft)
-        main.state = 'rotated'
+        main.state = 'portrait'
     if (op == rotateRight)
         main.state = ''
 }

@@ -35,7 +35,6 @@
 #include <MTheme>
 #include <QtDeclarative>
 
-#include "deviceorientation_p.h"
 #include "qwindowobject_p.h"
 
 
@@ -43,60 +42,25 @@ class QuickMApplicationWindow : public MApplicationWindow
 {
     Q_OBJECT
 public:
-    QuickMApplicationWindow(QWidget *parent);
+    QuickMApplicationWindow(QWindowObject *w, QWidget *parent = 0);
 protected:
-    virtual void closeEvent(QCloseEvent *event);
     virtual bool event(QEvent *event);
 
-protected slots:
-    void slotOrientationAngleChanged(M::OrientationAngle);
+public:
+    QWindowObject *windowObject;
 };
 
-static DeviceOrientation::Orientation convertOrientation(M::OrientationAngle angle)
+QuickMApplicationWindow::QuickMApplicationWindow(QWindowObject *w, QWidget *parent)
+    : MApplicationWindow(parent), windowObject(w)
 {
-    DeviceOrientation::Orientation o = DeviceOrientation::UnknownOrientation;
-    switch (angle) {
-    case M::Angle0:
-        o = DeviceOrientation::Landscape;
-        break;
-    case M::Angle90:
-        o = DeviceOrientation::Portrait;
-        break;
-    case M::Angle180:
-        o = DeviceOrientation::LandscapeInverted;
-        break;
-    case M::Angle270:
-        o = DeviceOrientation::PortraitInverted;
-        break;
-    }
-    return o;
-}
-
-
-QuickMApplicationWindow::QuickMApplicationWindow(QWidget *parent)
-    : MApplicationWindow(parent)
-{
-    connect(this, SIGNAL(orientationAngleChanged(M::OrientationAngle)), this, SLOT(slotOrientationAngleChanged(M::OrientationAngle)));
-    DeviceOrientation::instance()->setOrientation(convertOrientation(orientationAngle()));
-}
-
-void QuickMApplicationWindow::closeEvent(QCloseEvent *event)
-{
-    topLevelWidget()->close();
-    event->accept();
-}
-
-void QuickMApplicationWindow::slotOrientationAngleChanged(M::OrientationAngle angle)
-{
-    DeviceOrientation::instance()->setOrientation(convertOrientation(angle));
 }
 
 bool QuickMApplicationWindow::event(QEvent *event)
 {
     if (event->type() == QEvent::WindowActivate) {
-        QWindowObject::instance()->setActiveWindow(true);
+        windowObject->setActiveWindow(true);
     } else if (event->type() == QEvent::WindowDeactivate) {
-        QWindowObject::instance()->setActiveWindow(false);
+        windowObject->setActiveWindow(false);
     }
     return QWidget::event(event);
 }
@@ -112,8 +76,10 @@ public:
 
     QDeclarativeWindow *q;
 
-    MApplicationWindow *mWindow;
+    QuickMApplicationWindow *mWindow;
     MApplicationPage *mPage;
+
+    QWindowObject *windowObject;
 
     QUrl source;
 
@@ -131,14 +97,17 @@ QDeclarativeWindowPrivate::QDeclarativeWindowPrivate(QDeclarativeWindow *qq)
         (void) new MComponentData(argc, QApplication::instance()->argv());
     }
 
-    mWindow = new QuickMApplicationWindow(0);
+    windowObject = new QWindowObject(q);
+    mWindow = new QuickMApplicationWindow(windowObject);
+    QObject::connect(mWindow, SIGNAL(orientationAngleChanged(M::OrientationAngle)), windowObject, SIGNAL(orientationChanged()));
+
     mPage = new MApplicationPage;
     mPage->setPannable(false);
     mPage->appear();
 
     QDeclarativeContext *ctxt = engine.rootContext();
-    ctxt->setContextProperty("device", QWindowObject::instance());
-    qmlRegisterUncreatableType<DeviceOrientation>("Qt",4,7,"Orientation","");
+    ctxt->setContextProperty("window", windowObject);
+    qmlRegisterUncreatableType<QWindowObject>("Qt",4,7,"Orientation","");
 }
 
 
@@ -304,6 +273,17 @@ QDeclarativeWindow::Status QDeclarativeWindow::status() const
     return QDeclarativeWindow::Status(d->component->status());
 }
 
+
+void QDeclarativeWindow::adjustRootObject()
+{
+    QRectF rect = d->mPage->exposedContentRect();
+    if (!qFuzzyCompare(rect.width(), d->root->width()))
+        d->root->setWidth(rect.width());
+    if (!qFuzzyCompare(rect.height(), d->root->height()))
+        d->root->setHeight(rect.height());
+}
+
+
 /*!
   \internal
 */
@@ -320,11 +300,7 @@ void QDeclarativeWindow::setRootObject(QObject *obj)
     QGraphicsWidget *centralWidget = d->mPage->centralWidget();
     d->root->QGraphicsObject::setParentItem(centralWidget);
 
-    QRectF rect = d->mPage->exposedContentRect();
-    if (!qFuzzyCompare(rect.width(), d->root->width()))
-        d->root->setWidth(rect.width());
-    if (!qFuzzyCompare(rect.height(), d->root->height()))
-        d->root->setHeight(rect.height());
+    adjustRootObject();
 }
 
 QWidget *QDeclarativeWindow::window()

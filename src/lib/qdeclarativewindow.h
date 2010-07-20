@@ -60,6 +60,8 @@ public:
 
     QWidget *window();
 
+    void adjustRootObject();
+
 Q_SIGNALS:
     void statusChanged(QDeclarativeWindow::Status);
 

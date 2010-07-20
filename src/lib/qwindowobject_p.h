@@ -24,28 +24,24 @@
 **
 ****************************************************************************/
 
-#ifndef QDECLARATIVERUNTIME_P_H
-#define QDECLARATIVERUNTIME_P_H
+#ifndef QWINDOWOBJECT_P_H
+#define QWINDOWOBJECT_P_H
 
 #include <qobject.h>
-#include "deviceorientation_p.h"
-
+class QDeclarativeWindow;
 
 class QWindowObject : public QObject
 {
     Q_OBJECT
 
     Q_PROPERTY(bool isActiveWindow READ isActiveWindow NOTIFY isActiveWindowChanged)
-    Q_PROPERTY(DeviceOrientation::Orientation orientation READ orientation NOTIFY orientationChanged)
+    Q_PROPERTY(Orientation orientation READ orientation WRITE setOrientation NOTIFY orientationChanged)
+    Q_PROPERTY(bool orientationLocked READ isOrientationLocked WRITE setOrientationLocked NOTIFY orientationLockedChanged)
+
+    Q_ENUMS(Orientation)
 
 public:
-    static QWindowObject* instance()
-    {
-        static QWindowObject *instance = 0;
-        if (!instance)
-            instance = new QWindowObject;
-        return instance;
-    }
+    QWindowObject(QDeclarativeWindow *parent);
 
     bool isActiveWindow() const { return activeWindow; }
     void setActiveWindow(bool active)
@@ -56,20 +52,27 @@ public:
         emit isActiveWindowChanged();
     }
 
-    DeviceOrientation::Orientation orientation() const { return DeviceOrientation::instance()->orientation(); }
+    enum Orientation {
+        UnknownOrientation,
+        Portrait,
+        Landscape,
+        PortraitInverted,
+        LandscapeInverted
+    };
+    Orientation orientation() const;
+    void setOrientation(Orientation orientation);
+
+    bool isOrientationLocked() const;
+    void setOrientationLocked(bool locked);
 
 Q_SIGNALS:
     void isActiveWindowChanged();
     void orientationChanged();
+    void orientationLockedChanged();
 
 private:
-    QWindowObject(QObject *parent=0) : QObject(parent), activeWindow(false)
-    {
-        connect(DeviceOrientation::instance(), SIGNAL(orientationChanged()),
-                this, SIGNAL(orientationChanged()));
-    }
-
     bool activeWindow;
+    QDeclarativeWindow *window;
 };
 
 #endif

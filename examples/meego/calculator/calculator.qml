@@ -44,7 +44,8 @@ import "Core"
 import "Core/calculator.js" as CalcEngine
 
 Rectangle {
-    id: window
+    id: top
+    state: "landscape"
 
     width: 480; height: 360
     color: "#282828"
@@ -61,7 +62,6 @@ Rectangle {
 
     Item {
         id: main
-        state: (device.orientation == Orientation.Portrait) ? '' : 'rotated'
         width: parent.width; height: parent.height; anchors.centerIn: parent
 
         Column {
@@ -130,11 +130,18 @@ Rectangle {
             }
         }
 
-        states: State {
-            name: 'rotated'
-            PropertyChanges { target: main; rotation: -90; width: window.height; height: window.width }
-            PropertyChanges { target: rotateButton; operation: rotateRight }
-        }
+        states: [
+            State {
+                name: 'portrait'
+                PropertyChanges { target: window; orientation: Orientation.Portrait; }
+                PropertyChanges { target: rotateButton; operation: rotateRight }
+            },
+            State {
+                name: 'landscape'
+                PropertyChanges { target: window; orientation: Orientation.Landscape; }
+                PropertyChanges { target: rotateButton; operation: rotateLeft }
+            }
+        ]
 
         transitions: Transition {
             SequentialAnimation {

@@ -29,7 +29,6 @@
 #include <QApplication>
 #include <QtDeclarative>
 
-#include "deviceorientation_p.h"
 #include "qwindowobject_p.h"
 
 class QDeclarativeWindowPrivate
@@ -40,6 +39,8 @@ public:
     void execute();
 
     QDeclarativeWindow *q;
+
+    QWindowObject *windowObject;
 
     QGraphicsView *view;
     QGraphicsScene scene;
@@ -69,9 +70,11 @@ QDeclarativeWindowPrivate::QDeclarativeWindowPrivate(QDeclarativeWindow *qq)
 
     scene.setStickyFocus(true);  //### needed for correct focus handling
 
+    windowObject = new QWindowObject(q);
+
     QDeclarativeContext *ctxt = engine.rootContext();
-    ctxt->setContextProperty("device", QWindowObject::instance());
-    qmlRegisterUncreatableType<DeviceOrientation>("Qt",4,7,"Orientation","");
+    ctxt->setContextProperty("window", windowObject);
+    qmlRegisterUncreatableType<QWindowObject>("Qt",4,7,"Orientation","");
 }
 
 

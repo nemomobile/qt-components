@@ -98,3 +98,5 @@ QML_IMAGES += \
     Mx/images/toggle-handle.png \
     Mx/images/toolbar-button-hover.png \
     Mx/images/tooltip-background.png
+
+OTHER_FILES += QML_FILES
