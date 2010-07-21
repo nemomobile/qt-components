@@ -69,9 +69,6 @@ private:
     Qt::HANDLE pixmapDamage;
 
 public Q_SLOTS:
-    void handlePixmapDamageEvent(Qt::HANDLE &damage, short &x, short &y,
-                                 unsigned short &width, unsigned short &height);
-
     void enablePixmapUpdates();
     void disablePixmapUpdates();
     void sharedPixmapHandleReceived(QDBusPendingCallWatcher * call);

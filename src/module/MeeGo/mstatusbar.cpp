@@ -45,11 +45,37 @@ static const QLatin1String STATUS_INDICATOR_MENU_DBUS_PATH("/statusindicatormenu
 static const QLatin1String STATUS_INDICATOR_MENU_DBUS_INTERFACE("com.meego.core.MStatusIndicatorMenu");
 
 // for XDamage events
+static int xDamageEventBase = 0;
+static int xDamageErrorBase = 0;
+
 static bool filterRegistered = false;
 QCoreApplication::EventFilter oldFilter = 0;
+static QHash<Damage, MDeclarativeStatusBar *> damageMap;
 
-static bool x11EventFilter(void *message, long *result)
+static int handleXError(Display *, XErrorEvent *)
 {
+    return 0;
+}
+
+static bool x11EventFilter(void *message, long *)
+{
+    XEvent *event = (XEvent *)message;
+
+    if (event->type == xDamageEventBase + XDamageNotify) {
+        XDamageNotifyEvent *xevent = (XDamageNotifyEvent *) event;
+
+        // It is possible that the Damage has already been destroyed so register an error handler to suppress X errors
+        XErrorHandler errh = XSetErrorHandler(handleXError);
+        XDamageSubtract(QX11Info::display(), xevent->damage, None, None);
+        XSetErrorHandler(errh);
+
+        // notify status bar
+        MDeclarativeStatusBar *statusBar = damageMap.value(xevent->damage);
+        if (statusBar) {
+            statusBar->update();
+            return true;
+        }
+    }
     return false;
 }
 
@@ -59,19 +85,17 @@ MDeclarativeStatusBar::MDeclarativeStatusBar(QDeclarativeItem *parent) :
     QDeclarativeItem(parent),
     updatesEnabled(true)
 {
-#ifdef Q_WS_X11
-
     if (!filterRegistered) {
         ::oldFilter = QCoreApplication::instance()->setEventFilter(x11EventFilter);
+        XDamageQueryExtension(QX11Info::display(), &xDamageEventBase, &xDamageErrorBase);
+
         filterRegistered = true;
     }
 
-#ifdef HAVE_DBUS
     if (QDBusConnection::sessionBus().interface()->isServiceRegistered(PIXMAP_PROVIDER_DBUS_SERVICE))
         isPixmapProviderOnline = true;
     else
         isPixmapProviderOnline = false;
-    qWarning() << "pixmap provider online:" << isPixmapProviderOnline;
 
     dbusWatcher = new QDBusServiceWatcher( PIXMAP_PROVIDER_DBUS_SERVICE , QDBusConnection::sessionBus(),
                                            QDBusServiceWatcher::WatchForRegistration|QDBusServiceWatcher::WatchForUnregistration,
@@ -83,22 +107,17 @@ MDeclarativeStatusBar::MDeclarativeStatusBar(QDeclarativeItem *parent) :
             this, SLOT(handlePixmapProviderOffline()));
 
     querySharedPixmapFromProvider();
-#endif
-
-#endif
 }
 
 MDeclarativeStatusBar::~MDeclarativeStatusBar()
 {
-#ifdef Q_WS_X11
     destroyXDamageForSharedPixmap();
-#endif //Q_WS_X11
 }
 
 void MDeclarativeStatusBar::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
     qWarning() << "paint1";
-#ifdef Q_WS_X11
+
     if (sharedPixmap.isNull()) {
         MDeclarativeStatusBar *view = const_cast<MDeclarativeStatusBar *>(this);
         view->querySharedPixmapFromProvider();
@@ -124,20 +143,12 @@ void MDeclarativeStatusBar::paint(QPainter *painter, const QStyleOptionGraphicsI
 
     qWarning() << "drawing status bar" << sharedPixmap.size();
     painter->drawPixmap(QPointF(0.0, 0.0), sharedPixmap);// ####, sourceRect);
-#else
-    Q_UNUSED(painter);
-#endif
 }
 
-#ifdef Q_WS_X11
 void MDeclarativeStatusBar::updateSharedPixmap()
 {
     destroyXDamageForSharedPixmap();
-#ifndef HAVE_DBUS
-    if (!updatesEnabled)
-#else
     if ((!updatesEnabled)||(!isPixmapProviderOnline))
-#endif
         return;
 
     if (!sharedPixmap.isNull()) {
@@ -148,26 +159,16 @@ void MDeclarativeStatusBar::updateSharedPixmap()
 void MDeclarativeStatusBar::setupXDamageForSharedPixmap()
 {
     Q_ASSERT(!sharedPixmap.isNull());
-#ifdef HAVE_XDAMAGE
     pixmapDamage = XDamageCreate(QX11Info::display(), sharedPixmap.handle(), XDamageReportNonEmpty);
-#endif //HAVE_XDAMAGE
+    damageMap.insert(pixmapDamage, this);
 }
 
 void MDeclarativeStatusBar::destroyXDamageForSharedPixmap()
 {
-#ifdef HAVE_XDAMAGE
     if (pixmapDamage) {
+        damageMap.remove(pixmapDamage);
         XDamageDestroy(QX11Info::display(), pixmapDamage);
         pixmapDamage = 0;
-    }
-#endif //HAVE_XDAMAGE
-}
-
-void MDeclarativeStatusBar::handlePixmapDamageEvent(Qt::HANDLE &damage, short &x, short &y,
-                                             unsigned short &width, unsigned short &height)
-{
-    if (damage == pixmapDamage) {
-        scene()->update(x, y, width, height);
     }
 }
 
@@ -183,7 +184,6 @@ void MDeclarativeStatusBar::disablePixmapUpdates()
     destroyXDamageForSharedPixmap();
 }
 
-#ifdef HAVE_DBUS
 void MDeclarativeStatusBar::querySharedPixmapFromProvider()
 {
     if (!updatesEnabled || !isPixmapProviderOnline)
@@ -223,7 +223,6 @@ void MDeclarativeStatusBar::handlePixmapProviderOffline()
     isPixmapProviderOnline = false;
     destroyXDamageForSharedPixmap();
 }
-#endif
 
 void MDeclarativeStatusBar::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -239,16 +238,12 @@ void MDeclarativeStatusBar::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void MDeclarativeStatusBar::showStatusIndicatorMenu()
 {
-#ifdef HAVE_DBUS
     QDBusInterface interface(STATUS_INDICATOR_MENU_DBUS_SERVICE, STATUS_INDICATOR_MENU_DBUS_PATH, STATUS_INDICATOR_MENU_DBUS_INTERFACE, QDBusConnection::sessionBus());
     interface.call(QDBus::NoBlock, "open");
-#endif
 }
 
 void MDeclarativeStatusBar::playHapticsFeedback()
 {
 //    style()->pressFeedback().play();
 }
-
-#endif
 
