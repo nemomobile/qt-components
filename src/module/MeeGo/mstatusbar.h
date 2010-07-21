@@ -38,8 +38,9 @@ public:
     MDeclarativeStatusBar(QDeclarativeItem *parent = 0);
     virtual ~MDeclarativeStatusBar();
 
+    virtual void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
+
 protected:
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
@@ -76,4 +77,5 @@ public Q_SLOTS:
     void handlePixmapProviderOffline();
 };
 
+QML_DECLARE_TYPE(MDeclarativeStatusBar)
 #endif

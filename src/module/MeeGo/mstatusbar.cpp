@@ -85,6 +85,8 @@ MDeclarativeStatusBar::MDeclarativeStatusBar(QDeclarativeItem *parent) :
     QDeclarativeItem(parent),
     updatesEnabled(true)
 {
+    setFlag(QGraphicsItem::ItemHasNoContents, false);
+
     if (!filterRegistered) {
         ::oldFilter = QCoreApplication::instance()->setEventFilter(x11EventFilter);
         XDamageQueryExtension(QX11Info::display(), &xDamageEventBase, &xDamageErrorBase);
@@ -116,33 +118,29 @@ MDeclarativeStatusBar::~MDeclarativeStatusBar()
 
 void MDeclarativeStatusBar::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    qWarning() << "paint1";
-
     if (sharedPixmap.isNull()) {
         MDeclarativeStatusBar *view = const_cast<MDeclarativeStatusBar *>(this);
         view->querySharedPixmapFromProvider();
     }
 
-    qWarning() << "paint2";
     if (sharedPixmap.isNull())
         return;
-    qWarning() << "paint3";
 
     QRectF sourceRect;
-//    if (controller->sceneManager()->orientation() == M::Landscape) {
-//        sourceRect.setX(0);
-//        sourceRect.setY(0);
-//        sourceRect.setWidth(size().width());
-//        sourceRect.setHeight(size().height());
-//    } else {
-//        sourceRect.setX(0);
-//        sourceRect.setY(size().height());
-//        sourceRect.setWidth(size().width());
-//        sourceRect.setHeight(size().height());
-//    }
+    if (1) { // #### controller->sceneManager()->orientation() == M::Landscape) {
+        sourceRect.setX(0);
+        sourceRect.setY(0);
+        sourceRect.setWidth(width());
+        sourceRect.setHeight(height());
+    } else {
+        sourceRect.setX(0);
+        sourceRect.setY(height());
+        sourceRect.setWidth(width());
+        sourceRect.setHeight(height());
+    }
 
     qWarning() << "drawing status bar" << sharedPixmap.size();
-    painter->drawPixmap(QPointF(0.0, 0.0), sharedPixmap);// ####, sourceRect);
+    painter->drawPixmap(QPointF(0.0, 0.0), sharedPixmap, sourceRect);
 }
 
 void MDeclarativeStatusBar::updateSharedPixmap()
@@ -204,12 +202,13 @@ void MDeclarativeStatusBar::sharedPixmapHandleReceived(QDBusPendingCallWatcher *
         qWarning() << "MDeclarativeStatusBar" << reply.error().message();
         return;
     }
-    qWarning() << "handle received";
     quint32 tmp = reply;
     sharedPixmap = QPixmap::fromX11Pixmap(tmp, QPixmap::ExplicitlyShared);
+    setImplicitWidth(sharedPixmap.size().width());
+    setImplicitHeight(sharedPixmap.size().height()/4);
     updateSharedPixmap();
     call->deleteLater();
-    scene()->update(); // ###
+    scene()->update();
 }
 
 void MDeclarativeStatusBar::handlePixmapProviderOnline()
