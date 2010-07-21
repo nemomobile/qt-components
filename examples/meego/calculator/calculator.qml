@@ -40,6 +40,7 @@
 ****************************************************************************/
 
 import Qt 4.7
+import Qt.labs.components 1.0
 import "Core"
 import "Core/calculator.js" as CalcEngine
 
@@ -69,6 +70,13 @@ Rectangle {
 
             anchors { fill: parent; topMargin: 6; bottomMargin: 6; leftMargin: 6; rightMargin: 6 }
 
+    StatusBar {
+        id: status
+        x: 0
+        y: 0
+        width: 864
+        height: 25
+    }
             Row {
                 Display { id: display; width: box.width; height: 64 }
             }
@@ -76,7 +84,7 @@ Rectangle {
             Column {
                 id: column; spacing: 6
 
-                property real h: ((box.height - 72) / 6) - ((spacing * (6 - 1)) / 6)
+                property real h: ((box.height - 72 - status.height) / 6) - ((spacing * (6 - 1)) / 6)
                 property real w: (box.width / 4) - ((spacing * (4 - 1)) / 4)
 
                 Row {

@@ -35,6 +35,9 @@
 #include "qmxtoplevelitem.h"
 #include "qmxbuttongroup.h"
 #endif
+#ifdef Q_COMPONENTS_MEEGO
+#include "mstatusbar.h"
+#endif
 
 class QtComponentsPlugin : public QDeclarativeExtensionPlugin
 {
@@ -69,6 +72,10 @@ public:
 
         // ### Temporary solution until we can access children items inside QML
         qmlRegisterType<QMxButtonGroup>(uri, 1, 0, "ButtonGroup");
+#endif
+
+#ifdef Q_COMPONENTS_MEEGO
+        qmlRegisterType<MDeclarativeStatusBar>(uri, 1, 0, "StatusBar");
 #endif
     }
 };

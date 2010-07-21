@@ -2,6 +2,11 @@
 DEFINES += Q_COMPONENTS_MEEGO
 INCLUDEPATH += $$PWD
 
+QT += dbus
+
+SOURCES += MeeGo/mstatusbar.cpp
+HEADERS += MeeGo/mstatusbar.h
+
 QML_FILES = \
         MeeGo/qmldir \
         Mx/Button.qml    \
