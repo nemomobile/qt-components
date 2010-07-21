@@ -293,5 +293,3 @@ QWidget *QDeclarativeWindow::window()
     return d->view;
 }
 
-
-#include "qdeclarativewindow_meego.moc"
