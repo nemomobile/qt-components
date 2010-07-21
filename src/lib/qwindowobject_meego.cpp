@@ -16,21 +16,21 @@ QWindowObject::QWindowObject(QDeclarativeWindow *parent)
 QWindowObject::Orientation QWindowObject::orientation() const
 {
     Orientation o = UnknownOrientation;
-    switch (mwin->orientationAngle()) {
-    case M::Angle0:
-        o = Landscape;
-        break;
-    case M::Angle90:
-        o = PortraitInverted;
-        break;
-    case M::Angle180:
-        o = LandscapeInverted;
-        break;
-    case M::Angle270:
-        o = Portrait;
-        break;
-    }
-    printf(">>> orientation: %d\n", o);
+//    switch (mwin->orientationAngle()) {
+//    case M::Angle0:
+//        o = Landscape;
+//        break;
+//    case M::Angle90:
+//        o = PortraitInverted;
+//        break;
+//    case M::Angle180:
+//        o = LandscapeInverted;
+//        break;
+//    case M::Angle270:
+//        o = Portrait;
+//        break;
+//    }
+//    printf(">>> orientation: %d\n", o);
     return o;
 }
 
@@ -53,20 +53,20 @@ void QWindowObject::setOrientation(Orientation orientation)
         break;
     }
     printf(">>> setorientation: %d\n", orientation);
-    if (angle != mwin->orientationAngle()) {
-        mwin->setOrientationAngle(angle);
-        window->adjustRootObject();
-    }
+//    if (angle != mwin->orientationAngle()) {
+//        mwin->setOrientationAngle(angle);
+//        window->adjustRootObject();
+//    }
 }
 
 bool QWindowObject::isOrientationLocked() const
 {
-    return mwin->isOrientationAngleLocked();
+//    return mwin->isOrientationAngleLocked();
 }
 
 void QWindowObject::setOrientationLocked(bool locked)
 {
-    mwin->setOrientationAngleLocked(locked);
-    emit orientationLockedChanged();
+//    mwin->setOrientationAngleLocked(locked);
+//    emit orientationLockedChanged();
 }
 

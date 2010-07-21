@@ -37,36 +37,6 @@
 
 #include "qwindowobject_p.h"
 
-
-class QuickMApplicationWindow : public MApplicationWindow
-{
-    Q_OBJECT
-public:
-    QuickMApplicationWindow(QWindowObject *w, QWidget *parent = 0);
-protected:
-    virtual bool event(QEvent *event);
-
-public:
-    QWindowObject *windowObject;
-};
-
-QuickMApplicationWindow::QuickMApplicationWindow(QWindowObject *w, QWidget *parent)
-    : MApplicationWindow(parent), windowObject(w)
-{
-}
-
-bool QuickMApplicationWindow::event(QEvent *event)
-{
-    if (event->type() == QEvent::WindowActivate) {
-        windowObject->setActiveWindow(true);
-    } else if (event->type() == QEvent::WindowDeactivate) {
-        windowObject->setActiveWindow(false);
-    }
-    return QWidget::event(event);
-}
-
-
-
 class QDeclarativeWindowPrivate
 {
 public:
@@ -75,12 +45,10 @@ public:
     void execute();
 
     QDeclarativeWindow *q;
-
-    QuickMApplicationWindow *mWindow;
-    MApplicationPage *mPage;
-
     QWindowObject *windowObject;
 
+    QGraphicsView *view;
+    QGraphicsScene scene;
     QUrl source;
 
     QDeclarativeEngine engine;
@@ -90,20 +58,35 @@ public:
 };
 
 QDeclarativeWindowPrivate::QDeclarativeWindowPrivate(QDeclarativeWindow *qq)
-    : q(qq), mWindow(0), mPage(0), component(0)
+    : q(qq), windowObject(0), view(0), component(0)
 {
+    qApp->setProperty("NoMStyle", true);
     if(!MComponentData::instance()) {
         int argc = QApplication::instance()->argc();
         (void) new MComponentData(argc, QApplication::instance()->argv());
     }
 
-    windowObject = new QWindowObject(q);
-    mWindow = new QuickMApplicationWindow(windowObject);
-    QObject::connect(mWindow, SIGNAL(orientationAngleChanged(M::OrientationAngle)), windowObject, SIGNAL(orientationChanged()));
+    view = new QGraphicsView(&scene, 0);
+    view->setWindowFlags(Qt::Window
+                   | Qt::CustomizeWindowHint
+                   | Qt::FramelessWindowHint);
+    view->resize(QApplication::desktop()->screenGeometry().width(),
+                 QApplication::desktop()->screenGeometry().height());
 
-    mPage = new MApplicationPage;
-    mPage->setPannable(false);
-    mPage->appear();
+    view->setOptimizationFlags(QGraphicsView::DontSavePainterState);
+    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setFrameStyle(0);
+
+    // These seem to give the best performance
+    view->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
+    scene.setItemIndexMethod(QGraphicsScene::NoIndex);
+    view->viewport()->setFocusPolicy(Qt::NoFocus);
+    view->setFocusPolicy(Qt::StrongFocus);
+
+    scene.setStickyFocus(true);  //### needed for correct focus handling
+
+    windowObject = new QWindowObject(q);
 
     QDeclarativeContext *ctxt = engine.rootContext();
     ctxt->setContextProperty("window", windowObject);
@@ -114,8 +97,7 @@ QDeclarativeWindowPrivate::QDeclarativeWindowPrivate(QDeclarativeWindow *qq)
 QDeclarativeWindowPrivate::~QDeclarativeWindowPrivate()
 {
     delete component;
-    delete mPage;
-    delete mWindow;
+    delete view;
 }
 
 void QDeclarativeWindowPrivate::execute()
@@ -276,7 +258,9 @@ QDeclarativeWindow::Status QDeclarativeWindow::status() const
 
 void QDeclarativeWindow::adjustRootObject()
 {
-    QRectF rect = d->mPage->exposedContentRect();
+    QRect rect = qApp->desktop()->screenGeometry();
+    qWarning() << "screen rect" << rect;
+//    QRectF rect = d->mPage->exposedContentRect();
     if (!qFuzzyCompare(rect.width(), d->root->width()))
         d->root->setWidth(rect.width());
     if (!qFuzzyCompare(rect.height(), d->root->height()))
@@ -297,15 +281,16 @@ void QDeclarativeWindow::setRootObject(QObject *obj)
         return;
     }
 
-    QGraphicsWidget *centralWidget = d->mPage->centralWidget();
-    d->root->QGraphicsObject::setParentItem(centralWidget);
+//    QGraphicsWidget *centralWidget = d->mPage->centralWidget();
+//    d->root->QGraphicsObject::setParentItem(centralWidget);
+    d->scene.addItem(d->root);
 
     adjustRootObject();
 }
 
 QWidget *QDeclarativeWindow::window()
 {
-    return d->mWindow;
+    return d->view;
 }
 
 
