@@ -56,7 +56,8 @@ public:
     enum StyleType {
         None = 0,
         Button,
-        GroupButton
+        GroupButton,
+        Slider
     };
 
     QString mode() const;

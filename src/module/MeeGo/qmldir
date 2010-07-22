@@ -2,6 +2,7 @@ plugin qtcomponentsplugin
 #plugin contains WindowModel and EntryControl - but should be internal use only
 Button 1.0 Button.qml
 ButtonGroup 1.0 ButtonGroup.qml
+Slider 1.0 Slider.qml
 Window 1.0 Window.qml
 #Should only be used by window
 internal TitlebarCombobox TitlebarCombobox.qml
