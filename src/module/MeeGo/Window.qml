@@ -27,9 +27,18 @@
 import Qt 4.7
 import Qt.labs.components 1.0
 
-Item{
-    // hack to keep compat with Mx
-    property int headerBottom;
-    property string comboCurrent;
-    property ListModel comboModel;
+Rectangle {
+    property int clientX : 0;
+    property alias clientY: statusbar.height;
+    property int clientWidth: width;
+    property int clientHeight: height - statusbar.height;
+
+    property bool portrait : true;
+
+    color: "black";
+
+    StatusBar {
+        id: statusbar;
+        orientation: parent.portrait ? StatusBar.Portrait : StatusBar.Landscape;
+    }
 }

@@ -44,13 +44,9 @@ import Qt.labs.components 1.0
 import "Core"
 import "Core/calculator.js" as CalcEngine
 
-Rectangle {
+Window {
     id: top
     state: "landscape"
-
-    width: parent.width;
-    height: parent.height - status.height;
-    color: "#282828"
 
     property string rotateLeft: "\u2939"
     property string rotateRight: "\u2935"
@@ -60,15 +56,13 @@ Rectangle {
     property string squareRoot : "\u221a"
     property string plusminus : "\u00b1"
 
+    portrait: false;
+
     function doOp(operation) { CalcEngine.doOperation(operation) }
 
-    StatusBar {
-        id: status
-        orientation: StatusBar.Landscape;
-    }
     Item {
         id: main
-        width: parent.width; height: parent.height - status.height; y: status.height;
+        width: parent.clientWidth; height: parent.clientHeight; x: parent.clientX; y: parent.clientY;
 
         Column {
             id: box; spacing: 8
