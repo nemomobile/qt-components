@@ -24,44 +24,34 @@
 **
 ****************************************************************************/
 
-#include <QtDeclarative>
-#include <QScopedPointer>
+#ifndef MDECLARATIVEPIXMAP_H
+#define MDECLARATIVEPIXMAP_H
 
-#include "mcomponentdata.h"
-#include "mdeclarativescalableimage.h"
-#include "mdeclarativebackground.h"
-#include "mdeclarativepixmap.h"
-#include "mstylewrapper.h"
+#include "mdeclarativeprimitive.h"
 
-class MeegoTouchPlugin : public QDeclarativeExtensionPlugin
+class QPixmap;
+
+class MDeclarativePixmap : public MDeclarativePrimitive
 {
     Q_OBJECT
+
+    Q_PROPERTY(QString imageProperty READ imageProperty WRITE setImageProperty);
+
 public:
-    void initializeEngine(QDeclarativeEngine *engine, const char *uri) {
-        QDeclarativeExtensionPlugin::initializeEngine(engine, uri);
+    MDeclarativePixmap(QDeclarativeItem *parent = 0);
+    virtual ~MDeclarativePixmap();
 
-        // This is a workaround because we can't use a default
-        // constructor for MComponentData
-        int argc = 1;
-        char *argv0 = "meegotouch";
-        componentData.reset(new MComponentData(argc, &argv0));
-    }
+    QString imageProperty() const;
+    void setImageProperty(const QString &image);
 
-    void registerTypes(const char *uri) {
-//        Q_ASSERT(uri == QLatin1String("MeegoTouch"));
-        // Custom primitives
-        qmlRegisterType<MDeclarativeScalableImage>(uri, 1, 0, "ScalableImage");
-        qmlRegisterType<MDeclarativePixmap>(uri, 1, 0, "Pixmap");
-        qmlRegisterType<MDeclarativeBackground>(uri, 1, 0, "Background");
+protected:
+    virtual void clearStyleData();
+    virtual void fetchStyleData(const MWidgetStyleContainer &styleContainer);
+    virtual bool hasPendingPixmap();
+    virtual void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 
-        // Theme info
-        qmlRegisterType<MStyleWrapper>(uri, 1, 0, "Style");
-    }
-
-private:
-    QScopedPointer<MComponentData> componentData;
+    QString m_imageProperty;
+    const QPixmap *m_pixmap;
 };
 
-#include "plugin.moc"
-
-Q_EXPORT_PLUGIN2(meegotouchplugin, MeegoTouchPlugin);
+#endif //MDECLARATIVEPIXMAP_H
