@@ -57,6 +57,7 @@ public:
         None = 0,
         Button,
         GroupButton,
+        CheckBox,
         Slider
     };
 

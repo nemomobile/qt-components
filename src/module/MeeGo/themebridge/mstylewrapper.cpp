@@ -29,6 +29,7 @@
 #include <QVariant>
 #include <mwidgetstyle.h>
 #include <mbuttonstyle.h>
+#include <mcheckboxstyle.h>
 #include <msliderstyle.h>
 
 MStyleWrapper::MStyleWrapper(QObject *parent)
@@ -87,23 +88,26 @@ void MStyleWrapper::setStyleType(const StyleType styletype)
     MStyleContainer *oldStyleContainer = m_stylecontainer;
     m_stylecontainer = 0;
 
+    const char *viewtype = "";
+
     switch (m_styletype) {
     case Button:
         m_stylecontainer = new MButtonStyleContainer();
-        m_stylecontainer->initialize("", "", 0);
         break;
     case GroupButton:
         m_stylecontainer = new MButtonStyleContainer();
-        m_stylecontainer->initialize("", "group", 0);
+        viewtype = "group";
+        break;
+    case CheckBox:
+        m_stylecontainer = new MCheckboxStyleContainer();
         break;
     case Slider:
         m_stylecontainer = new MSliderStyleContainer();
-        m_stylecontainer->initialize("", "", 0);
         break;
     default:
         m_stylecontainer = new MWidgetStyleContainer();
-        m_stylecontainer->initialize("", "", 0);
     }
+    m_stylecontainer->initialize("", viewtype, 0);
 
     updateStyleMode();
     delete oldStyleContainer;
