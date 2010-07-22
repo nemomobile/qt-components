@@ -64,6 +64,7 @@ Rectangle {
 
     StatusBar {
         id: status
+        orientation: StatusBar.Landscape;
     }
     Item {
         id: main

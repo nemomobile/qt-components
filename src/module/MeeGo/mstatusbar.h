@@ -33,10 +33,20 @@ class QDBusPendingCallWatcher;
 class MDeclarativeStatusBar : public QDeclarativeItem
 {
     Q_OBJECT
+    Q_PROPERTY(Orientation orientation READ orientation WRITE setOrientation NOTIFY orientationChanged)
+    Q_ENUMS(Orientation)
 
 public:
     MDeclarativeStatusBar(QDeclarativeItem *parent = 0);
     virtual ~MDeclarativeStatusBar();
+
+    enum Orientation {
+        Portrait,
+        Landscape
+    };
+
+    void setOrientation(Orientation o);
+    Orientation orientation() const;
 
     virtual void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 
@@ -68,6 +78,11 @@ private:
 
     QPixmap sharedPixmap;
     Qt::HANDLE pixmapDamage;
+
+    Orientation mOrientation;
+
+Q_SIGNALS:
+    void orientationChanged();
 
 public Q_SLOTS:
     void enablePixmapUpdates();
