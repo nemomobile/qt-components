@@ -27,18 +27,16 @@
 import Qt 4.7
 import Qt.labs.components 1.0
 
-Rectangle {
+WindowBase {
     property int clientX : 0;
     property alias clientY: statusbar.height;
     property int clientWidth: width;
     property int clientHeight: height - statusbar.height;
 
-    property bool portrait : true;
-
-    color: "black";
+//    color: "black";
 
     StatusBar {
         id: statusbar;
-        orientation: parent.portrait ? StatusBar.Portrait : StatusBar.Landscape;
+        orientation: parent.orientation;
     }
 }

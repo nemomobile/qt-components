@@ -56,7 +56,7 @@ Window {
     property string squareRoot : "\u221a"
     property string plusminus : "\u00b1"
 
-    portrait: false;
+    orientation: WindowBase.Landscape;
 
     function doOp(operation) { CalcEngine.doOperation(operation) }
 
