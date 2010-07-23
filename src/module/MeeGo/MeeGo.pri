@@ -4,8 +4,11 @@ INCLUDEPATH += $$PWD
 
 QT += dbus
 
-SOURCES += MeeGo/mstatusbar.cpp
-HEADERS += MeeGo/mstatusbar.h
+SOURCES += \
+    MeeGo/mdeclarativestatusbar.cpp
+
+HEADERS += \
+    MeeGo/mdeclarativestatusbar.h
 
 QML_FILES = \
         MeeGo/qmldir \

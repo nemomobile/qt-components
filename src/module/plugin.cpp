@@ -36,7 +36,7 @@
 #include "qmxbuttongroup.h"
 #endif
 #ifdef Q_COMPONENTS_MEEGO
-#include "mstatusbar.h"
+#include "mdeclarativestatusbar.h"
 #endif
 
 class QtComponentsPlugin : public QDeclarativeExtensionPlugin
