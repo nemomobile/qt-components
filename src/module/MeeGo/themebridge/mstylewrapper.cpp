@@ -113,6 +113,30 @@ void MStyleWrapper::setStyleType(const StyleType styletype)
     delete oldStyleContainer;
 }
 
+int MStyleWrapper::preferredWidth() const
+{
+    if (!m_stylecontainer)
+        return 0;
+
+    const int min = (*m_stylecontainer)->minimumSize().width();
+    const int pref = (*m_stylecontainer)->preferredSize().width();
+    const int max = (*m_stylecontainer)->maximumSize().width();
+
+    return qBound(min, pref, max);
+}
+
+int MStyleWrapper::preferredHeight() const
+{
+    if (!m_stylecontainer)
+        return 0;
+
+    const int min = (*m_stylecontainer)->minimumSize().height();
+    const int pref = (*m_stylecontainer)->preferredSize().height();
+    const int max = (*m_stylecontainer)->maximumSize().height();
+
+    return qBound(min, pref, max);
+}
+
 QColor MStyleWrapper::textColor() const
 {
     if (!m_stylecontainer)

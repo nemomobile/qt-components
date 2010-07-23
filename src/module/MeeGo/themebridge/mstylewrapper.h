@@ -43,6 +43,8 @@ class MStyleWrapper : public QObject
     Q_PROPERTY(StyleType styleType READ styleType WRITE setStyleType)
 
     // To expose data from current StyleContainer
+    Q_PROPERTY(int preferredWidth READ preferredWidth NOTIFY modeChanged)
+    Q_PROPERTY(int preferredHeight READ preferredHeight NOTIFY modeChanged)
     Q_PROPERTY(QColor textColor READ textColor NOTIFY modeChanged)
 
     // XXX Were not "MStyleContainer::currentStyle()" private, we could consider
@@ -67,6 +69,8 @@ public:
     StyleType styleType() const;
     void setStyleType(const StyleType styleType);
 
+    int preferredWidth() const;
+    int preferredHeight() const;
     QColor textColor() const;
 
     const MWidgetStyleContainer *styleContainer() const;
