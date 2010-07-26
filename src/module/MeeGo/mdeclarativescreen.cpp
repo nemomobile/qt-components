@@ -108,14 +108,14 @@ void MDeclarativeScreenPrivate::initContextSubscriber()
 void MDeclarativeScreenPrivate::_q_isCoveredChanged()
 {
 #ifdef HAVE_CONTEXTSUBSCRIBER
-    bool covered = isCoveredProperty.value().toBool();
+//    bool covered = isCoveredProperty.value().toBool();
 
-    if (isCovered != covered) {
-        qDebug() << "MDeclarativeScreenPrivate" << "Covered:" << covered;
+//    if (isCovered != covered) {
+//        qDebug() << "MDeclarativeScreenPrivate" << "Covered:" << covered;
 
-        isCovered = covered;
-        emit q->coveredChanged();
-    }
+//        isCovered = covered;
+//        emit q->coveredChanged();
+//    }
 #endif
 }
 
@@ -276,6 +276,11 @@ void MDeclarativeScreen::setOrientationLocked(bool locked)
 
     d->orientationLocked = locked;
     emit orientationLockedChanged();
+}
+
+bool MDeclarativeScreen::isCovered() const
+{
+    return d->isCovered;
 }
 
 #include "moc_mdeclarativescreen.cpp"
