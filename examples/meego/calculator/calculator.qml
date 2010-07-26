@@ -133,22 +133,22 @@ Window {
         states: [
             State {
                 name: 'portrait'
-                PropertyChanges { target: window; orientation: Orientation.Portrait; }
+                PropertyChanges { target: top; orientation: WindowBase.Portrait; }
                 PropertyChanges { target: rotateButton; operation: rotateRight }
             },
             State {
                 name: 'landscape'
-                PropertyChanges { target: window; orientation: Orientation.Landscape; }
+                PropertyChanges { target: top; orientation: WindowBase.Landscape; }
                 PropertyChanges { target: rotateButton; operation: rotateLeft }
             }
         ]
 
-        transitions: Transition {
-            SequentialAnimation {
-                PropertyAction { target: rotateButton; property: "operation" }
-                NumberAnimation { properties: "rotation"; duration: 300; easing.type: Easing.InOutQuint }
-                NumberAnimation { properties: "x,y,width,height"; duration: 300; easing.type: Easing.InOutQuint }
-            }
-        }
+//        transitions: Transition {
+//            SequentialAnimation {
+//                PropertyAction { target: rotateButton; property: "operation" }
+//                NumberAnimation { properties: "rotation"; duration: 300; easing.type: Easing.InOutQuint }
+//                NumberAnimation { properties: "x,y,width,height"; duration: 300; easing.type: Easing.InOutQuint }
+//            }
+//        }
     }
 }
