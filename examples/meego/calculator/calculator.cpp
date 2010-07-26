@@ -26,10 +26,12 @@
 
 #include <qapplication.h>
 #include "qdeclarativewindow.h"
+#include <qdir.h>
 
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
+    QDir::setCurrent(app.applicationDirPath());
 
     QDeclarativeWindow window(QUrl::fromLocalFile("calculator.qml"));
 
