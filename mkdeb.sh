@@ -23,7 +23,7 @@ mkdir -p "usr/lib"
 cp -ar ../lib/* usr/lib
 
 mkdir -p usr/imports/Qt/labs/components
-cp -ar /usr/lib/qt4/imports/Qt/labs/components/* usr/imports/Qt/labs/components
+cp -ar /usr/lib/qt4/imports/Qt/labs/components/* usr/lib/qt4/imports/Qt/labs/components
 
 mkdir -p opt/qt-components
 
