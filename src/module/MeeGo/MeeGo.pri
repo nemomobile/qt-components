@@ -19,7 +19,7 @@ HEADERS += \
     MeeGo/mdeclarativestatusbar.h \
     MeeGo/mdeclarativewindow.h
 
-QML_FILES = \
+OTHER_FILES = \
         MeeGo/qmldir \
         Mx/Button.qml    \
         Mx/Common.qml    \
@@ -116,4 +116,4 @@ QML_IMAGES += \
     Mx/images/toolbar-button-hover.png \
     Mx/images/tooltip-background.png
 
-OTHER_FILES += QML_FILES
+QML_FILES += QML_FILES
