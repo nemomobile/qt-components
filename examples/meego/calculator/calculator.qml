@@ -61,7 +61,6 @@ Screen {
 
     window: Window {
         id: main
-        state: "Landscape"
 
         Item {
             y: parent.clientY;
@@ -134,25 +133,5 @@ Screen {
                 }
             }
         }
-        states: [
-            State {
-                name: 'Portrait'
-                PropertyChanges { target: screen; orientation: Screen.Portrait; }
-                PropertyChanges { target: rotateButton; operation: rotateRight }
-            },
-            State {
-                name: 'Landscape'
-                PropertyChanges { target: screen; orientation: Screen.Landscape; }
-                PropertyChanges { target: rotateButton; operation: rotateLeft }
-            }
-        ]
-
-//        transitions: Transition {
-//            SequentialAnimation {
-//                PropertyAction { target: rotateButton; property: "operation" }
-//                NumberAnimation { properties: "rotation"; duration: 300; easing.type: Easing.InOutQuint }
-//                NumberAnimation { properties: "x,y,width,height"; duration: 300; easing.type: Easing.InOutQuint }
-//            }
-//        }
     }
 }

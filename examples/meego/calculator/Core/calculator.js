@@ -84,9 +84,13 @@ function doOperation(op) {
         display.text ="0"
     }
 
-    if (op == rotateLeft)
-        main.state = 'Portrait'
-    if (op == rotateRight)
-        main.state = 'Landscape'
+    if (op == rotateLeft) {
+        screen.orientation = 'Portrait'
+        rotateButton.operation = rotateRight;
+    }
+    if (op == rotateRight) {
+        screen.orientation = 'Landscape'
+        rotateButton.operation = rotateLeft;
+    }
 }
 
