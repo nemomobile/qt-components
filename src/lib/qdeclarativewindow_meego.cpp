@@ -35,8 +35,6 @@
 #include <MTheme>
 #include <QtDeclarative>
 
-#include "qwindowobject_p.h"
-
 class QDeclarativeWindowPrivate
 {
 public:
@@ -45,7 +43,6 @@ public:
     void execute();
 
     QDeclarativeWindow *q;
-    QWindowObject *windowObject;
 
     QGraphicsView *view;
     QGraphicsScene scene;
@@ -58,7 +55,7 @@ public:
 };
 
 QDeclarativeWindowPrivate::QDeclarativeWindowPrivate(QDeclarativeWindow *qq)
-    : q(qq), windowObject(0), view(0), component(0)
+    : q(qq), view(0), component(0)
 {
     qApp->setProperty("NoMStyle", true);
     if(!MComponentData::instance()) {
@@ -85,12 +82,6 @@ QDeclarativeWindowPrivate::QDeclarativeWindowPrivate(QDeclarativeWindow *qq)
     view->setFocusPolicy(Qt::StrongFocus);
 
     scene.setStickyFocus(true);  //### needed for correct focus handling
-
-    windowObject = new QWindowObject(q);
-
-    QDeclarativeContext *ctxt = engine.rootContext();
-    ctxt->setContextProperty("window", windowObject);
-    qmlRegisterUncreatableType<QWindowObject>("Qt",4,7,"Orientation","");
 }
 
 
