@@ -37,7 +37,7 @@
 #endif
 #ifdef Q_COMPONENTS_MEEGO
 #include "mdeclarativestatusbar.h"
-#include "mdeclarativewindow.h"
+#include "mdeclarativescreen.h"
 #endif
 
 class QtComponentsPlugin : public QDeclarativeExtensionPlugin
@@ -77,7 +77,7 @@ public:
 
 #ifdef Q_COMPONENTS_MEEGO
         qmlRegisterType<MDeclarativeStatusBar>(uri, 1, 0, "StatusBar");
-        qmlRegisterType<MDeclarativeWindow>(uri, 1, 0, "WindowBase");
+        qmlRegisterType<MDeclarativeScreen>(uri, 1, 0, "Screen");
 #endif
     }
 };

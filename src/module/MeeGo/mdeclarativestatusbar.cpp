@@ -91,7 +91,7 @@ static bool x11EventFilter(void *message, long *)
 MDeclarativeStatusBar::MDeclarativeStatusBar(QDeclarativeItem *parent) :
     QDeclarativeItem(parent),
     updatesEnabled(true),
-    mOrientation(MDeclarativeWindow::Portrait)
+    mOrientation(MDeclarativeScreen::Portrait)
 {
     setFlag(QGraphicsItem::ItemHasNoContents, false);
 
@@ -135,7 +135,7 @@ void MDeclarativeStatusBar::paint(QPainter *painter, const QStyleOptionGraphicsI
         return;
 
     QRectF sourceRect;
-    if (mOrientation == MDeclarativeWindow::Landscape) {
+    if (mOrientation == MDeclarativeScreen::Landscape) {
         sourceRect.setX(0);
         sourceRect.setY(0);
         sourceRect.setWidth(width());
@@ -256,7 +256,7 @@ void MDeclarativeStatusBar::playHapticsFeedback()
 
 
 
-void MDeclarativeStatusBar::setOrientation(MDeclarativeWindow::Orientation o)
+void MDeclarativeStatusBar::setOrientation(MDeclarativeScreen::Orientation o)
 {
     if (mOrientation != o) {
         mOrientation = o;
@@ -265,7 +265,7 @@ void MDeclarativeStatusBar::setOrientation(MDeclarativeWindow::Orientation o)
     }
 }
 
-MDeclarativeWindow::Orientation MDeclarativeStatusBar::orientation() const
+MDeclarativeScreen::Orientation MDeclarativeStatusBar::orientation() const
 {
     return mOrientation;
 }

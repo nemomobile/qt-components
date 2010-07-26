@@ -24,27 +24,30 @@
 **
 ****************************************************************************/
 
-#ifndef MDECLARATIVEWINDOW_H
-#define MDECLARATIVEWINDOW_H
+#ifndef MDECLARATIVESCREEN_H
+#define MDECLARATIVESCREEN_H
 
 #include <qdeclarativeitem.h>
 #include <qglobal.h>
 
-class MDeclarativeWindowPrivate;
+class MDeclarativeScreenPrivate;
 
-class MDeclarativeWindow : public QDeclarativeItem
+class MDeclarativeScreen : public QDeclarativeItem
 {
     Q_OBJECT
+
+    Q_PROPERTY(QDeclarativeItem * window READ window WRITE setWindow NOTIFY windowChanged FINAL )
+
 //    Q_PROPERTY(bool isActiveWindow READ isActiveWindow NOTIFY isActiveWindowChanged)
-    Q_PROPERTY(Orientation orientation READ orientation WRITE setOrientation NOTIFY orientationChanged)
-    Q_PROPERTY(bool orientationLocked READ isOrientationLocked WRITE setOrientationLocked NOTIFY orientationLockedChanged)
-    Q_PROPERTY(bool covered READ isCovered NOTIFY coveredChanged)
+    Q_PROPERTY(Orientation orientation READ orientation WRITE setOrientation NOTIFY orientationChanged FINAL)
+    Q_PROPERTY(bool orientationLocked READ isOrientationLocked WRITE setOrientationLocked NOTIFY orientationLockedChanged FINAL)
+    Q_PROPERTY(bool covered READ isCovered NOTIFY coveredChanged FINAL)
 
     Q_ENUMS(Orientation)
 
 public:
-    MDeclarativeWindow(QDeclarativeItem *parent = 0);
-    virtual ~MDeclarativeWindow();
+    MDeclarativeScreen(QDeclarativeItem *parent = 0);
+    virtual ~MDeclarativeScreen();
 
 //    bool isActiveWindow() const;
 //    void setActiveWindow(bool active);
@@ -64,20 +67,26 @@ public:
 
     bool isCovered() const;
 
+    QDeclarativeItem *window() const;
+    void setWindow(QDeclarativeItem *window);
+
 Q_SIGNALS:
+    void windowChanged();
+
 //    void isActiveWindowChanged();
     void orientationChanged();
     void orientationLockedChanged();
     void coveredChanged();
 
 private:
-    Q_DISABLE_COPY(MDeclarativeWindow)
+    Q_DISABLE_COPY(MDeclarativeScreen)
     Q_PRIVATE_SLOT(d, void _q_isCoveredChanged())
     Q_PRIVATE_SLOT(d, void _q_updateOrientationAngle())
+    Q_PRIVATE_SLOT(d, void _q_setOrientationHelper())
 
-    friend class MDeclarativeWindowPrivate;
-    MDeclarativeWindowPrivate *d;
+    friend class MDeclarativeScreenPrivate;
+    MDeclarativeScreenPrivate *d;
 };
 
-QML_DECLARE_TYPE(MDeclarativeWindow)
+QML_DECLARE_TYPE(MDeclarativeScreen)
 #endif

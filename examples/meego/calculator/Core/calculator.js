@@ -73,7 +73,8 @@ function doOperation(op) {
     } else if (op == "m-") {
         memory = display.text.valueOf()
     } else if (op == leftArrow) {
-        display.text = display.text.toString().slice(0, -1)
+        main.statusbarVisible = !main.statusbarVisible;
+//        display.text = display.text.toString().slice(0, -1)
     } else if (op == "C") {
         display.text = "0"
     } else if (op == "AC") {
@@ -84,8 +85,8 @@ function doOperation(op) {
     }
 
     if (op == rotateLeft)
-        main.state = 'portrait'
+        main.state = 'Portrait'
     if (op == rotateRight)
-        main.state = ''
+        main.state = 'Landscape'
 }
 

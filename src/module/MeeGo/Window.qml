@@ -27,16 +27,29 @@
 import Qt 4.7
 import Qt.labs.components 1.0
 
-WindowBase {
-    property int clientX : 0;
-    property alias clientY: statusbar.height;
-    property int clientWidth: width;
-    property int clientHeight: height - statusbar.height;
+Rectangle {
+    color: "black";
 
-//    color: "black";
+    property double clientY: statusbar.y + statusbar.height;
+    property bool statusbarVisible: true
 
     StatusBar {
         id: statusbar;
-        orientation: parent.orientation;
+
+        orientation: parent.parent.orientation;
+
+        states: State {
+                name: 'hidden';
+                when:  (statusbar.parent.statusbarVisible == false);
+                PropertyChanges { target: statusbar; y: -statusbar.height; }
+                PropertyChanges { target: statusbar; opacity: 0; }
+        }
+
+        transitions: Transition {
+            SequentialAnimation {
+                NumberAnimation { target: statusbar; properties: "y,opacity"; duration: 300; easing.type: Easing.InOutQuad }
+            }
+        }
+
     }
 }

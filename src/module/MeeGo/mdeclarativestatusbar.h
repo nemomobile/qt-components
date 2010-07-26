@@ -28,7 +28,7 @@
 #define MDeclarativeStatusBar_H
 
 #include <qdeclarativeitem.h>
-#include <mdeclarativewindow.h>
+#include <mdeclarativescreen.h>
 #include <qglobal.h>
 
 class QPixmap;
@@ -41,14 +41,14 @@ class QDBusPendingCallWatcher;
 class MDeclarativeStatusBar : public QDeclarativeItem
 {
     Q_OBJECT
-    Q_PROPERTY(MDeclarativeWindow::Orientation orientation READ orientation WRITE setOrientation NOTIFY orientationChanged)
+    Q_PROPERTY(MDeclarativeScreen::Orientation orientation READ orientation WRITE setOrientation NOTIFY orientationChanged)
 
 public:
     MDeclarativeStatusBar(QDeclarativeItem *parent = 0);
     virtual ~MDeclarativeStatusBar();
 
-    void setOrientation(MDeclarativeWindow::Orientation o);
-    MDeclarativeWindow::Orientation orientation() const;
+    void setOrientation(MDeclarativeScreen::Orientation o);
+    MDeclarativeScreen::Orientation orientation() const;
 
     virtual void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 
@@ -81,7 +81,7 @@ private:
     QPixmap sharedPixmap;
     Qt::HANDLE pixmapDamage;
 
-    MDeclarativeWindow::Orientation mOrientation;
+    MDeclarativeScreen::Orientation mOrientation;
 
 Q_SIGNALS:
     void orientationChanged();

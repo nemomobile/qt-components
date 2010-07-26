@@ -44,9 +44,10 @@ import Qt.labs.components 1.0
 import "Core"
 import "Core/calculator.js" as CalcEngine
 
-Window {
-    id: top
-    state: "landscape"
+
+Screen {
+    id: screen
+    orientation: Screen.Landscape;
 
     property string rotateLeft: "\u2939"
     property string rotateRight: "\u2935"
@@ -56,89 +57,92 @@ Window {
     property string squareRoot : "\u221a"
     property string plusminus : "\u00b1"
 
-    orientation: WindowBase.Landscape;
-
     function doOp(operation) { CalcEngine.doOperation(operation) }
 
-    Item {
+    window: Window {
         id: main
-        width: parent.clientWidth; height: parent.clientHeight; x: parent.clientX; y: parent.clientY;
+        state: "Landscape"
 
-        Column {
-            id: box; spacing: 8
-
-            anchors { fill: parent; topMargin: 6; bottomMargin: 6; leftMargin: 6; rightMargin: 6 }
-
-            Row {
-                Display { id: display; width: box.width; height: 64 }
-            }
+        Item {
+            y: parent.clientY;
+            height: parent.height - y;
+            width: parent.width;
 
             Column {
-                id: column; spacing: 6
+                id: box; spacing: 8
 
-                property real h: ((box.height - 72) / 6) - ((spacing * (6 - 1)) / 6)
-                property real w: (box.width / 4) - ((spacing * (4 - 1)) / 4)
+                anchors { fill: parent; topMargin: 6; bottomMargin: 6; leftMargin: 6; rightMargin: 6 }
 
                 Row {
-                    spacing: 6
-
-                    Button {
-                        id: rotateButton
-                        width: column.w; height: column.h; color: 'purple'; operation: rotateLeft
-                    }
-                    Button { width: column.w; height: column.h; color: 'purple'; operation: leftArrow }
-                    Button { width: column.w; height: column.h; color: 'purple'; operation: "C" }
-                    Button { width: column.w; height: column.h; color: 'purple'; operation: "AC" }
+                    Display { id: display; width: box.width; height: 64 }
                 }
 
-                Row {
-                    spacing: 6
+                Column {
+                    id: column; spacing: 6
+
+                    property real h: ((box.height - 72) / 6) - ((spacing * (6 - 1)) / 6)
                     property real w: (box.width / 4) - ((spacing * (4 - 1)) / 4)
 
-                    Button { width: column.w; height: column.h; color: 'green'; operation: "mc" }
-                    Button { width: column.w; height: column.h; color: 'green'; operation: "m+" }
-                    Button { width: column.w; height: column.h; color: 'green'; operation: "m-" }
-                    Button { width: column.w; height: column.h; color: 'green'; operation: "mr" }
-                }
+                    Row {
+                        spacing: 6
 
-                Grid {
-                    id: grid; rows: 4; columns: 5; spacing: 6
+                        Button {
+                            id: rotateButton
+                            width: column.w; height: column.h; color: 'purple'; operation: rotateLeft
+                        }
+                        Button { width: column.w; height: column.h; color: 'purple'; operation: leftArrow }
+                        Button { width: column.w; height: column.h; color: 'purple'; operation: "C" }
+                        Button { width: column.w; height: column.h; color: 'purple'; operation: "AC" }
+                    }
 
-                    property real w: (box.width / columns) - ((spacing * (columns - 1)) / columns)
+                    Row {
+                        spacing: 6
+                        property real w: (box.width / 4) - ((spacing * (4 - 1)) / 4)
 
-                    Button { width: grid.w; height: column.h; operation: "7"; color: 'blue' }
-                    Button { width: grid.w; height: column.h; operation: "8"; color: 'blue' }
-                    Button { width: grid.w; height: column.h; operation: "9"; color: 'blue' }
-                    Button { width: grid.w; height: column.h; operation: division }
-                    Button { width: grid.w; height: column.h; operation: squareRoot }
-                    Button { width: grid.w; height: column.h; operation: "4"; color: 'blue' }
-                    Button { width: grid.w; height: column.h; operation: "5"; color: 'blue' }
-                    Button { width: grid.w; height: column.h; operation: "6"; color: 'blue' }
-                    Button { width: grid.w; height: column.h; operation: multiplication }
-                    Button { width: grid.w; height: column.h; operation: "x^2" }
-                    Button { width: grid.w; height: column.h; operation: "1"; color: 'blue' }
-                    Button { width: grid.w; height: column.h; operation: "2"; color: 'blue' }
-                    Button { width: grid.w; height: column.h; operation: "3"; color: 'blue' }
-                    Button { width: grid.w; height: column.h; operation: "-" }
-                    Button { width: grid.w; height: column.h; operation: "1/x" }
-                    Button { width: grid.w; height: column.h; operation: "0"; color: 'blue' }
-                    Button { width: grid.w; height: column.h; operation: "." }
-                    Button { width: grid.w; height: column.h; operation: plusminus }
-                    Button { width: grid.w; height: column.h; operation: "+" }
-                    Button { width: grid.w; height: column.h; operation: "="; color: 'red' }
+                        Button { width: column.w; height: column.h; color: 'green'; operation: "mc" }
+                        Button { width: column.w; height: column.h; color: 'green'; operation: "m+" }
+                        Button { width: column.w; height: column.h; color: 'green'; operation: "m-" }
+                        Button { width: column.w; height: column.h; color: 'green'; operation: "mr" }
+                    }
+
+                    Grid {
+                        id: grid; rows: 4; columns: 5; spacing: 6
+
+                        property real w: (box.width / columns) - ((spacing * (columns - 1)) / columns)
+
+                        Button { width: grid.w; height: column.h; operation: "7"; color: 'blue' }
+                        Button { width: grid.w; height: column.h; operation: "8"; color: 'blue' }
+                        Button { width: grid.w; height: column.h; operation: "9"; color: 'blue' }
+                        Button { width: grid.w; height: column.h; operation: division }
+                        Button { width: grid.w; height: column.h; operation: squareRoot }
+                        Button { width: grid.w; height: column.h; operation: "4"; color: 'blue' }
+                        Button { width: grid.w; height: column.h; operation: "5"; color: 'blue' }
+                        Button { width: grid.w; height: column.h; operation: "6"; color: 'blue' }
+                        Button { width: grid.w; height: column.h; operation: multiplication }
+                        Button { width: grid.w; height: column.h; operation: "x^2" }
+                        Button { width: grid.w; height: column.h; operation: "1"; color: 'blue' }
+                        Button { width: grid.w; height: column.h; operation: "2"; color: 'blue' }
+                        Button { width: grid.w; height: column.h; operation: "3"; color: 'blue' }
+                        Button { width: grid.w; height: column.h; operation: "-" }
+                        Button { width: grid.w; height: column.h; operation: "1/x" }
+                        Button { width: grid.w; height: column.h; operation: "0"; color: 'blue' }
+                        Button { width: grid.w; height: column.h; operation: "." }
+                        Button { width: grid.w; height: column.h; operation: plusminus }
+                        Button { width: grid.w; height: column.h; operation: "+" }
+                        Button { width: grid.w; height: column.h; operation: "="; color: 'red' }
+                    }
                 }
             }
         }
-
         states: [
             State {
-                name: 'portrait'
-                PropertyChanges { target: top; orientation: WindowBase.Portrait; }
+                name: 'Portrait'
+                PropertyChanges { target: screen; orientation: Screen.Portrait; }
                 PropertyChanges { target: rotateButton; operation: rotateRight }
             },
             State {
-                name: 'landscape'
-                PropertyChanges { target: top; orientation: WindowBase.Landscape; }
+                name: 'Landscape'
+                PropertyChanges { target: screen; orientation: Screen.Landscape; }
                 PropertyChanges { target: rotateButton; operation: rotateLeft }
             }
         ]
