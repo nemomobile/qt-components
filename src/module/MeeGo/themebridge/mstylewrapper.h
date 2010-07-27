@@ -81,6 +81,9 @@ public:
 Q_SIGNALS:
     void modeChanged(const QString &newMode);
 
+protected Q_SLOTS:
+    void notifyProperties();
+
 protected:
     void updateStyleMode();
 

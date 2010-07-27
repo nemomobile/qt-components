@@ -27,6 +27,7 @@
 #include "mstylewrapper.h"
 
 #include <QVariant>
+#include <mtheme.h>
 #include <mwidgetstyle.h>
 #include <mbuttonstyle.h>
 #include <mcheckboxstyle.h>
@@ -35,6 +36,8 @@
 MStyleWrapper::MStyleWrapper(QObject *parent)
   : QObject(parent), m_mode("default"), m_styletype(None), m_stylecontainer(0)
 {
+    // Emit notifier signals for all properties we export
+    connect(MTheme::instance(), SIGNAL(themeChangeCompleted()), SLOT(notifyProperties()));
 }
 
 MStyleWrapper::~MStyleWrapper()
@@ -54,6 +57,14 @@ void MStyleWrapper::setMode(const QString &mode)
 
     m_mode = mode;
     updateStyleMode();
+}
+
+void MStyleWrapper::notifyProperties()
+{
+    // Notify each of the properties we export directly and also any
+    // primitives that might be accessing our data.
+    // Currently this signal handles it all.
+    emit modeChanged(m_mode);
 }
 
 void MStyleWrapper::updateStyleMode()
