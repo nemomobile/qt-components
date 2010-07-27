@@ -3,7 +3,7 @@ TARGET = QtComponents
 
 DESTDIR = $$OUT_PWD/../../lib
 
-QT += declarative
+QT += declarative opengl
 CONFIG += build_lib
 
 include(../../qt-components.pri)

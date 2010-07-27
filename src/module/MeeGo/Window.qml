@@ -28,15 +28,107 @@ import Qt 4.7
 import Qt.labs.components 1.0
 
 Rectangle {
+    id: window
     color: "black";
 
     property double clientY: statusbar.y + statusbar.height;
     property bool statusbarVisible: true
 
+    width: screen.width;
+    height: screen.height;
+    property alias orientation: screen.orientation;
+
+    Snapshot {
+        id: snapshot;
+        anchors.centerIn: parent;
+    }
+
+    Screen {
+        id : screen;
+
+
+        onOrientationChanged: {
+
+            if (window.rotation == 0 && rotation == 270)
+                window.rotation = 360;
+            if (window.rotation == 270 && rotation == 0)
+                window.rotation = -90;
+            var delta = window.rotation - rotation;
+            // normalize to -90...180
+            if (delta <= -180) {
+                window.rotation += 360;
+                delta += 360;
+            } else if (delta > 180) {
+                window.rotation -= 360;
+                delta -= 360;
+            }
+
+            if (Math.abs(delta) < 100) {
+                // no need to take a snapshot for 180 degrees
+                snapshot.take();
+                snapshot.opacity = 1;
+                snapshot.rotation = -window.rotation;
+                window.opacity = 0;
+            }
+
+            if (orientation == Screen.Landscape || orientation == Screen.LandscapeInverted) {
+                window.width = width;
+                window.height= height;
+                window.x = 0;
+                window.y = 0;
+            } else {
+                window.width = height;
+                window.height= width;
+                window.x = (width - height)/2;
+                window.y = -(width - height)/2;
+            }
+
+            if (orientation == Screen.Portrait)
+                state = "Portrait";
+            else if (orientation == Screen.Landscape)
+                state = "Landscape";
+            if (orientation == Screen.PortraitInverted)
+                state = "Portrait";
+            else if (orientation == Screen.LandscapeInverted)
+                state = "LandscapeInverted";
+        }
+        states:  [
+            State {
+                name: "Landscape"
+                PropertyChanges { target: window; rotation : 0 }
+            },
+            State {
+                name: "LandscapeInverted"
+                PropertyChanges { target: window; rotation : 180 }
+            },
+            State {
+                name: "Portrait"
+                PropertyChanges { target: window; rotation : 270 }
+            },
+            State {
+                name: "PortraitInverted"
+                PropertyChanges { target: window; rotation : 90 }
+            }
+        ]
+
+        transitions: Transition {
+            SequentialAnimation {
+                ParallelAnimation {
+                    NumberAnimation { target: window; property: "opacity"; to: 1; duration: 300 }
+                    NumberAnimation { target: snapshot; property: "opacity"; to: 0; duration: 300 }
+                    PropertyAnimation { target: window; properties: "rotation"; easing.type: Easing.InOutQuad; duration: 300 }
+                }
+                ScriptAction { script: snapshot.free(); }
+            }
+        }
+    }
+
+
     StatusBar {
         id: statusbar;
 
-        orientation: parent.parent.orientation;
+        width: parent.width;
+        orientation: screen.orientation;
 
         states: State {
                 name: 'hidden';

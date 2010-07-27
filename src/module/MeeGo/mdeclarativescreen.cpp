@@ -46,7 +46,7 @@ public:
 
     MDeclarativeScreen *q;
 
-    QPointer<QDeclarativeItem> window;
+//    QPointer<QDeclarativeItem> window;
 
     MDeclarativeScreen::Orientation orientation;
     bool orientationLocked;
@@ -60,7 +60,7 @@ public:
 
 MDeclarativeScreenPrivate::MDeclarativeScreenPrivate(MDeclarativeScreen *qq)
         : q(qq)
-        , window(0)
+//        , window(0)
         , orientation(MDeclarativeScreen::Portrait)
         , orientationLocked(false)
         , isCovered(false)
@@ -82,13 +82,12 @@ MDeclarativeScreenPrivate::MDeclarativeScreenPrivate(MDeclarativeScreen *qq)
     QObject::connect(q, SIGNAL(heightChanged()),
             q, SLOT(_q_setOrientationHelper()));
 #endif
-
     initContextSubscriber();
 }
 
 MDeclarativeScreenPrivate::~MDeclarativeScreenPrivate()
 {
-    delete window;
+//    delete window;
 }
 
 
@@ -174,6 +173,7 @@ void MDeclarativeScreenPrivate::_q_updateOrientationAngle()
 
 void MDeclarativeScreenPrivate::_q_setOrientationHelper()
 {
+#if 0
     if (!window)
         return;
 
@@ -214,6 +214,7 @@ void MDeclarativeScreenPrivate::_q_setOrientationHelper()
     window->setWidth(w);
     window->setHeight(h);
     window->setRotation(rotate);
+#endif
 }
 
 
@@ -228,25 +229,25 @@ MDeclarativeScreen::~MDeclarativeScreen()
     delete d;
 }
 
-QDeclarativeItem *MDeclarativeScreen::window() const
-{
-    return d->window;
-}
+//QDeclarativeItem *MDeclarativeScreen::window() const
+//{
+//    return d->window;
+//}
 
-void MDeclarativeScreen::setWindow(QDeclarativeItem *window)
-{
-    if (window == d->window)
-        return;
+//void MDeclarativeScreen::setWindow(QDeclarativeItem *window)
+//{
+//    if (window == d->window)
+//        return;
 
-    if (d->window)
-        delete d->window;
-    window->setParentItem(this);
-    d->window = window;
-    d->window->setTransformOrigin(TopLeft);
+//    if (d->window)
+//        delete d->window;
+//    window->setParentItem(this);
+//    d->window = window;
+//    d->window->setTransformOrigin(TopLeft);
 
-    d->_q_setOrientationHelper();
-    emit windowChanged();
-}
+//    d->_q_setOrientationHelper();
+//    emit windowChanged();
+//}
 
 
 void MDeclarativeScreen::setOrientation(Orientation o)
@@ -263,6 +264,27 @@ MDeclarativeScreen::Orientation MDeclarativeScreen::orientation() const
 {
     return d->orientation;
 }
+
+int MDeclarativeScreen::rotation() const
+{
+    int angle = 0;
+    switch (d->orientation) {
+    case Landscape:
+        angle = 0;
+        break;
+    case Portrait:
+        angle = 270;
+        break;
+    case LandscapeInverted:
+        angle = 180;
+        break;
+    case PortraitInverted:
+        angle = 90;
+        break;
+    }
+    return angle;
+}
+
 
 bool MDeclarativeScreen::isOrientationLocked() const
 {

@@ -42,6 +42,8 @@
 
 #include <X11/extensions/Xdamage.h>
 
+static const int STATUSBAR_HEIGHT = 30;
+
 static const QLatin1String PIXMAP_PROVIDER_DBUS_SERVICE("com.meego.core.MStatusBar");
 static const QLatin1String PIXMAP_PROVIDER_DBUS_PATH("/statusbar");
 static const QLatin1String PIXMAP_PROVIDER_DBUS_INTERFACE("com.meego.core.MStatusBar");
@@ -147,7 +149,6 @@ void MDeclarativeStatusBar::paint(QPainter *painter, const QStyleOptionGraphicsI
         sourceRect.setHeight(height());
     }
 
-    qWarning() << "drawing status bar" << sharedPixmap.size();
     painter->drawPixmap(QPointF(0.0, 0.0), sharedPixmap, sourceRect);
 }
 
@@ -213,7 +214,7 @@ void MDeclarativeStatusBar::sharedPixmapHandleReceived(QDBusPendingCallWatcher *
     quint32 tmp = reply;
     sharedPixmap = QPixmap::fromX11Pixmap(tmp, QPixmap::ExplicitlyShared);
     setImplicitWidth(sharedPixmap.size().width());
-    setImplicitHeight(sharedPixmap.size().height()/4);
+    setImplicitHeight(STATUSBAR_HEIGHT);
     updateSharedPixmap();
     call->deleteLater();
     scene()->update();

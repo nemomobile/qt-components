@@ -36,12 +36,15 @@ class MDeclarativeScreen : public QDeclarativeItem
 {
     Q_OBJECT
 
-    Q_PROPERTY(QDeclarativeItem * window READ window WRITE setWindow NOTIFY windowChanged FINAL )
+//    Q_PROPERTY(QDeclarativeItem * window READ window WRITE setWindow NOTIFY windowChanged FINAL )
 
 //    Q_PROPERTY(bool isActiveWindow READ isActiveWindow NOTIFY isActiveWindowChanged)
     Q_PROPERTY(Orientation orientation READ orientation WRITE setOrientation NOTIFY orientationChanged FINAL)
     Q_PROPERTY(bool orientationLocked READ isOrientationLocked WRITE setOrientationLocked NOTIFY orientationLockedChanged FINAL)
     Q_PROPERTY(bool covered READ isCovered NOTIFY coveredChanged FINAL)
+    Q_PROPERTY(int width READ width CONSTANT FINAL)
+    Q_PROPERTY(int height READ height CONSTANT FINAL)
+    Q_PROPERTY(int rotation READ rotation NOTIFY orientationChanged FINAL)
 
     Q_ENUMS(Orientation)
 
@@ -62,16 +65,22 @@ public:
     void setOrientation(Orientation o);
     Orientation orientation() const;
 
+    int rotation() const;
+
     bool isOrientationLocked() const;
     void setOrientationLocked(bool locked);
 
     bool isCovered() const;
 
-    QDeclarativeItem *window() const;
-    void setWindow(QDeclarativeItem *window);
+    // ####
+    int width() const { return 864; }
+    int height() const { return 480; }
+
+//    QDeclarativeItem *window() const;
+//    void setWindow(QDeclarativeItem *window);
 
 Q_SIGNALS:
-    void windowChanged();
+//    void windowChanged();
 
 //    void isActiveWindowChanged();
     void orientationChanged();

@@ -27,6 +27,7 @@
 #include "qdeclarativewindow.h"
 
 #include <QApplication>
+#include <qgl.h>
 #include <MApplicationPage>
 #include <MApplicationWindow>
 #include <MComponentData>
@@ -80,6 +81,8 @@ QDeclarativeWindowPrivate::QDeclarativeWindowPrivate(QDeclarativeWindow *qq)
     scene.setItemIndexMethod(QGraphicsScene::NoIndex);
     view->viewport()->setFocusPolicy(Qt::NoFocus);
     view->setFocusPolicy(Qt::StrongFocus);
+
+    view->setViewport(new QGLWidget);
 
     scene.setStickyFocus(true);  //### needed for correct focus handling
 }

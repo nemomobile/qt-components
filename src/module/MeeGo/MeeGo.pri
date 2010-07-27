@@ -13,11 +13,13 @@ QT += dbus
 
 SOURCES += \
     MeeGo/mdeclarativestatusbar.cpp \
-    MeeGo/mdeclarativescreen.cpp
+    MeeGo/mdeclarativescreen.cpp \
+    MeeGo/msnapshot.cpp
 
 HEADERS += \
     MeeGo/mdeclarativestatusbar.h \
-    MeeGo/mdeclarativescreen.h
+    MeeGo/mdeclarativescreen.h \
+    MeeGo/msnapshot.h
 
 QML_FILES = \
         MeeGo/qmldir \

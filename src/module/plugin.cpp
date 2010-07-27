@@ -38,6 +38,7 @@
 #ifdef Q_COMPONENTS_MEEGO
 #include "mdeclarativestatusbar.h"
 #include "mdeclarativescreen.h"
+#include "msnapshot.h"
 #endif
 
 class QtComponentsPlugin : public QDeclarativeExtensionPlugin
@@ -78,6 +79,7 @@ public:
 #ifdef Q_COMPONENTS_MEEGO
         qmlRegisterType<MDeclarativeStatusBar>(uri, 1, 0, "StatusBar");
         qmlRegisterType<MDeclarativeScreen>(uri, 1, 0, "Screen");
+        qmlRegisterType<MSnapshot>(uri, 1, 0, "Snapshot");
 #endif
     }
 };
