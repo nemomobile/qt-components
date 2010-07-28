@@ -39,6 +39,7 @@ MDeclarativePrimitive::MDeclarativePrimitive(QDeclarativeItem *parent) :
 
 MDeclarativePrimitive::~MDeclarativePrimitive()
 {
+    internalClearStyleData();
 }
 
 MStyleWrapper *MDeclarativePrimitive::style() const

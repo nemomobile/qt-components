@@ -10,12 +10,14 @@ SOURCES += plugin.cpp \
            mdeclarativeprimitive.cpp \
            mdeclarativescalableimage.cpp \
            mdeclarativepixmap.cpp \
+           mdeclarativeicon.cpp \
            mdeclarativebackground.cpp
 
 HEADERS += mstylewrapper.h \
            mdeclarativeprimitive.h \
            mdeclarativescalableimage.h \
            mdeclarativepixmap.h \
+           mdeclarativeicon.h \
            mdeclarativebackground.h
 
 OTHER_FILES += ../qmldir

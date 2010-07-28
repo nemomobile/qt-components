@@ -31,6 +31,7 @@
 #include "mdeclarativescalableimage.h"
 #include "mdeclarativebackground.h"
 #include "mdeclarativepixmap.h"
+#include "mdeclarativeicon.h"
 #include "mstylewrapper.h"
 
 class MeegoTouchPlugin : public QDeclarativeExtensionPlugin
@@ -53,6 +54,7 @@ public:
         qmlRegisterType<MDeclarativeScalableImage>(uri, 1, 0, "ScalableImage");
         qmlRegisterType<MDeclarativePixmap>(uri, 1, 0, "Pixmap");
         qmlRegisterType<MDeclarativeBackground>(uri, 1, 0, "Background");
+        qmlRegisterType<MDeclarativeIcon>(uri, 1, 0, "Icon");
 
         // Theme info
         qmlRegisterType<MStyleWrapper>(uri, 1, 0, "Style");
