@@ -48,18 +48,20 @@ Rectangle {
 
 
         onOrientationChanged: {
+            var wrot = window.rotation;
+            var rot = rotation;
 
-            if (window.rotation == 0 && rotation == 270)
-                window.rotation = 360;
-            if (window.rotation == 270 && rotation == 0)
-                window.rotation = -90;
-            var delta = window.rotation - rotation;
+            if (wrot == 0 && rot == 270)
+                wrot = 360;
+            if (wrot == 270 && rot == 0)
+                wrot = -90;
+            var delta = wrot - rot;
             // normalize to -90...180
             if (delta <= -180) {
-                window.rotation += 360;
+                wrot += 360;
                 delta += 360;
             } else if (delta > 180) {
-                window.rotation -= 360;
+                wrot -= 360;
                 delta -= 360;
             }
 
@@ -67,7 +69,7 @@ Rectangle {
                 // no need to take a snapshot for 180 degrees
                 snapshot.take();
                 snapshot.opacity = 1;
-                snapshot.rotation = -window.rotation;
+                snapshot.rotation = -wrot;
                 window.opacity = 0;
             }
 
