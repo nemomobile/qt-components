@@ -221,6 +221,23 @@ void MDeclarativeScreenPrivate::_q_setOrientationHelper()
     window->setHeight(h);
     window->setRotation(rotate);
 #endif
+    M::OrientationAngle angle = M::Angle0;
+    switch(orientation) {
+    case MDeclarativeScreen::Landscape:
+        angle = M::Angle0;
+        break;
+    case MDeclarativeScreen::PortraitInverted:
+        angle = M::Angle90;
+        break;
+    case MDeclarativeScreen::LandscapeInverted:
+        angle = M::Angle180;
+        break;
+    case MDeclarativeScreen::Portrait:
+        angle = M::Angle270;
+        break;
+    }
+
+    MInputMethodState::instance()->setActiveWindowOrientationAngle(angle);
 }
 
 
