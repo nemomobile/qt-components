@@ -26,6 +26,8 @@
 
 #include <mdeclarativescreen.h>
 #include <mdeviceprofile.h>
+#include <minputmethodstate.h>
+
 #include <qpointer.h>
 
 #ifdef HAVE_CONTEXTSUBSCRIBER
@@ -83,6 +85,9 @@ MDeclarativeScreenPrivate::MDeclarativeScreenPrivate(MDeclarativeScreen *qq)
             q, SLOT(_q_setOrientationHelper()));
 #endif
     initContextSubscriber();
+
+    QObject::connect(MInputMethodState::instance(), SIGNAL(inputMethodAreaChanged(const QRect &)),
+                     q, SIGNAL(inputMethodChanged()));
 }
 
 MDeclarativeScreenPrivate::~MDeclarativeScreenPrivate()
@@ -107,14 +112,14 @@ void MDeclarativeScreenPrivate::initContextSubscriber()
 void MDeclarativeScreenPrivate::_q_isCoveredChanged()
 {
 #ifdef HAVE_CONTEXTSUBSCRIBER
-//    bool covered = isCoveredProperty.value().toBool();
+    bool covered = isCoveredProperty.value().toBool();
 
-//    if (isCovered != covered) {
-//        qDebug() << "MDeclarativeScreenPrivate" << "Covered:" << covered;
+    if (isCovered != covered) {
+        qDebug() << "MDeclarativeScreenPrivate" << "Covered:" << covered;
 
-//        isCovered = covered;
-//        emit q->coveredChanged();
-//    }
+        isCovered = covered;
+        emit q->coveredChanged();
+    }
 #endif
 }
 
@@ -164,6 +169,7 @@ void MDeclarativeScreenPrivate::_q_updateOrientationAngle()
     }
 
     if (newOrientation != orientation) {
+        qWarning() << "orientationChanged" << newOrientation;
         orientation = newOrientation;
         _q_setOrientationHelper();
         emit q->orientationChanged();
@@ -229,32 +235,12 @@ MDeclarativeScreen::~MDeclarativeScreen()
     delete d;
 }
 
-//QDeclarativeItem *MDeclarativeScreen::window() const
-//{
-//    return d->window;
-//}
-
-//void MDeclarativeScreen::setWindow(QDeclarativeItem *window)
-//{
-//    if (window == d->window)
-//        return;
-
-//    if (d->window)
-//        delete d->window;
-//    window->setParentItem(this);
-//    d->window = window;
-//    d->window->setTransformOrigin(TopLeft);
-
-//    d->_q_setOrientationHelper();
-//    emit windowChanged();
-//}
-
-
 void MDeclarativeScreen::setOrientation(Orientation o)
 {
     if (d->orientation == o)
         return;
 
+    qWarning() << "setOrientation" << o;
     d->orientation = o;
     d->_q_setOrientationHelper();
     emit orientationChanged();
@@ -304,5 +290,23 @@ bool MDeclarativeScreen::isCovered() const
 {
     return d->isCovered;
 }
+
+bool MDeclarativeScreen::isInputMethodVisible() const
+{
+    qWarning() << "IM visible" << !MInputMethodState::instance()->inputMethodArea().isEmpty();
+    return !MInputMethodState::instance()->inputMethodArea().isEmpty();
+}
+
+//void MDeclarativeScreen::setInputMethodVisible(bool visible)
+//{
+
+//}
+
+QRect MDeclarativeScreen::inputMethodRect() const
+{
+    qWarning() << "IM rect" << MInputMethodState::instance()->inputMethodArea();
+    return MInputMethodState::instance()->inputMethodArea();
+}
+
 
 #include "moc_mdeclarativescreen.cpp"
