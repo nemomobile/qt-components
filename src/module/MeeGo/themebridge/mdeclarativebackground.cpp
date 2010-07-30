@@ -31,7 +31,7 @@
 #include <MWidgetStyle>
 
 MDeclarativeBackground::MDeclarativeBackground(QDeclarativeItem *parent) :
-    MDeclarativePrimitive(parent), m_image(0), m_tiles(0), m_opacity(1), m_tileposition(DefaultPosition)
+    MDeclarativePrimitive(parent), m_image(0), m_tiles(0), m_tileposition(DefaultPosition)
 {
 }
 
@@ -58,7 +58,7 @@ void MDeclarativeBackground::clearStyleData()
     m_image = 0;
     m_tiles = 0;
     m_color = QColor();
-    m_opacity = 1;
+    setOpacity(1.);
 }
 
 void MDeclarativeBackground::fetchStyleData(const MWidgetStyleContainer &styleContainer)
@@ -70,7 +70,7 @@ void MDeclarativeBackground::fetchStyleData(const MWidgetStyleContainer &styleCo
 
     m_image = styleContainer->backgroundImage();
     m_color = styleContainer->backgroundColor();
-    m_opacity = styleContainer->backgroundOpacity();
+    setOpacity(styleContainer->backgroundOpacity());
 }
 
 bool MDeclarativeBackground::hasPendingPixmap()
@@ -85,9 +85,6 @@ bool MDeclarativeBackground::hasPendingPixmap()
 
 void MDeclarativeBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    const qreal oldOpacity = painter->opacity();
-    painter->setOpacity(m_opacity * oldOpacity);
-
     if (m_tiles) {
         // XXX No size hint so boundingRect may be smaller than minimum image size...
         m_tiles->draw(0, 0, boundingRect().width(), boundingRect().height(), painter);
@@ -97,7 +94,5 @@ void MDeclarativeBackground::paint(QPainter *painter, const QStyleOptionGraphics
     } else if (m_color.isValid()) {
         painter->fillRect(boundingRect(), QBrush(m_color));
     }
-
-    painter->setOpacity(oldOpacity);
 }
 

@@ -79,7 +79,6 @@ protected:
     const MScalableImage *m_image;
     const MScalableImage *m_tiles;
     QColor m_color;
-    qreal m_opacity;
     Position m_tileposition;
 };
 
