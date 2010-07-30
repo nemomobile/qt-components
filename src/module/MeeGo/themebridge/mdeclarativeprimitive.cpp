@@ -33,7 +33,6 @@
 MDeclarativePrimitive::MDeclarativePrimitive(QDeclarativeItem *parent) :
     QDeclarativeItem(parent), m_style(0), m_pendingPixmap(0)
 {
-    setCacheMode(QGraphicsItem::DeviceCoordinateCache);
     setFlag(QGraphicsItem::ItemHasNoContents, false);
 }
 
