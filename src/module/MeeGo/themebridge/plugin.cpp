@@ -41,11 +41,13 @@ public:
     void initializeEngine(QDeclarativeEngine *engine, const char *uri) {
         QDeclarativeExtensionPlugin::initializeEngine(engine, uri);
 
-        // This is a workaround because we can't use a default
-        // constructor for MComponentData
-        int argc = 1;
-        char *argv0 = "meegotouch";
-        componentData.reset(new MComponentData(argc, &argv0));
+        if (!MComponentData::instance()) {
+            // This is a workaround because we can't use a default
+            // constructor for MComponentData
+            int argc = 1;
+            char *argv0 = "meegotouch";
+            componentData.reset(new MComponentData(argc, &argv0));
+        }
     }
 
     void registerTypes(const char *uri) {
