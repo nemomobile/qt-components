@@ -29,7 +29,6 @@ import Qt.labs.components 1.0
 
 Rectangle {
     id: window
-    color: "black";
 
     property double clientY: statusbar.y + statusbar.height;
     property bool statusbarVisible: true
