@@ -20,4 +20,14 @@ HEADERS += mstylewrapper.h \
            mdeclarativeicon.h \
            mdeclarativebackground.h
 
-OTHER_FILES += ../qmldir
+OTHER_FILES += qmldir
+
+TARGETPATH = com/meego/themebridge
+
+target.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH
+
+otherfiles.files = $$OTHER_FILES
+otherfiles.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH
+
+
+INSTALLS += target otherfiles

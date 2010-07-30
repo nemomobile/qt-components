@@ -1,6 +1,6 @@
 import Qt 4.7
 import Qt.labs.components 1.0
-import themebridge 1.0
+import com.meego.themebridge 1.0
 
 Rectangle {
     color: "darkgray"
