@@ -33,7 +33,8 @@ echo "Description: Qt components test" >> "$control_file"
 [ ! -f "../src/Makefile" ] && (cd ../src; qmake -r CONFIG+=meego)
 (export INSTALL_ROOT=`pwd`; cd ../src; $MAKE install)
 
-[ ! -f "../examples/meego/calculator" ] && (cd ../examples/meego/calculator; qmake; $MAKE)
+[ ! -f "../examples/meego/Makefile" ] && (cd ../examples/meego/calculator; qmake;)
+(cd ../examples/meego/calculator; $MAKE)
 
 mkdir -p opt/qt-components
 
