@@ -13,29 +13,22 @@ Rectangle {
         ButtonGroup {
             id: group
 
-            Button {}
-            Button {}
-            Button {}
+            Button {width: 100; height: 50}
+            Button {width: 100; height: 50}
+            Button {width: 100; height: 50}
         }
 
         ButtonGroup {
-            Button {}
+            Button {width: 100; height: 50}
         }
 
-        Button { onClicked: icon.iconId = "icon-m-telephony-call-answer"}
+        Button { width: 200; height: 100; onClicked: icon.iconId = "icon-m-telephony-call-answer"}
     }
 
     Icon {
         id: icon
         anchors.centerIn: parent
-
-        style: meegostyle
         iconId: "icon-m-framework-home"
-
-        Style {
-            id: meegostyle
-            styleType: Style.Button
-        }
 
         // Rectangle {
         //     color: "green"

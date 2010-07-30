@@ -32,12 +32,14 @@
 #include <mtheme.h>
 
 MDeclarativeIcon::MDeclarativeIcon(QDeclarativeItem *parent) :
-    MDeclarativePrimitive(parent), m_icon(0)
+    QDeclarativeItem(parent), m_icon(0), m_pendingPixmap(0)
 {
+    setFlag(QGraphicsItem::ItemHasNoContents, false);
 }
 
 MDeclarativeIcon::~MDeclarativeIcon()
 {
+    setIconId(QLatin1String(""));
 }
 
 QString MDeclarativeIcon::iconId() const
@@ -50,53 +52,67 @@ void MDeclarativeIcon::setIconId(const QString &iconId)
     if (m_iconId == iconId)
         return;
 
+    if (m_icon) {
+        MTheme::instance()->releasePixmap(m_icon);
+        m_icon = 0;
+    }
+
     m_iconId = iconId;
-    updateStyleData();
-}
 
-void MDeclarativeIcon::clearStyleData()
-{
-    setImplicitWidth(0);
-    setImplicitHeight(0);
-
-    if (m_icon) {
-        MTheme::instance()->releasePixmap(m_icon);
-        m_icon = 0;
-    }
-}
-
-void MDeclarativeIcon::fetchStyleData(const MWidgetStyleContainer &styleContainer)
-{
-    if (m_icon) {
-        MTheme::instance()->releasePixmap(m_icon);
-        m_icon = 0;
+    if (!m_iconId.isEmpty()) {
+        // Request the pixmap represented by the given iconID
+        // XXX The second QSize(0, 0) argument is the size we want the returned pixmap
+        // to be. However, if we specify that, we do not have a way of knowing whether
+        // that pixmap is yet to be loaded (size -1, -1) or actually ready.
+        // Thus we ask the default size (0, 0) and can then use a heuristic in "hasPendingPixmap"
+        m_icon = MTheme::instance()->pixmap(m_iconId, QSize(0, 0));
     }
 
-    if (m_iconId.isEmpty())
-        return;
+    // Usually we would call "updateStyleData" but this specific primitive currently does
+    // not read any information from the given style. In fact we could be a standard
+    // QGraphicsItem but that would require us to duplicate the pendingPixmap logic which
+    // may be worse than ignoring the style, as we do today.
+    checkPendingPixmap();
+}
 
-    const QVariant pixmapSizeVariant = styleContainer->property("iconSize");
-    if (pixmapSizeVariant.canConvert<QSize>()) {
-        const QSize pixmapSize = pixmapSizeVariant.toSize();
-        setImplicitWidth(pixmapSize.width());
-        setImplicitHeight(pixmapSize.height());
+void MDeclarativeIcon::checkPendingPixmap()
+{
+    // In MeeGo the themeserver may run in a separate process. In that case MScalableImages
+    // may be created without a proper pixmap, instead a gray 1x1 pixmap is provided.
+    // We must account for that situation and then listen for the pixmapRequestFinished signal
+    // in order to repaint the primitive.
+    // This method is part of a helper infrastructure provided in MDeclarativePrimitive to
+    // help subclasses handle that issue.
+
+    if (hasPendingPixmap()) {
+        if (!m_pendingPixmap) {
+            // If not yet connected to MTheme, connect and wait for update
+            connect(MTheme::instance(), SIGNAL(pixmapRequestsFinished()), SLOT(checkPendingPixmap()));
+            m_pendingPixmap = 1;
+        }
     } else {
-        setImplicitWidth(0);
-        setImplicitHeight(0);
+        if (m_pendingPixmap) {
+            // If still connected to MTheme, disconnect.
+            MTheme::instance()->disconnect(this);
+            m_pendingPixmap = 0;
+        }
+        update();
     }
-
-    // Request the pixmap represented by the given iconID
-    // XXX The second QSize(0, 0) argument is the size we want the returned pixmap
-    // to be. However, if we specify that, we do not have a way of knowing whether
-    // that pixmap is yet to be loaded (size -1, -1) or actually ready.
-    // Thus we ask the default size (0, 0) and can then use a heuristic in "hasPendingPixmap"
-    m_icon = MTheme::instance()->pixmap(m_iconId, QSize(0, 0));
 }
 
 bool MDeclarativeIcon::hasPendingPixmap()
 {
-    if (!m_icon || (m_icon->size() != QSize(-1, -1)))
+    if (!m_icon) {
+        setImplicitWidth(0);
+        setImplicitHeight(0);
         return false;
+    }
+
+    if (m_icon->size() != QSize(-1, -1)) {
+        setImplicitWidth(m_icon->width());
+        setImplicitHeight(m_icon->height());
+        return false;
+    }
 
     return true;
 }

@@ -27,11 +27,11 @@
 #ifndef MDECLARATIVEICON_H
 #define MDECLARATIVEICON_H
 
-#include "mdeclarativeprimitive.h"
+#include <QDeclarativeItem>
 
 class QPixmap;
 
-class MDeclarativeIcon : public MDeclarativePrimitive
+class MDeclarativeIcon : public QDeclarativeItem
 {
     Q_OBJECT
 
@@ -44,14 +44,17 @@ public:
     QString iconId() const;
     void setIconId(const QString &iconId);
 
+protected Q_SLOTS:
+    void checkPendingPixmap();
+
 protected:
-    virtual void clearStyleData();
-    virtual void fetchStyleData(const MWidgetStyleContainer &styleContainer);
-    virtual bool hasPendingPixmap();
+    bool hasPendingPixmap();
+
     virtual void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 
     QString m_iconId;
     const QPixmap *m_icon;
+    int m_pendingPixmap : 1;
 };
 
 #endif //MDECLARATIVEICON_H
