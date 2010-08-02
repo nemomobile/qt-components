@@ -85,6 +85,8 @@ QDeclarativeWindowPrivate::QDeclarativeWindowPrivate(QDeclarativeWindow *qq)
     view->setViewport(new QGLWidget);
 
     scene.setStickyFocus(true);  //### needed for correct focus handling
+
+    QObject::connect(&engine, SIGNAL(quit()), QCoreApplication::instance(), SLOT(quit()));
 }
 
 

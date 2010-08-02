@@ -65,6 +65,8 @@ QDeclarativeWindowPrivate::QDeclarativeWindowPrivate(QDeclarativeWindow *qq)
     view->setFocusPolicy(Qt::StrongFocus);
 
     scene.setStickyFocus(true);  //### needed for correct focus handling
+
+    QObject::connect(&engine, SIGNAL(quit()), QCoreApplication::instance(), SLOT(quit()));
 }
 
 
