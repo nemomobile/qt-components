@@ -60,7 +60,9 @@ public:
         Button,
         GroupButton,
         CheckBox,
-        Slider
+        Slider,
+        NavigationBar,
+        HomeButton
     };
 
     QString mode() const;

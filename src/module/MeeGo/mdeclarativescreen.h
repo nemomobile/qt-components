@@ -46,6 +46,8 @@ class MDeclarativeScreen : public QDeclarativeItem
     Q_PROPERTY(int height READ height CONSTANT FINAL)
     Q_PROPERTY(int rotation READ rotation NOTIFY orientationChanged FINAL)
 
+    Q_PROPERTY(bool minimized READ isMinimized WRITE setMinimized NOTIFY minimizedChanged FINAL)
+
     Q_PROPERTY(bool inputMethodVisible READ isInputMethodVisible NOTIFY inputMethodChanged FINAL)
     Q_PROPERTY(QRect inputMethodRect READ inputMethodRect NOTIFY inputMethodChanged FINAL)
 
@@ -81,11 +83,15 @@ public:
 //    void setInputMethodVisible(bool visible);
     QRect inputMethodRect() const;
 
+    bool isMinimized() const;
+    void setMinimized(bool minimized);
+
 Q_SIGNALS:
     void orientationChanged();
     void orientationLockedChanged();
     void coveredChanged();
     void inputMethodChanged();
+    void minimizedChanged();
 
 private:
     Q_DISABLE_COPY(MDeclarativeScreen)

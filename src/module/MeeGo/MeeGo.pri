@@ -26,6 +26,8 @@ QML_FILES = \
         MeeGo/Button.qml \
         MeeGo/ButtonGroup.qml \
         MeeGo/Slider.qml \
+        MeeGo/TitleBar.qml \
+        MeeGo/TitleButton.qml \
         MeeGo/Window.qml
 
 // QML_IMAGES +=

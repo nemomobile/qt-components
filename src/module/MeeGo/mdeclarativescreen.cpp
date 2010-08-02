@@ -28,6 +28,7 @@
 #include <mdeviceprofile.h>
 #include <minputmethodstate.h>
 
+#include <qapplication.h>
 #include <qpointer.h>
 
 #ifdef HAVE_CONTEXTSUBSCRIBER
@@ -323,6 +324,20 @@ QRect MDeclarativeScreen::inputMethodRect() const
 {
     qWarning() << "IM rect" << MInputMethodState::instance()->inputMethodArea();
     return MInputMethodState::instance()->inputMethodArea();
+}
+
+bool MDeclarativeScreen::isMinimized() const
+{
+    // ###
+    return false;
+}
+
+void MDeclarativeScreen::setMinimized(bool minimized)
+{
+    QWidget *top = QApplication::activeWindow();
+    if (!top)
+        return;
+    top->setWindowState(Qt::WindowMinimized);
 }
 
 

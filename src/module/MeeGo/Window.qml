@@ -26,11 +26,12 @@
 
 import Qt 4.7
 import Qt.labs.components 1.0
+import com.meego.themebridge 1.0
 
 Rectangle {
     id: window
 
-    property double clientY: statusbar.y + statusbar.height;
+    property double clientY: statusbar.y + statusbar.height + titlebar.height;
     property bool statusbarVisible: true
 
     width: screen.width;
@@ -143,6 +144,11 @@ Rectangle {
                 NumberAnimation { target: statusbar; properties: "y,opacity"; duration: 300; easing.type: Easing.InOutQuad }
             }
         }
-
+    }
+    TitleBar {
+        id: titlebar;
+        anchors.top: statusbar.bottom;
+        onMinimize: { screen.minimized = true; }
+        onQuit:  { Qt.quit(); }
     }
 }

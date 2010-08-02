@@ -32,6 +32,8 @@
 #include <mbuttonstyle.h>
 #include <mcheckboxstyle.h>
 #include <msliderstyle.h>
+#include <mnavigationbarstyle.h>
+#include <mhomebuttonpanelstyle.h>
 
 MStyleWrapper::MStyleWrapper(QObject *parent)
   : QObject(parent), m_mode("default"), m_styletype(None), m_stylecontainer(0)
@@ -114,6 +116,12 @@ void MStyleWrapper::setStyleType(const StyleType styletype)
         break;
     case Slider:
         m_stylecontainer = new MSliderStyleContainer();
+        break;
+    case NavigationBar:
+        m_stylecontainer = new MNavigationBarStyleContainer();
+        break;
+    case HomeButton:
+        m_stylecontainer = new MHomeButtonPanelStyleContainer();
         break;
     default:
         m_stylecontainer = new MWidgetStyleContainer();
