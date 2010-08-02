@@ -85,6 +85,9 @@ bool MDeclarativeBackground::hasPendingPixmap()
 
 void MDeclarativeBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
+    if (hasPendingPixmap())
+        return;
+
     if (m_tiles) {
         // XXX No size hint so boundingRect may be smaller than minimum image size...
         m_tiles->draw(0, 0, boundingRect().width(), boundingRect().height(), painter);
