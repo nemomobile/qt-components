@@ -96,6 +96,7 @@ MDeclarativeStatusBar::MDeclarativeStatusBar(QDeclarativeItem *parent) :
     mOrientation(MDeclarativeScreen::Portrait)
 {
     setFlag(QGraphicsItem::ItemHasNoContents, false);
+    setAcceptedMouseButtons(Qt::LeftButton);
 
     if (!filterRegistered) {
         ::oldFilter = QCoreApplication::instance()->setEventFilter(x11EventFilter);
@@ -240,7 +241,7 @@ void MDeclarativeStatusBar::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void MDeclarativeStatusBar::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if(firstPos.y() /* ### + style()->swipeThreshold()*/ + 15 < event->pos().y())
+    if(firstPos.y() /* ### + style()->swipeThreshold()*/ + 25 < event->pos().y())
         showStatusIndicatorMenu();
 }
 
