@@ -42,6 +42,8 @@ class MDeclarativeScreen : public QDeclarativeItem
     Q_PROPERTY(Orientation orientation READ orientation WRITE setOrientation NOTIFY orientationChanged FINAL)
     Q_PROPERTY(bool orientationLocked READ isOrientationLocked WRITE setOrientationLocked NOTIFY orientationLockedChanged FINAL)
     Q_PROPERTY(bool covered READ isCovered NOTIFY coveredChanged FINAL)
+    Q_PROPERTY(bool keyboardOpen READ isKeyboardOpen NOTIFY keyboardOpenChanged FINAL)
+
     Q_PROPERTY(int width READ width CONSTANT FINAL)
     Q_PROPERTY(int height READ height CONSTANT FINAL)
     Q_PROPERTY(int rotation READ rotation NOTIFY orientationChanged FINAL)
@@ -73,6 +75,7 @@ public:
     void setOrientationLocked(bool locked);
 
     bool isCovered() const;
+    bool isKeyboardOpen() const;
 
     // ####
     int width() const { return 864; }
@@ -92,6 +95,7 @@ Q_SIGNALS:
     void coveredChanged();
     void inputMethodChanged();
     void minimizedChanged();
+    void keyboardOpenChanged();
 
 private:
     Q_DISABLE_COPY(MDeclarativeScreen)

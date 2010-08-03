@@ -54,22 +54,26 @@ public:
     MDeclarativeScreen::Orientation orientation;
     bool orientationLocked;
     bool isCovered;
+    bool keyboardOpen;
 
 #ifdef HAVE_CONTEXTSUBSCRIBER
     ContextProperty topEdgeProperty;
     ContextProperty isCoveredProperty;
+    ContextProperty keyboardOpenProperty;
 #endif
 };
 
 MDeclarativeScreenPrivate::MDeclarativeScreenPrivate(MDeclarativeScreen *qq)
-        : q(qq)
+    : q(qq)
 //        , window(0)
-        , orientation(MDeclarativeScreen::Portrait)
-        , orientationLocked(false)
-        , isCovered(false)
+    , orientation(MDeclarativeScreen::Portrait)
+    , orientationLocked(false)
+    , isCovered(false)
+    , keyboardOpen(false)
 #ifdef HAVE_CONTEXTSUBSCRIBER
     , topEdgeProperty("Screen.TopEdge")
     , isCoveredProperty("Screen.IsCovered")
+    , keyboardOpenProperty("/maemo/InternalKeyboard/Open")
 #endif
 {
 #ifdef HAVE_CONTEXTSUBSCRIBER
@@ -77,15 +81,14 @@ MDeclarativeScreenPrivate::MDeclarativeScreenPrivate(MDeclarativeScreen *qq)
             q, SLOT(_q_updateOrientationAngle()));
     QObject::connect(&isCoveredProperty, SIGNAL(valueChanged()),
             q, SLOT(_q_isCoveredChanged()));
-//    connect(MKeyboardStateTracker::instance(), SIGNAL(stateChanged()),
-//            this, SLOT(updateOrientationAngle()));
+    QObject::connect(&keyboardOpenProperty, SIGNAL(valueChanged()),
+            q, SLOT(_q_updateOrientationAngle()));
 
     QObject::connect(q, SIGNAL(widthChanged()),
             q, SLOT(_q_setOrientationHelper()));
     QObject::connect(q, SIGNAL(heightChanged()),
             q, SLOT(_q_setOrientationHelper()));
 #endif
-    initContextSubscriber();
 
     QObject::connect(MInputMethodState::instance(), SIGNAL(inputMethodAreaChanged(const QRect &)),
                      q, SIGNAL(inputMethodChanged()));
@@ -103,6 +106,7 @@ void MDeclarativeScreenPrivate::initContextSubscriber()
     //waiting for properties to synchronize
     topEdgeProperty.waitForSubscription();
     isCoveredProperty.waitForSubscription();
+    keyboardOpenProperty.waitForSubscription();
 
     //initiating the variables to current orientation
     _q_updateOrientationAngle();
@@ -132,9 +136,11 @@ void MDeclarativeScreenPrivate::_q_updateOrientationAngle()
 #ifdef HAVE_CONTEXTSUBSCRIBER
     MDeclarativeScreen::Orientation newOrientation = MDeclarativeScreen::Landscape;
     QString edge = topEdgeProperty.value().toString();
-    bool isKeyboardOpen = false; //### MKeyboardStateTracker::instance()->isOpen();
+    bool open = keyboardOpenProperty.value().toBool();
 
-    if (edge == "top") {// && (MDeviceProfile::instance()->orientationAngleIsSupported(M::Angle0, isKeyboardOpen))) {
+    if (open) {
+        newOrientation = MDeclarativeScreen::Landscape;
+    } else if (edge == "top") {// && (MDeviceProfile::instance()->orientationAngleIsSupported(M::Angle0, isKeyboardOpen))) {
         newOrientation = MDeclarativeScreen::Landscape;
     } else if (edge == "left") {// && (MDeviceProfile::instance()->orientationAngleIsSupported(M::Angle270, isKeyboardOpen))) {
         newOrientation = MDeclarativeScreen::Portrait;
@@ -169,8 +175,12 @@ void MDeclarativeScreenPrivate::_q_updateOrientationAngle()
 #endif
     }
 
+    if (open != keyboardOpen) {
+        keyboardOpen = open;
+        emit q->keyboardOpenChanged();
+    }
+
     if (newOrientation != orientation) {
-        qWarning() << "orientationChanged" << newOrientation;
         orientation = newOrientation;
         _q_setOrientationHelper();
         emit q->orientationChanged();
@@ -180,48 +190,6 @@ void MDeclarativeScreenPrivate::_q_updateOrientationAngle()
 
 void MDeclarativeScreenPrivate::_q_setOrientationHelper()
 {
-#if 0
-    if (!window)
-        return;
-
-    int x = 0;
-    int y = 0;
-    int w = q->width();
-    int h = q->height();
-    const char * state = 0;
-    qreal rotate = 0;
-
-    switch (orientation) {
-    case MDeclarativeScreen::Landscape:
-        state = "Landscape";
-        break;
-    case MDeclarativeScreen::Portrait:
-        state = "Portrait";
-        rotate = 270;
-        y = h;
-        qSwap(w, h);
-        break;
-    case MDeclarativeScreen::LandscapeInverted:
-        state = "LandscapeInverted";
-        rotate = 180;
-        x = w;
-        y = h;
-        break;
-    case MDeclarativeScreen::PortraitInverted:
-        state = "PortraitInverted";
-        rotate = 90;
-        x = w;
-        qSwap(w, h);
-        break;
-    }
-
-    qWarning() << "setOrientationHelper" << state << rotate << w << h;
-    window->setX(x);
-    window->setY(y);
-    window->setWidth(w);
-    window->setHeight(h);
-    window->setRotation(rotate);
-#endif
     M::OrientationAngle angle = M::Angle0;
     switch(orientation) {
     case MDeclarativeScreen::Landscape:
@@ -246,6 +214,7 @@ MDeclarativeScreen::MDeclarativeScreen(QDeclarativeItem *parent)
         : QDeclarativeItem(parent),
         d(new MDeclarativeScreenPrivate(this))
 {
+    d->initContextSubscriber();
 }
 
 MDeclarativeScreen::~MDeclarativeScreen()
@@ -307,6 +276,11 @@ void MDeclarativeScreen::setOrientationLocked(bool locked)
 bool MDeclarativeScreen::isCovered() const
 {
     return d->isCovered;
+}
+
+bool MDeclarativeScreen::isKeyboardOpen() const
+{
+    return d->keyboardOpen;
 }
 
 bool MDeclarativeScreen::isInputMethodVisible() const
