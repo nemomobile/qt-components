@@ -6,10 +6,13 @@ Background {
     id: titlebar;
     anchors.left: parent.left;
     anchors.right: parent.right;
-    height: 50;
+    z: 1000;
 
+    property alias dropShadowHeight: dropShadow.height;
     signal minimize();
     signal quit();
+
+    style: meegostyle;
 
     Component.onCompleted: {
         // XXX This is not nice
@@ -23,11 +26,18 @@ Background {
         height = meegostyle.preferredHeight
     }
 
-    style: meegostyle
-
     Style {
         id: meegostyle
         styleType: Style.NavigationBar
+    }
+
+    ScalableImage {
+        id: dropShadow
+        anchors.top: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        style: meegostyle
+        imageProperty: "dropShadowImage"
     }
 
     TitleButton {
