@@ -59,7 +59,7 @@ Window {
     function doOp(operation) { CalcEngine.doOperation(operation) }
 
     Item {
-        y: parent.clientY;
+        y: parent.clientY + 10;
         height: parent.height - y;
         width: parent.width;
 
