@@ -5,6 +5,7 @@ DESTDIR = $$OUT_PWD/../../lib
 
 QT += declarative opengl
 CONFIG += build_lib
+DEFINES += QDECLARATIVEWINDOW_BUILD_LIB
 
 include(../../qt-components.pri)
 

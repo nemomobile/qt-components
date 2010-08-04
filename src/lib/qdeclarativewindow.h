@@ -27,6 +27,12 @@
 #ifndef QDECLARATIVEWINDOW_H
 #define QDECLARATIVEWINDOW_H
 
+#if defined(QDECLARATIVEWINDOW_BUILD_LIB)
+#  define QDECLARATIVEWINDOW_EXPORT Q_DECL_EXPORT
+#else
+#  define QDECLARATIVEWINDOW_EXPORT Q_DECL_IMPORT
+#endif
+
 #include <qwidget.h>
 #include <qurl.h>
 
@@ -35,7 +41,7 @@ class QDeclarativeEngine;
 class QDeclarativeContext;
 class QGraphicsObject;
 
-class QDeclarativeWindow : public QObject
+class QDECLARATIVEWINDOW_EXPORT QDeclarativeWindow : public QObject
 {
     Q_OBJECT
 
