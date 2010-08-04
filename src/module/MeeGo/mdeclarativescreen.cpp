@@ -76,20 +76,6 @@ MDeclarativeScreenPrivate::MDeclarativeScreenPrivate(MDeclarativeScreen *qq)
     , keyboardOpenProperty("/maemo/InternalKeyboard/Open")
 #endif
 {
-#ifdef HAVE_CONTEXTSUBSCRIBER
-    QObject::connect(&topEdgeProperty, SIGNAL(valueChanged()),
-            q, SLOT(_q_updateOrientationAngle()));
-    QObject::connect(&isCoveredProperty, SIGNAL(valueChanged()),
-            q, SLOT(_q_isCoveredChanged()));
-    QObject::connect(&keyboardOpenProperty, SIGNAL(valueChanged()),
-            q, SLOT(_q_updateOrientationAngle()));
-
-    QObject::connect(q, SIGNAL(widthChanged()),
-            q, SLOT(_q_setOrientationHelper()));
-    QObject::connect(q, SIGNAL(heightChanged()),
-            q, SLOT(_q_setOrientationHelper()));
-#endif
-
     QObject::connect(MInputMethodState::instance(), SIGNAL(inputMethodAreaChanged(const QRect &)),
                      q, SIGNAL(inputMethodChanged()));
 }
@@ -107,6 +93,19 @@ void MDeclarativeScreenPrivate::initContextSubscriber()
     topEdgeProperty.waitForSubscription();
     isCoveredProperty.waitForSubscription();
     keyboardOpenProperty.waitForSubscription();
+
+    QObject::connect(&topEdgeProperty, SIGNAL(valueChanged()),
+            q, SLOT(_q_updateOrientationAngle()));
+    QObject::connect(&isCoveredProperty, SIGNAL(valueChanged()),
+            q, SLOT(_q_isCoveredChanged()));
+    QObject::connect(&keyboardOpenProperty, SIGNAL(valueChanged()),
+            q, SLOT(_q_updateOrientationAngle()));
+
+    // ### do we need these?
+    QObject::connect(q, SIGNAL(widthChanged()),
+            q, SLOT(_q_setOrientationHelper()));
+    QObject::connect(q, SIGNAL(heightChanged()),
+            q, SLOT(_q_setOrientationHelper()));
 
     //initiating the variables to current orientation
     _q_updateOrientationAngle();
