@@ -27,7 +27,12 @@
 #include "qdeclarativewindow.h"
 
 #include <QApplication>
+#include <qgl.h>
 #include <QtDeclarative>
+
+#ifdef Q_COMPONENTS_MEEGO
+#include <MComponentData>
+#endif
 
 class QDeclarativeWindowPrivate
 {
@@ -51,7 +56,23 @@ public:
 QDeclarativeWindowPrivate::QDeclarativeWindowPrivate(QDeclarativeWindow *qq)
     : q(qq), view(0), component(0)
 {
+#ifdef Q_COMPONENTS_MEEGO
+    qApp->setProperty("NoMStyle", true);
+    if(!MComponentData::instance()) {
+        int argc = QApplication::instance()->argc();
+        (void) new MComponentData(argc, QApplication::instance()->argv());
+    }
+#endif
+
     view = new QGraphicsView(&scene, 0);
+
+#ifdef Q_COMPONENTS_MEEGO
+    view->setWindowFlags(Qt::Window
+                   | Qt::CustomizeWindowHint
+                   | Qt::FramelessWindowHint);
+    view->resize(QApplication::desktop()->screenGeometry().width(),
+                 QApplication::desktop()->screenGeometry().height());
+#endif
 
     view->setOptimizationFlags(QGraphicsView::DontSavePainterState);
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -64,6 +85,8 @@ QDeclarativeWindowPrivate::QDeclarativeWindowPrivate(QDeclarativeWindow *qq)
     view->viewport()->setFocusPolicy(Qt::NoFocus);
     view->setFocusPolicy(Qt::StrongFocus);
 
+    view->setViewport(new QGLWidget);
+
     scene.setStickyFocus(true);  //### needed for correct focus handling
 
     QObject::connect(&engine, SIGNAL(quit()), QCoreApplication::instance(), SLOT(quit()));
@@ -73,6 +96,7 @@ QDeclarativeWindowPrivate::QDeclarativeWindowPrivate(QDeclarativeWindow *qq)
 QDeclarativeWindowPrivate::~QDeclarativeWindowPrivate()
 {
     delete component;
+    delete view;
 }
 
 void QDeclarativeWindowPrivate::execute()
@@ -123,6 +147,7 @@ void QDeclarativeWindow::continueExecute()
     }
 
     setRootObject(obj);
+
     emit statusChanged(status());
 }
 
@@ -229,6 +254,7 @@ QDeclarativeWindow::Status QDeclarativeWindow::status() const
     return QDeclarativeWindow::Status(d->component->status());
 }
 
+
 /*!
   \internal
 */
@@ -242,7 +268,7 @@ void QDeclarativeWindow::setRootObject(QObject *obj)
         return;
     }
 
-    d->view->scene()->addItem(d->root);
+    d->scene.addItem(d->root);
 
     QRect rect = d->view->rect();
     if (!qFuzzyCompare(rect.width(), d->root->width()))
@@ -255,3 +281,4 @@ QWidget *QDeclarativeWindow::window()
 {
     return d->view;
 }
+

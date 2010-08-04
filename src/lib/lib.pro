@@ -10,14 +10,8 @@ include(../../qt-components.pri)
 
 PUBLIC_HEADERS += \
     qdeclarativewindow.h
-
-meego {
-    SOURCES += \
-        qdeclarativewindow_meego.cpp
-} else {
-    SOURCES += \
-        qdeclarativewindow_desktop.cpp
-}
+SOURCES += \
+    qdeclarativewindow.cpp
 
 HEADERS += $$PUBLIC_HEADERS
 
