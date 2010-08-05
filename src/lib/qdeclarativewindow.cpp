@@ -59,8 +59,11 @@ QDeclarativeWindowPrivate::QDeclarativeWindowPrivate(QDeclarativeWindow *qq)
 #ifdef Q_COMPONENTS_MEEGO
     qApp->setProperty("NoMStyle", true);
     if(!MComponentData::instance()) {
-        int argc = QApplication::instance()->argc();
-        (void) new MComponentData(argc, QApplication::instance()->argv());
+        // This is a workaround because we can't use a default
+        // constructor for MComponentData
+        int argc = 1;
+        char *argv0 = "meegotouch";
+        (void) new MComponentData(argc, &argv0);
     }
 #endif
 

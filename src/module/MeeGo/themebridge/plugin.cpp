@@ -46,7 +46,7 @@ public:
             // constructor for MComponentData
             int argc = 1;
             char *argv0 = "meegotouch";
-            componentData.reset(new MComponentData(argc, &argv0));
+            (void) new MComponentData(argc, &argv0);
         }
     }
 
@@ -61,9 +61,6 @@ public:
         // Theme info
         qmlRegisterType<MStyleWrapper>(uri, 1, 0, "Style");
     }
-
-private:
-    QScopedPointer<MComponentData> componentData;
 };
 
 #include "plugin.moc"
