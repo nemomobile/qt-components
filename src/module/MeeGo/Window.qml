@@ -105,9 +105,7 @@ Rectangle {
                     window.opacity = 0;
                 }
             }
-            PauseAnimation { duration: 1000 }
             PropertyAction { target: window; properties: "x,y,width,height" }
-            PauseAnimation { duration: 1000 }
             ParallelAnimation {
                 NumberAnimation { target: window; property: "opacity"; to: 1; duration: 300 }
                 NumberAnimation { target: snapshot; property: "opacity"; to: 0; duration: 300 }
