@@ -7,6 +7,7 @@ Background {
     anchors.left: parent.left;
     anchors.right: parent.right;
     z: 1000;
+    property alias showBackButton : escapeButton.back;
 
     property alias dropShadowHeight: dropShadow.height;
     signal minimize();
@@ -49,8 +50,10 @@ Background {
         onClicked: { titlebar.minimize(); }
     }
     TitleButton {
-        id: quit;
-        icon: "icon-m-framework-close"
+        id: escapeButton;
+
+        property bool back: false;
+        icon: back ? "icon-m-framework-back" :"icon-m-framework-close"
         anchors.right: parent.right;
         anchors.verticalCenter: parent.verticalCenter;
 
