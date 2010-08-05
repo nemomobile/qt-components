@@ -272,12 +272,6 @@ void QDeclarativeWindow::setRootObject(QObject *obj)
     }
 
     d->scene.addItem(d->root);
-
-    QRect rect = d->view->rect();
-    if (!qFuzzyCompare(rect.width(), d->root->width()))
-        d->root->setWidth(rect.width());
-    if (!qFuzzyCompare(rect.height(), d->root->height()))
-        d->root->setHeight(rect.height());
 }
 
 QWidget *QDeclarativeWindow::window()

@@ -37,6 +37,7 @@ class MDeclarativeScreen : public QObject
     Q_OBJECT
 
     Q_PROPERTY(Orientation orientation READ orientation WRITE setOrientation NOTIFY orientationChanged FINAL)
+    Q_PROPERTY(QString orientationString READ orientationString NOTIFY orientationChanged FINAL)
     Q_PROPERTY(bool orientationLocked READ isOrientationLocked WRITE setOrientationLocked NOTIFY orientationLockedChanged FINAL)
     Q_PROPERTY(bool covered READ isCovered NOTIFY coveredChanged FINAL)
     Q_PROPERTY(bool keyboardOpen READ isKeyboardOpen NOTIFY keyboardOpenChanged FINAL)
@@ -65,6 +66,8 @@ public:
 
     void setOrientation(Orientation o);
     Orientation orientation() const;
+
+    QString orientationString() const;
 
     int rotation() const;
 

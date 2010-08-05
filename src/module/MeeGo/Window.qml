@@ -31,7 +31,7 @@ import com.meego.themebridge 1.0
 Rectangle {
     id: window
 
-    property int orientation: screen.orientation;
+    state: screen.orientationString;
 
     property bool statusbarVisible: true
     property bool titlebarVisible: true;
@@ -50,10 +50,9 @@ Rectangle {
     states:  [
         State {
             name: "Landscape"
-            when: (orientation == Screen.Landscape)
             PropertyChanges {
                 target: window;
-                rotation : 0
+                rotation: 0
                 width: screen.width;
                 height: screen.height;
                 x: 0;
@@ -62,10 +61,9 @@ Rectangle {
         },
         State {
             name: "LandscapeInverted"
-            when: (orientation == Screen.LandscapeInverted)
             PropertyChanges {
                 target: window;
-                rotation : 180
+                rotation: 180
                 width: screen.width;
                 height: screen.height;
                 x: 0;
@@ -74,10 +72,9 @@ Rectangle {
         },
         State {
             name: "Portrait"
-            when: (orientation == Screen.Portrait)
             PropertyChanges {
                 target: window;
-                rotation : 270
+                rotation: 270
                 width: screen.height;
                 height: screen.width;
                 x: (screen.width - screen.height)/2;
@@ -86,10 +83,9 @@ Rectangle {
         },
         State {
             name: "PortraitInverted"
-            when: (orientation == Screen.PortraitInverted)
             PropertyChanges {
                 target: window;
-                rotation : 90
+                rotation: 90
                 width: screen.height;
                 height: screen.width;
                 x: (screen.width - screen.height)/2;

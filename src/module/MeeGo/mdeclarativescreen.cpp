@@ -206,6 +206,26 @@ MDeclarativeScreen::Orientation MDeclarativeScreen::orientation() const
     return d->orientation;
 }
 
+QString MDeclarativeScreen::orientationString() const
+{
+    const char *s = 0;
+    switch (d->orientation) {
+    case Portrait:
+        s = "Portrait";
+        break;
+    case PortraitInverted:
+        s = "PortraitInverted";
+        break;
+    case Landscape:
+        s = "Landscape";
+        break;
+    case LandscapeInverted:
+        s = "LandscapeInverted";
+        break;
+    }
+    return QString::fromLatin1(s);
+}
+
 int MDeclarativeScreen::rotation() const
 {
     int angle = 0;
