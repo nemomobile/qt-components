@@ -31,91 +31,106 @@ import com.meego.themebridge 1.0
 Rectangle {
     id: window
 
+    property int orientation;
+
     property double clientY: statusbar.y + statusbar.height + titlebar.height;
     property bool statusbarVisible: true
 
-    width: screen.width;
-    height: screen.height;
-    property alias orientation: screen.orientation;
+    Component.onCompleted: {
+        orientation = screen.orientation;
+    }
 
     Snapshot {
         id: snapshot;
         anchors.centerIn: parent;
     }
 
-    Screen {
-        id : screen;
-
-
-        onOrientationChanged: {
-            var delta = window.rotation - rotation;
-            // normalize to -90...180
-            if (delta <= -180) {
-                delta += 360;
-            } else if (delta > 180) {
-                delta -= 360;
-            }
-
-            if (Math.abs(delta) < 100) {
-                // no need to take a snapshot for 180 degrees
-                snapshot.take();
-                snapshot.opacity = 1;
-                snapshot.rotation = -window.rotation;
-                window.opacity = 0;
-            }
-
-            if (orientation == Screen.Landscape || orientation == Screen.LandscapeInverted) {
-                window.width = width;
-                window.height= height;
-                window.x = 0;
-                window.y = 0;
-            } else {
-                window.width = height;
-                window.height= width;
-                window.x = (width - height)/2;
-                window.y = -(width - height)/2;
-            }
-
-            if (orientation == Screen.Portrait)
-                state = "Portrait";
-            else if (orientation == Screen.Landscape)
-                state = "Landscape";
-            if (orientation == Screen.PortraitInverted)
-                state = "Portrait";
-            else if (orientation == Screen.LandscapeInverted)
-                state = "LandscapeInverted";
+    function setOrientation() {
+        var delta = window.rotation - screen.rotation;
+        // normalize to -90...180
+        if (delta <= -180) {
+            delta += 360;
+        } else if (delta > 180) {
+            delta -= 360;
         }
-        states:  [
-            State {
-                name: "Landscape"
-                PropertyChanges { target: window; rotation : 0 }
-            },
-            State {
-                name: "LandscapeInverted"
-                PropertyChanges { target: window; rotation : 180 }
-            },
-            State {
-                name: "Portrait"
-                PropertyChanges { target: window; rotation : 270 }
-            },
-            State {
-                name: "PortraitInverted"
-                PropertyChanges { target: window; rotation : 90 }
-            }
-        ]
 
-        transitions: Transition {
-            SequentialAnimation {
-                ParallelAnimation {
-                    NumberAnimation { target: window; property: "opacity"; to: 1; duration: 300 }
-                    NumberAnimation { target: snapshot; property: "opacity"; to: 0; duration: 300 }
-                    RotationAnimation { target: window; properties: "rotation"; easing.type: Easing.InOutQuad; duration: 300 }
-                }
-                ScriptAction { script: snapshot.free(); }
-            }
+        if (Math.abs(delta) < 100) {
+            // no need to take a snapshot for 180 degrees
+            snapshot.take();
+            snapshot.opacity = 1;
+            snapshot.rotation = -window.rotation;
+            window.opacity = 0;
         }
+
+        window.orientation = screen.orientation;
     }
 
+    Connections {
+        target: screen;
+        onOrientationChanged: { window.setOrientation() }
+    }
+    states:  [
+        State {
+            name: "Landscape"
+            when: (orientation == Screen.Landscape)
+            PropertyChanges {
+                target: window;
+                rotation : 0
+                width: screen.width;
+                height: screen.height;
+                x: 0;
+                y: 0;
+            }
+        },
+        State {
+            name: "LandscapeInverted"
+            when: (orientation == Screen.LandscapeInverted)
+            PropertyChanges {
+                target: window;
+                rotation : 180
+                width: screen.width;
+                height: screen.height;
+                x: 0;
+                y: 0;
+            }
+        },
+        State {
+            name: "Portrait"
+            when: (orientation == Screen.Portrait)
+            PropertyChanges {
+                target: window;
+                rotation : 270
+                width: screen.height;
+                height: screen.width;
+                x: (screen.width - screen.height)/2;
+                y: -(screen.width - screen.height)/2;
+            }
+        },
+        State {
+            name: "PortraitInverted"
+            when: (orientation == Screen.PortraitInverted)
+            PropertyChanges {
+                target: window;
+                rotation : 90
+                width: screen.height;
+                height: screen.width;
+                x: (screen.width - screen.height)/2;
+                y: -(screen.width - screen.height)/2;
+            }
+        }
+    ]
+
+    transitions: Transition {
+        SequentialAnimation {
+            PropertyAction { target: window; properties: "x,y,width,height" }
+            ParallelAnimation {
+                NumberAnimation { target: window; property: "opacity"; to: 1; duration: 300 }
+                NumberAnimation { target: snapshot; property: "opacity"; to: 0; duration: 300 }
+                RotationAnimation { target: window; properties: "rotation"; easing.type: Easing.InOutQuad; duration: 300 }
+            }
+            ScriptAction { script: snapshot.free(); }
+        }
+    }
 
     StatusBar {
         id: statusbar;

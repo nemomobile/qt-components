@@ -39,6 +39,7 @@
 #include "mdeclarativestatusbar.h"
 #include "mdeclarativescreen.h"
 #include "msnapshot.h"
+#include <mcomponentdata.h>
 #endif
 
 class QtComponentsPlugin : public QDeclarativeExtensionPlugin
@@ -46,17 +47,18 @@ class QtComponentsPlugin : public QDeclarativeExtensionPlugin
     Q_OBJECT
 public:
     void initializeEngine(QDeclarativeEngine *engine, const char *uri) {
-        /*
-        QString style(qgetenv("COMPSTYLE"));
-        if (style == "") {
-            new TestStyle(engine);
-        } else {
-            QString path = QString("data/qmlstyle/%1").arg(style);
-            qWarning() << "Loading theme from: " << path;
-            new QmlStyle(path, engine, engine);
-        }
-        */
         QDeclarativeExtensionPlugin::initializeEngine(engine, uri);
+
+        if (!MComponentData::instance()) {
+            // This is a workaround because we can't use a default
+            // constructor for MComponentData
+            int argc = 1;
+            char *argv0 = "meegotouch";
+            (void) new MComponentData(argc, &argv0);
+        }
+        engine->rootContext()->setContextProperty("screen", new MDeclarativeScreen);
+        qmlRegisterUncreatableType<MDeclarativeScreen>("Qt",4,7,"Screen","");
+        qWarning() << "QtComponents plugin initialized";
     }
 
     void registerTypes(const char *uri) {
@@ -78,7 +80,6 @@ public:
 
 #ifdef Q_COMPONENTS_MEEGO
         qmlRegisterType<MDeclarativeStatusBar>(uri, 1, 0, "StatusBar");
-        qmlRegisterType<MDeclarativeScreen>(uri, 1, 0, "Screen");
         qmlRegisterType<MSnapshot>(uri, 1, 0, "Snapshot");
 #endif
     }

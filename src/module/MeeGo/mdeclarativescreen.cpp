@@ -101,11 +101,6 @@ void MDeclarativeScreenPrivate::initContextSubscriber()
     QObject::connect(&keyboardOpenProperty, SIGNAL(valueChanged()),
             q, SLOT(_q_updateOrientationAngle()));
 
-    // ### do we need these?
-    QObject::connect(q, SIGNAL(widthChanged()),
-            q, SLOT(_q_setOrientationHelper()));
-    QObject::connect(q, SIGNAL(heightChanged()),
-            q, SLOT(_q_setOrientationHelper()));
 
     //initiating the variables to current orientation
     _q_updateOrientationAngle();
@@ -210,7 +205,7 @@ void MDeclarativeScreenPrivate::_q_setOrientationHelper()
 
 
 MDeclarativeScreen::MDeclarativeScreen(QDeclarativeItem *parent)
-        : QDeclarativeItem(parent),
+        : QObject(parent),
         d(new MDeclarativeScreenPrivate(this))
 {
     d->initContextSubscriber();

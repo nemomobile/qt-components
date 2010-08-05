@@ -85,11 +85,11 @@ function doOperation(op) {
     }
 
     if (op == rotateLeft) {
-        main.orientation = Screen.Portrait
+        screen.orientation = Screen.Portrait
         rotateButton.text = rotateRight;
     }
     if (op == rotateRight) {
-        main.orientation = Screen.Landscape
+        screen.orientation = Screen.Landscape
         rotateButton.text = rotateLeft;
     }
 }

@@ -32,13 +32,10 @@
 
 class MDeclarativeScreenPrivate;
 
-class MDeclarativeScreen : public QDeclarativeItem
+class MDeclarativeScreen : public QObject
 {
     Q_OBJECT
 
-//    Q_PROPERTY(QDeclarativeItem * window READ window WRITE setWindow NOTIFY windowChanged FINAL )
-
-//    Q_PROPERTY(bool isActiveWindow READ isActiveWindow NOTIFY isActiveWindowChanged)
     Q_PROPERTY(Orientation orientation READ orientation WRITE setOrientation NOTIFY orientationChanged FINAL)
     Q_PROPERTY(bool orientationLocked READ isOrientationLocked WRITE setOrientationLocked NOTIFY orientationLockedChanged FINAL)
     Q_PROPERTY(bool covered READ isCovered NOTIFY coveredChanged FINAL)
