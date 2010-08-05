@@ -33,8 +33,12 @@ Rectangle {
 
     property int orientation: Screen.Portrait;
 
-    property double clientY: statusbar.y + statusbar.height + titlebar.height;
     property bool statusbarVisible: true
+
+    property double __pageX: 0;
+    property double __pageY: statusbar.y + statusbar.height + titlebar.height;
+    property alias __pageWidth: window.width;
+    property double __pageHeight: height - __pageY;
 
     Component.onCompleted: {
         orientation = screen.orientation;

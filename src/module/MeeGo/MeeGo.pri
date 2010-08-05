@@ -25,6 +25,7 @@ QML_FILES = \
         MeeGo/qmldir \
         MeeGo/Button.qml \
         MeeGo/ButtonGroup.qml \
+        MeeGo/Page.qml \
         MeeGo/Slider.qml \
         MeeGo/TitleBar.qml \
         MeeGo/TitleButton.qml \

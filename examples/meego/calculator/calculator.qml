@@ -58,15 +58,13 @@ Window {
 
     function doOp(operation) { CalcEngine.doOperation(operation) }
 
-    Item {
-        y: parent.clientY + 10;
-        height: parent.height - y;
-        width: parent.width;
+    Page {
 
         Column {
-            id: box; spacing: 8
+            id: box;
+            spacing: 8
 
-            anchors { fill: parent; topMargin: 6; bottomMargin: 6; leftMargin: 6; rightMargin: 6 }
+            anchors { fill: parent; topMargin: 16; bottomMargin: 6; leftMargin: 6; rightMargin: 6 }
 
             Row {
                 Display { id: display; width: box.width; height: 64 }

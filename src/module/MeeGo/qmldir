@@ -1,6 +1,7 @@
 plugin qtcomponentsplugin
 Button 1.0 Button.qml
 ButtonGroup 1.0 ButtonGroup.qml
+Page 1.0 Page.qml
 Slider 1.0 Slider.qml
 TitleBar 1.0 TitleBar.qml
 TitleButton 1.0 TitleButton.qml
