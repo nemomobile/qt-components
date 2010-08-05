@@ -130,7 +130,7 @@ Rectangle {
             ParallelAnimation {
                 NumberAnimation { target: window; property: "opacity"; to: 1; duration: 300 }
                 NumberAnimation { target: snapshot; property: "opacity"; to: 0; duration: 300 }
-                RotationAnimation { target: window; properties: "rotation"; easing.type: Easing.InOutQuad; duration: 300 }
+                RotationAnimation { target: window; property: "rotation"; direction: RotationAnimation.Shortest; easing.type: Easing.InOutQuad; duration: 300 }
             }
             ScriptAction { script: snapshot.free(); }
         }
