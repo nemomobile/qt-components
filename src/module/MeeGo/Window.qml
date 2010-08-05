@@ -31,7 +31,7 @@ import com.meego.themebridge 1.0
 Rectangle {
     id: window
 
-    property int orientation: Screen.Portrait;
+    property int orientation: screen.orientation;
 
     property bool statusbarVisible: true
 
@@ -40,39 +40,11 @@ Rectangle {
     property alias __pageWidth: window.width;
     property double __pageHeight: height - __pageY;
 
-    Component.onCompleted: {
-        orientation = screen.orientation;
-    }
-
     Snapshot {
         id: snapshot;
         anchors.centerIn: parent;
     }
 
-    function setOrientation() {
-        var delta = window.rotation - screen.rotation;
-        // normalize to -90...180
-        if (delta <= -180) {
-            delta += 360;
-        } else if (delta > 180) {
-            delta -= 360;
-        }
-
-        if (Math.abs(delta) < 100) {
-            // no need to take a snapshot for 180 degrees
-            snapshot.take();
-            snapshot.opacity = 1;
-            snapshot.rotation = -window.rotation;
-            window.opacity = 0;
-        }
-
-        window.orientation = screen.orientation;
-    }
-
-    Connections {
-        target: screen;
-        onOrientationChanged: { window.setOrientation() }
-    }
     states:  [
         State {
             name: "Landscape"
@@ -126,7 +98,16 @@ Rectangle {
 
     transitions: Transition {
         SequentialAnimation {
+            ScriptAction { script: {
+                    snapshot.take();
+                    snapshot.opacity = 1;
+                    snapshot.rotation = -window.rotation;
+                    window.opacity = 0;
+                }
+            }
+            PauseAnimation { duration: 1000 }
             PropertyAction { target: window; properties: "x,y,width,height" }
+            PauseAnimation { duration: 1000 }
             ParallelAnimation {
                 NumberAnimation { target: window; property: "opacity"; to: 1; duration: 300 }
                 NumberAnimation { target: snapshot; property: "opacity"; to: 0; duration: 300 }

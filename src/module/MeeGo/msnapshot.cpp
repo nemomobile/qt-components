@@ -43,6 +43,8 @@ MSnapshot::~MSnapshot()
 void MSnapshot::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
     painter->save();
+    painter->setRenderHint(QPainter::Antialiasing, true);
+    painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
     painter->drawPixmap(0, 0, snapshot);
     painter->restore();
 }
@@ -50,10 +52,11 @@ void MSnapshot::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidg
 void MSnapshot::take()
 {
     QGraphicsScene *s = scene();
+    if (!s)
+        return;
     snapshot = QPixmap(s->width(), s->height());
     setWidth(s->width());
     setHeight(s->height());
-    snapshot.fill(Qt::transparent);
     QPainter p(&snapshot);
     s->render(&p);
 }
