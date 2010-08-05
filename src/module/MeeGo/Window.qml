@@ -51,10 +51,8 @@ Rectangle {
             var delta = window.rotation - rotation;
             // normalize to -90...180
             if (delta <= -180) {
-                window.rotation += 360;
                 delta += 360;
             } else if (delta > 180) {
-                window.rotation -= 360;
                 delta -= 360;
             }
 
@@ -111,7 +109,7 @@ Rectangle {
                 ParallelAnimation {
                     NumberAnimation { target: window; property: "opacity"; to: 1; duration: 300 }
                     NumberAnimation { target: snapshot; property: "opacity"; to: 0; duration: 300 }
-                    PropertyAnimation { target: window; properties: "rotation"; easing.type: Easing.InOutQuad; duration: 300 }
+                    RotationAnimation { target: window; properties: "rotation"; easing.type: Easing.InOutQuad; duration: 300 }
                 }
                 ScriptAction { script: snapshot.free(); }
             }
