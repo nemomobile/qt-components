@@ -47,8 +47,8 @@ class MDeclarativeScreen : public QObject
 
     Q_PROPERTY(bool minimized READ isMinimized WRITE setMinimized NOTIFY minimizedChanged FINAL)
 
-    Q_PROPERTY(bool inputMethodVisible READ isInputMethodVisible NOTIFY inputMethodChanged FINAL)
-    Q_PROPERTY(QRect inputMethodRect READ inputMethodRect NOTIFY inputMethodChanged FINAL)
+    Q_PROPERTY(bool softwareInputPanelVisible READ softwareInputPanelVisible NOTIFY softwareInputPanelVisibleChanged FINAL)
+    Q_PROPERTY(QRect softwareInputPanelRect READ softwareInputPanelRect NOTIFY softwareInputPanelVisibleChanged FINAL)
 
     Q_ENUMS(Orientation)
 
@@ -79,9 +79,8 @@ public:
     int height() const { return 480; }
 
 
-    bool isInputMethodVisible() const;
-//    void setInputMethodVisible(bool visible);
-    QRect inputMethodRect() const;
+    bool softwareInputPanelVisible() const;
+    QRect softwareInputPanelRect() const;
 
     bool isMinimized() const;
     void setMinimized(bool minimized);
@@ -90,7 +89,7 @@ Q_SIGNALS:
     void orientationChanged();
     void orientationLockedChanged();
     void coveredChanged();
-    void inputMethodChanged();
+    void softwareInputPanelVisibleChanged();
     void minimizedChanged();
     void keyboardOpenChanged();
 

@@ -128,45 +128,20 @@ void MDeclarativeScreenPrivate::_q_updateOrientationAngle()
         return;
 
 #ifdef HAVE_CONTEXTSUBSCRIBER
-    MDeclarativeScreen::Orientation newOrientation = MDeclarativeScreen::Landscape;
+    MDeclarativeScreen::Orientation newOrientation = MDeclarativeScreen::Portrait;
     QString edge = topEdgeProperty.value().toString();
     bool open = keyboardOpenProperty.value().toBool();
 
     if (open) {
         newOrientation = MDeclarativeScreen::Landscape;
-    } else if (edge == "top") {// && (MDeviceProfile::instance()->orientationAngleIsSupported(M::Angle0, isKeyboardOpen))) {
+    } else if (edge == "top") {
         newOrientation = MDeclarativeScreen::Landscape;
-    } else if (edge == "left") {// && (MDeviceProfile::instance()->orientationAngleIsSupported(M::Angle270, isKeyboardOpen))) {
+    } else if (edge == "left") {
         newOrientation = MDeclarativeScreen::Portrait;
-    } else if (edge == "right") { // && (MDeviceProfile::instance()->orientationAngleIsSupported(M::Angle90, isKeyboardOpen))) {
+    } else if (edge == "right") {
         newOrientation = MDeclarativeScreen::PortraitInverted;
-    } else if (edge == "bottom") { // && (MDeviceProfile::instance()->orientationAngleIsSupported(M::Angle180, isKeyboardOpen))) {
+    } else if (edge == "bottom") {
         newOrientation = MDeclarativeScreen::LandscapeInverted;
-    } else {
-#if 0
-        //it seems that orientation does not match allowed for current kybrd state.
-        //check if the previous one was ok:
-        if ((orientation == Landscape && (MDeviceProfile::instance()->orientationAngleIsSupported(M::Angle0, isKeyboardOpen))) ||
-            (orientation == PortraitInverted && (MDeviceProfile::instance()->orientationAngleIsSupported(M::Angle90, isKeyboardOpen))) ||
-            (orientation == LandscapeInverted && (MDeviceProfile::instance()->orientationAngleIsSupported(M::Angle180, isKeyboardOpen))) ||
-            (orientation == Portrait && (MDeviceProfile::instance()->orientationAngleIsSupported(M::Angle270, isKeyboardOpen)))
-            ){
-            //it was: let's just use an old angle
-            newOrientation = orientation;
-        } else {
-            //it was not: let's use first allowed:
-            if (MDeviceProfile::instance()->orientationAngleIsSupported(M::Angle0, isKeyboardOpen))
-                newOrientation = Landscape;
-            else if (MDeviceProfile::instance()->orientationAngleIsSupported(M::Angle270, isKeyboardOpen))
-                newOrientation = Portrait;
-            else if (MDeviceProfile::instance()->orientationAngleIsSupported(M::Angle90, isKeyboardOpen))
-                newOrientation = PortraitInverted;
-            else if (MDeviceProfile::instance()->orientationAngleIsSupported(M::Angle180, isKeyboardOpen))
-                newOrientation = LandscapeInverted;
-            else
-                qFatal("MDeclarativeScreenPrivate::updateOrientationAngle() - current keyboard state seems not to be covered in device.conf file");
-        }
-#endif
     }
 
     if (open != keyboardOpen) {
@@ -221,7 +196,6 @@ void MDeclarativeScreen::setOrientation(Orientation o)
     if (d->orientation == o)
         return;
 
-    qWarning() << "setOrientation" << o;
     d->orientation = o;
     d->_q_setOrientationHelper();
     emit orientationChanged();
@@ -277,18 +251,13 @@ bool MDeclarativeScreen::isKeyboardOpen() const
     return d->keyboardOpen;
 }
 
-bool MDeclarativeScreen::isInputMethodVisible() const
+bool MDeclarativeScreen::softwareInputPanelVisible() const
 {
     qWarning() << "IM visible" << !MInputMethodState::instance()->inputMethodArea().isEmpty();
     return !MInputMethodState::instance()->inputMethodArea().isEmpty();
 }
 
-//void MDeclarativeScreen::setInputMethodVisible(bool visible)
-//{
-
-//}
-
-QRect MDeclarativeScreen::inputMethodRect() const
+QRect MDeclarativeScreen::softwareInputPanelRect() const
 {
     qWarning() << "IM rect" << MInputMethodState::instance()->inputMethodArea();
     return MInputMethodState::instance()->inputMethodArea();
@@ -296,8 +265,10 @@ QRect MDeclarativeScreen::inputMethodRect() const
 
 bool MDeclarativeScreen::isMinimized() const
 {
-    // ###
-    return false;
+    QWidget *top = QApplication::activeWindow();
+    if (!top)
+        return true;
+    return top->windowState() & Qt::WindowMinimized;
 }
 
 void MDeclarativeScreen::setMinimized(bool minimized)

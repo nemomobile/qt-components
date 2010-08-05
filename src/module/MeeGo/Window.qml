@@ -31,7 +31,7 @@ import com.meego.themebridge 1.0
 Rectangle {
     id: window
 
-    property int orientation;
+    property int orientation: Screen.Portrait;
 
     property double clientY: statusbar.y + statusbar.height + titlebar.height;
     property bool statusbarVisible: true
