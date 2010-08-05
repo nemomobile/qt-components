@@ -97,6 +97,8 @@ MDeclarativeStatusBar::MDeclarativeStatusBar(QDeclarativeItem *parent) :
 {
     setFlag(QGraphicsItem::ItemHasNoContents, false);
     setAcceptedMouseButtons(Qt::LeftButton);
+    // higher than TitleBar
+    setZValue(1010);
 
     if (!filterRegistered) {
         ::oldFilter = QCoreApplication::instance()->setEventFilter(x11EventFilter);

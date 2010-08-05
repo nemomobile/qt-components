@@ -34,9 +34,11 @@ Rectangle {
     property int orientation: screen.orientation;
 
     property bool statusbarVisible: true
+    property bool titlebarVisible: true;
+    property bool fullscreen: false;
 
     property double __pageX: 0;
-    property double __pageY: statusbar.y + statusbar.height + titlebar.height;
+    property double __pageY: decoration.y + decoration.height;
     property alias __pageWidth: window.width;
     property double __pageHeight: height - __pageY;
 
@@ -98,7 +100,8 @@ Rectangle {
 
     transitions: Transition {
         SequentialAnimation {
-            ScriptAction { script: {
+            ScriptAction {
+                script: {
                     snapshot.take();
                     snapshot.opacity = 1;
                     snapshot.rotation = -window.rotation;
@@ -115,29 +118,53 @@ Rectangle {
         }
     }
 
-    StatusBar {
-        id: statusbar;
-
+    Column {
+        id: decoration;
+        y: 0;
         width: parent.width;
-        orientation: screen.orientation;
+        height: titlebar.y + titlebar.height;
+
+        StatusBar {
+            id: statusbar;
+
+            width: parent.width;
+            orientation: screen.orientation;
+
+            states: State {
+                    name: 'hidden';
+                    when:  (window.statusbarVisible == false);
+                    PropertyChanges { target: statusbar; y: -statusbar.height; }
+            }
+
+            transitions: Transition {
+                NumberAnimation { target: statusbar; property: "y"; duration: 300; easing.type: Easing.InOutQuad }
+            }
+        }
+        TitleBar {
+            id: titlebar;
+            y: statusbar.y + statusbar.height;
+            onMinimize: { screen.minimized = true; }
+            onQuit:  { Qt.quit(); }
+
+            states: State {
+                    name: 'hidden';
+                    when:  (window.titlebarVisible == false);
+                    PropertyChanges { target: titlebar; y: statusbar.y + statusbar.height - titlebar.height; }
+            }
+            transitions: Transition {
+                NumberAnimation { target: titlebar; property: "y"; duration: 300; easing.type: Easing.InOutQuad }
+            }
+        }
 
         states: State {
                 name: 'hidden';
-                when:  (statusbar.parent.statusbarVisible == false);
-                PropertyChanges { target: statusbar; y: -statusbar.height; }
-                PropertyChanges { target: statusbar; opacity: 0; }
+                when:  (window.fullscreen == true);
+                PropertyChanges { target: decoration; y: -decoration.height; }
         }
 
         transitions: Transition {
-            SequentialAnimation {
-                NumberAnimation { target: statusbar; properties: "y,opacity"; duration: 300; easing.type: Easing.InOutQuad }
-            }
+            NumberAnimation { target: decoration; property: "y"; duration: 300; easing.type: Easing.InOutQuad }
         }
-    }
-    TitleBar {
-        id: titlebar;
-        anchors.top: statusbar.bottom;
-        onMinimize: { screen.minimized = true; }
-        onQuit:  { Qt.quit(); }
+
     }
 }

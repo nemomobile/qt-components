@@ -65,9 +65,11 @@ function doOperation(op) {
     } else if (op == squareRoot) {
         display.text = (Math.sqrt(display.text.valueOf())).toString()
     } else if (op == "mc") {
-        memory = 0;
+        //memory = 0;
+        main.titlebarVisible = !main.titlebarVisible;
     } else if (op == "m+") {
-        memory += display.text.valueOf()
+        //memory += display.text.valueOf()
+        main.fullscreen= !main.fullscreen;
     } else if (op == "mr") {
         display.text = memory.toString()
     } else if (op == "m-") {
