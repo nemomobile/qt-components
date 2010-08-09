@@ -24,27 +24,33 @@
 **
 ****************************************************************************/
 
-#include <QtDeclarative>
+// Helper code for the button-group.qml example
 
-#include "qbuttonmodel.h"
-#include "qlineeditmodel.h"
-#include "qrangemodel.h"
+var buttonList = [];
+var count = 0;
 
-class QtComponentsPlugin : public QDeclarativeExtensionPlugin
-{
-    Q_OBJECT
+function addButton(parent) {
+    var button = Qt.createQmlObject("import Qt.labs.Mx 1.0; Button { id: me; checkable: true; text: 'Button " + count + "' }", parent);
+    count += 1;
+    buttonList.push(button);
+}
 
-public:
-    void registerTypes(const char *uri) {
-        Q_ASSERT(uri == QLatin1String("Qt.labs.components"));
-        qmlRegisterType<QButtonModel>(uri, 1, 0, "ButtonModel");
-        qmlRegisterType<QLineEditModel>(uri, 1, 0, "LineEditModel");
-        qmlRegisterType<QLineEditLayoutHelper>(uri, 1, 0, "LineEditLayoutHelper");
-        qmlRegisterType<QLineEditEventHelper>(uri, 1, 0, "LineEditEventHelper");
-        qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
+function removeLastButton() {
+    if (buttonList.length > 0) {
+        var last = buttonList.pop();
+        last.destroy();
     }
-};
+}
 
-#include "plugin.moc"
+function removeButton(button) {
+    for (var i = 0; i < buttonList.length; i++) {
+        if (buttonList[i] === button) {
+            buttonList.splice(i, 1);
+            break;
+        }
+    }
 
-Q_EXPORT_PLUGIN2(qtcomponentsplugin, QtComponentsPlugin);
+    button.destroy();
+}
+
+

@@ -40,7 +40,7 @@
 ****************************************************************************/
 
 import Qt 4.7
-import Qt.labs.components 1.0
+import com.meego 1.0
 import "Core"
 import "Core/calculator.js" as CalcEngine
 

@@ -2,18 +2,26 @@ This source tree contains the Qt Components project.
 
 Building
 ========
-qmake (for choosing a specific platform do 'qmake -config mx' or 'qmake -config meego')
+qmake (for compiling specific component sets add '-config mx' and/or '-config meego')
 make
 make install
 
-The project is divided into one lib, libQtComponents, and one qml module: Qt.labs.components.
-The qml module depends on the qtcomponentsplugin. The lib will install in QTDIR/lib, while
-the module will go to QTDIR/imports.
+The project is divided into:
+
+- The library libQtCompoenents: contain general purpose helpers for C++;
+- The module Qt.labs.components: _for now_ contains general purpose helpers for QML.
+
+and also (for the time being) two QML modules for component sets implemented using those components
+
+- com.meego: components from MeeGo Touch UI library;
+- Qt.labs.Mx: set of UI components inspired in the Mx toolkit.
+
+The lib will install in QTDIR/lib, while the modules will go to QTDIR/imports.
 
 Build dependencies
 ==================
 - Qt 4.7
 
 Optional dependencies
-==================
-- Meegotouch
+=====================
+- MeeGo Touch (for the com.meego module)

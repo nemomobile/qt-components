@@ -40,7 +40,7 @@
 ****************************************************************************/
 
 import Qt 4.7
-import Qt.labs.components 1.0 as Components
+import com.meego 1.0 as Components 
 
 Components.Button {
     id: button

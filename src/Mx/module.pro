@@ -14,7 +14,9 @@ include(kernel/kernel.pri)
 include(models/models.pri)
 INCLUDEPATH += $$PWD/models
 
-QML_FILES += qmldir
+mx:include(Mx/Mx.pri)
+else:meego:include(MeeGo/MeeGo.pri)
+
 TARGETPATH = Qt/labs/components
 
 target.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH

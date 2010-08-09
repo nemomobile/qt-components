@@ -24,27 +24,49 @@
 **
 ****************************************************************************/
 
-#include <QtDeclarative>
+import Qt 4.7
+import Qt.labs.Mx 1.0
 
-#include "qbuttonmodel.h"
-#include "qlineeditmodel.h"
-#include "qrangemodel.h"
+Item {
+    Row {
+        id: row
+        x: 20; y: 50
+        spacing: 4
 
-class QtComponentsPlugin : public QDeclarativeExtensionPlugin
-{
-    Q_OBJECT
+        Button {
+            text: "Add crumb"
+            onClicked: { bar.push("Crumb" + (bar.level + 1)); }
+        }
 
-public:
-    void registerTypes(const char *uri) {
-        Q_ASSERT(uri == QLatin1String("Qt.labs.components"));
-        qmlRegisterType<QButtonModel>(uri, 1, 0, "ButtonModel");
-        qmlRegisterType<QLineEditModel>(uri, 1, 0, "LineEditModel");
-        qmlRegisterType<QLineEditLayoutHelper>(uri, 1, 0, "LineEditLayoutHelper");
-        qmlRegisterType<QLineEditEventHelper>(uri, 1, 0, "LineEditEventHelper");
-        qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
+        Button {
+            text: "Remove crumb"
+            onClicked: { bar.pop(); }
+        }
+
+        Button {
+            text: "Toggle editable"
+            onClicked: { bar.editable = !bar.editable; }
+        }
+
+        Button {
+            text: "Re-label 1st button"
+            onClicked: { bar.setLabel(1, bar.entry.text); }
+        }
     }
-};
 
-#include "plugin.moc"
+    Rectangle {
+        color: "gainsboro"
+        anchors.fill: bar
+    }
 
-Q_EXPORT_PLUGIN2(qtcomponentsplugin, QtComponentsPlugin);
+    PathBar {
+        id: bar
+
+        anchors.top: row.bottom
+        anchors.topMargin: 20
+        anchors.left: row.left
+
+        width: parent.width - 40
+        clearOnChange: true
+    }
+}

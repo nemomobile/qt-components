@@ -26,25 +26,39 @@
 
 #include <QtDeclarative>
 
-#include "qbuttonmodel.h"
-#include "qlineeditmodel.h"
-#include "qrangemodel.h"
+#include "mdeclarativestatusbar.h"
+#include "mdeclarativescreen.h"
+#include "msnapshot.h"
+#include <mcomponentdata.h>
 
-class QtComponentsPlugin : public QDeclarativeExtensionPlugin
+class MeeGoPlugin : public QDeclarativeExtensionPlugin
 {
     Q_OBJECT
 
 public:
+    void initializeEngine(QDeclarativeEngine *engine, const char *uri) {
+        QDeclarativeExtensionPlugin::initializeEngine(engine, uri);
+
+        if (!MComponentData::instance()) {
+            // This is a workaround because we can't use a default
+            // constructor for MComponentData
+            int argc = 1;
+            char *argv0 = "meegotouch";
+            (void) new MComponentData(argc, &argv0);
+        }
+
+        // ### Register in Qt module?
+        engine->rootContext()->setContextProperty("screen", new MDeclarativeScreen);
+        qmlRegisterUncreatableType<MDeclarativeScreen>("Qt",4,7,"Screen","");
+    }
+
     void registerTypes(const char *uri) {
-        Q_ASSERT(uri == QLatin1String("Qt.labs.components"));
-        qmlRegisterType<QButtonModel>(uri, 1, 0, "ButtonModel");
-        qmlRegisterType<QLineEditModel>(uri, 1, 0, "LineEditModel");
-        qmlRegisterType<QLineEditLayoutHelper>(uri, 1, 0, "LineEditLayoutHelper");
-        qmlRegisterType<QLineEditEventHelper>(uri, 1, 0, "LineEditEventHelper");
-        qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
+        Q_ASSERT(uri == QLatin1String("com.meego"));
+        qmlRegisterType<MDeclarativeStatusBar>(uri, 1, 0, "StatusBar");
+        qmlRegisterType<MSnapshot>(uri, 1, 0, "Snapshot");
     }
 };
 
 #include "plugin.moc"
 
-Q_EXPORT_PLUGIN2(qtcomponentsplugin, QtComponentsPlugin);
+Q_EXPORT_PLUGIN2(meegoplugin, MeeGoPlugin);

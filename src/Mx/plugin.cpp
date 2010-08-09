@@ -26,25 +26,27 @@
 
 #include <QtDeclarative>
 
-#include "qbuttonmodel.h"
-#include "qlineeditmodel.h"
-#include "qrangemodel.h"
+#include "qmxwindow.h"
+#include "qmxtoplevelitem.h"
+#include "qmxbuttongroup.h"
 
-class QtComponentsPlugin : public QDeclarativeExtensionPlugin
+class MxPlugin : public QDeclarativeExtensionPlugin
 {
     Q_OBJECT
 
 public:
     void registerTypes(const char *uri) {
-        Q_ASSERT(uri == QLatin1String("Qt.labs.components"));
-        qmlRegisterType<QButtonModel>(uri, 1, 0, "ButtonModel");
-        qmlRegisterType<QLineEditModel>(uri, 1, 0, "LineEditModel");
-        qmlRegisterType<QLineEditLayoutHelper>(uri, 1, 0, "LineEditLayoutHelper");
-        qmlRegisterType<QLineEditEventHelper>(uri, 1, 0, "LineEditEventHelper");
-        qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
+        Q_ASSERT(uri == QLatin1String("Qt.labs.Mx"));
+
+        // ### Common high level style items
+        qmlRegisterType<QMxWindow>(uri, 1, 0, "WindowModel");
+        qmlRegisterType<QMxTopLevelItem>(uri, 1, 0, "TopLevelItemHelper");
+
+        // ### Temporary solution until we can access children items inside QML
+        qmlRegisterType<QMxButtonGroup>(uri, 1, 0, "ButtonGroup");
     }
 };
 
 #include "plugin.moc"
 
-Q_EXPORT_PLUGIN2(qtcomponentsplugin, QtComponentsPlugin);
+Q_EXPORT_PLUGIN2(mxplugin, MxPlugin);

@@ -24,27 +24,21 @@
 **
 ****************************************************************************/
 
-#include <QtDeclarative>
+import Qt 4.7
+import Qt.labs.Mx 1.0
 
-#include "qbuttonmodel.h"
-#include "qlineeditmodel.h"
-#include "qrangemodel.h"
+Item {
+    Expander {
+        x: 10;
+        y: 10;
+        text: "Expander";
 
-class QtComponentsPlugin : public QDeclarativeExtensionPlugin
-{
-    Q_OBJECT
-
-public:
-    void registerTypes(const char *uri) {
-        Q_ASSERT(uri == QLatin1String("Qt.labs.components"));
-        qmlRegisterType<QButtonModel>(uri, 1, 0, "ButtonModel");
-        qmlRegisterType<QLineEditModel>(uri, 1, 0, "LineEditModel");
-        qmlRegisterType<QLineEditLayoutHelper>(uri, 1, 0, "LineEditLayoutHelper");
-        qmlRegisterType<QLineEditEventHelper>(uri, 1, 0, "LineEditEventHelper");
-        qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
+        ScrollGrid {
+            id: scroll
+            width: 350;
+            height: 250;
+            count: 50;
+            maxstride: 3;
+        }
     }
-};
-
-#include "plugin.moc"
-
-Q_EXPORT_PLUGIN2(qtcomponentsplugin, QtComponentsPlugin);
+}

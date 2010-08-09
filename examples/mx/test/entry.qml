@@ -24,27 +24,48 @@
 **
 ****************************************************************************/
 
-#include <QtDeclarative>
+import Qt 4.7
+import Qt.labs.Mx 1.0 as QtComponents
 
-#include "qbuttonmodel.h"
-#include "qlineeditmodel.h"
-#include "qrangemodel.h"
+Item {
+    Column {
+        x: 50;
+        y: 50;
 
-class QtComponentsPlugin : public QDeclarativeExtensionPlugin
-{
-    Q_OBJECT
+        spacing: 10;
 
-public:
-    void registerTypes(const char *uri) {
-        Q_ASSERT(uri == QLatin1String("Qt.labs.components"));
-        qmlRegisterType<QButtonModel>(uri, 1, 0, "ButtonModel");
-        qmlRegisterType<QLineEditModel>(uri, 1, 0, "LineEditModel");
-        qmlRegisterType<QLineEditLayoutHelper>(uri, 1, 0, "LineEditLayoutHelper");
-        qmlRegisterType<QLineEditEventHelper>(uri, 1, 0, "LineEditEventHelper");
-        qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
+        QtComponents.Entry {
+            width: 240;
+            text: "Hello World!";
+            hint: "Fixed Width Entry";
+        }
+        QtComponents.Entry {
+            hint: "Search...";
+            leftIconSource: "images/edit-find.png";
+            onLeftIconClicked: text="Hello world";
+            rightIconSource: "images/edit-clear.png";
+            onRightIconClicked: text="";
+        }
+
+        QtComponents.Entry {
+            id: textSetable;
+            hint: "hint hint...";
+        }
+        Row {
+            spacing: 10;
+            QtComponents.Button {
+                text: "Set";
+                onClicked: textSetable.text = "Here is some text";
+            }
+            QtComponents.Button {
+                text: "Clear";
+                onClicked: textSetable.text = "";
+            }
+        }
+
+        QtComponents.Entry {
+            hint: "Secret!";
+            secret: true;
+        }
     }
-};
-
-#include "plugin.moc"
-
-Q_EXPORT_PLUGIN2(qtcomponentsplugin, QtComponentsPlugin);
+}

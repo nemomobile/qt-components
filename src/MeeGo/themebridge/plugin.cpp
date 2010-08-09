@@ -25,26 +25,44 @@
 ****************************************************************************/
 
 #include <QtDeclarative>
+#include <QScopedPointer>
 
-#include "qbuttonmodel.h"
-#include "qlineeditmodel.h"
-#include "qrangemodel.h"
+#include "mcomponentdata.h"
+#include "mdeclarativescalableimage.h"
+#include "mdeclarativebackground.h"
+#include "mdeclarativepixmap.h"
+#include "mdeclarativeicon.h"
+#include "mstylewrapper.h"
 
-class QtComponentsPlugin : public QDeclarativeExtensionPlugin
+class MeeGoThemeBridgePlugin : public QDeclarativeExtensionPlugin
 {
     Q_OBJECT
-
 public:
+    void initializeEngine(QDeclarativeEngine *engine, const char *uri) {
+        QDeclarativeExtensionPlugin::initializeEngine(engine, uri);
+
+        if (!MComponentData::instance()) {
+            // This is a workaround because we can't use a default
+            // constructor for MComponentData
+            int argc = 1;
+            char *argv0 = "meegotouch";
+            (void) new MComponentData(argc, &argv0);
+        }
+    }
+
     void registerTypes(const char *uri) {
-        Q_ASSERT(uri == QLatin1String("Qt.labs.components"));
-        qmlRegisterType<QButtonModel>(uri, 1, 0, "ButtonModel");
-        qmlRegisterType<QLineEditModel>(uri, 1, 0, "LineEditModel");
-        qmlRegisterType<QLineEditLayoutHelper>(uri, 1, 0, "LineEditLayoutHelper");
-        qmlRegisterType<QLineEditEventHelper>(uri, 1, 0, "LineEditEventHelper");
-        qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
+//        Q_ASSERT(uri == QLatin1String("MeegoTouch"));
+        // Custom primitives
+        qmlRegisterType<MDeclarativeScalableImage>(uri, 1, 0, "ScalableImage");
+        qmlRegisterType<MDeclarativePixmap>(uri, 1, 0, "Pixmap");
+        qmlRegisterType<MDeclarativeBackground>(uri, 1, 0, "Background");
+        qmlRegisterType<MDeclarativeIcon>(uri, 1, 0, "Icon");
+
+        // Theme info
+        qmlRegisterType<MStyleWrapper>(uri, 1, 0, "Style");
     }
 };
 
 #include "plugin.moc"
 
-Q_EXPORT_PLUGIN2(qtcomponentsplugin, QtComponentsPlugin);
+Q_EXPORT_PLUGIN2(meegothemebridgeplugin, MeeGoThemeBridgePlugin);

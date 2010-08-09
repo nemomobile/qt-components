@@ -1,6 +1,10 @@
 TEMPLATE = subdirs
 SUBDIRS = lib module
 
+mx {
+    SUBDIRS += Mx
+}
+
 meego {
-    SUBDIRS += module/MeeGo/themebridge
+    SUBDIRS += MeeGo MeeGo/themebridge
 }

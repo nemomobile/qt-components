@@ -24,27 +24,59 @@
 **
 ****************************************************************************/
 
-#include <QtDeclarative>
+import Qt 4.7
+import Qt.labs.Mx 1.0
 
-#include "qbuttonmodel.h"
-#include "qlineeditmodel.h"
-#include "qrangemodel.h"
+import "buttongroup.js" as Helper
 
-class QtComponentsPlugin : public QDeclarativeExtensionPlugin
-{
-    Q_OBJECT
+Item {
+    Row {
+        id: control
+        x: 100
+        y: 100
 
-public:
-    void registerTypes(const char *uri) {
-        Q_ASSERT(uri == QLatin1String("Qt.labs.components"));
-        qmlRegisterType<QButtonModel>(uri, 1, 0, "ButtonModel");
-        qmlRegisterType<QLineEditModel>(uri, 1, 0, "LineEditModel");
-        qmlRegisterType<QLineEditLayoutHelper>(uri, 1, 0, "LineEditLayoutHelper");
-        qmlRegisterType<QLineEditEventHelper>(uri, 1, 0, "LineEditEventHelper");
-        qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
+        Button {
+            text: "Add button"
+            onClicked: {
+                Helper.addButton(row);
+                group.refresh();
+            }
+        }
+
+        Button {
+            text: "Remove button"
+
+            onClicked: {
+                Helper.removeLastButton();
+            }
+        }
+
+        Button {
+            text: "Destroy active"
+            onClicked: {
+                // ### better way to check for valid item?
+                if (group.checkedItem.toString() !== "null") {
+                    Helper.removeButton(group.checkedItem);
+                }
+            }
+        }
+
+        Button {
+            id: allowButton
+            text: "Allow no active"
+            checkable: true
+        }
     }
-};
 
-#include "plugin.moc"
+    ButtonGroup {
+        id: group
+        allowNoChecked: allowButton.checked
 
-Q_EXPORT_PLUGIN2(qtcomponentsplugin, QtComponentsPlugin);
+        Row {
+            id: row
+            x: 100
+            y: 200
+        }
+    }
+
+}
