@@ -50,13 +50,13 @@ BorderImage {
     source: "images/display.png"
     border { left: 10; top: 10; right: 10; bottom: 10 }
 
-    Text {
+    TextInput {
         id: displayText
         anchors {
             right: parent.right; verticalCenter: parent.verticalCenter; verticalCenterOffset: -1
             rightMargin: 6; left: operationText.right
         }
-        font.pixelSize: parent.height * .6; text: "0"; horizontalAlignment: Text.AlignRight; elide: Text.ElideRight
+        font.pixelSize: parent.height * .6; text: "0"; horizontalAlignment: Text.AlignRight;
         color: "#343434"; smooth: true; font.bold: true
     }
     Text {

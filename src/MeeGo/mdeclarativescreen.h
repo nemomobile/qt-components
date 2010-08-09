@@ -51,6 +51,8 @@ class MDeclarativeScreen : public QObject
     Q_PROPERTY(bool softwareInputPanelVisible READ softwareInputPanelVisible NOTIFY softwareInputPanelVisibleChanged FINAL)
     Q_PROPERTY(QRect softwareInputPanelRect READ softwareInputPanelRect NOTIFY softwareInputPanelVisibleChanged FINAL)
 
+    Q_PROPERTY(QRectF microFocus READ microFocus NOTIFY microFocusChanged)
+
     Q_ENUMS(Orientation)
 
 public:
@@ -85,6 +87,8 @@ public:
     bool softwareInputPanelVisible() const;
     QRect softwareInputPanelRect() const;
 
+    QRectF microFocus() const;
+
     bool isMinimized() const;
     void setMinimized(bool minimized);
 
@@ -95,12 +99,15 @@ Q_SIGNALS:
     void softwareInputPanelVisibleChanged();
     void minimizedChanged();
     void keyboardOpenChanged();
+    void microFocusChanged();
 
 private:
     Q_DISABLE_COPY(MDeclarativeScreen)
     Q_PRIVATE_SLOT(d, void _q_isCoveredChanged())
     Q_PRIVATE_SLOT(d, void _q_updateOrientationAngle())
     Q_PRIVATE_SLOT(d, void _q_setOrientationHelper())
+    Q_PRIVATE_SLOT(d, void _q_checkMicroFocusHint())
+    Q_PRIVATE_SLOT(d, void _q_sipChanged(const QRect &))
 
     friend class MDeclarativeScreenPrivate;
     MDeclarativeScreenPrivate *d;

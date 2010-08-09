@@ -30,6 +30,8 @@
 
 #include <qapplication.h>
 #include <qpointer.h>
+#include <qtimer.h>
+#include <qrect.h>
 
 #ifdef HAVE_CONTEXTSUBSCRIBER
 #include "contextproperty.h"
@@ -47,6 +49,9 @@ public:
 
     void _q_setOrientationHelper();
 
+    void _q_sipChanged(const QRect &);
+    void _q_checkMicroFocusHint();
+
     MDeclarativeScreen *q;
 
 //    QPointer<QDeclarativeItem> window;
@@ -55,6 +60,10 @@ public:
     bool orientationLocked;
     bool isCovered;
     bool keyboardOpen;
+    bool sipVisible;
+
+    QRectF microFocus;
+    QTimer checkMicroFocusHintTimer;
 
 #ifdef HAVE_CONTEXTSUBSCRIBER
     ContextProperty topEdgeProperty;
@@ -70,6 +79,7 @@ MDeclarativeScreenPrivate::MDeclarativeScreenPrivate(MDeclarativeScreen *qq)
     , orientationLocked(false)
     , isCovered(false)
     , keyboardOpen(false)
+    , sipVisible(false)
 #ifdef HAVE_CONTEXTSUBSCRIBER
     , topEdgeProperty("Screen.TopEdge")
     , isCoveredProperty("Screen.IsCovered")
@@ -77,7 +87,11 @@ MDeclarativeScreenPrivate::MDeclarativeScreenPrivate(MDeclarativeScreen *qq)
 #endif
 {
     QObject::connect(MInputMethodState::instance(), SIGNAL(inputMethodAreaChanged(const QRect &)),
-                     q, SIGNAL(inputMethodChanged()));
+                     q, SLOT(_q_sipChanged(const QRect &)));
+
+    checkMicroFocusHintTimer.setInterval(200);
+    QObject::connect(&checkMicroFocusHintTimer, SIGNAL(timeout()), q, SLOT(_q_checkMicroFocusHint()));
+    checkMicroFocusHintTimer.stop();
 }
 
 MDeclarativeScreenPrivate::~MDeclarativeScreenPrivate()
@@ -104,6 +118,9 @@ void MDeclarativeScreenPrivate::initContextSubscriber()
 
     //initiating the variables to current orientation
     _q_updateOrientationAngle();
+    if (orientation == MDeclarativeScreen::Portrait)
+        // make sure we notify the input method
+        _q_setOrientationHelper();
     _q_isCoveredChanged();
 #endif
 }
@@ -178,6 +195,37 @@ void MDeclarativeScreenPrivate::_q_setOrientationHelper()
     MInputMethodState::instance()->setActiveWindowOrientationAngle(angle);
 }
 
+void MDeclarativeScreenPrivate::_q_sipChanged(const QRect &rect)
+{
+    fprintf(stderr, "sip changed %d %d %d/%d\n", rect.x(), rect.y(), rect.width(), rect.height());
+    bool visible = !rect.isEmpty();
+    if (visible != sipVisible) {
+        if (visible)
+            checkMicroFocusHintTimer.start();
+        else
+            checkMicroFocusHintTimer.stop();
+        sipVisible = visible;
+    }
+
+    emit q->softwareInputPanelVisibleChanged();
+}
+
+void MDeclarativeScreenPrivate::_q_checkMicroFocusHint()
+{
+    if (!sipVisible)
+        return;
+    if (QWidget *widget = QApplication::focusWidget()) {
+        QVariant v = widget->inputMethodQuery(Qt::ImMicroFocus);
+        if (!v.toRectF().isValid())
+            return;
+        QRectF mf = v.toRectF();
+        if (mf != microFocus) {
+            microFocus = mf;
+            fprintf(stderr, "microfocus changed %f %f %f/%f\n", mf.x(), mf.y(), mf.width(), mf.height());
+            emit q->microFocusChanged();
+        }
+    }
+}
 
 MDeclarativeScreen::MDeclarativeScreen(QDeclarativeItem *parent)
         : QObject(parent),
@@ -273,8 +321,8 @@ bool MDeclarativeScreen::isKeyboardOpen() const
 
 bool MDeclarativeScreen::softwareInputPanelVisible() const
 {
-    qWarning() << "IM visible" << !MInputMethodState::instance()->inputMethodArea().isEmpty();
-    return !MInputMethodState::instance()->inputMethodArea().isEmpty();
+    qWarning() << "IM visible" << !MInputMethodState::instance()->inputMethodArea().isEmpty() << d->sipVisible;
+    return d->sipVisible;
 }
 
 QRect MDeclarativeScreen::softwareInputPanelRect() const
@@ -282,6 +330,12 @@ QRect MDeclarativeScreen::softwareInputPanelRect() const
     qWarning() << "IM rect" << MInputMethodState::instance()->inputMethodArea();
     return MInputMethodState::instance()->inputMethodArea();
 }
+
+QRectF MDeclarativeScreen::microFocus() const
+{
+    return d->microFocus;
+}
+
 
 bool MDeclarativeScreen::isMinimized() const
 {

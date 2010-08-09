@@ -66,10 +66,6 @@ Window {
 
             anchors { fill: parent; topMargin: 16; bottomMargin: 6; leftMargin: 6; rightMargin: 6 }
 
-            Row {
-                Display { id: display; width: box.width; height: 64 }
-            }
-
             Column {
                 id: column; spacing: 6
 
@@ -125,6 +121,10 @@ Window {
                     Button { width: grid.w; height: column.h; text: "="; color: 'red' }
                 }
             }
+            Row {
+                Display { id: display; width: box.width; height: 64 }
+            }
+
         }
     }
 }

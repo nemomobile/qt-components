@@ -40,7 +40,13 @@ Rectangle {
     property double __pageX: 0;
     property double __pageY: decoration.y + decoration.height;
     property alias __pageWidth: window.width;
-    property double __pageHeight: height - __pageY;
+    property double __pageHeight: height - __pageY + autoScroll;
+    property double __scrollOffset: 0;
+    property double autoScroll: __scrollOffset;
+
+//    Behavior on autoScroll {
+//        NumberAnimation { easing.type: Easing.InOutQuad; duration: 200; }
+//    }
 
     Snapshot {
         id: snapshot;
@@ -102,6 +108,7 @@ Rectangle {
                     snapshot.opacity = 1;
                     snapshot.rotation = -window.rotation;
                     window.opacity = 0;
+                    __scrollOffset = 0;
                 }
             }
             PropertyAction { target: window; properties: "x,y,width,height" }
@@ -110,13 +117,13 @@ Rectangle {
                 NumberAnimation { target: snapshot; property: "opacity"; to: 0; duration: 300 }
                 RotationAnimation { target: window; property: "rotation"; direction: RotationAnimation.Shortest; easing.type: Easing.InOutQuad; duration: 300 }
             }
-            ScriptAction { script: snapshot.free(); }
+            ScriptAction { script: { snapshot.free(); window.scrollPageIfRequired(); } }
         }
     }
 
     Column {
         id: decoration;
-        y: 0;
+        y: autoScroll;
         width: parent.width;
         height: titlebar.y + titlebar.height;
 
@@ -155,7 +162,7 @@ Rectangle {
         states: State {
                 name: 'hidden';
                 when:  (window.fullscreen == true);
-                PropertyChanges { target: decoration; y: -decoration.height; }
+                PropertyChanges { target: decoration; y: autoscroll - decoration.height; }
         }
 
         transitions: Transition {
@@ -163,4 +170,45 @@ Rectangle {
         }
 
     }
+
+    Connections {
+        target: screen;
+        onMicroFocusChanged: { scrollPageIfRequired(); }
+    }
+    function scrollPageIfRequired() {
+        if (screen.softwareInputPanelVisible) {
+            var mf = screen.microFocus;
+            var mfy = mf.y + mf.height/2;
+            var mfx = mf.x + mf.width/2;
+
+            var sipRect = screen.softwareInputPanelRect;
+            var max;
+
+            switch (screen.orientation) {
+            case Screen.Portrait:
+                __scrollOffset += sipRect.x/2 - mfx;
+                max = sipRect.width;
+                break;
+            case Screen.PortraitInverted:
+                __scrollOffset += mfx - (screen.width + sipRect.width)/2;
+                max = sipRect.width;
+                break;
+            case Screen.Landscape:
+                __scrollOffset += sipRect.y/2 - mfy;
+                max = sipRect.height;
+                break;
+            case Screen.LandscapeInverted:
+                __scrollOffset +=  mfy - (screen.height + sipRect.height)/2;
+                max = sipRect.height;
+                break;
+            }
+            if (__scrollOffset < -max)
+                __scrollOffset = -max;
+            if (__scrollOffset > 0)
+                __scrollOffset = 0;
+        } else {
+            __scrollOffset = 0;
+        }
+    }
+
 }
