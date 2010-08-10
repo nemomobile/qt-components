@@ -47,9 +47,7 @@ QtObject {
     id: root
     property variant selectedValue
 
-    function add(item) { Private.add(item); }
-    function remove(item) { Private.remove(item); }
-    function toggle(item) { Private.toggle(item); }
+    function __add(item) { Private.add(item); }
 
     Component.onCompleted: {
         Private.onCompleted();

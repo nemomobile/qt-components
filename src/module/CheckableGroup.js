@@ -128,23 +128,6 @@ function remove(item) {
     }
 }
 
-/// Items will call this when they are toggled and have a group.
-function toggle(item) {
-    // ### items could simply do checked = true in the exclusive case
-
-    // We can't uncheck an item, so ignore this toggle.
-    if (selectedItem === item && item.checked)
-        return;
-
-    if (selectedItem === item && !item.checked) {
-        // TODO: should we try to recover from this?
-        console.log("Error: inconsistency in checked items.");
-        return;
-    }
-
-    check(item);
-}
-
 /// Select one item, setting the selectedValue in the group
 function check(item) {
     // It is important to have the right item in the 'selectedItem'

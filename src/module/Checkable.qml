@@ -61,20 +61,26 @@ QtObject {
         if (!exclusiveGroup) {
             checked = !checked;
         } else {
-            exclusiveGroup.toggle(root);
+            // In an exclusive group, there is no 'checked = false'. The invariant
+            // of the group doesn't allow to "uncheck" the checked item. Note that
+            // the group watches for changes in the checked variable of its items.
+            checked = true;
         }
     }
 
     onExclusiveGroupChanged: {
         if (exclusiveGroup) {
             enabled = true;
-            exclusiveGroup.add(root);
+            // Note that we don't need to remove the previous group,
+            // since it is watching the 'exclusiveGroup' property changes
+            // in this item and will automatically remove us.
+            exclusiveGroup.__add(root);
         }
     }
 
     Component.onDestruction: {
-        if (exclusiveGroup) {
-            exclusiveGroup.remove(root);
-        }
+        // If there's a previous group, it will be watching for
+        // this change and will remove this item.
+        exclusiveGroup = null;
     }
 }

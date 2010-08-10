@@ -31,9 +31,11 @@ import com.meego.themebridge 1.0
 Item {
     id: button
 
-    property alias checked: model.checked
-    property alias checkable: model.checkable
-    property alias autoExclusive: model.autoExclusive
+    property alias checked: checkable.checked
+    property alias checkable: checkable.enabled
+
+    // Internal property, to be used by ButtonRow and other button containers.
+    property alias __exclusiveGroup: checkable.exclusiveGroup
 
     property alias text: label.text
     property string iconSource //: "images/sample-icon.svg"
@@ -63,9 +65,9 @@ Item {
         id: meegostyle
         styleType: button.groupButton ? Style.GroupButton : Style.Button
         mode: {
-            if (model.down)
+            if (mouseArea.containsMouse && mouseArea.pressed)
                 return "pressed"
-            else if (model.checked)
+            else if (checkable.checked)
                 return "selected"
             else
                 return "default"
@@ -107,7 +109,7 @@ Item {
             width: 48
             height: 48
 
-            source: (checkedIconSource == "" || !model.checked) ? iconSource : checkedIconSource
+            source: (checkedIconSource == "" || !button.checked) ? iconSource : checkedIconSource
         }
 
         Text {
@@ -116,8 +118,8 @@ Item {
             anchors.top: parent.top
             anchors.bottom: parent.bottom
 
-            horizontalAlignment: "AlignHCenter"
-            verticalAlignment: "AlignVCenter"
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
 
             font.family: "Nokia Sans"
             font.pixelSize: 24
@@ -130,15 +132,15 @@ Item {
     MouseArea {
         id: mouseArea
         anchors.fill: parent
+
+        onClicked: {
+            checkable.toggle();
+            button.clicked();
+        }
     }
 
-    ButtonModel {
-        id: model
-
-        pressed: mouseArea.pressed
-        highlighted: mouseArea.containsMouse
-        onClicked: button.clicked()
-
-        checkable: true
+    Checkable {
+        id: checkable
+        value: button
     }
 }
