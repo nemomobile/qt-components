@@ -53,11 +53,11 @@ Item {
         styleType: Style.CheckBox
         mode: {
             if (model.down)
-                return "pressed"
+                return Style.PressedMode
             else if (model.checked)
-                return "selected"
+                return Style.SelectedMode
             else
-                return "default"
+                return Style.DefaultMode
         }
     }
 

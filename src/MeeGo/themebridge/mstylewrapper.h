@@ -36,10 +36,11 @@ class MStyleWrapper : public QObject
 {
     Q_OBJECT
 
+    Q_ENUMS(StyleMode)
     Q_ENUMS(StyleType)
 
     // To be set from QML
-    Q_PROPERTY(QString mode READ mode WRITE setMode)
+    Q_PROPERTY(StyleMode mode READ mode WRITE setMode)
     Q_PROPERTY(StyleType styleType READ styleType WRITE setStyleType)
 
     // To expose data from current StyleContainer
@@ -55,6 +56,12 @@ public:
     MStyleWrapper(QObject *parent = 0);
     virtual ~MStyleWrapper();
 
+    enum StyleMode {
+        DefaultMode = 0,
+        PressedMode,
+        SelectedMode
+    };
+
     enum StyleType {
         None = 0,
         Button,
@@ -66,8 +73,8 @@ public:
         Switch
     };
 
-    QString mode() const;
-    void setMode(const QString &mode);
+    StyleMode mode() const;
+    void setMode(const StyleMode mode);
 
     StyleType styleType() const;
     void setStyleType(const StyleType styleType);
@@ -82,7 +89,7 @@ public:
     // QObject *internalStyle();
 
 Q_SIGNALS:
-    void modeChanged(const QString &newMode);
+    void modeChanged(const StyleMode newMode);
 
 protected Q_SLOTS:
     void notifyProperties();
@@ -90,7 +97,7 @@ protected Q_SLOTS:
 protected:
     void updateStyleMode();
 
-    QString m_mode;
+    StyleMode m_mode;
     StyleType m_styletype;
     MWidgetStyleContainer *m_stylecontainer;
 };

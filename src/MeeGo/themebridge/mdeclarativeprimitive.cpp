@@ -61,7 +61,7 @@ void MDeclarativePrimitive::setStyle(MStyleWrapper *style)
 
     if (m_style) {
         // Listen for mode and/or styleType changes
-        connect(m_style, SIGNAL(modeChanged(const QString &)), SLOT(updateStyleData()));
+        connect(m_style, SIGNAL(modeChanged(const StyleMode)), SLOT(updateStyleData()));
         updateStyleData();
     }
     update();

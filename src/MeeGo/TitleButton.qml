@@ -51,9 +51,9 @@ Item {
         styleType: Style.HomeButton;
         mode: {
             if (mouseArea.pressed)
-                return "pressed"
+                return Style.PressedMode
             else
-                return "default"
+                return Style.DefaultMode
         }
     }
 

@@ -66,11 +66,11 @@ Item {
         styleType: button.groupButton ? Style.GroupButton : Style.Button
         mode: {
             if (mouseArea.containsMouse && mouseArea.pressed)
-                return "pressed"
+                return Style.PressedMode
             else if (checkable.checked)
-                return "selected"
+                return Style.SelectedMode
             else
-                return "default"
+                return Style.DefaultMode
         }
     }
 

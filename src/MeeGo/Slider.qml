@@ -48,7 +48,7 @@ Item {
     Style {
         id: meegostyle
         styleType: Style.Slider
-        mode: "pressed"
+        mode: Style.PressedMode
     }
 
     Background {

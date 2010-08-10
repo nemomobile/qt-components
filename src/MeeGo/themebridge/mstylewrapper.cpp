@@ -37,7 +37,7 @@
 #include <mbuttonswitchstyle.h>
 
 MStyleWrapper::MStyleWrapper(QObject *parent)
-  : QObject(parent), m_mode("default"), m_styletype(None), m_stylecontainer(0)
+  : QObject(parent), m_mode(DefaultMode), m_styletype(None), m_stylecontainer(0)
 {
     // Emit notifier signals for all properties we export
     connect(MTheme::instance(), SIGNAL(themeChangeCompleted()), SLOT(notifyProperties()));
@@ -48,12 +48,12 @@ MStyleWrapper::~MStyleWrapper()
     delete m_stylecontainer;
 }
 
-QString MStyleWrapper::mode() const
+MStyleWrapper::StyleMode MStyleWrapper::mode() const
 {
     return m_mode;
 }
 
-void MStyleWrapper::setMode(const QString &mode)
+void MStyleWrapper::setMode(const StyleMode mode)
 {
     if (mode == m_mode)
         return;
@@ -75,15 +75,17 @@ void MStyleWrapper::updateStyleMode()
     if (!m_stylecontainer)
         return;
 
-    // XXX should use the protected method setMode(QString mode)
-    if (m_mode == "default")
+    switch (m_mode) {
+    case DefaultMode:
         m_stylecontainer->setModeDefault();
-    else if (m_mode == "pressed")
+        break;
+    case PressedMode:
         m_stylecontainer->setModePressed();
-    else if (m_mode == "selected")
+        break;
+    case SelectedMode:
         m_stylecontainer->setModeSelected();
-    else
-        m_stylecontainer->setModeDefault();
+        break;
+    }
 
     emit modeChanged(m_mode);
 }
