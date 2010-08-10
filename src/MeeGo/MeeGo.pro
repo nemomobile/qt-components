@@ -32,6 +32,7 @@ QML_FILES = \
         ButtonGroup.js \
         Page.qml \
         Slider.qml \
+        Switch.qml \
         TitleBar.qml \
         TitleButton.qml \
         Window.qml

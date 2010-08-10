@@ -62,7 +62,8 @@ public:
         CheckBox,
         Slider,
         NavigationBar,
-        HomeButton
+        HomeButton,
+        Switch
     };
 
     QString mode() const;

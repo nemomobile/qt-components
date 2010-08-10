@@ -4,6 +4,7 @@ ButtonColumn 1.0 ButtonColumn.qml
 ButtonRow 1.0 ButtonRow.qml
 Page 1.0 Page.qml
 Slider 1.0 Slider.qml
+Switch 1.0 Switch.qml
 TitleBar 1.0 TitleBar.qml
 TitleButton 1.0 TitleButton.qml
 Window 1.0 Window.qml
