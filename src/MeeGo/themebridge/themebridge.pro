@@ -11,6 +11,7 @@ SOURCES += plugin.cpp \
            mdeclarativescalableimage.cpp \
            mdeclarativepixmap.cpp \
            mdeclarativeicon.cpp \
+           mdeclarativemaskedimage.cpp \
            mdeclarativebackground.cpp
 
 HEADERS += mstylewrapper.h \
@@ -18,6 +19,7 @@ HEADERS += mstylewrapper.h \
            mdeclarativescalableimage.h \
            mdeclarativepixmap.h \
            mdeclarativeicon.h \
+           mdeclarativemaskedimage.h \
            mdeclarativebackground.h
 
 OTHER_FILES += qmldir
