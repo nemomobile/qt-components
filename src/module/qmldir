@@ -1,1 +1,3 @@
 plugin qtcomponentsplugin
+Checkable 1.0 Checkable.qml
+CheckableGroup 1.0 CheckableGroup.qml

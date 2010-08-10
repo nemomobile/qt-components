@@ -14,7 +14,12 @@ include(kernel/kernel.pri)
 include(models/models.pri)
 INCLUDEPATH += $$PWD/models
 
-QML_FILES += qmldir
+QML_FILES += \
+    qmldir \
+    Checkable.qml \
+    CheckableGroup.qml \
+    CheckableGroup.js
+
 TARGETPATH = Qt/labs/components
 
 target.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH
