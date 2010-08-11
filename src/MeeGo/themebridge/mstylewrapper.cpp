@@ -26,15 +26,14 @@
 
 #include "mstylewrapper.h"
 
-#include <QVariant>
 #include <mtheme.h>
-#include <mwidgetstyle.h>
 #include <mbuttonstyle.h>
 #include <mcheckboxstyle.h>
 #include <msliderstyle.h>
 #include <mnavigationbarstyle.h>
 #include <mhomebuttonpanelstyle.h>
 #include <mbuttonswitchstyle.h>
+#include <mtexteditstyle.h>
 
 MStyleWrapper::MStyleWrapper(QObject *parent)
   : QObject(parent), m_mode(DefaultMode), m_styletype(None), m_stylecontainer(0)
@@ -129,6 +128,9 @@ void MStyleWrapper::setStyleType(const StyleType styletype)
     case Switch:
         m_stylecontainer = new MButtonSwitchStyleContainer();
         break;
+    case TextEdit:
+        m_stylecontainer = new MTextEditStyleContainer();
+        break;
     default:
         m_stylecontainer = new MWidgetStyleContainer();
     }
@@ -160,14 +162,6 @@ int MStyleWrapper::preferredHeight() const
     const int max = (*m_stylecontainer)->maximumSize().height();
 
     return qBound(min, pref, max);
-}
-
-QColor MStyleWrapper::textColor() const
-{
-    if (!m_stylecontainer)
-        return QColor();
-
-    return (*m_stylecontainer)->property("textColor").value<QColor>();
 }
 
 const MWidgetStyleContainer *MStyleWrapper::styleContainer() const

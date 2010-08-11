@@ -29,6 +29,18 @@
 
 #include <QObject>
 #include <QColor>
+#include <QFont>
+#include <QVariant>
+
+#include <mwidgetstyle.h>
+
+#define M_STYLE_PROPERTY(type, name, propertyString, defaultValue)       \
+inline type name () const {                                                \
+    if (!m_stylecontainer)                                                 \
+        return defaultValue ;                                              \
+                                                                           \
+    return (*m_stylecontainer)->property( propertyString ).value< type >(); \
+}
 
 class MWidgetStyleContainer;
 
@@ -47,6 +59,21 @@ class MStyleWrapper : public QObject
     Q_PROPERTY(int preferredWidth READ preferredWidth NOTIFY modeChanged)
     Q_PROPERTY(int preferredHeight READ preferredHeight NOTIFY modeChanged)
     Q_PROPERTY(QColor textColor READ textColor NOTIFY modeChanged)
+    Q_PROPERTY(QColor promptColor READ promptColor NOTIFY modeChanged)
+    Q_PROPERTY(QColor selectionTextColor READ selectionTextColor NOTIFY modeChanged)
+    Q_PROPERTY(QColor selectionBackgroundColor READ selectionBackgroundColor NOTIFY modeChanged)
+    Q_PROPERTY(QString maskString READ maskString NOTIFY modeChanged)
+
+    Q_PROPERTY(int marginLeft READ marginLeft NOTIFY modeChanged)
+    Q_PROPERTY(int marginTop READ marginTop NOTIFY modeChanged)
+    Q_PROPERTY(int marginRight READ marginRight NOTIFY modeChanged)
+    Q_PROPERTY(int marginBottom READ marginBottom NOTIFY modeChanged)
+    Q_PROPERTY(int paddingLeft READ paddingLeft NOTIFY modeChanged)
+    Q_PROPERTY(int paddingTop READ paddingTop NOTIFY modeChanged)
+    Q_PROPERTY(int paddingRight READ paddingRight NOTIFY modeChanged)
+    Q_PROPERTY(int paddingBottom READ paddingBottom NOTIFY modeChanged)
+
+    Q_PROPERTY(QFont font READ font NOTIFY modeChanged)
 
     // XXX Were not "MStyleContainer::currentStyle()" private, we could consider
     // replacing the above properties by the single one below
@@ -70,6 +97,7 @@ public:
         Slider,
         NavigationBar,
         HomeButton,
+        TextEdit,
         Switch
     };
 
@@ -81,9 +109,24 @@ public:
 
     int preferredWidth() const;
     int preferredHeight() const;
-    QColor textColor() const;
 
     const MWidgetStyleContainer *styleContainer() const;
+
+    M_STYLE_PROPERTY(QColor, textColor, "textColor", QColor() )
+    M_STYLE_PROPERTY(QColor, promptColor, "promptColor", QColor() )
+    M_STYLE_PROPERTY(QColor, selectionTextColor, "selectionTextColor", QColor() )
+    M_STYLE_PROPERTY(QColor, selectionBackgroundColor, "selectionBackgroundColor", QColor() )
+    M_STYLE_PROPERTY(QFont, font, "font", QFont() )
+    M_STYLE_PROPERTY(QString, maskString, "maskString", "*")
+
+    M_STYLE_PROPERTY(int, marginLeft, "marginLeft", 0)
+    M_STYLE_PROPERTY(int, marginTop, "marginTop", 0)
+    M_STYLE_PROPERTY(int, marginRight, "marginRight", 0)
+    M_STYLE_PROPERTY(int, marginBottom, "marginBottom", 0)
+    M_STYLE_PROPERTY(int, paddingLeft, "paddingLeft", 0)
+    M_STYLE_PROPERTY(int, paddingTop, "paddingTop", 0)
+    M_STYLE_PROPERTY(int, paddingRight, "paddingRight", 0)
+    M_STYLE_PROPERTY(int, paddingBottom, "paddingBottom", 0)
 
     // Needs patch in libmeegotouch
     // QObject *internalStyle();
