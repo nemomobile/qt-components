@@ -47,6 +47,10 @@ QtObject {
     id: root
     property variant selectedValue
 
+    // This is equivalent to setting the group of all the items
+    // to null, but without causing glitches in the selectedValue.
+    function clear() { Private.clear(); }
+
     function __add(item) { Private.add(item); }
 
     Component.onCompleted: {

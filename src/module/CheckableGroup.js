@@ -156,3 +156,17 @@ function onCompleted() {
         check(items[0]);
     }
 }
+
+function clear() {
+    var itemsLength = items.length;
+    for (var i = 0; i < itemsLength; i++) {
+        var item = items[i];
+        item.exclusiveGroupChanged.disconnect(item, onItemExclusiveGroupChange);
+        item.checkedChanged.disconnect(item, onItemCheckedChange);
+        item.exclusiveGroup = null;
+    }
+
+    items = [];
+    selectedItem = null;
+    root.selectedValue = null;
+}

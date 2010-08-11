@@ -100,6 +100,13 @@ function setParameters(c, e, g, o) {
     params.group = g;
     params.orientation = o;
 
+    // This avoids unnecessary signal tracking to remove all the
+    // items from the group (which would happen if we iterate one
+    // by one setting the group to null).
+    if (!params.exclusive) {
+        params.group.clear();
+    }
+
     var buttonLength = buttons.length;
     for (var i = 0; i < buttonLength; i++) {
         var b = buttons[i];
