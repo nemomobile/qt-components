@@ -2,7 +2,6 @@ plugin meegoplugin
 Button 1.0 Button.qml
 ButtonColumn 1.0 ButtonColumn.qml
 ButtonRow 1.0 ButtonRow.qml
-ButtonGroup 1.0 ButtonGroup.qml
 Page 1.0 Page.qml
 Slider 1.0 Slider.qml
 TitleBar 1.0 TitleBar.qml
