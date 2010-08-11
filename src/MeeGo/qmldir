@@ -2,6 +2,7 @@ plugin meegoplugin
 Button 1.0 Button.qml
 ButtonColumn 1.0 ButtonColumn.qml
 ButtonRow 1.0 ButtonRow.qml
+LineEdit 1.0 LineEdit.qml
 Page 1.0 Page.qml
 Slider 1.0 Slider.qml
 Switch 1.0 Switch.qml
