@@ -4,14 +4,12 @@
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
-** This file is part of the QtDeclarative module of the Qt Toolkit.
+** This file is part of the Qt Components project on Qt Labs.
 **
-** $QT_BEGIN_LICENSE:LGPL$
 ** No Commercial Usage
 ** This file contains pre-release code and may not be distributed.
-** You may use this file in accordance with the terms and conditions
-** contained in the Technology Preview License Agreement accompanying
-** this package.
+** You may use this file in accordance with the terms and conditions contained
+** in the Technology Preview License Agreement accompanying this package.
 **
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
@@ -21,21 +19,8 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain additional
-** rights.  These rights are described in the Nokia Qt LGPL Exception
-** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
-**
 ** If you have questions regarding the use of this file, please contact
 ** Nokia at qt-info@nokia.com.
-**
-**
-**
-**
-**
-**
-**
-**
-** $QT_END_LICENSE$
 **
 ****************************************************************************/
 
@@ -43,33 +28,33 @@ import Qt 4.7
 import com.meego 1.0
 
 Item {
-    width: 800
+    width: 500
     height: 300
 
     ButtonRow {
         id: buttons
-        groupType: typeSelection.checkedButton.text
+        groupType: typeSelection.checkedButton ? typeSelection.checkedButton.text : "One"
         x: 30
         y: 30
         property int count: 3
 
         Button {
-            width: 100
+            width: 50
             height: 50
-            text: "Button 1"
+            text: "1"
         }
 
         Button {
-            width: 100
+            width: 50
             height: 50
-            text: "Button 2"
+            text: "2"
             checked: true
         }
 
         Button {
-            width: 100
+            width: 50
             height: 50
-            text: "Button 3"
+            text: "3"
         }
     }
 
@@ -86,12 +71,11 @@ Item {
         checkable: true
     }
 
-    Button {
-        id: another
+    ButtonColumn {
+        id: controls
         visible: advanced.checked
         width: 200
-        height: 50
-        text: "Add another!"
+        groupType: "None"
 
         anchors {
             left: advanced.right
@@ -99,10 +83,31 @@ Item {
             top: advanced.top
         }
 
-        onClicked: {
-            buttons.count += 1;
-            var b = Qt.createQmlObject("import com.meego 1.0; Button { checkable: true; width: 100; height: 50 }", buttons);
-            b.text = "Button " + buttons.count;
+        Button {
+            text: "Add another!"
+            width: 200
+            height: 50
+
+            onClicked: {
+                buttons.count += 1;
+                var b = Qt.createQmlObject("import com.meego 1.0; Button { checkable: true; width: 50; height: 50 }", buttons);
+                b.text = buttons.count;
+            }
+        }
+
+        Button {
+            text: "Remove last!"
+            width: 200
+            height: 50
+
+            onClicked: {
+                if (buttons.count == 1) {
+                    console.log("Can't remove the last one");
+                    return;
+                }
+                buttons.count -= 1;
+                buttons.children[buttons.count].destroy();
+            }
         }
     }
 
@@ -110,7 +115,7 @@ Item {
         visible: advanced.checked
         anchors {
             verticalCenter: advanced.verticalCenter
-            left: another.right
+            left: controls.right
             leftMargin: 20
         }
         text: {
