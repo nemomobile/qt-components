@@ -34,6 +34,7 @@
 #include <mhomebuttonpanelstyle.h>
 #include <mbuttonswitchstyle.h>
 #include <mtexteditstyle.h>
+#include <mlabelstyle.h>
 
 MStyleWrapper::MStyleWrapper(QObject *parent)
   : QObject(parent), m_mode(DefaultMode), m_styletype(None), m_stylecontainer(0)
@@ -131,6 +132,9 @@ void MStyleWrapper::setStyleType(const StyleType styletype)
     case TextEdit:
         m_stylecontainer = new MTextEditStyleContainer();
         break;
+    case Label:
+        m_stylecontainer = new MLabelStyleContainer();
+        break;
     default:
         m_stylecontainer = new MWidgetStyleContainer();
     }
@@ -162,6 +166,24 @@ int MStyleWrapper::preferredHeight() const
     const int max = (*m_stylecontainer)->maximumSize().height();
 
     return qBound(min, pref, max);
+}
+
+QColor MStyleWrapper::textColor() const
+{
+    if (!m_stylecontainer)
+        return QColor();
+
+    const char *propertyName;
+
+    switch (m_styletype) {
+    case Label:
+        propertyName = "color";
+        break;
+    default:
+        propertyName = "textColor";
+    }
+
+    return (*m_stylecontainer)->property(propertyName).value<QColor>();
 }
 
 const MWidgetStyleContainer *MStyleWrapper::styleContainer() const

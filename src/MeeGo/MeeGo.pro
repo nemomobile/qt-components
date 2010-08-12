@@ -30,6 +30,7 @@ QML_FILES = \
         ButtonColumn.qml \
         ButtonRow.qml \
         ButtonGroup.js \
+        Label.qml \
         LineEdit.qml \
         Page.qml \
         Slider.qml \

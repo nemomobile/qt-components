@@ -34,12 +34,12 @@
 
 #include <mwidgetstyle.h>
 
-#define M_STYLE_PROPERTY(type, name, propertyString, defaultValue)       \
+#define M_STYLE_PROPERTY(type, name, propertyName, defaultValue)       \
 inline type name () const {                                                \
     if (!m_stylecontainer)                                                 \
         return defaultValue ;                                              \
                                                                            \
-    return (*m_stylecontainer)->property( propertyString ).value< type >(); \
+    return (*m_stylecontainer)->property( propertyName ).value< type >(); \
 }
 
 class MWidgetStyleContainer;
@@ -98,6 +98,7 @@ public:
         NavigationBar,
         HomeButton,
         TextEdit,
+        Label,
         Switch
     };
 
@@ -109,10 +110,10 @@ public:
 
     int preferredWidth() const;
     int preferredHeight() const;
+    QColor textColor() const;
 
     const MWidgetStyleContainer *styleContainer() const;
 
-    M_STYLE_PROPERTY(QColor, textColor, "textColor", QColor() )
     M_STYLE_PROPERTY(QColor, promptColor, "promptColor", QColor() )
     M_STYLE_PROPERTY(QColor, selectionTextColor, "selectionTextColor", QColor() )
     M_STYLE_PROPERTY(QColor, selectionBackgroundColor, "selectionBackgroundColor", QColor() )
