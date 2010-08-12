@@ -33,6 +33,7 @@
 #include "mdeclarativepixmap.h"
 #include "mdeclarativeicon.h"
 #include "mdeclarativemaskedimage.h"
+#include "mdeclarativeimplicitsizeitem.h"
 #include "mstylewrapper.h"
 
 class MeeGoThemeBridgePlugin : public QDeclarativeExtensionPlugin
@@ -59,6 +60,7 @@ public:
         qmlRegisterType<MDeclarativeBackground>(uri, 1, 0, "Background");
         qmlRegisterType<MDeclarativeIcon>(uri, 1, 0, "Icon");
         qmlRegisterType<MDeclarativeMaskedImage>(uri, 1, 0, "MaskedImage");
+        qmlRegisterType<MDeclarativeImplicitSizeItem>(uri, 1, 0, "ImplicitSizeItem");
 
         // Theme info
         qmlRegisterType<MStyleWrapper>(uri, 1, 0, "Style");
