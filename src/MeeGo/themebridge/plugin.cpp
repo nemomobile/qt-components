@@ -30,6 +30,7 @@
 #include "mcomponentdata.h"
 #include "mdeclarativescalableimage.h"
 #include "mdeclarativebackground.h"
+#include "mdeclarativepiepixmap.h"
 #include "mdeclarativepixmap.h"
 #include "mdeclarativeicon.h"
 #include "mdeclarativemaskedimage.h"
@@ -57,6 +58,7 @@ public:
         // Custom primitives
         qmlRegisterType<MDeclarativeScalableImage>(uri, 1, 0, "ScalableImage");
         qmlRegisterType<MDeclarativePixmap>(uri, 1, 0, "Pixmap");
+        qmlRegisterType<MDeclarativePiePixmap>(uri, 1, 0, "PiePixmap");
         qmlRegisterType<MDeclarativeBackground>(uri, 1, 0, "Background");
         qmlRegisterType<MDeclarativeIcon>(uri, 1, 0, "Icon");
         qmlRegisterType<MDeclarativeMaskedImage>(uri, 1, 0, "MaskedImage");
