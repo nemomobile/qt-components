@@ -5,11 +5,11 @@ TARGET = meegoplugin
 CONFIG += qt plugin
 QT += declarative dbus
 
-#contextsubscriber {
-#    DEFINES += HAVE_CONTEXTSUBSCRIBER
-#    INCLUDEPATH += /home/cmarcelo/Installs/meegosupport/include/contextsubscriber
-#    LIBS += -lcontextsubscriber
-#}
+contextsubscriber {
+    DEFINES += HAVE_CONTEXTSUBSCRIBER
+    INCLUDEPATH += /usr/include/contextsubscriber
+    LIBS += -lcontextsubscriber
+}
 
 SOURCES += \
     plugin.cpp \
