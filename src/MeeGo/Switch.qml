@@ -116,5 +116,7 @@ ImplicitSizeItem {
                 }
             }
         }
+
+        onClicked: thumb.enabled = !thumb.enabled
     }
 }
