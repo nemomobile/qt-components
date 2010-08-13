@@ -1,15 +1,9 @@
 import Qt 4.7
 import com.meego 1.0
 
-Rectangle {
-
+Item {
     width: 500
     height: 400
-
-    gradient: Gradient {
-        GradientStop {position: 0; color: "lightgray" }
-        GradientStop {position: 1; color: "#606060" }
-    }
 
     // MouseArea {
     //     anchors.fill: parent

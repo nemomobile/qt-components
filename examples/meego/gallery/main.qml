@@ -31,6 +31,12 @@ Item {
     width: 800
     height: 600
 
+    // ### Remove once Window/Page set this color for us (and then use them).
+    Rectangle {
+        anchors.fill: parent
+        color: "#BCBCBC"
+    }
+
     ButtonColumn {
         id: group
         anchors.top: parent.top
