@@ -31,75 +31,52 @@ Item {
     width: 800
     height: 600
 
-    Row {
-        x: 0
-        y: parent.headerBottom
-        width: parent.width
-        height: parent.height - y
+    ButtonColumn {
+        id: group
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        width: 205
 
-        ButtonColumn {
-            id: group
-            width: 205
-            height: parent.height
-
-            Repeater {
-                model: ["Button", "Button Groups"]
-                Button {
-                    text: modelData
-                    width: 200
-                    height: 50
-                }
-            }
-
-            onCheckedButtonChanged: {
-                loader.source = group.checkedButton.text.toLowerCase().replace(" ", "") + ".qml";
-            }
-        }
-
-        Loader {
-            id: loader;
-            anchors.left: group.right
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            opacity: 1.0
-
-            MouseArea {
-                anchors.fill: parent;
-                z: 2;
-                onPressed: {
-                    loader.focus = true;
-                    mouse.accepted = false;
-                }
-            }
-        }
-
-        Item {
-            id: notImplemented
-            anchors.fill: loader
-            opacity: 0.0
-
-            Text {
-                x: 40
-                y: 40
-                text: "Not implemented yet."
-                font.pixelSize: 20
+        Repeater {
+            model: ["Button", "Button Groups"]
+            Button {
+                text: modelData
+                width: 200
+                height: 50
             }
         }
     }
 
-    states: [
-        State {
-            name: "not"
-            when: { loader.status === Loader.Error; }
-            PropertyChanges {
-                target: notImplemented
-                opacity: 1.0
-            }
-            PropertyChanges {
-                target: loader
-                opacity: 0.0
+    Loader {
+        id: loader;
+        anchors.left: group.right
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        visible: loader.status !== Loader.Error
+
+        source: group.checkedButton.text.toLowerCase().replace(" ", "") + ".qml"
+
+        MouseArea {
+            anchors.fill: parent;
+            z: 2;
+            onPressed: {
+                loader.focus = true;
+                mouse.accepted = false;
             }
         }
-    ]
+    }
+
+    Item {
+        id: notImplemented
+        anchors.fill: loader
+        visible: loader.status === Loader.Error
+
+        Text {
+            x: 40
+            y: 40
+            text: "Not implemented yet."
+            font.pixelSize: 20
+        }
+    }
 }
