@@ -7,6 +7,7 @@ Label 1.0 Label.qml
 LineEdit 1.0 LineEdit.qml
 Page 1.0 Page.qml
 Slider 1.0 Slider.qml
+Spinner 1.0 Spinner.qml
 Switch 1.0 Switch.qml
 TitleBar 1.0 TitleBar.qml
 TitleButton 1.0 TitleButton.qml

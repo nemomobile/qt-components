@@ -36,6 +36,7 @@
 #include <mtexteditstyle.h>
 #include <mlabelstyle.h>
 #include <mapplicationpagestyle.h>
+#include <mspinnerstyle.h>
 
 MStyleWrapper::MStyleWrapper(QObject *parent)
   : QObject(parent), m_mode(DefaultMode), m_styletype(None), m_stylecontainer(0)
@@ -138,6 +139,9 @@ void MStyleWrapper::setStyleType(const StyleType styletype)
         break;
     case Page:
         m_stylecontainer = new MApplicationPageStyleContainer();
+        break;
+    case Spinner:
+        m_stylecontainer = new MSpinnerStyleContainer();
         break;
     default:
         m_stylecontainer = new MWidgetStyleContainer();

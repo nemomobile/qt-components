@@ -35,6 +35,7 @@ QML_FILES = \
         CheckBox.qml \
         Page.qml \
         Slider.qml \
+        Spinner.qml \
         Switch.qml \
         TitleBar.qml \
         TitleButton.qml \

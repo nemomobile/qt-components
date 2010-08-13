@@ -75,6 +75,8 @@ class MStyleWrapper : public QObject
 
     Q_PROPERTY(QFont font READ font NOTIFY modeChanged)
 
+    Q_PROPERTY(int period READ period NOTIFY modeChanged)
+
     // XXX Were not "MStyleContainer::currentStyle()" private, we could consider
     // replacing the above properties by the single one below
     // Q_PROPERTY(QObject * internalStyle READ internalStyle);
@@ -100,6 +102,7 @@ public:
         TextEdit,
         Label,
         Page,
+        Spinner,
         Switch
     };
 
@@ -129,6 +132,7 @@ public:
     M_STYLE_PROPERTY(int, paddingTop, "paddingTop", 0)
     M_STYLE_PROPERTY(int, paddingRight, "paddingRight", 0)
     M_STYLE_PROPERTY(int, paddingBottom, "paddingBottom", 0)
+    M_STYLE_PROPERTY(int, period, "period", 0)
 
     // Needs patch in libmeegotouch
     // QObject *internalStyle();
