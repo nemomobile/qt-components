@@ -31,8 +31,7 @@ import com.meego.themebridge 1.0
 ImplicitSizeItem {
     id: button
 
-    property alias checked: model.checked
-    property alias autoExclusive: model.autoExclusive
+    property bool checked: false
 
     signal clicked
 
@@ -43,9 +42,9 @@ ImplicitSizeItem {
         id: meegostyle
         styleType: Style.CheckBox
         mode: {
-            if (model.down)
+            if (mouseArea.containsMouse && mouseArea.pressed)
                 return Style.PressedMode
-            else if (model.checked)
+            else if (button.checked)
                 return Style.SelectedMode
             else
                 return Style.DefaultMode
@@ -61,22 +60,17 @@ ImplicitSizeItem {
             anchors.centerIn: parent
             style: meegostyle
             imageProperty: "checkmarkImage"
-            visible: model.checked
+            visible: button.checked
         }
     }
 
     MouseArea {
         id: mouseArea
         anchors.fill: parent
-    }
 
-    ButtonModel {
-        id: model
-
-        pressed: mouseArea.pressed
-        highlighted: mouseArea.containsMouse
-        onClicked: button.clicked()
-
-        checkable: true
+        onClicked: {
+            button.checked = !button.checked;
+            button.clicked();
+        }
     }
 }

@@ -1,5 +1,6 @@
 plugin meegoplugin
 Button 1.0 Button.qml
+CheckBox 1.0 CheckBox.qml
 ButtonColumn 1.0 ButtonColumn.qml
 ButtonRow 1.0 ButtonRow.qml
 Label 1.0 Label.qml

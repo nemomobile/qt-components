@@ -32,6 +32,7 @@ QML_FILES = \
         ButtonGroup.js \
         Label.qml \
         LineEdit.qml \
+        CheckBox.qml \
         Page.qml \
         Slider.qml \
         Switch.qml \

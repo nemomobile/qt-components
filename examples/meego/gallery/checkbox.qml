@@ -28,55 +28,15 @@ import Qt 4.7
 import com.meego 1.0
 
 Item {
-    width: 800
-    height: 600
+    width: 300
+    height: 300
 
-    ButtonColumn {
-        id: group
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        width: 205
+    CheckBox {
+        id: checkbox
+        x: 50
+        y: 50
 
-        Repeater {
-            model: ["Button", "Button Groups", "Checkbox", "LineEdit"]
-            Button {
-                text: modelData
-                width: 200
-                height: 50
-            }
-        }
-    }
-
-    Loader {
-        id: loader;
-        anchors.left: group.right
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        visible: loader.status !== Loader.Error
-
-        source: group.checkedButton.text.toLowerCase().replace(" ", "") + ".qml"
-
-        MouseArea {
-            anchors.fill: parent;
-            z: 2;
-            onPressed: {
-                loader.focus = true;
-                mouse.accepted = false;
-            }
-        }
-    }
-
-    Item {
-        id: notImplemented
-        anchors.fill: loader
-        visible: loader.status === Loader.Error
-
-        Text {
-            x: 40
-            y: 40
-            text: "Not implemented yet."
-            font.pixelSize: 20
-        }
+        width: 50
+        height: 50
     }
 }
