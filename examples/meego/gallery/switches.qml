@@ -28,55 +28,54 @@ import Qt 4.7
 import com.meego 1.0
 
 Item {
-    width: 800
-    height: 600
+    width: 500
+    height: 400
 
-    ButtonColumn {
-        id: group
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        width: 205
+    Grid {
+        columns: 2
+        spacing: 10
+        anchors.fill: parent
+        anchors.leftMargin: 10
+        anchors.topMargin: 10
+        anchors.rightMargin: 10
+        anchors.bottomMargin: 10
 
-        Repeater {
-            model: ["Button", "Button Groups", "Checkbox", "LineEdit", "Switches"]
-            Button {
-                text: modelData
-                width: 200
-                height: 50
+        Switch {
+            id: switch1
+        }
+
+        Label {
+            text: "First switch is " + (switch1.enabled ? "ENABLED" : "Disabled")
+        }
+
+        Switch {
+            id: switch2
+        }
+
+        Label {
+            text: "Second switch is " + (switch2.enabled ? "ENABLED" : "Disabled")
+        }
+
+        Switch {
+            id: bindSwitch
+
+            Binding {
+                target: switch1
+                property: "enabled"
+                value: switch2.enabled
+                when: bindSwitch.enabled
+            }
+
+            Binding {
+                target: switch2
+                property: "enabled"
+                value: switch1.enabled
+                when: bindSwitch.enabled
             }
         }
-    }
 
-    Loader {
-        id: loader;
-        anchors.left: group.right
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        visible: loader.status !== Loader.Error
-
-        source: group.checkedButton.text.toLowerCase().replace(" ", "") + ".qml"
-
-        MouseArea {
-            anchors.fill: parent;
-            z: 2;
-            onPressed: {
-                loader.focus = true;
-                mouse.accepted = false;
-            }
-        }
-    }
-
-    Item {
-        id: notImplemented
-        anchors.fill: loader
-        visible: loader.status === Loader.Error
-
-        Text {
-            x: 40
-            y: 40
-            text: "Not implemented yet."
-            font.pixelSize: 20
+        Label {
+            text: "Bind the values of the two switches above"
         }
     }
 }
