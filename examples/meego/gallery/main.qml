@@ -38,7 +38,7 @@ Item {
         width: 205
 
         Repeater {
-            model: ["Button", "Button Groups"]
+            model: ["Button", "Button Groups", "LineEdit"]
             Button {
                 text: modelData
                 width: 200
