@@ -17,17 +17,17 @@ echo "Version=1.0" >> "$desktop_file_calculator"
 echo "Name=qt-components_calculator" >> "$desktop_file_calculator"
 echo "GenericName=QML calculator" >> "$desktop_file_calculator"
 echo "Comment=QML calculator" >> "$desktop_file_calculator"
-echo "Exec=/opt/qt-components/calculator" >> "$desktop_file_calculator"
+echo "Exec=/opt/qt-components/calculator/calculator" >> "$desktop_file_calculator"
 echo "Terminal=false" >> "$desktop_file_calculator"
 echo "Type=Application" >> "$desktop_file_calculator"
 
 
 echo "[Desktop Entry]" > "$desktop_file_gallery"
 echo "Version=1.0" >> "$desktop_file_gallery"
-echo "Name=qt-components_gallery" >> "$desktop_file_gallery"
+echo "Name=QML Widget Gallery" >> "$desktop_file_gallery"
 echo "GenericName=QML Widget Gallery" >> "$desktop_file_gallery"
 echo "Comment=QML Widget Gallery" >> "$desktop_file_gallery"
-echo "Exec=/opt/qt-components/gallery" >> "$desktop_file_gallery"
+echo "Exec=/opt/qt-components/gallery/gallery" >> "$desktop_file_gallery"
 echo "Terminal=false" >> "$desktop_file_gallery"
 echo "Type=Application" >> "$desktop_file_gallery"
 
@@ -41,17 +41,21 @@ echo "Architecture: all" >> "$control_file"
 echo "Maintainer: Qt developers" >> "$control_file"
 echo "Description: Qt components test" >> "$control_file"
 
-[ ! -f "../src/Makefile" ] && (cd ../src; qmake -r CONFIG+=meego)
+[ ! -f "../src/Makefile" ] && (cd ../src; qmake -r CONFIG+=meego CONFIG+=contextsubscriber)
 (export INSTALL_ROOT=`pwd`; cd ../src; $MAKE install)
 
-[ ! -f "../examples/meego/Makefile" ] && (cd ../examples/meego/calculator; qmake;)
-(cd ../examples/meego/calculator; $MAKE)
+[ ! -f "../examples/meego/Makefile" ] && (cd ../examples/meego/calculator; qmake; cd ../gallery; qmake)
+(cd ../examples/meego/calculator; $MAKE; cd ../gallery; $MAKE)
 
-mkdir -p opt/qt-components
+mkdir -p opt/qt-components/calculator
+mkdir -p opt/qt-components/gallery
 
-cp -ar ../examples/meego/calculator/calculator opt/qt-components
-cp -ar ../examples/meego/calculator/calculator.qml opt/qt-components
-cp -ar ../examples/meego/calculator/Core opt/qt-components
+cp -ar ../examples/meego/calculator/calculator opt/qt-components/calculator
+cp -ar ../examples/meego/calculator/calculator.qml opt/qt-components/calculator
+cp -ar ../examples/meego/calculator/Core opt/qt-components/calculator
+
+cp -ar ../examples/meego/gallery/gallery opt/qt-components/gallery
+cp -ar ../examples/meego/gallery/*.qml opt/qt-components/gallery
 
 cd ..
 dpkg-deb --build debian
