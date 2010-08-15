@@ -9,16 +9,27 @@ cd debian
 
 mkdir -p "usr/share/applications"
 
-desktop_file="usr/share/applications/qt-components.desktop"
+desktop_file_calculator="usr/share/applications/qt-components-calculator.desktop"
+desktop_file_gallery="usr/share/applications/qt-components-gallery.desktop"
 
-echo "[Desktop Entry]" > "$desktop_file"
-echo "Version=1.0" >> "$desktop_file"
-echo "Name=qt-components" >> "$desktop_file"
-echo "GenericName=QML calculator" >> "$desktop_file"
-echo "Comment=QML calculator" >> "$desktop_file"
-echo "Exec=/opt/qt-components/calculator" >> "$desktop_file"
-echo "Terminal=false" >> "$desktop_file"
-echo "Type=Application" >> "$desktop_file"
+echo "[Desktop Entry]" > "$desktop_file_calculator"
+echo "Version=1.0" >> "$desktop_file_calculator"
+echo "Name=qt-components_calculator" >> "$desktop_file_calculator"
+echo "GenericName=QML calculator" >> "$desktop_file_calculator"
+echo "Comment=QML calculator" >> "$desktop_file_calculator"
+echo "Exec=/opt/qt-components/calculator" >> "$desktop_file_calculator"
+echo "Terminal=false" >> "$desktop_file_calculator"
+echo "Type=Application" >> "$desktop_file_calculator"
+
+
+echo "[Desktop Entry]" > "$desktop_file_gallery"
+echo "Version=1.0" >> "$desktop_file_gallery"
+echo "Name=qt-components_gallery" >> "$desktop_file_gallery"
+echo "GenericName=QML Widget Gallery" >> "$desktop_file_gallery"
+echo "Comment=QML Widget Gallery" >> "$desktop_file_gallery"
+echo "Exec=/opt/qt-components/gallery" >> "$desktop_file_gallery"
+echo "Terminal=false" >> "$desktop_file_gallery"
+echo "Type=Application" >> "$desktop_file_gallery"
 
 mkdir -p DEBIAN
 

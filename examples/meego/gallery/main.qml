@@ -27,62 +27,57 @@
 import Qt 4.7
 import com.meego 1.0
 
-Item {
-    width: 800
-    height: 600
+Window {
 
-    // ### Remove once Window/Page set this color for us (and then use them).
-    Rectangle {
-        anchors.fill: parent
-        color: "#BCBCBC"
-    }
+    Page {
 
-    ButtonColumn {
-        id: group
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        width: 205
+        ButtonColumn {
+            id: group
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            width: 205
 
-        Repeater {
-            model: ["Button", "Button Groups", "Checkbox", "LineEdit", "Switches"]
-            Button {
-                text: modelData
-                width: 200
-                height: 50
+            Repeater {
+                model: ["Button", "Button Groups", "Checkbox", "LineEdit", "Switches"]
+                Button {
+                    text: modelData
+                    width: 200
+                    height: 50
+                }
             }
         }
-    }
 
-    Loader {
-        id: loader;
-        anchors.left: group.right
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        visible: loader.status !== Loader.Error
+        Loader {
+            id: loader;
+            anchors.left: group.right
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            visible: loader.status !== Loader.Error
 
-        source: group.checkedButton.text.toLowerCase().replace(" ", "") + ".qml"
+            source: group.checkedButton.text.toLowerCase().replace(" ", "") + ".qml"
 
-        MouseArea {
-            anchors.fill: parent;
-            z: 2;
-            onPressed: {
-                loader.focus = true;
-                mouse.accepted = false;
+            MouseArea {
+                anchors.fill: parent;
+                z: 2;
+                onPressed: {
+                    loader.focus = true;
+                    mouse.accepted = false;
+                }
             }
         }
-    }
 
-    Item {
-        id: notImplemented
-        anchors.fill: loader
-        visible: loader.status === Loader.Error
+        Item {
+            id: notImplemented
+            anchors.fill: loader
+            visible: loader.status === Loader.Error
 
-        Text {
-            x: 40
-            y: 40
-            text: "Not implemented yet."
-            font.pixelSize: 20
+            Text {
+                x: 40
+                y: 40
+                text: "Not implemented yet."
+                font.pixelSize: 20
+            }
         }
     }
 }
