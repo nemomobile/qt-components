@@ -25,23 +25,14 @@
 ****************************************************************************/
 
 import Qt 4.7
-import Qt.labs.components 1.0
-import com.meego.themebridge 1.0
+import com.meego 1.0
 
-Item {
-    id: page;
+Window {
+    id: window
+    property Component mainpage
 
-    x: __pageX;
-    y: __pageY;
-    width: __pageWidth;
-    height: __pageHeight;
-
-    Style {
-        id: meegostyle
-        styleType: Style.Page
-    }
-    Background {
-        anchors.fill: parent
-        style: meegostyle
+    Component.onCompleted: {
+        mainpage = Qt.createComponent("mainpage.qml")
+        window.nextPage(mainpage)
     }
 }

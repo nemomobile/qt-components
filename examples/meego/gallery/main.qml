@@ -28,55 +28,60 @@ import Qt 4.7
 import com.meego 1.0
 
 Window {
+    id: window
+    Component.onCompleted: {
+        window.nextPage(component)
+    }
+    Component {
+        id: component
+        Page {
+            ButtonColumn {
+                id: group
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                width: 205
 
-    Page {
-
-        ButtonColumn {
-            id: group
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            width: 205
-
-            Repeater {
-                model: ["Button", "Button Groups", "Checkbox", "LineEdit", "Switches"]
-                Button {
-                    text: modelData
-                    width: 200
-                    height: 50
+                Repeater {
+                    model: ["Button", "Button Groups", "Checkbox", "LineEdit", "Switches"]
+                    Button {
+                        text: modelData
+                        width: 200
+                        height: 50
+                    }
                 }
             }
-        }
 
-        Loader {
-            id: loader;
-            anchors.left: group.right
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            visible: loader.status !== Loader.Error
+            Loader {
+                id: loader;
+                anchors.left: group.right
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                visible: loader.status !== Loader.Error
 
-            source: group.checkedButton.text.toLowerCase().replace(" ", "") + ".qml"
+                source: group.checkedButton.text.toLowerCase().replace(" ", "") + ".qml"
 
-            MouseArea {
-                anchors.fill: parent;
-                z: 2;
-                onPressed: {
-                    loader.focus = true;
-                    mouse.accepted = false;
+                MouseArea {
+                    anchors.fill: parent;
+                    z: 2;
+                    onPressed: {
+                        loader.focus = true;
+                        mouse.accepted = false;
+                    }
                 }
             }
-        }
 
-        Item {
-            id: notImplemented
-            anchors.fill: loader
-            visible: loader.status === Loader.Error
+            Item {
+                id: notImplemented
+                anchors.fill: loader
+                visible: loader.status === Loader.Error
 
-            Text {
-                x: 40
-                y: 40
-                text: "Not implemented yet."
-                font.pixelSize: 20
+                Text {
+                    x: 40
+                    y: 40
+                    text: "Not implemented yet."
+                    font.pixelSize: 20
+                }
             }
         }
     }

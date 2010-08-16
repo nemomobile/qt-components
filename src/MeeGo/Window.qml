@@ -44,6 +44,9 @@ Rectangle {
     property double __scrollOffset: 0;
     property double autoScroll: __scrollOffset;
 
+    property variant __currentPage: null
+    property int __currentPageIdx: -1
+
 //    Behavior on autoScroll {
 //        NumberAnimation { easing.type: Easing.InOutQuad; duration: 200; }
 //    }
@@ -121,6 +124,43 @@ Rectangle {
         }
     }
 
+    // this function receives a Page Component as argument, sets
+    // it as the current page and initiates the transition animation.
+    // ### dont call this function while the animation is running
+    function nextPage(pageComponent) {
+        __currentPage = pageComponent.createObject(pages)
+        __currentPageIdx++
+
+        if (__currentPageIdx < 1)
+            return
+
+        pages.x -= __pageWidth
+        titlebar.showBackButton = true
+    }
+
+    // this function sets the previous in the navigation history as the
+    // current Page, initiates the back animation and deletes the old current after
+    // the animation finishes.
+    // ### dont call this function while the animation is running
+    function prevPage() {
+        if (__currentPageIdx < 1)
+            return
+
+        __currentPage.destroy(pageAnimation.duration + 250)
+        __currentPage = pages.children[--__currentPageIdx]
+
+        pages.x += __pageWidth
+
+        if (__currentPageIdx == 0)
+            titlebar.showBackButton = false
+    }
+
+    // add page before the title and status bar
+    Row {
+        id: pages
+        Behavior on x { NumberAnimation { id: pageAnimation } }
+    }
+
     Column {
         id: decoration;
         y: autoScroll;
@@ -148,6 +188,7 @@ Rectangle {
             y: statusbar.y + statusbar.height;
             onMinimize: { screen.minimized = true; }
             onQuit:  { Qt.quit(); }
+            onBackClicked: { prevPage() }
 
             states: State {
                     name: 'hidden';

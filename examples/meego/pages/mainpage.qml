@@ -25,23 +25,54 @@
 ****************************************************************************/
 
 import Qt 4.7
-import Qt.labs.components 1.0
-import com.meego.themebridge 1.0
+import com.meego 1.0
 
-Item {
-    id: page;
+Page {
+    id: page
+    property int num: 1
+    property string idx_prefix: ""
 
-    x: __pageX;
-    y: __pageY;
-    width: __pageWidth;
-    height: __pageHeight;
-
-    Style {
-        id: meegostyle
-        styleType: Style.Page
-    }
-    Background {
+    Rectangle {
         anchors.fill: parent
-        style: meegostyle
+
+        property real amountOfR: Math.random()
+        property real amountOfG: Math.random()
+        property real amountOfB: Math.random()
+        color: Qt.rgba(amountOfR, amountOfG, amountOfB, 1)
+    }
+
+    Text {
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        text: "Page number " + page.num
+    }
+
+    Column {
+        anchors.centerIn: parent
+
+        Repeater {
+            model: 8
+            Rectangle {
+                height: 50
+                width: 600
+
+                border.color: "black"
+                border.width: 3
+
+                Text {
+                    id: text
+                    anchors.centerIn: parent
+                    text: "Click me, I am index: " + idx_prefix + index
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        window.nextPage(window.mainpage)
+                        window.__currentPage.num = num + 1
+                        window.__currentPage.idx_prefix = idx_prefix + index + "->"
+                    }
+                }
+            }
+        }
     }
 }

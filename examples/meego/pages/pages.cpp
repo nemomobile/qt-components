@@ -24,24 +24,19 @@
 **
 ****************************************************************************/
 
-import Qt 4.7
-import Qt.labs.components 1.0
-import com.meego.themebridge 1.0
+#include <qapplication.h>
+#include "qdeclarativewindow.h"
+#include <qdir.h>
 
-Item {
-    id: page;
+int main(int argc, char **argv)
+{
+    QApplication::setGraphicsSystem("raster");
+    QApplication::setStyle("windows");
+    QApplication app(argc, argv);
+    QDir::setCurrent(app.applicationDirPath());
 
-    x: __pageX;
-    y: __pageY;
-    width: __pageWidth;
-    height: __pageHeight;
+    QDeclarativeWindow window(QUrl::fromLocalFile("main.qml"));
 
-    Style {
-        id: meegostyle
-        styleType: Style.Page
-    }
-    Background {
-        anchors.fill: parent
-        style: meegostyle
-    }
+    window.window()->show();
+    return app.exec();
 }
