@@ -99,6 +99,7 @@ public:
         HomeButton,
         TextEdit,
         Label,
+        Page,
         Switch
     };
 

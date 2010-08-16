@@ -35,6 +35,7 @@
 #include <mbuttonswitchstyle.h>
 #include <mtexteditstyle.h>
 #include <mlabelstyle.h>
+#include <mapplicationpagestyle.h>
 
 MStyleWrapper::MStyleWrapper(QObject *parent)
   : QObject(parent), m_mode(DefaultMode), m_styletype(None), m_stylecontainer(0)
@@ -134,6 +135,9 @@ void MStyleWrapper::setStyleType(const StyleType styletype)
         break;
     case Label:
         m_stylecontainer = new MLabelStyleContainer();
+        break;
+    case Page:
+        m_stylecontainer = new MApplicationPageStyleContainer();
         break;
     default:
         m_stylecontainer = new MWidgetStyleContainer();

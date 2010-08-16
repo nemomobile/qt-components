@@ -34,4 +34,14 @@ Item {
     y: __pageY;
     width: __pageWidth;
     height: __pageHeight;
+
+    Style {
+        id: meegostyle
+        styleType: Style.Page
+    }
+    Background {
+        id: background
+        anchors.fill: parent
+        style: meegostyle
+    }
 }
