@@ -25,3 +25,4 @@ Build dependencies
 Optional dependencies
 =====================
 - MeeGo Touch (for the com.meego module)
+  -- download and install: libmeegotouch & meegotouch-theme from http://meego.gitorious.org/meegotouch
