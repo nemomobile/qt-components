@@ -40,6 +40,8 @@ QML_FILES = \
         TitleButton.qml \
         Window.qml
 
+OTHER_FILES += QML_FILES
+
 TARGETPATH = com/meego
 
 target.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH
