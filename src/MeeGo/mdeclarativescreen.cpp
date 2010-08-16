@@ -66,7 +66,7 @@ public:
 MDeclarativeScreenPrivate::MDeclarativeScreenPrivate(MDeclarativeScreen *qq)
     : q(qq)
 //        , window(0)
-    , orientation(MDeclarativeScreen::Portrait)
+    , orientation(MDeclarativeScreen::Landscape)
     , orientationLocked(false)
     , isCovered(false)
     , keyboardOpen(false)

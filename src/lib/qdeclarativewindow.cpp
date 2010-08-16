@@ -73,8 +73,12 @@ QDeclarativeWindowPrivate::QDeclarativeWindowPrivate(QDeclarativeWindow *qq)
     view->setWindowFlags(Qt::Window
                    | Qt::CustomizeWindowHint
                    | Qt::FramelessWindowHint);
-    view->resize(QApplication::desktop()->screenGeometry().width(),
-                 QApplication::desktop()->screenGeometry().height());
+    // ###
+    if (QApplication::desktop()->screenGeometry().width() < 1000)
+        view->resize(QApplication::desktop()->screenGeometry().width(),
+                     QApplication::desktop()->screenGeometry().height());
+    else
+        view->resize(864, 480);
 #endif
 
     view->setOptimizationFlags(QGraphicsView::DontSavePainterState);
