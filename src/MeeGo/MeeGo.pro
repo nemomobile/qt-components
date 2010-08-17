@@ -40,7 +40,7 @@ QML_FILES = \
         TitleButton.qml \
         Window.qml
 
-OTHER_FILES += QML_FILES
+OTHER_FILES += $$QML_FILES
 
 TARGETPATH = com/meego
 
