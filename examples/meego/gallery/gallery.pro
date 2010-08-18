@@ -10,8 +10,5 @@ OTHER_FILES += \
     buttongroups.qml \
     button.qml \
     checkbox.qml \
-    gallery.cpp \
-    gallery.pro  \
     lineedit.qml \
-    main.qml \
     switches.qml
