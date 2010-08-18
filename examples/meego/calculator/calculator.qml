@@ -72,26 +72,28 @@ Window {
                 property real h: ((box.height - 72) / 6) - ((spacing * (6 - 1)) / 6)
                 property real w: (box.width / 4) - ((spacing * (4 - 1)) / 4)
 
+                Display { id: display; width: box.width; height: 64 }
+
                 Row {
                     spacing: 6
 
                     Button {
                         id: rotateButton
-                        width: column.w; height: column.h; color: 'purple'; text: rotateLeft
+                        width: column.w; height: column.h; text: rotateLeft
                     }
-                    Button { width: column.w; height: column.h; color: 'purple'; text: leftArrow }
-                    Button { width: column.w; height: column.h; color: 'purple'; text: "C" }
-                    Button { width: column.w; height: column.h; color: 'purple'; text: "AC" }
+                    Button { width: column.w; height: column.h; text: leftArrow }
+                    Button { width: column.w; height: column.h; text: "C" }
+                    Button { width: column.w; height: column.h; text: "AC" }
                 }
 
                 Row {
                     spacing: 6
                     property real w: (box.width / 4) - ((spacing * (4 - 1)) / 4)
 
-                    Button { width: column.w; height: column.h; color: 'green'; text: "mc" }
-                    Button { width: column.w; height: column.h; color: 'green'; text: "m+" }
-                    Button { width: column.w; height: column.h; color: 'green'; text: "m-" }
-                    Button { width: column.w; height: column.h; color: 'green'; text: "mr" }
+                    Button { width: column.w; height: column.h; text: "mc" }
+                    Button { width: column.w; height: column.h; text: "m+" }
+                    Button { width: column.w; height: column.h; text: "m-" }
+                    Button { width: column.w; height: column.h; text: "mr" }
                 }
 
                 Grid {
@@ -99,30 +101,27 @@ Window {
 
                     property real w: (box.width / columns) - ((spacing * (columns - 1)) / columns)
 
-                    Button { width: grid.w; height: column.h; text: "7"; color: 'blue' }
-                    Button { width: grid.w; height: column.h; text: "8"; color: 'blue' }
-                    Button { width: grid.w; height: column.h; text: "9"; color: 'blue' }
+                    Button { width: grid.w; height: column.h; text: "7"; }
+                    Button { width: grid.w; height: column.h; text: "8"; }
+                    Button { width: grid.w; height: column.h; text: "9"; }
                     Button { width: grid.w; height: column.h; text: division }
                     Button { width: grid.w; height: column.h; text: squareRoot }
-                    Button { width: grid.w; height: column.h; text: "4"; color: 'blue' }
-                    Button { width: grid.w; height: column.h; text: "5"; color: 'blue' }
-                    Button { width: grid.w; height: column.h; text: "6"; color: 'blue' }
+                    Button { width: grid.w; height: column.h; text: "4"; }
+                    Button { width: grid.w; height: column.h; text: "5"; }
+                    Button { width: grid.w; height: column.h; text: "6"; }
                     Button { width: grid.w; height: column.h; text: multiplication }
                     Button { width: grid.w; height: column.h; text: "x^2" }
-                    Button { width: grid.w; height: column.h; text: "1"; color: 'blue' }
-                    Button { width: grid.w; height: column.h; text: "2"; color: 'blue' }
-                    Button { width: grid.w; height: column.h; text: "3"; color: 'blue' }
+                    Button { width: grid.w; height: column.h; text: "1"; }
+                    Button { width: grid.w; height: column.h; text: "2"; }
+                    Button { width: grid.w; height: column.h; text: "3"; }
                     Button { width: grid.w; height: column.h; text: "-" }
                     Button { width: grid.w; height: column.h; text: "1/x" }
-                    Button { width: grid.w; height: column.h; text: "0"; color: 'blue' }
+                    Button { width: grid.w; height: column.h; text: "0"; }
                     Button { width: grid.w; height: column.h; text: "." }
                     Button { width: grid.w; height: column.h; text: plusminus }
                     Button { width: grid.w; height: column.h; text: "+" }
-                    Button { width: grid.w; height: column.h; text: "="; color: 'red' }
+                    Button { width: grid.w; height: column.h; text: "="; }
                 }
-            }
-            Row {
-                Display { id: display; width: box.width; height: 64 }
             }
 
         }

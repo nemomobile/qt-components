@@ -45,8 +45,5 @@ import com.meego 1.0 as Components
 Components.Button {
     id: button
 
-    property string color: ""
-    checkable: false
-
     onClicked: doOp(text)
 }
