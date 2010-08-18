@@ -34,6 +34,8 @@ ImplicitSizeItem {
     property alias text: textInput.text
     property alias promptText: prompt.text
     property alias echoMode: textInput.echoMode
+    property alias activeFocusOnPress: textInput.activeFocusOnPress
+    property alias horizontalAlignment: textInput.horizontalAlignment
 
     implicitWidth: Math.max(meegostyle.preferredWidth, textSizeModel.preferredWidth)
     implicitHeight: textSizeModel.preferredHeight
