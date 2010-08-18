@@ -12,6 +12,7 @@ ImplicitSizeItem {
     property alias dropShadowHeight: dropShadow.height;
     signal minimize();
     signal quit();
+    signal backClicked();
 
     implicitWidth: meegostyle.preferredWidth
     implicitHeight: meegostyle.preferredHeight
@@ -48,10 +49,10 @@ ImplicitSizeItem {
         id: escapeButton;
 
         property bool back: false;
-        icon: back ? "icon-m-framework-back" :"icon-m-framework-close"
+        icon: back ? "icon-m-framework-back" : "icon-m-framework-close"
         anchors.right: parent.right;
         anchors.verticalCenter: parent.verticalCenter;
 
-        onClicked: { titlebar.quit(); }
+        onClicked: { back ? titlebar.backClicked() : titlebar.quit(); }
     }
 }
