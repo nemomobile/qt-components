@@ -126,8 +126,11 @@ Rectangle {
 
     // this function receives a Page Component as argument, sets
     // it as the current page and initiates the transition animation.
-    // ### dont call this function while the animation is running
+    // during a running page change animation it will be ignored.
     function nextPage(pageComponent) {
+        if (pageAnimation.running)
+            return
+
         __currentPage = pageComponent.createObject(pages)
         __currentPageIdx++
 
@@ -141,9 +144,10 @@ Rectangle {
     // this function sets the previous in the navigation history as the
     // current Page, initiates the back animation and deletes the old current after
     // the animation finishes.
-    // ### dont call this function while the animation is running
+    // it cannot run again before finishing the animation, so the navigation is
+    // one page at a time.
     function prevPage() {
-        if (__currentPageIdx < 1)
+        if (__currentPageIdx < 1 || pageAnimation.running)
             return
 
         __currentPage.destroy(pageAnimation.duration + 250)
