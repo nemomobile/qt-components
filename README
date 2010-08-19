@@ -25,7 +25,8 @@ Build dependencies
 Optional dependencies
 =====================
 - MeeGo Touch (for the com.meego module)
-  -- download and install: libmeegotouch & meegotouch-theme from http://meego.gitorious.org/meegotouch
+  -- On desktop, download and install: libmeegotouch & meegotouch-theme from http://meego.gitorious.org/meegotouch
+  -- NOTE: meegotouch is already available if you are compiling inside scratchbox with a maemo6 target setup
 
 Running on Desktop
 ==================
@@ -50,7 +51,8 @@ git@gitorious.org:qt-components/qt-components.git
 2: libmeegotouch: ./configure && make install
 
 # mmoc is required
-export PATH=/usr/local/bin/:$PATH
+3: export PATH=/usr/local/bin/:$PATH
+
 4: qt-components: qmake -config meego -r && make install
      (installs into your current binary qt path)
 
