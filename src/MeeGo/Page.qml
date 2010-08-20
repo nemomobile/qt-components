@@ -37,4 +37,6 @@ Item {
     // checking parent to avoid warning, see QTBUG-13170
     width: parent ? parent.width : 0
     height: parent ? parent.height - y: 0
+
+    property string title
 }

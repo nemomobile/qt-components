@@ -35,6 +35,7 @@ Window {
     Component {
         id: component
         Page {
+            title: "Gallery Example"
             ButtonColumn {
                 id: group
                 anchors.top: parent.top

@@ -35,6 +35,8 @@ Item {
     property bool titlebarVisible
     property real topDecorationHeight: titlebar.y + titlebar.height
     property real bottomDecorationHeight: 0
+    property string title
+
 
     signal minimize()
     signal quit()
@@ -94,10 +96,19 @@ Item {
     }
 
     HomeButton {
+        id: home
         anchors.left: titlebar.left
         anchors.verticalCenter: titlebar.verticalCenter
         onClicked: root.minimize()
     }
+
+    TitleMenuButton {
+        anchors.left: home.right
+        anchors.top: home.top
+        width: 300 // XXX get from theme
+        title: root.title
+    }
+
 
     states: [
         State {

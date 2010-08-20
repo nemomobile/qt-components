@@ -34,6 +34,7 @@ Window {
         id: pageComponent
 
         Page {
+            title: "Widgets Gallery"
             ListView {
                 anchors.fill: parent
                 model: WidgetGallerySections { }

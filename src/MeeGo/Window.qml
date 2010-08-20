@@ -175,6 +175,7 @@ Item {
         orientation: screen.orientation
         statusbarVisible: !window.fullscreen && window.statusbarVisible
         titlebarVisible: !window.fullscreen && window.titlebarVisible
+        title: window.currentPage ? window.currentPage.title : ""
 
         onMinimize: screen.minimized = true
         onQuit: Qt.quit()

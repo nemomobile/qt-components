@@ -46,6 +46,7 @@ QML_FILES = \
         Slider.qml \
         Spinner.qml \
         Switch.qml \
+        TitleMenuButton.qml \
         Window.qml \
         WindowDecoration.qml
 
