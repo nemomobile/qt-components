@@ -3,7 +3,7 @@ QT += declarative
 include(../../../qt-components.pri)
 
 # Input
-SOURCES += calculator.cpp
+SOURCES += main.cpp
 
 OTHER_FILES += \
     Core/Button.qml \
