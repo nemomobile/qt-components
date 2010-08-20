@@ -101,6 +101,7 @@ void MDeclarativeMaskedImage::clearStyleData()
 {
     m_image = 0;
     m_mask = 0;
+    m_buffer.reset();
     setImplicitWidth(0);
     setImplicitHeight(0);
 }
@@ -112,6 +113,9 @@ void MDeclarativeMaskedImage::fetchStyleData(const MWidgetStyleContainer &styleC
 
     const QVariant maskVariant = styleContainer->property(m_maskProperty.toAscii());
     m_mask = maskVariant.value<const MScalableImage *>();
+
+    // New mask may be available, so lets invalidate the buffer
+    m_buffer.reset();
 
     setImplicitWidth(0);
     setImplicitHeight(0);
@@ -128,33 +132,67 @@ bool MDeclarativeMaskedImage::hasPendingPixmap()
         return true;
 
     if (m_mask) {
+        // Mask is not null and ready
         setImplicitWidth(m_mask->pixmap()->width());
         setImplicitHeight(m_mask->pixmap()->height());
     }
 
+    // Mask and Image are either empty or ready.
     return false;
 }
 
 void MDeclarativeMaskedImage::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    if (!m_image || !m_mask)
+    // If masked buffer is not ready, try to create it. If resources are missing
+    // or current size is empty, then no buffer is created
+    if (m_buffer.isNull() && !initializeMaskedBuffer())
         return;
 
-    QPixmap buffer(QSize(width(), height()));
-    buffer.fill(Qt::transparent);
-
-    // XXX We assume this primitive is being used for the switch component which is not
-    // performance critical. We could consider allocating the buffer only once, or try
-    // to compose on the destination buffer directly.
-    QPainter p(&buffer);
-    m_mask->draw(boundingRect().toRect(), &p);
+    QPainter p(m_buffer.data());
     p.setCompositionMode(QPainter::CompositionMode_SourceIn);
-
-    // XXX Image is painted using its standard size since this fits the need we have
-    // for the switch component. Were this component to be more general, we could export
-    // the imageSize as a public property.
     m_image->draw(QRect(m_imageOffset, m_image->pixmap()->size()), &p);
 
-    painter->drawPixmap(QPoint(), buffer);
+    // Blit offscreen buffer on the screen
+    painter->drawImage(QPoint(), *m_buffer);
 }
 
+void MDeclarativeMaskedImage::geometryChanged(const QRectF &newGeometry,
+                                              const QRectF &oldGeometry)
+{
+    MDeclarativePrimitive::geometryChanged(newGeometry, oldGeometry);
+
+    if (oldGeometry.size() != newGeometry.size())
+        m_buffer.reset();
+}
+
+bool MDeclarativeMaskedImage::initializeMaskedBuffer()
+{
+    const bool maskIsValid = m_mask && (m_mask->pixmap()->size() != QSize(1, 1));
+    const bool imageIsValid = m_image && (m_image->pixmap()->size() != QSize(1, 1));
+
+    if (!maskIsValid || !imageIsValid)
+        return false;
+
+    // This primitive:
+    // 1) allocates a QImage buffer
+    // 2) paints the mask image (m_mask) scaled to the primitive size
+    // 3) paints the image on top of that mask using the specified offset and
+    //    the original size of the image
+
+    // ### Alternatives to the QImage buffer could be
+    // 1) Use a QPixmap buffer, but it seems to be broken a some X11 systems
+    // 2) Try to compose the images using "painter" directly, without the offscreen
+    //    buffer. But not all platforms support that either.
+
+    const QSize size(width(), height());
+    if (size.isEmpty())
+        return false;
+
+    m_buffer.reset(new QImage(size, QImage::Format_ARGB32_Premultiplied));
+    m_buffer->fill(Qt::transparent);
+
+    QPainter p(m_buffer.data());
+    m_mask->draw(boundingRect().toRect(), &p);
+
+    return true;
+}
