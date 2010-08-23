@@ -46,7 +46,7 @@ class Q_COMPONENTS_EXPORT QButtonModel : public QObject
     Q_PROPERTY(int autoRepeatInterval READ autoRepeatInterval WRITE setAutoRepeatInterval)
     Q_PROPERTY(bool down READ isDown WRITE setDown DESIGNABLE false NOTIFY downChanged)
     Q_PROPERTY(bool highlighted READ isHighlighted WRITE setHighlighted DESIGNABLE false NOTIFY highlightChanged);
-    Q_PROPERTY(bool pressed READ isPressed WRITE setPressed DESIGNABLE false NOTIFY pressedChange);
+    Q_PROPERTY(bool pressed READ isPressed WRITE setPressed DESIGNABLE false NOTIFY pressedChanged);
 
 public:
     QButtonModel(QObject *parent = 0);
