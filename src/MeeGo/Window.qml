@@ -126,29 +126,30 @@ Rectangle {
 
     // this function receives a Page Component as argument, sets
     // it as the current page and initiates the transition animation.
-    // during a running page change animation it will be ignored.
+    // during a running page change animation it will be ignored and returns 'false'.
     function nextPage(pageComponent) {
         if (pageAnimation.running)
-            return
+            return false
 
         __currentPage = pageComponent.createObject(pages)
         __currentPageIdx++
 
         if (__currentPageIdx < 1)
-            return
+            return true
 
         pages.x -= __pageWidth
         titlebar.showBackButton = true
+        return true
     }
 
     // this function sets the previous in the navigation history as the
     // current Page, initiates the back animation and deletes the old current after
     // the animation finishes.
     // it cannot run again before finishing the animation, so the navigation is
-    // one page at a time.
+    // one page at a time. This function returns 'false' when it ignores the prevPage request.
     function prevPage() {
         if (__currentPageIdx < 1 || pageAnimation.running)
-            return
+            return false
 
         __currentPage.destroy(pageAnimation.duration + 250)
         __currentPage = pages.children[--__currentPageIdx]
@@ -157,6 +158,7 @@ Rectangle {
 
         if (__currentPageIdx == 0)
             titlebar.showBackButton = false
+        return true
     }
 
     // add page before the title and status bar

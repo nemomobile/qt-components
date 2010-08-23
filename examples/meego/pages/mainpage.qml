@@ -67,7 +67,8 @@ Page {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        window.nextPage(window.mainpage)
+                        if (!window.nextPage(window.mainpage))
+                            return
                         window.__currentPage.num = num + 1
                         window.__currentPage.idx_prefix = idx_prefix + index + "->"
                     }
