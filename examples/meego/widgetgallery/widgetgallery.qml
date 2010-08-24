@@ -31,7 +31,6 @@ Window {
 
     Page {
 
-
         ListView {
             anchors.fill: parent
             delegate: MeeGoDelegate { height: 50; text: name }

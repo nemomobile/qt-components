@@ -2,34 +2,39 @@ import Qt 4.7
 import com.meego 1.0
 import com.meego.themebridge 1.0
 
-Rectangle {
+Item {
 
     property alias image: delegateImage.source
     property alias text: text.text
     property alias subtext: subtext.text
 
-    border.color: "gray"
-    border.width: 1
+    width: parent.width
 
     Style {
         id: meegostyle
-        styleType:  Style.Button
+        //TODO: shouldn't this be "Style.Widget" or "Style.Background"?
+        styleType: Style.Label
+        mode: Style.DefaultMode
     }
 
-    Background {
+    ScalableImage {
         id: meegoDelegateBackground
         style: meegostyle
+        imageProperty: "backgroundBaseImage"
         anchors.fill: parent
     }
 
+
     Row {
-        height: parent.height
-        width: parent.width
+        anchors.fill: parent
+        spacing: meegostyle.paddingLeft+meegostyle.paddingRight
         Image {
             id: delegateImage
+            source: "images/user_picture_blank.png"
         }
         Column {
             height: parent.height
+            spacing: meegostyle.paddingTop+meegostyle.paddingBottom
 
             Text {
                 id: text
@@ -40,8 +45,9 @@ Rectangle {
             Text {
                 id: subtext
                 text: "subtext"
-                color: meegostyle.textColor
-                font: meegostyle.font
+                color: "gray"
+                font.family: meegostyle.font.family
+                font.pixelSize: meegostyle.font.pixelSize/2
             }
         }
     }
