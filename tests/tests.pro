@@ -2,7 +2,6 @@ TEMPLATE = subdirs
 SUBDIRS += \
     qbuttonmodel \
 #   qdatetimemodel \
-    qlineeditmodel \
     qrangemodel
 
 test.CONFIG = recursive
