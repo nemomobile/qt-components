@@ -37,7 +37,7 @@ ImplicitSizeItem {
 
     Style {
         id: meegostyle
-        styleType: Style.Switch
+        styleClass: "MButtonSwitchStyle"
     }
 
     Background {

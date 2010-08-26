@@ -12,9 +12,8 @@ Item {
 
     Style {
         id: meegostyle
-        //TODO: shouldn't this be "Style.Widget" or "Style.Background"?
-        styleType: Style.Label
-        mode: Style.DefaultMode
+        // TODO: shouldn't this be a style for Widget, Background or a specific style for renderer/delegate?
+        styleClass: "MLabelStyle"
     }
 
     ScalableImage {
@@ -27,27 +26,27 @@ Item {
 
     Row {
         anchors.fill: parent
-        spacing: meegostyle.paddingLeft+meegostyle.paddingRight
+        spacing: meegostyle.current.paddingLeft + meegostyle.current.paddingRight
         Image {
             id: delegateImage
             source: "images/user_picture_blank.png"
         }
         Column {
             height: parent.height
-            spacing: meegostyle.paddingTop+meegostyle.paddingBottom
+            spacing: meegostyle.current.paddingTop + meegostyle.current.paddingBottom
 
             Text {
                 id: text
                 text: "text"
-                color: meegostyle.textColor
-                font: meegostyle.font
+                color: meegostyle.current.color
+                font: meegostyle.current.font
             }
             Text {
                 id: subtext
                 text: "subtext"
                 color: "gray"
-                font.family: meegostyle.font.family
-                font.pixelSize: meegostyle.font.pixelSize/2
+                font.family: meegostyle.current.font.family
+                font.pixelSize: meegostyle.current.font.pixelSize/2
             }
         }
     }

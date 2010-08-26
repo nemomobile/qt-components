@@ -38,8 +38,8 @@ ImplicitSizeItem {
 
     Style {
         id: meegostyle
-        styleType: Style.Slider
-        mode: Style.PressedMode
+        styleClass: "MSliderStyle"
+        mode: "pressed"
     }
 
     Background {

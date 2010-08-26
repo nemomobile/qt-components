@@ -42,8 +42,8 @@ ImplicitSizeItem {
 
     Style {
         id: meegostyle
-        styleType: Style.TextEdit
-        mode: textInput.focus ? Style.SelectedMode : Style.DefaultMode
+        styleClass: "MTextEditStyle"
+        mode: textInput.focus ? "selected" : "default"
     }
 
     Background {
@@ -58,8 +58,8 @@ ImplicitSizeItem {
         visible: !textInput.focus && !textInput.text && prompt.text
 
         clip: true
-        color: meegostyle.promptColor
-        font: meegostyle.font
+        color: meegostyle.current.promptColor
+        font: meegostyle.current.font
     }
 
     TextInput {
@@ -68,18 +68,18 @@ ImplicitSizeItem {
         property int documentMargin: 4
 
         anchors.fill: parent
-        anchors.leftMargin: textInput.documentMargin + meegostyle.paddingLeft
-        anchors.rightMargin: textInput.documentMargin + meegostyle.paddingRight
-        anchors.topMargin: textInput.documentMargin + meegostyle.paddingTop
-        anchors.bottomMargin: textInput.documentMargin + meegostyle.paddingBottom
+        anchors.leftMargin: textInput.documentMargin + meegostyle.current.paddingLeft
+        anchors.rightMargin: textInput.documentMargin + meegostyle.current.paddingRight
+        anchors.topMargin: textInput.documentMargin + meegostyle.current.paddingTop
+        anchors.bottomMargin: textInput.documentMargin + meegostyle.current.paddingBottom
 
         clip: true
         selectByMouse: true
-        color: meegostyle.textColor
-        selectedTextColor: meegostyle.selectionTextColor
-        selectionColor: meegostyle.selectionBackgroundColor
-        font: meegostyle.font
-        passwordCharacter: meegostyle.maskString
+        color: meegostyle.current.textColor
+        selectedTextColor: meegostyle.current.selectionTextColor
+        selectionColor: meegostyle.current.selectionBackgroundColor
+        font: meegostyle.current.font
+        passwordCharacter: meegostyle.current.maskString
     }
 
     // XXX Having an additional text element and duplicating all the text
@@ -96,10 +96,10 @@ ImplicitSizeItem {
         property real preferredWidth
         property real preferredHeight
 
-        preferredWidth: textSizeModel.width + meegostyle.paddingLeft +
-                        meegostyle.paddingRight + 2 * textInput.documentMargin
+        preferredWidth: textSizeModel.width + meegostyle.current.paddingLeft +
+                        meegostyle.current.paddingRight + 2 * textInput.documentMargin
 
-        preferredHeight: textSizeModel.height + meegostyle.paddingTop +
-                         meegostyle.paddingBottom + 2 * textInput.documentMargin
+        preferredHeight: textSizeModel.height + meegostyle.current.paddingTop +
+                         meegostyle.current.paddingBottom + 2 * textInput.documentMargin
     }
 }

@@ -30,11 +30,11 @@ import com.meego.themebridge 1.0
 Text {
     id: root
 
-    font: meegostyle.font
-    color: meegostyle.textColor
+    font: meegostyle.current.font
+    color: meegostyle.current.color
 
     Style {
         id: meegostyle
-        styleType: Style.Label
+        styleClass: "MLabelStyle"
     }
 }

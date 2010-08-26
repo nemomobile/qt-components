@@ -44,7 +44,7 @@ ImplicitSizeItem {
 
     Style {
         id: meegostyle
-        styleType: Style.Spinner
+        styleClass: "MSpinnerStyle"
     }
 
     Pixmap {
@@ -64,7 +64,7 @@ ImplicitSizeItem {
             running: false
             target: pie
             property: "startAngle"
-            duration: meegostyle.period
+            duration: meegostyle.current.period
             // PiePixmap follows QPainter::drawPie() API, 0 is at 3 o'clock
             // and grows counter-clockwise. So we shift to start at 9 o'clock
             // and go clockwise.

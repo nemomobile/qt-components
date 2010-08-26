@@ -19,7 +19,7 @@ ImplicitSizeItem {
 
     Style {
         id: meegostyle
-        styleType: Style.NavigationBar
+        styleClass: "MNavigationBarStyle"
     }
 
     Background {
