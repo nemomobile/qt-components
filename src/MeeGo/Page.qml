@@ -35,6 +35,7 @@ Item {
     y: __pageY;
     width: __pageWidth;
     height: __pageHeight;
+    clip: true
 
     Style {
         id: meegostyle
