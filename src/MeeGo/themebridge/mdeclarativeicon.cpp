@@ -35,6 +35,14 @@ MDeclarativeIcon::MDeclarativeIcon(QDeclarativeItem *parent) :
     QDeclarativeItem(parent), m_icon(0), m_pendingPixmap(0)
 {
     setFlag(QGraphicsItem::ItemHasNoContents, false);
+
+    // ### We could share this connection between all Pixmaps, or even reuse
+    // the connection MStyleWrapperManager already have.
+
+    // When the theme changes we'll "refresh" our pixmap, i.e. release it and
+    // acquire a new one. This might be important to get the default size of
+    // the new theme. And it is what libmeegotouch does as well.
+    connect(MTheme::instance(), SIGNAL(themeIsChanging()), SLOT(refreshPixmap()));
 }
 
 MDeclarativeIcon::~MDeclarativeIcon()
@@ -52,12 +60,16 @@ void MDeclarativeIcon::setIconId(const QString &iconId)
     if (m_iconId == iconId)
         return;
 
+    m_iconId = iconId;
+    refreshPixmap();
+}
+
+void MDeclarativeIcon::refreshPixmap()
+{
     if (m_icon) {
         MTheme::instance()->releasePixmap(m_icon);
         m_icon = 0;
     }
-
-    m_iconId = iconId;
 
     if (!m_iconId.isEmpty()) {
         // Request the pixmap represented by the given iconID
@@ -93,7 +105,7 @@ void MDeclarativeIcon::checkPendingPixmap()
     } else {
         if (m_pendingPixmap) {
             // If still connected to MTheme, disconnect.
-            MTheme::instance()->disconnect(this);
+            disconnect(MTheme::instance(), SIGNAL(pixmapRequestsFinished()));
             m_pendingPixmap = 0;
         }
         update();

@@ -45,6 +45,7 @@ public:
     void setIconId(const QString &iconId);
 
 protected Q_SLOTS:
+    void refreshPixmap();
     void checkPendingPixmap();
 
 protected:
