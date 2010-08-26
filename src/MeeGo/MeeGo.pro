@@ -30,6 +30,7 @@ QML_FILES = \
         ButtonColumn.qml \
         ButtonRow.qml \
         ButtonGroup.js \
+        IconButton.qml \
         Label.qml \
         LineEdit.qml \
         CheckBox.qml \
