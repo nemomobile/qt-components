@@ -39,7 +39,6 @@ QML_FILES = \
         Spinner.qml \
         Switch.qml \
         TitleBar.qml \
-        TitleButton.qml \
         Window.qml
 
 OTHER_FILES += $$QML_FILES

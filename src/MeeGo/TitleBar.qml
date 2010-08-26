@@ -37,19 +37,19 @@ ImplicitSizeItem {
         imageProperty: "dropShadowImage"
     }
 
-    TitleButton {
+    IconButton {
         id: home;
-        icon: "icon-m-framework-home"
+        iconId: "icon-m-framework-home"
         anchors.left: parent.left;
         anchors.verticalCenter: parent.verticalCenter;
 
         onClicked: { titlebar.minimize(); }
     }
-    TitleButton {
+    IconButton {
         id: escapeButton;
 
         property bool back: false;
-        icon: back ? "icon-m-framework-back" : "icon-m-framework-close"
+        iconId: back ? "icon-m-framework-back" : "icon-m-framework-close"
         anchors.right: parent.right;
         anchors.verticalCenter: parent.verticalCenter;
 
