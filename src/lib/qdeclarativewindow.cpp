@@ -79,7 +79,7 @@ QDeclarativeWindowPrivate::QDeclarativeWindowPrivate(QDeclarativeWindow *qq)
                      QApplication::desktop()->screenGeometry().height());
     else
         view->resize(864, 480);
-    view->setSceneRect(QPoint(), view->size());
+    view->setSceneRect(QRect(QPoint(), view->size()));
 #endif
 
     view->setOptimizationFlags(QGraphicsView::DontSavePainterState);
