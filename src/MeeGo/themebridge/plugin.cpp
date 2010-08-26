@@ -33,6 +33,7 @@
 #include "mdeclarativepiepixmap.h"
 #include "mdeclarativepixmap.h"
 #include "mdeclarativeicon.h"
+#include "mdeclarativeiconglow.h"
 #include "mdeclarativemaskedimage.h"
 #include "mdeclarativeimplicitsizeitem.h"
 #include "mstylewrapper.h"
@@ -61,6 +62,7 @@ public:
         qmlRegisterType<MDeclarativePiePixmap>(uri, 1, 0, "PiePixmap");
         qmlRegisterType<MDeclarativeBackground>(uri, 1, 0, "Background");
         qmlRegisterType<MDeclarativeIcon>(uri, 1, 0, "Icon");
+        qmlRegisterType<MDeclarativeIconGlow>(uri, 1, 0, "IconGlow");
         qmlRegisterType<MDeclarativeMaskedImage>(uri, 1, 0, "MaskedImage");
         qmlRegisterType<MDeclarativeImplicitSizeItem>(uri, 1, 0, "ImplicitSizeItem");
 

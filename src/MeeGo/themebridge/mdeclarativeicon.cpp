@@ -68,6 +68,8 @@ void MDeclarativeIcon::setIconId(const QString &iconId)
         m_icon = MTheme::instance()->pixmap(m_iconId, QSize(0, 0));
     }
 
+    emit iconIdChanged(m_iconId);
+
     // Usually we would call "updateStyleData" but this specific primitive currently does
     // not read any information from the given style. In fact we could be a standard
     // QGraphicsItem but that would require us to duplicate the pendingPixmap logic which
@@ -122,6 +124,9 @@ void MDeclarativeIcon::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     if (!m_icon)
         return;
 
+    const bool oldSmooth = painter->testRenderHint(QPainter::SmoothPixmapTransform);
+    painter->setRenderHint(QPainter::SmoothPixmapTransform);
     painter->drawPixmap(boundingRect().toRect(), *m_icon);
+    painter->setRenderHint(QPainter::SmoothPixmapTransform, oldSmooth);
 }
 
