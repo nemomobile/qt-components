@@ -64,6 +64,13 @@ class MStyleWrapper : public QObject
     Q_PROPERTY(QColor selectionBackgroundColor READ selectionBackgroundColor NOTIFY modeChanged)
     Q_PROPERTY(QString maskString READ maskString NOTIFY modeChanged)
 
+    Q_PROPERTY(QSize iconSize READ iconSize NOTIFY modeChanged)
+    Q_PROPERTY(QColor glowColor READ glowColor NOTIFY modeChanged)
+    Q_PROPERTY(int glowDuration READ glowDuration NOTIFY modeChanged)
+    Q_PROPERTY(int glowRadius READ glowRadius NOTIFY modeChanged)
+    Q_PROPERTY(int shrinkDuration READ shrinkDuration NOTIFY modeChanged)
+    Q_PROPERTY(qreal shrinkFactor READ shrinkFactor NOTIFY modeChanged)
+
     Q_PROPERTY(int marginLeft READ marginLeft NOTIFY modeChanged)
     Q_PROPERTY(int marginTop READ marginTop NOTIFY modeChanged)
     Q_PROPERTY(int marginRight READ marginRight NOTIFY modeChanged)
@@ -99,6 +106,7 @@ public:
         Slider,
         NavigationBar,
         HomeButton,
+        IconButton,
         TextEdit,
         Label,
         Page,
@@ -123,6 +131,13 @@ public:
     M_STYLE_PROPERTY(QColor, selectionBackgroundColor, "selectionBackgroundColor", QColor() )
     M_STYLE_PROPERTY(QFont, font, "font", QFont() )
     M_STYLE_PROPERTY(QString, maskString, "maskString", "*")
+
+    M_STYLE_PROPERTY(QSize, iconSize, "iconSize", QSize() )
+    M_STYLE_PROPERTY(QColor, glowColor, "glowColor", QColor() )
+    M_STYLE_PROPERTY(int, glowDuration, "glowDuration", 0)
+    M_STYLE_PROPERTY(int, glowRadius, "glowRadius", 0)
+    M_STYLE_PROPERTY(int, shrinkDuration, "shrinkDuration", 0)
+    M_STYLE_PROPERTY(qreal, shrinkFactor, "shrinkFactor", 0)
 
     M_STYLE_PROPERTY(int, marginLeft, "marginLeft", 0)
     M_STYLE_PROPERTY(int, marginTop, "marginTop", 0)
