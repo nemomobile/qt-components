@@ -105,12 +105,12 @@ void MDeclarativeMaskedImage::clearStyleData()
     setImplicitHeight(0);
 }
 
-void MDeclarativeMaskedImage::fetchStyleData(const MWidgetStyleContainer &styleContainer)
+void MDeclarativeMaskedImage::fetchStyleData(const MStyle *style)
 {
-    const QVariant imageVariant = styleContainer->property(m_imageProperty.toAscii());
+    const QVariant imageVariant = style->property(m_imageProperty.toAscii());
     m_image = imageVariant.value<const MScalableImage *>();
 
-    const QVariant maskVariant = styleContainer->property(m_maskProperty.toAscii());
+    const QVariant maskVariant = style->property(m_maskProperty.toAscii());
     m_mask = maskVariant.value<const MScalableImage *>();
 
     setImplicitWidth(0);

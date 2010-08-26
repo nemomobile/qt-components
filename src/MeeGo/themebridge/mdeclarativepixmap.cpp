@@ -62,9 +62,9 @@ void MDeclarativePixmap::clearStyleData()
     setImplicitHeight(0);
 }
 
-void MDeclarativePixmap::fetchStyleData(const MWidgetStyleContainer &styleContainer)
+void MDeclarativePixmap::fetchStyleData(const MStyle *style)
 {
-    const QVariant imageVariant = styleContainer->property(m_imageProperty.toAscii());
+    const QVariant imageVariant = style->property(m_imageProperty.toAscii());
     m_pixmap = imageVariant.value<const QPixmap *>();
 
     setImplicitWidth(0);

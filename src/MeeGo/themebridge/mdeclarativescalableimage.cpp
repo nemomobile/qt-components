@@ -61,9 +61,9 @@ void MDeclarativeScalableImage::clearStyleData()
     setImplicitHeight(0);
 }
 
-void MDeclarativeScalableImage::fetchStyleData(const MWidgetStyleContainer &styleContainer)
+void MDeclarativeScalableImage::fetchStyleData(const MStyle *style)
 {
-    const QVariant imageVariant = styleContainer->property(m_imageProperty.toAscii());
+    const QVariant imageVariant = style->property(m_imageProperty.toAscii());
     m_image = imageVariant.value<const MScalableImage *>();
 
     setImplicitWidth(0);
