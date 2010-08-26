@@ -28,13 +28,21 @@ import Qt 4.7
 import com.meego 1.0
 
 Window {
+    id: window
 
-    Page {
+    Component {
+        id: pageComponent
 
-        ListView {
-            anchors.fill: parent
-            delegate: MeeGoDelegate { height: 50; text: name }
-            model: WidgetGallerySections { }
+        Page {
+            ListView {
+                anchors.fill: parent
+                model: WidgetGallerySections { }
+                delegate: MeeGoDelegate { height: 50; text: name }
+            }
         }
+    }
+
+    Component.onCompleted: {
+        window.nextPage(pageComponent)
     }
 }
