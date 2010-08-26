@@ -38,12 +38,18 @@ ImplicitSizeItem {
     }
 
     IconButton {
-        id: home;
-        iconId: "icon-m-framework-home"
-        anchors.left: parent.left;
-        anchors.verticalCenter: parent.verticalCenter;
+        id: home
+        iconId: homeStyle.current.get("homeButtonIconId")
+        styleObjectName: homeStyle.current.get("homeButtonObjectName")
+        anchors.left: parent.left
+        anchors.verticalCenter: parent.verticalCenter
 
-        onClicked: { titlebar.minimize(); }
+        onClicked: titlebar.minimize()
+
+        Style {
+            id: homeStyle
+            styleClass: "MHomeButtonPanelStyle"
+        }
     }
     IconButton {
         id: escapeButton;
