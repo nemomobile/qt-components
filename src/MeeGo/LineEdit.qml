@@ -58,8 +58,8 @@ ImplicitSizeItem {
         visible: !textInput.focus && !textInput.text && prompt.text
 
         clip: true
-        color: meegostyle.current.promptColor
-        font: meegostyle.current.font
+        color: meegostyle.current.get("promptColor")
+        font: meegostyle.current.get("font")
     }
 
     TextInput {
@@ -68,18 +68,18 @@ ImplicitSizeItem {
         property int documentMargin: 4
 
         anchors.fill: parent
-        anchors.leftMargin: textInput.documentMargin + meegostyle.current.paddingLeft
-        anchors.rightMargin: textInput.documentMargin + meegostyle.current.paddingRight
-        anchors.topMargin: textInput.documentMargin + meegostyle.current.paddingTop
-        anchors.bottomMargin: textInput.documentMargin + meegostyle.current.paddingBottom
+        anchors.leftMargin: textInput.documentMargin + meegostyle.current.get("paddingLeft")
+        anchors.rightMargin: textInput.documentMargin + meegostyle.current.get("paddingRight")
+        anchors.topMargin: textInput.documentMargin + meegostyle.current.get("paddingTop")
+        anchors.bottomMargin: textInput.documentMargin + meegostyle.current.get("paddingBottom")
 
         clip: true
         selectByMouse: true
-        color: meegostyle.current.textColor
-        selectedTextColor: meegostyle.current.selectionTextColor
-        selectionColor: meegostyle.current.selectionBackgroundColor
-        font: meegostyle.current.font
-        passwordCharacter: meegostyle.current.maskString
+        color: meegostyle.current.get("textColor")
+        selectedTextColor: meegostyle.current.get("selectionTextColor")
+        selectionColor: meegostyle.current.get("selectionBackgroundColor")
+        font: meegostyle.current.get("font")
+        passwordCharacter: meegostyle.current.get("maskString")
     }
 
     // XXX Having an additional text element and duplicating all the text
@@ -96,10 +96,10 @@ ImplicitSizeItem {
         property real preferredWidth
         property real preferredHeight
 
-        preferredWidth: textSizeModel.width + meegostyle.current.paddingLeft +
-                        meegostyle.current.paddingRight + 2 * textInput.documentMargin
+        preferredWidth: textSizeModel.width + meegostyle.current.get("paddingLeft") +
+            meegostyle.current.get("paddingRight") + 2 * textInput.documentMargin
 
-        preferredHeight: textSizeModel.height + meegostyle.current.paddingTop +
-                         meegostyle.current.paddingBottom + 2 * textInput.documentMargin
+        preferredHeight: textSizeModel.height + meegostyle.current.get("paddingTop") +
+            meegostyle.current.get("paddingBottom") + 2 * textInput.documentMargin
     }
 }

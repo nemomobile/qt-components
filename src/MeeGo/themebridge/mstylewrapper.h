@@ -84,6 +84,9 @@ Q_SIGNALS:
 
     void currentStyleChanged();
 
+public Q_SLOTS:
+    QVariant get(const QString &propertyName);
+
 private:
     friend class MStyleWrapperManager;
 

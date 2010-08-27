@@ -144,7 +144,7 @@ const MStyle *MStyleWrapper::currentStyle() const
 
 QObject *MStyleWrapper::currentStyleAsObject()
 {
-    return const_cast<MStyle *>(currentStyle());
+    return this;
 }
 
 int MStyleWrapper::preferredWidth() const
@@ -171,6 +171,31 @@ int MStyleWrapper::preferredHeight() const
     const int max = style->maximumSize().height();
 
     return qBound(min, pref, max);
+}
+
+// ### This property getter is a workaround to the following situation:
+//
+// - QML warns when when we bind to properties that doesn't have either a
+//   NOTIFY signal or a CONSTANT mark.
+//
+// - libmeegotouch MStyle classes have properties with the data we want, but do not
+//   have NOTIFY signal (they don't need since they write only once), neither
+//   CONSTANT mark (because they have WRITE, which they use to dynamically fill the
+//   properties from a set of CSS files).
+//
+// - Since MStyle is a QObject we do want to export it to QML instead of having to
+//   create wrapper for each proper as we did before.
+//
+// This workaround avoids the warning by accessing the property in C++ (via the get()
+// method). But we still need some signal to notify the properties that use data from
+// get() that something change. The trick is to make the MStyleWrapper have a property
+// that points to itself, and NOTIFY change when the style changes (what we want).
+QVariant MStyleWrapper::get(const QString &propertyName)
+{
+    if (!currentStyle())
+        return QVariant();
+
+    return currentStyle()->property(propertyName.toAscii());
 }
 
 void MStyleWrapper::updateStyle()

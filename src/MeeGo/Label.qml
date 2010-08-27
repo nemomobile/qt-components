@@ -30,8 +30,8 @@ import com.meego.themebridge 1.0
 Text {
     id: root
 
-    font: meegostyle.current.font
-    color: meegostyle.current.color
+    font: meegostyle.current.get("font")
+    color: meegostyle.current.get("color")
 
     Style {
         id: meegostyle

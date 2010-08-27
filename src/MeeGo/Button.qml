@@ -115,7 +115,7 @@ ImplicitSizeItem {
 
             font.family: "Nokia Sans"
             font.pixelSize: 24
-            color: meegostyle.current.textColor
+            color: meegostyle.current.get("textColor")
 
             text: "Effect"
         }
