@@ -32,15 +32,12 @@
 #include <mclassfactory.h>
 
 
-static M::Orientation orientationHelper()
+static M::Orientation currentOrientation()
 {
-    M::Orientation orientation = M::Landscape;
-
     const MWindow *activeWindow = MApplication::activeWindow();
     if (activeWindow)
-        orientation = activeWindow->orientation();
-
-    return orientation;
+        return activeWindow->orientation();
+    return M::Landscape;
 }
 
 
@@ -126,7 +123,7 @@ void MStyleWrapper::setStyleObjectName(const QString &styleObjectName)
 
 const MStyle *MStyleWrapper::currentStyle() const
 {
-    M::Orientation orientation = orientationHelper();
+    M::Orientation orientation = currentOrientation();
 
     if (m_currentStyle[orientation]) {
         return m_currentStyle[orientation];
