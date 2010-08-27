@@ -37,6 +37,7 @@
 #include <mlabelstyle.h>
 #include <mapplicationpagestyle.h>
 #include <mspinnerstyle.h>
+#include <mbuttoniconstyle.h>
 
 MStyleWrapper::MStyleWrapper(QObject *parent)
   : QObject(parent), m_mode(DefaultMode), m_styletype(None), m_stylecontainer(0)
@@ -127,6 +128,9 @@ void MStyleWrapper::setStyleType(const StyleType styletype)
         break;
     case HomeButton:
         m_stylecontainer = new MHomeButtonPanelStyleContainer();
+        break;
+    case IconButton:
+        m_stylecontainer = new MButtonIconStyleContainer();
         break;
     case Switch:
         m_stylecontainer = new MButtonSwitchStyleContainer();

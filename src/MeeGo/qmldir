@@ -3,6 +3,7 @@ Button 1.0 Button.qml
 CheckBox 1.0 CheckBox.qml
 ButtonColumn 1.0 ButtonColumn.qml
 ButtonRow 1.0 ButtonRow.qml
+IconButton 1.0 IconButton.qml
 Label 1.0 Label.qml
 LineEdit 1.0 LineEdit.qml
 Page 1.0 Page.qml

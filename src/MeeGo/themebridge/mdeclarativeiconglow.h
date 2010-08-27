@@ -24,40 +24,34 @@
 **
 ****************************************************************************/
 
-#ifndef MDECLARATIVEICON_H
-#define MDECLARATIVEICON_H
+#ifndef MDECLARATIVEICONGLOW_H
+#define MDECLARATIVEICONGLOW_H
 
-#include <QDeclarativeItem>
+#include "mdeclarativeicon.h"
 
-class QPixmap;
-
-class MDeclarativeIcon : public QDeclarativeItem
+class MDeclarativeIconGlow : public MDeclarativeIcon
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString iconId READ iconId WRITE setIconId NOTIFY iconIdChanged);
+    Q_PROPERTY(int glowRadius READ glowRadius WRITE setGlowRadius);
+    Q_PROPERTY(QColor glowColor READ glowColor WRITE setGlowColor);
 
 public:
-    MDeclarativeIcon(QDeclarativeItem *parent = 0);
-    virtual ~MDeclarativeIcon();
+    MDeclarativeIconGlow(QDeclarativeItem *parent = 0);
+    virtual ~MDeclarativeIconGlow();
 
-    QString iconId() const;
-    void setIconId(const QString &iconId);
+    int glowRadius() const;
+    void setGlowRadius(int glowRadius);
 
-Q_SIGNALS:
-    void iconIdChanged(QString iconId);
-
-protected Q_SLOTS:
-    void checkPendingPixmap();
+    QColor glowColor() const;
+    void setGlowColor(QColor glowColor);
 
 protected:
-    bool hasPendingPixmap();
-
+    virtual QRectF boundingRect() const;
     virtual void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 
-    QString m_iconId;
-    const QPixmap *m_icon;
-    int m_pendingPixmap : 1;
+    int m_glowRadius;
+    QColor m_glowColor;
 };
 
-#endif //MDECLARATIVEICON_H
+#endif //MDECLARATIVEICONGLOW_H

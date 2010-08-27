@@ -58,10 +58,14 @@ protected:
     virtual void fetchStyleData(const MWidgetStyleContainer &styleContainer);
     virtual bool hasPendingPixmap();
     virtual void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
+    virtual void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
+
+    bool initializeMaskedBuffer();
 
     QPoint m_imageOffset;
     QString m_imageProperty;
     QString m_maskProperty;
+    QScopedPointer<QImage> m_buffer;
     const MScalableImage *m_image;
     const MScalableImage *m_mask;
 };

@@ -12,6 +12,7 @@ SOURCES += plugin.cpp \
            mdeclarativepixmap.cpp \
            mdeclarativepiepixmap.cpp \
            mdeclarativeicon.cpp \
+           mdeclarativeiconglow.cpp \
            mdeclarativemaskedimage.cpp \
            mdeclarativeimplicitsizeitem.cpp \
            mdeclarativebackground.cpp
@@ -22,6 +23,7 @@ HEADERS += mstylewrapper.h \
            mdeclarativepixmap.h \
            mdeclarativepiepixmap.h \
            mdeclarativeicon.h \
+           mdeclarativeiconglow.h \
            mdeclarativemaskedimage.h \
            mdeclarativeimplicitsizeitem.h \
            mdeclarativebackground.h
