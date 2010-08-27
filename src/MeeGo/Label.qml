@@ -29,6 +29,7 @@ import com.meego.themebridge 1.0
 
 Text {
     id: root
+    property alias styleObjectName: meegostyle.styleObjectName
 
     font: meegostyle.current.get("font")
     color: meegostyle.current.get("color")
