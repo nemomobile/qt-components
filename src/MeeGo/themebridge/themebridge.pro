@@ -7,6 +7,7 @@ QT += declarative
 
 SOURCES += plugin.cpp \
            mstylewrapper.cpp \
+           mthemebridge.cpp \
            mdeclarativeprimitive.cpp \
            mdeclarativescalableimage.cpp \
            mdeclarativepixmap.cpp \
@@ -18,6 +19,7 @@ SOURCES += plugin.cpp \
            mdeclarativebackground.cpp
 
 HEADERS += mstylewrapper.h \
+           mthemebridge.h \
            mdeclarativeprimitive.h \
            mdeclarativescalableimage.h \
            mdeclarativepixmap.h \

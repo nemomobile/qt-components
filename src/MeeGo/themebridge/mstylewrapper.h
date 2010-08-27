@@ -88,7 +88,7 @@ public Q_SLOTS:
     QVariant get(const QString &propertyName);
 
 private:
-    friend class MStyleWrapperManager;
+    friend class MThemeBridge;
 
     void updateStyle();
     void invalidateStyle();
@@ -100,27 +100,6 @@ private:
 
     const MStyle *m_currentStyle[2];
     QHash<QString, const MStyle *> m_cachedStyles[2];
-};
-
-
-class MStyleWrapperManager : public QObject {
-    Q_OBJECT
-
-public:
-    MStyleWrapperManager();
-    virtual ~MStyleWrapperManager();
-
-    static MStyleWrapperManager *instance();
-
-    void registerStyleWrapper(MStyleWrapper *wrapper);
-    void unregisterStyleWrapper(MStyleWrapper *wrapper);
-
-public Q_SLOTS:
-    void updateStyleWrappers();
-
-private:
-    static MStyleWrapperManager *m_self;
-    QList<MStyleWrapper *> m_registeredStyleWrappers;
 };
 
 #endif // MSTYLEWRAPPER_H

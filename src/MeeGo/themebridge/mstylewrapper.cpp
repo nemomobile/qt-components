@@ -26,6 +26,8 @@
 
 #include "mstylewrapper.h"
 
+#include "mthemebridge.h"
+
 #include <mtheme.h>
 #include <mapplication.h>
 #include <mapplicationwindow.h>
@@ -46,13 +48,13 @@ MStyleWrapper::MStyleWrapper(QObject *parent)
 {
     m_currentStyle[0] = 0;
     m_currentStyle[1] = 0;
-    MStyleWrapperManager::instance()->registerStyleWrapper(this);
+    MThemeBridge::instance()->registerStyleWrapper(this);
 }
 
 MStyleWrapper::~MStyleWrapper()
 {
     invalidateStyle();
-    MStyleWrapperManager::instance()->unregisterStyleWrapper(this);
+    MThemeBridge::instance()->unregisterStyleWrapper(this);
 }
 
 QString MStyleWrapper::mode() const
@@ -226,65 +228,5 @@ void MStyleWrapper::invalidateStyle()
         }
         m_cachedStyles[i].clear();
         m_currentStyle[i] = 0;
-    }
-}
-
-
-MStyleWrapperManager *MStyleWrapperManager::m_self = 0;
-
-MStyleWrapperManager::MStyleWrapperManager() : QObject()
-{
-}
-
-MStyleWrapperManager::~MStyleWrapperManager()
-{
-}
-
-MStyleWrapperManager *MStyleWrapperManager::instance()
-{
-    if (!m_self) {
-        m_self = new MStyleWrapperManager();
-    }
-
-    return m_self;
-}
-
-void MStyleWrapperManager::registerStyleWrapper(MStyleWrapper *wrapper)
-{
-    Q_ASSERT(!m_registeredStyleWrappers.contains(wrapper));
-    m_registeredStyleWrappers.append(wrapper);
-
-    // If it's the first style wrapper, start watching for theme change.
-    if (m_registeredStyleWrappers.size() == 1) {
-        connect(MTheme::instance(), SIGNAL(themeIsChanging()), SLOT(updateStyleWrappers()));
-    }
-}
-
-void MStyleWrapperManager::unregisterStyleWrapper(MStyleWrapper *wrapper)
-{
-    Q_ASSERT(m_registeredStyleWrappers.contains(wrapper));
-    m_registeredStyleWrappers.removeOne(wrapper);
-
-    // If we don't have more style wrappers, stop watching for theme change.
-    if (m_registeredStyleWrappers.empty()) {
-        disconnect(MTheme::instance(), SIGNAL(themeIsChanging()));
-    }
-}
-
-void MStyleWrapperManager::updateStyleWrappers()
-{
-    // First we make sure that the style wrappers invalidate all cached
-    // styles they have.
-    for (int i = 0; i < m_registeredStyleWrappers.size(); i++) {
-        m_registeredStyleWrappers[i]->invalidateStyle();
-    }
-
-    // ...once they all are invalidated, we trigger a changed signal in
-    // the styles themselves. From our tests, it is important to fully
-    // cleanup the styles (not have any old style) before start to
-    // asking for new styles. We used this two loops together, but had
-    // situations when a new style was asked, and old one was received.
-    for (int i = 0; i < m_registeredStyleWrappers.size(); i++) {
-        emit m_registeredStyleWrappers[i]->currentStyleChanged();
     }
 }
