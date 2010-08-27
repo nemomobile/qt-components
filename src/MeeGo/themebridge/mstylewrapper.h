@@ -99,6 +99,7 @@ private:
     QString m_styleObjectName;
 
     const MStyle *m_currentStyle[2];
+    QHash<QString, const MStyle *> m_cachedStyles[2];
 };
 
 

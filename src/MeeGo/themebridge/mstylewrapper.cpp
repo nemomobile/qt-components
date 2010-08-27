@@ -32,6 +32,18 @@
 #include <mclassfactory.h>
 
 
+static M::Orientation orientationHelper()
+{
+    M::Orientation orientation = M::Landscape;
+
+    const MWindow *activeWindow = MApplication::activeWindow();
+    if (activeWindow)
+        orientation = activeWindow->orientation();
+
+    return orientation;
+}
+
+
 MStyleWrapper::MStyleWrapper(QObject *parent)
     : QObject(parent), m_mode("default"), m_styleClass(), m_styleType()
 {
@@ -57,7 +69,13 @@ void MStyleWrapper::setMode(const QString &mode)
         return;
     m_mode = mode;
 
-    updateStyle();
+    // Since we keep a cache of different modes, changing a mode will not
+    // invalidate our cache, just reset the current style and emit the
+    // styleChanged signal. The getter for current style will load the style
+    // new mode -- possibly from our cache.
+    m_currentStyle[0] = 0;
+    m_currentStyle[1] = 0;
+    emit currentStyleChanged();
     emit modeChanged();
 }
 
@@ -106,40 +124,37 @@ void MStyleWrapper::setStyleObjectName(const QString &styleObjectName)
     emit styleObjectNameChanged();
 }
 
-static M::Orientation orientationHelper()
-{
-    M::Orientation orientation = M::Landscape;
-
-    const MWindow *activeWindow = MApplication::activeWindow();
-    if (activeWindow)
-        orientation = activeWindow->orientation();
-
-    return orientation;
-}
-
 const MStyle *MStyleWrapper::currentStyle() const
 {
     M::Orientation orientation = orientationHelper();
 
-    // ### We can keep a cache "per-mode" like MStyleContainer from MeeGo Touch does.
+    if (m_currentStyle[orientation]) {
+        return m_currentStyle[orientation];
+    }
 
-    if (!m_currentStyle[orientation]) {
-        // ### This function does lazy initialization, so we break the const
-        // assumption here to do the actual initialization. We could avoid this
-        // here and do this cast in other functions, like preferredWidth().
-        MStyleWrapper *wrapper = const_cast<MStyleWrapper *>(this);
+    // ### This function does lazy initialization, so we break the const
+    // assumption here to do the actual initialization. We could avoid this
+    // here and do this cast in other functions, like preferredWidth().
+    MStyleWrapper *wrapper = const_cast<MStyleWrapper *>(this);
 
-        // MTheme::style() assumes that the name of the style class will actually exist, so
-        // we need to check.
+    const MStyle *style = 0;
+    QHash<QString, const MStyle *>::iterator it = wrapper->m_cachedStyles[orientation].find(m_mode);
+    if (it != wrapper->m_cachedStyles[orientation].end()) {
+        style = it.value();
+    } else {
+        // MTheme::style() assumes that the name of the style class will actually exist.
         if (MClassFactory::instance()->styleMetaObject(m_styleClass.toAscii().constData())) {
-            wrapper->m_currentStyle[orientation] = MTheme::style(m_styleClass.toAscii().constData(), m_styleObjectName, m_mode, m_styleType, orientation, 0);
+            style = MTheme::style(m_styleClass.toAscii().constData(), m_styleObjectName,
+                                  m_mode, m_styleType, orientation, 0);
+            wrapper->m_cachedStyles[orientation].insert(m_mode, style);
         } else {
-            qWarning("MStyleWrapper::currentStyle: could not find style class '%s'.", m_styleClass.toAscii().constData());
-            wrapper->m_currentStyle[orientation] = 0;
+            qWarning("MStyleWrapper::currentStyle: could not find style class '%s'.",
+                     m_styleClass.toAscii().constData());
         }
     }
 
-    return m_currentStyle[orientation];
+    wrapper->m_currentStyle[orientation] = style;
+    return style;
 }
 
 QObject *MStyleWrapper::currentStyleAsObject()
@@ -207,10 +222,13 @@ void MStyleWrapper::updateStyle()
 void MStyleWrapper::invalidateStyle()
 {
     for (int i = 0; i < 2; i++) {
-        if (m_currentStyle[i]) {
-            MTheme::releaseStyle(m_currentStyle[i]);
-            m_currentStyle[i] = 0;
+        QHash<QString, const MStyle *>::iterator it = m_cachedStyles[i].begin();
+        while (it != m_cachedStyles[i].end()) {
+            MTheme::releaseStyle(it.value());
+            ++it;
         }
+        m_cachedStyles[i].clear();
+        m_currentStyle[i] = 0;
     }
 }
 
