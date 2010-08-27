@@ -29,7 +29,7 @@
 
 #include <QDeclarativeItem>
 
-class MWidgetStyleContainer;
+class MStyle;
 class MStyleWrapper;
 
 class MDeclarativePrimitive : public QDeclarativeItem
@@ -50,7 +50,7 @@ protected Q_SLOTS:
 
 protected:
     virtual void clearStyleData();
-    virtual void fetchStyleData(const MWidgetStyleContainer &styleContainer);
+    virtual void fetchStyleData(const MStyle *style);
     virtual bool hasPendingPixmap();
 
 private Q_SLOTS:

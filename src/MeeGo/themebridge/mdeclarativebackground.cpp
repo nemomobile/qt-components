@@ -61,16 +61,25 @@ void MDeclarativeBackground::clearStyleData()
     setOpacity(1.);
 }
 
-void MDeclarativeBackground::fetchStyleData(const MWidgetStyleContainer &styleContainer)
+void MDeclarativeBackground::fetchStyleData(const MStyle *style)
 {
-    if (styleContainer->backgroundTiles().isValid())
-        m_tiles = styleContainer->backgroundTiles()[static_cast<M::Position>(m_tileposition)];
+    // We know it is a MWidgetStyle, this allows direct access to the properties...
+    const MWidgetStyle *widgetStyle = qobject_cast<const MWidgetStyle *>(style);
+
+    // ...if isn't, it is not a valid style for us
+    if (!widgetStyle) {
+        clearStyleData();
+        return;
+    }
+
+    if (widgetStyle->backgroundTiles().isValid())
+        m_tiles = widgetStyle->backgroundTiles()[static_cast<M::Position>(m_tileposition)];
     else
         m_tiles = 0;
 
-    m_image = styleContainer->backgroundImage();
-    m_color = styleContainer->backgroundColor();
-    setOpacity(styleContainer->backgroundOpacity());
+    m_image = widgetStyle->backgroundImage();
+    m_color = widgetStyle->backgroundColor();
+    setOpacity(widgetStyle->backgroundOpacity());
 }
 
 bool MDeclarativeBackground::hasPendingPixmap()

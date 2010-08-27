@@ -27,184 +27,264 @@
 #include "mstylewrapper.h"
 
 #include <mtheme.h>
-#include <mbuttonstyle.h>
-#include <mcheckboxstyle.h>
-#include <msliderstyle.h>
-#include <mnavigationbarstyle.h>
-#include <mhomebuttonpanelstyle.h>
-#include <mbuttonswitchstyle.h>
-#include <mtexteditstyle.h>
-#include <mlabelstyle.h>
-#include <mapplicationpagestyle.h>
-#include <mspinnerstyle.h>
-#include <mbuttoniconstyle.h>
+#include <mapplication.h>
+#include <mapplicationwindow.h>
+#include <mclassfactory.h>
+
+
+static M::Orientation currentOrientation()
+{
+    const MWindow *activeWindow = MApplication::activeWindow();
+    if (activeWindow)
+        return activeWindow->orientation();
+    return M::Landscape;
+}
+
 
 MStyleWrapper::MStyleWrapper(QObject *parent)
-  : QObject(parent), m_mode(DefaultMode), m_styletype(None), m_stylecontainer(0)
+    : QObject(parent), m_mode("default"), m_styleClass(), m_styleType()
 {
-    // Emit notifier signals for all properties we export
-    connect(MTheme::instance(), SIGNAL(themeChangeCompleted()), SLOT(notifyProperties()));
+    m_currentStyle[0] = 0;
+    m_currentStyle[1] = 0;
+    MStyleWrapperManager::instance()->registerStyleWrapper(this);
 }
 
 MStyleWrapper::~MStyleWrapper()
 {
-    delete m_stylecontainer;
+    invalidateStyle();
+    MStyleWrapperManager::instance()->unregisterStyleWrapper(this);
 }
 
-MStyleWrapper::StyleMode MStyleWrapper::mode() const
+QString MStyleWrapper::mode() const
 {
     return m_mode;
 }
 
-void MStyleWrapper::setMode(const StyleMode mode)
+void MStyleWrapper::setMode(const QString &mode)
 {
     if (mode == m_mode)
         return;
-
     m_mode = mode;
-    updateStyleMode();
+
+    // Since we keep a cache of different modes, changing a mode will not
+    // invalidate our cache, just reset the current style and emit the
+    // styleChanged signal. The getter for current style will load the style
+    // new mode -- possibly from our cache.
+    m_currentStyle[0] = 0;
+    m_currentStyle[1] = 0;
+    emit currentStyleChanged();
+    emit modeChanged();
 }
 
-void MStyleWrapper::notifyProperties()
+QString MStyleWrapper::styleClass() const
 {
-    // Notify each of the properties we export directly and also any
-    // primitives that might be accessing our data.
-    // Currently this signal handles it all.
-    emit modeChanged(m_mode);
+    return m_styleClass;
 }
 
-void MStyleWrapper::updateStyleMode()
+void MStyleWrapper::setStyleClass(const QString &styleClass)
 {
-    if (!m_stylecontainer)
+    if (styleClass == m_styleClass)
         return;
+    m_styleClass = styleClass;
 
-    switch (m_mode) {
-    case DefaultMode:
-        m_stylecontainer->setModeDefault();
-        break;
-    case PressedMode:
-        m_stylecontainer->setModePressed();
-        break;
-    case SelectedMode:
-        m_stylecontainer->setModeSelected();
-        break;
+    updateStyle();
+    emit styleClassChanged();
+}
+
+QString MStyleWrapper::styleType() const
+{
+    return m_styleType;
+}
+
+void MStyleWrapper::setStyleType(const QString &styleType)
+{
+    if (styleType == m_styleType)
+        return;
+    m_styleType = styleType;
+
+    updateStyle();
+    emit styleTypeChanged();
+}
+
+QString MStyleWrapper::styleObjectName() const
+{
+    return m_styleObjectName;
+}
+
+void MStyleWrapper::setStyleObjectName(const QString &styleObjectName)
+{
+    if (styleObjectName == m_styleObjectName)
+        return;
+    m_styleObjectName = styleObjectName;
+
+    updateStyle();
+    emit styleObjectNameChanged();
+}
+
+const MStyle *MStyleWrapper::currentStyle() const
+{
+    M::Orientation orientation = currentOrientation();
+
+    if (m_currentStyle[orientation]) {
+        return m_currentStyle[orientation];
     }
 
-    emit modeChanged(m_mode);
-}
+    // ### This function does lazy initialization, so we break the const
+    // assumption here to do the actual initialization. We could avoid this
+    // here and do this cast in other functions, like preferredWidth().
+    MStyleWrapper *wrapper = const_cast<MStyleWrapper *>(this);
 
-MStyleWrapper::StyleType MStyleWrapper::styleType() const
-{
-    return m_styletype;
-}
-
-void MStyleWrapper::setStyleType(const StyleType styletype)
-{
-    if (styletype == m_styletype)
-        return;
-    m_styletype = styletype;
-
-    MStyleContainer *oldStyleContainer = m_stylecontainer;
-    m_stylecontainer = 0;
-
-    const char *viewtype = "";
-
-    switch (m_styletype) {
-    case Button:
-        m_stylecontainer = new MButtonStyleContainer();
-        break;
-    case GroupButton:
-        m_stylecontainer = new MButtonStyleContainer();
-        viewtype = "group";
-        break;
-    case CheckBox:
-        m_stylecontainer = new MCheckboxStyleContainer();
-        break;
-    case Slider:
-        m_stylecontainer = new MSliderStyleContainer();
-        break;
-    case NavigationBar:
-        m_stylecontainer = new MNavigationBarStyleContainer();
-        break;
-    case HomeButton:
-        m_stylecontainer = new MHomeButtonPanelStyleContainer();
-        break;
-    case IconButton:
-        m_stylecontainer = new MButtonIconStyleContainer();
-        break;
-    case Switch:
-        m_stylecontainer = new MButtonSwitchStyleContainer();
-        break;
-    case TextEdit:
-        m_stylecontainer = new MTextEditStyleContainer();
-        break;
-    case Label:
-        m_stylecontainer = new MLabelStyleContainer();
-        break;
-    case Page:
-        m_stylecontainer = new MApplicationPageStyleContainer();
-        break;
-    case Spinner:
-        m_stylecontainer = new MSpinnerStyleContainer();
-        break;
-    default:
-        m_stylecontainer = new MWidgetStyleContainer();
+    const MStyle *style = 0;
+    QHash<QString, const MStyle *>::iterator it = wrapper->m_cachedStyles[orientation].find(m_mode);
+    if (it != wrapper->m_cachedStyles[orientation].end()) {
+        style = it.value();
+    } else {
+        // MTheme::style() assumes that the name of the style class will actually exist.
+        if (MClassFactory::instance()->styleMetaObject(m_styleClass.toAscii().constData())) {
+            style = MTheme::style(m_styleClass.toAscii().constData(), m_styleObjectName,
+                                  m_mode, m_styleType, orientation, 0);
+            wrapper->m_cachedStyles[orientation].insert(m_mode, style);
+        } else {
+            qWarning("MStyleWrapper::currentStyle: could not find style class '%s'.",
+                     m_styleClass.toAscii().constData());
+        }
     }
-    m_stylecontainer->initialize("", viewtype, 0);
 
-    updateStyleMode();
-    delete oldStyleContainer;
+    wrapper->m_currentStyle[orientation] = style;
+    return style;
+}
+
+QObject *MStyleWrapper::currentStyleAsObject()
+{
+    return this;
 }
 
 int MStyleWrapper::preferredWidth() const
 {
-    if (!m_stylecontainer)
+    const MWidgetStyle *style = qobject_cast<const MWidgetStyle *>(currentStyle());
+    if (!style)
         return 0;
 
-    const int min = (*m_stylecontainer)->minimumSize().width();
-    const int pref = (*m_stylecontainer)->preferredSize().width();
-    const int max = (*m_stylecontainer)->maximumSize().width();
+    const int min = style->minimumSize().width();
+    const int pref = style->preferredSize().width();
+    const int max = style->maximumSize().width();
 
     return qBound(min, pref, max);
 }
 
 int MStyleWrapper::preferredHeight() const
 {
-    if (!m_stylecontainer)
+    const MWidgetStyle *style = qobject_cast<const MWidgetStyle *>(currentStyle());
+    if (!style)
         return 0;
 
-    const int min = (*m_stylecontainer)->minimumSize().height();
-    const int pref = (*m_stylecontainer)->preferredSize().height();
-    const int max = (*m_stylecontainer)->maximumSize().height();
+    const int min = style->minimumSize().height();
+    const int pref = style->preferredSize().height();
+    const int max = style->maximumSize().height();
 
     return qBound(min, pref, max);
 }
 
-QColor MStyleWrapper::textColor() const
+// ### This property getter is a workaround to the following situation:
+//
+// - QML warns when when we bind to properties that doesn't have either a
+//   NOTIFY signal or a CONSTANT mark.
+//
+// - libmeegotouch MStyle classes have properties with the data we want, but do not
+//   have NOTIFY signal (they don't need since they write only once), neither
+//   CONSTANT mark (because they have WRITE, which they use to dynamically fill the
+//   properties from a set of CSS files).
+//
+// - Since MStyle is a QObject we do want to export it to QML instead of having to
+//   create wrapper for each proper as we did before.
+//
+// This workaround avoids the warning by accessing the property in C++ (via the get()
+// method). But we still need some signal to notify the properties that use data from
+// get() that something change. The trick is to make the MStyleWrapper have a property
+// that points to itself, and NOTIFY change when the style changes (what we want).
+QVariant MStyleWrapper::get(const QString &propertyName)
 {
-    if (!m_stylecontainer)
-        return QColor();
+    if (!currentStyle())
+        return QVariant();
 
-    const char *propertyName;
+    return currentStyle()->property(propertyName.toAscii());
+}
 
-    switch (m_styletype) {
-    case Label:
-        propertyName = "color";
-        break;
-    default:
-        propertyName = "textColor";
+void MStyleWrapper::updateStyle()
+{
+    invalidateStyle();
+    emit currentStyleChanged();
+}
+
+void MStyleWrapper::invalidateStyle()
+{
+    for (int i = 0; i < 2; i++) {
+        QHash<QString, const MStyle *>::iterator it = m_cachedStyles[i].begin();
+        while (it != m_cachedStyles[i].end()) {
+            MTheme::releaseStyle(it.value());
+            ++it;
+        }
+        m_cachedStyles[i].clear();
+        m_currentStyle[i] = 0;
+    }
+}
+
+
+MStyleWrapperManager *MStyleWrapperManager::m_self = 0;
+
+MStyleWrapperManager::MStyleWrapperManager() : QObject()
+{
+}
+
+MStyleWrapperManager::~MStyleWrapperManager()
+{
+}
+
+MStyleWrapperManager *MStyleWrapperManager::instance()
+{
+    if (!m_self) {
+        m_self = new MStyleWrapperManager();
     }
 
-    return (*m_stylecontainer)->property(propertyName).value<QColor>();
+    return m_self;
 }
 
-const MWidgetStyleContainer *MStyleWrapper::styleContainer() const
+void MStyleWrapperManager::registerStyleWrapper(MStyleWrapper *wrapper)
 {
-    return m_stylecontainer;
+    Q_ASSERT(!m_registeredStyleWrappers.contains(wrapper));
+    m_registeredStyleWrappers.append(wrapper);
+
+    // If it's the first style wrapper, start watching for theme change.
+    if (m_registeredStyleWrappers.size() == 1) {
+        connect(MTheme::instance(), SIGNAL(themeIsChanging()), SLOT(updateStyleWrappers()));
+    }
 }
 
-// Needs patch in libmeegotouch
-// QObject *MStyleWrapper::internalStyle()
-// {
-//     return m_stylecontainer ? const_cast<MStyle *>(m_stylecontainer->currentStyle()) : 0;
-// }
+void MStyleWrapperManager::unregisterStyleWrapper(MStyleWrapper *wrapper)
+{
+    Q_ASSERT(m_registeredStyleWrappers.contains(wrapper));
+    m_registeredStyleWrappers.removeOne(wrapper);
+
+    // If we don't have more style wrappers, stop watching for theme change.
+    if (m_registeredStyleWrappers.empty()) {
+        disconnect(MTheme::instance(), SIGNAL(themeIsChanging()));
+    }
+}
+
+void MStyleWrapperManager::updateStyleWrappers()
+{
+    // First we make sure that the style wrappers invalidate all cached
+    // styles they have.
+    for (int i = 0; i < m_registeredStyleWrappers.size(); i++) {
+        m_registeredStyleWrappers[i]->invalidateStyle();
+    }
+
+    // ...once they all are invalidated, we trigger a changed signal in
+    // the styles themselves. From our tests, it is important to fully
+    // cleanup the styles (not have any old style) before start to
+    // asking for new styles. We used this two loops together, but had
+    // situations when a new style was asked, and old one was received.
+    for (int i = 0; i < m_registeredStyleWrappers.size(); i++) {
+        emit m_registeredStyleWrappers[i]->currentStyleChanged();
+    }
+}

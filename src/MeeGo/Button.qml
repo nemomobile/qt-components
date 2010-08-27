@@ -54,14 +54,15 @@ ImplicitSizeItem {
 
     Style {
         id: meegostyle
-        styleType: button.groupButton ? Style.GroupButton : Style.Button
+        styleClass: "MButtonStyle"
+        styleType: button.groupButton ? "group" : ""
         mode: {
             if (mouseArea.containsMouse && mouseArea.pressed)
-                return Style.PressedMode
+                return "pressed"
             else if (checkable.checked)
-                return Style.SelectedMode
+                return "selected"
             else
-                return Style.DefaultMode
+                return "default"
         }
     }
 
@@ -114,7 +115,7 @@ ImplicitSizeItem {
 
             font.family: "Nokia Sans"
             font.pixelSize: 24
-            color: meegostyle.textColor
+            color: meegostyle.current.get("textColor")
 
             text: "Effect"
         }

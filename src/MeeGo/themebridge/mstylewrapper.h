@@ -34,136 +34,93 @@
 
 #include <mwidgetstyle.h>
 
-#define M_STYLE_PROPERTY(type, name, propertyName, defaultValue)       \
-inline type name () const {                                                \
-    if (!m_stylecontainer)                                                 \
-        return defaultValue ;                                              \
-                                                                           \
-    return (*m_stylecontainer)->property( propertyName ).value< type >(); \
-}
-
-class MWidgetStyleContainer;
 
 class MStyleWrapper : public QObject
 {
     Q_OBJECT
 
-    Q_ENUMS(StyleMode)
-    Q_ENUMS(StyleType)
-
     // To be set from QML
-    Q_PROPERTY(StyleMode mode READ mode WRITE setMode)
-    Q_PROPERTY(StyleType styleType READ styleType WRITE setStyleType)
+    Q_PROPERTY(QString mode READ mode WRITE setMode NOTIFY modeChanged)
+    Q_PROPERTY(QString styleClass READ styleClass WRITE setStyleClass NOTIFY styleClassChanged)
+    Q_PROPERTY(QString styleType READ styleType WRITE setStyleType NOTIFY styleTypeChanged)
+    Q_PROPERTY(QString styleObjectName READ styleObjectName WRITE setStyleObjectName NOTIFY styleObjectNameChanged)
 
-    // To expose data from current StyleContainer
-    Q_PROPERTY(int preferredWidth READ preferredWidth NOTIFY modeChanged)
-    Q_PROPERTY(int preferredHeight READ preferredHeight NOTIFY modeChanged)
-    Q_PROPERTY(QColor textColor READ textColor NOTIFY modeChanged)
-    Q_PROPERTY(QColor promptColor READ promptColor NOTIFY modeChanged)
-    Q_PROPERTY(QColor selectionTextColor READ selectionTextColor NOTIFY modeChanged)
-    Q_PROPERTY(QColor selectionBackgroundColor READ selectionBackgroundColor NOTIFY modeChanged)
-    Q_PROPERTY(QString maskString READ maskString NOTIFY modeChanged)
+    // We want to export the currentStyle as a plain QObject. QML can use
+    // its properties to get the style data.
+    Q_PROPERTY(QObject *current READ currentStyleAsObject NOTIFY currentStyleChanged)
 
-    Q_PROPERTY(QSize iconSize READ iconSize NOTIFY modeChanged)
-    Q_PROPERTY(QColor glowColor READ glowColor NOTIFY modeChanged)
-    Q_PROPERTY(int glowDuration READ glowDuration NOTIFY modeChanged)
-    Q_PROPERTY(int glowRadius READ glowRadius NOTIFY modeChanged)
-    Q_PROPERTY(int shrinkDuration READ shrinkDuration NOTIFY modeChanged)
-    Q_PROPERTY(qreal shrinkFactor READ shrinkFactor NOTIFY modeChanged)
-
-    Q_PROPERTY(int marginLeft READ marginLeft NOTIFY modeChanged)
-    Q_PROPERTY(int marginTop READ marginTop NOTIFY modeChanged)
-    Q_PROPERTY(int marginRight READ marginRight NOTIFY modeChanged)
-    Q_PROPERTY(int marginBottom READ marginBottom NOTIFY modeChanged)
-    Q_PROPERTY(int paddingLeft READ paddingLeft NOTIFY modeChanged)
-    Q_PROPERTY(int paddingTop READ paddingTop NOTIFY modeChanged)
-    Q_PROPERTY(int paddingRight READ paddingRight NOTIFY modeChanged)
-    Q_PROPERTY(int paddingBottom READ paddingBottom NOTIFY modeChanged)
-
-    Q_PROPERTY(QFont font READ font NOTIFY modeChanged)
-
-    Q_PROPERTY(int period READ period NOTIFY modeChanged)
-
-    // XXX Were not "MStyleContainer::currentStyle()" private, we could consider
-    // replacing the above properties by the single one below
-    // Q_PROPERTY(QObject * internalStyle READ internalStyle);
+    // Some pre-processed data that we want to export to QML as well. This could be
+    // calculated inside QML, its convenient to have it done in one place.
+    Q_PROPERTY(int preferredWidth READ preferredWidth NOTIFY currentStyleChanged)
+    Q_PROPERTY(int preferredHeight READ preferredHeight NOTIFY currentStyleChanged)
 
 public:
     MStyleWrapper(QObject *parent = 0);
     virtual ~MStyleWrapper();
 
-    enum StyleMode {
-        DefaultMode = 0,
-        PressedMode,
-        SelectedMode
-    };
+    QString mode() const;
+    void setMode(const QString &mode);
 
-    enum StyleType {
-        None = 0,
-        Button,
-        GroupButton,
-        CheckBox,
-        Slider,
-        NavigationBar,
-        HomeButton,
-        IconButton,
-        TextEdit,
-        Label,
-        Page,
-        Spinner,
-        Switch
-    };
+    QString styleClass() const;
+    void setStyleClass(const QString &styleClass);
 
-    StyleMode mode() const;
-    void setMode(const StyleMode mode);
+    QString styleType() const;
+    void setStyleType(const QString &styleType);
 
-    StyleType styleType() const;
-    void setStyleType(const StyleType styleType);
+    QString styleObjectName() const;
+    void setStyleObjectName(const QString &styleObjectName);
+
+    const MStyle *currentStyle() const;
+    QObject *currentStyleAsObject();
 
     int preferredWidth() const;
     int preferredHeight() const;
-    QColor textColor() const;
-
-    const MWidgetStyleContainer *styleContainer() const;
-
-    M_STYLE_PROPERTY(QColor, promptColor, "promptColor", QColor() )
-    M_STYLE_PROPERTY(QColor, selectionTextColor, "selectionTextColor", QColor() )
-    M_STYLE_PROPERTY(QColor, selectionBackgroundColor, "selectionBackgroundColor", QColor() )
-    M_STYLE_PROPERTY(QFont, font, "font", QFont() )
-    M_STYLE_PROPERTY(QString, maskString, "maskString", "*")
-
-    M_STYLE_PROPERTY(QSize, iconSize, "iconSize", QSize() )
-    M_STYLE_PROPERTY(QColor, glowColor, "glowColor", QColor() )
-    M_STYLE_PROPERTY(int, glowDuration, "glowDuration", 0)
-    M_STYLE_PROPERTY(int, glowRadius, "glowRadius", 0)
-    M_STYLE_PROPERTY(int, shrinkDuration, "shrinkDuration", 0)
-    M_STYLE_PROPERTY(qreal, shrinkFactor, "shrinkFactor", 0)
-
-    M_STYLE_PROPERTY(int, marginLeft, "marginLeft", 0)
-    M_STYLE_PROPERTY(int, marginTop, "marginTop", 0)
-    M_STYLE_PROPERTY(int, marginRight, "marginRight", 0)
-    M_STYLE_PROPERTY(int, marginBottom, "marginBottom", 0)
-    M_STYLE_PROPERTY(int, paddingLeft, "paddingLeft", 0)
-    M_STYLE_PROPERTY(int, paddingTop, "paddingTop", 0)
-    M_STYLE_PROPERTY(int, paddingRight, "paddingRight", 0)
-    M_STYLE_PROPERTY(int, paddingBottom, "paddingBottom", 0)
-    M_STYLE_PROPERTY(int, period, "period", 0)
-
-    // Needs patch in libmeegotouch
-    // QObject *internalStyle();
 
 Q_SIGNALS:
-    void modeChanged(const StyleMode newMode);
+    void modeChanged();
+    void styleClassChanged();
+    void styleTypeChanged();
+    void styleObjectNameChanged();
 
-protected Q_SLOTS:
-    void notifyProperties();
+    void currentStyleChanged();
 
-protected:
-    void updateStyleMode();
+public Q_SLOTS:
+    QVariant get(const QString &propertyName);
 
-    StyleMode m_mode;
-    StyleType m_styletype;
-    MWidgetStyleContainer *m_stylecontainer;
+private:
+    friend class MStyleWrapperManager;
+
+    void updateStyle();
+    void invalidateStyle();
+
+    QString m_mode;
+    QString m_styleClass;
+    QString m_styleType;
+    QString m_styleObjectName;
+
+    const MStyle *m_currentStyle[2];
+    QHash<QString, const MStyle *> m_cachedStyles[2];
+};
+
+
+class MStyleWrapperManager : public QObject {
+    Q_OBJECT
+
+public:
+    MStyleWrapperManager();
+    virtual ~MStyleWrapperManager();
+
+    static MStyleWrapperManager *instance();
+
+    void registerStyleWrapper(MStyleWrapper *wrapper);
+    void unregisterStyleWrapper(MStyleWrapper *wrapper);
+
+public Q_SLOTS:
+    void updateStyleWrappers();
+
+private:
+    static MStyleWrapperManager *m_self;
+    QList<MStyleWrapper *> m_registeredStyleWrappers;
 };
 
 #endif // MSTYLEWRAPPER_H

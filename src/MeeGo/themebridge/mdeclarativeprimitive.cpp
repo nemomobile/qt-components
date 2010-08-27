@@ -60,9 +60,10 @@ void MDeclarativePrimitive::setStyle(MStyleWrapper *style)
 
     if (m_style) {
         // Listen for mode and/or styleType changes
-        connect(m_style, SIGNAL(modeChanged(const StyleMode)), SLOT(updateStyleData()));
+        connect(m_style, SIGNAL(currentStyleChanged()), SLOT(updateStyleData()));
         updateStyleData();
     }
+
     update();
 }
 
@@ -85,11 +86,11 @@ void MDeclarativePrimitive::updateStyleData()
     if (!m_style)
         return;
 
-    const MWidgetStyleContainer *styleContainer = m_style->styleContainer();
+    const MStyle *style = m_style->currentStyle();
 
-    if (styleContainer) {
+    if (style) {
         // Fill subclass-specific members with updated data from style
-        fetchStyleData(*styleContainer);
+        fetchStyleData(style);
         checkPendingPixmap();
     } else {
         internalClearStyleData();
@@ -127,9 +128,9 @@ void MDeclarativePrimitive::clearStyleData()
 
 }
 
-void MDeclarativePrimitive::fetchStyleData(const MWidgetStyleContainer &styleContainer)
+void MDeclarativePrimitive::fetchStyleData(const MStyle *style)
 {
-    Q_UNUSED(styleContainer);
+    Q_UNUSED(style);
 }
 
 bool MDeclarativePrimitive::hasPendingPixmap()

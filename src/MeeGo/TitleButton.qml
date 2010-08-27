@@ -39,12 +39,11 @@ ImplicitSizeItem {
 
     Style {
         id: meegostyle
-        styleType: Style.HomeButton;
+        styleClass: "MHomeButtonPanelStyle"
         mode: {
             if (mouseArea.pressed)
-                return Style.PressedMode
-            else
-                return Style.DefaultMode
+                return "pressed"
+            return "default"
         }
     }
 

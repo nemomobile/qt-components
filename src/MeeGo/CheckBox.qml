@@ -40,14 +40,14 @@ ImplicitSizeItem {
 
     Style {
         id: meegostyle
-        styleType: Style.CheckBox
+        styleClass: "MCheckboxStyle"
         mode: {
             if (mouseArea.containsMouse && mouseArea.pressed)
-                return Style.PressedMode
+                return "pressed"
             else if (button.checked)
-                return Style.SelectedMode
+                return "selected"
             else
-                return Style.DefaultMode
+                return "default"
         }
     }
 

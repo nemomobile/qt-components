@@ -31,7 +31,7 @@ ImplicitSizeItem {
     id: root
 
     property alias iconId: icon.iconId
-//    property alias styleObjectName: meegostyle.styleObjectName
+    property alias styleObjectName: meegostyle.styleObjectName
     signal clicked
 
     implicitWidth: meegostyle.preferredWidth
@@ -39,8 +39,8 @@ ImplicitSizeItem {
 
     Style {
         id: meegostyle
-        styleType: Style.IconButton
-        mode: area.pressed ? Style.PressedMode : Style.DefaultMode
+        styleClass: "MButtonIconStyle"
+        mode: area.pressed ? "pressed" : "default"
     }
 
     MouseArea {
@@ -55,22 +55,22 @@ ImplicitSizeItem {
         opacity: 0
 
         iconId: icon.iconId
-        glowColor: meegostyle.glowColor
-        glowRadius: meegostyle.glowRadius
+        glowColor: meegostyle.current.get("glowColor")
+        glowRadius: meegostyle.current.get("glowRadius")
     }
 
     Icon {
         id: icon
         anchors.centerIn: parent
-        width: meegostyle.iconSize.width
-        height: meegostyle.iconSize.height
+        width: meegostyle.current.get("iconSize").width
+        height: meegostyle.current.get("iconSize").height
 
         states: State {
             name: "pressed"
             when: area.containsMouse && area.pressed
             PropertyChanges {
                 target: icon
-                scale: 1 - meegostyle.shrinkFactor
+                scale: 1 - meegostyle.current.get("shrinkFactor")
             }
             PropertyChanges {
                 target: glow
@@ -85,7 +85,7 @@ ImplicitSizeItem {
                     target: icon
                     property: "scale"
                     easing.type: Easing.InCubic
-                    duration: meegostyle.shrinkDuration
+                    duration: meegostyle.current.get("shrinkDuration")
                 }
             },
             Transition {
@@ -95,7 +95,7 @@ ImplicitSizeItem {
                         target: icon
                         property: "scale"
                         easing.type: Easing.OutCubic
-                        duration: meegostyle.shrinkDuration
+                        duration: meegostyle.current.get("shrinkDuration")
                     }
                     PropertyAnimation {
                         target: glow
@@ -103,14 +103,14 @@ ImplicitSizeItem {
                         from: 0
                         to: 1
                         easing.type: Easing.OutSine
-                        duration: meegostyle.glowDuration / 2
+                        duration: meegostyle.current.get("glowDuration") / 2
                     }
                     PropertyAnimation {
                         target: glow
                         property: "opacity"
                         from: 1
                         to: 0
-                        duration: meegostyle.glowDuration / 2
+                        duration: meegostyle.current.get("glowDuration") / 2
                         easing.type: Easing.OutSine
                     }
                 }

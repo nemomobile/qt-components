@@ -39,7 +39,7 @@ Item {
 
     Style {
         id: meegostyle
-        styleType: Style.Page
+        styleClass: "MApplicationPageStyle"
     }
     Background {
         anchors.fill: parent
