@@ -26,6 +26,8 @@
 
 #include "mdeclarativeicon.h"
 
+#include "mthemebridge.h"
+
 #include <QPixmap>
 #include <QPainter>
 #include <MWidgetStyle>
@@ -35,18 +37,12 @@ MDeclarativeIcon::MDeclarativeIcon(QDeclarativeItem *parent) :
     QDeclarativeItem(parent), m_icon(0), m_pendingPixmap(0)
 {
     setFlag(QGraphicsItem::ItemHasNoContents, false);
-
-    // ### We could share this connection between all Pixmaps, or even reuse
-    // the connection MStyleWrapperManager already have.
-
-    // When the theme changes we'll "refresh" our pixmap, i.e. release it and
-    // acquire a new one. This might be important to get the default size of
-    // the new theme. And it is what libmeegotouch does as well.
-    connect(MTheme::instance(), SIGNAL(themeIsChanging()), SLOT(refreshPixmap()));
+    MThemeBridge::instance()->registerIcon(this);
 }
 
 MDeclarativeIcon::~MDeclarativeIcon()
 {
+    MThemeBridge::instance()->unregisterIcon(this);
     setIconId(QLatin1String(""));
 }
 

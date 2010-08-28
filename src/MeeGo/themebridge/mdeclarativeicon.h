@@ -48,10 +48,12 @@ Q_SIGNALS:
     void iconIdChanged(QString iconId);
 
 protected Q_SLOTS:
-    void refreshPixmap();
     void checkPendingPixmap();
 
 protected:
+    friend class MThemeBridge;
+
+    void refreshPixmap();
     bool hasPendingPixmap();
 
     virtual void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);

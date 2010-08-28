@@ -33,6 +33,7 @@
 
 #include <QObject>
 
+class MDeclarativeIcon;
 class MStyleWrapper;
 
 class MThemeBridge : public QObject {
@@ -46,8 +47,11 @@ public:
     void registerStyleWrapper(MStyleWrapper *wrapper);
     void unregisterStyleWrapper(MStyleWrapper *wrapper);
 
+    void registerIcon(MDeclarativeIcon *icon);
+    void unregisterIcon(MDeclarativeIcon *icon);
+
 public Q_SLOTS:
-    void updateStyleWrappers();
+    void updateResources();
 
 private:
     // MThemeBridge::instance() should be used instead.
@@ -55,6 +59,7 @@ private:
 
     static MThemeBridge *m_self;
     QList<MStyleWrapper *> m_registeredStyleWrappers;
+    QList<MDeclarativeIcon *> m_registeredIcons;
 };
 
 #endif // MTHEMEBRIDGE_H

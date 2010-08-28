@@ -27,6 +27,7 @@
 #include "mthemebridge.h"
 
 #include "mstylewrapper.h"
+#include "mdeclarativeicon.h"
 
 #include <mtheme.h>
 
@@ -35,6 +36,7 @@ MThemeBridge *MThemeBridge::m_self = 0;
 
 MThemeBridge::MThemeBridge() : QObject()
 {
+    connect(MTheme::instance(), SIGNAL(themeIsChanging()), SLOT(updateResources()));
 }
 
 MThemeBridge::~MThemeBridge()
@@ -54,25 +56,27 @@ void MThemeBridge::registerStyleWrapper(MStyleWrapper *wrapper)
 {
     Q_ASSERT(!m_registeredStyleWrappers.contains(wrapper));
     m_registeredStyleWrappers.append(wrapper);
-
-    // If it's the first style wrapper, start watching for theme change.
-    if (m_registeredStyleWrappers.size() == 1) {
-        connect(MTheme::instance(), SIGNAL(themeIsChanging()), SLOT(updateStyleWrappers()));
-    }
 }
 
 void MThemeBridge::unregisterStyleWrapper(MStyleWrapper *wrapper)
 {
     Q_ASSERT(m_registeredStyleWrappers.contains(wrapper));
     m_registeredStyleWrappers.removeOne(wrapper);
-
-    // If we don't have more style wrappers, stop watching for theme change.
-    if (m_registeredStyleWrappers.empty()) {
-        disconnect(MTheme::instance(), SIGNAL(themeIsChanging()));
-    }
 }
 
-void MThemeBridge::updateStyleWrappers()
+void MThemeBridge::registerIcon(MDeclarativeIcon *icon)
+{
+    Q_ASSERT(!m_registeredIcons.contains(icon));
+    m_registeredIcons.append(icon);
+}
+
+void MThemeBridge::unregisterIcon(MDeclarativeIcon *icon)
+{
+    Q_ASSERT(m_registeredIcons.contains(icon));
+    m_registeredIcons.removeOne(icon);
+}
+
+void MThemeBridge::updateResources()
 {
     // First we make sure that the style wrappers invalidate all cached
     // styles they have.
@@ -87,5 +91,12 @@ void MThemeBridge::updateStyleWrappers()
     // situations when a new style was asked, and old one was received.
     for (int i = 0; i < m_registeredStyleWrappers.size(); i++) {
         emit m_registeredStyleWrappers[i]->currentStyleChanged();
+    }
+
+    // Refresh all the icons. This step is not order sensitive like the
+    // previous one, since the PixmapCache will automatically reload
+    // existing entries to the new theme.
+    for (int i = 0; i < m_registeredIcons.size(); i++) {
+        m_registeredIcons[i]->refreshPixmap();
     }
 }
