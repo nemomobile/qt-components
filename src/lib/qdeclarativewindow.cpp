@@ -103,6 +103,7 @@ QDeclarativeWindowPrivate::QDeclarativeWindowPrivate(QDeclarativeWindow *qq)
 
 QDeclarativeWindowPrivate::~QDeclarativeWindowPrivate()
 {
+    delete root;
     delete component;
     delete view;
 }
