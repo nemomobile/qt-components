@@ -59,7 +59,7 @@ Window {
                 anchors.bottom: parent.bottom
                 visible: loader.status !== Loader.Error
 
-                source: group.checkedButton.text.toLowerCase().replace(" ", "") + ".qml"
+                source: group.checkedButton ? group.checkedButton.text.toLowerCase().replace(" ", "") + ".qml" : ""
 
                 MouseArea {
                     anchors.fill: parent;
