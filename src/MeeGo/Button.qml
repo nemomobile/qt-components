@@ -38,8 +38,14 @@ ImplicitSizeItem {
     property alias __exclusiveGroup: checkable.exclusiveGroup
 
     property alias text: label.text
-    property string iconSource //: "images/sample-icon.svg"
-    property string checkedIconSource //: "images/sample-icon-2.svg"
+
+    // Icon properties. Precedence is the following:
+    // Source has precedence over Id
+    // When checked, try to use checked Source or Id, if empty, fallback to default Source or Id
+    property string iconSource
+    property string checkedIconSource
+    property string iconId
+    property string checkedIconId
 
     // Defines the button viewtype. Usually this is automatically set by
     // specialized containers like the ButtonRow or the QueryDialog
@@ -47,12 +53,12 @@ ImplicitSizeItem {
     property alias groupPosition: background.tilePosition
     property alias styleObjectName: meegostyle.styleObjectName
 
-    property alias iconVisible: iconImage.visible
+    property bool iconVisible: true
     property alias textVisible: label.visible
 
     signal clicked
 
-    implicitWidth: meegostyle.preferredWidth
+    implicitWidth: Math.max(meegostyle.preferredWidth, centeredContainer.width)
     implicitHeight: meegostyle.preferredHeight
 
     Style {
@@ -82,41 +88,88 @@ ImplicitSizeItem {
         width: calculateWidth()
 
         function calculateWidth() {
-            var width = 0
-            var hasIcon = (iconVisible && iconImage.source != "")
+            // XXX Check how does MeeGo Touch does that. Maybe use style paddings, etc
+            var width = iconFromSource.anchors.leftMargin + label.anchors.rightMargin
+            var hasIcon = (iconFromId.visible || iconFromSource.visible)
 
             if (textVisible && hasIcon) {
-                width = label.width + iconImage.width + 10
+                width += label.width + iconFromSource.width + 10
             } else if (textVisible) {
                 width += label.width
             } else if (hasIcon) {
-                width += iconImage.width
+                width += iconFromSource.width
             }
 
             return width
         }
 
-        Image {
-            id: iconImage
-            anchors.left: parent.left
-            anchors.verticalCenter: parent.verticalCenter
-            width: 48
-            height: 48
+        Icon {
+            id: iconFromId
+            anchors.fill: iconFromSource
 
-            source: (checkedIconSource == "" || !button.checked) ? iconSource : checkedIconSource
+            // When checked, try to use checked Id. If empty, the standard Id is the fallback
+            iconId: {
+                if (checkable.checked && button.checkedIconId)
+                    return button.checkedIconId;
+                return button.iconId;
+            }
+
+            // Visiblity check for default state (icon is not explicitly hidden)
+            // Icon is shown if there's a valid iconId, respecting the higher
+            // priority of iconFromSource
+            visible: iconId && !iconFromSource.visible
         }
 
-        Text {
+        Image {
+            id: iconFromSource
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.leftMargin: 10
+            width: meegostyle.current.get("iconSize").width
+            height: meegostyle.current.get("iconSize").height
+
+            // When checked, try to use checked source. If empty, the standard source is the fallback
+            source: {
+                if (checkable.checked && button.checkedIconSource)
+                    return button.checkedIconSource;
+                return button.iconSource;
+            }
+
+            // Visibility check for default state (icon is not explicitly hidden)
+            visible: {
+                if (iconFromSource.source == "")
+                    return false;
+
+                if (!checkable.checked)
+                    return true;
+
+                // Show sourceIcon when
+                //  1) checkedIconSource is present (highest priority), or
+                //  2) no checked icon exists (fallback)
+                return button.checkedIconSource || !button.checkedIconId;
+            }
+
+            states: State {
+                name: "iconHidden"
+                when: !button.iconVisible
+                // Hide both icons
+                PropertyChanges { target: iconFromSource; visible: false; source: "" }
+                PropertyChanges { target: iconFromId; visible: false; iconId: "" }
+            }
+        }
+
+        Label {
             id: label
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
+            anchors.rightMargin: 10
 
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
+            // XXX This does not make sense yet, since the label width is not being set
+            // horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: meegostyle.current.get("verticalTextAlign")
 
-            font.family: "Nokia Sans"
-            font.pixelSize: 24
+            font: meegostyle.current.get("font")
             color: meegostyle.current.get("textColor")
 
             text: "Effect"
