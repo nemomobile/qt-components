@@ -37,6 +37,8 @@ QML_FILES = \
         LineEdit.qml \
         CheckBox.qml \
         Page.qml \
+        QueryDialog.qml \
+        QueryPanel.qml \
         Slider.qml \
         Spinner.qml \
         Switch.qml \

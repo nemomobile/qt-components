@@ -3,7 +3,6 @@ Button 1.0 Button.qml
 CheckBox 1.0 CheckBox.qml
 ButtonColumn 1.0 ButtonColumn.qml
 ButtonRow 1.0 ButtonRow.qml
-EscapeButton 1.0 EscapeButton.qml
 IconButton 1.0 IconButton.qml
 Label 1.0 Label.qml
 LineEdit 1.0 LineEdit.qml
@@ -13,3 +12,8 @@ Spinner 1.0 Spinner.qml
 Switch 1.0 Switch.qml
 TitleBar 1.0 TitleBar.qml
 Window 1.0 Window.qml
+# Private
+# XXX Marking these as "internal" makes them inaccessible
+#     for our own components. Is this right?
+EscapeButton 1.0 EscapeButton.qml
+QueryDialog 1.0 QueryDialog.qml
