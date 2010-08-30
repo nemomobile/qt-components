@@ -73,14 +73,12 @@ void MDeclarativeIcon::refreshPixmap()
         // XXX The second QSize(0, 0) argument is the size we want the returned pixmap
         // to be. However, if we specify that, we do not have a way of knowing whether
         // that pixmap is yet to be loaded (size -1, -1) or actually ready.
-        // Thus we ask the default size (0, 0) and can then use a heuristic in "hasPendingPixmap"
+        // This causes the blur effect in Home and Close titlebar buttons.
+        // We have a patch that solves that but we are waiting on
+        // http://meego.gitorious.org/meegotouch/libmeegotouch/merge_requests/342
         m_icon = MTheme::instance()->pixmap(m_iconId, QSize(0, 0));
     }
 
-    // Usually we would call "updateStyleData" but this specific primitive currently does
-    // not read any information from the given style. In fact we could be a standard
-    // QGraphicsItem but that would require us to duplicate the pendingPixmap logic which
-    // may be worse than ignoring the style, as we do today.
     checkPendingPixmap();
 }
 
