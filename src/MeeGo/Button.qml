@@ -41,8 +41,11 @@ ImplicitSizeItem {
     property string iconSource //: "images/sample-icon.svg"
     property string checkedIconSource //: "images/sample-icon-2.svg"
 
-    property bool groupButton: false;
+    // Defines the button viewtype. Usually this is automatically set by
+    // specialized containers like the ButtonRow or the QueryDialog
+    property alias buttonType: meegostyle.styleType
     property alias groupPosition: background.tilePosition
+    property alias styleObjectName: meegostyle.styleObjectName
 
     property alias iconVisible: iconImage.visible
     property alias textVisible: label.visible
@@ -55,7 +58,6 @@ ImplicitSizeItem {
     Style {
         id: meegostyle
         styleClass: "MButtonStyle"
-        styleType: button.groupButton ? "group" : ""
         mode: {
             if (mouseArea.containsMouse && mouseArea.pressed)
                 return "pressed"

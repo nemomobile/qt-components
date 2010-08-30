@@ -58,7 +58,7 @@ function updateButtons(children) {
 
         if (isButton(item)) {
             buttons.push(item);
-            item.groupButton = true;
+            item.buttonType = "group";
             item.checkable = params.checkable;
             item.__exclusiveGroup = params.exclusive ? params.group : null;
         }
