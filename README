@@ -58,7 +58,11 @@ git@gitorious.org:qt-components/qt-components.git
 1: theme: qmake && make install
 1.1: sudo ln -s /usr/share/themes /usr/local/share/themes
 
-2: libmeegotouch: ./configure && make install
+2: libmeegotouch:
+   ./configure
+ Make sure that you configure with dbus. If it doesn't pick up qt's dbus:
+   export PKG_CONFIG_PATH=$QTDIR/lib/pkgconfig
+   make install
 
 # mmoc is required
 3: export PATH=/usr/local/bin/:$PATH
