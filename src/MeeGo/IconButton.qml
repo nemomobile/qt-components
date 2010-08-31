@@ -32,7 +32,10 @@ ImplicitSizeItem {
 
     property alias iconId: icon.iconId
     property alias styleObjectName: meegostyle.styleObjectName
+    // the icon button needs to export its mode in case it has a background
+    property alias mode: meegostyle.mode
     signal clicked
+
 
     implicitWidth: meegostyle.preferredWidth
     implicitHeight: meegostyle.preferredHeight
@@ -40,7 +43,7 @@ ImplicitSizeItem {
     Style {
         id: meegostyle
         styleClass: "MButtonIconStyle"
-        mode: area.pressed ? "pressed" : "default"
+        mode: area.containsMouse && area.pressed ? "pressed" : "default"
     }
 
     MouseArea {

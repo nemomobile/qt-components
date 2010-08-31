@@ -40,6 +40,7 @@ ImplicitSizeItem {
     Style {
         id: escapeStyle
         styleClass: "MEscapeButtonPanelStyle"
+        mode: back.state == "backButtonShown" ? back.mode : close.mode
     }
 
     // XXX Use MWarpAnimation style to get proper animation parameters
