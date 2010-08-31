@@ -99,6 +99,7 @@ MDeclarativeStatusBar::MDeclarativeStatusBar(QDeclarativeItem *parent) :
     setAcceptedMouseButtons(Qt::LeftButton);
     // higher than TitleBar
     setZValue(1010);
+    setImplicitHeight(STATUSBAR_HEIGHT);
 
     if (!filterRegistered) {
         ::oldFilter = QCoreApplication::instance()->setEventFilter(x11EventFilter);
@@ -217,7 +218,6 @@ void MDeclarativeStatusBar::sharedPixmapHandleReceived(QDBusPendingCallWatcher *
     quint32 tmp = reply;
     sharedPixmap = QPixmap::fromX11Pixmap(tmp, QPixmap::ExplicitlyShared);
     setImplicitWidth(sharedPixmap.size().width());
-    setImplicitHeight(STATUSBAR_HEIGHT);
     updateSharedPixmap();
     call->deleteLater();
     scene()->update();
