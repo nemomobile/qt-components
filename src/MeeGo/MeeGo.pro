@@ -46,6 +46,7 @@ QML_FILES = \
         QueryDialog.js \
         QueryPanel.qml \
         PageContainer.qml \
+        PositionIndicator.qml \
         Slider.qml \
         Spinner.qml \
         Switch.qml \

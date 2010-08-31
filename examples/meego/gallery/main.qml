@@ -49,7 +49,8 @@ Window {
                             "LineEdit",
                             "Query",
                             "Spinner",
-                            "Switches"]
+                            "Switches",
+                            "PositionIndicator"]
                     Button {
                         text: modelData
                         width: 200

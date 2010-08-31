@@ -27,25 +27,45 @@
 import Qt 4.7
 import com.meego 1.0
 
-Window {
-    id: window
+Item {
+    id: page
+    width: 500
+    height: 300
 
-    Component {
-        id: pageComponent
+    Flickable {
+        anchors.fill: parent
+        contentWidth: colorfulSquare.width
+        contentHeight: colorfulSquare.height
+        clip: true
 
-        Page {
-            title: "Widgets Gallery"
-            ListView {
-                anchors.fill: parent
-                model: WidgetGallerySections { }
-                delegate: MeeGoDelegate { text: name }
-
-                PositionIndicator { }
+        Rectangle {
+            id: colorfulSquare
+            width: page.width * 2
+            height: width
+            opacity: 0.5
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "red" }
+                GradientStop { position: 1.0; color: "blue" }
             }
         }
+        Rectangle {
+            width: colorfulSquare.height
+            height: colorfulSquare.width
+            opacity: 0.5
+            rotation: -90
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "red" }
+                GradientStop { position: 1.0; color: "green" }
+            }
+        }
+        children: PositionIndicator { }
     }
 
-    Component.onCompleted: {
-        window.nextPage(pageComponent)
+    Text {
+        anchors.centerIn: parent
+        text: "Flick around!"
+        color: "white"
+        font.pixelSize: 50
+        opacity: 0.85
     }
 }

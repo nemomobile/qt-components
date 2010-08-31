@@ -9,6 +9,7 @@ IconButton 1.0 IconButton.qml
 Label 1.0 Label.qml
 LineEdit 1.0 LineEdit.qml
 Page 1.0 Page.qml
+PositionIndicator 1.0 PositionIndicator.qml
 Slider 1.0 Slider.qml
 Spinner 1.0 Spinner.qml
 Switch 1.0 Switch.qml
