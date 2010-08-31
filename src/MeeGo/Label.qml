@@ -31,6 +31,13 @@ Text {
     id: root
     property alias styleObjectName: meegostyle.styleObjectName
 
+    // XXX This is a temporary solution to avoid creating an extra
+    //     wrapper around Text to implement the margins
+    anchors.leftMargin: meegostyle.current.get("marginLeft")
+    anchors.rightMargin: meegostyle.current.get("marginRight")
+    anchors.topMargin: meegostyle.current.get("marginTop")
+    anchors.bottomMargin: meegostyle.current.get("marginBottom")
+
     font.bold: meegostyle.font.bold
     font.capitalization: meegostyle.font.capitalization
     font.family: meegostyle.font.family
