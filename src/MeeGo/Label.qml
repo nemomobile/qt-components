@@ -31,11 +31,20 @@ Text {
     id: root
     property alias styleObjectName: meegostyle.styleObjectName
 
-    font: meegostyle.current.get("font")
+    font.bold: meegostyle.font.bold
+    font.capitalization: meegostyle.font.capitalization
+    font.family: meegostyle.font.family
+    font.italic: meegostyle.font.italic
+    font.letterSpacing: meegostyle.font.letterSpacing
+    font.pixelSize: meegostyle.font.pixelSize
+    font.weight: meegostyle.font.weight
+    font.wordSpacing: meegostyle.font.wordSpacing
+
     color: meegostyle.current.get("color")
 
     Style {
         id: meegostyle
         styleClass: "MLabelStyle"
+        property variant font: meegostyle.current.get("font")
     }
 }
