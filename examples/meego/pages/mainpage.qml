@@ -76,4 +76,23 @@ Page {
             }
         }
     }
+
+    Button {
+        text: "rotate"
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        width: 100
+        height: 30
+        onClicked: {
+            if (window.state == "Portrait") {
+                window.state = "Landscape";
+            } else if (window.state == "Landscape") {
+                window.state = "PortraitInverted";
+            } else if (window.state == "PortraitInverted") {
+                window.state = "LandscapeInverted";
+            } else {
+                window.state = "Portrait";
+            }
+        }
+    }
 }
