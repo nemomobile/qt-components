@@ -69,8 +69,8 @@ Page {
                     onClicked: {
                         if (!window.nextPage(window.mainpage))
                             return
-                        window.__currentPage.num = num + 1
-                        window.__currentPage.idx_prefix = idx_prefix + index + "->"
+                        window.currentPage.num = num + 1
+                        window.currentPage.idx_prefix = idx_prefix + index + "->"
                     }
                 }
             }

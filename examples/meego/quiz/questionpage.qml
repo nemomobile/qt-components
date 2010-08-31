@@ -25,7 +25,7 @@ Page {
         text: "Yes I love tea";
         onClicked: {
             window.nextPage(window.answerPage);
-            window.__currentPage.text = "Then go make it!";
+            window.currentPage.text = "Then go make it!";
         }
     }
 
@@ -36,8 +36,9 @@ Page {
         anchors.right: parent.right;
         text: "No";
         onClicked: {
+
             window.nextPage(window.answerPage);
-            window.__currentPage.text = "But it is such a nice lovely great tea that I was going to prepare for you...";
+            window.currentPage.text = "But it is such a nice lovely great tea that I was going to prepare for you...";
         }
     }
 }

@@ -28,6 +28,8 @@ import Qt 4.7
 import Qt.labs.components 1.0
 import com.meego.themebridge 1.0
 
+import "pagemanager.js" as PageManager
+
 Rectangle {
     id: window
 
@@ -37,15 +39,10 @@ Rectangle {
     property bool titlebarVisible: true;
     property bool fullscreen: false;
 
-    property double __pageX: 0;
-    property double __pageY: decoration.y + decoration.height;
-    property alias __pageWidth: window.width;
-    property double __pageHeight: height - __pageY + autoScroll;
     property double __scrollOffset: 0;
     property double autoScroll: __scrollOffset;
 
-    property variant __currentPage: null
-    property int __currentPageIdx: -1
+    property variant currentPage: null
 
 //    Behavior on autoScroll {
 //        NumberAnimation { easing.type: Easing.InOutQuad; duration: 200; }
@@ -124,22 +121,24 @@ Rectangle {
         }
     }
 
+    Item {
+        id: pages;
+        x: 0
+        y: decoration.y + decoration.height
+        width:  window.width
+        height: window.height - y
+    }
+
     // this function receives a Page Component as argument, sets
     // it as the current page and initiates the transition animation.
     // during a running page change animation it will be ignored and returns 'false'.
     function nextPage(pageComponent) {
-        if (pageAnimation.running)
-            return false
-
-        __currentPage = pageComponent.createObject(pages)
-        __currentPageIdx++
-
-        if (__currentPageIdx < 1)
+        var page = PageManager.nextPage(pageComponent, pages)
+        if (page != null) {
+            window.currentPage = page
             return true
-
-        pages.x -= __pageWidth
-        titlebar.showBackButton = true
-        return true
+        }
+        return false
     }
 
     // this function sets the previous in the navigation history as the
@@ -148,23 +147,12 @@ Rectangle {
     // it cannot run again before finishing the animation, so the navigation is
     // one page at a time. This function returns 'false' when it ignores the prevPage request.
     function prevPage() {
-        if (__currentPageIdx < 1 || pageAnimation.running)
-            return false
-
-        __currentPage.destroy(pageAnimation.duration + 250)
-        __currentPage = pages.children[--__currentPageIdx]
-
-        pages.x += __pageWidth
-
-        if (__currentPageIdx == 0)
-            titlebar.showBackButton = false
-        return true
-    }
-
-    // add page before the title and status bar
-    Row {
-        id: pages
-        Behavior on x { NumberAnimation { id: pageAnimation } }
+        var page = PageManager.prevPage()
+        if (page != null) {
+            window.currentPage = page
+            return true
+        }
+        return false
     }
 
     Column {

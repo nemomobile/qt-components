@@ -30,12 +30,14 @@ import com.meego.themebridge 1.0
 
 Item {
     id: page;
-
-    x: __pageX;
-    y: __pageY;
-    width: __pageWidth;
-    height: __pageHeight;
     clip: true
+
+    property bool __animationEnabled: false
+    property alias __pageNavigationState: pageNavigationInternal.state
+
+    // FIXME: this creates warnings when the page component is instantiated
+    width: parent.width
+    height: parent.height
 
     Style {
         id: meegostyle
@@ -44,5 +46,46 @@ Item {
     Background {
         anchors.fill: parent
         style: meegostyle
+    }
+
+    Item {
+        id: pageNavigationInternal
+        states: [
+            State {
+                name: "left"
+                PropertyChanges {
+                    target: page
+                    x: -page.width
+                }
+            },
+            State {
+                name: "right"
+                PropertyChanges {
+                    target: page
+                    x: page.width
+                }
+            }
+        ]
+    }
+
+    Behavior on x {
+        id: slideAnimation
+        enabled: __animationEnabled
+        SequentialAnimation {
+            ScriptAction {
+                script:
+                    if (pageNavigationInternal.state == "")
+                        page.visible = true
+            }
+            NumberAnimation {}
+            ScriptAction {
+                script:
+                    if (pageNavigationInternal.state == "right") {
+                        page.destroy(100)
+                    } else if (pageNavigationInternal.state == "left") {
+                        page.visible = false
+                    }
+            }
+        }
     }
 }
