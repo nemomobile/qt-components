@@ -26,7 +26,7 @@ Item {
 
         Image {
             id: delegateImage
-            source: "images/user_picture_blank.png"
+            visible: source!=""
         }
         Column {
             height: parent.height
@@ -36,13 +36,13 @@ Item {
                 id: text
                 text: "text"
                 styleObjectName: "CommonTitle"
-            }
+           }
 
             Label {
                 id: subtext
                 text: "subtext"
                 styleObjectName: "CommonSubTitle"
-            }
+           }
         }
     }
 
