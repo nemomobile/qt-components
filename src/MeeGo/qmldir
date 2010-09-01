@@ -10,7 +10,6 @@ Page 1.0 Page.qml
 Slider 1.0 Slider.qml
 Spinner 1.0 Spinner.qml
 Switch 1.0 Switch.qml
-TitleBar 1.0 TitleBar.qml
 Window 1.0 Window.qml
 # Private
 # XXX Marking these as "internal" makes them inaccessible
@@ -18,3 +17,4 @@ Window 1.0 Window.qml
 EscapeButton 1.0 EscapeButton.qml
 HomeButton 1.0 HomeButton.qml
 QueryDialog 1.0 QueryDialog.qml
+WindowDecoration 1.0 WindowDecoration.qml

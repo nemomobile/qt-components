@@ -30,7 +30,7 @@ import com.meego.themebridge 1.0
 
 import "pagemanager.js" as PageManager
 
-Rectangle {
+Item {
     id: window
 
     state: screen.orientationString;
@@ -123,10 +123,9 @@ Rectangle {
 
     Item {
         id: pages;
-        x: 0
-        y: decoration.y + decoration.height
-        width:  window.width
-        height: window.height - y
+        anchors.fill: parent
+        anchors.topMargin: decoration.topDecorationHeight
+        anchors.bottomMargin: decoration.bottomDecorationHeight
     }
 
     // this function receives a Page Component as argument, sets
@@ -155,61 +154,24 @@ Rectangle {
         return false
     }
 
-    Column {
+    WindowDecoration {
         id: decoration
-        y: autoScroll
-        width: parent.width
-        height: titlebar.y + titlebar.height
+        anchors.fill: parent
 
-        StatusBar {
-            id: statusbar
+        orientation: screen.orientation
+        statusbarVisible: !window.fullscreen && window.statusbarVisible
+        titlebarVisible: !window.fullscreen && window.titlebarVisible
 
-            width: parent.width
-            orientation: screen.orientation
-
-            states: State {
-                    name: 'hidden'
-                    when:  (window.statusbarVisible == false)
-                    PropertyChanges { target: statusbar; y: -statusbar.height }
-            }
-
-            transitions: Transition {
-                NumberAnimation { target: statusbar; property: "y"; duration: 300; easing.type: Easing.InOutQuad }
-            }
-        }
-        TitleBar {
-            id: titlebar
-            y: statusbar.y + statusbar.height
-            onMinimize: { screen.minimized = true }
-            onQuit:  { Qt.quit() }
-            onBackClicked: { prevPage() }
-
-            states: State {
-                    name: 'hidden'
-                    when:  (window.titlebarVisible == false)
-                    PropertyChanges { target: titlebar; y: statusbar.y + statusbar.height - titlebar.height }
-            }
-            transitions: Transition {
-                NumberAnimation { target: titlebar; property: "y"; duration: 300; easing.type: Easing.InOutQuad }
-            }
-        }
-
-        states: State {
-                name: 'hidden'
-                when:  (window.fullscreen == true)
-                PropertyChanges { target: decoration; y: autoscroll - decoration.height }
-        }
-
-        transitions: Transition {
-            NumberAnimation { target: decoration; property: "y"; duration: 300; easing.type: Easing.InOutQuad }
-        }
-
+        onMinimize: screen.minimized = true
+        onQuit: Qt.quit()
+        onBackClicked: window.prevPage()
     }
 
     Connections {
         target: screen
         onMicroFocusChanged: { scrollPageIfRequired() }
     }
+
     function scrollPageIfRequired() {
         if (screen.softwareInputPanelVisible) {
             var mf = screen.microFocus;

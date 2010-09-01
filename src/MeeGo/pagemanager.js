@@ -11,7 +11,7 @@ function nextPage(newPageComponent, parent)
         oldPage.__pageNavigationState = "left";
         newPage.__pageNavigationState = "right";
 
-        titlebar.showBackButton = true
+        decoration.showBackButton = true
     }
 
     newPage.__animationEnabled = true;
@@ -35,7 +35,7 @@ function prevPage()
     newPage.__pageNavigationState = "";
 
     if (allPages.length == 1)
-        titlebar.showBackButton = false;
+        decoration.showBackButton = false;
 
     return newPage;
 }

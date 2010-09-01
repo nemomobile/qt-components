@@ -44,8 +44,8 @@ QML_FILES = \
         Slider.qml \
         Spinner.qml \
         Switch.qml \
-        TitleBar.qml \
-        Window.qml
+        Window.qml \
+        WindowDecoration.qml
 
 OTHER_FILES += $$QML_FILES
 
