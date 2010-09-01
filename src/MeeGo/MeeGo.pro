@@ -1,9 +1,10 @@
-include (../../qt-components.pri)
 
 TEMPLATE = lib
 TARGET = meegoplugin
-CONFIG += qt plugin
+CONFIG += qt plugin meego
 QT += declarative dbus
+
+include (../../qt-components.pri)
 
 contextsubscriber {
     DEFINES += HAVE_CONTEXTSUBSCRIBER
