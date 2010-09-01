@@ -37,7 +37,7 @@ Window {
             ListView {
                 anchors.fill: parent
                 model: WidgetGallerySections { }
-                delegate: MeeGoDelegate { height: 50; text: name }
+                delegate: MeeGoDelegate { text: name }
             }
         }
     }

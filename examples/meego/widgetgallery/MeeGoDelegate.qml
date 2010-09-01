@@ -2,12 +2,13 @@ import Qt 4.7
 import com.meego 1.0
 import com.meego.themebridge 1.0
 
-Item {
+ImplicitSizeItem {
     property alias text: text.text
     property alias subtext: subtext.text
     property alias image: delegateImage.source
 
-    width: parent.width
+    implicitWidth: parent.width
+    implicitHeight: itemStyle.preferredHeight
 
     Style {
         id: itemStyle
@@ -29,20 +30,20 @@ Item {
             visible: source!=""
         }
         Column {
-            height: parent.height
+            anchors.verticalCenter: parent.verticalCenter
             spacing: itemStyle.current.get("paddingTop") + itemStyle.current.get("paddingBottom")
 
             Label {
                 id: text
                 text: "text"
                 styleObjectName: "CommonTitle"
-           }
+            }
 
             Label {
                 id: subtext
-                text: "subtext"
+                visible: text!=""
                 styleObjectName: "CommonSubTitle"
-           }
+            }
         }
     }
 
