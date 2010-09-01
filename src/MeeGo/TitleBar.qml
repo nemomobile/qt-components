@@ -62,6 +62,11 @@ ImplicitSizeItem {
         imageProperty: "dropShadowImage"
     }
 
+    Background {
+        id: homeBackground
+        anchors.fill: home
+        style: homeStyle
+    }
     IconButton {
         id: home
         iconId: homeStyle.current.get("homeButtonIconId")
@@ -74,6 +79,7 @@ ImplicitSizeItem {
         Style {
             id: homeStyle
             styleClass: "MHomeButtonPanelStyle"
+            mode: home.mode
         }
     }
 

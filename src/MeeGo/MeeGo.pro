@@ -40,7 +40,8 @@ QML_FILES = \
         Spinner.qml \
         Switch.qml \
         TitleBar.qml \
-        Window.qml
+        Window.qml \
+        pagemanager.js
 
 OTHER_FILES += $$QML_FILES
 
