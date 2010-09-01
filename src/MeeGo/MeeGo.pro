@@ -31,20 +31,21 @@ QML_FILES = \
         ButtonColumn.qml \
         ButtonRow.qml \
         ButtonGroup.js \
+        CheckBox.qml \
         EscapeButton.qml \
+        HomeButton.qml \
         IconButton.qml \
         Label.qml \
         LineEdit.qml \
-        CheckBox.qml \
         Page.qml \
+        pagemanager.js \
         QueryDialog.qml \
         QueryPanel.qml \
         Slider.qml \
         Spinner.qml \
         Switch.qml \
         TitleBar.qml \
-        Window.qml \
-        pagemanager.js
+        Window.qml
 
 OTHER_FILES += $$QML_FILES
 

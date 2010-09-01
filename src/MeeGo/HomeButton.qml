@@ -27,53 +27,22 @@
 import Qt 4.7
 import com.meego.themebridge 1.0
 
-ImplicitSizeItem {
-    id: titlebar;
-    anchors.left: parent.left;
-    anchors.right: parent.right;
-    z: 1000;
-    property alias showBackButton : escapeButton.back;
-
-    property alias dropShadowHeight: dropShadow.height;
-    signal minimize();
-    signal quit();
-    signal backClicked();
-
-    implicitWidth: meegostyle.preferredWidth
-    implicitHeight: meegostyle.preferredHeight
+IconButton {
+    id: root
 
     Style {
-        id: meegostyle
-        styleClass: "MNavigationBarStyle"
+        id: homeStyle
+        styleClass: "MHomeButtonPanelStyle"
+        mode: root.mode
     }
 
     Background {
-        id: background
-        anchors.fill: parent
-        style: meegostyle
+        id: homeBackground
+        anchors.fill: root
+        style: homeStyle
+        z: -1
     }
 
-    ScalableImage {
-        id: dropShadow
-        anchors.top: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        style: meegostyle
-        imageProperty: "dropShadowImage"
-    }
-
-    HomeButton {
-        anchors.left: parent.left
-        anchors.verticalCenter: parent.verticalCenter
-        onClicked: titlebar.minimize()
-    }
-
-    EscapeButton {
-        id: escapeButton
-        anchors.right: parent.right
-        anchors.verticalCenter: parent.verticalCenter
-
-        onBackClicked: titlebar.backClicked()
-        onCloseClicked: titlebar.quit()
-    }
+    iconId: homeStyle.current.get("homeButtonIconId")
+    styleObjectName: homeStyle.current.get("homeButtonObjectName")
 }

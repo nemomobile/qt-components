@@ -16,4 +16,5 @@ Window 1.0 Window.qml
 # XXX Marking these as "internal" makes them inaccessible
 #     for our own components. Is this right?
 EscapeButton 1.0 EscapeButton.qml
+HomeButton 1.0 HomeButton.qml
 QueryDialog 1.0 QueryDialog.qml
