@@ -1,10 +1,9 @@
 INCLUDEPATH += $$PWD/src/lib $$PWD/src/module $$PWD/src/module/models
 !build_lib:LIBS += -L$$PWD/lib -lQtComponents
-QMAKE_RPATHDIR = $$OUT_PWD/lib
 
 unix {
-	OBJECTS_DIR = .obj
-	MOC_DIR = .moc
+    OBJECTS_DIR = .obj
+    MOC_DIR = .moc
 }
 
 LIBRARYPATH += $$PWD/lib
