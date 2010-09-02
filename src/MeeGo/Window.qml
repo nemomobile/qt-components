@@ -36,66 +36,66 @@ Rectangle {
     state: screen.orientationString;
 
     property bool statusbarVisible: true
-    property bool titlebarVisible: true;
-    property bool fullscreen: false;
+    property bool titlebarVisible: true
+    property bool fullscreen: false
 
-    property double __scrollOffset: 0;
-    property double autoScroll: __scrollOffset;
+    property double __scrollOffset: 0
+    property double autoScroll: __scrollOffset
 
     property variant currentPage: null
 
 //    Behavior on autoScroll {
-//        NumberAnimation { easing.type: Easing.InOutQuad; duration: 200; }
+//        NumberAnimation { easing.type: Easing.InOutQuad; duration: 200 }
 //    }
 
     Snapshot {
-        id: snapshot;
-        anchors.centerIn: parent;
+        id: snapshot
+        anchors.centerIn: parent
     }
 
     states:  [
         State {
             name: "Landscape"
             PropertyChanges {
-                target: window;
+                target: window
                 rotation: 0
-                width: screen.width;
-                height: screen.height;
-                x: 0;
-                y: 0;
+                width: screen.width
+                height: screen.height
+                x: 0
+                y: 0
             }
         },
         State {
             name: "LandscapeInverted"
             PropertyChanges {
-                target: window;
+                target: window
                 rotation: 180
-                width: screen.width;
-                height: screen.height;
-                x: 0;
-                y: 0;
+                width: screen.width
+                height: screen.height
+                x: 0
+                y: 0
             }
         },
         State {
             name: "Portrait"
             PropertyChanges {
-                target: window;
+                target: window
                 rotation: 270
-                width: screen.height;
-                height: screen.width;
-                x: (screen.width - screen.height)/2;
-                y: -(screen.width - screen.height)/2;
+                width: screen.height
+                height: screen.width
+                x: (screen.width - screen.height) / 2
+                y: -(screen.width - screen.height) / 2
             }
         },
         State {
             name: "PortraitInverted"
             PropertyChanges {
-                target: window;
+                target: window
                 rotation: 90
-                width: screen.height;
-                height: screen.width;
-                x: (screen.width - screen.height)/2;
-                y: -(screen.width - screen.height)/2;
+                width: screen.height
+                height: screen.width
+                x: (screen.width - screen.height) / 2
+                y: -(screen.width - screen.height) / 2
             }
         }
     ]
@@ -104,11 +104,11 @@ Rectangle {
         SequentialAnimation {
             ScriptAction {
                 script: {
-                    snapshot.take();
-                    snapshot.opacity = 1;
-                    snapshot.rotation = -window.rotation;
-                    window.opacity = 0;
-                    __scrollOffset = 0;
+                    snapshot.take()
+                    snapshot.opacity = 1
+                    snapshot.rotation = -window.rotation
+                    window.opacity = 0
+                    __scrollOffset = 0
                 }
             }
             PropertyAction { target: window; properties: "x,y,width,height" }
@@ -117,7 +117,7 @@ Rectangle {
                 NumberAnimation { target: snapshot; property: "opacity"; to: 0; duration: 300 }
                 RotationAnimation { target: window; property: "rotation"; direction: RotationAnimation.Shortest; easing.type: Easing.InOutQuad; duration: 300 }
             }
-            ScriptAction { script: { snapshot.free(); window.scrollPageIfRequired(); } }
+            ScriptAction { script: { snapshot.free(); window.scrollPageIfRequired() } }
         }
     }
 
@@ -156,21 +156,21 @@ Rectangle {
     }
 
     Column {
-        id: decoration;
-        y: autoScroll;
-        width: parent.width;
-        height: titlebar.y + titlebar.height;
+        id: decoration
+        y: autoScroll
+        width: parent.width
+        height: titlebar.y + titlebar.height
 
         StatusBar {
-            id: statusbar;
+            id: statusbar
 
-            width: parent.width;
-            orientation: screen.orientation;
+            width: parent.width
+            orientation: screen.orientation
 
             states: State {
-                    name: 'hidden';
-                    when:  (window.statusbarVisible == false);
-                    PropertyChanges { target: statusbar; y: -statusbar.height; }
+                    name: 'hidden'
+                    when:  (window.statusbarVisible == false)
+                    PropertyChanges { target: statusbar; y: -statusbar.height }
             }
 
             transitions: Transition {
@@ -178,16 +178,16 @@ Rectangle {
             }
         }
         TitleBar {
-            id: titlebar;
-            y: statusbar.y + statusbar.height;
-            onMinimize: { screen.minimized = true; }
-            onQuit:  { Qt.quit(); }
+            id: titlebar
+            y: statusbar.y + statusbar.height
+            onMinimize: { screen.minimized = true }
+            onQuit:  { Qt.quit() }
             onBackClicked: { prevPage() }
 
             states: State {
-                    name: 'hidden';
-                    when:  (window.titlebarVisible == false);
-                    PropertyChanges { target: titlebar; y: statusbar.y + statusbar.height - titlebar.height; }
+                    name: 'hidden'
+                    when:  (window.titlebarVisible == false)
+                    PropertyChanges { target: titlebar; y: statusbar.y + statusbar.height - titlebar.height }
             }
             transitions: Transition {
                 NumberAnimation { target: titlebar; property: "y"; duration: 300; easing.type: Easing.InOutQuad }
@@ -195,9 +195,9 @@ Rectangle {
         }
 
         states: State {
-                name: 'hidden';
-                when:  (window.fullscreen == true);
-                PropertyChanges { target: decoration; y: autoscroll - decoration.height; }
+                name: 'hidden'
+                when:  (window.fullscreen == true)
+                PropertyChanges { target: decoration; y: autoscroll - decoration.height }
         }
 
         transitions: Transition {
@@ -207,8 +207,8 @@ Rectangle {
     }
 
     Connections {
-        target: screen;
-        onMicroFocusChanged: { scrollPageIfRequired(); }
+        target: screen
+        onMicroFocusChanged: { scrollPageIfRequired() }
     }
     function scrollPageIfRequired() {
         if (screen.softwareInputPanelVisible) {
