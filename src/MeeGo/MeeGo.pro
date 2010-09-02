@@ -40,6 +40,7 @@ QML_FILES = \
         Page.qml \
         pagemanager.js \
         QueryDialog.qml \
+        QueryDialog.js \
         QueryPanel.qml \
         Slider.qml \
         Spinner.qml \

@@ -40,6 +40,10 @@ Item {
     signal quit()
     signal backClicked()
 
+    function showQuery(title, message, callback) {
+        queryDialog.appear(title, message, callback)
+    }
+
     StatusBar {
         id: statusbar
 
@@ -49,11 +53,6 @@ Item {
         orientation: root.orientation
 
         z: 100
-
-        MouseArea {
-            anchors.fill: parent
-            onClicked: queryDialog.appear()
-        }
     }
 
     Background {
@@ -92,11 +91,6 @@ Item {
     QueryDialog {
         id: queryDialog
         anchors.fill: parent
-
-        onButtonClicked: { console.log("button clicked " + button); }
-
-        dialogTitle: "Query Dialog"
-        dialogText: "Is this working ok ?"
     }
 
     HomeButton {

@@ -42,7 +42,13 @@ Window {
                 width: 205
 
                 Repeater {
-                    model: ["Button", "Button Groups", "Checkbox", "LineEdit", "Spinner", "Switches"]
+                    model: ["Button",
+                            "Button Groups",
+                            "Checkbox",
+                            "LineEdit",
+                            "Query",
+                            "Spinner",
+                            "Switches"]
                     Button {
                         text: modelData
                         width: 200

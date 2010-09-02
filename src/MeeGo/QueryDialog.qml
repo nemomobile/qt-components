@@ -27,16 +27,17 @@
 import Qt 4.7
 import com.meego 1.0
 import com.meego.themebridge 1.0
+import "QueryDialog.js" as Private
 
 Item {
     id: root
 
     property alias dialogTitle: queryPanel.dialogTitle
     property alias dialogText: queryPanel.dialogText
-    signal buttonClicked(string button)
+    signal queryAnswered(string button)
 
-    function appear() {
-        queryPanel.shown = true;
+    function appear(title, message, callback) {
+        Private.appear(queryPanel, title, message, callback);
     }
 
     function dismiss() {
@@ -155,7 +156,10 @@ Item {
                         easing.type: Easing.OutCubic
                     }
                     ScriptAction {
-                        script: root.buttonClicked(queryPanel.lastButtonClicked)
+                        script: {
+                            Private.queryAnswered(queryPanel.lastButtonClicked);
+                            root.queryAnswered(queryPanel.lastButtonClicked);
+                        }
                     }
                 }
             }

@@ -44,6 +44,10 @@ Item {
 
     property variant currentPage: null
 
+    function showQuery(title, message, callback) {
+        decoration.showQuery(title, message, callback)
+    }
+
 //    Behavior on autoScroll {
 //        NumberAnimation { easing.type: Easing.InOutQuad; duration: 200 }
 //    }
