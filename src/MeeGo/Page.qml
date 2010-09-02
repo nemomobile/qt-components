@@ -29,62 +29,12 @@ import Qt.labs.components 1.0
 import com.meego.themebridge 1.0
 
 Item {
-    id: page;
+    // When using Page you should not change the geometry nor the position of the Page,
+    // this will be taken care internally by the PageContainer.
+
     clip: true
 
-    property bool __animationEnabled: false
-    property alias __pageNavigationState: pageNavigationInternal.state
-
+    // checking parent to avoid warning, see QTBUG-13170
     width: parent ? parent.width : 0
-    height: parent ? parent.height : 0
-
-    Style {
-        id: meegostyle
-        styleClass: "MApplicationPageStyle"
-    }
-    Background {
-        anchors.fill: parent
-        style: meegostyle
-    }
-
-    Item {
-        id: pageNavigationInternal
-        states: [
-            State {
-                name: "left"
-                PropertyChanges {
-                    target: page
-                    x: -page.width
-                }
-            },
-            State {
-                name: "right"
-                PropertyChanges {
-                    target: page
-                    x: page.width
-                }
-            }
-        ]
-    }
-
-    Behavior on x {
-        id: slideAnimation
-        enabled: __animationEnabled
-        SequentialAnimation {
-            ScriptAction {
-                script:
-                    if (pageNavigationInternal.state == "")
-                        page.visible = true
-            }
-            NumberAnimation {}
-            ScriptAction {
-                script:
-                    if (pageNavigationInternal.state == "right") {
-                        page.destroy(100)
-                    } else if (pageNavigationInternal.state == "left") {
-                        page.visible = false
-                    }
-            }
-        }
-    }
+    height: parent ? parent.height - y: 0
 }

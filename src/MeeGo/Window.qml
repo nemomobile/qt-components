@@ -126,22 +126,32 @@ Item {
     }
 
     Item {
-        id: pages;
+        id: pages
         anchors.fill: parent
-        anchors.topMargin: decoration.topDecorationHeight
-        anchors.bottomMargin: decoration.bottomDecorationHeight
+    }
+
+    Component {
+        id: pageContainerComponent
+        PageContainer {
+            pageY: decoration.topDecorationHeight
+        }
     }
 
     // this function receives a Page Component as argument, sets
     // it as the current page and initiates the transition animation.
     // during a running page change animation it will be ignored and returns 'false'.
     function nextPage(pageComponent) {
-        var page = PageManager.nextPage(pageComponent, pages)
-        if (page != null) {
-            window.currentPage = page
-            return true
+        var pageContainerObj = pageContainerComponent.createObject(pages)
+        if (pageContainerObj == null)
+            return false
+        var page = PageManager.nextPage(pageComponent, pageContainerObj)
+        if (page == null) {
+            pageContainerObj.destroy()
+            return false
         }
-        return false
+
+        window.currentPage = page
+        return true
     }
 
     // this function sets the previous in the navigation history as the
@@ -211,5 +221,4 @@ Item {
             __scrollOffset = 0;
         }
     }
-
 }

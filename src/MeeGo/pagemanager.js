@@ -1,23 +1,27 @@
-// a list of all pages
-// the last page is currently visible
+// a list of all pages containers, which contain the pages
+// the last page container contains the currently visible page
 var allPages = [];
 
-function nextPage(newPageComponent, parent)
+function nextPage(newPageComponent, newPageContainer)
 {
-    var newPage = newPageComponent.createObject(parent)
+    var newPage = newPageComponent.createObject(newPageContainer)
+    if (newPage == null)
+        return null
+
+    newPageContainer.page = newPage
 
     if (allPages.length > 0) {
-        var oldPage = allPages[allPages.length-1];
-        oldPage.__pageNavigationState = "left";
-        newPage.__pageNavigationState = "right";
+        var oldPageContainer = allPages[allPages.length-1];
+        oldPageContainer.state = "left";
+        newPageContainer.state = "right";
 
         decoration.showBackButton = true
     }
 
-    newPage.__animationEnabled = true;
-    newPage.__pageNavigationState = "";
+    newPageContainer.__animationEnabled = true;
+    newPageContainer.state = "";
 
-    allPages.push(newPage);
+    allPages.push(newPageContainer);
     return newPage;
 }
 
@@ -28,14 +32,14 @@ function prevPage()
         return null;
     }
 
-    var currentPage = allPages.pop();
-    currentPage.__pageNavigationState = "right";
+    var currentPageContainer = allPages.pop();
+    currentPageContainer.state = "right";
 
-    var newPage = allPages[allPages.length-1];
-    newPage.__pageNavigationState = "";
+    var newPageContainer = allPages[allPages.length-1];
+    newPageContainer.state = "";
 
     if (allPages.length == 1)
         decoration.showBackButton = false;
 
-    return newPage;
+    return newPageContainer.page;
 }

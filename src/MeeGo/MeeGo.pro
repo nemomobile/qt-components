@@ -42,6 +42,7 @@ QML_FILES = \
         QueryDialog.qml \
         QueryDialog.js \
         QueryPanel.qml \
+        PageContainer.qml \
         Slider.qml \
         Spinner.qml \
         Switch.qml \
