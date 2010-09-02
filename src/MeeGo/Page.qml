@@ -35,9 +35,8 @@ Item {
     property bool __animationEnabled: false
     property alias __pageNavigationState: pageNavigationInternal.state
 
-    // FIXME: this creates warnings when the page component is instantiated
-    width: parent.width
-    height: parent.height
+    width: parent ? parent.width : 0
+    height: parent ? parent.height : 0
 
     Style {
         id: meegostyle
