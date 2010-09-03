@@ -1,4 +1,6 @@
 plugin meegoplugin
+Action 1.0 Action.qml
+ActionButton 1.0 ActionButton.qml
 Button 1.0 Button.qml
 CheckBox 1.0 CheckBox.qml
 ButtonColumn 1.0 ButtonColumn.qml

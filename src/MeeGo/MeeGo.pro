@@ -27,6 +27,8 @@ INCLUDEPATH += $$PWD
 
 QML_FILES = \
         qmldir \
+        Action.qml \
+        ActionButton.qml \
         Button.qml \
         ButtonColumn.qml \
         ButtonRow.qml \
