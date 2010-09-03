@@ -56,10 +56,12 @@ Item {
         anchors.top: spinner.bottom
         anchors.topMargin: 40
         anchors.left: spinner.left
+        anchors.right: parent.right
         Repeater {
             model: [0, 20, 40, 60, 80, 100]
             Button {
                 text: modelData
+                width: progress.width / progress.children.length
             }
         }
     }
