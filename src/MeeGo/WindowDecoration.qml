@@ -34,9 +34,9 @@ Item {
     property bool statusbarVisible
     property bool titlebarVisible
     property real topDecorationHeight: titlebar.y + titlebar.height
-    property real bottomDecorationHeight: 0
+    property real bottomDecorationHeight: bottomBar.visible ? (root.height - bottomBar.y) : 0
     property string title
-
+    property Item toolbar: null
 
     signal minimize()
     signal quit()
@@ -44,6 +44,10 @@ Item {
 
     function showQuery(title, message, callback) {
         queryDialog.appear(title, message, callback)
+    }
+
+    function isLandscape() {
+        return orientation == Screen.Landscape || orientation == Screen.LandscapeInverted;
     }
 
     StatusBar {
@@ -72,12 +76,35 @@ Item {
         }
 
         ScalableImage {
-            id: dropShadow
             anchors.top: parent.bottom
             anchors.left: parent.left
             anchors.right: parent.right
             style: titlebarStyle
             imageProperty: "dropShadowImage"
+        }
+
+
+        TitleMenuButton {
+            id: menu
+
+            // Simulates anchor to the home button left
+            anchors.left: titlebar.left
+            anchors.leftMargin: home.width
+            anchors.top: escapeButton.top
+
+            width: 300 // XXX get from theme
+            title: root.title
+        }
+
+        Item {
+            id: landscapeToolbar
+
+            anchors.left: menu.right
+            anchors.right: escapeButton.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+
+            visible: root.isLandscape() && root.toolbar.hasInteractiveActions
         }
 
         EscapeButton {
@@ -95,6 +122,8 @@ Item {
         anchors.fill: parent
     }
 
+    // This button is outside the toolbar element because we want it to stand out
+    // when a dialog is activated.
     HomeButton {
         id: home
         anchors.left: titlebar.left
@@ -102,19 +131,55 @@ Item {
         onClicked: root.minimize()
     }
 
-    TitleMenuButton {
-        anchors.left: home.right
-        anchors.top: home.top
-        width: 300 // XXX get from theme
-        title: root.title
+    Item {
+        id: bottomBar
+
+        visible: !root.isLandscape() && root.toolbar.hasInteractiveActions
+
+        // ### Get from style
+        height: 60
+
+        anchors.bottom: root.bottom
+        anchors.left: root.left
+        anchors.right: root.right
+
+        Style {
+            id: bottomBarStyle
+            styleClass: "MToolbarStyle"
+        }
+
+        Background {
+            anchors.fill: parent
+            style: bottomBarStyle
+        }
+
+        ScalableImage {
+            style: bottomBarStyle
+            imageProperty: "dropShadowImage"
+
+            anchors.bottom: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+        }
+
+        Item {
+            id: portraitToolbar
+            anchors.fill: parent
+        }
     }
 
+    Binding {
+        target: toolbar
+        property: "parent"
+        value: root.isLandscape() ? landscapeToolbar : portraitToolbar
+    }
 
     states: [
         State {
             name: "statusbarOnly"
             when: !titlebarVisible && statusbarVisible
             AnchorChanges { target: titlebar; anchors.top: undefined; anchors.bottom: statusbar.bottom }
+            AnchorChanges { target: bottomBar; anchors.bottom: undefined; anchors.top: root.bottom }
         },
         State {
             name: "titlebarOnly"
@@ -126,6 +191,7 @@ Item {
             when: !titlebarVisible && !statusbarVisible
             AnchorChanges { target: statusbar; anchors.top: undefined; anchors.bottom: titlebar.top }
             AnchorChanges { target: titlebar; anchors.top: undefined; anchors.bottom: root.top }
+            AnchorChanges { target: bottomBar; anchors.bottom: undefined; anchors.top: root.bottom }
         }
     ]
 

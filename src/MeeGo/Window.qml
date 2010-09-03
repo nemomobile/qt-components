@@ -29,6 +29,7 @@ import Qt.labs.components 1.0
 import com.meego.themebridge 1.0
 
 import "pagemanager.js" as PageManager
+import "ActionManager.js" as ActionManager
 
 Item {
     id: window
@@ -43,6 +44,8 @@ Item {
     property double autoScroll: __scrollOffset
 
     property variant currentPage: null
+
+    property list<Action> actions
 
     function showQuery(title, message, callback) {
         decoration.showQuery(title, message, callback)
@@ -151,6 +154,7 @@ Item {
         }
 
         window.currentPage = page
+        ActionManager.setActionsForPage(window.currentPage.actions);
         return true
     }
 
@@ -163,6 +167,7 @@ Item {
         var page = PageManager.prevPage()
         if (page != null) {
             window.currentPage = page
+            ActionManager.setActionsForPage(window.currentPage.actions);
             return true
         }
         return false
@@ -176,6 +181,7 @@ Item {
         statusbarVisible: !window.fullscreen && window.statusbarVisible
         titlebarVisible: !window.fullscreen && window.titlebarVisible
         title: window.currentPage ? window.currentPage.title : ""
+        toolbar: toolbarContents
 
         onMinimize: screen.minimized = true
         onQuit: Qt.quit()
@@ -221,5 +227,36 @@ Item {
         } else {
             __scrollOffset = 0;
         }
+    }
+
+    Row {
+        id: toolbarContents
+
+        property bool hasInteractiveActions: false
+
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+
+
+        // ### Still doesn't match MTF layout for the case of custom items for actions
+        spacing: {
+            var i;
+            var childrenWidth = 0;
+
+            if (!children.length) {
+                return 0;
+            }
+
+            for (i = 0; i < children.length; i++) {
+                childrenWidth += children[i].width;
+            }
+
+            return (parent.width - childrenWidth) / (children.length + 1);
+        }
+    }
+
+    Component.onCompleted: {
+        ActionManager.setActionsForApp(window.actions);
     }
 }

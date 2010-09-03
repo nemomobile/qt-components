@@ -29,6 +29,7 @@ QML_FILES = \
         qmldir \
         Action.qml \
         ActionButton.qml \
+        ActionManager.js \
         Button.qml \
         ButtonColumn.qml \
         ButtonRow.qml \

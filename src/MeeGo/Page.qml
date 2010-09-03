@@ -32,11 +32,12 @@ Item {
     // When using Page you should not change the geometry nor the position of the Page,
     // this will be taken care internally by the PageContainer.
 
+    property string title
+    property list<Action> actions
+
     clip: true
 
     // checking parent to avoid warning, see QTBUG-13170
     width: parent ? parent.width : 0
     height: parent ? parent.height - y: 0
-
-    property string title
 }
