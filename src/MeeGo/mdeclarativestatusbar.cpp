@@ -137,8 +137,10 @@ void MDeclarativeStatusBar::paint(QPainter *painter, const QStyleOptionGraphicsI
         view->querySharedPixmapFromProvider();
     }
 
-    if (sharedPixmap.isNull())
+    if (sharedPixmap.isNull()) {
+        painter->fillRect(boundingRect(), Qt::black);
         return;
+    }
 
     QRectF sourceRect;
     if (mOrientation == MDeclarativeScreen::Landscape) {
