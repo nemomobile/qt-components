@@ -37,6 +37,8 @@ ImplicitSizeItem {
     property alias activeFocusOnPress: textInput.activeFocusOnPress
     property alias horizontalAlignment: textInput.horizontalAlignment
 
+    property alias styleType: meegostyle.styleType
+
     implicitWidth: Math.max(meegostyle.preferredWidth, textSizeModel.preferredWidth)
     implicitHeight: textSizeModel.preferredHeight
 
