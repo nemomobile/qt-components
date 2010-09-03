@@ -119,7 +119,7 @@ Item {
         State {
             name: "titlebarOnly"
             when: titlebarVisible && !statusbarVisible
-            AnchorChanges { target: statusbar; anchors.top: undefined; anchors.bottom: root.bottom }
+            AnchorChanges { target: statusbar; anchors.top: undefined; anchors.bottom: root.top }
         },
         State {
             name: "fullscreen"
