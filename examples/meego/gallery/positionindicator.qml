@@ -44,8 +44,8 @@ Item {
             height: width
             opacity: 0.5
             gradient: Gradient {
-                GradientStop { position: 0.0; color: "red" }
-                GradientStop { position: 1.0; color: "blue" }
+                GradientStop { position: 0.0; color: "blue" }
+                GradientStop { position: 1.0; color: "yellow" }
             }
         }
         Rectangle {

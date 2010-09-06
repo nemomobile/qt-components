@@ -36,29 +36,36 @@ Window {
         id: component
         Page {
             title: "Gallery Example"
-            ButtonColumn {
+            Flickable {
                 id: group
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
-                width: 205
+                width: buttons.width
+                contentHeight: buttons.height
+                contentWidth: buttons.width
+                ButtonColumn {
+                    id: buttons
+                    width: 215
 
-                Repeater {
-                    model: ["Button",
-                            "Button Groups",
-                            "Checkbox",
-                            "LineEdit",
-                            "Query",
-                            "Spinner",
-                            "Switches",
-                            "PositionIndicator"]
-                    Button {
-                        text: modelData
-                        width: 200
-                        height: 50
+                    Repeater {
+                        model: ["Button",
+                                "Button Groups",
+                                "Checkbox",
+                                "LineEdit",
+                                "Query",
+                                "Spinner",
+                                "Switches",
+                                "PositionIndicator"]
+                        Button {
+                            text: modelData
+                            width: 210
+                            height: 50
+                        }
                     }
                 }
-            }
 
+                children: PositionIndicator { }
+            }
             Loader {
                 id: loader;
                 anchors.left: group.right
@@ -67,7 +74,7 @@ Window {
                 anchors.bottom: parent.bottom
                 visible: loader.status !== Loader.Error
 
-                source: group.checkedButton ? group.checkedButton.text.toLowerCase().replace(" ", "") + ".qml" : ""
+                source: buttons.checkedButton ? buttons.checkedButton.text.toLowerCase().replace(" ", "") + ".qml" : ""
 
                 MouseArea {
                     anchors.fill: parent;
