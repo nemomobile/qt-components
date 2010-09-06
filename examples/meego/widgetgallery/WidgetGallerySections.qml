@@ -5,26 +5,26 @@
 
      ListElement {
          name: "Application View"
-	 source: "ApplicationView.qml"
+	 source: "gallery/ApplicationView.qml"
      }
      ListElement {
          name: "Simple Widgets"
-	 source: "SimpleWidgets.qml"
+	 source: "gallery/SimpleWidgets.qml"
      }
      ListElement {
          name: "Buttons"
-         source: "Buttons.qml"
+         source: "gallery/Buttons.qml"
      }
      ListElement {
          name: "Dialogs and Banners"
-         source: "DialogsAndBanners.qml"
+         source: "gallery/DialogsAndBanners.qml"
      }
      ListElement {
          name: "List, Grids and Popups"
-         source: "ListGridsAndPopups.qml"
+         source: "gallery/ListGridsAndPopups.qml"
      } 
      ListElement {
          name: "User Input"
-         source: "UserInput.qml"
+         source: "gallery/UserInput.qml"
      }
 }

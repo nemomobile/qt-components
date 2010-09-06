@@ -6,6 +6,7 @@ ImplicitSizeItem {
     property alias text: text.text
     property alias subtext: subtext.text
     property alias image: delegateImage.source
+    property Component nextPage
 
     implicitWidth: parent.width
     implicitHeight: itemStyle.preferredHeight
@@ -50,5 +51,10 @@ ImplicitSizeItem {
     MouseArea {
         id: mouseArea
         anchors.fill: parent
+
+        onClicked: {
+           nextPage = Qt.createComponent(source);
+           window.nextPage( nextPage );
+        }
     }
 }
