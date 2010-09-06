@@ -72,8 +72,8 @@ Item {
         ScalableImage {
             style: meegostyle
             imageProperty: "indicatorImage"
-            y: __flickable.visibleArea.yPosition * container.height
-            height: Math.max(meegostyle.current.get("minIndicatorSize"), __flickable.visibleArea.heightRatio * container.height)
+            y: __flickable.visibleArea.yPosition * __flickable.height
+            height: Math.max(meegostyle.current.get("minIndicatorSize"), __flickable.visibleArea.heightRatio * __flickable.height)
             anchors.right: parent.right
         }
 
@@ -96,25 +96,33 @@ Item {
     }
 
     Item {
+        // Workaround for some themes that don't have square images
         id: horizontalIndicator
         property bool shouldShow: __flickable.width > 0 && __flickable.contentWidth > __flickable.width
         opacity: 0
-        width: parent.width
-        anchors.bottom: parent.bottom
+        anchors.fill: parent
 
-        // TODO With some themes, these should rotate the scalable images.
-        ScalableImage {
-            style: meegostyle
-            imageProperty: "backgroundImage"
+        Item {
+            x: __flickable.width - __flickable.height
             width: parent.width
-            anchors.bottom: parent.bottom
-        }
-        ScalableImage {
-            style: meegostyle
-            imageProperty: "indicatorImage"
-            x: __flickable.visibleArea.xPosition * container.width
-            width: Math.max(meegostyle.current.get("minIndicatorSize"), __flickable.visibleArea.widthRatio * container.width)
-            anchors.bottom: parent.bottom
+            height: parent.height
+            transformOrigin: Item.BottomLeft
+            rotation: 90
+
+            ScalableImage {
+                style: meegostyle
+                imageProperty: "backgroundImage"
+                y: 0
+                height: __flickable.width
+                anchors.right: parent.left
+            }
+            ScalableImage {
+                style: meegostyle
+                imageProperty: "indicatorImage"
+                y: (1 - __flickable.visibleArea.xPosition) * __flickable.width - height
+                height: Math.max(meegostyle.current.get("minIndicatorSize"), __flickable.visibleArea.widthRatio * __flickable.width)
+                anchors.right: parent.left
+            }
         }
 
         states: State {
