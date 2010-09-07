@@ -103,25 +103,25 @@ Item {
         anchors.fill: parent
 
         Item {
-            x: __flickable.width - __flickable.height
+            x: __flickable.height - __flickable.width
             width: parent.width
             height: parent.height
-            transformOrigin: Item.BottomLeft
-            rotation: 90
+            transformOrigin: Item.BottomRight
+            rotation: -90
 
             ScalableImage {
                 style: meegostyle
                 imageProperty: "backgroundImage"
                 y: 0
                 height: __flickable.width
-                anchors.right: parent.left
+                anchors.left: parent.right
             }
             ScalableImage {
                 style: meegostyle
                 imageProperty: "indicatorImage"
-                y: (1 - __flickable.visibleArea.xPosition) * __flickable.width - height
+                y: __flickable.visibleArea.xPosition * __flickable.width
                 height: Math.max(meegostyle.current.get("minIndicatorSize"), __flickable.visibleArea.widthRatio * __flickable.width)
-                anchors.right: parent.left
+                anchors.left: parent.right
             }
         }
 
