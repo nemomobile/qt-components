@@ -136,7 +136,8 @@ Item {
     Component {
         id: pageContainerComponent
         PageContainer {
-            pageY: decoration.topDecorationHeight
+            topDecorationHeight: decoration.topDecorationHeight
+            bottomDecorationHeight: decoration.bottomDecorationHeight
         }
     }
 

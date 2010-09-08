@@ -37,7 +37,5 @@ Item {
 
     clip: true
 
-    // checking parent to avoid warning, see QTBUG-13170
-    width: parent ? parent.width : 0
-    height: parent ? parent.height - y: 0
+    anchors.fill: parent
 }

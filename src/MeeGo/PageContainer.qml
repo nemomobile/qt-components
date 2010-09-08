@@ -5,17 +5,28 @@ import com.meego.themebridge 1.0
 Item {
     id: pageContainer
 
-    property variant page: null
-    property real pageY: 0
+    property Item page: null
+    property alias topDecorationHeight: topMarginBinding.value
+    property alias bottomDecorationHeight: bottomMarginBinding.value
     property bool __animationEnabled: false
 
     // checking parent to avoid warning, see QTBUG-13170
     width: parent ? parent.width : 0
     height: parent ? parent.height : 0
 
-    // can't use Binding element because it emits a warning for assigning 'null' to target
-    onPageChanged: { if (page != null) page.y = pageY }
-    onPageYChanged: { if (page != null) page.y = pageY }
+    Binding {
+        id: topMarginBinding
+        target: page
+        property: "anchors.topMargin"
+        value: topDecorationHeight
+    }
+
+    Binding {
+        id: bottomMarginBinding
+        target: page
+        property: "anchors.bottomMargin"
+        value: bottomDecorationHeight
+    }
 
     states: [
         State {
