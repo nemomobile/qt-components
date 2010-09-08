@@ -55,8 +55,7 @@ git://gitorious.org/meegotouch/meegotouch-theme.git
 git://gitorious.org/meegotouch/libmeegotouch.git
 git@gitorious.org:qt-components/qt-components.git
 
-1: theme: qmake && make install
-1.1: sudo ln -s /usr/share/themes /usr/local/share/themes
+1: meegotouch-theme: qmake PREFIX=/usr/local/ && sudo make install
 
 2: libmeegotouch:
    ./configure
