@@ -58,7 +58,7 @@ ImplicitSizeItem {
 
     signal clicked
 
-    implicitWidth: Math.max(meegostyle.preferredWidth, centeredContainer.width)
+    implicitWidth: centeredContainer.width
     implicitHeight: meegostyle.preferredHeight
 
     Style {
