@@ -30,6 +30,7 @@
 #include "mdeclarativeicon.h"
 
 #include <mtheme.h>
+#include <minputmethodstate.h>
 
 
 MThemeBridge *MThemeBridge::m_self = 0;
@@ -37,6 +38,9 @@ MThemeBridge *MThemeBridge::m_self = 0;
 MThemeBridge::MThemeBridge() : QObject()
 {
     connect(MTheme::instance(), SIGNAL(themeIsChanging()), SLOT(updateResources()));
+    connect(MInputMethodState::instance(),
+            SIGNAL(activeWindowOrientationAngleChanged(M::OrientationAngle)),
+            SLOT(updateCurrentStyle()));
 }
 
 MThemeBridge::~MThemeBridge()
@@ -98,5 +102,12 @@ void MThemeBridge::updateResources()
     // existing entries to the new theme.
     for (int i = 0; i < m_registeredIcons.size(); i++) {
         m_registeredIcons[i]->refreshPixmap();
+    }
+}
+
+void MThemeBridge::updateCurrentStyle()
+{
+    for (int i = 0; i < m_registeredStyleWrappers.size(); i++) {
+        emit m_registeredStyleWrappers[i]->currentStyleChanged();
     }
 }

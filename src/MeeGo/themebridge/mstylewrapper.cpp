@@ -32,16 +32,14 @@
 #include <mapplication.h>
 #include <mapplicationwindow.h>
 #include <mclassfactory.h>
-
+#include <minputmethodstate.h>
 
 static M::Orientation currentOrientation()
 {
-    const MWindow *activeWindow = MApplication::activeWindow();
-    if (activeWindow)
-        return activeWindow->orientation();
-    return M::Landscape;
+    const M::OrientationAngle angle = \
+        MInputMethodState::instance()->activeWindowOrientationAngle();
+    return (angle == M::Angle0 || angle == M::Angle180) ? M::Landscape : M::Portrait;
 }
-
 
 MStyleWrapper::MStyleWrapper(QObject *parent)
     : QObject(parent), m_mode("default"), m_styleClass(), m_styleType()

@@ -192,6 +192,8 @@ void MDeclarativeScreenPrivate::_q_setOrientationHelper()
         break;
     }
 
+    // MThemeBridge and MStyleWrapper watch this property and will update
+    // theme resources when orientation changes.
     MInputMethodState::instance()->setActiveWindowOrientationAngle(angle);
 }
 

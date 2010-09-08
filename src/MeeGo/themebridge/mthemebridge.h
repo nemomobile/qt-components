@@ -52,6 +52,7 @@ public:
 
 public Q_SLOTS:
     void updateResources();
+    void updateCurrentStyle();
 
 private:
     // MThemeBridge::instance() should be used instead.
