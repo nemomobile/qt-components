@@ -5,6 +5,7 @@ import com.meego.themebridge 1.0
 ImplicitSizeItem {
     property Component nextPage
     property alias style: itemStyle
+    property alias padding: paddingRectangle
 
     implicitWidth: parent.width
     implicitHeight: itemStyle.preferredHeight
@@ -19,4 +20,16 @@ ImplicitSizeItem {
         style: itemStyle
         anchors.fill: parent
     }
+
+    Item {
+        // non-visible item to create a padding boundary that
+        // content items can bind to
+        id: paddingRectangle
+        anchors.leftMargin: style.current.get("paddingLeft")
+        anchors.rightMargin: style.current.get("paddingRight")
+        anchors.topMargin: style.current.get("paddingTop")
+        anchors.bottomMargin:  style.current.get("paddingBottom")
+        anchors.fill: parent
+    }
+
 }

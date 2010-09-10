@@ -9,8 +9,7 @@ ListItem {
     property alias image: delegateImage.source
 
     Row {
-        anchors.fill: parent
-        spacing: listItem.style.current.get("paddingLeft") + listItem.style.current.get("paddingRight")
+        anchors.fill: listItem.padding
 
         Image {
             id: delegateImage
@@ -18,11 +17,10 @@ ListItem {
         }
         Column {
             anchors.verticalCenter: parent.verticalCenter
-            spacing: listItem.style.current.get("paddingTop") + listItem.style.current.get("paddingBottom")
 
             Label {
                 id: text
-                text: "text"
+                text: ""
                 styleObjectName: "CommonTitle"
             }
 
