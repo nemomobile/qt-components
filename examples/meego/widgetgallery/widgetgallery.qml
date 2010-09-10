@@ -38,7 +38,7 @@ Window {
             ListView {
                 anchors.fill: parent
                 model: WidgetGallerySections { }
-                delegate:     BasicListItem {
+                delegate: BasicListItem {
                     title: name
                     subtitle: "subtext"
                     MouseArea {

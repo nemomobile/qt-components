@@ -19,6 +19,9 @@ ImplicitSizeItem {
     Background {
         style: itemStyle
         anchors.fill: parent
+        // ensure that only first and last item get rounded corners
+        // TODO: ensure sections also round first and last
+        tilePosition: (index==ListView.view.count-1 ? Background.VerticalBottomPosition : (index == 0 ? Background.VerticalTopPosition : Background.VerticalCenterPosition))
     }
 
     Item {
