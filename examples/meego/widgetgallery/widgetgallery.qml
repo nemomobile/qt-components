@@ -38,7 +38,19 @@ Window {
             ListView {
                 anchors.fill: parent
                 model: WidgetGallerySections { }
-                delegate: MeeGoDelegate { text: name }
+                delegate:     BasicListItem {
+                    title: name
+                    subtitle: "subtext"
+                    MouseArea {
+                        id: mouseArea
+                        anchors.fill: parent
+
+                        onClicked: {
+                            nextPage = Qt.createComponent(source);
+                            window.nextPage( nextPage );
+                        }
+                    }
+                }
 
                 PositionIndicator { }
             }

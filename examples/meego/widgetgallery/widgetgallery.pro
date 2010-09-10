@@ -8,5 +8,6 @@ SOURCES += widgetgallery.cpp
 
 OTHER_FILES += \
     widgetgallery.qml \
-    MeeGoDelegate.qml
+    ListItem.qml \
+    BasicListItem.qml
 
