@@ -44,6 +44,7 @@ class Q_COMPONENTS_EXPORT QRangeModel : public QObject
     Q_PROPERTY(qreal maximumValue READ maximum WRITE setMaximum NOTIFY rangeChanged)
     Q_PROPERTY(qreal singleStep READ singleStep WRITE setSingleStep)
     Q_PROPERTY(qreal pageStep READ pageStep WRITE setPageStep)
+    Q_PROPERTY(qreal steps READ steps WRITE setSteps)
     Q_PROPERTY(qreal position READ position WRITE setPosition NOTIFY positionChanged)
     Q_PROPERTY(qreal positionAtMinimum READ positionAtMinimum WRITE setPositionAtMinimum NOTIFY positionRangeChanged)
     Q_PROPERTY(qreal positionAtMaximum READ positionAtMaximum WRITE setPositionAtMaximum NOTIFY positionRangeChanged)
@@ -65,6 +66,9 @@ public:
 
     void setPageStep(qreal step);
     qreal pageStep() const;
+
+    void setSteps(qreal steps);
+    qreal steps() const;
 
     void setTracking(bool enable);
     bool isTracking() const;

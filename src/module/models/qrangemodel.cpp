@@ -48,12 +48,13 @@ QRangeModelPrivate::~QRangeModelPrivate()
 void QRangeModelPrivate::init()
 {
     isSedated = false;
+    valueOrPosIsValue = true;
     minimum = 0;
     maximum = 99;
     singleStep = 1;
     pageStep = 10;
-    value = 0;
-    pos = 0;
+    steps = 0;
+    valueOrPos = 0;
     posatmin = 0;
     posatmax = 0;
     tracking = true;
@@ -101,60 +102,66 @@ void QRangeModel::awake()
         blockSignals(false);
 }
 
+void QRangeModelPrivate::emitValueAndPositionIfChanged(const qreal oldValue, const qreal oldPosition)
+{
+    Q_Q(QRangeModel);
+
+    // Effective value and position might have changed even in cases when e.g. d->value is
+    // unchanged. This will be the case when operating with values outside range:
+    const qreal newValue = q->value();
+    const qreal newPosition = q->position();
+    if (newValue != oldValue)
+        emit q->valueChanged(newValue);
+    if (newPosition != oldPosition)
+        emit q->positionChanged(newPosition);
+}
+
 void QRangeModel::setPositionRange(qreal min, qreal max)
 {
     Q_D(QRangeModel);
 
-    // if both values didnt change we can safely return
-    if ((min == d->posatmin) && (max == d->posatmax)) {
+    if ((min == d->posatmin) && (max == d->posatmax))
         return;
-    }
 
+    const qreal oldValue = value();
+    const qreal oldPosition = position();
+    const qreal oldMinimum = d->posatmin;
     d->posatmin = min;
     d->posatmax = max;
 
-    // update the position based on the new range
-    bool emitPosChanged = false;
-    const qreal newPosition = d->positionFromValue(d->value);
-    if (newPosition != d->pos) {
-        d->pos = newPosition;
-        emitPosChanged = true;
+    if (d->posatmin != oldMinimum && !d->valueOrPosIsValue) {
+        // Since d->pos is relative (meaning it will always be >= 0), it
+        // needs to change when changing minimum so that absolute value (minimum + pos)
+        // remains unchanged:
+        d->valueOrPos += oldMinimum - d->minimum;
     }
 
     emit positionRangeChanged(d->posatmin, d->posatmax);
-
-    // if the position was updated, emit a signal with
-    // the new absolute position
-    if (emitPosChanged)
-        emit positionChanged(position());
+    d->emitValueAndPositionIfChanged(oldValue, oldPosition);
 }
 
 void QRangeModel::setRange(qreal min, qreal max)
 {
     Q_D(QRangeModel);
 
-    // if both values didnt change we can safely return
-    if ((min == d->minimum) && (max == d->maximum)) {
+    if ((min == d->minimum) && (max == d->maximum))
         return;
-    }
 
-    // bound the maximum value to be at least equal to the minimum
+    const qreal oldValue = value();
+    const qreal oldPosition = position();
+    const qreal oldMinimum = d->minimum;
     d->minimum = min;
     d->maximum = qMax(min, max);
 
-    // update the position based on the new value range
-    bool emitPosChanged = false;
-    const qreal newPosition = d->positionFromValue(d->value);
-    if (newPosition != d->pos) {
-        d->pos = newPosition;
-        emitPosChanged = true;
+    if (d->minimum != oldMinimum && d->valueOrPosIsValue) {
+        // Since d->value is relative (meaning it will always be >= 0), it
+        // needs to change when changing minimum so that absolute value (minimum + value)
+        // remains unchanged:
+        d->valueOrPos += oldMinimum - d->minimum;
     }
 
     emit rangeChanged(d->minimum, d->maximum);
-
-    // if the position was updated, emit a signal with the new position
-    if (emitPosChanged)
-        emit positionChanged(position());
+    d->emitValueAndPositionIfChanged(oldValue, oldPosition);
 }
 
 void QRangeModel::setMinimum(qreal min)
@@ -212,6 +219,25 @@ qreal QRangeModel::pageStep() const
     return d->pageStep;
 }
 
+void QRangeModel::setSteps(qreal steps)
+{
+    Q_D(QRangeModel);
+    if (steps == d->steps)
+        return;
+
+    const qreal oldValue = value();
+    const qreal oldPosition = position();
+    d->steps = steps;
+
+    d->emitValueAndPositionIfChanged(oldValue, oldPosition);
+}
+
+qreal QRangeModel::steps() const
+{
+    Q_D(const QRangeModel);
+    return d->steps;
+}
+
 void QRangeModel::setTracking(bool enable)
 {
     Q_D(QRangeModel);
@@ -228,44 +254,37 @@ qreal QRangeModel::position() const
 {
     Q_D(const QRangeModel);
 
-    // this must return the absolute position based on the internal
+    // This must return the absolute position based on the internal
     // one, that is relative. so we need to add the start position
     // and also bound it to d->posatmin and d->posatmax
-    const qreal pos = d->posatmin + d->pos;
+
+    // It is also important to do value-within-range check this
+    // late (as opposed to during setPosition()). The reason is
+    // QML bindings; a position that is initially invalid because it lays
+    // outside the range, might become valid later if the range changes.
+
+    qreal pos = d->posatmin + (d->valueOrPosIsValue ? d->positionFromValue(d->valueOrPos) : d->valueOrPos);
+    const qreal s = d->positionFromValue(d->steps);
+    if (s > 0)
+        pos = s * qRound(pos/s);
     if (d->posatmin > d->posatmax)
         return qBound(d->posatmax, pos, d->posatmin);
     return qBound(d->posatmin, pos, d->posatmax);
 }
 
-void QRangeModel::setPosition(qreal pos)
+void QRangeModel::setPosition(qreal newPosition)
 {
     Q_D(QRangeModel);
+    // Flag that we need to translate from position
+    // to value upon calls to value():
+    d->valueOrPosIsValue = false;
+    const qreal oldValue = value();
+    const qreal oldPosition = position();
 
     // 'pos' came as an absolute position and we want to store it
     // as a relative position, so we should subtract the start value
-    const qreal newPos = pos - d->posatmin;
-
-    // if the new relative position is the same, we can safely return
-    if (newPos == d->pos)
-        return;
-
-    // saves the relative position
-    d->pos = newPos;
-
-    // update the value based on the new position
-    bool emitValueChanged = false;
-    const qreal newValue = d->valueFromPosition(d->pos);
-    if (newValue != d->value) {
-        d->value = newValue;
-        emitValueChanged = true;
-    }
-
-    emit positionChanged(position());
-
-    // if we have a new value then we emit the signal with
-    // the new absolute value
-    if (emitValueChanged)
-        emit valueChanged(value());
+    d->valueOrPos = newPosition - d->posatmin;
+    d->emitValueAndPositionIfChanged(oldValue, oldPosition);
 }
 
 void QRangeModel::setPositionAtMinimum(qreal min)
@@ -299,52 +318,34 @@ qreal QRangeModel::value() const
     // this must return the absolute value based on the internal
     // one, that is relative. so we need to add the start value
     // considering if the value is 'inverted' or not and also bound
-    // it to d->minimum and d->maximum
-    qreal value;
-    if (d->inverted) {
-        value = d->maximum - d->value;
-    } else {
-        value = d->value + d->minimum;
-    }
+    // it to d->minimum and d->maximum.
+
+    // It is also important to do value-within-range check this
+    // late (as opposed to during setPosition()). The reason is
+    // QML bindings; a position that is initially invalid because it lays
+    // outside the range, might become valid later if the range changes.
+
+    qreal value = d->valueOrPosIsValue ? d->valueOrPos : d->valueFromPosition(d->valueOrPos);
+    value = d->inverted ? d->maximum - value : value + d->minimum;
+    if (d->steps > 0)
+        value = d->steps * qRound(value/d->steps);
     return qBound(d->minimum, value, d->maximum);
 }
 
-void QRangeModel::setValue(qreal value)
+void QRangeModel::setValue(qreal newValue)
 {
     Q_D(QRangeModel);
+    // Flag that we need to translate from value
+    // to position upon calls to position():
+    d->valueOrPosIsValue = true;
+    const qreal oldValue = value();
+    const qreal oldPosition = position();
 
     // 'value' came as an absolute value and we want to store it
     // as a relative value, so we should subtract/add the start
     // value, considering if the value is 'inverted' or not
-    qreal newValue;
-    if (d->inverted) {
-        newValue = d->maximum - value;
-    } else {
-        newValue = value - d->minimum;
-    }
-
-    // if the new relative value is the same, we can safely return
-    if (newValue == d->value)
-        return;
-
-    // saves the relative value
-    d->value = newValue;
-
-    // update the position based on the new value
-    bool emitPosChanged = false;
-    const qreal newPosition = d->positionFromValue(d->value);
-    if (newPosition != d->pos) {
-        d->pos = newPosition;
-        emitPosChanged = true;
-    }
-
-    if (d->tracking)
-        emit valueChanged(this->value());
-
-    // if we have a new position then we emit the signal with
-    // the new absolute position
-    if (emitPosChanged)
-        emit positionChanged(position());
+    d->valueOrPos = (d->inverted) ? d->maximum - newValue : newValue - d->minimum;
+    d->emitValueAndPositionIfChanged(oldValue, oldPosition);
 }
 
 void QRangeModel::setInverted(bool inverted)
