@@ -52,25 +52,46 @@ public:
     bool isSedated;
     bool signalsBlocked;
 
-    qreal pos, posatmin, posatmax;
-    qreal minimum, maximum, pageStep, singleStep, value;
+    // Because either value range or position range can be zero
+    // at times, we cannot calculate one from the other and store the
+    // value (because the scale then would be zero, and the true value
+    // would be lost). Therefore we must keep track if the user
+    // sat the value of the model using setValue or setPosition, and do
+    // the conversion when the user ask for it.
+    bool valueOrPosIsValue;
+
+    qreal posatmin, posatmax;
+    qreal minimum, maximum, pageStep, singleStep, steps, valueOrPos;
 
     uint tracking : 1;
     uint inverted : 1;
 
     QRangeModel *q_ptr;
 
-    inline qreal positionFromValue(qreal value) {
-        const qreal scale = qreal(maximum - minimum) /
-            qreal(posatmax - posatmin);
-        return value / scale;
+    inline qreal positionFromValue(qreal value) const {
+        // Return relative position from relative value (that
+        // is, both are indipendent from their respective ranges):
+        const qreal valueRange = qreal(maximum - minimum);
+        if (valueRange == 0)
+            return posatmin;
+
+        const qreal scale = qreal(posatmax - posatmin) / valueRange;
+        return value * scale;
     }
 
-    inline qreal valueFromPosition(qreal pos) {
-        const qreal scale = qreal(maximum - minimum) /
-            qreal(posatmax - posatmin);
+    inline qreal valueFromPosition(qreal pos) const {
+        // Return relative value from relative position (that
+        // is, both are indipendent from their respective ranges):
+        const qreal posRange = qreal(posatmax - posatmin);
+        if (posRange == 0)
+            return minimum;
+
+        const qreal scale = qreal(maximum - minimum) / posRange;
         return pos * scale;
     }
+
+    void emitValueAndPositionIfChanged(const qreal oldValue, const qreal oldPosition);
+
 };
 
 #endif // QRANGEMODEL_P_H

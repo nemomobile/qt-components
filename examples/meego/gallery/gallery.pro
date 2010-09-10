@@ -11,4 +11,5 @@ OTHER_FILES += \
     button.qml \
     checkbox.qml \
     lineedit.qml \
-    switches.qml
+    switches.qml \
+    slider.qml

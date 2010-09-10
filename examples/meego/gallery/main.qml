@@ -54,6 +54,7 @@ Window {
                                 "LineEdit",
                                 "Query",
                                 "Spinner",
+                                "Slider",
                                 "Switches",
                                 "PositionIndicator"]
                         Button {
