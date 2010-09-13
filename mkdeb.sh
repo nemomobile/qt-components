@@ -82,7 +82,7 @@ mkdir -p opt/qt-components/quiz
 mkdir -p opt/qt-components/pages
 
 cp -ar ../examples/meego/calculator/calculator opt/qt-components/calculator/
-cp -ar ../examples/meego/calculator/calculator.qml opt/qt-components/calculator/
+cp -ar ../examples/meego/calculator/*.qml opt/qt-components/calculator/
 cp -ar ../examples/meego/calculator/Core opt/qt-components/calculator/
 
 cp -ar ../examples/meego/gallery/gallery opt/qt-components/gallery/
