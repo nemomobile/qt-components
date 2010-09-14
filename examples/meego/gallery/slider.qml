@@ -60,10 +60,10 @@ Item {
 
         Text { text: "Normal"}
         Slider { id: red; maximumValue: 255; value: 150; onValueChanged: text.set(value); onHandlePressed: text.set(value)}
-        Text { text: "Steps 1"}
+        Text { text: "Steps (always)"}
         Slider { id: c; maximumValue: 12; steps:3; restrictedDragging: true; onValueChanged: text.set(value); onHandlePressed: text.set(value)}
-        Text { text: "Steps 2" }
-        Slider { maximumValue: 12; steps:3; onValueChanged: text.set(value); onHandlePressed: text.set(value)}
+        Text { text: "Steps (on release)" }
+        Slider { maximumValue: 10; steps:5; onValueChanged: text.set(value); onHandlePressed: text.set(value)}
         Text { text: "Progress" }
         Slider { id: stream; maximumValue: 500; onValueChanged: text.set(value); onHandlePressed: text.set(value)
             Timer {
