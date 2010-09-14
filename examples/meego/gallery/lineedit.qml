@@ -67,5 +67,17 @@ Item {
             width: parent.width - x
             echoMode: TextInput.PasswordEchoOnEdit
         }
+        Label {
+            height: line5.height
+            text: "Multiline:"
+            verticalAlignment: Text.AlignVCenter
+        }
+
+        LineEdit {
+            id: line5
+            text: "This text spans multiple \nlines."
+            multiLine: true
+            width: parent.width - x
+        }
     }
 }
