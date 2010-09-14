@@ -275,6 +275,14 @@ qreal QRangeModel::position() const
 void QRangeModel::setPosition(qreal newPosition)
 {
     Q_D(QRangeModel);
+    if (d->valueOrPosIsValue) {
+        if (qFuzzyCompare(newPosition, d->positionFromValue(d->valueOrPos)))
+            return;
+    } else {
+        if (qFuzzyCompare(newPosition, d->valueOrPos))
+            return;
+    }
+
     // Flag that we need to translate from position
     // to value upon calls to value():
     d->valueOrPosIsValue = false;
@@ -337,6 +345,14 @@ void QRangeModel::setValue(qreal newValue)
     Q_D(QRangeModel);
     // Flag that we need to translate from value
     // to position upon calls to position():
+    if (d->valueOrPosIsValue) {
+        if (qFuzzyCompare(newValue, d->valueOrPos))
+            return;
+    } else {
+        if (qFuzzyCompare(newValue, d->valueFromPosition(d->valueOrPos)))
+            return;
+    }
+
     d->valueOrPosIsValue = true;
     const qreal oldValue = value();
     const qreal oldPosition = position();
