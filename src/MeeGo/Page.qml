@@ -34,6 +34,8 @@ Item {
 
     property string title
     property list<Action> actions
+    signal aboutToExit()
+    signal entered()
 
     clip: true
 

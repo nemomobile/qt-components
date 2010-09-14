@@ -60,17 +60,23 @@ Item {
         enabled: __animationEnabled
         SequentialAnimation {
             ScriptAction {
-                script:
-                    if (state == "")
+                script: {
+                    if (state == "right")
+                        page.aboutToExit()
+                    else if (state == "")
                         pageContainer.visible = true
+                }
             }
             NumberAnimation {}
             ScriptAction {
-                script:
+                script: {
                     if (state == "right")
                         pageContainer.destroy(100)
                     else if (state == "left")
                         pageContainer.visible = false
+                    else
+                        page.entered()
+                }
             }
         }
     }
