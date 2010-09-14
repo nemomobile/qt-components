@@ -38,18 +38,19 @@ ImplicitSizeItem {
     property alias styleType: meegostyle.styleType
 
     // Inherited from text items
-    property variant echoMode
+    property string echoMode
+    property string wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
     property variant inputElement: multiLine ? textEdit : textInput
     property variant activeFocusOnPress: inputElement.activeFocusOnPress
-    property variant horizontalAlignment: inputElement.horizontalAlignment
+    property variant horizontalAlignment: TextEdit.AlignLeft
     property variant color: meegostyle.current.get("textColor")
     property variant selectedTextColor: meegostyle.current.get("selectionTextColor")
     property variant selectionColor: meegostyle.current.get("selectionBackgroundColor")
     property variant font: meegostyle.current.get("font")
     property variant passwordCharacter: meegostyle.current.get("maskString")
 
-    implicitWidth: Math.max(meegostyle.preferredWidth, textSizeModel.preferredWidth)
-    implicitHeight: textSizeModel.preferredHeight
+    implicitWidth: Math.max(meegostyle.preferredWidth, inputElement.textSizeModel.preferredWidth)
+    implicitHeight: inputElement.textSizeModel.preferredHeight
 
     Style {
         id: meegostyle
@@ -72,6 +73,12 @@ ImplicitSizeItem {
         font: root.font
     }
 
+    // XXX Having an additional text element and duplicating all the text
+    //     rendering logic is ugly and not efficient. I would expect textInput
+    //     to expose the implicit sizes so I could use that as a parameter to
+    //     control the size of my own component.
+    //     Something like, preferredWidth = textInput.implicitWidth + margins
+
     Item {
         id: inputContainer
         anchors.fill:parent
@@ -80,6 +87,9 @@ ImplicitSizeItem {
         anchors.topMargin: documentMargin + meegostyle.current.get("paddingTop")
         anchors.bottomMargin: documentMargin + meegostyle.current.get("paddingBottom")
 
+
+        clip: true
+
         TextEdit {
             id: textEdit
 
@@ -87,26 +97,35 @@ ImplicitSizeItem {
             onTextChanged: root.text = text
             visible: multiLine ? true : false
 
-            clip: true
             font: root.font
             color: root.color
             anchors.fill: parent
+            wrapMode: root.wrapMode
             selectByMouse: true
             horizontalAlignment: root.horizontalAlignment
             activeFocusOnPress: root.activeFocusOnPress
             selectedTextColor: root.selectedTextColor
             selectionColor: root.selectionColor
-        }
 
+            property variant textSizeModel : Text {
+                font: root.font;  text: root.text; visible: false
+                wrapMode: root.wrapMode; width: textEdit.width
+                property real preferredWidth: width + meegostyle.current.get("paddingLeft") +
+                                              meegostyle.current.get("paddingRight") + 2 * documentMargin
+                property real preferredHeight: height + meegostyle.current.get("paddingTop") +
+                                               meegostyle.current.get("paddingBottom") + 2 * documentMargin
+            }
+        }
         TextInput {
             id: textInput
 
             text:root.text
             onTextChanged: root.text = text
             visible: multiLine ? false : true
+
+            passwordCharacter: root.passwordCharacter
             echoMode: root.echoMode
 
-            clip: true
             font: root.font
             color: root.color
             anchors.fill: parent
@@ -115,24 +134,14 @@ ImplicitSizeItem {
             activeFocusOnPress: root.activeFocusOnPress
             selectedTextColor: root.selectedTextColor
             selectionColor: root.selectionColor
-            passwordCharacter: root.passwordCharacter
-        }
 
-        // XXX Having an additional text element and duplicating all the text
-        //     rendering logic is ugly and not efficient. I would expect textInput
-        //     to expose the implicit sizes so I could use that as a parameter to
-        //     control the size of my own component.
-        //     Something like, preferredWidth = textInput.implicitWidth + margins
-        Text {
-            id: textSizeModel
-            font: inputElement.font;  text: inputElement.text; visible: false
-            property real preferredWidth
-            property real preferredHeight
-            preferredWidth: textSizeModel.width + meegostyle.current.get("paddingLeft") +
-                            meegostyle.current.get("paddingRight") + 2 * documentMargin
-
-            preferredHeight: textSizeModel.height + meegostyle.current.get("paddingTop") +
-                             meegostyle.current.get("paddingBottom") + 2 * documentMargin
+            property variant textSizeModel : Text {
+                font: root.font;  text: root.text; visible: false
+                property real preferredWidth: width + meegostyle.current.get("paddingLeft") +
+                                              meegostyle.current.get("paddingRight") + 2 * documentMargin
+                property real preferredHeight: height + meegostyle.current.get("paddingTop") +
+                                               meegostyle.current.get("paddingBottom") + 2 * documentMargin
+            }
         }
     }
 }
