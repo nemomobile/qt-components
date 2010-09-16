@@ -38,10 +38,10 @@ ImplicitSizeItem {
     property alias styleType: meegostyle.styleType
 
     // Inherited from text items
-    property string echoMode
-    property string wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+    property variant echoMode: TextInput.Normal
+    property variant wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
     property variant inputElement: multiLine ? textEdit : textInput
-    property variant activeFocusOnPress: inputElement.activeFocusOnPress
+    property variant activeFocusOnPress: true
     property variant horizontalAlignment: TextEdit.AlignLeft
     property variant color: meegostyle.current.get("textColor")
     property variant selectedTextColor: meegostyle.current.get("selectionTextColor")
