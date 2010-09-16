@@ -67,9 +67,9 @@ ImplicitSizeItem {
         var hasIcon = (iconFromId.visible || iconFromSource.visible);
 
         if (textVisible && hasIcon) {
-            prefWidth += labelSizeHelper.width + iconFromSource.width + 10;
+            prefWidth += 1 + labelSizeHelper.width + iconFromSource.width + 10;
         } else if (textVisible) {
-            prefWidth += labelSizeHelper.width;
+            prefWidth += 1 + labelSizeHelper.width;
         } else if (hasIcon) {
             prefWidth += iconFromSource.width;
         }
