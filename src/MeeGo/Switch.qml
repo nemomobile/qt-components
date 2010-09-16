@@ -32,22 +32,25 @@ ImplicitSizeItem {
 
     property alias enabled: thumb.enabled
 
-    implicitWidth: meegostyle.preferredWidth
-    implicitHeight: meegostyle.preferredHeight
+    implicitWidth: meegostyle.preferredWidth + 2 * meegostyle.get("thumbMargin")
+    implicitHeight: meegostyle.preferredHeight + 2 * meegostyle.get("thumbMargin")
 
     Style {
         id: meegostyle
         styleClass: "MButtonSwitchStyle"
+        mode: state=="on" ? "selected" : "normal"
     }
 
     Background {
         anchors.fill: parent
+        anchors.margins: meegostyle.get("thumbMargin")
         style: meegostyle
     }
 
     MaskedImage {
         anchors.fill: parent
         style: meegostyle
+        anchors.margins: meegostyle.get("thumbMargin")
         maskProperty: "sliderMask"
         imageProperty: "sliderImage"
         imageXOffset: (thumb.x + thumb.width / 2) - width
@@ -85,20 +88,10 @@ ImplicitSizeItem {
                 when: mousearea.drag.active
             }]
 
-        transitions: [
-            // XXX Waiting for QTBUG-12805
-            // After that is fixed, we can use a transition "*" to "*"
+        transitions:
             Transition {
-                from: "*"
-                to: "off"
-                SmoothedAnimation { properties: "x"; velocity: 500; maximumEasingTime: 0 }
-            },
-            Transition {
-                from: "*"
-                to: "on"
                 SmoothedAnimation { properties: "x"; velocity: 500; maximumEasingTime: 0 }
             }
-        ]
     }
 
     MouseArea {
@@ -107,8 +100,9 @@ ImplicitSizeItem {
 
         drag {
             axis: Drag.XAxis
-            minimumX: 0
-            maximumX: parent.width - thumb.width
+            minimumX: meegostyle.get("thumbMargin")
+            maximumX: parent.width - thumb.width - 2 * meegostyle.get("thumbMargin")
+
             target: thumb
             onActiveChanged: {
                 if (!mousearea.drag.active) {
