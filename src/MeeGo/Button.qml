@@ -58,8 +58,24 @@ ImplicitSizeItem {
 
     signal clicked
 
-    implicitWidth: centeredContainer.width
+    implicitWidth: calculateWidth()
     implicitHeight: meegostyle.preferredHeight
+
+    function calculateWidth() {
+        // XXX Check how does MeeGo Touch does that. Maybe use style paddings, etc
+        var prefWidth = 20;
+        var hasIcon = (iconFromId.visible || iconFromSource.visible);
+
+        if (textVisible && hasIcon) {
+            prefWidth += labelSizeHelper.width + iconFromSource.width + 10;
+        } else if (textVisible) {
+            prefWidth += labelSizeHelper.width;
+        } else if (hasIcon) {
+            prefWidth += iconFromSource.width;
+        }
+
+        return prefWidth;
+    }
 
     Style {
         id: meegostyle
@@ -80,100 +96,107 @@ ImplicitSizeItem {
         style: meegostyle
     }
 
-    Item {
-        id: centeredContainer
+    Icon {
+        id: iconFromId
+        anchors.fill: iconFromSource
+
+        // When checked, try to use checked Id. If empty, the standard Id is the fallback
+        iconId: {
+            if (checkable.checked && button.checkedIconId)
+                return button.checkedIconId;
+            return button.iconId;
+        }
+
+        // Visiblity check for default state (icon is not explicitly hidden)
+        // Icon is shown if there's a valid iconId, respecting the higher
+        // priority of iconFromSource
+        visible: iconId && !iconFromSource.visible
+    }
+
+    Image {
+        id: iconFromSource
+        anchors.left: parent.left
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.leftMargin: calculateContentMargin()
+        width: meegostyle.current.get("iconSize").width
+        height: meegostyle.current.get("iconSize").height
+
+        // If button is wider than content, grow the margins to keep content centered
+        function calculateContentMargin() {
+            var margin = 10;
+            if (button.width > button.implicitWidth)
+                margin += (button.width - button.implicitWidth) / 2;
+            return margin;
+        }
+
+        // When checked, try to use checked source. If empty, the standard source is the fallback
+        source: {
+            if (checkable.checked && button.checkedIconSource)
+                return button.checkedIconSource;
+            return button.iconSource;
+        }
+
+        // Visibility check for default state (icon is not explicitly hidden)
+        visible: {
+            if (iconFromSource.source == "")
+                return false;
+
+            if (!checkable.checked)
+                return true;
+
+            // Show sourceIcon when
+            //  1) checkedIconSource is present (highest priority), or
+            //  2) no checked icon exists (fallback)
+            return button.checkedIconSource || !button.checkedIconId;
+        }
+
+        states: State {
+            name: "iconHidden"
+            when: !button.iconVisible
+            // Hide both icons
+            PropertyChanges { target: iconFromSource; visible: false; source: "" }
+            PropertyChanges { target: iconFromId; visible: false; iconId: "" }
+        }
+    }
+
+    Label {
+        id: label
+        anchors.left: iconFromSource.left
+        anchors.right: parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.horizontalCenter: parent.horizontalCenter
-        width: calculateWidth()
+        anchors.leftMargin: marginRespectingIconWidth()
+        anchors.rightMargin: iconFromSource.anchors.leftMargin
 
-        function calculateWidth() {
-            // XXX Check how does MeeGo Touch does that. Maybe use style paddings, etc
-            var width = iconFromSource.anchors.leftMargin + label.anchors.rightMargin
-            var hasIcon = (iconFromId.visible || iconFromSource.visible)
-
-            if (textVisible && hasIcon) {
-                width += label.width + iconFromSource.width + 10
-            } else if (textVisible) {
-                width += label.width
-            } else if (hasIcon) {
-                width += iconFromSource.width
-            }
-
-            return width
+        // Label left margin should be large enough to leave space for the icon
+        // when we have one
+        function marginRespectingIconWidth() {
+            if (iconFromId.visible || iconFromSource.visible)
+                return iconFromSource.width + 10;
+            return 0;
         }
 
-        Icon {
-            id: iconFromId
-            anchors.fill: iconFromSource
+        elide: Text.ElideRight
 
-            // When checked, try to use checked Id. If empty, the standard Id is the fallback
-            iconId: {
-                if (checkable.checked && button.checkedIconId)
-                    return button.checkedIconId;
-                return button.iconId;
-            }
+        // XXX This does not make sense yet, since the label width is not being set
+        // horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: meegostyle.current.get("verticalTextAlign")
 
-            // Visiblity check for default state (icon is not explicitly hidden)
-            // Icon is shown if there's a valid iconId, respecting the higher
-            // priority of iconFromSource
-            visible: iconId && !iconFromSource.visible
-        }
+        font: meegostyle.current.get("font")
+        color: meegostyle.current.get("textColor")
 
-        Image {
-            id: iconFromSource
-            anchors.left: parent.left
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.leftMargin: 10
-            width: meegostyle.current.get("iconSize").width
-            height: meegostyle.current.get("iconSize").height
+        text: "Effect"
+    }
 
-            // When checked, try to use checked source. If empty, the standard source is the fallback
-            source: {
-                if (checkable.checked && button.checkedIconSource)
-                    return button.checkedIconSource;
-                return button.iconSource;
-            }
+    // This invisible label is used to provide the required width to fit the current label text
+    // XXX remove when Label provide this by itself
+    Text {
+        id: labelSizeHelper
 
-            // Visibility check for default state (icon is not explicitly hidden)
-            visible: {
-                if (iconFromSource.source == "")
-                    return false;
+        font: label.font
+        text: label.text
 
-                if (!checkable.checked)
-                    return true;
-
-                // Show sourceIcon when
-                //  1) checkedIconSource is present (highest priority), or
-                //  2) no checked icon exists (fallback)
-                return button.checkedIconSource || !button.checkedIconId;
-            }
-
-            states: State {
-                name: "iconHidden"
-                when: !button.iconVisible
-                // Hide both icons
-                PropertyChanges { target: iconFromSource; visible: false; source: "" }
-                PropertyChanges { target: iconFromId; visible: false; iconId: "" }
-            }
-        }
-
-        Label {
-            id: label
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.rightMargin: 10
-
-            // XXX This does not make sense yet, since the label width is not being set
-            // horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: meegostyle.current.get("verticalTextAlign")
-
-            font: meegostyle.current.get("font")
-            color: meegostyle.current.get("textColor")
-
-            text: "Effect"
-        }
+        visible: false
     }
 
     MouseArea {
