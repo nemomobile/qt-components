@@ -33,7 +33,7 @@ Item {
 
     Grid {
         columns: 2
-        spacing: 10
+        spacing: 20
         anchors.fill: parent
         anchors.leftMargin: 10
         anchors.topMargin: 10

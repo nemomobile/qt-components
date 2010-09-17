@@ -32,8 +32,8 @@ ImplicitSizeItem {
 
     property alias enabled: thumb.enabled
 
-    implicitWidth: meegostyle.preferredWidth + 2 * meegostyle.get("thumbMargin")
-    implicitHeight: meegostyle.preferredHeight + 2 * meegostyle.get("thumbMargin")
+    implicitWidth: meegostyle.preferredWidth
+    implicitHeight: meegostyle.preferredHeight
 
     Style {
         id: meegostyle
@@ -43,23 +43,37 @@ ImplicitSizeItem {
 
     Background {
         anchors.fill: parent
-        anchors.margins: meegostyle.get("thumbMargin")
         style: meegostyle
     }
 
+    // XXX This is not exactly equal to how MButtonSwitchView composes the image
+    //     but gets close.
+    //     Proper implementation probably requires merging of both standard and
+    //     selected image
     MaskedImage {
-        anchors.fill: parent
+        id: selectedImage
+        anchors.fill: root
         style: meegostyle
-        anchors.margins: meegostyle.get("thumbMargin")
+        maskProperty: "sliderMask"
+        imageProperty: "sliderImageSelected"
+        opacity: (thumb.x - mousearea.drag.minimumX) / mousearea.drag.maximumX
+    }
+
+    MaskedImage {
+        anchors.fill: root
+        style: meegostyle
         maskProperty: "sliderMask"
         imageProperty: "sliderImage"
-        imageXOffset: (thumb.x + thumb.width / 2) - width
+        opacity: 1 - selectedImage.opacity
     }
 
     ScalableImage {
         id: thumb
         anchors.verticalCenter: parent.verticalCenter
         property bool enabled: false
+
+        height: root.height - 2 * meegostyle.current.get("thumbMargin")
+        width: height // XXX Assuming 1:1 aspect ratio. This is not safe
 
         style: meegostyle
         imageProperty: "thumbImage"
@@ -97,11 +111,15 @@ ImplicitSizeItem {
     MouseArea {
         id: mousearea
         anchors.fill: parent
+        anchors.leftMargin: -meegostyle.current.get("reactiveMarginLeft")
+        anchors.rightMargin: -meegostyle.current.get("reactiveMarginRight")
+        anchors.topMargin: -meegostyle.current.get("reactiveMarginTop")
+        anchors.bottomMargin: -meegostyle.current.get("reactiveMarginBottom")
 
         drag {
             axis: Drag.XAxis
             minimumX: meegostyle.get("thumbMargin")
-            maximumX: parent.width - thumb.width - 2 * meegostyle.get("thumbMargin")
+            maximumX: parent.width - thumb.width - meegostyle.get("thumbMargin")
 
             target: thumb
             onActiveChanged: {
