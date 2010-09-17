@@ -65,7 +65,7 @@ Item {
         Text { text: "Steps (on release)" }
         Slider { maximumValue: 10; steps:5; onValueChanged: text.set(value); onHandlePressed: text.set(value)}
         Text { text: "Progress" }
-        Slider { id: stream; maximumValue: 500; onValueChanged: text.set(value); onHandlePressed: text.set(value)
+        Slider { id: stream; maximumValue: 2000000; onValueChanged: text.set(value); onHandlePressed: text.set(value)
             Timer {
                 interval: 100; running: true; repeat: true
                 onTriggered: if (++stream.progress == stream.maximumValue) stream.progress = 0

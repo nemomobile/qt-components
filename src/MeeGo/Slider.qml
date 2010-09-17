@@ -48,13 +48,13 @@ Item {
     // should snap to steps _while_ dragging
     property bool restrictedDragging: false
 
-    property real innerLeftMargin: style.get("marginLeft")
-    property real innerRightMargin: style.get("marginRight")
-    property real innerTopMargin: style.get("marginTop")
-    property real innerBottomMargin: style.get("marginBottom")
+    property real innerLeftMargin: style.current.get("marginLeft")
+    property real innerRightMargin: style.current.get("marginRight")
+    property real innerTopMargin: style.current.get("marginTop")
+    property real innerBottomMargin: style.current.get("marginBottom")
 
-    width: innerLeftMargin + innerRightMargin + (vertical ? groove.width : style.get("groovePreferredLength"))
-    height: innerTopMargin + innerBottomMargin + (vertical ? style.get("groovePreferredLength") : groove.height)
+    width: innerLeftMargin + innerRightMargin + (vertical ? groove.width : style.current.get("groovePreferredLength"))
+    height: innerTopMargin + innerBottomMargin + (vertical ? style.current.get("groovePreferredLength") : groove.height)
 
     signal valueChanged(real value)
     signal handlePressed
@@ -173,16 +173,6 @@ Item {
                     easing.type: Easing.OutSine
                 }
             }
-
-            ThemeBridge.Pixmap {
-                id: handleIndicator
-                style: style
-                visible: false
-                imageProperty: "handleLabelArrowDownPixmap"
-                anchors.horizontalCenter: handlePixmap.horizontalCenter
-                width: 50; height: 50
-                y: -height
-            }
         }
 
         Item {
@@ -213,10 +203,55 @@ Item {
                     (handleDragItem.y + (height/2)) : (handleDragItem.x + (width/2))
                 // The effective position returned by the model is constrained to steps and
                 // ranges, and might therefore differ from the position set explicit. To let
-                // UI and model be in sync, we just set the visual postion before the dragging starts:
+                // UI and model be in sync, we just update the model position before the drag starts:
                 onPressed: { valueModel.position = valueModel.position; root.handlePressed() }
                 onReleased: { valueModel.position = valueModel.position; root.handleReleased() }
             }
         }
     }
+
+    ThemeBridge.ScalableImage {
+        id: indicatorBackground
+        style: labelStyle
+        imageProperty: "backgroundImage"
+        x: handlePixmap.x - (width - handlePixmap.width)/2
+        y: handlePixmap.y - height
+
+        ThemeBridge.Style {
+            id: labelStyle
+            styleClass: "MLabelStyle"
+            styleObjectName: "MSliderHandleLabel"
+        }
+
+        Timer {
+            // In the native meegotouch slider, the indicator
+            // pops up 100ms after pressing the handle:
+            id: indicatorTimer
+            running: invisibleHandleMouseArea.pressed || grooveMouseArea.pressed
+            interval: 100;
+            onTriggered: indicatorBackground.visible = invisibleHandleMouseArea.pressed || grooveMouseArea.pressed
+        }
+        Binding {
+            // ...but the indicator hides immidiatly:
+            target: indicatorBackground
+            property: "visible"
+            value: invisibleHandleMouseArea.pressed || grooveMouseArea.pressed
+            when: indicatorBackground.visible
+        }
+
+        Text {
+            id: indicatorText
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            text: Math.round(valueModel.value * Math.pow(10, 1))/Math.pow(10, 1)
+
+            // Set the width of indicatorBackground explicit circular
+            // dependency (since we only allow the width to grow):
+            onWidthChanged: indicatorBackground.width =
+                            Math.max(indicatorBackground.width, width
+                                     + labelStyle.current.get("paddingLeft")
+                                     + labelStyle.current.get("paddingRight"))
+        }
+    }
+
 }
