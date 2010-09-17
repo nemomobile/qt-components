@@ -41,8 +41,8 @@ Item {
     property alias progress: receivedModel.value
     property alias steps: valueModel.steps
 
-    property bool handleDragging: invisibleHandleMouseArea.drag.active
-    property bool handlePressed: invisibleHandleMouseArea.pressed
+    property bool handleDragging: grooveMouseArea.drag.active
+    property bool handlePressed: grooveMouseArea.pressed
 
     // restrictedDragging means that the handle
     // should snap to steps _while_ dragging
@@ -126,89 +126,85 @@ Item {
             anchors.right: vertical ? groove.right : handlePixmap.horizontalCenter
         }
 
-        MouseArea {
-            id: grooveMouseArea
-            // We get empty values when asking for reactive margins from the style.
-            // So for now, use the size of the handle instead:
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.horizontalCenter: parent.horizontalCenter
-            width: handlePixmap.width + (vertical ? 0 : parent.width)
-            height: handlePixmap.height + (vertical ? parent.height : 0)
-            onPressed: valueModel.position = vertical ? mouseY - (handlePixmap.height/2) : mouseX - (handlePixmap.width/2)
-        }
-
         ThemeBridge.Pixmap {
             // The size of this handle pixmap includes the reactive margins, which
             // makes it much larger than the visual size of the drawn image.
             id: handlePixmap
             style: style
-            imageProperty: invisibleHandleMouseArea.pressed ?
+            imageProperty: grooveMouseArea.pressed ?
                     (vertical ? "handleVerticalPressedPixmap" : "handlePressedPixmap")
                     : (vertical ? "handleVerticalPixmap" : "handlePixmap")
             anchors.verticalCenter: vertical ? undefined : parent.verticalCenter
             anchors.horizontalCenter: vertical ? parent.horizontalCenter : undefined
 
-            // Let the handle pixmap follow the model or the drag
-            // area, depending on the restrictedDragging property:
-            x: vertical ? 0 : (invisibleHandleMouseArea.pressed && !restrictedDragging ?
-                     handleDragItem.x : valueModel.position - (width / 2))
-            y: vertical ? (invisibleHandleMouseArea.pressed && !restrictedDragging ?
-                           handleDragItem.y : valueModel.position - (height / 2)) : 0
-
+            x: valueModel.position - (width / 2)
             Behavior on x  {
-                // Animate the handle pixmap along the groove when the handle
-                // changes position, unless the user is dragging the handleDragItem
-                PropertyAnimation {
+                 PropertyAnimation {
                     // The animation data is taken from msliderview.cpp:
-                    duration: invisibleHandleMouseArea.pressed ? 0 : 150
+                    duration: grooveMouseArea.dragging ? 0 : 150
                     easing.type: Easing.OutSine
                 }
             }
-            Behavior on y {
-                // Animate the handle pixmap along the groove when the handle
-                // changes position, unless the user is dragging the handleDragItem
-                PropertyAnimation {
+
+            y: valueModel.position - (height / 2)
+            Behavior on y  {
+                 PropertyAnimation {
                     // The animation data is taken from msliderview.cpp:
-                    duration: invisibleHandleMouseArea.pressed ? 0 : 150
+                    duration: grooveMouseArea.dragging ? 0 : 150
                     easing.type: Easing.OutSine
                 }
             }
         }
 
-        Item {
-            // The purpose of this item is to give the user an item to drag on, but at
-            // the same time, restrict the _visible_ handlePixmap to valid values in the model
-            // (typically discrete steps on the groove). So this item is transparent to make
-            // it look like the user is dragging the actual handle.
-            id: handleDragItem
-            // When the user is not using the handle, we want the handleDragItem to
-            // aling with the pixmap handle, so there is a 1:1 mapping between them
-            x: invisibleHandleMouseArea.pressed ? x : handlePixmap.x
-            y: invisibleHandleMouseArea.pressed ? y : handlePixmap.y
-            width: handlePixmap.width
-            height: handlePixmap.height
-            anchors.verticalCenter: vertical ? undefined : parent.verticalCenter
-            anchors.horizontalCenter: vertical ? parent.horizontalCenter : undefined
-
-            MouseArea {
-                id: invisibleHandleMouseArea
-                anchors.fill: parent
-                drag.axis: vertical ? Drag.YAxis : Drag.XAxis
-                drag.minimumX: 0 - width/2
-                drag.minimumY: 0 - height/2
-                drag.maximumX: groove.width - width/2
-                drag.maximumY: groove.height - height/2
-                drag.target: handleDragItem
-                onPositionChanged: valueModel.position = vertical ?
-                    (handleDragItem.y + (height/2)) : (handleDragItem.x + (width/2))
-                // The effective position returned by the model is constrained to steps and
-                // ranges, and might therefore differ from the position set explicit. To let
-                // UI and model be in sync, we just update the model position before the drag starts:
-                onPressed: { valueModel.position = valueModel.position; root.handlePressed() }
-                onReleased: { valueModel.position = valueModel.position; root.handleReleased() }
+        MouseArea {
+            function conformToRange(v) {
+                return Math.min(valueModel.positionAtMaximum - (handlePixmap.width/2),
+                         Math.max(valueModel.positionAtMinimum - (handlePixmap.width/2),
+                                  v - handlePixmap.width));
             }
+
+            id: grooveMouseArea
+            // We get empty values when asking for reactive margins from the style.
+            // So for now, use the size of the handle instead:
+            property bool dragging: false;
+            anchors.verticalCenter: groove.verticalCenter
+            anchors.horizontalCenter: groove.horizontalCenter
+            width: handlePixmap.width + (vertical ? 0 : groove.width)
+            height: handlePixmap.height + (vertical ? groove.height : 0)
+            onPressed: {
+                if (vertical) {
+                    valueModel.position = mouseY - handlePixmap.height/2;
+                    handlePixmap.y = restrictedDragging ?
+                                valueModel.position - (handlePixmap.height / 2) : conformToRange(mouseY);
+                } else {
+                    valueModel.position = mouseX - handlePixmap.width/2;
+                    handlePixmap.x = restrictedDragging ?
+                                valueModel.position - (handlePixmap.width / 2) : conformToRange(mouseX);
+                }
+            }
+            onPositionChanged: {
+                dragging = true;
+                if (vertical) {
+                    valueModel.position = mouseY - (handlePixmap.height/2);
+                    handlePixmap.y = restrictedDragging ?
+                                valueModel.position - (handlePixmap.height / 2) : conformToRange(mouseY);
+                } else {
+                    valueModel.position = mouseX - (handlePixmap.width/2);
+                    handlePixmap.x = restrictedDragging ?
+                                valueModel.position - (handlePixmap.width / 2) : conformToRange(mouseX);
+                }
+            }
+            onReleased: {
+                dragging = false;
+                if (vertical) {
+                    handlePixmap.y = valueModel.position - (handlePixmap.height / 2)
+                } else {
+                    handlePixmap.x = valueModel.position - (handlePixmap.width / 2)
+                }
+            }
+
         }
-    }
+     }
 
     ThemeBridge.ScalableImage {
         id: indicatorBackground
@@ -227,15 +223,15 @@ Item {
             // In the native meegotouch slider, the indicator
             // pops up 100ms after pressing the handle:
             id: indicatorTimer
-            running: invisibleHandleMouseArea.pressed || grooveMouseArea.pressed
+            running: grooveMouseArea.pressed
             interval: 100;
-            onTriggered: indicatorBackground.visible = invisibleHandleMouseArea.pressed || grooveMouseArea.pressed
+            onTriggered: indicatorBackground.visible = grooveMouseArea.pressed
         }
         Binding {
             // ...but the indicator hides immidiatly:
             target: indicatorBackground
             property: "visible"
-            value: invisibleHandleMouseArea.pressed || grooveMouseArea.pressed
+            value: grooveMouseArea.pressed
             when: indicatorBackground.visible
         }
 
