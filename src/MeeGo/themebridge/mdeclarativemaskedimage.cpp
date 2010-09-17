@@ -41,34 +41,6 @@ MDeclarativeMaskedImage::~MDeclarativeMaskedImage()
 {
 }
 
-int MDeclarativeMaskedImage::imageXOffset() const
-{
-    return m_imageOffset.x();
-}
-
-void MDeclarativeMaskedImage::setImageXOffset(int x)
-{
-    if (m_imageOffset.x() == x)
-        return;
-
-    m_imageOffset.setX(x);
-    update();
-}
-
-int MDeclarativeMaskedImage::imageYOffset() const
-{
-    return m_imageOffset.y();
-}
-
-void MDeclarativeMaskedImage::setImageYOffset(int y)
-{
-    if (m_imageOffset.y() == y)
-        return;
-
-    m_imageOffset.setY(y);
-    update();
-}
-
 QString MDeclarativeMaskedImage::imageProperty() const
 {
     return m_imageProperty;
@@ -150,7 +122,7 @@ void MDeclarativeMaskedImage::paint(QPainter *painter, const QStyleOptionGraphic
 
     QPainter p(m_buffer.data());
     p.setCompositionMode(QPainter::CompositionMode_SourceIn);
-    m_image->draw(QRect(m_imageOffset, m_image->pixmap()->size()), &p);
+    m_image->draw(QRect(QPoint(), m_buffer->size()), &p);
 
     // Blit offscreen buffer on the screen
     painter->drawImage(QPoint(), *m_buffer);

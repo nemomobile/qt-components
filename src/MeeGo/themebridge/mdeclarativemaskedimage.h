@@ -35,8 +35,6 @@ class MDeclarativeMaskedImage : public MDeclarativePrimitive
 {
     Q_OBJECT
 
-    Q_PROPERTY(int imageXOffset READ imageXOffset WRITE setImageXOffset);
-    Q_PROPERTY(int imageYOffset READ imageYOffset WRITE setImageYOffset);
     Q_PROPERTY(QString imageProperty READ imageProperty WRITE setImageProperty);
     Q_PROPERTY(QString maskProperty READ maskProperty WRITE setMaskProperty);
 
@@ -44,10 +42,6 @@ public:
     MDeclarativeMaskedImage(QDeclarativeItem *parent = 0);
     virtual ~MDeclarativeMaskedImage();
 
-    int imageXOffset() const;
-    void setImageXOffset(int x);
-    int imageYOffset() const;
-    void setImageYOffset(int y);
     QString imageProperty() const;
     void setImageProperty(const QString &imageProperty);
     QString maskProperty() const;
@@ -62,7 +56,6 @@ protected:
 
     bool initializeMaskedBuffer();
 
-    QPoint m_imageOffset;
     QString m_imageProperty;
     QString m_maskProperty;
     QScopedPointer<QImage> m_buffer;
