@@ -30,6 +30,7 @@ QML_FILES = \
         Action.qml \
         ActionButton.qml \
         ActionManager.js \
+        BasicListItem.qml \
         Button.qml \
         ButtonColumn.qml \
         ButtonRow.qml \
@@ -40,6 +41,7 @@ QML_FILES = \
         IconButton.qml \
         Label.qml \
         LineEdit.qml \
+        ListItem.qml \
         Page.qml \
         pagemanager.js \
         QueryDialog.qml \

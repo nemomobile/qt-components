@@ -1,13 +1,15 @@
 plugin meegoplugin
 Action 1.0 Action.qml
 ActionButton 1.0 ActionButton.qml
+BasicListItem 1.0 BasicListItem.qml
 Button 1.0 Button.qml
-CheckBox 1.0 CheckBox.qml
 ButtonColumn 1.0 ButtonColumn.qml
 ButtonRow 1.0 ButtonRow.qml
+CheckBox 1.0 CheckBox.qml
 IconButton 1.0 IconButton.qml
 Label 1.0 Label.qml
 LineEdit 1.0 LineEdit.qml
+ListItem 1.0 ListItem.qml
 Page 1.0 Page.qml
 PositionIndicator 1.0 PositionIndicator.qml
 Slider 1.0 Slider.qml

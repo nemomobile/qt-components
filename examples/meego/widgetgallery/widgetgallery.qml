@@ -40,15 +40,8 @@ Window {
                 model: WidgetGallerySections { }
                 delegate: BasicListItem {
                     title: name
-                    subtitle: "subtext"
-                    MouseArea {
-                        id: mouseArea
-                        anchors.fill: parent
-
-                        onClicked: {
-                            nextPage = Qt.createComponent(source);
-                            window.nextPage( nextPage );
-                        }
+                    onClicked: {
+                        window.nextPage(Qt.createComponent(source));
                     }
                 }
 
