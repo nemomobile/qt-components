@@ -24,25 +24,21 @@
 **
 ****************************************************************************/
 
-#include <QtDeclarative>
+#ifndef QGLOBALENUMS_H
+#define QGLOBALENUMS_H
 
-#include "qbuttonmodel.h"
-#include "qrangemodel.h"
-#include "qglobalenums.h"
+#include <QtCore/qobject.h>
+#include <QtDeclarative/qdeclarative.h>
+#include <kernel/common.h>
 
-class QtComponentsPlugin : public QDeclarativeExtensionPlugin
+class Q_COMPONENTS_EXPORT QOrientation : public QObject
 {
     Q_OBJECT
-
+    Q_ENUMS(Orientation)
 public:
-    void registerTypes(const char *uri) {
-        Q_ASSERT(uri == QLatin1String("Qt.labs.components"));
-        qmlRegisterType<QOrientation>(uri, 1, 0, "Orientation");
-        qmlRegisterType<QButtonModel>(uri, 1, 0, "ButtonModel");
-        qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
-    }
+    enum Orientation { Undefined, Left, Top, Right, Bottom };
 };
 
-#include "plugin.moc"
+QML_DECLARE_TYPE(QOrientation)
 
-Q_EXPORT_PLUGIN2(qtcomponentsplugin, QtComponentsPlugin);
+#endif // QGLOBALENUMS_H

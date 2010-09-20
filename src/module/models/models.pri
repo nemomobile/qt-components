@@ -4,7 +4,8 @@ HEADERS += models/qbuttonmodel.h \
 #    models/qdatetimemodel_p.h \
     models/qrangemodel.h \
     models/qrangemodel_p.h \
+    models/qglobalenums.h \
 
 SOURCES += models/qbuttonmodel.cpp \
 #    models/qdatetimemodel.cpp \
-    models/qrangemodel.cpp
+    models/qrangemodel.cpp \

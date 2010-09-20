@@ -26,6 +26,7 @@
 
 import Qt 4.7
 import com.meego 1.0
+import Qt.labs.components 1.0
 
 Item {
     id: root
@@ -77,6 +78,8 @@ Item {
         anchors.bottom: sliderGrid.bottom
         anchors.right: parent.right
         anchors.rightMargin: 30
+
+        indicatorPosition: Orientation.Left
 
         minimumValue: -2
         maximumValue: 5

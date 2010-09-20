@@ -40,6 +40,7 @@ Item {
     property alias maximumValue: valueModel.maximumValue
     property alias progress: receivedModel.value
     property alias steps: valueModel.steps
+    property int indicatorPosition: QtComponents.Orientation.Top
 
     property real innerLeftMargin: style.current.get("marginLeft")
     property real innerRightMargin: style.current.get("marginRight")
@@ -212,8 +213,36 @@ Item {
         id: indicatorBackground
         style: labelStyle
         imageProperty: "backgroundImage"
-        x: handlePixmap.x - (width - handlePixmap.width)/2
-        y: handlePixmap.y - height
+        x: {
+            switch (indicatorPosition) {
+            case QtComponents.Orientation.Left:
+                return handlePixmap.x - width
+                break;
+            case QtComponents.Orientation.Top:
+            case QtComponents.Orientation.Bottom:
+            case QtComponents.Orientation.Undefined:
+                return handlePixmap.x - (width - handlePixmap.width)/2
+                break;
+            case QtComponents.Orientation.Right:
+                return handlePixmap.x + handlePixmap.width;
+                break;
+            }
+        }
+        y: {
+            switch (indicatorPosition) {
+            case QtComponents.Orientation.Left:
+            case QtComponents.Orientation.Right:
+                return handlePixmap.y - (height - handlePixmap.height)/2
+                break;
+            case QtComponents.Orientation.Top:
+            case QtComponents.Orientation.Undefined:
+                return handlePixmap.y - height
+                break;
+            case QtComponents.Orientation.Bottom:
+                return handlePixmap.y + handlePixmap.height;
+                break;
+            }
+        }
 
         ThemeBridge.Style {
             id: labelStyle
