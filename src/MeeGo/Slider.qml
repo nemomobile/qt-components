@@ -40,7 +40,7 @@ Item {
     property alias maximumValue: valueModel.maximumValue
     property alias progress: receivedModel.value
     property alias steps: valueModel.steps
-    property int indicatorPosition: QtComponents.Orientation.Top
+    property int indicatorPosition: vertical ? QtComponents.Orientation.Left : QtComponents.Orientation.Top
 
     property real innerLeftMargin: style.current.get("marginLeft")
     property real innerRightMargin: style.current.get("marginRight")
@@ -213,36 +213,29 @@ Item {
         id: indicatorBackground
         style: labelStyle
         imageProperty: "backgroundImage"
-        x: {
-            switch (indicatorPosition) {
-            case QtComponents.Orientation.Left:
-                return handlePixmap.x - width
-                break;
-            case QtComponents.Orientation.Top:
-            case QtComponents.Orientation.Bottom:
-            case QtComponents.Orientation.Undefined:
-                return handlePixmap.x - (width - handlePixmap.width)/2
-                break;
-            case QtComponents.Orientation.Right:
-                return handlePixmap.x + handlePixmap.width;
-                break;
+
+        states: [
+            State {
+                when: indicatorPosition == QtComponents.Orientation.Left
+                PropertyChanges { target: indicatorBackground; x: handlePixmap.x - width }
+                PropertyChanges { target: indicatorBackground; y: handlePixmap.y - (height - handlePixmap.height)/2 }
+            },
+            State {
+                when: indicatorPosition == QtComponents.Orientation.Top || indicatorPosition == QtComponents.Orientation.Undefined
+                PropertyChanges { target: indicatorBackground; x: handlePixmap.x - (width - handlePixmap.width)/2 }
+                PropertyChanges { target: indicatorBackground; y: handlePixmap.y - height }
+            },
+            State {
+                when: indicatorPosition == QtComponents.Orientation.Right
+                PropertyChanges { target: indicatorBackground; x: handlePixmap.x + handlePixmap.width }
+                PropertyChanges { target: indicatorBackground; y: handlePixmap.y - (height - handlePixmap.height)/2 }
+            },
+            State {
+                when: indicatorPosition == QtComponents.Orientation.Bottom
+                PropertyChanges { target: indicatorBackground; x: handlePixmap.x - (width - handlePixmap.width)/2 }
+                PropertyChanges { target: indicatorBackground; y: handlePixmap.y + handlePixmap.height }
             }
-        }
-        y: {
-            switch (indicatorPosition) {
-            case QtComponents.Orientation.Left:
-            case QtComponents.Orientation.Right:
-                return handlePixmap.y - (height - handlePixmap.height)/2
-                break;
-            case QtComponents.Orientation.Top:
-            case QtComponents.Orientation.Undefined:
-                return handlePixmap.y - height
-                break;
-            case QtComponents.Orientation.Bottom:
-                return handlePixmap.y + handlePixmap.height;
-                break;
-            }
-        }
+        ]
 
         ThemeBridge.Style {
             id: labelStyle

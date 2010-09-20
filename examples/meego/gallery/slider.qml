@@ -79,8 +79,6 @@ Item {
         anchors.right: parent.right
         anchors.rightMargin: 30
 
-        indicatorPosition: Orientation.Left
-
         minimumValue: -2
         maximumValue: 5
         vertical: true
