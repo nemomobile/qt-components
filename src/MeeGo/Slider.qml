@@ -41,24 +41,19 @@ Item {
     property alias progress: receivedModel.value
     property alias steps: valueModel.steps
 
-    property bool handleDragging: grooveMouseArea.drag.active
-    property bool handlePressed: grooveMouseArea.pressed
-
-    // restrictedDragging means that the handle
-    // should snap to steps _while_ dragging
-    property bool restrictedDragging: false
-
     property real innerLeftMargin: style.current.get("marginLeft")
     property real innerRightMargin: style.current.get("marginRight")
     property real innerTopMargin: style.current.get("marginTop")
     property real innerBottomMargin: style.current.get("marginBottom")
 
-    width: innerLeftMargin + innerRightMargin + (vertical ? groove.width : style.current.get("groovePreferredLength"))
-    height: innerTopMargin + innerBottomMargin + (vertical ? style.current.get("groovePreferredLength") : groove.height)
+    property bool pressed: grooveMouseArea.pressed
 
     signal valueChanged(real value)
-    signal handlePressed
-    signal handleReleased
+    signal pressed
+    signal released
+
+    width: innerLeftMargin + innerRightMargin + (vertical ? groove.width : style.current.get("groovePreferredLength"))
+    height: innerTopMargin + innerBottomMargin + (vertical ? style.current.get("groovePreferredLength") : groove.height)
 
     QtComponents.RangeModel {
         // This model describes the range of values the slider can take
@@ -157,16 +152,16 @@ Item {
         }
 
         MouseArea {
-            function conformToRange(v) {
-                return Math.min(valueModel.positionAtMaximum - (handlePixmap.width/2),
-                         Math.max(valueModel.positionAtMinimum - (handlePixmap.width/2),
-                                  v - handlePixmap.width));
-            }
-
             id: grooveMouseArea
-            // We get empty values when asking for reactive margins from the style.
-            // So for now, use the size of the handle instead:
-            property bool dragging: false;
+            // RestrictedDragging means that the handle
+            // should snap to steps _while_ dragging. This property is hidden
+            // inside here as we see this as a style decition:
+            property bool restrictedDragging: false
+
+            // 'dragging' will be set to true when the user
+            // is dragging on the the slider:
+            property bool dragging: false
+
             anchors.verticalCenter: groove.verticalCenter
             anchors.horizontalCenter: groove.horizontalCenter
             width: handlePixmap.width + (vertical ? 0 : groove.width)
@@ -181,6 +176,7 @@ Item {
                     handlePixmap.x = restrictedDragging ?
                                 valueModel.position - (handlePixmap.width / 2) : conformToRange(mouseX);
                 }
+                root.pressed();
             }
             onPositionChanged: {
                 dragging = true;
@@ -201,8 +197,14 @@ Item {
                 } else {
                     handlePixmap.x = valueModel.position - (handlePixmap.width / 2)
                 }
+                root.released();
             }
 
+            function conformToRange(v) {
+                return Math.min(valueModel.positionAtMaximum - (handlePixmap.width/2),
+                         Math.max(valueModel.positionAtMinimum - (handlePixmap.width/2),
+                                  v - handlePixmap.width));
+            }
         }
      }
 

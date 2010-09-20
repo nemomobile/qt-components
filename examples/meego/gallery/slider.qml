@@ -56,16 +56,14 @@ Item {
         anchors.rightMargin: 30
 
         columns: 2
-        spacing: 60
+        spacing: 100
 
         Text { text: "Normal"}
-        Slider { id: red; maximumValue: 255; value: 150; onValueChanged: text.set(value); onHandlePressed: text.set(value)}
-        Text { text: "Steps (always)"}
-        Slider { id: c; maximumValue: 12; steps:3; restrictedDragging: true; onValueChanged: text.set(value); onHandlePressed: text.set(value)}
-        Text { text: "Steps (on release)" }
-        Slider { maximumValue: 10; steps:5; onValueChanged: text.set(value); onHandlePressed: text.set(value)}
+        Slider { id: red; maximumValue: 255; value: 150; onValueChanged: text.set(value); onPressed: text.set(value)}
+        Text { text: "Steps"}
+        Slider { maximumValue: 10; steps:5; onValueChanged: text.set(value); onPressed: text.set(value)}
         Text { text: "Progress" }
-        Slider { id: stream; maximumValue: 300; onValueChanged: text.set(value); onHandlePressed: text.set(value)
+        Slider { id: stream; maximumValue: 300; onValueChanged: text.set(value); onPressed: text.set(value)
             Timer {
                 interval: 100; running: true; repeat: true
                 onTriggered: if (++stream.progress == stream.maximumValue) stream.progress = 0
@@ -86,7 +84,7 @@ Item {
         steps: 0
         progress: minimumValue
         onValueChanged: text.set(value)
-        onHandlePressed: text.set(value)
+        onPressed: text.set(value)
     }
 
 }
