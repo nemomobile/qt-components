@@ -131,6 +131,7 @@ Item {
     Item {
         id: pages
         anchors.fill: parent
+        anchors.topMargin: autoScroll
     }
 
     Component {
@@ -177,6 +178,7 @@ Item {
     WindowDecoration {
         id: decoration
         anchors.fill: parent
+        anchors.topMargin: autoScroll
 
         orientation: screen.orientation
         statusbarVisible: !window.fullscreen && window.statusbarVisible
@@ -192,6 +194,11 @@ Item {
     Connections {
         target: screen
         onMicroFocusChanged: { scrollPageIfRequired() }
+    }
+
+    Connections {
+        target: screen
+        onSoftwareInputPanelVisibleChanged: { scrollPageIfRequired() }
     }
 
     function scrollPageIfRequired() {
