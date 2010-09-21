@@ -36,6 +36,7 @@ Item {
     signal queryAnswered(string button)
 
     function appear(title, message, callback) {
+        root.visible = true
         Private.appear(queryPanel, title, message, callback);
     }
 
@@ -158,6 +159,7 @@ Item {
                         script: {
                             Private.queryAnswered(queryPanel.lastButtonClicked);
                             root.queryAnswered(queryPanel.lastButtonClicked);
+                            root.visible = false
                         }
                     }
                 }
