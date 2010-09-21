@@ -40,7 +40,9 @@ Item {
     property alias maximumValue: valueModel.maximumValue
     property alias progress: receivedModel.value
     property alias steps: valueModel.steps
+
     property int indicatorPosition: vertical ? QtComponents.Orientation.Left : QtComponents.Orientation.Top
+    property bool indicatorVisible: true
 
     property real innerLeftMargin: style.current.get("marginLeft")
     property real innerRightMargin: style.current.get("marginRight")
@@ -247,15 +249,15 @@ Item {
             // In the native meegotouch slider, the indicator
             // pops up 100ms after pressing the handle:
             id: indicatorTimer
-            running: grooveMouseArea.pressed
+            running: grooveMouseArea.pressed && indicatorVisible
             interval: 100;
-            onTriggered: indicatorBackground.visible = grooveMouseArea.pressed
+            onTriggered: indicatorBackground.visible = grooveMouseArea.pressed && indicatorVisible
         }
         Binding {
             // ...but the indicator hides immidiatly:
             target: indicatorBackground
             property: "visible"
-            value: grooveMouseArea.pressed
+            value: grooveMouseArea.pressed && indicatorVisible
             when: indicatorBackground.visible
         }
 
