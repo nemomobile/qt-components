@@ -54,7 +54,7 @@ function addAction(a, actions) {
 }
 
 function setActionsForApp(actions) {
-    removeActions(appActions, toolbarContents);
+    removeActions(appActions);
     appActions = [];
 
     var i;
@@ -70,7 +70,7 @@ function setActionsForApp(actions) {
 }
 
 function setActionsForPage(actions) {
-    removeActions(pageActions, toolbarContents);
+    removeActions(pageActions);
     pageActions = [];
 
     var i;
