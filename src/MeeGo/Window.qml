@@ -51,9 +51,9 @@ Item {
         decoration.showQuery(title, message, callback)
     }
 
-//    Behavior on autoScroll {
-//        NumberAnimation { easing.type: Easing.InOutQuad; duration: 200 }
-//    }
+    Behavior on autoScroll {
+        NumberAnimation { easing.type: Easing.InOutQuad; duration: 200 }
+    }
 
     Snapshot {
         id: snapshot
