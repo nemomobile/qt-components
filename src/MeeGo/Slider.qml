@@ -43,6 +43,8 @@ Item {
 
     property int indicatorPosition: vertical ? QtComponents.Orientation.Left : QtComponents.Orientation.Top
     property bool indicatorVisible: true
+    property string indicatorLabel: Math.round(valueModel.value * Math.pow(10, 1))/Math.pow(10, 1)
+    property real indicatorLabelWidth: 0
 
     property real innerLeftMargin: style.current.get("marginLeft")
     property real innerRightMargin: style.current.get("marginRight")
@@ -221,21 +223,33 @@ Item {
                 when: indicatorPosition == QtComponents.Orientation.Left
                 PropertyChanges { target: indicatorBackground; x: handlePixmap.x - width }
                 PropertyChanges { target: indicatorBackground; y: handlePixmap.y - (height - handlePixmap.height)/2 }
+                PropertyChanges { target: indicatorArrow; imageProperty: "handleLabelArrowRightPixmap" }
+                AnchorChanges { target: indicatorArrow; anchors.left: indicatorBackground.right }
+                AnchorChanges { target: indicatorArrow; anchors.verticalCenter: indicatorBackground.verticalCenter }
             },
             State {
                 when: indicatorPosition == QtComponents.Orientation.Top || indicatorPosition == QtComponents.Orientation.Undefined
                 PropertyChanges { target: indicatorBackground; x: handlePixmap.x - (width - handlePixmap.width)/2 }
                 PropertyChanges { target: indicatorBackground; y: handlePixmap.y - height }
+                PropertyChanges { target: indicatorArrow; imageProperty: "handleLabelArrowDownPixmap" }
+                AnchorChanges { target: indicatorArrow; anchors.top: indicatorBackground.bottom }
+                AnchorChanges { target: indicatorArrow; anchors.horizontalCenter: indicatorBackground.horizontalCenter }
             },
             State {
                 when: indicatorPosition == QtComponents.Orientation.Right
                 PropertyChanges { target: indicatorBackground; x: handlePixmap.x + handlePixmap.width }
                 PropertyChanges { target: indicatorBackground; y: handlePixmap.y - (height - handlePixmap.height)/2 }
+                PropertyChanges { target: indicatorArrow; imageProperty: "handleLabelArrowLeftPixmap" }
+                AnchorChanges { target: indicatorArrow; anchors.right: indicatorBackground.left }
+                AnchorChanges { target: indicatorArrow; anchors.verticalCenter: indicatorBackground.verticalCenter }
             },
             State {
                 when: indicatorPosition == QtComponents.Orientation.Bottom
                 PropertyChanges { target: indicatorBackground; x: handlePixmap.x - (width - handlePixmap.width)/2 }
                 PropertyChanges { target: indicatorBackground; y: handlePixmap.y + handlePixmap.height }
+                PropertyChanges { target: indicatorArrow; imageProperty: "handleLabelArrowUpPixmap" }
+                AnchorChanges { target: indicatorArrow; anchors.bottom: indicatorBackground.top }
+                AnchorChanges { target: indicatorArrow; anchors.horizontalCenter: indicatorBackground.horizontalCenter }
             }
         ]
 
@@ -243,6 +257,7 @@ Item {
             id: labelStyle
             styleClass: "MLabelStyle"
             styleObjectName: "MSliderHandleLabel"
+            property variant font: labelStyle.current.get("font")
         }
 
         Timer {
@@ -261,19 +276,49 @@ Item {
             when: indicatorBackground.visible
         }
 
+        ThemeBridge.Pixmap {
+            id: indicatorArrow
+            style: style
+        }
+
         Text {
             id: indicatorText
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.verticalCenter: parent.verticalCenter
-            text: Math.round(valueModel.value * Math.pow(10, 1))/Math.pow(10, 1)
+            anchors.horizontalCenter: indicatorBackground.horizontalCenter
+            anchors.verticalCenter: indicatorBackground.verticalCenter
+            horizontalAlignment: Text.AlignLeft
 
-            // Set the width of indicatorBackground explicit circular
-            // dependency (since we only allow the width to grow):
-            onWidthChanged: indicatorBackground.width =
-                            Math.max(indicatorBackground.width, width
-                                     + labelStyle.current.get("paddingLeft")
-                                     + labelStyle.current.get("paddingRight"))
+            text: root.indicatorLabel
+            font.bold: labelStyle.font.bold
+            font.capitalization: labelStyle.font.capitalization
+            font.family: labelStyle.font.family
+            font.italic: labelStyle.font.italic
+            font.letterSpacing: labelStyle.font.letterSpacing
+            font.pixelSize: labelStyle.font.pixelSize
+            font.weight: labelStyle.font.weight
+            font.wordSpacing: labelStyle.font.wordSpacing
+            color: labelStyle.current.get("color")
+
+            // Set width inside a state so we don't overwrite
+            // the default behaviour (width of text) if indicatorLabelWidth is not set:
+            states: State {
+                when: root.indicatorLabelWidth > 0
+                PropertyChanges { target: indicatorText; width: root.indicatorLabelWidth }
+            }
+
+            // Set the width of indicatorBackground explicit to avoid circular
+            // dependency (since the calculation depends on the old width):
+            onWidthChanged:
+                if (root.indicatorLabelWidth == 0) {
+                    indicatorBackground.width = Math.max(indicatorBackground.width, width
+                            + labelStyle.current.get("paddingLeft")
+                            + labelStyle.current.get("paddingRight"))
+                } else {
+                    indicatorBackground.width = width
+                            + labelStyle.current.get("paddingLeft")
+                            + labelStyle.current.get("paddingRight")
+                }
         }
     }
+
 
 }
