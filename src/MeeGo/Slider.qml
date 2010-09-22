@@ -280,22 +280,13 @@ Item {
             style: style
         }
 
-        Text {
+        Label {
             id: indicatorText
             anchors.left: indicatorBackground.left
             anchors.leftMargin: labelStyle.current.get("paddingLeft")
             anchors.verticalCenter: indicatorBackground.verticalCenter
-
+            styleObjectName: "MSliderHandleLabel"
             text: root.indicatorLabel
-            font.bold: labelStyle.font.bold
-            font.capitalization: labelStyle.font.capitalization
-            font.family: labelStyle.font.family
-            font.italic: labelStyle.font.italic
-            font.letterSpacing: labelStyle.font.letterSpacing
-            font.pixelSize: labelStyle.font.pixelSize
-            font.weight: labelStyle.font.weight
-            font.wordSpacing: labelStyle.font.wordSpacing
-            color: labelStyle.current.get("color")
 
             // Set the width of indicatorBackground explicit to avoid circular
             // dependency (since the calculation depends on the old width):
@@ -303,6 +294,7 @@ Item {
                             + labelStyle.current.get("paddingLeft")
                             + labelStyle.current.get("paddingRight"))
         }
+
     }
 
 
