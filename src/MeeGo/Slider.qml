@@ -44,7 +44,6 @@ Item {
     property int indicatorPosition: vertical ? QtComponents.Orientation.Left : QtComponents.Orientation.Top
     property bool indicatorVisible: true
     property string indicatorLabel: Math.round(valueModel.value * Math.pow(10, 1))/Math.pow(10, 1)
-    property real indicatorLabelWidth: 0
 
     property real innerLeftMargin: style.current.get("marginLeft")
     property real innerRightMargin: style.current.get("marginRight")
@@ -283,9 +282,9 @@ Item {
 
         Text {
             id: indicatorText
-            anchors.horizontalCenter: indicatorBackground.horizontalCenter
+            anchors.left: indicatorBackground.left
+            anchors.leftMargin: labelStyle.current.get("paddingLeft")
             anchors.verticalCenter: indicatorBackground.verticalCenter
-            horizontalAlignment: Text.AlignLeft
 
             text: root.indicatorLabel
             font.bold: labelStyle.font.bold
@@ -298,25 +297,11 @@ Item {
             font.wordSpacing: labelStyle.font.wordSpacing
             color: labelStyle.current.get("color")
 
-            // Set width inside a state so we don't overwrite
-            // the default behaviour (width of text) if indicatorLabelWidth is not set:
-            states: State {
-                when: root.indicatorLabelWidth > 0
-                PropertyChanges { target: indicatorText; width: root.indicatorLabelWidth }
-            }
-
             // Set the width of indicatorBackground explicit to avoid circular
             // dependency (since the calculation depends on the old width):
-            onWidthChanged:
-                if (root.indicatorLabelWidth == 0) {
-                    indicatorBackground.width = Math.max(indicatorBackground.width, width
+            onWidthChanged: indicatorBackground.width = Math.max(indicatorBackground.width, width
                             + labelStyle.current.get("paddingLeft")
                             + labelStyle.current.get("paddingRight"))
-                } else {
-                    indicatorBackground.width = width
-                            + labelStyle.current.get("paddingLeft")
-                            + labelStyle.current.get("paddingRight")
-                }
         }
     }
 

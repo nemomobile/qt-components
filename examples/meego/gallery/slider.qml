@@ -66,7 +66,6 @@ Item {
         Text { text: "Progress" }
         Slider { id: stream; maximumValue: 300; onValueChanged: text.set(value); onPressed: text.set(value)           
             indicatorLabel: Math.floor(value/60) + ":" + value%60
-            indicatorLabelWidth: 200
             Timer {
                 interval: 100; running: true; repeat: true
                 onTriggered: if (++stream.progress == stream.maximumValue) stream.progress = 0
