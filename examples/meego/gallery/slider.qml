@@ -65,7 +65,14 @@ Item {
         Slider { maximumValue: 10; steps:5; onValueChanged: text.set(value); onPressed: text.set(value)}
         Text { text: "Progress" }
         Slider { id: stream; maximumValue: 300; onValueChanged: text.set(value); onPressed: text.set(value)           
-            indicatorLabel: Math.floor(value/60) + ":" + value%60
+            function formatTime(timeValue)
+            {
+                var sec = '' + value%60
+                if (sec.length == 1)
+                    sec = "0" + sec;
+                return Math.floor(value/60) + ":" + sec
+            }
+            indicatorLabel: formatTime(value)
             Timer {
                 interval: 100; running: true; repeat: true
                 onTriggered: if (++stream.progress == stream.maximumValue) stream.progress = 0
