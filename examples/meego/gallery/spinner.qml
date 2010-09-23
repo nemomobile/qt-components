@@ -31,38 +31,45 @@ Item {
     width: 400
     height: 400
 
-    Spinner {
-        id: spinner
-        x: 10
-        y: 10
-        unknownDuration: toggleUnknown.checked
-        value: progress.checkedButton ? progress.checkedButton.text : 0
-    }
+    Column {
+        x: 50
+        y: 25
 
-    Button {
-        id: toggleUnknown
-        anchors.top: spinner.top
-        anchors.left: spinner.right
-        anchors.leftMargin: 40
+        spacing: 100
 
-        width: 200
-        checkable: true
-        text: "Unknown"
-    }
+        Row {
+            spacing: 15
 
-    // ### Poor man's slider ;-), replace with a real Slider when it's done.
-    ButtonRow {
-        id: progress
-        anchors.top: spinner.bottom
-        anchors.topMargin: 40
-        anchors.left: spinner.left
-        anchors.right: parent.right
-        Repeater {
-            model: [0, 20, 40, 60, 80, 100]
-            Button {
-                text: modelData
-                width: progress.width / progress.children.length
+            ButtonRow {
+                groupType: "Many"
+
+                Button {
+                    id: toggleUnknown
+                    text: "Unknown"
+                }
+
+                Button {
+                    id: smallStyle
+                    text: "Small style"
+                }
             }
+
+            Spinner {
+                id: spinner
+                unknownDuration: toggleUnknown.checked
+                value: slider.value
+                __styleParentClass: smallStyle.checked ? "MContainerHeader" : ""
+            }
+        }
+
+        Slider {
+            id: slider
+
+            width: 300
+            visible: !toggleUnknown.checked
+
+            minimumValue: 0
+            maximumValue: 100
         }
     }
 }

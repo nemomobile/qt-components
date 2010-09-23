@@ -38,6 +38,7 @@ ImplicitSizeItem {
     property alias maximum: progressModel.maximumValue
     property alias value: progressModel.value
     property bool unknownDuration: false
+    property alias __styleParentClass: meegostyle.styleParentClass
 
     implicitWidth: meegostyle.preferredWidth
     implicitHeight: meegostyle.preferredHeight
