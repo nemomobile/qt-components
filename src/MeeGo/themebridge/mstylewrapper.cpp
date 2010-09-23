@@ -124,6 +124,21 @@ void MStyleWrapper::setStyleObjectName(const QString &styleObjectName)
     emit styleObjectNameChanged();
 }
 
+QString MStyleWrapper::styleParentClass() const
+{
+    return m_styleParentClass;
+}
+
+void MStyleWrapper::setStyleParentClass(const QString &styleParentClass)
+{
+    if (styleParentClass == m_styleParentClass)
+        return;
+    m_styleParentClass = styleParentClass;
+
+    updateStyle();
+    emit styleParentClassChanged();
+}
+
 const MStyle *MStyleWrapper::currentStyle() const
 {
     M::Orientation orientation = currentOrientation();
@@ -144,8 +159,18 @@ const MStyle *MStyleWrapper::currentStyle() const
     } else {
         // MTheme::style() assumes that the name of the style class will actually exist.
         if (MClassFactory::instance()->styleMetaObject(m_styleClass.toAscii().constData())) {
+            QList<QStringList> parentClassNames;
+            if (!m_styleParentClass.isEmpty()) {
+                // ### Works for simple cases in themes we use. For complete coverage
+                // each string list need to have the entire hierarchy of the class. We
+                // don't have dynamic access to that information (we don't want to create
+                // controllers for libmeegotouch widgets), so if we need to implement
+                // that, we'll need a map class -> hierarchy list.
+                parentClassNames.append(QStringList(m_styleParentClass));
+            }
+
             style = MTheme::style(m_styleClass.toAscii().constData(), m_styleObjectName,
-                                  m_mode, m_styleType, orientation, 0);
+                                  m_mode, m_styleType, orientation, parentClassNames, QString());
             wrapper->m_cachedStyles[orientation].insert(m_mode, style);
         } else {
             qWarning("MStyleWrapper::currentStyle: could not find style class '%s'.",

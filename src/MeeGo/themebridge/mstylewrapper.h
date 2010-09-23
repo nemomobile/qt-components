@@ -44,6 +44,7 @@ class MStyleWrapper : public QObject
     Q_PROPERTY(QString styleClass READ styleClass WRITE setStyleClass NOTIFY styleClassChanged)
     Q_PROPERTY(QString styleType READ styleType WRITE setStyleType NOTIFY styleTypeChanged)
     Q_PROPERTY(QString styleObjectName READ styleObjectName WRITE setStyleObjectName NOTIFY styleObjectNameChanged)
+    Q_PROPERTY(QString styleParentClass READ styleParentClass WRITE setStyleParentClass NOTIFY styleParentClassChanged)
 
     // We want to export the currentStyle as a plain QObject. QML can use
     // its properties to get the style data.
@@ -70,6 +71,9 @@ public:
     QString styleObjectName() const;
     void setStyleObjectName(const QString &styleObjectName);
 
+    QString styleParentClass() const;
+    void setStyleParentClass(const QString &styleParentClass);
+
     const MStyle *currentStyle() const;
     QObject *currentStyleAsObject();
 
@@ -83,6 +87,7 @@ Q_SIGNALS:
     void styleClassChanged();
     void styleTypeChanged();
     void styleObjectNameChanged();
+    void styleParentClassChanged();
 
     void currentStyleChanged();
 
@@ -99,6 +104,7 @@ private:
     QString m_styleClass;
     QString m_styleType;
     QString m_styleObjectName;
+    QString m_styleParentClass;
 
     const MStyle *m_currentStyle[2];
     QHash<QString, const MStyle *> m_cachedStyles[2];
