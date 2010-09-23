@@ -90,6 +90,10 @@ void MDeclarativePixmap::paint(QPainter *painter, const QStyleOptionGraphicsItem
     if (!m_pixmap)
         return;
 
-    painter->drawPixmap(boundingRect().toRect(), *m_pixmap);
+    QRectF rectf = boundingRect();
+    if (rectf.isEmpty())
+        return;
+
+    painter->drawPixmap(rectf.toRect(), *m_pixmap);
 }
 

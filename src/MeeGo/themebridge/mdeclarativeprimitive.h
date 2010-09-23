@@ -27,12 +27,12 @@
 #ifndef MDECLARATIVEPRIMITIVE_H
 #define MDECLARATIVEPRIMITIVE_H
 
-#include <QDeclarativeItem>
+#include "mdeclarativeimplicitsizeitem.h"
 
 class MStyle;
 class MStyleWrapper;
 
-class MDeclarativePrimitive : public QDeclarativeItem
+class MDeclarativePrimitive : public MDeclarativeImplicitSizeItem
 {
     Q_OBJECT
 

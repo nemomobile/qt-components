@@ -90,9 +90,13 @@ bool MDeclarativePiePixmap::hasPendingPixmap() {
 
 void MDeclarativePiePixmap::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
+    QRectF rectf = boundingRect();
+    if (rectf.isEmpty())
+        return;
+
     if (m_pieBrush.style() != Qt::NoBrush) {
         painter->setBrush(m_pieBrush);
         painter->setPen(m_piePen);
-        painter->drawPie(boundingRect().toRect(), m_startAngle * 16, m_spanAngle * 16);
+        painter->drawPie(rectf.toRect(), m_startAngle * 16, m_spanAngle * 16);
     }
 }

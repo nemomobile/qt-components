@@ -111,8 +111,8 @@ Item {
             anchors.left: groove.left
             anchors.bottom: vertical ? undefined : groove.bottom
             anchors.right: vertical ? groove.right : undefined
-            width: vertical ? undefined : receivedModel.position
-            height: vertical ? receivedModel.position : undefined
+            width: vertical ? implicitWidth : receivedModel.position
+            height: vertical ? receivedModel.position : implicitHeight
         }
 
         ThemeBridge.ScalableImage {

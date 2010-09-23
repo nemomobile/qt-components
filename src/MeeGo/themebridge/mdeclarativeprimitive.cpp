@@ -31,7 +31,7 @@
 #include <MWidgetStyle>
 
 MDeclarativePrimitive::MDeclarativePrimitive(QDeclarativeItem *parent) :
-    QDeclarativeItem(parent), m_style(0), m_pendingPixmap(0)
+    MDeclarativeImplicitSizeItem(parent), m_style(0), m_pendingPixmap(0)
 {
     setFlag(QGraphicsItem::ItemHasNoContents, false);
 }
