@@ -91,11 +91,11 @@ void MDeclarativeScalableImage::paint(QPainter *painter, const QStyleOptionGraph
     if (!m_image)
         return;
 
-    QRectF rectf = boundingRect();
-    if (rectf.isEmpty())
+    QRect rect = boundingRect().toRect();
+    if (rect.isEmpty())
         return;
 
     // XXX respect minimum size here...
-    m_image->draw(rectf.toRect(), painter);
+    m_image->draw(rect, painter);
 }
 
