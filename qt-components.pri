@@ -1,5 +1,6 @@
 INCLUDEPATH += $$PWD/src/lib $$PWD/src/module $$PWD/src/module/models
-!build_lib:LIBS += -L$$PWD/lib -lQtComponents
+TEMPLATE = lib ## hack to make qtLibraryTarget work
+!build_lib:LIBS += -L$$PWD/lib -l$$qtLibraryTarget(QtComponents)
 
 unix {
     OBJECTS_DIR = .obj

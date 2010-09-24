@@ -1,7 +1,10 @@
 include (../../qt-components.pri)
 
+TARGETPATH = Qt/labs/components
 TEMPLATE = lib
-TARGET = qtcomponentsplugin
+TARGET = $$qtLibraryTarget(qtcomponentsplugin)
+DESTDIR = $$PWD # we put the library there so that the autotests can link
+
 CONFIG += qt plugin
 QT += declarative
 
@@ -19,8 +22,6 @@ QML_FILES += \
     Checkable.qml \
     CheckableGroup.qml \
     CheckableGroup.js
-
-TARGETPATH = Qt/labs/components
 
 target.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH
 

@@ -1,6 +1,6 @@
 
 TEMPLATE = lib
-TARGET = meegoplugin
+TARGET = $$qtLibraryTarget(meegoplugin)
 CONFIG += qt plugin meego
 QT += declarative dbus
 

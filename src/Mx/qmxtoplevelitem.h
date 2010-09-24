@@ -32,7 +32,7 @@
 #include <kernel/common.h>
 
 class QMxTopLevelItemPrivate;
-class Q_COMPONENTS_EXPORT QMxTopLevelItem : public QDeclarativeItem
+class QMxTopLevelItem : public QDeclarativeItem
 {
     Q_OBJECT
     Q_PROPERTY(bool keepInside READ keepInside WRITE setKeepInside NOTIFY keepInsideChanged);

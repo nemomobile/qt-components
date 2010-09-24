@@ -32,7 +32,7 @@
 #include <kernel/common.h>
 
 //QDI so we're in the scene and associated with a window
-class Q_COMPONENTS_EXPORT QMxWindow : public QDeclarativeItem
+class QMxWindow : public QDeclarativeItem
 {
 
     Q_OBJECT

@@ -1,5 +1,5 @@
 TEMPLATE = lib
-TARGET = QtComponents
+TARGET = $$qtLibraryTarget(QtComponents)
 
 DESTDIR = $$OUT_PWD/../../lib
 

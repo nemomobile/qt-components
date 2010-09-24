@@ -31,7 +31,7 @@
 
 #include <kernel/common.h>
 
-class Q_COMPONENTS_EXPORT QMxButtonGroup : public QDeclarativeItem
+class QMxButtonGroup : public QDeclarativeItem
 {
     Q_OBJECT
 

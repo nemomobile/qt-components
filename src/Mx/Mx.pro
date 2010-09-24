@@ -1,7 +1,7 @@
 include (../../qt-components.pri)
 
 TEMPLATE = lib
-TARGET = mxplugin
+TARGET = $$qtLibraryTarget(mxplugin)
 CONFIG += qt plugin
 QT += declarative
 
