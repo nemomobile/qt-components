@@ -1,6 +1,6 @@
+include(../../../qt-components.pri)
 TEMPLATE = app
 QT += declarative
-include(../../../qt-components.pri)
 
 # Input
 SOURCES += main.cpp
