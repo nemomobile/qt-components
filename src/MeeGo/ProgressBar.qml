@@ -139,7 +139,7 @@ ImplicitSizeItem {
                 property: "x"
                 property int maxValue: background.width - __unknownBarWidth - 1
                 from: 0; to: maxValue
-                duration: oscillatingAnimation.baseDuration * maxValue
+                duration: Math.max(0, oscillatingAnimation.baseDuration * maxValue)
             }
             PropertyAction {
                 target: bar; property: "x"; value: 0
