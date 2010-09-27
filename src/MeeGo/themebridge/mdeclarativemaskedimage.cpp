@@ -33,7 +33,7 @@
 Q_DECLARE_METATYPE(const MScalableImage *)
 
 MDeclarativeMaskedImage::MDeclarativeMaskedImage(QDeclarativeItem *parent) :
-    MDeclarativePrimitive(parent), m_image(0), m_mask(0)
+    MDeclarativePrimitive(parent), m_image(0), m_mask(0), m_isTiled(false), m_isFullWidth(false)
 {
 }
 
@@ -86,6 +86,34 @@ void MDeclarativeMaskedImage::setImageProperty(const QString &imageProperty)
 QString MDeclarativeMaskedImage::maskProperty() const
 {
     return m_maskProperty;
+}
+
+bool MDeclarativeMaskedImage::isTiled() const
+{
+    return m_isTiled;
+}
+
+void MDeclarativeMaskedImage::setIsTiled(bool tiled)
+{
+    if (m_isTiled == tiled)
+        return;
+
+    m_isTiled = tiled;
+    update();
+}
+
+bool MDeclarativeMaskedImage::isFullWidth() const
+{
+    return m_isFullWidth;
+}
+
+void MDeclarativeMaskedImage::setIsFullWidth(bool isFullWidth)
+{
+    if (m_isFullWidth == isFullWidth)
+        return;
+
+    m_isFullWidth = isFullWidth;
+    update();
 }
 
 void MDeclarativeMaskedImage::setMaskProperty(const QString &maskProperty)
@@ -149,8 +177,16 @@ void MDeclarativeMaskedImage::paint(QPainter *painter, const QStyleOptionGraphic
         return;
 
     QPainter p(m_buffer.data());
+    QRect bufferRect(m_imageOffset, m_buffer.data()->size());
     p.setCompositionMode(QPainter::CompositionMode_SourceIn);
-    m_image->draw(QRect(m_imageOffset, m_image->pixmap()->size()), &p);
+    if (m_isTiled) {
+        if (m_isFullWidth)
+            p.drawTiledPixmap(QRect(QPoint(), m_buffer.data()->size()), *m_image->pixmap(), -m_imageOffset);
+        else
+            p.drawTiledPixmap(bufferRect, *m_image->pixmap());
+    } else {
+        m_image->draw(bufferRect, &p);
+    }
 
     // Blit offscreen buffer on the screen
     painter->drawImage(QPoint(), *m_buffer);

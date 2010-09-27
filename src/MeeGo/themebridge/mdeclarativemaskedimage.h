@@ -39,6 +39,8 @@ class MDeclarativeMaskedImage : public MDeclarativePrimitive
     Q_PROPERTY(int imageYOffset READ imageYOffset WRITE setImageYOffset);
     Q_PROPERTY(QString imageProperty READ imageProperty WRITE setImageProperty);
     Q_PROPERTY(QString maskProperty READ maskProperty WRITE setMaskProperty);
+    Q_PROPERTY(bool tiled READ isTiled WRITE setIsTiled);
+    Q_PROPERTY(bool fullWidth READ isFullWidth WRITE setIsFullWidth);
 
 public:
     MDeclarativeMaskedImage(QDeclarativeItem *parent = 0);
@@ -52,6 +54,10 @@ public:
     void setImageProperty(const QString &imageProperty);
     QString maskProperty() const;
     void setMaskProperty(const QString &maskProperty);
+    bool isTiled() const;
+    void setIsTiled(bool tiled);
+    bool isFullWidth() const;
+    void setIsFullWidth(bool isFullWidth);
 
 protected:
     virtual void clearStyleData();
@@ -68,6 +74,8 @@ protected:
     QScopedPointer<QImage> m_buffer;
     const MScalableImage *m_image;
     const MScalableImage *m_mask;
+    bool m_isTiled;
+    bool m_isFullWidth;
 };
 
 #endif //MDECLARATIVEMASKEDIMAGE_H
