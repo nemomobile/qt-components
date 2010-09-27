@@ -54,6 +54,7 @@ Window {
                                 "LineEdit",
                                 "Query",
                                 "Spinner",
+                                "ProgressBar",
                                 "Slider",
                                 "Switches",
                                 "PositionIndicator"]

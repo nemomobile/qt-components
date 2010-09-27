@@ -11,5 +11,6 @@ OTHER_FILES += \
     button.qml \
     checkbox.qml \
     lineedit.qml \
+    progressbar.qml \
     switches.qml \
     slider.qml

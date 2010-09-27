@@ -49,6 +49,7 @@ QML_FILES = \
         QueryPanel.qml \
         PageContainer.qml \
         PositionIndicator.qml \
+        ProgressBar.qml \
         Slider.qml \
         Spinner.qml \
         Switch.qml \
