@@ -36,7 +36,7 @@ Item {
         anchors.left: parent.left
         anchors.leftMargin: 20
         anchors.verticalCenter: toggleUnknown.verticalCenter
-        width: progress.width
+        width: 350
         unknownDuration: toggleUnknown.checked
         value: progress.checkedButton ? progress.checkedButton.text : 0
     }
@@ -59,11 +59,12 @@ Item {
         anchors.top: progressBar.bottom
         anchors.topMargin: 40
         anchors.left: progressBar.left
+        anchors.right: parent.right
         Repeater {
             model: [0, 20, 40, 60, 80, 100]
             Button {
                 text: modelData
-                width: 60
+                width: progress.width / progress.children.length
             }
         }
     }

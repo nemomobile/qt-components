@@ -54,10 +54,10 @@ Window {
                                 "LineEdit",
                                 "Query",
                                 "Spinner",
-                                "ProgressBar",
+                                "Progress Bar",
                                 "Slider",
                                 "Switches",
-                                "PositionIndicator"]
+                                "Position Indicator"]
                         Button {
                             text: modelData
                             width: 210
