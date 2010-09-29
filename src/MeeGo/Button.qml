@@ -203,7 +203,12 @@ ImplicitSizeItem {
         id: mouseArea
         anchors.fill: parent
 
+        onPressed: {
+            meegostyle.pressFeedback();
+        }
+
         onClicked: {
+            meegostyle.releaseFeedback();
             checkable.toggle();
             button.clicked();
         }

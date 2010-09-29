@@ -228,3 +228,24 @@ void MStyleWrapper::invalidateStyle()
         m_currentStyle[i] = 0;
     }
 }
+
+void MStyleWrapper::pressFeedback()
+{
+    const MWidgetStyle *style = qobject_cast<const MWidgetStyle *>(currentStyle());
+    if (style)
+        style->pressFeedback().play();
+}
+
+void MStyleWrapper::releaseFeedback()
+{
+    const MWidgetStyle *style = qobject_cast<const MWidgetStyle *>(currentStyle());
+    if (style)
+        style->releaseFeedback().play();
+}
+
+void MStyleWrapper::cancelFeedback()
+{
+    const MWidgetStyle *style = qobject_cast<const MWidgetStyle *>(currentStyle());
+    if (style)
+        style->cancelFeedback().play();
+}
