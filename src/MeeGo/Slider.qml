@@ -171,6 +171,7 @@ Item {
             width: handlePixmap.width + (vertical ? 0 : groove.width)
             height: handlePixmap.height + (vertical ? groove.height : 0)
             onPressed: {
+                style.feedback("pressFeedback");
                 if (vertical) {
                     valueModel.position = mouseY - handlePixmap.height/2;
                     handlePixmap.y = restrictedDragging ?
@@ -183,6 +184,8 @@ Item {
                 root.pressed();
             }
             onPositionChanged: {
+                // FIXME: handle min interval/value change
+                style.feedback("moveFeedback");
                 dragging = true;
                 if (vertical) {
                     valueModel.position = mouseY - (handlePixmap.height/2);
@@ -202,8 +205,8 @@ Item {
                     handlePixmap.x = valueModel.position - (handlePixmap.width / 2)
                 }
                 root.released();
+                // enable? style.feedback("releaseFeedback");
             }
-
             function conformToRange(v) {
                 return Math.min(valueModel.positionAtMaximum - (handlePixmap.width/2),
                          Math.max(valueModel.positionAtMinimum - (handlePixmap.width/2),

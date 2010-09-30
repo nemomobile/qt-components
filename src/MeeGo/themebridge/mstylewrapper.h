@@ -76,9 +76,7 @@ public:
     int preferredWidth() const;
     int preferredHeight() const;
 
-    Q_INVOKABLE void pressFeedback();
-    Q_INVOKABLE void releaseFeedback();
-    Q_INVOKABLE void cancelFeedback();
+    Q_INVOKABLE void feedback(const QByteArray& feedbackFunctionName);
 
 Q_SIGNALS:
     void modeChanged();

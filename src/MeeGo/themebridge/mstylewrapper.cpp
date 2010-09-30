@@ -34,6 +34,9 @@
 #include <mclassfactory.h>
 #include <minputmethodstate.h>
 
+// to be able to qvariant_cast MFeedback
+Q_DECLARE_METATYPE(MFeedback)
+
 static M::Orientation currentOrientation()
 {
     const M::OrientationAngle angle = \
@@ -229,23 +232,9 @@ void MStyleWrapper::invalidateStyle()
     }
 }
 
-void MStyleWrapper::pressFeedback()
+void MStyleWrapper::feedback(const QByteArray& feedbackFunctionName)
 {
     const MWidgetStyle *style = qobject_cast<const MWidgetStyle *>(currentStyle());
-    if (style)
-        style->pressFeedback().play();
-}
-
-void MStyleWrapper::releaseFeedback()
-{
-    const MWidgetStyle *style = qobject_cast<const MWidgetStyle *>(currentStyle());
-    if (style)
-        style->releaseFeedback().play();
-}
-
-void MStyleWrapper::cancelFeedback()
-{
-    const MWidgetStyle *style = qobject_cast<const MWidgetStyle *>(currentStyle());
-    if (style)
-        style->cancelFeedback().play();
+    if (style && style->property(feedbackFunctionName.constData()).canConvert<MFeedback>())
+        qvariant_cast<MFeedback>(style->property(feedbackFunctionName.constData())).play();
 }

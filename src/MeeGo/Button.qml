@@ -204,11 +204,11 @@ ImplicitSizeItem {
         anchors.fill: parent
 
         onPressed: {
-            meegostyle.pressFeedback();
+            meegostyle.feedback("pressFeedback");
         }
 
         onClicked: {
-            meegostyle.releaseFeedback();
+            meegostyle.feedback("releaseFeedback");
             checkable.toggle();
             button.clicked();
         }

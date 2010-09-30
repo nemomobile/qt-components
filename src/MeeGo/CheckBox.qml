@@ -68,9 +68,21 @@ ImplicitSizeItem {
         id: mouseArea
         anchors.fill: parent
 
+        onPressed: {
+            if (button.checked)
+                meegostyle.feedback("pressOnFeedback");
+            else
+                meegostyle.feedback("pressOffFeedback");
+        }
+
         onClicked: {
             button.checked = !button.checked;
             button.clicked();
+
+            if (button.checked)
+                meegostyle.feedback("releaseOnFeedback");
+            else
+                meegostyle.feedback("releaseOffFeedback");
         }
     }
 }
