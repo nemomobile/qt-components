@@ -57,6 +57,7 @@ Window {
                                 "Progress Bar",
                                 "Slider",
                                 "Switches",
+                                "List",
                                 "Position Indicator"]
                         Button {
                             text: modelData
