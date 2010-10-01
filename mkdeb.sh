@@ -91,6 +91,7 @@ cp -ar ../examples/meego/gallery/*.qml opt/qt-components/gallery/
 cp -ar ../examples/meego/widgetgallery/*.qml opt/qt-components/widgetgallery/
 cp -ar ../examples/meego/widgetgallery/widgetgallery opt/qt-components/widgetgallery/
 cp -ar ../examples/meego/widgetgallery/images opt/qt-components/widgetgallery/
+cp -ar ../examples/meego/widgetgallery/gallery opt/qt-components/widgetgallery/
 
 cp -ar ../examples/meego/quiz/quiz opt/qt-components/quiz/
 cp -ar ../examples/meego/quiz/*.qml opt/qt-components/quiz/

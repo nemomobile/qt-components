@@ -2,9 +2,15 @@ import Qt 4.7
 import com.meego 1.0
 
 Page {
-    Rectangle {
-        color: "steelblue"
+    title: "Application View"
+    ListView {
         anchors.fill: parent
-        Text { text:"Application View" }
+        model: ApplicationViewSections {}
+        delegate: BasicListItem {
+            title: name
+            onClicked: {
+                window.nextPage(Qt.createComponent(source));
+            }
+        }
     }
 }
