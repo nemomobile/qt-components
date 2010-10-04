@@ -1,0 +1,489 @@
+/****************************************************************************
+**
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project on Qt Labs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** No Commercial Usage
+** This file contains pre-release code and may not be distributed.
+** You may use this file in accordance with the terms and conditions
+** contained in the Technology Preview License Agreement accompanying
+** this package.
+**
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of this
+** file.
+**
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+/*!
+
+    \qmlclass Button
+    \ingroup qt-components
+    \since 4.7
+    \brief
+    ...insert mandatory comment...
+*/
+/*!
+    \qmlproperty enumeration Button::TransformOrigin
+*/
+
+/*!
+    \qmlproperty AnchorLine Button::baseline
+*/
+
+/*!
+    \qmlproperty AnchorLine Button::bottom
+*/
+
+/*!
+    \qmlproperty AnchorLine Button::horizontalCenter
+*/
+
+/*!
+    \qmlproperty AnchorLine Button::left
+*/
+
+/*!
+    \qmlproperty AnchorLine Button::right
+*/
+
+/*!
+    \qmlproperty AnchorLine Button::top
+*/
+
+/*!
+    \qmlproperty AnchorLine Button::verticalCenter
+*/
+
+/*!
+    \qmlproperty Anchors* Button::anchors
+*/
+
+/*!
+    \qmlproperty Item* Button::parent
+*/
+
+/*!
+    \qmlproperty QGraphicsEffect* Button::effect
+*/
+
+/*!
+    \qmlproperty QGraphicsObject* Button::parent
+*/
+
+/*!
+    \qmlproperty QObject* Button::__exclusiveGroup
+*/
+
+/*!
+    \qmlproperty bool Button::activeFocus
+*/
+
+/*!
+    \qmlproperty bool Button::checkable
+*/
+
+/*!
+    \qmlproperty bool Button::checked
+*/
+
+/*!
+    \qmlproperty bool Button::clip
+*/
+
+/*!
+    \qmlproperty bool Button::enabled
+*/
+
+/*!
+    \qmlproperty bool Button::focus
+*/
+
+/*!
+    \qmlproperty bool Button::iconVisible
+*/
+
+/*!
+    \qmlproperty bool Button::smooth
+*/
+
+/*!
+    \qmlproperty bool Button::textVisible
+*/
+
+/*!
+    \qmlproperty bool Button::visible
+*/
+
+/*!
+    \qmlproperty enumeration Button::transformOrigin
+*/
+
+/*!
+    \qmlproperty int Button::groupPosition
+*/
+
+/*!
+    \qmlproperty list<QGraphicsObject> Button::children
+*/
+
+/*!
+    \qmlproperty list<QGraphicsTransform> Button::transform
+*/
+
+/*!
+    \qmlproperty list<QObject> Button::data
+*/
+
+/*!
+    \qmlproperty list<QObject> Button::resources
+*/
+
+/*!
+    \qmlproperty list<State> Button::states
+*/
+
+/*!
+    \qmlproperty list<Transition> Button::transitions
+*/
+
+/*!
+    \qmlproperty point Button::pos
+*/
+
+/*!
+    \qmlproperty point Button::transformOriginPoint
+*/
+
+/*!
+    \qmlproperty point Button::transformOriginPoint
+*/
+
+/*!
+    \qmlproperty real Button::baselineOffset
+*/
+
+/*!
+    \qmlproperty real Button::height
+*/
+
+/*!
+    \qmlproperty real Button::implicitHeight
+*/
+
+/*!
+    \qmlproperty real Button::implicitWidth
+*/
+
+/*!
+    \qmlproperty real Button::opacity
+*/
+
+/*!
+    \qmlproperty real Button::rotation
+*/
+
+/*!
+    \qmlproperty real Button::scale
+*/
+
+/*!
+    \qmlproperty real Button::width
+*/
+
+/*!
+    \qmlproperty real Button::x
+*/
+
+/*!
+    \qmlproperty real Button::y
+*/
+
+/*!
+    \qmlproperty real Button::z
+*/
+
+/*!
+    \qmlproperty rect Button::childrenRect
+*/
+
+/*!
+    \qmlproperty string Button::buttonType
+*/
+
+/*!
+    \qmlproperty string Button::checkedIconId
+*/
+
+/*!
+    \qmlproperty string Button::checkedIconSource
+*/
+
+/*!
+    \qmlproperty string Button::iconId
+*/
+
+/*!
+    \qmlproperty string Button::iconSource
+*/
+
+/*!
+    \qmlproperty string Button::objectName
+*/
+
+/*!
+    \qmlproperty string Button::state
+*/
+
+/*!
+    \qmlproperty string Button::styleObjectName
+*/
+
+/*!
+    \qmlproperty string Button::text
+*/
+
+/*!
+    \qmlmethod Button::_q_reregisterTimers( void* )
+    This method is: private
+*/
+
+/*!
+    \qmlmethod Button::calculateWidth()
+    This method is: public
+*/
+
+/*!
+    \qmlmethod Button::deleteLater()
+    This method is: public
+*/
+
+/*!
+    \qmlmethod Button::updateMicroFocus()
+    This method is: protected
+*/
+
+/*!
+    \qmlmethod QDeclarativeItem* Button::childAt( real x, real y )
+    This method is: public
+*/
+
+/*!
+    \qmlmethod QScriptValue Button::mapFromItem( QScriptValue item, real x, real y )
+    This method is: public
+*/
+
+/*!
+    \qmlmethod QScriptValue Button::mapToItem( QScriptValue item, real x, real y )
+    This method is: public
+*/
+
+/*!
+    \qmlmethod void Button::forceActiveFocus()
+    This method is: public
+*/
+
+/*!
+    \qmlsignal Button::__exclusiveGroupChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::activeFocusChanged( bool )
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::baselineOffsetChanged( real )
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::buttonTypeChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::checkableChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::checkedChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::checkedIconIdChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::checkedIconSourceChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::childrenChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::childrenRectChanged( rect )
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::clicked()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::clipChanged( bool )
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::destroyed( QObject* )
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::destroyed()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::enabledChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::focusChanged( bool )
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::groupPositionChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::heightChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::iconIdChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::iconSourceChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::iconVisibleChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::implicitHeightChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::implicitWidthChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::opacityChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::parentChanged( QDeclarativeItem* )
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::parentChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::rotationChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::scaleChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::smoothChanged( bool )
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::stateChanged( string )
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::styleObjectNameChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::textChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::textVisibleChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::transformOriginChanged( enumeration )
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::visibleChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::widthChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::xChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::yChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Button::zChanged()
+    This method is: protected
+*/
+

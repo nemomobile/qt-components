@@ -1,0 +1,372 @@
+/****************************************************************************
+**
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project on Qt Labs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** No Commercial Usage
+** This file contains pre-release code and may not be distributed.
+** You may use this file in accordance with the terms and conditions
+** contained in the Technology Preview License Agreement accompanying
+** this package.
+**
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of this
+** file.
+**
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+/*!
+
+    \qmlclass Page
+    \ingroup qt-components
+    \since 4.7
+    \brief
+    ...insert mandatory comment...
+*/
+/*!
+    \qmlproperty enumeration Page::TransformOrigin
+*/
+
+/*!
+    \qmlproperty AnchorLine Page::baseline
+*/
+
+/*!
+    \qmlproperty AnchorLine Page::bottom
+*/
+
+/*!
+    \qmlproperty AnchorLine Page::horizontalCenter
+*/
+
+/*!
+    \qmlproperty AnchorLine Page::left
+*/
+
+/*!
+    \qmlproperty AnchorLine Page::right
+*/
+
+/*!
+    \qmlproperty AnchorLine Page::top
+*/
+
+/*!
+    \qmlproperty AnchorLine Page::verticalCenter
+*/
+
+/*!
+    \qmlproperty Anchors* Page::anchors
+*/
+
+/*!
+    \qmlproperty Item* Page::parent
+*/
+
+/*!
+    \qmlproperty QGraphicsEffect* Page::effect
+*/
+
+/*!
+    \qmlproperty QGraphicsObject* Page::parent
+*/
+
+/*!
+    \qmlproperty bool Page::activeFocus
+*/
+
+/*!
+    \qmlproperty bool Page::clip
+*/
+
+/*!
+    \qmlproperty bool Page::enabled
+*/
+
+/*!
+    \qmlproperty bool Page::focus
+*/
+
+/*!
+    \qmlproperty bool Page::smooth
+*/
+
+/*!
+    \qmlproperty bool Page::visible
+*/
+
+/*!
+    \qmlproperty enumeration Page::transformOrigin
+*/
+
+/*!
+    \qmlproperty list<Action_QMLTYPE_3> Page::actions
+*/
+
+/*!
+    \qmlproperty list<QGraphicsObject> Page::children
+*/
+
+/*!
+    \qmlproperty list<QGraphicsTransform> Page::transform
+*/
+
+/*!
+    \qmlproperty list<QObject> Page::data
+*/
+
+/*!
+    \qmlproperty list<QObject> Page::resources
+*/
+
+/*!
+    \qmlproperty list<State> Page::states
+*/
+
+/*!
+    \qmlproperty list<Transition> Page::transitions
+*/
+
+/*!
+    \qmlproperty point Page::pos
+*/
+
+/*!
+    \qmlproperty point Page::transformOriginPoint
+*/
+
+/*!
+    \qmlproperty point Page::transformOriginPoint
+*/
+
+/*!
+    \qmlproperty real Page::baselineOffset
+*/
+
+/*!
+    \qmlproperty real Page::height
+*/
+
+/*!
+    \qmlproperty real Page::opacity
+*/
+
+/*!
+    \qmlproperty real Page::rotation
+*/
+
+/*!
+    \qmlproperty real Page::scale
+*/
+
+/*!
+    \qmlproperty real Page::width
+*/
+
+/*!
+    \qmlproperty real Page::x
+*/
+
+/*!
+    \qmlproperty real Page::y
+*/
+
+/*!
+    \qmlproperty real Page::z
+*/
+
+/*!
+    \qmlproperty rect Page::childrenRect
+*/
+
+/*!
+    \qmlproperty string Page::objectName
+*/
+
+/*!
+    \qmlproperty string Page::state
+*/
+
+/*!
+    \qmlproperty string Page::title
+*/
+
+/*!
+    \qmlmethod Page::_q_reregisterTimers( void* )
+    This method is: private
+*/
+
+/*!
+    \qmlmethod Page::deleteLater()
+    This method is: public
+*/
+
+/*!
+    \qmlmethod Page::updateMicroFocus()
+    This method is: protected
+*/
+
+/*!
+    \qmlmethod QDeclarativeItem* Page::childAt( real x, real y )
+    This method is: public
+*/
+
+/*!
+    \qmlmethod QScriptValue Page::mapFromItem( QScriptValue item, real x, real y )
+    This method is: public
+*/
+
+/*!
+    \qmlmethod QScriptValue Page::mapToItem( QScriptValue item, real x, real y )
+    This method is: public
+*/
+
+/*!
+    \qmlmethod void Page::forceActiveFocus()
+    This method is: public
+*/
+
+/*!
+    \qmlsignal Page::aboutToExit()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::actionsChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::activeFocusChanged( bool )
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::baselineOffsetChanged( real )
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::childrenChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::childrenRectChanged( rect )
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::clipChanged( bool )
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::destroyed( QObject* )
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::destroyed()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::enabledChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::entered()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::focusChanged( bool )
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::heightChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::opacityChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::parentChanged( QDeclarativeItem* )
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::parentChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::rotationChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::scaleChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::smoothChanged( bool )
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::stateChanged( string )
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::titleChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::transformOriginChanged( enumeration )
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::visibleChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::widthChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::xChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::yChanged()
+    This method is: protected
+*/
+
+/*!
+    \qmlsignal Page::zChanged()
+    This method is: protected
+*/
+
