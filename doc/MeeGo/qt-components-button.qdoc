@@ -34,33 +34,16 @@
 */
 /*!
     \qmlproperty enumeration Button::TransformOrigin
+    default: 4 enum
 */
 
 /*!
     \qmlproperty AnchorLine Button::baseline
-*/
-
-/*!
     \qmlproperty AnchorLine Button::bottom
-*/
-
-/*!
-    \qmlproperty AnchorLine Button::horizontalCenter
-*/
-
-/*!
     \qmlproperty AnchorLine Button::left
-*/
-
-/*!
     \qmlproperty AnchorLine Button::right
-*/
-
-/*!
     \qmlproperty AnchorLine Button::top
-*/
-
-/*!
+    \qmlproperty AnchorLine Button::horizontalCenter
     \qmlproperty AnchorLine Button::verticalCenter
 */
 
@@ -86,42 +69,48 @@
 
 /*!
     \qmlproperty bool Button::activeFocus
+    default: false
 */
 
 /*!
     \qmlproperty bool Button::checkable
-*/
-
-/*!
     \qmlproperty bool Button::checked
+    default: false
 */
 
 /*!
     \qmlproperty bool Button::clip
+    default: false
 */
 
 /*!
     \qmlproperty bool Button::enabled
+    default: true
 */
 
 /*!
     \qmlproperty bool Button::focus
+    default: false
 */
 
 /*!
     \qmlproperty bool Button::iconVisible
+    default: true
 */
 
 /*!
     \qmlproperty bool Button::smooth
+    default: false
 */
 
 /*!
     \qmlproperty bool Button::textVisible
+    default: true
 */
 
 /*!
     \qmlproperty bool Button::visible
+    default: true
 */
 
 /*!
@@ -130,6 +119,7 @@
 
 /*!
     \qmlproperty int Button::groupPosition
+    default: 0
 */
 
 /*!
@@ -170,50 +160,58 @@
 
 /*!
     \qmlproperty real Button::baselineOffset
-*/
-
-/*!
-    \qmlproperty real Button::height
+    default: 0
 */
 
 /*!
     \qmlproperty real Button::implicitHeight
+    default: 64
 */
 
 /*!
     \qmlproperty real Button::implicitWidth
+    default: 91
 */
 
 /*!
     \qmlproperty real Button::opacity
+    default: 1.0
 */
 
 /*!
     \qmlproperty real Button::rotation
+    default: 0
 */
 
 /*!
     \qmlproperty real Button::scale
+    default: 1.0
 */
 
 /*!
     \qmlproperty real Button::width
+    \qmlproperty real Button::height
+
+    Defines the button's dimensions in pixel.
+    The default width is 91 and the default height is 64
 */
+
 
 /*!
     \qmlproperty real Button::x
-*/
-
-/*!
     \qmlproperty real Button::y
-*/
 
-/*!
+    Defines the button's position relative to its parent.
+
     \qmlproperty real Button::z
+    default: 0
 */
 
 /*!
     \qmlproperty rect Button::childrenRect
+
+    The children's rectangle property. This property is useful if you
+    have a button that needs to be sized to fit its children.
 */
 
 /*!
@@ -250,6 +248,9 @@
 
 /*!
     \qmlproperty string Button::text
+    default: "Effect"
+
+    The text will be displayed as the button's label.
 */
 
 /*!
@@ -378,11 +379,6 @@
 */
 
 /*!
-    \qmlsignal Button::heightChanged()
-    This method is: protected
-*/
-
-/*!
     \qmlsignal Button::iconIdChanged()
     This method is: protected
 */
@@ -400,9 +396,6 @@
 /*!
     \qmlsignal Button::implicitHeightChanged()
     This method is: protected
-*/
-
-/*!
     \qmlsignal Button::implicitWidthChanged()
     This method is: protected
 */
@@ -415,9 +408,6 @@
 /*!
     \qmlsignal Button::parentChanged( QDeclarativeItem* )
     This method is: protected
-*/
-
-/*!
     \qmlsignal Button::parentChanged()
     This method is: protected
 */
@@ -470,14 +460,13 @@
 /*!
     \qmlsignal Button::widthChanged()
     This method is: protected
+    \qmlsignal Button::heightChanged()
+    This method is: protected
 */
 
 /*!
     \qmlsignal Button::xChanged()
     This method is: protected
-*/
-
-/*!
     \qmlsignal Button::yChanged()
     This method is: protected
 */
