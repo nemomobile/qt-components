@@ -161,8 +161,8 @@ bool MDeclarativeMaskedImage::hasPendingPixmap()
 
     if (m_mask) {
         // Mask is not null and ready
-        setImplicitWidth(m_mask->pixmap()->width());
-        setImplicitHeight(m_mask->pixmap()->height());
+        setImplicitWidthNotify(m_mask->pixmap()->width());
+        setImplicitHeightNotify(m_mask->pixmap()->height());
     }
 
     // Mask and Image are either empty or ready.
