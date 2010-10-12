@@ -1,24 +1,29 @@
 Compile Instructions:
 
-1) Copy the qdoc files to $QTDIR/doc/src/declarative/qt-components.
+0)  -Define $QTCOMPONENTS as the qt-components directory
+            -example: $QTCOMPONENTS="/home/user/qt-components"
 
-	Create the directory if it doesn't already exist.
+    -Define $QTDIR as the $QTDIR as the Qt directory
+            -example: $QTDIR="/home/user/qt-4.7/"
 
-2) Run 'make docs' in the $QTDIR directory
+    -Define $QT_SOURCE_TREE as the directory containing the src/
+            -example: $QT_SOURCE_TREE="/home/user/qt-4.7/"
 
-	example: user@machine:qtdir$ make docs
+    -Add $QTDIR/bin to your $PATH variable. Otherwise, the qdoc3 tool can be run
+    from $QTDIR/bin/qdoc3.
 
-3) View the html files in the $QTDIR/doc/html directory.
+1)  Compile the Qt documentation. The qt-components documentation needs
+    to link to the Qt classes and types.
+            -example: user@host:/home/user/qt-4.7/$ make docs
 
-	The components will have a "qml-" prefix.
-	For example, qml-button.html is the file for the Button component.
-
-====================================================================
+2)  Compile the qt-components documentation from the doc/MeeGo directory.
+            -example: qt-components/doc/MeeGo/$ qdoc3 qt-components.qdocconf
 
 Notes:
-There is no easy way to link the qt-components documentation to
-Qt Quick documents if they are not in the $QTDIR/doc directory.
-The steps outlined above will suffice for now.
+-The generated documentation will be in the $QTCOMPONENTS/doc/html directory.
+-The styling (association with Qt and Qt Quick) need to be decided.
+
+====================================================================
 
 QML related markup:
 \qmlclass
