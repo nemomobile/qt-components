@@ -2,8 +2,8 @@ project         = qt-components
 description     = "Qt-Components Documentation"
 
 headerdirs =    $QTCOMPONENTS/src \
-                $QTCOMPONENTS/doc
-sourcedirs =    $QTCOMPONENTS/doc \
+                $QTCOMPONENTS/doc/src
+sourcedirs =    $QTCOMPONENTS/doc/src \
                 $QTCOMPONENTS/src
 
 outputdir  =    $QTCOMPONENTS/doc/html
