@@ -50,6 +50,7 @@
 
 /*!
     \qmlproperty enumeration Label::TransformOrigin
+    default: 4
 */
 
 /*!
@@ -62,29 +63,11 @@
 
 /*!
     \qmlproperty AnchorLine Label::baseline
-*/
-
-/*!
     \qmlproperty AnchorLine Label::bottom
-*/
-
-/*!
     \qmlproperty AnchorLine Label::horizontalCenter
-*/
-
-/*!
     \qmlproperty AnchorLine Label::left
-*/
-
-/*!
     \qmlproperty AnchorLine Label::right
-*/
-
-/*!
     \qmlproperty AnchorLine Label::top
-*/
-
-/*!
     \qmlproperty AnchorLine Label::verticalCenter
 */
 
@@ -94,6 +77,7 @@
 
 /*!
     \qmlproperty HAlignment Label::horizontalAlignment
+    default: 1
 */
 
 /*!
@@ -110,30 +94,37 @@
 
 /*!
     \qmlproperty TextElideMode Label::elide
+    default: 3 enum
 */
 
 /*!
     \qmlproperty TextFormat Label::textFormat
+    default: 2
 */
 
 /*!
     \qmlproperty TextStyle Label::style
+    default: 0 enum
 */
 
 /*!
     \qmlproperty VAlignment Label::verticalAlignment
+    default: 32
 */
 
 /*!
     \qmlproperty WrapMode Label::wrapMode
+    default: 0 enum
 */
 
 /*!
     \qmlproperty bool Label::activeFocus
+    default: false
 */
 
 /*!
     \qmlproperty bool Label::clip
+    default: false
 */
 
 /*!
@@ -142,14 +133,17 @@
 
 /*!
     \qmlproperty bool Label::focus
+    default: false
 */
 
 /*!
     \qmlproperty bool Label::smooth
+    default: false
 */
 
 /*!
     \qmlproperty bool Label::visible
+    default: true
 */
 
 /*!
@@ -206,46 +200,50 @@
 
 /*!
     \qmlproperty real Label::baselineOffset
-*/
-
-/*!
-    \qmlproperty real Label::height
+    default 0
 */
 
 /*!
     \qmlproperty real Label::opacity
+    default: 1
 */
 
 /*!
     \qmlproperty real Label::paintedHeight
+    default: 29
 */
 
 /*!
     \qmlproperty real Label::paintedWidth
+    default: 0
 */
 
 /*!
     \qmlproperty real Label::rotation
+    default: 0
 */
 
 /*!
     \qmlproperty real Label::scale
+    default: 1.0
 */
 
 /*!
+    \qmlproperty real Label::height
+    default: 29
     \qmlproperty real Label::width
+    default 0
 */
 
 /*!
     \qmlproperty real Label::x
-*/
-
-/*!
     \qmlproperty real Label::y
+    default: 0
 */
 
 /*!
     \qmlproperty real Label::z
+    default: 0
 */
 
 /*!
