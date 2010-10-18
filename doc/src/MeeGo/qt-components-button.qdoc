@@ -27,7 +27,7 @@
 /*!
     \qmlclass Button
     \ingroup qt-components
-    \since 4.7
+    \since 4.7f
     \brief A button component that has a label and has click event handling.
 
     A button is a component that accepts user input and send a click() event for
@@ -126,6 +126,11 @@
 */
 
 /*!
+    \qmlproperty real Button::radius
+    default: 0
+*/
+
+/*!
     \qmlproperty bool Button::textVisible
 
     Setting \c textVisible to false, will make the \c text invisible. The
@@ -207,7 +212,7 @@
 
 /*!
     \qmlproperty real Button::opacity
-    The button is fully transparent if opacity is 0.0 and is fully opaque if
+    The button is fully transparent if opacity is 0.0 and is opaque if
     opacity is set to 1.0. Opacity is inherited by the button's children.
     Button's opacity is set to 1.0 by default.
 
@@ -244,14 +249,18 @@
     \qmlproperty real Button::x
     \qmlproperty real Button::y
 
-    Defines the button's position relative to its parent.
+    Defines the button's position in pixels, relative to its parent.
 
     \sa Button::xChanged, Button::yChanged
 */
 
 /*!
     \qmlproperty real Button::z
-    default: 0
+
+    The \c z property determines the depth of the button in a view. A component
+    with a higher \c z value will be drawn in front of components with lower
+    \c z values. The default value is \c 0.
+
 */
 
 /*!
@@ -502,6 +511,9 @@
 
 /*!
     \qmlsignal Button::textChanged()
+
+    A signal emitted whenever the button's text changes.
+    Actions bound to signal handler onTextChanged will be executed.
     This method is: protected
 */
 

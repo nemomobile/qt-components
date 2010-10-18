@@ -25,42 +25,33 @@
 **
 ****************************************************************************/
 /*!
-
     \qmlclass LineEdit
     \ingroup qt-components
     \since 4.7
-    \brief
-    ...insert mandatory comment...
+    \brief The LineEdit component accepts key inputs.
+
+    LineEdit is resizes to fit all input characters or can be fitted onto a
+    fixed size. The line edit can also mask the input characters as when the
+    user enters their password.
+
+\snippet src/snippets/MeeGo/snippet-lineedit.qml 0
+\snippet src/snippets/MeeGo/snippet-lineedit.qml 99
+\snippet src/snippets/MeeGo/snippet-lineedit.qml 2
+\snippet src/snippets/MeeGo/snippet-lineedit.qml 98
 */
+
 /*!
     \qmlproperty enumeration LineEdit::TransformOrigin
+    default: enum 4
 */
 
 /*!
     \qmlproperty AnchorLine LineEdit::baseline
-*/
-
-/*!
     \qmlproperty AnchorLine LineEdit::bottom
-*/
-
-/*!
     \qmlproperty AnchorLine LineEdit::horizontalCenter
-*/
-
-/*!
     \qmlproperty AnchorLine LineEdit::left
-*/
-
-/*!
     \qmlproperty AnchorLine LineEdit::right
-*/
-
-/*!
     \qmlproperty AnchorLine LineEdit::top
-*/
-
-/*!
     \qmlproperty AnchorLine LineEdit::verticalCenter
 */
 
@@ -82,30 +73,52 @@
 
 /*!
     \qmlproperty bool LineEdit::activeFocus
+    default: true
+
+    \sa LineEdit::activeFocusChanged
 */
 
 /*!
     \qmlproperty bool LineEdit::clip
+    default: false
+
+    \sa LineEdit::clipChanged
 */
 
 /*!
     \qmlproperty bool LineEdit::enabled
+    default: true
+
+    \sa LineEdit::enabledChanged
 */
 
 /*!
     \qmlproperty bool LineEdit::focus
+    default: focus
+
+    \sa LineEdit::focusChanged
 */
 
 /*!
     \qmlproperty bool LineEdit::multiLine
+    default: false
+
+    \sa LineEdit::multiLineChanged
 */
 
 /*!
     \qmlproperty bool LineEdit::smooth
+    default: false
+
+    \sa LineEdit::smoothChanged
 */
 
 /*!
     \qmlproperty bool LineEdit::visible
+    Setting \c visible to false will turn the whole line edit invisible. The
+    line edit will not receive any mouse events.
+
+    \sa LineEdit::visibleChanged
 */
 
 /*!
@@ -154,47 +167,76 @@
 
 /*!
     \qmlproperty real LineEdit::baselineOffset
-*/
-
-/*!
-    \qmlproperty real LineEdit::height
+    default: 0
 */
 
 /*!
     \qmlproperty real LineEdit::implicitHeight
+    default: 20
 */
 
 /*!
     \qmlproperty real LineEdit::implicitWidth
+    default: 64
 */
 
 /*!
     \qmlproperty real LineEdit::opacity
+    default: 1
+
+    \sa LineEdit::opacityChanged
 */
 
 /*!
     \qmlproperty real LineEdit::rotation
+    default: 0
+
+    \sa LineEdit::rotationChanged
 */
 
 /*!
     \qmlproperty real LineEdit::scale
+    default: 1
+
+    \sa LineEdit::scaleChanged
 */
 
 /*!
     \qmlproperty real LineEdit::width
+    \qmlproperty real LineEdit::height
+
+    Defines the line edit's dimensions in pixel.
+    The default width is 200 pixels and the default height is 50 pixels.
+
+    \sa LineEdit::widthChanged, LineEdit::heightChanged
 */
 
 /*!
     \qmlproperty real LineEdit::x
-*/
-
-/*!
     \qmlproperty real LineEdit::y
+
+    Defines the LineEdit's position in pixels, relative to its parent.
+    By default, the value of \c x is 0 and \c y is 0.
+    \sa LineEdit::xChanged, LineEdit::yChanged
 */
 
 /*!
     \qmlproperty real LineEdit::z
+
+    The \c z property determines the depth of the button in a view. A component
+    with a higher \c z value will be drawn in front of components with lower
+    \c z values. The default value is \c 0.
+
+    \sa LineEdit::zChanged
 */
+
+/*!
+    \qmlproperty real LineEdit::radius
+    default: 0
+
+    \sa LineEdit::radiusChanged
+*/
+
 
 /*!
     \qmlproperty rect LineEdit::childrenRect
@@ -218,18 +260,44 @@
 
 /*!
     \qmlproperty string LineEdit::text
+
+    The string value of the line edit.
+
+    \sa LineEdit::textChanged
 */
 
 /*!
     \qmlproperty variant LineEdit::activeFocusOnPress
+
+    \sa LineEdit::activeFocusOnPressChanged
 */
 
 /*!
     \qmlproperty variant LineEdit::color
+
+    \sa LineEdit::colorChanged
 */
 
 /*!
     \qmlproperty variant LineEdit::echoMode
+    Sets the display format of the inputted characters. For password prompts,
+    the password should be masked.
+
+    Specifies how the \c text should be displayed in the LineEdit.
+    \list
+    \o TextInput.Normal - Displays the text as it is. (Default)
+    \o TextInput.Password - Displays asterixes instead of characters.
+    \o TextInput.NoEcho - Displays nothing.
+    \o TextInput.PasswordEchoOnEdit - Displays all but the current character
+        as asterixes.
+    \endlist
+
+\snippet src/snippets/MeeGo/snippet-lineedit.qml 0
+\snippet src/snippets/MeeGo/snippet-lineedit.qml 99
+\snippet src/snippets/MeeGo/snippet-lineedit.qml 1
+\snippet src/snippets/MeeGo/snippet-lineedit.qml 98
+
+    \sa TextInput::echoModeChanged, LineEdit::passwordCharacter
 */
 
 /*!
@@ -245,15 +313,26 @@
 */
 
 /*!
-    \qmlproperty variant LineEdit::passwordCharacter
+    \qmlproperty string LineEdit::passwordCharacter
+
+    Set the character used when masking the input. Asterisk, \c *, is the
+    default character.
+
+    \sa LineEdit::echoMode
 */
 
 /*!
-    \qmlproperty variant LineEdit::selectedTextColor
+    \qmlproperty color LineEdit::selectedTextColor
+    Set the color of selected text.
+
+    \sa LineEdit::selectedTextColorChanged, LineEdit::selectionColor
 */
 
 /*!
-    \qmlproperty variant LineEdit::selectionColor
+    \qmlproperty color LineEdit::selectionColor
+    Set the color of the selection area.
+
+    \sa LineEdit::selectionColorChanged, LineEdit::selectedTextColor
 */
 
 /*!
@@ -482,12 +561,13 @@
 
 /*!
     \qmlsignal LineEdit::xChanged()
-    This method is: protected
-*/
-
-/*!
     \qmlsignal LineEdit::yChanged()
-    This method is: protected
+
+    Whenever the \c x and \y properties change, these signals are emitted.
+    The actions bound to signal handlers \c onXChanged and \c onYChanged are
+    executed.
+
+    \sa LineEdit::x, LineEdit::y
 */
 
 /*!

@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 //! [0]
-import Qt 4.7
+import QtQuick 1.0
 import com.meego 1.0
 //![0]
 
@@ -126,11 +126,5 @@ Rectangle {
         font.pointSize: 12
         text: output
     }
-    function printProp(obj, name){
-        for( var prop in obj){
-            console.log(prop + " : " + typeof(obj[prop]) + " " + obj[prop])
-        }
-    }
-
 }
 
