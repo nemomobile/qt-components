@@ -45,7 +45,7 @@ Item {
         }
 
         Label {
-            text: "First switch is " + (switch1.enabled ? "ENABLED" : "Disabled")
+            text: "First switch is " + (switch1.checked ? "ENABLED" : "Disabled")
         }
 
         Switch {
@@ -53,7 +53,7 @@ Item {
         }
 
         Label {
-            text: "Second switch is " + (switch2.enabled ? "ENABLED" : "Disabled")
+            text: "Second switch is " + (switch2.checked ? "ENABLED" : "Disabled")
         }
 
         Switch {
@@ -61,16 +61,16 @@ Item {
 
             Binding {
                 target: switch1
-                property: "enabled"
-                value: switch2.enabled
-                when: bindSwitch.enabled
+                property: "checked"
+                value: switch2.checked
+                when: bindSwitch.checked
             }
 
             Binding {
                 target: switch2
-                property: "enabled"
-                value: switch1.enabled
-                when: bindSwitch.enabled
+                property: "checked"
+                value: switch1.checked
+                when: bindSwitch.checked
             }
         }
 

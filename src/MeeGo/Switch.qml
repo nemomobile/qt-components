@@ -30,7 +30,7 @@ import com.meego.themebridge 1.0
 ImplicitSizeItem {
     id: root
 
-    property alias enabled: thumb.enabled
+    property alias checked: thumb.checked
 
     implicitWidth: meegostyle.preferredWidth
     implicitHeight: meegostyle.preferredHeight
@@ -70,7 +70,7 @@ ImplicitSizeItem {
     ScalableImage {
         id: thumb
         anchors.verticalCenter: parent.verticalCenter
-        property bool enabled: false
+        property bool checked: false
 
         height: root.height - 2 * meegostyle.current.get("thumbMargin")
         width: height // XXX Assuming 1:1 aspect ratio. This is not safe
@@ -81,7 +81,7 @@ ImplicitSizeItem {
         states: [
             State {
                 name: "off"
-                when: !mousearea.drag.active && !enabled
+                when: !mousearea.drag.active && !checked
                 PropertyChanges {
                     restoreEntryValues: false
                     target: thumb
@@ -90,7 +90,7 @@ ImplicitSizeItem {
             },
             State {
                 name: "on"
-                when: !mousearea.drag.active && enabled
+                when: !mousearea.drag.active && checked
                 PropertyChanges {
                     restoreEntryValues: false
                     target: thumb
@@ -124,11 +124,11 @@ ImplicitSizeItem {
             target: thumb
             onActiveChanged: {
                 if (!mousearea.drag.active) {
-                    thumb.enabled = (thumb.x > mousearea.drag.maximumX / 2)
+                    thumb.checked = (thumb.x > mousearea.drag.maximumX / 2)
                 }
             }
         }
 
-        onClicked: thumb.enabled = !thumb.enabled
+        onClicked: thumb.checked = !thumb.checked
     }
 }
