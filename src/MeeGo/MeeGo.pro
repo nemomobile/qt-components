@@ -12,6 +12,11 @@ contextsubscriber {
     LIBS += -lcontextsubscriber
 }
 
+!win32:!embedded:!mac:!symbian {
+    CONFIG += link_pkgconfig
+    PKGCONFIG += xdamage
+}
+
 SOURCES += \
     plugin.cpp \
     mdeclarativestatusbar.cpp \
