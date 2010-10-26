@@ -32,6 +32,7 @@
 
 #ifdef Q_COMPONENTS_MEEGO
 #include <MComponentData>
+#include <MDeviceProfile>
 #endif
 
 class QDeclarativeWindowPrivate
@@ -73,12 +74,8 @@ QDeclarativeWindowPrivate::QDeclarativeWindowPrivate(QDeclarativeWindow *qq)
     view->setWindowFlags(Qt::Window
                    | Qt::CustomizeWindowHint
                    | Qt::FramelessWindowHint);
-    // ###
-    if (QApplication::desktop()->screenGeometry().width() < 1000)
-        view->resize(QApplication::desktop()->screenGeometry().width(),
-                     QApplication::desktop()->screenGeometry().height());
-    else
-        view->resize(864, 480);
+
+    view->resize(MDeviceProfile::instance()->resolution());
     view->setSceneRect(QRect(QPoint(), view->size()));
 #endif
 

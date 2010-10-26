@@ -79,10 +79,8 @@ public:
     bool isCovered() const;
     bool isKeyboardOpen() const;
 
-    // ####
-    int width() const { return 864; }
-    int height() const { return 480; }
-
+    int width() const;
+    int height() const;
 
     bool softwareInputPanelVisible() const;
     QRect softwareInputPanelRect() const;

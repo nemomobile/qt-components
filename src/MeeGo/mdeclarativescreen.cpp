@@ -62,6 +62,7 @@ public:
     bool keyboardOpen;
     bool sipVisible;
 
+    QSize resolution;
     QRectF microFocus;
     QTimer checkMicroFocusHintTimer;
 
@@ -92,6 +93,7 @@ MDeclarativeScreenPrivate::MDeclarativeScreenPrivate(MDeclarativeScreen *qq)
     checkMicroFocusHintTimer.setInterval(200);
     QObject::connect(&checkMicroFocusHintTimer, SIGNAL(timeout()), q, SLOT(_q_checkMicroFocusHint()));
     checkMicroFocusHintTimer.stop();
+    resolution = MDeviceProfile::instance()->resolution();
 }
 
 MDeclarativeScreenPrivate::~MDeclarativeScreenPrivate()
@@ -355,5 +357,14 @@ void MDeclarativeScreen::setMinimized(bool minimized)
     top->setWindowState(Qt::WindowMinimized);
 }
 
+int MDeclarativeScreen::width() const
+{
+    d->resolution.width();
+}
+
+int MDeclarativeScreen::height() const
+{
+    d->resolution.height();
+}
 
 #include "moc_mdeclarativescreen.cpp"
