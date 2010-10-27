@@ -73,7 +73,6 @@ public:
 protected:
     virtual void clearStyleData();
     virtual void fetchStyleData(const MStyle *style);
-    virtual bool hasPendingPixmap();
     virtual void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 
     const MScalableImage *m_image;

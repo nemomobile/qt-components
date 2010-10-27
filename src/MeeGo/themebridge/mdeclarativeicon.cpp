@@ -34,7 +34,7 @@
 #include <mtheme.h>
 
 MDeclarativeIcon::MDeclarativeIcon(QDeclarativeItem *parent) :
-    QDeclarativeItem(parent), m_icon(0), m_pendingPixmap(0)
+    QDeclarativeItem(parent), m_icon(0)
 {
     setFlag(QGraphicsItem::ItemHasNoContents, false);
     MThemeBridge::instance()->registerIcon(this);
@@ -79,49 +79,15 @@ void MDeclarativeIcon::refreshPixmap()
         m_icon = MTheme::instance()->pixmap(m_iconId, QSize(0, 0));
     }
 
-    checkPendingPixmap();
-}
-
-void MDeclarativeIcon::checkPendingPixmap()
-{
-    // In MeeGo the themeserver may run in a separate process. In that case MScalableImages
-    // may be created without a proper pixmap, instead a gray 1x1 pixmap is provided.
-    // We must account for that situation and then listen for the pixmapRequestFinished signal
-    // in order to repaint the primitive.
-    // This method is part of a helper infrastructure provided in MDeclarativePrimitive to
-    // help subclasses handle that issue.
-
-    if (hasPendingPixmap()) {
-        if (!m_pendingPixmap) {
-            // If not yet connected to MTheme, connect and wait for update
-            connect(MTheme::instance(), SIGNAL(pixmapRequestsFinished()), SLOT(checkPendingPixmap()));
-            m_pendingPixmap = 1;
-        }
-    } else {
-        if (m_pendingPixmap) {
-            // If still connected to MTheme, disconnect.
-            disconnect(MTheme::instance(), SIGNAL(pixmapRequestsFinished()));
-            m_pendingPixmap = 0;
-        }
-        update();
-    }
-}
-
-bool MDeclarativeIcon::hasPendingPixmap()
-{
-    if (!m_icon) {
-        setImplicitWidth(0);
-        setImplicitHeight(0);
-        return false;
-    }
-
-    if (m_icon->size() != QSize(-1, -1)) {
+    if (m_icon) {
         setImplicitWidth(m_icon->width());
         setImplicitHeight(m_icon->height());
-        return false;
+    } else {
+        setImplicitWidth(0);
+        setImplicitHeight(0);
     }
 
-    return true;
+    update();
 }
 
 void MDeclarativeIcon::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)

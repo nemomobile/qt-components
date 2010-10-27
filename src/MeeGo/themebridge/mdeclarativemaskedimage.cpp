@@ -145,28 +145,13 @@ void MDeclarativeMaskedImage::fetchStyleData(const MStyle *style)
     // New mask may be available, so lets invalidate the buffer
     m_buffer.reset();
 
-    setImplicitWidth(0);
-    setImplicitHeight(0);
-}
-
-bool MDeclarativeMaskedImage::hasPendingPixmap()
-{
-    // Note that we assume that a 1x1 pixmap means an unloaded pixmap. This will fail if there
-    // are actual 1x1 pixmaps in the theme.
-    const bool hasPendingMask = m_mask && (m_mask->pixmap()->size() == QSize(1, 1));
-    const bool hasPendingImage = m_image && (m_image->pixmap()->size() == QSize(1, 1));
-
-    if (hasPendingMask || hasPendingImage)
-        return true;
-
     if (m_mask) {
-        // Mask is not null and ready
         setImplicitWidthNotify(m_mask->pixmap()->width());
         setImplicitHeightNotify(m_mask->pixmap()->height());
+    } else {
+        setImplicitWidth(0);
+        setImplicitHeight(0);
     }
-
-    // Mask and Image are either empty or ready.
-    return false;
 }
 
 void MDeclarativeMaskedImage::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
@@ -203,10 +188,7 @@ void MDeclarativeMaskedImage::geometryChanged(const QRectF &newGeometry,
 
 bool MDeclarativeMaskedImage::initializeMaskedBuffer()
 {
-    const bool maskIsValid = m_mask && (m_mask->pixmap()->size() != QSize(1, 1));
-    const bool imageIsValid = m_image && (m_image->pixmap()->size() != QSize(1, 1));
-
-    if (!maskIsValid || !imageIsValid)
+    if (!m_mask || !m_image)
         return false;
 
     // This primitive:

@@ -82,21 +82,8 @@ void MDeclarativeBackground::fetchStyleData(const MStyle *style)
     setOpacity(widgetStyle->backgroundOpacity());
 }
 
-bool MDeclarativeBackground::hasPendingPixmap()
-{
-    // Note that we assume that a 1x1 pixmap means an unloaded pixmap. This will fail if there
-    // are actual 1x1 pixmaps in the theme.
-    const bool imagePixmapPending = m_image && (m_image->pixmap()->size() == QSize(1, 1));
-    const bool tilesPixmapPending = m_tiles && (m_tiles->pixmap()->size() == QSize(1, 1));
-
-    return imagePixmapPending || tilesPixmapPending;
-}
-
 void MDeclarativeBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    if (hasPendingPixmap())
-        return;
-
     if (m_tiles) {
         // XXX No size hint so boundingRect may be smaller than minimum image size...
         m_tiles->draw(0, 0, boundingRect().width(), boundingRect().height(), painter);

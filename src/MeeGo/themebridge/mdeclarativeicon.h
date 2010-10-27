@@ -47,20 +47,15 @@ public:
 Q_SIGNALS:
     void iconIdChanged(QString iconId);
 
-protected Q_SLOTS:
-    void checkPendingPixmap();
-
 protected:
     friend class MThemeBridge;
 
     void refreshPixmap();
-    bool hasPendingPixmap();
 
     virtual void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 
     QString m_iconId;
     const QPixmap *m_icon;
-    int m_pendingPixmap : 1;
 };
 
 #endif //MDECLARATIVEICON_H

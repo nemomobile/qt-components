@@ -56,7 +56,7 @@ Q_SIGNALS:
     void spanAngleChanged(qreal spanAngle);
 
 protected:
-    virtual bool hasPendingPixmap();
+    virtual void fetchStyleData(const MStyle *style);
     virtual void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 
     QBrush m_pieBrush;

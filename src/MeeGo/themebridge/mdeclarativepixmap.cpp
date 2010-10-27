@@ -67,22 +67,13 @@ void MDeclarativePixmap::fetchStyleData(const MStyle *style)
     const QVariant imageVariant = style->property(m_imageProperty.toAscii());
     m_pixmap = imageVariant.value<const QPixmap *>();
 
-    setImplicitWidth(0);
-    setImplicitHeight(0);
-}
-
-bool MDeclarativePixmap::hasPendingPixmap()
-{
-    if (!m_pixmap)
-        return false;
-
-    if (m_pixmap->size() != QSize(-1, -1)) {
+    if (m_pixmap) {
         setImplicitWidth(m_pixmap->width());
         setImplicitHeight(m_pixmap->height());
-        return false;
+    } else {
+        setImplicitWidth(0);
+        setImplicitHeight(0);
     }
-
-    return true;
 }
 
 void MDeclarativePixmap::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)

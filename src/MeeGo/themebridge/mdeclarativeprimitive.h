@@ -51,16 +51,9 @@ protected Q_SLOTS:
 protected:
     virtual void clearStyleData();
     virtual void fetchStyleData(const MStyle *style);
-    virtual bool hasPendingPixmap();
-
-private Q_SLOTS:
-    void checkPendingPixmap();
 
 private:
-    void internalClearStyleData();
-
     MStyleWrapper * m_style;
-    int m_pendingPixmap : 1;
 };
 
 #endif //MDECLARATIVEPRIMITIVE_H

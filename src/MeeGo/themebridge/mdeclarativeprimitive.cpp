@@ -31,7 +31,7 @@
 #include <MWidgetStyle>
 
 MDeclarativePrimitive::MDeclarativePrimitive(QDeclarativeItem *parent) :
-    MDeclarativeImplicitSizeItem(parent), m_style(0), m_pendingPixmap(0)
+    MDeclarativeImplicitSizeItem(parent), m_style(0)
 {
     setFlag(QGraphicsItem::ItemHasNoContents, false);
 }
@@ -52,8 +52,8 @@ void MDeclarativePrimitive::setStyle(MStyleWrapper *style)
 
     if (m_style) {
         // Stop listening for mode changes in the old style
-        m_style->disconnect(this);
-        internalClearStyleData();
+        disconnect(m_style, SIGNAL(currentStyleChanged()), this, SLOT(updateStyleData()));
+        clearStyleData();
     }
 
     m_style = style;
@@ -65,18 +65,6 @@ void MDeclarativePrimitive::setStyle(MStyleWrapper *style)
     }
 
     update();
-}
-
-void MDeclarativePrimitive::internalClearStyleData()
-{
-    // Clear subclass-specific members
-    clearStyleData();
-
-    // Disconnect from MTheme in case we were still waiting for pixmaps
-    if (m_pendingPixmap) {
-        MTheme::instance()->disconnect(this);
-        m_pendingPixmap = 0;
-    }
 }
 
 void MDeclarativePrimitive::updateStyleData()
@@ -91,36 +79,11 @@ void MDeclarativePrimitive::updateStyleData()
     if (style) {
         // Fill subclass-specific members with updated data from style
         fetchStyleData(style);
-        checkPendingPixmap();
     } else {
-        internalClearStyleData();
-        update();
+        clearStyleData();
     }
-}
 
-void MDeclarativePrimitive::checkPendingPixmap()
-{
-    // In MeeGo the themeserver may run in a separate process. In that case MScalableImages
-    // may be created without a proper pixmap, instead a gray 1x1 pixmap is provided.
-    // We must account for that situation and then listen for the pixmapRequestFinished signal
-    // in order to repaint the primitive.
-    // This method is part of a helper infrastructure provided in MDeclarativePrimitive to
-    // help subclasses handle that issue.
-
-    if (hasPendingPixmap()) {
-        if (!m_pendingPixmap) {
-            // If not yet connected to MTheme, connect and wait for update
-            connect(MTheme::instance(), SIGNAL(pixmapRequestsFinished()), SLOT(checkPendingPixmap()));
-            m_pendingPixmap = 1;
-        }
-    } else {
-        if (m_pendingPixmap) {
-            // If still connected to MTheme, disconnect.
-            MTheme::instance()->disconnect(this);
-            m_pendingPixmap = 0;
-        }
-        update();
-    }
+    update();
 }
 
 void MDeclarativePrimitive::clearStyleData()
@@ -133,7 +96,3 @@ void MDeclarativePrimitive::fetchStyleData(const MStyle *style)
     Q_UNUSED(style);
 }
 
-bool MDeclarativePrimitive::hasPendingPixmap()
-{
-    return false;
-}

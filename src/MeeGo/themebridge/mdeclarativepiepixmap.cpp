@@ -73,19 +73,15 @@ void MDeclarativePiePixmap::setSpanAngle(qreal spanAngle)
     emit spanAngleChanged(spanAngle);
 }
 
-bool MDeclarativePiePixmap::hasPendingPixmap() {
-    // Assumption is that hasPendingPixmap() will return false only once and
-    // not be called anymore unless there's a possibility of a new Pixmap.
-    // This is how MDeclarativePrimitive works at the moment.
-    if (!MDeclarativePixmap::hasPendingPixmap()) {
-        m_pieBrush.setTexture(*m_pixmap);
-        return false;
-    }
+void MDeclarativePiePixmap::fetchStyleData(const MStyle *style)
+{
+    MDeclarativePixmap::fetchStyleData(style);
 
-    // Invalidate previous brush, since we don't have a valid pixmap to use as texture
-    // anymore.
-    m_pieBrush.setStyle(Qt::NoBrush);
-    return true;
+    if (m_pixmap) {
+        m_pieBrush.setTexture(*m_pixmap);
+    } else {
+        m_pieBrush.setStyle(Qt::NoBrush);
+    }
 }
 
 void MDeclarativePiePixmap::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)

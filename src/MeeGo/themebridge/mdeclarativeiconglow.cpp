@@ -76,7 +76,7 @@ static void blur(const QImage *source, QImage *destination, int radius, const QC
 
 void MDeclarativeIconGlow::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    if (!m_icon || (m_icon->size() == QSize(1, 1)))
+    if (!m_icon)
         return;
 
     // Generate glow image

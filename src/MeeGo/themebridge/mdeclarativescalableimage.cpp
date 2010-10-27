@@ -66,24 +66,13 @@ void MDeclarativeScalableImage::fetchStyleData(const MStyle *style)
     const QVariant imageVariant = style->property(m_imageProperty.toAscii());
     m_image = imageVariant.value<const MScalableImage *>();
 
-    setImplicitWidth(0);
-    setImplicitHeight(0);
-}
-
-bool MDeclarativeScalableImage::hasPendingPixmap()
-{
-    if (!m_image)
-        return false;
-
-    // Note that we assume that a 1x1 pixmap means an unloaded pixmap. This will fail if there
-    // are actual 1x1 pixmaps in the theme.
-    if (m_image->pixmap()->size() != QSize(1, 1)) {
+    if (m_image && m_image->pixmap()) {
         setImplicitWidth(m_image->pixmap()->width());
         setImplicitHeight(m_image->pixmap()->height());
-        return false;
+    } else {
+        setImplicitWidth(0);
+        setImplicitHeight(0);
     }
-
-    return true;
 }
 
 void MDeclarativeScalableImage::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
