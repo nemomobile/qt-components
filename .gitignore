@@ -10,3 +10,12 @@ examples/styled-components-cpp/styled-components-cpp
 examples/simple-button/simple-button
 examples/simple-slider/simple-slider
 utils/merge-svg-grid/merge-svg-grid
+lib/
+examples/meego/calculator/calculator
+examples/meego/gallery/gallery
+examples/meego/pages/pages
+examples/meego/quiz/quiz
+examples/meego/widgetgallery/widgetgallery
+tests/qbuttonmodel/libqbuttonmodel.so.*
+tests/qrangemodel/libqrangemodel.so.*
+
