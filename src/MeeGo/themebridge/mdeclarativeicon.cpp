@@ -69,14 +69,20 @@ void MDeclarativeIcon::refreshPixmap()
     }
 
     if (!m_iconId.isEmpty()) {
-        // Request the pixmap represented by the given iconID
-        // XXX The second QSize(0, 0) argument is the size we want the returned pixmap
-        // to be. However, if we specify that, we do not have a way of knowing whether
-        // that pixmap is yet to be loaded (size -1, -1) or actually ready.
-        // This causes the blur effect in Home and Close titlebar buttons.
-        // We have a patch that solves that but we are waiting on
-        // http://meego.gitorious.org/meegotouch/libmeegotouch/merge_requests/342
-        m_icon = MTheme::instance()->pixmap(m_iconId, QSize(0, 0));
+        // By setting iconSize to (0, 0) we let MTheme server provide us with
+        // and icon of default size
+        QSize iconSize(0, 0);
+
+        if (widthValid() && heightValid()) {
+            // If we were explicitly given a valid size, then ask the MTheme
+            // server to give us a pixmap rendered with the correct size
+            // Note: MTheme::pixmap() does not support sizes that have only
+            //       one non-zero dimension
+            iconSize.setWidth(width());
+            iconSize.setHeight(height());
+        }
+
+        m_icon = MTheme::instance()->pixmap(m_iconId, iconSize);
     }
 
     if (m_icon) {
@@ -92,12 +98,17 @@ void MDeclarativeIcon::refreshPixmap()
 
 void MDeclarativeIcon::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
+    // If no icon available (no icon ID) then skip
     if (!m_icon)
         return;
+
+    // If our size changes, we want to re-render the pixmap. However, to avoid
+    // excessive rendering, we postpone that to the paint event.
+    if ((widthValid() && heightValid() && (m_icon->size() != QSize(width(), height()))))
+        refreshPixmap();
 
     const bool oldSmooth = painter->testRenderHint(QPainter::SmoothPixmapTransform);
     painter->setRenderHint(QPainter::SmoothPixmapTransform);
     painter->drawPixmap(boundingRect().toRect(), *m_icon);
     painter->setRenderHint(QPainter::SmoothPixmapTransform, oldSmooth);
 }
-
