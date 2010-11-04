@@ -31,7 +31,6 @@
 #include <mtheme.h>
 #include <mapplication.h>
 #include <mapplicationwindow.h>
-#include <mclassfactory.h>
 #include <minputmethodstate.h>
 
 // to be able to qvariant_cast MFeedback
@@ -157,20 +156,20 @@ const MStyle *MStyleWrapper::currentStyle() const
     if (it != wrapper->m_cachedStyles[orientation].end()) {
         style = it.value();
     } else {
-        // MTheme::style() assumes that the name of the style class will actually exist.
-        if (MClassFactory::instance()->styleMetaObject(m_styleClass.toAscii().constData())) {
-            QList<QStringList> parentClassNames;
-            if (!m_styleParentClass.isEmpty()) {
-                // ### Works for simple cases in themes we use. For complete coverage
-                // each string list need to have the entire hierarchy of the class. We
-                // don't have dynamic access to that information (we don't want to create
-                // controllers for libmeegotouch widgets), so if we need to implement
-                // that, we'll need a map class -> hierarchy list.
-                parentClassNames.append(QStringList(m_styleParentClass));
-            }
+        QList<QStringList> parentClassNames;
+        if (!m_styleParentClass.isEmpty()) {
+            // ### Works for simple cases in themes we use. For complete coverage
+            // each string list need to have the entire hierarchy of the class. We
+            // don't have dynamic access to that information (we don't want to create
+            // controllers for libmeegotouch widgets), so if we need to implement
+            // that, we'll need a map class -> hierarchy list.
+            parentClassNames.append(QStringList(m_styleParentClass));
+        }
 
-            style = MTheme::style(m_styleClass.toAscii().constData(), m_styleObjectName,
-                                  m_mode, m_styleType, orientation, parentClassNames, QString());
+        style = MTheme::style(m_styleClass.toAscii().constData(), m_styleObjectName,
+                              m_mode, m_styleType, orientation, parentClassNames, QString());
+
+        if (style) {
             wrapper->m_cachedStyles[orientation].insert(m_mode, style);
         } else {
             qWarning("MStyleWrapper::currentStyle: could not find style class '%s'.",
