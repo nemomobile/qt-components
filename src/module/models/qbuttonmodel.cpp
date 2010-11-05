@@ -47,7 +47,7 @@ QButtonModelPrivate::QButtonModelPrivate(QButtonModel *qq) :
 #endif
     checkable(false), checked(false), autoRepeat(false), autoExclusive(false),
     down(false), pressed(false), highlighted(false),
-#ifndef QT_NO_BUTTONGROUP
+#ifndef QTCOMPONENTS_NO_BUTTONGROUP
     group(0),
 #endif
     autoRepeatDelay(AUTO_REPEAT_DELAY),
@@ -65,7 +65,7 @@ void QButtonModelPrivate::emitClicked()
     Q_Q(QButtonModel);
     QPointer<QButtonModel> guard(q);
     emit q->clicked(checked);
-#ifndef QT_NO_BUTTONGROUP
+#ifndef QTCOMPONENTS_NO_BUTTONGROUP
     if (guard && group) {
         emit group->buttonClicked(group->id(button));
         if (guard && group)
@@ -79,7 +79,7 @@ void QButtonModelPrivate::emitPressed()
     Q_Q(QButtonModel);
     QPointer<QButtonModel> guard(q);
     emit q->pressed();
-#ifndef QT_NO_BUTTONGROUP
+#ifndef QTCOMPONENTS_NO_BUTTONGROUP
     if (guard && group) {
         emit group->pressed(group->id(button));
         if (guard && group)
@@ -93,7 +93,7 @@ void QButtonModelPrivate::emitReleased()
     Q_Q(QButtonModel);
     QPointer<QButtonModel> guard(q);
     emit q->released();
-#ifndef QT_NO_BUTTONGROUP
+#ifndef QTCOMPONENTS_NO_BUTTONGROUP
     if (guard && group) {
         emit group->released(group->id(button));
         if (guard && group)
@@ -106,7 +106,7 @@ QList<QButtonModel *>QButtonModelPrivate::queryButtonList() const
 {
     Q_Q(const QButtonModel);
 
-#ifndef QT_NO_BUTTONGROUP
+#ifndef QTCOMPONENTS_NO_BUTTONGROUP
     if (group)
         return group->d_func()->buttonList;
 #endif
@@ -144,7 +144,7 @@ QList<QButtonModel *>QButtonModelPrivate::queryButtonList() const
 
 QButtonModel *QButtonModelPrivate::queryCheckedButton() const
 {
-#ifndef QT_NO_BUTTONGROUP
+#ifndef QTCOMPONENTS_NO_BUTTONGROUP
     if (group)
         return group->d_func()->checkedButton;
 #endif
@@ -164,7 +164,7 @@ QButtonModel *QButtonModelPrivate::queryCheckedButton() const
 
 void QButtonModelPrivate::notifyChecked() const
 {
-#ifndef QT_NO_BUTTONGROUP
+#ifndef QTCOMPONENTS_NO_BUTTONGROUP
     Q_Q(QButtonModel);
     if (group) {
         QButtonModel *previous = group->d_func()->checkedButton;
@@ -187,7 +187,7 @@ void QButtonModelPrivate::click()
     bool changeState = true;
     if (checked && queryCheckedButton() == q) {
         // the checked button of an exclusive or autoexclusive group cannot be unchecked
-#ifndef QT_NO_BUTTONGROUP
+#ifndef QTCOMPONENTS_NO_BUTTONGROUP
         if (group ? group->d_func()->exclusive : autoExclusive)
 #else
         if (autoExclusive)
@@ -307,7 +307,7 @@ void QButtonModel::setChecked(bool checked)
 
     if (!checked && d->queryCheckedButton() == this) {
         // the checked button of an exclusive or autoexclusive group cannot be  unchecked
-#ifndef QT_NO_BUTTONGROUP
+#ifndef QTCOMPONENTS_NO_BUTTONGROUP
         if (d->group ? d->group->d_func()->exclusive : d->autoExclusive)
             return;
         if (d->group)
@@ -474,7 +474,7 @@ bool QButtonModel::autoExclusive() const
     return d->autoExclusive;
 }
 
-#ifndef QT_NO_BUTTONGROUP
+#ifndef QTCOMPONENTS_NO_BUTTONGROUP
 /*!
   Returns the group that this button belongs to.
 
@@ -488,7 +488,7 @@ QButtonGroup *QButtonModel::group() const
     Q_D(const QButtonModel);
     return d->group;
 }
-#endif // QT_NO_BUTTONGROUP
+#endif // QTCOMPONENTS_NO_BUTTONGROUP
 
 void QButtonModel::setPressed(bool pressed)
 {

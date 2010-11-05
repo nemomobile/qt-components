@@ -68,7 +68,7 @@ public:
     uint pressed :1;
     uint highlighted :1;
 
-#ifndef QT_NO_BUTTONGROUP
+#ifndef QTCOMPONENTS_NO_BUTTONGROUP
     QButtonGroup* group;
 #endif
     QBasicTimer repeatTimer;
@@ -82,7 +82,7 @@ public:
     QButtonModel *q_ptr;
 };
 
-#ifndef QT_NO_BUTTONGROUP
+#ifndef QTCOMPONENTS_NO_BUTTONGROUP
 
 class QButtonGroupPrivate
 {

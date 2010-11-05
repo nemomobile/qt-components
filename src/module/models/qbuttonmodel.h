@@ -81,7 +81,7 @@ public:
     bool isPressed() const;
     bool isHighlighted() const;
 
-#ifndef QT_NO_BUTTONGROUP
+#ifndef QTCOMPONENTS_NO_BUTTONGROUP
     QButtonGroup *group() const;
 #endif
 
