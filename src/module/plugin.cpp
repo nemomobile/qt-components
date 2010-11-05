@@ -26,7 +26,6 @@
 
 #include <QtDeclarative>
 
-#include "qbuttonmodel.h"
 #include "qrangemodel.h"
 #include "qglobalenums.h"
 
@@ -38,7 +37,6 @@ public:
     void registerTypes(const char *uri) {
         Q_ASSERT(uri == QLatin1String("Qt.labs.components"));
         qmlRegisterType<QOrientation>(uri, 1, 0, "Orientation");
-        qmlRegisterType<QButtonModel>(uri, 1, 0, "ButtonModel");
         qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
     }
 };

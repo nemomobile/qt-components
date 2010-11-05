@@ -8,7 +8,7 @@ DESTDIR = $$PWD # we put the library there so that the autotests can link
 CONFIG += qt plugin
 QT += declarative
 
-DEFINES += QTCOMPONENTS_NO_BUTTONGROUP QT_BUILD_COMPONENTS_LIB
+DEFINES += QT_BUILD_COMPONENTS_LIB
 
 SOURCES += plugin.cpp
 
