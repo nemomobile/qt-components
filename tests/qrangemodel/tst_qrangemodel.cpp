@@ -44,6 +44,7 @@ private slots:
     void sameRange();
     void setValueAndSetRangeOrder();
     void setRange();
+    void valueMustNotChange();
 };
 
 tst_QRangeModel::tst_QRangeModel()
@@ -302,6 +303,72 @@ void tst_QRangeModel::setRange()
     QCOMPARE(rangeChangedSpy.count(), 6);
     QCOMPARE(valueChangedSpy.count(), 3);
     QCOMPARE(positionChangedSpy.count(), 6);
+}
+
+void tst_QRangeModel::valueMustNotChange()
+{
+    // QRangeModel creates a bi-directional mapping between position and value.
+    // That means a change and "position" will trigger a change in "value" and
+    // vice-versa.
+    // There are however situations where neither "position" nor "value" were
+    // changed directly but one of those must be changed to keep the mapping
+    // consistent. In this situations we defined that "value" takes precedence
+    // over "position" and that the latter is the one that must change.
+    // This fits better real-world use cases, for instance, resizing a volume
+    // slider may cause the knob to move (position changes) but the volume must
+    // be constant (value is stable).
+
+    QRangeModel m;
+
+    // Init
+    m.setRange(0, 10);
+    m.setPositionRange(0, 200);
+    m.setValue(3);
+
+    // Start watching for signals
+    QSignalSpy valueChangedSpy(&m, SIGNAL(valueChanged(qreal)));
+    QSignalSpy positionChangedSpy(&m, SIGNAL(positionChanged(qreal)));
+
+    QCOMPARE(m.value(), 3.0);
+    QCOMPARE(m.position(), 60.0);
+    QCOMPARE(valueChangedSpy.count(), 0);
+    QCOMPARE(positionChangedSpy.count(), 0);
+
+    // Change position range. Value keeps constant
+    m.setPositionRange(0, 100);
+
+    QCOMPARE(m.value(), 3.0);
+    QCOMPARE(m.position(), 30.0);
+    QCOMPARE(valueChangedSpy.count(), 0);
+    QCOMPARE(positionChangedSpy.count(), 1);
+    QCOMPARE(positionChangedSpy.at(0).at(0).toReal(), 30.0);
+
+    // Change position range to inverted figures. Value keeps constant.
+    m.setPositionRange(-10, -20);
+
+    QCOMPARE(m.value(), 3.0);
+    QCOMPARE(m.position(), -13.0);
+    QCOMPARE(valueChangedSpy.count(), 0);
+    QCOMPARE(positionChangedSpy.count(), 2);
+    QCOMPARE(positionChangedSpy.at(1).at(0).toReal(), -13.0);
+
+    // Change value range. Value keeps constant since it's still in range.
+    m.setRange(3, 4);
+
+    QCOMPARE(m.value(), 3.0);
+    QCOMPARE(m.position(), -10.0);
+    QCOMPARE(valueChangedSpy.count(), 0);
+    QCOMPARE(positionChangedSpy.count(), 3);
+    QCOMPARE(positionChangedSpy.at(2).at(0).toReal(), -10.0);
+
+    // Change position range. This time position is kept constant because
+    // positionAtMinimum does not change "value" happens to be at minimum.
+    m.setPositionAtMaximum(0);
+
+    QCOMPARE(m.value(), 3.0);
+    QCOMPARE(m.position(), -10.0);
+    QCOMPARE(valueChangedSpy.count(), 0);
+    QCOMPARE(positionChangedSpy.count(), 3);
 }
 
 QTEST_MAIN(tst_QRangeModel)
