@@ -43,6 +43,7 @@ private slots:
 
     void sameRange();
     void setValueAndSetRangeOrder();
+    void setRange();
 };
 
 tst_QRangeModel::tst_QRangeModel()
@@ -188,6 +189,119 @@ void tst_QRangeModel::setValueAndSetRangeOrder()
 
     args = spy.at(1);
     QCOMPARE(m.value(), args.at(0).toReal());
+}
+
+void tst_QRangeModel::setRange()
+{
+    // These tests check different corner cases of setRange()
+    QRangeModel m;
+
+    // Init
+    m.setRange(10, 15);
+    m.setPositionRange(-1000, 1000);
+    m.setValue(12);
+
+    // Start watching for signals
+    QSignalSpy rangeChangedSpy(&m, SIGNAL(rangeChanged(qreal, qreal)));
+    QSignalSpy valueChangedSpy(&m, SIGNAL(valueChanged(qreal)));
+    QSignalSpy positionChangedSpy(&m, SIGNAL(positionChanged(qreal)));
+
+    QCOMPARE(m.value(), 12.0);
+    QCOMPARE(m.position(), -200.0);
+    QCOMPARE(rangeChangedSpy.count(), 0);
+    QCOMPARE(valueChangedSpy.count(), 0);
+    QCOMPARE(positionChangedSpy.count(), 0);
+
+    // Standard situation, change range, value keeps constant, position changes
+    m.setRange(11, 16);
+
+    QCOMPARE(m.value(), 12.0);
+    QCOMPARE(m.position(), -600.0);
+    QCOMPARE(rangeChangedSpy.count(), 1);
+    QCOMPARE(rangeChangedSpy.at(0).at(0).toReal(), 11.0);
+    QCOMPARE(rangeChangedSpy.at(0).at(1).toReal(), 16.0);
+    QCOMPARE(valueChangedSpy.count(), 0);
+    QCOMPARE(positionChangedSpy.count(), 1);
+    QCOMPARE(positionChangedSpy.at(0).at(0).toReal(), -600.0);
+
+    // Test setRange() min boundary. Still, value should not change.
+    m.setRange(12, 16);
+
+    QCOMPARE(m.value(), 12.0);
+    QCOMPARE(m.position(), -1000.0);
+    QCOMPARE(rangeChangedSpy.count(), 2);
+    QCOMPARE(rangeChangedSpy.at(1).at(0).toReal(), 12.0);
+    QCOMPARE(rangeChangedSpy.at(1).at(1).toReal(), 16.0);
+    QCOMPARE(valueChangedSpy.count(), 0);
+    QCOMPARE(positionChangedSpy.count(), 2);
+    QCOMPARE(positionChangedSpy.at(1).at(0).toReal(), -1000.0);
+
+    // Test setRange() max boundary. Still, value should not change.
+    m.setRange(8, 12);
+
+    QCOMPARE(m.value(), 12.0);
+    QCOMPARE(m.position(), 1000.0);
+    QCOMPARE(rangeChangedSpy.count(), 3);
+    QCOMPARE(rangeChangedSpy.at(2).at(0).toReal(), 8.0);
+    QCOMPARE(rangeChangedSpy.at(2).at(1).toReal(), 12.0);
+    QCOMPARE(valueChangedSpy.count(), 0);
+    QCOMPARE(positionChangedSpy.count(), 3);
+    QCOMPARE(positionChangedSpy.at(2).at(0).toReal(), 1000.0);
+
+    // Test setRange() out of boundary. This is a corner case.
+    // 1) Internally "value" should not change. We want the model to be
+    //    resilient and allow for inconsistent, transient states, often
+    //    found when QML engine is initializing its properties in random order.
+    // 2) OTOH, from the external point of view, it must appear consistent
+    //    and clamp value() to the boundaries specified in setRange().
+    m.setRange(20, 30);
+
+    QCOMPARE(m.value(), 20.0);
+    QCOMPARE(m.position(), -1000.0);
+    QCOMPARE(rangeChangedSpy.count(), 4);
+    QCOMPARE(rangeChangedSpy.at(3).at(0).toReal(), 20.0);
+    QCOMPARE(rangeChangedSpy.at(3).at(1).toReal(), 30.0);
+    QCOMPARE(valueChangedSpy.count(), 1);
+    QCOMPARE(valueChangedSpy.at(0).at(0).toReal(), 20.0);
+    QCOMPARE(positionChangedSpy.count(), 4);
+    QCOMPARE(positionChangedSpy.at(3).at(0).toReal(), -1000.0);
+
+    // Same as above. Now overflowing value()
+    m.setRange(-10, -5);
+
+    QCOMPARE(m.value(), -5.0);
+    QCOMPARE(m.position(), 1000.0);
+    QCOMPARE(rangeChangedSpy.count(), 5);
+    QCOMPARE(rangeChangedSpy.at(4).at(0).toReal(), -10.0);
+    QCOMPARE(rangeChangedSpy.at(4).at(1).toReal(), -5.0);
+    QCOMPARE(valueChangedSpy.count(), 2);
+    QCOMPARE(valueChangedSpy.at(1).at(0).toReal(), -5.0);
+    QCOMPARE(positionChangedSpy.count(), 5);
+    QCOMPARE(positionChangedSpy.at(4).at(0).toReal(), 1000.0);
+
+    // Now we have a valid range again. Internal value must have survived.
+    m.setRange(0, 20);
+
+    QCOMPARE(m.value(), 12.0);
+    QCOMPARE(m.position(), 200.0);
+    QCOMPARE(rangeChangedSpy.count(), 6);
+    QCOMPARE(rangeChangedSpy.at(5).at(0).toReal(), 0.0);
+    QCOMPARE(rangeChangedSpy.at(5).at(1).toReal(), 20.0);
+    QCOMPARE(valueChangedSpy.count(), 3);
+    QCOMPARE(valueChangedSpy.at(2).at(0).toReal(), 12.0);
+    QCOMPARE(positionChangedSpy.count(), 6);
+    QCOMPARE(positionChangedSpy.at(5).at(0).toReal(), 200.0);
+
+    // Set the same range again, nothing can change
+    m.setMinimum(0);
+    m.setMaximum(20);
+    m.setRange(0, 20);
+
+    QCOMPARE(m.value(), 12.0);
+    QCOMPARE(m.position(), 200.0);
+    QCOMPARE(rangeChangedSpy.count(), 6);
+    QCOMPARE(valueChangedSpy.count(), 3);
+    QCOMPARE(positionChangedSpy.count(), 6);
 }
 
 QTEST_MAIN(tst_QRangeModel)
