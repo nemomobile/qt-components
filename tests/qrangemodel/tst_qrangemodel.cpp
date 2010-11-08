@@ -64,8 +64,10 @@ void tst_QRangeModel::valueAndPosition_data()
 
     QTest::newRow("same range") << 1.0 << 2.0 << 1.0 << 2.0;
     QTest::newRow("same range inverted pos") << 1.0 << 2.0 << 2.0 << 1.0;
-    QTest::newRow("pos: 0-100 -> value: 1-2") << 1.0 << 2.0 << 0.0 << 100.0;
-    QTest::newRow("pos: 100-0 -> value: 1-2") << 1.0 << 2.0 << 100.0 << 0.0;
+    QTest::newRow("pos: 0 100 -> value: 1 2") << 1.0 << 2.0 << 0.0 << 100.0;
+    QTest::newRow("pos: 100 0 -> value: 1 2") << 1.0 << 2.0 << 100.0 << 0.0;
+    QTest::newRow("pos: -200 300 -> value: 1 2") << 1.0 << 2.0 << -200.0 << 300.0;
+    QTest::newRow("pos: 300 -200 -> value: -1 2") << -1.0 << 2.0 << 300.0 << -200.0;
 }
 
 void tst_QRangeModel::valueAndPosition()
@@ -118,6 +120,22 @@ void tst_QRangeModel::valueAndPosition()
     m.setValue(mid);
     QCOMPARE(m.position(), posAtMid);
     QCOMPARE(m.value(), mid);
+
+    // Check "1/3 between min and max values", reseting to max between two tests...
+    const qreal valueAtThird = (max - min) / 3 + min;
+    const qreal posAtThird = (posAtMax - posAtMin) / 3 + posAtMin;
+
+    m.setPosition(posAtThird);
+    QCOMPARE(m.position(), posAtThird);
+    QCOMPARE(m.value(), valueAtThird);
+
+    m.setValue(max);
+    QCOMPARE(m.position(), posAtMax);
+    QCOMPARE(m.value(), max);
+
+    m.setValue(valueAtThird);
+    QCOMPARE(m.position(), posAtThird);
+    QCOMPARE(m.value(), valueAtThird);
 
     // TODO: use values and positions to perform checks. Assume values[i] match positions[i].
 }
