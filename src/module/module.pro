@@ -10,6 +10,8 @@ QT += declarative
 
 DEFINES += QT_BUILD_COMPONENTS_LIB
 
+HEADERS += qglobalenums.h
+
 SOURCES += plugin.cpp
 
 include(kernel/kernel.pri)

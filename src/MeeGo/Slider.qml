@@ -41,7 +41,7 @@ Item {
     property alias progress: receivedModel.value
     property alias steps: valueModel.steps
 
-    property int indicatorPosition: vertical ? QtComponents.Orientation.Left : QtComponents.Orientation.Top
+    property int indicatorPosition: vertical ? QtComponents.Globals.Left : QtComponents.Globals.Top
     property bool indicatorVisible: true
     property string indicatorLabel: Math.round(valueModel.value * Math.pow(10, 1))/Math.pow(10, 1)
 
@@ -222,7 +222,7 @@ Item {
 
         states: [
             State {
-                when: indicatorPosition == QtComponents.Orientation.Left
+                when: indicatorPosition == QtComponents.Globals.Left
                 PropertyChanges { target: indicatorBackground; x: handlePixmap.x - width }
                 PropertyChanges { target: indicatorBackground; y: handlePixmap.y - (height - handlePixmap.height)/2 }
                 PropertyChanges { target: indicatorArrow; imageProperty: "handleLabelArrowRightPixmap" }
@@ -230,7 +230,7 @@ Item {
                 AnchorChanges { target: indicatorArrow; anchors.verticalCenter: indicatorBackground.verticalCenter }
             },
             State {
-                when: indicatorPosition == QtComponents.Orientation.Top || indicatorPosition == QtComponents.Orientation.Undefined
+                when: indicatorPosition == QtComponents.Globals.Top || indicatorPosition == QtComponents.Globals.Undefined
                 PropertyChanges { target: indicatorBackground; x: handlePixmap.x - (width - handlePixmap.width)/2 }
                 PropertyChanges { target: indicatorBackground; y: handlePixmap.y - height }
                 PropertyChanges { target: indicatorArrow; imageProperty: "handleLabelArrowDownPixmap" }
@@ -238,7 +238,7 @@ Item {
                 AnchorChanges { target: indicatorArrow; anchors.horizontalCenter: indicatorBackground.horizontalCenter }
             },
             State {
-                when: indicatorPosition == QtComponents.Orientation.Right
+                when: indicatorPosition == QtComponents.Globals.Right
                 PropertyChanges { target: indicatorBackground; x: handlePixmap.x + handlePixmap.width }
                 PropertyChanges { target: indicatorBackground; y: handlePixmap.y - (height - handlePixmap.height)/2 }
                 PropertyChanges { target: indicatorArrow; imageProperty: "handleLabelArrowLeftPixmap" }
@@ -246,7 +246,7 @@ Item {
                 AnchorChanges { target: indicatorArrow; anchors.verticalCenter: indicatorBackground.verticalCenter }
             },
             State {
-                when: indicatorPosition == QtComponents.Orientation.Bottom
+                when: indicatorPosition == QtComponents.Globals.Bottom
                 PropertyChanges { target: indicatorBackground; x: handlePixmap.x - (width - handlePixmap.width)/2 }
                 PropertyChanges { target: indicatorBackground; y: handlePixmap.y + handlePixmap.height }
                 PropertyChanges { target: indicatorArrow; imageProperty: "handleLabelArrowUpPixmap" }

@@ -36,7 +36,7 @@ class QtComponentsPlugin : public QDeclarativeExtensionPlugin
 public:
     void registerTypes(const char *uri) {
         Q_ASSERT(uri == QLatin1String("Qt.labs.components"));
-        qmlRegisterType<QOrientation>(uri, 1, 0, "Orientation");
+        qmlRegisterType<QGlobals>(uri, 1, 0, "Globals");
         qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
     }
 };

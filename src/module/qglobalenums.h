@@ -31,14 +31,16 @@
 #include <QtDeclarative/qdeclarative.h>
 #include <kernel/common.h>
 
-class Q_COMPONENTS_EXPORT QOrientation : public QObject
+class Q_COMPONENTS_EXPORT QGlobals : public QObject
 {
     Q_OBJECT
-    Q_ENUMS(Orientation)
+    Q_ENUMS(Globals)
+    Q_ENUMS(Position)
 public:
-    enum Orientation { Undefined, Left, Top, Right, Bottom };
+    enum Globals { Undefined = -1 };
+    enum Position { Left, Top, Right, Bottom };
 };
 
-QML_DECLARE_TYPE(QOrientation)
+QML_DECLARE_TYPE(QGlobals)
 
 #endif // QGLOBALENUMS_H
