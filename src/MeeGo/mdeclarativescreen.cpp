@@ -359,12 +359,12 @@ void MDeclarativeScreen::setMinimized(bool minimized)
 
 int MDeclarativeScreen::width() const
 {
-    d->resolution.width();
+    return d->resolution.width();
 }
 
 int MDeclarativeScreen::height() const
 {
-    d->resolution.height();
+    return d->resolution.height();
 }
 
 #include "moc_mdeclarativescreen.cpp"
