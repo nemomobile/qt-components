@@ -61,7 +61,7 @@ Item {
         SequentialAnimation {
             ScriptAction {
                 script: {
-                    if (state == "right")
+                    if (state == "right" || state == "left")
                         page.aboutToExit()
                     else if (state == "")
                         pageContainer.visible = true
