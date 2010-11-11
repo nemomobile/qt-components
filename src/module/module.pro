@@ -1,6 +1,6 @@
 include (../../qt-components.pri)
 
-TARGETPATH = Qt/labs/components
+TARGETPATH = /Qt/labs/components
 TEMPLATE = lib
 TARGET = $$qtLibraryTarget(qtcomponentsplugin)
 DESTDIR = $$PWD # we put the library there so that the autotests can link
