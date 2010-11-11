@@ -1,0 +1,12 @@
+qt-components (1.0~git20101111-1) unstable; urgency=low
+
+  * Pull from upstream
+
+ -- Antonio Aloisio <antonio.aloisio@nokia.com>  Tue, 12 Nov 2010 17:40:23 +0300
+
+qt-components (1.0~git20101012-1) unstable; urgency=low
+
+  * Initial release
+
+ -- Antonio Aloisio <antonio.aloisio@nokia.com>  Tue, 12 Oct 2010 15:21:07 +0300
+

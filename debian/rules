@@ -1,0 +1,20 @@
+#!/usr/bin/make -f
+  
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/qmake.mk
+include /usr/share/cdbs/1/rules/patchsys-quilt.mk
+
+DEB_DH_INSTALL_SOURCEDIR = debian/tmp
+
+DEB_QMAKE_CONFIG_VAL = meego contextsubscriber 
+
+# Doesn't generate .postinst and .postrm files
+DEB_DH_MAKESHLIBS_ARGS_ALL = -n
+
+clean::
+	find . -name "Makefile" -exec rm -rf {} \;
+	rm -rf libs
+
+build/qt-components-examples::
+	mkdir -p debian/tmp/usr/share/applications
+	cp debian/desktop/*.desktop debian/tmp/usr/share/applications
