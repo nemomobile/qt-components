@@ -86,10 +86,10 @@ void MDeclarativeBackground::paint(QPainter *painter, const QStyleOptionGraphics
 {
     if (m_tiles) {
         // XXX No size hint so boundingRect may be smaller than minimum image size...
-        m_tiles->draw(0, 0, boundingRect().width(), boundingRect().height(), painter);
+        m_tiles->draw(0.0, 0.0, boundingRect().width(), boundingRect().height(), painter);
     } else if (m_image) {
         // XXX No size hint so boundingRect may be smaller than minimum image size...
-        m_image->draw(0, 0, boundingRect().width(), boundingRect().height(), painter);
+        m_image->draw(0.0, 0.0, boundingRect().width(), boundingRect().height(), painter);
     } else if (m_color.isValid()) {
         painter->fillRect(boundingRect(), QBrush(m_color));
     }
