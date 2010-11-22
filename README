@@ -35,7 +35,7 @@ JavaScript coding style for JS only files.
 
 Coding Styles
 - Qt C++: http://qt.gitorious.org/qt/pages/QtCodingStyle
-- QML: http://doc.qt.nokia.com/4.7-snapshot/codingconventions.html
+- QML: http://doc.qt.nokia.com/4.7/qml-coding-conventions.html
 - JS: https://developer.mozilla.org/En/Developer_Guide/Coding_Style
 
 Running on Desktop
