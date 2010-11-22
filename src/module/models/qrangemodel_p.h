@@ -52,16 +52,8 @@ public:
     bool isSedated;
     bool signalsBlocked;
 
-    // Because either value range or position range can be zero
-    // at times, we cannot calculate one from the other and store the
-    // value (because the scale then would be zero, and the true value
-    // would be lost). Therefore we must keep track if the user
-    // sat the value of the model using setValue or setPosition, and do
-    // the conversion when the user ask for it.
-    bool valueOrPosIsValue;
-
     qreal posatmin, posatmax;
-    qreal minimum, maximum, pageStep, singleStep, steps, valueOrPos;
+    qreal minimum, maximum, pageStep, singleStep, steps, pos, value;
 
     uint tracking : 1;
     uint inverted : 1;
