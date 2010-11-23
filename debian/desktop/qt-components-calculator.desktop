@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Name=calculator
+GenericName=QML calculator
+Comment=QML calculator
+Exec=/opt/qt-components/calculator/calculator
+Terminal=false
+Type=Application

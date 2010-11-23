@@ -8,6 +8,8 @@ SOURCES += widgetgallery.cpp
 
 OTHER_FILES += \
     widgetgallery.qml \
-    ListItem.qml \
-    BasicListItem.qml
+    WidgetGallerySections.qml \
+    gallery \
+    images
 
+include(../meego.pri)

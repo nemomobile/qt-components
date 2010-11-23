@@ -13,4 +13,10 @@ OTHER_FILES += \
     lineedit.qml \
     progressbar.qml \
     switches.qml \
-    slider.qml
+    slider.qml \
+    list.qml \
+    positionindicator.qml \
+    query.qml \
+    spinner.qml
+
+include (../meego.pri)

@@ -1,0 +1,42 @@
+Source: qt-components
+Section: libs 
+Priority: extra
+Maintainer: Antonio Aloisio <antonio.aloisio@nokia.com>
+Build-Depends: cdbs, debhelper (>= 5), quilt, libqt4-dev(>= 4.7.0~), libqt4-declarative, libmeegotouch-dev
+Standards-Version: 3.7.2
+
+Package: qt-components
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Qt Quick components runtime libraries
+ The qt-components project aims to deliver a set of reusable components for Qt Quick.
+ Qt Quick provides simple QML Elements that allow you to create fluid uis from scratch without restricting 
+ the designers creativity.
+ .
+ Homepage: http://labs.qt.nokia.com/2010/09/10/building-the-future-reintroducing-the-qt-quick-components/
+ Bugs: http://bugreports.qt.nokia.com/browse/QTCOMPONENTS 
+ Code: http://qt.gitorious.org/qt-components
+
+Package: qt-components-dev
+Architecture: any
+Depends: qt-components 
+Description: Qt Quick components development files
+ The qt-components project aims to deliver a set of reusable components for Qt Quick.
+ Qt Quick provides simple QML Elements that allow you to create fluid uis from scratch without restricting 
+ the designers creativity.
+ .
+ Homepage: http://labs.qt.nokia.com/2010/09/10/building-the-future-reintroducing-the-qt-quick-components/
+ Bugs: http://bugreports.qt.nokia.com/browse/QTCOMPONENTS
+ Code: http://qt.gitorious.org/qt-components
+
+Package: qt-components-examples
+Architecture: any
+Depends: qt-components, ${shlibs:Depends}, ${misc:Depends}
+Description: Qt Quick components examples
+ The qt-components project aims to deliver a set of reusable components for Qt Quick.
+ Qt Quick provides simple QML Elements that allow you to create fluid uis from scratch without restricting 
+ the designers creativity.
+ .
+ Homepage: http://labs.qt.nokia.com/2010/09/10/building-the-future-reintroducing-the-qt-quick-components/
+ Bugs: http://bugreports.qt.nokia.com/browse/QTCOMPONENTS
+ Code: http://qt.gitorious.org/qt-components

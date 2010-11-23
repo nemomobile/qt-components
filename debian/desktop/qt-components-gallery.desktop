@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Name=QML Widget Gallery
+GenericName=QML Widget Gallery
+Comment=QML Widget Gallery
+Exec=/opt/qt-components/gallery/gallery
+Terminal=false
+Type=Application

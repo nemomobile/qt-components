@@ -11,3 +11,5 @@ OTHER_FILES += \
     mainwindow.qml \
     questionpage.qml \
     answerpage.qml
+
+include(../meego.pri)
