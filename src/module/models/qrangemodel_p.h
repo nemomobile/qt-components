@@ -53,7 +53,7 @@ public:
     bool signalsBlocked;
 
     qreal posatmin, posatmax;
-    qreal minimum, maximum, pageStep, singleStep, steps, pos, value;
+    qreal minimum, maximum, steps, pos, value;
 
     uint tracking : 1;
     uint inverted : 1;

@@ -50,8 +50,6 @@ void QRangeModelPrivate::init()
     isSedated = false;
     minimum = 0;
     maximum = 99;
-    singleStep = 1;
-    pageStep = 10;
     steps = 0;
     value = 0;
     pos = 0;
@@ -197,34 +195,6 @@ qreal QRangeModel::maximum() const
     return d->maximum;
 }
 
-
-void QRangeModel::setSingleStep(qreal step)
-{
-    Q_D(QRangeModel);
-    const qreal newStep = qAbs(step);
-    if (newStep != d->singleStep)
-        d->singleStep = newStep;
-}
-
-qreal QRangeModel::singleStep() const
-{
-    Q_D(const QRangeModel);
-    return d->singleStep;
-}
-
-void QRangeModel::setPageStep(qreal step)
-{
-    Q_D(QRangeModel);
-    const qreal newPageStep = qAbs(step);
-    if (step != d->pageStep)
-        d->pageStep = newPageStep;
-}
-
-qreal QRangeModel::pageStep() const
-{
-    Q_D(const QRangeModel);
-    return d->pageStep;
-}
 
 void QRangeModel::setSteps(qreal steps)
 {
@@ -397,50 +367,6 @@ bool QRangeModel::inverted() const
 {
     Q_D(const QRangeModel);
     return d->inverted;
-}
-
-void QRangeModel::singleStepAdd()
-{
-    Q_D(const QRangeModel);
-    // we use the public (absolute) value in order to let
-    // make life easier and let setValue() do all the dirty job
-    // for us - we just have to add d->singleStep to the value
-    const qreal oldValue = value();
-    const qreal newValue = oldValue + d->singleStep;
-    setValue(newValue);
-}
-
-void QRangeModel::singleStepSub()
-{
-    Q_D(const QRangeModel);
-    // we use the public (absolute) value in order to let
-    // make life easier and let setValue() do all the dirty job
-    // for us - we just have to subtract d->singleStep from the value
-    const qreal oldValue = value();
-    const qreal newValue = oldValue - d->singleStep;
-    setValue(newValue);
-}
-
-void QRangeModel::pageStepAdd()
-{
-    Q_D(const QRangeModel);
-    // we use the public (absolute) value in order to let
-    // make life easier and let setValue() do all the dirty job
-    // for us - we just have to add d->pageStep to the value
-    const qreal oldValue = value();
-    const qreal newValue = oldValue + d->pageStep;
-    setValue(newValue);
-}
-
-void QRangeModel::pageStepSub()
-{
-    Q_D(const QRangeModel);
-    // we use the public (absolute) value in order to let
-    // make life easier and let setValue() do all the dirty job
-    // for us - we just have to subtract d->pageStep from the value
-    const qreal oldValue = value();
-    const qreal newValue = oldValue - d->pageStep;
-    setValue(newValue);
 }
 
 void QRangeModel::toMinimum()
