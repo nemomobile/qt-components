@@ -33,6 +33,7 @@ Item {
     height: 300
 
     ListView {
+        id: list
         anchors.fill: parent
         model: ListModel {
                   ListElement {
@@ -66,6 +67,9 @@ Item {
         delegate: BasicListItem {
             title: name
         }
-        PositionIndicator { }
+    }
+
+    ScrollDecorator {
+        flickable: list
     }
 }

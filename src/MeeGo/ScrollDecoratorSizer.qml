@@ -25,34 +25,31 @@
 ****************************************************************************/
 
 import Qt 4.7
-import com.meego 1.0
 
-Window {
-    id: window
+QtObject {
+    property real minSize
+    property real maxSize
+    property real positionRatio
+    property real sizeRatio
+    property bool underflow: positionRatio < 0
+    property bool overflow: positionRatio >= 1 - sizeRatio
 
-    Component {
-        id: pageComponent
+    property real position: __position()
+    property real size: __size()
 
-        Page {
-            title: "Widgets Gallery"
-            ListView {
-                id: list
-                anchors.fill: parent
-                model: WidgetGallerySections { }
-                delegate: BasicListItem {
-                    title: name
-                    onClicked: {
-                        window.nextPage(Qt.createComponent(source));
-                    }
-                }
-            }
-            ScrollDecorator {
-                flickable: list
-            }
-        }
+    function __position() {
+        var pos = positionRatio * maxSize;
+        return Math.min(Math.max(0, pos), maxSize - minSize);
     }
 
-    Component.onCompleted: {
-        window.nextPage(pageComponent)
+    function __size() {
+        var length;
+        if (overflow)
+            length = 1- positionRatio;
+        else if (underflow)
+            length = sizeRatio + positionRatio;
+        else
+            length = sizeRatio;
+        return Math.max(minSize, length * maxSize);
     }
 }

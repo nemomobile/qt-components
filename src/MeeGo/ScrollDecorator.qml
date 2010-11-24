@@ -28,14 +28,16 @@ import Qt 4.7
 import com.meego.themebridge 1.0
 
 Item {
-    id: container
-    property alias __flickable: container.parent
-    anchors.fill: __flickable
+    id: scrollDecorator
+    property Flickable flickable
+    anchors.fill: flickable
+    z: flickable.z + 1;
 
     Style {
         id: meegostyle
         styleClass: "MPositionIndicatorStyle"
     }
+    property real __minIndicatorSize: meegostyle.current.get("minIndicatorSize")
 
     Timer {
         // Hack to have the indicators flash when the view is shown the first time.
@@ -45,25 +47,26 @@ Item {
         running: true
         repeat: false
         onTriggered: {
-            if (verticalIndicator.shouldShow) {
-                verticalIndicator.state = "visible";
-                verticalIndicator.state = "";
+            if (verticalSD.shouldShow) {
+                verticalSD.state = "visible";
+                verticalSD.state = "";
             }
-            if (horizontalIndicator.shouldShow) {
-                horizontalIndicator.state = "visible";
-                horizontalIndicator.state = "";
+            if (horizontalSD.shouldShow) {
+                horizontalSD.state = "visible";
+                horizontalSD.state = "";
             }
         }
     }
 
     Item {
-        id: verticalIndicator
-        property bool shouldShow: __flickable.height > 0 && __flickable.contentHeight > __flickable.height
+        id: verticalSD
+        property bool shouldShow: flickable.height > 0 && flickable.contentHeight > flickable.height
         opacity: 0
         height: parent.height
         anchors.right: parent.right
 
         ScalableImage {
+            id: verticalBG
             style: meegostyle
             imageProperty: "backgroundImage"
             height: parent.height
@@ -72,16 +75,27 @@ Item {
         ScalableImage {
             style: meegostyle
             imageProperty: "indicatorImage"
-            y: __flickable.visibleArea.yPosition * __flickable.height
-            height: Math.max(meegostyle.current.get("minIndicatorSize"), __flickable.visibleArea.heightRatio * __flickable.height)
+
+            ScrollDecoratorSizer {
+                id: vSizer
+                minSize: __minIndicatorSize
+                maxSize: horizontalSD.shouldShow
+                         ? flickable.height - horizontalBG.implicitWidth
+                         : flickable.height
+                positionRatio: flickable.visibleArea.yPosition
+                sizeRatio: flickable.visibleArea.heightRatio
+            }
+
+            y: vSizer.position
+            height: vSizer.size
             anchors.right: parent.right
         }
 
         states: State {
             name: "visible"
-            when: verticalIndicator.shouldShow && __flickable.moving
+            when: verticalSD.shouldShow && flickable.moving
             PropertyChanges {
-                target: verticalIndicator
+                target: verticalSD
                 opacity: 1
             }
         }
@@ -97,39 +111,51 @@ Item {
 
     Item {
         // Workaround for some themes that don't have square images
-        id: horizontalIndicator
-        property bool shouldShow: __flickable.width > 0 && __flickable.contentWidth > __flickable.width
+        id: horizontalSD
+        property bool shouldShow: flickable.width > 0 && flickable.contentWidth > flickable.width
         opacity: 0
         anchors.fill: parent
 
         Item {
-            x: __flickable.height - __flickable.width
-            width: parent.width
+            x: flickable.height - flickable.width
+            width: flickable.width
             height: parent.height
             transformOrigin: Item.BottomRight
             rotation: -90
 
             ScalableImage {
+                id: horizontalBG
                 style: meegostyle
                 imageProperty: "backgroundImage"
                 y: 0
-                height: __flickable.width
+                height: flickable.width
                 anchors.left: parent.right
             }
             ScalableImage {
                 style: meegostyle
                 imageProperty: "indicatorImage"
-                y: __flickable.visibleArea.xPosition * __flickable.width
-                height: Math.max(meegostyle.current.get("minIndicatorSize"), __flickable.visibleArea.widthRatio * __flickable.width)
+
+                ScrollDecoratorSizer {
+                    id: hSizer
+                    minSize: __minIndicatorSize
+                    maxSize: verticalSD.shouldShow
+                             ? flickable.width - verticalBG.implicitWidth
+                             : flickable.width
+                    positionRatio: flickable.visibleArea.xPosition
+                    sizeRatio: flickable.visibleArea.widthRatio
+                }
+
+                y: hSizer.position
+                height: hSizer.size
                 anchors.left: parent.right
             }
         }
 
         states: State {
             name: "visible"
-            when: horizontalIndicator.shouldShow && __flickable.moving
+            when: horizontalSD.shouldShow && flickable.moving
             PropertyChanges {
-                target: horizontalIndicator
+                target: horizontalSD
                 opacity: 1
             }
         }

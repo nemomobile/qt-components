@@ -53,8 +53,9 @@ QML_FILES = \
         QueryDialog.js \
         QueryPanel.qml \
         PageContainer.qml \
-        PositionIndicator.qml \
         ProgressBar.qml \
+        ScrollDecorator.qml \
+        ScrollDecoratorSizer.qml \
         Slider.qml \
         BusyIndicator.qml \
         Switch.qml \

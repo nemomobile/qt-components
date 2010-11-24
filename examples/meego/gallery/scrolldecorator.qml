@@ -33,6 +33,7 @@ Item {
     height: 300
 
     Flickable {
+        id: flickable
         anchors.fill: parent
         contentWidth: colorfulSquare.width
         contentHeight: colorfulSquare.height
@@ -58,7 +59,10 @@ Item {
                 GradientStop { position: 1.0; color: "green" }
             }
         }
-        children: PositionIndicator { }
+    }
+
+    ScrollDecorator {
+        flickable: flickable
     }
 
     Text {

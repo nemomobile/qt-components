@@ -15,7 +15,7 @@ OTHER_FILES += \
     switches.qml \
     slider.qml \
     list.qml \
-    positionindicator.qml \
+    scrolldecorator.qml \
     query.qml \
     busyindicator.qml
 
