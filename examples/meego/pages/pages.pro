@@ -8,3 +8,5 @@ SOURCES += pages.cpp
 OTHER_FILES += \
     main.qml \
     mainpage.qml
+
+include(../meego.pri)

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Name=Quiz
+GenericName=Quiz
+Comment=Quiz
+Exec=/opt/qt-components/quiz/quiz
+Terminal=false
+Type=Application

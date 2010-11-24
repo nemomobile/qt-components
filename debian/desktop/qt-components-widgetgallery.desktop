@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Name=Widgets Gallery
+GenericName=Widgets Gallery
+Comment=Emulating Harmattan Widgets Gallery
+Exec=/opt/qt-components/widgetgallery/widgetgallery
+Terminal=false
+Type=Application
