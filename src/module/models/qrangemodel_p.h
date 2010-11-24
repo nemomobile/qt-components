@@ -49,13 +49,9 @@ public:
 
     void init();
 
-    bool isSedated;
-    bool signalsBlocked;
-
     qreal posatmin, posatmax;
     qreal minimum, maximum, steps, pos, value;
 
-    uint tracking : 1;
     uint inverted : 1;
 
     QRangeModel *q_ptr;

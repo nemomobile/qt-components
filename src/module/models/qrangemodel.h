@@ -47,23 +47,16 @@ class Q_COMPONENTS_EXPORT QRangeModel : public QObject
     Q_PROPERTY(qreal positionAtMinimum READ positionAtMinimum WRITE setPositionAtMinimum NOTIFY positionRangeChanged)
     Q_PROPERTY(qreal positionAtMaximum READ positionAtMaximum WRITE setPositionAtMaximum NOTIFY positionRangeChanged)
     Q_PROPERTY(bool inverted READ inverted WRITE setInverted)
-    Q_PROPERTY(bool tracking READ isTracking WRITE setTracking)
 
 public:
     QRangeModel(QObject *parent = 0);
     virtual ~QRangeModel();
-
-    void sedate();
-    void awake();
 
     void setRange(qreal min, qreal max);
     void setPositionRange(qreal min, qreal max);
 
     void setSteps(qreal steps);
     qreal steps() const;
-
-    void setTracking(bool enable);
-    bool isTracking() const;
 
     void setMinimum(qreal min);
     qreal minimum() const;

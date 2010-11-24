@@ -47,7 +47,6 @@ QRangeModelPrivate::~QRangeModelPrivate()
 
 void QRangeModelPrivate::init()
 {
-    isSedated = false;
     minimum = 0;
     maximum = 99;
     steps = 0;
@@ -55,7 +54,6 @@ void QRangeModelPrivate::init()
     pos = 0;
     posatmin = 0;
     posatmax = 0;
-    tracking = true;
     inverted = false;
 }
 
@@ -77,27 +75,6 @@ QRangeModel::~QRangeModel()
 {
     delete d_ptr;
     d_ptr = 0;
-}
-
-void QRangeModel::sedate()
-{
-    Q_D(QRangeModel);
-    if (d->isSedated)
-        return;
-
-    d->isSedated = true;
-    d->signalsBlocked = blockSignals(true);
-}
-
-void QRangeModel::awake()
-{
-    Q_D(QRangeModel);
-    if (!d->isSedated)
-        return;
-
-    d->isSedated = false;
-    if (!d->signalsBlocked)
-        blockSignals(false);
 }
 
 void QRangeModelPrivate::emitValueAndPositionIfChanged(const qreal oldValue, const qreal oldPosition)
@@ -213,18 +190,6 @@ qreal QRangeModel::steps() const
 {
     Q_D(const QRangeModel);
     return d->steps;
-}
-
-void QRangeModel::setTracking(bool enable)
-{
-    Q_D(QRangeModel);
-    d->tracking = enable;
-}
-
-bool QRangeModel::isTracking() const
-{
-    Q_D(const QRangeModel);
-    return d->tracking;
 }
 
 qreal QRangeModel::position() const
