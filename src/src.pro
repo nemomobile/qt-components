@@ -1,5 +1,5 @@
 TEMPLATE = subdirs
-SUBDIRS = lib module
+SUBDIRS = lib module native
 
 mx {
     SUBDIRS += Mx

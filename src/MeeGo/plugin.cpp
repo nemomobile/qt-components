@@ -53,7 +53,7 @@ public:
     }
 
     void registerTypes(const char *uri) {
-        Q_ASSERT(uri == QLatin1String("com.meego"));
+        Q_ASSERT(uri == QLatin1String("com.meego") || uri == QLatin1String("Qt.labs.components.native"));
         qmlRegisterType<MDeclarativeStatusBar>(uri, 1, 0, "StatusBar");
         qmlRegisterType<MSnapshot>(uri, 1, 0, "Snapshot");
     }
