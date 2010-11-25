@@ -68,6 +68,7 @@ git@gitorious.org:qt-components/qt-components.git
 
 4: qt-components: qmake -config meego -r && make install
      (installs into your current binary qt path)
+     or use dpkg-buildpackage to make a .deb package
 
 On destop: -graphicssystem native needed:
 5: run example: cd qt-components/examples/meego/calculator && ./calculator -graphicssystem native
