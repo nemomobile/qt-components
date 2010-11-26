@@ -46,6 +46,8 @@ private slots:
     void setRange();
     void setPositionRange();
     void valueMustNotChange();
+    void outOfRangeValues();
+    void outOfRangePositions();
     void toMaximum();
     void toMinimum();
     void invertedTest();
@@ -164,14 +166,20 @@ void tst_QRangeModel::toMinimum()
     QSignalSpy positionChangedSpy(&m, SIGNAL(positionChanged(qreal)));
     QList<QVariant> args;
 
+    QCOMPARE(m.value(), 50.0);
+    QCOMPARE(m.position(), 0.0);
+
     m.toMinimum();
     QCOMPARE(m.value(), 50.0);
     QCOMPARE(m.position(), 0.0);
+    QCOMPARE(valueChangedSpy.count(), 0);
+    QCOMPARE(positionChangedSpy.count(), 0);
 
     //### NEW RANGE
     m.setRange(0.0, 200.0);
 
     QCOMPARE(m.value(), 50.0);
+    QCOMPARE(valueChangedSpy.count(), 0);
     QCOMPARE(m.position(), 25.0);
     QCOMPARE(positionChangedSpy.count(), 1);
     args = positionChangedSpy.at(0);
@@ -180,8 +188,8 @@ void tst_QRangeModel::toMinimum()
     m.toMinimum();
     QCOMPARE(m.value(), 0.0);
     QCOMPARE(m.position(), 0.0);
-    QCOMPARE(valueChangedSpy.count(), 2);
-    args = valueChangedSpy.at(1);
+    QCOMPARE(valueChangedSpy.count(), 1);
+    args = valueChangedSpy.at(0);
     QCOMPARE(m.value(), args.at(0).toReal());
     QCOMPARE(positionChangedSpy.count(), 2);
     args = positionChangedSpy.at(1);
@@ -191,8 +199,8 @@ void tst_QRangeModel::toMinimum()
     m.setRange(100.0, 150.0);
 
     QCOMPARE(m.value(), 100.0);
-    QCOMPARE(valueChangedSpy.count(), 3);
-    args = valueChangedSpy.at(2);
+    QCOMPARE(valueChangedSpy.count(), 2);
+    args = valueChangedSpy.at(1);
     QCOMPARE(m.value(), args.at(0).toReal());
     QCOMPARE(m.position(), 0.0);
     QCOMPARE(positionChangedSpy.count(), 2);
@@ -201,7 +209,7 @@ void tst_QRangeModel::toMinimum()
     m.setRange(-100.0, 300.0);
 
     QCOMPARE(m.value(), 0.0);
-    QCOMPARE(valueChangedSpy.count(), 4);
+    QCOMPARE(valueChangedSpy.count(), 3);
     QCOMPARE(m.position(), 25.0);
     QCOMPARE(positionChangedSpy.count(), 3);
     args = positionChangedSpy.at(2);
@@ -209,8 +217,8 @@ void tst_QRangeModel::toMinimum()
 
     m.toMinimum();
     QCOMPARE(m.value(), -100.0);
-    QCOMPARE(valueChangedSpy.count(), 5);
-    args = valueChangedSpy.at(4);
+    QCOMPARE(valueChangedSpy.count(), 4);
+    args = valueChangedSpy.at(3);
     QCOMPARE(m.value(), args.at(0).toReal());
     QCOMPARE(m.position(), 0.0);
     QCOMPARE(positionChangedSpy.count(), 4);
@@ -221,7 +229,7 @@ void tst_QRangeModel::toMinimum()
     m.setRange(-200.0, -100.0);
 
     QCOMPARE(m.value(), -100.0);
-    QCOMPARE(valueChangedSpy.count(), 5);
+    QCOMPARE(valueChangedSpy.count(), 4);
     QCOMPARE(m.position(), 100.0);
     QCOMPARE(positionChangedSpy.count(), 5);
     args = positionChangedSpy.at(4);
@@ -229,8 +237,8 @@ void tst_QRangeModel::toMinimum()
 
     m.toMinimum();
     QCOMPARE(m.value(), -200.0);
-    QCOMPARE(valueChangedSpy.count(), 6);
-    args = valueChangedSpy.at(5);
+    QCOMPARE(valueChangedSpy.count(), 5);
+    args = valueChangedSpy.at(4);
     QCOMPARE(m.value(), args.at(0).toReal());
     QCOMPARE(m.position(), 0.0);
     QCOMPARE(positionChangedSpy.count(), 6);
@@ -287,7 +295,7 @@ void tst_QRangeModel::invertedTest()
 
     m.setValue(50.0);
     QCOMPARE(m.value(), 50.0);
-    QCOMPARE(valueChangedSpy.count(), 3);
+    QCOMPARE(valueChangedSpy.count(), 2);
     QCOMPARE(m.position(), 100.0);
     QCOMPARE(positionChangedSpy.count(), 3);
 
@@ -295,8 +303,8 @@ void tst_QRangeModel::invertedTest()
     m.setRange(-100.0, 0.0);
 
     QCOMPARE(m.value(), 0.0);
-    QCOMPARE(valueChangedSpy.count(), 4);
-    args = valueChangedSpy.at(3);
+    QCOMPARE(valueChangedSpy.count(), 3);
+    args = valueChangedSpy.at(2);
     QCOMPARE(m.value(), args.at(0).toReal());
     QCOMPARE(m.position(), 0.0);
     QCOMPARE(positionChangedSpy.count(), 4);
@@ -305,8 +313,8 @@ void tst_QRangeModel::invertedTest()
 
     m.setValue(-75.0);
     QCOMPARE(m.value(), -75.0);
-    QCOMPARE(valueChangedSpy.count(), 5);
-    args = valueChangedSpy.at(4);
+    QCOMPARE(valueChangedSpy.count(), 4);
+    args = valueChangedSpy.at(3);
     QCOMPARE(m.value(), args.at(0).toReal());
     QCOMPARE(m.position(), 75.0);
     QCOMPARE(positionChangedSpy.count(), 5);
@@ -317,7 +325,7 @@ void tst_QRangeModel::invertedTest()
     m.setRange(-100.0, -50.0);
 
     QCOMPARE(m.value(), -75.0);
-    QCOMPARE(valueChangedSpy.count(), 5);
+    QCOMPARE(valueChangedSpy.count(), 4);
     QCOMPARE(m.position(), 50.0);
     QCOMPARE(positionChangedSpy.count(), 6);
     args = positionChangedSpy.at(5);
@@ -325,8 +333,8 @@ void tst_QRangeModel::invertedTest()
 
     m.setValue(-90.0);
     QCOMPARE(m.value(), -90.0);
-    QCOMPARE(valueChangedSpy.count(), 6);
-    args = valueChangedSpy.at(5);
+    QCOMPARE(valueChangedSpy.count(), 5);
+    args = valueChangedSpy.at(4);
     QCOMPARE(m.value(), args.at(0).toReal());
     QCOMPARE(m.position(), 80.0);
     QCOMPARE(positionChangedSpy.count(), 7);
@@ -336,7 +344,7 @@ void tst_QRangeModel::invertedTest()
     m.setInverted(false);
 
     QCOMPARE(m.value(), -90.0);
-    QCOMPARE(valueChangedSpy.count(), 6);
+    QCOMPARE(valueChangedSpy.count(), 5);
     QCOMPARE(m.position(), 20.0);
     QCOMPARE(positionChangedSpy.count(), 8);
     args = positionChangedSpy.at(7);
@@ -757,6 +765,184 @@ void tst_QRangeModel::valueMustNotChange()
     QCOMPARE(m.position(), -10.0);
     QCOMPARE(valueChangedSpy.count(), 0);
     QCOMPARE(positionChangedSpy.count(), 3);
+}
+
+void tst_QRangeModel::outOfRangeValues()
+{
+    QRangeModel m;
+
+    // Init with value and position inside range
+    m.setRange(50, 100);
+    m.setPositionRange(200, 300);
+    m.setValue(80);
+
+    // Start watching for signals
+    QSignalSpy valueChangedSpy(&m, SIGNAL(valueChanged(qreal)));
+    QSignalSpy positionChangedSpy(&m, SIGNAL(positionChanged(qreal)));
+
+    int valueSignalsCount = 0;
+    int positionSignalsCount = 0;
+    qreal expectedValue = 0;
+    qreal expectedPosition = 0;
+
+    QCOMPARE(valueChangedSpy.count(), valueSignalsCount);
+    QCOMPARE(positionChangedSpy.count(), positionSignalsCount);
+
+    // Set out of range value, visible value and position should move to border
+    m.setValue(20);
+
+    valueSignalsCount++;
+    positionSignalsCount++;
+    expectedValue = 50;
+    expectedPosition = 200;
+
+    QCOMPARE(valueChangedSpy.count(), valueSignalsCount);
+    QCOMPARE(valueChangedSpy.at(valueSignalsCount - 1).at(0).toReal(), expectedValue);
+    QCOMPARE(positionChangedSpy.count(), positionSignalsCount);
+    QCOMPARE(positionChangedSpy.at(positionSignalsCount - 1).at(0).toReal(), expectedPosition);
+
+    // Set other out of range value, visible value and position should not change
+    m.setValue(30);
+
+    QCOMPARE(valueChangedSpy.count(), valueSignalsCount);
+    QCOMPARE(positionChangedSpy.count(), positionSignalsCount);
+
+    // Set one more out of range value, visible value and position should not change
+    m.setValue(40);
+
+    QCOMPARE(valueChangedSpy.count(), valueSignalsCount);
+    QCOMPARE(positionChangedSpy.count(), positionSignalsCount);
+
+    // Make range broad. External value must change.
+    m.setRange(25, 100);
+
+    valueSignalsCount++;
+    positionSignalsCount++;
+    expectedValue = 40;
+    expectedPosition = 220;
+
+    QCOMPARE(valueChangedSpy.count(), valueSignalsCount);
+    QCOMPARE(valueChangedSpy.at(valueSignalsCount - 1).at(0).toReal(), expectedValue);
+    QCOMPARE(positionChangedSpy.count(), positionSignalsCount);
+    QCOMPARE(positionChangedSpy.at(positionSignalsCount - 1).at(0).toReal(), expectedPosition);
+
+    // Close range. External value must change.
+    m.setRange(60, 100);
+
+    valueSignalsCount++;
+    positionSignalsCount++;
+    expectedValue = 60;
+    expectedPosition = 200;
+
+    QCOMPARE(valueChangedSpy.count(), valueSignalsCount);
+    QCOMPARE(valueChangedSpy.at(valueSignalsCount - 1).at(0).toReal(), expectedValue);
+    QCOMPARE(positionChangedSpy.count(), positionSignalsCount);
+    QCOMPARE(positionChangedSpy.at(positionSignalsCount - 1).at(0).toReal(), expectedPosition);
+
+    // Set value right at the edge. Internal value must change. External one, not.
+    m.setValue(60);
+
+    QCOMPARE(valueChangedSpy.count(), valueSignalsCount);
+    QCOMPARE(positionChangedSpy.count(), positionSignalsCount);
+
+    // Make range broad. External value does not change. Position does.
+    m.setRange(20, 120);
+
+    positionSignalsCount++;
+    expectedPosition = 240;
+
+    QCOMPARE(valueChangedSpy.count(), valueSignalsCount);
+    QCOMPARE(positionChangedSpy.count(), positionSignalsCount);
+    QCOMPARE(positionChangedSpy.at(positionSignalsCount - 1).at(0).toReal(), expectedPosition);
+}
+
+void tst_QRangeModel::outOfRangePositions()
+{
+    QRangeModel m;
+
+    // Init with value and position inside range
+    m.setRange(50, 100);
+    m.setPositionRange(200, 300);
+    m.setPosition(260);
+
+    // Start watching for signals
+    QSignalSpy valueChangedSpy(&m, SIGNAL(valueChanged(qreal)));
+    QSignalSpy positionChangedSpy(&m, SIGNAL(positionChanged(qreal)));
+
+    int valueSignalsCount = 0;
+    int positionSignalsCount = 0;
+    qreal expectedValue = 0;
+    qreal expectedPosition = 0;
+
+    QCOMPARE(valueChangedSpy.count(), valueSignalsCount);
+    QCOMPARE(positionChangedSpy.count(), positionSignalsCount);
+
+    // Set out of range value, visible value and position should move to border
+    m.setPosition(140);
+
+    valueSignalsCount++;
+    positionSignalsCount++;
+    expectedValue = 50;
+    expectedPosition = 200;
+
+    QCOMPARE(valueChangedSpy.count(), valueSignalsCount);
+    QCOMPARE(valueChangedSpy.at(valueSignalsCount - 1).at(0).toReal(), expectedValue);
+    QCOMPARE(positionChangedSpy.count(), positionSignalsCount);
+    QCOMPARE(positionChangedSpy.at(positionSignalsCount - 1).at(0).toReal(), expectedPosition);
+
+    // Set other out of range value, visible value and position should not change
+    m.setPosition(160);
+
+    QCOMPARE(valueChangedSpy.count(), valueSignalsCount);
+    QCOMPARE(positionChangedSpy.count(), positionSignalsCount);
+
+    // Set one more out of range value, visible value and position should not change
+    m.setPosition(180);
+
+    QCOMPARE(valueChangedSpy.count(), valueSignalsCount);
+    QCOMPARE(positionChangedSpy.count(), positionSignalsCount);
+
+    // Make range broad. External value must change.
+    m.setRange(25, 100);
+
+    valueSignalsCount++;
+    positionSignalsCount++;
+    expectedValue = 40;
+    expectedPosition = 220;
+
+    QCOMPARE(valueChangedSpy.count(), valueSignalsCount);
+    QCOMPARE(valueChangedSpy.at(valueSignalsCount - 1).at(0).toReal(), expectedValue);
+    QCOMPARE(positionChangedSpy.count(), positionSignalsCount);
+    QCOMPARE(positionChangedSpy.at(positionSignalsCount - 1).at(0).toReal(), expectedPosition);
+
+    // Close range. External value must change.
+    m.setRange(60, 100);
+
+    valueSignalsCount++;
+    positionSignalsCount++;
+    expectedValue = 60;
+    expectedPosition = 200;
+
+    QCOMPARE(valueChangedSpy.count(), valueSignalsCount);
+    QCOMPARE(valueChangedSpy.at(valueSignalsCount - 1).at(0).toReal(), expectedValue);
+    QCOMPARE(positionChangedSpy.count(), positionSignalsCount);
+    QCOMPARE(positionChangedSpy.at(positionSignalsCount - 1).at(0).toReal(), expectedPosition);
+
+    // Set position right at the edge. Internal value must change. External one, not.
+    m.setPosition(200);
+
+    QCOMPARE(valueChangedSpy.count(), valueSignalsCount);
+    QCOMPARE(positionChangedSpy.count(), positionSignalsCount);
+
+    // Make range broad. External value does not change. Position does.
+    m.setRange(20, 120);
+
+    positionSignalsCount++;
+    expectedPosition = 240;
+
+    QCOMPARE(valueChangedSpy.count(), valueSignalsCount);
+    QCOMPARE(positionChangedSpy.count(), positionSignalsCount);
+    QCOMPARE(positionChangedSpy.at(positionSignalsCount - 1).at(0).toReal(), expectedPosition);
 }
 
 QTEST_MAIN(tst_QRangeModel)

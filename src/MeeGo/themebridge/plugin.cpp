@@ -28,6 +28,7 @@
 #include <QScopedPointer>
 
 #include "mcomponentdata.h"
+#include "mdeclarativeimageprovider.h"
 #include "mdeclarativescalableimage.h"
 #include "mdeclarativebackground.h"
 #include "mdeclarativepiepixmap.h"
@@ -52,6 +53,8 @@ public:
             char *argv0 = "meegotouch";
             (void) new MComponentData(argc, &argv0);
         }
+
+        engine->addImageProvider(QLatin1String("theme"), new MDeclarativeImageProvider);
     }
 
     void registerTypes(const char *uri) {

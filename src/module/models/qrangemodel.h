@@ -42,36 +42,21 @@ class Q_COMPONENTS_EXPORT QRangeModel : public QObject
     Q_PROPERTY(qreal value READ value WRITE setValue NOTIFY valueChanged USER true)
     Q_PROPERTY(qreal minimumValue READ minimum WRITE setMinimum NOTIFY rangeChanged)
     Q_PROPERTY(qreal maximumValue READ maximum WRITE setMaximum NOTIFY rangeChanged)
-    Q_PROPERTY(qreal singleStep READ singleStep WRITE setSingleStep)
-    Q_PROPERTY(qreal pageStep READ pageStep WRITE setPageStep)
     Q_PROPERTY(qreal steps READ steps WRITE setSteps)
     Q_PROPERTY(qreal position READ position WRITE setPosition NOTIFY positionChanged)
     Q_PROPERTY(qreal positionAtMinimum READ positionAtMinimum WRITE setPositionAtMinimum NOTIFY positionRangeChanged)
     Q_PROPERTY(qreal positionAtMaximum READ positionAtMaximum WRITE setPositionAtMaximum NOTIFY positionRangeChanged)
     Q_PROPERTY(bool inverted READ inverted WRITE setInverted)
-    Q_PROPERTY(bool tracking READ isTracking WRITE setTracking)
 
 public:
     QRangeModel(QObject *parent = 0);
     virtual ~QRangeModel();
 
-    void sedate();
-    void awake();
-
     void setRange(qreal min, qreal max);
     void setPositionRange(qreal min, qreal max);
 
-    void setSingleStep(qreal step);
-    qreal singleStep() const;
-
-    void setPageStep(qreal step);
-    qreal pageStep() const;
-
     void setSteps(qreal steps);
     qreal steps() const;
-
-    void setTracking(bool enable);
-    bool isTracking() const;
 
     void setMinimum(qreal min);
     qreal minimum() const;
@@ -92,10 +77,6 @@ public:
     qreal position() const;
 
 public Q_SLOTS:
-    void singleStepAdd();
-    void singleStepSub();
-    void pageStepAdd();
-    void pageStepSub();
     void toMinimum();
     void toMaximum();
     void setValue(qreal value);
