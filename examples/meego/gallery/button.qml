@@ -31,24 +31,41 @@ Item {
     width: 300
     height: 300
 
-    Button {
-        x: 100
-        y: 50
+    Column {
+        anchors.top: parent.top
+        anchors.topMargin: 10
+        spacing: 5
 
-        width: 200
-        height: 50
+        Button {
+            width: 200
+            height: 50
+            text: "Push Button"
+        }
 
-        text: "Push Button"
-    }
+        Button {
+            width: 200
+            height: 50
+            buttonType: "affirmative"
+            text: "Affirmative Button"
+        }
 
-    Button {
-        x: 100
-        y: 150
+        Button {
+            width: 200
+            height: 50
+            buttonType: "negative"
+            text: "Negative Button"
+        }
 
-        width: 200
-        height: 50
+        Button {
+            width: 200
+            height: 50
 
-        text: "Toggle Button"
-        checkable: true
+            text: "Toggle Button"
+            checkable: true
+        }
+
+        Button {
+            text: "Push Button auto-size"
+        }
     }
 }
