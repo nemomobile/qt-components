@@ -37,12 +37,15 @@
 
 class QDeclarativeWindowPrivate
 {
+    Q_DECLARE_PUBLIC(QDeclarativeWindow)
+
 public:
     QDeclarativeWindowPrivate(QDeclarativeWindow *qq);
     ~QDeclarativeWindowPrivate();
     void execute();
+    void _q_continueExecute();
 
-    QDeclarativeWindow *q;
+    QDeclarativeWindow *q_ptr;
 
     QGraphicsView *view;
     QGraphicsScene scene;
@@ -55,7 +58,7 @@ public:
 };
 
 QDeclarativeWindowPrivate::QDeclarativeWindowPrivate(QDeclarativeWindow *qq)
-    : q(qq), view(0), component(0)
+    : q_ptr(qq), view(0), component(0)
 {
 #ifdef Q_COMPONENTS_MEEGO
     qApp->setProperty("NoMStyle", true);
@@ -107,6 +110,7 @@ QDeclarativeWindowPrivate::~QDeclarativeWindowPrivate()
 
 void QDeclarativeWindowPrivate::execute()
 {
+    Q_Q(QDeclarativeWindow);
     if (root) {
         delete root;
         root = 0;
@@ -118,43 +122,41 @@ void QDeclarativeWindowPrivate::execute()
     if (!source.isEmpty()) {
         component = new QDeclarativeComponent(&engine, source, q);
         if (!component->isLoading()) {
-            q->continueExecute();
+            _q_continueExecute();
         } else {
-            QObject::connect(component, SIGNAL(statusChanged(QDeclarativeComponent::Status)), q, SLOT(continueExecute()));
+            QObject::connect(component, SIGNAL(statusChanged(QDeclarativeComponent::Status)), q, SLOT(_q_continueExecute()));
         }
     }
 }
 
-/*!
-  \internal
- */
-void QDeclarativeWindow::continueExecute()
+void QDeclarativeWindowPrivate::_q_continueExecute()
 {
-    disconnect(d->component, SIGNAL(statusChanged(QDeclarativeComponent::Status)), this, SLOT(continueExecute()));
+    Q_Q(QDeclarativeWindow);
+    QObject::disconnect(component, SIGNAL(statusChanged(QDeclarativeComponent::Status)), q, SLOT(_q_continueExecute()));
 
-    if (d->component->isError()) {
-        QList<QDeclarativeError> errorList = d->component->errors();
+    if (component->isError()) {
+        QList<QDeclarativeError> errorList = component->errors();
         foreach (const QDeclarativeError &error, errorList) {
             qWarning() << error;
         }
-        emit statusChanged(status());
+        emit q->statusChanged(q->status());
         return;
     }
 
-    QObject *obj = d->component->create();
+    QObject *obj = component->create();
 
-    if(d->component->isError()) {
-        QList<QDeclarativeError> errorList = d->component->errors();
+    if (component->isError()) {
+        QList<QDeclarativeError> errorList = component->errors();
         foreach (const QDeclarativeError &error, errorList) {
             qWarning() << error;
         }
-        emit statusChanged(status());
+        emit q->statusChanged(q->status());
         return;
     }
 
-    setRootObject(obj);
+    q->setRootObject(obj);
 
-    emit statusChanged(status());
+    emit q->statusChanged(q->status());
 }
 
 
@@ -162,21 +164,19 @@ void QDeclarativeWindow::continueExecute()
 
 
 
-QDeclarativeWindow::QDeclarativeWindow()
+QDeclarativeWindow::QDeclarativeWindow() :
+    d_ptr(new QDeclarativeWindowPrivate(this))
 {
-    d = new QDeclarativeWindowPrivate(this);
 }
 
-QDeclarativeWindow::QDeclarativeWindow(const QUrl &source)
+QDeclarativeWindow::QDeclarativeWindow(const QUrl &source) :
+    d_ptr(new QDeclarativeWindowPrivate(this))
 {
-    d = new QDeclarativeWindowPrivate(this);
     setSource(source);
 }
 
 QDeclarativeWindow::~QDeclarativeWindow()
 {
-    delete d;
-    d = 0;
 }
 
 
@@ -200,6 +200,7 @@ QDeclarativeWindow::~QDeclarativeWindow()
  */
 void QDeclarativeWindow::setSource(const QUrl& url)
 {
+    Q_D(QDeclarativeWindow);
     d->source = url;
     d->execute();
 }
@@ -211,6 +212,7 @@ void QDeclarativeWindow::setSource(const QUrl& url)
  */
 QUrl QDeclarativeWindow::source() const
 {
+    Q_D(const QDeclarativeWindow);
     return d->source;
 }
 
@@ -218,9 +220,9 @@ QUrl QDeclarativeWindow::source() const
   Returns a pointer to the QDeclarativeEngine used for instantiating
   QML Components.
  */
-QDeclarativeEngine* QDeclarativeWindow::engine()
+QDeclarativeEngine* QDeclarativeWindow::engine() const
 {
-    return &d->engine;
+    return &d_ptr->engine;
 }
 
 /*!
@@ -230,8 +232,9 @@ QDeclarativeEngine* QDeclarativeWindow::engine()
   arranged hierarchically and this hierarchy is managed by the
   QDeclarativeEngine.
  */
-QDeclarativeContext* QDeclarativeWindow::rootContext()
+QDeclarativeContext* QDeclarativeWindow::rootContext() const
 {
+    Q_D(const QDeclarativeWindow);
     return d->engine.rootContext();
 }
 
@@ -241,6 +244,7 @@ QDeclarativeContext* QDeclarativeWindow::rootContext()
  */
 QGraphicsObject *QDeclarativeWindow::rootObject() const
 {
+    Q_D(const QDeclarativeWindow);
     return d->root;
 }
 
@@ -254,6 +258,7 @@ QGraphicsObject *QDeclarativeWindow::rootObject() const
 */
 QDeclarativeWindow::Status QDeclarativeWindow::status() const
 {
+    Q_D(const QDeclarativeWindow);
     if (!d->component)
         return QDeclarativeWindow::Null;
 
@@ -266,6 +271,7 @@ QDeclarativeWindow::Status QDeclarativeWindow::status() const
 */
 void QDeclarativeWindow::setRootObject(QObject *obj)
 {
+    Q_D(QDeclarativeWindow);
     if (d->root == obj)
         return;
     d->root = qobject_cast<QDeclarativeItem *>(obj);
@@ -277,8 +283,10 @@ void QDeclarativeWindow::setRootObject(QObject *obj)
     d->scene.addItem(d->root);
 }
 
-QWidget *QDeclarativeWindow::window()
+QWidget *QDeclarativeWindow::window() const
 {
+    Q_D(const QDeclarativeWindow);
     return d->view;
 }
 
+#include "moc_qdeclarativewindow.cpp"

@@ -35,6 +35,7 @@
 
 #include <qwidget.h>
 #include <qurl.h>
+#include <qscopedpointer.h>
 
 class QDeclarativeWindowPrivate;
 class QDeclarativeEngine;
@@ -56,15 +57,15 @@ public:
     QUrl source() const;
     void setSource(const QUrl &url);
 
-    QDeclarativeEngine *engine();
-    QDeclarativeContext *rootContext();
+    QDeclarativeEngine *engine() const;
+    QDeclarativeContext *rootContext() const;
 
     QGraphicsObject *rootObject() const;
 
     enum Status { Null, Ready, Loading, Error };
     Status status() const;
 
-    QWidget *window();
+    QWidget *window() const;
 
 Q_SIGNALS:
     void statusChanged(QDeclarativeWindow::Status);
@@ -72,12 +73,13 @@ Q_SIGNALS:
 protected:
     virtual void setRootObject(QObject *obj);
 
-private Q_SLOTS:
-    void continueExecute();
+    QScopedPointer<QDeclarativeWindowPrivate> d_ptr;
 
 private:
-    friend class QDeclarativeWindowPrivate;
-    QDeclarativeWindowPrivate *d;
+    Q_PRIVATE_SLOT(d_func(), void _q_continueExecute())
+
+    Q_DISABLE_COPY(QDeclarativeWindow)
+    Q_DECLARE_PRIVATE(QDeclarativeWindow)
 };
 
 #endif
