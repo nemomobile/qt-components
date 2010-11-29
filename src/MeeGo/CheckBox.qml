@@ -33,6 +33,7 @@ ImplicitSizeItem {
 
     property bool checked: false
 
+    property alias pressed: mouseArea.pressed
     signal clicked
 
     implicitWidth: meegostyle.preferredWidth

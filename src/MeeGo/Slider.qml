@@ -33,15 +33,17 @@ Item {
     // the same time, preserve aspect ratio of inner contents. In
     // addition, it will implement margins towards the groove
     id: root
-    property bool vertical: false
-
-    property alias value: valueModel.value
+    property alias stepSize: valueModel.steps
     property alias minimumValue: valueModel.minimumValue
     property alias maximumValue: valueModel.maximumValue
-    property alias progress: receivedModel.value
-    property alias steps: valueModel.steps
+    property alias value: valueModel.value
+    property int orientation : Qt.Horizontal
+    property bool pressed: grooveMouseArea.pressed
+    property bool updateValueWhileDragging       // ### implement me
 
-    property int indicatorPosition: vertical ? QtComponents.Globals.Left : QtComponents.Globals.Top
+    property alias progress: receivedModel.value
+
+    property int indicatorPosition: orientation == Qt.Vertical ? QtComponents.Globals.Left : QtComponents.Globals.Top
     property bool indicatorVisible: true
     property string indicatorLabel: Math.round(valueModel.value * Math.pow(10, 1))/Math.pow(10, 1)
 
@@ -50,14 +52,12 @@ Item {
     property real innerTopMargin: style.current.get("marginTop")
     property real innerBottomMargin: style.current.get("marginBottom")
 
-    property bool pressed: grooveMouseArea.pressed
-
     signal valueChanged(real value)
     signal pressed
     signal released
 
-    width: innerLeftMargin + innerRightMargin + (vertical ? groove.width : style.current.get("groovePreferredLength"))
-    height: innerTopMargin + innerBottomMargin + (vertical ? style.current.get("groovePreferredLength") : groove.height)
+    width: innerLeftMargin + innerRightMargin + (orientation == Qt.Vertical ? groove.width : style.current.get("groovePreferredLength"))
+    height: innerTopMargin + innerBottomMargin + (orientation == Qt.Vertical ? style.current.get("groovePreferredLength") : groove.height)
 
     QtComponents.RangeModel {
         // This model describes the range of values the slider can take
@@ -67,7 +67,7 @@ Item {
         id: valueModel
         steps: 1
         positionAtMinimum: 0
-        positionAtMaximum: root.vertical ? groove.height : groove.width
+        positionAtMaximum: root.orientation == Qt.Vertical ? groove.height : groove.width
         onValueChanged: root.valueChanged(value)
     }
 
@@ -89,14 +89,14 @@ Item {
     ThemeBridge.ScalableImage {
         id: groove
         style: style
-        imageProperty: vertical ? "backgroundVerticalBaseImage" : "backgroundBaseImage"
+        imageProperty: orientation == Qt.Vertical ? "backgroundVerticalBaseImage" : "backgroundBaseImage"
 
-        anchors.left: vertical ? undefined : root.left
-        anchors.right: vertical ? undefined : root.right
-        anchors.top: vertical ? root.top : undefined
-        anchors.bottom: vertical ? root.bottom : undefined
-        anchors.horizontalCenter: vertical ? root.horizontalCenter : undefined
-        anchors.verticalCenter: vertical ? undefined : root.verticalCenter
+        anchors.left: orientation == Qt.Vertical ? undefined : root.left
+        anchors.right: orientation == Qt.Vertical ? undefined : root.right
+        anchors.top: orientation == Qt.Vertical ? root.top : undefined
+        anchors.bottom: orientation == Qt.Vertical ? root.bottom : undefined
+        anchors.horizontalCenter: orientation == Qt.Vertical ? root.horizontalCenter : undefined
+        anchors.verticalCenter: orientation == Qt.Vertical ? undefined : root.verticalCenter
 
         anchors.leftMargin: root.innerLeftMargin
         anchors.rightMargin: root.innerRightMargin
@@ -106,23 +106,23 @@ Item {
         ThemeBridge.ScalableImage {
             id: received
             style: style
-            imageProperty: vertical ? "backgroundVerticalReceivedImage" : "backgroundReceivedImage"
+            imageProperty: orientation == Qt.Vertical ? "backgroundVerticalReceivedImage" : "backgroundReceivedImage"
             anchors.top: groove.top
             anchors.left: groove.left
-            anchors.bottom: vertical ? undefined : groove.bottom
-            anchors.right: vertical ? groove.right : undefined
-            width: vertical ? implicitWidth : receivedModel.position
-            height: vertical ? receivedModel.position : implicitHeight
+            anchors.bottom: orientation == Qt.Vertical ? undefined : groove.bottom
+            anchors.right: orientation == Qt.Vertical ? groove.right : undefined
+            width: orientation == Qt.Vertical ? implicitWidth : receivedModel.position
+            height: orientation == Qt.Vertical ? receivedModel.position : implicitHeight
         }
 
         ThemeBridge.ScalableImage {
             id: elapsed
             style: style
-            imageProperty: vertical ? "backgroundVerticalElapsedImage" : "backgroundElapsedImage"
+            imageProperty: orientation == Qt.Vertical ? "backgroundVerticalElapsedImage" : "backgroundElapsedImage"
             anchors.top: groove.top
             anchors.left: groove.left
-            anchors.bottom: vertical ? handlePixmap.verticalCenter : groove.bottom
-            anchors.right: vertical ? groove.right : handlePixmap.horizontalCenter
+            anchors.bottom: orientation == Qt.Vertical ? handlePixmap.verticalCenter : groove.bottom
+            anchors.right: orientation == Qt.Vertical ? groove.right : handlePixmap.horizontalCenter
         }
 
         ThemeBridge.Pixmap {
@@ -131,10 +131,10 @@ Item {
             id: handlePixmap
             style: style
             imageProperty: grooveMouseArea.pressed ?
-                    (vertical ? "handleVerticalPressedPixmap" : "handlePressedPixmap")
-                    : (vertical ? "handleVerticalPixmap" : "handlePixmap")
-            anchors.verticalCenter: vertical ? undefined : parent.verticalCenter
-            anchors.horizontalCenter: vertical ? parent.horizontalCenter : undefined
+                    (orientation == Qt.Vertical ? "handleVerticalPressedPixmap" : "handlePressedPixmap")
+                    : (orientation == Qt.Vertical ? "handleVerticalPixmap" : "handlePixmap")
+            anchors.verticalCenter: orientation == Qt.Vertical ? undefined : parent.verticalCenter
+            anchors.horizontalCenter: orientation == Qt.Vertical ? parent.horizontalCenter : undefined
 
             x: valueModel.position - (width / 2)
             Behavior on x  {
@@ -168,11 +168,11 @@ Item {
 
             anchors.verticalCenter: groove.verticalCenter
             anchors.horizontalCenter: groove.horizontalCenter
-            width: handlePixmap.width + (vertical ? 0 : groove.width)
-            height: handlePixmap.height + (vertical ? groove.height : 0)
+            width: handlePixmap.width + (orientation == Qt.Vertical ? 0 : groove.width)
+            height: handlePixmap.height + (orientation == Qt.Vertical ? groove.height : 0)
             onPressed: {
                 style.feedback("pressFeedback");
-                if (vertical) {
+                if (orientation == Qt.Vertical) {
                     valueModel.position = mouseY - handlePixmap.height/2;
                     handlePixmap.y = restrictedDragging ?
                                 valueModel.position - (handlePixmap.height / 2) : conformToRange(mouseY);
@@ -187,7 +187,7 @@ Item {
                 // FIXME: handle min interval/value change
                 style.feedback("moveFeedback");
                 dragging = true;
-                if (vertical) {
+                if (orientation == Qt.Vertical) {
                     valueModel.position = mouseY - (handlePixmap.height/2);
                     handlePixmap.y = restrictedDragging ?
                                 valueModel.position - (handlePixmap.height / 2) : conformToRange(mouseY);
@@ -199,7 +199,7 @@ Item {
             }
             onReleased: {
                 dragging = false;
-                if (vertical) {
+                if (orientation == Qt.Vertical) {
                     handlePixmap.y = valueModel.position - (handlePixmap.height / 2)
                 } else {
                     handlePixmap.x = valueModel.position - (handlePixmap.width / 2)

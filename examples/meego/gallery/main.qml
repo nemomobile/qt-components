@@ -53,7 +53,7 @@ Window {
                                 "Checkbox",
                                 "LineEdit",
                                 "Query",
-                                "Spinner",
+                                "Busy Indicator",
                                 "Progress Bar",
                                 "Slider",
                                 "Switches",

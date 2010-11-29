@@ -33,6 +33,18 @@
     ...insert mandatory comment...
 */
 /*!
+    A CheckBox
+
+    \section1 Common API
+
+ // toggled via clicked()
+    property bool checked
+    property bool pressed
+    signal clicked
+
+*/
+
+/*!
     \qmlproperty enumeration CheckBox::TransformOrigin
 */
 

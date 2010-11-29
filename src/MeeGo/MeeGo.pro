@@ -56,7 +56,7 @@ QML_FILES = \
         PositionIndicator.qml \
         ProgressBar.qml \
         Slider.qml \
-        Spinner.qml \
+        BusyIndicator.qml \
         Switch.qml \
         TitleMenuButton.qml \
         Window.qml \

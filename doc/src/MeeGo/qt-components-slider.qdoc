@@ -32,6 +32,22 @@
     \brief
     ...insert mandatory comment...
 */
+
+/*!
+    \section1 Common API
+
+    \code
+    property real stepSize // default is 1.0
+    property real minimumValue // default = 0.0
+    property real maximumValue // default = 100.0
+    property real value // default = 0.0
+    property int orientation // Qt.Horizontal (default) | Qt.Vertical
+
+    property bool pressed // this activates in all the slider area
+    property bool updateValueWhileDragging // default = true
+    \endcode
+*/
+
 /*!
     \qmlproperty enumeration Slider::TransformOrigin
 */

@@ -62,7 +62,7 @@ Item {
         Text { text: "Normal"}
         Slider { id: red; maximumValue: 255; value: 150; onValueChanged: text.set(value); onPressed: text.set(value)}
         Text { text: "Steps"}
-        Slider { maximumValue: 10; steps:5; onValueChanged: text.set(value); onPressed: text.set(value)}
+        Slider { maximumValue: 10; stepSize:5; onValueChanged: text.set(value); onPressed: text.set(value)}
         Text { text: "Progress" }
         Slider { id: stream; maximumValue: 300; onValueChanged: text.set(value); onPressed: text.set(value)           
             function formatTime(timeValue)
@@ -89,8 +89,8 @@ Item {
 
         minimumValue: -2
         maximumValue: 5
-        vertical: true
-        steps: 0
+        orientation: Qt.Vertical
+        stepSize: 0
         progress: minimumValue
         onValueChanged: text.set(value)
         onPressed: text.set(value)

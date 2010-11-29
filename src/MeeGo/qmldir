@@ -2,6 +2,7 @@ plugin meegoplugin
 Action 1.0 Action.qml
 ActionButton 1.0 ActionButton.qml
 BasicListItem 1.0 BasicListItem.qml
+BusyIndicator 1.0 BusyIndicator.qml
 Button 1.0 Button.qml
 ButtonColumn 1.0 ButtonColumn.qml
 ButtonRow 1.0 ButtonRow.qml
@@ -14,6 +15,5 @@ Page 1.0 Page.qml
 PositionIndicator 1.0 PositionIndicator.qml
 ProgressBar 1.0 ProgressBar.qml
 Slider 1.0 Slider.qml
-Spinner 1.0 Spinner.qml
 Switch 1.0 Switch.qml
 Window 1.0 Window.qml

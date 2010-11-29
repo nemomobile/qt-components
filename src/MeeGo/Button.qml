@@ -31,18 +31,19 @@ import com.meego.themebridge 1.0
 ImplicitSizeItem {
     id: button
 
+    // Common public API
     property alias checked: checkable.checked
     property alias checkable: checkable.enabled
-
-    // Internal property, to be used by ButtonRow and other button containers.
-    property alias __exclusiveGroup: checkable.exclusiveGroup
-
+    property alias pressed: mouseArea.pressed
     property alias text: label.text
+    property string iconSource     // ###Change type to url
+                                // ###Problem with relative links, (i.e is it relative to the apps qml file?)
+    signal clicked
+
 
     // Icon properties. Precedence is the following:
     // Source has precedence over Id
     // When checked, try to use checked Source or Id, if empty, fallback to default Source or Id
-    property string iconSource
     property string checkedIconSource
     property string iconId
     property string checkedIconId
@@ -56,10 +57,11 @@ ImplicitSizeItem {
     property bool iconVisible: true
     property alias textVisible: label.visible
 
-    signal clicked
-
     implicitWidth: calculateWidth()
     implicitHeight: meegostyle.preferredHeight
+
+    // Internal property, to be used by ButtonRow and other button containers.
+    property alias __exclusiveGroup: checkable.exclusiveGroup
 
     function calculateWidth() {
         // XXX Check how does MeeGo Touch does that. Maybe use style paddings, etc
