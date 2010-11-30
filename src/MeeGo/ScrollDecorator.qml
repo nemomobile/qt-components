@@ -38,6 +38,8 @@ Item {
         styleClass: "MPositionIndicatorStyle"
     }
     property real __minIndicatorSize: meegostyle.current.get("minIndicatorSize")
+    property real __hideTimeout: meegostyle.current.get("hideTimeout")
+    property bool __firstTime: true
 
     Timer {
         // Hack to have the indicators flash when the view is shown the first time.
@@ -47,14 +49,36 @@ Item {
         running: true
         repeat: false
         onTriggered: {
-            if (verticalSD.shouldShow) {
-                verticalSD.state = "visible";
-                verticalSD.state = "";
+            // Will trigger a "visible" to "hidden" state change
+            __firstTime = false;
+        }
+    }
+
+    Component {
+        id: hiddenStateTransitions
+
+
+        QtObject {
+            property Transition toHidden: Transition {
+                from: "visible"; to: "hidden"
+                SequentialAnimation {
+                    PauseAnimation {
+                        duration: __hideTimeout
+                    }
+                    NumberAnimation {
+                        properties: "opacity"
+                    }
+                }
             }
-            if (horizontalSD.shouldShow) {
-                horizontalSD.state = "visible";
-                horizontalSD.state = "";
+
+            property Transition fromHidden: Transition {
+                from: "hidden"; to: "visible"
+                NumberAnimation {
+                    properties: "opacity"
+                }
             }
+
+            property variant trList: [ toHidden, fromHidden ]
         }
     }
 
@@ -91,22 +115,27 @@ Item {
             anchors.right: parent.right
         }
 
-        states: State {
-            name: "visible"
-            when: verticalSD.shouldShow && flickable.moving
-            PropertyChanges {
-                target: verticalSD
-                opacity: 1
-            }
-        }
+        states: [
+            State {
+                name: "visible"
+                when: verticalSD.shouldShow && (__firstTime || flickable.moving)
+                PropertyChanges {
+                    target: verticalSD
+                    opacity: 1
+                }
+            },
 
-        transitions: Transition {
-            from: "visible"; to: ""
-            NumberAnimation {
-                properties: "opacity"
-                duration: meegostyle.current.get("hideTimeout")
+            State {
+                name: "hidden"
+                when: (!verticalSD.shouldShow || !flickable.moving) && !__firstTime
+                PropertyChanges {
+                    target: verticalSD
+                    opacity: 0
+                }
             }
-        }
+        ]
+
+        transitions: hiddenStateTransitions.createObject(verticalSD).trList
     }
 
     Item {
@@ -151,21 +180,25 @@ Item {
             }
         }
 
-        states: State {
-            name: "visible"
-            when: horizontalSD.shouldShow && flickable.moving
-            PropertyChanges {
-                target: horizontalSD
-                opacity: 1
+        states: [
+            State {
+                name: "visible"
+                when: horizontalSD.shouldShow && (__firstTime || flickable.moving)
+                PropertyChanges {
+                    target: horizontalSD
+                    opacity: 1
+                }
+            },
+            State {
+                name: "hidden"
+                when: (!horizontalSD.shouldShow || !flickable.moving) && !__firstTime
+                PropertyChanges {
+                    target: horizontalSD
+                    opacity: 0
+                }
             }
-        }
+        ]
 
-        transitions: Transition {
-            from: "visible"; to: ""
-            NumberAnimation {
-                properties: "opacity"
-                duration: meegostyle.current.get("hideTimeout")
-            }
-        }
+        transitions: hiddenStateTransitions.createObject(horizontalSD).trList
     }
 }
