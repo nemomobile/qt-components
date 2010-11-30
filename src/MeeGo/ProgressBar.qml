@@ -30,10 +30,10 @@ import com.meego.themebridge 1.0
 
 ImplicitSizeItem {
     id: container
-    property alias minimum: progressModel.minimumValue
-    property alias maximum: progressModel.maximumValue
+    property alias minimumValue: progressModel.minimumValue
+    property alias maximumValue: progressModel.maximumValue
     property alias value: progressModel.value
-    property bool unknownDuration: false
+    property bool indeterminate: false
 
     implicitWidth: meegostyle.preferredWidth
     // The plankton theme seems to be using some other value inside libmeegotouch.

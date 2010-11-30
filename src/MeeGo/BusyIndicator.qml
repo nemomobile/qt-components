@@ -25,51 +25,50 @@
 ****************************************************************************/
 
 import Qt 4.7
-import com.meego 1.0
+import Qt.labs.components 1.0
+import com.meego.themebridge 1.0
 
-Item {
-    width: 400
-    height: 400
+// ### Display Entered / Exited! Pause animation when not "on display".
+// ### LayoutDirection
 
-    Column {
-        x: 50
-        y: 25
+ImplicitSizeItem {
+    id: root
 
-        spacing: 100
+    property bool running: false
+    property alias __styleParentClass: meegostyle.styleParentClass
 
-        Row {
-            spacing: 15
+    implicitWidth: meegostyle.preferredWidth
+    implicitHeight: meegostyle.preferredHeight
 
-            ButtonRow {
-                groupType: "Many"
+    Style {
+        id: meegostyle
+        styleClass: "MSpinnerStyle"
+    }
 
-                Button {
-                    id: toggleUnknown
-                    text: "Unknown"
-                }
+    Pixmap {
+        anchors.fill: parent
+        style: meegostyle
+        imageProperty: "bgPixmap"
+    }
 
-                Button {
-                    id: smallStyle
-                    text: "Small style"
-                }
-            }
+    PiePixmap {
+        id: pie
+        anchors.fill: parent
+        style: meegostyle
+        imageProperty: "progressPixmap"
 
-            Spinner {
-                id: spinner
-                unknownDuration: toggleUnknown.checked
-                value: slider.value
-                __styleParentClass: smallStyle.checked ? "MContainerHeader" : ""
-            }
-        }
-
-        Slider {
-            id: slider
-
-            width: 300
-            visible: !toggleUnknown.checked
-
-            minimumValue: 0
-            maximumValue: 100
+        NumberAnimation {
+            id: unknownAnimation
+            running: root.running
+            target: pie
+            property: "startAngle"
+            duration: meegostyle.current.get("period")
+            // PiePixmap follows QPainter::drawPie() API, 0 is at 3 o'clock
+            // and grows counter-clockwise. So we shift to start at 9 o'clock
+            // and go clockwise.
+            from: 540
+            to: 180
+            loops: Animation.Infinite
         }
     }
 }

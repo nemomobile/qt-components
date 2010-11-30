@@ -17,6 +17,6 @@ OTHER_FILES += \
     list.qml \
     positionindicator.qml \
     query.qml \
-    spinner.qml
+    busyindicator.qml
 
 include (../meego.pri)

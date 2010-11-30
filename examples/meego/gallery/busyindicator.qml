@@ -31,41 +31,35 @@ Item {
     width: 400
     height: 400
 
-    ProgressBar {
-        id: progressBar
-        anchors.left: parent.left
-        anchors.leftMargin: 20
-        anchors.verticalCenter: toggleUnknown.verticalCenter
-        width: 350
-        indeterminate: toggleUnknown.checked
-        value: progress.checkedButton ? progress.checkedButton.text : 0
-    }
+    Column {
+        x: 50
+        y: 25
 
-    Button {
-        id: toggleUnknown
-        anchors.top: parent.top
-        anchors.topMargin: 20
-        anchors.left: progressBar.right
-        anchors.leftMargin: 40
+        spacing: 100
 
-        width: 200
-        checkable: true
-        text: "Unknown"
-    }
+        Row {
+            spacing: 15
 
-    // ### Poor man's slider ;-), replace with a real Slider when it's done.
-    ButtonRow {
-        id: progress
-        anchors.top: progressBar.bottom
-        anchors.topMargin: 40
-        anchors.left: progressBar.left
-        anchors.right: parent.right
-        Repeater {
-            model: [0, 20, 40, 60, 80, 100]
-            Button {
-                text: modelData
-                width: progress.width / progress.children.length
+            ButtonRow {
+                groupType: "Many"
+
+                Button {
+                    id: toggleRunning
+                    checked: false
+                    text: "Running"
+                }
+
+                Button {
+                    id: smallStyle
+                    text: "Small style"
+                }
             }
+            BusyIndicator {
+                id: busyIndicator
+                running: toggleRunning.checked
+                __styleParentClass: smallStyle.checked ? "MContainerHeader" : ""
+            }
+
         }
     }
 }
