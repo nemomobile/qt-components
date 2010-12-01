@@ -65,6 +65,14 @@ Item {
         }
 
         Button {
+            width: 200
+            height: 50
+
+            text: "Button with icon"
+            iconSource: "testIcon.png"
+        }
+
+        Button {
             text: "Push Button auto-size"
         }
     }

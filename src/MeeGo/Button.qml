@@ -36,15 +36,15 @@ ImplicitSizeItem {
     property alias checkable: checkable.enabled
     property alias pressed: mouseArea.pressed
     property alias text: label.text
-    property string iconSource     // ###Change type to url
-                                // ###Problem with relative links, (i.e is it relative to the apps qml file?)
+    property url iconSource
+
     signal clicked
 
 
     // Icon properties. Precedence is the following:
     // Source has precedence over Id
     // When checked, try to use checked Source or Id, if empty, fallback to default Source or Id
-    property string checkedIconSource
+    property url checkedIconSource
     property string iconId
     property string checkedIconId
 
@@ -120,8 +120,8 @@ ImplicitSizeItem {
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
         anchors.leftMargin: calculateContentMargin()
-        width: meegostyle.current.get("iconSize").width
-        height: meegostyle.current.get("iconSize").height
+        sourceSize.width: meegostyle.current.get("iconSize").width
+        sourceSize.height: meegostyle.current.get("iconSize").height
 
         // If button is wider than content, grow the margins to keep content centered
         function calculateContentMargin() {

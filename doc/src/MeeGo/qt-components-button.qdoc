@@ -59,7 +59,7 @@
     property string text
     // icon visibility depends on iconSource presence
     // state-dependent resources should be assigned by ternary operators comparing e.g. checked state
-    property url iconSource //TBC: this should be relative to the application
+    property url iconSource
     \endcode
 */
 
