@@ -18,10 +18,18 @@ HEADERS += $$PUBLIC_HEADERS
 
 INCLUDEPATH = $$PWD
 
-install_headers.files = $$PUBLIC_HEADERS
-install_headers.path = $$[QT_INSTALL_HEADERS]/QtComponents
+macx:CONFIG(qt_framework, qt_framework|qt_no_framework) {
+    CONFIG += lib_bundle
+    FRAMEWORK_HEADERS.version = Versions
+    FRAMEWORK_HEADERS.files = $$PUBLIC_HEADERS
+    FRAMEWORK_HEADERS.path = Headers
+    QMAKE_BUNDLE_DATA += FRAMEWORK_HEADERS
+} else {
+    install_headers.files = $$PUBLIC_HEADERS
+    install_headers.path = $$[QT_INSTALL_HEADERS]/QtComponents
+    INSTALLS += install_headers
+}
 
 target.path = $$[QT_INSTALL_LIBS]
 
-INSTALLS += target install_headers
-
+INSTALLS += target
