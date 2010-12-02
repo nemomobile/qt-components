@@ -69,7 +69,7 @@ Item {
             height: 50
 
             text: "Button with icon"
-            iconSource: "testIcon.png"
+            iconSource: "images/testIcon.png"
         }
 
         Button {
