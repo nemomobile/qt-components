@@ -24,6 +24,23 @@
 **
 ****************************************************************************/
 
+/*!
+    \class QRangeModel
+    \brief The QRangeModel class, helps users to build components that depend
+           on some value and/or position to be in a certain range previously defined
+
+    With this class, the user sets a value range and a position range, which
+    represent the valid values/positions the model can assume. It is worth telling
+    that the value property always has priority over the position property. A nice use
+    case, would be a Slider implementation with the help of QRangeModel. If the user sets
+    a value range to [0,100], a position range to [50,100] and sets the value
+    to 80, the equivalent position would be 90. After that, if the user decides to
+    resize the slider, the value would be the same, but the knob position would
+    be updated due to the new position range.
+
+    \ingroup qt-components
+*/
+
 #include <QEvent>
 #include <QApplication>
 #include <QGraphicsSceneEvent>
@@ -56,6 +73,13 @@ void QRangeModelPrivate::init()
     posatmax = 0;
     inverted = false;
 }
+
+/*!
+    Calculates the position that is going to be seen outside by the component
+    that is using QRangeModel. It takes into account the \l stepSize,
+    \l positionAtMinimum, \l positionAtMaximum properties
+    and \a position that is passed as parameter.
+*/
 
 qreal QRangeModelPrivate::publicPosition(qreal position) const
 {
@@ -91,6 +115,13 @@ qreal QRangeModelPrivate::publicPosition(qreal position) const
     return rightEdge;
 }
 
+/*!
+    Calculates the value that is going to be seen outside by the component
+    that is using QRangeModel. It takes into account the \l stepSize,
+    \l minimumValue, \l maximumValue properties
+    and \a value that is passed as parameter.
+*/
+
 qreal QRangeModelPrivate::publicValue(qreal value) const
 {
     // It is important to do value-within-range check this
@@ -114,6 +145,11 @@ qreal QRangeModelPrivate::publicValue(qreal value) const
     return (value <= middle) ? leftEdge : rightEdge;
 }
 
+/*!
+    Checks if the \l value or \l position, that is seen by the user, has changed and emits the changed signal if it
+    has changed.
+*/
+
 void QRangeModelPrivate::emitValueAndPositionIfChanged(const qreal oldValue, const qreal oldPosition)
 {
     Q_Q(QRangeModel);
@@ -128,12 +164,21 @@ void QRangeModelPrivate::emitValueAndPositionIfChanged(const qreal oldValue, con
         emit q->positionChanged(newPosition);
 }
 
+/*!
+    Constructs a QRangeModel with \a parent
+*/
+
 QRangeModel::QRangeModel(QObject *parent)
     : QObject(parent), d_ptr(new QRangeModelPrivate(this))
 {
     Q_D(QRangeModel);
     d->init();
 }
+
+/*!
+    \internal
+    Constructs a QRangeModel with private class pointer \a dd and \a parent
+*/
 
 QRangeModel::QRangeModel(QRangeModelPrivate &dd, QObject *parent)
     : QObject(parent), d_ptr(&dd)
@@ -142,11 +187,21 @@ QRangeModel::QRangeModel(QRangeModelPrivate &dd, QObject *parent)
     d->init();
 }
 
+/*!
+    Destroys the QRangeModel
+*/
+
 QRangeModel::~QRangeModel()
 {
     delete d_ptr;
     d_ptr = 0;
 }
+
+/*!
+    Sets the range of valid positions, that \l position can assume externally, with
+    \a min and \a max.
+    Such range is represented by \l positionAtMinimum and \l positionAtMaximum
+*/
 
 void QRangeModel::setPositionRange(qreal min, qreal max)
 {
@@ -177,6 +232,11 @@ void QRangeModel::setPositionRange(qreal min, qreal max)
 
     d->emitValueAndPositionIfChanged(value(), oldPosition);
 }
+/*!
+    Sets the range of valid values, that \l value can assume externally, with
+    \a min and \a max. The range has the following constraint: \a min must be less or equal \a max
+    Such range is represented by \l minimumValue and \l maximumValue
+*/
 
 void QRangeModel::setRange(qreal min, qreal max)
 {
@@ -205,6 +265,13 @@ void QRangeModel::setRange(qreal min, qreal max)
     d->emitValueAndPositionIfChanged(oldValue, oldPosition);
 }
 
+/*!
+    \property QRangeModel::minimumValue
+    \brief the minimum value that \l value can assume
+
+    This property's default value is 0
+*/
+
 void QRangeModel::setMinimum(qreal min)
 {
     Q_D(const QRangeModel);
@@ -216,6 +283,13 @@ qreal QRangeModel::minimum() const
     Q_D(const QRangeModel);
     return d->minimum;
 }
+
+/*!
+    \property QRangeModel::maximumValue
+    \brief the maximum value that \l value can assume
+
+    This property's default value is 99
+*/
 
 void QRangeModel::setMaximum(qreal max)
 {
@@ -231,6 +305,13 @@ qreal QRangeModel::maximum() const
     return d->maximum;
 }
 
+/*!
+    \property QRangeModel::stepSize
+    \brief the value that is added to the \l value and \l position property
+
+    Example: If a user sets a range of [0,100] and stepSize
+    to 30, the valid values that are going to be seen externally would be: 0, 30, 60, 90, 100.
+*/
 
 void QRangeModel::setStepSize(qreal stepSize)
 {
@@ -254,6 +335,12 @@ qreal QRangeModel::stepSize() const
     return d->stepSize;
 }
 
+/*!
+    Returns a valid position, respecting the \l positionAtMinimum,
+    \l positionAtMaximum and the \l stepSize properties.
+    Such calculation is based on the parameter \a value (which is valid externally).
+*/
+
 qreal QRangeModel::positionForValue(qreal value) const
 {
     Q_D(const QRangeModel);
@@ -261,6 +348,16 @@ qreal QRangeModel::positionForValue(qreal value) const
     const qreal unconstrainedPosition = d->equivalentPosition(value);
     return d->publicPosition(unconstrainedPosition);
 }
+
+/*!
+    \property QRangeModel::position
+    \brief the current position of the model
+
+    Represents a valid external position, based on the \l positionAtMinimum,
+    \l positionAtMaximum and the \l stepSize properties.
+    The user can set it internally with a position, that is not within the current position range,
+    since it can become valid if the user changes the position range later.
+*/
 
 qreal QRangeModel::position() const
 {
@@ -287,6 +384,13 @@ void QRangeModel::setPosition(qreal newPosition)
     d->emitValueAndPositionIfChanged(oldValue, oldPosition);
 }
 
+/*!
+    \property QRangeModel::positionAtMinimum
+    \brief the minimum value that \l position can assume
+
+    This property's default value is 0
+*/
+
 void QRangeModel::setPositionAtMinimum(qreal min)
 {
     Q_D(QRangeModel);
@@ -298,6 +402,13 @@ qreal QRangeModel::positionAtMinimum() const
     Q_D(const QRangeModel);
     return d->posatmin;
 }
+
+/*!
+    \property QRangeModel::positionAtMaximum
+    \brief the maximum value that \l position can assume
+
+    This property's default value is 0
+*/
 
 void QRangeModel::setPositionAtMaximum(qreal max)
 {
@@ -311,6 +422,12 @@ qreal QRangeModel::positionAtMaximum() const
     return d->posatmax;
 }
 
+/*!
+    Returns a valid value, respecting the \l minimumValue,
+    \l maximumValue and the \l stepSize properties.
+    Such calculation is based on the parameter \a position (which is valid externally).
+*/
+
 qreal QRangeModel::valueForPosition(qreal position) const
 {
     Q_D(const QRangeModel);
@@ -318,6 +435,16 @@ qreal QRangeModel::valueForPosition(qreal position) const
     const qreal unconstrainedValue = d->equivalentValue(position);
     return d->publicValue(unconstrainedValue);
 }
+
+/*!
+    \property QRangeModel::value
+    \brief the current value of the model
+
+    Represents a valid external value, based on the \l minimumValue,
+    \l maximumValue and the \l stepSize properties.
+    The user can set it internally with a value, that is not within the current range,
+    since it can become valid if the user changes the range later.
+*/
 
 qreal QRangeModel::value() const
 {
@@ -344,6 +471,15 @@ void QRangeModel::setValue(qreal newValue)
     d->emitValueAndPositionIfChanged(oldValue, oldPosition);
 }
 
+/*!
+    \property QRangeModel::inverted
+    \brief the model is inverted or not
+
+    The model can be represented with an inverted behavior, e.g. when \l value assumes
+    the maximum value (represented by \l maximumValue) the \l position will be at its
+    minimum (represented by \l positionAtMinimum).
+*/
+
 void QRangeModel::setInverted(bool inverted)
 {
     Q_D(QRangeModel);
@@ -363,11 +499,19 @@ bool QRangeModel::inverted() const
     return d->inverted;
 }
 
+/*!
+    Sets the \l value to \l minimumValue.
+*/
+
 void QRangeModel::toMinimum()
 {
     Q_D(const QRangeModel);
     setValue(d->minimum);
 }
+
+/*!
+    Sets the \l value to \l maximumValue.
+*/
 
 void QRangeModel::toMaximum()
 {
