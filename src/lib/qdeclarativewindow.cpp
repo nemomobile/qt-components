@@ -66,9 +66,14 @@ void QDeclarativeWindowPrivate::init()
     if (!MComponentData::instance()) {
         // This is a workaround because we can't use a default
         // constructor for MComponentData
+        // ### this is only needed here for accessing MDeviceProfile::instance()->resolution()
+        QByteArray argv0;
+        if (!QCoreApplication::arguments().isEmpty())
+            argv0 = QCoreApplication::arguments().first().toLocal8Bit();
+
         int argc = 1;
-        char *argv0 = "meegotouch";
-        (void) new MComponentData(argc, &argv0);
+        char *argv[] = { argv0.data() };
+        (void) new MComponentData(argc, argv);
     }
 
     q->setResizeMode(QDeclarativeView::SizeRootObjectToView);
