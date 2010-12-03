@@ -49,7 +49,7 @@ void QRangeModelPrivate::init()
 {
     minimum = 0;
     maximum = 99;
-    steps = 0;
+    stepSize = 0;
     value = 0;
     pos = 0;
     posatmin = 0;
@@ -187,23 +187,24 @@ qreal QRangeModel::maximum() const
 }
 
 
-void QRangeModel::setSteps(qreal steps)
+void QRangeModel::setStepSize(qreal stepSize)
 {
     Q_D(QRangeModel);
-    if (steps == d->steps)
+    if (stepSize == d->stepSize)
         return;
 
     const qreal oldValue = value();
     const qreal oldPosition = position();
-    d->steps = steps;
+    d->stepSize = stepSize;
 
+    emit stepSizeChanged(d->stepSize);
     d->emitValueAndPositionIfChanged(oldValue, oldPosition);
 }
 
-qreal QRangeModel::steps() const
+qreal QRangeModel::stepSize() const
 {
     Q_D(const QRangeModel);
-    return d->steps;
+    return d->stepSize;
 }
 
 qreal QRangeModel::positionForValue(qreal value) const
@@ -234,9 +235,19 @@ qreal QRangeModel::position() const
     // outside the range, might become valid later if the range changes.
 
     qreal pos = d->effectivePosAtMin() + d->pos;
-    const qreal s = d->positionFromValue(d->steps);
-    if (s > 0)
-        pos = s * qRound(pos/s);
+
+    // Call positionFromValue with stepSize as parameter, in order to
+    // to calculate the equivalent stepSize for the position property.
+    const qreal positionStep = d->positionFromValue(d->stepSize);
+    if (positionStep > 0) {
+        int stepSizeMultiplier = (int) (d->pos/positionStep);
+        qreal leftRange = (stepSizeMultiplier * positionStep) + d->posatmin;
+        qreal rightRange = (d->posatmin > d->posatmax) ? qMax(d->posatmax, leftRange + positionStep) : qMin(d->posatmax, leftRange + positionStep);
+        if (pos > ((rightRange + leftRange) / 2))
+            pos = rightRange;
+        else
+            pos = leftRange;
+    }
     if (d->effectivePosAtMin() > d->effectivePosAtMax())
         return qBound(d->effectivePosAtMax(), pos, d->effectivePosAtMin());
     return qBound(d->effectivePosAtMin(), pos, d->effectivePosAtMax());
@@ -315,8 +326,15 @@ qreal QRangeModel::value() const
     // QML bindings; a position that is initially invalid because it lays
     // outside the range, might become valid later if the range changes.
     qreal value = d->value + d->minimum;
-    if (d->steps > 0)
-        value = d->steps * qRound(value/d->steps);
+    if (d->stepSize > 0) {
+        int stepSizeMultiplier = (int) (d->value/d->stepSize);
+        qreal leftRange = (stepSizeMultiplier * d->stepSize) + d->minimum;
+        qreal rightRange = qMin(d->maximum, leftRange + d->stepSize);
+        if (value > ((rightRange + leftRange) / 2))
+            value = rightRange;
+        else
+            value = leftRange;
+    }
     return qBound(d->minimum, value, d->maximum);
 }
 

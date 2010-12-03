@@ -40,9 +40,9 @@ class Q_COMPONENTS_EXPORT QRangeModel : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(qreal value READ value WRITE setValue NOTIFY valueChanged USER true)
-    Q_PROPERTY(qreal steps READ steps WRITE setSteps)
     Q_PROPERTY(qreal minimumValue READ minimum WRITE setMinimum NOTIFY minimumChanged)
     Q_PROPERTY(qreal maximumValue READ maximum WRITE setMaximum NOTIFY maximumChanged)
+    Q_PROPERTY(qreal stepSize READ stepSize WRITE setStepSize NOTIFY stepSizeChanged)
     Q_PROPERTY(qreal position READ position WRITE setPosition NOTIFY positionChanged)
     Q_PROPERTY(bool inverted READ inverted WRITE setInverted)
     Q_PROPERTY(qreal positionAtMinimum READ positionAtMinimum WRITE setPositionAtMinimum NOTIFY positionAtMinimumChanged)
@@ -55,8 +55,8 @@ public:
     void setRange(qreal min, qreal max);
     void setPositionRange(qreal min, qreal max);
 
-    void setSteps(qreal steps);
-    qreal steps() const;
+    void setStepSize(qreal stepSize);
+    qreal stepSize() const;
 
     void setMinimum(qreal min);
     qreal minimum() const;
@@ -89,6 +89,7 @@ Q_SIGNALS:
     void valueChanged(qreal value);
     void positionChanged(qreal position);
 
+    void stepSizeChanged(qreal stepSize);
 
     void minimumChanged(qreal min);
     void maximumChanged(qreal max);

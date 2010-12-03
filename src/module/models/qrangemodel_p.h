@@ -50,7 +50,7 @@ public:
     void init();
 
     qreal posatmin, posatmax;
-    qreal minimum, maximum, steps, pos, value;
+    qreal minimum, maximum, stepSize, pos, value;
 
     uint inverted : 1;
 
