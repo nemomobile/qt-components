@@ -56,21 +56,29 @@ public:
 
     QRangeModel *q_ptr;
 
+    inline qreal effectivePosAtMin() const {
+        return inverted ? posatmax : posatmin;
+    }
+
+    inline qreal effectivePosAtMax() const {
+        return inverted ? posatmin : posatmax;
+    }
+
     inline qreal positionFromValue(qreal value) const {
         // Return relative position from relative value (that
         // is, both are indipendent from their respective ranges):
         const qreal valueRange = qreal(maximum - minimum);
         if (valueRange == 0)
-            return posatmin;
+            return effectivePosAtMin();
 
-        const qreal scale = qreal(posatmax - posatmin) / valueRange;
+        const qreal scale = qreal(effectivePosAtMax() - effectivePosAtMin()) / valueRange;
         return value * scale;
     }
 
     inline qreal valueFromPosition(qreal pos) const {
         // Return relative value from relative position (that
         // is, both are indipendent from their respective ranges):
-        const qreal posRange = qreal(posatmax - posatmin);
+        const qreal posRange = qreal(effectivePosAtMax() - effectivePosAtMin());
         if (posRange == 0)
             return minimum;
 
