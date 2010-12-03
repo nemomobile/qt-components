@@ -388,7 +388,7 @@ void tst_QRangeModel::valueAndPosition_data()
     QTest::newRow("pos: 0 100 -> value: 1 2") << 1.0 << 2.0 << 0.0 << 100.0;
     QTest::newRow("pos: 100 0 -> value: 1 2") << 1.0 << 2.0 << 100.0 << 0.0;
     QTest::newRow("pos: -200 300 -> value: 1 2") << 1.0 << 2.0 << -200.0 << 300.0;
-    QTest::newRow("pos: 300 -200 -> value: -1 2") << -1.0 << 2.0 << 300.0 << -200.0;
+    QTest::newRow("pos: 300 -200 -> value: -1 2.5") << -1.0 << 2.5 << 300.0 << -200.0;
 }
 
 void tst_QRangeModel::valueAndPosition()
