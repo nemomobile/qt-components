@@ -369,9 +369,16 @@ void QRangeModel::setInverted(bool inverted)
     Q_D(QRangeModel);
     if (inverted == d->inverted)
         return;
-
     d->inverted = inverted;
-
+    /*else {
+        // We have to update the internal value if rangeModel's inverted property changes.
+        if (d->inverted)
+            d->value = (d->maximum - d->value) - d->minimum;
+        else
+            d->value = d->maximum - (d->value - d->minimum);
+    }*/
+    d->inverted = inverted;
+    emit invertedChanged(d->inverted);
     // After updating the internal value, the position property can change.
     setPosition(d->positionFromValue(d->value) + d->effectivePosAtMin());
 }

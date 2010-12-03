@@ -44,9 +44,9 @@ class Q_COMPONENTS_EXPORT QRangeModel : public QObject
     Q_PROPERTY(qreal maximumValue READ maximum WRITE setMaximum NOTIFY maximumChanged)
     Q_PROPERTY(qreal stepSize READ stepSize WRITE setStepSize NOTIFY stepSizeChanged)
     Q_PROPERTY(qreal position READ position WRITE setPosition NOTIFY positionChanged)
-    Q_PROPERTY(bool inverted READ inverted WRITE setInverted)
     Q_PROPERTY(qreal positionAtMinimum READ positionAtMinimum WRITE setPositionAtMinimum NOTIFY positionAtMinimumChanged)
     Q_PROPERTY(qreal positionAtMaximum READ positionAtMaximum WRITE setPositionAtMaximum NOTIFY positionAtMaximumChanged)
+    Q_PROPERTY(bool inverted READ inverted WRITE setInverted NOTIFY invertedChanged)
 
 public:
     QRangeModel(QObject *parent = 0);
@@ -90,6 +90,8 @@ Q_SIGNALS:
     void positionChanged(qreal position);
 
     void stepSizeChanged(qreal stepSize);
+
+    void invertedChanged(bool inverted);
 
     void minimumChanged(qreal min);
     void maximumChanged(qreal max);
