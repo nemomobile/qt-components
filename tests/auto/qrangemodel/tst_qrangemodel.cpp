@@ -59,6 +59,8 @@ private slots:
 
     void stepSize();
     void invertedStepSize();
+
+    void settingOwnPositionAndValue();
 };
 
 tst_QRangeModel::tst_QRangeModel()
@@ -1395,6 +1397,36 @@ void tst_QRangeModel::invertedStepSize()
 
     m.setPosition(130);
     QCOMPARE(m.position(), 200.0);
+}
+
+void tst_QRangeModel::settingOwnPositionAndValue()
+{
+    QRangeModel m;
+    m.setRange(0.0, 100.0);
+
+    // This range for position will cause the step to be non-integer, the actual
+    // figures came from a test of a Slider component.
+    m.setPositionRange(32.0, 268.0);
+    m.setStepSize(1.0);
+    m.setPosition(32.0);
+
+    QSignalSpy positionChangedSpy(&m, SIGNAL(positionChanged(qreal)));
+    m.setPosition(215);
+    QCOMPARE(m.position(), 216.08);
+    m.setPosition(m.position());
+    QCOMPARE(m.position(), 216.08);
+    QCOMPARE(positionChangedSpy.count(), 1);
+
+    // Now with a step size that will cause non-integer values
+    m.setStepSize(1 + (1.0 / 3.0));
+    m.setValue(0.0);
+
+    QSignalSpy valueChangedSpy(&m, SIGNAL(valueChanged(qreal)));
+    m.setValue(7.9);
+    QCOMPARE(m.value(), 8.0);
+    m.setValue(m.value());
+    QCOMPARE(m.value(), 8.0);
+    QCOMPARE(valueChangedSpy.count(), 1);
 }
 
 QTEST_MAIN(tst_QRangeModel)
