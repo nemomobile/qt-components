@@ -8,16 +8,6 @@ TEMPLATE = lib ## hack to make qtLibraryTarget work
     }
 }
 
-unix {
-    OBJECTS_DIR = .obj
-    MOC_DIR = .moc
-}
-
-LIBRARYPATH += $$PWD/lib
-
-QMAKE_INCDIR += $$INCLUDEPATH
-QMAKE_LIBDIR += $$LIBRARYPATH
-
 meego {
     DEFINES += Q_COMPONENTS_MEEGO
     CONFIG += meegotouch

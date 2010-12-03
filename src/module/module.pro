@@ -13,9 +13,7 @@ HEADERS += qglobalenums.h
 SOURCES += plugin.cpp
 
 include(kernel/kernel.pri)
-
 include(models/models.pri)
-INCLUDEPATH += $$PWD/models
 
 QML_FILES += \
     qmldir \
