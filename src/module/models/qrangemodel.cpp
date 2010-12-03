@@ -76,7 +76,7 @@ qreal QRangeModelPrivate::publicPosition(qreal position) const
         return min;
 
     qreal leftEdge = (stepSizeMultiplier * positionStep) + min;
-    qreal rightEdge = leftEdge + positionStep;
+    qreal rightEdge = ((stepSizeMultiplier + 1) * positionStep) + min;
 
     if (min < max) {
         leftEdge = qMin(leftEdge, max);
@@ -108,7 +108,7 @@ qreal QRangeModelPrivate::publicValue(qreal value) const
         return minimum;
 
     const qreal leftEdge = qMin(maximum, (stepSizeMultiplier * stepSize) + minimum);
-    const qreal rightEdge = qMin(maximum, leftEdge + stepSize);
+    const qreal rightEdge = qMin(maximum, ((stepSizeMultiplier + 1) * stepSize) + minimum);
     const qreal middle = (leftEdge + rightEdge) / 2;
 
     return (value <= middle) ? leftEdge : rightEdge;
@@ -122,9 +122,9 @@ void QRangeModelPrivate::emitValueAndPositionIfChanged(const qreal oldValue, con
     // unchanged. This will be the case when operating with values outside range:
     const qreal newValue = q->value();
     const qreal newPosition = q->position();
-    if (newValue != oldValue)
+    if (!qFuzzyCompare(newValue, oldValue))
         emit q->valueChanged(newValue);
-    if (newPosition != oldPosition)
+    if (!qFuzzyCompare(newPosition, oldPosition))
         emit q->positionChanged(newPosition);
 }
 
@@ -152,8 +152,8 @@ void QRangeModel::setPositionRange(qreal min, qreal max)
 {
     Q_D(QRangeModel);
 
-    bool emitPosAtMinChanged = (min != d->posatmin);
-    bool emitPosAtMaxChanged = (max != d->posatmax);
+    bool emitPosAtMinChanged = !qFuzzyCompare(min, d->posatmin);
+    bool emitPosAtMaxChanged = !qFuzzyCompare(max, d->posatmax);
 
     if (!(emitPosAtMinChanged || emitPosAtMaxChanged))
         return;
@@ -182,8 +182,8 @@ void QRangeModel::setRange(qreal min, qreal max)
 {
     Q_D(QRangeModel);
 
-    bool emitMinimumChanged = (min != d->minimum);
-    bool emitMaximumChanged = (max != d->maximum);
+    bool emitMinimumChanged = !qFuzzyCompare(min, d->minimum);
+    bool emitMaximumChanged = !qFuzzyCompare(max, d->maximum);
 
     if (!(emitMinimumChanged || emitMaximumChanged))
         return;
@@ -237,7 +237,7 @@ void QRangeModel::setStepSize(qreal stepSize)
     Q_D(QRangeModel);
 
     stepSize = qMax(qreal(0.0), stepSize);
-    if (stepSize == d->stepSize)
+    if (qFuzzyCompare(stepSize, d->stepSize))
         return;
 
     const qreal oldValue = value();
