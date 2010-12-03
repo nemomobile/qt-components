@@ -168,7 +168,7 @@ void QRangeModel::setPositionRange(qreal min, qreal max)
     // the new position, based on the value (50), will be 50.
     // If the newPosition is different than the old one, it must be updated, in order to emit
     // the positionChanged signal.
-    d->pos = d->positionFromValue(d->value);
+    d->pos = d->equivalentPosition(d->value);
 
     if (emitPosAtMinChanged)
         emit positionAtMinimumChanged(d->posatmin);
@@ -195,7 +195,7 @@ void QRangeModel::setRange(qreal min, qreal max)
     d->maximum = qMax(min, max);
 
     // Update internal position if it was changed. It can occurs if internal value changes, due to range update
-    d->pos = d->positionFromValue(d->value);
+    d->pos = d->equivalentPosition(d->value);
 
     if (emitMinimumChanged)
         emit minimumChanged(d->minimum);
@@ -258,7 +258,7 @@ qreal QRangeModel::positionForValue(qreal value) const
 {
     Q_D(const QRangeModel);
 
-    const qreal unconstrainedPosition = d->positionFromValue(value);
+    const qreal unconstrainedPosition = d->equivalentPosition(value);
     return d->publicPosition(unconstrainedPosition);
 }
 
@@ -283,7 +283,7 @@ void QRangeModel::setPosition(qreal newPosition)
 
     // Update position and calculate new value
     d->pos = newPosition;
-    d->value = d->valueFromPosition(d->pos);
+    d->value = d->equivalentValue(d->pos);
     d->emitValueAndPositionIfChanged(oldValue, oldPosition);
 }
 
@@ -315,7 +315,7 @@ qreal QRangeModel::valueForPosition(qreal position) const
 {
     Q_D(const QRangeModel);
 
-    const qreal unconstrainedValue = d->valueFromPosition(position);
+    const qreal unconstrainedValue = d->equivalentValue(position);
     return d->publicValue(unconstrainedValue);
 }
 
@@ -340,7 +340,7 @@ void QRangeModel::setValue(qreal newValue)
 
     // Update relative value and position
     d->value = newValue;
-    d->pos = d->positionFromValue(d->value);
+    d->pos = d->equivalentPosition(d->value);
     d->emitValueAndPositionIfChanged(oldValue, oldPosition);
 }
 
@@ -354,7 +354,7 @@ void QRangeModel::setInverted(bool inverted)
     emit invertedChanged(d->inverted);
 
     // After updating the internal value, the position property can change.
-    setPosition(d->positionFromValue(d->value));
+    setPosition(d->equivalentPosition(d->value));
 }
 
 bool QRangeModel::inverted() const

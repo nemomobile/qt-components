@@ -64,7 +64,7 @@ public:
         return inverted ? posatmin : posatmax;
     }
 
-    inline qreal positionFromValue(qreal value) const {
+    inline qreal equivalentPosition(qreal value) const {
         // Return absolute position from absolute value
         const qreal valueRange = maximum - minimum;
         if (valueRange == 0)
@@ -74,7 +74,7 @@ public:
         return (value - minimum) * scale + effectivePosAtMin();
     }
 
-    inline qreal valueFromPosition(qreal pos) const {
+    inline qreal equivalentValue(qreal pos) const {
         // Return absolute value from absolute position
         const qreal posRange = effectivePosAtMax() - effectivePosAtMin();
         if (posRange == 0)
