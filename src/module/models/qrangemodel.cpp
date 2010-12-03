@@ -57,6 +57,77 @@ void QRangeModelPrivate::init()
     inverted = false;
 }
 
+qreal QRangeModelPrivate::publicPosition(qreal position) const
+{
+    // Calculate the equivalent stepSize for the position property.
+    const qreal min = effectivePosAtMin();
+    const qreal max = effectivePosAtMax();
+    const qreal valueRange = maximum - minimum;
+    const qreal positionValueRatio = valueRange ? (max - min) / valueRange : 0;
+    const qreal positionStep = stepSize * positionValueRatio;
+
+    if (positionStep == 0)
+        return (min < max) ? qBound(min, position, max) : qBound(max, position, min);
+
+    const int stepSizeMultiplier = (position - min) / positionStep;
+
+    // Test whether value is below minimum range
+    if (stepSizeMultiplier < 0)
+        return min;
+
+    qreal leftRange = (stepSizeMultiplier * positionStep) + min;
+    qreal rightRange = leftRange + positionStep;
+
+    if (min < max) {
+        leftRange = qMin(leftRange, max);
+        rightRange = qMin(rightRange, max);
+    } else {
+        leftRange = qMax(leftRange, max);
+        rightRange = qMax(rightRange, max);
+    }
+
+    if (qAbs(leftRange - position) <= qAbs(rightRange - position))
+        return leftRange;
+    return rightRange;
+}
+
+qreal QRangeModelPrivate::publicValue(qreal value) const
+{
+    // It is important to do value-within-range check this
+    // late (as opposed to during setPosition()). The reason is
+    // QML bindings; a position that is initially invalid because it lays
+    // outside the range, might become valid later if the range changes.
+
+    if (stepSize == 0)
+        return qBound(minimum, value, maximum);
+
+    const int stepSizeMultiplier = (value - minimum) / stepSize;
+
+    // Test whether value is below minimum range
+    if (stepSizeMultiplier < 0)
+        return minimum;
+
+    const qreal leftRange = qMin(maximum, (stepSizeMultiplier * stepSize) + minimum);
+    const qreal rightRange = qMin(maximum, leftRange + stepSize);
+    const qreal middle = (leftRange + rightRange) / 2;
+
+    return (value <= middle) ? leftRange : rightRange;
+}
+
+void QRangeModelPrivate::emitValueAndPositionIfChanged(const qreal oldValue, const qreal oldPosition)
+{
+    Q_Q(QRangeModel);
+
+    // Effective value and position might have changed even in cases when e.g. d->value is
+    // unchanged. This will be the case when operating with values outside range:
+    const qreal newValue = q->value();
+    const qreal newPosition = q->position();
+    if (newValue != oldValue)
+        emit q->valueChanged(newValue);
+    if (newPosition != oldPosition)
+        emit q->positionChanged(newPosition);
+}
+
 QRangeModel::QRangeModel(QObject *parent)
     : QObject(parent), d_ptr(new QRangeModelPrivate(this))
 {
@@ -75,20 +146,6 @@ QRangeModel::~QRangeModel()
 {
     delete d_ptr;
     d_ptr = 0;
-}
-
-void QRangeModelPrivate::emitValueAndPositionIfChanged(const qreal oldValue, const qreal oldPosition)
-{
-    Q_Q(QRangeModel);
-
-    // Effective value and position might have changed even in cases when e.g. d->value is
-    // unchanged. This will be the case when operating with values outside range:
-    const qreal newValue = q->value();
-    const qreal newPosition = q->position();
-    if (newValue != oldValue)
-        emit q->valueChanged(newValue);
-    if (newPosition != oldPosition)
-        emit q->positionChanged(newPosition);
 }
 
 void QRangeModel::setPositionRange(qreal min, qreal max)
@@ -201,55 +258,17 @@ qreal QRangeModel::positionForValue(qreal value) const
 {
     Q_D(const QRangeModel);
 
-    const qreal pos = d->positionFromValue(value);
-    const qreal min = d->effectivePosAtMin();
-    const qreal max = d->effectivePosAtMax();
-
-    // ### TODO: Observe "steps" property.
-    if (min > max)
-        return qBound(max, pos, min);
-    return qBound(min, pos, max);
+    const qreal unconstrainedPosition = d->positionFromValue(value);
+    return d->publicPosition(unconstrainedPosition);
 }
 
 qreal QRangeModel::position() const
 {
     Q_D(const QRangeModel);
 
-    // It is also important to do value-within-range check this
-    // late (as opposed to during setPosition()). The reason is
-    // QML bindings; a position that is initially invalid because it lays
-    // outside the range, might become valid later if the range changes.
-
-    // Calculate the equivalent stepSize for the position property.
-    const qreal min = d->effectivePosAtMin();
-    const qreal max = d->effectivePosAtMax();
-    const qreal valueRange = d->maximum - d->minimum;
-    const qreal positionValueRatio = valueRange ? (max - min) / valueRange : 0;
-    const qreal positionStep = d->stepSize * positionValueRatio;
-
-    if (positionStep == 0)
-        return (min < max) ? qBound(min, d->pos, max) : qBound(max, d->pos, min);
-
-    const int stepSizeMultiplier = (d->pos - min) / positionStep;
-
-    // Test whether value is below minimum range
-    if (stepSizeMultiplier < 0)
-        return min;
-
-    qreal leftRange = (stepSizeMultiplier * positionStep) + min;
-    qreal rightRange = leftRange + positionStep;
-
-    if (min < max) {
-        leftRange = qMin(leftRange, max);
-        rightRange = qMin(rightRange, max);
-    } else {
-        leftRange = qMax(leftRange, max);
-        rightRange = qMax(rightRange, max);
-    }
-
-    if (qAbs(leftRange - d->pos) <= qAbs(rightRange - d->pos))
-        return leftRange;
-    return rightRange;
+    // Return the internal position but observe boundaries and
+    // stepSize restrictions.
+    return d->publicPosition(d->pos);
 }
 
 void QRangeModel::setPosition(qreal newPosition)
@@ -296,35 +315,17 @@ qreal QRangeModel::valueForPosition(qreal position) const
 {
     Q_D(const QRangeModel);
 
-    const qreal value = d->valueFromPosition(position);
-
-    // ### TODO: Observe "steps" property.
-    return qBound(d->minimum, value, d->maximum);
+    const qreal unconstrainedValue = d->valueFromPosition(position);
+    return d->publicValue(unconstrainedValue);
 }
 
 qreal QRangeModel::value() const
 {
     Q_D(const QRangeModel);
 
-    // It is important to do value-within-range check this
-    // late (as opposed to during setPosition()). The reason is
-    // QML bindings; a position that is initially invalid because it lays
-    // outside the range, might become valid later if the range changes.
-
-    if (d->stepSize == 0)
-        return qBound(d->minimum, d->value, d->maximum);
-
-    const int stepSizeMultiplier = (d->value - d->minimum) / d->stepSize;
-
-    // Test whether value is below minimum range
-    if (stepSizeMultiplier < 0)
-        return d->minimum;
-
-    const qreal leftRange = qMin(d->maximum, (stepSizeMultiplier * d->stepSize) + d->minimum);
-    const qreal rightRange = qMin(d->maximum, leftRange + d->stepSize);
-    const qreal middle = (leftRange + rightRange) / 2;
-
-    return (d->value <= middle) ? leftRange : rightRange;
+    // Return internal value but observe boundaries and
+    // stepSize restrictions
+    return d->publicValue(d->value);
 }
 
 void QRangeModel::setValue(qreal newValue)

@@ -84,8 +84,9 @@ public:
         return (pos - effectivePosAtMin()) * scale + minimum;
     }
 
+    qreal publicPosition(qreal position) const;
+    qreal publicValue(qreal value) const;
     void emitValueAndPositionIfChanged(const qreal oldValue, const qreal oldPosition);
-
 };
 
 #endif // QRANGEMODEL_P_H
