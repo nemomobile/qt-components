@@ -56,6 +56,7 @@ private slots:
     void valueForPosition();
     void positionForValue_data();
     void positionForValue();
+    void stepSize();
 };
 
 tst_QRangeModel::tst_QRangeModel()
@@ -1038,6 +1039,132 @@ void tst_QRangeModel::positionForValue()
     // Inverted boundaries only
     m.setInverted(false);
     QCOMPARE(m.positionForValue(value), positionAtMaximum - position + positionAtMinimum);
+}
+
+void tst_QRangeModel::stepSize()
+{
+    QRangeModel m;
+
+    // Value 0 makes RangeModelb behaves like ifit were Analog
+    m.setRange(0, 50);
+    m.setPositionRange(0, 50);
+    m.setValue(0);
+    m.setStepSize(10); // 0--10--20--30--40--50
+
+    // Value and position by changing value
+    m.setValue(10);
+    QCOMPARE(m.value(), qreal(10));
+    QCOMPARE(m.position(), qreal(10));
+    m.setValue(33);
+    QCOMPARE(m.value(), qreal(30)); // Rounds to the closest value of the value set +/- stepSize
+    QCOMPARE(m.position(), qreal(30));
+    m.setValue(26);
+    QCOMPARE(m.value(), qreal(30));
+    QCOMPARE(m.position(), qreal(30));
+
+    // Value and position by changing position
+    m.setPosition(23);
+    QCOMPARE(m.value(), qreal(20));
+    QCOMPARE(m.position(), qreal(20));
+    m.setPosition(48);
+    QCOMPARE(m.value(), qreal(50));
+    QCOMPARE(m.position(), qreal(50));
+
+    QSignalSpy valueSpy(&m, SIGNAL(valueChanged(qreal)));
+    QSignalSpy positionSpy(&m, SIGNAL(positionChanged(qreal)));
+
+    // Changing range
+    m.setValue(23);
+    m.setStepSize(5);
+    QCOMPARE(m.value(), qreal(25)); // When the step size is reset the setted value is also reseted
+    QCOMPARE(m.position(), qreal(25));
+    QCOMPARE(valueSpy.count(), 2);
+    QCOMPARE(positionSpy.count(), 2);
+    QCOMPARE(valueSpy.at(1).at(0), qreal(25)); // Must not emit a signal with the internal value
+    QCOMPARE(positionSpy.at(1).at(0), qreal(25));
+
+    // Range size not multiple of stepSize
+    m.setRange(0, 100);
+    m.setStepSize(30); // 0--30--60--90--100
+
+    m.setValue(96);
+    QCOMPARE(m.value(), qreal(100)); // Closer value
+    QCOMPARE(m.position(), qreal(50));
+    m.setValue(94);
+    QCOMPARE(m.value(), qreal(90));
+    QCOMPARE(m.position(), qreal(45));
+
+    // Supressing unnecessary signals
+    m.setRange(0, 100);
+    m.setPositionRange(0, 20);
+    m.setValue(0);
+    m.setStepSize(10);
+    valueSpy.clear();
+    positionSpy.clear();
+
+    m.setValue(10);
+    QCOMPARE(valueSpy.count(), 1);
+    QCOMPARE(positionSpy.count(), 1);
+    m.setValue(11);
+    QCOMPARE(valueSpy.count(), 1);
+    QCOMPARE(positionSpy.count(), 1);
+    m.setValue(12);
+    QCOMPARE(valueSpy.count(), 1);
+    QCOMPARE(positionSpy.count(), 1);
+    m.setValue(13);
+    QCOMPARE(valueSpy.count(), 1);
+    QCOMPARE(positionSpy.count(), 1);
+    m.setValue(14);
+    QCOMPARE(valueSpy.count(), 1);
+    QCOMPARE(positionSpy.count(), 1);
+
+    m.setValue(15); // Rounding behaviour analog to qRound
+    QCOMPARE(valueSpy.count(), 2);
+    QCOMPARE(positionSpy.count(), 2);
+    QCOMPARE(valueSpy.at(1).at(0), qreal(20));
+    QCOMPARE(positionSpy.at(1).at(0), qreal(4));
+    QCOMPARE(m.value(), qreal(20));
+    QCOMPARE(m.position(), qreal(4));
+
+    // StepSize 0
+    m.setRange(0, 100);
+    m.setValue(15);
+    m.setStepSize(0);
+    QCOMPARE(m.value(), qreal(15));
+    QCOMPARE(m.position(), qreal(3));
+
+    m.setValue(12);
+    QCOMPARE(m.value(), qreal(12));
+    QCOMPARE(m.position(), qreal(2.4));
+
+    m.setPosition(0.2);
+    QCOMPARE(m.value(), qreal(1));
+    QCOMPARE(m.position(), qreal(0.2));
+
+    // StepSize bigger than range
+    m.setRange(0, 100);
+    m.setStepSize(10);
+    QSignalSpy stepSizeSpy(&m, SIGNAL(stepSizeChanged(qreal)));
+
+    m.setStepSize(300);
+    QCOMPARE(stepSizeSpy.count(), 1);
+    QCOMPARE(stepSizeSpy.at(0).at(0), qreal(100)); // Max range
+    QCOMPARE(m.stepSize(), 100);
+
+    m.setRange(-100, 100);
+    QCOMPARE(stepSizeSpy.count(), 2);
+    QCOMPARE(stepSizeSpy.at(1).at(0), qreal(200)); // Max range
+    QCOMPARE(m.stepSize(), 200);
+
+    m.setRange(0, 500);
+    QCOMPARE(stepSizeSpy.count(), 3);
+    QCOMPARE(stepSizeSpy.at(2).at(0), qreal(300)); // Real Step Size
+    QCOMPARE(m.stepSize(), 300);
+
+    m.setStepSize(100);
+    QCOMPARE(stepSizeSpy.count(), 4);
+    QCOMPARE(stepSizeSpy.at(3).at(0), qreal(100)); // Real Step Size
+    QCOMPARE(m.stepSize(), 100);
 }
 
 QTEST_MAIN(tst_QRangeModel)
