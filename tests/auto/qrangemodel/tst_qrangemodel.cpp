@@ -259,11 +259,17 @@ void tst_QRangeModel::invertedTest()
     m.setRange(0.0, 100.0);
     m.setPositionRange(0.0, 100.0);
     //setting inverted property to TRUE
+
+    QSignalSpy invertedSpy(&m, SIGNAL(invertedChanged(bool)));
+    QList<QVariant> args;
+
     m.setInverted(true);
+    QCOMPARE(m.inverted(), true);
+    QCOMPARE(invertedSpy.count(), 1);
+    QCOMPARE(invertedSpy.at(0).at(0).toBool(), true);
 
     QSignalSpy valueChangedSpy(&m, SIGNAL(valueChanged(qreal)));
     QSignalSpy positionChangedSpy(&m, SIGNAL(positionChanged(qreal)));
-    QList<QVariant> args;
 
     m.setValue(10.0);
     QCOMPARE(m.value(), 10.0);
@@ -348,6 +354,9 @@ void tst_QRangeModel::invertedTest()
     QCOMPARE(m.position(), args.at(0).toReal());
 
     m.setInverted(false);
+    QCOMPARE(m.inverted(), false);
+    QCOMPARE(invertedSpy.count(), 2);
+    QCOMPARE(invertedSpy.at(1).at(0).toBool(), false);
 
     QCOMPARE(m.value(), -90.0);
     QCOMPARE(valueChangedSpy.count(), 5);
@@ -505,13 +514,15 @@ void tst_QRangeModel::setRange()
     m.setValue(12);
 
     // Start watching for signals
-    QSignalSpy rangeChangedSpy(&m, SIGNAL(rangeChanged(qreal, qreal)));
+    QSignalSpy maximumChangedSpy(&m, SIGNAL(maximumChanged(qreal)));
+    QSignalSpy minimumChangedSpy(&m, SIGNAL(minimumChanged(qreal)));
     QSignalSpy valueChangedSpy(&m, SIGNAL(valueChanged(qreal)));
     QSignalSpy positionChangedSpy(&m, SIGNAL(positionChanged(qreal)));
 
     QCOMPARE(m.value(), 12.0);
     QCOMPARE(m.position(), -200.0);
-    QCOMPARE(rangeChangedSpy.count(), 0);
+    QCOMPARE(minimumChangedSpy.count(), 0);
+    QCOMPARE(maximumChangedSpy.count(), 0);
     QCOMPARE(valueChangedSpy.count(), 0);
     QCOMPARE(positionChangedSpy.count(), 0);
 
@@ -520,9 +531,10 @@ void tst_QRangeModel::setRange()
 
     QCOMPARE(m.value(), 12.0);
     QCOMPARE(m.position(), -600.0);
-    QCOMPARE(rangeChangedSpy.count(), 1);
-    QCOMPARE(rangeChangedSpy.at(0).at(0).toReal(), 11.0);
-    QCOMPARE(rangeChangedSpy.at(0).at(1).toReal(), 16.0);
+    QCOMPARE(minimumChangedSpy.count(), 1);
+    QCOMPARE(maximumChangedSpy.count(), 1);
+    QCOMPARE(minimumChangedSpy.at(0).at(0).toReal(), 11.0);
+    QCOMPARE(maximumChangedSpy.at(0).at(0).toReal(), 16.0);
     QCOMPARE(valueChangedSpy.count(), 0);
     QCOMPARE(positionChangedSpy.count(), 1);
     QCOMPARE(positionChangedSpy.at(0).at(0).toReal(), -600.0);
@@ -532,9 +544,8 @@ void tst_QRangeModel::setRange()
 
     QCOMPARE(m.value(), 12.0);
     QCOMPARE(m.position(), -1000.0);
-    QCOMPARE(rangeChangedSpy.count(), 2);
-    QCOMPARE(rangeChangedSpy.at(1).at(0).toReal(), 12.0);
-    QCOMPARE(rangeChangedSpy.at(1).at(1).toReal(), 16.0);
+    QCOMPARE(minimumChangedSpy.count(), 2);
+    QCOMPARE(minimumChangedSpy.at(1).at(0).toReal(), 12.0);
     QCOMPARE(valueChangedSpy.count(), 0);
     QCOMPARE(positionChangedSpy.count(), 2);
     QCOMPARE(positionChangedSpy.at(1).at(0).toReal(), -1000.0);
@@ -544,9 +555,10 @@ void tst_QRangeModel::setRange()
 
     QCOMPARE(m.value(), 12.0);
     QCOMPARE(m.position(), 1000.0);
-    QCOMPARE(rangeChangedSpy.count(), 3);
-    QCOMPARE(rangeChangedSpy.at(2).at(0).toReal(), 8.0);
-    QCOMPARE(rangeChangedSpy.at(2).at(1).toReal(), 12.0);
+    QCOMPARE(maximumChangedSpy.count(), 2);
+    QCOMPARE(minimumChangedSpy.count(), 3);
+    QCOMPARE(minimumChangedSpy.at(2).at(0).toReal(), 8.0);
+    QCOMPARE(maximumChangedSpy.at(1).at(0).toReal(), 12.0);
     QCOMPARE(valueChangedSpy.count(), 0);
     QCOMPARE(positionChangedSpy.count(), 3);
     QCOMPARE(positionChangedSpy.at(2).at(0).toReal(), 1000.0);
@@ -561,9 +573,10 @@ void tst_QRangeModel::setRange()
 
     QCOMPARE(m.value(), 20.0);
     QCOMPARE(m.position(), -1000.0);
-    QCOMPARE(rangeChangedSpy.count(), 4);
-    QCOMPARE(rangeChangedSpy.at(3).at(0).toReal(), 20.0);
-    QCOMPARE(rangeChangedSpy.at(3).at(1).toReal(), 30.0);
+    QCOMPARE(minimumChangedSpy.count(), 4);
+    QCOMPARE(maximumChangedSpy.count(), 3);
+    QCOMPARE(minimumChangedSpy.at(3).at(0).toReal(), 20.0);
+    QCOMPARE(maximumChangedSpy.at(2).at(0).toReal(), 30.0);
     QCOMPARE(valueChangedSpy.count(), 1);
     QCOMPARE(valueChangedSpy.at(0).at(0).toReal(), 20.0);
     QCOMPARE(positionChangedSpy.count(), 4);
@@ -574,9 +587,10 @@ void tst_QRangeModel::setRange()
 
     QCOMPARE(m.value(), -5.0);
     QCOMPARE(m.position(), 1000.0);
-    QCOMPARE(rangeChangedSpy.count(), 5);
-    QCOMPARE(rangeChangedSpy.at(4).at(0).toReal(), -10.0);
-    QCOMPARE(rangeChangedSpy.at(4).at(1).toReal(), -5.0);
+    QCOMPARE(minimumChangedSpy.count(), 5);
+    QCOMPARE(maximumChangedSpy.count(), 4);
+    QCOMPARE(minimumChangedSpy.at(4).at(0).toReal(), -10.0);
+    QCOMPARE(maximumChangedSpy.at(3).at(0).toReal(), -5.0);
     QCOMPARE(valueChangedSpy.count(), 2);
     QCOMPARE(valueChangedSpy.at(1).at(0).toReal(), -5.0);
     QCOMPARE(positionChangedSpy.count(), 5);
@@ -587,9 +601,10 @@ void tst_QRangeModel::setRange()
 
     QCOMPARE(m.value(), 12.0);
     QCOMPARE(m.position(), 200.0);
-    QCOMPARE(rangeChangedSpy.count(), 6);
-    QCOMPARE(rangeChangedSpy.at(5).at(0).toReal(), 0.0);
-    QCOMPARE(rangeChangedSpy.at(5).at(1).toReal(), 20.0);
+    QCOMPARE(minimumChangedSpy.count(), 6);
+    QCOMPARE(maximumChangedSpy.count(), 5);
+    QCOMPARE(minimumChangedSpy.at(5).at(0).toReal(), 0.0);
+    QCOMPARE(maximumChangedSpy.at(4).at(0).toReal(), 20.0);
     QCOMPARE(valueChangedSpy.count(), 3);
     QCOMPARE(valueChangedSpy.at(2).at(0).toReal(), 12.0);
     QCOMPARE(positionChangedSpy.count(), 6);
@@ -602,7 +617,8 @@ void tst_QRangeModel::setRange()
 
     QCOMPARE(m.value(), 12.0);
     QCOMPARE(m.position(), 200.0);
-    QCOMPARE(rangeChangedSpy.count(), 6);
+    QCOMPARE(minimumChangedSpy.count(), 6);
+    QCOMPARE(maximumChangedSpy.count(), 5);
     QCOMPARE(valueChangedSpy.count(), 3);
     QCOMPARE(positionChangedSpy.count(), 6);
 }
@@ -620,13 +636,15 @@ void tst_QRangeModel::setPositionRange()
     // Start watching for signals
     QSignalSpy valueChangedSpy(&m, SIGNAL(valueChanged(qreal)));
     QSignalSpy positionChangedSpy(&m, SIGNAL(positionChanged(qreal)));
-    QSignalSpy positionRangeChangedSpy(&m, SIGNAL(positionRangeChanged(qreal, qreal)));
+    QSignalSpy positionAtMaximumChangedSpy(&m, SIGNAL(positionAtMaximumChanged(qreal)));
+    QSignalSpy positionAtMinimumChangedSpy(&m, SIGNAL(positionAtMinimumChanged(qreal)));
 
     QCOMPARE(m.value(), 7.0);
     QCOMPARE(m.position(), 90.0);
     QCOMPARE(valueChangedSpy.count(), 0);
     QCOMPARE(positionChangedSpy.count(), 0);
-    QCOMPARE(positionRangeChangedSpy.count(), 0);
+    QCOMPARE(positionAtMinimumChangedSpy.count(), 0);
+    QCOMPARE(positionAtMaximumChangedSpy.count(), 0);
 
     // Standard situation. Change position range. Position will change
     m.setPositionRange(-100, 200);
@@ -636,9 +654,10 @@ void tst_QRangeModel::setPositionRange()
     QCOMPARE(valueChangedSpy.count(), 0);
     QCOMPARE(positionChangedSpy.count(), 1);
     QCOMPARE(positionChangedSpy.at(0).at(0).toReal(), 20.0);
-    QCOMPARE(positionRangeChangedSpy.count(), 1);
-    QCOMPARE(positionRangeChangedSpy.at(0).at(0).toReal(), -100.0);
-    QCOMPARE(positionRangeChangedSpy.at(0).at(1).toReal(), 200.0);
+    QCOMPARE(positionAtMinimumChangedSpy.count(), 1);
+    QCOMPARE(positionAtMaximumChangedSpy.count(), 1);
+    QCOMPARE(positionAtMinimumChangedSpy.at(0).at(0).toReal(), -100.0);
+    QCOMPARE(positionAtMaximumChangedSpy.at(0).at(0).toReal(), 200.0);
 
     // Corner case situation. Position happens to remain the same.
     m.setPositionRange(-40.0, 110.0);
@@ -647,9 +666,10 @@ void tst_QRangeModel::setPositionRange()
     QCOMPARE(m.position(), 20.0);
     QCOMPARE(valueChangedSpy.count(), 0);
     QCOMPARE(positionChangedSpy.count(), 1);
-    QCOMPARE(positionRangeChangedSpy.count(), 2);
-    QCOMPARE(positionRangeChangedSpy.at(1).at(0).toReal(), -40.0);
-    QCOMPARE(positionRangeChangedSpy.at(1).at(1).toReal(), 110.0);
+    QCOMPARE(positionAtMinimumChangedSpy.count(), 2);
+    QCOMPARE(positionAtMaximumChangedSpy.count(), 2);
+    QCOMPARE(positionAtMinimumChangedSpy.at(1).at(0).toReal(), -40.0);
+    QCOMPARE(positionAtMaximumChangedSpy.at(1).at(0).toReal(), 110.0);
 
     // Tests with value == min
     m.setValue(5);
@@ -660,7 +680,8 @@ void tst_QRangeModel::setPositionRange()
     QCOMPARE(valueChangedSpy.at(0).at(0).toReal(), 5.0);
     QCOMPARE(positionChangedSpy.count(), 2);
     QCOMPARE(positionChangedSpy.at(1).at(0).toReal(), -40.0);
-    QCOMPARE(positionRangeChangedSpy.count(), 2);
+    QCOMPARE(positionAtMinimumChangedSpy.count(), 2);
+    QCOMPARE(positionAtMaximumChangedSpy.count(), 2);
 
     // Changing positionAtMaximum won't cause changes to position nor value
     m.setPositionAtMaximum(160);
@@ -669,9 +690,9 @@ void tst_QRangeModel::setPositionRange()
     QCOMPARE(m.position(), -40.0);
     QCOMPARE(valueChangedSpy.count(), 1);
     QCOMPARE(positionChangedSpy.count(), 2);
-    QCOMPARE(positionRangeChangedSpy.count(), 3);
-    QCOMPARE(positionRangeChangedSpy.at(2).at(0).toReal(), -40.0);
-    QCOMPARE(positionRangeChangedSpy.at(2).at(1).toReal(), 160.0);
+    QCOMPARE(positionAtMinimumChangedSpy.count(), 2);
+    QCOMPARE(positionAtMaximumChangedSpy.count(), 3);
+    QCOMPARE(positionAtMaximumChangedSpy.at(2).at(0).toReal(), 160.0);
 
     // Tests with value == max
     m.setValue(10);
@@ -682,7 +703,8 @@ void tst_QRangeModel::setPositionRange()
     QCOMPARE(valueChangedSpy.at(1).at(0).toReal(), 10.0);
     QCOMPARE(positionChangedSpy.count(), 3);
     QCOMPARE(positionChangedSpy.at(2).at(0).toReal(), 160.0);
-    QCOMPARE(positionRangeChangedSpy.count(), 3);
+    QCOMPARE(positionAtMinimumChangedSpy.count(), 2);
+    QCOMPARE(positionAtMaximumChangedSpy.count(), 3);
 
     // Changing positionAtMinimum won't cause changes to position nor value
     m.setPositionAtMinimum(260);
@@ -691,9 +713,9 @@ void tst_QRangeModel::setPositionRange()
     QCOMPARE(m.position(), 160.0);
     QCOMPARE(valueChangedSpy.count(), 2);
     QCOMPARE(positionChangedSpy.count(), 3);
-    QCOMPARE(positionRangeChangedSpy.count(), 4);
-    QCOMPARE(positionRangeChangedSpy.at(3).at(0).toReal(), 260.0);
-    QCOMPARE(positionRangeChangedSpy.at(3).at(1).toReal(), 160.0);
+    QCOMPARE(positionAtMinimumChangedSpy.count(), 3);
+    QCOMPARE(positionAtMaximumChangedSpy.count(), 3);
+    QCOMPARE(positionAtMinimumChangedSpy.at(2).at(0).toReal(), 260.0);
 
     // Resetting same position range should not change anything
     m.setPositionRange(260, 160);
@@ -704,7 +726,8 @@ void tst_QRangeModel::setPositionRange()
     QCOMPARE(m.position(), 160.0);
     QCOMPARE(valueChangedSpy.count(), 2);
     QCOMPARE(positionChangedSpy.count(), 3);
-    QCOMPARE(positionRangeChangedSpy.count(), 4);
+    QCOMPARE(positionAtMinimumChangedSpy.count(), 3);
+    QCOMPARE(positionAtMaximumChangedSpy.count(), 3);
 }
 
 void tst_QRangeModel::valueMustNotChange()
