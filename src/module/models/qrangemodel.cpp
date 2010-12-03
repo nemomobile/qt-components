@@ -101,7 +101,6 @@ void QRangeModel::setPositionRange(qreal min, qreal max)
     if (!(emitPosAtMinChanged || emitPosAtMaxChanged))
         return;
 
-    const qreal oldValue = value();
     const qreal oldPosition = position();
     d->posatmin = min;
     d->posatmax = max;
@@ -119,7 +118,7 @@ void QRangeModel::setPositionRange(qreal min, qreal max)
     if (emitPosAtMaxChanged)
         emit positionAtMaximumChanged(d->posatmax);
 
-    d->emitValueAndPositionIfChanged(oldValue, oldPosition);
+    d->emitValueAndPositionIfChanged(value(), oldPosition);
 }
 
 void QRangeModel::setRange(qreal min, qreal max)
@@ -134,20 +133,9 @@ void QRangeModel::setRange(qreal min, qreal max)
 
     const qreal oldValue = value();
     const qreal oldPosition = position();
-    const qreal oldMinimum = d->minimum;
-    const qreal oldMaximum = d->maximum;
 
     d->minimum = min;
     d->maximum = qMax(min, max);
-
-    // Internal value property must be updated when the range is changed, since it can become valid with the
-    // new range. For instance, imagine a range of [50,100] and a user sets the value to 10 (public value), even 
-    // this value is not inside the valid range, it must be stored, since it can become valid later. Thus, it
-    // will be internally stored as a relative value of -40 (publicValue - minimum). Later, if the user sets a new
-    // range of [10,100], the value that was invalid previously, now is valid in the new range, so its relative value
-    // to be stored is 0 (oldRelativeValue + (oldMinimum - newMinimum)). Additionally the position must be updated
-    // too.
-    d->value += oldMinimum - d->minimum;
 
     // Update internal position if it was changed. It can occurs if internal value changes, due to range update
     d->pos = d->positionFromValue(d->value);
@@ -190,6 +178,8 @@ qreal QRangeModel::maximum() const
 void QRangeModel::setStepSize(qreal stepSize)
 {
     Q_D(QRangeModel);
+
+    stepSize = qMax(qreal(0.0), stepSize);
     if (stepSize == d->stepSize)
         return;
 
@@ -211,72 +201,69 @@ qreal QRangeModel::positionForValue(qreal value) const
 {
     Q_D(const QRangeModel);
 
-    const qreal relativeValue = value - d->minimum;
-    const qreal relativePosition = d->positionFromValue(relativeValue);
-    const qreal absolutePosition = relativePosition + d->effectivePosAtMin();
+    const qreal pos = d->positionFromValue(value);
+    const qreal min = d->effectivePosAtMin();
+    const qreal max = d->effectivePosAtMax();
 
     // ### TODO: Observe "steps" property.
-    if (d->effectivePosAtMin() > d->effectivePosAtMax())
-        return qBound(d->effectivePosAtMax(), absolutePosition, d->effectivePosAtMin());
-    return qBound(d->effectivePosAtMin(), absolutePosition, d->effectivePosAtMax());
+    if (min > max)
+        return qBound(max, pos, min);
+    return qBound(min, pos, max);
 }
 
 qreal QRangeModel::position() const
 {
     Q_D(const QRangeModel);
 
-    // This must return the absolute position based on the internal
-    // one, that is relative. so we need to add the start position
-    // and also bound it to effective posatmin and posatmax
-
     // It is also important to do value-within-range check this
     // late (as opposed to during setPosition()). The reason is
     // QML bindings; a position that is initially invalid because it lays
     // outside the range, might become valid later if the range changes.
 
-    qreal pos = d->effectivePosAtMin() + d->pos;
+    // Calculate the equivalent stepSize for the position property.
+    const qreal min = d->effectivePosAtMin();
+    const qreal max = d->effectivePosAtMax();
+    const qreal valueRange = d->maximum - d->minimum;
+    const qreal positionValueRatio = valueRange ? (max - min) / valueRange : 0;
+    const qreal positionStep = d->stepSize * positionValueRatio;
 
-    // Call positionFromValue with stepSize as parameter, in order to
-    // to calculate the equivalent stepSize for the position property.
-    const qreal positionStep = d->positionFromValue(d->stepSize);
-    if (positionStep != 0) {
-        int stepSizeMultiplier = qAbs(d->pos/positionStep);
-        qreal leftRange = (stepSizeMultiplier * positionStep) + d->effectivePosAtMin();
-        qreal rightRange = (d->effectivePosAtMin() > d->effectivePosAtMax()) ? qMax(d->effectivePosAtMax(), leftRange + positionStep) : qMin(d->effectivePosAtMax(), leftRange + positionStep);
-        if (qAbs(leftRange - pos) <= qAbs(rightRange - pos))
-            pos = leftRange;
-        else
-            pos = rightRange;
+    if (positionStep == 0)
+        return (min < max) ? qBound(min, d->pos, max) : qBound(max, d->pos, min);
+
+    const int stepSizeMultiplier = (d->pos - min) / positionStep;
+
+    // Test whether value is below minimum range
+    if (stepSizeMultiplier < 0)
+        return min;
+
+    qreal leftRange = (stepSizeMultiplier * positionStep) + min;
+    qreal rightRange = leftRange + positionStep;
+
+    if (min < max) {
+        leftRange = qMin(leftRange, max);
+        rightRange = qMin(rightRange, max);
+    } else {
+        leftRange = qMax(leftRange, max);
+        rightRange = qMax(rightRange, max);
     }
-    if (d->effectivePosAtMin() > d->effectivePosAtMax())
-        return qBound(d->effectivePosAtMax(), pos, d->effectivePosAtMin());
-    return qBound(d->effectivePosAtMin(), pos, d->effectivePosAtMax());
+
+    if (qAbs(leftRange - d->pos) <= qAbs(rightRange - d->pos))
+        return leftRange;
+    return rightRange;
 }
 
 void QRangeModel::setPosition(qreal newPosition)
 {
     Q_D(QRangeModel);
 
-    const qreal oldPosition = position();
-
-    // We can't call position() here to get the oldInternalPosition, instead we must get the internal position and
-    // add the posatmin. For instance, if we have a positionRange of [50,100] and a user has set position to
-    // 10, we must store 10 because it can become a valid position if the positionRange is changed in the
-    // future. position() method always return a position bounded to [posatmin,posatmax], so it would return 50,
-    // instead of 10. So, if a user wants to set position to 50, the internal position would not be updated
-    // with this newPosition, since position() would return 50 for the oldInternalPosition and the qFuzzyCompare
-    // between newPosition and oldInternalPosition would return true.
-    const qreal oldInternalPosition = d->pos + d->effectivePosAtMin();
-
-    if (qFuzzyCompare(newPosition, oldInternalPosition))
+    if (qFuzzyCompare(newPosition, d->pos))
         return;
-    // Flag that we need to translate from position
-    // to value upon calls to value():
+
+    const qreal oldPosition = position();
     const qreal oldValue = value();
 
-    // Update relative position with the new one (get absolute position "newPosition" and subtract
-    // the posatmin property). Value property must be updated too.
-    d->pos = newPosition - d->effectivePosAtMin();
+    // Update position and calculate new value
+    d->pos = newPosition;
     d->value = d->valueFromPosition(d->pos);
     d->emitValueAndPositionIfChanged(oldValue, oldPosition);
 }
@@ -309,12 +296,10 @@ qreal QRangeModel::valueForPosition(qreal position) const
 {
     Q_D(const QRangeModel);
 
-    const qreal relativePosition = position - d->effectivePosAtMin();
-    const qreal relativeValue = d->valueFromPosition(relativePosition);
-    const qreal absoluteValue = relativeValue + d->minimum;
+    const qreal value = d->valueFromPosition(position);
 
     // ### TODO: Observe "steps" property.
-    return qBound(d->minimum, absoluteValue, d->maximum);
+    return qBound(d->minimum, value, d->maximum);
 }
 
 qreal QRangeModel::value() const
@@ -325,41 +310,35 @@ qreal QRangeModel::value() const
     // late (as opposed to during setPosition()). The reason is
     // QML bindings; a position that is initially invalid because it lays
     // outside the range, might become valid later if the range changes.
-    qreal value = d->value + d->minimum;
-    if (d->stepSize != 0) {
-        int stepSizeMultiplier = qAbs(d->value/d->stepSize);
-        qreal leftRange = (stepSizeMultiplier * d->stepSize) + d->minimum;
-        qreal rightRange = qMin(d->maximum, leftRange + d->stepSize);
-        if (qAbs(leftRange - value) <= qAbs(rightRange - value))
-            value = leftRange;
-        else
-            value = rightRange;
-    }
-    return qBound(d->minimum, value, d->maximum);
+
+    if (d->stepSize == 0)
+        return qBound(d->minimum, d->value, d->maximum);
+
+    const int stepSizeMultiplier = (d->value - d->minimum) / d->stepSize;
+
+    // Test whether value is below minimum range
+    if (stepSizeMultiplier < 0)
+        return d->minimum;
+
+    const qreal leftRange = qMin(d->maximum, (stepSizeMultiplier * d->stepSize) + d->minimum);
+    const qreal rightRange = qMin(d->maximum, leftRange + d->stepSize);
+    const qreal middle = (leftRange + rightRange) / 2;
+
+    return (d->value <= middle) ? leftRange : rightRange;
 }
 
 void QRangeModel::setValue(qreal newValue)
 {
     Q_D(QRangeModel);
 
-    const qreal oldValue = value();
-
-    // We can't call value() here to get the oldInternalValue, instead we must get the internal value and
-    // add the minimum. For instance, if we have a valueRange of [50,100] and a user has set value to
-    // 10, we must store 10 because it can become a valid value if the valueRange is changed in the
-    // future. value() method always return a value bounded to [min,max], so it would return 50, instead of
-    // 10. So, if a user wants to set value to 50, the internal value would not be updated with this new
-    // value, since value() would return 50 for the oldInternalValue and the qFuzzyCompare between newValue and
-    // oldInternalValue would return true.
-    const qreal oldInternalValue = d->value + d->minimum;
-
-    if (qFuzzyCompare(newValue, oldInternalValue))
+    if (qFuzzyCompare(newValue, d->value))
         return;
 
+    const qreal oldValue = value();
     const qreal oldPosition = position();
 
     // Update relative value and position
-    d->value = newValue - d->minimum;
+    d->value = newValue;
     d->pos = d->positionFromValue(d->value);
     d->emitValueAndPositionIfChanged(oldValue, oldPosition);
 }
@@ -369,18 +348,12 @@ void QRangeModel::setInverted(bool inverted)
     Q_D(QRangeModel);
     if (inverted == d->inverted)
         return;
-    d->inverted = inverted;
-    /*else {
-        // We have to update the internal value if rangeModel's inverted property changes.
-        if (d->inverted)
-            d->value = (d->maximum - d->value) - d->minimum;
-        else
-            d->value = d->maximum - (d->value - d->minimum);
-    }*/
+
     d->inverted = inverted;
     emit invertedChanged(d->inverted);
+
     // After updating the internal value, the position property can change.
-    setPosition(d->positionFromValue(d->value) + d->effectivePosAtMin());
+    setPosition(d->positionFromValue(d->value));
 }
 
 bool QRangeModel::inverted() const

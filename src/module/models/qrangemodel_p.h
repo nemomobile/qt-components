@@ -65,25 +65,23 @@ public:
     }
 
     inline qreal positionFromValue(qreal value) const {
-        // Return relative position from relative value (that
-        // is, both are indipendent from their respective ranges):
-        const qreal valueRange = qreal(maximum - minimum);
+        // Return absolute position from absolute value
+        const qreal valueRange = maximum - minimum;
         if (valueRange == 0)
             return effectivePosAtMin();
 
-        const qreal scale = qreal(effectivePosAtMax() - effectivePosAtMin()) / valueRange;
-        return value * scale;
+        const qreal scale = (effectivePosAtMax() - effectivePosAtMin()) / valueRange;
+        return (value - minimum) * scale + effectivePosAtMin();
     }
 
     inline qreal valueFromPosition(qreal pos) const {
-        // Return relative value from relative position (that
-        // is, both are indipendent from their respective ranges):
-        const qreal posRange = qreal(effectivePosAtMax() - effectivePosAtMin());
+        // Return absolute value from absolute position
+        const qreal posRange = effectivePosAtMax() - effectivePosAtMin();
         if (posRange == 0)
             return minimum;
 
-        const qreal scale = qreal(maximum - minimum) / posRange;
-        return pos * scale;
+        const qreal scale = (maximum - minimum) / posRange;
+        return (pos - effectivePosAtMin()) * scale + minimum;
     }
 
     void emitValueAndPositionIfChanged(const qreal oldValue, const qreal oldPosition);
