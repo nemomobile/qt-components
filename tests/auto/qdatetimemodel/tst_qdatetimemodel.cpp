@@ -25,7 +25,7 @@
 ****************************************************************************/
 
 #include <QtTest/QtTest>
-#include "qdatetimemodel.h"
+#include "model/qdatetimemodel.h"
 
 // ### FIX THIS INCLUDE ###
 #include <QtCore/private/qdatetime_p.h>

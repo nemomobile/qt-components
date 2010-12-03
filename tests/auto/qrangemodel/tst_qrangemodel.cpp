@@ -25,7 +25,7 @@
 ****************************************************************************/
 
 #include <QtTest/QtTest>
-#include "qrangemodel.h"
+#include "models/qrangemodel.h"
 
 typedef QList<qreal> RealList;
 

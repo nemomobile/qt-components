@@ -1,4 +1,4 @@
-INCLUDEPATH += $$PWD/src/lib $$PWD/src/module $$PWD/src/module/models
+INCLUDEPATH += $$PWD/src/lib
 TEMPLATE = lib ## hack to make qtLibraryTarget work
 !build_lib {
     macx:CONFIG(qt_framework, qt_framework|qt_no_framework) {

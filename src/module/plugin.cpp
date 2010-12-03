@@ -26,7 +26,7 @@
 
 #include <QtDeclarative>
 
-#include "qrangemodel.h"
+#include "models/qrangemodel.h"
 #include "qglobalenums.h"
 
 class QtComponentsPlugin : public QDeclarativeExtensionPlugin
