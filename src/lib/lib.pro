@@ -9,12 +9,10 @@ DEFINES += QDECLARATIVEWINDOW_BUILD_LIB
 
 include(../../qt-components.pri)
 
-PUBLIC_HEADERS += \
+HEADERS += \
     qdeclarativewindow.h
 SOURCES += \
     qdeclarativewindow.cpp
-
-HEADERS += $$PUBLIC_HEADERS
 
 INCLUDEPATH = $$PWD
 
@@ -25,13 +23,13 @@ macx:CONFIG(qt_framework, qt_framework|qt_no_framework) {
     } else { #release
         !debug_and_release|build_pass {
             FRAMEWORK_HEADERS.version = Versions
-            FRAMEWORK_HEADERS.files = $$PUBLIC_HEADERS
+            FRAMEWORK_HEADERS.files = $$HEADERS
             FRAMEWORK_HEADERS.path = Headers
         }
         QMAKE_BUNDLE_DATA += FRAMEWORK_HEADERS
     }
 } else {
-    install_headers.files = $$PUBLIC_HEADERS
+    install_headers.files = $$HEADERS
     install_headers.path = $$[QT_INSTALL_HEADERS]/QtComponents
     INSTALLS += install_headers
 }
