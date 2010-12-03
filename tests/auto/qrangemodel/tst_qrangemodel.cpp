@@ -364,6 +364,14 @@ void tst_QRangeModel::invertedTest()
     QCOMPARE(positionChangedSpy.count(), 8);
     args = positionChangedSpy.at(7);
     QCOMPARE(m.position(), args.at(0).toReal());
+
+    m.setRange(0.0, 100.0);
+    m.setPositionRange(0.0, 100.0);
+    m.setInverted(true);
+    m.setStepSize(30.0);
+    m.setValue(91.0);
+    QCOMPARE(m.value(), 90.0);
+    QCOMPARE(m.position(), 10.0);
 }
 
 void tst_QRangeModel::valueAndPosition_data()
@@ -728,6 +736,11 @@ void tst_QRangeModel::setPositionRange()
     QCOMPARE(positionChangedSpy.count(), 3);
     QCOMPARE(positionAtMinimumChangedSpy.count(), 3);
     QCOMPARE(positionAtMaximumChangedSpy.count(), 3);
+
+    m.setStepSize(3);
+    m.setValue(9.0);
+    QCOMPARE(m.value(), 8.0);
+    QCOMPARE(m.position(), 200.0);
 }
 
 void tst_QRangeModel::valueMustNotChange()
