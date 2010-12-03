@@ -239,14 +239,14 @@ qreal QRangeModel::position() const
     // Call positionFromValue with stepSize as parameter, in order to
     // to calculate the equivalent stepSize for the position property.
     const qreal positionStep = d->positionFromValue(d->stepSize);
-    if (positionStep > 0) {
-        int stepSizeMultiplier = (int) (d->pos/positionStep);
-        qreal leftRange = (stepSizeMultiplier * positionStep) + d->posatmin;
-        qreal rightRange = (d->posatmin > d->posatmax) ? qMax(d->posatmax, leftRange + positionStep) : qMin(d->posatmax, leftRange + positionStep);
-        if (pos > ((rightRange + leftRange) / 2))
-            pos = rightRange;
-        else
+    if (positionStep != 0) {
+        int stepSizeMultiplier = qAbs(d->pos/positionStep);
+        qreal leftRange = (stepSizeMultiplier * positionStep) + d->effectivePosAtMin();
+        qreal rightRange = (d->effectivePosAtMin() > d->effectivePosAtMax()) ? qMax(d->effectivePosAtMax(), leftRange + positionStep) : qMin(d->effectivePosAtMax(), leftRange + positionStep);
+        if (qAbs(leftRange - pos) <= qAbs(rightRange - pos))
             pos = leftRange;
+        else
+            pos = rightRange;
     }
     if (d->effectivePosAtMin() > d->effectivePosAtMax())
         return qBound(d->effectivePosAtMax(), pos, d->effectivePosAtMin());
@@ -326,14 +326,14 @@ qreal QRangeModel::value() const
     // QML bindings; a position that is initially invalid because it lays
     // outside the range, might become valid later if the range changes.
     qreal value = d->value + d->minimum;
-    if (d->stepSize > 0) {
-        int stepSizeMultiplier = (int) (d->value/d->stepSize);
+    if (d->stepSize != 0) {
+        int stepSizeMultiplier = qAbs(d->value/d->stepSize);
         qreal leftRange = (stepSizeMultiplier * d->stepSize) + d->minimum;
         qreal rightRange = qMin(d->maximum, leftRange + d->stepSize);
-        if (value > ((rightRange + leftRange) / 2))
-            value = rightRange;
-        else
+        if (qAbs(leftRange - value) <= qAbs(rightRange - value))
             value = leftRange;
+        else
+            value = rightRange;
     }
     return qBound(d->minimum, value, d->maximum);
 }
