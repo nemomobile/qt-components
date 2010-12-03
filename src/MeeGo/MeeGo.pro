@@ -63,13 +63,5 @@ QML_FILES = \
         Window.qml \
         WindowDecoration.qml
 
-OTHER_FILES += $$QML_FILES
-
 TARGETPATH = com/meego
-
-target.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH
-
-qmlfiles.files = $$QML_FILES
-qmlfiles.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH
-
-INSTALLS += target qmlfiles
+include(../../qml.pri)

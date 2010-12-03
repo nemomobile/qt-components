@@ -1,4 +1,3 @@
-
 TEMPLATE = lib
 TARGET = meegothemebridgeplugin
 DESTDIR = .
@@ -32,14 +31,7 @@ HEADERS += mstylewrapper.h \
            mdeclarativeimplicitsizeitem.h \
            mdeclarativebackground.h
 
-OTHER_FILES += qmldir
+QML_FILES += qmldir
 
 TARGETPATH = com/meego/themebridge
-
-target.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH
-
-otherfiles.files = $$OTHER_FILES
-otherfiles.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH
-
-
-INSTALLS += target otherfiles
+include(../../../qml.pri)

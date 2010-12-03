@@ -1,6 +1,5 @@
 include (../../qt-components.pri)
 
-TARGETPATH = /Qt/labs/components
 TEMPLATE = lib
 TARGET = $$qtLibraryTarget(qtcomponentsplugin)
 
@@ -24,12 +23,5 @@ QML_FILES += \
     CheckableGroup.qml \
     CheckableGroup.js
 
-target.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH
-
-qmlfiles.files = $$QML_FILES
-qmlfiles.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH
-
-qmlimages.files = $$QML_IMAGES
-qmlimages.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH/images
-
-INSTALLS += target qmlfiles qmlimages
+TARGETPATH = Qt/labs/components
+include(../../qml.pri)
