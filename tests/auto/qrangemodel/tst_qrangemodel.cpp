@@ -51,6 +51,11 @@ private slots:
     void toMaximum();
     void toMinimum();
     void invertedTest();
+
+    void valueForPosition_data();
+    void valueForPosition();
+    void positionForValue_data();
+    void positionForValue();
 };
 
 tst_QRangeModel::tst_QRangeModel()
@@ -943,6 +948,96 @@ void tst_QRangeModel::outOfRangePositions()
     QCOMPARE(valueChangedSpy.count(), valueSignalsCount);
     QCOMPARE(positionChangedSpy.count(), positionSignalsCount);
     QCOMPARE(positionChangedSpy.at(positionSignalsCount - 1).at(0).toReal(), expectedPosition);
+}
+
+void tst_QRangeModel::valueForPosition_data()
+{
+    QTest::addColumn<qreal>("position");
+    QTest::addColumn<qreal>("value");
+
+    QTest::newRow("Below minimum") << 150.0 << 5.0;
+    QTest::newRow("At minimum") << 200.0 << 5.0;
+    QTest::newRow("At 1/5") << 220.0 << 6.0;
+    QTest::newRow("At 3/5") << 260.0 << 8.0;
+    QTest::newRow("At maximum") << 300.0 << 10.0;
+    QTest::newRow("Above maximum") << 350.0 << 10.0;
+}
+
+void tst_QRangeModel::valueForPosition()
+{
+    QRangeModel m;
+
+    const qreal minimum = 5;
+    const qreal maximum = 10;
+    const qreal positionAtMinimum = 200;
+    const qreal positionAtMaximum = 300;
+
+    // Init
+    m.setRange(minimum, maximum);
+    m.setPositionRange(positionAtMinimum, positionAtMaximum);
+
+    QFETCH(qreal, position);
+    QFETCH(qreal, value);
+
+    // Base test
+    QCOMPARE(m.valueForPosition(position), value);
+
+    // Inverted flag
+    m.setInverted(true);
+    QCOMPARE(m.valueForPosition(position), maximum - value + minimum);
+
+    // Inverted boundaries and Inverted flag
+    m.setPositionRange(positionAtMaximum, positionAtMinimum);
+    QCOMPARE(m.valueForPosition(position), value);
+
+    // Inverted boundaries only
+    m.setInverted(false);
+    QCOMPARE(m.valueForPosition(position), maximum - value + minimum);
+}
+
+void tst_QRangeModel::positionForValue_data()
+{
+    QTest::addColumn<qreal>("position");
+    QTest::addColumn<qreal>("value");
+
+    QTest::newRow("Below minimum") << 200.0 << 4.0;
+    QTest::newRow("At minimum") << 200.0 << 5.0;
+    QTest::newRow("At 1/5") << 220.0 << 6.0;
+    QTest::newRow("At 3/5") << 260.0 << 8.0;
+    QTest::newRow("At maximum") << 300.0 << 10.0;
+    QTest::newRow("Above maximum") << 300.0 << 12.0;
+}
+
+void tst_QRangeModel::positionForValue()
+{
+    QRangeModel m;
+
+    const qreal minimum = 5;
+    const qreal maximum = 10;
+    const qreal positionAtMinimum = 200;
+    const qreal positionAtMaximum = 300;
+
+    // Init
+    m.setRange(minimum, maximum);
+    m.setPositionRange(positionAtMinimum, positionAtMaximum);
+
+    QFETCH(qreal, position);
+    QFETCH(qreal, value);
+
+    // Base test
+    QCOMPARE(m.positionForValue(value), position);
+
+    // Inverted flag
+    m.setInverted(true);
+    QCOMPARE(m.positionForValue(value), positionAtMaximum - position + positionAtMinimum);
+
+    // Inverted boundaries and Inverted flag
+    m.setPositionRange(positionAtMaximum, positionAtMinimum);
+    QCOMPARE(m.positionForValue(value), position);
+
+    // Inverted boundaries only
+    m.setInverted(false);
+    QCOMPARE(m.positionForValue(value), positionAtMaximum - position + positionAtMinimum);
 }
 
 QTEST_MAIN(tst_QRangeModel)

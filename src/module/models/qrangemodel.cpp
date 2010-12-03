@@ -192,6 +192,20 @@ qreal QRangeModel::steps() const
     return d->steps;
 }
 
+qreal QRangeModel::positionForValue(qreal value) const
+{
+    Q_D(const QRangeModel);
+
+    const qreal relativeValue = d->inverted ? d->maximum - value : value - d->minimum;
+    const qreal relativePosition = d->positionFromValue(relativeValue);
+    const qreal absolutePosition = relativePosition + d->posatmin;
+
+    // ### TODO: Observe "steps" property.
+    if (d->posatmin > d->posatmax)
+        return qBound(d->posatmax, absolutePosition, d->posatmin);
+    return qBound(d->posatmin, absolutePosition, d->posatmax);
+}
+
 qreal QRangeModel::position() const
 {
     Q_D(const QRangeModel);
@@ -264,6 +278,18 @@ qreal QRangeModel::positionAtMaximum() const
 {
     Q_D(const QRangeModel);
     return d->posatmax;
+}
+
+qreal QRangeModel::valueForPosition(qreal position) const
+{
+    Q_D(const QRangeModel);
+
+    const qreal relativePosition = position - d->posatmin;
+    const qreal relativeValue = d->valueFromPosition(relativePosition);
+    const qreal absoluteValue = d->inverted ? d->maximum - relativeValue : relativeValue + d->minimum;
+
+    // ### TODO: Observe "steps" property.
+    return qBound(d->minimum, absoluteValue, d->maximum);
 }
 
 qreal QRangeModel::value() const

@@ -76,6 +76,9 @@ public:
     qreal value() const;
     qreal position() const;
 
+    Q_INVOKABLE qreal valueForPosition(qreal position) const;
+    Q_INVOKABLE qreal positionForValue(qreal value) const;
+
 public Q_SLOTS:
     void toMinimum();
     void toMaximum();
