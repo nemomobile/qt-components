@@ -7,7 +7,7 @@ QT += declarative
 
 TEMPLATE = lib ## this is a hack to make qtLibraryTarget return the correct value
 INCLUDEPATH += ../../../src/module
-LIBS += -L../../../src/module -l$$qtLibraryTarget(qtcomponentsplugin)
+LIBS += -L$$PWD/../src/module -l$$qtLibraryTarget(qtcomponentsplugin)
 
 # ### Don't know how to replicate this feature on non-Unix systems, the
 # idea here is that the tests can run using the .so in the working directory,
