@@ -56,7 +56,9 @@ private slots:
     void valueForPosition();
     void positionForValue_data();
     void positionForValue();
+
     void stepSize();
+    void invertedStepSize();
 };
 
 tst_QRangeModel::tst_QRangeModel()
@@ -1366,6 +1368,33 @@ void tst_QRangeModel::stepSize()
     QCOMPARE(stepSizeSpy.count(), 0);
     QCOMPARE(valueSpy.at(1).at(0).toReal(), 100.0);
     QCOMPARE(positionSpy.at(1).at(0).toReal(), 20.0);
+
+    m.setValue(5000);
+    QCOMPARE(m.value(), 100.0);
+}
+
+void tst_QRangeModel::invertedStepSize()
+{
+    QRangeModel m;
+    m.setRange(40, 41);
+    m.setPositionRange(250, 200);
+
+    m.setStepSize(0.3);
+
+    QCOMPARE(m.value(), 40.0);
+    QCOMPARE(m.position(), 250.0);
+
+    m.setPosition(225);
+    QCOMPARE(m.position(), 220.0);
+
+    m.setPosition(203);
+    QCOMPARE(m.position(), 205.0);
+
+    m.setPosition(360);
+    QCOMPARE(m.position(), 250.0);
+
+    m.setPosition(130);
+    QCOMPARE(m.position(), 200.0);
 }
 
 QTEST_MAIN(tst_QRangeModel)
