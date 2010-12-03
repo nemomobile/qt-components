@@ -29,8 +29,6 @@
 
 #include <QtDeclarative/QDeclarativeItem>
 
-#include <kernel/common.h>
-
 class QMxButtonGroup : public QDeclarativeItem
 {
     Q_OBJECT

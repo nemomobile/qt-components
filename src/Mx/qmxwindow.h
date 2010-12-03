@@ -29,8 +29,6 @@
 #ifndef QMXWINDOW_H
 #define QMXWINDOW_H
 
-#include <kernel/common.h>
-
 //QDI so we're in the scene and associated with a window
 class QMxWindow : public QDeclarativeItem
 {

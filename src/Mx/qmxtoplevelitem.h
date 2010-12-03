@@ -29,8 +29,6 @@
 
 #include <QtDeclarative/qdeclarativeitem.h>
 
-#include <kernel/common.h>
-
 class QMxTopLevelItemPrivate;
 class QMxTopLevelItem : public QDeclarativeItem
 {
