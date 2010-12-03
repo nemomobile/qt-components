@@ -40,13 +40,13 @@ class Q_COMPONENTS_EXPORT QRangeModel : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(qreal value READ value WRITE setValue NOTIFY valueChanged USER true)
-    Q_PROPERTY(qreal minimumValue READ minimum WRITE setMinimum NOTIFY rangeChanged)
-    Q_PROPERTY(qreal maximumValue READ maximum WRITE setMaximum NOTIFY rangeChanged)
     Q_PROPERTY(qreal steps READ steps WRITE setSteps)
+    Q_PROPERTY(qreal minimumValue READ minimum WRITE setMinimum NOTIFY minimumChanged)
+    Q_PROPERTY(qreal maximumValue READ maximum WRITE setMaximum NOTIFY maximumChanged)
     Q_PROPERTY(qreal position READ position WRITE setPosition NOTIFY positionChanged)
-    Q_PROPERTY(qreal positionAtMinimum READ positionAtMinimum WRITE setPositionAtMinimum NOTIFY positionRangeChanged)
-    Q_PROPERTY(qreal positionAtMaximum READ positionAtMaximum WRITE setPositionAtMaximum NOTIFY positionRangeChanged)
     Q_PROPERTY(bool inverted READ inverted WRITE setInverted)
+    Q_PROPERTY(qreal positionAtMinimum READ positionAtMinimum WRITE setPositionAtMinimum NOTIFY positionAtMinimumChanged)
+    Q_PROPERTY(qreal positionAtMaximum READ positionAtMaximum WRITE setPositionAtMaximum NOTIFY positionAtMaximumChanged)
 
 public:
     QRangeModel(QObject *parent = 0);
@@ -89,8 +89,11 @@ Q_SIGNALS:
     void valueChanged(qreal value);
     void positionChanged(qreal position);
 
-    void rangeChanged(qreal min, qreal max);
-    void positionRangeChanged(qreal min, qreal max);
+
+    void minimumChanged(qreal min);
+    void maximumChanged(qreal max);
+    void positionAtMinimumChanged(qreal min);
+    void positionAtMaximumChanged(qreal max);
 
 protected:
     QRangeModel(QRangeModelPrivate &dd, QObject *parent);

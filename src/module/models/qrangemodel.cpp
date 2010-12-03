@@ -95,7 +95,10 @@ void QRangeModel::setPositionRange(qreal min, qreal max)
 {
     Q_D(QRangeModel);
 
-    if ((min == d->posatmin) && (max == d->posatmax))
+    bool emitPosAtMinChanged = (min != d->posatmin);
+    bool emitPosAtMaxChanged = (max != d->posatmax);
+
+    if (!(emitPosAtMinChanged || emitPosAtMaxChanged))
         return;
 
     const qreal oldValue = value();
@@ -111,7 +114,11 @@ void QRangeModel::setPositionRange(qreal min, qreal max)
     // the positionChanged signal.
     d->pos = d->positionFromValue(d->value);
 
-    emit positionRangeChanged(d->posatmin, d->posatmax);
+    if (emitPosAtMinChanged)
+        emit positionAtMinimumChanged(d->posatmin);
+    if (emitPosAtMaxChanged)
+        emit positionAtMaximumChanged(d->posatmax);
+
     d->emitValueAndPositionIfChanged(oldValue, oldPosition);
 }
 
@@ -119,7 +126,10 @@ void QRangeModel::setRange(qreal min, qreal max)
 {
     Q_D(QRangeModel);
 
-    if ((min == d->minimum) && (max == d->maximum))
+    bool emitMinimumChanged = (min != d->minimum);
+    bool emitMaximumChanged = (max != d->maximum);
+
+    if (!(emitMinimumChanged || emitMaximumChanged))
         return;
 
     const qreal oldValue = value();
@@ -142,7 +152,11 @@ void QRangeModel::setRange(qreal min, qreal max)
     // Update internal position if it was changed. It can occurs if internal value changes, due to range update
     d->pos = d->positionFromValue(d->value);
 
-    emit rangeChanged(d->minimum, d->maximum);
+    if (emitMinimumChanged)
+        emit minimumChanged(d->minimum);
+    if (emitMaximumChanged)
+        emit maximumChanged(d->maximum);
+
     d->emitValueAndPositionIfChanged(oldValue, oldPosition);
 }
 
