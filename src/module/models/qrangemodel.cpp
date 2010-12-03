@@ -75,20 +75,20 @@ qreal QRangeModelPrivate::publicPosition(qreal position) const
     if (stepSizeMultiplier < 0)
         return min;
 
-    qreal leftRange = (stepSizeMultiplier * positionStep) + min;
-    qreal rightRange = leftRange + positionStep;
+    qreal leftEdge = (stepSizeMultiplier * positionStep) + min;
+    qreal rightEdge = leftEdge + positionStep;
 
     if (min < max) {
-        leftRange = qMin(leftRange, max);
-        rightRange = qMin(rightRange, max);
+        leftEdge = qMin(leftEdge, max);
+        rightEdge = qMin(rightEdge, max);
     } else {
-        leftRange = qMax(leftRange, max);
-        rightRange = qMax(rightRange, max);
+        leftEdge = qMax(leftEdge, max);
+        rightEdge = qMax(rightEdge, max);
     }
 
-    if (qAbs(leftRange - position) <= qAbs(rightRange - position))
-        return leftRange;
-    return rightRange;
+    if (qAbs(leftEdge - position) <= qAbs(rightEdge - position))
+        return leftEdge;
+    return rightEdge;
 }
 
 qreal QRangeModelPrivate::publicValue(qreal value) const
@@ -107,11 +107,11 @@ qreal QRangeModelPrivate::publicValue(qreal value) const
     if (stepSizeMultiplier < 0)
         return minimum;
 
-    const qreal leftRange = qMin(maximum, (stepSizeMultiplier * stepSize) + minimum);
-    const qreal rightRange = qMin(maximum, leftRange + stepSize);
-    const qreal middle = (leftRange + rightRange) / 2;
+    const qreal leftEdge = qMin(maximum, (stepSizeMultiplier * stepSize) + minimum);
+    const qreal rightEdge = qMin(maximum, leftEdge + stepSize);
+    const qreal middle = (leftEdge + rightEdge) / 2;
 
-    return (value <= middle) ? leftRange : rightRange;
+    return (value <= middle) ? leftEdge : rightEdge;
 }
 
 void QRangeModelPrivate::emitValueAndPositionIfChanged(const qreal oldValue, const qreal oldPosition)
