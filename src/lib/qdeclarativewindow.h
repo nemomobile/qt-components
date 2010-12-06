@@ -27,59 +27,31 @@
 #ifndef QDECLARATIVEWINDOW_H
 #define QDECLARATIVEWINDOW_H
 
-#if defined(QDECLARATIVEWINDOW_BUILD_LIB)
-#  define QDECLARATIVEWINDOW_EXPORT Q_DECL_EXPORT
+#if defined(Q_COMPONENTS_BUILD_LIB)
+#  define Q_COMPONENTS_EXPORT Q_DECL_EXPORT
 #else
-#  define QDECLARATIVEWINDOW_EXPORT Q_DECL_IMPORT
+#  define Q_COMPONENTS_EXPORT Q_DECL_IMPORT
 #endif
 
-#include <qwidget.h>
-#include <qurl.h>
-#include <qscopedpointer.h>
+#include <QtDeclarative/qdeclarativeview.h>
 
 class QDeclarativeWindowPrivate;
-class QDeclarativeEngine;
-class QDeclarativeContext;
-class QGraphicsObject;
 
-class QDECLARATIVEWINDOW_EXPORT QDeclarativeWindow : public QObject
+class Q_COMPONENTS_EXPORT QDeclarativeWindow : public QDeclarativeView
 {
     Q_OBJECT
 
-    Q_PROPERTY(Status status READ status NOTIFY statusChanged)
-    Q_ENUMS(Status)
-
 public:
-    QDeclarativeWindow();
-    QDeclarativeWindow(const QUrl &source);
+    explicit QDeclarativeWindow(QWidget *parent = 0);
+    QDeclarativeWindow(const QUrl &source, QWidget *parent = 0);
     ~QDeclarativeWindow();
 
-    QUrl source() const;
-    void setSource(const QUrl &url);
-
-    QDeclarativeEngine *engine() const;
-    QDeclarativeContext *rootContext() const;
-
-    QGraphicsObject *rootObject() const;
-
-    enum Status { Null, Ready, Loading, Error };
-    Status status() const;
-
-    QWidget *window() const;
-
-Q_SIGNALS:
-    void statusChanged(QDeclarativeWindow::Status);
-
 protected:
-    virtual void setRootObject(QObject *obj);
-
     QScopedPointer<QDeclarativeWindowPrivate> d_ptr;
 
 private:
-    Q_PRIVATE_SLOT(d_func(), void _q_continueExecute())
-
     Q_DISABLE_COPY(QDeclarativeWindow)
     Q_DECLARE_PRIVATE(QDeclarativeWindow)
 };
 
-#endif
+#endif // QDECLARATIVEWINDOW_H
