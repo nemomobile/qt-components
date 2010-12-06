@@ -1,0 +1,93 @@
+/****************************************************************************
+**
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project on Qt Labs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** No Commercial Usage
+** This file contains pre-release code and may not be distributed.
+** You may use this file in accordance with the terms and conditions
+** contained in the Technology Preview License Agreement accompanying
+** this package.
+**
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of this
+** file.
+**
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+/*!
+    \qmlclass Button
+    \ingroup qt-components
+    \since 4.7f
+    \brief A button component that has basic event handling and text label.
+
+    A Button is an Item-like class.
+
+    A button is a component that accepts user input and send a click() event for
+    the application to handle. The button has resizable properties, event
+    handling, and can undergo state changes and transitions.
+
+    \section1 Common API
+    \code
+    // toggled via clicked()
+    property bool checked
+    property bool checkable
+    property bool pressed
+
+    signal clicked
+
+    // label visibility depends on string presence
+    property string text
+    // icon visibility depends on iconSource presence
+    // state-dependent resources should be assigned by ternary operators comparing e.g. checked state
+    property url iconSource
+    \endcode
+
+    \section1 Example Usage
+
+    Following is a basic button declaration. The button simply displays
+    "Click Me!". The \l onClicked handler will assign "Thank You!" when there is
+    a \l clicked() signal detected.
+    \snippet src/snippets/MeeGo/snippet-button-simple.qml 0
+*/
+/*!
+    \qmlproperty bool Button::checkable
+
+    If a button's \c checkable property is set to \c true, then it can have
+    two alternative \c checked states, on or off. The \c checkable property is
+    set to \c false by default.
+
+    \snippet src/snippets/MeeGo/snippet-button.qml 3
+
+    \sa Button::checked
+*/
+/*!
+    \qmlproperty bool Button::checked
+
+    If the button is checked, then \c checked is true. The property is set to
+    \c false by default.
+
+    \snippet src/snippets/MeeGo/snippet-button.qml 3
+    \sa Button::checkable
+*/
+/*!
+    \qmlproperty bool Button::pressed
+
+    \sa Button::clicked()
+*/
+/*!
+    \qmlsignal Button::clicked()
+    Signal for detecting button clicks. If the button is pressed, released, then
+    this signal will be emitted.
+
+    The signal handler, onClicked(), can bind to state changes or other actions.
+*/
