@@ -42,9 +42,13 @@ public:
         if (!MComponentData::instance()) {
             // This is a workaround because we can't use a default
             // constructor for MComponentData
+            QByteArray argv0;
+            if (!QCoreApplication::arguments().isEmpty())
+                argv0 = QCoreApplication::arguments().first().toLocal8Bit();
+
             int argc = 1;
-            char *argv0 = "meegotouch";
-            (void) new MComponentData(argc, &argv0);
+            char *argv[] = { argv0.data() };
+            (void) new MComponentData(argc, argv);
         }
 
         // ### Register in Qt module?
