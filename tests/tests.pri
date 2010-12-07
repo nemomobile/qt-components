@@ -1,7 +1,7 @@
 include (../qt-components.pri)
 
 DEPENDPATH  += $$INCLUDEPATH .
-CONFIG += qtestlib
+CONFIG += qtestlib testcase
 CONFIG -= app_bundle
 QT += declarative
 
