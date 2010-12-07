@@ -54,7 +54,6 @@ private slots:
     void iconSource();
 
 private:
-    QDeclarativeWindow *createView(const QUrl &filename);
     QDeclarativeComponent *component;
     QObject *componentObject;
     QDeclarativeEngine *engine;
@@ -62,7 +61,7 @@ private:
 
 tst_quickcomponentsbutton::tst_quickcomponentsbutton()
 {
-    QDeclarativeWindow *window = createView( QUrl::fromLocalFile(QString("foo")) );
+    QDeclarativeWindow *window = new QDeclarativeWindow;
     QDeclarativeComponent *component = new QDeclarativeComponent(window->engine());
 
     QFile file("tst_quickcomponentsbutton.qml");
@@ -121,13 +120,6 @@ void tst_quickcomponentsbutton::clicked()
     QMetaObject::invokeMethod(componentObject,"clicked",Qt::DirectConnection);
     QCOMPARE(spy.count(),1);
     QVERIFY(spy.isValid());
-}
-
-QDeclarativeWindow *tst_quickcomponentsbutton::createView(const QUrl &filename)
-{
-    QDeclarativeWindow *canvas = new QDeclarativeWindow;
-    canvas->setSource(filename);
-    return canvas;
 }
 
 QTEST_MAIN(tst_quickcomponentsbutton)
