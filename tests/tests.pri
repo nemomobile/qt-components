@@ -1,7 +1,7 @@
 include (../qt-components.pri)
 
 DEPENDPATH  += $$INCLUDEPATH .
-CONFIG += qtestlib
+CONFIG += qtestlib testcase
 CONFIG -= app_bundle
 QT += declarative
 
@@ -13,4 +13,4 @@ LIBS += -L$$PWD/../src/module -l$$qtLibraryTarget(qtcomponentsplugin)
 # idea here is that the tests can run using the .so in the working directory,
 # because the .so we are testing is not installed in a visible library directory
 # on the system, because it is part of a QML module.
-QMAKE_RPATHDIR += ../../../src/module
+QMAKE_RPATHDIR += $$PWD/../src/module
