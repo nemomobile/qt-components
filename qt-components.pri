@@ -1,10 +1,10 @@
-INCLUDEPATH += $$PWD/src/lib
+INCLUDEPATH += $$Q_COMPONENTS_SOURCE_TREE/src/lib
 TEMPLATE = lib ## hack to make qtLibraryTarget work
 !build_lib {
     macx:CONFIG(qt_framework, qt_framework|qt_no_framework) {
-        LIBS += -F$$PWD/lib -framework QtComponents
+        LIBS += -F$$Q_COMPONENTS_BUILD_TREE/lib -framework QtComponents
     } else {
-        LIBS += -L$$PWD/lib -l$$qtLibraryTarget(QtComponents)
+        LIBS += -L$$Q_COMPONENTS_BUILD_TREE/lib -l$$qtLibraryTarget(QtComponents)
     }
 }
 
