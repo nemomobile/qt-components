@@ -1,6 +1,7 @@
 TEMPLATE = lib
 TARGET = meegothemebridgeplugin
-DESTDIR = .
+DESTDIR = $$Q_COMPONENTS_BUILD_TREE/lib
+win32:DLLDESTDIR = $$Q_COMPONENTS_BUILD_TREE/bin
 CONFIG += meegotouch qt plugin
 QT += declarative
 
