@@ -13,4 +13,4 @@ LIBS += -L$$Q_COMPONENTS_BUILD_TREE/lib -l$$qtLibraryTarget(qtcomponentsplugin)
 # idea here is that the tests can run using the .so in the working directory,
 # because the .so we are testing is not installed in a visible library directory
 # on the system, because it is part of a QML module.
-QMAKE_RPATHDIR += $$Q_COMPONENTS_BUILD_TREE/lib
+QMAKE_RPATHDIR = $$Q_COMPONENTS_BUILD_TREE/lib $$QMAKE_RPATHDIR
