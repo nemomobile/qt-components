@@ -6,7 +6,7 @@ CONFIG -= app_bundle
 QT += declarative
 
 TEMPLATE = lib ## this is a hack to make qtLibraryTarget return the correct value
-INCLUDEPATH += $$Q_COMPONENTS_SOURCE_TREE/src/module
+INCLUDEPATH += $$Q_COMPONENTS_SOURCE_TREE/src/components
 LIBS += -L$$Q_COMPONENTS_BUILD_TREE/lib -l$$qtLibraryTarget(qtcomponentsplugin)
 
 # ### Don't know how to replicate this feature on non-Unix systems, the
