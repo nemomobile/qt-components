@@ -2,6 +2,9 @@ include (../../qt-components.pri)
 
 TEMPLATE = lib
 TARGET = $$qtLibraryTarget(qtcomponentsplugin)
+DESTDIR = $$Q_COMPONENTS_BUILD_TREE/lib
+win32:DLLDESTDIR = $$Q_COMPONENTS_BUILD_TREE/bin
+INCLUDEPATH += .
 
 CONFIG += qt plugin
 QT += declarative

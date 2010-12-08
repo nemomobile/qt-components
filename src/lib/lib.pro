@@ -1,7 +1,8 @@
 TEMPLATE = lib
 TARGET = $$qtLibraryTarget(QtComponents)
 
-DESTDIR = $$OUT_PWD/../../lib
+DESTDIR = $$Q_COMPONENTS_BUILD_TREE/lib
+win32:DLLDESTDIR = $$Q_COMPONENTS_BUILD_TREE/bin
 
 QT += declarative opengl
 CONFIG += build_lib
@@ -33,5 +34,7 @@ macx:CONFIG(qt_framework, qt_framework|qt_no_framework) {
 }
 
 target.path = $$[QT_INSTALL_LIBS]
+win32:dlltarget.path = $$[QT_INSTALL_BINS]
 
 INSTALLS += target
+win32:INSTALLS += dlltarget

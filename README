@@ -2,19 +2,19 @@ This source tree contains the Qt Components project.
 
 Building
 ========
-qmake (for compiling specific component sets add '-config mx' and/or '-config meego')
+configure (for compiling specific component sets add '-config mx' and/or '-config meego')
 make
 make install
 
 The project is divided into:
 
-- The library libQtCompoenents: contain general purpose helpers for C++;
+- The library libQtComponents: contain general purpose helpers for C++;
 - The module Qt.labs.components: _for now_ contains general purpose helpers for QML.
 
 and also (for the time being) two QML modules for component sets implemented using those components
 
 - com.meego: components from MeeGo Touch UI library;
-- Qt.labs.Mx: set of UI components inspired in the Mx toolkit.
+- Qt.labs.Mx: set of UI components inspired by the Mx toolkit.
 
 The lib will install in QTDIR/lib, while the modules will go to QTDIR/imports.
 
@@ -66,7 +66,7 @@ git@gitorious.org:qt-components/qt-components.git
 # mmoc is required
 3: export PATH=/usr/local/bin/:$PATH
 
-4: qt-components: qmake -config meego -r && make install
+4: qt-components: ./configure -config meego && make install
      (installs into your current binary qt path)
      or use dpkg-buildpackage to make a .deb package
 
