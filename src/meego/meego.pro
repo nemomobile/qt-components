@@ -30,6 +30,8 @@ HEADERS += \
     mdeclarativescreen.h \
     msnapshot.h
 
+INCLUDEPATH += $$PWD
+
 QML_FILES = \
         qmldir \
         Action.qml \

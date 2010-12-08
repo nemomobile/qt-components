@@ -15,6 +15,8 @@ HEADERS += \
 SOURCES += \
     qdeclarativewindow.cpp
 
+INCLUDEPATH = $$PWD
+
 macx:CONFIG(qt_framework, qt_framework|qt_no_framework) {
     CONFIG += lib_bundle debug_and_release
     CONFIG(debug, debug|release) {

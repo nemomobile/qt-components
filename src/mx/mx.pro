@@ -19,6 +19,8 @@ HEADERS += \
     qmxtoplevelitem_p.h \
     qmxwindow.h
 
+INCLUDEPATH += $$PWD
+
 QML_FILES = \
         qmldir \
         Button.qml \
