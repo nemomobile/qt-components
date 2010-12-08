@@ -17,6 +17,7 @@ OTHER_FILES += \
     list.qml \
     scrolldecorator.qml \
     query.qml \
-    busyindicator.qml
+    busyindicator.qml \
+    images
 
 include (../meego.pri)
