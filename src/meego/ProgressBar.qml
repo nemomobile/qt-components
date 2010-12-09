@@ -67,8 +67,8 @@ ImplicitSizeItem {
 
             states: [
                 State {
-                    name: "unknownDuration"
-                    when: unknownDuration
+                    name: "indeterminate"
+                    when: indeterminate
                     PropertyChanges {
                         target: bar
                         imageProperty: "unknownBarTexture"
@@ -86,7 +86,7 @@ ImplicitSizeItem {
                 },
                 State {
                     name: "progress"
-                    when: !unknownDuration
+                    when: !indeterminate
                     PropertyChanges {
                         target: bar
                         imageProperty: "knownBarTexture"
