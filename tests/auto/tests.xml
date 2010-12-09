@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<testdefinition version="0.1">
+
+<!-- Test suite, name mandatory - the same as test package name -->
+  <!-- Schema: https://projects.maemo.org/docs/testing/xml-definition.html -->
+  <suite name="qt-components-tests" domain="TBD"> 
+
+    <set name="auto-tests" description="Qt Components auto tests" feature="TBD" requirement="TBD" >   
+
+      <case name="button" type="Functional" description="Unit tests for button" level="Unit" timeout="20">
+          <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_button; ./tst_api_button</step>
+      </case>
+      <case name="checkbox" type="Functional" description="Unit tests for checkbox" level="Unit" timeout="20">
+          <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_checkbox; ./tst_api_checkbox</step>
+      </case>
+      <case name="lineedit" type="Functional" description="Unit tests for lineedit" level="Unit" timeout="20">
+          <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_lineedit; ./tst_api_lineedit</step>
+      </case>
+      <case name="multilineedit" type="Functional" description="Unit tests for multilineedit" level="Unit" timeout="20">
+          <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_multilineedit; ./tst_api_multilineedit</step>
+      </case>
+      <case name="progressbar" type="Functional" description="Unit tests for progressbar" level="Unit" timeout="20">
+          <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_progressbar; ./tst_api_progressbar</step>
+      </case>
+      <case name="scrolldecorator" type="Functional" description="Unit tests for scrolldecorator" level="Unit" timeout="20">
+          <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_scrolldecorator; ./tst_api_scrolldecorator</step>
+      </case>
+      <case name="slider" type="Functional" description="Unit tests for slider" level="Unit" timeout="20">
+          <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_slider; ./tst_api_slider</step>
+      </case>
+      <case name="qrangemodel" type="Functional" description="Unit tests for qrangemodel" level="Unit" timeout="20">
+          <step expected_result="0">cd /opt/qt-components-tests/auto/qrangemodel; ./qrangemodel</step>
+      </case>
+      <environments>
+          <scratchbox>true</scratchbox>
+          <hardware>true</hardware>    
+      </environments>
+
+      <!--get>
+      </get-->
+    </set>
+  </suite>
+</testdefinition>
+
+

@@ -7,3 +7,5 @@ QT += declarative
 
 SOURCES += tst_quickcomponentsprogressbar.cpp
 OTHER_FILES += tst_quickcomponentsprogressbar.qml
+
+include (../auto.pri)
