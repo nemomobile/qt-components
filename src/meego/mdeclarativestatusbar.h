@@ -35,8 +35,10 @@ class QPixmap;
 class QDBusServiceWatcher;
 class QDBusPendingCallWatcher;
 
-#define HAVE_DBUS
-#define HAVE_XDAMAGE
+#ifndef Q_WS_MAC
+   #define HAVE_DBUS
+   #define HAVE_XDAMAGE
+#endif
 
 class MDeclarativeStatusBar : public QDeclarativeItem
 {

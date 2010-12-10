@@ -36,14 +36,19 @@
 #include <qgraphicsscene.h>
 #include <qdebug.h>
 
-#include <QDBusInterface>
-#include <QDBusServiceWatcher>
-#include <QDBusConnectionInterface>
+#ifdef HAVE_DBUS
+   #include <QDBusInterface>
+   #include <QDBusServiceWatcher>
+   #include <QDBusConnectionInterface>
+#endif
 
-#include <X11/extensions/Xdamage.h>
+#ifdef HAVE_XDAMAGE
+   #include <X11/extensions/Xdamage.h>
+#endif
 
 static const int STATUSBAR_HEIGHT = 30;
 
+#ifdef HAVE_DBUS
 static const QLatin1String PIXMAP_PROVIDER_DBUS_SERVICE("com.meego.core.MStatusBar");
 static const QLatin1String PIXMAP_PROVIDER_DBUS_PATH("/statusbar");
 static const QLatin1String PIXMAP_PROVIDER_DBUS_INTERFACE("com.meego.core.MStatusBar");
@@ -52,22 +57,30 @@ static const QLatin1String PIXMAP_PROVIDER_DBUS_SHAREDPIXMAP_CALL("sharedPixmapH
 static const QLatin1String STATUS_INDICATOR_MENU_DBUS_SERVICE("com.meego.core.MStatusIndicatorMenu");
 static const QLatin1String STATUS_INDICATOR_MENU_DBUS_PATH("/statusindicatormenu");
 static const QLatin1String STATUS_INDICATOR_MENU_DBUS_INTERFACE("com.meego.core.MStatusIndicatorMenu");
+#endif
 
+#ifdef HAVE_XDAMAGE
 // for XDamage events
 static int xDamageEventBase = 0;
 static int xDamageErrorBase = 0;
+#endif
 
 static bool filterRegistered = false;
 QCoreApplication::EventFilter oldFilter = 0;
+#ifdef HAVE_XDAMAGE
 static QHash<Damage, MDeclarativeStatusBar *> damageMap;
+#endif
 
+#ifdef HAVE_XDAMAGE
 static int handleXError(Display *, XErrorEvent *)
 {
     return 0;
 }
+#endif
 
 static bool x11EventFilter(void *message, long *)
 {
+#ifdef HAVE_XDAMAGE
     XEvent *event = (XEvent *)message;
 
     if (event->type == xDamageEventBase + XDamageNotify) {
@@ -85,6 +98,7 @@ static bool x11EventFilter(void *message, long *)
             return true;
         }
     }
+#endif
     return false;
 }
 
@@ -103,16 +117,20 @@ MDeclarativeStatusBar::MDeclarativeStatusBar(QDeclarativeItem *parent) :
 
     if (!filterRegistered) {
         ::oldFilter = QCoreApplication::instance()->setEventFilter(x11EventFilter);
+#ifdef HAVE_XDAMAGE
         XDamageQueryExtension(QX11Info::display(), &xDamageEventBase, &xDamageErrorBase);
-
+#endif
         filterRegistered = true;
     }
 
+#ifdef HAVE_DBUS
     if (QDBusConnection::sessionBus().interface()->isServiceRegistered(PIXMAP_PROVIDER_DBUS_SERVICE))
         isPixmapProviderOnline = true;
     else
+#endif
         isPixmapProviderOnline = false;
 
+#ifdef HAVE_DBUS
     dbusWatcher = new QDBusServiceWatcher( PIXMAP_PROVIDER_DBUS_SERVICE , QDBusConnection::sessionBus(),
                                            QDBusServiceWatcher::WatchForRegistration|QDBusServiceWatcher::WatchForUnregistration,
                                            this );
@@ -122,6 +140,7 @@ MDeclarativeStatusBar::MDeclarativeStatusBar(QDeclarativeItem *parent) :
     connect(dbusWatcher, SIGNAL(serviceUnregistered(QString)),
             this, SLOT(handlePixmapProviderOffline()));
 
+#endif
     querySharedPixmapFromProvider();
 }
 
@@ -171,18 +190,22 @@ void MDeclarativeStatusBar::updateSharedPixmap()
 
 void MDeclarativeStatusBar::setupXDamageForSharedPixmap()
 {
+#ifdef HAVE_XDAMAGE
     Q_ASSERT(!sharedPixmap.isNull());
     pixmapDamage = XDamageCreate(QX11Info::display(), sharedPixmap.handle(), XDamageReportNonEmpty);
     damageMap.insert(pixmapDamage, this);
+#endif
 }
 
 void MDeclarativeStatusBar::destroyXDamageForSharedPixmap()
 {
+#ifdef HAVE_XDAMAGE
     if (pixmapDamage) {
         damageMap.remove(pixmapDamage);
         XDamageDestroy(QX11Info::display(), pixmapDamage);
         pixmapDamage = 0;
     }
+#endif
 }
 
 void MDeclarativeStatusBar::enablePixmapUpdates()
@@ -201,6 +224,7 @@ void MDeclarativeStatusBar::querySharedPixmapFromProvider()
 {
     if (!updatesEnabled || !isPixmapProviderOnline)
         return;
+#ifdef HAVE_DBUS
     QDBusInterface interface(PIXMAP_PROVIDER_DBUS_SERVICE, PIXMAP_PROVIDER_DBUS_PATH, PIXMAP_PROVIDER_DBUS_INTERFACE,
                              QDBusConnection::sessionBus());
     QDBusPendingCall asyncCall =  interface.asyncCall(PIXMAP_PROVIDER_DBUS_SHAREDPIXMAP_CALL);
@@ -208,10 +232,12 @@ void MDeclarativeStatusBar::querySharedPixmapFromProvider()
 
     connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)),
             this, SLOT(sharedPixmapHandleReceived(QDBusPendingCallWatcher*)));
+#endif
 }
 
 void MDeclarativeStatusBar::sharedPixmapHandleReceived(QDBusPendingCallWatcher * call)
 {
+#ifdef HAVE_DBUS
     QDBusPendingReply<quint32> reply = *call;
     if (reply.isError()) {
         qWarning() << "MDeclarativeStatusBar" << reply.error().message();
@@ -223,6 +249,7 @@ void MDeclarativeStatusBar::sharedPixmapHandleReceived(QDBusPendingCallWatcher *
     updateSharedPixmap();
     call->deleteLater();
     scene()->update();
+#endif
 }
 
 void MDeclarativeStatusBar::handlePixmapProviderOnline()
@@ -251,8 +278,10 @@ void MDeclarativeStatusBar::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void MDeclarativeStatusBar::showStatusIndicatorMenu()
 {
+#ifdef HAVE_DBUS
     QDBusInterface interface(STATUS_INDICATOR_MENU_DBUS_SERVICE, STATUS_INDICATOR_MENU_DBUS_PATH, STATUS_INDICATOR_MENU_DBUS_INTERFACE, QDBusConnection::sessionBus());
     interface.call(QDBus::NoBlock, "open");
+#endif
 }
 
 void MDeclarativeStatusBar::playHapticsFeedback()

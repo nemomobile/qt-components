@@ -30,11 +30,15 @@
 
 int main(int argc, char **argv)
 {
-    //QApplication::setGraphicsSystem("raster");
-
+    QApplication::setGraphicsSystem("raster");
     QApplication::setStyle("windows");
     QApplication app(argc, argv);
+
+#ifdef Q_WS_MAC
+    QDir::setCurrent(app.applicationDirPath().append("../../../"));
+#else
     QDir::setCurrent(app.applicationDirPath());
+#endif
 
     QDeclarativeWindow window(QUrl::fromLocalFile("mainwindow.qml"));
 

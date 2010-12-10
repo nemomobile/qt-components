@@ -29,6 +29,7 @@ macx:CONFIG(qt_framework, qt_framework|qt_no_framework) {
         }
         QMAKE_BUNDLE_DATA += FRAMEWORK_HEADERS
     }
+    QMAKE_LFLAGS_SONAME  = -Wl,-install_name,$$[QT_INSTALL_LIBS]/
 } else {
     install_headers.files = $$HEADERS
     install_headers.path = $$[QT_INSTALL_HEADERS]/QtComponents
