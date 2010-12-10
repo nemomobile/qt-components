@@ -5,7 +5,7 @@ DESTDIR = $$Q_COMPONENTS_BUILD_TREE/lib
 win32:DLLDESTDIR = $$Q_COMPONENTS_BUILD_TREE/bin
 CONFIG += qt plugin meego
 QT += declarative
-#!macx: QT += dbus
+!macx: QT += dbus
 
 include (../../qt-components.pri)
 
