@@ -73,10 +73,9 @@ Item {
             verticalAlignment: Text.AlignVCenter
         }
 
-        LineEdit {
+        MultiLineEdit {
             id: line5
             text: "This text spans multiple \nlines."
-            multiLine: true
             width: parent.width - x
         }
     }

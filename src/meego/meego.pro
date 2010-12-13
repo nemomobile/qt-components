@@ -49,6 +49,7 @@ QML_FILES = \
         IconButton.qml \
         Label.qml \
         LineEdit.qml \
+        MultiLineEdit.qml \
         ListItem.qml \
         Page.qml \
         pagemanager.js \

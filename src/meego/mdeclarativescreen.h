@@ -90,6 +90,9 @@ public:
     bool isMinimized() const;
     void setMinimized(bool minimized);
 
+    // ### this is a workaround for QTBUG-15574
+    Q_INVOKABLE void sendClicked(int x, int y, int position) const;
+
 Q_SIGNALS:
     void orientationChanged();
     void orientationLockedChanged();

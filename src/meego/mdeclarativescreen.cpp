@@ -32,6 +32,8 @@
 #include <qpointer.h>
 #include <qtimer.h>
 #include <qrect.h>
+#include <QMouseEvent>
+#include <QInputContext>
 
 #ifdef HAVE_CONTEXTSUBSCRIBER
 #include "contextproperty.h"
@@ -351,6 +353,8 @@ bool MDeclarativeScreen::isMinimized() const
 
 void MDeclarativeScreen::setMinimized(bool minimized)
 {
+    Q_UNUSED(minimized);
+
     QWidget *top = QApplication::activeWindow();
     if (!top)
         return;
@@ -365,6 +369,20 @@ int MDeclarativeScreen::width() const
 int MDeclarativeScreen::height() const
 {
     return d->resolution.height();
+}
+
+void MDeclarativeScreen::sendClicked(int x, int y, int position) const
+{
+    QInputContext *ic = qApp->inputContext();
+
+    if (ic != NULL) {
+        QEvent::Type mouseEventType(QEvent::MouseButtonRelease);
+        QPoint mousePoint(x,y);
+        QMouseEvent mouseEvent(mouseEventType, mousePoint, Qt::LeftButton,
+                               Qt::LeftButton, Qt::NoModifier);
+        int preeditOffset = 0;
+        ic->mouseHandler(preeditOffset, &mouseEvent);
+    }
 }
 
 #include "moc_mdeclarativescreen.cpp"

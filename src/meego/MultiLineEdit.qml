@@ -37,10 +37,11 @@ ImplicitSizeItem {
     property alias styleType: meegostyle.styleType
 
     // Inherited from text items
-    property variant echoMode: TextInput.Normal
-    property variant inputElement: textInput
+    //property variant echoMode: TextEdit.Normal
+    property variant wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+    property variant inputElement: textEdit
     property variant activeFocusOnPress: true
-    property variant horizontalAlignment: TextInput.AlignLeft
+    property variant horizontalAlignment: TextEdit.AlignLeft
     property variant color: meegostyle.current.get("textColor")
     property variant selectedTextColor: meegostyle.current.get("selectionTextColor")
     property variant selectionColor: meegostyle.current.get("selectionBackgroundColor")
@@ -94,18 +95,17 @@ ImplicitSizeItem {
         font: root.font
     }
 
-    TextInput {
-        id: textInput
+    TextEdit {
+        id: textEdit
         x: root.anchors.leftMargin
         y: root.anchors.topMargin
         width: root.width - x - root.anchors.rightMargin
         height: root.height - y - root.anchors.bottomMargin
         text:root.text
         onTextChanged: root.text = text
-        passwordCharacter: root.passwordCharacter
-        echoMode: root.echoMode
         font: root.font
         color: root.color
+        wrapMode: root.wrapMode
         selectByMouse: true
         horizontalAlignment: root.horizontalAlignment
         selectedTextColor: root.selectedTextColor
@@ -114,12 +114,13 @@ ImplicitSizeItem {
             font: root.font;
             text: root.text;
             visible: false
+            wrapMode: root.wrapMode;
         }
         MouseArea {
             anchors.fill: parent
             onReleased: {
                 parent.focus=true;
-                screen.sendClicked(mouseX,mouseY,parent.positionAt(mouseX));
+                screen.sendClicked(mouseX,mouseY,parent.positionAt(mouseX,mouseY));
             }
         }
     }

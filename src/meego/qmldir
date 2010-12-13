@@ -10,6 +10,7 @@ CheckBox 1.0 CheckBox.qml
 IconButton 1.0 IconButton.qml
 Label 1.0 Label.qml
 LineEdit 1.0 LineEdit.qml
+MultiLineEdit 1.0 MultiLineEdit.qml
 ListItem 1.0 ListItem.qml
 Page 1.0 Page.qml
 ProgressBar 1.0 ProgressBar.qml
