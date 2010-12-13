@@ -1,5 +1,5 @@
-include (../../../../qt-components.pri)
-include (../../../tests.pri)
+include (../../../qt-components.pri)
+include (../../tests.pri)
 
 TEMPLATE = app
 QT += declarative
