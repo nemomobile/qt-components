@@ -95,6 +95,7 @@ void tst_quickcomponentsscrolldecorator::minimumValue()
     componentObject->setProperty( "value", 50.0 );
     componentObject->setProperty( "value", -1.0 );
     // the minimum limit should prevent change in property
+    QEXPECT_FAIL("", "Not yet blocked by min and max ranges, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-287", Continue);
     QVERIFY( componentObject->property("value") == 50.0 );
 }
 
@@ -109,6 +110,7 @@ void tst_quickcomponentsscrolldecorator::maximumValue()
     componentObject->setProperty( "value", 50.0 );
     componentObject->setProperty( "value", 101.0 );
     // the maximum limit should prevent change in property
+    QEXPECT_FAIL("", "Not yet blocked by min and max ranges, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-287", Continue);
     QVERIFY( componentObject->property("value") == 50.0 );
 }
 

@@ -83,6 +83,7 @@ void tst_quickcomponentsbutton::checkable()
 
     // try to set the property while checkable is false
     QVERIFY( componentObject->setProperty("checked",true) );
+    QEXPECT_FAIL("", "QML Doesn't have readonly properties", Continue);
     QCOMPARE( componentObject->property("checked").toBool(),false );
 
     // allow checked to change again, and verify it changes

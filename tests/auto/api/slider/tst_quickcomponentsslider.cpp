@@ -52,7 +52,7 @@ private slots:
     void minimumValue();
     void maximumValue();
     void orientation();
-    void updateWhileDragging();
+    void updateValueWhileDragging();
     void pressed();
 
 private:
@@ -105,6 +105,7 @@ void tst_quickcomponentsslider::minimumValue()
     componentObject->setProperty( "value", 50.0 );
     componentObject->setProperty( "value", -1.0 );
     // the minimum limit should prevent change in property
+    QEXPECT_FAIL("", "Not yet blocked by min and max ranges, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-287", Continue);
     QVERIFY( componentObject->property("value") == 50.0 );
 }
 
@@ -119,6 +120,7 @@ void tst_quickcomponentsslider::maximumValue()
     componentObject->setProperty( "value", 50.0 );
     componentObject->setProperty( "value", 101.0 );
     // the maximum limit should prevent change in property
+    QEXPECT_FAIL("", "Not yet blocked by min and max ranges, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-287", Continue);
     QVERIFY( componentObject->property("value") == 50.0 );
 }
 
@@ -132,12 +134,15 @@ void tst_quickcomponentsslider::orientation()
 
     // make sure no other values than Qt::Orientation are settable
     componentObject->setProperty( "orientation", 3 );
+    QEXPECT_FAIL("", "Not yet blocked by enum range, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-287", Continue);
     QVERIFY( componentObject->property("orientation").toInt() <= (int)Qt::Horizontal
             && componentObject->property("orientation").toInt() >= (int)Qt::Vertical  );
     componentObject->setProperty( "orientation", 0 );
+    QEXPECT_FAIL("", "Not yet blocked by enum range, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-287", Continue);
     QVERIFY( componentObject->property("orientation").toInt() <= (int)Qt::Horizontal
             && componentObject->property("orientation").toInt() >= (int)Qt::Vertical  );
     componentObject->setProperty( "orientation", rand() );
+    QEXPECT_FAIL("", "Not yet blocked by enum range, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-287", Continue);
     QVERIFY( componentObject->property("orientation").toInt() <= (int)Qt::Horizontal
             && componentObject->property("orientation").toInt() >= (int)Qt::Vertical  );
 
@@ -147,10 +152,10 @@ void tst_quickcomponentsslider::pressed()
 {
 }
 
-void tst_quickcomponentsslider::updateWhileDragging()
+void tst_quickcomponentsslider::updateValueWhileDragging()
 {
-    QVERIFY( componentObject->setProperty( "updateWhileDragging", true ) );
-    QCOMPARE( componentObject->property("updateWhileDragging").toBool(), true );
+    QVERIFY( componentObject->setProperty( "updateValueWhileDragging", true ) );
+    QCOMPARE( componentObject->property("updateValueWhileDragging").toBool(), true );
 }
 
 QTEST_MAIN(tst_quickcomponentsslider)

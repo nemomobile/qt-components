@@ -33,7 +33,7 @@ Item {
     // the same time, preserve aspect ratio of inner contents. In
     // addition, it will implement margins towards the groove
     id: root
-    property alias stepSize: valueModel.steps
+    property alias stepSize: valueModel.stepSize
     property alias minimumValue: valueModel.minimumValue
     property alias maximumValue: valueModel.maximumValue
     property alias value: valueModel.value
@@ -65,7 +65,7 @@ Item {
         // the graphical position of the handle inside the component
         // (positionAtMinimum/positionAtMaximum)
         id: valueModel
-        steps: 1
+        stepSize: 1
         positionAtMinimum: 0
         positionAtMaximum: root.orientation == Qt.Vertical ? groove.height : groove.width
         onValueChanged: root.valueChanged(value)
@@ -74,7 +74,7 @@ Item {
     QtComponents.RangeModel {
         // This model describes the progress/download percentage
         id: receivedModel
-        steps: valueModel.steps
+        stepSize: valueModel.stepSize
         positionAtMinimum: valueModel.positionAtMinimum
         positionAtMaximum: valueModel.positionAtMaximum
         minimumValue: valueModel.minimumValue
