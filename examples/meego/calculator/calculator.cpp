@@ -24,14 +24,13 @@
 **
 ****************************************************************************/
 
-#include <qapplication.h>
-#include "qdeclarativewindow.h"
-#include <qdir.h>
+#include <QtDeclarative>
 
 int main(int argc, char **argv)
 {
     QApplication::setGraphicsSystem("raster");
     QApplication::setStyle("windows");
+
     QApplication app(argc, argv);
 
 #ifdef Q_WS_MAC
@@ -40,8 +39,9 @@ int main(int argc, char **argv)
     QDir::setCurrent(app.applicationDirPath());
 #endif
 
-    QDeclarativeWindow window(QUrl::fromLocalFile("calculator.qml"));
-
-    window.window()->show();
+    QDeclarativeView window;
+    window.setSource(QUrl::fromLocalFile("calculator.qml"));
+    window.show();
+    
     return app.exec();
 }

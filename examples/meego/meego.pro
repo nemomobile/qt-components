@@ -4,7 +4,4 @@
 
 TEMPLATE=subdirs
 SUBDIRS += calculator \
-           gallery \
-           pages \
-           quiz \
            widgetgallery

@@ -43,10 +43,23 @@ import Qt 4.7
 import com.meego 1.0
 
 
-Window {
+Rectangle {
     id: main
+    
+    width: 854
+    height: 480
+    
+    Image {
+        source: "image://theme/meegotouch-applicationpage-background"
+    }
+
+    PageStack {
+        id: pageStack
+        
+        anchors.fill: parent
+    }
 
     Component.onCompleted: {
-        main.nextPage(Qt.createComponent("page.qml"))
+        pageStack.push(Qt.createComponent("page.qml"))
     }
 }

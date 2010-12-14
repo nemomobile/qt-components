@@ -29,12 +29,41 @@ import com.meego 1.0
 
 Window {
     id: window
+    
+    width: 854
+    height: 480
+    
+    Image {
+        source: "image://theme/meegotouch-applicationpage-background"
+    }
+
+    PageStack {
+        id: pageStack
+        
+        toolbar: toolbar
+        
+        anchors.top: toolbar.bottom
+        anchors.bottom: window.bottom
+    }
+    
+    ToolBar {
+        id: toolbar
+        
+        anchors.top: window.top
+    }
+    
+    ToolBarLayout {
+        id: commonTools
+        visible: false
+        ToolItem { iconId: "icon-m-toolbar-home" }
+        ToolItem { iconId: "icon-m-toolbar-view-menu" }
+        ToolItem { iconId: "icon-m-toolbar-back"; onClicked: pageStack.pop(); }
+    }
 
     Component {
         id: pageComponent
 
         Page {
-            title: "Widgets Gallery"
             ListView {
                 id: list
                 anchors.fill: parent
@@ -42,7 +71,7 @@ Window {
                 delegate: BasicListItem {
                     title: name
                     onClicked: {
-                        window.nextPage(Qt.createComponent(source));
+                        pageStack.push(Qt.createComponent(source));
                     }
                 }
             }
@@ -53,6 +82,6 @@ Window {
     }
 
     Component.onCompleted: {
-        window.nextPage(pageComponent)
+        pageStack.push(pageComponent)
     }
 }
