@@ -37,6 +37,10 @@ Page {
             name: "Labels"
             source: "Labels.qml"
         }
+        ListElement {
+            name: "Progress Bar"
+            source: "ProgressBars.qml"
+        }
     }
 
     ListView {

@@ -27,43 +27,62 @@
 import Qt 4.7
 import Qt.labs.components 1.0
 import com.meego.themebridge 1.0
+import "UIConstants.js" as UI
 
 ImplicitSizeItem {
     id: container
+
     property alias minimumValue: progressModel.minimumValue
     property alias maximumValue: progressModel.maximumValue
     property alias value: progressModel.value
     property bool indeterminate: false
 
-    implicitWidth: meegostyle.preferredWidth
-    // The plankton theme seems to be using some other value inside libmeegotouch.
-    // We stick to the preferred height, though.
-    implicitHeight: meegostyle.preferredHeight
+    implicitWidth: UI.SIZE_BUTTON
+    implicitHeight: 8
 
-    property int __unknownBarWidth: Math.min(background.width, meegostyle.current.get("unknownBarSize").width)
-    property bool __fullWidth: __unknownBarWidth >= container.width
-    property int __unknownOffset: 0
-
-    Style {
-        id: meegostyle
-        styleClass: "MProgressIndicatorStyle"
-        styleType: "bar"
-    }
-
-    ScalableImage {
+    BorderImage {
         id: background
         anchors.fill: parent
-        style: meegostyle
-        imageProperty: "progressBarBackground"
-        clip: true
+        source: "image://theme/meegotouch-progressindicator-bar-background"
+        horizontalTileMode: BorderImage.Repeat
+        border {
+            top: 4
+            bottom: 4
+            left: 4
+            right: 4
+        }
 
-        MaskedImage {
+        MaskedItem {
             id: bar
-            anchors.top: background.top
-            anchors.bottom: background.bottom
-            style: meegostyle
-            maskProperty: "progressBarMask"
-            fullWidth: __fullWidth
+
+            property url texture: "image://theme/meegotouch-progressindicator-bar-known-texture"
+            property int textureWidth
+
+            anchors {
+                top: parent.top
+                bottom: parent.bottom
+                left: parent.left
+            }
+
+            mask: BorderImage {
+                width: bar.width
+                height: bar.height
+                source: "image://theme/meegotouch-progressindicator-bar-mask"
+                border {
+                    top: 4
+                    bottom: 4
+                    left: 4
+                    right: 4
+                }
+            }
+
+            visualItem: Image {
+                width: bar.width + sourceSize.width
+                height: bar.height
+                source: bar.texture
+                fillMode: Image.Tile
+                onStatusChanged: if (status == Image.Ready) bar.textureWidth = sourceSize.width
+            }
 
             states: [
                 State {
@@ -71,17 +90,12 @@ ImplicitSizeItem {
                     when: indeterminate
                     PropertyChanges {
                         target: bar
-                        imageProperty: "unknownBarTexture"
-                        tiled: meegostyle.current.get("unknownBarTextureTiled")
-                        x: 0
-                        imageXOffset: 0
-                        width: __unknownBarWidth
+                        imageOffset.x: -textureWidth
+                        texture: "image://theme/meegotouch-progressindicator-bar-unknown-texture"
+                        width: background.width
                     }
                     PropertyChanges {
-                        target: candybarAnimation; running: __fullWidth
-                    }
-                    PropertyChanges {
-                        target: oscillatingAnimation; running: !__fullWidth
+                        target: candybarAnimation; running: true
                     }
                 },
                 State {
@@ -89,76 +103,23 @@ ImplicitSizeItem {
                     when: !indeterminate
                     PropertyChanges {
                         target: bar
-                        imageProperty: "knownBarTexture"
-                        tiled: meegostyle.current.get("knownBarTextureTiled")
-                        x: 0
-                        imageXOffset: 0
+                        texture: "image://theme/meegotouch-progressindicator-bar-known-texture"
+                        imageOffset.x: 0
                         width: progressModel.position
                     }
                     PropertyChanges {
                         target: candybarAnimation; running: false
                     }
-                    PropertyChanges {
-                        target: oscillatingAnimation; running: false
-                    }
                 }
             ]
-        }
-
-        MaskedImage {
-            // We use a second image for the wrapping animation when not full width.
-            id: wrappingBar
-            anchors.top: background.top
-            anchors.bottom: background.bottom
-            anchors.right: background.right
-            style: meegostyle
-            imageProperty: "unknownBarTexture"
-            maskProperty: "progressBarMask"
-            tiled: meegostyle.current.get("unknownBarTextureTiled")
-            imageXOffset: 0
-            width: 0
-            fullWidth: false
-        }
-
-        NumberAnimation {
-            id: candybarAnimation
-            target: bar
-            property: "imageXOffset"
-            from: 0; to: bar.implicitWidth
-            duration: 1000 * bar.implicitWidth / meegostyle.current.get("speed")
-            loops: Animation.Infinite
-        }
-
-        SequentialAnimation {
-            id: oscillatingAnimation
-            property real baseDuration: 1000 / 20 // from mprogressindicatorbarview.cpp
-            loops: Animation.Infinite
 
             NumberAnimation {
+                id: candybarAnimation
                 target: bar
-                property: "x"
-                property int maxValue: background.width - __unknownBarWidth - 1
-                from: 0; to: maxValue
-                duration: Math.max(0, oscillatingAnimation.baseDuration * maxValue)
-            }
-            PropertyAction {
-                target: bar; property: "x"; value: 0
-            }
-            ParallelAnimation {
-                id: wrapAroundAnimation
-                property real wrapDuration: oscillatingAnimation.baseDuration * __unknownBarWidth
-                NumberAnimation {
-                    target: bar
-                    property: "width"
-                    from: 0; to: __unknownBarWidth
-                    duration: wrapAroundAnimation.wrapDuration
-                }
-                NumberAnimation {
-                    target: wrappingBar
-                    property: "width"
-                    from: __unknownBarWidth; to: 0
-                    duration: wrapAroundAnimation.wrapDuration
-                }
+                property: "imageOffset.x"
+                from: -bar.textureWidth; to: 0
+                duration: 1000 * bar.textureWidth / 40 // time = distance / speed, where speed = 40 from the style
+                loops: Animation.Infinite
             }
         }
     }
