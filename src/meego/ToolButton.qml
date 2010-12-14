@@ -24,25 +24,39 @@
 **
 ****************************************************************************/
 
-// The Page item is intended for use as a root item in QML items that make
-// up pages to use with the PageStack.
+// ToolButton is a push-button style button intended for use with toolbars.
 
 import Qt 4.7
+import com.meego.themebridge 1.0
 
 Item {
-    id: root
+    property string text
+    width: 150; height: 64
+    anchors.verticalCenter: parent ? parent.verticalCenter : undefined
+    signal clicked
 
-    width: parent ? parent.width : 0
-    height: parent ? parent.height : 0
+    BorderImage {
+        id: name
+        width: 150; height: 40
+        border.left: 15; border.top: 15
+        border.right: 15; border.bottom: 15
 
-    visible: false
+        source: mouseArea.pressed ?
+                    "image://theme/meegotouch-button-navigationbar-button-background-pressed" :
+                    "image://theme/meegotouch-button-navigationbar-button-background";
+        anchors.centerIn: parent
 
-    // Signal that fires when the page is activated.
-    signal activated
+        Text {
+            text: parent.parent.text
+            anchors.centerIn: parent
+            font.bold: true
+            font.capitalization: Font.AllUppercase
+        }
+    }
 
-    // Signal that fires when the page is deactivated.
-    signal deactivated
-
-    // Defines the tools for the page; null for none.
-    property Item tools: null
+    MouseArea {
+        id: mouseArea
+        anchors.fill: parent
+        onClicked: parent.clicked()
+    }
 }

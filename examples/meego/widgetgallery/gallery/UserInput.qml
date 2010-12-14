@@ -2,7 +2,9 @@ import QtQuick 1.0
 import com.meego 1.0
 
 Page {
-    title: "User Input"
+    id: page
+    anchors.fill: parent
+    tools: commonTools
 
     ListModel {
         id: m
@@ -25,7 +27,7 @@ Page {
         delegate: BasicListItem {
             title: name
             onClicked: {
-                window.nextPage(Qt.createComponent(source));
+                pageStack.push(Qt.createComponent(source));
             }
         }
     }

@@ -24,25 +24,31 @@
 **
 ****************************************************************************/
 
-// The Page item is intended for use as a root item in QML items that make
-// up pages to use with the PageStack.
+// ToolItem is a component that is used to add actions to toolbars.
 
 import Qt 4.7
+import com.meego.themebridge 1.0
 
 Item {
-    id: root
+    property url iconSource
+    property string iconId
+    width: 80; height: 64
+    anchors.verticalCenter: parent ? parent.verticalCenter : undefined
+    signal clicked
 
-    width: parent ? parent.width : 0
-    height: parent ? parent.height : 0
+    Image {
+        source: mouseArea.pressed ? "image://theme/meegotouch-button-navigationbar-button-background-pressed" : ""
+        anchors.centerIn: parent
 
-    visible: false
+        Image {
+            source: iconSource != "" ? iconSource : ("image://theme/" + iconId)
+            anchors.centerIn: parent
+        }
+    }
 
-    // Signal that fires when the page is activated.
-    signal activated
-
-    // Signal that fires when the page is deactivated.
-    signal deactivated
-
-    // Defines the tools for the page; null for none.
-    property Item tools: null
+    MouseArea {
+        id: mouseArea
+        anchors.fill: parent
+        onClicked: parent.clicked()
+    }
 }

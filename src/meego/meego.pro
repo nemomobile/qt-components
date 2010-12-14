@@ -53,6 +53,8 @@ QML_FILES = \
         MultiLineEdit.qml \
         ListItem.qml \
         Page.qml \
+        PageStack.qml \
+        PageStack.js \
         pagemanager.js \
         QueryDialog.qml \
         QueryDialog.js \
@@ -61,6 +63,10 @@ QML_FILES = \
         ProgressBar.qml \
         ScrollDecorator.qml \
         ScrollDecoratorSizer.qml \
+        ToolBar.qml \
+        ToolBarLayout.qml \
+        ToolButton.qml \
+        ToolItem.qml \
         Slider.qml \
         SliderTemplate.qml \
         Switch.qml \

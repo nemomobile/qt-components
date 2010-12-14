@@ -3,9 +3,8 @@ import com.meego 1.0
 import com.meego.themebridge 1.0 as ThemeBridge // TODO: export Icon
 
 Page {
-    title: "Slider"
-
     // TODO: sections headers are being done manually here, not according to the style.
+    tools: commonTools
 
     Flickable {
         anchors.fill: parent

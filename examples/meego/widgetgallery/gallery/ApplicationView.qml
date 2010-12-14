@@ -2,14 +2,14 @@ import Qt 4.7
 import com.meego 1.0
 
 Page {
-    title: "Application View"
+    tools: commonTools
     ListView {
         anchors.fill: parent
         model: ApplicationViewSections {}
         delegate: BasicListItem {
             title: name
             onClicked: {
-                window.nextPage(Qt.createComponent(source));
+                pageStack.push(Qt.createComponent(source));
             }
         }
     }

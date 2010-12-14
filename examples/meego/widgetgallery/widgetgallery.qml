@@ -27,7 +27,7 @@
 import Qt 4.7
 import com.meego 1.0
 
-Window {
+Rectangle {
     id: window
     
     width: 854
@@ -64,6 +64,7 @@ Window {
         id: pageComponent
 
         Page {
+            tools: commonTools
             ListView {
                 id: list
                 anchors.fill: parent

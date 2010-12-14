@@ -2,17 +2,17 @@ import Qt 4.7
 import com.meego 1.0
 
 Page {
-    title: "Application Menu"
-
-    actions:  [
-        Action {
-            iconId: "icon-m-toolbar-addressbook"
-            text:"Italic"
-            onTriggered: {
-                applicationMenuText.font.italic = !applicationMenuText.font.italic
+    tools:  ToolBarLayout {
+                ToolItem { iconId: "icon-m-toolbar-home" }
+                ToolItem { iconId: "icon-m-toolbar-view-menu" }
+                ToolButton {
+                    text: "Italic"
+                    onClicked: {
+                        applicationMenuText.font.italic = !applicationMenuText.font.italic
+                    }
+                }
+                ToolItem { iconId: "icon-m-toolbar-back"; onClicked: pageStack.pop(); }
             }
-        }
-    ]
 
     Text {
         id: applicationMenuText

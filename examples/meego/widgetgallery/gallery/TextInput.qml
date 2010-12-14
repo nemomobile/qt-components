@@ -4,6 +4,7 @@ import com.meego 1.0
 Page {
     id: page
     anchors.fill: parent
+    tools: commonTools
     Rectangle {
         color: "steelblue"
         anchors.fill: parent
