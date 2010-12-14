@@ -25,7 +25,8 @@ SOURCES += plugin.cpp \
            themedaemon/mabstractthemedaemonclient.cpp \
            themedaemon/mlocalthemedaemonclient.cpp \
            themedaemon/mremotethemedaemonclient.cpp \
-           themedaemon/mthemedaemonprotocol.cpp
+           themedaemon/mthemedaemonprotocol.cpp \
+           mdeclarativemaskeditem.cpp
 
 HEADERS += mstylewrapper.h \
            mthemebridge.h \
@@ -42,7 +43,8 @@ HEADERS += mstylewrapper.h \
            themedaemon/mabstractthemedaemonclient.h \
            themedaemon/mlocalthemedaemonclient.h \
            themedaemon/mremotethemedaemonclient.h \
-           themedaemon/mthemedaemonprotocol.h
+           themedaemon/mthemedaemonprotocol.h \
+           mdeclarativemaskeditem.h
 
 QML_FILES += qmldir
 
