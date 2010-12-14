@@ -1,0 +1,20 @@
+#ifndef __QTCOMPONENTS_IBY__
+#define __QTCOMPONENTS_IBY__
+
+#include <bldvariant.hrh>
+
+REM QT
+
+file=ABI_DIR\BUILD_DIR\QtComponents.dll                                                 SHARED_LIB_DIR\QtComponents.dll PAGED
+
+// Qt components plugin
+file=ABI_DIR\BUILD_DIR\qtcomponentsplugin.dll                                           SHARED_LIB_DIR\qtcomponentsplugin.dll
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\qtcomponentsplugin.qtplugin  RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\qtcomponentsplugin.qtplugin
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\qmldir                       RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\qmldir
+
+// Symbian plugin
+file=ABI_DIR\BUILD_DIR\symbianplugin.dll                                                SHARED_LIB_DIR\symbianplugin.dll PAGED
+data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\symbianplugin.qtplugin        RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\symbianplugin.qtplugin
+data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\qmldir                        RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\qmldir
+
+#endif

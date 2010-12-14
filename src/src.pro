@@ -14,3 +14,8 @@ meego {
     meego.depends += lib
     meego-themebridge.depends += lib
 }
+
+symbian3 {
+    SUBDIRS += symbian
+    symbian.depends += lib
+}

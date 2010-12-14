@@ -17,6 +17,18 @@ SOURCES += \
 
 INCLUDEPATH = $$PWD
 
+symbian {
+    TARGET.EPOCALLOWDLLDATA = 1
+    TARGET.CAPABILITY = CAP_GENERAL_DLL
+    TARGET.UID3 = 0x200346E2
+    MMP_RULES += EXPORTUNFROZEN
+    MMP_RULES += SMPSAFE
+
+    library.sources = QtComponents.dll
+    library.path = /sys/bin
+    DEPLOYMENT += library
+}
+
 macx:CONFIG(qt_framework, qt_framework|qt_no_framework) {
     CONFIG += lib_bundle debug_and_release
     CONFIG(debug, debug|release) {

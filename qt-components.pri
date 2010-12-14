@@ -8,7 +8,7 @@ TEMPLATE = lib ## hack to make qtLibraryTarget work
     }
 }
 
-unix {
+unix:!symbian {
     OBJECTS_DIR = .obj
     MOC_DIR = .moc
 }
@@ -21,4 +21,8 @@ QMAKE_LIBDIR += $$LIBRARYPATH
 meego {
     DEFINES += Q_COMPONENTS_MEEGO
     CONFIG += meegotouch
+}
+
+symbian3 {
+    DEFINES += Q_COMPONENTS_SYMBIAN
 }
