@@ -1,7 +1,6 @@
-INSTALLS += target qmlfiles
-qmlfiles.files = $$OTHER_FILES
-
-unix {
-  qmlfiles.path = /opt/qt-components-tests/auto/$$TARGET
-  target.path = /opt/qt-components-tests/auto/$$TARGET
+meego {
+    INSTALLS += target qmlfiles
+    qmlfiles.files = $$OTHER_FILES
+    qmlfiles.path = /opt/qt-components-tests/auto/$$TARGET
+    target.path = /opt/qt-components-tests/auto/$$TARGET
 }

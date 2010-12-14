@@ -10,11 +10,3 @@ SUBDIRS=            \
     api_scrolldecorator \
     api_lineedit \
     api_multilineedit
-
-testsxml.files = tests.xml
-
-unix {
-  testsxml.path = /usr/share/qt-components-tests
-}
-
-INSTALLS += testsxml
