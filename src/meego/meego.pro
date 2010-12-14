@@ -39,6 +39,7 @@ QML_FILES = \
         ActionButton.qml \
         ActionManager.js \
         BasicListItem.qml \
+        BusyIndicator.qml \
         Button.qml \
         ButtonColumn.qml \
         ButtonRow.qml \
@@ -61,7 +62,7 @@ QML_FILES = \
         ScrollDecorator.qml \
         ScrollDecoratorSizer.qml \
         Slider.qml \
-        BusyIndicator.qml \
+        SliderTemplate.qml \
         Switch.qml \
         TitleMenuButton.qml \
         Window.qml \

@@ -24,7 +24,7 @@
 **
 ****************************************************************************/
 
-import Qt 4.7
+import QtQuick 1.0
 import com.meego 1.0
 
 Item {
@@ -38,7 +38,7 @@ Item {
         anchors.verticalCenter: toggleUnknown.verticalCenter
         width: 350
         indeterminate: toggleUnknown.checked
-        value: progress.checkedButton ? progress.checkedButton.text : 0
+        value: progress.value
     }
 
     Button {
@@ -53,19 +53,11 @@ Item {
         text: "Unknown"
     }
 
-    // ### Poor man's slider ;-), replace with a real Slider when it's done.
-    ButtonRow {
+    Slider {
         id: progress
         anchors.top: progressBar.bottom
         anchors.topMargin: 40
         anchors.left: progressBar.left
         anchors.right: parent.right
-        Repeater {
-            model: [0, 20, 40, 60, 80, 100]
-            Button {
-                text: modelData
-                width: progress.width / progress.children.length
-            }
-        }
     }
 }

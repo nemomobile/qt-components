@@ -24,7 +24,7 @@
 **
 ****************************************************************************/
 
-import Qt 4.7
+import QtQuick 1.0
 import com.meego 1.0
 import Qt.labs.components 1.0
 
@@ -41,7 +41,7 @@ Item {
         anchors.leftMargin: 30
         color: Qt.rgba(red.value/255, 0, 0, 1)
         font.letterSpacing: letterSpacing.value
-        text: "Current slider value: " + red.value;
+        text: "Current slider value: " + red.value
 
         function set(value){
             text.text = "Current slider value: " + value;
@@ -57,25 +57,65 @@ Item {
         anchors.rightMargin: 30
 
         columns: 2
-        spacing: 100
+        spacing: 50
 
-        Text { text: "Normal"}
-        Slider { id: red; maximumValue: 255; value: 150; onValueChanged: text.set(value); onPressed: text.set(value)}
-        Text { text: "Steps"}
-        Slider { maximumValue: 10; stepSize:5; onValueChanged: text.set(value); onPressed: text.set(value)}
-        Text { text: "Progress" }
-        Slider { id: stream; maximumValue: 300; onValueChanged: text.set(value); onPressed: text.set(value)           
-            function formatTime(timeValue)
-            {
-                var sec = '' + value%60
+        Text {
+            text: "Normal"
+        }
+
+        Slider {
+            id: red
+            maximumValue: 255
+            value: 150
+            onValueChanged: text.set(value)
+            onPressedChanged: {
+                if (pressed)
+                    text.set(value);
+            }
+        }
+
+        Text {
+            text: "Steps"
+        }
+
+        Slider {
+            maximumValue: 10
+            stepSize: 2
+            onValueChanged: text.set(value)
+            onPressedChanged: {
+                if (pressed)
+                    text.set(value);
+            }
+        }
+
+        Text {
+            text: "Progress"
+        }
+
+        Slider {
+            id: stream
+            maximumValue: 300
+            onValueChanged: text.set(value)
+            onPressedChanged: {
+                if (pressed)
+                    text.set(value);
+            }
+
+            function formatValue(v) {
+                var sec = '' + v%60
                 if (sec.length == 1)
                     sec = "0" + sec;
-                return Math.floor(value/60) + ":" + sec
+                return Math.floor(v/60) + ":" + sec
             }
-            indicatorLabel: formatTime(value)
+
             Timer {
-                interval: 100; running: true; repeat: true
-                onTriggered: if (++stream.progress == stream.maximumValue) stream.progress = 0
+                interval: 100
+                running: true
+                repeat: true
+                onTriggered: {
+                    if (++stream.secondaryValue == stream.maximumValue)
+                        stream.secondaryValue = 0;
+                }
             }
         }
     }
@@ -87,13 +127,27 @@ Item {
         anchors.right: parent.right
         anchors.rightMargin: 30
 
+        function formatValue(v) {
+            var sign = v > 0 ? "" : "-"
+            var integer = Math.abs(v - (v % 1));
+            var fraction = Math.abs(Math.floor((v % 1) * 100));
+
+            if (fraction < 10)
+                fraction = "0" + fraction;
+
+            return sign + integer + "." + fraction;
+        }
+
         minimumValue: -2
         maximumValue: 5
         orientation: Qt.Vertical
         stepSize: 0
-        progress: minimumValue
+        secondaryValue: minimumValue
         onValueChanged: text.set(value)
-        onPressed: text.set(value)
+        onPressedChanged: {
+            if (pressed)
+                text.set(value);
+        }
     }
 
 }

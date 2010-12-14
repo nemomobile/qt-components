@@ -16,5 +16,6 @@ Page 1.0 Page.qml
 ProgressBar 1.0 ProgressBar.qml
 ScrollDecorator 1.0 ScrollDecorator.qml
 Slider 1.0 Slider.qml
+SliderTemplate 1.0 SliderTemplate.qml
 Switch 1.0 Switch.qml
 Window 1.0 Window.qml
