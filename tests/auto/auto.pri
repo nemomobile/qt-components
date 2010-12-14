@@ -1,4 +1,4 @@
-meego {
+harmattan {
     INSTALLS += target qmlfiles
     qmlfiles.files = $$OTHER_FILES
     qmlfiles.path = /opt/qt-components-tests/auto/$$TARGET
