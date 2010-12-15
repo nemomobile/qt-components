@@ -66,11 +66,10 @@ tst_quickcomponentscheckbox::tst_quickcomponentscheckbox()
     QDeclarativeComponent *component = new QDeclarativeComponent(window->engine());
 
     QFile file("tst_quickcomponentscheckbox.qml");
-    QVERIFY(file.open(QFile::ReadOnly));
-    component->setData( file.readAll(), QUrl() );
+    if (file.open(QFile::ReadOnly) )
+        component->setData( file.readAll(), QUrl() );
     
     componentObject = component->create();
-    QVERIFY(componentObject != 0);
 }
 
 void tst_quickcomponentscheckbox::checked()

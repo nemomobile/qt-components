@@ -68,11 +68,10 @@ tst_quickcomponentsscrolldecorator::tst_quickcomponentsscrolldecorator()
     QDeclarativeComponent *component = new QDeclarativeComponent(window->engine());
 
     QFile file("tst_quickcomponentsscrolldecorator.qml");
-    QVERIFY(file.open(QFile::ReadOnly));
-    component->setData( file.readAll(), QUrl() );
+    if( file.open(QFile::ReadOnly) )
+        component->setData( file.readAll(), QUrl() );
     
     componentObject = component->create();
-    QVERIFY(componentObject != 0);
 }
 
 void tst_quickcomponentsscrolldecorator::value()

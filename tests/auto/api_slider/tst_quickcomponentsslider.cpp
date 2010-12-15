@@ -71,11 +71,10 @@ tst_quickcomponentsslider::tst_quickcomponentsslider()
     QDeclarativeComponent *component = new QDeclarativeComponent(window->engine());
 
     QFile file("tst_quickcomponentsslider.qml");
-    QVERIFY(file.open(QFile::ReadOnly));
-    component->setData( file.readAll(), QUrl() );
+    if( file.open(QFile::ReadOnly) )
+        component->setData( file.readAll(), QUrl() );
     
     componentObject = component->create();
-    QVERIFY(componentObject != 0);
 }
 
 void tst_quickcomponentsslider::stepSize()

@@ -8,5 +8,5 @@ SUBDIRS=            \
     api_slider \
     api_progressbar \
     api_scrolldecorator \
-    api_lineedit \
-    api_multilineedit
+    #api_lineedit \ #TODO not yet finalized
+    #api_multilineedit #TODO not yet finalized

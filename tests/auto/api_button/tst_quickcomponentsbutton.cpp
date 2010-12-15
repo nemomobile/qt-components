@@ -65,10 +65,10 @@ tst_quickcomponentsbutton::tst_quickcomponentsbutton()
     QDeclarativeComponent *component = new QDeclarativeComponent(window->engine());
 
     QFile file("tst_quickcomponentsbutton.qml");
-    QVERIFY(file.open(QFile::ReadOnly));
-    component->setData( file.readAll(), QUrl() );
+    if (file.open(QFile::ReadOnly) )
+        component->setData( file.readAll(), QUrl() );
     
-    QVERIFY( (componentObject = component->create()) != 0);
+    componentObject = component->create();
 }
 
 void tst_quickcomponentsbutton::checkable()

@@ -79,10 +79,10 @@ tst_quickcomponentslineedit::tst_quickcomponentslineedit()
     QDeclarativeComponent *component = new QDeclarativeComponent(window->engine());
 
     QFile file("tst_quickcomponentslineedit.qml");
-    QVERIFY(file.open(QFile::ReadOnly));
-    component->setData( file.readAll(), QUrl() );
+    if ( file.open(QFile::ReadOnly) )
+        component->setData( file.readAll(), QUrl() );
     
-    QVERIFY( (componentObject = component->create()) != 0);
+    componentObject = component->create();
 }
 
 void tst_quickcomponentslineedit::placeholderText()

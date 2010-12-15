@@ -75,10 +75,10 @@ tst_quickcomponentsmultilineedit::tst_quickcomponentsmultilineedit()
     QDeclarativeComponent *component = new QDeclarativeComponent(window->engine());
 
     QFile file("tst_quickcomponentsmultilineedit.qml");
-    QVERIFY(file.open(QFile::ReadOnly));
-    component->setData( file.readAll(), QUrl() );
+    if( file.open(QFile::ReadOnly) )
+        component->setData( file.readAll(), QUrl() );
     
-    QVERIFY( (componentObject = component->create()) != 0);
+    componentObject = component->create();
 }
 
 
