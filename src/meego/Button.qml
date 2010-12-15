@@ -27,6 +27,7 @@
 import Qt 4.7
 import Qt.labs.components 1.0
 import com.meego.themebridge 1.0
+import "UIConstants.js" as UI
 
 ImplicitSizeItem {
     id: button
@@ -71,7 +72,7 @@ ImplicitSizeItem {
     BorderImage {
         id: background
         anchors.fill: parent
-        border { left: 12; top: 12; right: 12; bottom: 12 }
+        border { left: UI.CORNER_MARGINS; top: UI.CORNER_MARGINS; right: UI.CORNER_MARGINS; bottom: UI.CORNER_MARGINS }
         source: getImageName()
 
         function getImageName() {
@@ -100,14 +101,14 @@ ImplicitSizeItem {
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
         anchors.leftMargin: calculateContentMargin()
-        sourceSize.width: 32
-        sourceSize.height: 32
+        sourceSize.width: UI.SIZE_ICON_DEFAULT
+        sourceSize.height: UI.SIZE_ICON_DEFAULT
 
         source: button.iconSource
 
         // If button is wider than content, grow the margins to keep content centered
         function calculateContentMargin() {
-            var margin = 16;
+            var margin = UI.MARGIN_XLARGE;
             if (button.width > button.implicitWidth)
                 margin += (button.width - button.implicitWidth) / 2;
             return margin;
@@ -140,16 +141,17 @@ ImplicitSizeItem {
         // horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
 
-        font.family: "Nokia Sans"
+        font.family: UI.FONT_FAMILY
         font.weight: Font.Normal
-        font.pixelSize: 24
+        font.pixelSize: UI.FONT_DEFAULT_SIZE
         color: getFontColor()
 
         function getFontColor() {
             if (buttonType == "affirmative" || buttonType == "negative")
-                return mouseArea.containsMouse && mouseArea.pressed ? "#cc6633" : "#ffffff"
+                return mouseArea.containsMouse && mouseArea.pressed ? UI.COLOR_INVERTED_SECONDARY_FOREGROUND : UI.COLOR_INVERTED_FOREGROUND
             else
-                return mouseArea.containsMouse && mouseArea.pressed ? "#ffffff" : "#000000"
+                return (mouseArea.containsMouse && mouseArea.pressed) || (button.checkable && button.checked) ?
+                    UI.COLOR_INVERTED_FOREGROUND : UI.COLOR_FOREGROUND
         }
         text: "Effect"
 
