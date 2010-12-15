@@ -43,10 +43,8 @@ class tst_quickcomponentsslider : public QObject
 
 {
     Q_OBJECT
-public:
-    tst_quickcomponentsslider();
-
 private slots:
+    void initTestCase();
     void stepSize();
     void value();
     void minimumValue();
@@ -65,9 +63,10 @@ private:
 };
 
 
-tst_quickcomponentsslider::tst_quickcomponentsslider()
+void tst_quickcomponentsslider::initTestCase()
 {
     QDeclarativeWindow *window = new QDeclarativeWindow();
+    window->engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
     QDeclarativeComponent *component = new QDeclarativeComponent(window->engine());
 
     QFile file("tst_quickcomponentsslider.qml");

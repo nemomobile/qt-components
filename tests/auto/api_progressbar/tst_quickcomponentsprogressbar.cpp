@@ -43,10 +43,8 @@ class tst_quickcomponentsprogressbar : public QObject
 
 {
     Q_OBJECT
-public:
-    tst_quickcomponentsprogressbar();
-
 private slots:
+    void initTestCase();
     void value();
     void minimumValue();
     void maximumValue();
@@ -62,9 +60,10 @@ private:
 };
 
 
-tst_quickcomponentsprogressbar::tst_quickcomponentsprogressbar()
+void tst_quickcomponentsprogressbar::initTestCase()
 {
     QDeclarativeWindow *window = new QDeclarativeWindow();
+    window->engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
     QDeclarativeComponent *component = new QDeclarativeComponent(window->engine());
 
     QFile file("tst_quickcomponentsprogressbar.qml");

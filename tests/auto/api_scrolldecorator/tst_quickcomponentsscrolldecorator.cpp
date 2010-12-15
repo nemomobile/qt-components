@@ -43,10 +43,8 @@ class tst_quickcomponentsscrolldecorator : public QObject
 
 {
     Q_OBJECT
-public:
-    tst_quickcomponentsscrolldecorator();
-
 private slots:
+    void initTestCase();
     void value();
     void minimumValue();
     void maximumValue();
@@ -62,9 +60,10 @@ private:
 };
 
 
-tst_quickcomponentsscrolldecorator::tst_quickcomponentsscrolldecorator()
+void tst_quickcomponentsscrolldecorator::initTestCase()
 {
     QDeclarativeWindow *window = new QDeclarativeWindow();
+    window->engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
     QDeclarativeComponent *component = new QDeclarativeComponent(window->engine());
 
     QFile file("tst_quickcomponentsscrolldecorator.qml");

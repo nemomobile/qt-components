@@ -43,10 +43,8 @@ class tst_quickcomponentsbutton : public QObject
 
 {
     Q_OBJECT
-public:
-    tst_quickcomponentsbutton();
-
 private slots:
+    void initTestCase();
     void checked();
     void checkable();
     void clicked();
@@ -59,9 +57,10 @@ private:
     QDeclarativeEngine *engine;
 };
 
-tst_quickcomponentsbutton::tst_quickcomponentsbutton()
+void tst_quickcomponentsbutton::initTestCase()
 {
     QDeclarativeWindow *window = new QDeclarativeWindow;
+    window->engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
     QDeclarativeComponent *component = new QDeclarativeComponent(window->engine());
 
     QFile file("tst_quickcomponentsbutton.qml");

@@ -43,10 +43,8 @@ class tst_quickcomponentscheckbox : public QObject
 
 {
     Q_OBJECT
-public:
-    tst_quickcomponentscheckbox();
-
 private slots:
+    void initTestCase();
     void checked();
     void clicked();
 
@@ -60,9 +58,10 @@ private:
 };
 
 
-tst_quickcomponentscheckbox::tst_quickcomponentscheckbox()
+void tst_quickcomponentscheckbox::initTestCase()
 {
     QDeclarativeWindow *window = new QDeclarativeWindow();
+    window->engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
     QDeclarativeComponent *component = new QDeclarativeComponent(window->engine());
 
     QFile file("tst_quickcomponentscheckbox.qml");
