@@ -1,7 +1,11 @@
 include (../../qt-components.pri)
 
+TARGETPATH = com/nokia/symbian
 TEMPLATE = lib
 TARGET = $$qtLibraryTarget(symbianplugin)
+DESTDIR = $$Q_COMPONENTS_BUILD_TREE/imports/$$TARGETPATH
+INCLUDEPATH += $$PWD
+
 CONFIG += qt plugin
 QT += declarative
 
@@ -14,19 +18,10 @@ HEADERS += \
     sdeclarativescreen.h \
     sdeclarativewindowdecoration.h
 
-INCLUDEPATH += $$PWD
-
 QML_FILES = \
     qmldir
 
 OTHER_FILES += $$QML_FILES
-
-TARGETPATH = com/nokia/symbian
-
-target.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH
-
-qmlfiles.files = $$QML_FILES
-qmlfiles.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH
 
 symbian {
     TARGET.EPOCALLOWDLLDATA = 1
@@ -55,4 +50,4 @@ symbian {
     DEPLOYMENT = pluginstub resources
 }
 
-INSTALLS += target qmlfiles
+include(../../qml.pri)

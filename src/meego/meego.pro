@@ -1,13 +1,14 @@
+include (../../qt-components.pri)
 
+TARGETPATH = com/meego
 TEMPLATE = lib
 TARGET = $$qtLibraryTarget(meegoplugin)
-DESTDIR = $$Q_COMPONENTS_BUILD_TREE/lib
-win32:DLLDESTDIR = $$Q_COMPONENTS_BUILD_TREE/bin
+DESTDIR = $$Q_COMPONENTS_BUILD_TREE/imports/$$TARGETPATH
+INCLUDEPATH += $$PWD
+
 CONFIG += qt plugin meego
 QT += declarative
 !macx: QT += dbus
-
-include (../../qt-components.pri)
 
 contextsubscriber {
     DEFINES += HAVE_CONTEXTSUBSCRIBER
@@ -30,8 +31,6 @@ HEADERS += \
     mdeclarativestatusbar.h \
     mdeclarativescreen.h \
     msnapshot.h
-
-INCLUDEPATH += $$PWD
 
 QML_FILES = \
         qmldir \
@@ -71,5 +70,4 @@ QML_FILES = \
         Window.qml \
         WindowDecoration.qml
 
-TARGETPATH = com/meego
 include(../../qml.pri)

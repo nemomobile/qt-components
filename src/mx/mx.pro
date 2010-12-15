@@ -1,9 +1,11 @@
 include (../../qt-components.pri)
 
+TARGETPATH = Qt/labs/Mx
 TEMPLATE = lib
 TARGET = $$qtLibraryTarget(mxplugin)
-DESTDIR = $$Q_COMPONENTS_BUILD_TREE/lib
-win32:DLLDESTDIR = $$Q_COMPONENTS_BUILD_TREE/bin
+DESTDIR = $$Q_COMPONENTS_BUILD_TREE/imports/$$TARGETPATH
+INCLUDEPATH += $$PWD
+
 CONFIG += qt plugin
 QT += declarative
 
@@ -18,8 +20,6 @@ HEADERS += \
     qmxtoplevelitem.h \
     qmxtoplevelitem_p.h \
     qmxwindow.h
-
-INCLUDEPATH += $$PWD
 
 QML_FILES = \
         qmldir \
@@ -118,5 +118,4 @@ QML_IMAGES += \
     images/toolbar-button-hover.png \
     images/tooltip-background.png
 
-TARGETPATH = Qt/labs/Mx
 include(../../qml.pri)

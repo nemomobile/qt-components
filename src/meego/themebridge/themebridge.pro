@@ -1,7 +1,8 @@
+TARGETPATH = com/meego/themebridge
 TEMPLATE = lib
 TARGET = meegothemebridgeplugin
-DESTDIR = $$Q_COMPONENTS_BUILD_TREE/lib
-win32:DLLDESTDIR = $$Q_COMPONENTS_BUILD_TREE/bin
+DESTDIR = $$Q_COMPONENTS_BUILD_TREE/imports/$$TARGETPATH
+
 CONFIG += meegotouch qt plugin
 QT += declarative network
 contains(DEFINES, HAVE_MEEGOGRAPHICSSYSTEM) {
@@ -45,5 +46,4 @@ HEADERS += mstylewrapper.h \
 
 QML_FILES += qmldir
 
-TARGETPATH = com/meego/themebridge
 include(../../../qml.pri)
