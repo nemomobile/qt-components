@@ -6,7 +6,7 @@ include /usr/share/cdbs/1/class/autotools.mk
 DEB_DH_INSTALL_SOURCEDIR = debian/tmp
 DEB_MAKE_INSTALL_TARGET = install INSTALL_ROOT=$(DEB_DESTDIR)
 
-DEB_CONFIGURE_NORMAL_ARGS = CONFIG+=meego CONFIG+=contextsubscriber 
+DEB_CONFIGURE_NORMAL_ARGS = CONFIG+=meego CONFIG+=contextsubscriber CONFIG+=harmattan
 
 # Doesn't generate .postinst and .postrm files
 DEB_DH_MAKESHLIBS_ARGS_ALL = -n
@@ -19,3 +19,7 @@ clean::
 build/qt-components-examples::
 	mkdir -p debian/tmp/usr/share/applications
 	cp debian/desktop/*.desktop debian/tmp/usr/share/applications
+
+build/qt-components-tests::
+	mkdir -p debian/tmp/usr/share/qt-components-tests
+	cp tests/auto/tests-meego.xml debian/tmp/usr/share/qt-components-tests/tests.xml

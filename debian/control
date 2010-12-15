@@ -40,3 +40,17 @@ Description: Qt Quick components examples
  Homepage: http://labs.qt.nokia.com/2010/09/10/building-the-future-reintroducing-the-qt-quick-components/
  Bugs: http://bugreports.qt.nokia.com/browse/QTCOMPONENTS
  Code: http://qt.gitorious.org/qt-components
+
+Package: qt-components-tests
+Architecture: any
+Depends: qt-components, ci-testing, ${shlibs:Depends}, ${misc:Depends}
+XB-Maemo-CI-Packages: qt-components
+XB-Maemo-CI-Stage: fast
+Description: Qt Quick components tests
+ The qt-components project aims to deliver a set of reusable components for Qt Quick.
+ Qt Quick provides simple QML Elements that allow you to create fluid uis from scratch without restricting 
+ the designers creativity.
+ .
+ Homepage: http://labs.qt.nokia.com/2010/09/10/building-the-future-reintroducing-the-qt-quick-components/
+ Bugs: http://bugreports.qt.nokia.com/browse/QTCOMPONENTS
+ Code: http://qt.gitorious.org/qt-components
