@@ -1,15 +1,15 @@
 import Qt 4.7
 
 ListModel {
-    id: widgetGallerySections 
+    id: widgetGallerySections
 
     ListElement {
         name: "Application View"
-	    source: "gallery/ApplicationView.qml"
+        source: "gallery/ApplicationView.qml"
     }
     ListElement {
         name: "Simple Widgets"
-	    source: "gallery/SimpleWidgets.qml"
+        source: "gallery/SimpleWidgets.qml"
     }
     ListElement {
         name: "Buttons"
@@ -22,7 +22,7 @@ ListModel {
     ListElement {
         name: "List, Grids and Popups"
         source: "gallery/ListGridsAndPopups.qml"
-    } 
+    }
     ListElement {
         name: "User Input"
         source: "gallery/UserInput.qml"

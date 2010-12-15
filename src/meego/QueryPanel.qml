@@ -187,15 +187,16 @@ ImplicitSizeItem {
             // XXX Make this dynamic in the future
             Button {
                 text: "Yes"
-                styleObjectName: "MDialogButtonOk"
-                buttonType: "first"
+                buttonType: "group"
+                groupPosition: "horizontal-left"
                 width: parent.buttonWidth
                 onClicked: root.buttonClicked(text)
             }
 
             Button {
                 text: "No"
-                buttonType: "last"
+                buttonType: "group"
+                groupPosition: "horizontal-right"
                 width: parent.buttonWidth
                 onClicked: root.buttonClicked(text)
             }

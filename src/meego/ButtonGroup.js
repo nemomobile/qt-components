@@ -72,19 +72,19 @@ function updateButtonTypes() {
     var middlePos;
     var lastPos;
     if (params.orientation === Qt.Horizontal) {
-        firstPos = Background.HorizontalLeftPosition;
-        middlePos = Background.HorizontalCenterPosition;
-        lastPos = Background.HorizontalRightPosition;
+        firstPos = "horizontal-left"
+        middlePos = "horizontal-center"
+        lastPos = "horizontal-right"
     } else {
-        firstPos = Background.VerticalTopPosition;
-        middlePos = Background.VerticalCenterPosition;
-        lastPos = Background.VerticalBottomPosition;
+        firstPos = "vertical-top"
+        middlePos = "vertical-center"
+        lastPos = "vertical-bottom"
     }
 
     // Fix the children group position
     var buttonLength = buttons.length;
     if (buttonLength == 1) {
-        buttons[0].groupPosition = Background.DefaultPosition;
+        buttons[0].groupPosition = ""
     } else if (buttonLength > 1) {
         buttons[0].groupPosition = firstPos;
         for (var i = 1; i < buttonLength - 1; i++) {
