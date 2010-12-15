@@ -24,7 +24,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.0
+import Qt 4.7
 import Qt.labs.components 1.0
 import com.meego.themebridge 1.0 as ThemeBridge
 
