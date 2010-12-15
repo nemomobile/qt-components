@@ -34,12 +34,33 @@ Page {
         id: m
 
         ListElement {
+            name: "Push Button"
+            source: "PushButton.qml"
+        }
+
+        ListElement {
             name: "Icon Button"
             source: "IconButtons.qml"
+        }
+
+        ListElement {
+            name: "Switch"
+            source: "PushButton.qml"
+        }
+
+        ListElement {
+            name: "Checkbox"
+            source: "PushButton.qml"
+        }
+
+        ListElement {
+            name: "Button Group"
+            source: "PushButton.qml"
         }
     }
 
     ListView {
+        id: buttonsView
         anchors.fill: parent
         model: m
 
@@ -49,5 +70,9 @@ Page {
                 pageStack.push(Qt.createComponent(source));
             }
         }
+    }
+
+    ScrollDecorator {
+        flickable: buttonsView
     }
 }
