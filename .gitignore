@@ -22,6 +22,7 @@ debug/
 release/
 /bin/
 /lib/
+/imports/
 /examples/meego/calculator/calculator
 /examples/meego/gallery/gallery
 /examples/meego/pages/pages
