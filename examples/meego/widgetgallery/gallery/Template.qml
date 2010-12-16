@@ -31,39 +31,50 @@ Page {
 
     property alias infoText: infoLabel.text
     property alias data: leftContainer.data
+    property alias flickableContentHeight: flick.contentHeight
 
-    Item {
-        id: leftContainer
-        anchors.left: parent.left
-        anchors.right: separator.left
-        anchors.top: separator.top
-        anchors.bottom: parent.bottom
-        anchors.topMargin: 6
-        anchors.bottomMargin: 6
-        anchors.leftMargin: 8
-        anchors.rightMargin: 10
+    Flickable {
+        id: flick
+
+        anchors.fill: parent
+
+        Item {
+            id: leftContainer
+            anchors.left: parent.left
+            anchors.right: separator.left
+            anchors.top: separator.top
+            anchors.bottom: parent.bottom
+            anchors.topMargin: 6
+            anchors.bottomMargin: 6
+            anchors.leftMargin: 8
+            anchors.rightMargin: 10
+        }
+
+        Rectangle {
+            id: separator
+            color: "black"
+            width: 1
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: parent.top
+            height: flick.contentHeight
+            anchors.topMargin: 16
+            anchors.bottomMargin: 5
+        }
+
+        Label {
+            id: infoLabel
+            anchors.left: separator.right
+            anchors.right: parent.right
+            anchors.top: separator.top
+            anchors.bottom: parent.bottom
+            anchors.topMargin: 6
+            anchors.bottomMargin: 6
+            anchors.leftMargin: 10
+            anchors.rightMargin: 8
+        }
     }
 
-    Rectangle {
-        id: separator
-        color: "black"
-        width: 2
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        anchors.topMargin: 25
-        anchors.bottomMargin: 5
+    ScrollDecorator {
+        flickable: flick
     }
-
-    Label {
-        id: infoLabel
-        anchors.left: separator.right
-        anchors.right: parent.right
-        anchors.top: separator.top
-        anchors.bottom: parent.bottom
-        anchors.topMargin: 6
-        anchors.bottomMargin: 6
-        anchors.leftMargin: 10
-        anchors.rightMargin: 8
-   }
 }
