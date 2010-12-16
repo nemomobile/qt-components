@@ -16,6 +16,9 @@
       <case name="lineedit" type="Functional" description="Unit tests for lineedit" level="Unit" timeout="20">
           <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_lineedit; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_api_lineedit</step>
       </case>
+      <case name="mremotethemedaemonclient" type="Functional" description="Unit tests for mremotethemedaemonclient" level="Unit" timeout="20">
+          <step expected_result="0">cd /opt/qt-components-tests/auto/mremotethemedaemonclient; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./mremotethemedaemonclient</step>
+      </case>
       <case name="multilineedit" type="Functional" description="Unit tests for multilineedit" level="Unit" timeout="20">
           <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_multilineedit; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_api_multilineedit</step>
       </case>

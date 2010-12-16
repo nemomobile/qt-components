@@ -24,22 +24,31 @@
 **
 ****************************************************************************/
 
-#ifndef MDECLARATIVEIMAGEPROVIDER_H
-#define MDECLARATIVEIMAGEPROVIDER_H
+#ifndef MABSTRACTTHEMEDAEMONCLIENT_H
+#define MABSTRACTTHEMEDAEMONCLIENT_H
 
-#include <qdeclarativeimageprovider.h>
+#include <QObject>
+#include <QPixmap>
 
-class MAbstractThemeDaemonClient;
-
-class MDeclarativeImageProvider : public QDeclarativeImageProvider
+/**
+ * \brief Interface for a client to request pixmaps from the themedaemon server.
+ */
+class MAbstractThemeDaemonClient : public QObject
 {
-public:
-    MDeclarativeImageProvider();
-    virtual ~MDeclarativeImageProvider();
-    virtual QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize);
+    Q_OBJECT
 
-private:
-    MAbstractThemeDaemonClient *m_themeDaemonClient;
+public:
+    MAbstractThemeDaemonClient(QObject *parent = 0);
+    virtual ~MAbstractThemeDaemonClient();
+
+    /**
+     * \param id            Identifier of the pixmap.
+     * \param requestedSize Requested size of the pixmap. If the size is invalid,
+     *                      the returned pixmap will have the original size. Otherwise
+     *                      the pixmap gets scaled to the requested size.
+     */
+    virtual QPixmap requestPixmap(const QString &id, const QSize &requestedSize) = 0;
 };
 
 #endif
+

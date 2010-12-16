@@ -24,22 +24,27 @@
 **
 ****************************************************************************/
 
-#ifndef MDECLARATIVEIMAGEPROVIDER_H
-#define MDECLARATIVEIMAGEPROVIDER_H
+#ifndef MLOCALTHEMEDAEMONCLIENT_H
+#define MLOCALTHEMEDAEMONCLIENT_H
 
-#include <qdeclarativeimageprovider.h>
+#include <themedaemon/mabstractthemedaemonclient.h>
 
-class MAbstractThemeDaemonClient;
-
-class MDeclarativeImageProvider : public QDeclarativeImageProvider
+/**
+ * \brief Allows to request pixmaps from a local themedaemon server.
+ */
+class MLocalThemeDaemonClient : public MAbstractThemeDaemonClient
 {
-public:
-    MDeclarativeImageProvider();
-    virtual ~MDeclarativeImageProvider();
-    virtual QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize);
+    Q_OBJECT
 
-private:
-    MAbstractThemeDaemonClient *m_themeDaemonClient;
+public:
+    MLocalThemeDaemonClient(QObject *parent = 0);
+    virtual ~MLocalThemeDaemonClient();
+
+    /**
+     * \see MAbstractThemeDaemonClient::requestPixmap()
+     */
+    virtual QPixmap requestPixmap(const QString &id, const QSize &requestedSize);
 };
 
 #endif
+

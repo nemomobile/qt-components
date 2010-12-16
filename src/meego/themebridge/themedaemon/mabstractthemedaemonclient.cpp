@@ -24,22 +24,13 @@
 **
 ****************************************************************************/
 
-#ifndef MDECLARATIVEIMAGEPROVIDER_H
-#define MDECLARATIVEIMAGEPROVIDER_H
+#include "mabstractthemedaemonclient.h"
 
-#include <qdeclarativeimageprovider.h>
-
-class MAbstractThemeDaemonClient;
-
-class MDeclarativeImageProvider : public QDeclarativeImageProvider
+MAbstractThemeDaemonClient::MAbstractThemeDaemonClient(QObject *parent) :
+    QObject(parent)
 {
-public:
-    MDeclarativeImageProvider();
-    virtual ~MDeclarativeImageProvider();
-    virtual QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize);
+}
 
-private:
-    MAbstractThemeDaemonClient *m_themeDaemonClient;
-};
-
-#endif
+MAbstractThemeDaemonClient::~MAbstractThemeDaemonClient()
+{
+}

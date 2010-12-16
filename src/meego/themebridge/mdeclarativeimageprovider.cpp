@@ -26,26 +26,33 @@
 
 #include "mdeclarativeimageprovider.h"
 
-#include <mtheme.h>
+#include <themedaemon/mlocalthemedaemonclient.h>
+#include <themedaemon/mremotethemedaemonclient.h>
 
 MDeclarativeImageProvider::MDeclarativeImageProvider() :
-    QDeclarativeImageProvider(QDeclarativeImageProvider::Pixmap)
+    QDeclarativeImageProvider(QDeclarativeImageProvider::Pixmap),
+    m_themeDaemonClient(0)
 {
+    MRemoteThemeDaemonClient *remoteThemeDaemonClient = new MRemoteThemeDaemonClient();
+    if (remoteThemeDaemonClient->isConnected()) {
+        m_themeDaemonClient = remoteThemeDaemonClient;
+    } else {
+        delete remoteThemeDaemonClient;
+        m_themeDaemonClient = new MLocalThemeDaemonClient();
+    }
 }
 
 MDeclarativeImageProvider::~MDeclarativeImageProvider()
 {
+    delete m_themeDaemonClient;
 }
 
 QPixmap MDeclarativeImageProvider::requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
 {
-    const QPixmap *pixmap = MTheme::instance()->pixmap(id, requestedSize);
-    if (pixmap) {
-        if (size) {
-            *size = pixmap->size();
-        }
-        return *pixmap;
+    const QPixmap pixmap = m_themeDaemonClient->requestPixmap(id, requestedSize);
+    if (!pixmap.isNull() && size) {
+        *size = pixmap.size();
     }
 
-    return QPixmap();
+    return pixmap;
 }

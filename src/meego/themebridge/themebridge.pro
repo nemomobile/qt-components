@@ -3,7 +3,10 @@ TARGET = meegothemebridgeplugin
 DESTDIR = $$Q_COMPONENTS_BUILD_TREE/lib
 win32:DLLDESTDIR = $$Q_COMPONENTS_BUILD_TREE/bin
 CONFIG += meegotouch qt plugin
-QT += declarative
+QT += declarative network
+contains(DEFINES, HAVE_MEEGOGRAPHICSSYSTEM) {
+    QT += meegographicssystemhelper
+}
 
 SOURCES += plugin.cpp \
            mstylewrapper.cpp \
@@ -17,7 +20,11 @@ SOURCES += plugin.cpp \
            mdeclarativeimageprovider.cpp \
            mdeclarativemaskedimage.cpp \
            mdeclarativeimplicitsizeitem.cpp \
-           mdeclarativebackground.cpp
+           mdeclarativebackground.cpp \
+           themedaemon/mabstractthemedaemonclient.cpp \
+           themedaemon/mlocalthemedaemonclient.cpp \
+           themedaemon/mremotethemedaemonclient.cpp \
+           themedaemon/mthemedaemonprotocol.cpp
 
 HEADERS += mstylewrapper.h \
            mthemebridge.h \
@@ -30,7 +37,11 @@ HEADERS += mstylewrapper.h \
            mdeclarativeimageprovider.h \
            mdeclarativemaskedimage.h \
            mdeclarativeimplicitsizeitem.h \
-           mdeclarativebackground.h
+           mdeclarativebackground.h \
+           themedaemon/mabstractthemedaemonclient.h \
+           themedaemon/mlocalthemedaemonclient.h \
+           themedaemon/mremotethemedaemonclient.h \
+           themedaemon/mthemedaemonprotocol.h
 
 QML_FILES += qmldir
 

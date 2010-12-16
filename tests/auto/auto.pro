@@ -10,3 +10,7 @@ SUBDIRS=            \
     api_scrolldecorator \
     #api_lineedit \ #TODO not yet finalized
     #api_multilineedit #TODO not yet finalized
+
+meego {
+   SUBDIRS += mremotethemedaemonclient
+}
