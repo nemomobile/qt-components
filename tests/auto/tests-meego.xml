@@ -8,31 +8,31 @@
     <set name="auto-tests" description="Qt Components auto tests" feature="TBD" requirement="TBD" >   
 
       <case name="button" type="Functional" description="Unit tests for button" level="Unit" timeout="20">
-          <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_button; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_api_button</step>
+          <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_button; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_api_button -xml</step>
       </case>
       <case name="checkbox" type="Functional" description="Unit tests for checkbox" level="Unit" timeout="20">
-          <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_checkbox; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_api_checkbox</step>
+          <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_checkbox; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_api_checkbox -xml</step>
       </case>
       <case name="lineedit" type="Functional" description="Unit tests for lineedit" level="Unit" timeout="20">
-          <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_lineedit; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_api_lineedit</step>
+          <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_lineedit; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_api_lineedit -xml</step>
       </case>
       <case name="mremotethemedaemonclient" type="Functional" description="Unit tests for mremotethemedaemonclient" level="Unit" timeout="20">
-          <step expected_result="0">cd /opt/qt-components-tests/auto/mremotethemedaemonclient; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./mremotethemedaemonclient</step>
+          <step expected_result="0">cd /opt/qt-components-tests/auto/mremotethemedaemonclient; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./mremotethemedaemonclient -xml</step>
       </case>
       <case name="multilineedit" type="Functional" description="Unit tests for multilineedit" level="Unit" timeout="20">
-          <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_multilineedit; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_api_multilineedit</step>
+          <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_multilineedit; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_api_multilineedit -xml</step>
       </case>
       <case name="progressbar" type="Functional" description="Unit tests for progressbar" level="Unit" timeout="20">
-          <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_progressbar; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_api_progressbar</step>
+          <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_progressbar; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_api_progressbar -xml</step>
       </case>
       <case name="scrolldecorator" type="Functional" description="Unit tests for scrolldecorator" level="Unit" timeout="20">
-          <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_scrolldecorator; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_api_scrolldecorator</step>
+          <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_scrolldecorator; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_api_scrolldecorator -xml</step>
       </case>
       <case name="slider" type="Functional" description="Unit tests for slider" level="Unit" timeout="20">
-          <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_slider; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_api_slider</step>
+          <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_slider; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_api_slider -xml</step>
       </case>
       <case name="qrangemodel" type="Functional" description="Unit tests for qrangemodel" level="Unit" timeout="20">
-          <step expected_result="0">cd /opt/qt-components-tests/auto/qrangemodel; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./qrangemodel</step>
+          <step expected_result="0">cd /opt/qt-components-tests/auto/qrangemodel; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./qrangemodel -xml</step>
       </case>
       <environments>
           <scratchbox>true</scratchbox>
