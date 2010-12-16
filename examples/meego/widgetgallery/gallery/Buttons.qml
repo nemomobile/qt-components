@@ -55,7 +55,7 @@ Page {
 
         ListElement {
             name: "Button Group"
-            source: "PushButton.qml"
+            source: "ButtonGroup.qml"
         }
     }
 
