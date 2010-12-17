@@ -29,7 +29,7 @@ BUILD_TREE=`/bin/pwd`
 SOURCE_TREE=`dirname $0`
 SOURCE_TREE=`cd "$SOURCE_TREE"; /bin/pwd`
 
-QMAKE=`which qmake`
+QMAKE=`which qmake` 2> /dev/null
 if [ -z $QMAKE ] && [ -n "$QTDIR" ]; then
     QMAKE=$QTDIR/bin/qmake
 fi
@@ -42,4 +42,8 @@ echo "Q_COMPONENTS_BUILD_TREE = $BUILD_TREE" >> $QMAKE_CACHE
 
 echo
 echo Running qmake...
-$QMAKE -r "$@" $SOURCE_TREE/qt-components.pro
+$QMAKE -r "$@" $SOURCE_TREE/qt-components.pro 2> /dev/null
+if [ $? != 0 ]; then
+    echo "ERROR: Unable to detect qmake. Run QTDIR=/path/to/qt $0."
+    exit 1
+fi

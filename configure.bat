@@ -43,4 +43,5 @@ echo Q_COMPONENTS_BUILD_TREE = %BUILD_TREE:\=/% >> %QMAKE_CACHE%
 
 echo.
 echo Running qmake...
-call %QMAKE% -r %* %SOURCE_TREE%\qt-components.pro
+call %QMAKE% -r %* %SOURCE_TREE%\qt-components.pro 2> NUL
+if errorlevel 1 echo ERROR: Unable to detect qmake. Set QTDIR=\path\to\qt and re-run configure.bat.
