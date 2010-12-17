@@ -13,14 +13,19 @@
       <case name="checkbox" type="Functional" description="Unit tests for checkbox" level="Unit" timeout="20">
           <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_checkbox; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_api_checkbox -xml</step>
       </case>
+
+<!-- TODO: uncomment these test cases once they are ready to be run.
+
       <case name="lineedit" type="Functional" description="Unit tests for lineedit" level="Unit" timeout="20">
           <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_lineedit; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_api_lineedit -xml</step>
       </case>
-      <case name="mremotethemedaemonclient" type="Functional" description="Unit tests for mremotethemedaemonclient" level="Unit" timeout="20">
-          <step expected_result="0">cd /opt/qt-components-tests/auto/mremotethemedaemonclient; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./mremotethemedaemonclient -xml</step>
-      </case>
       <case name="multilineedit" type="Functional" description="Unit tests for multilineedit" level="Unit" timeout="20">
           <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_multilineedit; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_api_multilineedit -xml</step>
+      </case>
+-->
+
+      <case name="mremotethemedaemonclient" type="Functional" description="Unit tests for mremotethemedaemonclient" level="Unit" timeout="20">
+          <step expected_result="0">cd /opt/qt-components-tests/auto/mremotethemedaemonclient; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./mremotethemedaemonclient -xml</step>
       </case>
       <case name="progressbar" type="Functional" description="Unit tests for progressbar" level="Unit" timeout="20">
           <step expected_result="0">cd /opt/qt-components-tests/auto/tst_api_progressbar; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_api_progressbar -xml</step>
