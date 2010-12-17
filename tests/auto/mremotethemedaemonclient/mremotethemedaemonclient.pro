@@ -24,4 +24,4 @@ HEADERS += \
     ../../../src/meego/themebridge/themedaemon/mremotethemedaemonclient.h \
     ../../../src/meego/themebridge/themedaemon/mthemedaemonprotocol.h
 
-#include (../auto.pri)
+ include (../auto.pri)
