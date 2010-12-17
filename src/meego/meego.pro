@@ -43,16 +43,20 @@ QML_FILES = \
         ButtonRow.qml \
         ButtonGroup.js \
         CheckBox.qml \
+        Dialog.qml \
+        DialogTitleBar.qml \
         EscapeButton.qml \
+        Fader.qml \
         HomeButton.qml \
         IconButton.qml \
         Label.qml \
+        Menu.qml \
+        MenuItem.qml \
         ListItem.qml \
         Page.qml \
         PageStack.qml \
         PageStack.js \
         QueryDialog.qml \
-        QueryDialog.js \
         QueryPanel.qml \
         ProgressBar.qml \
         ScrollDecorator.qml \

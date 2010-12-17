@@ -56,7 +56,7 @@ Rectangle {
         id: commonTools
         visible: false
         ToolItem { iconId: "icon-m-toolbar-home" }
-        ToolItem { iconId: "icon-m-toolbar-view-menu" }
+        ToolItem { iconId: "icon-m-toolbar-view-menu"; onClicked: myMenu.state="visible"; }
         ToolItem { iconId: "icon-m-toolbar-back"; onClicked: pageStack.pop(); }
     }
 
@@ -81,6 +81,30 @@ Rectangle {
             }
         }
     }
+
+    Menu {
+        id: myMenu
+        content:
+            Column {
+                width: myMenu.width
+                MenuItem {id: b1; text: "Copy"; onClicked: myMenu.accepted()}
+                MenuItem {id: b2; text: "Cut"; onClicked: myMenu.rejected()}
+                MenuItem {id: b3; text: "Delete"; onClicked: myMenu.rejected()}
+                MenuItem {id: b4; text: "Copy"; onClicked: myMenu.accepted()}
+                MenuItem {id: b5; text: "Cut"; onClicked: myMenu.rejected()}
+                MenuItem {id: b6; text: "Delete"; onClicked: myMenu.rejected()}
+                MenuItem {id: b7; text: "Copy"; onClicked: myMenu.accepted()}
+                MenuItem {id: b8; text: "Cut"; onClicked: myMenu.rejected()}
+                MenuItem {id: b9; text: "Delete"; onClicked: myMenu.rejected()}
+                MenuItem {id: b10; text: "Copy"; onClicked: myMenu.accepted()}
+                MenuItem {id: b11; text: "Cut"; onClicked: myMenu.rejected()}
+                MenuItem {id: b12; text: "Delete"; onClicked: myMenu.rejected()}
+                MenuItem {id: b13; text: "Copy"; onClicked: myMenu.accepteded()}
+                MenuItem {id: b14; text: "Cut"; onClicked: myMenu.rejecteded()}
+                MenuItem {id: b15; text: "Delete"; onClicked: myMenu.rejected()}
+            }
+        }
+
 
     Component.onCompleted: {
         pageStack.push(pageComponent)
