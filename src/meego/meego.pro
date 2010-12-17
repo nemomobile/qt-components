@@ -36,7 +36,6 @@ INCLUDEPATH += $$PWD
 QML_FILES = \
         qmldir \
         Action.qml \
-        ActionButton.qml \
         ActionManager.js \
         BasicListItem.qml \
         BusyIndicator.qml \
@@ -55,11 +54,9 @@ QML_FILES = \
         Page.qml \
         PageStack.qml \
         PageStack.js \
-        pagemanager.js \
         QueryDialog.qml \
         QueryDialog.js \
         QueryPanel.qml \
-        PageContainer.qml \
         ProgressBar.qml \
         ScrollDecorator.qml \
         ScrollDecoratorSizer.qml \

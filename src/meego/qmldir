@@ -1,6 +1,5 @@
 plugin meegoplugin
 Action 1.0 Action.qml
-ActionButton 1.0 ActionButton.qml
 BasicListItem 1.0 BasicListItem.qml
 BusyIndicator 1.0 BusyIndicator.qml
 Button 1.0 Button.qml
