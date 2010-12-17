@@ -111,7 +111,7 @@ void tst_quickcomponentsbutton::text()
 
 void tst_quickcomponentsbutton::iconSource()
 {
-    QCOMPARE(componentObject->property("iconSource").toString(),QString("http://qt.nokia.com/logo.png"));
+    QCOMPARE(componentObject->property("iconSource").toString(),QString("logo.png"));
 }
 
 void tst_quickcomponentsbutton::clicked()

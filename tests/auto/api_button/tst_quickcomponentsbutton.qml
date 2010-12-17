@@ -5,5 +5,5 @@ Button {
    id: testTarget
    width: 640; height: 480
    text: "Testing Button"
-   iconSource: "http://qt.nokia.com/logo.png"
+   iconSource: "logo.png"
 }
