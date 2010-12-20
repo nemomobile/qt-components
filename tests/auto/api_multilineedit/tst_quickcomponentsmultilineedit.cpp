@@ -33,12 +33,11 @@
 ****************************************************************************/
 #include <QtTest/QtTest>
 #include <QtTest/QSignalSpy>
-#include <QtDeclarative/qdeclarativeengine.h>
 #include <QtDeclarative/qdeclarativecontext.h>
-#include <QtDeclarative/qdeclarativecomponent.h>
 #include <QDeclarativeView>
-#include <qdeclarativewindow.h>
 #include <QLineEdit>
+
+#include "tst_quickcomponentstest.h"
 
 class tst_quickcomponentsmultilineedit : public QObject
 
@@ -62,23 +61,14 @@ private slots:
     void wrapMode();
 
 private:
-    QDeclarativeComponent *component;
     QObject *componentObject;
-    QDeclarativeEngine *engine;
 };
 
 void tst_quickcomponentsmultilineedit::initTestCase()
 {
-    QDeclarativeWindow *window = new QDeclarativeWindow();
-    engine = window->engine();
-    QDeclarativeComponent *component = new QDeclarativeComponent(window->engine());
-
-    QFile file("tst_quickcomponentsmultilineedit.qml");
-    if( file.open(QFile::ReadOnly) )
-        component->setData( file.readAll(), QUrl() );
-
-    componentObject = component->create();
-    QVERIFY(componentObject);
+    QString errors;
+    componentObject = tst_quickcomponentstest::createComponentFromFile("tst_quickcomponentsmultilineedit.qml", &errors);
+    QVERIFY2(componentObject, qPrintable(errors));
 }
 
 
