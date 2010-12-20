@@ -44,10 +44,9 @@ class tst_quickcomponentsmultilineedit : public QObject
 
 {
     Q_OBJECT
-public:
-    tst_quickcomponentsmultilineedit();
 
 private slots:
+    void initTestCase();
     void font();
     void cursorPosition();
     void horizontalAlignment();
@@ -68,7 +67,7 @@ private:
     QDeclarativeEngine *engine;
 };
 
-tst_quickcomponentsmultilineedit::tst_quickcomponentsmultilineedit()
+void tst_quickcomponentsmultilineedit::initTestCase()
 {
     QDeclarativeWindow *window = new QDeclarativeWindow();
     engine = window->engine();
@@ -77,8 +76,9 @@ tst_quickcomponentsmultilineedit::tst_quickcomponentsmultilineedit()
     QFile file("tst_quickcomponentsmultilineedit.qml");
     if( file.open(QFile::ReadOnly) )
         component->setData( file.readAll(), QUrl() );
-    
+
     componentObject = component->create();
+    QVERIFY(componentObject);
 }
 
 

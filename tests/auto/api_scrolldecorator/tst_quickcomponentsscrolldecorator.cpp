@@ -66,8 +66,9 @@ void tst_quickcomponentsscrolldecorator::initTestCase()
     QFile file("tst_quickcomponentsscrolldecorator.qml");
     if( file.open(QFile::ReadOnly) )
         component->setData( file.readAll(), QUrl() );
-    
+
     componentObject = component->create();
+    QVERIFY(componentObject);
 }
 
 void tst_quickcomponentsscrolldecorator::flickable()

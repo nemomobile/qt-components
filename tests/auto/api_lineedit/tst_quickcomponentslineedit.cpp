@@ -44,10 +44,8 @@ class tst_quickcomponentslineedit : public QObject
 
 {
     Q_OBJECT
-public:
-    tst_quickcomponentslineedit();
-
 private slots:
+    void initTestCase();
     void placeholderText();
     void inputMethodHint();
     void font();
@@ -72,7 +70,7 @@ private:
     QDeclarativeEngine *engine;
 };
 
-tst_quickcomponentslineedit::tst_quickcomponentslineedit()
+void tst_quickcomponentslineedit::initTestCase()
 {
     QDeclarativeWindow *window = new QDeclarativeWindow();
     engine = window->engine();
@@ -81,8 +79,9 @@ tst_quickcomponentslineedit::tst_quickcomponentslineedit()
     QFile file("tst_quickcomponentslineedit.qml");
     if ( file.open(QFile::ReadOnly) )
         component->setData( file.readAll(), QUrl() );
-    
+
     componentObject = component->create();
+    QVERIFY(componentObject);
 }
 
 void tst_quickcomponentslineedit::placeholderText()

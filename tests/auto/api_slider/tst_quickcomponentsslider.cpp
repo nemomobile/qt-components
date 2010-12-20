@@ -72,8 +72,9 @@ void tst_quickcomponentsslider::initTestCase()
     QFile file("tst_quickcomponentsslider.qml");
     if( file.open(QFile::ReadOnly) )
         component->setData( file.readAll(), QUrl() );
-    
+
     componentObject = component->create();
+    QVERIFY(componentObject);
 }
 
 void tst_quickcomponentsslider::stepSize()

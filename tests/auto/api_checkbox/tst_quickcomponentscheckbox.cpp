@@ -67,8 +67,9 @@ void tst_quickcomponentscheckbox::initTestCase()
     QFile file("tst_quickcomponentscheckbox.qml");
     if (file.open(QFile::ReadOnly) )
         component->setData( file.readAll(), QUrl() );
-    
+
     componentObject = component->create();
+    QVERIFY(componentObject);
 }
 
 void tst_quickcomponentscheckbox::checked()

@@ -66,8 +66,9 @@ void tst_quickcomponentsbutton::initTestCase()
     QFile file("tst_quickcomponentsbutton.qml");
     if (file.open(QFile::ReadOnly) )
         component->setData( file.readAll(), QUrl() );
-    
+
     componentObject = component->create();
+    QVERIFY(componentObject);
 }
 
 void tst_quickcomponentsbutton::checkable()

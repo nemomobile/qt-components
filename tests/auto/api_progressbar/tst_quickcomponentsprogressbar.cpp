@@ -69,8 +69,9 @@ void tst_quickcomponentsprogressbar::initTestCase()
     QFile file("tst_quickcomponentsprogressbar.qml");
     if( file.open(QFile::ReadOnly) )
         component->setData( file.readAll(), QUrl() );
-    
+
     componentObject = component->create();
+    QVERIFY(componentObject);
 }
 
 void tst_quickcomponentsprogressbar::value()
