@@ -1,5 +1,5 @@
 import Qt 4.7
-import com.meego.themebridge 1.0
+import "UIConstants.js" as UI
 
 ListItem {
     id: listItem
@@ -9,6 +9,7 @@ ListItem {
 
     Row {
         anchors.fill: listItem.padding
+        anchors.leftMargin: 18
 
         Image {
             id: delegateImage
@@ -20,14 +21,18 @@ ListItem {
             Label {
                 id: mainText
                 text: ""
-                styleObjectName: "CommonTitle"
+                font.weight: Font.Bold
+                font.pixelSize: 26
             }
 
             Label {
                 id: subText
                 text: ""
+                font.weight: Font.Light
+                font.pixelSize: 22
+                color: UI.COLOR_SECONDARY_FOREGROUND
+
                 visible: text != ""
-                styleObjectName: "CommonSubTitle"
             }
         }
     }

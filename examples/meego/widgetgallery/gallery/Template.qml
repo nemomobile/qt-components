@@ -25,12 +25,45 @@
 ****************************************************************************/
 
 import Qt 4.7
-import "UIConstants.js" as UI
+import com.meego 1.0
 
-Text {
-    font.family: UI.FONT_FAMILY
-    font.pixelSize: UI.FONT_DEFAULT_SIZE
-    color: UI.COLOR_FOREGROUND
+Page {
 
-    wrapMode: Text.Wrap
+    property alias infoText: infoLabel.text
+    property alias data: leftContainer.data
+
+    Item {
+        id: leftContainer
+        anchors.left: parent.left
+        anchors.right: separator.left
+        anchors.top: separator.top
+        anchors.bottom: parent.bottom
+        anchors.topMargin: 6
+        anchors.bottomMargin: 6
+        anchors.leftMargin: 8
+        anchors.rightMargin: 10
+    }
+
+    Rectangle {
+        id: separator
+        color: "black"
+        width: 2
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.topMargin: 25
+        anchors.bottomMargin: 5
+    }
+
+    Label {
+        id: infoLabel
+        anchors.left: separator.right
+        anchors.right: parent.right
+        anchors.top: separator.top
+        anchors.bottom: parent.bottom
+        anchors.topMargin: 6
+        anchors.bottomMargin: 6
+        anchors.leftMargin: 10
+        anchors.rightMargin: 8
+   }
 }

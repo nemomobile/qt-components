@@ -25,12 +25,27 @@
 ****************************************************************************/
 
 import Qt 4.7
-import "UIConstants.js" as UI
+import com.meego 1.0
 
-Text {
-    font.family: UI.FONT_FAMILY
-    font.pixelSize: UI.FONT_DEFAULT_SIZE
-    color: UI.COLOR_FOREGROUND
+Template {
+    tools: commonTools
 
-    wrapMode: Text.Wrap
+    //title: "Labels"
+    infoText: "Simple Label is used mainly by other components, and it does not support any formatting or interaction.\n\nRich Label supports multiple lines, HTML formatting and highlighting for links.\n\n All Labels can be aligned left, right or center and will be automatically truncated if the text does not fit inside the given area."
+
+    Label {
+        y: 40
+        anchors.left: parent.left
+        anchors.right: parent.right
+
+        text: "Simple Label"
+    }
+
+    Label {
+        y: 109
+        anchors.left: parent.left
+        anchors.right: parent.right
+
+        text: "Rich Label <b>bold</b>, <i>italic</i>, http://www.nokia.com, +358401234567, fors.fagerstrom@email.com"
+    }
 }

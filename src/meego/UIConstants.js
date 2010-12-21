@@ -24,13 +24,8 @@
 **
 ****************************************************************************/
 
-import Qt 4.7
-import "UIConstants.js" as UI
+var FONT_FAMILY = "";
+var FONT_DEFAULT_SIZE = 24;
 
-Text {
-    font.family: UI.FONT_FAMILY
-    font.pixelSize: UI.FONT_DEFAULT_SIZE
-    color: UI.COLOR_FOREGROUND
-
-    wrapMode: Text.Wrap
-}
+var COLOR_FOREGROUND = "black";
+var COLOR_SECONDARY_FOREGROUND = "#cc6633";

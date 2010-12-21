@@ -67,6 +67,7 @@ QML_FILES = \
         SliderTemplate.qml \
         Switch.qml \
         TitleMenuButton.qml \
+        UIConstants.js \
         Window.qml \
         WindowDecoration.qml
 

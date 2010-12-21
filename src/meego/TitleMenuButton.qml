@@ -68,7 +68,7 @@ ImplicitSizeItem {
         width: button.width
         elide: Text.ElideRight
 
-        styleObjectName: "NavigationBarMenuButtonLabel"
+        color: "white"
 
         // XXX This does not make sense yet, since the label width is not being set
         // horizontalAlignment: Text.AlignHCenter

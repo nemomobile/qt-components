@@ -84,7 +84,7 @@ ImplicitSizeItem {
             anchors.left: parent.left
             anchors.right: closeButton.left
             anchors.verticalCenter: parent.verticalCenter
-            styleObjectName: "MDialogTitleLabel"
+            color: "white"
             font.capitalization: {
                 if (dialogStyle.current.get("titleCapitalization"))
                     return Font.AllUppercase
