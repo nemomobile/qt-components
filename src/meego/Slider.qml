@@ -149,7 +149,6 @@ SliderTemplate {
         Label {
             id: label
             anchors.centerIn: parent
-            styleObjectName: "MSliderHandleLabel"
             text: slider.__indicatorText
         }
 
