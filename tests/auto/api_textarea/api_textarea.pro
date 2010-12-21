@@ -1,11 +1,11 @@
 include (../../../qt-components.pri)
 include (../../tests.pri)
 
-TARGET = tst_api_textarea
+TARGET = tst_quickcomponentstextarea
 TEMPLATE = app
 QT += declarative
 
-SOURCES += tst_api_textarea.cpp
-OTHER_FILES += tst_api_textarea.qml
+SOURCES += tst_quickcomponentstextarea.cpp
+OTHER_FILES += tst_quickcomponentstextarea.qml
 
 include (../auto.pri)

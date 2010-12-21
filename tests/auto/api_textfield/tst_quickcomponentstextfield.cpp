@@ -40,7 +40,7 @@
 
 #include "tst_quickcomponentstest.h"
 
-class tst_api_textfield : public QObject
+class tst_quickcomponentstextfield : public QObject
 
 {
     Q_OBJECT
@@ -66,20 +66,20 @@ private:
     QObject *componentObject;
 };
 
-void tst_api_textfield::initTestCase()
+void tst_quickcomponentstextfield::initTestCase()
 {
     QString errors;
-    componentObject = tst_quickcomponentstest::createComponentFromFile("tst_api_textfield.qml", &errors);
+    componentObject = tst_quickcomponentstest::createComponentFromFile("tst_quickcomponentstextfield.qml", &errors);
     QVERIFY2(componentObject, qPrintable(errors));
 }
 
-void tst_api_textfield::placeholderText()
+void tst_quickcomponentstextfield::placeholderText()
 {
     QVERIFY( componentObject->setProperty("placeholderText", "Some text") );
     QCOMPARE( componentObject->property("placeholderText").toString(), QString("Some text") );
 }
 
-void tst_api_textfield::inputMethodHints()
+void tst_quickcomponentstextfield::inputMethodHints()
 {
     QVERIFY( componentObject->setProperty("inputMethodHints", Qt::ImhPreferNumbers) );
     QVERIFY( componentObject->setProperty("text", "1234") );
@@ -88,39 +88,39 @@ void tst_api_textfield::inputMethodHints()
     QCOMPARE( componentObject->property("text").toString(), QString("1234") );
 }
 
-void tst_api_textfield::font()
+void tst_quickcomponentstextfield::font()
 {
     QVERIFY( componentObject->setProperty("font.family", "Helvetica") );
     QCOMPARE( componentObject->property("font.family").toString(), QString("Helvetica") );
 }
 
-void tst_api_textfield::cursorPosition()
+void tst_quickcomponentstextfield::cursorPosition()
 {
     QVERIFY( componentObject->setProperty("cursorPosition", 0) );
     QCOMPARE( componentObject->property("cursorPosition").toInt(), 0 );
 }
 
-void tst_api_textfield::readOnly()
+void tst_quickcomponentstextfield::readOnly()
 {
     QVERIFY( componentObject->setProperty("readOnly", true) );
     QVERIFY( componentObject->setProperty("text", "I just changed the text") );
     QVERIFY( componentObject->property("text").toString() != QString("I just changed the text"));
 }
 
-void tst_api_textfield::echoMode()
+void tst_quickcomponentstextfield::echoMode()
 {
     // ### set correct enum type
     QVERIFY( componentObject->setProperty("echoMode", 2) );
     QCOMPARE( componentObject->property("echoMode").toInt(), 2 );
 }
 
-void tst_api_textfield::inputMask()
+void tst_quickcomponentstextfield::inputMask()
 {
     QVERIFY( componentObject->setProperty("inputMask", 2) );
 
 }
 
-void tst_api_textfield::selectedText()
+void tst_quickcomponentstextfield::selectedText()
 {
     QVERIFY( componentObject->setProperty("text", "Good morning") );
     QVERIFY( componentObject->setProperty("selectionStart", 0) );
@@ -129,26 +129,26 @@ void tst_api_textfield::selectedText()
     QCOMPARE( componentObject->property("selectedText").toString(), QString("Good") );
 }
 
-void tst_api_textfield::selectionEnd()
+void tst_quickcomponentstextfield::selectionEnd()
 {
     // ### needs to set selection
     QVERIFY( componentObject->setProperty("selectionEnd", 2) );
 
 }
 
-void tst_api_textfield::selectionStart()
+void tst_quickcomponentstextfield::selectionStart()
 {
     // ### needs to set selection
     QVERIFY( componentObject->setProperty("selectionStart", 1) );
 }
 
-void tst_api_textfield::text()
+void tst_quickcomponentstextfield::text()
 {
     QVERIFY( componentObject->setProperty("text", "Hello World") );
     QCOMPARE( componentObject->property("text").toString(), QString("Hello World") );
 }
 
-void tst_api_textfield::acceptableInput()
+void tst_quickcomponentstextfield::acceptableInput()
 {
     // depending on validator, acceptable input should be true / false
     QVERIFY( componentObject->setProperty("validator", "-?\\d{1,3}") );
@@ -163,12 +163,12 @@ void tst_api_textfield::acceptableInput()
     QCOMPARE( componentObject->property("acceptableInput").toBool(), false);
 }
 
-void tst_api_textfield::validator()
+void tst_quickcomponentstextfield::validator()
 {
     QVERIFY( componentObject->setProperty("validator", "-?\\d{1,3}") );
 
 }
 
-QTEST_MAIN(tst_api_textfield)
+QTEST_MAIN(tst_quickcomponentstextfield)
 
-#include "tst_api_textfield.moc"
+#include "tst_quickcomponentstextfield.moc"

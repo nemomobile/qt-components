@@ -39,7 +39,7 @@
 
 #include "tst_quickcomponentstest.h"
 
-class tst_api_textarea : public QObject
+class tst_quickcomponentstextarea : public QObject
 
 {
     Q_OBJECT
@@ -63,46 +63,46 @@ private:
     QObject *componentObject;
 };
 
-void tst_api_textarea::initTestCase()
+void tst_quickcomponentstextarea::initTestCase()
 {
     QString errors;
-    componentObject = tst_quickcomponentstest::createComponentFromFile("tst_api_textarea.qml", &errors);
+    componentObject = tst_quickcomponentstest::createComponentFromFile("tst_quickcomponentstextarea.qml", &errors);
     QVERIFY2(componentObject, qPrintable(errors));
 }
 
 
-void tst_api_textarea::font()
+void tst_quickcomponentstextarea::font()
 {
     QVERIFY( componentObject->setProperty("font.family", "Helvetica") );
     QCOMPARE( componentObject->property("font.family").toString(), QString("Helvetica") );
 }
 
-void tst_api_textarea::cursorPosition()
+void tst_quickcomponentstextarea::cursorPosition()
 {
     QVERIFY( componentObject->setProperty("cursorPosition", 0) );
     QCOMPARE( componentObject->property("cursorPosition").toInt(), 0 );
 }
 
-void tst_api_textarea::horizontalAlignment()
+void tst_quickcomponentstextarea::horizontalAlignment()
 {
     QVERIFY( componentObject->setProperty("horizontalAlignment", 0) );
     QCOMPARE( componentObject->property("horizontalAlignment").toInt(), 0 );
 }
 
-void tst_api_textarea::verticalAlignment()
+void tst_quickcomponentstextarea::verticalAlignment()
 {
     QVERIFY( componentObject->setProperty("verticalAlignment", 0) );
     QCOMPARE( componentObject->property("verticalAlignment").toInt(), 0 );
 }
 
-void tst_api_textarea::readOnly()
+void tst_quickcomponentstextarea::readOnly()
 {
     QVERIFY( componentObject->setProperty("readOnly", true) );
     QVERIFY( componentObject->setProperty("text", "I just changed the text") );
     QVERIFY( componentObject->property("text").toString() != QString("I just changed the text"));
 }
 
-void tst_api_textarea::selectedText()
+void tst_quickcomponentstextarea::selectedText()
 {
     QVERIFY( componentObject->setProperty("text", "Good morning") );
     QVERIFY( componentObject->setProperty("selectionStart", 0) );
@@ -111,35 +111,35 @@ void tst_api_textarea::selectedText()
     QCOMPARE( componentObject->property("selectedText").toString(), QString("Good") );
 }
 
-void tst_api_textarea::selectionEnd()
+void tst_quickcomponentstextarea::selectionEnd()
 {
     QVERIFY( componentObject->setProperty("selectionEnd", 2) );
 
 }
 
-void tst_api_textarea::selectionStart()
+void tst_quickcomponentstextarea::selectionStart()
 {
     QVERIFY( componentObject->setProperty("selectionStart", 1) );
 }
 
-void tst_api_textarea::text()
+void tst_quickcomponentstextarea::text()
 {
     QVERIFY( componentObject->setProperty("text", "Hello World") );
     QCOMPARE( componentObject->property("text").toString(), QString("Hello World") );
 }
 
-void tst_api_textarea::textFormat()
+void tst_quickcomponentstextarea::textFormat()
 {
     QVERIFY( componentObject->setProperty("textFormat", 0) );
     QCOMPARE( componentObject->property("textFormat").toInt(), 0 );
 }
 
-void tst_api_textarea::wrapMode()
+void tst_quickcomponentstextarea::wrapMode()
 {
     QVERIFY( componentObject->setProperty("wrapMode", 0) );
     QCOMPARE( componentObject->property("wrapMode").toInt(), 0 );
 }
 
-QTEST_MAIN(tst_api_textarea)
+QTEST_MAIN(tst_quickcomponentstextarea)
 
-#include "tst_api_textarea.moc"
+#include "tst_quickcomponentstextarea.moc"
