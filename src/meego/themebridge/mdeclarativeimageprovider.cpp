@@ -33,6 +33,9 @@ MDeclarativeImageProvider::MDeclarativeImageProvider() :
     QDeclarativeImageProvider(QDeclarativeImageProvider::Pixmap),
     m_themeDaemonClient(0)
 {
+#ifdef Q_WS_MAC
+    m_themeDaemonClient = new MLocalThemeDaemonClient();
+#else
     MRemoteThemeDaemonClient *remoteThemeDaemonClient = new MRemoteThemeDaemonClient();
     if (remoteThemeDaemonClient->isConnected()) {
         m_themeDaemonClient = remoteThemeDaemonClient;
@@ -40,6 +43,7 @@ MDeclarativeImageProvider::MDeclarativeImageProvider() :
         delete remoteThemeDaemonClient;
         m_themeDaemonClient = new MLocalThemeDaemonClient();
     }
+#endif // Q_WS_MAC
 }
 
 MDeclarativeImageProvider::~MDeclarativeImageProvider()

@@ -60,7 +60,7 @@ MRemoteThemeDaemonClient::MRemoteThemeDaemonClient(const QString &serverAddress,
     connect(&m_socket, SIGNAL(readyRead()), this, SLOT(connectionDataAvailable()));
 
     const QString address = serverAddress.isEmpty() ? M::MThemeDaemonProtocol::ServerAddress : serverAddress;
-    if (connectToServer(address, -1)) {
+    if (connectToServer(address, 2000)) {
         m_stream.setDevice(&m_socket);
 
         const QFileInfo fileInfo(QCoreApplication::instance()->applicationName());

@@ -29,21 +29,68 @@
 
 #include <themedaemon/mabstractthemedaemonclient.h>
 
+#include <QHash>
+#include <QPixmap>
+#include <QString>
+
 /**
  * \brief Allows to request pixmaps from a local themedaemon server.
+ *
+ * The requested pixmaps are cached so that multiple requests of the
+ * same pixmap can be handled fast.
  */
 class MLocalThemeDaemonClient : public MAbstractThemeDaemonClient
 {
     Q_OBJECT
 
 public:
-    MLocalThemeDaemonClient(QObject *parent = 0);
+    /**
+     * \param path   File path where the icons and images are located.
+     *               If no file path is provided, the default path defined
+     *               by the define THEME_DIR is used.
+     * \param parent Parent object.
+     */
+    MLocalThemeDaemonClient(const QString &path = QString(), QObject *parent = 0);
     virtual ~MLocalThemeDaemonClient();
 
     /**
      * \see MAbstractThemeDaemonClient::requestPixmap()
      */
     virtual QPixmap requestPixmap(const QString &id, const QSize &requestedSize);
+
+private:
+    /**
+     * Reads the image \a id from the available directories specified
+     * by m_imageDirNodes.
+     */
+    QImage readImage(const QString &id) const;
+
+    /**
+     * Cache entry that identifies a pixmap by a string-ID and size.
+     */
+    struct PixmapIdentifier
+    {
+        PixmapIdentifier();
+        PixmapIdentifier(const QString &imageId, const QSize &size);
+        QString imageId;
+        QSize size;
+        bool operator==(const PixmapIdentifier &other) const;
+        bool operator!=(const PixmapIdentifier &other) const;
+    };
+
+    struct ImageDirNode
+    {
+        ImageDirNode(const QString &directory, const QStringList &suffixList);
+        QString directory;
+        QStringList suffixList;
+    };
+
+    QString m_path;
+    QHash<PixmapIdentifier, QPixmap> m_pixmapCache;
+    QList<ImageDirNode> m_imageDirNodes;
+
+    friend uint qHash(const MLocalThemeDaemonClient::PixmapIdentifier &id);
+    friend class tst_MLocalThemeDaemonClient; // Unit tests
 };
 
 #endif

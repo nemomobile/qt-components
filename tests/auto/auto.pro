@@ -12,5 +12,6 @@ SUBDIRS=            \
     #api_multilineedit #TODO not yet finalized
 
 meego {
-   !macx:SUBDIRS += mremotethemedaemonclient
+   !macx:SUBDIRS += mlocalthemedaemonclient \
+                    mremotethemedaemonclient
 }
