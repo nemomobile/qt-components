@@ -24,30 +24,25 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.0
+import Qt 4.7
 import com.meego 1.0
 
-Page {
+Template {
     tools: commonTools
 
-    ListModel {
-        id: m
+    //title: "Icon Button"
+    infoText: "Icon Buttons have an icon and can have a text label. Icon button differs from push button by its visual presentation: it does not have button-style edges like a Push Button does.\n\nIcon Buttons are used in e.g. Toolbars."
 
-        ListElement {
-            name: "Icon Button"
-            source: "IconButtons.qml"
-        }
+    IconButton {
+        y: 52
+        anchors.horizontalCenter: parent.horizontalCenter
+        iconSource: "image://theme/icon-m-toolbar-new-chat"
     }
 
-    ListView {
-        anchors.fill: parent
-        model: m
-
-        delegate: BasicListItem {
-            title: name
-            onClicked: {
-                pageStack.push(Qt.createComponent(source));
-            }
-        }
+    IconButton {
+        y: 145
+        anchors.horizontalCenter: parent.horizontalCenter
+        iconSource: "image://theme/icon-m-toolbar-send-email"
+        text: "Lorem ipsum"
     }
 }
