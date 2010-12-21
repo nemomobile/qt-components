@@ -26,6 +26,7 @@
 
 import Qt 4.7
 import com.meego.themebridge 1.0
+import "UIConstants.js" as UI
 
 ImplicitSizeItem {
     id: root
@@ -61,8 +62,11 @@ ImplicitSizeItem {
         anchors.centerIn: parent
         onClicked: root.closeClicked()
 
-        iconId: escapeStyle.current.get("closeButtonIconId")
-        styleObjectName: escapeStyle.current.get("closeButtonObjectName")
+        iconSource: "image://theme/" + escapeStyle.current.get("closeButtonIconId")
+        iconWidth: UI.SIZE_ICON_LARGE
+        iconHeight: UI.SIZE_ICON_LARGE
+
+        property string mode: pressed ? "pressed" : "default"
     }
 
     IconButton {
@@ -70,8 +74,11 @@ ImplicitSizeItem {
         anchors.centerIn: parent
         onClicked: root.backClicked()
 
-        iconId: escapeStyle.current.get("backButtonIconId")
-        styleObjectName: escapeStyle.current.get("backButtonObjectName")
+        iconSource: "image://theme/" + escapeStyle.current.get("backButtonIconId")
+        iconWidth: UI.SIZE_ICON_LARGE
+        iconHeight: UI.SIZE_ICON_LARGE
+
+        property string mode: pressed ? "pressed" : "default"
 
         // Hidden state
         anchors.horizontalCenterOffset: root.warpDistance

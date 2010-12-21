@@ -27,15 +27,54 @@
 #include "mdeclarativeiconglow.h"
 
 #include <QPainter>
+#include <QDeclarativeEngine>
+#include <QDeclarativeImageProvider>
 
 MDeclarativeIconGlow::MDeclarativeIconGlow(QDeclarativeItem *parent) :
-    MDeclarativeIcon(parent), m_glowRadius(0), m_glowColor(Qt::white)
+    QDeclarativeItem(parent), m_glowRadius(0), m_glowColor(Qt::white)
 {
+    setFlag(QGraphicsItem::ItemHasNoContents, false);
     setCacheMode(QGraphicsItem::ItemCoordinateCache);
 }
 
 MDeclarativeIconGlow::~MDeclarativeIconGlow()
 {
+}
+
+QUrl MDeclarativeIconGlow::source() const
+{
+    return m_source;
+}
+
+void MDeclarativeIconGlow::setSource(const QUrl &source)
+{
+    if (m_source == source)
+        return;
+
+    m_source = source;
+
+    m_icon = QImage();
+    update();
+
+    emit sourceChanged(m_source);
+}
+
+QSize MDeclarativeIconGlow::sourceSize() const
+{
+    return m_sourceSize;
+}
+
+void MDeclarativeIconGlow::setSourceSize(const QSize &size)
+{
+    if (m_sourceSize == size)
+        return;
+
+    m_sourceSize = size;
+
+    m_icon = QImage();
+    update();
+
+    emit sourceSizeChanged(m_sourceSize);
 }
 
 int MDeclarativeIconGlow::glowRadius() const
@@ -76,19 +115,62 @@ static void blur(const QImage *source, QImage *destination, int radius, const QC
 
 void MDeclarativeIconGlow::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    if (!m_icon)
+    if (m_icon.isNull() && !loadIcon())
         return;
 
     // Generate glow image
     // This is slow, I'm relying on QGraphicsItem cache system here
-    QImage pixmapImage = m_icon->toImage().scaled(QSize(width(), height()),
-                                                  Qt::IgnoreAspectRatio,
-                                                  Qt::SmoothTransformation);
+    QImage scaledImage = m_icon.scaled(QSize(width(), height()),
+                                       Qt::IgnoreAspectRatio,
+                                       Qt::SmoothTransformation);
     QImage glowImage(boundingRect().size().toSize(), QImage::Format_ARGB32);
-    blur(&pixmapImage, &glowImage, m_glowRadius, m_glowColor);
+    blur(&scaledImage, &glowImage, m_glowRadius, m_glowColor);
 
     // Blit to screen
     painter->drawImage(boundingRect().toRect(), glowImage);
+}
+
+bool MDeclarativeIconGlow::loadIcon()
+{
+    if (m_source.isEmpty())
+        return false;
+
+    const QString scheme = m_source.scheme();
+
+    if (scheme == "file") {
+        // Load from filesystem
+        m_icon = QImage(m_source.path());
+
+        if (m_icon.isNull())
+            return false;
+
+    } else if (scheme == "image") {
+        QDeclarativeEngine *engine = qmlEngine(this);
+        Q_ASSERT(engine);
+
+        QDeclarativeImageProvider *provider = engine->imageProvider(m_source.host());
+        if (!provider)
+            return false;
+
+        const QString id(m_source.path().mid(1));
+        QSize loadedSize;
+        const QSize requestedSize = m_sourceSize.isEmpty() ? QSize(0, 0) : m_sourceSize;
+
+        if (provider->imageType() == QDeclarativeImageProvider::Image) {
+            m_icon = provider->requestImage(id, &loadedSize, requestedSize);
+        } else {
+            m_icon = provider->requestPixmap(id, &loadedSize, requestedSize).toImage();
+        }
+
+    } else {
+        qWarning("QML IconGlow: Protocl \"%s\" is unknown", qPrintable(scheme));
+        return false;
+    }
+
+    setImplicitWidth(m_icon.width());
+    setImplicitHeight(m_icon.height());
+
+    return true;
 }
 
 ////////////////////////////////////////////////////

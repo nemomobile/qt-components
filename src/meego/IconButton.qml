@@ -30,26 +30,22 @@ import com.meego.themebridge 1.0
 ImplicitSizeItem {
     id: root
 
-    property alias iconId: icon.iconId
-    property alias styleObjectName: meegostyle.styleObjectName
-    // the icon button needs to export its mode in case it has a background
-    property alias mode: meegostyle.mode
+    property alias pressed: area.buttonPressed
     property alias text: label.text
+    property alias iconSource: icon.source
+    property alias iconWidth: icon.sourceSize.width
+    property alias iconHeight: icon.sourceSize.height
+
     signal clicked
 
-    implicitWidth: Math.max(meegostyle.preferredWidth, icon.width)
-    implicitHeight: Math.max(meegostyle.preferredHeight, icon.height)
-
-    Style {
-        id: meegostyle
-        styleClass: "MButtonIconStyle"
-        mode: area.containsMouse && area.pressed ? "pressed" : "default"
-    }
+    implicitWidth: Math.max(88, icon.width)
+    implicitHeight: Math.max(60, icon.height)
 
     MouseArea {
         id: area
         anchors.fill: parent
         onClicked: root.clicked()
+        property bool buttonPressed: containsMouse && pressed
     }
 
     IconGlow {
@@ -57,16 +53,16 @@ ImplicitSizeItem {
         anchors.fill: icon
         opacity: 0
 
-        iconId: icon.iconId
-        glowColor: meegostyle.current.get("glowColor")
-        glowRadius: meegostyle.current.get("glowRadius")
+        source: icon.source
+        sourceSize: icon.sourceSize
+        glowColor: "white"
+        glowRadius: 8
     }
 
-    Icon {
+    Image {
         id: icon
         anchors.centerIn: parent
-        width: meegostyle.current.get("iconSize").width
-        height: meegostyle.current.get("iconSize").height
+        smooth: true
 
         transform: Scale {
             id: scaleTransform
@@ -81,7 +77,7 @@ ImplicitSizeItem {
             when: area.containsMouse && area.pressed
             PropertyChanges {
                 target: label
-                scale: 1 - meegostyle.current.get("shrinkFactor")
+                scale: 0.8
             }
             PropertyChanges {
                 target: glow
@@ -95,7 +91,7 @@ ImplicitSizeItem {
                 PropertyAnimation {
                     property: "scale"
                     easing.type: Easing.InCubic
-                    duration: meegostyle.current.get("shrinkDuration")
+                    duration: 100
                 }
             },
             Transition {
@@ -104,7 +100,7 @@ ImplicitSizeItem {
                     PropertyAnimation {
                         property: "scale"
                         easing.type: Easing.OutCubic
-                        duration: meegostyle.current.get("shrinkDuration")
+                        duration: 100
                     }
                     PropertyAnimation {
                         target: glow
@@ -112,15 +108,15 @@ ImplicitSizeItem {
                         from: 0
                         to: 1
                         easing.type: Easing.OutSine
-                        duration: meegostyle.current.get("glowDuration") / 2
+                        duration: 400
                     }
                     PropertyAnimation {
                         target: glow
                         property: "opacity"
                         from: 1
                         to: 0
-                        duration: meegostyle.current.get("glowDuration") / 2
                         easing.type: Easing.OutSine
+                        duration: 400
                     }
                 }
             }
@@ -141,11 +137,11 @@ ImplicitSizeItem {
                 target: root
                 implicitWidth: {
                     var contentsWidth = Math.max(icon.width, label.width);
-                    return Math.max(meegostyle.preferredWidth, contentsWidth);
+                    return Math.max(88, contentsWidth);
                 }
                 implicitHeight: {
                     var contentsHeight = icon.height + label.height + label.anchors.topMargin;
-                    return Math.max(meegostyle.preferredHeight, contentsHeight);
+                    return Math.max(60, contentsHeight);
                 }
             }
 

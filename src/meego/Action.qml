@@ -38,7 +38,7 @@ QtObject {
 
     property Item item: ActionButton {
         __action: action
-        iconId: action.iconId
+        iconSource: "image://theme/" + action.iconId
     }
 
     signal triggered

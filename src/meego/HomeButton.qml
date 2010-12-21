@@ -26,6 +26,7 @@
 
 import Qt 4.7
 import com.meego.themebridge 1.0
+import "UIConstants.js" as UI
 
 IconButton {
     id: root
@@ -33,7 +34,7 @@ IconButton {
     Style {
         id: homeStyle
         styleClass: "MHomeButtonPanelStyle"
-        mode: root.mode
+        mode: root.pressed ? "pressed" : "default"
     }
 
     Background {
@@ -43,6 +44,7 @@ IconButton {
         z: -1
     }
 
-    iconId: homeStyle.current.get("homeButtonIconId")
-    styleObjectName: homeStyle.current.get("homeButtonObjectName")
+    iconSource: "image://theme/" + homeStyle.current.get("homeButtonIconId")
+    iconWidth: UI.SIZE_ICON_LARGE
+    iconHeight: UI.SIZE_ICON_LARGE
 }

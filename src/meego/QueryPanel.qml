@@ -26,6 +26,7 @@
 
 import Qt 4.7
 import com.meego.themebridge 1.0
+import "UIConstants.js" as UI
 
 ImplicitSizeItem {
     id: root
@@ -105,8 +106,9 @@ ImplicitSizeItem {
             anchors.right: parent.right
             anchors.rightMargin: titleBarStyle.current.get("marginRight");
 
-            iconId: "icon-m-framework-close"
-            styleObjectName: "MDialogCloseButton"
+            iconSource: "image://theme/icon-m-framework-close"
+            iconWidth: UI.SIZE_ICON_DEFAULT
+            iconHeight: UI.SIZE_ICON_DEFAULT
             onClicked: root.dismiss()
         }
     }
