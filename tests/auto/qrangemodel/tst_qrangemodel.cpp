@@ -387,12 +387,12 @@ void tst_QRangeModel::valueAndPosition_data()
     // QTest::addColumn<RealList>("values");
     // QTest::addColumn<RealList>("positions");
 
-    QTest::newRow("same range") << 1.0 << 2.0 << 1.0 << 2.0;
-    QTest::newRow("same range inverted pos") << 1.0 << 2.0 << 2.0 << 1.0;
-    QTest::newRow("pos: 0 100 -> value: 1 2") << 1.0 << 2.0 << 0.0 << 100.0;
-    QTest::newRow("pos: 100 0 -> value: 1 2") << 1.0 << 2.0 << 100.0 << 0.0;
-    QTest::newRow("pos: -200 300 -> value: 1 2") << 1.0 << 2.0 << -200.0 << 300.0;
-    QTest::newRow("pos: 300 -200 -> value: -1 2.5") << -1.0 << 2.5 << 300.0 << -200.0;
+    QTest::newRow("same range") << qreal(1.0) << qreal(2.0) << qreal(1.0) << qreal(2.0);
+    QTest::newRow("same range inverted pos") << qreal(1.0) << qreal(2.0) << qreal(2.0) << qreal(1.0);
+    QTest::newRow("pos: 0 100 -> value: 1 2") << qreal(1.0) << qreal(2.0) << qreal(0.0) << qreal(100.0);
+    QTest::newRow("pos: 100 0 -> value: 1 2") << qreal(1.0) << qreal(2.0) << qreal(100.0) << qreal(0.0);
+    QTest::newRow("pos: -200 300 -> value: 1 2") << qreal(1.0) << qreal(2.0) << qreal(-200.0) << qreal(300.0);
+    QTest::newRow("pos: 300 -200 -> value: -1 2.5") << qreal(-1.0) << qreal(2.5) << qreal(300.0) << qreal(-200.0);
 }
 
 void tst_QRangeModel::valueAndPosition()
@@ -996,12 +996,12 @@ void tst_QRangeModel::valueForPosition_data()
     QTest::addColumn<qreal>("position");
     QTest::addColumn<qreal>("value");
 
-    QTest::newRow("Below minimum") << 150.0 << 5.0;
-    QTest::newRow("At minimum") << 200.0 << 5.0;
-    QTest::newRow("At 1/5") << 220.0 << 6.0;
-    QTest::newRow("At 3/5") << 260.0 << 8.0;
-    QTest::newRow("At maximum") << 300.0 << 10.0;
-    QTest::newRow("Above maximum") << 350.0 << 10.0;
+    QTest::newRow("Below minimum") << qreal(150.0) << qreal(5.0);
+    QTest::newRow("At minimum") << qreal(200.0) << qreal(5.0);
+    QTest::newRow("At 1/5") << qreal(220.0) << qreal(6.0);
+    QTest::newRow("At 3/5") << qreal(260.0) << qreal(8.0);
+    QTest::newRow("At maximum") << qreal(300.0) << qreal(10.0);
+    QTest::newRow("Above maximum") << qreal(350.0) << qreal(10.0);
 }
 
 void tst_QRangeModel::valueForPosition()
@@ -1041,12 +1041,12 @@ void tst_QRangeModel::positionForValue_data()
     QTest::addColumn<qreal>("position");
     QTest::addColumn<qreal>("value");
 
-    QTest::newRow("Below minimum") << 200.0 << 4.0;
-    QTest::newRow("At minimum") << 200.0 << 5.0;
-    QTest::newRow("At 1/5") << 220.0 << 6.0;
-    QTest::newRow("At 3/5") << 260.0 << 8.0;
-    QTest::newRow("At maximum") << 300.0 << 10.0;
-    QTest::newRow("Above maximum") << 300.0 << 12.0;
+    QTest::newRow("Below minimum") << qreal(200.0) << qreal(4.0);
+    QTest::newRow("At minimum") << qreal(200.0) << qreal(5.0);
+    QTest::newRow("At 1/5") << qreal(220.0) << qreal(6.0);
+    QTest::newRow("At 3/5") << qreal(260.0) << qreal(8.0);
+    QTest::newRow("At maximum") << qreal(300.0) << qreal(10.0);
+    QTest::newRow("Above maximum") << qreal(300.0) << qreal(12.0);
 }
 
 void tst_QRangeModel::positionForValue()
