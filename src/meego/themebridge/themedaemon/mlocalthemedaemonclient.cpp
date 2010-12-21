@@ -37,7 +37,7 @@ MLocalThemeDaemonClient::MLocalThemeDaemonClient(const QString &path, QObject *p
     m_imageDirNodes()
 {
     if (m_path.isEmpty()) {
-        m_path = getenv("M_THEME_DIR");
+        m_path = qgetenv("M_THEME_DIR");
         if (m_path.isEmpty()) {
 #ifdef THEME_DIR
             m_path = THEME_DIR;
