@@ -30,6 +30,8 @@ import com.meego 1.0
 Template {
     id: page
 
+    tools: commonTools
+
     anchors.fill: parent
     flickableContentHeight: 520
 

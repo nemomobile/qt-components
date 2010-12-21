@@ -56,7 +56,7 @@ Page {
             width: 1
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
-            height: flick.contentHeight
+            anchors.bottom: parent.bottom
             anchors.topMargin: 16
             anchors.bottomMargin: 5
         }

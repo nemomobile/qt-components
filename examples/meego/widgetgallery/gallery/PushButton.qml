@@ -30,6 +30,8 @@ import com.meego 1.0
 Page {
     id: page
 
+    tools: commonTools
+
     anchors.fill: parent
     Flickable {
         id: flick
@@ -72,7 +74,6 @@ Page {
                     rightMargin: 10
                 }
             }
-
 
             Rectangle {
                 id: firstLine

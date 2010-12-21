@@ -30,7 +30,8 @@ import com.meego 1.0
 Template {
     tools: commonTools
 
-    //title: "Labels"
+    flickableContentHeight: 440
+
     infoText: "Simple Label is used mainly by other components, and it does not support any formatting or interaction.\n\nRich Label supports multiple lines, HTML formatting and highlighting for links.\n\n All Labels can be aligned left, right or center and will be automatically truncated if the text does not fit inside the given area."
 
     Label {

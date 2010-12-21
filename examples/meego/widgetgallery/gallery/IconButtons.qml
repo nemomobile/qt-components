@@ -28,9 +28,9 @@ import Qt 4.7
 import com.meego 1.0
 
 Template {
+    id: page
     tools: commonTools
 
-    //title: "Icon Button"
     infoText: "Icon Buttons have an icon and can have a text label. Icon button differs from push button by its visual presentation: it does not have button-style edges like a Push Button does.\n\nIcon Buttons are used in e.g. Toolbars."
 
     IconButton {
