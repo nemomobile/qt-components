@@ -1,7 +1,7 @@
 include (../../../qt-components.pri)
 include (../../tests.pri)
 
-TARGET = tst_api_multilineedit
+TARGET = tst_quickcomponentsmultilineedit
 TEMPLATE = app
 QT += declarative
 

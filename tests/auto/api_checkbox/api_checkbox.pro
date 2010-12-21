@@ -1,7 +1,7 @@
 include (../../../qt-components.pri)
 include (../../tests.pri)
 
-TARGET = tst_api_checkbox
+TARGET = tst_quickcomponentscheckbox
 TEMPLATE = app
 QT += declarative
 

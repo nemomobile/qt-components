@@ -1,7 +1,7 @@
 include (../../../qt-components.pri)
 include (../../tests.pri)
 
-TARGET = tst_api_lineedit
+TARGET = tst_quickcomponentslineedit
 TEMPLATE = app
 QT += declarative
 

@@ -1,7 +1,7 @@
 include (../../../qt-components.pri)
 include (../../tests.pri)
 
-TARGET = tst_api_scrolldecorator
+TARGET = tst_quickcomponentsscrolldecorator
 TEMPLATE = app
 QT += declarative
 
