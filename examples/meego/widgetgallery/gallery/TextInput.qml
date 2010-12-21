@@ -8,47 +8,45 @@ Page {
     Rectangle {
         color: "steelblue"
         anchors.fill: parent
-
-        LineEdit {
+        TextField {
             id: lineEdit0
             width: 20
-            text: "LineEdit"
+            text: "TextField"
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
-            promptText:"lineEdit.promptText set ok"
+            placeholderText: "lineEdit.promptText set ok"
             echoMode: TextInput.Password
         }
 
-        LineEdit {
+        TextField {
             id: lineEdit1
             width: 20
-            text: "singleLineEdit"
+            text: "singleTextField"
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: lineEdit0.bottom
-            promptText:"lineEdit.promptText set ok"
+            placeholderText: "lineEdit.promptText set ok"
         }
 
-        MultiLineEdit {
+        TextArea {
             id: lineEdit2
             width: 20
-            text: "MultiLineEdit"
+            text: "TextArea"
             anchors.top: lineEdit1.bottom
             anchors.left: parent.left
             anchors.right: parent.right
-            promptText:"lineEdit.promptText set ok"
+            placeholderText: "lineEdit.promptText set ok"
         }
 
-        LineEdit {
+        TextField {
             id: lineEdit3
             width: 20
             text: "vkb disabled"
             anchors.top: lineEdit2.bottom
             anchors.left: parent.left
             anchors.right: parent.right
-            promptText:"lineEdit.promptText set ok"
-            //activateFocusOnPressed: false
+            placeholderText: "lineEdit.promptText set ok"
         }
 
         TextInput {

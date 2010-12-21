@@ -31,39 +31,79 @@ import com.meego.themebridge 1.0
 ImplicitSizeItem {
     id: root
 
+    // Common public API
     property string text
-    property int   documentMargin: 4
-    property alias promptText: prompt.text
-    property alias styleType: meegostyle.styleType
+    property alias placeholderText: prompt.text
 
-    // Inherited from text items
-    property variant echoMode: TextInput.Normal
-    property variant inputElement: textInput
-    property variant activeFocusOnPress: true
-    property variant horizontalAlignment: TextInput.AlignLeft
-    property variant color: meegostyle.current.get("textColor")
-    property variant selectedTextColor: meegostyle.current.get("selectionTextColor")
-    property variant selectionColor: meegostyle.current.get("selectionBackgroundColor")
+    property alias cursorPosition: textEdit.cursorPosition
+    property alias readOnly: textEdit.readOnly
+
+    property alias horizontalAlignment: textEdit.horizontalAlignment
+    property alias verticalAlignment: textEdit.verticalAlignment
     property variant font: meegostyle.current.get("font")
-    property variant passwordCharacter: meegostyle.current.get("maskString")
 
-    property real preferredWidth: inputElement.textModel.width +
+    property alias selectedText: textEdit.selectedText
+    property alias selectionStart: textEdit.selectionStart
+    property alias selectionEnd: textEdit.selectionEnd
+
+    property alias wrapMode: textEdit.wrapMode // ### was TextEdit.WrapAtWordBoundaryOrAnywhere
+    property alias textFormat: textEdit.textFormat
+
+    function copy() {
+        textEdit.copy()
+    }
+
+    function paste() {
+        textEdit.paste()
+    }
+
+    function cut() {
+        textEdit.cut()
+    }
+
+    function select(start, end) {
+        textEdit.select(start, end)
+    }
+
+    function selectAll() {
+        textEdit.selectAll()
+    }
+
+    function selectWord() {
+        textEdit.selectWord()
+    }
+
+    function positionAt(x) {
+        // ### TODO: remove the left margins from x
+        return textEdit.positionAt(x)
+    }
+
+    function positionToRectangle(pos) {
+        // ### TODO: translate rect to TextArea coord
+        return textEdit.positionToRectangle(pos)
+    }
+
+    // API extensions
+    property real preferredWidth: textEdit.textModel.width +
             meegostyle.current.get("paddingLeft") +
             meegostyle.current.get("paddingRight") +
-            2 * documentMargin
+            2 * __documentMargin
 
-    property real preferredHeight: inputElement.textModel.height +
+    property real preferredHeight: textEdit.textModel.height +
             meegostyle.current.get("paddingTop") +
             meegostyle.current.get("paddingBottom") +
-            2 * documentMargin
+            2 * __documentMargin
 
     implicitWidth: Math.max(meegostyle.preferredWidth, preferredWidth)
     implicitHeight: preferredHeight
 
+    // private
+    property int __documentMargin: 4
+
     Style {
         id: meegostyle
         styleClass: "MTextEditStyle"
-        mode: inputElement.activeFocus ? "selected" : "default"
+        mode: textEdit.activeFocus ? "selected" : "default"
     }
 
     Background {
@@ -73,53 +113,51 @@ ImplicitSizeItem {
     }
 
     // XXX Having an additional text element and duplicating all the text
-    //     rendering logic is ugly and not efficient. I would expect textInput
+    //     rendering logic is ugly and not efficient. I would expect textEdit
     //     to expose the implicit sizes so I could use that as a parameter to
     //     control the size of my own component.
-    //     Something like, preferredWidth = textInput.implicitWidth + margins
+    //     Something like, preferredWidth = textEdit.implicitWidth + margins
 
 
-    anchors.leftMargin: documentMargin + meegostyle.current.get("paddingLeft")
-    anchors.rightMargin: documentMargin + meegostyle.current.get("paddingRight")
-    anchors.topMargin: documentMargin + meegostyle.current.get("paddingTop")
-    anchors.bottomMargin: documentMargin + meegostyle.current.get("paddingBottom")
+    anchors.leftMargin: __documentMargin + meegostyle.current.get("paddingLeft")
+    anchors.rightMargin: __documentMargin + meegostyle.current.get("paddingRight")
+    anchors.topMargin: __documentMargin + meegostyle.current.get("paddingTop")
+    anchors.bottomMargin: __documentMargin + meegostyle.current.get("paddingBottom")
 
-    clip:true
+    clip: true
 
     Text {
         id: prompt
         anchors.fill: parent
-        visible: !inputElement.activeFocus && !inputElement.text && prompt.text
+        visible: !textEdit.activeFocus && !textEdit.text && prompt.text
         color: meegostyle.current.get("promptColor")
         font: root.font
     }
 
-    TextInput {
-        id: textInput
+    TextEdit {
+        id: textEdit
         x: root.anchors.leftMargin
         y: root.anchors.topMargin
         width: root.width - x - root.anchors.rightMargin
         height: root.height - y - root.anchors.bottomMargin
-        text:root.text
+        text: root.text
         onTextChanged: root.text = text
-        passwordCharacter: root.passwordCharacter
-        echoMode: root.echoMode
         font: root.font
-        color: root.color
+        color: meegostyle.current.get("textColor")
         selectByMouse: true
-        horizontalAlignment: root.horizontalAlignment
-        selectedTextColor: root.selectedTextColor
-        selectionColor: root.selectionColor
+        selectedTextColor: meegostyle.current.get("selectionTextColor")
+        selectionColor: meegostyle.current.get("selectionBackgroundColor")
         property variant textModel: Text {
             font: root.font;
             text: root.text;
             visible: false
+            wrapMode: textEdit.wrapMode;
         }
         MouseArea {
             anchors.fill: parent
             onReleased: {
                 parent.focus=true;
-                screen.sendClicked(mouseX,mouseY,parent.positionAt(mouseX));
+                screen.sendClicked(mouseX,mouseY,parent.positionAt(mouseX,mouseY));
             }
         }
     }

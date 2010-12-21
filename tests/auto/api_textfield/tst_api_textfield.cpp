@@ -40,20 +40,18 @@
 
 #include "tst_quickcomponentstest.h"
 
-class tst_quickcomponentslineedit : public QObject
+class tst_api_textfield : public QObject
 
 {
     Q_OBJECT
 private slots:
     void initTestCase();
     void placeholderText();
-    void inputMethodHint();
+    void inputMethodHints();
     void font();
     void cursorPosition();
     void readOnly();
-    void displayText();
-    void passwordMode();
-    void horizontalAlignment();
+    void echoMode();
     void inputMask();
     void selectedText();
     void selectionEnd();
@@ -61,79 +59,68 @@ private slots:
     void text();
     void acceptableInput();
     void validator();
-    void maximumLength();
-    void selectionPolicy();
+
+    // ### missing function tests
 
 private:
     QObject *componentObject;
 };
 
-void tst_quickcomponentslineedit::initTestCase()
+void tst_api_textfield::initTestCase()
 {
     QString errors;
-    componentObject = tst_quickcomponentstest::createComponentFromFile("tst_quickcomponentslineedit.qml", &errors);
+    componentObject = tst_quickcomponentstest::createComponentFromFile("tst_api_textfield.qml", &errors);
     QVERIFY2(componentObject, qPrintable(errors));
 }
 
-void tst_quickcomponentslineedit::placeholderText()
+void tst_api_textfield::placeholderText()
 {
     QVERIFY( componentObject->setProperty("placeholderText", "Some text") );
     QCOMPARE( componentObject->property("placeholderText").toString(), QString("Some text") );
 }
 
-void tst_quickcomponentslineedit::inputMethodHint()
+void tst_api_textfield::inputMethodHints()
 {
-    QVERIFY( componentObject->setProperty("inputMethodHint", Qt::ImhPreferNumbers) );
+    QVERIFY( componentObject->setProperty("inputMethodHints", Qt::ImhPreferNumbers) );
     QVERIFY( componentObject->setProperty("text", "1234") );
     QCOMPARE( componentObject->property("placeholderText").toString(), QString("Some text") );
     QVERIFY( componentObject->setProperty("text", "Some more text" ) );
     QCOMPARE( componentObject->property("text").toString(), QString("1234") );
 }
 
-void tst_quickcomponentslineedit::font()
+void tst_api_textfield::font()
 {
     QVERIFY( componentObject->setProperty("font.family", "Helvetica") );
     QCOMPARE( componentObject->property("font.family").toString(), QString("Helvetica") );
 }
 
-void tst_quickcomponentslineedit::cursorPosition()
+void tst_api_textfield::cursorPosition()
 {
     QVERIFY( componentObject->setProperty("cursorPosition", 0) );
     QCOMPARE( componentObject->property("cursorPosition").toInt(), 0 );
 }
 
-void tst_quickcomponentslineedit::readOnly()
+void tst_api_textfield::readOnly()
 {
     QVERIFY( componentObject->setProperty("readOnly", true) );
     QVERIFY( componentObject->setProperty("text", "I just changed the text") );
     QVERIFY( componentObject->property("text").toString() != QString("I just changed the text"));
 }
 
-void tst_quickcomponentslineedit::displayText()
+void tst_api_textfield::echoMode()
 {
-    QVERIFY( componentObject->setProperty("displayText", "Display Hint") );
-    QCOMPARE( componentObject->property("displayText").toString(), QString("Display Hint") );
+    // ### set correct enum type
+    QVERIFY( componentObject->setProperty("echoMode", 2) );
+    QCOMPARE( componentObject->property("echoMode").toInt(), 2 );
 }
 
-void tst_quickcomponentslineedit::passwordMode()
-{
-    QVERIFY( componentObject->setProperty("passwordMode", 2) );
-    QCOMPARE( componentObject->property("passwordMode").toInt(), 2 );
-}
-
-void tst_quickcomponentslineedit::horizontalAlignment()
-{
-    QVERIFY( componentObject->setProperty("horizontalAlignment", 2) );
-
-}
-
-void tst_quickcomponentslineedit::inputMask()
+void tst_api_textfield::inputMask()
 {
     QVERIFY( componentObject->setProperty("inputMask", 2) );
 
 }
 
-void tst_quickcomponentslineedit::selectedText()
+void tst_api_textfield::selectedText()
 {
     QVERIFY( componentObject->setProperty("text", "Good morning") );
     QVERIFY( componentObject->setProperty("selectionStart", 0) );
@@ -142,24 +129,26 @@ void tst_quickcomponentslineedit::selectedText()
     QCOMPARE( componentObject->property("selectedText").toString(), QString("Good") );
 }
 
-void tst_quickcomponentslineedit::selectionEnd()
+void tst_api_textfield::selectionEnd()
 {
+    // ### needs to set selection
     QVERIFY( componentObject->setProperty("selectionEnd", 2) );
 
 }
 
-void tst_quickcomponentslineedit::selectionStart()
+void tst_api_textfield::selectionStart()
 {
+    // ### needs to set selection
     QVERIFY( componentObject->setProperty("selectionStart", 1) );
 }
 
-void tst_quickcomponentslineedit::text()
+void tst_api_textfield::text()
 {
     QVERIFY( componentObject->setProperty("text", "Hello World") );
     QCOMPARE( componentObject->property("text").toString(), QString("Hello World") );
 }
 
-void tst_quickcomponentslineedit::acceptableInput()
+void tst_api_textfield::acceptableInput()
 {
     // depending on validator, acceptable input should be true / false
     QVERIFY( componentObject->setProperty("validator", "-?\\d{1,3}") );
@@ -174,22 +163,12 @@ void tst_quickcomponentslineedit::acceptableInput()
     QCOMPARE( componentObject->property("acceptableInput").toBool(), false);
 }
 
-void tst_quickcomponentslineedit::validator()
+void tst_api_textfield::validator()
 {
     QVERIFY( componentObject->setProperty("validator", "-?\\d{1,3}") );
 
 }
 
-void tst_quickcomponentslineedit::maximumLength()
-{
-    QVERIFY( componentObject->setProperty("maximumLength", 100) );
-    QCOMPARE( componentObject->property("maximumLength").toInt(), 100 );
-}
+QTEST_MAIN(tst_api_textfield)
 
-void tst_quickcomponentslineedit::selectionPolicy()
-{
-}
-
-QTEST_MAIN(tst_quickcomponentslineedit)
-
-#include "tst_quickcomponentslineedit.moc"
+#include "tst_api_textfield.moc"

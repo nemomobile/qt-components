@@ -47,8 +47,6 @@ QML_FILES = \
         HomeButton.qml \
         IconButton.qml \
         Label.qml \
-        LineEdit.qml \
-        MultiLineEdit.qml \
         ListItem.qml \
         Page.qml \
         PageStack.qml \
@@ -59,6 +57,8 @@ QML_FILES = \
         ProgressBar.qml \
         ScrollDecorator.qml \
         ScrollDecoratorSizer.qml \
+        TextArea.qml \
+        TextField.qml \
         ToolBar.qml \
         ToolBarLayout.qml \
         ToolButton.qml \

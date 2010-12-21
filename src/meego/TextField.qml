@@ -31,40 +31,81 @@ import com.meego.themebridge 1.0
 ImplicitSizeItem {
     id: root
 
+    // Common public API
     property string text
-    property int   documentMargin: 4
-    property alias promptText: prompt.text
-    property alias styleType: meegostyle.styleType
+    property alias placeholderText: prompt.text
 
-    // Inherited from text items
-    //property variant echoMode: TextEdit.Normal
-    property variant wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-    property variant inputElement: textEdit
-    property variant activeFocusOnPress: true
-    property variant horizontalAlignment: TextEdit.AlignLeft
-    property variant color: meegostyle.current.get("textColor")
-    property variant selectedTextColor: meegostyle.current.get("selectionTextColor")
-    property variant selectionColor: meegostyle.current.get("selectionBackgroundColor")
+    property alias inputMethodHints: textInput.inputMethodHints
+    property alias cursorPosition: textInput.cursorPosition
+    property alias readOnly: textInput.readOnly
+    property alias acceptableInput: textInput.acceptableInput
+    property alias inputMask: textInput.inputMask
+    property alias validator: textInput.validator
+
+    property alias selectedText: textInput.selectedText
+    property alias selectionStart: textInput.selectionStart
+    property alias selectionEnd: textInput.selectionEnd
+
     property variant font: meegostyle.current.get("font")
-    property variant passwordCharacter: meegostyle.current.get("maskString")
+    property alias echoMode: textInput.echoMode // ### TODO: declare own enum { Normal, Password }
 
-    property real preferredWidth: inputElement.textModel.width +
+    function copy() {
+        textInput.copy()
+    }
+
+    function paste() {
+        textInput.paste()
+    }
+
+    function cut() {
+        textInput.cut()
+    }
+
+    function select(start, end) {
+        textInput.select(start, end)
+    }
+
+    function selectAll() {
+        textInput.selectAll()
+    }
+
+    function selectWord() {
+        textInput.selectWord()
+    }
+
+    function positionAt(x) {
+        // ### TODO: remove the left margins from x
+        return textInput.positionAt(x)
+    }
+
+    function positionToRectangle(pos) {
+        // ### TODO: translate rect to TextField coord
+        return textInput.positionToRectangle(pos)
+    }
+
+    // API extensions
+    property real preferredWidth: textInput.textModel.width +
             meegostyle.current.get("paddingLeft") +
             meegostyle.current.get("paddingRight") +
-            2 * documentMargin
+            2 * __documentMargin
 
-    property real preferredHeight: inputElement.textModel.height +
+    property real preferredHeight: textInput.textModel.height +
             meegostyle.current.get("paddingTop") +
             meegostyle.current.get("paddingBottom") +
-            2 * documentMargin
+            2 * __documentMargin
 
     implicitWidth: Math.max(meegostyle.preferredWidth, preferredWidth)
     implicitHeight: preferredHeight
 
+    // private
+    property variant __passwordCharacter: meegostyle.current.get("maskString")
+    property int __documentMargin: 4
+
+
     Style {
         id: meegostyle
         styleClass: "MTextEditStyle"
-        mode: inputElement.activeFocus ? "selected" : "default"
+        mode: textInput.activeFocus ? "selected" : "default"
     }
 
     Background {
@@ -80,47 +121,45 @@ ImplicitSizeItem {
     //     Something like, preferredWidth = textInput.implicitWidth + margins
 
 
-    anchors.leftMargin: documentMargin + meegostyle.current.get("paddingLeft")
-    anchors.rightMargin: documentMargin + meegostyle.current.get("paddingRight")
-    anchors.topMargin: documentMargin + meegostyle.current.get("paddingTop")
-    anchors.bottomMargin: documentMargin + meegostyle.current.get("paddingBottom")
+    anchors.leftMargin: __documentMargin + meegostyle.current.get("paddingLeft")
+    anchors.rightMargin: __documentMargin + meegostyle.current.get("paddingRight")
+    anchors.topMargin: __documentMargin + meegostyle.current.get("paddingTop")
+    anchors.bottomMargin: __documentMargin + meegostyle.current.get("paddingBottom")
 
-    clip:true
+    clip: true
 
     Text {
         id: prompt
         anchors.fill: parent
-        visible: !inputElement.activeFocus && !inputElement.text && prompt.text
+        visible: !textInput.activeFocus && !textInput.text && prompt.text
         color: meegostyle.current.get("promptColor")
         font: root.font
     }
 
-    TextEdit {
-        id: textEdit
+    TextInput {
+        id: textInput
         x: root.anchors.leftMargin
         y: root.anchors.topMargin
         width: root.width - x - root.anchors.rightMargin
         height: root.height - y - root.anchors.bottomMargin
-        text:root.text
+        text: root.text
         onTextChanged: root.text = text
+        passwordCharacter: root.__passwordCharacter
         font: root.font
-        color: root.color
-        wrapMode: root.wrapMode
+        color: meegostyle.current.get("textColor")
         selectByMouse: true
-        horizontalAlignment: root.horizontalAlignment
-        selectedTextColor: root.selectedTextColor
-        selectionColor: root.selectionColor
+        selectedTextColor: meegostyle.current.get("selectionTextColor")
+        selectionColor: meegostyle.current.get("selectionBackgroundColor")
         property variant textModel: Text {
             font: root.font;
             text: root.text;
             visible: false
-            wrapMode: root.wrapMode;
         }
         MouseArea {
             anchors.fill: parent
             onReleased: {
-                parent.focus=true;
-                screen.sendClicked(mouseX,mouseY,parent.positionAt(mouseX,mouseY));
+                parent.focus = true;
+                screen.sendClicked(mouseX,mouseY,parent.positionAt(mouseX));
             }
         }
     }

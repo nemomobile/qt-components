@@ -8,8 +8,6 @@ ButtonRow 1.0 ButtonRow.qml
 CheckBox 1.0 CheckBox.qml
 IconButton 1.0 IconButton.qml
 Label 1.0 Label.qml
-LineEdit 1.0 LineEdit.qml
-MultiLineEdit 1.0 MultiLineEdit.qml
 ListItem 1.0 ListItem.qml
 Page 1.0 Page.qml
 PageStack 1.0 PageStack.qml
@@ -18,6 +16,8 @@ ScrollDecorator 1.0 ScrollDecorator.qml
 Slider 1.0 Slider.qml
 SliderTemplate 1.0 SliderTemplate.qml
 Switch 1.0 Switch.qml
+TextArea 1.0 TextArea.qml
+TextField 1.0 TextField.qml
 ToolBar 1.0 ToolBar.qml
 ToolBarLayout 1.0 ToolBarLayout.qml
 ToolButton 1.0 ToolButton.qml

@@ -39,7 +39,7 @@
 
 #include "tst_quickcomponentstest.h"
 
-class tst_quickcomponentsmultilineedit : public QObject
+class tst_api_textarea : public QObject
 
 {
     Q_OBJECT
@@ -50,8 +50,6 @@ private slots:
     void cursorPosition();
     void horizontalAlignment();
     void verticalAlignment();
-    void contentHeight();
-    void contentWidth();
     void readOnly();
     void selectedText();
     void selectionEnd();
@@ -60,62 +58,51 @@ private slots:
     void textFormat();
     void wrapMode();
 
+    // ### missing functions tests
 private:
     QObject *componentObject;
 };
 
-void tst_quickcomponentsmultilineedit::initTestCase()
+void tst_api_textarea::initTestCase()
 {
     QString errors;
-    componentObject = tst_quickcomponentstest::createComponentFromFile("tst_quickcomponentsmultilineedit.qml", &errors);
+    componentObject = tst_quickcomponentstest::createComponentFromFile("tst_api_textarea.qml", &errors);
     QVERIFY2(componentObject, qPrintable(errors));
 }
 
 
-void tst_quickcomponentsmultilineedit::font()
+void tst_api_textarea::font()
 {
     QVERIFY( componentObject->setProperty("font.family", "Helvetica") );
     QCOMPARE( componentObject->property("font.family").toString(), QString("Helvetica") );
 }
 
-void tst_quickcomponentsmultilineedit::cursorPosition()
+void tst_api_textarea::cursorPosition()
 {
     QVERIFY( componentObject->setProperty("cursorPosition", 0) );
     QCOMPARE( componentObject->property("cursorPosition").toInt(), 0 );
 }
 
-void tst_quickcomponentsmultilineedit::horizontalAlignment()
+void tst_api_textarea::horizontalAlignment()
 {
     QVERIFY( componentObject->setProperty("horizontalAlignment", 0) );
     QCOMPARE( componentObject->property("horizontalAlignment").toInt(), 0 );
 }
 
-void tst_quickcomponentsmultilineedit::verticalAlignment()
+void tst_api_textarea::verticalAlignment()
 {
     QVERIFY( componentObject->setProperty("verticalAlignment", 0) );
     QCOMPARE( componentObject->property("verticalAlignment").toInt(), 0 );
 }
 
-void tst_quickcomponentsmultilineedit::contentHeight()
-{
-    QVERIFY( componentObject->setProperty("contentHeight", 0) );
-    QCOMPARE( componentObject->property("contentHeight").toInt(), 0 );
-}
-
-void tst_quickcomponentsmultilineedit::contentWidth()
-{
-    QVERIFY( componentObject->setProperty("contentWidth", 0) );
-    QCOMPARE( componentObject->property("contentWidth").toInt(), 0 );
-}
-
-void tst_quickcomponentsmultilineedit::readOnly()
+void tst_api_textarea::readOnly()
 {
     QVERIFY( componentObject->setProperty("readOnly", true) );
     QVERIFY( componentObject->setProperty("text", "I just changed the text") );
     QVERIFY( componentObject->property("text").toString() != QString("I just changed the text"));
 }
 
-void tst_quickcomponentsmultilineedit::selectedText()
+void tst_api_textarea::selectedText()
 {
     QVERIFY( componentObject->setProperty("text", "Good morning") );
     QVERIFY( componentObject->setProperty("selectionStart", 0) );
@@ -124,35 +111,35 @@ void tst_quickcomponentsmultilineedit::selectedText()
     QCOMPARE( componentObject->property("selectedText").toString(), QString("Good") );
 }
 
-void tst_quickcomponentsmultilineedit::selectionEnd()
+void tst_api_textarea::selectionEnd()
 {
     QVERIFY( componentObject->setProperty("selectionEnd", 2) );
 
 }
 
-void tst_quickcomponentsmultilineedit::selectionStart()
+void tst_api_textarea::selectionStart()
 {
     QVERIFY( componentObject->setProperty("selectionStart", 1) );
 }
 
-void tst_quickcomponentsmultilineedit::text()
+void tst_api_textarea::text()
 {
     QVERIFY( componentObject->setProperty("text", "Hello World") );
     QCOMPARE( componentObject->property("text").toString(), QString("Hello World") );
 }
 
-void tst_quickcomponentsmultilineedit::textFormat()
+void tst_api_textarea::textFormat()
 {
     QVERIFY( componentObject->setProperty("textFormat", 0) );
     QCOMPARE( componentObject->property("textFormat").toInt(), 0 );
 }
 
-void tst_quickcomponentsmultilineedit::wrapMode()
+void tst_api_textarea::wrapMode()
 {
     QVERIFY( componentObject->setProperty("wrapMode", 0) );
     QCOMPARE( componentObject->property("wrapMode").toInt(), 0 );
 }
 
-QTEST_MAIN(tst_quickcomponentsmultilineedit)
+QTEST_MAIN(tst_api_textarea)
 
-#include "tst_quickcomponentsmultilineedit.moc"
+#include "tst_api_textarea.moc"

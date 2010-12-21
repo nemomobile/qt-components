@@ -25,12 +25,12 @@
 **
 ****************************************************************************/
 /*!
-    \qmlclass LineEdit
+    \qmlclass TextField
     \ingroup qt-components
     \since 4.7
-    \brief The LineEdit component accepts key inputs.
+    \brief The TextField component accepts key inputs.
 
-    LineEdit is resizes to fit all input characters or can be fitted onto a
+    TextField is resizes to fit all input characters or can be fitted onto a
     fixed size. The line edit can also mask the input characters as when the
     user enters their password.
 
@@ -42,38 +42,32 @@
 
     \section1 Sample Implementation
     \code
-// uses a TextInput in the implementation, but provides styling frame and default fonts,
+// uses a TextInput in the implementation, but provides styling frame and default fonts
 Item {
+    property string text
     property string placeholderText
-    property int inputMethodHint (have enum in QML. use http://doc.qt.nokia.com/4.7/qt.html#InputMethodHint-enum
-    property alias font: textInput.font
+    property int inputMethodHints
+    property font font // alias to textInput.font
 
     property int cursorPosition
     property bool readOnly // defaults to false
-    property string displayText
-    property bool passwordMode
-    property int horizontalAlignment // enumeration
-    property string inputMask
-    property string selectedText
-    property int selectionEnd
-    property int selectionStart
-    property string text
+    property int echoMode // { Normal, Password }
     property bool acceptableInput // this is a read-only property
+    property string inputMask
     property Validator validator
-    property int maximumLength
-
-    property int selectionPolicy // enumeration. Select all, only one word, nothing, or ... on tap?
+    property string selectedText // read-only
+    property int selectionEnd // read-only
+    property int selectionStart // read-only
 
     // functions
     copy
     paste
     cut
-    moveCursorSelection
+    select(int start, int end)
     selectAll
     selectWord
-
-    // signal
-    signal accepted
+    positionAt(int x)
+    positionToRectangle(int pos)
 }
     \endcode
 */
