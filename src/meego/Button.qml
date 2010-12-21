@@ -85,7 +85,9 @@ ImplicitSizeItem {
 
             name += "-background";
 
-            if (mouseArea.containsMouse && mouseArea.pressed)
+            if (!enabled)
+                name += "-disabled";
+            else if (mouseArea.containsMouse && mouseArea.pressed)
                 name += "-pressed";
             else if (checkable.checked)
                 name += "-selected"
@@ -147,7 +149,9 @@ ImplicitSizeItem {
         color: getFontColor()
 
         function getFontColor() {
-            if (buttonType == "affirmative" || buttonType == "negative")
+            if (!enabled)
+                return UI.COLOR_DISABLED_FOREGROUND
+            else if (buttonType == "affirmative" || buttonType == "negative")
                 return mouseArea.containsMouse && mouseArea.pressed ? UI.COLOR_INVERTED_SECONDARY_FOREGROUND : UI.COLOR_INVERTED_FOREGROUND
             else
                 return (mouseArea.containsMouse && mouseArea.pressed) || (button.checkable && button.checked) ?

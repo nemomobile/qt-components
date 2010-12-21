@@ -33,6 +33,7 @@ var COLOR_FOREGROUND = "#000000";
 var COLOR_INVERTED_FOREGROUND = "#ffffff"
 var COLOR_SECONDARY_FOREGROUND = "#cc6633";
 var COLOR_INVERTED_SECONDARY_FOREGROUND = "#cc6633"
+var COLOR_DISABLED_FOREGROUND = "#b2b2b4"
 
 var SIZE_ICON_DEFAULT = 32;
 var SIZE_ICON_LARGE = 48;
@@ -45,3 +46,6 @@ var MARGIN_XLARGE = 16;
 // Distance in pixels from the widget bounding box inside which a release
 // event would still be accepted and trigger the widget
 var RELEASE_MISS_DELTA = 30
+
+var OPACITY_ENABLED = 1.0
+var OPACITY_DISABLED = 0.5
