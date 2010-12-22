@@ -15,6 +15,7 @@ SOURCES += \
     sdeclarativewindowdecoration.cpp
 
 HEADERS += \
+    sdeclarative.h \
     sdeclarativescreen.h \
     sdeclarativewindowdecoration.h
 

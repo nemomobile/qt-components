@@ -24,34 +24,32 @@
 **
 ****************************************************************************/
 
-#include "sdeclarative.h"
-#include "sdeclarativescreen.h"
-#include "sdeclarativewindowdecoration.h"
+#ifndef SFRAMEPOOL_H
+#define SFRAMEPOOL_H
 
-#include <QtDeclarative>
+#include <QtGui/qpixmap.h>
+#include "sdeclarativeframe.h"
 
-class SymbianPlugin : public QDeclarativeExtensionPlugin
+QT_BEGIN_NAMESPACE
+class QString;
+class QSize;
+QT_END_NAMESPACE
+
+class SFramePool
 {
-    Q_OBJECT
-
 public:
+    static QPixmap get(const QString &filename, SDeclarativeFrame::FrameType type, const QSize &size);
+    static void release(const QString &filename, SDeclarativeFrame::FrameType type, const QSize &size);
 
-    void initializeEngine(QDeclarativeEngine *engine, const char *uri) {
-        QDeclarativeExtensionPlugin::initializeEngine(engine, uri);
+#ifdef FRAME_POOL_UNIT_TEST
+    static int totalCount();
+    static int count(const QString &filename, SDeclarativeFrame::FrameType type, const QSize &size);
+#endif // FRAME_POOL_UNIT_TEST
 
-        SDeclarativeScreen *scr = new SDeclarativeScreen();
-        scr->setParent(engine->rootContext()); // context takes the ownership
-
-        engine->rootContext()->setContextProperty("screen", scr);
-        qmlRegisterUncreatableType<SDeclarativeScreen>(uri, 1, 0,"Screen", "");
-    }
-
-    void registerTypes(const char *uri) {
-        qmlRegisterUncreatableType<SDeclarative>(uri, 1, 0,"Symbian", "");
-        qmlRegisterType<SDeclarativeWindowDecoration>(uri, 1, 0, "WindowDecoration");
-    }
+private:
+    static QPixmap loadFrame(const QString &filename, SDeclarativeFrame::FrameType type, const QSize &size);
+    static QString createFileName(const QString &filename, const QString &suffix);
+    SFramePool();
 };
 
-#include "plugin.moc"
-
-Q_EXPORT_PLUGIN2(symbianplugin, SymbianPlugin)
+#endif // SFRAMEPOOL_H

@@ -24,34 +24,44 @@
 **
 ****************************************************************************/
 
-#include "sdeclarative.h"
-#include "sdeclarativescreen.h"
-#include "sdeclarativewindowdecoration.h"
+#ifndef SDECLARATIVEICON_H
+#define SDECLARATIVEICON_H
 
-#include <QtDeclarative>
+#include <QtCore/qscopedpointer.h>
+#include <QtDeclarative/qdeclarativeitem.h>
 
-class SymbianPlugin : public QDeclarativeExtensionPlugin
+class SDeclarativeIconPrivate;
+
+class SDeclarativeIcon : public QDeclarativeItem
 {
     Q_OBJECT
+    Q_PROPERTY(QString iconName READ iconName WRITE setIconName NOTIFY iconNameChanged)
+    Q_PROPERTY(QColor iconColor READ iconColor WRITE setIconColor NOTIFY iconColorChanged)
 
 public:
+    SDeclarativeIcon(QDeclarativeItem *parent = 0);
+    virtual ~SDeclarativeIcon();
 
-    void initializeEngine(QDeclarativeEngine *engine, const char *uri) {
-        QDeclarativeExtensionPlugin::initializeEngine(engine, uri);
+    QString iconName() const;
+    void setIconName(const QString &name);
 
-        SDeclarativeScreen *scr = new SDeclarativeScreen();
-        scr->setParent(engine->rootContext()); // context takes the ownership
+    QColor iconColor() const;
+    void setIconColor(const QColor &color);
 
-        engine->rootContext()->setContextProperty("screen", scr);
-        qmlRegisterUncreatableType<SDeclarativeScreen>(uri, 1, 0,"Screen", "");
-    }
+    virtual void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 
-    void registerTypes(const char *uri) {
-        qmlRegisterUncreatableType<SDeclarative>(uri, 1, 0,"Symbian", "");
-        qmlRegisterType<SDeclarativeWindowDecoration>(uri, 1, 0, "WindowDecoration");
-    }
+Q_SIGNALS:
+    void iconNameChanged(const QString &name);
+    void iconColorChanged(const QColor &color);
+
+protected:
+    QScopedPointer<SDeclarativeIconPrivate> d_ptr;
+
+private:
+    Q_DISABLE_COPY(SDeclarativeIcon)
+    Q_DECLARE_PRIVATE(SDeclarativeIcon)
 };
 
-#include "plugin.moc"
+QML_DECLARE_TYPE(SDeclarativeIcon)
 
-Q_EXPORT_PLUGIN2(symbianplugin, SymbianPlugin)
+#endif // SDECLARATIVEICON_H

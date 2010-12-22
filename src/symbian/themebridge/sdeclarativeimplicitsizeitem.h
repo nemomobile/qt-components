@@ -24,34 +24,29 @@
 **
 ****************************************************************************/
 
-#include "sdeclarative.h"
-#include "sdeclarativescreen.h"
-#include "sdeclarativewindowdecoration.h"
+#ifndef SDECLARATIVEIMPLICITSIZEITEM_H
+#define SDECLARATIVEIMPLICITSIZEITEM_H
 
-#include <QtDeclarative>
+#include <QtDeclarative/qdeclarativeitem.h>
 
-class SymbianPlugin : public QDeclarativeExtensionPlugin
+class SDeclarativeImplicitSizeItem : public QDeclarativeItem
 {
     Q_OBJECT
 
+    Q_PROPERTY(qreal implicitWidth READ implicitWidth WRITE setImplicitWidthNotify NOTIFY implicitWidthChanged)
+    Q_PROPERTY(qreal implicitHeight READ implicitHeight WRITE setImplicitHeightNotify NOTIFY implicitHeightChanged)
+
 public:
+    SDeclarativeImplicitSizeItem(QDeclarativeItem *parent = 0);
+    virtual ~SDeclarativeImplicitSizeItem();
 
-    void initializeEngine(QDeclarativeEngine *engine, const char *uri) {
-        QDeclarativeExtensionPlugin::initializeEngine(engine, uri);
+Q_SIGNALS:
+    void implicitWidthChanged();
+    void implicitHeightChanged();
 
-        SDeclarativeScreen *scr = new SDeclarativeScreen();
-        scr->setParent(engine->rootContext()); // context takes the ownership
-
-        engine->rootContext()->setContextProperty("screen", scr);
-        qmlRegisterUncreatableType<SDeclarativeScreen>(uri, 1, 0,"Screen", "");
-    }
-
-    void registerTypes(const char *uri) {
-        qmlRegisterUncreatableType<SDeclarative>(uri, 1, 0,"Symbian", "");
-        qmlRegisterType<SDeclarativeWindowDecoration>(uri, 1, 0, "WindowDecoration");
-    }
+protected:
+    void setImplicitWidthNotify(const qreal width);
+    void setImplicitHeightNotify(const qreal height);
 };
 
-#include "plugin.moc"
-
-Q_EXPORT_PLUGIN2(symbianplugin, SymbianPlugin)
+#endif //SDECLARATIVEIMPLICITSIZEITEM_H

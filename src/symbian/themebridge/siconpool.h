@@ -24,34 +24,34 @@
 **
 ****************************************************************************/
 
-#include "sdeclarative.h"
-#include "sdeclarativescreen.h"
-#include "sdeclarativewindowdecoration.h"
+#ifndef SICONPOOL_H
+#define SICONPOOL_H
 
-#include <QtDeclarative>
+#include <QtGui/qpixmap.h>
 
-class SymbianPlugin : public QDeclarativeExtensionPlugin
+QT_BEGIN_NAMESPACE
+class QString;
+class QSize;
+class QSvgRenderer;
+QT_END_NAMESPACE
+
+class SIconPool
 {
-    Q_OBJECT
-
 public:
+    static QPixmap get(const QString &filename, const QSize &size, Qt::AspectRatioMode mode = Qt::KeepAspectRatio);
+    static void release(const QString &filename, const QSize &size, Qt::AspectRatioMode mode = Qt::KeepAspectRatio);
 
-    void initializeEngine(QDeclarativeEngine *engine, const char *uri) {
-        QDeclarativeExtensionPlugin::initializeEngine(engine, uri);
+    static QSize defaultSize(const QString &filename);
 
-        SDeclarativeScreen *scr = new SDeclarativeScreen();
-        scr->setParent(engine->rootContext()); // context takes the ownership
+#ifdef ICON_POOL_UNIT_TEST
+    static int totalCount();
+    static int count(const QString &filename, const QSize &size, Qt::AspectRatioMode mode = Qt::KeepAspectRatio);
+#endif // ICON_POOL_UNIT_TEST
 
-        engine->rootContext()->setContextProperty("screen", scr);
-        qmlRegisterUncreatableType<SDeclarativeScreen>(uri, 1, 0,"Screen", "");
-    }
-
-    void registerTypes(const char *uri) {
-        qmlRegisterUncreatableType<SDeclarative>(uri, 1, 0,"Symbian", "");
-        qmlRegisterType<SDeclarativeWindowDecoration>(uri, 1, 0, "WindowDecoration");
-    }
+private:
+    static QPixmap loadIcon(const QString &filename, const QSize &size, Qt::AspectRatioMode mode);
+    static QSvgRenderer *getSvgRenderer(const QString &filename);
+    SIconPool();
 };
 
-#include "plugin.moc"
-
-Q_EXPORT_PLUGIN2(symbianplugin, SymbianPlugin)
+#endif // SICONPOOL_H

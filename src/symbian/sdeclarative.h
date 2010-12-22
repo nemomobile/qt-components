@@ -24,34 +24,39 @@
 **
 ****************************************************************************/
 
-#include "sdeclarative.h"
-#include "sdeclarativescreen.h"
-#include "sdeclarativewindowdecoration.h"
+#ifndef SDECLARATIVE_H
+#define SDECLARATIVE_H
 
-#include <QtDeclarative>
+#include <QtCore/qobject.h>
+#include <QtDeclarative/qdeclarative.h>
 
-class SymbianPlugin : public QDeclarativeExtensionPlugin
+class SDeclarative : public QObject
 {
     Q_OBJECT
+    Q_ENUMS(ImageSize)
 
 public:
+    enum ImageSize {
+        Undefined = 0,
+        Small,
+        Medium,
+        Large,
+        ImagePortrait
+    };
 
-    void initializeEngine(QDeclarativeEngine *engine, const char *uri) {
-        QDeclarativeExtensionPlugin::initializeEngine(engine, uri);
+    static inline QString resolveIconFileName(const QString &iconName)
+    {
+        QString fileName = iconName;
+        if (fileName.startsWith(QLatin1String("qtg")))
+            fileName.prepend(QLatin1String(":/graphics/"));
 
-        SDeclarativeScreen *scr = new SDeclarativeScreen();
-        scr->setParent(engine->rootContext()); // context takes the ownership
+        if (fileName.lastIndexOf(QLatin1Char('.')) == -1)
+            fileName.append(QLatin1String(".svg"));
 
-        engine->rootContext()->setContextProperty("screen", scr);
-        qmlRegisterUncreatableType<SDeclarativeScreen>(uri, 1, 0,"Screen", "");
-    }
-
-    void registerTypes(const char *uri) {
-        qmlRegisterUncreatableType<SDeclarative>(uri, 1, 0,"Symbian", "");
-        qmlRegisterType<SDeclarativeWindowDecoration>(uri, 1, 0, "WindowDecoration");
+        return fileName;
     }
 };
 
-#include "plugin.moc"
+QML_DECLARE_TYPE(SDeclarative)
 
-Q_EXPORT_PLUGIN2(symbianplugin, SymbianPlugin)
+#endif // SDECLARATIVE_H

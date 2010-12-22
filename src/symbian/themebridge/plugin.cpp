@@ -24,34 +24,32 @@
 **
 ****************************************************************************/
 
-#include "sdeclarative.h"
-#include "sdeclarativescreen.h"
-#include "sdeclarativewindowdecoration.h"
-
 #include <QtDeclarative>
+#include <QScopedPointer>
+#include <QDebug>
 
-class SymbianPlugin : public QDeclarativeExtensionPlugin
+#include "sstylewrapper.h"
+#include "sdeclarativeicon.h"
+#include "sdeclarativeframe.h"
+#include "sdeclarativeimplicitsizeitem.h"
+
+class SymbianThemeBridgePlugin : public QDeclarativeExtensionPlugin
 {
     Q_OBJECT
-
 public:
-
     void initializeEngine(QDeclarativeEngine *engine, const char *uri) {
         QDeclarativeExtensionPlugin::initializeEngine(engine, uri);
-
-        SDeclarativeScreen *scr = new SDeclarativeScreen();
-        scr->setParent(engine->rootContext()); // context takes the ownership
-
-        engine->rootContext()->setContextProperty("screen", scr);
-        qmlRegisterUncreatableType<SDeclarativeScreen>(uri, 1, 0,"Screen", "");
     }
 
     void registerTypes(const char *uri) {
-        qmlRegisterUncreatableType<SDeclarative>(uri, 1, 0,"Symbian", "");
-        qmlRegisterType<SDeclarativeWindowDecoration>(uri, 1, 0, "WindowDecoration");
+        qmlRegisterType<SDeclarativeIcon>(uri, 1, 0, "Icon");
+        qmlRegisterType<SDeclarativeFrame>(uri, 1, 0, "Frame");
+        qmlRegisterType<SStyleWrapper>(uri, 1, 0, "Style");
+        qmlRegisterType<SDeclarativeImplicitSizeItem>(uri, 1, 0, "ImplicitSizeItem");
+        qDebug() << "SymbianThemeBridgePlugin: Icon, Frame, Style and ImplicitSizeItem registered";
     }
 };
 
 #include "plugin.moc"
 
-Q_EXPORT_PLUGIN2(symbianplugin, SymbianPlugin)
+Q_EXPORT_PLUGIN2(symbianthemebridgeplugin, SymbianThemeBridgePlugin)
