@@ -7,39 +7,39 @@
 
     <set name="auto-tests" description="Qt Components auto tests" feature="TBD" requirement="TBD" >   
 
-      <case name="button" type="Functional" description="Unit tests for button" level="Unit" timeout="20">
+      <case name="button" type="Functional" description="Unit tests for button" level="Component" timeout="20">
           <step expected_result="0">cd /opt/qt-components-tests/auto/tst_quickcomponentsbutton; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_quickcomponentsbutton -xml</step>
       </case>
-      <case name="checkbox" type="Functional" description="Unit tests for checkbox" level="Unit" timeout="20">
+      <case name="checkbox" type="Functional" description="Unit tests for checkbox" level="Component" timeout="20">
           <step expected_result="0">cd /opt/qt-components-tests/auto/tst_quickcomponentscheckbox; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_quickcomponentscheckbox -xml</step>
       </case>
 
 <!-- TODO: uncomment these test cases once they are ready to be run.
 
-      <case name="textfield" type="Functional" description="Unit tests for textfield" level="Unit" timeout="20">
+      <case name="textfield" type="Functional" description="Unit tests for textfield" level="Component" timeout="20">
           <step expected_result="0">cd /opt/qt-components-tests/auto/tst_quickcomponentstextfield; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_quickcomponentstextfield -xml</step>
       </case>
-      <case name="textarea" type="Functional" description="Unit tests for textarea" level="Unit" timeout="20">
+      <case name="textarea" type="Functional" description="Unit tests for textarea" level="Component" timeout="20">
           <step expected_result="0">cd /opt/qt-components-tests/auto/tst_quickcomponentstextarea; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_quickcomponentstextarea -xml</step>
       </case>
 -->
 
-      <case name="mlocalthemedaemonclient" type="Functional" description="Unit tests for mlocalthemedaemonclient" level="Unit" timeout="20">
+      <case name="mlocalthemedaemonclient" type="Functional" description="Unit tests for mlocalthemedaemonclient" level="Component" timeout="20">
           <step expected_result="0">cd /opt/qt-components-tests/auto/mlocalthemedaemonclient; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./mlocalthemedaemonclient</step>
       </case>
-      <case name="mremotethemedaemonclient" type="Functional" description="Unit tests for mremotethemedaemonclient" level="Unit" timeout="100">
+      <case name="mremotethemedaemonclient" type="Functional" description="Unit tests for mremotethemedaemonclient" level="Component" timeout="100">
           <step expected_result="0">cd /opt/qt-components-tests/auto/mremotethemedaemonclient; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./mremotethemedaemonclient -xml</step>
       </case>
-      <case name="progressbar" type="Functional" description="Unit tests for progressbar" level="Unit" timeout="20">
+      <case name="progressbar" type="Functional" description="Unit tests for progressbar" level="Component" timeout="20">
           <step expected_result="0">cd /opt/qt-components-tests/auto/tst_quickcomponentsprogressbar; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_quickcomponentsprogressbar -xml</step>
       </case>
-      <case name="scrolldecorator" type="Functional" description="Unit tests for scrolldecorator" level="Unit" timeout="20">
+      <case name="scrolldecorator" type="Functional" description="Unit tests for scrolldecorator" level="Component" timeout="20">
           <step expected_result="0">cd /opt/qt-components-tests/auto/tst_quickcomponentsscrolldecorator; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_quickcomponentsscrolldecorator -xml</step>
       </case>
-      <case name="slider" type="Functional" description="Unit tests for slider" level="Unit" timeout="20">
+      <case name="slider" type="Functional" description="Unit tests for slider" level="Component" timeout="20">
           <step expected_result="0">cd /opt/qt-components-tests/auto/tst_quickcomponentsslider; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_quickcomponentsslider -xml</step>
       </case>
-      <case name="qrangemodel" type="Functional" description="Unit tests for qrangemodel" level="Unit" timeout="20">
+      <case name="qrangemodel" type="Functional" description="Unit tests for qrangemodel" level="Component" timeout="20">
           <step expected_result="0">cd /opt/qt-components-tests/auto/qrangemodel; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./qrangemodel -xml</step>
       </case>
       <environments>
