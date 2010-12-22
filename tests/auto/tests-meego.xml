@@ -27,7 +27,7 @@
       <case name="mlocalthemedaemonclient" type="Functional" description="Unit tests for mlocalthemedaemonclient" level="Unit" timeout="20">
           <step expected_result="0">cd /opt/qt-components-tests/auto/mlocalthemedaemonclient; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./mlocalthemedaemonclient</step>
       </case>
-      <case name="mremotethemedaemonclient" type="Functional" description="Unit tests for mremotethemedaemonclient" level="Unit" timeout="20">
+      <case name="mremotethemedaemonclient" type="Functional" description="Unit tests for mremotethemedaemonclient" level="Unit" timeout="100">
           <step expected_result="0">cd /opt/qt-components-tests/auto/mremotethemedaemonclient; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./mremotethemedaemonclient -xml</step>
       </case>
       <case name="progressbar" type="Functional" description="Unit tests for progressbar" level="Unit" timeout="20">
