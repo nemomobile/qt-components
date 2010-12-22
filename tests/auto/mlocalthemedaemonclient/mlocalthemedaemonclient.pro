@@ -15,3 +15,5 @@ SOURCES += \
 HEADERS += \
     ../../../src/meego/themebridge/themedaemon/mabstractthemedaemonclient.h \
     ../../../src/meego/themebridge/themedaemon/mlocalthemedaemonclient.h
+
+include (../auto.pri)
