@@ -41,3 +41,7 @@ var CORNER_MARGINS = 12;
 
 var MARGIN_DEFAULT = 0;
 var MARGIN_XLARGE = 16;
+
+// Distance in pixels from the widget bounding box inside which a release
+// event would still be accepted and trigger the widget
+var RELEASE_MISS_DELTA = 30
