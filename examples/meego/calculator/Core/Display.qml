@@ -42,18 +42,47 @@
 import Qt 4.7
 import com.meego 1.0
 
-LineEdit {
-    id: image
+// Here we want to use the TextField background. I'm relying on the
+// image provider to get that.
+BorderImage {
+    property alias currentOperation: operation
+    property alias text: digits.text
 
-    property alias currentOperation : operationText
+    source: "image://theme/meegotouch-textedit-background";
+    border {
+        left: 12
+        top: 12
+        right: 12
+        bottom: 12
+    }
 
-    activeFocusOnPress: false;
-    horizontalAlignment: TextInput.AlignRight
+    // ### Just to steal the font
+    TextField {
+        id: field
+        visible: false
+    }
 
     Text {
-        id: operationText
+        id: digits
+        font: field.font
+        horizontalAlignment: TextInput.AlignRight
+        anchors {
+            right: parent.right
+            rightMargin: 12
+            left: operation.right
+            leftMargin: 6
+            verticalCenter: parent.verticalCenter
+        }
+    }
+
+    Text {
+        id: operation
         font.bold: true; font.pixelSize: parent.height * .7
         color: "#343434"; smooth: true
-        anchors { left: parent.left; leftMargin: 6; verticalCenterOffset: -3; verticalCenter: parent.verticalCenter }
+        anchors {
+            left: parent.left
+            leftMargin: 12
+            verticalCenter: parent.verticalCenter
+        }
     }
 }
