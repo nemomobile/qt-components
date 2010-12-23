@@ -24,55 +24,23 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.0
+import Qt 4.7
 import com.meego 1.0
 
-Page {
+Template {
     tools: commonTools
 
-    ListModel {
-        id: m
+    anchors.fill: parent
+    infoText: "The Checkbox is a variant of Button that allows users to set the state of variable or setting which has two values, On and Off.\n\nCheckbox essentially does the same thing as the Switch button, so please consider using a Switch instead."
 
-        ListElement {
-            name: "Push Button"
-            source: "PushButton.qml"
+    Row {
+        y: 60
+        spacing: 25
+        Label {
+            text: "I have read and understood\nthe instructions."
         }
 
-        ListElement {
-            name: "Icon Button"
-            source: "IconButtons.qml"
+        CheckBox {
         }
-
-        ListElement {
-            name: "Switch"
-            source: "PushButton.qml"
-        }
-
-        ListElement {
-            name: "Checkbox"
-            source: "Checkbox.qml"
-        }
-
-        ListElement {
-            name: "Button Group"
-            source: "ButtonGroup.qml"
-        }
-    }
-
-    ListView {
-        id: buttonsView
-        anchors.fill: parent
-        model: m
-
-        delegate: BasicListItem {
-            title: name
-            onClicked: {
-                pageStack.push(Qt.createComponent(source));
-            }
-        }
-    }
-
-    ScrollDecorator {
-        flickable: buttonsView
     }
 }

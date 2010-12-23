@@ -24,66 +24,68 @@
 **
 ****************************************************************************/
 
-import Qt 4.7
+import QtQuick 1.0
 import Qt.labs.components 1.0
 import com.meego.themebridge 1.0
 
+import "UIConstants.js" as UI
+
 ImplicitSizeItem {
-    id: button
+    id: checkbox
 
     property bool checked: false
-
-    property alias pressed: mouseArea.pressed
+    property bool pressed
     signal clicked
 
-    implicitWidth: meegostyle.preferredWidth
-    implicitHeight: meegostyle.preferredHeight
+    implicitWidth: 32
+    implicitHeight: 32
 
-    Style {
-        id: meegostyle
-        styleClass: "MCheckboxStyle"
-        mode: {
-            if (mouseArea.containsMouse && mouseArea.pressed)
-                return "pressed"
-            else if (button.checked)
-                return "selected"
-            else
-                return "default"
-        }
+    Binding {
+        target: checkbox
+        property: "pressed"
+        value: mouseArea.pressed && mouseArea.containsMouse
     }
 
-    Background {
-        id: background
+    BorderImage {
         anchors.fill: parent
-        style: meegostyle
+        smooth: true
 
-        Pixmap {
-            anchors.centerIn: parent
-            style: meegostyle
-            imageProperty: "checkmarkImage"
-            visible: button.checked
+        source: !checkbox.enabled ? "image://theme/meegotouch-button-checkbox-background-disabled" :
+                checkbox.pressed ? "image://theme/meegotouch-button-checkbox-background-pressed" :
+                checkbox.checked ? "image://theme/meegotouch-button-checkbox-background-selected" :
+                "image://theme/meegotouch-button-checkbox-background"
+
+        border {
+            left: 4
+            top: 4
+            right: 4
+            bottom: 4
         }
     }
 
     MouseArea {
         id: mouseArea
+
         anchors.fill: parent
+        anchors.margins: pressed ? -UI.RELEASE_MISS_DELTA : 0
 
         onPressed: {
-            if (button.checked)
-                meegostyle.feedback("pressOnFeedback");
-            else
-                meegostyle.feedback("pressOffFeedback");
+            // TODO: enable feedback without old themebridge
+            // if (checkbox.checked)
+            //     meegostyle.feedback("pressOnFeedback");
+            // else
+            //     meegostyle.feedback("pressOffFeedback");
         }
 
         onClicked: {
-            button.checked = !button.checked;
-            button.clicked();
+            checkbox.checked = !checkbox.checked;
+            checkbox.clicked();
 
-            if (button.checked)
-                meegostyle.feedback("releaseOnFeedback");
-            else
-                meegostyle.feedback("releaseOffFeedback");
+            // TODO: enable feedback without old themebridge
+            // if (checkbox.checked)
+            //     meegostyle.feedback("releaseOnFeedback");
+            // else
+            //     meegostyle.feedback("releaseOffFeedback");
         }
     }
 }
