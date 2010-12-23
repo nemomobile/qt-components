@@ -29,8 +29,6 @@
 #include <MScalableImage>
 #include <MWidgetStyle>
 
-Q_DECLARE_METATYPE(const MScalableImage *)
-
 MDeclarativeScalableImage::MDeclarativeScalableImage(QDeclarativeItem *parent) :
     MDeclarativePrimitive(parent), m_image(0)
 {

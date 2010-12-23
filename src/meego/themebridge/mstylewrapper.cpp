@@ -33,9 +33,6 @@
 #include <mapplicationwindow.h>
 #include <minputmethodstate.h>
 
-// to be able to qvariant_cast MFeedback
-Q_DECLARE_METATYPE(MFeedback)
-
 static M::Orientation currentOrientation()
 {
     const M::OrientationAngle angle = \
