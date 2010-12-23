@@ -30,8 +30,6 @@
 #include <MWidgetStyle>
 #include <QPainter>
 
-Q_DECLARE_METATYPE(const MScalableImage *)
-
 MDeclarativeMaskedImage::MDeclarativeMaskedImage(QDeclarativeItem *parent) :
     MDeclarativePrimitive(parent), m_image(0), m_mask(0), m_isTiled(false), m_isFullWidth(false)
 {
