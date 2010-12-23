@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <testdefinition version="0.1">
 
+<!--
+
+READ THIS BEFORE ADDING A NEW TEST CASE
+
+Please make sure that your test is properly installed by the debian package.
+Look at the existing .pro files for how to do this. The key is to have
+the line
+
+   include (../auto.pri)
+
+at the end of the .pro file.
+-->
+
 <!-- Test suite, name mandatory - the same as test package name -->
   <!-- Schema: https://projects.maemo.org/docs/testing/xml-definition.html -->
   <suite name="qt-components-tests" domain="TBD"> 
