@@ -25,47 +25,9 @@
 ****************************************************************************/
 
 import Qt 4.7
-import Qt.labs.components 1.0
-import com.meego.themebridge 1.0
 
 Dialog {
-    id: queryDialog
-    property string message: ""
-    property string acceptButtonText: qsTr("Yes")
-    property string rejectButtonText: qsTr("No")
-
+    id: root
     closeButtonVisible: false
-
-    buttons: Row {
-      anchors.horizontalCenter: parent.horizontalCenter
-      Button {
-          id: acceptButton
-          text: queryDialog.acceptButtonText
-          onClicked: accepted()
-      }
-      Button {
-          id: rejectButton
-          text: queryDialog.rejectButtonText
-          onClicked: rejected()
-      }
-    }
-
-    content: Item {
-        id: queryContent
-            width: queryDialog.width
-            height: 250
-            Text {
-                id: queryText
-                anchors.centerIn: parent
-                objectName: "queryDialogText"
-
-                font.pixelSize: 22
-                color: "white"
-
-                text: queryDialog.message
-
-            }
-    }
+    modal: true
 }
-
-

@@ -24,17 +24,45 @@
 **
 ****************************************************************************/
 
-var answerCallback = undefined;
 
-function appear(panel, title, message, callback) {
-    panel.dialogTitle = title;
-    panel.dialogText = message;
-    answerCallback = callback;
-    panel.shown = true;
-}
+// MenuItem is a component that is used in menus.
 
-function queryAnswered(result) {
-    if (answerCallback != undefined)
-        answerCallback(result);
-    answerCallback = undefined;
+import Qt 4.7
+
+Item {
+    id: menuItemRoot
+    property string text
+    width: parent ? parent.width: 0
+    height: 2 * menuText.anchors.margins + menuText.paintedHeight
+    signal clicked
+
+    Rectangle {
+       id: backgroundRec
+       // ToDo: remove hardcoded values
+       color: mouseArea.pressed ? "darkgray" : "transparent"
+       anchors.fill : menuItemRoot
+       opacity : 0.5
+    }
+
+    Text {
+	id: menuText
+	text: parent.text
+	font.family : "Nokia Sans"
+	font.pointSize : 14
+        color: "white"
+        anchors.margins : 10
+        anchors.top : backgroundRec.top
+        anchors.bottom : backgroundRec.bottom
+        anchors.left : backgroundRec.left
+        anchors.right : backgroundRec.right
+        anchors.centerIn: parent.centerIn
+    }
+
+    MouseArea {
+        id: mouseArea
+        anchors.fill: parent
+        onClicked: { if (parent.enabled) parent.clicked();}
+    }
+
+
 }

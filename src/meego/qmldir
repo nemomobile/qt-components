@@ -6,12 +6,16 @@ Button 1.0 Button.qml
 ButtonColumn 1.0 ButtonColumn.qml
 ButtonRow 1.0 ButtonRow.qml
 CheckBox 1.0 CheckBox.qml
+Dialog 1.0 Dialog.qml
 IconButton 1.0 IconButton.qml
 Label 1.0 Label.qml
+Menu 1.0 Menu.qml
+MenuItem 1.0 MenuItem.qml
 ListItem 1.0 ListItem.qml
 Page 1.0 Page.qml
 PageStack 1.0 PageStack.qml
 ProgressBar 1.0 ProgressBar.qml
+QueryDialog 1.0 QueryDialog.qml
 ScrollDecorator 1.0 ScrollDecorator.qml
 Slider 1.0 Slider.qml
 SliderTemplate 1.0 SliderTemplate.qml
