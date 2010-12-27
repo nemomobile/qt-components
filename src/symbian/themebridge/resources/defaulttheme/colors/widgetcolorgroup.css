@@ -1,0 +1,178 @@
+@variables
+{
+/* Default palette */
+qtc_default_decor_normal:#ffffff;
+qtc_default_decor_pressed:#FFFFFF;
+qtc_default_decor_latched:#FFFFFF;
+qtc_default_decor_highlight:#FFFFFF;
+qtc_default_decor_disabled:#838383;
+qtc_default_main_pane_normal:#ffffff;
+qtc_default_main_pane_pressed:#ffffff;
+qtc_default_main_pane_latched:#ffffff;
+qtc_default_main_pane_highlight:#ffffff;
+qtc_default_main_pane_disabled:#838383;
+qtc_default_popup_normal:#ffffff;
+qtc_default_popup_pressed:#FFFFFF;
+qtc_default_popup_latched:#FFFFFF;
+qtc_default_popup_highlight:#FFFFFF;
+qtc_default_popup_disabled:#838383;
+
+/* Title pane */
+qtc_title_pane_normal:#ffffff;
+qtc_title_pane_pressed:#FFFFFF;
+qtc_title_pane_highlight:#FFFFFF;
+qtc_title_pane_latched:#ffffff;
+qtc_title_pane_trans_normal:#FFFFFF;
+qtc_title_pane_trans_pressed:#FFFFFF;
+qtc_title_pane_trans_highlight:#FFFFFF;
+qtc_title_pane_trans_latched:#FFFFFF;
+qtc_status_pane:#FFFFFF;
+qtc_status_pane_trans:#FFFFFF;
+
+/* Main area - View */
+qtc_view_normal:#ffffff;
+qtc_view_pressed:#ffffff;
+qtc_view_line_normal:#A0A0A0;
+qtc_view_link_normal:#8AC0E9;
+qtc_view_visited_normal:#F4BD4D;
+qtc_view_separator_normal:#595B5D;
+qtc_view_normal_secondary:#E4E4E4;
+
+/* Main area - View title */
+qtc_viewtitle_normal:#E4E4E4;
+
+/* Main area - Grid */
+qtc_grid_normal:#ffffff;
+qtc_grid_pressed:#FFFFFF;
+qtc_grid_highlight:#FFFFFF;
+qtc_grid_latched:#FFFFFF;
+qtc_grid_disabled:#838383;
+
+/* Main area - List */
+qtc_list_item_title_normal:#ffffff;
+qtc_list_item_title_secondary_normal:#3C3C3C;
+qtc_list_item_content_normal:#E4E4E4;
+qtc_list_item_content_secondary_normal:#505050;
+qtc_list_item_parent_normal:#ffffff;
+qtc_list_item_pressed:#FFFFFF;
+qtc_list_item_highlight:#FFFFFF;
+qtc_list_item_disabled:#838383;
+qtc_list_item_latched:#FFFFFF;
+qtc_list_item_separator:#e4e4e4;
+
+/* Button */
+qtc_button_normal:#ffffff;
+qtc_button_pressed:#FFFFFF;
+qtc_button_latched:#FFFFFF;
+qtc_button_highlight:#FFFFFF;
+qtc_button_disabled:#838383;
+
+/* LineEdit */
+qtc_lineedit_normal:#0f0f0f;
+qtc_lineedit_selected:#0f0f0f;
+qtc_lineedit_marker_normal:#8AC0E9;
+qtc_lineedit_hint_normal:#A6A6A6;
+qtc_lineedit_cursor:#1a1a1a;
+
+/* Combobox */
+qtc_combobox_normal:#ffffff;
+qtc_combobox_pressed:#FFFFFF;
+qtc_combobox_highlight:#ffffff;
+qtc_combobox_disabled:#838383;
+qtc_combobox_edit:#0f0f0f;
+qtc_combobox_latched:#FFFFFF;
+
+/* Tumbler */
+qtc_tumbler_normal:#999999;
+qtc_tumbler_selected:#FFFFFF;
+qtc_tumbler_highlight:#FFFFFF;
+
+/* Scrollbar */
+qtc_scrollbar_track:#000000;
+qtc_scrollbar_handle_pressed:#C5DAF2;
+qtc_scrollbar_handle_released:#5e83b3;
+
+/* Main area - DataForm */
+qtc_dataform_heading:#FFFFFF;
+qtc_dataform_heading_link:#8ac0e9;
+
+/* Main area - ProgressSlider */
+qtc_progslider_normal:#ffffff;
+qtc_progslider_pressed:#FFFFFF;
+
+/* Main area - TextEdit */
+qtc_textedit_normal:#ffffff;
+qtc_textedit_selected:#ffffff;
+qtc_textedit_marker_normal:#8ac0e9;
+qtc_textedit_hint_normal:#a6a6a6;
+qtc_textedit_cursor:#1a1a1a; /* empty in doc */
+
+/* Main area - Toolbar */
+qtc_toolbar_normal:#ffffff;
+qtc_toolbar_pressed:#FFFFFF;
+qtc_toolbar_latched:#FFFFFF;
+qtc_toolbar_disabled:#838383;
+qtc_toolbar_highlight:#FFFFFF;
+qtc_toolbar_trans_normal:#FFFFFF;
+qtc_toolbar_trans_pressed:#FFFFFF;
+qtc_toolbar_trans_latched:#FFFFFF;
+qtc_toolbar_trans_disabled:#838383;
+qtc_toolbar_trans_highlight:#FFFFFF;
+
+/* Main area - Groupbox */
+qtc_groupbox_normal:#ffffff;
+qtc_groupbox_pressed:#FFFFFF;
+qtc_groupbox_highlight:#FFFFFF;
+
+/* Pop-ups - Generic pop-up */
+qtc_popup_sk_normal:#ffffff;
+qtc_popup_sk_highlight:#FFFFFF;
+qtc_popup_sk_pressed:#FFFFFF;
+qtc_popup_sk_disabled:#838383;
+qtc_popup_heading_normal:#ffffff;
+qtc_popup_normal:#ffffff;
+qtc_popup_link:#8ac0e9;
+
+/* Pop-ups - Preview pop-up */
+qtc_popup_preview_normal:#FFFFFF;
+qtc_popup_preview_pressed:#FFFFFF;
+qtc_popup_preview_link:#8ac0e9;
+
+/* Pop-ups - Transparent pop-up */
+qtc_popup_trans_normal:#FFFFFF;
+qtc_popup_trans_pressed:#FFFFFF;
+qtc_popup_trans_link:#8ac0e9;
+
+/* Pop-ups - Grid in a pop-up */
+qtc_popup_grid_normal:#ffffff;
+qtc_popup_grid_pressed:#FFFFFF;
+qtc_popup_grid_highlight:#FFFFFF;
+qtc_popup_grid_disabled:#838383;
+qtc_popup_grid_latched:#FFFFFF;
+qtc_popup_grid_trans_normal:#FFFFFF;
+qtc_popup_grid_trans_pressed:#ffffff;
+
+/* Pop-ups - List in a pop-up */
+qtc_popup_list_title_normal:#ffffff;
+qtc_popup_list_item_content_normal:#ffffff;
+qtc_popup_list_item_parent_normal:#ffffff;
+qtc_popup_list_item_pressed:#FFFFFF;
+qtc_popup_list_item_highlight:#FFFFFF;
+qtc_popup_list_item_disabled:#838383;
+qtc_popup_list_item_latched:#FFFFFF;
+qtc_popup_list_item_trans_normal:#FFFFFF;
+
+/* Virtual inputs */
+qtc_input_button_normal:#ffffff;
+qtc_input_button_accented_normal:#ffffff;
+qtc_input_button_pressed:#FFFFFF;
+qtc_input_button_latched:#FFFFFF;
+qtc_input_button_disabled:#838383;
+qtc_input_function_normal:#FFFFFF;
+qtc_input_function_pressed:#FFFFFF;
+qtc_input_function_latched:#FFFFFF;
+qtc_input_function_disabled:#838383;
+qtc_input_preview_normal:#0f0f0f;
+qtc_input_hint_normal:#A0A0A0;
+qtc_input_grid_line:#ffffff;
+}

@@ -1,0 +1,75 @@
+@variables
+{
+param-graphic-size-primary-small: 4un;
+param-graphic-size-primary-medium: 6un;
+param-graphic-size-primary-large: 8un;
+param-graphic-size-function: 5un;
+param-graphic-size-secondary: 3un;
+param-graphic-size-image-portrait: 9.5un;
+param-graphic-size-image-landscape: 8.25un;
+
+param-text-height-primary: 4un;
+param-text-height-secondary: 3.5un;
+param-text-height-tiny: 3un;
+param-text-height-title: 5un;
+
+param-margin-view-bottom: 0un;
+param-margin-view-left: 0un;
+param-margin-view-right: 0un;
+param-margin-view-top: 0un;
+param-margin-gene-top: 2un;
+param-margin-gene-bottom: 2un;
+param-margin-gene-right: 2un;
+param-margin-gene-left: 2un;
+param-margin-gene-middle-vertical: 0.75un;
+param-margin-gene-middle-horizontal: 0.75un;
+param-margin-gene-popup: 2un;
+param-margin-gene-popup-list: 0un;
+param-margin-gene-screen: 2un;
+param-margin-indentation: 4un;
+param-margin-form-label-right: 5un;
+param-margin-form-label-top: 3.75un;
+param-margin-label: 0un;
+param-margin-gene-center-align: 0.75un;
+
+param-touch-area-gene-primary-small: 6un;
+param-touch-area-gene-primary-medium: 8un;
+param-touch-area-gene-primary-large: 10un;
+
+param-background-popup-primary: 1.5un;
+param-background-popup-secondary: 1.5un;
+param-background-popup-preview: 1.5un;
+param-background-popup-transparent: 1.5un;
+param-background-list-main: 1.5un;
+param-background-list-popup: 1.5un;
+param-background-grid-main: 1.5un;
+param-background-grid-popup: 1.5un;
+param-background-button: 1.5un;
+param-background-editor: 1.5un;
+param-background-groupbox: 1.5un;
+param-background-tumbler: 1.5un;
+param-background-button-input-itut: 1.5un;
+param-background-button-input-vkb: 1.5un;
+param-background-bubble: 2.25un;
+
+param-widget-scroll-bar-indicative-width: 2un;
+param-widget-scroll-bar-interactive-width: 2un;
+param-widget-scroll-bar-indicative-minimum-handle: 4un;
+param-widget-scroll-bar-interactive-minimum-handle: 8un;
+param-widget-scroll-bar-interactive-key-event-size: 2un;
+
+param-widget-slider-thumb-width: 3un;
+param-widget-chrome-height: 9.5un;
+param-widget-toolbar-height: 9un;
+param-widget-progress-bar-height: 3un;
+param-widget-popup-softkey-height: 7.5un;
+param-widget-popup-heading-height: 8un;
+param-widget-dialog-width: 49.75un;
+param-widget-combobox-height: 7.5un;
+param-widget-progress-slider-height: 4un;
+
+param-zoom-graphic-primary-small: 1;
+param-zoom-graphic-secondary: 1;
+param-zoom-text-primary: 1;
+param-zoom-text-secondary: 1;
+}

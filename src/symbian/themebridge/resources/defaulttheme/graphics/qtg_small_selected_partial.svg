@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Tiny//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-tiny.dtd">
+<svg baseProfile="tiny" height="30" viewBox="0 0 30 30" width="30" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g>
+<rect fill="none" height="30" width="30"/>
+<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_1_" x1="15.0005" x2="15.0005" y1="29" y2="1.0005">
+<stop offset="0" style="stop-color:#FAFBFD;stop-opacity:0.35"/>
+<stop offset="0.1818" style="stop-color:#FAFBFD;stop-opacity:0.15"/>
+<stop offset="0.9267" style="stop-color:#FAFBFD;stop-opacity:0.4686"/>
+<stop offset="1" style="stop-color:#FAFBFD;stop-opacity:0.5"/>
+</linearGradient>
+<rect fill="url(#SVGID_1_)" fill-opacity="0.8" height="28" stroke-opacity="0.8" width="28" x="1" y="1"/>
+<polygon fill-opacity="0.2" points="2,2 2,28 3,28 3,4 27,4 27,28 28,28 28,2 " stroke-opacity="0.2"/>
+<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_2_" x1="1" x2="29" y1="15" y2="15">
+<stop offset="0" style="stop-color:#FFFFFF;stop-opacity:0"/>
+<stop offset="0.5" style="stop-color:#FFFFFF"/>
+<stop offset="1" style="stop-color:#FFFFFF;stop-opacity:0"/>
+</linearGradient>
+<path d="M28,2v26H2V2H28 M29,1H1v28h28V1L29,1z" fill="url(#SVGID_2_)" fill-opacity="0.8" stroke-opacity="0.8"/>
+<path d="M0,0v30h30V0H0z M29,29H1V1h28V29z" fill-opacity="0.15" stroke-opacity="0.15"/>
+<rect fill-opacity="0.2" height="1" stroke-opacity="0.2" width="26" x="2" y="2"/>
+<rect fill="none" height="30" width="30"/>
+<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_3_" x1="14.9995" x2="14.9995" y1="8.125" y2="24.2505">
+<stop offset="0" style="stop-color:#FFFFFF"/>
+<stop offset="0.4" style="stop-color:#C3D1D9"/>
+<stop offset="1" style="stop-color:#FEFEFE"/>
+</linearGradient>
+<rect fill="url(#SVGID_3_)" height="16" width="16" x="7" y="8"/>
+<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_4_" x1="7" x2="23" y1="16" y2="16">
+<stop offset="0" style="stop-color:#FFFFFF;stop-opacity:0"/>
+<stop offset="0.5" style="stop-color:#FFFFFF"/>
+<stop offset="1" style="stop-color:#FFFFFF;stop-opacity:0"/>
+</linearGradient>
+<path d="M22,9v14H8V9H22 M23,8H7v16h16V8L23,8z" fill="url(#SVGID_4_)"/>
+</g>
+</svg>

@@ -26,6 +26,9 @@ HEADERS += \
     sframepool.h \
     sdeclarativeimplicitsizeitem.h
 
+RESOURCES += \
+    themebridge.qrc
+
 OTHER_FILES += \
     qmldir
 

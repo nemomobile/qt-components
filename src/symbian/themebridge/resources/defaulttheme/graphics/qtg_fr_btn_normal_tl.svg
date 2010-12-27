@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Tiny//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-tiny.dtd">
+<svg baseProfile="tiny" height="10.0" version="1.1" viewBox="0.0 0.0 10.0 10.0" width="10.0" x="0.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0.0">
+<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_1_" x1="35.0005" x2="35.0005" y1="48.0" y2="2.0005">
+<stop offset="0" style="stop-color:#1E1E1E"/>
+<stop offset="1" style="stop-color:#939393;stop-opacity:0.95"/>
+</linearGradient>
+<path d="M 2.0 10.0 V 8.0 c 0.0 -3.3 2.699 -6.0 6.0 -6.0 h 2.0 L 10.0 10.0 L 2.0 10.0 z" fill="url(#SVGID_1_)" fill-opacity="0.5" stroke-opacity="0.5"/>
+<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_2_" x1="35.0005" x2="35.0005" y1="47.0" y2="3.0005">
+<stop offset="0" style="stop-color:#FFFFFF;stop-opacity:0.1"/>
+<stop offset="1" style="stop-color:#FFFFFF;stop-opacity:0.6"/>
+</linearGradient>
+<path d="M 10.0 3.0 H 8.0 C 5.242 3.0 3.0 5.243 3.0 8.0 v 2.0 L 4.0 10.0 V 8.0 c 0.0 -2.206 1.793 -4.0 4.0 -4.0 h 2.0 L 10.0 3.0 z" fill="url(#SVGID_2_)"/>
+<path d="M 10.0 2.0 H 8.0 C 4.699 2.0 2.0 4.7 2.0 8.0 v 2.0 L 3.0 10.0 V 8.0 c 0.0 -2.757 2.242 -5.0 5.0 -5.0 h 2.0 L 10.0 2.0 z" fill-opacity="0.3" stroke-opacity="0.3"/>
+<path d="M 2.0 10.0 V 8.0 c 0.0 -3.3 2.699 -6.0 6.0 -6.0 H 10.0 L 10.0 0.0 H 8.0 C 3.589 0.0 0.0 3.589 0.0 8.0 v 2.0 L 0.0 10.0 L 2.0 10.0 z" fill="#FFFFFF" fill-opacity="0.1" stroke-opacity="0.1"/>
+<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_3_" x1="8.0" x2="62.0" y1="3.5" y2="3.5">
+<stop offset="0" style="stop-color:#FFFFFF;stop-opacity:0.1"/>
+<stop offset="0.5" style="stop-color:#FFFFFF"/>
+<stop offset="1" style="stop-color:#FFFFFF;stop-opacity:0.1"/>
+</linearGradient>
+<rect fill="url(#SVGID_3_)" height="1.0" width="2.0" x="8.0" y="3.0"/>
+<linearGradient gradientUnits="userSpaceOnUse" x1="8.0" x2="62.0" y1="46.5" y2="46.5">
+<stop offset="0" style="stop-color:#FFFFFF;stop-opacity:0"/>
+<stop offset="0.5" style="stop-color:#FFFFFF;stop-opacity:0.4"/>
+<stop offset="1" style="stop-color:#FFFFFF;stop-opacity:0"/>
+</linearGradient>
+<path d="M 7.0 10.0 V 8.0 c 0.0 -0.552 0.449 -1.0 1.0 -1.0 H 10.0 L 10.0 4.0 H 8.0 C 5.793 4.0 4.0 5.794 4.0 8.0 v 2.0 L 7.0 10.0 z" fill="#FFFFFF" fill-opacity="0.05" stroke-opacity="0.05"/>
+<path d="M 6.0 10.0 V 8.0 c 0.0 -1.103 0.897 -2.0 2.0 -2.0 H 10.0 L 10.0 4.0 H 8.0 C 5.793 4.0 4.0 5.794 4.0 8.0 v 2.0 L 6.0 10.0 z" fill="#FFFFFF" fill-opacity="0.05" stroke-opacity="0.05"/>
+<path d="M 5.0 10.0 V 8.0 c 0.0 -1.654 1.346 -3.0 3.0 -3.0 H 10.0 L 10.0 4.0 H 8.0 C 5.793 4.0 4.0 5.794 4.0 8.0 v 2.0 L 5.0 10.0 z" fill="#FFFFFF" fill-opacity="0.1" stroke-opacity="0.1"/>
+</svg>
