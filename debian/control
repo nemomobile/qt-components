@@ -2,7 +2,7 @@ Source: qt-components
 Section: libs 
 Priority: extra
 Maintainer: Antonio Aloisio <antonio.aloisio@nokia.com>
-Build-Depends: cdbs, debhelper (>= 5), quilt, libqt4-dev(>= 4.7.0~), libqt4-declarative, libmeegotouch-dev
+Build-Depends: cdbs, debhelper (>= 5), quilt, libqt4-dev(>= 4.7.0~), libqt4-declarative, libmeegotouch-dev (>= 0.20.68)
 Standards-Version: 3.7.2
 
 Package: qt-components
