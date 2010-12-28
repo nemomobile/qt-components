@@ -40,6 +40,7 @@
 
 static const qreal MM_PER_INCH = 25.4;
 static const qreal PPI = 229;
+static const qreal UNIT = 6.75;
 
 class SDeclarativeScreenPrivate
 {
@@ -73,7 +74,7 @@ SDeclarativeScreenPrivate::SDeclarativeScreenPrivate(SDeclarativeScreen *qq)
     ,orientation(SDeclarativeScreen::Automatic)
     ,ppi(PPI)
     ,ppmm(PPI / MM_PER_INCH)
-    ,unit(0.0f)
+    ,unit(UNIT)
     ,screenSize()
     ,activeDisplayProfile(0)
     ,activatingDisplayProfile(false)
