@@ -1,9 +1,11 @@
 include (../../../qt-components.pri)
 
+TARGETPATH = com/nokia/symbian/themebridge
 TEMPLATE = lib
 TARGET = $$qtLibraryTarget(symbianthemebridgeplugin)
-DESTDIR = $$Q_COMPONENTS_BUILD_TREE/lib
-win32:DLLDESTDIR = $$Q_COMPONENTS_BUILD_TREE/bin
+DESTDIR = $$Q_COMPONENTS_BUILD_TREE/imports/$$TARGETPATH
+INCLUDEPATH += $$PWD
+
 CONFIG += qt plugin
 QT += declarative svg
 
@@ -29,15 +31,8 @@ HEADERS += \
 RESOURCES += \
     themebridge.qrc
 
-OTHER_FILES += \
+QML_FILES += \
     qmldir
-
-TARGETPATH = com/nokia/symbian/themebridge
-
-target.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH
-
-otherfiles.files = $$OTHER_FILES
-otherfiles.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH
 
 symbian {
     TARGET.EPOCALLOWDLLDATA = 1
@@ -54,9 +49,9 @@ symbian {
     pluginstub.path = /resource/qt/imports/$$TARGETPATH
 
     resources.path = /resource/qt/imports/$$TARGETPATH
-    resources.sources += $$OTHER_FILES
+    resources.sources += $$QML_FILES
 
     DEPLOYMENT = pluginstub resources
 }
 
-INSTALLS += target otherfiles
+include(../../../qml.pri)

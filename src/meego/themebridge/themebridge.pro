@@ -1,9 +1,12 @@
+include (../../../qt-components.pri)
+
 TARGETPATH = com/meego/themebridge
 TEMPLATE = lib
-TARGET = meegothemebridgeplugin
+TARGET = $$qtLibraryTarget(meegothemebridgeplugin)
 DESTDIR = $$Q_COMPONENTS_BUILD_TREE/imports/$$TARGETPATH
+INCLUDEPATH += $$PWD
 
-CONFIG += meegotouch qt plugin
+CONFIG += qt plugin
 QT += declarative network
 contains(DEFINES, HAVE_MEEGOGRAPHICSSYSTEM) {
     QT += meegographicssystemhelper

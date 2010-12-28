@@ -6,7 +6,7 @@ TARGET = $$qtLibraryTarget(meegoplugin)
 DESTDIR = $$Q_COMPONENTS_BUILD_TREE/imports/$$TARGETPATH
 INCLUDEPATH += $$PWD
 
-CONFIG += qt plugin meego
+CONFIG += qt plugin
 QT += declarative
 !macx: QT += dbus
 

@@ -1,21 +1,19 @@
+include(../../qt-components.pri)
+
 TEMPLATE = lib
 TARGET = $$qtLibraryTarget(QtComponents)
-
 DESTDIR = $$Q_COMPONENTS_BUILD_TREE/lib
 win32:DLLDESTDIR = $$Q_COMPONENTS_BUILD_TREE/bin
+INCLUDEPATH += $$PWD
 
 QT += declarative opengl
 CONFIG += build_lib
 DEFINES += Q_COMPONENTS_BUILD_LIB
 
-include(../../qt-components.pri)
-
 HEADERS += \
     qdeclarativewindow.h
 SOURCES += \
     qdeclarativewindow.cpp
-
-INCLUDEPATH = $$PWD
 
 symbian {
     TARGET.EPOCALLOWDLLDATA = 1
