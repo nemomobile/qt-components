@@ -40,7 +40,7 @@ Rectangle {
     PageStack {
         id: pageStack
         
-        toolbar: toolbar
+        toolBar: toolbar
         
         anchors.top: toolbar.bottom
         anchors.bottom: window.bottom

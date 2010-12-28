@@ -24,8 +24,6 @@
 **
 ****************************************************************************/
 
-// Page stack engine implementation.
-
 // Page stack - items are page slots.
 var pageStack = [];
 
@@ -56,7 +54,8 @@ function push(page, replace, immediate) {
 
     // push any extra defined pages onto the stack
     if (pages) {
-        for (var i = 0; i < pages.length; i++) {
+        var i;
+        for (i = 0; i < pages.length; i++) {
             pageStack.push(createSlot(pages[i]));
         }
     }
@@ -77,10 +76,10 @@ function push(page, replace, immediate) {
     }
     slot.pushEnter(replace, immediate);
 
-    // sync toolbar
-    var tools = slot.page.tools;
-    if (toolbar) {
-        toolbar.setTools(tools, immediate ? "set" : replace ? "replace" : "push");
+    // sync tool bar
+    var tools = slot.page.tools || null;
+    if (toolBar) {
+        toolBar.setTools(tools, immediate ? "set" : replace ? "replace" : "push");
     }
 
     return slot.page;
@@ -130,10 +129,10 @@ function pop(page, immediate) {
         oldSlot.popExit(immediate);
         slot.popEnter(immediate);
 
-        // sync toolbar
-        var tools = slot.page.tools;
-        if (toolbar) {
-            toolbar.setTools(tools, immediate ? "set" : "pop");
+        // sync tool bar
+        var tools = slot.page.tools || null;
+        if (toolBar) {
+            toolBar.setTools(tools, immediate ? "set" : "pop");
         }
 
         return oldSlot.page;
@@ -147,25 +146,6 @@ function clear() {
     var slot;
     while (slot = pageStack.pop()) {
         slot.destroy();
-    }
-}
-
-// Called when the page stack visibility changes.
-function onVisibleChanged() {
-    var slot = pageStack[pageStack.length - 1];
-    if (slot) {
-        var page = slot.page;
-        if (root.visible) {
-            // page stack became visible
-            if (page.activated) {
-                page.activated();
-            }
-        } else {
-            // page stack became invisible
-            if (page.deactivated) {
-                page.deactivated();
-            }
-        }
     }
 }
 

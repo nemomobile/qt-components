@@ -28,7 +28,6 @@
 // navigation model. Pages can be defined as QML items or components.
 
 import Qt 4.7
-import com.meego.themebridge 1.0
 import "PageStack.js" as Engine
 
 Item {
@@ -43,8 +42,11 @@ Item {
     // The currently active page.
     property Item currentPage: null
 
-    // The application toolbar
-    property Item toolbar: null
+    // The application tool bar.
+    property Item toolBar: null
+
+    // Indicates whether there is an ongoing page transition.
+    property bool busy: (currentPage && currentPage.parent.busy)
 
     // Pushes a page on the stack.
     // The page can be defined as a component or an item.
@@ -72,10 +74,28 @@ Item {
         return Engine.clear();
     }
 
+    // Called when the page stack visibility changes.
     onVisibleChanged: {
-        Engine.onVisibleChanged();
+        if (currentPage) {
+            if (root.visible) {
+                // page stack became visible
+                __emitPageLifecycleSignal(currentPage, "activating");
+                __emitPageLifecycleSignal(currentPage, "activated");
+            } else {
+                // page stack became invisible
+                __emitPageLifecycleSignal(currentPage, "deactivating");
+                __emitPageLifecycleSignal(currentPage, "deactivated");
+            }
+        }
     }
     
+    // Emits a lifecycle signal for a page.
+    function __emitPageLifecycleSignal(page, signal) {
+        if (page[signal]) {
+            page[signal]();
+        }
+    }
+
     // Component for page slots.
     Component {
         id: slotComponent
@@ -97,6 +117,9 @@ Item {
             // Duration of transition animation (in ms)
             property int transitionDuration: 500
 
+            // Tracks whether a transition is ongoing.
+            property bool busy: false
+
             // Performs a push enter transition.
             function pushEnter(replace, immediate) {
                 if (!immediate) {
@@ -104,19 +127,21 @@ Item {
                 }
                 state = "";
                 page.visible = true;
-                if (root.visible && page.activated) {
-                    page.activated();
+                if (root.visible && immediate) {
+                    __emitPageLifecycleSignal(page, "activating");
+                    __emitPageLifecycleSignal(page, "activated");
                 }
             }
 
             // Performs a push exit transition.
             function pushExit(replace, immediate) {
                 state = immediate ? "hidden" : (replace ? "back" : "left");
-                if (root.visible && page.deactivated) {
-                    page.deactivated();
+                if (root.visible && immediate) {
+                    __emitPageLifecycleSignal(page, "deactivating");
+                    __emitPageLifecycleSignal(page, "deactivated");
                 }
                 if (replace) {
-                    slot.destroy(immediate ? 0 : transitionDuration);
+                    slot.destroy(immediate ? 0 : transitionDuration + 100);
                 }
             }
 
@@ -127,18 +152,39 @@ Item {
                 }
                 state = "";
                 page.visible = true;
-                if (root.visible && page.activated) {
-                    page.activated();
+                if (root.visible && immediate) {
+                    __emitPageLifecycleSignal(page, "activating");
+                    __emitPageLifecycleSignal(page, "activated");
                 }
             }
 
             // Performs a pop exit transition.
             function popExit(immediate) {
                 state = immediate ? "hidden" : "right";
-                if (root.visible && page.deactivated) {
-                    page.deactivated();
+                if (root.visible && immediate) {
+                    __emitPageLifecycleSignal(page, "deactivating");
+                    __emitPageLifecycleSignal(page, "deactivated");
                 }
-                slot.destroy(immediate ? 0 : transitionDuration);
+                slot.destroy(immediate ? 0 : transitionDuration + 100);
+            }
+            
+            // Called when a transition has started.
+            function transitionStarted() {
+                busy = true;
+                if (root.visible) {
+                    __emitPageLifecycleSignal(page, state == "" ? "activating" : "deactivating");
+                }
+            }
+            
+            // Called when a transition has ended.
+            function transitionEnded() {
+                busy = false;
+                if (root.visible) {
+                    __emitPageLifecycleSignal(page, state == "" ? "activated" : "deactivated");
+                }
+                if (state == "left" || state == "right" || state == "back") {
+                    state = "hidden";
+                }
             }
 
             states: [
@@ -174,32 +220,37 @@ Item {
                 Transition {
                     from: ""; to: "left"; reversible: true
                     SequentialAnimation {
+                        ScriptAction { script: if (state == "left") { transitionStarted(); } else { transitionEnded(); } }
                         PropertyAnimation { properties: "x"; easing.type: Easing.InOutExpo; duration: transitionDuration }
-                        ScriptAction { script: if (state == "left") state = "hidden"; }
+                        ScriptAction { script: if (state == "left") { transitionEnded(); } else { transitionStarted(); } }
                     }
                 },
                 // Push entry and pop exit transition.
                 Transition {
                     from: ""; to: "right"; reversible: true
                     SequentialAnimation {
+                        ScriptAction { script: if (state == "right") { transitionStarted(); } else { transitionEnded(); } }
                         PropertyAnimation { properties: "x"; easing.type: Easing.InOutExpo; duration: transitionDuration }
-                        ScriptAction { script: if (state == "right") state = "hidden"; }
+                        ScriptAction { script: if (state == "right") { transitionEnded(); } else { transitionStarted(); } }
                     }
                 },
                 // Replace entry transition.
                 Transition {
                     from: "front"; to: "";
                     SequentialAnimation {
+                        ScriptAction { script: transitionStarted(); }
                         PropertyAnimation { properties: "scale,opacity"; easing.type: Easing.InOutExpo; duration: transitionDuration }
+                        ScriptAction { script: transitionEnded(); }
                     }
                 },
                 // Replace exit transition.
                 Transition {
                     from: ""; to: "back";
                     SequentialAnimation {
+                        ScriptAction { script: transitionStarted(); }
                         PropertyAnimation { properties: "scale,opacity"; easing.type: Easing.InOutExpo; duration: transitionDuration }
-                        ScriptAction { script: if (state == "back") state = "hidden"; }
-                    }
+                        ScriptAction { script: transitionEnded(); }
+                   }
                 }
             ]
 
@@ -207,8 +258,9 @@ Item {
             Component.onDestruction: {
                 if (state == "") {
                     // the page is active - deactivate it
-                    if (root.visible && page.deactivated) {
-                        page.deactivated();
+                    if (root.visible) {
+                        __emitPageLifecycleSignal(page, "deactivating");
+                        __emitPageLifecycleSignal(page, "deactivated");
                     }
                 }
                 if (owner != slot) {
@@ -222,3 +274,4 @@ Item {
     }
 
 }
+

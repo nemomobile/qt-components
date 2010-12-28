@@ -31,7 +31,7 @@ import com.meego.themebridge 1.0
 
 Item {
     id: root
-    
+
     width: parent ? parent.width : 0
     height: bgImage.height
 
@@ -44,8 +44,11 @@ Item {
         width: root.width
         border.left: 10
         border.right: 10
+        border.top: 10
         border.bottom: 10
-        source: "image://theme/meegotouch-navigationbar-landscape-background"
+        source: "image://theme/meegotouch-navigationbar-" +
+                (root.parent && (root.parent.width > root.parent.height) ? "landscape" : "portrait") +
+                "-background"
     }
 
     Item {
@@ -58,7 +61,7 @@ Item {
         // Inactive state.
         State {
             name: "hidden"
-            PropertyChanges { target: root; height: 0 }
+            PropertyChanges { target: root; height: 0; opacity: 0.0 }
         }
     ]
 
@@ -67,7 +70,8 @@ Item {
         Transition {
             from: ""; to: "hidden"; reversible: true
             SequentialAnimation {
-                PropertyAnimation { properties: "height"; easing.type: Easing.InOutExpo; duration: transitionDuration }
+                PropertyAnimation { properties: "opacity"; easing.type: Easing.InOutExpo; duration: transitionDuration }
+                PropertyAnimation { properties: "height"; duration: 10 }
             }
         }
     ]
@@ -76,8 +80,8 @@ Item {
     property Item tools: null
 
     onToolsChanged: {
-        _performTransition(_transition || transition);
-        _transition = undefined;
+        __performTransition(__transition || transition);
+        __transition = undefined;
     }
 
     // The transition type. One of the following:
@@ -88,33 +92,33 @@ Item {
     property string transition: "set"
 
     // The currently displayed slot; null if none.
-    property Item _currentSlot: null
+    property Item __currentSlot: null
 
     // Alternating slots used for transitions.
-    property Item _slotA: null
-    property Item _slotB: null
+    property Item __slotA: null
+    property Item __slotB: null
 
     // The transition to perform next.
-    property variant _transition
+    property variant __transition
 
     // Sets the tools with a transition.
     function setTools(tools, transition) {
         root.state = tools ? "" : "hidden";
-        _transition = transition;
+        __transition = transition;
         root.tools = tools;
     }
 
     // Performs a transition between tools in the toolbar.
-    function _performTransition(transition) {
+    function __performTransition(transition) {
         // lazily create slots if they have not been created
-        if (!_currentSlot) {
-            _slotA = slotComponent.createObject(slotContainer);
-            _slotB = slotComponent.createObject(slotContainer);
-            _currentSlot = _slotB;
+        if (!__currentSlot) {
+            __slotA = slotComponent.createObject(slotContainer);
+            __slotB = slotComponent.createObject(slotContainer);
+            __currentSlot = __slotB;
         }
 
         // no transition if the tools are unchanged
-        if (_currentSlot.tools == tools) {
+        if (__currentSlot.tools == tools) {
             return;
         }
 
@@ -128,7 +132,7 @@ Item {
         var animation = transitions[transition];
 
         // initialize the free slot
-        var slot = _currentSlot == _slotA ? _slotB : _slotA;
+        var slot = __currentSlot == __slotA ? __slotB : __slotA;
         slot.state = "hidden";
         if (tools) {
             slot.tools = tools;
@@ -138,13 +142,13 @@ Item {
         }
 
         // perform transition
-        _currentSlot.state = animation["old"];
+        __currentSlot.state = animation["old"];
         if (tools) {
             slot.state = animation["new"];
             slot.state = "";
         }
 
-        _currentSlot = slot;
+        __currentSlot = slot;
     }
 
     // Component for toolbar slots.
@@ -169,12 +173,12 @@ Item {
                 // Start state for pop entry, end state for push exit.
                 State {
                     name: "left"
-                    PropertyChanges { target: slot; x: -50; opacity: 0.0 }
+                    PropertyChanges { target: slot; x: -30; opacity: 0.0 }
                 },
                 // Start state for push entry, end state for pop exit.
                 State {
                     name: "right"
-                    PropertyChanges { target: slot; x: 50; opacity: 0.0 }
+                    PropertyChanges { target: slot; x: 30; opacity: 0.0 }
                 },
                 // Start state for replace entry.
                 State {
@@ -210,7 +214,8 @@ Item {
                 Transition {
                     from: ""; to: "left"; reversible: true
                     SequentialAnimation {
-                        PropertyAnimation { properties: "x,opacity"; easing.type: Easing.InOutExpo; duration: transitionDuration }
+                        PropertyAnimation { properties: "x,opacity"; easing.type: Easing.InCubic; duration: transitionDuration / 2 }
+                        PauseAnimation { duration: transitionDuration / 2 }
                         ScriptAction { script: if (state == "left") state = "hidden"; }
                     }
                 },
@@ -218,7 +223,8 @@ Item {
                 Transition {
                     from: ""; to: "right"; reversible: true
                     SequentialAnimation {
-                        PropertyAnimation { properties: "x,opacity"; easing.type: Easing.InOutExpo; duration: transitionDuration }
+                        PropertyAnimation { properties: "x,opacity"; easing.type: Easing.InCubic; duration: transitionDuration / 2 }
+                        PauseAnimation { duration: transitionDuration / 2 }
                         ScriptAction { script: if (state == "right") state = "hidden"; }
                     }
                 },
