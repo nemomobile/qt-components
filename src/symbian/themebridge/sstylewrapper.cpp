@@ -131,7 +131,7 @@ QObject *SStyleWrapper::currentStyleAsObject() const
 qreal SStyleWrapper::preferredWidth() const
 {
     Q_D(const SStyleWrapper);
-    if (styleClass() == QLatin1String("Button") && styleObjectName() == QLatin1String("BackButton"))
+    if (styleClass() == QLatin1String("Button"))
         return d->fetchLayoutParameter(QLatin1String("param-widget-chrome-height"));
 
     // listItem width should be really controlled by the list user, but it defaults to screen width
@@ -168,7 +168,7 @@ qreal SStyleWrapper::preferredWidth() const
 qreal SStyleWrapper::preferredHeight() const
 {
     Q_D(const SStyleWrapper);
-    if (styleClass() == QLatin1String("Button") && styleObjectName() == QLatin1String("BackButton"))
+    if (styleClass() == QLatin1String("Button"))
         return qreal(2 / 3 * d->fetchLayoutParameter(QLatin1String("param-widget-chrome-height")));
 
     // round, ceil, floor?
@@ -237,8 +237,6 @@ QVariant SStyleWrapper::get(const QString &propertyName)
         ret = d->textEditProperty(propertyName);
     else if (styleClass() == QLatin1String("TitleBar"))
         ret = d->titleBarProperty(propertyName);
-    else if (styleClass() == QLatin1String("BackButton"))
-        ret = d->backButtonProperty(propertyName);
     else if (styleClass() == QLatin1String("ListItem"))
         ret = d->listItemProperty(propertyName);
     else if (styleClass() == QLatin1String("PageContainer"))

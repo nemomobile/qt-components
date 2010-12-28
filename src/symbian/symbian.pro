@@ -20,7 +20,8 @@ HEADERS += \
     sdeclarativewindowdecoration.h
 
 QML_FILES = \
-    qmldir
+    qmldir \
+    Button.qml
 
 symbian {
     TARGET.EPOCALLOWDLLDATA = 1

@@ -49,7 +49,6 @@ public:
     QVariant buttonProperty(const QString &propertyName) const;
     QVariant textEditProperty(const QString &propertyName) const;
     QVariant titleBarProperty(const QString &propertyName) const;
-    QVariant backButtonProperty(const QString &propertyName) const;
     QVariant listItemProperty(const QString &propertyName) const;
     QVariant basicListItemImageProperty(const QString &propertyName) const;
     QVariant pageContainerProperty(const QString &propertyName) const;
@@ -74,8 +73,6 @@ private:
     QVariant buttonPropertyBackground() const;
     QVariant buttonPropertyTextColor() const;
     QVariant textEditPropertyFrame() const;
-    QVariant backButtonPropertyIconColor() const;
-    QVariant backButtonPropertyBackground() const;
     QVariant listItemPropertyMainTextColor() const;
     QVariant listItemPropertySubTextColor() const;
 

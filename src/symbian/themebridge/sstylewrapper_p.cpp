@@ -319,13 +319,6 @@ void SStyleWrapperPrivate::initScreenPtr() const
 
 QVariant SStyleWrapperPrivate::buttonProperty(const QString &propertyName) const
 {
-    // BackButton overrides some properties (icon, iconColor etc)
-    if (styleObjectName == QLatin1String("BackButton")) {
-        QVariant ret = backButtonProperty(propertyName);
-        if (!ret.isNull())
-            return ret;
-    }
-
     if (propertyName == QLatin1String("font"))
         return fetchFont(SStyleWrapper::Primary, fetchLayoutParameter(QLatin1String("param-text-height-tiny")));
 
@@ -422,32 +415,6 @@ QVariant SStyleWrapperPrivate::titleBarProperty(const QString &propertyName) con
 
     if (propertyName == QLatin1String("font"))
         return fetchFont(SStyleWrapper::Title);
-
-    return QVariant();
-}
-
-QVariant SStyleWrapperPrivate::backButtonProperty(const QString &propertyName) const
-{
-    if (propertyName == QLatin1String("frameType"))
-        return SDeclarativeFrame::ThreePiecesHorizontal;
-
-    if (propertyName == QLatin1String("icon"))
-        return QLatin1String("qtg_mono_back");
-
-    if (propertyName == QLatin1String("iconColor"))
-        return backButtonPropertyIconColor();
-
-    if (propertyName == QLatin1String("background"))
-        return backButtonPropertyBackground();
-
-    if (propertyName == QLatin1String("iconWidth"))
-        return fetchLayoutParameter(QLatin1String("param-graphic-size-function"));
-
-    if (propertyName == QLatin1String("iconHeight"))
-        return fetchLayoutParameter(QLatin1String("param-graphic-size-function"));
-
-    if (propertyName.contains(QLatin1String("iconMargin")))
-        return 0;
 
     return QVariant();
 }
@@ -802,7 +769,7 @@ QVariant SStyleWrapperPrivate::buttonPropertyBackground() const
 {
     if (mode == QLatin1String("pressed"))
         return QLatin1String("qtg_fr_btn_pressed");
-    else if (mode == QLatin1String("selected"))
+    else if (mode == QLatin1String("focused"))
         return QLatin1String("qtg_fr_btn_highlight");
     else if (mode == QLatin1String("checked"))
         return QLatin1String("qtg_fr_btn_latched");
@@ -814,7 +781,7 @@ QVariant SStyleWrapperPrivate::buttonPropertyTextColor() const
 {
     if (mode == QLatin1String("pressed"))
         return fetchThemeColor(QLatin1String("qtc_button_pressed"));
-    else if (mode == QLatin1String("selected"))
+    else if (mode == QLatin1String("focused"))
         return fetchThemeColor(QLatin1String("qtc_button_latched"));
     else if (mode == QLatin1String("checked"))
         return fetchThemeColor(QLatin1String("qtc_button_latched"));
@@ -832,22 +799,6 @@ QVariant SStyleWrapperPrivate::textEditPropertyFrame() const
         return QLatin1String("qtg_fr_textedit_normal");
     else
         return QVariant();
-}
-
-QVariant SStyleWrapperPrivate::backButtonPropertyIconColor() const
-{
-    if (mode == QLatin1String("pressed"))
-        return fetchThemeColor(QLatin1String("qtc_title_pane_pressed"));
-    else
-        return fetchThemeColor(QLatin1String("qtc_title_pane_normal"));
-}
-
-QVariant SStyleWrapperPrivate::backButtonPropertyBackground() const
-{
-    if (mode == QLatin1String("pressed"))
-        return QLatin1String("qtg_fr_titlebar_pressed_r");
-    else
-        return QLatin1String("qtg_fr_titlebar_normal_r");
 }
 
 QVariant SStyleWrapperPrivate::listItemPropertyMainTextColor() const
