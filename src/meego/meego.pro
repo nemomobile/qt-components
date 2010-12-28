@@ -8,7 +8,7 @@ INCLUDEPATH += $$PWD
 
 CONFIG += qt plugin
 QT += declarative
-!macx: QT += dbus
+!win32:!macx: QT += dbus
 
 contextsubscriber {
     DEFINES += HAVE_CONTEXTSUBSCRIBER

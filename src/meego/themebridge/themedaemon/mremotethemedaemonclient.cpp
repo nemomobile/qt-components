@@ -45,6 +45,10 @@
 #include <sys/ipc.h>
 #endif
 
+#ifdef Q_OS_WIN
+#include <qt_windows.h>
+#endif
+
 using namespace M::MThemeDaemonProtocol;
 
 MRemoteThemeDaemonClient::MRemoteThemeDaemonClient(const QString &serverAddress, QObject *parent) :

@@ -5,7 +5,7 @@ SUBDIRS=            \
     qrangemodel
 
 meego {
-   !macx:SUBDIRS += mlocalthemedaemonclient \
+   !win32:!macx:SUBDIRS += mlocalthemedaemonclient \
                     mremotethemedaemonclient
 
     # FIXME: although ostensibly generic API tests, these currently
