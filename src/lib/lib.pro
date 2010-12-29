@@ -1,3 +1,4 @@
+CONFIG += build_lib
 include(../../qt-components.pri)
 
 TEMPLATE = lib
@@ -7,7 +8,6 @@ win32:DLLDESTDIR = $$Q_COMPONENTS_BUILD_TREE/bin
 INCLUDEPATH += $$PWD
 
 QT += declarative opengl
-CONFIG += build_lib
 DEFINES += Q_COMPONENTS_BUILD_LIB
 
 HEADERS += \
