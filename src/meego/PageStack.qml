@@ -46,7 +46,7 @@ Item {
     property Item toolBar: null
 
     // Indicates whether there is an ongoing page transition.
-    property bool busy: (currentPage && currentPage.parent.busy)
+    property bool busy: (currentPage != null && currentPage.parent.busy)
 
     // Pushes a page on the stack.
     // The page can be defined as a component or an item.
