@@ -21,7 +21,8 @@ HEADERS += \
 
 QML_FILES = \
     qmldir \
-    Button.qml
+    Button.qml \
+    CheckBox.qml
 
 symbian {
     TARGET.EPOCALLOWDLLDATA = 1

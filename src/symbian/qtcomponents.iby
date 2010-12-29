@@ -25,5 +25,6 @@ data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\themebridge\qmldir    
 
 // Symbian QML components
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\Button.qml                                     RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\Button.qml
+data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\CheckBox.qml                                   RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\CheckBox.qml
 
 #endif

@@ -1,2 +1,3 @@
 plugin symbianplugin
 Button 1.0 Button.qml
+CheckBox 1.0 CheckBox.qml
