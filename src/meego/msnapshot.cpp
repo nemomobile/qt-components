@@ -29,7 +29,7 @@
 #include <qgraphicsscene.h>
 
 MSnapshot::MSnapshot(QDeclarativeItem *parent)
-    : QDeclarativeItem(parent)
+    : QDeclarativeItem(parent), sWidth(0), sHeight(0)
 {
     setFlag(ItemHasNoContents, false);
     setFlag(ItemIgnoresParentOpacity, true);
@@ -54,14 +54,39 @@ void MSnapshot::take()
     QGraphicsScene *s = scene();
     if (!s)
         return;
-    snapshot = QPixmap(s->width(), s->height());
-    setWidth(s->width());
-    setHeight(s->height());
-    QPainter p(&snapshot);
-    s->render(&p);
+    snapshot = QPixmap(width(), height());
+    QPainter painter(&snapshot);
+    QRectF r(0, 0, snapshotWidth(), snapshotHeight());
+    s->render(&painter, r, r);
 }
 
 void MSnapshot::free()
 {
     snapshot = QPixmap();
+}
+
+void MSnapshot::setSnapshotWidth(int width)
+{
+    if (sWidth != width) {
+        sWidth = width;
+        emit snapshotWidthChanged();
+    }
+}
+
+void MSnapshot::setSnapshotHeight(int height)
+{
+    if (sHeight != height) {
+        sHeight = height;
+        emit snapshotHeightChanged();
+    }
+}
+
+int MSnapshot::snapshotWidth() const
+{
+    return sWidth;
+}
+
+int MSnapshot::snapshotHeight() const
+{
+    return sHeight;
 }

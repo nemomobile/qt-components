@@ -58,6 +58,8 @@ Item {
     Snapshot {
         id: snapshot
         anchors.centerIn: parent
+        snapshotWidth: screen.width
+        snapshotHeight: screen.height
     }
 
     states:  [

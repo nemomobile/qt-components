@@ -35,20 +35,35 @@ class MSnapshot : public QDeclarativeItem
 {
     Q_OBJECT
 
+    Q_PROPERTY(int snapshotWidth READ snapshotWidth WRITE setSnapshotWidth NOTIFY snapshotWidthChanged)
+    Q_PROPERTY(int snapshotHeight READ snapshotHeight WRITE setSnapshotHeight NOTIFY snapshotHeightChanged)
+
 public:
     MSnapshot(QDeclarativeItem *parent = 0);
     virtual ~MSnapshot();
 
     virtual void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 
+    int snapshotWidth() const;
+    int snapshotHeight() const;
+
+    void setSnapshotWidth(int width);
+    void setSnapshotHeight(int height);
+
 public Q_SLOTS:
     void take();
     void free();
+
+Q_SIGNALS:
+    void snapshotWidthChanged();
+    void snapshotHeightChanged();
 
 private:
     Q_DISABLE_COPY(MSnapshot)
 
     QPixmap snapshot;
+    int sWidth;
+    int sHeight;
 };
 
 QML_DECLARE_TYPE(MSnapshot)
