@@ -36,8 +36,8 @@ Item {
     Snapshot {
         id: snapshot
         anchors.centerIn: parent
-        width: parent.width
-        height: parent.height
+        width: screen.width
+        height: screen.height
         snapshotWidth: screen.width
         snapshotHeight: screen.height
         z: 100
