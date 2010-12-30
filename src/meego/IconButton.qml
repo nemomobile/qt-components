@@ -33,8 +33,8 @@ ImplicitSizeItem {
     property alias pressed: area.buttonPressed
     property alias text: label.text
     property alias iconSource: icon.source
-    property alias iconWidth: icon.sourceSize.width
-    property alias iconHeight: icon.sourceSize.height
+    property alias iconWidth: icon.width
+    property alias iconHeight: icon.height
 
     signal clicked
 
