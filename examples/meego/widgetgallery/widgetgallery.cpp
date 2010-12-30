@@ -40,6 +40,9 @@ int main(int argc, char **argv)
 #endif
 
     QDeclarativeView window;
+
+    window.setResizeMode(QDeclarativeView::SizeRootObjectToView);
+
     window.setSource(QUrl::fromLocalFile("widgetgallery.qml"));
     window.show();
     

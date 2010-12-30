@@ -27,14 +27,15 @@
 import Qt 4.7
 import com.meego 1.0
 
-Rectangle {
+Window {
     id: window
     
     width: 854
     height: 480
     
     Image {
-        source: "image://theme/meegotouch-applicationpage-background"
+        source: window.inLandscape ? "image://theme/meegotouch-applicationpage-background" :
+        "image://theme/meegotouch-applicationpage-portrait-background"
     }
 
     PageStack {
@@ -55,7 +56,10 @@ Rectangle {
     ToolBarLayout {
         id: commonTools
         visible: false
-        ToolItem { iconId: "icon-m-toolbar-home" }
+        ToolItem {
+            iconId: "icon-m-toolbar-home"
+            onClicked: { while (pageStack.depth > 1) pageStack.pop() }
+        }
         ToolItem { iconId: "icon-m-toolbar-view-menu"; onClicked: myMenu.state="visible"; }
         ToolItem { iconId: "icon-m-toolbar-back"; onClicked: pageStack.pop(); }
     }
