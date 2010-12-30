@@ -24,6 +24,7 @@
 **
 ****************************************************************************/
 
+///////////////////////////////////////////////////////////////////////////////
 // The Page item is intended for use as a root item in QML items that make
 // up pages to use with the PageStack.
 
@@ -37,18 +38,71 @@ Item {
 
     visible: false
 
-    // Signal that fires when the page is being activated.
-    signal activating
-    
     // Signal that fires when the page has been activated.
     signal activated
-    
-    // Signal that fires when the page is being deactivated.
-    signal deactivating
-    
+
     // Signal that fires when the page has been deactivated.
     signal deactivated
 
     // Defines the tools for the page; null for none.
     property Item tools: null
+
+    // Defines if page is locked in landscape
+    property bool lockInLandscape : false
+    // Defines if page is locked in portrait
+    property bool lockInPortrait : false
+
+    onActivated: {
+        // We are locked in both orientation
+        if(lockInLandscape && lockInPortrait) {
+            screen.orientationLocked = true
+            return
+        }
+
+        // We are not locked in any orientations
+        if(!lockInLandscape && !lockInPortrait) {
+            screen.orientationLocked = false
+            return
+        }
+
+        if(lockInLandscape && isScreenInPortrait()) {
+            screen.orientation = Screen.Landscape;
+            screen.orientationLocked = true
+        } else if(lockInPortrait && isScreenInLandscape()) {
+            screen.orientation = Screen.Portrait;
+            screen.orientationLocked = true
+        }
+    }
+
+    onLockInLandscapeChanged: {
+        if(lockInLandscape) {
+            screen.orientationLocked = true
+            if(isScreenInPortrait())
+            {
+                screen.orientation = Screen.Landscape
+            }
+        }
+        else if (!lockInPortrait)
+            screen.orientationLocked = false
+    }
+
+    onLockInPortraitChanged: {
+        if(lockInPortrait) {
+            screen.orientationLocked = true
+            if(isScreenInLandscape())
+            {
+                screen.orientation = Screen.Portrait
+            }
+        }
+        else if (!lockInLandscape)
+            screen.orientationLocked = false
+    }
+
+    function isScreenInPortrait() {
+        return screen.orientation == Screen.Portrait || screen.orientation == Screen.PortraitInverted;
+    }
+
+    function isScreenInLandscape() {
+        return screen.orientation == Screen.Landscape || screen.orientation == Screen.LandscapeInverted;
+    }
 }
