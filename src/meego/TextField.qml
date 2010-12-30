@@ -130,7 +130,13 @@ ImplicitSizeItem {
 
     Text {
         id: prompt
+
         anchors.fill: parent
+        anchors.leftMargin: __documentMargin + meegostyle.current.get("paddingLeft")
+        anchors.rightMargin: __documentMargin + meegostyle.current.get("paddingRight")
+        anchors.topMargin: __documentMargin + meegostyle.current.get("paddingTop")
+        anchors.bottomMargin: __documentMargin + meegostyle.current.get("paddingBottom")
+
         visible: !textInput.activeFocus && !textInput.text && prompt.text
         color: meegostyle.current.get("promptColor")
         font: root.font
@@ -138,10 +144,13 @@ ImplicitSizeItem {
 
     TextInput {
         id: textInput
-        x: root.anchors.leftMargin
-        y: root.anchors.topMargin
-        width: root.width - x - root.anchors.rightMargin
-        height: root.height - y - root.anchors.bottomMargin
+
+        anchors.fill: parent
+        anchors.leftMargin: __documentMargin + meegostyle.current.get("paddingLeft")
+        anchors.rightMargin: __documentMargin + meegostyle.current.get("paddingRight")
+        anchors.topMargin: __documentMargin + meegostyle.current.get("paddingTop")
+        anchors.bottomMargin: __documentMargin + meegostyle.current.get("paddingBottom")
+
         text: root.text
         onTextChanged: root.text = text
         passwordCharacter: root.__passwordCharacter
