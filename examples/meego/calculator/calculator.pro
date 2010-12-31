@@ -3,6 +3,8 @@ include(../../../qt-components.pri)
 TEMPLATE = app
 QT += declarative
 
+CONFIG -= app_bundle
+
 # Input
 SOURCES += calculator.cpp
 

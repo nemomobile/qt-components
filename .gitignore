@@ -36,3 +36,8 @@ release/
 /tests/auto/api_scrolldecorator/tst_api_scrolldecorator
 /tests/auto/api_slider/tst_api_slider
 /tests/auto/qrangemodel/qrangemodel
+/tests/auto/api_button/tst_quickcomponentsbutton
+/tests/auto/api_checkbox/tst_quickcomponentscheckbox
+/tests/auto/api_progressbar/tst_quickcomponentsprogressbar
+/tests/auto/api_scrolldecorator/tst_quickcomponentsscrolldecorator
+/tests/auto/api_slider/tst_quickcomponentsslider

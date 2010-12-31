@@ -1,6 +1,8 @@
 TEMPLATE = app
 QT += declarative
 
+CONFIG -= app_bundle
+
 # Input
 SOURCES += widgetgallery.cpp
 
