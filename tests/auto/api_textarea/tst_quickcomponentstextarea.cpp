@@ -36,6 +36,7 @@
 #include <QtDeclarative/qdeclarativecontext.h>
 #include <QDeclarativeView>
 #include <QLineEdit>
+#include <QDeclarativeExpression>
 
 #include "tst_quickcomponentstest.h"
 
@@ -61,20 +62,22 @@ private slots:
     // ### missing functions tests
 private:
     QObject *componentObject;
+    QDeclarativeEngine *engine;
 };
 
 void tst_quickcomponentstextarea::initTestCase()
 {
     QString errors;
-    componentObject = tst_quickcomponentstest::createComponentFromFile("tst_quickcomponentstextarea.qml", &errors);
+    engine = 0;
+    componentObject = tst_quickcomponentstest::createComponentFromFile("tst_quickcomponentstextarea.qml", &errors, &engine);
     QVERIFY2(componentObject, qPrintable(errors));
 }
 
 
 void tst_quickcomponentstextarea::font()
 {
-    QVERIFY( componentObject->setProperty("font.family", "Helvetica") );
-    QCOMPARE( componentObject->property("font.family").toString(), QString("Helvetica") );
+    QVERIFY( componentObject->setProperty("font", "Helvetica") );
+    QCOMPARE( componentObject->property("font").toString(), QString("Helvetica") );
 }
 
 void tst_quickcomponentstextarea::cursorPosition()
@@ -99,27 +102,41 @@ void tst_quickcomponentstextarea::readOnly()
 {
     QVERIFY( componentObject->setProperty("readOnly", true) );
     QVERIFY( componentObject->setProperty("text", "I just changed the text") );
+    QEXPECT_FAIL("", "Not yet guarded by readOnly property, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-318", Continue);
     QVERIFY( componentObject->property("text").toString() != QString("I just changed the text"));
 }
 
 void tst_quickcomponentstextarea::selectedText()
 {
-    QVERIFY( componentObject->setProperty("text", "Good morning") );
-    QVERIFY( componentObject->setProperty("selectionStart", 0) );
-    QVERIFY( componentObject->setProperty("selectionEnd", 4) );
-
+    componentObject->setProperty("text", "Good morning");
+    QDeclarativeExpression *expr = new QDeclarativeExpression(engine->rootContext(), componentObject, "select(0,4);");
+    expr->evaluate();
+    if (expr->hasError())
+        qDebug() << expr->error();
+    QVERIFY( !expr->hasError() );
     QCOMPARE( componentObject->property("selectedText").toString(), QString("Good") );
-}
-
-void tst_quickcomponentstextarea::selectionEnd()
-{
-    QVERIFY( componentObject->setProperty("selectionEnd", 2) );
-
 }
 
 void tst_quickcomponentstextarea::selectionStart()
 {
-    QVERIFY( componentObject->setProperty("selectionStart", 1) );
+    componentObject->setProperty("text", "Good morning");
+    QDeclarativeExpression *expr = new QDeclarativeExpression(engine->rootContext(), componentObject, "select(5,11);");
+    expr->evaluate();
+    if (expr->hasError())
+        qDebug() << expr->error();
+    QVERIFY( !expr->hasError() );
+    QCOMPARE( componentObject->property("selectionStart").toInt(), 5 );
+}
+
+void tst_quickcomponentstextarea::selectionEnd()
+{
+    componentObject->setProperty("text", "Good morning");
+    QDeclarativeExpression *expr = new QDeclarativeExpression(engine->rootContext(), componentObject, "select(5,11);");
+    expr->evaluate();
+    if (expr->hasError())
+        qDebug() << expr->error();
+    QVERIFY( !expr->hasError() );
+    QCOMPARE( componentObject->property("selectionEnd").toInt(), 11 );
 }
 
 void tst_quickcomponentstextarea::text()

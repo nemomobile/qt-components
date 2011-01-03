@@ -16,6 +16,6 @@ meego {
         api_slider \
         api_progressbar \
         api_scrolldecorator \
-        #api_textfield \ #TODO not yet finalized
-        #api_textarea #TODO not yet finalized
+        api_textfield \ #TODO not yet finalized
+        api_textarea #TODO not yet finalized
 }

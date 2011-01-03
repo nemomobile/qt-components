@@ -39,6 +39,9 @@
 #include <QLineEdit>
 
 #include "tst_quickcomponentstest.h"
+#include <private/qdeclarativetextinput_p.h>
+#include <QDeclarativeExpression>
+#include <QRegExpValidator>
 
 class tst_quickcomponentstextfield : public QObject
 
@@ -58,18 +61,19 @@ private slots:
     void selectionStart();
     void text();
     void acceptableInput();
-    void validator();
 
     // ### missing function tests
 
 private:
     QObject *componentObject;
+    QDeclarativeEngine *engine;
 };
 
 void tst_quickcomponentstextfield::initTestCase()
 {
     QString errors;
-    componentObject = tst_quickcomponentstest::createComponentFromFile("tst_quickcomponentstextfield.qml", &errors);
+    engine = 0;
+    componentObject = tst_quickcomponentstest::createComponentFromFile("tst_quickcomponentstextfield.qml", &errors, &engine);
     QVERIFY2(componentObject, qPrintable(errors));
 }
 
@@ -85,13 +89,15 @@ void tst_quickcomponentstextfield::inputMethodHints()
     QVERIFY( componentObject->setProperty("text", "1234") );
     QCOMPARE( componentObject->property("placeholderText").toString(), QString("Some text") );
     QVERIFY( componentObject->setProperty("text", "Some more text" ) );
+
+    QEXPECT_FAIL("", "Not yet guarded by input hint, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-317", Continue);
     QCOMPARE( componentObject->property("text").toString(), QString("1234") );
 }
 
 void tst_quickcomponentstextfield::font()
 {
-    QVERIFY( componentObject->setProperty("font.family", "Helvetica") );
-    QCOMPARE( componentObject->property("font.family").toString(), QString("Helvetica") );
+    QVERIFY( componentObject->setProperty("font", "Helvetica") );
+    QCOMPARE( componentObject->property("font").toString(), QString("Helvetica") );
 }
 
 void tst_quickcomponentstextfield::cursorPosition()
@@ -104,6 +110,7 @@ void tst_quickcomponentstextfield::readOnly()
 {
     QVERIFY( componentObject->setProperty("readOnly", true) );
     QVERIFY( componentObject->setProperty("text", "I just changed the text") );
+    QEXPECT_FAIL("", "Not yet guarded by readOnly property, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-318", Continue);
     QVERIFY( componentObject->property("text").toString() != QString("I just changed the text"));
 }
 
@@ -122,24 +129,38 @@ void tst_quickcomponentstextfield::inputMask()
 
 void tst_quickcomponentstextfield::selectedText()
 {
-    QVERIFY( componentObject->setProperty("text", "Good morning") );
-    QVERIFY( componentObject->setProperty("selectionStart", 0) );
-    QVERIFY( componentObject->setProperty("selectionEnd", 4) );
-
+    componentObject->setProperty("text", "Good morning");
+    QDeclarativeExpression *expr = new QDeclarativeExpression(engine->rootContext(), componentObject, "select(0,4);");
+    expr->evaluate();
+    if (expr->hasError())
+        qDebug() << expr->error();
+    QVERIFY( !expr->hasError() );
+    QEXPECT_FAIL("", "Not yet able to verify text selection, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-322", Continue);
     QCOMPARE( componentObject->property("selectedText").toString(), QString("Good") );
-}
-
-void tst_quickcomponentstextfield::selectionEnd()
-{
-    // ### needs to set selection
-    QVERIFY( componentObject->setProperty("selectionEnd", 2) );
-
 }
 
 void tst_quickcomponentstextfield::selectionStart()
 {
-    // ### needs to set selection
-    QVERIFY( componentObject->setProperty("selectionStart", 1) );
+    componentObject->setProperty("text", "Good morning");
+    QDeclarativeExpression *expr = new QDeclarativeExpression(engine->rootContext(), componentObject, "select(5,11);");
+    expr->evaluate();
+    if (expr->hasError())
+        qDebug() << expr->error();
+    QVERIFY( !expr->hasError() );
+    QEXPECT_FAIL("", "Not yet able to verify text selection, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-322", Continue);
+    QCOMPARE( componentObject->property("selectionStart").toInt(), 5 );
+}
+
+void tst_quickcomponentstextfield::selectionEnd()
+{
+    componentObject->setProperty("text", "Good morning");
+    QDeclarativeExpression *expr = new QDeclarativeExpression(engine->rootContext(), componentObject, "select(5,11);");
+    expr->evaluate();
+    if (expr->hasError())
+        qDebug() << expr->error();
+    QVERIFY( !expr->hasError() );
+    QEXPECT_FAIL("", "Not yet able to verify text selection, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-322", Continue);
+    QCOMPARE( componentObject->property("selectionEnd").toInt(), 11 );
 }
 
 void tst_quickcomponentstextfield::text()
@@ -150,23 +171,23 @@ void tst_quickcomponentstextfield::text()
 
 void tst_quickcomponentstextfield::acceptableInput()
 {
-    // depending on validator, acceptable input should be true / false
-    QVERIFY( componentObject->setProperty("validator", "-?\\d{1,3}") );
 
+    QRegExpValidator* validator = new QRegExpValidator(QRegExp("-?\\d{1,3}"),this);
+
+    componentObject->setProperty("validator",QVariant::fromValue(validator));
+
+    // depending on validator, acceptable input should be true / false
     // set text that is allowed by the validator
-    QVERIFY( componentObject->setProperty("text", "42") );
-    QCOMPARE( componentObject->property("text").toInt(), 42);
+    QVERIFY( componentObject->setProperty("text", "-42") );
+    QCOMPARE( componentObject->property("acceptableInput").toBool(), true);
+
+    QVERIFY( componentObject->setProperty("text", "128") );
     QCOMPARE( componentObject->property("acceptableInput").toBool(), true);
 
     // make sure setting the text fails if validator fails
-    QVERIFY( componentObject->setProperty("text", "2800}") );
+    QVERIFY( componentObject->setProperty("text", "qwerasdfzxvc") );
+    QEXPECT_FAIL("", "Not yet able to verify validator failure, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-323", Continue);
     QCOMPARE( componentObject->property("acceptableInput").toBool(), false);
-}
-
-void tst_quickcomponentstextfield::validator()
-{
-    QVERIFY( componentObject->setProperty("validator", "-?\\d{1,3}") );
-
 }
 
 QTEST_MAIN(tst_quickcomponentstextfield)

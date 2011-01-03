@@ -6,7 +6,7 @@
 namespace tst_quickcomponentstest
 {
     QString errorString(QDeclarativeComponent*);
-    QObject* createComponentFromFile(QString const&, QString*);
+    QObject* createComponentFromFile(QString const&, QString*,QDeclarativeEngine **engine=0);
 };
 
 inline
@@ -28,9 +28,11 @@ QString tst_quickcomponentstest::errorString(QDeclarativeComponent* component)
 }
 
 inline
-QObject* tst_quickcomponentstest::createComponentFromFile(QString const& filename, QString* errors)
+QObject* tst_quickcomponentstest::createComponentFromFile(QString const& filename, QString* errors, QDeclarativeEngine **engine)
 {
     QDeclarativeWindow *window = new QDeclarativeWindow;
+    if (engine)
+        *engine = window->engine();
     window->engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
     QDeclarativeComponent *component = new QDeclarativeComponent(window->engine());
 
