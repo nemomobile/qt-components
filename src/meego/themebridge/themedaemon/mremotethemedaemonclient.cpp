@@ -31,6 +31,7 @@
 #include <QPainter>
 #include <QSettings>
 #include <QTime>
+#include <QUuid>
 
 #ifdef HAVE_MEEGOGRAPHICSSYSTEM
 #include <QtMeeGoGraphicsSystemHelper>
@@ -67,8 +68,10 @@ MRemoteThemeDaemonClient::MRemoteThemeDaemonClient(const QString &serverAddress,
     if (connectToServer(address, 2000)) {
         m_stream.setDevice(&m_socket);
 
-        const QFileInfo fileInfo(QCoreApplication::instance()->applicationName());
-        const QString applicationName = fileInfo.fileName();
+        QString applicationName = QCoreApplication::instance()->applicationName();
+        if (applicationName.isEmpty()) {
+            applicationName = QUuid::createUuid().toString();
+        }
         registerApplication(applicationName);
         initializePriority(applicationName);
     } else {
