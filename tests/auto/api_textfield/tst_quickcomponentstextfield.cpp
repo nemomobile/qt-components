@@ -39,7 +39,6 @@
 #include <QLineEdit>
 
 #include "tst_quickcomponentstest.h"
-#include <private/qdeclarativetextinput_p.h>
 #include <QDeclarativeExpression>
 #include <QRegExpValidator>
 
@@ -171,9 +170,7 @@ void tst_quickcomponentstextfield::text()
 
 void tst_quickcomponentstextfield::acceptableInput()
 {
-
     QRegExpValidator* validator = new QRegExpValidator(QRegExp("-?\\d{1,3}"),this);
-
     componentObject->setProperty("validator",QVariant::fromValue(validator));
 
     // depending on validator, acceptable input should be true / false
@@ -191,5 +188,7 @@ void tst_quickcomponentstextfield::acceptableInput()
 }
 
 QTEST_MAIN(tst_quickcomponentstextfield)
+
+QML_DECLARE_TYPE(QRegExpValidator)
 
 #include "tst_quickcomponentstextfield.moc"
