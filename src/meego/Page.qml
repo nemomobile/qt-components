@@ -38,8 +38,14 @@ Item {
 
     visible: false
 
+    // Signal that fires when the page is being activated.
+    signal activating
+
     // Signal that fires when the page has been activated.
     signal activated
+
+    // Signal that fires when the page is being deactivated.
+    signal deactivating
 
     // Signal that fires when the page has been deactivated.
     signal deactivated
