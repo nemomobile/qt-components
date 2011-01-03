@@ -58,7 +58,7 @@ Item {
     // Defines if page is locked in portrait
     property bool lockInPortrait : false
 
-    onActivated: {
+    onActivating: {
         // We are locked in both orientation
         if(lockInLandscape && lockInPortrait) {
             screen.orientationLocked = true
@@ -71,10 +71,10 @@ Item {
             return
         }
 
-        if(lockInLandscape && isScreenInPortrait()) {
+        if(lockInLandscape && __isScreenInPortrait()) {
             screen.orientation = Screen.Landscape;
             screen.orientationLocked = true
-        } else if(lockInPortrait && isScreenInLandscape()) {
+        } else if(lockInPortrait && __isScreenInLandscape()) {
             screen.orientation = Screen.Portrait;
             screen.orientationLocked = true
         }
@@ -83,7 +83,7 @@ Item {
     onLockInLandscapeChanged: {
         if(lockInLandscape) {
             screen.orientationLocked = true
-            if(isScreenInPortrait())
+            if(__isScreenInPortrait())
             {
                 screen.orientation = Screen.Landscape
             }
@@ -95,7 +95,7 @@ Item {
     onLockInPortraitChanged: {
         if(lockInPortrait) {
             screen.orientationLocked = true
-            if(isScreenInLandscape())
+            if(__isScreenInLandscape())
             {
                 screen.orientation = Screen.Portrait
             }
@@ -104,11 +104,11 @@ Item {
             screen.orientationLocked = false
     }
 
-    function isScreenInPortrait() {
+    function __isScreenInPortrait() {
         return screen.orientation == Screen.Portrait || screen.orientation == Screen.PortraitInverted;
     }
 
-    function isScreenInLandscape() {
+    function __isScreenInLandscape() {
         return screen.orientation == Screen.Landscape || screen.orientation == Screen.LandscapeInverted;
     }
 }
