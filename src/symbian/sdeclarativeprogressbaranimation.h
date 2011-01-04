@@ -24,36 +24,45 @@
 **
 ****************************************************************************/
 
-#include "sdeclarative.h"
-#include "sdeclarativescreen.h"
-#include "sdeclarativeprogressbaranimation.h"
-#include "sdeclarativewindowdecoration.h"
+#ifndef SDECLARATIVEPROGRESSBARANIMATION_H
+#define SDECLARATIVEPROGRESSBARANIMATION_H
 
-#include <QtDeclarative>
+#include <QDeclarativeItem>
 
-class SymbianPlugin : public QDeclarativeExtensionPlugin
+class SDeclarativeProgressBarAnimationPrivate;
+
+class SDeclarativeProgressBarAnimation : public QDeclarativeItem
 {
     Q_OBJECT
 
+    Q_PROPERTY(QString animationIcon READ animationIcon WRITE setAnimationIcon)
+    Q_PROPERTY(QString animationMask READ animationMask WRITE setAnimationMask)
+    Q_PROPERTY(int animationOffset READ animationOffset WRITE setAnimationOffset)
+
 public:
 
-    void initializeEngine(QDeclarativeEngine *engine, const char *uri) {
-        QDeclarativeExtensionPlugin::initializeEngine(engine, uri);
+    explicit SDeclarativeProgressBarAnimation(QDeclarativeItem *parent = 0);
+    virtual ~SDeclarativeProgressBarAnimation();
 
-        SDeclarativeScreen *scr = new SDeclarativeScreen();
-        scr->setParent(engine->rootContext()); // context takes the ownership
+    QString animationIcon() const;
+    void setAnimationIcon(const QString &name);
 
-        engine->rootContext()->setContextProperty("screen", scr);
-        qmlRegisterUncreatableType<SDeclarativeScreen>(uri, 1, 0,"Screen", "");
-    }
+    QString animationMask() const;
+    void setAnimationMask(const QString &name);
 
-    void registerTypes(const char *uri) {
-        qmlRegisterUncreatableType<SDeclarative>(uri, 1, 0,"Symbian", "");
-        qmlRegisterType<SDeclarativeProgressBarAnimation>(uri, 1, 0, "ProgressBarAnimation");
-        qmlRegisterType<SDeclarativeWindowDecoration>(uri, 1, 0, "WindowDecoration");
-    }
+    int animationOffset() const;
+    void setAnimationOffset(int offset);
+
+    virtual void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
+
+protected:
+    QScopedPointer<SDeclarativeProgressBarAnimationPrivate> d_ptr;
+
+private:
+    Q_DISABLE_COPY(SDeclarativeProgressBarAnimation)
+    Q_DECLARE_PRIVATE(SDeclarativeProgressBarAnimation)
 };
 
-#include "plugin.moc"
+QML_DECLARE_TYPE(SDeclarativeProgressBarAnimation)
 
-Q_EXPORT_PLUGIN2(symbianplugin, SymbianPlugin)
+#endif // SDECLARATIVEPROGRESSBARANIMATION_H

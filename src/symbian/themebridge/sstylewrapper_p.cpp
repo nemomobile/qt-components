@@ -651,23 +651,23 @@ QVariant SStyleWrapperPrivate::scrollBarProperty(const QString &propertyName) co
 QVariant SStyleWrapperPrivate::progressBarProperty(const QString &propertyName) const
 {
     // Graphic tiles
-    if (propertyName == QLatin1String("backgroundTexture"))
+    if (propertyName == QLatin1String("backgroundFrame"))
         return QLatin1String("qtg_fr_progbar_h_frame");
 
-    if ((propertyName == QLatin1String("backgroundType")) || (propertyName == QLatin1String("progressBarType")))
+    if ((propertyName == QLatin1String("backgroundType")) || (propertyName == QLatin1String("contentsType")))
         return SDeclarativeFrame::ThreePiecesHorizontal;
 
-    if (propertyName == QLatin1String("progressBarTexture"))
+    if (propertyName == QLatin1String("contentsFrame"))
         return QLatin1String("qtg_fr_progbar_h_filled");
 
-    if (propertyName == QLatin1String("waitBar"))
+    if (propertyName == QLatin1String("indeterminateIcon"))
         return QLatin1String("qtg_graf_progbar_h_wait");
 
-    if (propertyName == QLatin1String("waitMask"))
+    if (propertyName == QLatin1String("indeterminateMask"))
         return QLatin1String("qtg_fr_progbar_h_mask");
 
     // Sizes and measurements
-    if ((propertyName == QLatin1String("progressBarHeight")))
+    if ((propertyName == QLatin1String("height")))
         return fetchLayoutParameter(QLatin1String("param-widget-progress-bar-height"));
 
     return QVariant();

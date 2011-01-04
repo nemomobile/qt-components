@@ -1,3 +1,4 @@
 plugin symbianplugin
 Button 1.0 Button.qml
 CheckBox 1.0 CheckBox.qml
+ProgressBar 1.0 ProgressBar.qml

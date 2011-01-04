@@ -11,18 +11,21 @@ QT += declarative
 
 SOURCES += \
     plugin.cpp \
+    sdeclarativeprogressbaranimation.cpp \
     sdeclarativescreen.cpp \
     sdeclarativewindowdecoration.cpp
 
 HEADERS += \
     sdeclarative.h \
+    sdeclarativeprogressbaranimation.h \
     sdeclarativescreen.h \
     sdeclarativewindowdecoration.h
 
 QML_FILES = \
     qmldir \
     Button.qml \
-    CheckBox.qml
+    CheckBox.qml \
+    ProgressBar.qml
 
 symbian {
     TARGET.EPOCALLOWDLLDATA = 1
