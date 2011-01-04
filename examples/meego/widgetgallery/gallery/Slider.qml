@@ -1,6 +1,5 @@
 import QtQuick 1.0
 import com.meego 1.0
-import com.meego.themebridge 1.0 as ThemeBridge // TODO: export Icon
 
 Page {
     // TODO: sections headers are being done manually here, not according to the style.
@@ -85,9 +84,9 @@ Page {
                 width: parent.width
                 height: Math.max(playerSlider.height, playButton.height);
 
-                IconButton {
+                Button {
                     id: playButton
-                    iconId: "icon-m-common-play"
+                    iconSource: "image://theme/icon-m-common-play"
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: parent.left
                 }
@@ -149,12 +148,12 @@ Page {
                 width: parent.width
                 height: Math.max(brightnessSlider.height, weak.height)
 
-                ThemeBridge.Icon {
+                Image {
                     id: weak
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: parent.left
                     anchors.leftMargin: 10
-                    iconId: "icon-m-common-strength1"
+                    source: "image://theme/icon-m-common-strength1"
                 }
 
                 Slider {
@@ -168,12 +167,12 @@ Page {
                     }
                 }
 
-                ThemeBridge.Icon {
+                Image {
                     id: strong
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
                     anchors.rightMargin: 10
-                    iconId: "icon-m-common-strength5"
+                    source: "image://theme/icon-m-common-strength5"
                 }
             }
         }

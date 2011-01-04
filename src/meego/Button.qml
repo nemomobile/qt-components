@@ -153,7 +153,7 @@ ImplicitSizeItem {
                 return (mouseArea.containsMouse && mouseArea.pressed) || (button.checkable && button.checked) ?
                     UI.COLOR_INVERTED_FOREGROUND : UI.COLOR_FOREGROUND
         }
-        text: "Effect"
+        text: ""
 
         visible: text != ""
     }
