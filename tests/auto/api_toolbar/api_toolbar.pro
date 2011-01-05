@@ -1,7 +1,7 @@
 include (../../../qt-components.pri)
 include (../../tests.pri)
 
-TARGET = tst_api_toolbar
+TARGET = tst_quickcomponentstoolbar
 TEMPLATE = app
 QT += declarative
 
