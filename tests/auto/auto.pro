@@ -14,6 +14,7 @@ meego {
         api_button \
         api_checkbox \
         api_slider \
+        api_pagestack \
         api_progressbar \
         api_scrolldecorator \
         api_textfield \ #TODO not yet finalized
