@@ -52,6 +52,12 @@ at the end of the .pro file.
       <case name="slider" type="Functional" description="Unit tests for slider" level="Component" timeout="20">
           <step expected_result="0">cd /opt/qt-components-tests/auto/tst_quickcomponentsslider; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_quickcomponentsslider -xml</step>
       </case>
+      <case name="toolbar" type="Functional" description="Unit tests for toolbar" level="Component" timeout="20">
+          <step expected_result="0">cd /opt/qt-components-tests/auto/tst_quickcomponentstoolbar; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_quickcomponentstoolbar -xml</step>
+      </case>
+      <case name="pagestack" type="Functional" description="Unit tests for pagestack" level="Component" timeout="20">
+          <step expected_result="0">cd /opt/qt-components-tests/auto/tst_quickcomponentspagestack; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_quickcomponentspagestack -xml</step>
+      </case>
       <case name="qrangemodel" type="Functional" description="Unit tests for qrangemodel" level="Component" timeout="20">
           <step expected_result="0">cd /opt/qt-components-tests/auto/qrangemodel; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./qrangemodel -xml</step>
       </case>
