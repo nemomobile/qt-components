@@ -35,6 +35,7 @@ release/
 /tests/auto/api_slider/tst_quickcomponentsslider
 /tests/auto/api_textarea/tst_quickcomponentstextarea
 /tests/auto/api_textfield/tst_quickcomponentstextfield
+/tests/auto/api_toolbar/tst_api_toolbar
 /tests/auto/mlocalthemedaemonclient/mlocalthemedaemonclient
 /tests/auto/mremotethemedaemonclient/mremotethemedaemonclient
 /tests/auto/qrangemodel/qrangemodel
