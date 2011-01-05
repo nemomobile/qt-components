@@ -41,11 +41,15 @@ Rectangle {
   color: "black"
   state: 'hidden'
 
+  signal clicked
+
   //eat mouse events inside the background
   MouseArea {
     id: mouseEventEater 
     anchors.fill: parent
     enabled: background.modal
+
+    onClicked: parent.clicked();
   }
 
   function init() {

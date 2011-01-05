@@ -63,6 +63,7 @@ Item {
 
     Fader {
         id: dialogFader
+        onClicked: rejected()
     }
 
     function isVisible() {
