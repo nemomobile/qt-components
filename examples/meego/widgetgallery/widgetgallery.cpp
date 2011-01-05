@@ -33,11 +33,7 @@ int main(int argc, char **argv)
 
     QApplication app(argc, argv);
 
-#ifdef Q_WS_MAC
-    QDir::setCurrent(app.applicationDirPath().append("../../../"));
-#else
     QDir::setCurrent(app.applicationDirPath());
-#endif
 
     QDeclarativeView window;
 
