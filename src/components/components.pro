@@ -6,6 +6,7 @@ TARGET = $$qtLibraryTarget(qtcomponentsplugin)
 DESTDIR = $$Q_COMPONENTS_BUILD_TREE/imports/$$TARGETPATH
 INCLUDEPATH += $$PWD $$PWD/models
 
+win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release
 CONFIG += qt plugin
 QT += declarative
 
