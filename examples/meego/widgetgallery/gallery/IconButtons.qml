@@ -31,7 +31,7 @@ Template {
     id: page
     tools: commonTools
 
-    infoText: "Icon Buttons have an icon and can have a text label. Icon button differs from push button by its visual presentation: it does not have button-style edges like a Push Button does.\n\nIcon Buttons are used in e.g. Toolbars."
+    infoText: "Icon Buttons have an icon and can have a text label. Icon button differs from push button by its visual presentation: it does not have button-style edges like a Push Button does.\n\nIcon Buttons are used in e.g. Toolbars.\n\nIconButtons can be disabled by setting the enabled property to false."
 
     IconButton {
         y: 52
@@ -44,5 +44,12 @@ Template {
         anchors.horizontalCenter: parent.horizontalCenter
         iconSource: "image://theme/icon-m-toolbar-send-email"
         text: "Lorem ipsum"
+    }
+    IconButton {
+        y: 238
+        anchors.horizontalCenter: parent.horizontalCenter
+        iconSource: "image://theme/icon-m-toolbar-send-email"
+        text: "Dolor Sit Amet"
+        enabled: false
     }
 }

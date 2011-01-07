@@ -43,7 +43,7 @@ Page {
             id: content
 
             width: parent.width
-            height: 1000
+            height: childrenRect.height
 
             Text {
                 id: firstText
@@ -258,7 +258,51 @@ Page {
                 width: parent.width
                 height: 1
             }
-        }
+
+            Text {
+                id: sixthText
+                text: "<b><br/>&nbsp;5. Disabled button\n<br/></b>\nButtons can be \"disabled\" preventing interaction and using a disabled look and feel. To use this feature set the <i>enabled</i> property to false."
+                font.pixelSize: 24
+                width: parent.width
+                wrapMode: Text.WordWrap
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    top: eighthLine.bottom
+                    leftMargin: 10
+                    rightMargin: 10
+                }
+            }
+
+            Rectangle {
+                id: ninthLine
+                color: "black"
+                anchors.topMargin: 5
+                anchors.top: sixthText.bottom
+                width: parent.width
+                height: 1
+            }
+
+            Button {
+                id: disabledButton
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: "Disabled Button"
+                anchors.top: ninthLine.bottom
+                anchors.topMargin: 5
+                height: 64
+                width: 424
+                enabled: false
+            }
+
+            Rectangle {
+                id: tenthLine
+                color: "black"
+                anchors.topMargin: 5
+                anchors.top: disabledButton.bottom
+                width: parent.width
+                height: 1
+            }
+         }
     }
 
     ScrollDecorator {

@@ -57,7 +57,8 @@ Page {
             name: "Button Group"
             source: "ButtonGroup.qml"
         }
-    }
+
+   }
 
     ListView {
         id: buttonsView
