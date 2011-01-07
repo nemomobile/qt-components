@@ -24,30 +24,47 @@
 **
 ****************************************************************************/
 
-.pragma library
+import Qt 4.7
+import com.meego 1.0
 
-var FONT_FAMILY = "";
-var FONT_DEFAULT_SIZE = 24;
+Template {
 
-var COLOR_FOREGROUND = "#000000";
-var COLOR_INVERTED_FOREGROUND = "#ffffff"
-var COLOR_SECONDARY_FOREGROUND = "#cc6633";
-var COLOR_INVERTED_SECONDARY_FOREGROUND = "#cc6633"
-var COLOR_DISABLED_FOREGROUND = "#b2b2b4"
+    infoText: "A Progress Bar can indicate an ongoing process with either known or unknown durations."
 
-var SIZE_ICON_DEFAULT = 32;
-var SIZE_ICON_LARGE = 48;
+    Label {
+        text: "Downloading nicepic.jpg"
+        y: 44
+    }
 
-var CORNER_MARGINS = 12;
+    ProgressBar {
+        y: 120
+        width: parent.width
 
-var MARGIN_DEFAULT = 0;
-var MARGIN_XLARGE = 16;
+        PropertyAnimation on value {
+            id: anim
+            from: 0
+            to: 100
+            duration: 10000
+            running: false
+            easing.type: Easing.OutInQuad
+        }
+    }
 
-// Distance in pixels from the widget bounding box inside which a release
-// event would still be accepted and trigger the widget
-var RELEASE_MISS_DELTA = 30
+    Button {
+        y: 149
+        width: parent.width
+        iconSource: "image://theme/icon-m-common-play"
+        onClicked: anim.start()
+    }
 
-var OPACITY_ENABLED = 1.0
-var OPACITY_DISABLED = 0.5
-var SIZE_BUTTON = 64
+    Label {
+        y: 259
+        text: "Installing CoolApp"
+    }
 
+    ProgressBar {
+        anchors.bottom: parent.bottom
+        width: parent.width
+        indeterminate: true
+    }
+}

@@ -38,6 +38,7 @@
 #include "mdeclarativemaskedimage.h"
 #include "mdeclarativeimplicitsizeitem.h"
 #include "mstylewrapper.h"
+#include "mdeclarativemaskeditem.h"
 
 class MeeGoThemeBridgePlugin : public QDeclarativeExtensionPlugin
 {
@@ -72,6 +73,7 @@ public:
         qmlRegisterType<MDeclarativeIconGlow>(uri, 1, 0, "IconGlow");
         qmlRegisterType<MDeclarativeMaskedImage>(uri, 1, 0, "MaskedImage");
         qmlRegisterType<MDeclarativeImplicitSizeItem>(uri, 1, 0, "ImplicitSizeItem");
+        qmlRegisterType<MDeclarativeMaskedItem>(uri, 1, 0, "MaskedItem");
 
         // Theme info
         qmlRegisterType<MStyleWrapper>(uri, 1, 0, "Style");
