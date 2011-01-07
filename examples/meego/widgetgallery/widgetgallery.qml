@@ -29,10 +29,7 @@ import com.meego 1.0
 
 Window {
     id: window
-    
-    width: 854
-    height: 480
-    
+
     Image {
         source: window.inLandscape ? "image://theme/meegotouch-applicationpage-background" :
         "image://theme/meegotouch-applicationpage-portrait-background"
@@ -68,7 +65,11 @@ Window {
         id: pageComponent
 
         Page {
-            tools: commonTools
+            tools: ToolBarLayout {
+                ToolItem { iconId: "icon-m-toolbar-home" }
+                ToolItem { iconId: "icon-m-toolbar-view-menu"; onClicked: myMenu.state="visible"; }
+            }
+
             ListView {
                 id: list
                 anchors.fill: parent
