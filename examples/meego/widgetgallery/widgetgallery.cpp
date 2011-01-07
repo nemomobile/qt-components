@@ -28,10 +28,14 @@
 
 int main(int argc, char **argv)
 {
+#ifdef __arm__
+    QApplication::setGraphicsSystem("meego");
+#else
     QApplication::setGraphicsSystem("raster");
-    QApplication::setStyle("windows");
+#endif
 
     QApplication app(argc, argv);
+    app.setProperty("NoMStyle", true);
 
     QDir::setCurrent(app.applicationDirPath());
 
