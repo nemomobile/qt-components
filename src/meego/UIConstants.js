@@ -51,3 +51,9 @@ var OPACITY_ENABLED = 1.0
 var OPACITY_DISABLED = 0.5
 var SIZE_BUTTON = 64
 
+// Size in pixels for BusyIndicator
+var SIZE_BUSY_INDICATOR = {
+    small: 24,
+    medium: 32,
+    large: 96
+};

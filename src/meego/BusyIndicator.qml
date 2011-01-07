@@ -27,6 +27,7 @@
 import Qt 4.7
 import Qt.labs.components 1.0
 import com.meego.themebridge 1.0
+import "UIConstants.js" as UI
 
 // ### Display Entered / Exited! Pause animation when not "on display".
 // ### LayoutDirection
@@ -35,39 +36,26 @@ ImplicitSizeItem {
     id: root
 
     property bool running: false
-    property alias __styleParentClass: meegostyle.styleParentClass
+    // Defines the indicator's size, the pixel values are defined in UIConstants.js
+    property string size: "medium"
 
-    implicitWidth: meegostyle.preferredWidth
-    implicitHeight: meegostyle.preferredHeight
+    // Internal properties used for animation timing
+    property int __numberOfFrames: 10
+    property int __period: 1000
 
-    Style {
-        id: meegostyle
-        styleClass: "MSpinnerStyle"
-    }
+    implicitWidth: UI.SIZE_BUSY_INDICATOR[size]
+    implicitHeight: implicitWidth
 
-    Pixmap {
-        anchors.fill: parent
-        style: meegostyle
-        imageProperty: "bgPixmap"
-    }
+    Image {
+        id: spinner
+        property int index: 1
+        source: "image://theme/spinner_" + root.implicitWidth + "_" + index
+        smooth: true
 
-    PiePixmap {
-        id: pie
-        anchors.fill: parent
-        style: meegostyle
-        imageProperty: "progressPixmap"
-
-        NumberAnimation {
-            id: unknownAnimation
-            running: root.running
-            target: pie
-            property: "startAngle"
-            duration: meegostyle.current.get("period")
-            // PiePixmap follows QPainter::drawPie() API, 0 is at 3 o'clock
-            // and grows counter-clockwise. So we shift to start at 9 o'clock
-            // and go clockwise.
-            from: 540
-            to: 180
+        NumberAnimation on index {
+            from: 1; to: root.__numberOfFrames
+            duration: root.__period
+            running: root.running && root.visible
             loops: Animation.Infinite
         }
     }
