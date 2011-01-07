@@ -26,6 +26,7 @@
 
 import Qt 4.7
 import com.meego.themebridge 1.0
+import "UIConstants.js" as UI
 
 ImplicitSizeItem {
     id: root
@@ -40,6 +41,8 @@ ImplicitSizeItem {
 
     implicitWidth: Math.max(88, icon.width)
     implicitHeight: Math.max(60, icon.height)
+
+    opacity: enabled ? UI.OPACITY_ENABLED : UI.OPACITY_DISABLED
 
     MouseArea {
         id: area
