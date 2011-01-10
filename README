@@ -8,7 +8,6 @@ make install
 
 The project is divided into:
 
-- The library libQtComponents: contain general purpose helpers for C++;
 - The module Qt.labs.components: _for now_ contains general purpose helpers for QML.
 
 and also (for the time being) two QML modules for component sets implemented using those components

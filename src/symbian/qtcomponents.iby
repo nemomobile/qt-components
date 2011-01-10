@@ -5,9 +5,6 @@
 
 REM QT
 
-// Qt components library
-file=ABI_DIR\BUILD_DIR\QtComponents.dll SHARED_LIB_DIR\QtComponents.dll PAGED
-
 // Qt components plugin
 file=ABI_DIR\BUILD_DIR\qtcomponentsplugin.dll                                                            SHARED_LIB_DIR\qtcomponentsplugin.dll
 data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\qtcomponentsplugin.qtplugin                   RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\qtcomponentsplugin.qtplugin
