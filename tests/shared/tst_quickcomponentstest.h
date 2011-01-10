@@ -1,6 +1,6 @@
 #include <QDeclarativeComponent>
 #include <QDeclarativeEngine>
-#include <qdeclarativewindow.h>
+#include <QDeclarativeView>
 #include <QtTest>
 
 namespace tst_quickcomponentstest
@@ -30,7 +30,7 @@ QString tst_quickcomponentstest::errorString(QDeclarativeComponent* component)
 inline
 QObject* tst_quickcomponentstest::createComponentFromFile(QString const& filename, QString* errors, QDeclarativeEngine **engine)
 {
-    QDeclarativeWindow *window = new QDeclarativeWindow;
+    QDeclarativeView *window = new QDeclarativeView;
     if (engine)
         *engine = window->engine();
     window->engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");

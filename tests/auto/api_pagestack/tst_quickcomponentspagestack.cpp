@@ -35,9 +35,8 @@
 #include <QtTest/QSignalSpy>
 #include <QtDeclarative/qdeclarativecontext.h>
 #include <QtDeclarative/qdeclarativecomponent.h>
-#include <QDeclarativeView>
-#include <QDeclarativeItem>
-#include <qdeclarativewindow.h>
+#include <QtDeclarative/qdeclarativeview.h>
+#include <QtDeclarative/qdeclarativeitem.h>
 
 #include "tst_quickcomponentstest.h"
 
