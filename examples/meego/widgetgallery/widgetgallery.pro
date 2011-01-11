@@ -12,3 +12,4 @@ OTHER_FILES += \
     gallery/*.qml \
     images/*
 
+include(../meego.pri)
