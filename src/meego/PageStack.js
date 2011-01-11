@@ -116,6 +116,7 @@ function pop(page, immediate) {
         if (page) {
             // an unwind target has been specified - pop until we find it
             while (slot.page != page && pageStack.length > 1) {
+                slot.cleanup();
                 slot.destroy();
                 pageStack.pop();
                 slot = pageStack[pageStack.length - 1];
@@ -145,6 +146,7 @@ function pop(page, immediate) {
 function clear() {
     var slot;
     while (slot = pageStack.pop()) {
+        slot.cleanup();
         slot.destroy();
     }
 }
