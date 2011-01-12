@@ -56,7 +56,7 @@ void MDeclarativeMaskedItem::setMask(QDeclarativeComponent *maskComponent)
         mask = qobject_cast<QDeclarativeItem*>(maskObject);
 
         if (!mask)
-            qWarning("MaskedItem: the mask property isn't being setted with a Component.");
+            qWarning("MaskedItem: the mask property isn't being set with a Component.");
         else if (!mask->childItems().isEmpty())
             qWarning("MaskedItem: the mask property has children. Due to current limitation, it won't be painted.");
     }
@@ -87,7 +87,7 @@ void MDeclarativeMaskedItem::setVisualItem(QDeclarativeComponent *visualItemComp
         visualItem = qobject_cast<QDeclarativeItem*>(itemObject);
 
         if (!visualItem)
-            qWarning("MaskedItem: the visualItem property isn't being setted with a Component.");
+            qWarning("MaskedItem: the visualItem property isn't being set with a Component.");
         else if (!visualItem->childItems().empty())
             qWarning("MaskedItem: the visualItem property has children. Due to current limitation, it won't be painted.");
     }
