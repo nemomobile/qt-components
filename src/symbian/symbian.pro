@@ -26,7 +26,8 @@ QML_FILES = \
     qmldir \
     Button.qml \
     CheckBox.qml \
-    ProgressBar.qml
+    ProgressBar.qml \
+    TextField.qml
 
 symbian {
     TARGET.EPOCALLOWDLLDATA = 1
