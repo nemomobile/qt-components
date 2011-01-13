@@ -39,3 +39,4 @@ release/
 /tests/auto/mlocalthemedaemonclient/mlocalthemedaemonclient
 /tests/auto/mremotethemedaemonclient/mremotethemedaemonclient
 /tests/auto/qrangemodel/qrangemodel
+/tests/auto/symbian_textfield/tst_symbian_textfield
