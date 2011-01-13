@@ -4,3 +4,9 @@ harmattan {
     qmlfiles.path = /opt/qt-components-tests/auto/$$TARGET
     target.path = /opt/qt-components-tests/auto/$$TARGET
 }
+
+symbian {
+    imports.sources = $$OTHER_FILES
+    imports.path = .
+    DEPLOYMENT = imports
+}

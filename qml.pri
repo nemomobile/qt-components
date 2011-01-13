@@ -1,4 +1,4 @@
-for(qmlfile, QML_FILES) {
+!symbian:for(qmlfile, QML_FILES) {
     ARGUMENTS = $$qmlfile $$DESTDIR
     !isEmpty(QMAKE_POST_LINK):QMAKE_POST_LINK += &&
     QMAKE_POST_LINK += $$QMAKE_COPY $$replace(ARGUMENTS, /, $$QMAKE_DIR_SEP)

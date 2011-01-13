@@ -10,7 +10,7 @@ INCLUDEPATH += \
     $$Q_COMPONENTS_SOURCE_TREE/src/components \
     $$Q_COMPONENTS_SOURCE_TREE/tests/shared
 LIBS += -L$$Q_COMPONENTS_BUILD_TREE/imports/Qt/labs/components -l$$qtLibraryTarget(qtcomponentsplugin)
-DEFINES += Q_COMPONENTS_BUILD_TREE=\\\"$$Q_COMPONENTS_BUILD_TREE\\\"
+DEFINES += Q_COMPONENTS_BUILD_TREE=\"\\\"$${Q_COMPONENTS_BUILD_TREE}\\\"\"
 
 # ### Don't know how to replicate this feature on non-Unix systems, the
 # idea here is that the tests can run using the .so in the working directory,
