@@ -47,7 +47,7 @@ public:
     void initScreenPtr() const;
 
     QVariant buttonProperty(const QString &propertyName) const;
-    QVariant textEditProperty(const QString &propertyName) const;
+    QVariant textComponentProperty(const QString &propertyName) const;
     QVariant titleBarProperty(const QString &propertyName) const;
     QVariant listItemProperty(const QString &propertyName) const;
     QVariant basicListItemImageProperty(const QString &propertyName) const;
@@ -72,7 +72,7 @@ private:
     // Helpers
     QVariant buttonPropertyBackground() const;
     QVariant buttonPropertyTextColor() const;
-    QVariant textEditPropertyFrame() const;
+    QVariant textComponentFrameName() const;
     QVariant listItemPropertyMainTextColor() const;
     QVariant listItemPropertySubTextColor() const;
 

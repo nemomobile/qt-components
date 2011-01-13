@@ -233,8 +233,8 @@ QVariant SStyleWrapper::get(const QString &propertyName)
     // properties for each component
     if (styleClass() == QLatin1String("Button"))
         ret = d->buttonProperty(propertyName);
-    else if (styleClass() == QLatin1String("TextEdit"))
-        ret = d->textEditProperty(propertyName);
+    else if (styleClass() == QLatin1String("TextField"))
+        ret = d->textComponentProperty(propertyName);
     else if (styleClass() == QLatin1String("TitleBar"))
         ret = d->titleBarProperty(propertyName);
     else if (styleClass() == QLatin1String("ListItem"))

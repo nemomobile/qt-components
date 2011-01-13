@@ -67,13 +67,6 @@ qtc_button_latched:#FFFFFF;
 qtc_button_highlight:#FFFFFF;
 qtc_button_disabled:#838383;
 
-/* LineEdit */
-qtc_lineedit_normal:#0f0f0f;
-qtc_lineedit_selected:#0f0f0f;
-qtc_lineedit_marker_normal:#8AC0E9;
-qtc_lineedit_hint_normal:#A6A6A6;
-qtc_lineedit_cursor:#1a1a1a;
-
 /* Combobox */
 qtc_combobox_normal:#ffffff;
 qtc_combobox_pressed:#FFFFFF;
@@ -100,12 +93,12 @@ qtc_dataform_heading_link:#8ac0e9;
 qtc_progslider_normal:#ffffff;
 qtc_progslider_pressed:#FFFFFF;
 
-/* Main area - TextEdit */
-qtc_textedit_normal:#ffffff;
-qtc_textedit_selected:#ffffff;
-qtc_textedit_marker_normal:#8ac0e9;
-qtc_textedit_hint_normal:#a6a6a6;
-qtc_textedit_cursor:#1a1a1a; /* empty in doc */
+/* Main area - Text Components (TextField & TextArea) */
+qtc_text_component_normal:#ffffff;
+qtc_text_component_selected:#ffffff;
+qtc_text_component_marker_normal:#8ac0e9;
+qtc_text_component_hint_normal:#a6a6a6;
+qtc_text_component_cursor:#1a1a1a; /* empty in doc */
 
 /* Main area - Toolbar */
 qtc_toolbar_normal:#ffffff;

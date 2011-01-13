@@ -364,25 +364,25 @@ QVariant SStyleWrapperPrivate::buttonProperty(const QString &propertyName) const
     return QVariant();
 }
 
-QVariant SStyleWrapperPrivate::textEditProperty(const QString &propertyName) const
+QVariant SStyleWrapperPrivate::textComponentProperty(const QString &propertyName) const
 {
-    if (propertyName == QLatin1String("frame"))
-        return textEditPropertyFrame();
+    if (propertyName == QLatin1String("frameName"))
+        return textComponentFrameName();
 
     if (propertyName == QLatin1String("frameType"))
         return SDeclarativeFrame::NinePieces;
 
-    if (propertyName == QLatin1String("promptColor") || propertyName == QLatin1String("textColor"))
-        return fetchThemeColor(QLatin1String("qtc_textedit_normal"));
+    if (propertyName == QLatin1String("placeholderColor") || propertyName == QLatin1String("textColor"))
+        return fetchThemeColor(QLatin1String("qtc_text_component_normal"));
 
     if (propertyName == QLatin1String("font"))
         return fetchFont(SStyleWrapper::Secondary, fetchLayoutParameter(QLatin1String("param-text-height-tiny"))); // magic
 
     if (propertyName == QLatin1String("selectionTextColor"))
-        return fetchThemeColor(QLatin1String("qtc_textedit_selected"));
+        return fetchThemeColor(QLatin1String("qtc_text_component_selected"));
 
-    if (propertyName == QLatin1String("selectionBackgroundColor"))
-        return fetchThemeColor(QLatin1String("qtc_textedit_marker_normal"));
+    if (propertyName == QLatin1String("selectionColor"))
+        return fetchThemeColor(QLatin1String("qtc_text_component_marker_normal"));
 
     if (propertyName == QLatin1String("paddingLeft"))
         return fetchLayoutParameter(QLatin1String("param-margin-gene-middle-horizontal"));
@@ -791,12 +791,12 @@ QVariant SStyleWrapperPrivate::buttonPropertyTextColor() const
         return QVariant();
 }
 
-QVariant SStyleWrapperPrivate::textEditPropertyFrame() const
+QVariant SStyleWrapperPrivate::textComponentFrameName() const
 {
     if (mode == QLatin1String("selected"))
-        return QLatin1String("qtg_fr_textedit_highlight");
+        return QLatin1String("qtg_fr_text_component_highlight");
     else if (mode == QLatin1String("default"))
-        return QLatin1String("qtg_fr_textedit_normal");
+        return QLatin1String("qtg_fr_text_component_normal");
     else
         return QVariant();
 }
