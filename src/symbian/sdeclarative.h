@@ -34,6 +34,7 @@ class SDeclarative : public QObject
 {
     Q_OBJECT
     Q_ENUMS(ImageSize)
+    Q_ENUMS(ScrollBarVisibility)
 
 public:
     enum ImageSize {
@@ -42,6 +43,11 @@ public:
         Medium,
         Large,
         ImagePortrait
+    };
+    // No duplicate prefix naming because enum values are only visible via qml
+    enum ScrollBarVisibility {
+        ScrollBarWhenNeeded = 0,
+        ScrollBarWhenScrolling
     };
 
     static inline QString resolveIconFileName(const QString &iconName)

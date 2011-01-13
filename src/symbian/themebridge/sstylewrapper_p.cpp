@@ -614,35 +614,38 @@ QVariant SStyleWrapperPrivate::dialogProperty(const QString &propertyName) const
 
 QVariant SStyleWrapperPrivate::scrollBarProperty(const QString &propertyName) const
 {
-    if (propertyName == QLatin1String("interactiveScrollbarWidth"))
-        return fetchLayoutParameter(QLatin1String("param-widget-scroll-bar-interactive-width"));
+    if (propertyName == QLatin1String("thickness")) {
+        if (mode == QLatin1String("indicative"))
+            return fetchLayoutParameter(QLatin1String("param-widget-scroll-bar-indicative-width"));
+        else if (mode == QLatin1String("interactive"))
+            return fetchLayoutParameter(QLatin1String("param-widget-scroll-bar-interactive-width"));
+    }
 
-    if (propertyName == QLatin1String("indicativeScrollbarWidth"))
-        return fetchLayoutParameter(QLatin1String("param-widget-scroll-bar-indicative-width"));
-
-    if (propertyName == QLatin1String("scrollbarTrackColor"))
+    if (propertyName == QLatin1String("trackColor"))
         return fetchThemeColor(QLatin1String("qtc_scrollbar_track"));
 
-    if (propertyName == QLatin1String("scrollbarHandlePressedColor"))
-        return fetchThemeColor(QLatin1String("qtc_scrollbar_handle_pressed"));
+    if (propertyName == QLatin1String("handleColor")) {
+        if (mode == QLatin1String("default"))
+            return fetchThemeColor(QLatin1String("qtc_scrollbar_handle_released"));
+        else if (mode == QLatin1String("pressed"))
+            return fetchThemeColor(QLatin1String("qtc_scrollbar_handle_pressed"));
+    }
 
-    if (propertyName == QLatin1String("scrollbarHandleReleasedColor"))
-        return fetchThemeColor(QLatin1String("qtc_scrollbar_handle_released"));
-
-    if (propertyName == QLatin1String("minInteractiveHandleSize"))
-        return fetchLayoutParameter(QLatin1String("param-widget-scroll-bar-interactive-minimum-handle"));
-
-    if (propertyName == QLatin1String("minIndicativeHandleSize"))
-        return fetchLayoutParameter(QLatin1String("param-widget-scroll-bar-indicative-minimum-handle"));
+    if (propertyName == QLatin1String("minHandleSize")) {
+        if (mode == QLatin1String("indicative"))
+            return fetchLayoutParameter(QLatin1String("param-widget-scroll-bar-indicative-minimum-handle"));
+        else if (mode == QLatin1String("interactive"))
+            return fetchLayoutParameter(QLatin1String("param-widget-scroll-bar-interactive-minimum-handle"));
+    }
 
     if (propertyName == QLatin1String("hideTimeout"))
         //TODO: Extract from a common effects styling file
         return 2000;
 
-    if (propertyName == QLatin1String("interactiveKeyEventSize"))
+    if (propertyName == QLatin1String("keyEventSize"))
         return fetchLayoutParameter(QLatin1String("param-widget-scroll-bar-interactive-key-event-size"));
 
-    if (propertyName == QLatin1String("interactiveScrollbarTouchAreaThickness"))
+    if (propertyName == QLatin1String("touchAreaThickness"))
         return fetchLayoutParameter(QLatin1String("param-touch-area-gene-primary-small"));
 
     return QVariant();

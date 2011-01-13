@@ -28,6 +28,8 @@ QML_FILES = \
     Button.qml \
     CheckBox.qml \
     ProgressBar.qml \
+    ScrollBar.qml \
+    ScrollDecorator.qml \
     TextField.qml \
     Window.qml
 
