@@ -21,3 +21,8 @@ meego {
         api_textarea \ #TODO not yet finalized
         api_toolbar
 }
+
+symbian3 {
+    SUBDIRS += \
+        symbian_textfield
+}
