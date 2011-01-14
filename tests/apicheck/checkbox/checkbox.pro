@@ -1,8 +1,9 @@
 include (../../../qt-components.pri)
 include (../../tests.pri)
 
-TARGET = apicheck-checkbox
+TARGET = apicheck_checkbox
 TEMPLATE = app
 QT += declarative
 
-SOURCES += apicheck-checkbox.cpp
+SOURCES += apicheck_checkbox.cpp
+OTHER_FILES += ApiCheckCheckBox.qml
