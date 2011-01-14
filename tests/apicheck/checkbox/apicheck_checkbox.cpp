@@ -52,6 +52,7 @@ private:
     QString qmlSource;
 
     QObject *componentObject;
+    void propertyExists(const QString &propertyName);
 };
 
 
@@ -62,16 +63,28 @@ void ApiCheckCheckBox::initTestCase()
     QVERIFY2(componentObject, qPrintable(errors));
 }
 
-void ApiCheckCheckBox::checked()
+void ApiCheckCheckBox::propertyExists(const QString &propertyName)
 {
-   const QVariant value =componentObject->property("checked");
-   QVERIFY2(value.isValid (), "Missing Property: checked");
+    const QVariant value =componentObject->property(propertyName.toStdString ().c_str ());
+    QVERIFY2(value.isValid (), QString("Missing Property: %1").arg (propertyName).toStdString ().c_str ());
 }
 
-void ApiCheckCheckBox::pressed ()
+void ApiCheckCheckBox::checked()
 {
-    const QVariant value = componentObject->property ("pressed");
-    QVERIFY2(value.isValid (), "Missing Property: pressed");
+    propertyExists("checked");
+    componentObject->setProperty("checked", false);
+    QCOMPARE(componentObject->property("checked").toBool (), false);
+    componentObject->setProperty("checked", true);
+    QCOMPARE(componentObject->property("checked").toBool (), true);
+}
+
+void ApiCheckCheckBox::pressed()
+{
+    propertyExists("pressed");
+    componentObject->setProperty("pressed", false);
+    QCOMPARE(componentObject->property("pressed").toBool (), false);
+    componentObject->setProperty("pressed", true);
+    QCOMPARE(componentObject->property("pressed").toBool (), true);
 }
 
 void ApiCheckCheckBox::clicked()
