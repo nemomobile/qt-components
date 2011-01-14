@@ -35,6 +35,7 @@
 #include <QtTest/QSignalSpy>
 #include <QtDeclarative/qdeclarativecontext.h>
 #include <QtDeclarative/qdeclarativeview.h>
+#include <QMetaObject>
 
 #include "tst_quickcomponentstest.h"
 
@@ -69,11 +70,12 @@ void ApiCheckBusyIndicator::propertyExists(const QString &propertyName)
 
 void ApiCheckBusyIndicator::running()
 {
-    propertyExists("running");
-    componentObject->setProperty("running", false);
-    QCOMPARE(componentObject->property("running").toBool (), false);
-    componentObject->setProperty("running", true);
-    QCOMPARE(componentObject->property("running").toBool (), true);
+    const QMetaObject *meta =componentObject->metaObject ();
+    const int propertyIndex = meta->indexOfProperty("running");
+    QVERIFY2(propertyIndex != -1, "Component does not have a property running");
+
+    const QMetaProperty property = meta->property(propertyIndex);
+    QVERIFY2(property.type() == QVariant::Bool, "Property running is not a Bool");
 }
 
 QTEST_MAIN(ApiCheckBusyIndicator)
