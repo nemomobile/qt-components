@@ -1,5 +1,6 @@
 include (../../../qt-components.pri)
 include (../../tests.pri)
+include (../base/apicheckbase.pri)
 
 TARGET = apicheck_checkbox
 TEMPLATE = app

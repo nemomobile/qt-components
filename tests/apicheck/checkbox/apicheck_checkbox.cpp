@@ -32,13 +32,10 @@
 **
 ****************************************************************************/
 #include <QtTest/QtTest>
-#include <QtTest/QSignalSpy>
-#include <QtDeclarative/qdeclarativecontext.h>
-#include <QtDeclarative/qdeclarativeview.h>
 
-#include "tst_quickcomponentstest.h"
+#include "apicheckbase.h"
 
-class ApiCheckCheckBox : public QObject
+class ApiCheckCheckBox : public ApiCheckBase
 {
     Q_OBJECT
 private slots:
@@ -46,53 +43,27 @@ private slots:
     void checked();
     void pressed();
     void clicked();
-
-private:
-    QStringList standard;
-    QString qmlSource;
-
-    QObject *componentObject;
-    void propertyExists(const QString &propertyName);
 };
 
 
 void ApiCheckCheckBox::initTestCase()
 {
-    QString errors;
-    componentObject = tst_quickcomponentstest::createComponentFromFile("ApiCheckCheckBox.qml", &errors);
-    QVERIFY2(componentObject, qPrintable(errors));
-}
-
-void ApiCheckCheckBox::propertyExists(const QString &propertyName)
-{
-    const QVariant value =componentObject->property(propertyName.toStdString ().c_str ());
-    QVERIFY2(value.isValid (), QString("Missing Property: %1").arg (propertyName).toStdString ().c_str ());
+    init("ApiCheckCheckBox.qml");
 }
 
 void ApiCheckCheckBox::checked()
 {
-    propertyExists("checked");
-    componentObject->setProperty("checked", false);
-    QCOMPARE(componentObject->property("checked").toBool (), false);
-    componentObject->setProperty("checked", true);
-    QCOMPARE(componentObject->property("checked").toBool (), true);
+    validateProperty("checked", QVariant::Bool);
 }
 
 void ApiCheckCheckBox::pressed()
 {
-    propertyExists("pressed");
-    componentObject->setProperty("pressed", false);
-    QCOMPARE(componentObject->property("pressed").toBool (), false);
-    componentObject->setProperty("pressed", true);
-    QCOMPARE(componentObject->property("pressed").toBool (), true);
+    validateProperty("pressed", QVariant::Bool);
 }
 
 void ApiCheckCheckBox::clicked()
 {
-    QSignalSpy spy(componentObject, SIGNAL(clicked()));
-    QMetaObject::invokeMethod(componentObject,"clicked",Qt::DirectConnection);
-    QCOMPARE(spy.count(),1);
-    QVERIFY2(spy.isValid(), "Missing Property: clicked");
+    validateSignal("clicked()");
 }
 
 QTEST_MAIN(ApiCheckCheckBox)

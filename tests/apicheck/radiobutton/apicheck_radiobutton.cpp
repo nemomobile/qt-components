@@ -32,13 +32,10 @@
 **
 ****************************************************************************/
 #include <QtTest/QtTest>
-#include <QtTest/QSignalSpy>
-#include <QtDeclarative/qdeclarativecontext.h>
-#include <QtDeclarative/qdeclarativeview.h>
 
-#include "tst_quickcomponentstest.h"
+#include "apicheckbase.h"
 
-class ApiCheckRadioButton : public QObject
+class ApiCheckRadioButton : public ApiCheckBase
 {
     Q_OBJECT
 private slots:
@@ -46,40 +43,27 @@ private slots:
     void checked();
     void pressed();
     void clicked();
-
-private:
-    QStringList standard;
-    QString qmlSource;
-
-    QObject *componentObject;
 };
 
 
 void ApiCheckRadioButton::initTestCase()
 {
-    QString errors;
-    componentObject = tst_quickcomponentstest::createComponentFromFile("ApiCheckRadioButton.qml", &errors);
-    QVERIFY2(componentObject, qPrintable(errors));
+    init("ApiCheckRadioButton.qml");
 }
 
 void ApiCheckRadioButton::checked()
 {
-   const QVariant value =componentObject->property("checked");
-   QVERIFY2(value.isValid (), "Missing Property: checked");
+   validateProperty("checked", QVariant::Bool);
 }
 
 void ApiCheckRadioButton::pressed ()
 {
-    const QVariant value = componentObject->property ("pressed");
-    QVERIFY2(value.isValid (), "Missing Property: pressed");
+    validateProperty ("pressed", QVariant::Bool);
 }
 
 void ApiCheckRadioButton::clicked()
 {
-    QSignalSpy spy(componentObject, SIGNAL(clicked()));
-    QMetaObject::invokeMethod(componentObject,"clicked",Qt::DirectConnection);
-    QCOMPARE(spy.count(),1);
-    QVERIFY2(spy.isValid(), "Missing Property: clicked");
+    validateSignal("clicked()");
 }
 
 QTEST_MAIN(ApiCheckRadioButton)

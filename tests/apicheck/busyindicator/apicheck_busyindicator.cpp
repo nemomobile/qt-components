@@ -32,50 +32,26 @@
 **
 ****************************************************************************/
 #include <QtTest/QtTest>
-#include <QtTest/QSignalSpy>
-#include <QtDeclarative/qdeclarativecontext.h>
-#include <QtDeclarative/qdeclarativeview.h>
-#include <QMetaObject>
 
-#include "tst_quickcomponentstest.h"
+#include "apicheckbase.h"
 
-class ApiCheckBusyIndicator : public QObject
+class ApiCheckBusyIndicator : public ApiCheckBase
 {
     Q_OBJECT
 private slots:
     void initTestCase();
     void running();
-
-private:
-    QStringList standard;
-    QString qmlSource;
-
-    QObject *componentObject;
-    void propertyExists(const QString &propertyName);
 };
 
 
 void ApiCheckBusyIndicator::initTestCase()
 {
-    QString errors;
-    componentObject = tst_quickcomponentstest::createComponentFromFile("ApiCheckBusyIndicator.qml", &errors);
-    QVERIFY2(componentObject, qPrintable(errors));
-}
-
-void ApiCheckBusyIndicator::propertyExists(const QString &propertyName)
-{
-    const QVariant value =componentObject->property(propertyName.toStdString ().c_str ());
-    QVERIFY2(value.isValid (), QString("Missing Property: %1").arg (propertyName).toStdString ().c_str ());
+    init("ApiCheckBusyIndicator.qml");
 }
 
 void ApiCheckBusyIndicator::running()
 {
-    const QMetaObject *meta =componentObject->metaObject ();
-    const int propertyIndex = meta->indexOfProperty("running");
-    QVERIFY2(propertyIndex != -1, "Component does not have a property running");
-
-    const QMetaProperty property = meta->property(propertyIndex);
-    QVERIFY2(property.type() == QVariant::Bool, "Property running is not a Bool");
+    validateProperty("running", QVariant::Bool);
 }
 
 QTEST_MAIN(ApiCheckBusyIndicator)
