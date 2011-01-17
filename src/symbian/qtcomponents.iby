@@ -25,5 +25,6 @@ data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\Button.qml            
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\CheckBox.qml                                   RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\CheckBox.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ProgressBar.qml                                RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ProgressBar.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\TextField.qml                                  RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\TextField.qml
+data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\Window.qml                                     RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\Window.qml
 
 #endif
