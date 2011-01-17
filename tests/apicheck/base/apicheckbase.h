@@ -1,79 +1,60 @@
+/****************************************************************************
+**
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project on Qt Labs.
+**
+** No Commercial Usage
+** This file contains pre-release code and may not be distributed.
+** You may use this file in accordance with the terms and conditions contained
+** in the Technology Preview License Agreement accompanying this package.
+**
+** GNU Lesser General Public License Usage
+** Alternatively, this file may be used under the terms of the GNU Lesser
+** General Public License version 2.1 as published by the Free Software
+** Foundation and appearing in the file LICENSE.LGPL included in the
+** packaging of this file.  Please review the following information to
+** ensure the GNU Lesser General Public License version 2.1 requirements
+** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+**
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
+**
+****************************************************************************/
+
+#ifndef APICHECKBASE_H
+#define APICHECKBASE_H
+
+#include <QtTest/QtTest>
 #include <QtCore/QObject>
 #include <QtCore/QVariant>
-#include <QtTest/QtTest>
 
-#include "tst_quickcomponentstest.h"
+
+class QDeclarativeEngine;
 
 class ApiCheckBase : public QObject
 {
+    Q_OBJECT
+
 public:
-    ApiCheckBase(QObject *parent = 0)
-        : QObject(parent) {}
+    ApiCheckBase(QDeclarativeEngine *engine, const QString &module);
+    virtual ~ApiCheckBase();
 
 protected:
-    void init(const QString &file);
-    void validateProperty(const QString &propertyName, QVariant::Type propertyType, const QVariant &value = QVariant()) const;
+    void init(const QString &name, const QString &body = QString());
     void validateProperty(const QString &propertyName, const QString &typeName) const;
+    void validateProperty(const QString &propertyName, QVariant::Type propertyType,
+                          const QVariant &value = QVariant()) const;
     void validateSignal(const char *signalName) const;
     void validateMethod(const char *methodName) const;
 
 private:
-    QObject *componentObject;
+    QString m_name;
+    QString m_module;
+    QObject *m_object;
+    QDeclarativeEngine *m_engine;
 };
 
-void ApiCheckBase::init(const QString &file)
-{
-    QString errors;
-    componentObject = tst_quickcomponentstest::createComponentFromFile(file, &errors);
-    QVERIFY2(componentObject, qPrintable(errors));
-}
-
-void ApiCheckBase::validateProperty(const QString &propertyName, QVariant::Type propertyType, const QVariant &value) const
-{
-    const QMetaObject *metaObject = componentObject->metaObject();
-    const int propertyIndex = metaObject->indexOfProperty(propertyName.toStdString().c_str());
-
-    const QString propertyErrorString = QString("API Error: %1 not found").arg(propertyName);
-    QVERIFY2(propertyIndex != -1, propertyErrorString.toStdString().c_str());
-
-    const QMetaProperty metaProperty = metaObject->property(propertyIndex);
-
-    const QString type = QVariant::typeToName(propertyType);
-    const QString typeErrorString = QString("Type error: %1 is not a %2").arg(propertyName).arg(type);
-    QVERIFY2(metaProperty.type() == propertyType, typeErrorString.toStdString().c_str());
-
-    if (value.isValid()) {
-        const QVariant tst = metaProperty.read(componentObject);
-        const QString defaultErrorString = QString("Wrong default value");
-        QVERIFY2(tst == value, defaultErrorString.toStdString().c_str());
-    }
-}
-
-void ApiCheckBase::validateProperty(const QString &propertyName, const QString &typeName) const
-{
-    const QMetaObject *metaObject = componentObject->metaObject();
-    const int propertyIndex = metaObject->indexOfProperty(propertyName.toStdString().c_str());
-
-    const QString propertyErrorString = QString("API Error: %1 not found").arg(propertyName);
-    QVERIFY2(propertyIndex != -1, propertyErrorString.toStdString().c_str());
-
-    const QMetaProperty metaProperty = metaObject->property(propertyIndex);
-
-    const QString typeErrorString = QString("Type error: %1 is not a %2").arg(propertyName).arg(typeName);
-    QVERIFY2(typeName == metaProperty.typeName(), typeErrorString.toStdString().c_str());
-}
-
-void ApiCheckBase::validateSignal(const char *signalName) const
-{
-    const QMetaObject *metaObject = componentObject->metaObject();
-    const int signalIndex = metaObject->indexOfSignal(signalName);
-    QVERIFY2(signalIndex != -1, "API Error: signal not found");
-}
-
-void ApiCheckBase::validateMethod(const char *methodName) const
-{
-    const QMetaObject *metaObject = componentObject->metaObject();
-    const int methodIndex = metaObject->indexOfMethod(methodName);
-    QVERIFY2(methodIndex != -1, "API Error: method not found");
-}
-
+#endif

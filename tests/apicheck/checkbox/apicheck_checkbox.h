@@ -24,26 +24,24 @@
 **
 ****************************************************************************/
 
-#include <QtTest/QtTest>
-#include "apicheck_radiobutton.h"
+#ifndef APICHECK_CHECKBOX_H
+#define APICHECK_CHECKBOX_H
 
+#include "apicheckbase.h"
 
-void ApiCheckRadioButton::initTestCase()
+class ApiCheckCheckBox : public ApiCheckBase
 {
-    init("RadioButton");
-}
+    Q_OBJECT
 
-void ApiCheckRadioButton::checked()
-{
-   validateProperty("checked", QVariant::Bool);
-}
+public:
+    ApiCheckCheckBox(QDeclarativeEngine *engine, const QString &module)
+        : ApiCheckBase(engine, module) { }
 
-void ApiCheckRadioButton::pressed ()
-{
-    validateProperty ("pressed", QVariant::Bool);
-}
+private slots:
+    void initTestCase();
+    void checked();
+    void pressed();
+    void clicked();
+};
 
-void ApiCheckRadioButton::clicked()
-{
-    validateSignal("clicked()");
-}
+#endif

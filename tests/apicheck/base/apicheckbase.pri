@@ -1,3 +1,0 @@
-DEPENDPATH  += $$INCLUDEPATH .
-INCLUDEPATH += \
-    $$Q_COMPONENTS_SOURCE_TREE/tests/apicheck/base

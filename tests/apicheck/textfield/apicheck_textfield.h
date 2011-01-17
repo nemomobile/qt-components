@@ -24,7 +24,42 @@
 **
 ****************************************************************************/
 
-import Qt 4.7
-import com.meego 1.0
+#ifndef APICHECK_TEXTFIELD_H
+#define APICHECK_TEXTFIELD_H
 
-TextField {}
+#include "apicheckbase.h"
+
+class ApiCheckTextField : public ApiCheckBase
+{
+    Q_OBJECT
+
+public:
+    ApiCheckTextField(QDeclarativeEngine *engine, const QString &module)
+        : ApiCheckBase(engine, module) { }
+
+private slots:
+    void initTestCase();
+    void placeholderText();
+    void inputMethodHints();
+    void font();
+    void cursorPosition();
+    void readOnly();
+    void echoMode();
+    void acceptableInput();
+    void inputMask();
+    void validator();
+    void selectedText();
+    void selectionEnd();
+    void selectionStart();
+    void text();
+    void copy();
+    void paste();
+    void cut();
+    void select();
+    void selectAll();
+    void selectWord();
+    void positionAt();
+    void positionToRectangle();
+};
+
+#endif

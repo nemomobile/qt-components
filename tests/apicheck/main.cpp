@@ -25,25 +25,44 @@
 ****************************************************************************/
 
 #include <QtTest/QtTest>
-#include "apicheck_radiobutton.h"
+#include <QtDeclarative/qdeclarativeview.h>
+#include <QtDeclarative/qdeclarativeengine.h>
+
+#include "slider/apicheck_slider.h"
+#include "button/apicheck_button.h"
+#include "checkbox/apicheck_checkbox.h"
+#include "radiobutton/apicheck_radiobutton.h"
+#include "textfield/apicheck_textfield.h"
+#include "busyindicator/apicheck_busyindicator.h"
 
 
-void ApiCheckRadioButton::initTestCase()
+int main(int argc, char *argv[])
 {
-    init("RadioButton");
-}
+    QApplication app(argc, argv);
 
-void ApiCheckRadioButton::checked()
-{
-   validateProperty("checked", QVariant::Bool);
-}
+    QDeclarativeView view;
+    QDeclarativeEngine *engine = view.engine();
 
-void ApiCheckRadioButton::pressed ()
-{
-    validateProperty ("pressed", QVariant::Bool);
-}
+    QString module = (argc > 1) ? argv[1] : "com.meego 1.0";
 
-void ApiCheckRadioButton::clicked()
-{
-    validateSignal("clicked()");
+    if (argc > 2)
+        engine->addImportPath(argv[2]);
+    else
+        engine->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
+
+    ApiCheckSlider slider(engine, module);
+    ApiCheckButton button(engine, module);
+    ApiCheckCheckBox checkbox(engine, module);
+    ApiCheckTextField textField(engine, module);
+    ApiCheckRadioButton radioButton(engine, module);
+    ApiCheckBusyIndicator busyIndicator(engine, module);
+
+    QTest::qExec(&slider);
+    QTest::qExec(&button);
+    QTest::qExec(&checkbox);
+    QTest::qExec(&textField);
+    QTest::qExec(&radioButton);
+    QTest::qExec(&busyIndicator);
+
+    return 0;
 }

@@ -25,25 +25,12 @@
 ****************************************************************************/
 
 #include <QtTest/QtTest>
-#include "apicheckbase.h"
+#include "apicheck_button.h"
 
-class ApiCheckButton : public ApiCheckBase
-{
-    Q_OBJECT
-
-private slots:
-    void initTestCase();
-    void checked();
-    void checkable();
-    void pressed();
-    void text();
-    void iconSource();
-    void clicked();
-};
 
 void ApiCheckButton::initTestCase()
 {
-    init("ApiCheckButton.qml");
+    init("Button");
 }
 
 void ApiCheckButton::checked()
@@ -75,8 +62,3 @@ void ApiCheckButton::clicked()
 {
     validateSignal("clicked()");
 }
-
-QTEST_MAIN(ApiCheckButton);
-
-#include "apicheck_button.moc"
-

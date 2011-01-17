@@ -25,40 +25,12 @@
 ****************************************************************************/
 
 #include <QtTest/QtTest>
-#include "apicheckbase.h"
+#include "apicheck_textfield.h"
 
-class ApiCheckTextField : public ApiCheckBase
-{
-    Q_OBJECT
-
-private slots:
-    void initTestCase();
-    void placeholderText();
-    void inputMethodHints();
-    void font();
-    void cursorPosition();
-    void readOnly();
-    void echoMode();
-    void acceptableInput();
-    void inputMask();
-    void validator();
-    void selectedText();
-    void selectionEnd();
-    void selectionStart();
-    void text();
-    void copy();
-    void paste();
-    void cut();
-    void select();
-    void selectAll();
-    void selectWord();
-    void positionAt();
-    void positionToRectangle();
-};
 
 void ApiCheckTextField::initTestCase()
 {
-    init("ApiCheckTextField.qml");
+    init("TextField");
 }
 
 void ApiCheckTextField::placeholderText()
@@ -165,8 +137,3 @@ void ApiCheckTextField::positionToRectangle()
 {
     validateMethod("positionToRectangle(QVariant)");
 }
-
-QTEST_MAIN(ApiCheckTextField);
-
-#include "apicheck_textfield.moc"
-

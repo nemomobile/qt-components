@@ -24,26 +24,28 @@
 **
 ****************************************************************************/
 
-#include <QtTest/QtTest>
-#include "apicheck_radiobutton.h"
+#ifndef APICHECK_SLIDER_H
+#define APICHECK_SLIDER_H
 
+#include "apicheckbase.h"
 
-void ApiCheckRadioButton::initTestCase()
+class ApiCheckSlider : public ApiCheckBase
 {
-    init("RadioButton");
-}
+    Q_OBJECT
 
-void ApiCheckRadioButton::checked()
-{
-   validateProperty("checked", QVariant::Bool);
-}
+public:
+    ApiCheckSlider(QDeclarativeEngine *engine, const QString &module)
+        : ApiCheckBase(engine, module) { }
 
-void ApiCheckRadioButton::pressed ()
-{
-    validateProperty ("pressed", QVariant::Bool);
-}
+private slots:
+    void initTestCase();
+    void stepSize();
+    void minimumValue();
+    void maximumValue();
+    void value();
+    void orientation(); //int
+    void pressed(); //bool
+    void updateValueWhileDragging(); //bool
+};
 
-void ApiCheckRadioButton::clicked()
-{
-    validateSignal("clicked()");
-}
+#endif

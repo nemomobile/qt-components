@@ -24,7 +24,27 @@
 **
 ****************************************************************************/
 
-import Qt 4.7
-import com.meego 1.0
+#ifndef APICHECK_BUTTON_H
+#define APICHECK_BUTTON_H
 
-Button {}
+#include "apicheckbase.h"
+
+class ApiCheckButton : public ApiCheckBase
+{
+    Q_OBJECT
+
+public:
+    ApiCheckButton(QDeclarativeEngine *engine, const QString &module)
+        : ApiCheckBase(engine, module) { }
+
+private slots:
+    void initTestCase();
+    void checked();
+    void checkable();
+    void pressed();
+    void text();
+    void iconSource();
+    void clicked();
+};
+
+#endif
