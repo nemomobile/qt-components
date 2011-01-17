@@ -1,5 +1,5 @@
 TEMPLATE = subdirs
-SUBDIRS = components native
+SUBDIRS = components
 
 mx {
     SUBDIRS += mx
