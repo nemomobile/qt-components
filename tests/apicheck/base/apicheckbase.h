@@ -14,6 +14,7 @@ protected:
     void init(const QString &file);
     void validateProperty(const QString &propertyName, QVariant::Type propertyType, const QVariant &value = QVariant()) const;
     void validateSignal(const char *signalName) const;
+    void validateMethod(const char *methodName) const;
 
 private:
     QObject *componentObject;
@@ -53,3 +54,11 @@ void ApiCheckBase::validateSignal(const char *signalName) const
     const int signalIndex = metaObject->indexOfSignal(signalName);
     QVERIFY2(signalIndex != -1, "API Error: signal not found");
 }
+
+void ApiCheckBase::validateMethod(const char *methodName) const
+{
+    const QMetaObject *metaObject = componentObject->metaObject();
+    const int methodIndex = metaObject->indexOfMethod(methodName);
+    QVERIFY2(methodIndex != -1, "API Error: method not found");
+}
+
