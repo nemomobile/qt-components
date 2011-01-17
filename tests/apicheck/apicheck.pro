@@ -2,4 +2,5 @@ TEMPLATE = subdirs
 SUBDIRS += \
         checkbox \
         radiobutton \
-        busyindicator
+        busyindicator \
+        slider
