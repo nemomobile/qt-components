@@ -3,4 +3,6 @@ SUBDIRS += \
         checkbox \
         radiobutton \
         busyindicator \
-        slider
+        slider \
+        button \
+        textfield
