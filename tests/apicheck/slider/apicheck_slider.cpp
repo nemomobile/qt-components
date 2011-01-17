@@ -57,27 +57,27 @@ void ApiCheckSlider::initTestCase()
 
 void ApiCheckSlider::stepSize()
 {
-    validateProperty("stepSize", QVariant::Double);
+    validateProperty("stepSize", QVariant::Double, 1.0);
 }
 
 void ApiCheckSlider::minimumValue()
 {
-    validateProperty("minimumValue", QVariant::Double);
+    validateProperty("minimumValue", QVariant::Double, 0.0);
 }
 
 void ApiCheckSlider::maximumValue()
 {
-    validateProperty("maximumValue", QVariant::Double);
+    validateProperty("maximumValue", QVariant::Double, 100.0);
 }
 
 void ApiCheckSlider::value()
 {
-    validateProperty("value", QVariant::Double);
+    validateProperty("value", QVariant::Double, 0.0);
 }
 
 void ApiCheckSlider::orientation()
 {
-    validateProperty("orientation", QVariant::Int);
+    validateProperty("orientation", QVariant::Int, Qt::Horizontal);
 }
 
 void ApiCheckSlider::pressed()
@@ -87,7 +87,7 @@ void ApiCheckSlider::pressed()
 
 void ApiCheckSlider::updateValueWhileDragging()
 {
-    validateProperty("updateValueWhileDragging", QVariant::Bool);
+    validateProperty("updateValueWhileDragging", QVariant::Bool, true);
 }
 
 QTEST_MAIN(ApiCheckSlider)
