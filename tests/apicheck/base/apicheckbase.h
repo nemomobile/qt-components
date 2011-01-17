@@ -12,7 +12,7 @@ public:
 
 protected:
     void init(const QString &file);
-    void validateProperty(const QString &propertyName, QVariant::Type propertyType) const;
+    void validateProperty(const QString &propertyName, QVariant::Type propertyType, const QVariant &value = QVariant()) const;
     void validateSignal(const char *signalName) const;
 
 private:
@@ -26,7 +26,7 @@ void ApiCheckBase::init(const QString &file)
     QVERIFY2(componentObject, qPrintable(errors));
 }
 
-void ApiCheckBase::validateProperty(const QString &propertyName, QVariant::Type propertyType) const
+void ApiCheckBase::validateProperty(const QString &propertyName, QVariant::Type propertyType, const QVariant &value) const
 {
     const QMetaObject *metaObject = componentObject->metaObject();
     const int propertyIndex = metaObject->indexOfProperty(propertyName.toStdString().c_str());
@@ -39,6 +39,12 @@ void ApiCheckBase::validateProperty(const QString &propertyName, QVariant::Type 
     const QString type = QVariant::typeToName(propertyType);
     const QString typeErrorString = QString("Type error: %1 is not a %2").arg(propertyName).arg(type);
     QVERIFY2(metaProperty.type() == propertyType, typeErrorString.toStdString().c_str());
+
+    if (value.isValid()) {
+        const QVariant tst = metaProperty.read(componentObject);
+        const QString defaultErrorString = QString("Wrong default value");
+        QVERIFY2(tst == value, defaultErrorString.toStdString().c_str());
+    }
 }
 
 void ApiCheckBase::validateSignal(const char *signalName) const
