@@ -15,3 +15,13 @@ qmlimages.files = $$QML_IMAGES
 qmlimages.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH/images
 
 INSTALLS += target qmlfiles qmlimages
+
+symbian {
+    pluginstub.sources = $$symbianRemoveSpecialCharacters($$basename(TARGET)).dll
+    pluginstub.path = /resource/qt/imports/$$TARGETPATH
+
+    resources.sources = $$QML_FILES
+    resources.path = /resource/qt/imports/$$TARGETPATH
+
+    DEPLOYMENT += pluginstub resources
+}

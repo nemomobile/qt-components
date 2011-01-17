@@ -47,14 +47,6 @@ symbian {
     LIBS += -lavkon
 
     BLD_INF_RULES.prj_exports += "qtcomponents.iby $$CORE_MW_LAYER_IBY_EXPORT_PATH(qtcomponents.iby)"
-
-    pluginstub.sources = symbianplugin.dll
-    pluginstub.path = /resource/qt/imports/$$TARGETPATH
-
-    resources.path = /resource/qt/imports/$$TARGETPATH
-    resources.sources = $$QML_FILES
-
-    DEPLOYMENT = pluginstub resources
 }
 
 include(../../qml.pri)

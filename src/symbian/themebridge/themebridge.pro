@@ -45,14 +45,6 @@ symbian {
     LIBS += -lfbscli
     LIBS += -lcone
     LIBS += -leikcore
-
-    pluginstub.sources = symbianthemebridgeplugin.dll
-    pluginstub.path = /resource/qt/imports/$$TARGETPATH
-
-    resources.path = /resource/qt/imports/$$TARGETPATH
-    resources.sources += $$QML_FILES
-
-    DEPLOYMENT = pluginstub resources
 }
 
 include(../../../qml.pri)
