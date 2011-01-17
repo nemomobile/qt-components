@@ -20,6 +20,7 @@ HEADERS += \
     sdeclarative.h \
     sdeclarativeprogressbaranimation.h \
     sdeclarativescreen.h \
+    sdeclarativescreen_p.h \
     sdeclarativewindowdecoration.h
 
 QML_FILES = \

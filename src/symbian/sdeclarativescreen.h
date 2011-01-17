@@ -38,14 +38,14 @@ class SDeclarativeScreen : public QObject
     Q_PROPERTY(Orientation orientation READ orientation WRITE setOrientation NOTIFY orientationChanged FINAL)
     Q_PROPERTY(QString orientationString READ orientationString NOTIFY orientationChanged FINAL)
 
-    Q_PROPERTY(int width READ width NOTIFY sizeChanged)
-    Q_PROPERTY(int height READ height NOTIFY sizeChanged)
+    Q_PROPERTY(int width READ width NOTIFY displayChanged )
+    Q_PROPERTY(int height READ height NOTIFY displayChanged )
     Q_PROPERTY(int rotation READ rotation NOTIFY orientationChanged FINAL)
 
-    Q_PROPERTY(qreal ppi READ ppi)
-    Q_PROPERTY(qreal ppmm READ ppmm)
-    Q_PROPERTY(qreal unit READ unit NOTIFY displayChanged)
-    Q_PROPERTY(QSizeF physicalSize READ physicalSize)
+    Q_PROPERTY(qreal ppi READ ppi NOTIFY displayChanged )
+    Q_PROPERTY(qreal ppmm READ ppmm NOTIFY displayChanged )
+    Q_PROPERTY(qreal unit READ unit NOTIFY displayChanged )
+    Q_PROPERTY(QSizeF physicalSize READ physicalSize NOTIFY displayChanged )
 
     Q_PROPERTY(bool minimized READ isMinimized WRITE setMinimized NOTIFY minimizedChanged FINAL)
 
@@ -80,19 +80,20 @@ public:
     qreal unit() const;
     QSizeF physicalSize() const;
 
+    Q_INVOKABLE void setDisplay(const QSize &screenSize, qreal ppi, qreal unit);
+
 Q_SIGNALS:
     void orientationChanged();
     void minimizedChanged();
-    void sizeChanged();
     void displayChanged();
 
 protected:
+    bool eventFilter(QObject *obj, QEvent *event);
     QScopedPointer<SDeclarativeScreenPrivate> d_ptr;
 
 private:
-    Q_PRIVATE_SLOT(d_func(), void _q_updateOrientationAngle())
     Q_PRIVATE_SLOT(d_func(), void _q_updateScreenSize(const QSize&))
-
+    Q_PRIVATE_SLOT(d_func(), void _q_initView(const QSize&))
     Q_DISABLE_COPY(SDeclarativeScreen)
     Q_DECLARE_PRIVATE(SDeclarativeScreen)
 };
