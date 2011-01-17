@@ -13,6 +13,7 @@ public:
 protected:
     void init(const QString &file);
     void validateProperty(const QString &propertyName, QVariant::Type propertyType, const QVariant &value = QVariant()) const;
+    void validateProperty(const QString &propertyName, const QString &typeName) const;
     void validateSignal(const char *signalName) const;
     void validateMethod(const char *methodName) const;
 
@@ -46,6 +47,20 @@ void ApiCheckBase::validateProperty(const QString &propertyName, QVariant::Type 
         const QString defaultErrorString = QString("Wrong default value");
         QVERIFY2(tst == value, defaultErrorString.toStdString().c_str());
     }
+}
+
+void ApiCheckBase::validateProperty(const QString &propertyName, const QString &typeName) const
+{
+    const QMetaObject *metaObject = componentObject->metaObject();
+    const int propertyIndex = metaObject->indexOfProperty(propertyName.toStdString().c_str());
+
+    const QString propertyErrorString = QString("API Error: %1 not found").arg(propertyName);
+    QVERIFY2(propertyIndex != -1, propertyErrorString.toStdString().c_str());
+
+    const QMetaProperty metaProperty = metaObject->property(propertyIndex);
+
+    const QString typeErrorString = QString("Type error: %1 is not a %2").arg(propertyName).arg(typeName);
+    QVERIFY2(typeName == metaProperty.typeName(), typeErrorString.toStdString().c_str());
 }
 
 void ApiCheckBase::validateSignal(const char *signalName) const
