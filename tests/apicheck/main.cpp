@@ -34,6 +34,7 @@
 #include "radiobutton/apicheck_radiobutton.h"
 #include "textfield/apicheck_textfield.h"
 #include "busyindicator/apicheck_busyindicator.h"
+#include "textarea/apicheck_textarea.h"
 
 
 int main(int argc, char *argv[])
@@ -56,6 +57,7 @@ int main(int argc, char *argv[])
     ApiCheckTextField textField(engine, module);
     ApiCheckRadioButton radioButton(engine, module);
     ApiCheckBusyIndicator busyIndicator(engine, module);
+    ApiCheckTextArea textArea(engine, module);
 
     QTest::qExec(&slider);
     QTest::qExec(&button);
@@ -63,6 +65,7 @@ int main(int argc, char *argv[])
     QTest::qExec(&textField);
     QTest::qExec(&radioButton);
     QTest::qExec(&busyIndicator);
+    QTest::qExec(&textArea);
 
     return 0;
 }
