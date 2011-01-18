@@ -140,20 +140,9 @@ void SDeclarativeIcon::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     // Load pixmap now that rect size is known
     if (!d->iconLoadAttempted && !d->fileName.isEmpty()) {
         // Get pixmap from application's icon pool
-        d->pixmap = SIconPool::get(d->fileName, rectSize);
+        d->pixmap = SIconPool::get(d->fileName, rectSize, Qt::KeepAspectRatio, d->iconColor);
         d->iconLoadAttempted = true;
         d->loadedSize = rectSize;
-
-        if (!d->pixmap.isNull()) {
-            // Set color if defined
-            if (d->iconColor.isValid()) {
-                QPixmap mask = d->pixmap.alphaChannel();
-                d->pixmap.fill(d->iconColor);
-                d->pixmap.setAlphaChannel(mask);
-            }
-        } else {
-            return;
-        }
     }
 
     // Center pixmap rect
