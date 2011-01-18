@@ -47,13 +47,10 @@ static const QLatin1String extension_bl("_bl");
 static const QLatin1String extension_b("_b");
 static const QLatin1String extension_br("_br");
 
-/*!
-  \class SFramePoolKey
- */
 struct SFramePoolKey {
 public:
-    SFramePoolKey(const QString &filename, SDeclarativeFrame::FrameType type, const QSize &size)
-        : mFilename(filename), mType(type), mSize(size) {}
+    SFramePoolKey(const QString &fileName, SDeclarativeFrame::FrameType type, const QSize &size)
+        : mFilename(fileName), mType(type), mSize(size) {}
 
     bool operator==(const SFramePoolKey &other) const {
         return other.mFilename == mFilename && other.mType == mType && other.mSize == mSize;
@@ -64,9 +61,6 @@ public:
     QSize mSize;
 };
 
-/*!
-  \class SFramePoolValue
- */
 struct SFramePoolValue {
     SFramePoolValue()
         : mPixmap(), mRefCount(0) {}
@@ -84,12 +78,12 @@ uint qHash(const SFramePoolKey &key)
 typedef QHash<SFramePoolKey, SFramePoolValue> SFramePoolData;
 Q_GLOBAL_STATIC(SFramePoolData, poolData);
 
-QPixmap SFramePool::get(const QString &filename, SDeclarativeFrame::FrameType type, const QSize &size)
+QPixmap SFramePool::get(const QString &fileName, SDeclarativeFrame::FrameType type, const QSize &size)
 {
     QPixmap pixmap;
 
-    if (!filename.isEmpty() && !size.isEmpty() && type != SDeclarativeFrame::Undefined) {
-        SFramePoolKey key(filename, type, size);
+    if (!fileName.isEmpty() && !size.isEmpty() && type != SDeclarativeFrame::Undefined) {
+        SFramePoolKey key(fileName, type, size);
         SFramePoolData *pool = poolData();
 
         if (pool->contains(key)) {
@@ -98,7 +92,7 @@ QPixmap SFramePool::get(const QString &filename, SDeclarativeFrame::FrameType ty
             pixmap = value.mPixmap;
             pool->insert(key, value);
         } else {
-            pixmap = loadFrame(filename, type, size);
+            pixmap = loadFrame(fileName, type, size);
             pool->insert(key, SFramePoolValue(pixmap));
         }
 #ifdef Q_DEBUG_FRAME
@@ -108,13 +102,13 @@ QPixmap SFramePool::get(const QString &filename, SDeclarativeFrame::FrameType ty
     return pixmap;
 }
 
-void SFramePool::release(const QString &filename, SDeclarativeFrame::FrameType type, const QSize &size)
+void SFramePool::release(const QString &fileName, SDeclarativeFrame::FrameType type, const QSize &size)
 {
     // One piece frame uses icon pool directly...
     if (type == SDeclarativeFrame::OnePiece) {
-        SIconPool::release(filename, size, Qt::IgnoreAspectRatio);
+        SIconPool::release(fileName, size, Qt::IgnoreAspectRatio);
     } else {
-        SFramePoolKey key(filename, type, size);
+        SFramePoolKey key(fileName, type, size);
         SFramePoolData *pool = poolData();
         if (pool->contains(key)) {
             SFramePoolValue value = pool->value(key);
@@ -132,16 +126,13 @@ void SFramePool::release(const QString &filename, SDeclarativeFrame::FrameType t
     }
 }
 
-/**
-* This is just a temp solution to get something visible - final icon/frame loading architecture is worked on in SVG team.
-*/
-QPixmap SFramePool::loadFrame(const QString &filename, SDeclarativeFrame::FrameType type, const QSize &size)
+QPixmap SFramePool::loadFrame(const QString &fileName, SDeclarativeFrame::FrameType type, const QSize &size)
 {
     QPixmap pm;
 
     // If frame is one piece, use icon pool directly
     if (type == SDeclarativeFrame::OnePiece) {
-        pm = SIconPool::get(filename, size, Qt::IgnoreAspectRatio);
+        pm = SIconPool::get(fileName, size, Qt::IgnoreAspectRatio);
     } else {
 
         // Generate frame in the given size
@@ -152,53 +143,53 @@ QPixmap SFramePool::loadFrame(const QString &filename, SDeclarativeFrame::FrameT
         switch (type) {
         case SDeclarativeFrame::ThreePiecesHorizontal: {
 
-            int border = SIconPool::defaultSize(createFileName(filename, extension_l)).width();
+            int border = SIconPool::defaultSize(createFileName(fileName, extension_l)).width();
 
             QRect rect_l = QRect(0, 0, border, size.height());
             QRect rect_c = QRect(border, 0, size.width() - 2 * border, size.height());
             QRect rect_r = QRect(size.width() - border, 0, border, size.height());
 
-            QPixmap l = SIconPool::get(createFileName(filename, extension_l), rect_l.size(), Qt::KeepAspectRatio);
-            QPixmap c = SIconPool::get(createFileName(filename, extension_c), rect_c.size(), Qt::IgnoreAspectRatio);
-            QPixmap r = SIconPool::get(createFileName(filename, extension_r), rect_r.size(), Qt::KeepAspectRatio);
+            QPixmap l = SIconPool::get(createFileName(fileName, extension_l), rect_l.size(), Qt::KeepAspectRatio);
+            QPixmap c = SIconPool::get(createFileName(fileName, extension_c), rect_c.size(), Qt::IgnoreAspectRatio);
+            QPixmap r = SIconPool::get(createFileName(fileName, extension_r), rect_r.size(), Qt::KeepAspectRatio);
 
             // Draw the loaded pixmaps in the frame pixmap
             painter.drawPixmap(rect_l, l);
             painter.drawPixmap(rect_c, c);
             painter.drawPixmap(rect_r, r);
 
-            SIconPool::release(createFileName(filename, extension_l), rect_l.size(), Qt::KeepAspectRatio);
-            SIconPool::release(createFileName(filename, extension_c), rect_c.size(), Qt::IgnoreAspectRatio);
-            SIconPool::release(createFileName(filename, extension_r), rect_r.size(), Qt::KeepAspectRatio);
+            SIconPool::release(createFileName(fileName, extension_l), rect_l.size(), Qt::KeepAspectRatio);
+            SIconPool::release(createFileName(fileName, extension_c), rect_c.size(), Qt::IgnoreAspectRatio);
+            SIconPool::release(createFileName(fileName, extension_r), rect_r.size(), Qt::KeepAspectRatio);
 
             break;
         }
         case SDeclarativeFrame::ThreePiecesVertical: {
 
-            int border = SIconPool::defaultSize(createFileName(filename, extension_t)).height();
+            int border = SIconPool::defaultSize(createFileName(fileName, extension_t)).height();
 
             QRect rect_t = QRect(0, 0, size.width(), border);
             QRect rect_c = QRect(0, border, size.width(), size.height() - 2 * border);
             QRect rect_b = QRect(0, size.height() - border, size.width(), border);
 
-            QPixmap t = SIconPool::get(createFileName(filename, extension_t), rect_t.size(), Qt::KeepAspectRatio);
-            QPixmap c = SIconPool::get(createFileName(filename, extension_c), rect_c.size(), Qt::IgnoreAspectRatio);
-            QPixmap b = SIconPool::get(createFileName(filename, extension_b), rect_b.size(), Qt::KeepAspectRatio);
+            QPixmap t = SIconPool::get(createFileName(fileName, extension_t), rect_t.size(), Qt::KeepAspectRatio);
+            QPixmap c = SIconPool::get(createFileName(fileName, extension_c), rect_c.size(), Qt::IgnoreAspectRatio);
+            QPixmap b = SIconPool::get(createFileName(fileName, extension_b), rect_b.size(), Qt::KeepAspectRatio);
 
             // Draw the loaded pixmaps in the frame pixmap
             painter.drawPixmap(QRect(0, 0, size.width(), border), t);
             painter.drawPixmap(QRect(0, border, size.width(), size.height() - 2 * border), c);
             painter.drawPixmap(QRect(0, size.height() - border, size.width(), border), b);
 
-            SIconPool::release(createFileName(filename, extension_t), rect_t.size(), Qt::KeepAspectRatio);
-            SIconPool::release(createFileName(filename, extension_c), rect_c.size(), Qt::IgnoreAspectRatio);
-            SIconPool::release(createFileName(filename, extension_b), rect_b.size(), Qt::KeepAspectRatio);
+            SIconPool::release(createFileName(fileName, extension_t), rect_t.size(), Qt::KeepAspectRatio);
+            SIconPool::release(createFileName(fileName, extension_c), rect_c.size(), Qt::IgnoreAspectRatio);
+            SIconPool::release(createFileName(fileName, extension_b), rect_b.size(), Qt::KeepAspectRatio);
 
             break;
         }
         case SDeclarativeFrame::NinePieces: {
 
-            int border = SIconPool::defaultSize(createFileName(filename, extension_tl)).width();
+            int border = SIconPool::defaultSize(createFileName(fileName, extension_tl)).width();
 
             QRect rect_tl = QRect(0, 0, border, border);
             QRect rect_t = QRect(border, 0, size.width() - 2 * border, border);
@@ -210,15 +201,15 @@ QPixmap SFramePool::loadFrame(const QString &filename, SDeclarativeFrame::FrameT
             QRect rect_b = QRect(border, size.height() - border, size.width() - 2 * border, border);
             QRect rect_br = QRect(size.width() - border, size.height() - border, border, border);
 
-            QPixmap tl = SIconPool::get(createFileName(filename, extension_tl), rect_tl.size(), Qt::KeepAspectRatio);
-            QPixmap t = SIconPool::get(createFileName(filename, extension_t), rect_t.size(), Qt::IgnoreAspectRatio);
-            QPixmap tr = SIconPool::get(createFileName(filename, extension_tr), rect_tr.size(), Qt::KeepAspectRatio);
-            QPixmap l = SIconPool::get(createFileName(filename, extension_l), rect_l.size(), Qt::IgnoreAspectRatio);
-            QPixmap c = SIconPool::get(createFileName(filename, extension_c), rect_c.size(), Qt::IgnoreAspectRatio);;
-            QPixmap r = SIconPool::get(createFileName(filename, extension_r), rect_r.size(), Qt::IgnoreAspectRatio);
-            QPixmap bl = SIconPool::get(createFileName(filename, extension_bl), rect_bl.size(), Qt::KeepAspectRatio);
-            QPixmap b = SIconPool::get(createFileName(filename, extension_b), rect_b.size(), Qt::IgnoreAspectRatio);
-            QPixmap br = SIconPool::get(createFileName(filename, extension_br), rect_br.size(), Qt::KeepAspectRatio);
+            QPixmap tl = SIconPool::get(createFileName(fileName, extension_tl), rect_tl.size(), Qt::KeepAspectRatio);
+            QPixmap t = SIconPool::get(createFileName(fileName, extension_t), rect_t.size(), Qt::IgnoreAspectRatio);
+            QPixmap tr = SIconPool::get(createFileName(fileName, extension_tr), rect_tr.size(), Qt::KeepAspectRatio);
+            QPixmap l = SIconPool::get(createFileName(fileName, extension_l), rect_l.size(), Qt::IgnoreAspectRatio);
+            QPixmap c = SIconPool::get(createFileName(fileName, extension_c), rect_c.size(), Qt::IgnoreAspectRatio);;
+            QPixmap r = SIconPool::get(createFileName(fileName, extension_r), rect_r.size(), Qt::IgnoreAspectRatio);
+            QPixmap bl = SIconPool::get(createFileName(fileName, extension_bl), rect_bl.size(), Qt::KeepAspectRatio);
+            QPixmap b = SIconPool::get(createFileName(fileName, extension_b), rect_b.size(), Qt::IgnoreAspectRatio);
+            QPixmap br = SIconPool::get(createFileName(fileName, extension_br), rect_br.size(), Qt::KeepAspectRatio);
 
             // Draw the loaded pixmaps in the frame pixmap
             painter.drawPixmap(rect_tl, tl);
@@ -231,15 +222,15 @@ QPixmap SFramePool::loadFrame(const QString &filename, SDeclarativeFrame::FrameT
             painter.drawPixmap(rect_b, b);
             painter.drawPixmap(rect_br, br);
 
-            SIconPool::release(createFileName(filename, extension_tl), rect_tl.size(), Qt::KeepAspectRatio);
-            SIconPool::release(createFileName(filename, extension_t), rect_t.size(), Qt::IgnoreAspectRatio);
-            SIconPool::release(createFileName(filename, extension_tr), rect_tr.size(), Qt::KeepAspectRatio);
-            SIconPool::release(createFileName(filename, extension_l), rect_l.size(), Qt::IgnoreAspectRatio);
-            SIconPool::release(createFileName(filename, extension_c), rect_c.size(), Qt::IgnoreAspectRatio);
-            SIconPool::release(createFileName(filename, extension_r), rect_r.size(), Qt::IgnoreAspectRatio);
-            SIconPool::release(createFileName(filename, extension_bl), rect_bl.size(), Qt::KeepAspectRatio);
-            SIconPool::release(createFileName(filename, extension_b), rect_b.size(), Qt::IgnoreAspectRatio);
-            SIconPool::release(createFileName(filename, extension_br), rect_br.size(), Qt::KeepAspectRatio);
+            SIconPool::release(createFileName(fileName, extension_tl), rect_tl.size(), Qt::KeepAspectRatio);
+            SIconPool::release(createFileName(fileName, extension_t), rect_t.size(), Qt::IgnoreAspectRatio);
+            SIconPool::release(createFileName(fileName, extension_tr), rect_tr.size(), Qt::KeepAspectRatio);
+            SIconPool::release(createFileName(fileName, extension_l), rect_l.size(), Qt::IgnoreAspectRatio);
+            SIconPool::release(createFileName(fileName, extension_c), rect_c.size(), Qt::IgnoreAspectRatio);
+            SIconPool::release(createFileName(fileName, extension_r), rect_r.size(), Qt::IgnoreAspectRatio);
+            SIconPool::release(createFileName(fileName, extension_bl), rect_bl.size(), Qt::KeepAspectRatio);
+            SIconPool::release(createFileName(fileName, extension_b), rect_b.size(), Qt::IgnoreAspectRatio);
+            SIconPool::release(createFileName(fileName, extension_br), rect_br.size(), Qt::KeepAspectRatio);
 
             break;
         }
@@ -259,11 +250,11 @@ QPixmap SFramePool::loadFrame(const QString &filename, SDeclarativeFrame::FrameT
     return pm;
 }
 
-QString SFramePool::createFileName(const QString &filename, const QString &suffix)
+QString SFramePool::createFileName(const QString &fileName, const QString &suffix)
 {
-    QString ret = filename;
+    QString ret = fileName;
 
-    int index = filename.lastIndexOf(QChar('.'));
+    int index = fileName.lastIndexOf(QChar('.'));
     // Append suffix before extension
     if (index > 0)
         ret.insert(index, suffix);
@@ -279,9 +270,9 @@ int SFramePool::totalCount()
     return pool->count();
 }
 
-int SFramePool::count(const QString &filename, SDeclarativeFrame::FrameType type, const QSize &size)
+int SFramePool::count(const QString &fileName, SDeclarativeFrame::FrameType type, const QSize &size)
 {
-    SFramePoolKey key(filename, type, size);
+    SFramePoolKey key(fileName, type, size);
     SFramePoolData *pool = poolData();
     if (pool->contains(key)) {
         SFramePoolValue value = pool->value(key);

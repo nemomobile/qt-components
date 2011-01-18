@@ -38,17 +38,17 @@ QT_END_NAMESPACE
 class SFramePool
 {
 public:
-    static QPixmap get(const QString &filename, SDeclarativeFrame::FrameType type, const QSize &size);
-    static void release(const QString &filename, SDeclarativeFrame::FrameType type, const QSize &size);
+    static QPixmap get(const QString &fileName, SDeclarativeFrame::FrameType type, const QSize &size);
+    static void release(const QString &fileName, SDeclarativeFrame::FrameType type, const QSize &size);
 
 #ifdef FRAME_POOL_UNIT_TEST
     static int totalCount();
-    static int count(const QString &filename, SDeclarativeFrame::FrameType type, const QSize &size);
+    static int count(const QString &fileName, SDeclarativeFrame::FrameType type, const QSize &size);
 #endif // FRAME_POOL_UNIT_TEST
 
 private:
-    static QPixmap loadFrame(const QString &filename, SDeclarativeFrame::FrameType type, const QSize &size);
-    static QString createFileName(const QString &filename, const QString &suffix);
+    static QPixmap loadFrame(const QString &fileName, SDeclarativeFrame::FrameType type, const QSize &size);
+    static QString createFileName(const QString &fileName, const QString &suffix);
     SFramePool();
 };
 
