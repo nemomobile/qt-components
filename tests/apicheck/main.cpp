@@ -36,6 +36,7 @@
 #include "progressbar/apicheck_progressbar.h"
 #include "busyindicator/apicheck_busyindicator.h"
 #include "textarea/apicheck_textarea.h"
+#include "scrolldecorator/apicheck_scrolldecorator.h"
 
 
 int main(int argc, char *argv[])
@@ -60,6 +61,7 @@ int main(int argc, char *argv[])
     ApiCheckProgressBar progressBar(engine, module);
     ApiCheckBusyIndicator busyIndicator(engine, module);
     ApiCheckTextArea textArea(engine, module);
+    ApiCheckScrollDecorator scrollDecorator(engine, module);
 
     QTest::qExec(&slider);
     QTest::qExec(&button);
@@ -69,6 +71,7 @@ int main(int argc, char *argv[])
     QTest::qExec(&progressBar);
     QTest::qExec(&busyIndicator);
     QTest::qExec(&textArea);
+    QTest::qExec(&scrollDecorator);
 
     return 0;
 }

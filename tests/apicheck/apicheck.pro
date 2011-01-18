@@ -15,6 +15,7 @@ HEADERS += base/apicheckbase.h \
            radiobutton/apicheck_radiobutton.h \
            busyindicator/apicheck_busyindicator.h \
            textarea/apicheck_textarea.h \
+           scrolldecorator/apicheck_scrolldecorator.h
 
 SOURCES += main.cpp \
            base/apicheckbase.cpp \
