@@ -81,7 +81,9 @@ void ApiCheckBase::validateProperty(const QString &name, QVariant::Type type, co
 
     if (value.isValid()) {
         QVERIFY2(property == value,
-                 qPrintable(QString("property '%1.%2' has wrong default value").arg(m_name, name)));
+                 qPrintable(QString("property '%1.%2' has wrong default value"
+                                    " (actual: %3; expected: %4)")
+                            .arg(m_name, name, property.toString(), value.toString())));
     }
 }
 
