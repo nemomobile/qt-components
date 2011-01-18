@@ -29,6 +29,7 @@
 #include "sdeclarativeprogressbaranimation.h"
 #include "sdeclarativewindowdecoration.h"
 
+#include <QCoreApplication>
 #include <QtDeclarative>
 
 class SymbianPlugin : public QDeclarativeExtensionPlugin
@@ -45,6 +46,8 @@ public:
 
         engine->rootContext()->setContextProperty("screen", scr);
         qmlRegisterUncreatableType<SDeclarativeScreen>(uri, 1, 0,"Screen", "");
+
+        QObject::connect(engine, SIGNAL(quit()), QCoreApplication::instance(), SLOT(quit()));
     }
 
     void registerTypes(const char *uri) {
