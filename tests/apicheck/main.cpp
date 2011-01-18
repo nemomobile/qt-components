@@ -33,6 +33,7 @@
 #include "checkbox/apicheck_checkbox.h"
 #include "radiobutton/apicheck_radiobutton.h"
 #include "textfield/apicheck_textfield.h"
+#include "progressbar/apicheck_progressbar.h"
 #include "busyindicator/apicheck_busyindicator.h"
 #include "textarea/apicheck_textarea.h"
 
@@ -56,6 +57,7 @@ int main(int argc, char *argv[])
     ApiCheckCheckBox checkbox(engine, module);
     ApiCheckTextField textField(engine, module);
     ApiCheckRadioButton radioButton(engine, module);
+    ApiCheckProgressBar progressBar(engine, module);
     ApiCheckBusyIndicator busyIndicator(engine, module);
     ApiCheckTextArea textArea(engine, module);
 
@@ -64,6 +66,7 @@ int main(int argc, char *argv[])
     QTest::qExec(&checkbox);
     QTest::qExec(&textField);
     QTest::qExec(&radioButton);
+    QTest::qExec(&progressBar);
     QTest::qExec(&busyIndicator);
     QTest::qExec(&textArea);
 

@@ -11,6 +11,7 @@ HEADERS += base/apicheckbase.h \
            checkbox/apicheck_checkbox.h \
            slider/apicheck_slider.h \
            textfield/apicheck_textfield.h \
+           progressbar/apicheck_progressbar.h \
            radiobutton/apicheck_radiobutton.h \
            busyindicator/apicheck_busyindicator.h \
            textarea/apicheck_textarea.h \
