@@ -15,7 +15,8 @@ HEADERS += base/apicheckbase.h \
            radiobutton/apicheck_radiobutton.h \
            busyindicator/apicheck_busyindicator.h \
            textarea/apicheck_textarea.h \
-           scrolldecorator/apicheck_scrolldecorator.h
+           scrolldecorator/apicheck_scrolldecorator.h \
+           buttoncolumn/apicheck_buttoncolumn.h
 
 SOURCES += main.cpp \
            base/apicheckbase.cpp \
@@ -25,4 +26,5 @@ SOURCES += main.cpp \
            textfield/apicheck_textfield.cpp \
            radiobutton/apicheck_radiobutton.cpp \
            busyindicator/apicheck_busyindicator.cpp \
-           textarea/apicheck_textarea.cpp
+           textarea/apicheck_textarea.cpp \
+           buttoncolumn/apicheck_buttoncolumn.cpp

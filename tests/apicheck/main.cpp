@@ -37,6 +37,7 @@
 #include "busyindicator/apicheck_busyindicator.h"
 #include "textarea/apicheck_textarea.h"
 #include "scrolldecorator/apicheck_scrolldecorator.h"
+#include "buttoncolumn/apicheck_buttoncolumn.h"
 
 
 int main(int argc, char *argv[])
@@ -78,6 +79,7 @@ int main(int argc, char *argv[])
     ApiCheckBusyIndicator busyIndicator(engine, module);
     ApiCheckTextArea textArea(engine, module);
     ApiCheckScrollDecorator scrollDecorator(engine, module);
+    ApiCheckButtonColumn buttonColumn(engine, module);
 
     QTest::qExec(&slider, args);
     QTest::qExec(&button, args);
@@ -88,6 +90,7 @@ int main(int argc, char *argv[])
     QTest::qExec(&busyIndicator, args);
     QTest::qExec(&textArea, args);
     QTest::qExec(&scrollDecorator, args);
+    QTest::qExec(&buttonColumn, args);
 
     return 0;
 }
