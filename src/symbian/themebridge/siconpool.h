@@ -33,24 +33,25 @@ QT_BEGIN_NAMESPACE
 class QString;
 class QSize;
 class QSvgRenderer;
+class QColor;
 QT_END_NAMESPACE
 
 class SIconPool
 {
 public:
-    static QPixmap get(const QString &filename, const QSize &size, Qt::AspectRatioMode mode = Qt::KeepAspectRatio);
-    static void release(const QString &filename, const QSize &size, Qt::AspectRatioMode mode = Qt::KeepAspectRatio);
+    static QPixmap get(const QString &fileName, const QSize &size, Qt::AspectRatioMode mode = Qt::KeepAspectRatio, const QColor &color = QColor());
+    static void release(const QString &fileName, const QSize &size, Qt::AspectRatioMode mode = Qt::KeepAspectRatio, const QColor &color = QColor());
 
-    static QSize defaultSize(const QString &filename);
+    static QSize defaultSize(const QString &fileName);
 
 #ifdef ICON_POOL_UNIT_TEST
     static int totalCount();
-    static int count(const QString &filename, const QSize &size, Qt::AspectRatioMode mode = Qt::KeepAspectRatio);
+    static int count(const QString &fileName, const QSize &size, Qt::AspectRatioMode mode = Qt::KeepAspectRatio, const QColor &color = QColor());
 #endif // ICON_POOL_UNIT_TEST
 
 private:
-    static QPixmap loadIcon(const QString &filename, const QSize &size, Qt::AspectRatioMode mode);
-    static QSvgRenderer *getSvgRenderer(const QString &filename);
+    static QPixmap loadIcon(const QString &fileName, const QSize &size, Qt::AspectRatioMode mode, const QColor &color);
+    static QSvgRenderer *getSvgRenderer(const QString &fileName);
     SIconPool();
 };
 

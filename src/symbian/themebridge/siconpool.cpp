@@ -42,16 +42,17 @@
  */
 struct SIconPoolKey {
 public:
-    SIconPoolKey(const QString &filename, const QSize &size, Qt::AspectRatioMode mode)
-        : mFilename(filename), mSize(size), mMode(mode) {}
+    SIconPoolKey(const QString &fileName, const QSize &size, Qt::AspectRatioMode mode, const QColor &color)
+        : mFilename(fileName), mSize(size), mMode(mode), mColor(color) {}
 
     bool operator==(const SIconPoolKey &other) const {
-        return other.mFilename == mFilename && other.mSize == mSize && other.mMode == mMode;
+        return other.mFilename == mFilename && other.mSize == mSize && other.mMode == mMode && other.mColor == mColor;
     }
 
     QString mFilename;
     QSize mSize;
     Qt::AspectRatioMode mMode;
+    QColor mColor;
 };
 
 /*!
@@ -74,12 +75,15 @@ uint qHash(const SIconPoolKey &key)
 typedef QHash<SIconPoolKey, SIconPoolValue> SIconPoolData;
 Q_GLOBAL_STATIC(SIconPoolData, poolData);
 
-QPixmap SIconPool::get(const QString &filename, const QSize &size, Qt::AspectRatioMode mode)
+QPixmap SIconPool::get(const QString &fileName,
+                       const QSize &size,
+                       Qt::AspectRatioMode mode,
+                       const QColor &color)
 {
     QPixmap pixmap;
 
-    if (!filename.isEmpty() && !size.isEmpty()) {
-        SIconPoolKey key(filename, size, mode);
+    if (!fileName.isEmpty() && !size.isEmpty()) {
+        SIconPoolKey key(fileName, size, mode, color);
         SIconPoolData *pool = poolData();
 
         if (pool->contains(key)) {
@@ -88,7 +92,7 @@ QPixmap SIconPool::get(const QString &filename, const QSize &size, Qt::AspectRat
             pixmap = value.mPixmap;
             pool->insert(key, value);
         } else {
-            pixmap = loadIcon(filename, size, mode);
+            pixmap = loadIcon(fileName, size, mode, color);
             pool->insert(key, SIconPoolValue(pixmap));
         }
 #ifdef Q_DEBUG_ICON
@@ -101,18 +105,22 @@ QPixmap SIconPool::get(const QString &filename, const QSize &size, Qt::AspectRat
 /**
 * This is just a temp solution to get something visible - final icon loading architecture is worked on in SVG team.
 */
-QPixmap SIconPool::loadIcon(const QString &filename, const QSize &size, Qt::AspectRatioMode mode)
+QPixmap SIconPool::loadIcon(
+    const QString &fileName,
+    const QSize &size,
+    Qt::AspectRatioMode mode,
+    const QColor &color)
 {
     QPixmap pm;
     // SVG? Use QSvgRenderer
-    if (filename.endsWith(".svg")) {
-        QSvgRenderer *renderer = getSvgRenderer(filename);
+    if (fileName.endsWith(".svg")) {
+        QSvgRenderer *renderer = getSvgRenderer(fileName);
 
         if (renderer->isValid()) {
             QSize renderSize = renderer->defaultSize();
 
             // a bit of a hack: should we expose the aspect ratio flag?
-            if (filename.contains("screen_bg")) {
+            if (fileName.contains("screen_bg")) {
                 mode = Qt::KeepAspectRatioByExpanding;
             }
             renderSize.scale(size, mode);
@@ -124,12 +132,18 @@ QPixmap SIconPool::loadIcon(const QString &filename, const QSize &size, Qt::Aspe
         }
     } else {
         // Otherwise load with QPixmap
-        pm.load(filename);
+        pm.load(fileName);
         if (!pm.isNull()) {
             pm = pm.scaled(size, mode, Qt::SmoothTransformation);
         }
     }
 
+    if (!pm.isNull() && color.isValid()) {
+        // Colorize the icon
+        QPixmap mask = pm.alphaChannel();
+        pm.fill(color);
+        pm.setAlphaChannel(mask);
+    }
 #ifdef Q_DEBUG_ICON
     if (pm.isNull()) {
         qDebug() << "Fail to load icon: " << filename;
@@ -139,9 +153,13 @@ QPixmap SIconPool::loadIcon(const QString &filename, const QSize &size, Qt::Aspe
     return pm;
 }
 
-void SIconPool::release(const QString &filename, const QSize &size, Qt::AspectRatioMode mode)
+void SIconPool::release(
+    const QString &fileName,
+    const QSize &size,
+    Qt::AspectRatioMode mode,
+    const QColor &color)
 {
-    SIconPoolKey key(filename, size, mode);
+    SIconPoolKey key(fileName, size, mode, color);
     SIconPoolData *pool = poolData();
     if (pool->contains(key)) {
         SIconPoolValue value = pool->value(key);
@@ -159,22 +177,22 @@ void SIconPool::release(const QString &filename, const QSize &size, Qt::AspectRa
     }
 }
 
-QSize SIconPool::defaultSize(const QString &filename)
+QSize SIconPool::defaultSize(const QString &fileName)
 {
     QSize defSize;
 
     // Get the default size from svg renderer or pixmap size
-    if (!filename.isEmpty()) {
+    if (!fileName.isEmpty()) {
         // SVG? Use QSvgRenderer
-        if (filename.endsWith(".svg")) {
-            QSvgRenderer *svgRenderer = getSvgRenderer(filename);
+        if (fileName.endsWith(".svg")) {
+            QSvgRenderer *svgRenderer = getSvgRenderer(fileName);
             if (svgRenderer->isValid()) {
                 defSize = svgRenderer->defaultSize();
             }
         } else {
             // Otherwise load with QPixmap
             QPixmap pixmap;
-            pixmap.load(filename);
+            pixmap.load(fileName);
             defSize = pixmap.size();
         }
     }
@@ -182,17 +200,17 @@ QSize SIconPool::defaultSize(const QString &filename)
     return defSize;
 }
 
-QSvgRenderer *SIconPool::getSvgRenderer(const QString &filename)
+QSvgRenderer *SIconPool::getSvgRenderer(const QString &fileName)
 {
     static QString lastSvgFileName;
     static QSvgRenderer *lastSvgRenderer = 0;
 
-    if (lastSvgFileName == filename)
+    if (lastSvgFileName == fileName)
         return lastSvgRenderer;
 
     delete lastSvgRenderer;
-    lastSvgRenderer = new QSvgRenderer(filename);
-    lastSvgFileName = filename;
+    lastSvgRenderer = new QSvgRenderer(fileName);
+    lastSvgFileName = fileName;
     return lastSvgRenderer;
 }
 
@@ -204,9 +222,9 @@ int SIconPool::totalCount()
     return pool->count();
 }
 
-int SIconPool::count(const QString &filename, const QSize &size, Qt::AspectRatioMode mode)
+int SIconPool::count(const QString &fileName, const QSize &size, Qt::AspectRatioMode mode, const QColor &color)
 {
-    SIconPoolKey key(filename, size, mode);
+    SIconPoolKey key(fileName, size, mode, color);
     SIconPoolData *pool = poolData();
     if (pool->contains(key)) {
         SIconPoolValue value = pool->value(key);
