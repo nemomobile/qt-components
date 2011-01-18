@@ -42,17 +42,33 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+    QStringList args = app.arguments();
 
     QDeclarativeView view;
     QDeclarativeEngine *engine = view.engine();
 
-    QString module = (argc > 1) ? argv[1] : "com.meego 1.0";
+    // check for module
+    QString module("com.meego 1.0");
+    int moduleIdx = args.indexOf("-module");
 
-    if (argc > 2)
-        engine->addImportPath(argv[2]);
-    else
-        engine->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
+    if (moduleIdx != -1) {
+        args.removeAt(moduleIdx);
+        module = args.takeAt(moduleIdx++);
+    }
 
+    // check for import path
+    QString importPath(Q_COMPONENTS_BUILD_TREE"/imports");
+    int pathIdx = args.indexOf("-importpath");
+
+    if (pathIdx != -1) {
+        args.removeAt(pathIdx);
+        importPath = args.takeAt(pathIdx++);
+    }
+
+    // setup engine's import path
+    engine->addImportPath(importPath);
+
+    // create tests
     ApiCheckSlider slider(engine, module);
     ApiCheckButton button(engine, module);
     ApiCheckCheckBox checkbox(engine, module);
@@ -63,15 +79,15 @@ int main(int argc, char *argv[])
     ApiCheckTextArea textArea(engine, module);
     ApiCheckScrollDecorator scrollDecorator(engine, module);
 
-    QTest::qExec(&slider);
-    QTest::qExec(&button);
-    QTest::qExec(&checkbox);
-    QTest::qExec(&textField);
-    QTest::qExec(&radioButton);
-    QTest::qExec(&progressBar);
-    QTest::qExec(&busyIndicator);
-    QTest::qExec(&textArea);
-    QTest::qExec(&scrollDecorator);
+    QTest::qExec(&slider, args);
+    QTest::qExec(&button, args);
+    QTest::qExec(&checkbox, args);
+    QTest::qExec(&textField, args);
+    QTest::qExec(&radioButton, args);
+    QTest::qExec(&progressBar, args);
+    QTest::qExec(&busyIndicator, args);
+    QTest::qExec(&textArea, args);
+    QTest::qExec(&scrollDecorator, args);
 
     return 0;
 }
