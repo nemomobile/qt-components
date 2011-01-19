@@ -20,7 +20,7 @@ HEADERS += base/apicheckbase.h \
            buttoncolumn/apicheck_buttoncolumn.h \
            buttonrow/apicheck_buttonrow.h
 
-SOURCES += main.cpp \
+SOURCES += tst_apicheck.cpp \
            base/apicheckbase.cpp \
            button/apicheck_button.cpp \
            checkbox/apicheck_checkbox.cpp \
