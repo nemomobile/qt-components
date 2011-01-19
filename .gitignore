@@ -40,3 +40,6 @@ release/
 /tests/auto/mremotethemedaemonclient/mremotethemedaemonclient
 /tests/auto/qrangemodel/qrangemodel
 /tests/auto/symbian_textfield/tst_symbian_textfield
+tests/apicheck/tst_apicheck
+tests/auto/api_pagestack/tst_quickcomponentspagestack
+tests/auto/api_toolbar/tst_quickcomponentstoolbar
