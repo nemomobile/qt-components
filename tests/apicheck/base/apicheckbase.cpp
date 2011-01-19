@@ -69,8 +69,8 @@ void ApiCheckBase::validateProperty(const QString &name, const QString &typeName
     const QMetaProperty &metaProperty = meta->property(propertyIndex);
 
     QVERIFY2(metaProperty.typeName() == typeName,
-             qPrintable(QString("property '%1.%2' has invalid type (expected: %3)")
-                        .arg(m_name, name, typeName)));
+             qPrintable(QString("property '%1.%2' has invalid type (expected: %3, had: %4)")
+                        .arg(m_name, name, typeName, metaProperty.typeName())));
 }
 
 void ApiCheckBase::validateProperty(const QString &name, QVariant::Type type, const QVariant &value) const
@@ -84,15 +84,15 @@ void ApiCheckBase::validateProperty(const QString &name, QVariant::Type type, co
     const QMetaProperty &metaProperty = meta->property(propertyIndex);
 
     QVERIFY2(metaProperty.type() == type,
-             qPrintable(QString("property '%1.%2' has invalid type (expected: %3)")
-                        .arg(m_name, name, QVariant::typeToName(type))));
+             qPrintable(QString("property '%1.%2' has invalid type (expected: %3, had: %4)")
+                        .arg(m_name, name, QVariant::typeToName(type), metaProperty.typeName())));
 
     if (value.isValid()) {
         const QVariant &variant = metaProperty.read(m_object);
 
         QVERIFY2(variant == value,
-                 qPrintable(QString("property '%1.%2' has wrong default value (expected: %3)")
-                            .arg(m_name, name, value.toString())));
+                 qPrintable(QString("property '%1.%2' has wrong default value (expected: %3, had: %4)")
+                            .arg(m_name, name, value.toString(), variant.toString())));
     }
 }
 
