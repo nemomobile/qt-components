@@ -1,13 +1,15 @@
 include (../../../qt-components.pri)
 
 TARGETPATH = com/meego/themebridge
+NATIVESUBPATH = themebridge
 TEMPLATE = lib
 TARGET = $$qtLibraryTarget(meegothemebridgeplugin)
 DESTDIR = $$Q_COMPONENTS_BUILD_TREE/imports/$$TARGETPATH
 INCLUDEPATH += $$PWD
 
 win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release
-CONFIG += qt plugin install_native
+CONFIG += qt plugin
+symbian|!unix:CONFIG += install_native
 QT += declarative network
 contains(DEFINES, HAVE_MEEGOGRAPHICSSYSTEM) {
     QT += meegographicssystemhelper

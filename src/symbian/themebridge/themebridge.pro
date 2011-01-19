@@ -1,13 +1,15 @@
 include (../../../qt-components.pri)
 
 TARGETPATH = com/nokia/symbian/themebridge
+NATIVESUBPATH = themebridge
 TEMPLATE = lib
 TARGET = $$qtLibraryTarget(symbianthemebridgeplugin)
 DESTDIR = $$Q_COMPONENTS_BUILD_TREE/imports/$$TARGETPATH
 INCLUDEPATH += $$PWD
 
 win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release
-CONFIG += qt plugin install_native
+CONFIG += qt plugin
+symbian|!unix:CONFIG += install_native
 QT += declarative svg
 
 SOURCES += \
