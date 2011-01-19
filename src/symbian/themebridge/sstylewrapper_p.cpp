@@ -823,3 +823,7 @@ QVariant SStyleWrapperPrivate::listItemPropertySubTextColor() const
     else
         return QVariant();
 }
+QString SStyleWrapperPrivate::imagePath(const QString &fileName) const
+{
+    return QLatin1String("image://theme/") + fileName;
+}

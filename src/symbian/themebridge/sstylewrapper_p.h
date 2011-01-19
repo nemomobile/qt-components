@@ -75,6 +75,7 @@ private:
     QVariant textComponentFrameName() const;
     QVariant listItemPropertyMainTextColor() const;
     QVariant listItemPropertySubTextColor() const;
+    QString imagePath(const QString &fileName) const;
 
 private:
     mutable bool updateOnScreenAreaChange;
