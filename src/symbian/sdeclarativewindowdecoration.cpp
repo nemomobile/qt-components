@@ -197,6 +197,7 @@ void SDeclarativeWindowDecorationPrivate::_q_doUpdateFullScreen()
         q->setTopDecorationHeight(q->isLandscape() ? qRound(6.7 * unit) : qRound(13.6 * unit));
         q->setBottomDecorationHeight(q->isLandscape() ? qRound(6.7 * unit) : qRound(9.0 * unit));
     }
+    updateCba();
     q->update();
 #endif // Q_OS_SYMBIAN
 }
@@ -207,6 +208,7 @@ void SDeclarativeWindowDecorationPrivate::_q_desktopWorkareaChanged()
     Q_Q(SDeclarativeWindowDecoration);
     // use flat status pane layout. this removes the space needed for the
     // tabs/navigation page in portrait, which we do not currently use.
+    bool firstTime = false;
     static CEikonEnv *eikonEnv = 0;
     if (!eikonEnv) {
         eikonEnv = CEikonEnv::Static();
@@ -214,6 +216,7 @@ void SDeclarativeWindowDecorationPrivate::_q_desktopWorkareaChanged()
         // next events asyncronously so that the screenGeometry is updated
         QObject::disconnect(QApplication::desktop(), SIGNAL(workAreaResized(int)), q, SLOT(_q_desktopWorkareaChanged()));
         QObject::connect(QApplication::desktop(), SIGNAL(workAreaResized(int)), q, SLOT(_q_desktopWorkareaChanged()), Qt::QueuedConnection);
+        firstTime = true;
     }
 
     MEikAppUiFactory *eikAppUiFactory = eikonEnv->AppUiFactory();
@@ -226,27 +229,33 @@ void SDeclarativeWindowDecorationPrivate::_q_desktopWorkareaChanged()
                 == R_AVKON_STATUS_PANE_LAYOUT_USUAL_EXT) {
             QT_TRAP_THROWING(eikStatusPane->SwitchLayoutL(R_AVKON_STATUS_PANE_LAYOUT_USUAL_FLAT));
             return;
+        } else if (firstTime) {
+            QMetaObject::invokeMethod(q, "_q_desktopWorkareaChanged", Qt::QueuedConnection);
+            return;
         }
     }
 
-    const QRect screenGeometry = QApplication::desktop()->screenGeometry();
-    const TRect newApplicationAreaSymbian = static_cast<CEikAppUi*>(eikonEnv->AppUi())->ClientRect();
-    QRect newApplicationArea(newApplicationAreaSymbian.iTl.iX, newApplicationAreaSymbian.iTl.iY, newApplicationAreaSymbian.Width(), newApplicationAreaSymbian.Height());
+    const TRect applicationRect = static_cast<CEikAppUi *>(eikonEnv->AppUi())->ApplicationRect();
+    QRect newApplicationRect(applicationRect.iTl.iX, applicationRect.iTl.iY, applicationRect.Width(), applicationRect.Height());
+    const TRect clientRect = static_cast<CEikAppUi *>(eikonEnv->AppUi())->ClientRect();
+    QRect newClientRect(clientRect.iTl.iX, clientRect.iTl.iY, clientRect.Width(), clientRect.Height());
 
 #ifdef Q_DEBUG_DECORATION
-    qDebug() << "SDeclarativeWindowDecoration::desktopWorkareaChanged(): " << newApplicationArea;
+    qDebug() << "SDeclarativeWindowDecoration::_q_desktopWorkareaChanged(): " << newClientRect;
 #endif
     // keep top decorator as 0 height and set the whole offset to bottom decoration
     q->setTopDecorationHeight(0);
-    q->setBottomDecorationHeight(screenGeometry.height() - newApplicationArea.height());
+    q->setBottomDecorationHeight(newApplicationRect.height() - newClientRect.height());
 #endif
 }
 
 void SDeclarativeWindowDecorationPrivate::_q_optionsSelected()
 {
+    Q_Q(SDeclarativeWindowDecoration);
 #ifdef Q_DEBUG_DECORATION
     qDebug() << "OPTIONS";
 #endif
+    emit q->optionsClicked();
 }
 
 void SDeclarativeWindowDecorationPrivate::_q_exitSelected()
@@ -440,6 +449,8 @@ void SDeclarativeWindowDecoration::paint(QPainter *painter, const QStyleOptionGr
 
     // show hard-coded decorators for desktop purposes
     painter->save();
+    painter->setBrush(Qt::black);
+    painter->setPen(Qt::white);
 
     // CBA
     const qreal cbaHeight = bottomDecorationHeight();
@@ -455,10 +466,10 @@ void SDeclarativeWindowDecoration::paint(QPainter *painter, const QStyleOptionGr
         QAction *right = d->rightSoftkey();
 
         if (left)
-            painter->drawText(QRectF(0, height()-cbaHeight, width() / 2, cbaHeight), left->text(), QTextOption(Qt::AlignCenter));
+            painter->drawText(QRectF(0, height() - cbaHeight, width() / 2, cbaHeight), left->text(), QTextOption(Qt::AlignCenter));
 
         if (right)
-            painter->drawText(QRectF(width() / 2, height()-cbaHeight, width() / 2, cbaHeight), right->text(), QTextOption(Qt::AlignCenter));
+            painter->drawText(QRectF(width() / 2, height() - cbaHeight, width() / 2, cbaHeight), right->text(), QTextOption(Qt::AlignCenter));
     }
 
     // Status/title pane

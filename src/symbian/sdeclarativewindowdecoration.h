@@ -84,6 +84,7 @@ signals:
     void minimize();
     void quit();
     void backClicked();
+    void optionsClicked();
 
     void orientationChanged(int orientation);
     void backButtonVisibleChanged(bool show);
