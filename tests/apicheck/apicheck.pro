@@ -9,6 +9,7 @@ INCLUDEPATH += base
 HEADERS += base/apicheckbase.h \
            button/apicheck_button.h \
            checkbox/apicheck_checkbox.h \
+           choicelist/apicheck_choicelist.h \
            slider/apicheck_slider.h \
            textfield/apicheck_textfield.h \
            progressbar/apicheck_progressbar.h \
@@ -23,6 +24,7 @@ SOURCES += main.cpp \
            base/apicheckbase.cpp \
            button/apicheck_button.cpp \
            checkbox/apicheck_checkbox.cpp \
+           choicelist/apicheck_choicelist.cpp \
            slider/apicheck_slider.cpp \
            textfield/apicheck_textfield.cpp \
            radiobutton/apicheck_radiobutton.cpp \

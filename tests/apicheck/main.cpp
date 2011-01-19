@@ -39,6 +39,7 @@
 #include "scrolldecorator/apicheck_scrolldecorator.h"
 #include "buttoncolumn/apicheck_buttoncolumn.h"
 #include "buttonrow/apicheck_buttonrow.h"
+#include "choicelist/apicheck_choicelist.h"
 
 
 int main(int argc, char *argv[])
@@ -82,6 +83,7 @@ int main(int argc, char *argv[])
     ApiCheckScrollDecorator scrollDecorator(engine, module);
     ApiCheckButtonColumn buttonColumn(engine, module);
     ApiCheckButtonRow buttonRow(engine, module);
+    ApiCheckChoiceList choiceList(engine, module);
 
     QTest::qExec(&slider, args);
     QTest::qExec(&button, args);
@@ -94,6 +96,7 @@ int main(int argc, char *argv[])
     QTest::qExec(&scrollDecorator, args);
     QTest::qExec(&buttonColumn, args);
     QTest::qExec(&buttonRow, args);
+    QTest::qExec(&choiceList, args);
 
     return 0;
 }
