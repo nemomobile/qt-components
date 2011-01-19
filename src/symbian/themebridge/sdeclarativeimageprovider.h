@@ -24,34 +24,17 @@
 **
 ****************************************************************************/
 
-#include <QtDeclarative>
-#include <QScopedPointer>
-#include <QDebug>
+#ifndef SDECLARATIVEIMAGEPROVIDER_H
+#define SDECLARATIVEIMAGEPROVIDER_H
 
-#include "sstylewrapper.h"
-#include "sdeclarativeicon.h"
-#include "sdeclarativeframe.h"
-#include "sdeclarativeimplicitsizeitem.h"
-#include "sdeclarativeimageprovider.h"
+#include <qdeclarativeimageprovider.h>
 
-class SymbianThemeBridgePlugin : public QDeclarativeExtensionPlugin
+class SDeclarativeImageProvider : public QDeclarativeImageProvider
 {
-    Q_OBJECT
 public:
-    void initializeEngine(QDeclarativeEngine *engine, const char *uri) {
-        QDeclarativeExtensionPlugin::initializeEngine(engine, uri);
-        engine->addImageProvider(QLatin1String("theme"), new SDeclarativeImageProvider);
-    }
-
-    void registerTypes(const char *uri) {
-        qmlRegisterType<SDeclarativeIcon>(uri, 1, 0, "Icon");
-        qmlRegisterType<SDeclarativeFrame>(uri, 1, 0, "Frame");
-        qmlRegisterType<SStyleWrapper>(uri, 1, 0, "Style");
-        qmlRegisterType<SDeclarativeImplicitSizeItem>(uri, 1, 0, "ImplicitSizeItem");
-        qDebug() << "SymbianThemeBridgePlugin: Icon, Frame, Style and ImplicitSizeItem registered";
-    }
+    SDeclarativeImageProvider();
+    virtual ~SDeclarativeImageProvider();
+    virtual QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize);
 };
 
-#include "plugin.moc"
-
-Q_EXPORT_PLUGIN2(symbianthemebridgeplugin, SymbianThemeBridgePlugin)
+#endif // SDECLARATIVEIMAGEPROVIDER_H

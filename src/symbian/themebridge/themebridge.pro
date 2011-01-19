@@ -18,16 +18,18 @@ SOURCES += \
     sdeclarativeframe.cpp \
     siconpool.cpp \
     sframepool.cpp \
+    sdeclarativeimageprovider.cpp \
     sdeclarativeimplicitsizeitem.cpp
 
 HEADERS += \
-    sstylewrapper.h \
-    sstylewrapper_p.h \
-    sdeclarativeicon.h \
     sdeclarativeframe.h \
-    siconpool.h \
+    sdeclarativeicon.h \
+    sdeclarativeimageprovider.h \
+    sdeclarativeimplicitsizeitem.h \
     sframepool.h \
-    sdeclarativeimplicitsizeitem.h
+    siconpool.h \
+    sstylewrapper.h \
+    sstylewrapper_p.h
 
 RESOURCES += \
     themebridge.qrc
