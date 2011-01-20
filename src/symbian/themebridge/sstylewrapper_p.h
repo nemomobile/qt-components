@@ -58,6 +58,7 @@ public:
     QVariant progressBarProperty(const QString &propertyName) const;
     QVariant radioButtonProperty(const QString &propertyName) const;
     QVariant toolTipProperty(const QString &propertyName) const;
+    QVariant faderProperty(const QString &propertyName) const;
 
     void _q_desktopWorkareaChanged();
     void _q_displayChanged();

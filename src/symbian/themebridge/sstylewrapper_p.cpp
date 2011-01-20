@@ -758,6 +758,32 @@ QVariant SStyleWrapperPrivate::toolTipProperty(const QString &propertyName) cons
     return QVariant();
 }
 
+QVariant SStyleWrapperPrivate::faderProperty(const QString &propertyName) const
+{
+    QRect appRect;
+#ifdef Q_OS_SYMBIAN
+    CEikonEnv *eikonEnv = CEikonEnv::Static();
+    const TRect appArea = static_cast<CEikAppUi*>(eikonEnv->AppUi())->ClientRect();
+    appRect.setRect(appArea.iTl.iX, appArea.iTl.iY, appArea.Width(), appArea.Height());
+#else
+    QWidgetList widgetList = QApplication::allWidgets();
+    // resize all graphicsviews (usually just one of them)
+    foreach (QWidget *w, widgetList) {
+        QGraphicsView *gv = qobject_cast<QGraphicsView*>(w);
+        if (gv)
+            appRect.setSize(gv->size());
+    }
+#endif //Q_OS_SYMBIAN
+
+    if (propertyName == QLatin1String("appRectHeight"))
+        return appRect.height();
+
+    if (propertyName == QLatin1String("appRectWidth"))
+        return appRect.width();
+
+    return QVariant();
+}
+
 void SStyleWrapperPrivate::_q_desktopWorkareaChanged()
 {
     Q_Q(SStyleWrapper);
