@@ -39,7 +39,7 @@ ButtonColumn {
 
     Button {
         id: topButton
-        objectName: "button_0"
+        objectName: "child_0"
         text: "Yes"
         width: 100
         height: 64
@@ -47,6 +47,7 @@ ButtonColumn {
 
     Button {
         id: middleButton
+        objectName: "child_1"
         text: "No"
         width: 100
         height: topButton.height
@@ -54,6 +55,7 @@ ButtonColumn {
 
     Button {
         id: bottomButton
+        objectName: "child_2"
         text: "Maybe"
         width: 100
         height: topButton.height

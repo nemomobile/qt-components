@@ -68,27 +68,52 @@ void tst_quickcomponentsbuttoncolumn::exclusive()
     // test property has right initial value
     QCOMPARE(componentObject->property("exclusive").toBool(), false);
 
-    // change value and test again
-    QVERIFY(componentObject->setProperty("exclusive",true));
+    // first we set the checkable property of all Buttons that are
+    // children of ButtonRow to false.
+    QObject *child;
+    const QObjectList children = componentObject->children();
+    for (int i = 0; i < children.size(); ++i) {
+        child = children.at(i);
+        if (child->objectName().contains("child_")) {
+            QVERIFY2(child->property("checked").isValid(), "Error, ButtonColumn's child must have checked property");
+            if (child->property("checkable").isValid()) {
+                child->setProperty("checkable", false);
+                QVERIFY2(child->property("checkable").toBool() == false, QString("Error, could not set checkable property of %1").arg(child->metaObject()->className()).toAscii().data());
+            }
+        }
+    }
+
+    // change value to true and test again
+    QVERIFY(componentObject->setProperty("exclusive",true) );
     QCOMPARE(componentObject->property("exclusive").toBool(), true);
+
+    // According to the Common API: "when true, forces all its children to be checkable"
+    for (int i = 0; i < children.size(); ++i) {
+        child = children.at(i);
+        if (child->objectName().contains("child_")) {
+            if (child->property("checkable").isValid())
+                QVERIFY2(child->property("checkable").toBool() == true, QString("Error, checkable property was not set to true in %1").arg(child->metaObject()->className()).toAscii().data());
+        }
+    }
 }
 
 void tst_quickcomponentsbuttoncolumn::checkedButton()
 {
     // get ButtonColumn first Button child
-    QObject *buttonObject = componentObject->findChild<QObject*>(QString("button_0"));
-    QVERIFY2(buttonObject, "Error, ButtonColumn has no button inside");
-
-    // convert it to Variant, in order to set the checkedButton property correctly
-    QVariant buttonVariant = qVariantFromValue(buttonObject);
-    // set checkedButton property to buttonVariant
-    QVERIFY(componentObject->setProperty("checkedButton", buttonVariant));
-
-    QVariant tmpVariant = componentObject->property("checkedButton");
-    QObject *tmpObject = tmpVariant.value<QObject*>();
-
-    // check if the checkedButton has the first Button child set
-    QVERIFY2(buttonObject->objectName() == tmpObject->objectName(), "Error, the returned object is not the one thar was previously set");
+    QVariant variant;
+    QObject *child;
+    QObject *tmp;
+    const QObjectList children = componentObject->children();
+    for (int i = 0; i < children.size(); ++i) {
+        child = children.at(i);
+        if (child->objectName().contains("child_")) {
+            QVERIFY2(QMetaObject::invokeMethod(child, "clicked"), "ButtonColumn's child, does not have clicked() signal");
+            variant = componentObject->property("checkedButton");
+            QVERIFY(variant.isValid());
+            tmp = variant.value<QObject*>();
+            QVERIFY2(child->objectName() == tmp->objectName(), "Error, the returned object is not the one thar was previously set");
+        }
+    }
 }
 
 QTEST_MAIN(tst_quickcomponentsbuttoncolumn)
