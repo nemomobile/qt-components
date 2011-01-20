@@ -9,7 +9,7 @@ INCLUDEPATH += $$PWD
 
 win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release
 CONFIG += qt plugin
-symbian|!unix:CONFIG += install_native
+symbian|!unix:CONFIG += copy_native install_native
 QT += declarative network
 contains(DEFINES, HAVE_MEEGOGRAPHICSSYSTEM) {
     QT += meegographicssystemhelper

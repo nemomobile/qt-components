@@ -1,7 +1,30 @@
-!symbian:for(qmlfile, QML_FILES) {
-    ARGUMENTS = $$qmlfile $$DESTDIR
-    !isEmpty(QMAKE_POST_LINK):QMAKE_POST_LINK += &&
-    QMAKE_POST_LINK += $$QMAKE_COPY $$replace(ARGUMENTS, /, $$QMAKE_DIR_SEP)
+!symbian {
+    for(qmlfile, QML_FILES) {
+        ARGUMENTS = $$qmlfile $$DESTDIR
+        !isEmpty(QMAKE_POST_LINK):QMAKE_POST_LINK += &&
+        QMAKE_POST_LINK += $$QMAKE_COPY $$replace(ARGUMENTS, /, $$QMAKE_DIR_SEP)
+    }
+
+    copy_native {
+        NATIVE_DESTDIR = $$Q_COMPONENTS_BUILD_TREE/imports/Qt/labs/components/native
+
+        unix {
+            QMAKE_POST_LINK += && $(SYMLINK) -n $$DESTDIR $$NATIVE_DESTDIR
+        } else {
+            !isEmpty(NATIVESUBPATH):NATIVE_DESTDIR = $$NATIVE_DESTDIR/$$NATIVESUBPATH
+            NATIVE_DESTDIR = $$replace(NATIVE_DESTDIR, /, $$QMAKE_DIR_SEP)
+
+            QMAKE_POST_LINK += && $$QMAKE_CHK_DIR_EXISTS $$NATIVE_DESTDIR $$QMAKE_MKDIR $$NATIVE_DESTDIR
+
+            ARGUMENTS = $$DESTDIR/$(TARGET) $$NATIVE_DESTDIR
+            QMAKE_POST_LINK += && $$QMAKE_COPY $$replace(ARGUMENTS, /, $$QMAKE_DIR_SEP)
+
+            for(qmlfile, QML_FILES) {
+                ARGUMENTS = $$qmlfile $$NATIVE_DESTDIR
+                QMAKE_POST_LINK += && $$QMAKE_COPY $$replace(ARGUMENTS, /, $$QMAKE_DIR_SEP)
+            }
+        }
+    }
 }
 
 OTHER_FILES += $$QML_FILES
