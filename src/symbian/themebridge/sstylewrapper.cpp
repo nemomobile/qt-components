@@ -255,6 +255,8 @@ QVariant SStyleWrapper::get(const QString &propertyName)
         ret = d->radioButtonProperty(propertyName);
     else if (styleClass() == QLatin1String("ToolTip"))
         ret = d->toolTipProperty(propertyName);
+    else if (styleClass() == QLatin1String("Menu"))
+        ret = d->menuProperty(propertyName);
     else if (styleClass() == QLatin1String("Fader"))
         ret = d->faderProperty(propertyName);
 

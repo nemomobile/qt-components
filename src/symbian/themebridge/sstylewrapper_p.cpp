@@ -758,6 +758,77 @@ QVariant SStyleWrapperPrivate::toolTipProperty(const QString &propertyName) cons
     return QVariant();
 }
 
+QVariant SStyleWrapperPrivate::menuProperty(const QString &propertyName) const
+{
+    if (propertyName == QLatin1String("itemHeight"))
+        return QVariant(fetchLayoutParameter(QLatin1String("param-text-height-primary"))
+                        + fetchLayoutParameter(QLatin1String("param-margin-gene-top"))
+                        + fetchLayoutParameter(QLatin1String("param-margin-gene-bottom")));
+
+    if (propertyName == QLatin1String("listMargin"))
+        return QVariant(fetchLayoutParameter(QLatin1String("param-margin-gene-popup-list")));
+
+    if (propertyName == QLatin1String("frameName"))
+        return QLatin1String("qtg_fr_popup");
+
+    if (propertyName == QLatin1String("frameType"))
+        return SDeclarativeFrame::NinePieces;
+
+    if (propertyName == QLatin1String("titleTextHeight"))
+        return fetchLayoutParameter(QLatin1String("param-text-height-secondary"));
+
+    if (propertyName == QLatin1String("margin"))
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-popup-list"));
+
+    if (propertyName == QLatin1String("titleFrameName"))
+        return QLatin1String("qtg_fr_popup_heading");
+
+    if (propertyName == QLatin1String("titleFrameType"))
+        return SDeclarativeFrame::ThreePiecesHorizontal;
+
+    if (propertyName == QLatin1String("titleTextColor"))
+        return fetchThemeColor(QLatin1String("qtc_popup_heading_normal"));
+
+    if (propertyName == QLatin1String("font"))
+        return fetchFont(SStyleWrapper::Primary);
+
+    if (propertyName == QLatin1String("itemFrameName")) {
+        if (mode == QLatin1String("default"))
+            return QLatin1String("qtg_fr_popup_list_normal");
+        else if (mode == QLatin1String("pressed"))
+            return QLatin1String("qtg_fr_popup_list_pressed");
+    }
+
+    if (propertyName == QLatin1String("itemFrameType"))
+        return SDeclarativeFrame::NinePieces;
+
+    if (propertyName == QLatin1String("itemMarginLeft"))
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-left"));
+
+    if (propertyName == QLatin1String("itemMarginRight"))
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-right"));
+
+    if (propertyName == QLatin1String("itemMarginTop"))
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-top"));
+
+    if (propertyName == QLatin1String("itemMarginBottom"))
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-bottom"));
+
+    if (propertyName == QLatin1String("color"))
+        return fetchThemeColor(QLatin1String("qtc_popup_list_title_normal"));
+
+    if (propertyName == QLatin1String("screenMargin"))
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-screen"));
+
+    if (propertyName == QLatin1String("appRectHeight"))
+        return faderProperty(propertyName);
+
+    if (propertyName == QLatin1String("appRectWidth"))
+        return faderProperty(propertyName);
+
+    return QVariant();
+}
+
 QVariant SStyleWrapperPrivate::faderProperty(const QString &propertyName) const
 {
     QRect appRect;
