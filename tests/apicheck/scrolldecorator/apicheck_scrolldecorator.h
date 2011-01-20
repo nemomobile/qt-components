@@ -52,7 +52,7 @@ inline void ApiCheckScrollDecorator::initTestCase()
 
 inline void ApiCheckScrollDecorator::validateProperties()
 {
-    validateProperty("flickable", "QDeclarativeFlickable*");
+    validateProperty("flickableItem", "QDeclarativeFlickable*");
 }
 
 #endif

@@ -49,15 +49,15 @@
             ...
         }
 
-        ScrollDecorator { flickable: list }
+        ScrollDecorator { flickableItem: list }
     }
     \endcode
 
     \section1 Common API
     \code
-    property Flickable flickable
+    property Flickable flickableItem
     \endcode
 */
 /*!
-    \qmlproperty Flickable ScrollDecorator::flickable
+    \qmlproperty Flickable ScrollDecorator::flickableItem
 */
