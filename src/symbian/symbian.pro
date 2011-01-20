@@ -30,6 +30,7 @@ QML_FILES = \
     CheckBox.qml \
     Fader.qml \
     Menu.qml \
+    ObjectMenu.qml \
     Page.qml \
     ProgressBar.qml \
     ScrollBar.qml \

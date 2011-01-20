@@ -26,6 +26,7 @@ data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\Button.qml            
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\CheckBox.qml                                   RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\CheckBox.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\Fader.qml                                      RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\Fader.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\Menu.qml                                       RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\Menu.qml
+data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ObjectMenu.qml                                 RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ObjectMenu.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\Page.qml                                       RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\Page.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ProgressBar.qml                                RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ProgressBar.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ScrollBar.qml                                  RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ScrollBar.qml
