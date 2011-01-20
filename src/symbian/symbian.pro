@@ -27,6 +27,7 @@ QML_FILES = \
     qmldir \
     Button.qml \
     CheckBox.qml \
+    Page.qml \
     ProgressBar.qml \
     ScrollBar.qml \
     ScrollDecorator.qml \

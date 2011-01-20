@@ -23,6 +23,7 @@ data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\themebridge\qmldir    
 // Symbian QML components
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\Button.qml                                     RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\Button.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\CheckBox.qml                                   RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\CheckBox.qml
+data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\Page.qml                                       RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\Page.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ProgressBar.qml                                RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ProgressBar.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ScrollBar.qml                                  RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ScrollBar.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ScrollDecorator.qml                            RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ScrollDecorator.qml
