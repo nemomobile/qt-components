@@ -25,8 +25,10 @@ HEADERS += \
 
 QML_FILES = \
     qmldir \
+    AppManager.js \
     Button.qml \
     CheckBox.qml \
+    Fader.qml \
     Page.qml \
     ProgressBar.qml \
     ScrollBar.qml \
