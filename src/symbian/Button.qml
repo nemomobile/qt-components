@@ -33,7 +33,7 @@ ImplicitSizeItem {
     // Common Public API
     property bool checked: false
     property bool checkable: false
-    property bool pressed: (state == "Pressed" || state == "PressAndHold") && mouseArea.containsMouse
+    property bool pressed: (internal.state == "Pressed" || internal.state == "PressAndHold") && mouseArea.containsMouse
     property alias text: label.text
     property alias iconSource: contentIcon.iconName; // theme id or absolute filename
 
@@ -132,11 +132,54 @@ ImplicitSizeItem {
         button.clicked();
     }
 
+    Item {
+        id: internal
+
+        states: [
+            State { name: "Pressed"; },
+            State { name: "PressAndHold"; },
+            State { name: "Canceled"; }
+        ]
+
+        transitions: [
+            Transition {
+                to: "Pressed"
+                ScriptAction { script: button.press(); }
+            },
+            Transition {
+                from: "Pressed"
+                to: "PressAndHold"
+                ScriptAction { script: button.hold(); }
+            },
+            Transition {
+                from: "Pressed"
+                to: ""
+                ScriptAction { script: button.release(); }
+                ScriptAction { script: button.click(); }
+            },
+            Transition {
+                from: "PressAndHold"
+                to: ""
+                ScriptAction { script: button.release(); }
+            },
+            Transition {
+                from: "Pressed"
+                to: "Canceled"
+                ScriptAction { script: button.release(); }
+            },
+            Transition {
+                from: "PressAndHold"
+                to: "Canceled"
+                ScriptAction { script: button.release(); }
+            }
+        ]
+    }
+
     Style {
         id: style
         styleClass: "Button"
         mode: {
-            if (state == "Pressed" || state == "PressAndHold")
+            if (internal.state == "Pressed" || internal.state == "PressAndHold")
                 return "pressed"
             else if (focus && checked)
                 return "pressed"
@@ -194,30 +237,30 @@ ImplicitSizeItem {
 
         anchors.fill: parent
 
-        onPressed: button.state = "Pressed";
+        onPressed: internal.state = "Pressed"
 
-        onReleased: button.state = "";
+        onReleased: internal.state = ""
 
         onCanceled: {
             // Mark as canceled
-            button.state = "Canceled";
+            internal.state = "Canceled";
             // Reset state. Can't expect a release since mouse was ungrabbed
-            button.state = "";
+            internal.state = "";
         }
 
         onPressAndHold: {
-            if (button.state != "Canceled" && (longPress || autoRepeat))
-                button.state = "PressAndHold";
+            if (internal.state != "Canceled" && (longPress || autoRepeat))
+                internal.state = "PressAndHold";
         }
 
-        onExited: button.state = "Canceled"
+        onExited: internal.state = "Canceled"
     }
 
     Timer {
         id: tapRepeatTimer
 
         interval: button.autoRepeatInterval; running: false; repeat: true
-        onTriggered: { button.repeat(); }
+        onTriggered: button.repeat()
     }
 
     // TODO: Temporary sequential animation
@@ -229,54 +272,16 @@ ImplicitSizeItem {
 
     Keys.onPressed: {
         if (event.key == Qt.Key_Select || event.key == Qt.Key_Return) {
-            button.state = "Pressed";
+            internal.state = "Pressed";
             event.accepted = true;
         }
     }
 
     Keys.onReleased: {
         if (event.key == Qt.Key_Select || event.key == Qt.Key_Return) {
-            button.state = "";
+            internal.state = "";
             event.accepted = true;
         }
     }
 
-    states: [
-        State { name: "Pressed"; },
-        State { name: "PressAndHold"; },
-        State { name: "Canceled"; }
-    ]
-
-    transitions: [
-        Transition {
-            to: "Pressed"
-            ScriptAction { script: button.press(); }
-        },
-        Transition {
-            from: "Pressed"
-            to: "PressAndHold"
-            ScriptAction { script: button.hold(); }
-        },
-        Transition {
-            from: "Pressed"
-            to: ""
-            ScriptAction { script: button.release(); }
-            ScriptAction { script: button.click(); }
-        },
-        Transition {
-            from: "PressAndHold"
-            to: ""
-            ScriptAction { script: button.release(); }
-        },
-        Transition {
-            from: "Pressed"
-            to: "Canceled"
-            ScriptAction { script: button.release(); }
-        },
-        Transition {
-            from: "PressAndHold"
-            to: "Canceled"
-            ScriptAction { script: button.release(); }
-        }
-    ]
 }
