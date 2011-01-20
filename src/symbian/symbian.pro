@@ -48,6 +48,7 @@ symbian {
     LIBS += -leikcoctl
     LIBS += -leikcore
     LIBS += -lavkon
+    LIBS += -lhal
 
     BLD_INF_RULES.prj_exports += "qtcomponents.iby $$CORE_MW_LAYER_IBY_EXPORT_PATH(qtcomponents.iby)"
 }
