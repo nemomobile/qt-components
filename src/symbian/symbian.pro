@@ -36,6 +36,7 @@ QML_FILES = \
     ScrollBar.qml \
     ScrollDecorator.qml \
     TextField.qml \
+    ViewMenu.qml \
     Window.qml
 
 symbian {
