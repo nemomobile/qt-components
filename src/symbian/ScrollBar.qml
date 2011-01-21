@@ -35,13 +35,14 @@ ImplicitSizeItem {
     property int orientation: Qt.Vertical
     property bool interactive: true
     property int policy: Symbian.ScrollBarWhenScrolling
-    property real position: orientation == Qt.Vertical ? flickableItem.visibleArea.yPosition : flickableItem.visibleArea.xPosition
-    property real pageSize: orientation == Qt.Vertical ? flickableItem.visibleArea.heightRatio : flickableItem.visibleArea.widthRatio
+    property real position: internal.getPosition()
+    property real pageSize: internal.getPageSize()
+
     //implicit values for qml designer
     implicitHeight: orientation == Qt.Vertical ? 3 * style.current.get("minHandleSize") : style.current.get("thickness")
     implicitWidth: orientation == Qt.Horizontal ? 3 * style.current.get("minHandleSize") : style.current.get("thickness")
-    height: internalData.getHeight()
-    width: internalData.getWidth()
+    height: internal.getHeight()
+    width: internal.getWidth()
 
     //For showing explicitly a ScrollBar if policy is Symbian.ScrollBarWhenScrolling
     function flash() {
@@ -65,7 +66,7 @@ ImplicitSizeItem {
     }
 
     QtObject {
-        id: internalData
+        id: internal
         //Trigger for move the scrollBar handles when using keys
         property bool keyNavigationTrigger: false
         //internal styling values
@@ -99,14 +100,32 @@ ImplicitSizeItem {
                     return flickableItem.width
             }
         }
+
+        function getPageSize() {
+            if (flickableItem == null)
+                return 0//cannot return undefined as a double in qml
+            if (orientation == Qt.Vertical)
+                return flickableItem.visibleArea.heightRatio
+            else
+                return flickableItem.visibleArea.widthRatio
+        }
+
+        function getPosition() {
+            if (flickableItem == null)
+                return 0//cannot return undefined as a double in qml
+            if (orientation == Qt.Vertical)
+                return flickableItem.visibleArea.yPosition
+            else
+                return flickableItem.visibleArea.xPosition
+        }
     }
 
     onPositionChanged: {
         if (policy == Symbian.ScrollBarWhenScrolling) {
             // Trigger for OnlyWhenScrolling state
-            internalData.keyNavigationTrigger =! internalData.keyNavigationTrigger
+            internal.keyNavigationTrigger =! internal.keyNavigationTrigger
             // Trigger back to original value
-            internalData.keyNavigationTrigger =! internalData.keyNavigationTrigger
+            internal.keyNavigationTrigger =! internal.keyNavigationTrigger
         }
     }
 
@@ -151,7 +170,7 @@ ImplicitSizeItem {
         anchors.fill: flickableItem != null ? scrollBar : undefined
         radius: orientation == Qt.Vertical ? width / 2 - 2 : height / 2 - 2
         color: style.current.get("trackColor")
-        opacity: internalData.trackOpacity
+        opacity: internal.trackOpacity
     }
 
     Rectangle {
@@ -174,7 +193,7 @@ ImplicitSizeItem {
         }
         radius: orientation == Qt.Vertical ? width / 2 - 2 : height / 2 - 2
         color: handleStyle.current.get("handleColor")
-        opacity: internalData.handleOpacity
+        opacity: internal.handleOpacity
     }
 
     Rectangle {
@@ -189,7 +208,7 @@ ImplicitSizeItem {
         }
         width: orientation == Qt.Vertical ? style.current.get("touchAreaThickness") - scrollBar.width : handle.width
         height: orientation == Qt.Horizontal ? style.current.get("touchAreaThickness") - scrollBar.height : handle.height
-        opacity: internalData.handleTouchAreaOpacity
+        opacity: internal.handleTouchAreaOpacity
     }
 
     // MouseArea for the move content "page by page" by tapping
@@ -268,7 +287,7 @@ ImplicitSizeItem {
     states: [
         State {
             name: "OnlyWhenScrolling"
-            when: (flickableItem.moving || internalData.keyNavigationTrigger) && policy == Symbian.ScrollBarWhenScrolling && ((orientation == Qt.Vertical && flickableItem.contentHeight > scrollBar.height) ||
+            when: (flickableItem.moving || internal.keyNavigationTrigger) && policy == Symbian.ScrollBarWhenScrolling && ((orientation == Qt.Vertical && flickableItem.contentHeight > scrollBar.height) ||
                    (orientation == Qt.Horizontal && flickableItem.contentWidth > scrollBar.width))
             PropertyChanges { target: scrollBar; opacity: 1 }
         },
