@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Tiny//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-tiny.dtd">
+<svg baseProfile="tiny" height="40px" version="1.1" viewBox="0 0 20 40" width="20px" x="0px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px">
+<rect fill="none" height="40" width="20"/>
+<path d="M10,30C4.487,30,0,25.516,0,20c0-5.513,4.487-10,10-10c5.516,0,10,4.487,10,10  C20,25.516,15.516,30,10,30L10,30z" fill="#E4E4E4"/>
+<linearGradient gradientTransform="matrix(1 0 0 1 -569.9609 -786.0391)" gradientUnits="userSpaceOnUse" id="SVGID_1_" x1="579.9609" x2="579.9609" y1="796.8086" y2="815.2676">
+<stop offset="0" style="stop-color:#FAFAFA"/>
+<stop offset="1" style="stop-color:#EBEBF5"/>
+</linearGradient>
+<circle cx="10" cy="19.999" fill="url(#SVGID_1_)" r="9.23"/>
+<path d="M10,11.538c-4.665,0-8.462,3.797-8.462,8.462  c0,4.664,3.797,8.463,8.462,8.463c4.664,0,8.463-3.799,8.463-8.463C18.463,15.335,14.664,11.538,10,11.538z M10,27.691  c-4.243,0-7.691-3.449-7.691-7.691c0-4.243,3.449-7.691,7.691-7.691s7.691,3.449,7.691,7.691S14.242,27.691,10,27.691z" fill="#FFFFFF" fill-opacity="0.5" stroke-opacity="0.5"/>
+<circle cx="10" cy="20.001" fill="#FFFFFF" fill-opacity="0.5" r="4.616" stroke-opacity="0.5"/>
+<path d="M10,10.769c-5.098,0-9.231,4.133-9.231,9.231c0,5.098,4.133,9.229,9.231,9.229  c5.098,0,9.229-4.129,9.229-9.229C19.229,14.901,15.098,10.769,10,10.769z M10,28.463c-4.665,0-8.462-3.799-8.462-8.463  c0-4.665,3.797-8.462,8.462-8.462c4.664,0,8.463,3.797,8.463,8.462C18.463,24.664,14.664,28.463,10,28.463z" fill-opacity="0.2" stroke-opacity="0.2"/>
+<linearGradient gradientTransform="matrix(1 0 0 1 -569.9609 -786.0391)" gradientUnits="userSpaceOnUse" id="SVGID_2_" x1="579.96" x2="579.96" y1="809.8857" y2="802.1934">
+<stop offset="0" style="stop-color:#66B8CC"/>
+<stop offset="1" style="stop-color:#3F89A9"/>
+</linearGradient>
+<circle cx="10" cy="20" fill="url(#SVGID_2_)" r="3.846"/>
+<path d="M10,16.154c-2.124,0-3.846,1.722-3.846,3.846c0,2.123,1.722,3.846,3.846,3.846  c2.123,0,3.846-1.723,3.846-3.846C13.846,17.876,12.123,16.154,10,16.154z M10,23.076c-1.696,0-3.077-1.381-3.077-3.076  c0-1.696,1.381-3.077,3.077-3.077c1.695,0,3.076,1.381,3.076,3.077C13.076,21.695,11.695,23.076,10,23.076z" fill-opacity="0.1" stroke-opacity="0.1"/>
+</svg>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Tiny//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-tiny.dtd">
+<svg baseProfile="tiny" height="20px" version="1.1" viewBox="0 0 40 20" width="40px" x="0px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px">
+<rect fill="none" height="20" width="40"/>
+<path d="M20,20c-5.513,0-10-4.484-10-10c0-5.513,4.487-10,10-10c5.516,0,10,4.487,10,10  C30,15.516,25.516,20,20,20L20,20z" fill="#E4E4E4"/>
+<linearGradient gradientTransform="matrix(1 0 0 1 -579.9609 -806.0391)" gradientUnits="userSpaceOnUse" id="SVGID_1_" x1="599.9609" x2="599.9609" y1="806.8086" y2="825.2676">
+<stop offset="0" style="stop-color:#C8C8D2"/>
+<stop offset="1" style="stop-color:#F0F0FA"/>
+</linearGradient>
+<circle cx="20" cy="9.999" fill="url(#SVGID_1_)" r="9.23"/>
+<path d="M20,1.538c-4.665,0-8.462,3.797-8.462,8.462  c0,4.664,3.797,8.463,8.462,8.463c4.664,0,8.463-3.799,8.463-8.463C28.463,5.335,24.664,1.538,20,1.538z M20,17.691  c-4.243,0-7.691-3.449-7.691-7.691c0-4.243,3.449-7.691,7.691-7.691S27.691,5.758,27.691,10S24.242,17.691,20,17.691z" fill="#FFFFFF" fill-opacity="0.2" stroke-opacity="0.2"/>
+<circle cx="20" cy="10.001" fill="#FFFFFF" fill-opacity="0.2" r="4.616" stroke-opacity="0.2"/>
+<path d="M20,0.769c-5.098,0-9.231,4.133-9.231,9.231c0,5.098,4.134,9.229,9.231,9.229  c5.098,0,9.229-4.129,9.229-9.229C29.229,4.901,25.098,0.769,20,0.769z M20,18.463c-4.665,0-8.462-3.799-8.462-8.463  c0-4.665,3.797-8.462,8.462-8.462c4.664,0,8.463,3.797,8.463,8.462C28.463,14.664,24.664,18.463,20,18.463z" fill-opacity="0.2" stroke-opacity="0.2"/>
+<linearGradient gradientTransform="matrix(1 0 0 1 -579.9609 -806.0391)" gradientUnits="userSpaceOnUse" id="SVGID_2_" x1="599.9609" x2="599.9609" y1="812.1934" y2="819.8848">
+<stop offset="0" style="stop-color:#66B8CC"/>
+<stop offset="1" style="stop-color:#3F89A9"/>
+</linearGradient>
+<circle cx="20" cy="10" fill="url(#SVGID_2_)" r="3.846"/>
+<path d="M20,6.154c-2.124,0-3.846,1.722-3.846,3.846c0,2.123,1.722,3.846,3.846,3.846  c2.123,0,3.846-1.723,3.846-3.846C23.846,7.876,22.123,6.154,20,6.154z M20,13.076c-1.695,0-3.077-1.381-3.077-3.076  c0-1.696,1.382-3.077,3.077-3.077c1.695,0,3.076,1.381,3.076,3.077C23.076,11.695,21.695,13.076,20,13.076z" fill-opacity="0.1" stroke-opacity="0.1"/>
+</svg>
