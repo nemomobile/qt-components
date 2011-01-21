@@ -732,6 +732,80 @@ QVariant SStyleWrapperPrivate::radioButtonProperty(const QString &propertyName) 
     return QVariant();
 }
 
+QVariant SStyleWrapperPrivate::sliderProperty(const QString &propertyName) const
+{
+    // Graphic tiles
+    if (propertyName == QLatin1String("trackFrame")) {
+        if (mode == QLatin1String("horizontal"))
+            return QLatin1String("qtg_fr_slider_h_frame_normal");
+        else
+            return QLatin1String("qtg_fr_slider_v_frame_normal");
+    } else if ( propertyName == QLatin1String("trackType") ) {
+        if (mode == QLatin1String("horizontal"))
+            return QVariant(SDeclarativeFrame::ThreePiecesHorizontal);
+        else
+            return QVariant(SDeclarativeFrame::ThreePiecesVertical);
+    } else if (propertyName == QLatin1String("trackPressed")) {
+        if (mode == QLatin1String("horizontal"))
+            return QLatin1String("qtg_fr_slider_h_frame_pressed");
+        else
+            return QLatin1String("qtg_fr_slider_v_frame_pressed");
+    } else if (propertyName == QLatin1String("handleIcon")) {
+        if (mode == QLatin1String("horizontal"))
+            return QLatin1String("qtg_graf_slider_h_handle_normal");
+        else
+            return QLatin1String("qtg_graf_slider_v_handle_normal");
+    } else if (propertyName == QLatin1String("handlePressed")) {
+        if (mode == QLatin1String("horizontal"))
+            return QLatin1String("qtg_graf_slider_h_handle_pressed");
+        else
+            return QLatin1String("qtg_graf_slider_v_handle_pressed");
+    }
+
+    // Sizes and measurements
+    if (propertyName == QLatin1String("handleHeight")) {
+        if (mode == QLatin1String("horizontal"))
+            return fetchLayoutParameter(QLatin1String("param-widget-slider-thumb-width")) * 2;
+        else
+            return fetchLayoutParameter(QLatin1String("param-widget-slider-thumb-width"));
+    } else if (propertyName == QLatin1String("handleWidth")) {
+        if (mode == QLatin1String("horizontal"))
+            return fetchLayoutParameter(QLatin1String("param-widget-slider-thumb-width"));
+        else
+            return fetchLayoutParameter(QLatin1String("param-widget-slider-thumb-width")) * 2;
+    } else if (propertyName == QLatin1String("handleTouchAreaWidth")) {
+        if (mode == QLatin1String("horizontal"))
+            return 30; // TODO: get from layout
+        else
+            return fetchLayoutParameter(QLatin1String("param-touch-area-gene-primary-medium"));
+    } else if (propertyName == QLatin1String("handleTouchAreaHeight")) {
+        if (mode == QLatin1String("horizontal"))
+            return fetchLayoutParameter(QLatin1String("param-touch-area-gene-primary-medium"));
+        else
+            return 30; // TODO: get from layout
+    } else if (propertyName == QLatin1String("trackHeight")) {
+        if (mode == QLatin1String("horizontal"))
+            return 20; // TODO: get from layout
+        else
+            return 20; // TODO: get from layout
+    }
+
+    // Margins
+    if (propertyName == QLatin1String("marginLeft")) {
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-left"));
+    } else if (propertyName == QLatin1String("marginRight")) {
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-right"));
+    } else if (propertyName == QLatin1String("marginTop")) {
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-top"));
+    } else if (propertyName == QLatin1String("marginBottom")) {
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-bottom"));
+    } else if (propertyName == QLatin1String("toolTipDistance")) {
+        return 20; // TODO: get from layout
+    }
+
+    return QVariant();
+}
+
 QVariant SStyleWrapperPrivate::toolTipProperty(const QString &propertyName) const
 {
     if (propertyName == QLatin1String("toolTipBackground"))

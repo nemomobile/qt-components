@@ -35,6 +35,7 @@ QML_FILES = \
     ProgressBar.qml \
     ScrollBar.qml \
     ScrollDecorator.qml \
+    Slider.qml \
     TextField.qml \
     ViewMenu.qml \
     Window.qml

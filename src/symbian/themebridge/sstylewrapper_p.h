@@ -57,6 +57,7 @@ public:
     QVariant scrollBarProperty(const QString &propertyName) const;
     QVariant progressBarProperty(const QString &propertyName) const;
     QVariant radioButtonProperty(const QString &propertyName) const;
+    QVariant sliderProperty(const QString &propertyName) const;
     QVariant toolTipProperty(const QString &propertyName) const;
     QVariant menuProperty(const QString &propertyName) const;
     QVariant faderProperty(const QString &propertyName) const;
