@@ -37,5 +37,7 @@ symbian3 {
 
 symbian3 {
     SUBDIRS += \
+        symbian_declarativescreen \
         symbian_textfield
+        
 }
