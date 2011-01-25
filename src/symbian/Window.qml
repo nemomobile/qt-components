@@ -31,6 +31,14 @@ Item {
     id: window
     property bool fullScreen: false
 
+    function showPopup(component) {
+        var popupObj = component.createObject(window);
+        if (popupObj == null)
+            return false;
+        popupObj.open();
+        return true;
+    }
+
     Binding { target: window; property: "width"; value: screen.width; when: screen.width > 0 }
     Binding { target: window; property: "height"; value: screen.height; when: screen.height > 0 }
 

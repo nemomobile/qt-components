@@ -28,6 +28,7 @@ QML_FILES = \
     AppManager.js \
     Button.qml \
     CheckBox.qml \
+    Dialog.qml \
     Fader.qml \
     Menu.qml \
     ObjectMenu.qml \

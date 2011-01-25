@@ -85,18 +85,19 @@ int main(int argc, char *argv[])
     ApiCheckButtonRow buttonRow(engine, module);
     ApiCheckChoiceList choiceList(engine, module);
 
-    QTest::qExec(&slider, args);
-    QTest::qExec(&button, args);
-    QTest::qExec(&checkbox, args);
-    QTest::qExec(&textField, args);
-    QTest::qExec(&radioButton, args);
-    QTest::qExec(&progressBar, args);
-    QTest::qExec(&busyIndicator, args);
-    QTest::qExec(&textArea, args);
-    QTest::qExec(&scrollDecorator, args);
-    QTest::qExec(&buttonColumn, args);
-    QTest::qExec(&buttonRow, args);
-    QTest::qExec(&choiceList, args);
+    int ret = 0;
+    ret |= QTest::qExec(&slider, args);
+    ret |= QTest::qExec(&button, args);
+    ret |= QTest::qExec(&checkbox, args);
+    ret |= QTest::qExec(&textField, args);
+    ret |= QTest::qExec(&radioButton, args);
+    ret |= QTest::qExec(&progressBar, args);
+    ret |= QTest::qExec(&busyIndicator, args);
+    ret |= QTest::qExec(&textArea, args);
+    ret |= QTest::qExec(&scrollDecorator, args);
+    ret |= QTest::qExec(&buttonColumn, args);
+    ret |= QTest::qExec(&buttonRow, args);
+    ret |= QTest::qExec(&choiceList, args);
 
-    return 0;
+    return ret;
 }
