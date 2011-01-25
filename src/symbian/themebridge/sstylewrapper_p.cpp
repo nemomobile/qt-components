@@ -372,7 +372,7 @@ QVariant SStyleWrapperPrivate::textComponentProperty(const QString &propertyName
     if (propertyName == QLatin1String("frameType"))
         return SDeclarativeFrame::NinePieces;
 
-    if (propertyName == QLatin1String("placeholderColor") || propertyName == QLatin1String("textColor"))
+    if (propertyName == QLatin1String("placeholderColor") || propertyName == QLatin1String("color"))
         return fetchThemeColor(QLatin1String("qtc_text_component_normal"));
 
     if (propertyName == QLatin1String("font"))
@@ -384,16 +384,16 @@ QVariant SStyleWrapperPrivate::textComponentProperty(const QString &propertyName
     if (propertyName == QLatin1String("selectionColor"))
         return fetchThemeColor(QLatin1String("qtc_text_component_marker_normal"));
 
-    if (propertyName == QLatin1String("paddingLeft"))
+    if (propertyName == QLatin1String("leftMargin"))
         return fetchLayoutParameter(QLatin1String("param-margin-gene-middle-horizontal"));
 
-    if (propertyName == QLatin1String("paddingRight"))
+    if (propertyName == QLatin1String("rightMargin"))
         return fetchLayoutParameter(QLatin1String("param-margin-gene-middle-horizontal"));
 
-    if (propertyName == QLatin1String("paddingTop"))
+    if (propertyName == QLatin1String("topMargin"))
         return fetchLayoutParameter(QLatin1String("param-margin-gene-middle-vertical"));
 
-    if (propertyName == QLatin1String("paddingBottom"))
+    if (propertyName == QLatin1String("bottomMargin"))
         return fetchLayoutParameter(QLatin1String("param-margin-gene-middle-vertical"));
 
     return QVariant();

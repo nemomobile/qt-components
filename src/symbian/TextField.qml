@@ -80,13 +80,13 @@ ImplicitSizeItem {
     }
 
     // API extensions
-    implicitWidth: style.current.get("paddingLeft") +
+    implicitWidth: style.current.get("leftMargin") +
                    Math.max(style.textWidth(text, textInput.font), priv.minWidth) +
-                   style.current.get("paddingRight")
+                   style.current.get("rightMargin")
 
-    implicitHeight: style.current.get("paddingTop") +
+    implicitHeight: style.current.get("topMargin") +
                     style.fontHeight(textInput.font) +
-                    style.current.get("paddingBottom")
+                    style.current.get("bottomMargin")
 
     // Private data
     QtObject {
@@ -115,8 +115,8 @@ ImplicitSizeItem {
         id: container
         anchors {
             fill: parent
-            leftMargin: style.current.get("paddingLeft"); rightMargin: style.current.get("paddingRight")
-            topMargin: style.current.get("paddingTop"); bottomMargin: style.current.get("paddingBottom")
+            leftMargin: style.current.get("leftMargin"); rightMargin: style.current.get("rightMargin")
+            topMargin: style.current.get("topMargin"); bottomMargin: style.current.get("bottomMargin")
         }
         clip: true
 
@@ -131,7 +131,7 @@ ImplicitSizeItem {
         TextInput {
             id: textInput
             anchors.fill: parent
-            color: style.current.get("textColor")
+            color: style.current.get("color")
             font: style.current.get("font")
             // TODO: Use desktop text selection behaviour for now.
             selectByMouse: true
