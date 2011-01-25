@@ -37,6 +37,7 @@ QML_FILES = \
     ScrollBar.qml \
     ScrollDecorator.qml \
     Slider.qml \
+    TextArea.qml \
     TextField.qml \
     ViewMenu.qml \
     Window.qml

@@ -245,6 +245,8 @@ QVariant SStyleWrapper::get(const QString &propertyName)
     // properties for each component
     if (styleClass() == QLatin1String("Button"))
         ret = d->buttonProperty(propertyName);
+    else if (styleClass() == QLatin1String("TextArea"))
+        ret = d->textComponentProperty(propertyName);
     else if (styleClass() == QLatin1String("TextField"))
         ret = d->textComponentProperty(propertyName);
     else if (styleClass() == QLatin1String("TitleBar"))
