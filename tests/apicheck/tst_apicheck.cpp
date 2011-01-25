@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
     }
 
     // setup engine's import path
-    engine->addImportPath(importPath);
+    engine->addImportPath(QDir(importPath).canonicalPath());    //QTBUG-16885
 
     // create tests
     ApiCheckSlider slider(engine, module);
