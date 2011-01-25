@@ -553,13 +553,13 @@ QVariant SStyleWrapperPrivate::dialogProperty(const QString &propertyName) const
     if (propertyName == QLatin1String("titleTextColor"))
         return fetchThemeColor(QLatin1String("qtc_popup_heading_normal"));
 
-    if (propertyName == QLatin1String("titleBarBackground"))
+    if (propertyName == QLatin1String("titleFrameName"))
         return QLatin1String("qtg_fr_popup_heading");
 
-    if (propertyName == QLatin1String("titleBarFrameType"))
+    if (propertyName == QLatin1String("titleFrameType"))
         return SDeclarativeFrame::ThreePiecesHorizontal;
 
-    if (propertyName == QLatin1String("popupBackground"))
+    if (propertyName == QLatin1String("popupFrameName"))
         return QLatin1String("qtg_fr_popup");
 
     if (propertyName == QLatin1String("popupFrameType"))
@@ -568,7 +568,7 @@ QVariant SStyleWrapperPrivate::dialogProperty(const QString &propertyName) const
     if (propertyName == QLatin1String("titleTextHeight"))
         return fetchLayoutParameter(QLatin1String("param-text-height-primary"));
 
-    if (propertyName == QLatin1String("margin"))
+    if (propertyName == QLatin1String("titleMargin"))
         return fetchLayoutParameter(QLatin1String("param-margin-gene-popup"));
 
     if (propertyName == QLatin1String("screenMargin"))
@@ -583,31 +583,11 @@ QVariant SStyleWrapperPrivate::dialogProperty(const QString &propertyName) const
     if (propertyName == QLatin1String("buttonMargin"))
         return fetchLayoutParameter(QLatin1String("param-margin-gene-center-align"));
 
-    QRect appRect;
-#ifdef Q_OS_SYMBIAN
-    CEikonEnv *eikonEnv = CEikonEnv::Static();
-    const TRect newApplicationAreaSymbian = static_cast<CEikAppUi *>(eikonEnv->AppUi())->ClientRect();
-    appRect.setRect(newApplicationAreaSymbian.iTl.iX, newApplicationAreaSymbian.iTl.iY, newApplicationAreaSymbian.Width(), newApplicationAreaSymbian.Height());
-#else
-    QWidgetList widgetList = QApplication::allWidgets();
-    // resize all graphicsviews (usually just one of them)
-    foreach (QWidget *widget, widgetList) {
-        QGraphicsView *view = qobject_cast<QGraphicsView *>(widget);
-        if (view) {
-            appRect.setSize(view->size());
-            break;
-        }
-    }
-#endif //Q_OS_SYMBIAN
+    if (propertyName == QLatin1String("appRectHeight"))
+        return faderProperty(propertyName);
 
-    if (propertyName == QLatin1String("verticalCenter"))
-        return appRect.height() / 2;
-
-    if (propertyName == QLatin1String("maxWidth"))
-        return appRect.width() - 2 * fetchLayoutParameter(QLatin1String("param-margin-gene-screen"));
-
-    if (propertyName == QLatin1String("maxHeight"))
-        return appRect.height() - 2 * fetchLayoutParameter(QLatin1String("param-margin-gene-screen"));
+    if (propertyName == QLatin1String("appRectWidth"))
+        return faderProperty(propertyName);
 
     return QVariant();
 }
