@@ -1,5 +1,6 @@
 TEMPLATE = subdirs
-SUBDIRS = auto apicheck
+SUBDIRS += auto
+!symbian3:SUBDIRS += apicheck
 
 test.CONFIG = recursive
 test.recurse = $$SUBDIRS
