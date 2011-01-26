@@ -49,6 +49,7 @@ public:
     QVariant buttonProperty(const QString &propertyName) const;
     QVariant textComponentProperty(const QString &propertyName) const;
     QVariant titleBarProperty(const QString &propertyName) const;
+    QVariant listHeadingProperty(const QString &propertyName) const;
     QVariant listItemProperty(const QString &propertyName) const;
     QVariant listItemImageProperty(const QString &propertyName) const;
     QVariant pageContainerProperty(const QString &propertyName) const;

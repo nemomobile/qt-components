@@ -134,6 +134,9 @@ qreal SStyleWrapper::preferredWidth() const
     if (styleClass() == QLatin1String("Button"))
         return d->fetchLayoutParameter(QLatin1String("param-widget-chrome-height"));
 
+    if (styleClass() == QLatin1String("ListHeading"))
+        return d->fetchLayoutParameter(QLatin1String("param-screen-width"));
+
     // listItem width should be really controlled by the list user, but it defaults to screen width
     if (styleClass() == QLatin1String("ListItem"))
         return d->fetchLayoutParameter(QLatin1String("param-screen-width"));
@@ -177,13 +180,17 @@ qreal SStyleWrapper::preferredHeight() const
     if (styleClass() == QLatin1String("Button"))
         return qreal(2 / 3 * d->fetchLayoutParameter(QLatin1String("param-widget-chrome-height")));
 
-    // round, ceil, floor?
+    if (styleClass() == QLatin1String("ListHeading"))
+        return qreal(d->listHeadingProperty(QLatin1String("marginTop")).toReal()
+            + d->fetchLayoutParameter(QLatin1String("param-text-height-secondary"))
+            + d->listHeadingProperty(QLatin1String("marginBottom")).toReal());
+
     if (styleClass() == QLatin1String("ListItem"))
         return qreal(d->listItemProperty(QLatin1String("marginTop")).toReal()
-                     + d->fetchLayoutParameter(QLatin1String("param-text-height-primary"))
-                     + d->listItemProperty(QLatin1String("verticalSpacing")).toReal()
-                     + d->fetchLayoutParameter(QLatin1String("param-text-height-secondary"))
-                     + d->listItemProperty(QLatin1String("marginBottom")).toReal());
+            + d->fetchLayoutParameter(QLatin1String("param-text-height-primary"))
+            + d->listItemProperty(QLatin1String("verticalSpacing")).toReal()
+            + d->fetchLayoutParameter(QLatin1String("param-text-height-secondary"))
+            + d->listItemProperty(QLatin1String("marginBottom")).toReal());
 
     if (styleClass() == QLatin1String("ListItemImage")) {
 
@@ -251,6 +258,8 @@ QVariant SStyleWrapper::get(const QString &propertyName)
         ret = d->textComponentProperty(propertyName);
     else if (styleClass() == QLatin1String("TitleBar"))
         ret = d->titleBarProperty(propertyName);
+    else if (styleClass() == QLatin1String("ListHeading"))
+        ret = d->listHeadingProperty(propertyName);
     else if (styleClass() == QLatin1String("ListItem"))
         ret = d->listItemProperty(propertyName);
     else if (styleClass() == QLatin1String("PageContainer"))

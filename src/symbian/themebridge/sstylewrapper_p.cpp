@@ -419,6 +419,29 @@ QVariant SStyleWrapperPrivate::titleBarProperty(const QString &propertyName) con
     return QVariant();
 }
 
+QVariant SStyleWrapperPrivate::listHeadingProperty(const QString &propertyName) const
+{
+    if (propertyName == QLatin1String("frameName"))
+        return QLatin1String("qtg_fr_list_heading_normal");
+
+    if (propertyName == QLatin1String("frameType"))
+        return SDeclarativeFrame::NinePieces;
+
+    if (propertyName == QLatin1String("marginLeft"))
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-middle-horizontal"));
+
+    if (propertyName == QLatin1String("marginRight"))
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-middle-horizontal"));
+
+    if (propertyName == QLatin1String("marginTop"))
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-middle-vertical"));
+
+    if (propertyName == QLatin1String("marginBottom"))
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-middle-vertical"));
+
+    return QVariant();
+}
+
 QVariant SStyleWrapperPrivate::listItemProperty(const QString &propertyName) const
 {
     if (propertyName == QLatin1String("frameName"))
@@ -488,7 +511,6 @@ QVariant SStyleWrapperPrivate::listItemImageProperty(const QString &propertyName
 
     return QVariant();
 }
-
 
 QVariant SStyleWrapperPrivate::pageContainerProperty(const QString &propertyName) const
 {
