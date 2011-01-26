@@ -36,7 +36,9 @@
 #include <QtDeclarative/qdeclarativecontext.h>
 #include <QDeclarativeView>
 #include <QLineEdit>
+#include <QTextOption>
 #include <QDeclarativeExpression>
+#include <QClipboard>
 
 #include "tst_quickcomponentstest.h"
 
@@ -59,7 +61,6 @@ private slots:
     void textFormat();
     void wrapMode();
 
-    // ### missing functions tests
 private:
     QObject *componentObject;
     QDeclarativeEngine *engine;
@@ -76,32 +77,36 @@ void tst_quickcomponentstextarea::initTestCase()
 
 void tst_quickcomponentstextarea::font()
 {
-    QVERIFY( componentObject->setProperty("font", "Helvetica") );
-    QVERIFY( componentObject->property("font").toString().startsWith("Helvetica"));
+    // test setting/getting the property
+    QVERIFY(componentObject->setProperty("font", "Helvetica"));
+    QVERIFY(componentObject->property("font").toString().startsWith("Helvetica"));
 }
 
 void tst_quickcomponentstextarea::cursorPosition()
 {
-    QVERIFY( componentObject->setProperty("cursorPosition", 0) );
-    QCOMPARE( componentObject->property("cursorPosition").toInt(), 0 );
+    // test setting/getting the property
+    QVERIFY(componentObject->setProperty("cursorPosition", 0));
+    QCOMPARE(componentObject->property("cursorPosition").toInt(), 0);
 }
 
 void tst_quickcomponentstextarea::horizontalAlignment()
 {
+    // test setting/getting the property
     QVERIFY( componentObject->setProperty("horizontalAlignment", 0) );
     QCOMPARE( componentObject->property("horizontalAlignment").toInt(), 0 );
 }
 
 void tst_quickcomponentstextarea::verticalAlignment()
 {
+    // test setting/getting the property
     QVERIFY( componentObject->setProperty("verticalAlignment", 0) );
     QCOMPARE( componentObject->property("verticalAlignment").toInt(), 0 );
 }
 
 void tst_quickcomponentstextarea::readOnly()
 {
-    QVERIFY( componentObject->setProperty("readOnly", true) );
-    QVERIFY( componentObject->setProperty("text", "I just changed the text") );
+    QVERIFY(componentObject->setProperty("readOnly", true) );
+    QVERIFY(componentObject->setProperty("text", "I just changed the text"));
     QEXPECT_FAIL("", "Not yet guarded by readOnly property, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-318", Continue);
     QVERIFY( componentObject->property("text").toString() != QString("I just changed the text"));
 }
@@ -141,14 +146,16 @@ void tst_quickcomponentstextarea::selectionEnd()
 
 void tst_quickcomponentstextarea::text()
 {
-    QVERIFY( componentObject->setProperty("text", "Hello World") );
-    QCOMPARE( componentObject->property("text").toString(), QString("Hello World") );
+    // test setting/getting the property
+    QVERIFY(componentObject->setProperty("text", "Hello World"));
+    QCOMPARE(componentObject->property("text").toString(), QString("Hello World"));
 }
 
 void tst_quickcomponentstextarea::textFormat()
 {
-    QVERIFY( componentObject->setProperty("textFormat", 0) );
-    QCOMPARE( componentObject->property("textFormat").toInt(), 0 );
+    // test setting/getting the property
+    QVERIFY(componentObject->setProperty("textFormat", 0));
+    QCOMPARE(componentObject->property("textFormat").toInt(), 0);
 }
 
 void tst_quickcomponentstextarea::wrapMode()
