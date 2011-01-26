@@ -60,6 +60,8 @@ private slots:
     void text();
     void textFormat();
     void wrapMode();
+    void copypaste();
+    void cutpaste();
 
 private:
     QObject *componentObject;
@@ -185,6 +187,54 @@ void tst_quickcomponentstextarea::wrapMode()
 {
     QVERIFY( componentObject->setProperty("wrapMode", 0) );
     QCOMPARE( componentObject->property("wrapMode").toInt(), 0 );
+}
+
+void tst_quickcomponentstextarea::copypaste()
+{
+    // set the text to something known, select and copy it
+    componentObject->setProperty("text", "Hello Copy World");
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "selectAll"), "Could not select all the text");
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "copy"), "Could not copy the text");
+
+    // check if clipboard's content is right
+    QCOMPARE(QApplication::clipboard()->text(), QString("Hello Copy World"));
+
+    // clear text property
+    componentObject->setProperty("text", "");
+    QCOMPARE(componentObject->property("text").toString(), QString(""));
+
+    // paste
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "paste"), "Could not paste the text");
+
+    // check value of text
+    QCOMPARE(componentObject->property("text").toString(), QString("Hello Copy World"));
+}
+
+void tst_quickcomponentstextarea::cutpaste()
+{
+    // set the text to something known, select and cut it
+    componentObject->setProperty("text", "Hello Cut World");
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "selectAll"), "Could not select all the text");
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "cut"), "Could not cut the text");
+
+    // check if clipboard's content is right
+    QCOMPARE(QApplication::clipboard()->text(), QString("Hello Cut World"));
+
+    // check if the text area was cleared
+    QCOMPARE(componentObject->property("text").toString(), QString(""));
+
+    // check if the cursor position is '0' (no text after all)
+    QCOMPARE(componentObject->property("cursorPosition").toInt(), 0);
+
+    // check if selection start and end are '0' too
+    QCOMPARE(componentObject->property("selectionStart").toInt(), 0);
+    QCOMPARE(componentObject->property("selectionEnd").toInt(), 0);
+
+    // paste
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "paste"), "Could not paste the text");
+
+    // check value of text
+    QCOMPARE(componentObject->property("text").toString(), QString("Hello Cut World"));
 }
 
 QTEST_MAIN(tst_quickcomponentstextarea)
