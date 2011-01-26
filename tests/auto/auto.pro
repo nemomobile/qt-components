@@ -40,6 +40,7 @@ symbian3 {
         symbian_declarativeframe \
         symbian_declarativeicon \
         symbian_declarativescreen \
+        symbian_framepool \
         symbian_textarea \
         symbian_textfield
 }

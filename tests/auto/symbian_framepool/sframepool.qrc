@@ -1,0 +1,23 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file alias="qtg_fr_btn_normal_tl.svg" >../../../src/symbian/themebridge/resources/defaulttheme/graphics/qtg_fr_btn_normal_tl.svg</file>
+    <file alias="qtg_fr_btn_normal_t.svg" >../../../src/symbian/themebridge/resources/defaulttheme/graphics/qtg_fr_btn_normal_t.svg</file>
+    <file alias="qtg_fr_btn_normal_tr.svg" >../../../src/symbian/themebridge/resources/defaulttheme/graphics/qtg_fr_btn_normal_tr.svg</file>
+    <file alias="qtg_fr_btn_normal_l.svg" >../../../src/symbian/themebridge/resources/defaulttheme/graphics/qtg_fr_btn_normal_l.svg</file>
+    <file alias="qtg_fr_btn_normal_c.svg" >../../../src/symbian/themebridge/resources/defaulttheme/graphics/qtg_fr_btn_normal_c.svg</file>
+    <file alias="qtg_fr_btn_normal_r.svg" >../../../src/symbian/themebridge/resources/defaulttheme/graphics/qtg_fr_btn_normal_r.svg</file>
+    <file alias="qtg_fr_btn_normal_bl.svg" >../../../src/symbian/themebridge/resources/defaulttheme/graphics/qtg_fr_btn_normal_bl.svg</file>
+    <file alias="qtg_fr_btn_normal_b.svg" >../../../src/symbian/themebridge/resources/defaulttheme/graphics/qtg_fr_btn_normal_b.svg</file>
+    <file alias="qtg_fr_btn_normal_br.svg" >../../../src/symbian/themebridge/resources/defaulttheme/graphics/qtg_fr_btn_normal_br.svg</file>
+    <file alias="qtg_fr_btn_pressed_tl.svg" >../../../src/symbian/themebridge/resources/defaulttheme/graphics/qtg_fr_btn_pressed_tl.svg</file>
+    <file alias="qtg_fr_btn_pressed_t.svg" >../../../src/symbian/themebridge/resources/defaulttheme/graphics/qtg_fr_btn_pressed_t.svg</file>
+    <file alias="qtg_fr_btn_pressed_tr.svg" >../../../src/symbian/themebridge/resources/defaulttheme/graphics/qtg_fr_btn_pressed_tr.svg</file>
+    <file alias="qtg_fr_btn_pressed_l.svg" >../../../src/symbian/themebridge/resources/defaulttheme/graphics/qtg_fr_btn_pressed_l.svg</file>
+    <file alias="qtg_fr_btn_pressed_c.svg" >../../../src/symbian/themebridge/resources/defaulttheme/graphics/qtg_fr_btn_pressed_c.svg</file>
+    <file alias="qtg_fr_btn_pressed_r.svg" >../../../src/symbian/themebridge/resources/defaulttheme/graphics/qtg_fr_btn_pressed_r.svg</file>
+    <file alias="qtg_fr_btn_pressed_bl.svg" >../../../src/symbian/themebridge/resources/defaulttheme/graphics/qtg_fr_btn_pressed_bl.svg</file>
+    <file alias="qtg_fr_btn_pressed_b.svg" >../../../src/symbian/themebridge/resources/defaulttheme/graphics/qtg_fr_btn_pressed_b.svg</file>
+    <file alias="qtg_fr_btn_pressed_br.svg" >../../../src/symbian/themebridge/resources/defaulttheme/graphics/qtg_fr_btn_pressed_br.svg</file>
+    
+</qresource>
+</RCC>
