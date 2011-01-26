@@ -25,6 +25,7 @@
 ****************************************************************************/
 
 #include "sdeclarativescreen.h"
+#include "tst_quickcomponentstest.h"
 #include <QtTest/QtTest>
 #include <QUrl>
 #include <QDeclarativeComponent>
@@ -61,7 +62,7 @@ void tst_SDeclarativeScreen::cleanup()
 
 void tst_SDeclarativeScreen::initTestCase()
 {
-    window = new QDeclarativeView(QUrl::fromLocalFile("tst_declarativescreen.qml"));
+    window = tst_quickcomponentstest::createDeclarativeView("tst_declarativescreen.qml");
     window->show();
     screen = qVariantValue<QObject *>(window->engine()->rootContext()->contextProperty("screen"));
 }
