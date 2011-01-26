@@ -62,6 +62,8 @@ private slots:
     void wrapMode();
     void copypaste();
     void cutpaste();
+    void positionAt();
+    void positionToRectangle();
 
 private:
     QObject *componentObject;
@@ -235,6 +237,63 @@ void tst_quickcomponentstextarea::cutpaste()
 
     // check value of text
     QCOMPARE(componentObject->property("text").toString(), QString("Hello Cut World"));
+}
+
+void tst_quickcomponentstextarea::positionAt()
+{
+    // set the text to something known
+    QVariant retVal;
+    const QString text("Hello from Position World");
+    componentObject->setProperty("text", text);
+
+    // values smaller than the position of the first char will always return 0
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "positionAt",
+                                       Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, 0), Q_ARG(QVariant, 0)),
+             "Could not call positionAt");
+    QCOMPARE(retVal.toInt(), 0);
+
+    // this test considers that the width of the element is really big
+    // big enough to fit the text and still have some more space
+    // values bigger than the position of the last char will always return the size of the string
+    const int size = componentObject->property("width").toInt();
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "positionAt",
+                                       Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, size), Q_ARG(QVariant, 0)),
+             "Could not call positionAt)");
+    QCOMPARE(retVal.toInt(), text.size());
+
+    QFontMetrics m(componentObject->property("font").toString());
+    const int width = m.width(text);
+
+    // random position considering the string above. it will return the char
+    // position at x = width/2 pixels (should be the 17th char (o))
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "positionAt",
+                                       Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, width/2), Q_ARG(QVariant, 0)),
+             "Could not call positionAt)");
+    QCOMPARE(retVal.toInt(), 17);
+    QCOMPARE(text.at(retVal.toInt()), QString("o").at(0));
+}
+
+void tst_quickcomponentstextarea::positionToRectangle()
+{
+    // set the text to something known
+    QVariant retVal;
+    const QString text("Hello from Rectangle World");
+    componentObject->setProperty("text", text);
+
+    // the cursor position should not change after a call to positionToRectangle()
+    const int oldPosition = componentObject->property("cursorPosition").toInt();
+
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "positionToRectangle",
+                                       Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, 17)),
+             "Could not call positionToRectangle");
+
+    // for char number 17 with the specified font (Helvetica) the cursor
+    // rect whould be at = topleft(99, 0) and =size(1, 16)
+    QCOMPARE(retVal.toRectF(), QRectF(98, 0, 1, 16));
+
+    // the position shouldn't have changed
+    QCOMPARE(oldPosition, componentObject->property("cursorPosition").toInt());
+
 }
 
 QTEST_MAIN(tst_quickcomponentstextarea)
