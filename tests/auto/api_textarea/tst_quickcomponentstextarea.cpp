@@ -135,34 +135,36 @@ void tst_quickcomponentstextarea::readOnly()
 void tst_quickcomponentstextarea::selectedText()
 {
     componentObject->setProperty("text", "Good morning");
-    QDeclarativeExpression *expr = new QDeclarativeExpression(engine->rootContext(), componentObject, "select(0,4);");
-    expr->evaluate();
-    if (expr->hasError())
-        qDebug() << expr->error();
-    QVERIFY( !expr->hasError() );
-    QCOMPARE( componentObject->property("selectedText").toString(), QString("Good") );
+
+    // test select(start, end)
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "select", Q_ARG(QVariant, 0), Q_ARG(QVariant, 4)),
+             "Could not select from 0-4");
+    QCOMPARE(componentObject->property("selectedText").toString(), QString("Good") );
+
+    // test selectAll()
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "selectAll"), "Could not select all the text");
+    QCOMPARE(componentObject->property("selectedText").toString(), QString("Good morning") );
+
+    // test selectWord (it will select the word closest to the cursor)
+    componentObject->setProperty("cursorPosition", 0);
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "selectWord"), "Could not select one word");
+    QCOMPARE(componentObject->property("selectedText").toString(), QString("Good") );
 }
 
 void tst_quickcomponentstextarea::selectionStart()
 {
     componentObject->setProperty("text", "Good morning");
-    QDeclarativeExpression *expr = new QDeclarativeExpression(engine->rootContext(), componentObject, "select(5,11);");
-    expr->evaluate();
-    if (expr->hasError())
-        qDebug() << expr->error();
-    QVERIFY( !expr->hasError() );
-    QCOMPARE( componentObject->property("selectionStart").toInt(), 5 );
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "select", Q_ARG(QVariant, 5), Q_ARG(QVariant, 11)),
+             "Could not select from 5-11");
+    QCOMPARE(componentObject->property("selectionStart").toInt(), 5);
 }
 
 void tst_quickcomponentstextarea::selectionEnd()
 {
     componentObject->setProperty("text", "Good morning");
-    QDeclarativeExpression *expr = new QDeclarativeExpression(engine->rootContext(), componentObject, "select(5,11);");
-    expr->evaluate();
-    if (expr->hasError())
-        qDebug() << expr->error();
-    QVERIFY( !expr->hasError() );
-    QCOMPARE( componentObject->property("selectionEnd").toInt(), 11 );
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "select", Q_ARG(QVariant, 5), Q_ARG(QVariant, 11)),
+             "Could not select from 5-11");
+    QCOMPARE(componentObject->property("selectionEnd").toInt(), 11);
 }
 
 void tst_quickcomponentstextarea::text()
