@@ -181,8 +181,33 @@ void tst_quickcomponentstextarea::text()
 void tst_quickcomponentstextarea::textFormat()
 {
     // test setting/getting the property
-    QVERIFY(componentObject->setProperty("textFormat", 0));
-    QCOMPARE(componentObject->property("textFormat").toInt(), 0);
+    QVERIFY(componentObject->setProperty("textFormat", Qt::AutoText));
+    QCOMPARE(componentObject->property("textFormat").toInt(), (int)Qt::AutoText);
+
+    componentObject->setProperty("textFormat", 4);
+    QEXPECT_FAIL("", "Not yet blocked by enum range,"
+                 "http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-414",
+                 Continue);
+    QVERIFY(componentObject->property("textFormat").toInt()
+            <= (int)Qt::LogText);
+
+    // try to set a lower value
+    componentObject->setProperty("textFormat", -1);
+    QEXPECT_FAIL("", "Not yet blocked by enum range,"
+                 "http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-414",
+                 Continue);
+    QVERIFY(componentObject->property("textFormat").toInt()
+            >= (int)Qt::PlainText);
+
+    // try to set random value
+    componentObject->setProperty("textFormat", rand());
+    QEXPECT_FAIL("", "Not yet blocked by enum range,"
+                 "http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-414",
+                 Continue);
+    QVERIFY(componentObject->property("textFormat").toInt()
+            <= (int)Qt::PlainText
+            && componentObject->property("textFormat").toInt()
+            >= (int)Qt::LogText);
 }
 
 void tst_quickcomponentstextarea::wrapMode()
