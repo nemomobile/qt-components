@@ -77,7 +77,7 @@ void tst_quickcomponentstextarea::initTestCase()
 void tst_quickcomponentstextarea::font()
 {
     QVERIFY( componentObject->setProperty("font", "Helvetica") );
-    QCOMPARE( componentObject->property("font").toString(), QString("Helvetica") );
+    QVERIFY( componentObject->property("font").toString().startsWith("Helvetica"));
 }
 
 void tst_quickcomponentstextarea::cursorPosition()

@@ -96,7 +96,7 @@ void tst_quickcomponentstextfield::inputMethodHints()
 void tst_quickcomponentstextfield::font()
 {
     QVERIFY( componentObject->setProperty("font", "Helvetica") );
-    QCOMPARE( componentObject->property("font").toString(), QString("Helvetica") );
+    QVERIFY( componentObject->property("font").toString().startsWith("Helvetica"));
 }
 
 void tst_quickcomponentstextfield::cursorPosition()
