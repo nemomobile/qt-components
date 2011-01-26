@@ -105,10 +105,31 @@ void tst_quickcomponentstextarea::verticalAlignment()
 
 void tst_quickcomponentstextarea::readOnly()
 {
-    QVERIFY(componentObject->setProperty("readOnly", true) );
+    QVERIFY(componentObject->setProperty("readOnly", true));
     QVERIFY(componentObject->setProperty("text", "I just changed the text"));
     QEXPECT_FAIL("", "Not yet guarded by readOnly property, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-318", Continue);
-    QVERIFY( componentObject->property("text").toString() != QString("I just changed the text"));
+    QVERIFY(componentObject->property("text").toString() != QString("I just changed the text"));
+
+    // if readOnly == true, we should not be able to cut or paste
+    // set the text to something known, select and cut it
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "selectAll"), "Could not select all the text");
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "cut"), "Could not cut the text");
+
+    // check if the text area was cleared
+    // ###: Change the string being compared here when the test above is fixed (readOnly guard)
+    QCOMPARE(componentObject->property("text").toString(), QString("I just changed the text"));
+
+    // we shouldn't be able to paste stuff on it too
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "selectAll"), "Could not select all the text");
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "copy"), "Could not copy the text");
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "paste"), "Could not paste the text");
+
+    // the text should remain the same as readOnly == true
+    // ###: Change the string being compared here when the test above is fixed (readOnly guard)
+    QCOMPARE(componentObject->property("text").toString(), QString("I just changed the text"));
+
+    // reset readonly so it doesn't affect the next tests
+    componentObject->setProperty("readOnly", false);
 }
 
 void tst_quickcomponentstextarea::selectedText()
