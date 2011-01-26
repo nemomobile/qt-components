@@ -30,13 +30,19 @@
 #include <QtCore/qobject.h>
 #include <QtDeclarative/qdeclarative.h>
 
+class SDeclarativePrivate;
+
 class SDeclarative : public QObject
 {
     Q_OBJECT
-    Q_ENUMS(ImageSize)
-    Q_ENUMS(ScrollBarVisibility)
+    Q_PROPERTY(InteractionMode listInteractionMode READ listInteractionMode WRITE setListInteractionMode NOTIFY listInteractionModeChanged FINAL)
+
+    Q_ENUMS(InteractionMode ImageSize ScrollBarVisibility)
 
 public:
+    SDeclarative(QObject *parent = 0);
+    virtual ~SDeclarative();
+
     enum ImageSize {
         Undefined = 0,
         Small,
@@ -50,6 +56,11 @@ public:
         ScrollBarWhenScrolling
     };
 
+    enum InteractionMode {
+        TouchInteraction,
+        KeyNavigation
+    };
+
     static inline QString resolveIconFileName(const QString &iconName)
     {
         QString fileName = iconName;
@@ -61,6 +72,16 @@ public:
 
         return fileName;
     }
+
+    InteractionMode listInteractionMode() const;
+    void setListInteractionMode(InteractionMode mode);
+
+Q_SIGNALS:
+    void listInteractionModeChanged();
+
+private:
+    Q_DISABLE_COPY(SDeclarative)
+    QScopedPointer<SDeclarativePrivate> d_ptr;
 };
 
 QML_DECLARE_TYPE(SDeclarative)

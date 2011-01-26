@@ -47,11 +47,16 @@ public:
         engine->rootContext()->setContextProperty("screen", scr);
         qmlRegisterUncreatableType<SDeclarativeScreen>(uri, 1, 0,"Screen", "");
 
+        // context takes the ownership
+        SDeclarative *declarative = new SDeclarative();
+        declarative->setParent(engine->rootContext()); // context takes the ownership
+        engine->rootContext()->setContextProperty("symbian", declarative);
+        qmlRegisterUncreatableType<SDeclarative>(uri, 1, 0, "Symbian", "");
+
         QObject::connect(engine, SIGNAL(quit()), QCoreApplication::instance(), SLOT(quit()));
     }
 
     void registerTypes(const char *uri) {
-        qmlRegisterUncreatableType<SDeclarative>(uri, 1, 0,"Symbian", "");
         qmlRegisterType<SDeclarativeProgressBarAnimation>(uri, 1, 0, "ProgressBarAnimation");
         qmlRegisterType<SDeclarativeWindowDecoration>(uri, 1, 0, "WindowDecoration");
     }

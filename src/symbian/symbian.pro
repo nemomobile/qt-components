@@ -12,6 +12,7 @@ QT += declarative
 
 SOURCES += \
     plugin.cpp \
+    sdeclarative.cpp \
     sdeclarativeprogressbaranimation.cpp \
     sdeclarativescreen.cpp \
     sdeclarativewindowdecoration.cpp
@@ -30,6 +31,7 @@ QML_FILES = \
     CheckBox.qml \
     Dialog.qml \
     Fader.qml \
+    ListItem.qml \
     Menu.qml \
     ObjectMenu.qml \
     Page.qml \
