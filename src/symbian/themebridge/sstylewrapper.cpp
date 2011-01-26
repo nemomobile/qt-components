@@ -162,11 +162,12 @@ qreal SStyleWrapper::preferredWidth() const
     if (styleClass() == QLatin1String("Dialog"))
         return d->fetchLayoutParameter(QLatin1String("param-widget-dialog-width"));
 
-    if (styleClass() == QLatin1String("Slider"))
+    if (styleClass() == QLatin1String("Slider")) {
         if (d->mode == QLatin1String("horizontal"))
             return 150; // TODO: get from layout
         else
-            return d->fetchLayoutParameter(QLatin1String("param-widget-slider-thumb-width"));//return 20;
+            return d->fetchLayoutParameter(QLatin1String("param-widget-slider-thumb-width"));
+    }
 
     if (styleClass() == QLatin1String("ProgressBar"))
         return 150; // TODO: get from layout
@@ -213,11 +214,12 @@ qreal SStyleWrapper::preferredHeight() const
     if (styleClass() == QLatin1String("Dialog"))
         return d->fetchLayoutParameter(QLatin1String("param-widget-dialog-width"));
 
-    if (styleClass() == QLatin1String("Slider"))
+    if (styleClass() == QLatin1String("Slider")) {
         if (d->mode == QLatin1String("horizontal"))
-            return d->fetchLayoutParameter(QLatin1String("param-widget-slider-thumb-width"));// 20; // TODO: get from layout
+            return d->fetchLayoutParameter(QLatin1String("param-widget-slider-thumb-width"));
         else
             return 150; // TODO: get from layout
+    }
 
     if (styleClass() == QLatin1String("ProgressBar"))
         return d->fetchLayoutParameter(QLatin1String("param-widget-progress-bar-height"));
