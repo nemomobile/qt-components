@@ -138,19 +138,19 @@ qreal SStyleWrapper::preferredWidth() const
     if (styleClass() == QLatin1String("ListItem"))
         return d->fetchLayoutParameter(QLatin1String("param-screen-width"));
 
-    if (styleClass() == QLatin1String("BasicListItemImage")) {
+    if (styleClass() == QLatin1String("ListItemImage")) {
 
         const int imageSize = property("imageSize").toInt();
 
         switch (imageSize) {
         case SDeclarative::Small:
-            return d->basicListItemImageProperty(QLatin1String("iconSmallWidth")).toReal();
+            return d->listItemImageProperty(QLatin1String("iconSmallWidth")).toReal();
         case SDeclarative::Medium:
-            return d->basicListItemImageProperty(QLatin1String("iconMediumWidth")).toReal();
+            return d->listItemImageProperty(QLatin1String("iconMediumWidth")).toReal();
         case SDeclarative::Large:
-            return d->basicListItemImageProperty(QLatin1String("iconLargeWidth")).toReal();
+            return d->listItemImageProperty(QLatin1String("iconLargeWidth")).toReal();
         case SDeclarative::ImagePortrait:
-            return d->basicListItemImageProperty(QLatin1String("imageWidth")).toReal();
+            return d->listItemImageProperty(QLatin1String("imageWidth")).toReal();
         case SDeclarative::Undefined:
         default:
             return 0;
@@ -181,23 +181,23 @@ qreal SStyleWrapper::preferredHeight() const
     if (styleClass() == QLatin1String("ListItem"))
         return qreal(d->listItemProperty(QLatin1String("marginTop")).toReal()
                      + d->fetchLayoutParameter(QLatin1String("param-text-height-primary"))
-                     + d->listItemProperty(QLatin1String("marginVerticalMiddle")).toReal()
+                     + d->listItemProperty(QLatin1String("verticalSpacing")).toReal()
                      + d->fetchLayoutParameter(QLatin1String("param-text-height-secondary"))
                      + d->listItemProperty(QLatin1String("marginBottom")).toReal());
 
-    if (styleClass() == QLatin1String("BasicListItemImage")) {
+    if (styleClass() == QLatin1String("ListItemImage")) {
 
         const int imageSize = property("imageSize").toInt();
 
         switch (imageSize) {
         case SDeclarative::Small:
-            return d->basicListItemImageProperty(QLatin1String("iconSmallHeight")).toReal();
+            return d->listItemImageProperty(QLatin1String("iconSmallHeight")).toReal();
         case SDeclarative::Medium:
-            return d->basicListItemImageProperty(QLatin1String("iconMediumHeight")).toReal();
+            return d->listItemImageProperty(QLatin1String("iconMediumHeight")).toReal();
         case SDeclarative::Large:
-            return d->basicListItemImageProperty(QLatin1String("iconLargeHeight")).toReal();
+            return d->listItemImageProperty(QLatin1String("iconLargeHeight")).toReal();
         case SDeclarative::ImagePortrait:
-            return d->basicListItemImageProperty(QLatin1String("imageHeight")).toReal();
+            return d->listItemImageProperty(QLatin1String("imageHeight")).toReal();
         case SDeclarative::Undefined:
         default:
             return 0;
@@ -263,8 +263,8 @@ QVariant SStyleWrapper::get(const QString &propertyName)
         ret = d->scrollBarProperty(propertyName);
     else if (styleClass() == QLatin1String("ProgressBar"))
         ret = d->progressBarProperty(propertyName);
-    else if (styleClass() == QLatin1String("BasicListItemImage"))
-        ret = d->basicListItemImageProperty(propertyName);
+    else if (styleClass() == QLatin1String("ListItemImage"))
+        ret = d->listItemImageProperty(propertyName);
     else if (styleClass() == QLatin1String("RadioButton"))
         ret = d->radioButtonProperty(propertyName);
     else if (styleClass() == QLatin1String("Slider"))

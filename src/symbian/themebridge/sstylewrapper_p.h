@@ -50,7 +50,7 @@ public:
     QVariant textComponentProperty(const QString &propertyName) const;
     QVariant titleBarProperty(const QString &propertyName) const;
     QVariant listItemProperty(const QString &propertyName) const;
-    QVariant basicListItemImageProperty(const QString &propertyName) const;
+    QVariant listItemImageProperty(const QString &propertyName) const;
     QVariant pageContainerProperty(const QString &propertyName) const;
     QVariant checkBoxProperty(const QString &propertyName) const;
     QVariant dialogProperty(const QString &propertyName) const;
@@ -76,8 +76,6 @@ private:
     QVariant buttonPropertyBackground() const;
     QVariant buttonPropertyTextColor() const;
     QVariant textComponentFrameName() const;
-    QVariant listItemPropertyMainTextColor() const;
-    QVariant listItemPropertySubTextColor() const;
     QString imagePath(const QString &fileName) const;
 
 private:

@@ -421,34 +421,28 @@ QVariant SStyleWrapperPrivate::titleBarProperty(const QString &propertyName) con
 
 QVariant SStyleWrapperPrivate::listItemProperty(const QString &propertyName) const
 {
-    if (propertyName == QLatin1String("mainTextColor"))
-        return listItemPropertyMainTextColor();
-
-    if (propertyName == QLatin1String("subTextColor"))
-        return listItemPropertySubTextColor();
-
-    if (propertyName == QLatin1String("frame"))
+    if (propertyName == QLatin1String("frameName"))
         return QLatin1String("qtg_fr_list_normal");
 
     if (propertyName == QLatin1String("frameType"))
         return SDeclarativeFrame::NinePieces;
 
-    if (propertyName == QLatin1String("frameFader"))
-        return QLatin1String("qtg_fr_list_pressed");
+    if (propertyName == QLatin1String("frameFaderName")) {
+        if (mode == QLatin1String("default"))
+            return QLatin1String("qtg_fr_list_normal");
+        if (mode == QLatin1String("pressed"))
+            return QLatin1String("qtg_fr_list_pressed");
+        else if (mode == QLatin1String("focused"))
+            return QLatin1String("qtg_fr_list_highlight");
+    }
 
     if (propertyName == QLatin1String("frameFaderType"))
         return SDeclarativeFrame::NinePieces;
 
-    if (propertyName == QLatin1String("mainTextFont"))
-        return fetchFont(SStyleWrapper::Primary);
-
-    if (propertyName == QLatin1String("subTextFont"))
-        return fetchFont(SStyleWrapper::Secondary);
-
-    if (propertyName == QLatin1String("marginHorizontalMiddle"))
+    if (propertyName == QLatin1String("horizontalSpacing"))
         return fetchLayoutParameter(QLatin1String("param-margin-gene-middle-horizontal"));
 
-    if (propertyName == QLatin1String("marginVerticalMiddle"))
+    if (propertyName == QLatin1String("verticalSpacing"))
         return fetchLayoutParameter(QLatin1String("param-margin-gene-middle-vertical"));
 
     if (propertyName == QLatin1String("marginLeft"))
@@ -463,16 +457,10 @@ QVariant SStyleWrapperPrivate::listItemProperty(const QString &propertyName) con
     if (propertyName == QLatin1String("marginBottom"))
         return fetchLayoutParameter(QLatin1String("param-margin-gene-bottom"));
 
-    if (propertyName == QLatin1String("primaryTextHeight"))
-        return fetchLayoutParameter(QLatin1String("param-text-height-primary"));
-
-    if (propertyName == QLatin1String("secondaryTextHeight"))
-        return fetchLayoutParameter(QLatin1String("param-text-height-secondary"));
-
     return QVariant();
 }
 
-QVariant SStyleWrapperPrivate::basicListItemImageProperty(const QString &propertyName) const
+QVariant SStyleWrapperPrivate::listItemImageProperty(const QString &propertyName) const
 {
     if (propertyName == QLatin1String("iconSmallWidth"))
         return fetchLayoutParameter(QLatin1String("param-graphic-size-primary-small"));
@@ -500,6 +488,7 @@ QVariant SStyleWrapperPrivate::basicListItemImageProperty(const QString &propert
 
     return QVariant();
 }
+
 
 QVariant SStyleWrapperPrivate::pageContainerProperty(const QString &propertyName) const
 {
@@ -955,25 +944,6 @@ QVariant SStyleWrapperPrivate::textComponentFrameName() const
         return QVariant();
 }
 
-QVariant SStyleWrapperPrivate::listItemPropertyMainTextColor() const
-{
-    if (mode == QLatin1String("pressed"))
-        return fetchThemeColor(QLatin1String("qtc_list_item_pressed"));
-    else if (mode == QLatin1String("default"))
-        return fetchThemeColor(QLatin1String("qtc_list_item_title_normal"));
-    else
-        return QVariant();
-}
-
-QVariant SStyleWrapperPrivate::listItemPropertySubTextColor() const
-{
-    if (mode == QLatin1String("pressed"))
-        return fetchThemeColor(QLatin1String("qtc_list_item_pressed"));
-    else if (mode == QLatin1String("default"))
-        return fetchThemeColor(QLatin1String("qtc_list_item_content_normal"));
-    else
-        return QVariant();
-}
 QString SStyleWrapperPrivate::imagePath(const QString &fileName) const
 {
     return QLatin1String("image://theme/") + fileName;
