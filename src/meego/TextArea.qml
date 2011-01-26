@@ -73,9 +73,9 @@ ImplicitSizeItem {
         textEdit.selectWord()
     }
 
-    function positionAt(x) {
+    function positionAt(x,y) {
         // ### TODO: remove the left margins from x
-        return textEdit.positionAt(x)
+        return textEdit.positionAt(x,y)
     }
 
     function positionToRectangle(pos) {
