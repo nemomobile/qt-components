@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     QDeclarativeEngine *engine = view.engine();
 
     // check for module
-    QString module("com.meego 1.0");
+    QString module("Qt.labs.components.native 1.0");
     int moduleIdx = args.indexOf("-module");
 
     if (moduleIdx != -1) {
