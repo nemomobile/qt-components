@@ -26,7 +26,6 @@
 
 #include "sdeclarative.h"
 #include "sdeclarativescreen.h"
-#include "sdeclarativeprogressbaranimation.h"
 #include "sdeclarativewindowdecoration.h"
 
 #include <QCoreApplication>
@@ -57,7 +56,6 @@ public:
     }
 
     void registerTypes(const char *uri) {
-        qmlRegisterType<SDeclarativeProgressBarAnimation>(uri, 1, 0, "ProgressBarAnimation");
         qmlRegisterType<SDeclarativeWindowDecoration>(uri, 1, 0, "WindowDecoration");
     }
 };

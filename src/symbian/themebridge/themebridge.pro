@@ -18,6 +18,7 @@ SOURCES += \
     sstylewrapper_p.cpp \
     sdeclarativeicon.cpp \
     sdeclarativeframe.cpp \
+    sdeclarativemaskedimage.cpp \
     siconpool.cpp \
     sframepool.cpp \
     sdeclarativeimageprovider.cpp \
@@ -31,6 +32,8 @@ HEADERS += \
     sframepool.h \
     siconpool.h \
     sstylewrapper.h \
+    sdeclarativemaskedimage.h \
+    sdeclarativemaskedimage_p.h \
     sstylewrapper_p.h
 
 RESOURCES += \

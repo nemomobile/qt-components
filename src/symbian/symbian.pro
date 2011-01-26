@@ -13,13 +13,11 @@ QT += declarative
 SOURCES += \
     plugin.cpp \
     sdeclarative.cpp \
-    sdeclarativeprogressbaranimation.cpp \
     sdeclarativescreen.cpp \
     sdeclarativewindowdecoration.cpp
 
 HEADERS += \
     sdeclarative.h \
-    sdeclarativeprogressbaranimation.h \
     sdeclarativescreen.h \
     sdeclarativescreen_p.h \
     sdeclarativewindowdecoration.h

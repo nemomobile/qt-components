@@ -33,6 +33,7 @@
 #include "sdeclarativeframe.h"
 #include "sdeclarativeimplicitsizeitem.h"
 #include "sdeclarativeimageprovider.h"
+#include "sdeclarativemaskedimage.h"
 
 class SymbianThemeBridgePlugin : public QDeclarativeExtensionPlugin
 {
@@ -46,6 +47,7 @@ public:
     void registerTypes(const char *uri) {
         qmlRegisterType<SDeclarativeIcon>(uri, 1, 0, "Icon");
         qmlRegisterType<SDeclarativeFrame>(uri, 1, 0, "Frame");
+        qmlRegisterType<SDeclarativeMaskedImage>(uri, 1, 0, "MaskedImage");
         qmlRegisterType<SStyleWrapper>(uri, 1, 0, "Style");
         qmlRegisterType<SDeclarativeImplicitSizeItem>(uri, 1, 0, "ImplicitSizeItem");
         qDebug() << "SymbianThemeBridgePlugin: Icon, Frame, Style and ImplicitSizeItem registered";

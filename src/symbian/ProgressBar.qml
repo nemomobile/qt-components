@@ -65,11 +65,15 @@ ImplicitSizeItem {
                     visible: true
                 }
                 PropertyChanges {
-                    target: indeterminateAnimation
+                    target: indeterminateMaskedImage
                     visible: false
                 }
                 PropertyChanges {
-                    target: propertyAnimation
+                    target: indeterminateMaskedImageExtra
+                    visible: false
+                }
+                PropertyChanges {
+                    target: indeterminateAnimation
                     running: false
                 }
             },
@@ -81,17 +85,28 @@ ImplicitSizeItem {
                     visible: false
                 }
                 PropertyChanges {
-                    target: indeterminateAnimation
+                    target: indeterminateMaskedImage
                     visible: true
                 }
                 PropertyChanges {
-                    target: propertyAnimation
+                    target: indeterminateMaskedImageExtra
+                    visible: true
+                }
+                PropertyChanges {
+                    target: indeterminateAnimation
                     running: true
                 }
             }
         ]
 
-        PropertyAnimation { id: propertyAnimation; loops: Animation.Infinite; running: true; target: indeterminateAnimation; property: "animationOffset"; from: 0; to: 200; easing.type: Easing.Linear; duration: 5000 }
+        ParallelAnimation {
+            id: indeterminateAnimation
+            loops: Animation.Infinite
+            running:true
+
+            PropertyAnimation { target: indeterminateMaskedImage; property: "offset.x"; from: style.current.preferredHeight + 1; to: 1; easing.type: Easing.Linear; duration: style.current.preferredHeight * 25 }
+            PropertyAnimation { target: indeterminateMaskedImageExtra; property: "offset.x"; from: 0; to: -style.current.preferredHeight; easing.type: Easing.Linear; duration: style.current.preferredHeight * 25 }
+        }
 
         Item {
             clip: true
@@ -124,12 +139,23 @@ ImplicitSizeItem {
             }
         }
 
-        ProgressBarAnimation {
-            id: indeterminateAnimation
+        MaskedImage {
+            id: indeterminateMaskedImage
             anchors.fill: parent
 
-            animationIcon: style.current.get("indeterminateIcon")
-            animationMask: style.current.get("indeterminateMask")
+            tiled: true
+            imageName: style.current.get("indeterminateIcon")
+            maskName: style.current.get("indeterminateMask")
+        }
+
+        // Secondary tile to keep the bar full when the animation scrolls
+        MaskedImage {
+            id: indeterminateMaskedImageExtra
+            anchors.fill: parent
+
+            tiled: false
+            imageName: style.current.get("indeterminateIcon")
+            maskName: style.current.get("indeterminateMask")
         }
     }
 }

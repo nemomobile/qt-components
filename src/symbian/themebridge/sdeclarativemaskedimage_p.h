@@ -24,45 +24,44 @@
 **
 ****************************************************************************/
 
-#ifndef SDECLARATIVEPROGRESSBARANIMATION_H
-#define SDECLARATIVEPROGRESSBARANIMATION_H
+#ifndef SDECLARATIVEMASKEDIMAGE_P_H
+#define SDECLARATIVEMASKEDIMAGE_P_H
 
+#include "sdeclarativeframe.h"
 #include <QDeclarativeItem>
+#include <QApplication>
+#include <qglobal.h>
 
-class SDeclarativeProgressBarAnimationPrivate;
-
-class SDeclarativeProgressBarAnimation : public QDeclarativeItem
+class SDeclarativeMaskedImagePrivate
 {
-    Q_OBJECT
-
-    Q_PROPERTY(QString animationIcon READ animationIcon WRITE setAnimationIcon)
-    Q_PROPERTY(QString animationMask READ animationMask WRITE setAnimationMask)
-    Q_PROPERTY(int animationOffset READ animationOffset WRITE setAnimationOffset)
+    Q_DECLARE_PUBLIC(SDeclarativeMaskedImage)
 
 public:
+    SDeclarativeMaskedImagePrivate(SDeclarativeMaskedImage *qq) :
+        q_ptr(qq),
+        offset(0, 0),
+        tiled(false),
+        pixmapsCreated(false),
+        maskType(SDeclarativeFrame::ThreePiecesHorizontal),
+        tileSize(0)
+        {}
 
-    explicit SDeclarativeProgressBarAnimation(QDeclarativeItem *parent = 0);
-    virtual ~SDeclarativeProgressBarAnimation();
+    void createImagePixmap();
+    void createNonImagePixmap();
+    void createMask();
 
-    QString animationIcon() const;
-    void setAnimationIcon(const QString &name);
+    SDeclarativeMaskedImage *q_ptr;
+    QString imageName;
+    QString maskName;
+    SDeclarativeFrame::FrameType maskType;
+    QPoint offset;
+    bool tiled;
 
-    QString animationMask() const;
-    void setAnimationMask(const QString &name);
-
-    int animationOffset() const;
-    void setAnimationOffset(int offset);
-
-    virtual void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
-
-protected:
-    QScopedPointer<SDeclarativeProgressBarAnimationPrivate> d_ptr;
-
-private:
-    Q_DISABLE_COPY(SDeclarativeProgressBarAnimation)
-    Q_DECLARE_PRIVATE(SDeclarativeProgressBarAnimation)
+    bool pixmapsCreated;
+    QSize createdSize;
+    QPixmap imagePixmap;
+    QBitmap imageMask;
+    int tileSize;
 };
 
-QML_DECLARE_TYPE(SDeclarativeProgressBarAnimation)
-
-#endif // SDECLARATIVEPROGRESSBARANIMATION_H
+#endif // SDECLARATIVEMASKEDIMAGE_P_H
