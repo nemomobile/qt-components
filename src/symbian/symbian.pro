@@ -31,6 +31,7 @@ QML_FILES = \
     CheckBox.qml \
     Dialog.qml \
     Fader.qml \
+    ListHeading.qml \    
     ListItem.qml \
     Menu.qml \
     ObjectMenu.qml \

@@ -2,6 +2,7 @@ plugin symbianplugin
 Button 1.0 Button.qml
 CheckBox 1.0 CheckBox.qml
 Dialog 1.0 Dialog.qml
+ListHeading 1.0 ListHeading.qml
 ListItem 1.0 ListItem.qml
 ObjectMenu 1.0 ObjectMenu.qml
 Page 1.0 Page.qml
