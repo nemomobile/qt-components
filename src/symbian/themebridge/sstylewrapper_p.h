@@ -62,6 +62,7 @@ public:
     QVariant sliderProperty(const QString &propertyName) const;
     QVariant toolTipProperty(const QString &propertyName) const;
     QVariant menuProperty(const QString &propertyName) const;
+    QVariant choiceListProperty(const QString &propertyName) const;
     QVariant faderProperty(const QString &propertyName) const;
 
     void _q_desktopWorkareaChanged();

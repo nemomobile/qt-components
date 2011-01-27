@@ -68,11 +68,11 @@ qtc_button_highlight:#FFFFFF;
 qtc_button_disabled:#838383;
 
 /* Combobox */
-qtc_combobox_normal:#ffffff;
+qtc_combobox_normal:#3C3C3C;
 qtc_combobox_pressed:#FFFFFF;
-qtc_combobox_highlight:#ffffff;
-qtc_combobox_disabled:#838383;
-qtc_combobox_edit:#0f0f0f;
+qtc_combobox_highlight:#3C3C3C;
+qtc_combobox_disabled:#787878;
+qtc_combobox_edit:#3C3C3C;
 qtc_combobox_latched:#FFFFFF;
 
 /* Tumbler */

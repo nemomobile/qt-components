@@ -299,6 +299,8 @@ QVariant SStyleWrapper::get(const QString &propertyName)
         ret = d->toolTipProperty(propertyName);
     else if (styleClass() == QLatin1String("Menu"))
         ret = d->menuProperty(propertyName);
+    else if (styleClass() == QLatin1String("ChoiceList"))
+        ret = d->choiceListProperty(propertyName);
     else if (styleClass() == QLatin1String("Fader"))
         ret = d->faderProperty(propertyName);
 

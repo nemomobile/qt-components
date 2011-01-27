@@ -941,6 +941,135 @@ QVariant SStyleWrapperPrivate::menuProperty(const QString &propertyName) const
     return QVariant();
 }
 
+QVariant SStyleWrapperPrivate::choiceListProperty(const QString &propertyName) const
+{
+    if (propertyName == QLatin1String("textHeight"))
+        return fetchLayoutParameter(QLatin1String("param-text-height-secondary"));
+
+    if (propertyName == QLatin1String("textColor")) {
+        if (mode == QLatin1String("normal"))
+            return fetchThemeColor(QLatin1String("qtc_combobox_normal"));
+        else if (mode == QLatin1String("pressed"))
+            return fetchThemeColor(QLatin1String("qtc_combobox_pressed"));
+        else if (mode == QLatin1String("latched"))
+            return fetchThemeColor(QLatin1String("qtc_combobox_latched"));
+        else if (mode == QLatin1String("disabled"))
+            return fetchThemeColor(QLatin1String("qtc_combobox_disabled"));
+        else
+            return fetchThemeColor(QLatin1String("qtc_combobox_normal"));
+    }
+
+    if (propertyName == QLatin1String("font"))
+        return fetchFont(SStyleWrapper::Primary);
+
+    if (propertyName == QLatin1String("frameName")) {
+        if (mode == QLatin1String("normal"))
+            return QLatin1String("qtg_fr_combobox_normal");
+        else if (mode == QLatin1String("pressed"))
+            return QLatin1String("qtg_fr_combobox_pressed");
+        else if (mode == QLatin1String("latched"))
+            return QLatin1String("qtg_fr_combobox_latched");
+        else if (mode == QLatin1String("disabled"))
+            return QLatin1String("qtg_fr_combobox_disabled");
+        else
+            return QLatin1String("qtg_fr_combobox_normal");
+    }
+
+    if (propertyName == QLatin1String("frameType"))
+        return SDeclarativeFrame::ThreePiecesHorizontal;
+
+    if (propertyName == QLatin1String("marginLeft"))
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-left"));
+
+    if (propertyName == QLatin1String("marginRight"))
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-right"));
+
+    if (propertyName == QLatin1String("marginTop"))
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-top"));
+
+    if (propertyName == QLatin1String("marginBottom"))
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-bottom"));
+
+    if (propertyName == QLatin1String("marginMiddle"))
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-middle-horizontal"));
+
+    if (propertyName == QLatin1String("appRectHeight"))
+        return faderProperty(propertyName);
+
+    // List indicator related properties
+    if (propertyName == QLatin1String("listIndicatorFrameName")) {
+        if (mode == QLatin1String("normal"))
+            return QLatin1String("qtg_graf_combobox_button_normal");
+        else if (mode == QLatin1String("pressed"))
+            return QLatin1String("qtg_graf_combobox_button_pressed");
+        else if (mode == QLatin1String("latched"))
+            return QLatin1String("qtg_graf_combobox_button_latched");
+        else if (mode == QLatin1String("disabled"))
+            return QLatin1String("qtg_graf_combobox_button_disabled");
+        else
+            return QLatin1String("qtg_graf_combobox_button_normal");
+    }
+
+    if (propertyName == QLatin1String("listIndicatorFrameType"))
+        return SDeclarativeFrame::OnePiece;
+
+    if (propertyName == QLatin1String("listIndicatorWidth"))
+        return fetchLayoutParameter(QLatin1String("param-widget-combobox-height"));
+
+    if (propertyName == QLatin1String("listIndicatorHeight"))
+        return fetchLayoutParameter(QLatin1String("param-widget-combobox-height"));
+
+
+    // Drop down list related properties
+    if (propertyName == QLatin1String("listItemHeight"))
+        return fetchLayoutParameter(QLatin1String("param-text-height-primary"))
+            + fetchLayoutParameter(QLatin1String("param-margin-gene-top"))
+            + fetchLayoutParameter(QLatin1String("param-margin-gene-bottom"));
+
+    if ( propertyName == QLatin1String("listItemTextColor") )
+        return fetchThemeColor(QLatin1String("qtc_list_item_title_secondary_normal"));
+
+    if (propertyName == QLatin1String("listFrameName"))
+        return QLatin1String("qtg_fr_popup_secondary");
+
+    if (propertyName == QLatin1String("listFrameType"))
+        return SDeclarativeFrame::NinePieces;
+
+    if (propertyName == QLatin1String("selectionIndicatorWidth"))
+        return fetchLayoutParameter(QLatin1String("param-graphic-size-secondary"));
+
+    if (propertyName == QLatin1String("selectionIndicatorFrameName"))
+        return QLatin1String("qtg_mono_tick");
+
+    if (propertyName == QLatin1String("selectionIndicatorFrameType"))
+        return SDeclarativeFrame::OnePiece;
+
+    if (propertyName == QLatin1String("scrollbarWidth"))
+        return fetchLayoutParameter(QLatin1String("param-widget-scroll-bar-indicative-width"));
+
+    if (propertyName == QLatin1String("listMargin"))
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-popup-list"));
+
+    if (propertyName == QLatin1String("listItemFrameName")) {
+        if (mode == QLatin1String("normal"))
+            return QLatin1String("qtg_fr_popup_list_normal");
+        else if (mode == QLatin1String("pressed"))
+            return QLatin1String("qtg_fr_popup_list_pressed");
+        else if (mode == QLatin1String("highlight"))
+            return QLatin1String("qtg_fr_popup_list_highlight");
+        else
+            return QLatin1String("qtg_fr_popup_list_normal");
+    }
+
+    if (propertyName == QLatin1String("listItemFont"))
+        return fetchFont(SStyleWrapper::Primary);
+
+    if (propertyName == QLatin1String("listItemFrameType"))
+        return SDeclarativeFrame::NinePieces;
+
+    return QVariant();
+}
+
 QVariant SStyleWrapperPrivate::faderProperty(const QString &propertyName) const
 {
     QRect appRect;
