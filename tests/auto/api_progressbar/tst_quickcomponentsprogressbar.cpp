@@ -66,41 +66,46 @@ void tst_quickcomponentsprogressbar::initTestCase()
 
 void tst_quickcomponentsprogressbar::value()
 {
-    // check presence of property and set initial value
-    QVERIFY( componentObject->setProperty( "minimumValue", 0.0 ) );
-    QVERIFY( componentObject->setProperty( "maximumValue", 100.0 ) );
-    QVERIFY( componentObject->setProperty( "value", 10.0 ) );
-    QCOMPARE( componentObject->property("value").toReal(), 10.0 );
+    componentObject->setProperty( "minimumValue", 0.0 );
+    componentObject->setProperty( "maximumValue", 1.0 );
+
+    // first, test if the same value set can be retrieved later
+    QVERIFY( componentObject->setProperty( "value", 0.5 ) );
+    QCOMPARE( componentObject->property("value").toReal(), 0.5 );
+
+    // when a value lower than minimumValue is set, we expect value to be equal to minimumValue
+    QVERIFY( componentObject->setProperty( "value", -0.5 ) );
+    QCOMPARE( componentObject->property("value").toReal(), componentObject->property ("minimumValue").toReal ());
+
+    // when a value higher than maximumValue is set, we expect value to be equal to maximumValue
+    QVERIFY( componentObject->setProperty( "value", 2.0 ) );
+    QCOMPARE( componentObject->property("value").toReal(), componentObject->property ("maximumValue").toReal ());
 }
 
 void tst_quickcomponentsprogressbar::minimumValue()
 {
-    // check presence of property and set initial value
-    QVERIFY( componentObject->setProperty( "minimumValue", 0.0 ) );
-    QCOMPARE( componentObject->property("minimumValue").toReal(), 0.0 );
+    // check presence of property and set initial value different than the default minimumValue
+    componentObject->setProperty( "maximumValue", 1.0 );
+    QVERIFY( componentObject->setProperty( "minimumValue", -1.0 ) );
+    QCOMPARE( componentObject->property("minimumValue").toReal(), -1.0 );
 
-    // try to set value below minimum, minimum is already 0
-    componentObject->setProperty( "maximumValue", 100.0 );
-    componentObject->setProperty( "value", 50.0 );
-    componentObject->setProperty( "value", -1.0 );
-    // the minimum limit should prevent change in property
-    QEXPECT_FAIL("", "Not yet blocked by min and max ranges, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-287", Continue);
-    QVERIFY( componentObject->property("value") == 50.0 );
+    // try to set value below the mimimum value set previously
+    componentObject->setProperty( "value", -2.0 );
+    // the minimum limit must be respected, so setting a value bellow minimumValue should set value to minimumValue
+    QVERIFY( componentObject->property("value") == componentObject->property ("minimumValue"));
 }
 
 void tst_quickcomponentsprogressbar::maximumValue()
 {
     // check presence of property and set initial value
-    QVERIFY( componentObject->setProperty( "maximumValue", 100.0 ) );
-    QCOMPARE( componentObject->property("maximumValue").toReal(), 100.0 );
-
-    // tro ty set value above maximum, maximum is already 100
     componentObject->setProperty( "minimumValue", 0.0 );
+    QVERIFY( componentObject->setProperty( "maximumValue", 10.0 ) );
+    QCOMPARE( componentObject->property("maximumValue").toReal(), 10.0 );
+
+    // tro ty set value above maximum, maximum value set previously
     componentObject->setProperty( "value", 50.0 );
-    componentObject->setProperty( "value", 101.0 );
-    // the maximum limit should prevent change in property
-    QEXPECT_FAIL("", "Not yet blocked by min and max ranges, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-287", Continue);
-    QVERIFY( componentObject->property("value") == 50.0 );
+    // the maximum limit must be respected, so setting a value above maximumValue should set value to maximumValue
+    QVERIFY( componentObject->property("value") == componentObject->property ("maximumValue"));
 }
 
 void tst_quickcomponentsprogressbar::indeterminate()
@@ -108,6 +113,10 @@ void tst_quickcomponentsprogressbar::indeterminate()
     // check presence of property and set initial value
     QVERIFY( componentObject->setProperty( "indeterminate", true ) );
     QCOMPARE( componentObject->property("indeterminate").toBool(), true );
+
+    // now check if we can set to false again
+    QVERIFY( componentObject->setProperty( "indeterminate", false ) );
+    QCOMPARE( componentObject->property("indeterminate").toBool(), false );
 }
 
 QTEST_MAIN(tst_quickcomponentsprogressbar)
