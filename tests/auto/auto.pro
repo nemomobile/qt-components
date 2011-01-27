@@ -13,6 +13,7 @@ meego {
         api_checkbox \
         api_slider \
         api_busyindicator \
+        api_radiobutton \
         api_pagestack \
         api_progressbar \
         api_scrolldecorator \
