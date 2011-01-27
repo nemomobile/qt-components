@@ -76,6 +76,15 @@
         <file alias="qtg_fr_list_highlight_t.svg">resources/defaulttheme/graphics/qtg_fr_list_highlight_t.svg</file>
         <file alias="qtg_fr_list_highlight_tl.svg">resources/defaulttheme/graphics/qtg_fr_list_highlight_tl.svg</file>
         <file alias="qtg_fr_list_highlight_tr.svg">resources/defaulttheme/graphics/qtg_fr_list_highlight_tr.svg</file>
+        <file alias="qtg_fr_list_disabled_b.svg">resources/defaulttheme/graphics/qtg_fr_list_disabled_b.svg</file>
+        <file alias="qtg_fr_list_disabled_bl.svg">resources/defaulttheme/graphics/qtg_fr_list_disabled_bl.svg</file>
+        <file alias="qtg_fr_list_disabled_br.svg">resources/defaulttheme/graphics/qtg_fr_list_disabled_br.svg</file>
+        <file alias="qtg_fr_list_disabled_c.svg">resources/defaulttheme/graphics/qtg_fr_list_disabled_c.svg</file>
+        <file alias="qtg_fr_list_disabled_l.svg">resources/defaulttheme/graphics/qtg_fr_list_disabled_l.svg</file>
+        <file alias="qtg_fr_list_disabled_r.svg">resources/defaulttheme/graphics/qtg_fr_list_disabled_r.svg</file>
+        <file alias="qtg_fr_list_disabled_t.svg">resources/defaulttheme/graphics/qtg_fr_list_disabled_t.svg</file>
+        <file alias="qtg_fr_list_disabled_tl.svg">resources/defaulttheme/graphics/qtg_fr_list_disabled_tl.svg</file>
+        <file alias="qtg_fr_list_disabled_tr.svg">resources/defaulttheme/graphics/qtg_fr_list_disabled_tr.svg</file>
         <file alias="qtg_small_selected.svg">resources/defaulttheme/graphics/qtg_small_selected.svg</file>
         <file alias="qtg_small_selected_highlight.svg">resources/defaulttheme/graphics/qtg_small_selected_highlight.svg</file>
         <file alias="qtg_small_selected_partial.svg">resources/defaulttheme/graphics/qtg_small_selected_partial.svg</file>
