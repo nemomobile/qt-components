@@ -59,6 +59,7 @@ private slots:
     void cutAndPaste();
     void selectAll();
     void selectWord();
+    void positionAt();
 
 private:
     QObject *componentObject;
@@ -370,6 +371,45 @@ void tst_quickcomponentstextfield::selectWord()
     QCOMPARE(componentObject->property("selectionEnd").toInt(), 5);
     QVERIFY(QMetaObject::invokeMethod(componentObject, "paste"));
     QCOMPARE(componentObject->property("text").toString(), QString("Good morning"));
+}
+
+void tst_quickcomponentstextfield::positionAt()
+{
+    // set the text to something known
+    QVariant retVal;
+    const QString text("Hello from Position World");
+    QVERIFY(componentObject->setProperty("text", text));
+    // set font to something known
+    QFont font;
+    font.setFamily("Helvetica");
+    font.setPixelSize(12);
+    QVERIFY( componentObject->setProperty("font", font) );
+    // set textField width
+    QVERIFY(componentObject->setProperty("width", 186));
+
+    // values smaller than the position of the first char will always return 0
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "positionAt",
+                                        Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, 0)),
+              "Could not call positionAt");
+    QCOMPARE(retVal.toInt(), 0);
+
+    // this test considers that the width of the element is really big
+    // big enough to fit the text and still have some more space
+    // values bigger than the position of the last char will always return the size of the string
+    const int textFieldSize = componentObject->property("width").toInt();
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "positionAt",
+                                        Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, textFieldSize + 1)),
+              "Could not call positionAt)");
+    QCOMPARE(retVal.toInt(), text.size());
+    QFontMetrics m(componentObject->property("font").toString());
+
+    // random position considering the string above. it will return the char
+    // position at x = textFieldSize/2 pixels (should be the 18th char (n))
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "positionAt",
+                                        Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, textFieldSize/2)),
+              "Could not call positionAt)");
+    QCOMPARE(retVal.toInt(), 18);
+    QCOMPARE(text.at(retVal.toInt()), QString("n").at(0));
 }
 
 QTEST_MAIN(tst_quickcomponentstextfield)
