@@ -58,6 +58,7 @@ private slots:
     void copyAndPaste();
     void cutAndPaste();
     void selectAll();
+    void selectWord();
 
 private:
     QObject *componentObject;
@@ -331,6 +332,44 @@ void tst_quickcomponentstextfield::selectAll()
     QVERIFY(componentObject->setProperty("cursorPosition", 12));
     QVERIFY(QMetaObject::invokeMethod(componentObject, "paste"));
     QCOMPARE(componentObject->property("text").toString(), QString("Good morningGood morning"));
+}
+
+void tst_quickcomponentstextfield::selectWord()
+{
+    componentObject->setProperty("text", "Good morning");
+
+    QVERIFY(componentObject->setProperty("cursorPosition", 0));
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "selectWord"));
+    QCOMPARE(componentObject->property("selectedText").toString(), QString("Good"));
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "cut"));
+    QCOMPARE(componentObject->property("selectionStart").toInt(), 0);
+    QCOMPARE(componentObject->property("selectionEnd").toInt(), 0);
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "paste"));
+    QCOMPARE(componentObject->property("text").toString(), QString("Good morning"));
+
+    QVERIFY(componentObject->setProperty("cursorPosition", 2));
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "selectWord"));
+    QCOMPARE(componentObject->property("selectedText").toString(), QString("Good"));
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "cut"));
+    QCOMPARE(componentObject->property("selectionStart").toInt(), 0);
+    QCOMPARE(componentObject->property("selectionEnd").toInt(), 0);
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "paste"));
+    QCOMPARE(componentObject->property("text").toString(), QString("Good morning"));
+
+
+    QVERIFY(componentObject->setProperty("cursorPosition", 5));
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "selectWord"));
+
+    QEXPECT_FAIL("", "Selected word should be morning", Continue);
+    QCOMPARE(componentObject->property("selectedText").toString(), QString("morning"));
+
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "cut"));
+    QEXPECT_FAIL("", "'morning' was cut, so cursorPosition should be at 5", Continue);
+    QCOMPARE(componentObject->property("selectionStart").toInt(), 5);
+    QEXPECT_FAIL("", "'morning' was cut, so cursorPosition should be at 5", Continue);
+    QCOMPARE(componentObject->property("selectionEnd").toInt(), 5);
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "paste"));
+    QCOMPARE(componentObject->property("text").toString(), QString("Good morning"));
 }
 
 QTEST_MAIN(tst_quickcomponentstextfield)
