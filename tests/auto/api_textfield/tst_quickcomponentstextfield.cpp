@@ -60,6 +60,7 @@ private slots:
     void selectAll();
     void selectWord();
     void positionAt();
+    void positionToRectangle();
 
 private:
     QObject *componentObject;
@@ -410,6 +411,36 @@ void tst_quickcomponentstextfield::positionAt()
               "Could not call positionAt)");
     QCOMPARE(retVal.toInt(), 18);
     QCOMPARE(text.at(retVal.toInt()), QString("n").at(0));
+}
+
+void tst_quickcomponentstextfield::positionToRectangle()
+{
+    // set the text to something known
+    QVariant retVal;
+    const QString text("Hello from Rectangle World");
+    QVERIFY(componentObject->setProperty("text", text));
+    // set font to something known
+    QFont font;
+    font.setFamily("Helvetica");
+    font.setPixelSize(12);
+    QVERIFY( componentObject->setProperty("font", font) );
+    // set textField width
+    QVERIFY(componentObject->setProperty("width", 186));
+
+
+    // the cursor position should not change after a call to positionToRectangle()
+    const int oldPosition = componentObject->property("cursorPosition").toInt();
+
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "positionToRectangle",
+                                       Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, 14)),
+             "Could not call positionToRectangle");
+
+    // for char number 14 with the specified font the cursor
+    // rect whould be at = topleft(77, 0) and =size(1, 16)
+    QCOMPARE(retVal.toRectF(), QRectF(77, 0, 1, 16));
+
+    // the position shouldn't have changed
+    QCOMPARE(oldPosition, componentObject->property("cursorPosition").toInt());
 }
 
 QTEST_MAIN(tst_quickcomponentstextfield)
