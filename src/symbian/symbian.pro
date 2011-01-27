@@ -27,6 +27,7 @@ QML_FILES = \
     AppManager.js \
     Button.qml \
     CheckBox.qml \
+    ChoiceList.qml \
     Dialog.qml \
     Fader.qml \
     ListHeading.qml \
