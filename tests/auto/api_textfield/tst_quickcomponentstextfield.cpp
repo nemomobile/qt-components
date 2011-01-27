@@ -94,8 +94,13 @@ void tst_quickcomponentstextfield::font()
 
 void tst_quickcomponentstextfield::cursorPosition()
 {
+    QVERIFY(componentObject->setProperty("text", "Good morning"));
     QVERIFY( componentObject->setProperty("cursorPosition", 0) );
     QCOMPARE( componentObject->property("cursorPosition").toInt(), 0 );
+
+    // test other values, different from 0
+    QVERIFY( componentObject->setProperty("cursorPosition", 4) );
+    QCOMPARE( componentObject->property("cursorPosition").toInt(), 4 );
 }
 
 void tst_quickcomponentstextfield::readOnly()
