@@ -57,6 +57,7 @@ private slots:
     // Functions
     void copyAndPaste();
     void cutAndPaste();
+    void selectAll();
 
 private:
     QObject *componentObject;
@@ -311,6 +312,25 @@ void tst_quickcomponentstextfield::cutAndPaste()
     QVERIFY(componentObject->setProperty("cursorPosition", 5));
     QVERIFY(QMetaObject::invokeMethod(componentObject, "paste"));
     QCOMPARE(componentObject->property("text").toString(), QString("Good morning"));
+}
+
+void tst_quickcomponentstextfield::selectAll()
+{
+    componentObject->setProperty("text", "Good morning");
+
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "selectAll"));
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "cut"));
+    QCOMPARE(componentObject->property("selectionStart").toInt(), 0);
+    QCOMPARE(componentObject->property("selectionEnd").toInt(), 0);
+    QCOMPARE(componentObject->property("text").toString(), QString(""));
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "paste"));
+    QCOMPARE(componentObject->property("text").toString(), QString("Good morning"));
+
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "selectAll"));
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "copy"));
+    QVERIFY(componentObject->setProperty("cursorPosition", 12));
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "paste"));
+    QCOMPARE(componentObject->property("text").toString(), QString("Good morningGood morning"));
 }
 
 QTEST_MAIN(tst_quickcomponentstextfield)
