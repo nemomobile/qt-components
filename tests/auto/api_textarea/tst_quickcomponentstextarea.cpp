@@ -200,7 +200,7 @@ void tst_quickcomponentstextarea::textFormat()
             >= (int)Qt::PlainText);
 
     // try to set random value
-    componentObject->setProperty("textFormat", rand());
+    componentObject->setProperty("textFormat", qrand());
     QEXPECT_FAIL("", "Not yet blocked by enum range,"
                  "http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-414",
                  Continue);

@@ -151,7 +151,7 @@ void tst_quickcomponentsslider::orientation()
             >= (int)Qt::Horizontal);
 
     // try to set random value
-    componentObject->setProperty("orientation", rand());
+    componentObject->setProperty("orientation", qrand());
     QEXPECT_FAIL("", "Not yet blocked by enum range,"
                  "http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-414",
                  Continue);
