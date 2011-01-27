@@ -124,6 +124,8 @@ void tst_quickcomponentstextfield::echoMode()
     // ### set correct enum type
     QVERIFY( componentObject->setProperty("echoMode", 2) );
     QCOMPARE( componentObject->property("echoMode").toInt(), 2 );
+    // reset echoMode, in order to not mess around with the other tests
+    QVERIFY( componentObject->setProperty("echoMode", 0) );
 }
 
 void tst_quickcomponentstextfield::inputMask()
