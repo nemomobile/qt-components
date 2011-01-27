@@ -37,6 +37,7 @@ symbian3 {
 
 symbian3 {
     SUBDIRS += \
+        symbian_checkbox \
         symbian_declarativeframe \
         symbian_declarativeicon \
         symbian_declarativeimplicitsizeitem \
