@@ -37,6 +37,7 @@ namespace tst_quickcomponentstest
 {
     QString errorString(QDeclarativeComponent*);
     QObject* createComponentFromFile(QString const&, QString*,QDeclarativeEngine **engine=0);
+    QObject* createComponentFromString(QString const&, QString*, QDeclarativeEngine **engine=0);
     QDeclarativeView *createDeclarativeView(const QString& source);
 };
 
@@ -86,6 +87,25 @@ QObject* tst_quickcomponentstest::createComponentFromFile(QString const& filenam
 
     return out;
 }
+
+inline
+QObject* tst_quickcomponentstest::createComponentFromString(QString const &qml, QString *errors, QDeclarativeEngine **engine)
+{
+    QDeclarativeView *window = new QDeclarativeView;
+    if (engine)
+        *engine = window->engine();
+    window->engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
+    QDeclarativeComponent *component = new QDeclarativeComponent(window->engine());
+    component->setData(qml.toUtf8(), QUrl());
+    QObject* out = component->create();
+    if (!out) {
+        if (errors) {
+            *errors = QString("Could not create component from %1: %2").arg(qml).arg(errorString(component));
+        }
+    }
+    return out;
+}
+
 inline
 QDeclarativeView* tst_quickcomponentstest::createDeclarativeView(const QString& source)
 {
