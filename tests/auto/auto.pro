@@ -17,6 +17,9 @@ meego {
         api_pagestack \
         api_progressbar \
         api_scrolldecorator \
+        api_choicelist \
+        api_buttoncolumn \
+        api_buttonrow \
         api_textfield \ #TODO not yet finalized
         api_textarea \ #TODO not yet finalized
         api_toolbar
