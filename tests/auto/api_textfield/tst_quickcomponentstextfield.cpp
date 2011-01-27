@@ -88,8 +88,14 @@ void tst_quickcomponentstextfield::inputMethodHints()
 
 void tst_quickcomponentstextfield::font()
 {
-    QVERIFY( componentObject->setProperty("font", "Helvetica") );
-    QVERIFY( componentObject->property("font").toString().startsWith("Helvetica"));
+    QFont font;
+    font.setFamily("Helvetica");
+    font.setPixelSize(12);
+
+    QFont temp;
+    QVERIFY( componentObject->setProperty("font", font) );
+    temp = componentObject->property("font").value<QFont>();
+    QCOMPARE( temp, font );
 }
 
 void tst_quickcomponentstextfield::cursorPosition()
