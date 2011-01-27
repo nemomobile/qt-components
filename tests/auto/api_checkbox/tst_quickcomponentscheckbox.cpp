@@ -45,6 +45,7 @@ class tst_quickcomponentscheckbox : public QObject
 private slots:
     void initTestCase();
     void checked();
+    void pressed();
     void clicked();
 
 private:
@@ -68,6 +69,14 @@ void tst_quickcomponentscheckbox::checked()
     QCOMPARE(componentObject->property("checked").toBool(),false);
     componentObject->setProperty("checked",true);
     QCOMPARE(componentObject->property("checked").toBool(),true);
+}
+
+void tst_quickcomponentscheckbox::pressed()
+{
+    componentObject->setProperty("pressed",false);
+    QCOMPARE(componentObject->property("pressed").toBool(),false);
+    componentObject->setProperty("pressed",true);
+    QCOMPARE(componentObject->property("pressed").toBool(),true);
 }
 
 void tst_quickcomponentscheckbox::clicked()
