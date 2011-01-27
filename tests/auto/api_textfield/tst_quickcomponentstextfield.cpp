@@ -56,6 +56,7 @@ private slots:
 
     // Functions
     void copyAndPaste();
+    void cutAndPaste();
 
 private:
     QObject *componentObject;
@@ -281,6 +282,35 @@ void tst_quickcomponentstextfield::copyAndPaste()
     QVERIFY(componentObject->setProperty("cursorPosition", 12));
     QVERIFY(QMetaObject::invokeMethod(componentObject, "paste"));
     QCOMPARE(componentObject->property("text").toString(), QString("Good morningmorning"));
+}
+
+void tst_quickcomponentstextfield::cutAndPaste()
+{
+    componentObject->setProperty("text", "Good morning");
+
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "select", Q_ARG(QVariant, 0), Q_ARG(QVariant, 6)));
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "cut"));
+    QCOMPARE(componentObject->property("selectionStart").toInt(), 0);
+    QCOMPARE(componentObject->property("selectionEnd").toInt(), 0);
+    QCOMPARE(componentObject->property("text").toString(), QString("orning"));
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "paste"));
+    QCOMPARE(componentObject->property("text").toString(), QString("Good morning"));
+
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "select", Q_ARG(QVariant, 5), Q_ARG(QVariant, 12)));
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "cut"));
+    QCOMPARE(componentObject->property("selectionStart").toInt(), 5);
+    QCOMPARE(componentObject->property("selectionEnd").toInt(), 5);
+    QVERIFY(componentObject->setProperty("cursorPosition", 0));
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "paste"));
+    QCOMPARE(componentObject->property("text").toString(), QString("morningGood "));
+
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "select", Q_ARG(QVariant, 0), Q_ARG(QVariant, 7)));
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "cut"));
+    QCOMPARE(componentObject->property("selectionStart").toInt(), 0);
+    QCOMPARE(componentObject->property("selectionEnd").toInt(), 0);
+    QVERIFY(componentObject->setProperty("cursorPosition", 5));
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "paste"));
+    QCOMPARE(componentObject->property("text").toString(), QString("Good morning"));
 }
 
 QTEST_MAIN(tst_quickcomponentstextfield)
