@@ -52,6 +52,7 @@ public:
     QVariant listHeadingProperty(const QString &propertyName) const;
     QVariant listItemProperty(const QString &propertyName) const;
     QVariant listItemImageProperty(const QString &propertyName) const;
+    QVariant listItemTextProperty(const QString &propertyName) const;
     QVariant pageContainerProperty(const QString &propertyName) const;
     QVariant checkBoxProperty(const QString &propertyName) const;
     QVariant dialogProperty(const QString &propertyName) const;

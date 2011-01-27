@@ -141,6 +141,9 @@ qreal SStyleWrapper::preferredWidth() const
     if (styleClass() == QLatin1String("ListItem"))
         return d->fetchLayoutParameter(QLatin1String("param-screen-width"));
 
+    if (styleClass() == QLatin1String("ListItemText"))
+        return d->fetchLayoutParameter(QLatin1String("param-screen-width"));
+
     if (styleClass() == QLatin1String("ListItemImage")) {
 
         const int imageSize = property("imageSize").toInt();
@@ -192,6 +195,16 @@ qreal SStyleWrapper::preferredHeight() const
             + d->listItemProperty(QLatin1String("verticalSpacing")).toReal()
             + d->fetchLayoutParameter(QLatin1String("param-text-height-secondary"))
             + d->listItemProperty(QLatin1String("marginBottom")).toReal());
+
+    if (styleClass() == QLatin1String("ListItemText")) {
+        // height for ListItem specified supported part
+        if (styleObjectName() == QLatin1String("Title"))
+            return d->fetchLayoutParameter(QLatin1String("param-text-height-primary"));
+        if (styleObjectName() == QLatin1String("Subtitle"))
+            return d->fetchLayoutParameter(QLatin1String("param-text-height-secondary"));
+        if (styleObjectName() == QLatin1String("Heading"))
+            return d->fetchLayoutParameter(QLatin1String("param-text-height-title"));
+    }
 
     if (styleClass() == QLatin1String("ListItemImage")) {
 
@@ -264,6 +277,8 @@ QVariant SStyleWrapper::get(const QString &propertyName)
         ret = d->listHeadingProperty(propertyName);
     else if (styleClass() == QLatin1String("ListItem"))
         ret = d->listItemProperty(propertyName);
+    else if (styleClass() == QLatin1String("ListItemText"))
+        ret = d->listItemTextProperty(propertyName);
     else if (styleClass() == QLatin1String("PageContainer"))
         ret = d->pageContainerProperty(propertyName);
     else if (styleClass() == QLatin1String("CheckBox"))

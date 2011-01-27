@@ -512,6 +512,53 @@ QVariant SStyleWrapperPrivate::listItemImageProperty(const QString &propertyName
     return QVariant();
 }
 
+QVariant SStyleWrapperPrivate::listItemTextProperty(const QString &propertyName) const
+{
+    if (propertyName == QLatin1String("textColor")) {
+        if (styleObjectName == QLatin1String("Title")) {
+            if (mode == QLatin1String("default"))
+                return fetchThemeColor(QLatin1String("qtc_list_item_title_normal"));
+            else if (mode == QLatin1String("pressed"))
+                return fetchThemeColor(QLatin1String("qtc_list_item_pressed"));
+            else if (mode == QLatin1String("disabled"))
+                return fetchThemeColor(QLatin1String("qtc_list_item_disabled"));
+            else if (mode == QLatin1String("focused"))
+                return fetchThemeColor(QLatin1String("qtc_list_item_highlight"));
+        }
+        if (styleObjectName == QLatin1String("Subtitle")) {
+            if (mode == QLatin1String("default"))
+                return fetchThemeColor(QLatin1String("qtc_list_item_content_normal"));
+            else if (mode == QLatin1String("pressed"))
+                return fetchThemeColor(QLatin1String("qtc_list_item_pressed"));
+            else if (mode == QLatin1String("disabled"))
+                return fetchThemeColor(QLatin1String("qtc_list_item_disabled"));
+            else if (mode == QLatin1String("focused"))
+                return fetchThemeColor(QLatin1String("qtc_list_item_highlight"));
+        }
+        if (styleObjectName == QLatin1String("Heading"))
+            return fetchThemeColor(QLatin1String("qtc_list_item_title_normal"));
+    }
+
+    if (propertyName == QLatin1String("font")) {
+        if (styleObjectName == QLatin1String("Title"))
+            return fetchFont(SStyleWrapper::Primary);
+        if (styleObjectName == QLatin1String("Subtitle"))
+            return fetchFont(SStyleWrapper::Secondary);
+        if (styleObjectName == QLatin1String("Heading"))
+            return fetchFont(SStyleWrapper::PrimarySmall);
+    }
+
+    if (propertyName == QLatin1String("textHeight")) {
+        if (styleObjectName == QLatin1String("Title"))
+            return fetchLayoutParameter(QLatin1String("param-text-height-primary"));
+        if (styleObjectName == QLatin1String("Subtitle"))
+            return fetchLayoutParameter(QLatin1String("param-text-height-secondary"));
+        if (styleObjectName == QLatin1String("Heading"))
+            return fetchLayoutParameter(QLatin1String("param-text-height-tiny"));
+    }
+    return QVariant();
+}
+
 QVariant SStyleWrapperPrivate::pageContainerProperty(const QString &propertyName) const
 {
     if (propertyName == QLatin1String("backgroundImage")) {
