@@ -29,7 +29,7 @@ QML_FILES = \
     CheckBox.qml \
     Dialog.qml \
     Fader.qml \
-    ListHeading.qml \    
+    ListHeading.qml \
     ListItem.qml \
     ListItemText.qml \
     Menu.qml \
