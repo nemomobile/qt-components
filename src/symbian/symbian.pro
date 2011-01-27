@@ -31,6 +31,7 @@ QML_FILES = \
     Fader.qml \
     ListHeading.qml \    
     ListItem.qml \
+    ListItemText.qml \
     Menu.qml \
     ObjectMenu.qml \
     Page.qml \

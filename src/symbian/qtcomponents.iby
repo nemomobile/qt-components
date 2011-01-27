@@ -28,6 +28,7 @@ data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\Dialog.qml            
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\Fader.qml                                      RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\Fader.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ListHeading.qml                                RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ListHeading.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ListItem.qml                                   RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ListItem.qml
+data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ListItemText.qml                               RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ListItemText.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\Menu.qml                                       RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\Menu.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ObjectMenu.qml                                 RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ObjectMenu.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\Page.qml                                       RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\Page.qml
