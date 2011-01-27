@@ -177,13 +177,23 @@ void tst_quickcomponentstextfield::inputMask()
 void tst_quickcomponentstextfield::selectedText()
 {
     componentObject->setProperty("text", "Good morning");
-    QDeclarativeExpression *expr = new QDeclarativeExpression(engine->rootContext(), componentObject, "select(0,4);");
-    expr->evaluate();
-    if (expr->hasError())
-        qDebug() << expr->error();
-    QVERIFY( !expr->hasError() );
-    QEXPECT_FAIL("", "Not yet able to verify text selection, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-322", Continue);
+
+    int methodIndex = componentObject->metaObject()->indexOfMethod("select(QVariant,QVariant)");
+    QMetaMethod method = componentObject->metaObject()->method(methodIndex);
+    QVERIFY(method.invoke(componentObject, Qt::DirectConnection, Q_ARG(QVariant, 0), Q_ARG(QVariant, 6)));
+    QCOMPARE( componentObject->property("selectedText").toString(), QString("Good m") );
+
+    QVERIFY(method.invoke(componentObject, Qt::DirectConnection, Q_ARG(QVariant, 0), Q_ARG(QVariant, 4)));
     QCOMPARE( componentObject->property("selectedText").toString(), QString("Good") );
+
+    QVERIFY(method.invoke(componentObject, Qt::DirectConnection, Q_ARG(QVariant, 0), Q_ARG(QVariant, 12)));
+    QCOMPARE( componentObject->property("selectedText").toString(), QString("Good morning") );
+
+    QVERIFY(method.invoke(componentObject, Qt::DirectConnection, Q_ARG(QVariant, 5), Q_ARG(QVariant, 12)));
+    QCOMPARE( componentObject->property("selectedText").toString(), QString("morning") );
+
+    QVERIFY(method.invoke(componentObject, Qt::DirectConnection, Q_ARG(QVariant, 5), Q_ARG(QVariant, 10)));
+    QCOMPARE( componentObject->property("selectedText").toString(), QString("morni") );
 }
 
 void tst_quickcomponentstextfield::selectionStart()
