@@ -122,15 +122,16 @@ ImplicitSizeItem {
     Keys.onPressed: {
         switch (event.key) {
             case Qt.Key_Select:
-            case Qt.Key_Return:
+            case Qt.Key_Return: {
                 if (symbian.listInteractionMode != Symbian.KeyNavigation)
                     symbian.listInteractionMode = Symbian.KeyNavigation
                 else
                     listItem.clicked()
                 event.accepted = true
                 break
+            }
 
-            case Qt.Key_Up:
+            case Qt.Key_Up: {
                 if (symbian.listInteractionMode != Symbian.KeyNavigation) {
                     symbian.listInteractionMode = Symbian.KeyNavigation
                     internal.state = "Focused"
@@ -139,8 +140,9 @@ ImplicitSizeItem {
                     ListView.view.decrementCurrentIndex()
                 event.accepted = true
                 break
+            }
 
-            case Qt.Key_Down:
+            case Qt.Key_Down: {
                 if (symbian.listInteractionMode != Symbian.KeyNavigation) {
                     symbian.listInteractionMode = Symbian.KeyNavigation
                     ListView.view.positionViewAtIndex(index, ListView.Beginning)
@@ -149,9 +151,11 @@ ImplicitSizeItem {
                     ListView.view.incrementCurrentIndex()
                 event.accepted = true
                 break
-            default:
+            }
+            default: {
                 event.accepted = false
                 break
+            }
         }
     }
 
