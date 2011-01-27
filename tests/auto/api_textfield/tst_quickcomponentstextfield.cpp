@@ -54,7 +54,8 @@ private slots:
     void text();
     void acceptableInput();
 
-    // ### missing function tests
+    // Functions
+    void copyAndPaste();
 
 private:
     QObject *componentObject;
@@ -255,6 +256,31 @@ void tst_quickcomponentstextfield::acceptableInput()
     QVERIFY( componentObject->setProperty("text", "qwerasdfzxvc") );
     QEXPECT_FAIL("", "Not yet able to verify validator failure, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-323", Continue);
     QCOMPARE( componentObject->property("acceptableInput").toBool(), false);
+}
+
+void tst_quickcomponentstextfield::copyAndPaste()
+{
+    QVERIFY(componentObject->setProperty("text", "Good morning"));
+
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "select", Q_ARG(QVariant, 0), Q_ARG(QVariant, 6)));
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "copy"));
+    QVERIFY(componentObject->setProperty("cursorPosition", 0));
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "paste"));
+    QCOMPARE(componentObject->property("text").toString(), QString("Good mGood morning"));
+
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "select", Q_ARG(QVariant, 0), Q_ARG(QVariant, 4)));
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "copy"));
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "select", Q_ARG(QVariant, 0), Q_ARG(QVariant, 18)));
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "paste"));
+    QCOMPARE(componentObject->property("text").toString(), QString("Good"));
+
+    componentObject->setProperty("text", "Good morning");
+
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "select", Q_ARG(QVariant, 5), Q_ARG(QVariant, 12)));
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "copy"));
+    QVERIFY(componentObject->setProperty("cursorPosition", 12));
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "paste"));
+    QCOMPARE(componentObject->property("text").toString(), QString("Good morningmorning"));
 }
 
 QTEST_MAIN(tst_quickcomponentstextfield)
