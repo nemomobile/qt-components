@@ -39,6 +39,7 @@ symbian3 {
     SUBDIRS += \
         symbian_declarativeframe \
         symbian_declarativeicon \
+        symbian_declarativeimplicitsizeitem \
         symbian_declarativescreen \
         symbian_framepool \
         symbian_iconpool \
