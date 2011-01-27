@@ -120,8 +120,48 @@ void tst_quickcomponentstextfield::echoMode()
 
 void tst_quickcomponentstextfield::inputMask()
 {
-    QVERIFY( componentObject->setProperty("inputMask", 2) );
+    QVERIFY(componentObject->setProperty("inputMask", QString("000.000;_")));
+    QVERIFY(componentObject->setProperty("text", "A1.2B"));
+    QCOMPARE(componentObject->property("text").toString(), QString("1.2"));
 
+    QVERIFY(componentObject->setProperty("text", "12345"));
+    QCOMPARE(componentObject->property("text").toString(), QString("123.45"));
+
+    QVERIFY(componentObject->setProperty("text", "123456"));
+    QCOMPARE(componentObject->property("text").toString(), QString("123.456"));
+
+    QVERIFY(componentObject->setProperty("text", "1234567"));
+    QCOMPARE(componentObject->property("text").toString(), QString("123.456"));
+
+    QVERIFY(componentObject->setProperty("text", "....."));
+    QCOMPARE(componentObject->property("text").toString(), QString("."));
+
+    QVERIFY(componentObject->setProperty("inputMask", QString("D0.AA.XX.AA.00;_")));
+    QVERIFY(componentObject->setProperty("text", QString("0!P3")));
+    QCOMPARE(componentObject->property("text").toString(), QString("0..!P..3"));
+
+    QVERIFY(componentObject->setProperty("text", "Sometext"));
+    QCOMPARE(componentObject->property("text").toString(), QString(".So.me.te."));
+
+    QVERIFY(componentObject->setProperty("inputMask", ">AAAA"));
+    QVERIFY(componentObject->setProperty("text", QString("abcd")));
+    QCOMPARE(componentObject->property("text").toString(), QString("ABCD"));
+
+    QVERIFY(componentObject->setProperty("text", QString("12Ab")));
+    QCOMPARE(componentObject->property("text").toString(), QString("AB"));
+
+    QVERIFY(componentObject->setProperty("inputMask", QString("#9999")));
+    QVERIFY(componentObject->setProperty("text", "Sometext"));
+    QCOMPARE(componentObject->property("text").toString(), QString(""));
+
+    QVERIFY(componentObject->setProperty("text", "4564"));
+    QCOMPARE(componentObject->property("text").toString(), QString("4564"));
+
+    QVERIFY(componentObject->setProperty("text", "-4564"));
+    QCOMPARE(componentObject->property("text").toString(), QString("-4564"));
+
+    // reset mask, in order to not mess around with the other tests
+    QVERIFY(componentObject->setProperty("inputMask", ""));
 }
 
 void tst_quickcomponentstextfield::selectedText()
