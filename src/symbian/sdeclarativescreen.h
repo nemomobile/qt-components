@@ -38,14 +38,14 @@ class SDeclarativeScreen : public QObject
     Q_PROPERTY(Orientation orientation READ orientation WRITE setOrientation NOTIFY orientationChanged FINAL)
     Q_PROPERTY(QString orientationString READ orientationString NOTIFY orientationChanged FINAL)
 
-    Q_PROPERTY(int width READ width NOTIFY displayChanged )
-    Q_PROPERTY(int height READ height NOTIFY displayChanged )
+    Q_PROPERTY(int width READ width NOTIFY displayChanged)
+    Q_PROPERTY(int height READ height NOTIFY displayChanged)
     Q_PROPERTY(int rotation READ rotation NOTIFY orientationChanged FINAL)
 
-    Q_PROPERTY(qreal ppi READ ppi NOTIFY displayChanged )
-    Q_PROPERTY(qreal ppmm READ ppmm NOTIFY displayChanged )
-    Q_PROPERTY(qreal unit READ unit NOTIFY displayChanged )
-    Q_PROPERTY(QSizeF physicalSize READ physicalSize NOTIFY displayChanged )
+    Q_PROPERTY(qreal ppi READ ppi NOTIFY displayChanged)
+    Q_PROPERTY(qreal ppmm READ ppmm NOTIFY displayChanged)
+    Q_PROPERTY(qreal unit READ unit NOTIFY displayChanged)
+    Q_PROPERTY(QSizeF physicalSize READ physicalSize NOTIFY displayChanged)
 
     Q_PROPERTY(bool minimized READ isMinimized WRITE setMinimized NOTIFY minimizedChanged FINAL)
 
@@ -92,8 +92,10 @@ protected:
     QScopedPointer<SDeclarativeScreenPrivate> d_ptr;
 
 private:
-    Q_PRIVATE_SLOT(d_func(), void _q_updateScreenSize(const QSize&))
-    Q_PRIVATE_SLOT(d_func(), void _q_initView(const QSize&))
+    Q_PRIVATE_SLOT(d_func(), void _q_updateScreenSize(const QSize &))
+    Q_PRIVATE_SLOT(d_func(), void _q_initView(const QSize &))
+    Q_PRIVATE_SLOT(d_func(), void _q_desktopResized(int))
+
     Q_DISABLE_COPY(SDeclarativeScreen)
     Q_DECLARE_PRIVATE(SDeclarativeScreen)
 };

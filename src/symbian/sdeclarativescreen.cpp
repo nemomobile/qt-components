@@ -28,6 +28,7 @@
 #include "sdeclarativescreen_p.h"
 #include <QApplication>
 #include <QResizeEvent>
+#include <QDesktopWidget>
 
 #ifdef Q_OS_SYMBIAN
 #include <displaylayoutmetrics.cdl.h>
@@ -47,17 +48,18 @@ static const qreal DEFAULT_UNIT = 6.75;
 static const int DEFAULT_WIDTH = 360;
 static const int DEFAULT_HEIGHT = 640;
 
-SDeclarativeScreenPrivate::SDeclarativeScreenPrivate(SDeclarativeScreen *qq)
-    : q_ptr(qq)
-    ,orientation(SDeclarativeScreen::Automatic)
-    ,ppi(DEFAULT_PPI)
-    ,unit(DEFAULT_UNIT)
-    ,screenSize()
-    ,settingDisplay(false)
+SDeclarativeScreenPrivate::SDeclarativeScreenPrivate(SDeclarativeScreen *qq) :
+    q_ptr(qq),
+    orientation(SDeclarativeScreen::Automatic),
+    ppi(DEFAULT_PPI),
+    unit(DEFAULT_UNIT),
+    screenSize(),
+    settingDisplay(false)
 {
-
     Q_Q(SDeclarativeScreen);
 #ifdef Q_OS_SYMBIAN
+    Q_UNUSED(DEFAULT_WIDTH)
+    Q_UNUSED(DEFAULT_HEIGHT)
     QSize initScreenSize = currentScreenSize();
 #ifndef __WINS__
     int twipsHor(0);
@@ -66,7 +68,7 @@ SDeclarativeScreenPrivate::SDeclarativeScreenPrivate(SDeclarativeScreen *qq)
     if (HAL::Get(HALData::EDisplayXTwips, twipsHor) == KErrNone
         && HAL::Get(HALData::EDisplayYTwips, twipsVer) == KErrNone) {
         ppi = 0.5 * ((initScreenSize.width() / (twipsHor / DEFAULT_TWIPS_PER_INCH)) +
-                     (initScreenSize.height() /(twipsVer / DEFAULT_TWIPS_PER_INCH)));
+                     (initScreenSize.height() / (twipsVer / DEFAULT_TWIPS_PER_INCH)));
     }
 #endif // __WINS__
     unit = Display_Layout_Metrics::UnitValue();
@@ -121,14 +123,17 @@ void SDeclarativeScreenPrivate::_q_initView(const QSize &size)
     if (!gv) {
         QWidgetList widgetList = QApplication::allWidgets();
         foreach (QWidget *w, widgetList) {
-            QGraphicsView *graphicsView = qobject_cast<QGraphicsView*>(w);
+            QGraphicsView *graphicsView = qobject_cast<QGraphicsView *>(w);
             if (graphicsView) {
                 gv = graphicsView;
-                gv->installEventFilter(q);
+
 #ifndef Q_OS_SYMBIAN
-                // emulate the resizing done by the system
+                // For resizing in desktop
+                gv->installEventFilter(q);
+                // Emulate the resizing done by the system
                 gv->resize(adjustedSize(size, orientation));
 #else
+                q->connect(QApplication::desktop(), SIGNAL(resized(int)), SLOT(_q_desktopResized(int)));
                 gv->setSceneRect(0, 0, gv->width(), gv->height());
                 QMetaObject::invokeMethod(q, "_q_updateScreenSize", Qt::QueuedConnection, Q_ARG(QSize, size));
 #endif
@@ -136,6 +141,23 @@ void SDeclarativeScreenPrivate::_q_initView(const QSize &size)
             }
         }
     }
+}
+
+void SDeclarativeScreenPrivate::_q_desktopResized(int screen)
+{
+    Q_UNUSED(screen)
+
+#ifdef Q_OS_SYMBIAN
+    if (screen == QApplication::desktop()->primaryScreen()) {
+        QSize current = currentScreenSize();
+
+        if (gv) {
+            gv->resize(current);
+            gv->setSceneRect(0, 0, current.width(), current.height());
+        }
+        _q_updateScreenSize(current);
+    }
+#endif
 }
 
 bool SDeclarativeScreenPrivate::isLandscapeScreen() const
@@ -162,10 +184,8 @@ QSize SDeclarativeScreenPrivate::adjustedSize(const QSize &size, SDeclarativeScr
     int shortEdge = qMin(size.width(), size.height());
     int longEdge = qMax(size.width(), size.height());
     QSize newSize(shortEdge, longEdge);
-    if (o == SDeclarativeScreen::Landscape
-        || o == SDeclarativeScreen::LandscapeInverted) {
+    if (o == SDeclarativeScreen::Landscape || o == SDeclarativeScreen::LandscapeInverted)
         newSize.transpose();
-    }
     return newSize;
 }
 
@@ -222,12 +242,10 @@ void SDeclarativeScreen::setOrientation(Orientation orientation)
         emit orientationChanged();
         return;
     }
-    QSize newSize(d->adjustedSize(d->screenSize,orientation));
+    QSize newSize(d->adjustedSize(d->screenSize, orientation));
     if (newSize != d->screenSize) {
-        if (d->gv) {
-            // emulate the resizing done by the system
-            d->gv->resize(newSize);
-        }
+        if (d->gv)
+            d->gv->resize(newSize); // emulate the resizing done by the system
     }
 #endif
 }
@@ -324,10 +342,8 @@ void SDeclarativeScreen::setDisplay(const QSize &screenSize, qreal ppi, qreal un
     d->settingDisplay = true;
     d->ppi = ppi;
     d->unit = unit;
-    if (d->gv) {
-        // emulate the resizing done by the system
-        d->gv->resize(screenSize);
-    }
+    if (d->gv)
+        d->gv->resize(screenSize); // emulate the resizing done by the system
     emit displayChanged();
     d->settingDisplay = false;
 #endif
@@ -343,10 +359,11 @@ bool SDeclarativeScreen::eventFilter(QObject *obj, QEvent *event)
         if (d->gv)
             d->gv->setSceneRect(0, 0, d->gv->width(), d->gv->height());
 
-        QMetaObject::invokeMethod(this, "_q_updateScreenSize", Q_ARG(QSize, resizeEvent->size()));
+        d->_q_updateScreenSize(resizeEvent->size());
         return false;
     } else {
         return QObject::eventFilter(obj, event);
     }
 }
+
 #include "moc_sdeclarativescreen.cpp"

@@ -39,8 +39,9 @@ public:
     ~SDeclarativeScreenPrivate();
 
     void updateOrientationAngle();
-    void _q_updateScreenSize(const QSize&);
-    void _q_initView(const QSize&);
+    void _q_updateScreenSize(const QSize &);
+    void _q_initView(const QSize &);
+    void _q_desktopResized(int);
     bool isLandscapeScreen() const;
     QSize currentScreenSize() const;
     QSize adjustedSize(const QSize &size, SDeclarativeScreen::Orientation orientation) const;
