@@ -199,12 +199,16 @@ void tst_quickcomponentstextfield::selectedText()
 void tst_quickcomponentstextfield::selectionStart()
 {
     componentObject->setProperty("text", "Good morning");
-    QDeclarativeExpression *expr = new QDeclarativeExpression(engine->rootContext(), componentObject, "select(5,11);");
-    expr->evaluate();
-    if (expr->hasError())
-        qDebug() << expr->error();
-    QVERIFY( !expr->hasError() );
-    QEXPECT_FAIL("", "Not yet able to verify text selection, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-322", Continue);
+
+    int methodIndex = componentObject->metaObject()->indexOfMethod("select(QVariant,QVariant)");
+    QMetaMethod method = componentObject->metaObject()->method(methodIndex);
+    QVERIFY(method.invoke(componentObject, Qt::DirectConnection, Q_ARG(QVariant, 0), Q_ARG(QVariant, 6)));
+    QCOMPARE( componentObject->property("selectionStart").toInt(), 0 );
+
+    QVERIFY(method.invoke(componentObject, Qt::DirectConnection, Q_ARG(QVariant, 3), Q_ARG(QVariant, 6)));
+    QCOMPARE( componentObject->property("selectionStart").toInt(), 3 );
+
+    QVERIFY(method.invoke(componentObject, Qt::DirectConnection, Q_ARG(QVariant, 5), Q_ARG(QVariant, 6)));
     QCOMPARE( componentObject->property("selectionStart").toInt(), 5 );
 }
 
