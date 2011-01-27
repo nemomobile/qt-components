@@ -718,35 +718,48 @@ QVariant SStyleWrapperPrivate::radioButtonProperty(const QString &propertyName) 
 {
     if (propertyName == QLatin1String("iconName")) {
         if (mode == QLatin1String("checked") || mode == QLatin1String("pressed"))
-            return QLatin1String("qtg_small_radio_selected");
-        else if (mode == QLatin1String("default"))
-            return QLatin1String("qtg_small_radio_unselected");
+            return imagePath(QLatin1String("qtg_small_radio_selected"));
+        else if (mode == QLatin1String("normal"))
+            return imagePath(QLatin1String("qtg_small_radio_unselected"));
         else if (mode == QLatin1String("focused"))
-            return QLatin1String("qtg_small_radio_unselected_highlight");
-        else if (mode == QLatin1String("checkedanddisabled"))
-            return QLatin1String("qtg_small_radio_selected_disabled");
-        else if (mode == QLatin1String("checkedandfocused"))
-            return QLatin1String("qtg_small_radio_selected_highlight");
-        else // disabled
-            return QLatin1String("qtg_small_radio_unselected_disabled");
+            return imagePath(QLatin1String("qtg_small_radio_unselected_highlight"));
+        else if (mode == QLatin1String("checkedAndDisabled"))
+            return imagePath(QLatin1String("qtg_small_radio_selected_disabled"));
+        else if (mode == QLatin1String("checkedAndFocused"))
+            return imagePath(QLatin1String("qtg_small_radio_selected_highlight"));
+        else
+            return imagePath(QLatin1String("qtg_small_radio_unselected_disabled"));
     }
 
     if (propertyName == QLatin1String("font"))
         return fetchFont(SStyleWrapper::Primary, fetchLayoutParameter(QLatin1String("param-text-height-secondary")));
 
-    // TODO: popup list item colors are not handled separately yet, popup item background missing
     if (propertyName == QLatin1String("textColor")) {
         if (mode == QLatin1String("pressed"))
             return fetchThemeColor(QLatin1String("qtc_list_item_pressed"));
-        else if (mode == QLatin1String("focused") || mode == QLatin1String("checkedandfocused"))
+        else if (mode == QLatin1String("focused") || mode == QLatin1String("checkedAndFocused"))
             return fetchThemeColor(QLatin1String("qtc_list_item_highlight"));
-        else if (mode == QLatin1String("disabled") || mode == QLatin1String("checkedanddisabled"))
+        else if (mode == QLatin1String("disabled") || mode == QLatin1String("checkedAndDisabled"))
             return fetchThemeColor(QLatin1String("qtc_list_item_disabled"));
         else
             return fetchThemeColor(QLatin1String("qtc_list_item_title_normal"));
     }
 
-    if (propertyName == QLatin1String("paddingLeft"))
+    if (propertyName == QLatin1String("frameName")) {
+        if (mode == QLatin1String("pressed"))
+            return QLatin1String("qtg_fr_list_pressed");
+        else if (mode == QLatin1String("focused") || mode == QLatin1String("checkedAndFocused"))
+            return QLatin1String("qtg_fr_list_highlight");
+        else if (mode == QLatin1String("disabled") || mode == QLatin1String("checkedAndDisabled"))
+            return QLatin1String("qtg_fr_list_disabled");
+        else
+            return QLatin1String("qtg_fr_list_normal");
+    }
+
+    if (propertyName == QLatin1String("frameType"))
+        return QVariant(SDeclarativeFrame::NinePieces);
+
+    if (propertyName == QLatin1String("spacing"))
         return fetchLayoutParameter(QLatin1String("param-margin-gene-middle-horizontal"));
 
     if (propertyName == QLatin1String("marginLeft"))

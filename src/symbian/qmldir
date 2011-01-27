@@ -9,6 +9,7 @@ ListItemText 1.0 ListItemText.qml
 ObjectMenu 1.0 ObjectMenu.qml
 Page 1.0 Page.qml
 ProgressBar 1.0 ProgressBar.qml
+RadioButton 1.0 RadioButton.qml
 ScrollBar 1.0 ScrollBar.qml
 ScrollDecorator 1.0 ScrollDecorator.qml
 Slider 1.0 Slider.qml

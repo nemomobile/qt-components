@@ -37,6 +37,7 @@ QML_FILES = \
     ObjectMenu.qml \
     Page.qml \
     ProgressBar.qml \
+    RadioButton.qml \
     ScrollBar.qml \
     ScrollDecorator.qml \
     Slider.qml \
