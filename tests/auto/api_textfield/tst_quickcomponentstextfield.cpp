@@ -115,6 +115,8 @@ void tst_quickcomponentstextfield::readOnly()
     QVERIFY( componentObject->setProperty("text", "I just changed the text") );
     QEXPECT_FAIL("", "Not yet guarded by readOnly property, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-318", Continue);
     QVERIFY( componentObject->property("text").toString() != QString("I just changed the text"));
+    // reset readOnly, in order to not mess around with the other tests
+    QVERIFY( componentObject->setProperty("readOnly", false) );
 }
 
 void tst_quickcomponentstextfield::echoMode()
