@@ -215,13 +215,21 @@ void tst_quickcomponentstextfield::selectionStart()
 void tst_quickcomponentstextfield::selectionEnd()
 {
     componentObject->setProperty("text", "Good morning");
-    QDeclarativeExpression *expr = new QDeclarativeExpression(engine->rootContext(), componentObject, "select(5,11);");
-    expr->evaluate();
-    if (expr->hasError())
-        qDebug() << expr->error();
-    QVERIFY( !expr->hasError() );
-    QEXPECT_FAIL("", "Not yet able to verify text selection, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-322", Continue);
-    QCOMPARE( componentObject->property("selectionEnd").toInt(), 11 );
+
+    int methodIndex = componentObject->metaObject()->indexOfMethod("select(QVariant,QVariant)");
+    QMetaMethod method = componentObject->metaObject()->method(methodIndex);
+    QVERIFY(method.invoke(componentObject, Qt::DirectConnection, Q_ARG(QVariant, 0), Q_ARG(QVariant, 6)));
+    QCOMPARE( componentObject->property("selectionEnd").toInt(), 6 );
+
+    QVERIFY(method.invoke(componentObject, Qt::DirectConnection, Q_ARG(QVariant, 3), Q_ARG(QVariant, 4)));
+    QCOMPARE( componentObject->property("selectionEnd").toInt(), 4 );
+
+    // when selection range is higher than limit, it stays unchanged
+    QVERIFY(method.invoke(componentObject, Qt::DirectConnection, Q_ARG(QVariant, 3), Q_ARG(QVariant, 100)));
+    QCOMPARE( componentObject->property("selectionEnd").toInt(), 4 );
+
+    QVERIFY(method.invoke(componentObject, Qt::DirectConnection, Q_ARG(QVariant, 5), Q_ARG(QVariant, 12)));
+    QCOMPARE( componentObject->property("selectionEnd").toInt(), 12 );
 }
 
 void tst_quickcomponentstextfield::text()
