@@ -36,6 +36,8 @@ QML_FILES = \
     Menu.qml \
     ObjectMenu.qml \
     Page.qml \
+    PageStack.js \
+    PageStack.qml \
     ProgressBar.qml \
     RadioButton.qml \
     ScrollBar.qml \

@@ -25,24 +25,35 @@
 ****************************************************************************/
 
 import Qt 4.7
+import com.nokia.symbian 1.0
 
 Item {
     id: root
 
-    // Common Public API
-    signal activating
-    signal activated
-    signal deactivating
-    signal deactivated
+    // The status of the page. One of the following:
+    //      Symbian.PageInactive - the page is not visible
+    //      Symbian.PageActivating - the page is transitioning into becoming the active page
+    //      Symbian.PageActive - the page is the current active page
+    //      Symbian.PageDeactivating - the page is transitioning into becoming inactive
+    property int status: Symbian.PageInactive
 
-    property Item tools: null
+    property PageStack pageStack
 
     property string title
 
-    width: parent ? parent.width : 0
-    height: parent ? parent.height : 0
-
     visible: false
+
+    width: visible && parent ? parent.width : internal.previousWidth
+    height: visible && parent ? parent.height : internal.previousHeight
+
+    onWidthChanged: internal.previousWidth = visible ? width : internal.previousWidth
+    onHeightChanged: internal.previousHeight = visible ? height : internal.previousHeight
+
+    QtObject {
+        id: internal
+        property int previousWidth: 0
+        property int previousHeight: 0
+    }
 
     Rectangle {
         anchors.fill: parent

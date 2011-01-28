@@ -37,11 +37,16 @@ class SDeclarative : public QObject
     Q_OBJECT
     Q_PROPERTY(InteractionMode listInteractionMode READ listInteractionMode WRITE setListInteractionMode NOTIFY listInteractionModeChanged FINAL)
 
-    Q_ENUMS(InteractionMode ImageSize ScrollBarVisibility)
+    Q_ENUMS(InteractionMode ImageSize ScrollBarVisibility PageStatus)
 
 public:
     SDeclarative(QObject *parent = 0);
     virtual ~SDeclarative();
+
+    enum InteractionMode {
+        TouchInteraction,
+        KeyNavigation
+    };
 
     enum ImageSize {
         Undefined = 0,
@@ -50,15 +55,18 @@ public:
         Large,
         ImagePortrait
     };
+
     // No duplicate prefix naming because enum values are only visible via qml
     enum ScrollBarVisibility {
         ScrollBarWhenNeeded = 0,
         ScrollBarWhenScrolling
     };
 
-    enum InteractionMode {
-        TouchInteraction,
-        KeyNavigation
+    enum PageStatus {
+        PageInactive,
+        PageActivating,
+        PageActive,
+        PageDeactivating
     };
 
     static inline QString resolveIconFileName(const QString &iconName)
