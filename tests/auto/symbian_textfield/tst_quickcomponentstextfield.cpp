@@ -23,6 +23,7 @@
 ** Nokia at qt-info@nokia.com.
 **
 ****************************************************************************/
+
 #include <QtTest/QtTest>
 #include <QGraphicsObject>
 #include "tst_quickcomponentstest.h"
