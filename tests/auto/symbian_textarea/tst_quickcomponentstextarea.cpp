@@ -100,7 +100,7 @@ void tst_quickcomponentstextarea::defaultPropertyValues()
 
     // Font
     property = textArea->property("font");
-    QCOMPARE(property.toString(), QString("Nokia Sans,-1,16,5,50,0,0,0,0,0"));
+    QCOMPARE(property.toString(), QString("Nokia Sans,-1,14,5,50,0,0,0,0,0"));
 
     // CursorPosition
     property = textArea->property("cursorPosition");

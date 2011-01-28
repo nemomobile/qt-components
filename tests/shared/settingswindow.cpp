@@ -46,32 +46,31 @@ struct DisplayProfile {
     int resolutionWidth;
     int resolutionHeight;
     qreal ppiValue;
-    qreal unitValue;
 };
 
 // These are for desktop use only, do not alter the order of the array!
 static const DisplayProfile displayProfilesArray[] = {
     // ~3.47" NHD
-    {"NHD Portrait", 360, 640, 211.7, 6.75},
-    {"NHD Landscape", 640, 360, 211.7, 6.75},
+    {"NHD Portrait", 360, 640, 211.7},
+    {"NHD Landscape", 640, 360, 211.7},
     // 3.2" NHD
-    //{"NHD Portrait", 360, 640, 229, 6.7},
-    //{"NHD Landscape", 640, 360, 229, 6.7},
+    //{"NHD Portrait", 360, 640, 229},
+    //{"NHD Landscape", 640, 360, 229},
     // ~2.46" VGA
-    {"VGA Portrait", 480, 640, 325.6, 9.2},
-    {"VGA Landscape", 640, 480, 325.6, 9.2},
+    {"VGA Portrait", 480, 640, 325.6},
+    {"VGA Landscape", 640, 480, 325.6},
     // 3.2" VGA
-    //{"VGA Portrait", 480, 640, 250, 6.2},
-    //{"VGA Landscape", 640, 480, 250, 6.2},
+    //{"VGA Portrait", 480, 640, 250},
+    //{"VGA Landscape", 640, 480, 250},
     // 3.2" HVGA
-    {"HVGA Portrait", 320, 480, 180, 5.3},
-    {"HVGA Landscape", 480, 320, 180, 5.3},
+    {"HVGA Portrait", 320, 480, 180},
+    {"HVGA Landscape", 480, 320, 180},
     // 4.0" NHD
-    {"NHD Portrait", 360, 640, 183.6, 5.42},
-    {"NHD Landscape", 640, 360, 183.6, 5.42},
+    {"NHD Portrait", 360, 640, 183.6},
+    {"NHD Landscape", 640, 360, 183.6},
     // 4.0" WVGA
-    {"WVGA Portrait", 480, 864, 247.1, 7.27},
-    {"WVGA Landscape", 864, 480, 247.1, 7.27}
+    {"WVGA Portrait", 480, 864, 247.1},
+    {"WVGA Landscape", 864, 480, 247.1}
 };
 
 static const int displayProfilesCount = sizeof(displayProfilesArray) / sizeof(DisplayProfile);
@@ -130,11 +129,6 @@ SettingsWindow::SettingsWindow(QDeclarativeView *view)
     resolutionGroup->setLayout(resolutionLayout);
     boxLayout->addWidget(resolutionGroup);
 
-    unitLineEdit = new QLineEdit(this);
-    connect(unitLineEdit, SIGNAL(textEdited(QString)), this, SLOT(userEditedDisplayValues()));
-    connect(unitLineEdit, SIGNAL(editingFinished()), this, SLOT(userEditingFinished()));
-    resolutionLayout->addRow(tr("&Unit:"), unitLineEdit);
-
     ppiLineEdit = new QLineEdit(this);
     connect(ppiLineEdit, SIGNAL(textEdited(QString)), this, SLOT(userEditedDisplayValues()));
     connect(ppiLineEdit, SIGNAL(editingFinished()), this, SLOT(userEditingFinished()));
@@ -176,8 +170,7 @@ int SettingsWindow::activeDisplayProfile()
 
         if (profile.resolutionWidth == screen->property("width").value<int>()
             && profile.resolutionHeight == screen->property("height").value<int>()
-            && qFuzzyCompare(profile.ppiValue, screen->property("ppi").value<qreal>())
-            && qFuzzyCompare(profile.unitValue, screen->property("unit").value<qreal>())) {
+            && qFuzzyCompare(profile.ppiValue, screen->property("ppi").value<qreal>())) {
             return i;
         }
     }
@@ -196,8 +189,7 @@ void SettingsWindow::changeResolution(int index)
         DisplayProfile profile = displayProfilesArray[index];
         QMetaObject::invokeMethod(screen, "setDisplay",
                                   Q_ARG(QSize, QSize(profile.resolutionWidth, profile.resolutionHeight)),
-                                  Q_ARG(qreal, profile.ppiValue),
-                                  Q_ARG(qreal, profile.unitValue));
+                                  Q_ARG(qreal, profile.ppiValue));
     }
 }
 
@@ -207,12 +199,10 @@ void SettingsWindow::displayChanged()
 
     const int newWidthValue = screen->property("width").value<int>();
     const int newHeightValue = screen->property("height").value<int>();
-    const qreal newUnitValue = screen->property("unit").value<qreal>();
     const qreal newPpiValue = screen->property("ppi").value<qreal>();
 
     resolutionComboBox->setCurrentIndex(activeDisplayProfile());
 
-    unitLineEdit->setText(QString::number(newUnitValue));
     ppiLineEdit->setText(QString::number(newPpiValue, 'f', 2));
 
     qreal diagonal = qSqrt(static_cast<qreal>(newWidthValue * newWidthValue + newHeightValue * newHeightValue)); // in "pixels"
@@ -253,7 +243,6 @@ void SettingsWindow::userEditingFinished()
 
     QMetaObject::invokeMethod(screen, "setDisplay",
                               Q_ARG(QSize, QSize(widthSpinBox->value(), heightSpinBox->value())),
-                              Q_ARG(qreal, ppi),
-                              Q_ARG(qreal, unitLineEdit->text().toDouble()));
+                              Q_ARG(qreal, ppi));
 
 }

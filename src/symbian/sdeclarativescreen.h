@@ -44,7 +44,6 @@ class SDeclarativeScreen : public QObject
 
     Q_PROPERTY(qreal ppi READ ppi NOTIFY displayChanged)
     Q_PROPERTY(qreal ppmm READ ppmm NOTIFY displayChanged)
-    Q_PROPERTY(qreal unit READ unit NOTIFY displayChanged)
     Q_PROPERTY(QSizeF physicalSize READ physicalSize NOTIFY displayChanged)
 
     Q_PROPERTY(bool minimized READ isMinimized WRITE setMinimized NOTIFY minimizedChanged FINAL)
@@ -77,10 +76,9 @@ public:
 
     qreal ppi() const;
     qreal ppmm() const;
-    qreal unit() const;
     QSizeF physicalSize() const;
 
-    Q_INVOKABLE void setDisplay(const QSize &screenSize, qreal ppi, qreal unit);
+    Q_INVOKABLE void setDisplay(const QSize &screenSize, qreal ppi);
 
 Q_SIGNALS:
     void orientationChanged();

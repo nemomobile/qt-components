@@ -48,6 +48,8 @@
 #include <QDebug>
 #endif
 
+static const qreal DEFAULT_DP_PER_PPI = 160.0;
+
 class SDeclarativeWindowDecorationPrivate
 {
     Q_DECLARE_PUBLIC(SDeclarativeWindowDecoration)
@@ -182,20 +184,20 @@ void SDeclarativeWindowDecorationPrivate::_q_doUpdateFullScreen()
         q->setTopDecorationHeight(0);
         q->setBottomDecorationHeight(0);
     } else {
-        const qreal unit = screen->property("unit").value<qreal>();
+        const qreal dpValue = screen->property("ppi").value<qreal>() / DEFAULT_DP_PER_PPI;
         // Emulate Avkon decorator sizes in desktop.
         // TODO: This will be removed when decorators are done with QML
         //
-        // Magic numbers come from reference device and are calculated using 6.75 as a unit value:
+        // Magic numbers come from 212 ppi reference device:
         //
         //                  Portrait    Landscape
         // Top decoration:      45          92
-        // Magic number:        6.7         13.6
+        // -> "dp"              34.0        69.5
         //
         // Bottom decoration:   45          61
-        // Magic number:        6.7         9.0
-        q->setTopDecorationHeight(q->isLandscape() ? qRound(6.7 * unit) : qRound(13.6 * unit));
-        q->setBottomDecorationHeight(q->isLandscape() ? qRound(6.7 * unit) : qRound(9.0 * unit));
+        // -> "dp"              34.0        46.0
+        q->setTopDecorationHeight(q->isLandscape() ? qRound(34.0 * dpValue) : qRound(69.5 * dpValue));
+        q->setBottomDecorationHeight(q->isLandscape() ? qRound(34.0 * dpValue) : qRound(46.0 * dpValue));
     }
     updateCba();
     q->update();

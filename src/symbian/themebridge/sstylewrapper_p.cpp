@@ -47,6 +47,8 @@
 #include <eikappui.h>
 #endif
 
+static const qreal DEFAULT_DP_PER_PPI = 160.0;
+
 // Use static variables. There are a lot of SStyleWrapper instances
 // which like to share the same data.
 struct SStyleWrapperData
@@ -73,7 +75,7 @@ static void loadVariables(const QString &filename)
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QTextStream in(&file);
 
-        const qreal unitValue = styleData()->screen->property("unit").value<qreal>();
+        const qreal dpValue = styleData()->screen->property("ppi").value<qreal>() / DEFAULT_DP_PER_PPI;
         while (!in.atEnd()) {
             QString line = in.readLine().trimmed();
 
@@ -104,15 +106,15 @@ static void loadVariables(const QString &filename)
                 int endIndex = line.indexOf(QLatin1Char(';'));
                 value = line.mid(startIndex + 1, endIndex - startIndex - 1).trimmed();
 
-                int unitIndex = value.indexOf(QLatin1String("un"));
-                if (unitIndex != -1) {
-                    value = value.left(unitIndex);
+                int dpIndex = value.indexOf(QLatin1String("dp"));
+                if (dpIndex != -1) {
+                    value = value.left(dpIndex);
                 }
 
                 bool ok = false;
                 qreal valueInReal = (qreal)value.toDouble(&ok);
-                if (unitIndex != -1) {
-                    valueInReal *= unitValue;
+                if (dpIndex != -1) {
+                    valueInReal *= dpValue;
                 }
 
                 if (ok) {
@@ -308,7 +310,7 @@ void SStyleWrapperPrivate::initScreenPtr() const
     }
 
 #ifndef Q_OS_SYMBIAN
-    // Reloads the layout parameters when the unit value changes
+    // Reloads the layout parameters when the display changes
     // in symbian, the orientation switch does not result a "display change".
     if (styleData()->screen && !listeningDisplayChange) {
         QObject::connect(styleData()->screen, SIGNAL(displayChanged()), q, SLOT(_q_displayChanged()));

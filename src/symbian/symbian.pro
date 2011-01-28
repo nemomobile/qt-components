@@ -57,7 +57,6 @@ symbian {
     LIBS += -lws32
     LIBS += -lcone
     LIBS += -lapgrfx
-    LIBS += -lcdlengine
     LIBS += -leikcoctl
     LIBS += -leikcore
     LIBS += -lavkon

@@ -60,7 +60,7 @@ void tst_quickcomponentstextfield::defaultPropertyValues()
     QCOMPARE(textField->property("inputMethodHints").toInt(), int(Qt::ImhNone));
 
     QVERIFY(textField->property("font").isValid());
-    QCOMPARE(textField->property("font").toString(), QString("Nokia Sans,-1,16,5,50,0,0,0,0,0"));
+    QCOMPARE(textField->property("font").toString(), QString("Nokia Sans,-1,14,5,50,0,0,0,0,0"));
 
     QVERIFY(textField->property("cursorPosition").isValid());
 

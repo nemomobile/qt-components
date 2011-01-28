@@ -31,7 +31,6 @@
 #include <QDesktopWidget>
 
 #ifdef Q_OS_SYMBIAN
-#include <displaylayoutmetrics.cdl.h>
 #include <aknappui.h>
 #include <hal.h>
 #endif
@@ -44,7 +43,6 @@
 static const qreal DEFAULT_MM_PER_INCH = 25.4;
 static const qreal DEFAULT_TWIPS_PER_INCH = 1440.0;
 static const qreal DEFAULT_PPI = 211.7;
-static const qreal DEFAULT_UNIT = 6.75;
 static const int DEFAULT_WIDTH = 360;
 static const int DEFAULT_HEIGHT = 640;
 
@@ -52,7 +50,6 @@ SDeclarativeScreenPrivate::SDeclarativeScreenPrivate(SDeclarativeScreen *qq) :
     q_ptr(qq),
     orientation(SDeclarativeScreen::Automatic),
     ppi(DEFAULT_PPI),
-    unit(DEFAULT_UNIT),
     screenSize(),
     settingDisplay(false)
 {
@@ -71,7 +68,6 @@ SDeclarativeScreenPrivate::SDeclarativeScreenPrivate(SDeclarativeScreen *qq) :
                      (initScreenSize.height() / (twipsVer / DEFAULT_TWIPS_PER_INCH)));
     }
 #endif // __WINS__
-    unit = Display_Layout_Metrics::UnitValue();
 #else
     QSize initScreenSize = QSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 #endif // Q_OS_SYMBIAN
@@ -317,12 +313,6 @@ qreal SDeclarativeScreen::ppmm() const
     return d->ppi / DEFAULT_MM_PER_INCH;
 }
 
-qreal SDeclarativeScreen::unit() const
-{
-    Q_D(const SDeclarativeScreen);
-    return d->unit;
-}
-
 QSizeF SDeclarativeScreen::physicalSize() const
 {
     Q_D(const SDeclarativeScreen);
@@ -331,17 +321,15 @@ QSizeF SDeclarativeScreen::physicalSize() const
     return physicalSize;
 }
 
-void SDeclarativeScreen::setDisplay(const QSize &screenSize, qreal ppi, qreal unit)
+void SDeclarativeScreen::setDisplay(const QSize &screenSize, qreal ppi)
 {
 #ifdef Q_OS_SYMBIAN
     Q_UNUSED(screenSize);
     Q_UNUSED(ppi);
-    Q_UNUSED(unit);
 #else
     Q_D(SDeclarativeScreen);
     d->settingDisplay = true;
     d->ppi = ppi;
-    d->unit = unit;
     if (d->gv)
         d->gv->resize(screenSize); // emulate the resizing done by the system
     emit displayChanged();
