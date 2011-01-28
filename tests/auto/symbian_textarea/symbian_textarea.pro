@@ -1,6 +1,6 @@
 include (../../tests.pri)
 
-TARGET = tst_symbian_textfield
+TARGET = tst_symbian_textarea
 TEMPLATE = app
 QT += declarative
 
