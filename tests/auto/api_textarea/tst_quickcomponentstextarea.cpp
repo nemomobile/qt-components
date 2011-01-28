@@ -52,11 +52,11 @@ private slots:
     void selectionStart();
     void text();
     void textFormat();
-    void wrapMode();
     void copypaste();
     void cutpaste();
     void positionAt();
     void positionToRectangle();
+    void wrapMode();
 
 private:
     QObject *componentObject;
@@ -205,8 +205,41 @@ void tst_quickcomponentstextarea::textFormat()
 
 void tst_quickcomponentstextarea::wrapMode()
 {
-    QVERIFY( componentObject->setProperty("wrapMode", 0) );
-    QCOMPARE( componentObject->property("wrapMode").toInt(), 0 );
+    QVariant retVal;
+    const int wrap1[] = {6, 12, 22}, wrap3[] = {8, 15, 23};
+
+    QVERIFY(componentObject->setProperty("text", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+                                         "Pellentesque accumsan lorem ante, a accumsan risus. Ut vulputate "
+                                         "cursus ligula nec pretium. Suspendisse cursus scelerisque augue "
+                                         "ut egestas. Vestibulum ante ipsum primis in faucibus orci luctus "
+                                         "et ultrices posuere cubilia Curae"));
+
+    QVERIFY(componentObject->setProperty("wrapMode", 0));
+    for (int i = 0; i < 3; i++) {
+        QVERIFY(componentObject->setProperty("width", 100 + i * 50));
+        QVERIFY2(QMetaObject::invokeMethod(componentObject, "positionAt",
+                                           Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, 0), Q_ARG(QVariant, 20)),
+                 "Could not call positionAt");
+        QCOMPARE(retVal.toInt(), 284);
+    }
+
+    QVERIFY(componentObject->setProperty("wrapMode", 1));
+    for (int i = 0; i < 3; i++) {
+        QVERIFY(componentObject->setProperty("width", 100 + i * 50));
+        QVERIFY2(QMetaObject::invokeMethod(componentObject, "positionAt",
+                                           Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, 0), Q_ARG(QVariant, 20)),
+                 "Could not call positionAt");
+        QCOMPARE(retVal.toInt(), wrap1[i]);
+    }
+
+    QVERIFY(componentObject->setProperty("wrapMode", 3));
+    for (int i = 0; i < 3; i++) {
+        QVERIFY(componentObject->setProperty("width", 100 + i * 50));
+        QVERIFY2(QMetaObject::invokeMethod(componentObject, "positionAt",
+                                           Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, 0), Q_ARG(QVariant, 20)),
+                 "Could not call positionAt");
+        QCOMPARE(retVal.toInt(), wrap3[i]);
+    }
 }
 
 void tst_quickcomponentstextarea::copypaste()
