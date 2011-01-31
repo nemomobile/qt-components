@@ -805,14 +805,14 @@ QVariant SStyleWrapperPrivate::sliderProperty(const QString &propertyName) const
             return QLatin1String("qtg_fr_slider_v_frame_pressed");
     } else if (propertyName == QLatin1String("handleIcon")) {
         if (mode == QLatin1String("horizontal"))
-            return QLatin1String("qtg_graf_slider_h_handle_normal");
+            return imagePath(QLatin1String("qtg_graf_slider_h_handle_normal"));
         else
-            return QLatin1String("qtg_graf_slider_v_handle_normal");
+            return imagePath(QLatin1String("qtg_graf_slider_v_handle_normal"));
     } else if (propertyName == QLatin1String("handlePressed")) {
         if (mode == QLatin1String("horizontal"))
-            return QLatin1String("qtg_graf_slider_h_handle_pressed");
+            return imagePath(QLatin1String("qtg_graf_slider_h_handle_pressed"));
         else
-            return QLatin1String("qtg_graf_slider_v_handle_pressed");
+            return imagePath(QLatin1String("qtg_graf_slider_v_handle_pressed"));
     }
 
     // Sizes and measurements

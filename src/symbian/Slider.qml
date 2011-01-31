@@ -124,14 +124,14 @@ ImplicitSizeItem {
                 }
             }
 
-            Icon {
+            Image {
                 id: handle
                 objectName: "handle"
                 x: orientation == Qt.Horizontal ? model.position : 0
                 y: orientation == Qt.Horizontal ? 0 : model.position
 
-                height: style.current.get("handleHeight")
-                width: style.current.get("handleWidth")
+                sourceSize.height: style.current.get("handleHeight")
+                sourceSize.width: style.current.get("handleWidth")
 
                 anchors.verticalCenter: orientation == Qt.Horizontal ? parent.verticalCenter : undefined
                 anchors.horizontalCenter: orientation == Qt.Horizontal ? undefined : parent.horizontalCenter
@@ -140,11 +140,11 @@ ImplicitSizeItem {
                     State {
                         name: "Pressed"
                         when: handleMouseArea.pressed
-                        PropertyChanges { target: handle; iconName: style.current.get("handlePressed"); }
+                        PropertyChanges { target: handle; source: style.current.get("handlePressed"); }
                     }
                 ]
 
-                iconName: style.current.get("handleIcon")
+                source: style.current.get("handleIcon")
 
                 MouseArea {
                     id: handleMouseArea

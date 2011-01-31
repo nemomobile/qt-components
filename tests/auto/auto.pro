@@ -26,7 +26,7 @@ symbian3 {
     SUBDIRS += \
         api_button \
         api_checkbox \
-        #api_slider \
+        api_slider \
         #api_pagestack \
         api_progressbar \
         #api_scrolldecorator \ #TODO flickable property not aligned
