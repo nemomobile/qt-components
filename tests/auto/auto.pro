@@ -46,5 +46,6 @@ symbian3 {
         symbian_iconpool \
         symbian_imageprovider \
         symbian_textarea \
-        symbian_textfield
+        symbian_textfield \
+        symbian_tooltip #TODO not yet finalized
 }
