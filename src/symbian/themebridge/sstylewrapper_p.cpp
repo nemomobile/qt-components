@@ -582,9 +582,9 @@ QVariant SStyleWrapperPrivate::checkBoxProperty(const QString &propertyName) con
 
     if (propertyName == QLatin1String("iconName")) {
         if (mode == QLatin1String("selected"))
-            return QLatin1String("qtg_small_selected");
+            return imagePath(QLatin1String("qtg_small_selected"));
         else
-            return QLatin1String("qtg_small_unselected"); // Default
+            return imagePath(QLatin1String("qtg_small_unselected")); // Default
     }
 
     if (propertyName == QLatin1String("padding"))

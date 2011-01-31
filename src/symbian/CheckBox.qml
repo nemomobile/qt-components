@@ -55,13 +55,13 @@ ImplicitSizeItem {
     implicitWidth: style.current.get("iconWidth") + style.current.get("padding") + style.textWidth(label.text, label.font)
     implicitHeight: style.current.get("topMargin") + Math.max( style.current.get("iconHeight"), style.fontHeight(label.font) ) + style.current.get("bottomMargin")
 
-    Icon {
+    Image {
         id: contentIcon
-        iconName: style.current.get("iconName")
+        source: style.current.get("iconName")
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
-        width: style.current.get("iconWidth")
-        height: style.current.get("iconHeight")
+        sourceSize.width: style.current.get("iconWidth")
+        sourceSize.height: style.current.get("iconHeight")
     }
 
     Text {
