@@ -246,21 +246,40 @@ void tst_quickcomponentstextfield::text()
 
 void tst_quickcomponentstextfield::acceptableInput()
 {
-    QRegExpValidator* validator = new QRegExpValidator(QRegExp("-?\\d{1,3}"),this);
-    componentObject->setProperty("validator",QVariant::fromValue(validator));
+    // reset text
+    componentObject->setProperty("text", QString(""));
+
+    // acceptableInput should be true by default because no validator was set yet
+    QCOMPARE(componentObject->property("acceptableInput").toBool(), true);
+
+    // create and set the validator
+    QValidator *validator = new QRegExpValidator(QRegExp("-?\\d{1,3}"), 0);
+    componentObject->setProperty("validator", QVariant::fromValue(validator));
+
+    // check if we could setup the validator
+    QVariant tmpVariant = componentObject->property("validator");
+    QValidator *tmpValidator = tmpVariant.value<QValidator*>();
+    QCOMPARE(validator, tmpValidator);
+
+    // acceptableInput should be false just after the setup of the validator (with no text)
+    QCOMPARE(componentObject->property("acceptableInput").toBool(), false);
 
     // depending on validator, acceptable input should be true / false
     // set text that is allowed by the validator
-    QVERIFY( componentObject->setProperty("text", "-42") );
-    QCOMPARE( componentObject->property("acceptableInput").toBool(), true);
+    componentObject->setProperty("text", "-42");
+    QCOMPARE(componentObject->property("acceptableInput").toBool(), true);
 
-    QVERIFY( componentObject->setProperty("text", "128") );
-    QCOMPARE( componentObject->property("acceptableInput").toBool(), true);
+    componentObject->setProperty("text", "128");
+    QCOMPARE(componentObject->property("acceptableInput").toBool(), true);
 
     // make sure setting the text fails if validator fails
-    QVERIFY( componentObject->setProperty("text", "qwerasdfzxvc") );
-    QEXPECT_FAIL("", "Not yet able to verify validator failure, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-323", Continue);
-    QCOMPARE( componentObject->property("acceptableInput").toBool(), false);
+    componentObject->setProperty("text", "qwerasdfzxvc");
+    QCOMPARE(componentObject->property("acceptableInput").toBool(), false);
+
+    // reset the validator property to tests after this one are not affected
+    QValidator *reset = 0;
+    componentObject->setProperty("validator", QVariant::fromValue(reset));
+    QCOMPARE(componentObject->property("acceptableInput").toBool(), true);
 }
 
 void tst_quickcomponentstextfield::copyAndPaste()
@@ -445,6 +464,6 @@ void tst_quickcomponentstextfield::positionToRectangle()
 
 QTEST_MAIN(tst_quickcomponentstextfield)
 
-QML_DECLARE_TYPE(QRegExpValidator)
+QML_DECLARE_TYPE(QValidator)
 
 #include "tst_quickcomponentstextfield.moc"
