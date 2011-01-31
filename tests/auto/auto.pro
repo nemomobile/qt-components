@@ -45,6 +45,7 @@ symbian3 {
         symbian_framepool \
         symbian_iconpool \
         symbian_imageprovider \
+        symbian_radiobutton \
         symbian_slider \
         symbian_textarea \
         symbian_textfield \
