@@ -41,7 +41,7 @@ ImplicitSizeItem {
     property bool updateValueWhileDragging: true
 
     // Symbian specific
-    // TODO: property bool toolTipVisible: true
+    property bool toolTipVisible: true
     property alias inverted: model.inverted
 
     signal valueChanged(real value)
@@ -68,7 +68,6 @@ ImplicitSizeItem {
     Frame {
         id: track
         objectName: "track"
-        // TODO: property ToolTip toolTip
         property bool tapOnTrack: false
         property bool keysActive: false
 
@@ -166,7 +165,7 @@ ImplicitSizeItem {
                     onPositionChanged: {
                         if (updateValueWhileDragging) {
                             model.position = orientation == Qt.Horizontal ? handle.x : handle.y
-                            // TODO: updateToolTipPos()
+                            toolTip.position()
                         }
                     }
                     onReleased: {
@@ -181,29 +180,6 @@ ImplicitSizeItem {
                 interval: 750
                 onTriggered: track.keysActive = false
             }
-
-            /* TODO: ToolTip missing
-            states:  [
-                State {
-                    when: slider.pressed
-                    name: "Visible"
-                    StateChangeScript {
-                        script: {
-                            keyActivity.running = false
-                            if (!track.toolTip)
-                                track.toolTip = window.showToolTip(toolTip)
-                                updateToolTipPos()
-                        }
-                    }
-                },
-                State {
-                    when: !slider.pressed
-                    name: "Invisible"
-                    StateChangeScript {
-                        script: hideToolTip()
-                    }
-                }
-            ] */
         }
     }
 
@@ -211,38 +187,34 @@ ImplicitSizeItem {
         handleKeyEvent(event)
         track.keysActive = true
         keyActivity.restart()
-        // TODO: if (track.toolTip) updateToolTipPos()
+        toolTip.position()
     }
 
-    /* TODO: ToolTip missing
-    function hideToolTip() {
-        if (track.toolTip && toolTipVisible) {
-            track.toolTip.dismiss();
-            track.toolTip = null;
-        }
-    }
+    Component { id: toolTipComponent; ToolTip { text:  model.value } }
 
-    function updateToolTipPos() {
-        var point = null;
-        if (track.toolTip) {
+    Loader {
+        id:toolTip
+
+        property real spacing: style.current.get("toolTipSpacing")
+        sourceComponent: slider.pressed && toolTipVisible ? toolTipComponent : undefined
+        onLoaded: position()
+
+        function position() {
+            if (!toolTipVisible || status != Loader.Ready)
+                return
+
+            var point = null;
             if (orientation == Qt.Horizontal) {
-                point = window.mapFromItem(track, handle.x, 0);
-                track.toolTip.x = point.x;
-                track.toolTip.y = point.y - style.current.get("toolTipDistance") - track.toolTip.height;
+                point = slider.mapFromItem(track, handle.x, 0)
+                toolTip.item.x = point.x
+                toolTip.item.y = point.y - toolTip.spacing - toolTip.item.height
             } else {
-                point = window.mapFromItem(track, 0, handle.y);
-                track.toolTip.x = point.x - style.current.get("toolTipDistance") - track.toolTip.width;
-                track.toolTip.y = point.y;
+                point = slider.mapFromItem(track, 0, handle.y)
+                toolTip.item.x = point.x - toolTip.spacing - toolTip.item.width
+                toolTip.item.y = point.y
             }
         }
     }
-
-    Component {
-        id: toolTip
-        ToolTip {
-            text:  model.value
-        }
-    } */
 
     function handleKeyEvent(keyEvent) {
         if (orientation == Qt.Horizontal) {

@@ -852,7 +852,7 @@ QVariant SStyleWrapperPrivate::sliderProperty(const QString &propertyName) const
         return fetchLayoutParameter(QLatin1String("param-margin-gene-top"));
     } else if (propertyName == QLatin1String("marginBottom")) {
         return fetchLayoutParameter(QLatin1String("param-margin-gene-bottom"));
-    } else if (propertyName == QLatin1String("toolTipDistance")) {
+    } else if (propertyName == QLatin1String("toolTipSpacing")) {
         return 20; // TODO: get from layout
     }
 
