@@ -34,6 +34,7 @@ ImplicitSizeItem {
     property alias padding: paddingRectangle
     property real verticalSpacing: itemStyle.current.get("verticalSpacing")
     property real horizontalSpacing: itemStyle.current.get("horizontalSpacing")
+    property bool enabled: true
 
     signal clicked
     signal pressAndHold
@@ -61,6 +62,8 @@ ImplicitSizeItem {
                 return "pressed"
             else if (internal.state == "Focused")
                 return "focused"
+            else if (internal.state == "Disabled")
+                return "disabled"
             else
                 return "default"
         }
@@ -90,6 +93,7 @@ ImplicitSizeItem {
     MouseArea {
         id: mouseArea
         anchors.fill: parent
+        enabled: listItem.enabled
         onPressed: {
             symbian.listInteractionMode = Symbian.TouchInteraction
             internal.state = "Pressed"
@@ -113,9 +117,11 @@ ImplicitSizeItem {
     }
 
     Keys.onReleased: {
-        if (event.key == Qt.Key_Select || event.key == Qt.Key_Return) {
-            event.accepted = true
-            internal.state = "Focused"
+        if (listItem.enabled) {
+            if (event.key == Qt.Key_Select || event.key == Qt.Key_Return) {
+                event.accepted = true
+                internal.state = "Focused"
+            }
         }
     }
 
@@ -126,7 +132,8 @@ ImplicitSizeItem {
                 if (symbian.listInteractionMode != Symbian.KeyNavigation)
                     symbian.listInteractionMode = Symbian.KeyNavigation
                 else
-                    listItem.clicked()
+	            if (listItem.enabled)
+                        listItem.clicked()
                 event.accepted = true
                 break
             }
@@ -211,6 +218,10 @@ ImplicitSizeItem {
             listItem.pressAndHold()
         }
 
+        function disable() {
+            frameFader.opacity = 1
+        }
+
         function focus() {
             frameFader.opacity = 1
         }
@@ -218,6 +229,7 @@ ImplicitSizeItem {
         states: [
             State { name: "Pressed" },
             State { name: "PressAndHold" },
+            State { name: "Disabled"; when: !listItem.enabled },
             State { name: "" },
             State { name: "Focused"; when: (listItem.ListView.isCurrentItem &&
                 symbian.listInteractionMode == Symbian.KeyNavigation) }
@@ -236,6 +248,10 @@ ImplicitSizeItem {
             Transition {
                 to: ""
                 ScriptAction { script: internal.release() }
+            },
+            Transition {
+                to: "Disabled"
+                ScriptAction { script: internal.disable() }
             },
             Transition {
                 to: "Focused"

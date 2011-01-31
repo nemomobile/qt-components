@@ -457,8 +457,10 @@ QVariant SStyleWrapperPrivate::listItemProperty(const QString &propertyName) con
             return QLatin1String("qtg_fr_list_normal");
         if (mode == QLatin1String("pressed"))
             return QLatin1String("qtg_fr_list_pressed");
-        else if (mode == QLatin1String("focused"))
+        if (mode == QLatin1String("focused"))
             return QLatin1String("qtg_fr_list_highlight");
+        if (mode == QLatin1String("disabled"))
+            return QLatin1String("qtg_fr_list_disabled");
     }
 
     if (propertyName == QLatin1String("frameFaderType"))
