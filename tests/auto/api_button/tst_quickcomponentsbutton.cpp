@@ -103,7 +103,7 @@ void tst_quickcomponentsbutton::text()
 
 void tst_quickcomponentsbutton::iconSource()
 {
-    QCOMPARE(componentObject->property("iconSource").toString(),QString("logo.png"));
+    QCOMPARE(QFileInfo(componentObject->property("iconSource").toString()).fileName(),QString("logo.png"));
 }
 
 void tst_quickcomponentsbutton::clicked()

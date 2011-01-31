@@ -35,7 +35,7 @@ ImplicitSizeItem {
     property bool checkable: false
     property bool pressed: (internal.state == "Pressed" || internal.state == "PressAndHold") && mouseArea.containsMouse
     property alias text: label.text
-    property alias iconSource: contentIcon.iconName; // theme id or absolute filename
+    property alias iconSource: icon.source
 
     signal clicked
     signal released
@@ -53,11 +53,11 @@ ImplicitSizeItem {
     function calculateImplicitWidth() {
         var prefWidth = 20;
 
-        if (iconSource && text)
+        if (iconSource != "" && text)
             // leftMargin + iconWidth + padding + textWidth + rightMargin
             prefWidth = style.current.get("iconMarginLeft") + style.current.get("iconWidth") + style.current.get("textMarginLeftInner")
                         + style.textWidth(label.text, label.font) + style.current.get("textMarginRight");
-        else if (iconSource)
+        else if (iconSource != "")
             // leftMargin + iconWidth + rightMargin
             prefWidth = style.current.get("iconMarginLeft") + style.current.get("iconWidth") + style.current.get("iconMarginRight");
         else if (text)
@@ -70,9 +70,9 @@ ImplicitSizeItem {
     function calculateImplicitHeight() {
         var prefHeight = style.current.get("iconMarginTop") + style.current.get("iconMarginBottom");
 
-        if (iconSource && text)
+        if (iconSource != "" && text)
             prefHeight = prefHeight + Math.max(style.current.get("iconHeight"), style.fontHeight(label.font));
-        else if (iconSource)
+        else if (iconSource != "")
             prefHeight = prefHeight + style.current.get("iconHeight");
         else if (text)
             prefHeight = prefHeight + style.fontHeight(label.font);
@@ -199,20 +199,22 @@ ImplicitSizeItem {
         anchors.fill: parent
     }
 
-    Icon {
-        id: contentIcon
-        anchors.leftMargin: style.current.get("iconMarginLeft")
-        anchors.rightMargin: style.current.get("iconMarginRight")
-        anchors.topMargin: style.current.get("iconMarginTop")
-        anchors.bottomMargin: style.current.get("iconMarginBottom")
+    Image {
+        id: icon
+        source: button.iconSource
+        sourceSize.width : style.current.get("iconWidth")
+        sourceSize.height : style.current.get("iconHeight")
+        fillMode: Image.PreserveAspectFit
+        smooth: true
 
+        anchors.leftMargin : style.current.get("iconMarginLeft")
+        anchors.rightMargin : style.current.get("iconMarginRight")
+        anchors.topMargin : style.current.get("iconMarginTop")
+        anchors.bottomMargin : style.current.get("iconMarginBottom")
         anchors.left: parent.left
         anchors.right: text == "" ? parent.right : undefined
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-
-        width: style.current.get("iconWidth")
-        height: style.current.get("iconHeight")
     }
 
     Text {
@@ -221,7 +223,7 @@ ImplicitSizeItem {
         anchors.leftMargin: iconSource != "" ? style.current.get("textMarginLeftInner") : style.current.get("textMarginLeft")
         anchors.rightMargin: style.current.get("textMarginRight")
 
-        anchors.left: iconSource != "" ? contentIcon.right : parent.left
+        anchors.left: iconSource != "" ? icon.right : parent.left
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
 
