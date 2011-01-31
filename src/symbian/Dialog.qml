@@ -71,7 +71,7 @@ ImplicitSizeItem {
         id: internal
 
         property int animationDuration: 250
-        property Item appRoot: AppManager.getRoot()
+        property Item appRoot: AppManager.rootObject()
 
         function getTopPosition() {
             return style.current.get("appRectHeight") / 2 - internal.getHeight() / 2;

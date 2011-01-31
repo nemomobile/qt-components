@@ -54,7 +54,7 @@ ImplicitSizeItem {
         property int animationDurationLandscape: 120
         property int visibleItems: 0
         property variant popupObject: null
-        property Item applicationRoot: AppManager.getRoot()
+        property Item applicationRoot: AppManager.rootObject()
 
         function mapRootToApplicationRoot() {
             return mapToItem(applicationRoot, choiceList.x, choiceList.y)

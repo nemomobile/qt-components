@@ -24,11 +24,9 @@
 **
 ****************************************************************************/
 
-function getRoot() {
-    var next = parent;
-    if (next != null) {
-        while (next.parent)
-            next = next.parent;
-    }
-    return next;
+function rootObject() {
+    var next = parent
+    while (next && next.parent)
+        next = next.parent
+    return next
 }

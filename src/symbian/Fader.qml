@@ -56,7 +56,7 @@ Rectangle {
     width: style.current.get("appRectWidth"); height: style.current.get("appRectHeight")
     color: "black"
 
-    Component.onCompleted: fader.parent = AppManager.getRoot()
+    Component.onCompleted: fader.parent = AppManager.rootObject()
 
     Connections {
         target: screen

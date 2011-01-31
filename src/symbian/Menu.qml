@@ -63,7 +63,7 @@ ImplicitSizeItem {
     QtObject {
         id: internalData
 
-        property Item appRoot: AppManager.getRoot()
+        property Item appRoot: AppManager.rootObject()
 
         function getHeight() {
             var itemsShown = Math.min(actionsRepeater.model.length, root.maxVisibleItems);
