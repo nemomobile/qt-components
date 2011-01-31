@@ -861,10 +861,10 @@ QVariant SStyleWrapperPrivate::sliderProperty(const QString &propertyName) const
 
 QVariant SStyleWrapperPrivate::toolTipProperty(const QString &propertyName) const
 {
-    if (propertyName == QLatin1String("toolTipBackground"))
+    if (propertyName == QLatin1String("frameName"))
         return QLatin1String("qtg_fr_popup_preview");
 
-    if (propertyName == QLatin1String("toolTipFrameType"))
+    if (propertyName == QLatin1String("frameType"))
         return SDeclarativeFrame::NinePieces;
 
     if (propertyName == QLatin1String("horizontalMargin"))
@@ -873,13 +873,13 @@ QVariant SStyleWrapperPrivate::toolTipProperty(const QString &propertyName) cons
     if (propertyName == QLatin1String("verticalMargin"))
         return fetchLayoutParameter(QLatin1String("param-margin-gene-middle-vertical"));
 
-    if (propertyName == QLatin1String("screenMargin"))
+    if (propertyName == QLatin1String("spacing"))
         return fetchLayoutParameter(QLatin1String("param-margin-gene-screen"));
 
     if (propertyName == QLatin1String("font"))
         return fetchFont(SStyleWrapper::Secondary, fetchLayoutParameter(QLatin1String("param-text-height-tiny")));
 
-    if (propertyName == QLatin1String("fontColor"))
+    if (propertyName == QLatin1String("color"))
         return fetchThemeColor(QLatin1String("qtc_popup_preview_normal"));
 
     return QVariant();

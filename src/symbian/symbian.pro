@@ -45,6 +45,7 @@ QML_FILES = \
     Slider.qml \
     TextArea.qml \
     TextField.qml \
+    ToolTip.qml \
     ViewMenu.qml \
     Window.qml
 

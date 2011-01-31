@@ -42,6 +42,7 @@ data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ScrollDecorator.qml   
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\Slider.qml                                     RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\Slider.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\TextArea.qml                                   RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\TextArea.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\TextField.qml                                  RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\TextField.qml
+data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ToolTip.qml                                    RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ToolTip.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ViewMenu.qml                                   RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ViewMenu.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\Window.qml                                     RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\Window.qml
 

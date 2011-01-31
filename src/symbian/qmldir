@@ -16,5 +16,6 @@ ScrollDecorator 1.0 ScrollDecorator.qml
 Slider 1.0 Slider.qml
 TextArea 1.0 TextArea.qml
 TextField 1.0 TextField.qml
+ToolTip 1.0 ToolTip.qml
 ViewMenu 1.0 ViewMenu.qml
 Window 1.0 Window.qml
