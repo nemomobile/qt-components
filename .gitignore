@@ -27,6 +27,7 @@ release/
 /imports/
 /examples/meego/calculator/calculator
 /examples/meego/widgetgallery/widgetgallery
+/examples/symbian/gallery/qmlgallery
 /tests/auto/api_button/tst_quickcomponentsbutton
 /tests/auto/api_checkbox/tst_quickcomponentscheckbox
 /tests/auto/api_pagestack/tst_quickcomponentspagestack

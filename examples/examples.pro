@@ -4,6 +4,8 @@
 
 TEMPLATE = subdirs
 meego {
-   SUBDIRS=meego
+   SUBDIRS = meego
 }
-
+symbian3 {
+   SUBDIRS = symbian
+}
