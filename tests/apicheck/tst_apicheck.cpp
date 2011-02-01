@@ -34,13 +34,15 @@
 #include "radiobutton/apicheck_radiobutton.h"
 #include "textfield/apicheck_textfield.h"
 #include "progressbar/apicheck_progressbar.h"
-#include "busyindicator/apicheck_busyindicator.h"
 #include "textarea/apicheck_textarea.h"
 #include "scrolldecorator/apicheck_scrolldecorator.h"
-#include "buttoncolumn/apicheck_buttoncolumn.h"
-#include "buttonrow/apicheck_buttonrow.h"
 #include "choicelist/apicheck_choicelist.h"
 
+#ifndef Q_COMPONENTS_SYMBIAN
+#include "busyindicator/apicheck_busyindicator.h"
+#include "buttoncolumn/apicheck_buttoncolumn.h"
+#include "buttonrow/apicheck_buttonrow.h"
+#endif
 
 int main(int argc, char *argv[])
 {
@@ -78,12 +80,15 @@ int main(int argc, char *argv[])
     ApiCheckTextField textField(engine, module);
     ApiCheckRadioButton radioButton(engine, module);
     ApiCheckProgressBar progressBar(engine, module);
-    ApiCheckBusyIndicator busyIndicator(engine, module);
     ApiCheckTextArea textArea(engine, module);
     ApiCheckScrollDecorator scrollDecorator(engine, module);
+    ApiCheckChoiceList choiceList(engine, module);
+
+#ifndef Q_COMPONENTS_SYMBIAN
+    ApiCheckBusyIndicator busyIndicator(engine, module);
     ApiCheckButtonColumn buttonColumn(engine, module);
     ApiCheckButtonRow buttonRow(engine, module);
-    ApiCheckChoiceList choiceList(engine, module);
+#endif
 
     int ret = 0;
     ret |= QTest::qExec(&slider, args);
@@ -92,12 +97,15 @@ int main(int argc, char *argv[])
     ret |= QTest::qExec(&textField, args);
     ret |= QTest::qExec(&radioButton, args);
     ret |= QTest::qExec(&progressBar, args);
-    ret |= QTest::qExec(&busyIndicator, args);
     ret |= QTest::qExec(&textArea, args);
     ret |= QTest::qExec(&scrollDecorator, args);
+    ret |= QTest::qExec(&choiceList, args);
+
+#ifndef Q_COMPONENTS_SYMBIAN
+    ret |= QTest::qExec(&busyIndicator, args);
     ret |= QTest::qExec(&buttonColumn, args);
     ret |= QTest::qExec(&buttonRow, args);
-    ret |= QTest::qExec(&choiceList, args);
+#endif
 
     return ret;
 }
