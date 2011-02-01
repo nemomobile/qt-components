@@ -39,10 +39,10 @@ class SDeclarativeMaskedImagePrivate
 public:
     SDeclarativeMaskedImagePrivate(SDeclarativeMaskedImage *qq) :
         q_ptr(qq),
+        maskType(SDeclarativeFrame::ThreePiecesHorizontal),
         offset(0, 0),
         tiled(false),
         pixmapsCreated(false),
-        maskType(SDeclarativeFrame::ThreePiecesHorizontal),
         tileSize(0)
         {}
 
