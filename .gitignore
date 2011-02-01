@@ -39,6 +39,7 @@ release/
 /tests/auto/mlocalthemedaemonclient/mlocalthemedaemonclient
 /tests/auto/mremotethemedaemonclient/mremotethemedaemonclient
 /tests/auto/qrangemodel/qrangemodel
+/tests/auto/symbian_button/tst_symbian_button
 /tests/auto/symbian_checkbox/tst_symbian_checkbox
 /tests/auto/symbian_declarativeframe/tst_symbian_declarativeframe
 /tests/auto/symbian_declarativeicon/tst_symbian_declarativeicon
@@ -47,6 +48,11 @@ release/
 /tests/auto/symbian_framepool/tst_symbian_framepool
 /tests/auto/symbian_iconpool/tst_symbian_iconpool
 /tests/auto/symbian_imageprovider/tst_symbian_imageprovider
+/tests/auto/symbian_progressbar/tst_symbian_progressbar
+/tests/auto/symbian_radiobutton/tst_symbian_radiobutton
+/tests/auto/symbian_slider/tst_symbian_slider
+/tests/auto/symbian_textarea/tst_symbian_textarea
 /tests/auto/symbian_textarea/tst_symbian_textfield
 /tests/auto/symbian_textfield/tst_symbian_textfield
+/tests/auto/symbian_tooltip/tst_symbian_tooltip
 /tests/apicheck/tst_apicheck
