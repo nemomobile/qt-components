@@ -42,6 +42,7 @@ symbian3 {
 
 symbian3 {
     SUBDIRS += \
+        symbian_button \
         symbian_checkbox \
         symbian_declarativeframe \
         symbian_declarativeicon \
