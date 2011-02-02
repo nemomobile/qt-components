@@ -55,6 +55,7 @@ SDeclarativeScreenPrivate::SDeclarativeScreenPrivate(SDeclarativeScreen *qq) :
 {
     Q_Q(SDeclarativeScreen);
 #ifdef Q_OS_SYMBIAN
+    QCoreApplication::setAttribute(Qt::AA_S60DontConstructApplicationPanes);
     Q_UNUSED(DEFAULT_WIDTH)
     Q_UNUSED(DEFAULT_HEIGHT)
     QSize initScreenSize = currentScreenSize();

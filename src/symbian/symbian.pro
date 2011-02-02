@@ -24,6 +24,7 @@ HEADERS += \
 
 QML_FILES = \
     qmldir \
+    ApplicationWindow.qml \
     AppManager.js \
     Button.qml \
     CheckBox.qml \

@@ -135,6 +135,7 @@ void SDeclarativeWindowDecorationPrivate::updateCba()
 
 void SDeclarativeWindowDecorationPrivate::_q_doUpdateCba()
 {
+    Q_Q(SDeclarativeWindowDecoration);
     updatingCba = false;
 
     exitAction->setSoftKeyRole(QAction::NoSoftKey);
@@ -147,6 +148,7 @@ void SDeclarativeWindowDecorationPrivate::_q_doUpdateCba()
     } else {
         exitAction->setSoftKeyRole(QAction::NegativeSoftKey);
     }
+    q->update();
 }
 
 void SDeclarativeWindowDecorationPrivate::updateFullScreen()
@@ -277,6 +279,7 @@ SDeclarativeWindowDecoration::SDeclarativeWindowDecoration(QDeclarativeItem *par
 {
     Q_D(SDeclarativeWindowDecoration);
 #ifdef Q_OS_SYMBIAN
+    QCoreApplication::setAttribute(Qt::AA_S60DontConstructApplicationPanes, false);
     QObject::connect(QApplication::desktop(), SIGNAL(workAreaResized(int)), this, SLOT(_q_desktopWorkareaChanged()));
 #else
     setFlag(QGraphicsItem::ItemHasNoContents, false);
@@ -483,7 +486,7 @@ void SDeclarativeWindowDecoration::paint(QPainter *painter, const QStyleOptionGr
         spFont.setPixelSize(statusPaneHeight / 3);
         painter->setFont(spFont);
 
-        const QRect statusPaneRect(0,0,width(), statusPaneHeight);
+        const QRect statusPaneRect(0,0,width(), statusPaneHeight - 1);
         painter->drawRect(statusPaneRect);
 
         if (d->titleBarVisible) {

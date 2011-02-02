@@ -21,6 +21,7 @@ data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\themebridge\symbianthe
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\themebridge\qmldir                             RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\themebridge\qmldir
 
 // Symbian QML components
+data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ApplicationWindow.qml                          RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ApplicationWindow.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\AppManager.js                                  RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\AppManager.js
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\Button.qml                                     RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\Button.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\CheckBox.qml                                   RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\CheckBox.qml

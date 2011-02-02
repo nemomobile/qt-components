@@ -33,8 +33,6 @@ Window {
     property int rowSpacing: 24
     property int columnSpacing: 14
 
-    fullScreen: true
-
     Flickable {
         id: flickable
         anchors { left: parent.left; right: parent.right; top: parent.top; bottom: quitButton.top }

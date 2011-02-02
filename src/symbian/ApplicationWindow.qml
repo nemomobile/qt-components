@@ -25,21 +25,36 @@
 ****************************************************************************/
 
 import Qt 4.7
-import com.nokia.symbian 1.0
 
-Item {
+Window {
     id: window
 
-    Binding { target: window; property: "height"; value: screen.height; when: screen.height > 0 }
-    Binding { target: window; property: "width"; value: screen.width; when: screen.width > 0 }
+    property bool fullScreen: false
+    default property alias content: contentItem.data
+    property alias pageStack: stack
 
-     // Deprecated, use Dialog.open() instead
-     function showPopup(component) {
-         console.log("warning: use of deprecated method showPopup, use Dialog.open() instead")
-         var popupObj = component.createObject(window);
-         if (popupObj == null)
-             return false;
-         popupObj.open();
-        return true;
+    // To be replaced by StatusBar and ToolBar components
+    WindowDecoration {
+        id: decoration
+        anchors.fill: parent
+        orientation: screen.orientation
+        statusBarVisible: !window.fullScreen
+        titleBarVisible: !window.fullScreen
+        backButtonVisible: pageStack.depth > 1
+        onMinimize: screen.minimized = true
+        onQuit: Qt.quit()
+        onBackClicked: pageStack.pop()
+    }
+
+    Item {
+        id: contentItem
+        anchors.fill: parent
+        anchors.topMargin: decoration.topDecorationHeight
+        anchors.bottomMargin: decoration.bottomDecorationHeight
+
+        PageStack {
+            id: stack
+            anchors.fill: parent
+        }
     }
 }

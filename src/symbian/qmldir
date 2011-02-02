@@ -1,4 +1,5 @@
 plugin symbianplugin
+ApplicationWindow 1.0 ApplicationWindow.qml
 Button 1.0 Button.qml
 CheckBox 1.0 CheckBox.qml
 ChoiceList 1.0 ChoiceList.qml
