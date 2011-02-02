@@ -37,8 +37,27 @@ ImplicitSizeItem {
     property real value: 0.0
     property bool indeterminate: false
 
+    onValueChanged: internal.checkValueLimits()
+    onMaximumValueChanged: internal.checkValueLimits()
+    onMinimumValueChanged: internal.checkValueLimits()
+
     implicitWidth: style.current.preferredWidth
     implicitHeight: style.current.preferredHeight
+
+    Item {
+        id: internal
+
+        function checkValueLimits()
+        {
+            if (progressBar.maximumValue < progressBar.minimumValue)
+                progressBar.maximumValue = progressBar.minimumValue;
+
+            if (progressBar.value < progressBar.minimumValue)
+                progressBar.value = progressBar.minimumValue;
+            else if (progressBar.value > progressBar.maximumValue)
+                progressBar.value = progressBar.maximumValue;
+        }
+    }
 
     Style {
         id: style
