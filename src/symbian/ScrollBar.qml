@@ -72,7 +72,7 @@ ImplicitSizeItem {
         //internal styling values
         property real handleOpacity: 0.7
         //A light, semi-transparent background
-        property real trackOpacity: 0.3
+        property real trackOpacity: 0
         property real handleTouchAreaOpacity: 0
 
         function getHeight() {
