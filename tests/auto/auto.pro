@@ -51,6 +51,7 @@ symbian3 {
         symbian_framepool \
         symbian_iconpool \
         symbian_imageprovider \
+        symbian_listheading \
         symbian_listitem \
         symbian_progressbar \
         symbian_radiobutton \
