@@ -53,6 +53,7 @@ symbian3 {
         symbian_imageprovider \
         symbian_listheading \
         symbian_listitem \
+        symbian_listitemtext \
         symbian_progressbar \
         symbian_radiobutton \
         symbian_slider \
