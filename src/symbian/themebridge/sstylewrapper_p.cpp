@@ -529,7 +529,7 @@ QVariant SStyleWrapperPrivate::listItemTextProperty(const QString &propertyName)
             else if (mode == QLatin1String("focused"))
                 return fetchThemeColor(QLatin1String("qtc_list_item_highlight"));
         }
-        if (styleObjectName == QLatin1String("Subtitle")) {
+        if (styleObjectName == QLatin1String("SubTitle")) {
             if (mode == QLatin1String("default"))
                 return fetchThemeColor(QLatin1String("qtc_list_item_content_normal"));
             else if (mode == QLatin1String("pressed"))
@@ -546,7 +546,7 @@ QVariant SStyleWrapperPrivate::listItemTextProperty(const QString &propertyName)
     if (propertyName == QLatin1String("font")) {
         if (styleObjectName == QLatin1String("Title"))
             return fetchFont(SStyleWrapper::Primary);
-        if (styleObjectName == QLatin1String("Subtitle"))
+        if (styleObjectName == QLatin1String("SubTitle"))
             return fetchFont(SStyleWrapper::Secondary);
         if (styleObjectName == QLatin1String("Heading"))
             return fetchFont(SStyleWrapper::PrimarySmall);
@@ -555,7 +555,7 @@ QVariant SStyleWrapperPrivate::listItemTextProperty(const QString &propertyName)
     if (propertyName == QLatin1String("textHeight")) {
         if (styleObjectName == QLatin1String("Title"))
             return fetchLayoutParameter(QLatin1String("param-text-height-primary"));
-        if (styleObjectName == QLatin1String("Subtitle"))
+        if (styleObjectName == QLatin1String("SubTitle"))
             return fetchLayoutParameter(QLatin1String("param-text-height-secondary"));
         if (styleObjectName == QLatin1String("Heading"))
             return fetchLayoutParameter(QLatin1String("param-text-height-tiny"));

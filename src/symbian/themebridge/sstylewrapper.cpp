@@ -200,7 +200,7 @@ qreal SStyleWrapper::preferredHeight() const
         // height for ListItem specified supported part
         if (styleObjectName() == QLatin1String("Title"))
             return d->fetchLayoutParameter(QLatin1String("param-text-height-primary"));
-        if (styleObjectName() == QLatin1String("Subtitle"))
+        if (styleObjectName() == QLatin1String("SubTitle"))
             return d->fetchLayoutParameter(QLatin1String("param-text-height-secondary"));
         if (styleObjectName() == QLatin1String("Heading"))
             return d->fetchLayoutParameter(QLatin1String("param-text-height-title"));
