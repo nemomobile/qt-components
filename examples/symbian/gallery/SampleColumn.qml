@@ -146,38 +146,49 @@ Column {
         clip: true
         delegate: listDelegate
         model: listModel
-        header: ListHeading {
-            id: listItem
-            width: parent.width; height: 60
-
-            ListItemText {
-                anchors.fill: parent.padding
-                role: "Heading"
-                text: "Heading"
-            }
-        }
+        header: listHeading
     }
 
     ListModel {
         id: listModel
 
         ListElement {
-            name: "List item"
+            titleText: "Title"
+            subTitleText: "SubTitle"
+        }
+    }
+
+    Component {
+        id: listHeading
+        ListHeading {
+            width: parent.width
+            ListItemText {
+                anchors.fill: parent.padding
+                role: "Heading"
+                text: "ListHeading"
+            }
         }
     }
 
     Component {
         id: listDelegate
-
         ListItem {
             id: listItem
-            width: parent.width; height: 60
-
-            ListItemText {
-                anchors.fill: parent.padding
-                style: listItem.style
-                role: "Title"
-                text: name
+            Column {
+                anchors.fill: listItem.padding
+                spacing: listItem.verticalSpacing
+                ListItemText {
+                    anchors.fill: parent.padding
+                    style: listItem.style
+                    role: "Title"
+                    text: titleText
+                }
+                ListItemText {
+                    anchors.fill: parent.padding
+                    style: listItem.style
+                    role: "SubTitle"
+                    text: subTitleText
+                }
             }
         }
     }
