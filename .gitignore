@@ -49,6 +49,9 @@ release/
 /tests/auto/symbian_framepool/tst_symbian_framepool
 /tests/auto/symbian_iconpool/tst_symbian_iconpool
 /tests/auto/symbian_imageprovider/tst_symbian_imageprovider
+/tests/auto/symbian_listheading/tst_symbian_listheading
+/tests/auto/symbian_listitem/tst_symbian_listitem
+/tests/auto/symbian_listitemtext/tst_symbian_listitemtext
 /tests/auto/symbian_progressbar/tst_symbian_progressbar
 /tests/auto/symbian_radiobutton/tst_symbian_radiobutton
 /tests/auto/symbian_slider/tst_symbian_slider
