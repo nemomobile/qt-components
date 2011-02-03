@@ -35,7 +35,7 @@ void ApiCheckSlider::initTestCase()
 
 void ApiCheckSlider::stepSize()
 {
-    validateProperty("stepSize", QVariant::Double, 1.0);
+    validateProperty("stepSize", QVariant::Double, 0.0);
 }
 
 void ApiCheckSlider::minimumValue()
@@ -45,7 +45,7 @@ void ApiCheckSlider::minimumValue()
 
 void ApiCheckSlider::maximumValue()
 {
-    validateProperty("maximumValue", QVariant::Double, 100.0);
+    validateProperty("maximumValue", QVariant::Double, 1.0);
 }
 
 void ApiCheckSlider::value()
