@@ -47,6 +47,10 @@
 #include <eikappui.h>
 #endif
 
+#ifdef HAVE_QTMOBILITY
+#include <QFeedbackEffect>
+#endif //HAVE_QTMOBILITY
+
 static const qreal DEFAULT_DP_PER_PPI = 160.0;
 
 // Use static variables. There are a lot of SStyleWrapper instances
@@ -286,7 +290,11 @@ void SStyleWrapperPrivate::_q_displayChanged()
 
 void SStyleWrapperPrivate::play(int effect)
 {
-    Q_UNUSED(effect);
+#ifdef HAVE_QTMOBILITY
+    QtMobility::QFeedbackEffect::playThemeEffect(static_cast<QtMobility::QFeedbackEffect::ThemeEffect>(effect));
+#else
+    Q_UNUSED( effect );
+#endif //HAVE_QTMOBILITY
 }
 
 void SStyleWrapperPrivate::updateStyle()

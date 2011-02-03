@@ -37,7 +37,7 @@ class SDeclarative : public QObject
     Q_OBJECT
     Q_PROPERTY(InteractionMode listInteractionMode READ listInteractionMode WRITE setListInteractionMode NOTIFY listInteractionModeChanged FINAL)
 
-    Q_ENUMS(InteractionMode ImageSize ScrollBarVisibility PageStatus)
+    Q_ENUMS(InteractionMode ImageSize ScrollBarVisibility PageStatus Feedback)
 
 public:
     SDeclarative(QObject *parent = 0);
@@ -67,6 +67,42 @@ public:
         PageActivating,
         PageActive,
         PageDeactivating
+    };
+
+    enum Feedback {
+        Basic,
+        Sensitive,
+        BasicButton,
+        SensitiveButton,
+        BasicKeypad,
+        SensitiveKeypad,
+        BasicSlider,
+        SensitiveSlider,
+        BasicItem,
+        SensitiveItem,
+        ItemScroll,
+        ItemPick,
+        ItemDrop,
+        ItemMoveOver,
+        BounceEffect,
+        CheckBox,
+        MultipleCheckBox,
+        Editor,
+        TextSelection,
+        BlankSelection,
+        LineSelection,
+        EmptyLineSelection,
+        PopUp,
+        PopupOpen,
+        PopupClose,
+        Flick,
+        StopFlick,
+        MultiPointTouchActivate,
+        RotateStep,
+        LongPress,
+        PositiveTacticon,
+        NeutralTacticon,
+        NegativeTacticon
     };
 
     static inline QString resolveIconFileName(const QString &iconName)

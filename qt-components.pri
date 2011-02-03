@@ -11,3 +11,7 @@ meego {
 symbian3 {
     DEFINES += Q_COMPONENTS_SYMBIAN
 }
+
+mobility {
+    DEFINES += HAVE_QTMOBILITY
+}

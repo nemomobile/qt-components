@@ -11,6 +11,7 @@ win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release
 CONFIG += qt plugin
 symbian|!unix:CONFIG += copy_native install_native
 QT += declarative svg
+mobility:MOBILITY += feedback
 
 SOURCES += \
     plugin.cpp \
