@@ -237,7 +237,7 @@ void SettingsWindow::userEditingFinished()
         const qreal inches = qreal(inchLineEdit->text().toDouble());
         const qreal diagonal = qSqrt(static_cast<qreal>(widthSpinBox->value() * widthSpinBox->value() + heightSpinBox->value() * heightSpinBox->value())); // in "pixels"
         ppi = diagonal / inches;
-    } else if (QObject::sender() == ppiLineEdit) {
+    } else {
         ppi = ppiLineEdit->text().toDouble();
     }
 
