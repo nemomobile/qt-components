@@ -36,6 +36,7 @@ Window {
     // To be replaced by StatusBar and ToolBar components
     WindowDecoration {
         id: decoration
+        z: 1 // decorators on top of content
         anchors.fill: parent
         orientation: screen.orientation
         statusBarVisible: !window.fullScreen
@@ -47,14 +48,18 @@ Window {
     }
 
     Item {
-        id: contentItem
+        z: 0 // content below decorators
         anchors.fill: parent
-        anchors.topMargin: decoration.topDecorationHeight
-        anchors.bottomMargin: decoration.bottomDecorationHeight
-
-        PageStack {
-            id: stack
+        Item {
+            id: contentItem
             anchors.fill: parent
+            anchors.topMargin: decoration.topDecorationHeight
+            anchors.bottomMargin: decoration.bottomDecorationHeight
+
+            PageStack {
+                id: stack
+                anchors.fill: parent
+            }
         }
     }
 }
