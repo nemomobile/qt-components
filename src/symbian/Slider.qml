@@ -51,9 +51,9 @@ ImplicitSizeItem {
     QtComponents.RangeModel {
         id: model
         value: 0.0
-        stepSize: 1.0
+        stepSize: 0.0
         minimumValue: 0.0
-        maximumValue: 100.0
+        maximumValue: 1.0
         positionAtMinimum: 0
         positionAtMaximum: orientation == Qt.Horizontal ? track.width - handle.width : track.height - handle.height
         onValueChanged: slider.valueChanged(value)
