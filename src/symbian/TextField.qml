@@ -70,13 +70,13 @@ ImplicitSizeItem {
     }
 
     function positionAt(x) {
-        // ### TODO: remove the left margins from x
-        return textInput.positionAt(x)
+        return textInput.positionAt(textInput.mapToItem(root, x, 0).x)
     }
 
     function positionToRectangle(pos) {
-        // ### TODO: translate rect to TextField coord
-        return textInput.positionToRectangle(pos)
+        var rect = textInput.positionToRectangle(pos)
+        rect.x = Math.round(root.mapToItem(textInput, rect.x, 0).x)
+        return rect
     }
 
     // API extensions
