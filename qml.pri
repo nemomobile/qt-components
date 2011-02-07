@@ -51,7 +51,7 @@ symbian {
 
 install_native {
     symbian {
-        native_pluginstub.sources = $$symbianRemoveSpecialCharacters($$basename(TARGET)).dll
+        native_pluginstub.sources = $$_PRO_FILE_PWD_/qmakepluginstubs/$$symbianRemoveSpecialCharacters($$basename(TARGET)).qtplugin
         native_pluginstub.path = /resource/qt/imports/Qt/labs/components/native/$$NATIVESUBPATH
 
         native_qmlfiles.sources = $$QML_FILES
