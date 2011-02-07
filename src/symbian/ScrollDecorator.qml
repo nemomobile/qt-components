@@ -80,7 +80,6 @@ Item {
                 decorators.vertical.flickableItem = scrollDecorator.flickableItem
                 decorators.vertical.orientation = Qt.Vertical
                 decorators.vertical.interactive = false
-                decorators.vertical.focus = true//for key navigation support
                 decorators.vertical.anchors.top = scrollDecorator.top
                 decorators.vertical.anchors.right = scrollDecorator.right
             }
@@ -89,5 +88,9 @@ Item {
     onFlickableItemChanged: {
         decorators.destroyDecorators()
         decorators.createDecorators()
+    }
+    onFocusChanged: {
+        if (decorators.vertical == null)
+            decorators.vertical.focus = focus //for key navigation support
     }
 }

@@ -103,6 +103,7 @@ Window {
     }
 
     ScrollDecorator {
+        focus: true
         flickableItem: flickable
         anchors { top: flickable.top; right: flickable.right }
     }
