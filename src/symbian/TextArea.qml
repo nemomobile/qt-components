@@ -180,6 +180,9 @@ ImplicitSizeItem {
             contentHeight: textEdit.model.paintedHeight
             contentWidth: textEdit.model.paintedWidth
 
+            // To avoid too early loading of ScrollDecorator when Flickable is not ready
+            Component.onCompleted: { scroll.flickableItem = flick }
+
             TextEdit {
                 id: textEdit
                 objectName: "textEdit"
@@ -222,7 +225,6 @@ ImplicitSizeItem {
 
         ScrollDecorator {
             id: scroll
-            flickableItem: flick
         }
 
         Timer {
