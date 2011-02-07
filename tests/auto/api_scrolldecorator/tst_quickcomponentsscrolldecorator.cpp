@@ -37,7 +37,7 @@ class tst_quickcomponentsscrolldecorator : public QObject
     Q_OBJECT
 private slots:
     void initTestCase();
-    void flickable();
+    void flickableItem();
 
 private:
     QStringList standard;
@@ -54,10 +54,10 @@ void tst_quickcomponentsscrolldecorator::initTestCase()
     QVERIFY2(componentObject, qPrintable(errors));
 }
 
-void tst_quickcomponentsscrolldecorator::flickable()
+void tst_quickcomponentsscrolldecorator::flickableItem()
 {
-    // check presence of a real flickable element
-    QCOMPARE( componentObject->property("flickable").typeName(), "QDeclarativeFlickable*");
+    // check presence of a real Flickable element
+    QCOMPARE(componentObject->property("flickableItem").typeName(), "QDeclarativeFlickable*");
 }
 
 QTEST_MAIN(tst_quickcomponentsscrolldecorator)

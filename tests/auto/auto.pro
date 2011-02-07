@@ -34,7 +34,7 @@ symbian3 {
         api_slider \
         #api_pagestack \
         api_progressbar \
-        #api_scrolldecorator \ #TODO flickable property not aligned
+        api_scrolldecorator \
         #api_textfield \ #TODO not yet finalized
         #api_textarea \ #TODO not yet finalized
         #api_toolbar
@@ -56,6 +56,7 @@ symbian3 {
         symbian_listitemtext \
         symbian_progressbar \
         symbian_radiobutton \
+        symbian_scrollbar \
         symbian_slider \
         symbian_textarea \
         symbian_textfield \
