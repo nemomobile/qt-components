@@ -24,14 +24,6 @@ symbian {
     TARGET.UID3 = 0x200346E1
     MMP_RULES += EXPORTUNFROZEN
     MMP_RULES += SMPSAFE
-
-    pluginstub.sources = qtcomponentsplugin.dll
-    pluginstub.path = /resource/qt/imports/$$TARGETPATH
-
-    resources.path = /resource/qt/imports/$$TARGETPATH
-    resources.sources += $$QML_FILES
-
-    DEPLOYMENT += pluginstub resources
 }
 
 HEADERS += qglobalenums.h
