@@ -47,4 +47,39 @@ data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ToolTip.qml           
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ViewMenu.qml                                   RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ViewMenu.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\Window.qml                                     RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\Window.qml
 
+// Symbian plugin to Native
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\symbianplugin.qtplugin                 RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\symbianplugin.qtplugin
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\qmldir                                 RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\qmldir
+
+// Symbian themebridge plugin to Native
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\themebridge\symbianthemebridgeplugin.qtplugin RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\themebridge\symbianthemebridgeplugin.qtplugin
+data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\themebridge\qmldir                             RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\themebridge\qmldir
+
+// Symbian QML components to Native
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\ApplicationWindow.qml                  RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\ApplicationWindow.qml
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\AppManager.js                          RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\AppManager.js
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\Button.qml                             RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\Button.qml
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\CheckBox.qml                           RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\CheckBox.qml
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\ChoiceList.qml                         RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\ChoiceList.qml
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\ialog.qml                              RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\Dialog.qml
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\Fader.qml                              RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\Fader.qml
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\ListHeading.qml                        RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\ListHeading.qml
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\ListItem.qml                           RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\ListItem.qml
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\ListItemText.qml                       RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\ListItemText.qml
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\Menu.qml                               RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\Menu.qml
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\ObjectMenu.qml                         RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\ObjectMenu.qml
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\Page.qml                               RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\Page.qml
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\PageStack.js                           RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\PageStack.js
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\PageStack.qml                          RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\PageStack.qml
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\ProgressBar.qml                        RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\ProgressBar.qml
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\RadioButton.qml                        RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\RadioButton.qml
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\ScrollBar.qml                          RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\ScrollBar.qml
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\ScrollDecorator.qml                    RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\ScrollDecorator.qml
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\Slider.qml                             RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\Slider.qml
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\TextArea.qml                           RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\TextArea.qml
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\TextField.qml                          RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\TextField.qml
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\ToolTip.qml                            RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\ToolTip.qml
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\ViewMenu.qml                           RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\ViewMenu.qml
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\Window.qml                             RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\Window.qml
+
 #endif
