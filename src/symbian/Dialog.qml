@@ -27,129 +27,56 @@
 import Qt 4.7
 import com.nokia.symbian 1.0
 import com.nokia.symbian.themebridge 1.0
-import "AppManager.js" as AppManager
 
-ImplicitSizeItem {
+Item {
     id: root
 
-    property alias title: titleLabel.text
-    property alias buttonsText: buttons.model
-    property int preferredWidth: 0
-    property int preferredHeight: 0
-    property alias timeout: timeoutTimer.interval
-    property bool modal: true
-    property Component contentComponent
+    property alias title: titleItem.children
+    property alias content: contentItem.children
+    property alias buttons: buttonItem.children
+    property alias visualParent: dialog.visualParent
+    property alias status: dialog.status
 
-    signal triggered(int index)
+    signal accepted
+    signal rejected
 
     function open() {
-        root.anchors.horizontalCenter = internal.appRoot.horizontalCenter;
-        popup.visible = true;
+        dialog.open()
+    }
 
-        if (root.modal)
-            fader.activate();
+    function accept() {
+        dialog.close()
+        accepted()
+    }
 
-        if (timeoutTimer.interval > 0)
-            timeoutTimer.start();
+    function reject() {
+        dialog.close()
+        rejected()
     }
 
     function close() {
-        popup.visible = false;
-
-        if (fader.isActive())
-            fader.deactivate();
-
-        root.destroy(internal.animationDuration);
+        dialog.close()
     }
 
-    opacity: 0
-    implicitWidth: internal.getWidth()
-    implicitHeight: internal.getHeight()
-    y: internal.getTopPosition()
+    visible: false
 
-    QtObject {
-        id: internal
-
-        property int animationDuration: 250
-        property Item appRoot: AppManager.rootObject()
-
-        function getTopPosition() {
-            return style.current.get("appRectHeight") / 2 - internal.getHeight() / 2;
-        }
+    Popup {
+        id: dialog
 
         function getWidth() {
-            var size;
-            var defaultWidth = style.current.get("appRectHeight") - 2 * style.current.get("screenMargin");
-            if (style.current.get("appRectWidth") < style.current.get("appRectHeight"))
-                defaultWidth = style.current.get("appRectWidth") - 2 * style.current.get("screenMargin");
-
-            var maxWidth = style.current.get("appRectWidth") - 2 * style.current.get("screenMargin");
-            if (root.preferredWidth > 0 && root.preferredWidth < maxWidth) {
-               size = root.preferredWidth;
-            } else {
-                if (root.preferredWidth == 0)
-                    size = defaultWidth;
-                else
-                    size = maxWidth;
-            }
-
-            return size;
+            return root.width > style.current.get("maxWidth") ? style.current.get("maxWidth") : root.width
         }
 
         function getHeight() {
-            var size;
-            var defaultHeight = style.current.get("appRectHeight") - 2 * style.current.get("screenMargin");
-            if (style.current.get("appRectWidth") < style.current.get("appRectHeight"))
-                defaultHeight = style.current.get("appRectWidth") - 2 * style.current.get("screenMargin");
-
-            var maxHeight = style.current.get("appRectHeight") - 2 * style.current.get("screenMargin");
-            if (root.preferredHeight > 0 && root.preferredHeight < maxHeight) {
-               size = root.preferredHeight;
-            } else {
-                if (root.preferredHeight == 0)
-                    size = defaultHeight;
-                else
-                    size = maxHeight;
-            }
-            return size;
+            return root.height > style.current.get("maxHeight") ? style.current.get("maxHeight") : root.height
         }
-    }
 
-    Timer {
-        id: timeoutTimer
-        interval: 0
-        onTriggered: root.close();
-    }
-
-    Timer {
-        id: connectionTimer
-        interval: 1
-        onTriggered: {
-            if (popup.visible) {
-                root.implicitWidth = internal.getWidth();
-                root.implicitHeight = internal.getHeight();
-                root.y = internal.getTopPosition();
-            }
-        }
-    }
-
-    Connections {
-        target: screen
-        onOrientationChanged: connectionTimer.start()
-    }
-
-    Fader {
-        id: fader
-        animationDuration: internal.animationDuration
-    }
-
-    Item {
-        id: popup
-
-        parent: internal.appRoot
-        z: fader.z + 1
-        anchors.fill: root
-        visible: false
+        width: root.width ? getWidth() : style.current.preferredWidth
+        height: root.height ? getHeight() : style.current.preferredHeight
+        state: "Hidden"
+        visible: true
+        anchors.centerIn: parent
+        animationDuration: 800
 
         Frame {
             frameName: style.current.get("popupFrameName")
@@ -165,12 +92,12 @@ ImplicitSizeItem {
         Item {
             id: titleBar
 
+            height: style.current.get("titleTextHeight") + 2 * style.current.get("titleMargin")
             anchors {
                 top: parent.top
                 left: parent.left
                 right: parent.right
             }
-            height: style.current.get("titleTextHeight") + 2 * style.current.get("titleMargin")
 
             Frame {
                 frameName: style.current.get("titleFrameName")
@@ -178,70 +105,73 @@ ImplicitSizeItem {
                 anchors.fill: parent
             }
 
-            Text {
-                id: titleLabel
+            Item {
+                id: titleItem
 
+                clip: true
                 anchors {
                     fill: parent
                     margins: style.current.get("titleMargin")
                 }
-                color: style.current.get("titleTextColor")
-                font: style.current.get("font")
             }
         }
 
-        Loader {
+        Item {
+            id: contentItem
+
+            clip: true
             anchors {
                 top: titleBar.bottom
                 left: parent.left
                 right: parent.right
-                bottom: buttonRow.top
+                bottom: buttonItem.top
                 margins: style.current.get("contentMargin")
             }
-            sourceComponent: contentComponent
         }
 
-        Row {
-            id: buttonRow
-            anchors {
-                topMargin: style.current.get("buttonMargin")
-                bottom: parent.bottom
-                horizontalCenter: parent.horizontalCenter
-            }
-            height: style.current.get("buttonHeight")
+        Item {
+            id: buttonItem
 
-            Repeater {
-                id: buttons
-                Button {
-                    objectName: "DialogButton" + index
-                    text: modelData
-                    width: root.width / buttons.model.length
-                    height: buttonRow.height
-                    onClicked: {
-                        if (popup.visible) {
-                            root.close();
-                            root.triggered(index);
-                        }
-                    }
-                }
+            height: childrenRect.height
+            clip: true
+            anchors {
+                left: parent.left
+                right: parent.right
+                bottom: parent.bottom
+                topMargin: style.current.get("buttonMargin")
             }
         }
 
         states: [
             State {
-                name: "Hidden"
-                when: !popup.visible
-                PropertyChanges { target: root; opacity: 0 }
+                name: "Visible"
+                when: status == DialogStatus.Opening || status == DialogStatus.Open
+                PropertyChanges { target: dialog; opacity: 1.0 }
             },
             State {
-                name: "Visible"
-                when: popup.visible
-                PropertyChanges { target: root; opacity: 1 }
+                name: "Hidden"
+                when: status == DialogStatus.Closing || status == DialogStatus.Closed
+                PropertyChanges { target: dialog; opacity: 0.0 }
             }
         ]
 
-        transitions: Transition {
-            PropertyAnimation { duration: internal.animationDuration; properties: "opacity"; easing.type: Easing.InOutCubic }
-        }
+        transitions: [
+            Transition {
+                from: "Visible"; to: "Hidden"
+                SequentialAnimation {
+                    ScriptAction {script: status = DialogStatus.Closing }
+                    NumberAnimation { properties: "opacity"; duration: dialog.animationDuration }
+                    ScriptAction {script: status = DialogStatus.Closed }
+                }
+            },
+            Transition {
+                from: "Hidden"; to: "Visible"
+                SequentialAnimation {
+                    ScriptAction { script: status = DialogStatus.Opening }
+                    NumberAnimation { properties: "opacity"; duration: dialog.animationDuration }
+                    ScriptAction { script: status = DialogStatus.Open }
+                }
+            }
+        ]
     }
 }

@@ -42,7 +42,7 @@ ImplicitSizeItem {
     signal canceled()
 
     function show() {
-        fader.activate();
+        fader.state = "Visible";
         content.enabled = true;
         content.visible = true;
         if (root.timeout > 0)
@@ -50,9 +50,9 @@ ImplicitSizeItem {
     }
 
     function hide() {
-        if (fader.isActive()) {
+        if (fader.state == "Visible") {
             content.enabled = false;
-            fader.deactivate();
+            fader.state = "Hidden";
             timeoutTimer.stop();
         }
     }

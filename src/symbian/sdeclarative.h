@@ -128,6 +128,20 @@ private:
     QScopedPointer<SDeclarativePrivate> d_ptr;
 };
 
+class SDialogStatus : public QObject
+{
+    Q_OBJECT
+    Q_ENUMS(Status)
+
+public:
+    enum Status {
+        Opening,
+        Open,
+        Closing,
+        Closed
+    };
+};
+
 QML_DECLARE_TYPE(SDeclarative)
 
 #endif // SDECLARATIVE_H

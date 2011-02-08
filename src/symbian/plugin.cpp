@@ -57,6 +57,7 @@ public:
 
     void registerTypes(const char *uri) {
         qmlRegisterType<SDeclarativeWindowDecoration>(uri, 1, 0, "WindowDecoration");
+        qmlRegisterUncreatableType<SDialogStatus>(uri, 1, 0, "DialogStatus", "");
     }
 };
 

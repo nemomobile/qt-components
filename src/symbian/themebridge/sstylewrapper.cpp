@@ -163,7 +163,9 @@ qreal SStyleWrapper::preferredWidth() const
         }
     }
     if (styleClass() == QLatin1String("Dialog"))
-        return d->fetchLayoutParameter(QLatin1String("param-widget-dialog-width"));
+        return qMin(d->dialogProperty(QLatin1String("appRectWidth")).toReal(),
+            d->dialogProperty(QLatin1String("appRectHeight")).toReal())
+            - 4 * d->fetchLayoutParameter(QLatin1String("param-margin-gene-screen"));
 
     if (styleClass() == QLatin1String("Slider")) {
         if (d->mode == QLatin1String("horizontal"))
@@ -225,7 +227,7 @@ qreal SStyleWrapper::preferredHeight() const
         }
     }
     if (styleClass() == QLatin1String("Dialog"))
-        return d->fetchLayoutParameter(QLatin1String("param-widget-dialog-width"));
+        return preferredWidth();
 
     if (styleClass() == QLatin1String("Slider")) {
         if (d->mode == QLatin1String("horizontal"))

@@ -39,6 +39,7 @@ QML_FILES = \
     Page.qml \
     PageStack.js \
     PageStack.qml \
+    Popup.qml \
     ProgressBar.qml \
     RadioButton.qml \
     ScrollBar.qml \

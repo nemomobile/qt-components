@@ -94,24 +94,43 @@ Column {
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width - parent.spacing
         text: "Dialog"
-        onClicked: root.showPopup(dialog)
+        onClicked: dialog.open()
     }
 
-    Component {
+    Dialog {
         id: dialog
-        Dialog {
-            title: "Dialog"
-            buttonsText: ["Ok", "Cancel"]
-            contentComponent: Component {
-                Item {
-                    Text {
-                        anchors.centerIn: parent
-                        text: "This is content text."
-                        font.bold: true
-                        font.pixelSize: 18
-                    }
-                }
+
+        title: Text {
+            text: "Dialog"
+            font { bold: true; pixelSize: 16 }
+            color: "white"
+            anchors.fill: parent
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+        }
+        buttons: Row {
+            height: 60
+            width: parent.width
+            Button {
+                text: "Ok"
+                width: parent.width / 2
+                height: parent.height
+                onClicked: dialog.accept()
             }
+
+            Button {
+                text: "Cancel"
+                width: parent.width / 2
+                height: parent.height
+                onClicked: dialog.reject()
+            }
+        }
+        content: Text {
+            text: "This is the content"
+            font { bold: true; pixelSize: 16 }
+            anchors.fill: parent
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
         }
     }
 

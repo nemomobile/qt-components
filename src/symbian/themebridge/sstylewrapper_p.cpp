@@ -659,6 +659,18 @@ QVariant SStyleWrapperPrivate::dialogProperty(const QString &propertyName) const
     if (propertyName == QLatin1String("appRectWidth"))
         return faderProperty(propertyName);
 
+    if (propertyName == QLatin1String("maxWidth")) {
+        qreal width = qMin(fetchLayoutParameter(QLatin1String("param-screen-width")),
+            faderProperty(QLatin1String("appRectWidth")).toReal());
+        return width - 4 * fetchLayoutParameter(QLatin1String("param-margin-gene-screen"));
+    }
+
+    if (propertyName == QLatin1String("maxHeight")) {
+        qreal width = qMin(fetchLayoutParameter(QLatin1String("param-screen-height")),
+            faderProperty(QLatin1String("appRectHeight")).toReal());
+        return width - 4 * fetchLayoutParameter(QLatin1String("param-margin-gene-screen"));
+    }
+
     return QVariant();
 }
 

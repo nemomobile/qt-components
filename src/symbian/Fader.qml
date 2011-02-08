@@ -25,75 +25,89 @@
 ****************************************************************************/
 
 import Qt 4.7
-import com.nokia.symbian.themebridge 1.0
-import "AppManager.js" as AppManager
 
-Rectangle {
-    id: fader
+Item {
+    id: root
 
-    property int animationDuration: 250
+    property real dimm: 0.8
+    property int animationDuration: 500
+    property Item visualParent: null
 
-    signal clicked()
+    signal clicked
 
-    function isActive() {
-        return internal.state == "Active";
-    }
+    anchors.fill: parent
+    state: "Hidden"
 
-    function activate() {
-        if (!fader.isActive()) {
-            internal.state = "Active";
-            fader.enabled = true;
-        }
-    }
+    Rectangle {
+        id: fader
 
-    function deactivate() {
-        if (fader.isActive()) {
-            fader.enabled = false;
-            internal.state = "Inactive";
-        }
-    }
-
-    width: style.current.get("appRectWidth"); height: style.current.get("appRectHeight")
-    color: "black"
-
-    Component.onCompleted: fader.parent = AppManager.rootObject()
-
-    Connections {
-        target: screen
-        onOrientationChanged: {
-            fader.width = style.current.get("appRectWidth");
-            fader.height = style.current.get("appRectHeight");
-        }
-    }
-
-    Style {
-        id: style
-        styleClass: "Fader"
-    }
-
-    MouseArea {
         anchors.fill: parent
-        onClicked: fader.clicked()
-    }
+        opacity: 0.0
+        color: "black"
 
-    StateGroup {
-        id: internal
+        property QtObject originalParent: parent
 
-        state: "Inactive"
+        function findRoot() {
+            var next = parent
 
-        states: [
-            State {
-                name: "Inactive"
-                PropertyChanges { target: fader; opacity: 0 }
-            },
-            State {
-                name: "Active"
-                PropertyChanges { target: fader; opacity: 0.5 }
+            if (next != null) {
+                while (next.parent)
+                    next = next.parent
             }
-        ]
+            return next
+        }
 
-        transitions: Transition {
-            PropertyAnimation { duration: fader.animationDuration; properties: "opacity"; easing.type: Easing.InOutCubic }
+        //eat mouse events
+        MouseArea {
+            id: mouseEventEater
+            anchors.fill: parent
+            enabled: fader.opacity != 0.0
+            onClicked: root.clicked()
         }
     }
+
+    states: [
+        State {
+            name: "Visible"
+            PropertyChanges { target: fader; opacity: dimm }
+        },
+        State {
+            name: "Hidden"
+            PropertyChanges { target: fader; opacity: 0.0 }
+        }
+    ]
+
+    transitions: [
+        Transition {
+            from: "Hidden"; to: "Visible"
+            //reparent fader whenever it is going to be visible
+            SequentialAnimation {
+                ScriptAction {script: {
+                        // the algorithm works in the following way:
+                        // First:  Check if visualParent property is set; if yes, center the fader in visualParent
+                        // Second: If not, center inside window content element
+                        // Third:  If no window was found, use root window
+                        fader.originalParent = root.parent
+                        if (visualParent != null) {
+                            root.parent = visualParent
+                        } else if (typeof window != "undefined") {
+                            root.parent = window
+                        } else {
+                            var appRoot = fader.findRoot()
+                            if (appRoot != null)
+                                root.parent = appRoot
+                        }
+                    }
+                }
+                NumberAnimation {properties: "opacity"; duration: animationDuration}
+            }
+        },
+        Transition {
+            from: "Visible"; to: "Hidden"
+            SequentialAnimation {
+                NumberAnimation { properties: "opacity"; duration: animationDuration }
+                ScriptAction { script: root.parent = fader.originalParent }
+            }
+        }
+    ]
 }

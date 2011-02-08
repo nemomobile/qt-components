@@ -36,6 +36,7 @@ data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ObjectMenu.qml        
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\Page.qml                                       RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\Page.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\PageStack.js                                   RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\PageStack.js
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\PageStack.qml                                  RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\PageStack.qml
+data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\Popup.qml                                      RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\Popup.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ProgressBar.qml                                RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ProgressBar.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\RadioButton.qml                                RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\RadioButton.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ScrollBar.qml                                  RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ScrollBar.qml
