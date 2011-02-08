@@ -76,10 +76,10 @@ public:
 
     QAction *findActionWithSoftkeyRole(QAction::SoftKeyRole role) const
     {
-        QList<QAction*> actions = rootWidget->actions();
-        foreach(QAction *a, actions) {
-            if (a->softKeyRole() == role) {
-                return a;
+        if (rootWidget) {
+            foreach(QAction *a, rootWidget->actions()) {
+                if (a->softKeyRole() == role)
+                    return a;
             }
         }
         return 0;
@@ -127,7 +127,7 @@ void SDeclarativeWindowDecorationPrivate::updateCba()
 {
     Q_Q(SDeclarativeWindowDecoration);
     // avoid flickering by updating asyncronously
-    if (!updatingCba) {
+    if (rootWidget && !updatingCba) {
         QMetaObject::invokeMethod(q, "_q_doUpdateCba", Qt::QueuedConnection);
         updatingCba = true;
     }
@@ -167,11 +167,13 @@ void SDeclarativeWindowDecorationPrivate::_q_doUpdateFullScreen()
     updatingFullScreen = false;
 
 #ifdef Q_OS_SYMBIAN
-    if (!statusBarVisible && !titleBarVisible) {
-        rootWidget->showFullScreen();
-    } else {
-        rootWidget->showMaximized();
-        updateCba();
+    if (rootWidget) {
+        if (!statusBarVisible && !titleBarVisible) {
+            rootWidget->showFullScreen();
+        } else {
+            rootWidget->showMaximized();
+            updateCba();
+        }
     }
 #else
     static QObject *screen = 0;
@@ -287,24 +289,25 @@ SDeclarativeWindowDecoration::SDeclarativeWindowDecoration(QDeclarativeItem *par
 #endif
 
     d->rootWidget = QApplication::topLevelWidgets().value(0);
-    Q_ASSERT(d->rootWidget);
 
-    d->optionsAction = new QAction(d->rootWidget);
-    d->optionsAction->setText(tr("Options"));
-    d->rootWidget->addAction(d->optionsAction);
-    connect(d->optionsAction, SIGNAL(triggered(bool)), this, SLOT(_q_optionsSelected()));
+    if (d->rootWidget) {
+        d->optionsAction = new QAction(d->rootWidget);
+        d->optionsAction->setText(tr("Options"));
+        d->rootWidget->addAction(d->optionsAction);
+        connect(d->optionsAction, SIGNAL(triggered(bool)), this, SLOT(_q_optionsSelected()));
 
-    d->exitAction = new QAction(d->rootWidget);
-    d->exitAction->setText(tr("Exit"));
-    d->rootWidget->addAction(d->exitAction);
-    connect(d->exitAction, SIGNAL(triggered(bool)), this, SLOT(_q_exitSelected()));
+        d->exitAction = new QAction(d->rootWidget);
+        d->exitAction->setText(tr("Exit"));
+        d->rootWidget->addAction(d->exitAction);
+        connect(d->exitAction, SIGNAL(triggered(bool)), this, SLOT(_q_exitSelected()));
 
-    d->backAction = new QAction(d->rootWidget);
-    d->backAction->setText(tr("Back"));
-    d->rootWidget->addAction(d->backAction);
-    connect(d->backAction, SIGNAL(triggered(bool)), this, SLOT(_q_backSelected()));
+        d->backAction = new QAction(d->rootWidget);
+        d->backAction->setText(tr("Back"));
+        d->rootWidget->addAction(d->backAction);
+        connect(d->backAction, SIGNAL(triggered(bool)), this, SLOT(_q_backSelected()));
 
-    d->updateFullScreen();
+        d->updateFullScreen();
+    }
 }
 
 SDeclarativeWindowDecoration::~SDeclarativeWindowDecoration()
@@ -419,7 +422,8 @@ void SDeclarativeWindowDecoration::setTitle(const QString &title)
     Q_D(SDeclarativeWindowDecoration);
     if (title != d->title) {
         d->title = title;
-        d->rootWidget->setWindowTitle(d->title);
+        if (d->rootWidget)
+            d->rootWidget->setWindowTitle(d->title);
         emit titleChanged(title);
     }
 }
