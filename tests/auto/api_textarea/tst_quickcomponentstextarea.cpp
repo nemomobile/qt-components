@@ -205,41 +205,64 @@ void tst_quickcomponentstextarea::textFormat()
 
 void tst_quickcomponentstextarea::wrapMode()
 {
-    QVariant retVal;
-    const int wrap1[] = {6, 12, 22}, wrap3[] = {8, 15, 23};
+    QString text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+                 "Pellentesque accumsan lorem ante, a accumsan risus. Ut vulputate "
+                 "cursus ligula nec pretium. Suspendisse cursus scelerisque augue "
+                 "ut egestas. Vestibulum ante ipsum primis in faucibus orci luctus "
+                 "et ultrices posuere cubilia Curae");
 
-    QVERIFY(componentObject->setProperty("text", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
-                                         "Pellentesque accumsan lorem ante, a accumsan risus. Ut vulputate "
-                                         "cursus ligula nec pretium. Suspendisse cursus scelerisque augue "
-                                         "ut egestas. Vestibulum ante ipsum primis in faucibus orci luctus "
-                                         "et ultrices posuere cubilia Curae"));
+    // follow the same test procedure of QDeclarativeTextEdit: only test if the width doesn't change
+    // when we set the wrap mode
 
-    QVERIFY(componentObject->setProperty("wrapMode", 0));
-    for (int i = 0; i < 3; i++) {
-        QVERIFY(componentObject->setProperty("width", 100 + i * 50));
-        QVERIFY2(QMetaObject::invokeMethod(componentObject, "positionAt",
-                                           Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, 0), Q_ARG(QVariant, 20)),
-                 "Could not call positionAt");
-        QCOMPARE(retVal.toInt(), 284);
-    }
+    componentObject->setProperty("width", 300);
+    componentObject->setProperty("text", "");
 
-    QVERIFY(componentObject->setProperty("wrapMode", 1));
-    for (int i = 0; i < 3; i++) {
-        QVERIFY(componentObject->setProperty("width", 100 + i * 50));
-        QVERIFY2(QMetaObject::invokeMethod(componentObject, "positionAt",
-                                           Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, 0), Q_ARG(QVariant, 20)),
-                 "Could not call positionAt");
-        QCOMPARE(retVal.toInt(), wrap1[i]);
-    }
+    QVERIFY(componentObject->setProperty("wrapMode", QTextOption::NoWrap));
+    componentObject->setProperty("text", text);
+    QCOMPARE(componentObject->property("width").toInt(), 300);
+    componentObject->setProperty("text", "");
 
-    QVERIFY(componentObject->setProperty("wrapMode", 3));
-    for (int i = 0; i < 3; i++) {
-        QVERIFY(componentObject->setProperty("width", 100 + i * 50));
-        QVERIFY2(QMetaObject::invokeMethod(componentObject, "positionAt",
-                                           Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, 0), Q_ARG(QVariant, 20)),
-                 "Could not call positionAt");
-        QCOMPARE(retVal.toInt(), wrap3[i]);
-    }
+    QVERIFY(componentObject->setProperty("wrapMode", QTextOption::WordWrap));
+    componentObject->setProperty("text", text);
+    QCOMPARE(componentObject->property("width").toInt(), 300);
+    componentObject->setProperty("text", "");
+
+    QVERIFY(componentObject->setProperty("wrapMode", QTextOption::ManualWrap));
+    componentObject->setProperty("text", text);
+    QCOMPARE(componentObject->property("width").toInt(), 300);
+    componentObject->setProperty("text", "");
+
+    QVERIFY(componentObject->setProperty("wrapMode", QTextOption::WrapAnywhere));
+    componentObject->setProperty("text", text);
+    QCOMPARE(componentObject->property("width").toInt(), 300);
+    componentObject->setProperty("text", "");
+
+    // check if the enum stays in the right range
+    componentObject->setProperty("wrapMode", 5);
+    QEXPECT_FAIL("", "Not yet blocked by enum range,"
+                 "http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-414",
+                 Continue);
+    QVERIFY(componentObject->property("wrapMode").toInt()
+            <= (int)Qt::LogText);
+
+    // try to set a lower value
+    componentObject->setProperty("wrapMode", -1);
+    QEXPECT_FAIL("", "Not yet blocked by enum range,"
+                 "http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-414",
+                 Continue);
+    QVERIFY(componentObject->property("wrapMode").toInt()
+            >= (int)Qt::PlainText);
+
+    // try to set random value
+    componentObject->setProperty("wrapMode", qrand());
+    QEXPECT_FAIL("", "Not yet blocked by enum range,"
+                 "http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-414",
+                 Continue);
+    QVERIFY(componentObject->property("wrapMode").toInt()
+            <= (int)Qt::PlainText
+            && componentObject->property("wrapMode").toInt()
+            >= (int)Qt::LogText);
+
 }
 
 void tst_quickcomponentstextarea::copypaste()
