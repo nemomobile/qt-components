@@ -35,7 +35,7 @@ class QPixmap;
 class QDBusServiceWatcher;
 class QDBusPendingCallWatcher;
 
-#if !defined(Q_WS_MAC) && !defined(Q_WS_WIN)
+#if !defined(Q_OS_MAC) && !defined(Q_OS_WIN)
    #define HAVE_DBUS
    #define HAVE_XDAMAGE
 #endif
