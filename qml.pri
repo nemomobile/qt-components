@@ -1,6 +1,6 @@
 !symbian {
     for(qmlfile, QML_FILES) {
-        ARGUMENTS = $$qmlfile $$DESTDIR
+        ARGUMENTS = $$_PRO_FILE_PWD_/$$qmlfile $$DESTDIR
         target = copy_$$lower($$basename(qmlfile))
         target = $$replace(target, \\., _)
         commands = $${target}.commands
@@ -30,7 +30,7 @@
             QMAKE_POST_LINK += && $$QMAKE_COPY $$replace(ARGUMENTS, /, $$QMAKE_DIR_SEP)
 
             for(qmlfile, QML_FILES) {
-                ARGUMENTS = $$qmlfile $$NATIVE_DESTDIR
+                ARGUMENTS = $$_PRO_FILE_PWD_/$$qmlfile $$NATIVE_DESTDIR
                 target = copy_native_$$lower($$basename(qmlfile))
                 target = $$replace(target, \\., _)
                 commands = $${target}.commands
