@@ -1,7 +1,7 @@
-
-INCLUDEPATH += $$PWD
-DEPENDPATH += $$PWD
 !meego:!symbian {
-    HEADERS += $$INCLUDEPATH/settingswindow.h
-    SOURCES += $$INCLUDEPATH/settingswindow.cpp
+    INCLUDEPATH += $$PWD
+    DEPENDPATH += $$PWD
+
+    HEADERS += $$PWD/settingswindow.h
+    SOURCES += $$PWD/settingswindow.cpp
 }
