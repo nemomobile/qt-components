@@ -1,5 +1,8 @@
 TEMPLATE = subdirs
-SUBDIRS += auto apicheck
+
+SUBDIRS += apicheck \
+           auto \
+           manual
 
 test.CONFIG = recursive
 test.recurse = $$SUBDIRS

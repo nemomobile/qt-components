@@ -1,0 +1,30 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file alias="list1.png" >images/list1.png</file>
+    <file alias="list2.png" >images/list2.png</file>
+    <file alias="list3.png" >images/list3.png</file>
+    <file alias="list4.png" >images/list4.png</file>
+    <file alias="list5.png" >images/list5.png</file>
+    <file alias="list6.png" >images/list6.png</file>
+    <file alias="list7.png" >images/list7.png</file>
+    <file alias="list8.png" >images/list8.png</file>
+    <file alias="list9.png" >images/list9.png</file>
+    <file alias="list10.png" >images/list10.png</file>
+    <file alias="list11.png" >images/list11.png</file>
+    <file alias="list12.png" >images/list12.png</file>
+    <file alias="list13.png" >images/list13.png</file>
+    <file alias="list14.png" >images/list14.png</file>
+    <file alias="list15.png" >images/list15.png</file>
+    <file alias="richtexteditor.png" >images/richtexteditor.png</file>
+    <file alias="qtg_fr_btn_normal.svg" >images/qtg_fr_btn_normal.svg</file>
+    <file alias="qtg_fr_btn_normal_tl.svg" >images/qtg_fr_btn_normal_tl.svg</file>
+    <file alias="qtg_fr_btn_normal_t.svg" >images/qtg_fr_btn_normal_t.svg</file>
+    <file alias="qtg_fr_btn_normal_tr.svg" >images/qtg_fr_btn_normal_tr.svg</file>
+    <file alias="qtg_fr_btn_normal_l.svg" >images/qtg_fr_btn_normal_l.svg</file>
+    <file alias="qtg_fr_btn_normal_c.svg" >images/qtg_fr_btn_normal_c.svg</file>
+    <file alias="qtg_fr_btn_normal_r.svg" >images/qtg_fr_btn_normal_r.svg</file>
+    <file alias="qtg_fr_btn_normal_bl.svg" >images/qtg_fr_btn_normal_bl.svg</file>
+    <file alias="qtg_fr_btn_normal_b.svg" >images/qtg_fr_btn_normal_b.svg</file>
+    <file alias="qtg_fr_btn_normal_br.svg" >images/qtg_fr_btn_normal_br.svg</file>
+</qresource>
+</RCC>
