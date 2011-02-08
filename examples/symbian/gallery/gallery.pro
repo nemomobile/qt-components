@@ -6,10 +6,6 @@ CONFIG -= app_bundle
 
 TEMPLATE = app
 
-win32 {
-    DESTDIR = $$PWD
-}
-
 SOURCES += gallery.cpp
 
 symbian {
