@@ -111,6 +111,8 @@ int main(int argc, char **argv)
     qmlRegisterType<Settings>("Settings", 1, 0, "Settings");
 
     QDeclarativeView view;
+    view.engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
+
 #ifdef Q_OS_SYMBIAN
     view.setSource(QUrl::fromLocalFile("main.qml"));
     view.showMaximized();
