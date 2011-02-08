@@ -61,3 +61,4 @@ release/
 /tests/auto/symbian_textfield/tst_symbian_textfield
 /tests/auto/symbian_tooltip/tst_symbian_tooltip
 /tests/apicheck/tst_apicheck
+/tests/manual/componenttest/componenttest
