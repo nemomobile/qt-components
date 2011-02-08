@@ -32,6 +32,7 @@
 #ifdef QT_COMP_SCROLLBAR_UNIT_TEST_TRACES
 #include <QtCore/QDebug>
 #endif //QT_COMP_SCROLLBAR_UNIT_TEST_TRACES
+#include "tst_quickcomponentstest.h"
 
 static const QByteArray QT_COMP_IMPORT_STRING_SYMBIAN = "import com.nokia.symbian 1.0\n";
 
@@ -84,6 +85,7 @@ private:
 
 void tst_scrollbar::initTestCase()
 {
+    engine.addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
 }
 
 void tst_scrollbar::cleanupTestCase()
@@ -195,11 +197,8 @@ void tst_scrollbar::testScrollBarWithInvalidFlickable()
                      +"    Rectangle { id: rect }\n"
                      +"    ScrollBar { flickableItem: rect }\n"
                      +"}";
-    QDeclarativeComponent c(&engine);
-    c.setData(qml, QUrl());
-    QVERIFY(c.isReady());//Should still pass
     QTest::ignoreMessage(QtWarningMsg, "<Unknown File>:6: Unable to assign QObject* to QDeclarativeFlickable*");
-    QObject *obj = c.create()->children().value(1);//QDeclarativeComponent.create should invoke expected QWARN
+    QObject *obj = tst_quickcomponentstest::createComponentFromString(qml, 0)->children().value(1);//QDeclarativeComponent.create should invoke expected QWARN
     delete obj;
 }
 
@@ -209,11 +208,10 @@ void tst_scrollbar::testScrollBarLoadingWithNoParams()
                      +QT_COMP_IMPORT_STRING_SYMBIAN
                      +"ScrollBar {\n"
                      +"}";
-    QDeclarativeComponent c(&engine);
-    c.setData(qml, QUrl());
-    QVERIFY(c.isReady());//Should still pass
     QtMsgHandler orig = qInstallMsgHandler(failIfWarnings);
-    QObject *obj = c.create()->children().value(1);
+    QString errors;
+    QObject *obj = tst_quickcomponentstest::createComponentFromString(qml, &errors)->children().value(1);
+    QVERIFY2(obj, qPrintable(errors));
     qInstallMsgHandler(orig);
     delete obj;
 }
@@ -335,11 +333,9 @@ void tst_scrollbar::testPropertiesScrollBar()
                      +"    Flickable { id: flickableArea }\n"
                      +"    ScrollBar { flickableItem: flickableArea }\n"
                      +"}";
-    QDeclarativeComponent c(&engine);
-    c.setData(qml, QUrl());
-    QVERIFY(c.isReady());
-    QObject *obj = c.create()->children().value(1);
-    QVERIFY(obj);
+    QString errors;
+    QObject *obj = tst_quickcomponentstest::createComponentFromString(qml, &errors)->children().value(1);
+    QVERIFY2(obj, qPrintable(errors));
 
     QVERIFY(obj->property("interactive").isValid());
     QVERIFY(obj->property("flickableItem").isValid());
@@ -482,11 +478,8 @@ void tst_scrollbar::testScrollDecoratorWithInvalidFlickable()
                      +"    Rectangle { id: rect }\n"
                      +"    ScrollDecorator { flickableItem: rect }\n"
                      +"}";
-    QDeclarativeComponent c(&engine);
-    c.setData(qml, QUrl());
-    QVERIFY(c.isReady());//should still pass
     QTest::ignoreMessage(QtWarningMsg, "<Unknown File>:6: Unable to assign QObject* to QDeclarativeFlickable*");
-    QObject *obj = c.create()->children().value(1);//QDeclarativeComponent.create should invoke expected QWARN
+    QObject *obj = tst_quickcomponentstest::createComponentFromString(qml, 0)->children().value(1);//QDeclarativeComponent.create should invoke expected QWARN
     delete obj;
 }
 void tst_scrollbar::testScrollDecoratorLoadingWithNoParams()
@@ -495,11 +488,10 @@ void tst_scrollbar::testScrollDecoratorLoadingWithNoParams()
                      +QT_COMP_IMPORT_STRING_SYMBIAN
                      +"ScrollDecorator {\n"
                      +"}";
-    QDeclarativeComponent c(&engine);
-    c.setData(qml, QUrl());
-    QVERIFY(c.isReady());//Should still pass
     QtMsgHandler orig = qInstallMsgHandler(failIfWarnings);
-    QObject *obj = c.create()->children().value(1);
+    QString errors;
+    QObject *obj = tst_quickcomponentstest::createComponentFromString(qml, &errors)->children().value(1);
+    QVERIFY2(obj, qPrintable(errors));
     qInstallMsgHandler(orig);
     delete obj;
 }
@@ -513,12 +505,9 @@ void tst_scrollbar::testPropertiesScrollDecorator()
                      +"    Flickable { id: flickableArea }\n"
                      +"    ScrollDecorator { flickableItem: flickableArea }\n"
                      +"}";
-
-    QDeclarativeComponent c(&engine);
-    c.setData(qml, QUrl());
-    QVERIFY(c.isReady());
-    QObject *obj = c.create()->children().value(1);
-    QVERIFY(obj);
+    QString errors;
+    QObject *obj = tst_quickcomponentstest::createComponentFromString(qml, &errors)->children().value(1);
+    QVERIFY2(obj, qPrintable(errors));
 
     //ScrollDecorator.qml part of Common API and is a wrapper using ScrollBar.qml
     QVERIFY(!obj->property("interactive").isValid());
