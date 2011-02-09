@@ -18,16 +18,17 @@
             !isEmpty(NATIVESUBPATH):NATIVE_DESTDIR = $$NATIVE_DESTDIR/$$NATIVESUBPATH
             NATIVE_DESTDIR = $$replace(NATIVE_DESTDIR, /, $$QMAKE_DIR_SEP)
 
-            mkdir_native.commands += $$QMAKE_CHK_DIR_EXISTS $$NATIVE_DESTDIR $$QMAKE_MKDIR $$NATIVE_DESTDIR
+            contains(QMAKE_HOST.os, Windows):isEmpty(QMAKE_SH) {
+                CHK_DIR_EXISTS_MKDIR = $$QMAKE_CHK_DIR_EXISTS $$NATIVE_DESTDIR $$QMAKE_MKDIR $$NATIVE_DESTDIR
+            } else {
+                CHK_DIR_EXISTS_MKDIR = $$QMAKE_CHK_DIR_EXISTS $$NATIVE_DESTDIR || $$QMAKE_MKDIR $$NATIVE_DESTDIR
+            }
+
+            mkdir_native.commands += $$CHK_DIR_EXISTS_MKDIR
             QMAKE_EXTRA_TARGETS += mkdir_native
 
             ARGUMENTS = $$DESTDIR/$(TARGET) $$NATIVE_DESTDIR
-            contains(QMAKE_HOST.os, Windows):isEmpty(QMAKE_SH) {
-                QMAKE_POST_LINK += ($$QMAKE_CHK_DIR_EXISTS $$NATIVE_DESTDIR $$QMAKE_MKDIR $$NATIVE_DESTDIR)
-            } else {
-                QMAKE_POST_LINK += ($$QMAKE_CHK_DIR_EXISTS $$NATIVE_DESTDIR || $$QMAKE_MKDIR $$NATIVE_DESTDIR)
-            }
-            QMAKE_POST_LINK += && $$QMAKE_COPY $$replace(ARGUMENTS, /, $$QMAKE_DIR_SEP)
+            QMAKE_POST_LINK += ($$CHK_DIR_EXISTS_MKDIR) && $$QMAKE_COPY $$replace(ARGUMENTS, /, $$QMAKE_DIR_SEP)
 
             for(qmlfile, QML_FILES) {
                 ARGUMENTS = $$_PRO_FILE_PWD_/$$qmlfile $$NATIVE_DESTDIR
