@@ -1,10 +1,10 @@
 include (../../../qt-components.pri)
-QT += declarative core gui
 
 TARGET = qmlgallery
-CONFIG -= app_bundle
-
 TEMPLATE = app
+QT += declarative
+CONFIG -= app_bundle
+win32:DESTDIR = $$OUT_PWD
 
 SOURCES += gallery.cpp
 
