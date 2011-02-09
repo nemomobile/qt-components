@@ -95,6 +95,7 @@ ImplicitSizeItem {
             if (fader.isActive()) {
                 root.canceled();
                 root.hide();
+                style.play(Symbian.PopupClose);
             }
         }
     }
@@ -179,6 +180,8 @@ ImplicitSizeItem {
         ListView {
             id: listView
 
+            property real contentBottom: contentY + height
+
             onMovementStarted: timeoutTimer.stop();
             onMovementEnded: timeoutTimer.start();
             onFlickStarted: timeoutTimer.stop();
@@ -205,6 +208,10 @@ ImplicitSizeItem {
 
             Item {
                 id: activeItem
+
+                property bool outOfBounds: y > listView.contentBottom || y + height < listView.contentY
+
+                onOutOfBoundsChanged: if (!outOfBounds && listView.moving) style.play(Symbian.ItemScroll)
 
                 width: listView.width; height: style.current.get("itemHeight")
 
@@ -239,6 +246,7 @@ ImplicitSizeItem {
                     onPressed: {
                         itemStyle.mode = "pressed";
                         timeoutTimer.stop();
+                        style.play(Symbian.BasicItem);
                     }
                     onReleased: {
                         if (containsMouse) {
@@ -246,6 +254,7 @@ ImplicitSizeItem {
                             timeoutTimer.start();
                             root.triggered(index);
                             root.hide();
+                            style.play(Symbian.PopupClose);
                         }
                     }
                     onCanceled: {
