@@ -25,6 +25,7 @@
 ****************************************************************************/
 
 import Qt 4.7
+import com.nokia.symbian 1.0
 import com.nokia.symbian.themebridge 1.0
 
 ImplicitSizeItem {
@@ -85,10 +86,12 @@ ImplicitSizeItem {
             PropertyAnimation { target: contentIcon; property: "scale"; from: 0.8; to: 1.0; easing.type: "OutQuad"; duration: 300 }
         }
 
+        onPressed: if (checkable) style.play(Symbian.BasicItem);
         onClicked: {
             if (checkable) {
                 clickedEffect.restart();
                 checkbox.checked = !checkbox.checked;
+                style.play(Symbian.CheckBox);
             }
             checkbox.clicked();
         }
