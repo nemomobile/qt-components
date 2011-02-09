@@ -25,6 +25,7 @@
 ****************************************************************************/
 
 import Qt 4.7
+import com.nokia.symbian 1.0
 import com.nokia.symbian.themebridge 1.0
 
 ImplicitSizeItem {
@@ -87,11 +88,10 @@ ImplicitSizeItem {
 
     function press() {
         // haptics
-        if (checkable && checked) {
-            // TODO: style.play(ThemeEffect.SensitiveButton);
-        } else {
-            // TODO: style.play(ThemeEffect.BasicButton);
-        }
+        if (checkable && checked)
+            style.play(Symbian.SensitiveButton);
+        else
+            style.play(Symbian.BasicButton);
     }
 
     function release() {
@@ -107,9 +107,8 @@ ImplicitSizeItem {
         clickedEffect.restart();
 
         // release haptics on succesfull click
-        if (!checkable || (checkable && !checked)) {
-            // TODO: style.play(ThemeEffect.BasicButton);
-        }
+        if (!checkable || (checkable && !checked))
+            style.play(Symbian.BasicButton);
 
         // emit signal
         button.clicked();
@@ -125,9 +124,8 @@ ImplicitSizeItem {
     }
 
     function repeat() {
-        if (!checkable) {
-            // TODO: style.play(ThemeEffect.SensitiveButton);
-        }
+        if (!checkable)
+            style.play(Symbian.SensitiveButton);
         // emit signal
         button.clicked();
     }
