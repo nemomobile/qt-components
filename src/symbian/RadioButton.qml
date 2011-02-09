@@ -101,18 +101,12 @@ ImplicitSizeItem {
         id: mouseArea
         anchors.fill: parent
 
-// TODO: Tactile feedback missing
-//        onPressed: {
-//            if (exclusiveGroup)
-//                style.play(ThemeEffect.BasicItem);
-//        }
-
+        onPressed: if (exclusiveGroup) style.play(Symbian.BasicItem);
         onClicked: {
             checkable.toggle();
             root.clicked();
-// TODO: Tactile feedback missing
-//            if (exclusiveGroup)
-//                style.play(ThemeEffect.CheckBox);
+            if (exclusiveGroup)
+                style.play(Symbian.CheckBox);
         }
     }
 
