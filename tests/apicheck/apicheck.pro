@@ -3,7 +3,7 @@ include (../tests.pri)
 
 TEMPLATE = app
 TARGET = tst_apicheck
-
+CONFIG += qtestlib testcase
 INCLUDEPATH += base
 
 HEADERS += base/apicheckbase.h \

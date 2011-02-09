@@ -1,3 +1,5 @@
+CONFIG += qtestlib testcase
+
 harmattan {
     INSTALLS += target qmlfiles
     qmlfiles.files = $$OTHER_FILES
