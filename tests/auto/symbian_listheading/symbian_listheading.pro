@@ -5,6 +5,6 @@ TEMPLATE = app
 QT += declarative
 
 SOURCES += tst_quickcomponentslistheading.cpp
-
 OTHER_FILES += tst_quickcomponentslistheading.qml
+
 include (../auto.pri)

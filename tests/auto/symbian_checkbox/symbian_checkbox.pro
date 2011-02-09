@@ -4,10 +4,7 @@ TARGET = tst_symbian_checkbox
 TEMPLATE = app
 QT += declarative
 
-SOURCES += \
-    tst_checkbox.cpp
+SOURCES += tst_checkbox.cpp
+OTHER_FILES += tst_checkbox.qml
 
 include (../auto.pri)
-
-OTHER_FILES += \
-    tst_checkbox.qml
