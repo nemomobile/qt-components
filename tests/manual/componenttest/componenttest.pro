@@ -27,5 +27,6 @@ symbian {
 
 OTHER_FILES += \
     main.qml \
-    tests/Button.qml
+    tests/Button.qml \
+    tests/Metrics.qml
 
