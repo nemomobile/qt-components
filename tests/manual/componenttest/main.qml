@@ -29,7 +29,7 @@ import com.nokia.symbian 1.0
 import FileAccess 1.0
 import Settings 1.0
 
-Window {
+ApplicationWindow {
     id: mainWindow
 
     objectName: "mainWindow"
@@ -37,10 +37,6 @@ Window {
     // For TDriver tests - setting component name to this property will open the corresponding
     // component page "automatically"
     property string componentName
-
-    PageStack {
-        id: pageStack
-    }
 
     FileAccess {
         id: fileAccess
@@ -66,7 +62,7 @@ Window {
     Component.onCompleted: {
         internal.qmlPaths = fileAccess.qmlPaths()
         screen.orientation = settings.orientation()
-        pageStack.push(component)
+        mainWindow.pageStack.push(component)
     }
 
     Component {
@@ -179,7 +175,7 @@ Window {
                             return buttonLabel
                         }
 
-                        onClicked: pageStack.push(listPageComponent)
+                        onClicked: mainWindow.pageStack.push(listPageComponent)
                     }
                     Text {
                         id: currentFileLabel
@@ -236,9 +232,9 @@ Window {
                             onClicked: {
                                 buttons.checkedButton = testButton
                                 if (flickableSetting.checked == true)
-                                    pageStack.push(flickableTestComponent)
+                                    mainWindow.pageStack.push(flickableTestComponent)
                                 else
-                                    pageStack.push(testComponent)
+                                    mainWindow.pageStack.push(testComponent)
                             }
 
                             // For TDriver ->
@@ -250,9 +246,9 @@ Window {
                                         testButton.text = mainWindow.componentName
                                         buttons.checkedButton  = testButton
                                         if (flickableSetting.checked)
-                                            pageStack.push(flickableTestComponent)
+                                            mainWindow.pageStack.push(flickableTestComponent)
                                         else
-                                            pageStack.push(testComponent)
+                                            mainWindow.pageStack.push(testComponent)
                                     }
                                 componentName = ""
                                 }
@@ -323,7 +319,7 @@ Window {
 
                                             anchors { left: parent.left; top: parent.top }
                                             width: if (fillSetting.checked) parent.width
-                                            height: if (fillSetting.checked) parent.height                                       
+                                            height: if (fillSetting.checked) parent.height
 
                                             visible: loader.status !== Loader.Error
                                             source: mainPage.resolveSource()
@@ -379,7 +375,7 @@ Window {
                 ListItem {
                     onClicked: {
                         internal.fullPath = listTextId.fullPath
-                        pageStack.pop(listPageComponent)
+                        mainWindow.pageStack.pop(listPageComponent)
                     }
                     ListItemText {
                         id: listTextId

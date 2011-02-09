@@ -150,17 +150,4 @@ Item {
             button2.iconSource = buttonIconEditor.text
         }
     }
-
-    // TODO: Temporary back button
-    // remove when ApplicationWindow is ready
-    Button {
-        anchors { right: parent.right; bottom: parent.bottom; rightMargin: 10 }
-        text: "Back"
-        width: 100
-        height: 35
-
-        onClicked: {
-            pageStack.pop()
-        }
-    }
 }

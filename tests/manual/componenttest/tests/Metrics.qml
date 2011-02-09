@@ -62,17 +62,4 @@ Item {
         anchors { fill: parent; margins: 20 }
         horizontalAlignment: Text.AlignRight
     }
-
-    // Temporary back button
-    // remove when ApplicationWindow is ready
-    Button {
-        anchors { right: parent.right; bottom: parent.bottom; rightMargin: 10; bottomMargin: 0 }
-        text: "Back"
-        width: 100
-        height: 35
-
-        onClicked: {
-            pageStack.pop()
-        }
-    }
 }
