@@ -101,12 +101,11 @@ ImplicitSizeItem {
         id: mouseArea
         anchors.fill: parent
 
-        onPressed: if (exclusiveGroup) style.play(Symbian.BasicItem);
+        onPressed: style.play(Symbian.BasicItem);
         onClicked: {
             checkable.toggle();
             root.clicked();
-            if (exclusiveGroup)
-                style.play(Symbian.CheckBox);
+            style.play(Symbian.CheckBox);
         }
     }
 
@@ -121,5 +120,6 @@ ImplicitSizeItem {
     Checkable {
         id: checkable
         value: root.text
+        enabled: true
     }
 }
