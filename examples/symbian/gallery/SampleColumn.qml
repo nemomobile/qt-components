@@ -26,6 +26,7 @@
 
 import Qt 4.7
 import com.nokia.symbian 1.0
+import Qt.labs.components 1.0
 
 Column {
 
@@ -60,6 +61,21 @@ Column {
     Slider {
         anchors.horizontalCenter: parent.horizontalCenter
         value: 50
+    }
+
+    Row {
+        anchors.horizontalCenter: parent.horizontalCenter
+        spacing: parent.spacing
+
+        CheckableGroup { id: group }
+
+        RadioButton {
+            exclusiveGroup: group
+        }
+
+        RadioButton {
+            exclusiveGroup: group
+        }
     }
 
     Row {
