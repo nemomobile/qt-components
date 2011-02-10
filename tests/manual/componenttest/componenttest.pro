@@ -28,5 +28,6 @@ symbian {
 OTHER_FILES += \
     main.qml \
     tests/Button.qml \
-    tests/Metrics.qml
+    tests/Metrics.qml \
+    tests/RadioButton.qml
 
