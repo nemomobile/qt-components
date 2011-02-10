@@ -99,7 +99,6 @@ Item {
             if (checked) {
                 button3.autoRepeat = true;
                 button3.longPress = false;
-                button3.autoRepeatInterval = 10;
                 button3.text = "autoRepeat"
             }
             else {

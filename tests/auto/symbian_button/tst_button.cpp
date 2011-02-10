@@ -60,8 +60,6 @@ void tst_button::defaultPropertyValues()
     QVERIFY(testButton);
     QVERIFY(testButton->property("autoRepeat").isValid());
     QCOMPARE(testButton->property("autoRepeat").toBool(), false);
-    QVERIFY(testButton->property("autoRepeatInterval").isValid());
-    QCOMPARE(testButton->property("autoRepeatInterval").toInt(), 50);
     QVERIFY(testButton->property("longPress").isValid());
     QCOMPARE(testButton->property("longPress").toBool(), false);
 }
@@ -82,9 +80,6 @@ void tst_button::properties()
 
     testButton->setProperty("longPress", QVariant(false));
     QCOMPARE(testButton->property("longPress").toBool(), false);
-
-    testButton->setProperty("autoRepeatInterval", QVariant(100));
-    QCOMPARE(testButton->property("autoRepeatInterval").toInt(), 100);
 }
 
 void tst_button::testImplicitSize()

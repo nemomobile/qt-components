@@ -34,47 +34,42 @@ ImplicitSizeItem {
     // Common Public API
     property bool checked: false
     property bool checkable: false
-    property bool pressed: (internal.state == "Pressed" || internal.state == "PressAndHold") && mouseArea.containsMouse
+    property bool pressed: (stateGroup.state == "Pressed" || stateGroup.state == "PressAndHold") && mouseArea.containsMouse
     property alias text: label.text
     property alias iconSource: icon.source
 
     signal clicked
+
+    // Symbian specific signals and properties
     signal released
     signal pressAndHold
 
     property bool autoRepeat: false
-    property int autoRepeatInterval: 50
     property bool longPress: false
 
-    property variant __style: style
-
-    implicitWidth: calculateImplicitWidth()
-    implicitHeight: calculateImplicitHeight()
-
-    function calculateImplicitWidth() {
+    implicitWidth: {
         var prefWidth = 20;
 
         if (iconSource != "" && text)
             // leftMargin + iconWidth + padding + textWidth + rightMargin
-            prefWidth = style.current.get("iconMarginLeft") + style.current.get("iconWidth") + style.current.get("textMarginLeftInner")
-                        + style.textWidth(label.text, label.font) + style.current.get("textMarginRight");
+            prefWidth = icon.anchors.leftMargin + icon.sourceSize.width + label.anchors.leftMargin + style.textWidth(label.text, label.font) + label.anchors.rightMargin
         else if (iconSource != "")
             // leftMargin + iconWidth + rightMargin
-            prefWidth = style.current.get("iconMarginLeft") + style.current.get("iconWidth") + style.current.get("iconMarginRight");
+            prefWidth = icon.anchors.leftMargin + icon.sourceSize.width + icon.anchors.rightMargin;
         else if (text)
             // leftMargin + textWidth + rightMargin
-            prefWidth = style.current.get("textMarginLeft") + style.textWidth(label.text, label.font) + style.current.get("textMarginRight");
+            prefWidth = icon.anchors.leftMargin + style.textWidth(label.text, label.font) + label.anchors.rightMargin;
 
         return prefWidth;
     }
 
-    function calculateImplicitHeight() {
-        var prefHeight = style.current.get("iconMarginTop") + style.current.get("iconMarginBottom");
+    implicitHeight: {
+        var prefHeight = icon.anchors.topMargin + icon.anchors.bottomMargin;
 
         if (iconSource != "" && text)
-            prefHeight = prefHeight + Math.max(style.current.get("iconHeight"), style.fontHeight(label.font));
+            prefHeight = prefHeight + Math.max(icon.sourceSize.height, style.fontHeight(label.font));
         else if (iconSource != "")
-            prefHeight = prefHeight + style.current.get("iconHeight");
+            prefHeight = prefHeight + icon.sourceSize.height;
         else if (text)
             prefHeight = prefHeight + style.fontHeight(label.font);
 
@@ -130,8 +125,13 @@ ImplicitSizeItem {
         button.clicked();
     }
 
-    Item {
+    QtObject {
         id: internal
+        property int autoRepeatInterval: 50
+    }
+
+    StateGroup {
+        id: stateGroup
 
         states: [
             State { name: "Pressed"; },
@@ -177,7 +177,7 @@ ImplicitSizeItem {
         id: style
         styleClass: "Button"
         mode: {
-            if (internal.state == "Pressed" || internal.state == "PressAndHold")
+            if (stateGroup.state == "Pressed" || stateGroup.state == "PressAndHold")
                 return "pressed"
             else if (focus && checked)
                 return "pressed"
@@ -199,7 +199,6 @@ ImplicitSizeItem {
 
     Image {
         id: icon
-        source: button.iconSource
         sourceSize.width : style.current.get("iconWidth")
         sourceSize.height : style.current.get("iconHeight")
         fillMode: Image.PreserveAspectFit
@@ -237,29 +236,29 @@ ImplicitSizeItem {
 
         anchors.fill: parent
 
-        onPressed: internal.state = "Pressed"
+        onPressed: stateGroup.state = "Pressed"
 
-        onReleased: internal.state = ""
+        onReleased: stateGroup.state = ""
 
         onCanceled: {
             // Mark as canceled
-            internal.state = "Canceled";
+            stateGroup.state = "Canceled";
             // Reset state. Can't expect a release since mouse was ungrabbed
-            internal.state = "";
+            stateGroup.state = "";
         }
 
         onPressAndHold: {
-            if (internal.state != "Canceled" && (longPress || autoRepeat))
-                internal.state = "PressAndHold";
+            if (stateGroup.state != "Canceled" && (longPress || autoRepeat))
+                stateGroup.state = "PressAndHold";
         }
 
-        onExited: internal.state = "Canceled"
+        onExited: stateGroup.state = "Canceled"
     }
 
     Timer {
         id: tapRepeatTimer
 
-        interval: button.autoRepeatInterval; running: false; repeat: true
+        interval: internal.autoRepeatInterval; running: false; repeat: true
         onTriggered: button.repeat()
     }
 
@@ -272,14 +271,14 @@ ImplicitSizeItem {
 
     Keys.onPressed: {
         if (event.key == Qt.Key_Select || event.key == Qt.Key_Return) {
-            internal.state = "Pressed";
+            stateGroup.state = "Pressed";
             event.accepted = true;
         }
     }
 
     Keys.onReleased: {
         if (event.key == Qt.Key_Select || event.key == Qt.Key_Return) {
-            internal.state = "";
+            stateGroup.state = "";
             event.accepted = true;
         }
     }
