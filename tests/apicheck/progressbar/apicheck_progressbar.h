@@ -52,9 +52,9 @@ inline void ApiCheckProgressBar::initTestCase()
 
 inline void ApiCheckProgressBar::validateProperties()
 {
-    validateProperty("minimumValue", QVariant::Double, 0.0);
-    validateProperty("maximumValue", QVariant::Double, 1.0);
-    validateProperty("value", QVariant::Double, 0.0);
+    validateProperty("minimumValue", static_cast<QVariant::Type>(QMetaType::QReal), 0.0);
+    validateProperty("maximumValue", static_cast<QVariant::Type>(QMetaType::QReal), 1.0);
+    validateProperty("value", static_cast<QVariant::Type>(QMetaType::QReal), 0.0);
     validateProperty("indeterminate", QVariant::Bool, false);
 }
 
