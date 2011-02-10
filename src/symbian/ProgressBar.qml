@@ -25,39 +25,20 @@
 ****************************************************************************/
 
 import Qt 4.7
-import com.nokia.symbian 1.0
+import Qt.labs.components 1.0
 import com.nokia.symbian.themebridge 1.0
 
 ImplicitSizeItem {
     id: progressBar
 
     // Common Public API
-    property real minimumValue: 0.0
-    property real maximumValue: 1.0
-    property real value: 0.0
+    property alias minimumValue: model.minimumValue
+    property alias maximumValue: model.maximumValue
+    property alias value: model.value
     property bool indeterminate: false
-
-    onValueChanged: internal.checkValueLimits()
-    onMaximumValueChanged: internal.checkValueLimits()
-    onMinimumValueChanged: internal.checkValueLimits()
 
     implicitWidth: style.current.preferredWidth
     implicitHeight: style.current.preferredHeight
-
-    Item {
-        id: internal
-
-        function checkValueLimits()
-        {
-            if (progressBar.maximumValue < progressBar.minimumValue)
-                progressBar.maximumValue = progressBar.minimumValue;
-
-            if (progressBar.value < progressBar.minimumValue)
-                progressBar.value = progressBar.minimumValue;
-            else if (progressBar.value > progressBar.maximumValue)
-                progressBar.value = progressBar.maximumValue;
-        }
-    }
 
     Style {
         id: style
@@ -134,16 +115,7 @@ ImplicitSizeItem {
             anchors.top: parent.top
             anchors.bottom: parent.bottom
 
-            width: progressWidth()
-
-            function progressWidth() {
-                if (value <= minimumValue)
-                    return 0;
-                else if (value >= maximumValue)
-                    return progressBar.width;
-                else
-                    return ((value - minimumValue) / (maximumValue - minimumValue)) * progressBar.width;
-            }
+            width: model.position
 
             Frame {
                 id: frame
@@ -176,6 +148,14 @@ ImplicitSizeItem {
             imageName: style.current.get("indeterminateIcon")
             maskName: style.current.get("indeterminateMask")
         }
+    }
+
+    RangeModel {
+        id: model
+        minimumValue: 0.0
+        maximumValue: 1.0
+        positionAtMinimum: 0.0
+        positionAtMaximum: background.width
     }
 }
 
