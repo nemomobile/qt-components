@@ -338,9 +338,6 @@ QVariant SStyleWrapperPrivate::buttonProperty(const QString &propertyName) const
     if (propertyName == QLatin1String("background"))
         return buttonPropertyBackground();
 
-    if (propertyName == QLatin1String("frameType"))
-        return SDeclarativeFrame::NinePieces;
-
     if (propertyName == QLatin1String("textColor"))
         return buttonPropertyTextColor();
 
@@ -1146,21 +1143,17 @@ void SStyleWrapperPrivate::_q_desktopWorkareaChanged()
 QVariant SStyleWrapperPrivate::buttonPropertyBackground() const
 {
     if (mode == QLatin1String("pressed"))
-        return QLatin1String("qtg_fr_btn_pressed");
-    else if (mode == QLatin1String("focused"))
-        return QLatin1String("qtg_fr_btn_highlight");
+        return imagePath(QLatin1String("qtg_fr_pushbutton_pressed"));
     else if (mode == QLatin1String("checked"))
-        return QLatin1String("qtg_fr_btn_latched");
+        return imagePath(QLatin1String("qtg_fr_pushbutton_latched"));
     else
-        return QLatin1String("qtg_fr_btn_normal");
+        return imagePath(QLatin1String("qtg_fr_pushbutton_normal"));
 }
 
 QVariant SStyleWrapperPrivate::buttonPropertyTextColor() const
 {
     if (mode == QLatin1String("pressed"))
         return fetchThemeColor(QLatin1String("qtc_button_pressed"));
-    else if (mode == QLatin1String("focused"))
-        return fetchThemeColor(QLatin1String("qtc_button_latched"));
     else if (mode == QLatin1String("checked"))
         return fetchThemeColor(QLatin1String("qtc_button_latched"));
     else if (mode == QLatin1String("default"))

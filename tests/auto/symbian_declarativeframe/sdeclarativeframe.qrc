@@ -1,5 +1,5 @@
 <!DOCTYPE RCC><RCC version="1.0">
-<qresource>
+<qresource prefix="/graphics">
 
     <file alias="qtg_fr_btn_normal_tl.svg" >resources/qtg_fr_btn_normal_tl.svg</file>
     <file alias="qtg_fr_btn_normal_t.svg" >resources/qtg_fr_btn_normal_t.svg</file>
@@ -19,15 +19,6 @@
     <file alias="qtg_fr_btn_highlight_bl.svg" >resources/qtg_fr_btn_highlight_bl.svg</file>
     <file alias="qtg_fr_btn_highlight_b.svg" >resources/qtg_fr_btn_highlight_b.svg</file>
     <file alias="qtg_fr_btn_highlight_br.svg" >resources/qtg_fr_btn_highlight_br.svg</file>
-    <file alias="qtg_fr_btn_pressed_tl.svg" >resources/qtg_fr_btn_pressed_tl.svg</file>
-    <file alias="qtg_fr_btn_pressed_t.svg" >resources/qtg_fr_btn_pressed_t.svg</file>
-    <file alias="qtg_fr_btn_pressed_tr.svg" >resources/qtg_fr_btn_pressed_tr.svg</file>
-    <file alias="qtg_fr_btn_pressed_l.svg" >resources/qtg_fr_btn_pressed_l.svg</file>
-    <file alias="qtg_fr_btn_pressed_c.svg" >resources/qtg_fr_btn_pressed_c.svg</file>
-    <file alias="qtg_fr_btn_pressed_r.svg" >resources/qtg_fr_btn_pressed_r.svg</file>
-    <file alias="qtg_fr_btn_pressed_bl.svg" >resources/qtg_fr_btn_pressed_bl.svg</file>
-    <file alias="qtg_fr_btn_pressed_b.svg" >resources/qtg_fr_btn_pressed_b.svg</file>
-    <file alias="qtg_fr_btn_pressed_br.svg" >resources/qtg_fr_btn_pressed_br.svg</file>
     
 </qresource>
 </RCC>

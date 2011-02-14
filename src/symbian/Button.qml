@@ -181,8 +181,6 @@ ImplicitSizeItem {
                 return "pressed"
             else if (focus && checked)
                 return "pressed"
-            else if (focus)
-                return "focused"
             else if (checked)
                 return "checked"
             else
@@ -190,10 +188,10 @@ ImplicitSizeItem {
         }
     }
 
-    Frame {
+    BorderImage {
         id: background
-        frameName: style.current.get("background")
-        frameType: style.current.get("frameType")
+        source: style.current.get("background")
+        border { left: 20; top: 20; right: 20; bottom: 20 }
         anchors.fill: parent
     }
 

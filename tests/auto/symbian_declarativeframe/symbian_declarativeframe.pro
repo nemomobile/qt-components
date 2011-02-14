@@ -3,6 +3,7 @@ include (../../tests.pri)
 TARGET = tst_symbian_declarativeframe
 TEMPLATE = app
 QT += declarative svg
+RESOURCES += sdeclarativeframe.qrc
 
 INCLUDEPATH = ../../../src/symbian/themebridge
 DEPENDPATH = ../../../src/symbian/themebridge
