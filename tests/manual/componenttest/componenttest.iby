@@ -18,5 +18,6 @@ data=DATAZ_\private\200346E0\tests\ListItem.qml   \private\200346E0\tests\ListIt
 data=DATAZ_\private\200346E0\tests\ListView.qml   \private\200346E0\tests\ListView.qml
 data=DATAZ_\private\200346E0\tests\Metrics.qml    \private\200346E0\tests\Metrics.qml
 data=DATAZ_\private\200346E0\tests\ObjectMenu.qml \private\200346E0\tests\ObjectMenu.qml
+data=DATAZ_\private\200346E0\tests\ProgressBar.qml \private\200346E0\tests\ProgressBar.qml
 data=DATAZ_\private\200346E0\tests\ViewMenu.qml   \private\200346E0\tests\ViewMenu.qml
 #endif

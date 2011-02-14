@@ -34,6 +34,7 @@ OTHER_FILES += \
     tests/ListView.qml \
     tests/Metrics.qml \
     tests/ObjectMenu.qml \
+    tests/ProgressBar.qml \
     tests/RadioButton.qml \
     tests/ViewMenu.qml
 
