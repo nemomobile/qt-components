@@ -61,5 +61,6 @@ symbian3 {
         symbian_slider \
         symbian_textarea \
         symbian_textfield \
-        symbian_tooltip #TODO not yet finalized
+        symbian_tooltip \ #TODO not yet finalized
+        symbian_window
 }

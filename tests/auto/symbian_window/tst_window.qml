@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
@@ -26,36 +26,7 @@
 
 import Qt 4.7
 import com.nokia.symbian 1.0
-import com.nokia.symbian.themebridge 1.0
 
-Item {
+Window {
     id: window
-
-    property bool inPortrait: height > width
-
-    signal orientationChangeAboutToStart
-    signal orientationChangeStarted
-    signal orientationChangeFinished
-
-    // Deprecated, use Dialog.open() instead
-    function showPopup(component) {
-        console.log("warning: use of deprecated method showPopup, use Dialog.open() instead")
-        var popupObj = component.createObject(window);
-        if (popupObj == null)
-            return false;
-        popupObj.open();
-       return true;
-   }
-
-    Binding { target: window; property: "height"; value: screen.height; when: screen.height > 0 }
-    Binding { target: window; property: "width"; value: screen.width; when: screen.width > 0 }
-
-    Connections {
-        target: screen
-        onOrientationChanged: window.orientationChangeFinished()
-        onDisplayChanged: {
-            window.orientationChangeAboutToStart()
-            window.orientationChangeStarted()
-        }
-    }
 }
