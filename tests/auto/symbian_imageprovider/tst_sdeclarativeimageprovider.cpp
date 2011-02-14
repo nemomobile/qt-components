@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
@@ -25,14 +25,10 @@
 ****************************************************************************/
 
 #include "tst_quickcomponentstest.h"
-#include <QtTest/QtTest>
-#include <QUrl>
-#include <QImage>
-#include <QPainter>
-#include <QDeclarativeEngine>
-#include <QDeclarativeContext>
+#include <QTest>
 #include <QDeclarativeItem>
 #include <QDeclarativeView>
+#include <QGraphicsObject>
 
 class tst_SDeclarativeImageProvider : public QObject
 {
@@ -40,68 +36,76 @@ class tst_SDeclarativeImageProvider : public QObject
 
 private slots:
     void initTestCase();
-    void cleanupTestCase();
-    void testPng();
-    void testSvg();
-    void testInvalid();
+    void pngImage();
+    void svgImage();
+    void svgBorderImage();
+    void invalidImage();
+    void invalidBorderImage();
 private:
-    QDeclarativeView *window;
-    QObject *screen;
-    QDeclarativeItem *image;
+    QScopedPointer<QDeclarativeView> view;
+    QObject *image;
+    QObject *borderImage;
 };
 
 void tst_SDeclarativeImageProvider::initTestCase()
 {
-    window = tst_quickcomponentstest::createDeclarativeView("imagetest.qml");
-    window->show();
-    QTest::qWaitForWindowShown(window);
+    view.reset(tst_quickcomponentstest::createDeclarativeView("tst_imageprovider.qml"));
+    view->show();
+    QTest::qWaitForWindowShown(view.data());
+    QVERIFY(view);
+    QVERIFY(view->rootObject());
+    QTRY_COMPARE(QApplication::activeWindow(), static_cast<QWidget *>(view.data()));
 
-    image = 0;
-    foreach (QGraphicsItem *item,  window->scene()->items()) {
-        QDeclarativeItem *temp = qobject_cast<QDeclarativeItem *>(item);
-        if (temp) {
-            if (temp->property("source").toString().startsWith("image:")) {
-                image = temp;
-                break;
-            }
-        }
-    }
+    image = view->rootObject()->findChild<QObject *>("image");
+    borderImage = view->rootObject()->findChild<QObject *>("borderImage");
     QVERIFY(image);
-
-    screen = qVariantValue<QObject *>(window->engine()->rootContext()->contextProperty("screen"));
+    QVERIFY(borderImage);
 }
 
-void tst_SDeclarativeImageProvider::cleanupTestCase()
+void tst_SDeclarativeImageProvider::pngImage()
 {
-    delete window;
-}
-
-void tst_SDeclarativeImageProvider::testPng()
-{
-    image->setProperty("source", QString("image://theme/list1.png"));
     QCOMPARE(image->property("width").toInt(), 100);
     QCOMPARE(image->property("height").toInt(), 100);
     QCOMPARE(image->property("sourceSize").toSize().width(), 60);
     QCOMPARE(image->property("sourceSize").toSize().height(), 60);
+    QVERIFY(image->property("loadOk").toBool());
 }
 
-void tst_SDeclarativeImageProvider::testSvg()
+void tst_SDeclarativeImageProvider::svgImage()
 {
     image->setProperty("source", QString("image://theme/image.svg"));
     QCOMPARE(image->property("width").toInt(), 100);
     QCOMPARE(image->property("height").toInt(), 100);
     QCOMPARE(image->property("sourceSize").toSize().width(), 60);
-    QCOMPARE(image->property("sourceSize").toSize().height(), 12);
+    QCOMPARE(image->property("sourceSize").toSize().height(), 60);
+    QVERIFY(image->property("loadOk").toBool());
 }
 
-void tst_SDeclarativeImageProvider::testInvalid()
+void tst_SDeclarativeImageProvider::svgBorderImage()
+{
+    borderImage->setProperty("source", QString("image://theme/image.svg"));
+    QCOMPARE(borderImage->property("width").toInt(), 200);
+    QCOMPARE(borderImage->property("height").toInt(), 100);
+    QVERIFY(borderImage->property("loadOk").toBool());
+}
+
+void tst_SDeclarativeImageProvider::invalidImage()
 {
     image->setProperty("source", QString("image://theme/notfound.xyz"));
     QCOMPARE(image->property("width").toInt(), 100);
     QCOMPARE(image->property("height").toInt(), 100);
     QCOMPARE(image->property("sourceSize").toSize().width(), 0);
     QCOMPARE(image->property("sourceSize").toSize().height(), 0);
-
+    QVERIFY(!image->property("loadOk").toBool());
 }
+
+void tst_SDeclarativeImageProvider::invalidBorderImage()
+{
+    borderImage->setProperty("source", QString("image://theme/notfound.xyz"));
+    QCOMPARE(borderImage->property("width").toInt(), 200);
+    QCOMPARE(borderImage->property("height").toInt(), 100);
+    QVERIFY(!borderImage->property("loadOk").toBool());
+}
+
 QTEST_MAIN(tst_SDeclarativeImageProvider)
 #include "tst_sdeclarativeimageprovider.moc"

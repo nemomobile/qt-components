@@ -82,7 +82,8 @@ QPixmap SIconPool::get(const QString &fileName,
 {
     QPixmap pixmap;
 
-    if (!fileName.isEmpty() && !size.isEmpty()) {
+    // Accept non-valid size (will use default size) or user defined non-empty size
+    if (!fileName.isEmpty() && !size.isNull()) {
         SIconPoolKey key(fileName, size, mode, color);
         SIconPoolData *pool = poolData();
 
@@ -102,9 +103,6 @@ QPixmap SIconPool::get(const QString &fileName,
     return pixmap;
 }
 
-/**
-* This is just a temp solution to get something visible - final icon loading architecture is worked on in SVG team.
-*/
 QPixmap SIconPool::loadIcon(
     const QString &fileName,
     const QSize &size,
@@ -123,7 +121,8 @@ QPixmap SIconPool::loadIcon(
             if (fileName.contains("screen_bg")) {
                 mode = Qt::KeepAspectRatioByExpanding;
             }
-            renderSize.scale(size, mode);
+            if (size.isValid())
+                renderSize.scale(size, mode);
 
             pm = QPixmap(renderSize);
             pm.fill(QColor(0, 0, 0, 0));

@@ -7,7 +7,7 @@ QT += declarative svg
 SOURCES += tst_sdeclarativeimageprovider.cpp
 
 OTHER_FILES += \
-    imagetest.qml \
+    tst_imageprovider.qml \
     list1.png
 
 include (../auto.pri)
