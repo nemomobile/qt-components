@@ -31,6 +31,7 @@ OTHER_FILES += \
     tests/ChoiceList.qml \
     tests/Dialog.qml \
     tests/ListItem.qml \
+    tests/ListView.qml \
     tests/Metrics.qml \
     tests/ObjectMenu.qml \
     tests/RadioButton.qml \
