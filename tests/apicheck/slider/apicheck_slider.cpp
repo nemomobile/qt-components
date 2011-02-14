@@ -35,22 +35,22 @@ void ApiCheckSlider::initTestCase()
 
 void ApiCheckSlider::stepSize()
 {
-    validateProperty("stepSize", QVariant::Double, 0.0);
+    validateProperty("stepSize", static_cast<QVariant::Type>(QMetaType::QReal), 0.0);
 }
 
 void ApiCheckSlider::minimumValue()
 {
-    validateProperty("minimumValue", QVariant::Double, 0.0);
+    validateProperty("minimumValue", static_cast<QVariant::Type>(QMetaType::QReal), 0.0);
 }
 
 void ApiCheckSlider::maximumValue()
 {
-    validateProperty("maximumValue", QVariant::Double, 1.0);
+    validateProperty("maximumValue", static_cast<QVariant::Type>(QMetaType::QReal), 1.0);
 }
 
 void ApiCheckSlider::value()
 {
-    validateProperty("value", QVariant::Double, 0.0);
+    validateProperty("value", static_cast<QVariant::Type>(QMetaType::QReal), 0.0);
 }
 
 void ApiCheckSlider::orientation()
