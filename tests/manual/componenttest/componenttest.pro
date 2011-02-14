@@ -30,6 +30,7 @@ OTHER_FILES += \
     tests/Button.qml \
     tests/ChoiceList.qml \
     tests/Dialog.qml \
+    tests/ListItem.qml \
     tests/Metrics.qml \
     tests/ObjectMenu.qml \
     tests/RadioButton.qml \
