@@ -28,22 +28,21 @@
 #include "sdeclarativescreen.h"
 
 #include <QApplication>
-#include <QGraphicsView>
+#include <QDeclarativeEngine>
+#include <QDeclarativeContext>
+#include <QDeclarativeView>
+
 #ifdef Q_OS_SYMBIAN
 #include <QDesktopWidget>
 #include <eikenv.h>
-#include <eikaufty.h>
-#include <eikspane.h>
-#include <avkon.rsg>
+#include <eikappui.h>
 #else
 #include <QPainter>
 #include <QGraphicsSceneMouseEvent>
 #include <QFileInfo>
-#include <QDeclarativeEngine>
-#include <QDeclarativeContext>
 #endif
 
-#define Q_DEBUG_DECORATION
+#undef Q_DEBUG_DECORATION
 #ifdef Q_DEBUG_DECORATION
 #include <QDebug>
 #endif
@@ -57,6 +56,7 @@ class SDeclarativeWindowDecorationPrivate
 public:
     SDeclarativeWindowDecorationPrivate(SDeclarativeWindowDecoration *qq) :
         q_ptr(qq),
+        screenObject(0),
         backButtonVisible(false),
         topDecorationHeight(0),
         bottomDecorationHeight(0),
@@ -107,6 +107,7 @@ public:
     void _q_backSelected();
 
     SDeclarativeWindowDecoration *q_ptr;
+    QObject *screenObject;
     int orientation;
     bool backButtonVisible;
     bool statusBarVisible;
@@ -176,19 +177,11 @@ void SDeclarativeWindowDecorationPrivate::_q_doUpdateFullScreen()
         }
     }
 #else
-    static QObject *screen = 0;
-    if (!screen) {
-        QDeclarativeContext *context = QDeclarativeEngine::contextForObject(q);
-        screen = qVariantValue<QObject *>(context->contextProperty("screen"));
-
-        QObject::connect(screen,SIGNAL(displayChanged()), q, SLOT(_q_doUpdateFullScreen()));
-    }
-
     if (!statusBarVisible && !titleBarVisible) {
         q->setTopDecorationHeight(0);
         q->setBottomDecorationHeight(0);
-    } else {
-        const qreal dpValue = screen->property("ppi").value<qreal>() / DEFAULT_DP_PER_PPI;
+    } else if (screenObject) {
+        const qreal dpValue = screenObject->property("ppi").value<qreal>() / DEFAULT_DP_PER_PPI;
         // Emulate Avkon decorator sizes in desktop.
         // TODO: This will be removed when decorators are done with QML
         //
@@ -212,34 +205,8 @@ void SDeclarativeWindowDecorationPrivate::_q_desktopWorkareaChanged()
 {
 #ifdef Q_OS_SYMBIAN
     Q_Q(SDeclarativeWindowDecoration);
-    // use flat status pane layout. this removes the space needed for the
-    // tabs/navigation page in portrait, which we do not currently use.
-    bool firstTime = false;
-    static CEikonEnv *eikonEnv = 0;
-    if (!eikonEnv) {
-        eikonEnv = CEikonEnv::Static();
-        // first event syncronously so that the wrong status pane layout doesn't get drawn
-        // next events asyncronously so that the screenGeometry is updated
-        QObject::disconnect(QApplication::desktop(), SIGNAL(workAreaResized(int)), q, SLOT(_q_desktopWorkareaChanged()));
-        QObject::connect(QApplication::desktop(), SIGNAL(workAreaResized(int)), q, SLOT(_q_desktopWorkareaChanged()), Qt::QueuedConnection);
-        firstTime = true;
-    }
-
-    MEikAppUiFactory *eikAppUiFactory = eikonEnv->AppUiFactory();
-    if (eikAppUiFactory) {
-        // the decorators are allocated in QWidget::show, so this
-        // if the first possible point to access it i.e. this
-        // cannot be done in the constructor.
-        CEikStatusPane *eikStatusPane = eikAppUiFactory->StatusPane();
-        if (eikStatusPane && eikStatusPane->CurrentLayoutResId()
-                == R_AVKON_STATUS_PANE_LAYOUT_USUAL_EXT) {
-            QT_TRAP_THROWING(eikStatusPane->SwitchLayoutL(R_AVKON_STATUS_PANE_LAYOUT_USUAL_FLAT));
-            return;
-        } else if (firstTime) {
-            QMetaObject::invokeMethod(q, "_q_desktopWorkareaChanged", Qt::QueuedConnection);
-            return;
-        }
-    }
+    
+    CEikonEnv *eikonEnv = CEikonEnv::Static();
 
     const TRect applicationRect = static_cast<CEikAppUi *>(eikonEnv->AppUi())->ApplicationRect();
     QRect newApplicationRect(applicationRect.iTl.iX, applicationRect.iTl.iY, applicationRect.Width(), applicationRect.Height());
@@ -282,7 +249,12 @@ SDeclarativeWindowDecoration::SDeclarativeWindowDecoration(QDeclarativeItem *par
     Q_D(SDeclarativeWindowDecoration);
 #ifdef Q_OS_SYMBIAN
     QCoreApplication::setAttribute(Qt::AA_S60DontConstructApplicationPanes, false);
-    QObject::connect(QApplication::desktop(), SIGNAL(workAreaResized(int)), this, SLOT(_q_desktopWorkareaChanged()));
+    QObject::connect(
+        QApplication::desktop(),
+        SIGNAL(workAreaResized(int)),
+        this,
+        SLOT(_q_desktopWorkareaChanged()),
+        Qt::QueuedConnection);
 #else
     setFlag(QGraphicsItem::ItemHasNoContents, false);
     setAcceptedMouseButtons(Qt::LeftButton);
@@ -305,9 +277,18 @@ SDeclarativeWindowDecoration::SDeclarativeWindowDecoration(QDeclarativeItem *par
         d->backAction->setText(tr("Back"));
         d->rootWidget->addAction(d->backAction);
         connect(d->backAction, SIGNAL(triggered(bool)), this, SLOT(_q_backSelected()));
-
-        d->updateFullScreen();
     }
+
+    foreach (QWidget *w, QApplication::allWidgets()) {
+        QDeclarativeView *view = qobject_cast<QDeclarativeView *>(w);
+        if (view) {
+            d->screenObject = qVariantValue<QObject *>(view->rootContext()->contextProperty("screen"));
+            connect(d->screenObject, SIGNAL(statusPaneChanged()), SLOT(_q_desktopWorkareaChanged()), Qt::QueuedConnection);
+            connect(d->screenObject, SIGNAL(displayChanged()), SLOT(_q_doUpdateFullScreen()), Qt::QueuedConnection);
+        }
+    }
+
+    d->updateFullScreen();
 }
 
 SDeclarativeWindowDecoration::~SDeclarativeWindowDecoration()

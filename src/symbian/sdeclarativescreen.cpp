@@ -32,6 +32,10 @@
 
 #ifdef Q_OS_SYMBIAN
 #include <aknappui.h>
+#include <eikenv.h>
+#include <eikaufty.h>
+#include <eikspane.h>
+#include <avkon.rsg>
 #include <hal.h>
 #endif
 
@@ -51,7 +55,8 @@ SDeclarativeScreenPrivate::SDeclarativeScreenPrivate(SDeclarativeScreen *qq) :
     orientation(SDeclarativeScreen::Automatic),
     ppi(DEFAULT_PPI),
     screenSize(),
-    settingDisplay(false)
+    settingDisplay(false),
+    statusPaneChanged(false)
 {
     Q_Q(SDeclarativeScreen);
 #ifdef Q_OS_SYMBIAN
@@ -72,7 +77,27 @@ SDeclarativeScreenPrivate::SDeclarativeScreenPrivate(SDeclarativeScreen *qq) :
 #else
     QSize initScreenSize = QSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 #endif // Q_OS_SYMBIAN
-    QMetaObject::invokeMethod(q, "_q_initView", Qt::QueuedConnection, Q_ARG(QSize, initScreenSize));
+    foreach (QWidget *w, QApplication::allWidgets()) {
+        QGraphicsView *graphicsView = qobject_cast<QGraphicsView *>(w);
+        if (graphicsView) {
+            gv = graphicsView;
+
+#ifndef Q_OS_SYMBIAN
+            // Init view asynchronously
+            QMetaObject::invokeMethod(q, "_q_initView", Qt::QueuedConnection, Q_ARG(QSize, initScreenSize));
+#else
+            // Install event filter for observing graphics view resizes
+            gv->installEventFilter(q);
+            // Observe desktop resizes
+            q->connect(QApplication::desktop(), SIGNAL(resized(int)), SLOT(_q_desktopResized(int)), Qt::QueuedConnection);
+            // Set initial scene rect
+            gv->setSceneRect(0, 0, gv->width(), gv->height());
+            // Update screen size asynchronously
+            QMetaObject::invokeMethod(q, "_q_updateScreenSize", Qt::QueuedConnection, Q_ARG(QSize, initScreenSize));
+#endif
+            break;
+        }
+    }
 }
 
 SDeclarativeScreenPrivate::~SDeclarativeScreenPrivate()
@@ -101,7 +126,7 @@ void SDeclarativeScreenPrivate::_q_updateScreenSize(const QSize &size)
     QSize newSize(currentScreenSize());
 #else
     QSize newSize(size);
-    if (!newSize.isValid())
+    if (newSize.isEmpty())
         newSize = screenSize;
 #endif
 
@@ -114,31 +139,16 @@ void SDeclarativeScreenPrivate::_q_updateScreenSize(const QSize &size)
     updateOrientationAngle();
 }
 
+#ifndef Q_OS_SYMBIAN
 void SDeclarativeScreenPrivate::_q_initView(const QSize &size)
 {
     Q_Q(SDeclarativeScreen);
-    if (!gv) {
-        QWidgetList widgetList = QApplication::allWidgets();
-        foreach (QWidget *w, widgetList) {
-            QGraphicsView *graphicsView = qobject_cast<QGraphicsView *>(w);
-            if (graphicsView) {
-                gv = graphicsView;
-
-#ifndef Q_OS_SYMBIAN
-                // For resizing in desktop
-                gv->installEventFilter(q);
-                // Emulate the resizing done by the system
-                gv->resize(adjustedSize(size, orientation));
-#else
-                q->connect(QApplication::desktop(), SIGNAL(resized(int)), SLOT(_q_desktopResized(int)));
-                gv->setSceneRect(0, 0, gv->width(), gv->height());
-                QMetaObject::invokeMethod(q, "_q_updateScreenSize", Qt::QueuedConnection, Q_ARG(QSize, size));
-#endif
-                break;
-            }
-        }
-    }
+    // Install event filter for observing graphics view resizes
+    gv->installEventFilter(q);
+    // Emulate the resizing done by the system
+    gv->resize(adjustedSize(size, orientation));
 }
+#endif
 
 void SDeclarativeScreenPrivate::_q_desktopResized(int screen)
 {
@@ -147,11 +157,10 @@ void SDeclarativeScreenPrivate::_q_desktopResized(int screen)
 #ifdef Q_OS_SYMBIAN
     if (screen == QApplication::desktop()->primaryScreen()) {
         QSize current = currentScreenSize();
+        // Move view's scene rect to origin
+        if (gv)
+            gv->setSceneRect(0, 0, gv->width(), gv->height());
 
-        if (gv) {
-            gv->resize(current);
-            gv->setSceneRect(0, 0, current.width(), current.height());
-        }
         _q_updateScreenSize(current);
     }
 #endif
@@ -185,6 +194,26 @@ QSize SDeclarativeScreenPrivate::adjustedSize(const QSize &size, SDeclarativeScr
         newSize.transpose();
     return newSize;
 }
+
+#ifdef Q_OS_SYMBIAN
+void SDeclarativeScreenPrivate::setStatusPaneLayout()
+{
+    Q_Q(SDeclarativeScreen);
+    // Change to flat status pane layout to make more space for QML view.
+    if (!statusPaneChanged) {
+        MEikAppUiFactory *eikAppUiFactory = CEikonEnv::Static()->AppUiFactory();
+        if (eikAppUiFactory) {
+            CEikStatusPane *eikStatusPane = eikAppUiFactory->StatusPane();
+            if (eikStatusPane && eikStatusPane->CurrentLayoutResId()
+                    == R_AVKON_STATUS_PANE_LAYOUT_USUAL_EXT) {
+                QT_TRAP_THROWING(eikStatusPane->SwitchLayoutL(R_AVKON_STATUS_PANE_LAYOUT_USUAL_FLAT));
+                statusPaneChanged = true;
+                emit q->statusPaneChanged();
+            }
+        }
+    }
+}
+#endif
 
 SDeclarativeScreen::SDeclarativeScreen(QDeclarativeItem *parent)
     : QObject(parent), d_ptr(new SDeclarativeScreenPrivate(this))
@@ -342,6 +371,11 @@ bool SDeclarativeScreen::eventFilter(QObject *obj, QEvent *event)
 {
     Q_D(SDeclarativeScreen);
     if (event->type() == QEvent::Resize) {
+#ifdef Q_OS_SYMBIAN
+        // Statuspane layout cannot be changed in the constructor because the statuspane
+        // has not been created yet.
+        d->setStatusPaneLayout();
+#endif
         QResizeEvent *resizeEvent = static_cast<QResizeEvent*>(event);
         if (resizeEvent->size() == d->screenSize)
             return false;

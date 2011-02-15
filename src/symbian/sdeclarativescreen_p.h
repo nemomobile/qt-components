@@ -39,22 +39,28 @@ public:
     ~SDeclarativeScreenPrivate();
 
     void updateOrientationAngle();
-    void _q_updateScreenSize(const QSize &);
+#ifndef Q_OS_SYMBIAN
     void _q_initView(const QSize &);
+#endif
+    void _q_updateScreenSize(const QSize &);
     void _q_desktopResized(int);
     bool isLandscapeScreen() const;
     QSize currentScreenSize() const;
     QSize adjustedSize(const QSize &size, SDeclarativeScreen::Orientation orientation) const;
+#ifdef Q_OS_SYMBIAN
+    void setStatusPaneLayout();
+#endif
 
+public:
     SDeclarativeScreen *q_ptr;
     SDeclarativeScreen::Orientation orientation;
 
     qreal ppi;
-    qreal unit;
 
     QSize screenSize;
     bool settingDisplay;
     QPointer<QGraphicsView> gv;
+    bool statusPaneChanged;
 };
 
 #endif // SDECLARATIVESCREEN_P_H

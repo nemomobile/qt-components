@@ -84,14 +84,17 @@ Q_SIGNALS:
     void orientationChanged();
     void minimizedChanged();
     void displayChanged();
+    void statusPaneChanged();
 
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
     QScopedPointer<SDeclarativeScreenPrivate> d_ptr;
 
 private:
-    Q_PRIVATE_SLOT(d_func(), void _q_updateScreenSize(const QSize &))
+#ifndef Q_OS_SYMBIAN
     Q_PRIVATE_SLOT(d_func(), void _q_initView(const QSize &))
+#endif
+    Q_PRIVATE_SLOT(d_func(), void _q_updateScreenSize(const QSize &))
     Q_PRIVATE_SLOT(d_func(), void _q_desktopResized(int))
 
     Q_DISABLE_COPY(SDeclarativeScreen)
