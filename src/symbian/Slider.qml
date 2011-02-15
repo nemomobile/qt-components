@@ -187,7 +187,7 @@ ImplicitSizeItem {
     }
 
     Keys.onPressed: {
-        handleKeyEvent(event)
+        internal.handleKeyEvent(event)
         track.keysActive = true
         keyActivity.restart()
         toolTip.position()
@@ -219,26 +219,30 @@ ImplicitSizeItem {
         }
     }
 
-    function handleKeyEvent(keyEvent) {
-        if (orientation == Qt.Horizontal) {
-            if (keyEvent.key == Qt.Key_Left) {
-                model.value = inverted ? model.value + model.stepSize : model.value - model.stepSize;
-                handle.x = model.position;
-                keyEvent.accepted = true;
-            } else if (keyEvent.key == Qt.Key_Right) {
-                model.value = inverted ? model.value - model.stepSize : model.value + model.stepSize;
-                handle.x = model.position;
-                keyEvent.accepted = true;
-            }
-        } else { //Vertical
-            if (keyEvent.key == Qt.Key_Up) {
-                model.value = inverted ? model.value + model.stepSize : model.value - model.stepSize;
-                handle.x = model.position;
-                keyEvent.accepted = true;
-            } else if (keyEvent.key == Qt.Key_Down) {
-                model.value = inverted ? model.value - model.stepSize : model.value + model.stepSize;
-                handle.x = model.position;
-                keyEvent.accepted = true;
+    QtObject {
+        id: internal
+
+        function handleKeyEvent(keyEvent) {
+            if (orientation == Qt.Horizontal) {
+                if (keyEvent.key == Qt.Key_Left) {
+                    model.value = inverted ? model.value + model.stepSize : model.value - model.stepSize;
+                    handle.x = model.position;
+                    keyEvent.accepted = true;
+                } else if (keyEvent.key == Qt.Key_Right) {
+                    model.value = inverted ? model.value - model.stepSize : model.value + model.stepSize;
+                    handle.x = model.position;
+                    keyEvent.accepted = true;
+                }
+            } else { //Vertical
+                if (keyEvent.key == Qt.Key_Up) {
+                    model.value = inverted ? model.value + model.stepSize : model.value - model.stepSize;
+                    handle.x = model.position;
+                    keyEvent.accepted = true;
+                } else if (keyEvent.key == Qt.Key_Down) {
+                    model.value = inverted ? model.value - model.stepSize : model.value + model.stepSize;
+                    handle.x = model.position;
+                    keyEvent.accepted = true;
+                }
             }
         }
     }
