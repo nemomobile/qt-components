@@ -28,6 +28,7 @@ symbian {
 OTHER_FILES += \
     main.qml \
     tests/Button.qml \
+    tests/CheckBox.qml \
     tests/ChoiceList.qml \
     tests/Dialog.qml \
     tests/ListItem.qml \
