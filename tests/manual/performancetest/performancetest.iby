@@ -1,0 +1,15 @@
+#ifndef __PERFORMANCETEST_IBY__
+#define __PERFORMANCETEST_IBY__
+
+#include <bldvariant.hrh>
+
+REM QT
+
+S60_APP_EXE(performancetest)
+// Application registration file.
+data=DATAZ_\private\10003a3f\import\apps\performancetest_reg.rsc \private\10003a3f\import\apps\performancetest_reg.rsc
+
+// resources
+data=DATAZ_\private\200346E6\main.qml \private\200346E6\main.qml
+
+#endif

@@ -1,2 +1,2 @@
 TEMPLATE = subdirs
-SUBDIRS += componenttest
+SUBDIRS += componenttest performancetest
