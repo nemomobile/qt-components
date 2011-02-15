@@ -37,5 +37,7 @@ OTHER_FILES += \
     tests/ObjectMenu.qml \
     tests/ProgressBar.qml \
     tests/RadioButton.qml \
+    tests/ScrollBar.qml \
+    tests/ScrollDecorator.qml \
     tests/ViewMenu.qml
 
