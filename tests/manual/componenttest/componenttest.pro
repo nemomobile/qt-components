@@ -23,7 +23,7 @@ symbian {
     componenttest_qmls3.path = tests/utils
     componenttest_js.sources = *.js
     DEPLOYMENT += componenttest_qmls1 componenttest_qmls2 componenttest_qmls3 componenttest_js
-    BLD_INF_RULES.prj_exports += "componenttest.iby /epoc32/rom/include/core/app/componenttest.iby"
+    BLD_INF_RULES.prj_exports += "componenttest.iby $$CORE_APP_LAYER_IBY_EXPORT_PATH(componenttest.iby)"
 }
 
 OTHER_FILES += \

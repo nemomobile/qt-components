@@ -15,7 +15,7 @@ symbian {
     TARGET.CAPABILITY = CAP_APPLICATION
     gallery_qmls.sources = *.qml
     DEPLOYMENT += gallery_qmls
-    BLD_INF_RULES.prj_exports += "qmlgallery.iby /epoc32/rom/include/core/app/qmlgallery.iby"
+    BLD_INF_RULES.prj_exports += "qmlgallery.iby $$CORE_APP_LAYER_IBY_EXPORT_PATH(qmlgallery.iby)"
 }
 
 OTHER_FILES += \

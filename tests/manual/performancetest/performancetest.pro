@@ -23,7 +23,7 @@ symbian {
     performancetest_qmls3.path = tests/utils
     performancetest_js.sources = *.js
     DEPLOYMENT += performancetest_qmls1 performancetest_qmls2 performancetest_qmls3 performancetest_js
-    BLD_INF_RULES.prj_exports += "performancetest.iby /epoc32/rom/include/core/app/performancetest.iby"
+    BLD_INF_RULES.prj_exports += "performancetest.iby $$CORE_APP_LAYER_IBY_EXPORT_PATH(performancetest.iby)"
 }
 
 OTHER_FILES += \
