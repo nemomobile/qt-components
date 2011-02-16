@@ -64,3 +64,4 @@ release/
 /tests/auto/symbian_window/tst_window
 /tests/apicheck/tst_apicheck
 /tests/manual/componenttest/componenttest
+/tests/manual/performancetest/performancetest
