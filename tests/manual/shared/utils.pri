@@ -1,7 +1,5 @@
-!meego:!symbian {
-    INCLUDEPATH += $$PWD
-    DEPENDPATH += $$PWD
+INCLUDEPATH += $$PWD
+DEPENDPATH += $$PWD
 
-    HEADERS += $$PWD/utils.h
-    SOURCES += $$PWD/utils.cpp
-}
+HEADERS += $$PWD/utils.h
+SOURCES += $$PWD/utils.cpp
