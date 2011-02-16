@@ -27,82 +27,12 @@
 #if defined(Q_COMPONENTS_SYMBIAN3) && !defined(Q_OS_SYMBIAN)
 #include "settingswindow.h"
 #endif
-#include <QDeclarativeView>
-#include <QDeclarativeItem>
-#include <QTime>
+#include "utils.h"
 #include <QApplication>
-#include <QFile>
-#include <QDir>
-#include <QStringList>
-#include <QDebug>
-#include <QLibraryInfo>
+#include <QDeclarativeView>
 #include <QDeclarativeEngine>
-#include <QDeclarativeContext>
-#include <QSettings>
-#include <QList>
-
-#ifdef Q_OS_SYMBIAN
-static const QStringList QML_PATHS = QStringList() << "e:/qmlc" << "c:/data/qmlc";
-#else
-static const QStringList QML_PATHS = QStringList() << "qmlc/";
-#endif
-
-class FileAccess : public QObject
-{
-    Q_OBJECT
-
-public:
-    explicit FileAccess(QObject *parent = 0) : QObject(parent) {}
-    ~FileAccess() {}
-
-    Q_INVOKABLE QStringList qmlFileNames(const QString &path) {
-        QStringList filePaths;
-        QList<QFileInfo> entries = QDir(path).entryInfoList(QStringList("*.qml"), QDir::Files);
-        foreach (const QFileInfo &info, entries)
-            filePaths += info.fileName();
-        filePaths.replaceInStrings(".qml", "");
-        return filePaths;
-    }
-
-    Q_INVOKABLE QStringList qmlFilePaths(const QString &path) {
-        QStringList filePaths;
-        QList<QFileInfo> entries = QDir(path).entryInfoList(QStringList("*.qml"), QDir::Files);
-        foreach (const QFileInfo &info, entries)
-            filePaths += info.absoluteFilePath();
-        return filePaths;
-    }
-
-    Q_INVOKABLE QStringList qmlPaths() {
-        QStringList paths;
-        foreach (const QString &path, QML_PATHS) {
-            QDir dir;
-            if (!dir.exists(path) && !dir.mkdir(path))
-                qWarning() << "Creation of " << path << " failed";
-            else
-                paths += path;
-        }
-        return paths;
-    }
-};
-
-class Settings : public QObject
-{
-    Q_OBJECT
-
-public:
-    explicit Settings(QObject *parent = 0) : QObject(parent) {}
-    ~Settings() {}
-
-    Q_INVOKABLE void setOrientation(int o) {
-        QSettings settings("performancetest");
-        settings.setValue("orientation", o);
-    }
-
-    Q_INVOKABLE int orientation() {
-        QSettings settings("performancetest");
-        return settings.value("orientation").toInt();
-    }
-};
+#include <QDeclarativeItem>
+#include <QDir>
 
 int main(int argc, char **argv)
 {
@@ -127,5 +57,3 @@ int main(int argc, char **argv)
 #endif
     return app.exec();
 }
-
-#include "performancetest.moc"

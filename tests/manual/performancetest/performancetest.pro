@@ -6,6 +6,7 @@ QT += declarative svg
 CONFIG -= app_bundle
 win32:DESTDIR = $$OUT_PWD
 !symbian: include (../shared/settingswindow.pri)
+include (../shared/utils.pri)
 
 SOURCES += performancetest.cpp
 RESOURCES += performancetest.qrc
