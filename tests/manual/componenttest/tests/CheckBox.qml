@@ -50,7 +50,6 @@ Item {
             id: checkBox2
             width: checkBox1.width
             text: "checkBox2"
-            checkable: true
             checked: true
 
              Rectangle {
@@ -66,40 +65,6 @@ Item {
                 height: parent.implicitHeight
                 color: "#00000000"
                 border.color: "blue"
-            }
-        }
-
-        CheckBox {
-            id: checkBox3
-            width:  checkBox2.width
-            height: 50
-            text: "toggle checkable"
-            checked: false
-
-            onClicked: {
-                if (checked) {
-                    checkBox4.checkable = true;
-                    checkBox4.text = "checkable";
-                } else {
-                    checkBox4.checkable = false;
-                    checkBox4.text = "un-checkable";
-                }
-            }
-        }
-
-        CheckBox {
-            id: checkBox4
-            width: checkBox3.width
-            height: 50
-            text: "un-checkable"
-            checked: true
-            checkable: false
-
-             Rectangle {
-                z: -1
-                anchors.fill: parent
-                color: "#00000000"
-                border.color: "red"
             }
         }
     }

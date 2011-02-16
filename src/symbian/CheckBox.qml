@@ -37,8 +37,10 @@ ImplicitSizeItem {
 
     signal clicked
 
-    property bool checkable: true
     property alias text: label.text
+
+    property bool checkable: true // Deprecated
+    onCheckableChanged: console.log("warning: CheckBox.checkable is deprecated")
 
     Style {
         id: style

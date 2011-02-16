@@ -71,7 +71,6 @@ void tst_checkbox::cleanup()
 
 void tst_checkbox::testValid()
 {
-    QVERIFY(componentObject->property("checkable").isValid());
     QVERIFY(componentObject->property("checked").isValid());
     QVERIFY(componentObject->property("pressed").isValid());
     QVERIFY(componentObject->property("text").isValid());
@@ -87,16 +86,6 @@ void tst_checkbox::testProperties()
         metaPropertyCount = metaInfo->propertyCount();
         for (int i = 0; i < metaPropertyCount; i++) {
             QMetaProperty property = metaInfo->property(i);
-
-            if (property.name() == QString("checkable")) {
-                //increase the property count
-                propertyCount++;
-                //check for default value
-                QCOMPARE(property.read(componentObject).toBool(), true);
-                //set the property and compare
-                property.write(componentObject,false);
-                QCOMPARE(property.read(componentObject).toBool(), false);
-            }
 
             if (property.name() == QString("checked")) {
                 //increase the property count
@@ -119,7 +108,7 @@ void tst_checkbox::testProperties()
             }
         }
     }
-    QCOMPARE(propertyCount, 3);
+    QCOMPARE(propertyCount, 2);
 }
 
 void tst_checkbox::testImplicitSize()
@@ -148,16 +137,12 @@ void tst_checkbox::testImplicitSize()
     QVERIFY(longTextImplicitWidth > shortTextImplicitWidth);
     QVERIFY(longTextImplicitHeight >= shortTextImplicitHeight);
 
-    // long text, change checkable
+    // long text
     checkBox->setProperty("text", "longer text than just 'short'");
-    checkBox->setProperty("checkable", true);
     checkBox->setProperty("checked", false);
     QCOMPARE(longTextImplicitWidth, checkBox->implicitWidth());
     QCOMPARE(longTextImplicitHeight, checkBox->implicitHeight());
     checkBox->setProperty("checked", true);
-    QCOMPARE(longTextImplicitWidth, checkBox->implicitWidth());
-    QCOMPARE(longTextImplicitHeight, checkBox->implicitHeight());
-    checkBox->setProperty("checkable", false);
     QCOMPARE(longTextImplicitWidth, checkBox->implicitWidth());
     QCOMPARE(longTextImplicitHeight, checkBox->implicitHeight());
 }
