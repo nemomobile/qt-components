@@ -24,10 +24,12 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.0
+import Qt 4.7
 import com.nokia.symbian 1.0
+import Qt.labs.components 1.0
 
 Item {
+    id: root
 
     function isLandscape() {
         if ( screen.width > screen.height )
@@ -36,14 +38,109 @@ Item {
             return false;
     }
 
-    Button {
-        id: button1
 
-        anchors { top: parent.top; topMargin: 50; left: parent.left; leftMargin: 50 }
-        anchors { right: isLandscape() ? buttonTextEditor.left : parent.right; rightMargin: isLandscape() ? 15 : 50 }
-        anchors { bottom: button2.top; bottomMargin: 15 }
+    Column {
+        id: common
+        anchors {
+            top: parent.top
+            left: parent.left
+            right: isLandscape() ? undefined : parent.right
+            margins: 10
+        }
+        spacing: 10
+
+        Row {
+            ChoiceList {
+                Component.onCompleted: {console.log("ChoiceList::onCompleted: " + currentValue + " " + currentIndex)}
+
+                id: iconChoicelist
+                width: 200
+                onCurrentValueChanged: {
+                    currentValue != "<none>" ? scalableButton.iconSource = "image://theme/:/" + currentValue :  scalableButton.iconSource = ""
+                    currentValue != "<none>" ? mixedButton.iconSource = "image://theme/:/" + currentValue :  mixedButton.iconSource = ""
+                }
+                model: ["<none>", "list1.png", "list2.png", "list3.png", "list4.png", "list5.png",
+                        "list6.png", "list7.png", "list8.png", "list9.png", "list10.png",
+                        "list11.png", "list12.png", "list13.png", "list14.png", "list15.png"]
+            }
+
+            Button {
+                text: "Unset"
+                onClicked: {
+                    scalableButton.iconSource = ""
+                    mixedButton.iconSource = ""
+                }
+            }
+        }
+
+        Row {
+            spacing: 10
+            Text {
+                color: "white"
+                font.pointSize: 12
+                text: "Button text:"
+            }
+
+            TextField {
+                id: buttonTextEditor
+                text: "Hello QML"
+            }
+        }
+
+        Button {
+            id: checkableButton
+            text: "Auto repeat / Long press"
+            checkable: true
+            onCheckedChanged: {
+                if (checked) {
+                    mixedButton.text = "Auto repeat"
+                    mixedButton.longPress = false;
+                    mixedButton.autoRepeat = true;
+                } else {
+                    mixedButton.text = "Long press"
+                    mixedButton.longPress = true;
+                    mixedButton.autoRepeat = false;
+                }
+            }
+        }
+
+        Button {
+            id: mixedButton
+            longPress: true
+            text: "Long press"
+
+            onClicked: {
+                rect.x += 2;
+                if (rect.x + rect.width > parent.width)
+                    rect.x = mixedButton.x + mixedButton.width + 10;
+            }
+
+            onPressAndHold: {
+                var menu = Qt.createQmlObject('import Qt 4.7; Rectangle { id: tempMenu; color: "lightsteelblue"; width: 200; height: 100; anchors.centerIn: parent; opacity: 0.8; Text { id: text1; text: "Click to close"; font.pointSize: 12; anchors.top: parent.top;}  MouseArea { anchors.fill: parent; onClicked: {tempMenu.destroy(); } } }', scalableButton.parent, "menu");
+            }
+
+            Rectangle {
+                id: rect
+                x: mixedButton.x + mixedButton.width + 10
+                width: 50
+                height: mixedButton.height
+                color: "red"
+                radius: 10
+            }
+        }
+    }
+
+    Button {
+        id: scalableButton
+
+        anchors {
+            top: isLandscape() ? parent.top : common.bottom;
+            left: isLandscape() ? common.right : parent.left;
+            right: parent.right
+            bottom: parent.bottom
+            margins: 10
+        }
         text: buttonTextEditor.text
-        iconSource: ""
 
         Rectangle {
             width: parent.implicitWidth
@@ -51,102 +148,6 @@ Item {
             anchors.centerIn: parent
             color: "#00000000"
             border.color: "blue"
-        }
-    }
-
-    Button {
-        id: button2
-
-        anchors { left: parent.left; leftMargin: 50; right: button1.right }
-        anchors { bottom: isLandscape() ? parent.bottom : buttonTextEditor.top; bottomMargin: 50 }
-        width: 150
-        height: 35
-        text: buttonTextEditor.text
-        iconSource: ""
-        checkable: true
-    }
-
-    Button {
-        id: button3
-
-        anchors { top: button2.bottom; left: parent.left; leftMargin: 50 }
-        longPress: true
-        width: 150
-        height: 35
-        text: "longPress"
-
-        onClicked: {
-            rect.x += 2;
-            if (rect.x > parent.width)
-                rect.x = 0;
-        }
-
-        onPressAndHold: {
-            var menu = Qt.createQmlObject('import Qt 4.7; Rectangle {id: tempMenu; color: "lightsteelblue"; width: 200; height: 100; anchors.centerIn: parent; opacity: 0.8; Text {id: text1; text: "Click to close"; font.pointSize: 12; anchors.top: parent.top;}  MouseArea{anchors.fill: parent; onClicked: {tempMenu.destroy();} } }', button1.parent, "menu");
-        }
-    }
-
-    CheckBox {
-        id: checkBox
-
-        anchors { top: button2.bottom; left: button3.right }
-        width: 100
-        height: 50
-        text: "toggle autorepeat"
-        checked: false
-
-        onClicked: {
-            if (checked) {
-                button3.autoRepeat = true;
-                button3.longPress = false;
-                button3.text = "autoRepeat"
-            }
-            else {
-                button3.longPress = true;
-                button3.autoRepeat = false;
-                button3.text = "longPress"
-            }
-        }
-    }
-
-    Rectangle {
-        id: rect
-
-        anchors.top: button3.bottom
-        x: 0
-        width: 50
-        height: 15
-        color: "red"
-    }
-
-    TextField {
-        id: buttonTextEditor
-
-        anchors { right: parent.right; rightMargin: 50; bottom: buttonIconEditor.top; bottomMargin: 15 }
-        width: 150
-        height: 40
-        text: "Button text"
-        clip:true
-    }
-
-    TextField {
-         id: buttonIconEditor
-
-         anchors { left: parent.left; bottom: parent.bottom; bottomMargin: 50; right: parent.right; rightMargin: 150 }
-         height: 40
-         text: "image://theme/:/list1.png"
-         clip:true
-     }
-
-    Button {
-        anchors { left: buttonIconEditor.right; verticalCenter: buttonIconEditor.verticalCenter}
-        text:"Load file!"
-        width: 150
-        height: 50
-
-        onClicked: {
-            button1.iconSource = buttonIconEditor.text
-            button2.iconSource = buttonIconEditor.text
         }
     }
 }
