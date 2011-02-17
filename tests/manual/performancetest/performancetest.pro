@@ -27,5 +27,6 @@ symbian {
 }
 
 OTHER_FILES += \
-    main.qml
-
+    main.qml \
+    tests/ListView.qml \
+    tests/utils/ListViewSetup.qml

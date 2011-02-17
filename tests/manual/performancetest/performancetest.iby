@@ -11,5 +11,7 @@ data=DATAZ_\private\10003a3f\import\apps\performancetest_reg.rsc \private\10003a
 
 // resources
 data=DATAZ_\private\200346E6\main.qml \private\200346E6\main.qml
+data=DATAZ_\private\200346E6\tests\ListView.qml \private\200346E6\tests\ListView.qml
+data=DATAZ_\private\200346E6\tests\utils\ListViewSetup.qml \private\200346E6\tests\utils\ListViewSetup.qml
 
 #endif
