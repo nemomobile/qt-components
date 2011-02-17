@@ -40,5 +40,6 @@ OTHER_FILES += \
     tests/RadioButton.qml \
     tests/ScrollBar.qml \
     tests/ScrollDecorator.qml \
+    tests/Slider.qml \
     tests/ViewMenu.qml
 
