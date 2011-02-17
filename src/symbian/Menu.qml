@@ -92,7 +92,7 @@ ImplicitSizeItem {
         id: fader
         animationDuration: root.animationDuration
         onClicked: {
-            if (fader.isActive()) {
+            if (fader.state == "Visible") {
                 root.canceled();
                 root.hide();
                 style.play(Symbian.PopupClose);
@@ -111,7 +111,7 @@ ImplicitSizeItem {
         repeat: true
         interval: root.timeout
         onTriggered: {
-            if (fader.isActive()) {
+            if (fader.state == "Visible") {
                 root.canceled();
                 root.hide();
             }
