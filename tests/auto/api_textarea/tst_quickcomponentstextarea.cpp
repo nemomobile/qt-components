@@ -28,8 +28,9 @@
 #include <QtTest/QSignalSpy>
 #include <QtDeclarative/qdeclarativecontext.h>
 #include <QDeclarativeView>
-#include <QLineEdit>
 #include <QTextOption>
+#include <QFontDatabase>
+#include <QDeclarativeItem>
 #include <QDeclarativeExpression>
 #include <QClipboard>
 
@@ -61,22 +62,57 @@ private slots:
 private:
     QObject *componentObject;
     QDeclarativeEngine *engine;
+
+    // our internal objects
+    QGraphicsObject *root;
+    QGraphicsObject *textEdit;
+
+    // font helpers
+    QFont mfont;
+    QString family;
+    int fontSize;
 };
 
 void tst_quickcomponentstextarea::initTestCase()
 {
     QString errors;
-    engine = 0;
-    componentObject = tst_quickcomponentstest::createComponentFromFile("tst_quickcomponentstextarea.qml", &errors, &engine);
+    componentObject = tst_quickcomponentstest::createComponentFromFile("tst_quickcomponentstextarea.qml", &errors);
     QVERIFY2(componentObject, qPrintable(errors));
+
+    // select a font from the database
+    QFontDatabase database;
+    family = database.families().at(0);
+    fontSize = database.smoothSizes(family, "Normal").at(0);
+
+    // create the font based on the one found in the system and set it
+    mfont = QFont(family, fontSize);
+    componentObject->setProperty("font", mfont);
+
+    // we need to find the child that is a QDeclarativeTextInput in order to properly
+    // map the position so this test doesn't fail when there are margins.
+    // this is a safe assumption for symbian and meego components as these tests
+    // aims to test the features of those two platforms components.
+    root = qobject_cast<QGraphicsObject*>(componentObject);
+    const QObjectList list = componentObject->children();
+    foreach (QObject *obj, list) {
+        const QString className(obj->metaObject()->className());
+        if (className.compare("QDeclarativeTextEdit") == 0) {
+            textEdit = qobject_cast<QGraphicsObject*>(obj);
+            break;
+        }
+    }
+
+    QVERIFY(root);
+    QVERIFY(textEdit);
 }
 
 
 void tst_quickcomponentstextarea::font()
 {
-    // test setting/getting the property
-    QVERIFY(componentObject->setProperty("font", "Helvetica"));
-    QVERIFY(componentObject->property("font").toString().startsWith("Helvetica"));
+    QFont temp;
+    QVERIFY(componentObject->setProperty("font", mfont));
+    temp = componentObject->property("font").value<QFont>();
+    QCOMPARE(temp, mfont);
 }
 
 void tst_quickcomponentstextarea::cursorPosition()
