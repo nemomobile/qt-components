@@ -206,12 +206,14 @@ ImplicitSizeItem {
 
         function press() {
             pressedEffect.restart()
+            itemStyle.play(Symbian.BasicItem)
             if (ListView.view)
                 ListView.view.currentIndex = index
         }
 
         function release() {
             releasedEffect.restart()
+            itemStyle.play(Symbian.BasicItem)
         }
 
         function hold() {
