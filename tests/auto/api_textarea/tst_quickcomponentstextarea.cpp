@@ -355,32 +355,37 @@ void tst_quickcomponentstextarea::positionAt()
     QVariant retVal;
     const QString text("Hello from Position World");
     componentObject->setProperty("text", text);
+    componentObject->setProperty("cursorPosition", 0);
 
     // values smaller than the position of the first char will always return 0
+    const QPointF smaller = textEdit->mapToItem(root, 0, 0);
     QVERIFY2(QMetaObject::invokeMethod(componentObject, "positionAt",
-                                       Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, 0), Q_ARG(QVariant, 0)),
-             "Could not call positionAt");
+                                       Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, smaller.x()),
+                                       Q_ARG(QVariant, smaller.y())), "Could not call positionAt");
     QCOMPARE(retVal.toInt(), 0);
 
     // this test considers that the width of the element is really big
     // big enough to fit the text and still have some more space
     // values bigger than the position of the last char will always return the size of the string
     const int size = componentObject->property("width").toInt();
+    const QPointF bigger = textEdit->mapToItem(root, size, 0);
+
     QVERIFY2(QMetaObject::invokeMethod(componentObject, "positionAt",
-                                       Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, size), Q_ARG(QVariant, 0)),
-             "Could not call positionAt)");
+                                       Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, bigger.x()),
+                                       Q_ARG(QVariant, bigger.y())), "Could not call positionAt");
     QCOMPARE(retVal.toInt(), text.size());
 
-    QFontMetrics m(componentObject->property("font").toString());
-    const int width = m.width(text);
+    // the position returned for the pixel that is in the end of the text
+    // should be the position of the last char
+    QFontMetrics fm(mfont);
+    const int width = fm.width(text);
+    const QPointF mappedWidth = textEdit->mapToItem(root, width, 0);
 
-    // random position considering the string above. it will return the char
-    // position at x = width/2 pixels (should be the 17th char (o))
     QVERIFY2(QMetaObject::invokeMethod(componentObject, "positionAt",
-                                       Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, width/2), Q_ARG(QVariant, 0)),
-             "Could not call positionAt)");
-    QCOMPARE(retVal.toInt(), 17);
-    QCOMPARE(text.at(retVal.toInt()), QString("o").at(0));
+                                       Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, mappedWidth.x()),
+                                       Q_ARG(QVariant, mappedWidth.y())), "Could not call positionAt");
+
+    QCOMPARE(text.left(retVal.toInt()), text);
 }
 
 void tst_quickcomponentstextarea::positionToRectangle()
