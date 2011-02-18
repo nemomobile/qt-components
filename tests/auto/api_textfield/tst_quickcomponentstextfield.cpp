@@ -470,27 +470,36 @@ void tst_quickcomponentstextfield::positionToRectangle()
 {
     // set the text to something known
     QVariant retVal;
+    QVariant retValPos;
     const QString text("Hello from Rectangle World");
-    QVERIFY(componentObject->setProperty("text", text));
-    // set font to something known
-    QFont font;
-    font.setFamily("Helvetica");
-    font.setPixelSize(12);
-    QVERIFY( componentObject->setProperty("font", font) );
-    // set textField width
-    QVERIFY(componentObject->setProperty("width", 186));
-
+    componentObject->setProperty("text", text);
+    componentObject->setProperty("cursorPosition", 0);
 
     // the cursor position should not change after a call to positionToRectangle()
     const int oldPosition = componentObject->property("cursorPosition").toInt();
 
+    // now we take the rectangle and check if at the given position we have the right
+    // char. because of this, positionToRectangle() should be tested *after* positionAt()
+    // because we rely that it's working properly to check the right position
+    const int size = text.size() / 2;
+    const int value = textInput->mapToItem(root, size, 0).x();
     QVERIFY2(QMetaObject::invokeMethod(componentObject, "positionToRectangle",
-                                       Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, 14)),
-             "Could not call positionToRectangle");
+                                       Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, value)),
+                                       "Could not call positionToRectangle");
 
-    // for char number 14 with the specified font the cursor
-    // rect whould be at = topleft(77, 0) and =size(1, 16)
-    QCOMPARE(retVal.toRectF(), QRectF(77, 0, 1, 16));
+    const QRectF rect = retVal.toRectF();
+    const QRectF mapped = textInput->mapToItem(root, rect).boundingRect();
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "positionAt",
+                                       Q_RETURN_ARG(QVariant, retValPos), Q_ARG(QVariant, mapped.x())),
+                                       "Could not call positionAt");
+
+    // it should be the same as used in 'value' (in this case size)
+    QCOMPARE(retValPos.toInt(), size);
+
+    // the 'x' of the rectangle should be the same as the width of the text
+    // until the position returned
+    QFontMetrics fm(mfont);
+    QCOMPARE((int)retVal.toRectF().x(), fm.width(text.left(retValPos.toInt())));
 
     // the position shouldn't have changed
     QCOMPARE(oldPosition, componentObject->property("cursorPosition").toInt());
