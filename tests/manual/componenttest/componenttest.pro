@@ -41,5 +41,6 @@ OTHER_FILES += \
     tests/ScrollBar.qml \
     tests/ScrollDecorator.qml \
     tests/Slider.qml \
+    tests/Tabs.qml \
     tests/TextArea.qml \
     tests/ViewMenu.qml
