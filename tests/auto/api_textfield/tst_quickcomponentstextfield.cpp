@@ -415,14 +415,11 @@ void tst_quickcomponentstextfield::selectWord()
 
     QVERIFY(componentObject->setProperty("cursorPosition", 5));
     QVERIFY(QMetaObject::invokeMethod(componentObject, "selectWord"));
-
-    QEXPECT_FAIL("", "Selected word should be morning", Continue);
     QCOMPARE(componentObject->property("selectedText").toString(), QString("morning"));
 
     QVERIFY(QMetaObject::invokeMethod(componentObject, "cut"));
-    QEXPECT_FAIL("", "'morning' was cut, so cursorPosition should be at 5", Continue);
     QCOMPARE(componentObject->property("selectionStart").toInt(), 5);
-    QEXPECT_FAIL("", "'morning' was cut, so cursorPosition should be at 5", Continue);
+
     QCOMPARE(componentObject->property("selectionEnd").toInt(), 5);
     QVERIFY(QMetaObject::invokeMethod(componentObject, "paste"));
     QCOMPARE(componentObject->property("text").toString(), QString("Good morning"));
