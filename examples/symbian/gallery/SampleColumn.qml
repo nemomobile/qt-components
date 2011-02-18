@@ -234,4 +234,22 @@ Column {
         currentIndex: 2
         model: ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"]
     }
+
+    TabBar {
+        width: parent.width - parent.spacing
+        TabButton { tab: tab1content; text: "1" }
+        TabButton { tab: tab2content; text: "2" }
+        TabButton { tab: tab3content; text: "3" }
+    }
+
+    TabGroup {
+        height: 100
+        width: parent.width - parent.spacing
+        Button { id: tab1content; text: "tab1" }
+        Text { id: tab2content; text: "tab2"; horizontalAlignment: "AlignHCenter"; verticalAlignment: "AlignVCenter" }
+        Page {
+            id: tab3content
+            CheckBox { anchors.fill: parent; text: "tab3" }
+        }
+    }
 }
