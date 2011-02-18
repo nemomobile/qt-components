@@ -69,13 +69,13 @@ ImplicitSizeItem {
     }
 
     function positionAt(x) {
-        return textInput.positionAt(textInput.mapToItem(root, x, 0).x)
+        var p = mapToItem(textEdit, x, 0);
+        return textInput.positionAt(p.x)
     }
 
     function positionToRectangle(pos) {
-        var rect = textInput.positionToRectangle(pos)
-        rect.x = Math.round(root.mapToItem(textInput, rect.x, 0).x)
-        return rect
+        var p = mapToItem(textInput, pos, 0);
+        return textInput.positionToRectangle(p.x)
     }
 
     // API extensions

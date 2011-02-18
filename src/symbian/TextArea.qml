@@ -67,13 +67,13 @@ ImplicitSizeItem {
     }
 
     function positionAt(x, y) {
-        // ### TODO: remove the left margins from x
-        return textEdit.positionAt(x, y)
+        var p = mapToItem(textEdit, x, y);
+        return textEdit.positionAt(p.x, p.y)
     }
 
     function positionToRectangle(pos) {
-        // ### TODO: translate rect to TextArea coord
-        return textEdit.positionToRectangle(pos)
+        var p = mapToItem(textEdit, pos, 0);
+        return textEdit.positionToRectangle(p.x)
     }
 
     // API extensions
