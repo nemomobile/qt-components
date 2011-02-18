@@ -45,6 +45,11 @@ QML_FILES = \
     ScrollBar.qml \
     ScrollDecorator.qml \
     Slider.qml \
+    TabBar.qml \
+    TabBarLayout.qml \
+    TabButton.qml \
+    TabGroup.js \
+    TabGroup.qml \
     TextArea.qml \
     TextField.qml \
     ToolTip.qml \

@@ -46,6 +46,7 @@ ImplicitSizeItem {
 
     property bool autoRepeat: false
     property bool longPress: false
+    property QtObject __style: style
 
     implicitWidth: {
         var prefWidth = 20;

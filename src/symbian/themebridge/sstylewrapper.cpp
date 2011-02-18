@@ -177,12 +177,19 @@ qreal SStyleWrapper::preferredWidth() const
     if (styleClass() == QLatin1String("ProgressBar"))
         return 150; // TODO: get from layout
 
+    if (styleClass() == QLatin1String("TabBar"))
+        return d->fetchLayoutParameter(QLatin1String("param-screen-width"));
+
     return 50;
 }
 
 qreal SStyleWrapper::preferredHeight() const
 {
     Q_D(const SStyleWrapper);
+
+    if (styleClass() == QLatin1String("Button") && styleObjectName() == QLatin1String("TabButton"))
+        return 46; // TODO: get from layout. tab-bar-height: nHD 46
+
     if (styleClass() == QLatin1String("Button"))
         return qreal(2 / 3 * d->fetchLayoutParameter(QLatin1String("param-widget-chrome-height")));
 
@@ -238,6 +245,9 @@ qreal SStyleWrapper::preferredHeight() const
 
     if (styleClass() == QLatin1String("ProgressBar"))
         return d->fetchLayoutParameter(QLatin1String("param-widget-progress-bar-height"));
+
+    if (styleClass() == QLatin1String("TabBar"))
+        return 46; // TODO: get from layout. tab-bar-height: nHD 46
 
     return 50;
 }
@@ -305,6 +315,8 @@ QVariant SStyleWrapper::get(const QString &propertyName)
         ret = d->choiceListProperty(propertyName);
     else if (styleClass() == QLatin1String("Fader"))
         ret = d->faderProperty(propertyName);
+    else if (styleClass() == QLatin1String("TabBar"))
+        ret = d->tabBarProperty(propertyName);
 
     // this is for querying something else than component specific values...
     /*if(ret.isNull())

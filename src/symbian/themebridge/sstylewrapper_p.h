@@ -47,6 +47,8 @@ public:
     void initScreenPtr() const;
 
     QVariant buttonProperty(const QString &propertyName) const;
+    QVariant tabButtonProperty(const QString &propertyName) const;
+    QVariant tabBarProperty(const QString &propertyName) const;
     QVariant textComponentProperty(const QString &propertyName) const;
     QVariant titleBarProperty(const QString &propertyName) const;
     QVariant listHeadingProperty(const QString &propertyName) const;

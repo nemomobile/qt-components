@@ -329,6 +329,13 @@ void SStyleWrapperPrivate::initScreenPtr() const
 
 QVariant SStyleWrapperPrivate::buttonProperty(const QString &propertyName) const
 {
+    // TabButton overrides some properties
+    if (styleObjectName == QLatin1String("TabButton")) {
+        QVariant ret = tabButtonProperty(propertyName);
+        if (!ret.isNull())
+            return ret;
+    }
+
     if (propertyName == QLatin1String("font"))
         return fetchFont(SStyleWrapper::Primary, fetchLayoutParameter(QLatin1String("param-text-height-tiny")));
 
@@ -1170,6 +1177,40 @@ QVariant SStyleWrapperPrivate::textComponentFrameName() const
         return QLatin1String("qtg_fr_text_component_normal");
     else
         return QVariant();
+}
+
+QVariant SStyleWrapperPrivate::tabButtonProperty(const QString &propertyName) const
+{
+    Q_UNUSED(propertyName)
+
+    if (propertyName == QLatin1String("iconWidth"))
+        return fetchLayoutParameter(QLatin1String("param-graphic-size-primary-small"));
+
+    if (propertyName == QLatin1String("iconHeight"))
+        return fetchLayoutParameter(QLatin1String("param-graphic-size-primary-small"));
+
+    if (propertyName == QLatin1String("textColor"))
+        return QColor(Qt::black); // TODO: no color group defined yet
+
+    if (propertyName == QLatin1String("background")) {
+        if (mode == QLatin1String("checked"))
+            return imagePath(QLatin1String("qtg_fr_tab_active"));
+        else if (mode == QLatin1String("pressed"))
+            return imagePath(QLatin1String("qtg_fr_tab_passive_pressed"));
+        else
+            return imagePath(QLatin1String("qtg_fr_tab_passive_normal"));
+    }
+
+    return QVariant();
+}
+
+
+QVariant SStyleWrapperPrivate::tabBarProperty(const QString &propertyName) const
+{
+    if (propertyName == QLatin1String("background"))
+        return imagePath(QLatin1String("qtg_fr_tab_bar"));
+
+    return QVariant();
 }
 
 QString SStyleWrapperPrivate::imagePath(const QString &fileName) const
