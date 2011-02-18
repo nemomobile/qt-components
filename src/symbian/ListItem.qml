@@ -132,7 +132,7 @@ ImplicitSizeItem {
                 if (symbian.listInteractionMode != Symbian.KeyNavigation)
                     symbian.listInteractionMode = Symbian.KeyNavigation
                 else
-	            if (listItem.enabled)
+                    if (listItem.enabled)
                         listItem.clicked()
                 event.accepted = true
                 break
