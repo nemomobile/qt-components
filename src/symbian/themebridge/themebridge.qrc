@@ -164,6 +164,10 @@
         <file alias="qtg_graf_combobox_button_disabled.svg">resources/defaulttheme/graphics/qtg_graf_combobox_button_disabled.svg</file>
         <file alias="qtg_graf_combobox_button_latched.svg">resources/defaulttheme/graphics/qtg_graf_combobox_button_latched.svg</file>
         <file alias="qtg_graf_combobox_button_normal.svg">resources/defaulttheme/graphics/qtg_graf_combobox_button_normal.svg</file>
+        <file alias="qtg_fr_tab_active.svg">resources/defaulttheme/graphics/qtg_fr_tab_active.svg</file>
+        <file alias="qtg_fr_tab_bar.svg">resources/defaulttheme/graphics/qtg_fr_tab_bar.svg</file>
+        <file alias="qtg_fr_tab_passive_normal.svg">resources/defaulttheme/graphics/qtg_fr_tab_passive_normal.svg</file>
+        <file alias="qtg_fr_tab_passive_pressed.svg">resources/defaulttheme/graphics/qtg_fr_tab_passive_pressed.svg</file>
         <file alias="qtg_fr_text_component_highlight_b.svg">resources/defaulttheme/graphics/qtg_fr_text_component_highlight_b.svg</file>
         <file alias="qtg_fr_text_component_highlight_bl.svg">resources/defaulttheme/graphics/qtg_fr_text_component_highlight_bl.svg</file>
         <file alias="qtg_fr_text_component_highlight_br.svg">resources/defaulttheme/graphics/qtg_fr_text_component_highlight_br.svg</file>
