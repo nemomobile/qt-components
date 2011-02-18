@@ -59,6 +59,10 @@ symbian3 {
         symbian_radiobutton \
         symbian_scrollbar \
         symbian_slider \
+        symbian_tabbar \
+        symbian_tabbarlayout \
+        symbian_tabbutton \
+        symbian_tabgroup \
         symbian_textarea \
         symbian_textfield \
         symbian_tooltip \ #TODO not yet finalized
