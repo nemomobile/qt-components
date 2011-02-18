@@ -29,11 +29,16 @@
 #include <QtDeclarative/qdeclarativecontext.h>
 #include <QtDeclarative/qdeclarativecomponent.h>
 #include <QDeclarativeView>
-#include <QLineEdit>
-
-#include "tst_quickcomponentstest.h"
+#include <QDeclarativeItem>
 #include <QDeclarativeExpression>
 #include <QRegExpValidator>
+#include <QFontDatabase>
+#include <QFontMetrics>
+
+#include "tst_quickcomponentstest.h"
+
+QML_DECLARE_TYPE(QValidator)
+
 
 class tst_quickcomponentstextfield : public QObject
 
@@ -65,14 +70,48 @@ private slots:
 private:
     QObject *componentObject;
     QDeclarativeEngine *engine;
+
+    // our internal objects
+    QGraphicsObject *root;
+    QGraphicsObject *textInput;
+
+    // font helpers
+    QFont mfont;
+    QString family;
+    int fontSize;
 };
 
 void tst_quickcomponentstextfield::initTestCase()
 {
     QString errors;
-    engine = 0;
-    componentObject = tst_quickcomponentstest::createComponentFromFile("tst_quickcomponentstextfield.qml", &errors, &engine);
+    componentObject = tst_quickcomponentstest::createComponentFromFile("tst_quickcomponentstextfield.qml", &errors);
     QVERIFY2(componentObject, qPrintable(errors));
+
+    // select a font from the database
+    QFontDatabase database;
+    family = database.families().at(0);
+    fontSize = database.smoothSizes(family, "Normal").at(0);
+
+    // create the font based on the one found in the system and set it
+    mfont = QFont(family, fontSize);
+    componentObject->setProperty("font", mfont);
+
+    // we need to find the child that is a QDeclarativeTextInput in order to properly
+    // map the position so this test doesn't fail when there are margins.
+    // this is a safe assumption for symbian and meego components as these tests
+    // aims to test the features of those two platforms components.
+    root = qobject_cast<QGraphicsObject*>(componentObject);
+    const QObjectList list = componentObject->children();
+    foreach (QObject *obj, list) {
+        const QString className(obj->metaObject()->className());
+        if (className.compare("QDeclarativeTextInput") == 0) {
+            textInput = qobject_cast<QGraphicsObject*>(obj);
+            break;
+        }
+    }
+
+    QVERIFY(root);
+    QVERIFY(textInput);
 }
 
 void tst_quickcomponentstextfield::placeholderText()
@@ -94,14 +133,10 @@ void tst_quickcomponentstextfield::inputMethodHints()
 
 void tst_quickcomponentstextfield::font()
 {
-    QFont font;
-    font.setFamily("Helvetica");
-    font.setPixelSize(12);
-
     QFont temp;
-    QVERIFY( componentObject->setProperty("font", font) );
+    QVERIFY(componentObject->setProperty("font", mfont));
     temp = componentObject->property("font").value<QFont>();
-    QCOMPARE( temp, font );
+    QCOMPARE(temp, mfont);
 }
 
 void tst_quickcomponentstextfield::cursorPosition()
@@ -463,7 +498,5 @@ void tst_quickcomponentstextfield::positionToRectangle()
 }
 
 QTEST_MAIN(tst_quickcomponentstextfield)
-
-QML_DECLARE_TYPE(QValidator)
 
 #include "tst_quickcomponentstextfield.moc"
