@@ -36,10 +36,10 @@
 namespace tst_quickcomponentstest
 {
     QString errorString(QDeclarativeComponent*);
-    QObject* createComponentFromFile(QString const&, QString*,QDeclarativeEngine **engine=0);
+    QObject* createComponentFromFile(QString const&, QString*,QDeclarativeView **view=0);
     QObject* createComponentFromString(QString const&, QString*, QDeclarativeEngine **engine=0);
     QDeclarativeView *createDeclarativeView(const QString& source);
-};
+}
 
 inline
 QString tst_quickcomponentstest::errorString(QDeclarativeComponent* component)
@@ -60,13 +60,23 @@ QString tst_quickcomponentstest::errorString(QDeclarativeComponent* component)
 }
 
 inline
-QObject* tst_quickcomponentstest::createComponentFromFile(QString const& filename, QString* errors, QDeclarativeEngine **engine)
+QObject* tst_quickcomponentstest::createComponentFromFile(QString const& filename, QString* errors, QDeclarativeView **view)
 {
-    QDeclarativeView *window = new QDeclarativeView;
-    if (engine)
-        *engine = window->engine();
-    window->engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
-    QDeclarativeComponent *component = new QDeclarativeComponent(window->engine());
+    // view usage priority
+    // #1 *view points to a view instance - use that and ownership is not transferred
+    // #2 *view points to null - create new view and pass the ownership to caller
+    // #3 view points to null - create new view and let the application quit destroy it
+    QDeclarativeView *usedView = 0;
+    if (view) {
+        if (!*view)
+            *view  = new QDeclarativeView;
+        usedView = *view;
+    } else {
+        usedView = new QDeclarativeView;
+    }
+
+    usedView->engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
+    QDeclarativeComponent component(usedView->engine());
 
     QFile file(filename);
     if (!file.open(QFile::ReadOnly)) {
@@ -76,14 +86,16 @@ QObject* tst_quickcomponentstest::createComponentFromFile(QString const& filenam
         return 0;
     }
 
-    component->setData( file.readAll(), QUrl() );
+    component.setData( file.readAll(), QUrl() );
 
-    QObject* out = component->create();
+    QObject* out = component.create();
     if (!out) {
         if (errors) {
-            *errors = QString("Could not create component from %1: %2").arg(filename).arg(errorString(component));
+            *errors = QString("Could not create component from %1: %2").arg(filename).arg(errorString(&component));
         }
     }
+    if (!view)
+        QObject::connect(QCoreApplication::instance(), SIGNAL(aboutToQuit()), usedView, SLOT(deleteLater()));
 
     return out;
 }
