@@ -260,7 +260,7 @@ qreal SStyleWrapperPrivate::fetchLayoutParameter(const QString &layoutParameterN
             // register to auto-fetch when orientation changes
             if (!updateOnScreenAreaChange) {
 #ifdef Q_OS_SYMBIAN
-                QObject::connect(QApplication::desktop(), SIGNAL(workAreaResized(int)), q_ptr, SLOT(desktopWorkareaChanged()), Qt::QueuedConnection);
+                QObject::connect(QApplication::desktop(), SIGNAL(workAreaResized(int)), q_ptr, SLOT(_q_desktopWorkareaChanged()), Qt::QueuedConnection);
 #else
                 if (styleData()->graphicsView)
                     styleData()->graphicsView->installEventFilter(q_ptr);
