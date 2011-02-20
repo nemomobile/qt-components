@@ -62,6 +62,10 @@ release/
 /tests/auto/symbian_radiobutton/tst_symbian_radiobutton
 /tests/auto/symbian_scrollbar/tst_symbian_scrollbar
 /tests/auto/symbian_slider/tst_symbian_slider
+/tests/auto/symbian_tabbar/tst_symbian_tabbar
+/tests/auto/symbian_tabbarlayout/tst_symbian_tabbarlayout
+/tests/auto/symbian_tabbutton/tst_symbian_tabbutton
+/tests/auto/symbian_tabgroup/tst_symbian_tabgroup
 /tests/auto/symbian_textarea/tst_symbian_textarea
 /tests/auto/symbian_textarea/tst_symbian_textfield
 /tests/auto/symbian_textfield/tst_symbian_textfield
