@@ -46,7 +46,6 @@ static void failIfWarnings(QtMsgType type, const char *msg)
     case QtCriticalMsg:
     case QtFatalMsg:
         QFAIL("NO invoke of any QWARN, QCRITICAL nor QFATAL messages should occur.");
-        break;
     }
 }
 
