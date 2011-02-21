@@ -42,13 +42,11 @@ symbian3 {
 
 symbian3 {
     SUBDIRS += \
-        symbian_applicationwindow \
         symbian_button \
         symbian_checkbox \
         symbian_declarativeframe \
         symbian_declarativeicon \
         symbian_declarativeimplicitsizeitem \
-        symbian_declarativescreen \
         symbian_framepool \
         symbian_iconpool \
         symbian_imageprovider \
@@ -65,6 +63,11 @@ symbian3 {
         symbian_tabgroup \
         symbian_textarea \
         symbian_textfield \
-        symbian_tooltip \ #TODO not yet finalized
+        symbian_tooltip #TODO not yet finalized
+
+    #TODO fail on mac, to be fixed
+    !macx:SUBDIRS += \
+        symbian_applicationwindow \
+        symbian_declarativescreen \
         symbian_window
 }
