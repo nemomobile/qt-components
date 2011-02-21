@@ -67,5 +67,12 @@ Item {
                 border.color: "blue"
             }
         }
+
+        CheckBox {
+            id: checkBox3
+            width: checkBox2.width
+            enabled: checkBox2.checked
+            text: checkBox2.checked ? "enabled" : "disabled"
+        }
     }
 }
