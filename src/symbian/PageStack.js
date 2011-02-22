@@ -90,16 +90,21 @@ function push(page, properties, replace, immediate) {
 function initPage(page, properties) {
     var container = containerComponent.createObject(root);
 
+    var pageComp;
     if (page.createObject) {
-        // page defined as component - instantiate it
-        page = page.createObject(container);
+        // page defined as component
+        pageComp = page;
     } else if (typeof page == "string") {
-        // page defined as string (a url) - load the component and instantiate it
-        page = Qt.createComponent(page).createObject(container);
+        // page defined as string (a url)
+        pageComp = Qt.createComponent(page);
     }
-
-    if (!page) {
-        throw new Error("Error while loading page");
+    if (pageComp) {
+        if (pageComp.status == Component.Error) {
+            throw new Error("Error while loading page: " + pageComp.errorString());
+        } else {
+            // instantiate page from component
+            page = pageComp.createObject(container);
+        }
     }
 
     container.page = page;
@@ -157,6 +162,8 @@ function clear() {
     while (container = pageStack.pop()) {
         container.cleanup();
     }
+    depth = 0;
+    currentPage = null;
 }
 
 // Iterates through all pages in the stack (top to bottom) to find a page.

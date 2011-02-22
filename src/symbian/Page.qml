@@ -38,8 +38,11 @@ Item {
     property int status: Symbian.PageInactive
 
     property PageStack pageStack
+    property bool lockInLandscape: false
+    property bool lockInPortrait: false
 
-    property string title
+    property string title // Deprecated
+    onTitleChanged: console.log("warning: Page.title is deprecated")
 
     visible: false
 
@@ -49,10 +52,53 @@ Item {
     onWidthChanged: internal.previousWidth = visible ? width : internal.previousWidth
     onHeightChanged: internal.previousHeight = visible ? height : internal.previousHeight
 
+    onStatusChanged: {
+        if (status == Symbian.PageActivating)
+            internal.orientationLockCheck();
+    }
+
+    onLockInLandscapeChanged: {
+        if (status == Symbian.PageActivating || status == Symbian.PageActive)
+            internal.orientationLockCheck();
+    }
+
+    onLockInPortraitChanged: {
+        if (status == Symbian.PageActivating || status == Symbian.PageActive)
+            internal.orientationLockCheck();
+    }
+
     QtObject {
         id: internal
         property int previousWidth: 0
         property int previousHeight: 0
+
+        function isScreenInPortrait() {
+            return screen.orientation == Screen.Portrait || screen.orientation == Screen.PortraitInverted;
+        }
+
+        function isScreenInLandscape() {
+            return screen.orientation == Screen.Landscape || screen.orientation == Screen.LandscapeInverted;
+        }
+        
+        function orientationLockCheck() {
+            // We are locked in both orientations
+            if (lockInLandscape && lockInPortrait) {
+                // lock to current orientation
+                screen.orientation = screen.orientation;
+                return;
+            }
+
+            // We are not locked in any orientations
+            if (!lockInLandscape && !lockInPortrait) {
+                screen.orientation = Screen.Automatic;
+                return;
+            }
+
+            if (lockInLandscape && isScreenInPortrait())
+                screen.orientation = Screen.Landscape;
+            else if (lockInPortrait && isScreenInLandscape())
+                screen.orientation = Screen.Portrait;
+        }
     }
 
     Rectangle {
