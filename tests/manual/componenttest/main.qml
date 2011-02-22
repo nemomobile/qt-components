@@ -209,6 +209,14 @@ ApplicationWindow {
                         checkable: true
                         text: "Fill area"
                     }
+                    CheckBox {
+                        id: fullScreenSetting
+                        height: flickableSetting.height
+                        checked: false
+                        checkable: true
+                        text: "Fullscreen"
+                        onClicked: mainWindow.fullScreen = fullScreenSetting.checked
+                    }
 
                     Repeater {
                         id: componentsmodel
