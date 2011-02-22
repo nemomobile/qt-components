@@ -117,8 +117,9 @@ ApplicationWindow {
                             height: parent.buttonHeight
 
                             onClicked: {
-                                screen.orientation = Screen.Portrait
                                 startupOrientationButton.orientation = Screen.Portrait
+                                mainPage.lockInPortrait = true
+                                mainPage.lockInLandscape = false
                             }
                         }
                         Button {
@@ -129,8 +130,9 @@ ApplicationWindow {
                             height: parent.buttonHeight
 
                             onClicked: {
-                               screen.orientation = Screen.Landscape
                                startupOrientationButton.orientation = Screen.Landscape
+                               mainPage.lockInLandscape = true
+                               mainPage.lockInPortrait = false
                             }
                         }
                         Button {
@@ -141,8 +143,9 @@ ApplicationWindow {
                             height: parent.buttonHeight
 
                             onClicked: {
-                                screen.orientation = Screen.Automatic
                                 startupOrientationButton.orientation = Screen.Automatic
+                                mainPage.lockInLandscape = false
+                                mainPage.lockInPortrait = false
                             }
                         }
                         Button {
@@ -260,6 +263,8 @@ ApplicationWindow {
 
                                 Page {
                                     id: testPage
+                                    lockInLandscape: mainPage.lockInLandscape
+                                    lockInPortrait: mainPage.lockInPortrait
 
                                     Flickable {
                                         id: testPageGroup
@@ -285,6 +290,8 @@ ApplicationWindow {
 
                                 Page {
                                     id: testPage
+                                    lockInLandscape: mainPage.lockInLandscape
+                                    lockInPortrait: mainPage.lockInPortrait
 
                                     Rectangle {
                                         anchors { left: parent.left; top: parent.top }
