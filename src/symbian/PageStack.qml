@@ -28,7 +28,7 @@
 // navigation model. Pages can be defined as QML items or components.
 
 import Qt 4.7
-import com.nokia.symbian 1.0
+import "." 1.0
 
 import "PageStack.js" as Engine
 

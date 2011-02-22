@@ -25,8 +25,8 @@
 ****************************************************************************/
 
 import Qt 4.7
-import com.nokia.symbian 1.0
-import com.nokia.symbian.themebridge 1.0
+import "." 1.0
+import "themebridge" 1.0
 
 ImplicitSizeItem {
     id: listHeading
