@@ -58,6 +58,8 @@ release/
 /tests/auto/symbian_listheading/tst_symbian_listheading
 /tests/auto/symbian_listitem/tst_symbian_listitem
 /tests/auto/symbian_listitemtext/tst_symbian_listitemtext
+/tests/auto/symbian_page/tst_symbian_page
+/tests/auto/symbian_pagestack/tst_symbian_pagestack
 /tests/auto/symbian_progressbar/tst_symbian_progressbar
 /tests/auto/symbian_radiobutton/tst_symbian_radiobutton
 /tests/auto/symbian_scrollbar/tst_symbian_scrollbar
