@@ -95,6 +95,14 @@ Item {
         page.destroy()
     }
 
+    function findButtonByContent(content) {
+        for (var i = 0; i < tabBar.layout.children.length; ++i) {
+            if (tabBar.layout.children[i].tab == content)
+                return tabBar.layout.children[i]
+        }
+        return 0
+    }
+
     TabBar {
         id: tabBar
         anchors.top: parent.top
@@ -119,23 +127,7 @@ Item {
             id: itemItem // ;)
             property string titleString
 
-            Column {
-                anchors.fill: parent
-                anchors.topMargin: 20
-                Text {
-                    text: "item: " + titleString
-                    width: parent.width
-                    horizontalAlignment: Text.AlignHCenter
-                    font.pointSize: 30
-                    color: "white"
-                }
-
-                Row {
-                    Button { text: "append page"; onClicked: root.addTab(pageComponent) }
-                    Button { text: "append item"; onClicked: root.addTab(itemComponent) }
-                    Button { text: "remove"; onClicked: removeTab(itemItem) }
-                }
-            }
+            Component.onCompleted: { commonContent.createObject(itemItem) }
         }
     }
 
@@ -145,30 +137,9 @@ Item {
             id: pageItem
             property string titleString
 
-            Column {
-                id: columnLayout
-                anchors.fill: parent
-                anchors.topMargin: 20
-                Text {
-                    text: "page: " + titleString
-                    width: parent.width
-                    horizontalAlignment: Text.AlignHCenter
-                    font.pointSize: 30
-                    color: "white"
-                }
-
-                Row {
-                    Button { text: "append page"; onClicked: root.addTab(pageComponent) }
-                    Button { text: "append item"; onClicked: root.addTab(itemComponent) }
-                    Button { text: "remove"; onClicked: removeTab(pageItem) }
-                }
-
-                Row {
-                    height: 40
-                    width: parent.width
-                    Rectangle { color: "red"; height: parent.height; width: parent.width / 2; opacity: pageItem.status == Symbian.PageDeactivating ? 1 : 0.1}
-                    Rectangle { color: "blue"; height: parent.height; width: parent.width / 2; opacity: pageItem.status == Symbian.PageActivating ? 1 : 0.1 }
-                }
+            Component.onCompleted: {
+                var newContent = commonContent.createObject(pageItem)
+                newContent.page = pageItem
             }
         }
     }
@@ -181,5 +152,64 @@ Item {
     QtObject {
         id: priv
         property Item newItem
+    }
+
+    Component {
+        id: commonContent
+        Column {
+            id: column
+            property Item page
+
+            anchors.fill: parent
+            anchors.topMargin: 20
+            Text {
+                text: (page ? "page: " : "item: ") + column.parent.titleString
+                width: parent.width
+                horizontalAlignment: Text.AlignHCenter
+                font.pointSize: 30
+                color: "white"
+            }
+
+            Row {
+                Button { text: "append page"; onClicked: root.addTab(pageComponent) }
+                Button { text: "append item"; onClicked: root.addTab(itemComponent) }
+                Button { text: "remove"; onClicked: removeTab(column.parent) }
+            }
+
+            Row {
+                height: 40
+                width: parent.width
+                Rectangle { color: "red"; height: parent.height; width: parent.width / 2; opacity: page ? (page.status == Symbian.PageDeactivating ? 1 : 0.1) : 0}
+                Rectangle { color: "blue"; height: parent.height; width: parent.width / 2; opacity: page ? (page.status == Symbian.PageActivating ? 1 : 0.1) : 0 }
+            }
+
+            Row {
+                height: 40
+                width: parent.width
+                TextField {
+                    id: editor
+                    width: parent.width / 2
+                    placeholderText: column.parent.titleString
+                    onTextChanged: {
+                        var tabButton = findButtonByContent(column.parent)
+                        if (tabButton)
+                            tabButton.text = text
+                        column.parent.titleString = text
+                    }
+                }
+                ChoiceList {
+                    Component.onCompleted: {console.log("ChoiceList::onCompleted: " + currentValue + " " + currentIndex)}
+
+                    id: iconChoicelist
+                    width: parent.width / 2
+                    onCurrentValueChanged: {
+                        var tabButton = findButtonByContent(column.parent)
+                        if (tabButton)
+                            tabButton.iconSource = currentValue != "<none>" ? "image://theme/:/" + currentValue : ""
+                    }
+                    model: ["<none>", "list1.png", "list2.png"]
+                }
+            }
+        }
     }
 }
