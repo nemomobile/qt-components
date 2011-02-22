@@ -81,7 +81,7 @@ install_native {
         DEPLOYMENT += native_pluginstub native_qmlfiles native_qmlimages
     } else:unix {
         native_symlink.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH
-        native_symlink.commands = $(SYMLINK) -n $(INSTALL_ROOT)$$[QT_INSTALL_IMPORTS]/$$TARGETPATH \
+        native_symlink.commands = $(SYMLINK) -n $$[QT_INSTALL_IMPORTS]/$$TARGETPATH \
             $(INSTALL_ROOT)$$[QT_INSTALL_IMPORTS]/Qt/labs/components/native
         native_symlink.uninstall = $(DEL_FILE) $(INSTALL_ROOT)$$[QT_INSTALL_IMPORTS]/Qt/labs/components/native
         INSTALLS += native_symlink
