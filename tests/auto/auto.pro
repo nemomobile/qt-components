@@ -54,6 +54,7 @@ symbian3 {
         symbian_listitem \
         symbian_listitemtext \
         symbian_page \
+        symbian_pagestack \
         symbian_progressbar \
         symbian_radiobutton \
         symbian_scrollbar \
