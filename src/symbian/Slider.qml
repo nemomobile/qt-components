@@ -208,11 +208,11 @@ ImplicitSizeItem {
 
             var point = null;
             if (orientation == Qt.Horizontal) {
-                point = slider.mapFromItem(track, handle.x, 0)
+                point = slider.mapFromItem(track, handle.x + handle.width / 2 - toolTip.item.width / 2, 0)
                 toolTip.item.x = point.x
                 toolTip.item.y = point.y - toolTip.spacing - toolTip.item.height
             } else {
-                point = slider.mapFromItem(track, 0, handle.y)
+                point = slider.mapFromItem(track, 0, handle.y + handle.height / 2 - toolTip.item.height / 2)
                 toolTip.item.x = point.x - toolTip.spacing - toolTip.item.width
                 toolTip.item.y = point.y
             }
