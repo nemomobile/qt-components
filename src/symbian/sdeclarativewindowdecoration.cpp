@@ -205,7 +205,7 @@ void SDeclarativeWindowDecorationPrivate::_q_desktopWorkareaChanged()
 {
 #ifdef Q_OS_SYMBIAN
     Q_Q(SDeclarativeWindowDecoration);
-    
+
     CEikonEnv *eikonEnv = CEikonEnv::Static();
 
     const TRect applicationRect = static_cast<CEikAppUi *>(eikonEnv->AppUi())->ApplicationRect();

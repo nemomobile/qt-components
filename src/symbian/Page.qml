@@ -79,7 +79,7 @@ Item {
         function isScreenInLandscape() {
             return screen.orientation == Screen.Landscape || screen.orientation == Screen.LandscapeInverted;
         }
-        
+
         function orientationLockCheck() {
             // We are locked in both orientations
             if (lockInLandscape && lockInPortrait) {

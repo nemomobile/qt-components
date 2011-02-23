@@ -110,20 +110,20 @@ function initPage(page, properties) {
     container.page = page;
     container.owner = page.parent;
 
-    // the page has to be reparented if 
+    // the page has to be reparented if
     if (page.parent != container) {
         page.parent = container;
     }
-    
+
     if (page.pageStack !== undefined) {
         page.pageStack = root;
     }
-    
+
     // copy properties to the page
     for (var prop in properties) {
         page[prop] = properties[prop];
     }
-    
+
     return container;
 }
 

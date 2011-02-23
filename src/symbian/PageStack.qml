@@ -88,7 +88,7 @@ Item {
     function find(func) {
         return Engine.find(func);
     }
-    
+
     // Called when the page stack visibility changes.
     onVisibleChanged: {
         if (currentPage) {
@@ -185,21 +185,21 @@ Item {
                 else
                     cleanupAfterTransition = true;
             }
-            
+
             // Called when a transition has started.
             function transitionStarted() {
                 internal.ongoingTransitionCount++;
                 if (root.visible)
                     internal.setPageStatus(page, (state == "") ? Symbian.PageActivating : Symbian.PageDeactivating);
             }
-            
+
             // Called when a transition has ended.
             function transitionEnded() {
                 if (state != "")
                     state = "Hidden";
                 if (root.visible)
                     internal.setPageStatus(page, (state == "") ? Symbian.PageActive : Symbian.PageInactive);
-                    
+
                 internal.ongoingTransitionCount--;
                 if (cleanupAfterTransition)
                     cleanup();
@@ -276,7 +276,7 @@ Item {
                    }
                 }
             ]
-            
+
             // Cleans up the container and then destroys it.
             function cleanup() {
                 if (page.status == Symbian.PageActive)

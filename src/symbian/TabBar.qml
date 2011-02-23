@@ -39,15 +39,15 @@ ImplicitSizeItem {
         anchors.fill: parent
         source: style.current.get("background")
         border { left: 20; top: 20; right: 20; bottom: 20 }
-    }    
+    }
 
     TabBarLayout {
         id: tabBarLayout
         anchors.fill: parent
     }
 
-    Style { 
-        id: style 
+    Style {
+        id: style
         styleClass: "TabBar"
     }
 }
