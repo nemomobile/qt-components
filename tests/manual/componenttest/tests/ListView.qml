@@ -43,8 +43,10 @@ Item {
             clip: true
             model: ListModel { id: model }
             delegate: defaultDelegate
-            Component.onCompleted: initializeDefault() // Initial fill of the model
-
+            Component.onCompleted: {
+                 initializeDefault() // Initial fill of the model
+                 listView.forceActiveFocus()
+             }
             ScrollBar {
                 flickableItem: listView
                 anchors { top: listView.top; right: listView.right }
