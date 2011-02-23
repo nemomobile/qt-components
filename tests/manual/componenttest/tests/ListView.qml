@@ -252,32 +252,32 @@ Item {
         id: defaultDelegate
 
         ListItem {
-            id: listItem1
+            id: listItem
             objectName: title
             width: listView.width
             enabled: !disabled // State from model
 
             Row {
-                anchors.fill: listItem1.padding
-                spacing: listItem1.horizontalSpacing
+                anchors.fill: listItem.padding
+                spacing: listItem.horizontalSpacing
 
                 Image {
-                    sourceSize.height: listItem1.preferredImageHeight(imageSize)
-                    sourceSize.width: listItem1.preferredImageWidth(imageSize)
+                    sourceSize.height: listItem.preferredImageHeight(imageSize)
+                    sourceSize.width: listItem.preferredImageWidth(imageSize)
                     source: imageSize == Symbian.Undefined ? "" : image
                 }
 
                 Column {
-                    spacing: listItem1.verticalSpacing
+                    spacing: listItem.verticalSpacing
 
                     ListItemText {
-                        style: listItem1.style
+                        style: listItem.style
                         role: "Title"
                         text: title // Title from model
                     }
 
                     ListItemText {
-                        style: listItem1.style
+                        style: listItem.style
                         role: "SubTitle"
                         text: subTitle // SubTitle from model
                     }
