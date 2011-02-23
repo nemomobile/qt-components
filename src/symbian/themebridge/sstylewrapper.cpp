@@ -194,12 +194,14 @@ qreal SStyleWrapper::preferredHeight() const
         return qreal(2 / 3 * d->fetchLayoutParameter(QLatin1String("param-widget-chrome-height")));
 
     if (styleClass() == QLatin1String("ListHeading"))
-        return qreal(d->listHeadingProperty(QLatin1String("marginTop")).toReal()
+        // Conversion to whole number to avoid sub-pixel alignment of items
+        return qRound(d->listHeadingProperty(QLatin1String("marginTop")).toReal()
             + d->fetchLayoutParameter(QLatin1String("param-text-height-secondary"))
             + d->listHeadingProperty(QLatin1String("marginBottom")).toReal());
 
     if (styleClass() == QLatin1String("ListItem"))
-        return qreal(d->listItemProperty(QLatin1String("marginTop")).toReal()
+        // Conversion to whole number to avoid sub-pixel alignment of items
+        return qRound(d->listItemProperty(QLatin1String("marginTop")).toReal()
             + d->fetchLayoutParameter(QLatin1String("param-text-height-primary"))
             + d->listItemProperty(QLatin1String("verticalSpacing")).toReal()
             + d->fetchLayoutParameter(QLatin1String("param-text-height-secondary"))
