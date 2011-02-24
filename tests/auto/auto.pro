@@ -35,8 +35,8 @@ symbian3 {
         #api_pagestack \
         api_progressbar \
         api_scrolldecorator \
-        #api_textfield \ #TODO not yet finalized
-        #api_textarea \ #TODO not yet finalized
+        api_textfield \ #TODO not yet finalized
+        api_textarea \ #TODO not yet finalized
         #api_toolbar
 }
 
