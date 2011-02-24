@@ -72,8 +72,10 @@ ImplicitSizeItem {
     }
 
     function positionToRectangle(pos) {
-        var p = mapToItem(textEdit, pos, 0);
-        return textEdit.positionToRectangle(p.x)
+        var rect = textEdit.positionToRectangle(pos)
+        var point = mapFromItem(textEdit, rect.x, rect.y)
+        rect.x = point.x; rect.y = point.y
+        return rect;
     }
 
     // API extensions
