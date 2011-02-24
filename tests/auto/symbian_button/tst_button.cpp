@@ -126,28 +126,36 @@ void tst_button::released()
 {
     QGraphicsObject *testButton = componentObject->findChild<QGraphicsObject*>("button3");
     QVERIFY(testButton);
+
     QSignalSpy releasedSpy(testButton, SIGNAL(released()));
-    int releasedCount = 0;
-    QMetaObject::invokeMethod(testButton, "release", Qt::DirectConnection);
-    QCOMPARE(releasedSpy.count(), ++releasedCount);
     QVERIFY(releasedSpy.isValid());
+
+    QObject *internal = testButton->findChild<QObject*>("internal");
+    QVERIFY(internal);
+
+    QVERIFY(QMetaObject::invokeMethod(internal, "release"));
+    QCOMPARE(releasedSpy.count(), 1);
 }
 
 void tst_button::pressAndHold()
 {
     QGraphicsObject *testButton = componentObject->findChild<QGraphicsObject*>("button3");
     QVERIFY(testButton);
+
     QSignalSpy pressAndHoldSpy(testButton, SIGNAL(pressAndHold()));
+    QVERIFY(pressAndHoldSpy.isValid());
 
     testButton->setProperty("longPress", QVariant(true));
     QCOMPARE(testButton->property("longPress").toBool(), true);
 
-    int pressAndHoldCount = 0;
-    QMetaObject::invokeMethod(testButton, "press", Qt::DirectConnection);
-    QMetaObject::invokeMethod(testButton, "hold", Qt::DirectConnection);
-    QCOMPARE(pressAndHoldSpy.count(), ++pressAndHoldCount);
-    QVERIFY(pressAndHoldSpy.isValid());
+    QObject *internal = testButton->findChild<QObject*>("internal");
+    QVERIFY(internal);
+
+    QVERIFY(QMetaObject::invokeMethod(internal, "press"));
+    QVERIFY(QMetaObject::invokeMethod(internal, "hold"));
+    QCOMPARE(pressAndHoldSpy.count(), 1);
 }
 
 QTEST_MAIN(tst_button)
+
 #include "tst_button.moc"

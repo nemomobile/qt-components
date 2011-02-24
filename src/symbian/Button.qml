@@ -77,57 +77,85 @@ ImplicitSizeItem {
     }
 
     function toggleChecked() {
-        if (checkable)
-            checked = !checked;
+        console.log("warning: Button.toggleChecked() is deprecated")
+        internal.toggleChecked()
     }
 
     function press() {
-        // haptics
-        if (checkable && checked)
-            style.play(Symbian.SensitiveButton);
-        else
-            style.play(Symbian.BasicButton);
+        console.log("warning: Button.press() is deprecated")
+        internal.press()
     }
 
     function release() {
-        if (tapRepeatTimer.running)
-            tapRepeatTimer.stop();
-        button.released();
+        console.log("warning: Button.release() is deprecated")
+        internal.release()
     }
 
     function click() {
-        button.toggleChecked();
-
-        // Just to show some effect, TODO: real effect from theme
-        clickedEffect.restart();
-
-        // release haptics on succesfull click
-        if (!checkable || (checkable && !checked))
-            style.play(Symbian.BasicButton);
-
-        // emit signal
-        button.clicked();
+        console.log("warning: Button.click() is deprecated")
+        internal.click()
     }
 
     function hold() {
-        // If autorepeat is enabled, do not emit long press, but repeat the tap action.
-        if (button.autoRepeat)
-            tapRepeatTimer.start();
-
-        if (button.longPress) // otherwise emit pressAndHold signal
-            button.pressAndHold();
+        console.log("warning: Button.hold() is deprecated")
+        internal.hold()
     }
 
     function repeat() {
-        if (!checkable)
-            style.play(Symbian.SensitiveButton);
-        // emit signal
-        button.clicked();
+        console.log("warning: Button.repeat() is deprecated")
+        internal.repeat()
     }
 
     QtObject {
         id: internal
+        objectName: "internal"
+
         property int autoRepeatInterval: 50
+
+        function toggleChecked() {
+            if (checkable)
+                checked = !checked;
+        }
+
+        function press() {
+            if (checkable && checked)
+                style.play(Symbian.SensitiveButton);
+            else
+                style.play(Symbian.BasicButton);
+        }
+
+        function release() {
+            if (tapRepeatTimer.running)
+                tapRepeatTimer.stop();
+            button.released();
+        }
+
+        function click() {
+            internal.toggleChecked();
+
+            // Just to show some effect, TODO: real effect from theme
+            clickedEffect.restart();
+
+            if (!checkable || (checkable && !checked))
+                style.play(Symbian.BasicButton);
+
+            button.clicked();
+        }
+
+        function hold() {
+            // If autorepeat is enabled, do not emit long press, but repeat the tap action.
+            if (button.autoRepeat)
+                tapRepeatTimer.start();
+
+            if (button.longPress)
+                button.pressAndHold();
+        }
+
+        function repeat() {
+            if (!checkable)
+                style.play(Symbian.SensitiveButton);
+            button.clicked();
+        }
     }
 
     StateGroup {
@@ -142,33 +170,33 @@ ImplicitSizeItem {
         transitions: [
             Transition {
                 to: "Pressed"
-                ScriptAction { script: button.press(); }
+                ScriptAction { script: internal.press(); }
             },
             Transition {
                 from: "Pressed"
                 to: "PressAndHold"
-                ScriptAction { script: button.hold(); }
+                ScriptAction { script: internal.hold(); }
             },
             Transition {
                 from: "Pressed"
                 to: ""
-                ScriptAction { script: button.release(); }
-                ScriptAction { script: button.click(); }
+                ScriptAction { script: internal.release(); }
+                ScriptAction { script: internal.click(); }
             },
             Transition {
                 from: "PressAndHold"
                 to: ""
-                ScriptAction { script: button.release(); }
+                ScriptAction { script: internal.release(); }
             },
             Transition {
                 from: "Pressed"
                 to: "Canceled"
-                ScriptAction { script: button.release(); }
+                ScriptAction { script: internal.release(); }
             },
             Transition {
                 from: "PressAndHold"
                 to: "Canceled"
-                ScriptAction { script: button.release(); }
+                ScriptAction { script: internal.release(); }
             }
         ]
     }
@@ -257,7 +285,7 @@ ImplicitSizeItem {
         id: tapRepeatTimer
 
         interval: internal.autoRepeatInterval; running: false; repeat: true
-        onTriggered: button.repeat()
+        onTriggered: internal.repeat()
     }
 
     // TODO: Temporary sequential animation
