@@ -1,4 +1,4 @@
-/****************************************************************************
+    /****************************************************************************
 **
 ** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
@@ -69,13 +69,13 @@ ImplicitSizeItem {
     }
 
     function positionAt(x) {
-        var p = mapToItem(textEdit, x, 0);
-        return textInput.positionAt(p.x)
+        return textInput.positionAt(mapToItem(textInput, x, 0).x)
     }
 
     function positionToRectangle(pos) {
-        var p = mapToItem(textInput, pos, 0);
-        return textInput.positionToRectangle(p.x)
+        var rect = textInput.positionToRectangle(pos)
+        rect.x = mapFromItem(textInput, rect.x, 0).x
+        return rect;
     }
 
     // API extensions
