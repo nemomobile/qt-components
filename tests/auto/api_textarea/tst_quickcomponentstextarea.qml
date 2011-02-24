@@ -29,8 +29,6 @@ import Qt.labs.components.native 1.0
 
 TextArea {
    id: testTarget
-//   width: 640; height: 480
-
+   width: 300; height: 50
    text: "text"
-//   placeholderText: "FooBar"
 }
