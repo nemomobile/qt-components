@@ -44,6 +44,10 @@ class tst_quickcomponentstextfield : public QObject
 
 {
     Q_OBJECT
+
+public:
+    tst_quickcomponentstextfield();
+
 private slots:
     void initTestCase();
     void placeholderText();
@@ -68,10 +72,10 @@ private slots:
     void positionToRectangle();
 
 private:
-    QObject *componentObject;
-    QDeclarativeEngine *engine;
+    QObject *findTextInput(QObject *root);
 
     // our internal objects
+    QObject *componentObject;
     QGraphicsObject *root;
     QGraphicsObject *textInput;
 
@@ -80,6 +84,27 @@ private:
     QString family;
     int fontSize;
 };
+
+tst_quickcomponentstextfield::tst_quickcomponentstextfield()
+    : componentObject(NULL)
+    , root(NULL)
+    , textInput(NULL)
+{
+}
+
+QObject *tst_quickcomponentstextfield::findTextInput(QObject *root)
+{
+    QObject *returnValue = NULL;
+    if (root->metaObject()->className() == QString("QDeclarativeTextInput"))
+        return root;
+
+    QObjectList children = root->children();
+    if (!children.isEmpty()) {
+        for (int i = 0; i < children.size() && !returnValue; ++i)
+            returnValue = findTextInput(children.at(i));
+    }
+    return returnValue;
+}
 
 void tst_quickcomponentstextfield::initTestCase()
 {
@@ -101,15 +126,7 @@ void tst_quickcomponentstextfield::initTestCase()
     // this is a safe assumption for symbian and meego components as these tests
     // aims to test the features of those two platforms components.
     root = qobject_cast<QGraphicsObject*>(componentObject);
-    const QObjectList list = componentObject->children();
-    foreach (QObject *obj, list) {
-        const QString className(obj->metaObject()->className());
-        if (className.compare("QDeclarativeTextInput") == 0) {
-            textInput = qobject_cast<QGraphicsObject*>(obj);
-            break;
-        }
-    }
-
+    textInput = qobject_cast<QGraphicsObject*>(findTextInput(componentObject));
     QVERIFY(root);
     QVERIFY(textInput);
 }
@@ -415,11 +432,19 @@ void tst_quickcomponentstextfield::selectWord()
 
     QVERIFY(componentObject->setProperty("cursorPosition", 5));
     QVERIFY(QMetaObject::invokeMethod(componentObject, "selectWord"));
+#if QT_VERSION < 0x040702
+   QEXPECT_FAIL("", "Selected word should be morning", Continue);
+#endif
     QCOMPARE(componentObject->property("selectedText").toString(), QString("morning"));
 
     QVERIFY(QMetaObject::invokeMethod(componentObject, "cut"));
+#if QT_VERSION < 0x040702
+   QEXPECT_FAIL("", "'morning' was cut, so cursorPosition should be at 5", Continue);
+#endif
     QCOMPARE(componentObject->property("selectionStart").toInt(), 5);
-
+#if QT_VERSION < 0x040702
+   QEXPECT_FAIL("", "'morning' was cut, so cursorPosition should be at 5", Continue);
+#endif
     QCOMPARE(componentObject->property("selectionEnd").toInt(), 5);
     QVERIFY(QMetaObject::invokeMethod(componentObject, "paste"));
     QCOMPARE(componentObject->property("text").toString(), QString("Good morning"));
@@ -479,15 +504,13 @@ void tst_quickcomponentstextfield::positionToRectangle()
     // char. because of this, positionToRectangle() should be tested *after* positionAt()
     // because we rely that it's working properly to check the right position
     const int size = text.size() / 2;
-    const int value = textInput->mapToItem(root, size, 0).x();
     QVERIFY2(QMetaObject::invokeMethod(componentObject, "positionToRectangle",
-                                       Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, value)),
+                                       Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, size)),
                                        "Could not call positionToRectangle");
 
     const QRectF rect = retVal.toRectF();
-    const QRectF mapped = textInput->mapToItem(root, rect).boundingRect();
     QVERIFY2(QMetaObject::invokeMethod(componentObject, "positionAt",
-                                       Q_RETURN_ARG(QVariant, retValPos), Q_ARG(QVariant, mapped.x())),
+                                       Q_RETURN_ARG(QVariant, retValPos), Q_ARG(QVariant, rect.x())),
                                        "Could not call positionAt");
 
     // it should be the same as used in 'value' (in this case size)
@@ -496,7 +519,7 @@ void tst_quickcomponentstextfield::positionToRectangle()
     // the 'x' of the rectangle should be the same as the width of the text
     // until the position returned
     QFontMetrics fm(mfont);
-    QCOMPARE((int)retVal.toRectF().x(), fm.width(text.left(retValPos.toInt())));
+    QCOMPARE((int)root->mapRectToItem(textInput, retVal.toRectF()).x(), fm.width(text.left(retValPos.toInt())));
 
     // the position shouldn't have changed
     QCOMPARE(oldPosition, componentObject->property("cursorPosition").toInt());
