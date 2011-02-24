@@ -32,7 +32,7 @@ ImplicitSizeItem {
 
     // Common Public API
     property bool checked: false
-    property bool pressed: mouseArea.containsMouse && mouseArea.pressed && checkable
+    property bool pressed: stateGroup.state == "Pressed"
 
     signal clicked
 
@@ -41,13 +41,48 @@ ImplicitSizeItem {
     property bool checkable: true // Deprecated
     onCheckableChanged: console.log("warning: CheckBox.checkable is deprecated")
 
+    QtObject {
+        id: internal
+        objectName: "internal"
+
+        function press() {
+            style.play(Symbian.BasicItem);
+        }
+
+        function toggle() {
+            clickedEffect.restart();
+            checkbox.checked = !checkbox.checked;
+            checkbox.clicked();
+            style.play(Symbian.CheckBox);
+        }
+    }
+
+    StateGroup {
+        id: stateGroup
+
+        states: [
+            State { name: "Pressed" },
+            State { name: "Canceled" }
+        ]
+
+        transitions: [
+            Transition {
+                to: "Pressed"
+                ScriptAction { script: internal.press() }
+            },
+            Transition {
+                from: "Pressed"
+                to: ""
+                ScriptAction { script: internal.toggle() }
+            }
+        ]
+    }
+
     Style {
         id: style
         styleClass: "CheckBox"
         mode: {
-            if (pressed)
-                return "pressed"
-            else if (checkbox.checked)
+            if (checkbox.checked)
                 return "selected"
             else
                 return "default"
@@ -87,14 +122,9 @@ ImplicitSizeItem {
             PropertyAnimation { target: contentIcon; property: "scale"; from: 0.8; to: 1.0; easing.type: "OutQuad"; duration: 300 }
         }
 
-        onPressed: if (checkable) style.play(Symbian.BasicItem);
-        onClicked: {
-            if (checkable) {
-                clickedEffect.restart();
-                checkbox.checked = !checkbox.checked;
-                style.play(Symbian.CheckBox);
-            }
-            checkbox.clicked();
-        }
+        onPressed: stateGroup.state = "Pressed"
+        onReleased: stateGroup.state = ""
+        onClicked: stateGroup.state = ""
+        onExited: stateGroup.state = "Canceled"
     }
 }
