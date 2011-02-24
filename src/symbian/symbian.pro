@@ -8,19 +8,42 @@ INCLUDEPATH += $$PWD
 
 win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release build_all
 CONFIG += qt plugin copy_native install_native
-QT += declarative
+QT += declarative svg
+mobility:MOBILITY += feedback
 
 SOURCES += \
     plugin.cpp \
     sdeclarative.cpp \
+    sdeclarativeframe.cpp \
+    sdeclarativeicon.cpp \
+    sdeclarativeimageprovider.cpp \
+    sdeclarativeimplicitsizeitem.cpp \
+    sdeclarativemaskedimage.cpp \
     sdeclarativescreen.cpp \
-    sdeclarativewindowdecoration.cpp
+    sdeclarativewindowdecoration.cpp \
+    sframepool.cpp \
+    siconpool.cpp \
+    sstylewrapper.cpp \
+    sstylewrapper_p.cpp
 
 HEADERS += \
     sdeclarative.h \
+    sdeclarativeframe.h \
+    sdeclarativeicon.h \
+    sdeclarativeimageprovider.h \
+    sdeclarativeimplicitsizeitem.h \
+    sdeclarativemaskedimage.h \
+    sdeclarativemaskedimage_p.h \
     sdeclarativescreen.h \
     sdeclarativescreen_p.h \
-    sdeclarativewindowdecoration.h
+    sdeclarativewindowdecoration.h \
+    sframepool.h \
+    siconpool.h \
+    sstylewrapper.h \
+    sstylewrapper_p.h
+
+RESOURCES += \
+    symbian.qrc
 
 QML_FILES = \
     qmldir \

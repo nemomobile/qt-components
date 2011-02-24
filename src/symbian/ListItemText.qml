@@ -25,7 +25,6 @@
 ****************************************************************************/
 
 import Qt 4.7
-import "themebridge" 1.0
 
 ImplicitSizeItem {
     id: listItemText

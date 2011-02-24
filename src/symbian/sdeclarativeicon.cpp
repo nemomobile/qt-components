@@ -26,7 +26,7 @@
 
 #include "sdeclarativeicon.h"
 #include "siconpool.h"
-#include "../sdeclarative.h"
+#include "sdeclarative.h"
 
 #include <QCoreApplication>
 #include <QPainter>

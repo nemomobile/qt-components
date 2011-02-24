@@ -26,7 +26,6 @@
 
 import Qt 4.7
 import "." 1.0
-import "themebridge" 1.0
 import Qt.labs.components 1.0 as QtComponents
 
 ImplicitSizeItem {

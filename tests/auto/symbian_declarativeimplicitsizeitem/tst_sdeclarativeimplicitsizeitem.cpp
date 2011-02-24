@@ -73,7 +73,7 @@ private:
 void tst_SDeclarativeImplicitSizeItem::testDirectQmlUsage()
 {
     QString text("import Qt 4.7\n"
-        "import com.nokia.symbian.themebridge 1.0\n"
+        "import com.nokia.symbian 1.0\n"
         "ImplicitSizeItem {\n"
         "}\n");
 

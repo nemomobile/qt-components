@@ -8,8 +8,8 @@ DEFINES += ICON_POOL_UNIT_TEST
 
 QT += declarative svg
 
-INCLUDEPATH = ../../../src/symbian/themebridge
-DEPENDPATH = ../../../src/symbian/themebridge
+INCLUDEPATH = ../../../src/symbian
+DEPENDPATH = ../../../src/symbian
 
 SOURCES += tst_iconpool.cpp
 RESOURCES += siconpool.qrc

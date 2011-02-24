@@ -26,7 +26,6 @@
 
 import Qt 4.7
 import "." 1.0
-import "themebridge" 1.0
 
 ImplicitSizeItem {
     id: listItem

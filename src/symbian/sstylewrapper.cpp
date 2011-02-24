@@ -30,7 +30,7 @@
 #include "sstylewrapper.h"
 #include "sdeclarativeframe.h"
 #include "sstylewrapper_p.h"
-#include "../sdeclarative.h"
+#include "sdeclarative.h"
 
 #include <QEvent>
 #include <QResizeEvent>

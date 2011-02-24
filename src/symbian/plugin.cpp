@@ -25,6 +25,12 @@
 ****************************************************************************/
 
 #include "sdeclarative.h"
+#include "sstylewrapper.h"
+#include "sdeclarativeicon.h"
+#include "sdeclarativeframe.h"
+#include "sdeclarativeimplicitsizeitem.h"
+#include "sdeclarativeimageprovider.h"
+#include "sdeclarativemaskedimage.h"
 #include "sdeclarativescreen.h"
 #include "sdeclarativewindowdecoration.h"
 
@@ -39,6 +45,8 @@ public:
 
     void initializeEngine(QDeclarativeEngine *engine, const char *uri) {
         QDeclarativeExtensionPlugin::initializeEngine(engine, uri);
+
+        engine->addImageProvider(QLatin1String("theme"), new SDeclarativeImageProvider);
 
         SDeclarativeScreen *scr = new SDeclarativeScreen();
         scr->setParent(engine->rootContext()); // context takes the ownership
@@ -57,6 +65,11 @@ public:
 
     void registerTypes(const char *uri) {
         qmlRegisterType<SDeclarativeWindowDecoration>(uri, 1, 0, "WindowDecoration");
+        qmlRegisterType<SDeclarativeIcon>(uri, 1, 0, "Icon");
+        qmlRegisterType<SDeclarativeFrame>(uri, 1, 0, "Frame");
+        qmlRegisterType<SDeclarativeMaskedImage>(uri, 1, 0, "MaskedImage");
+        qmlRegisterType<SStyleWrapper>(uri, 1, 0, "Style");
+        qmlRegisterType<SDeclarativeImplicitSizeItem>(uri, 1, 0, "ImplicitSizeItem");
         qmlRegisterUncreatableType<SDialogStatus>(uri, 1, 0, "DialogStatus", "");
     }
 };

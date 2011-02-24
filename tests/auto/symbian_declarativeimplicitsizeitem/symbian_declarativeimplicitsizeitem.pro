@@ -4,8 +4,8 @@ TARGET = tst_symbian_declarativeimplicitsizeitem
 TEMPLATE = app
 QT += declarative svg
 
-INCLUDEPATH += ../../../src/symbian/themebridge
-DEPENDPATH += ../../../src/symbian/themebridge
+INCLUDEPATH += ../../../src/symbian
+DEPENDPATH += ../../../src/symbian
 
 HEADERS += sdeclarativeimplicitsizeitem.h
 SOURCES += sdeclarativeimplicitsizeitem.cpp

@@ -18,11 +18,6 @@ file=ABI_DIR\BUILD_DIR\symbianplugin.dll                                        
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\symbianplugin.qtplugin                         RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\symbianplugin.qtplugin
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\qmldir                                         RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\qmldir
 
-// Symbian themebridge plugin
-file=ABI_DIR\BUILD_DIR\symbianthemebridgeplugin.dll                                                      SHARED_LIB_DIR\symbianthemebridgeplugin.dll PAGED
-data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\themebridge\symbianthemebridgeplugin.qtplugin  RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\themebridge\symbianthemebridgeplugin.qtplugin
-data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\themebridge\qmldir                             RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\themebridge\qmldir
-
 // Symbian QML components
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ApplicationWindow.qml                          RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ApplicationWindow.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\AppManager.js                                  RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\AppManager.js
@@ -59,10 +54,6 @@ data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\Window.qml            
 // Symbian plugin to Native
 data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\symbianplugin.qtplugin                 RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\symbianplugin.qtplugin
 data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\qmldir                                 RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\qmldir
-
-// Symbian themebridge plugin to Native
-data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\themebridge\symbianthemebridgeplugin.qtplugin RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\themebridge\symbianthemebridgeplugin.qtplugin
-data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\themebridge\qmldir                             RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\themebridge\qmldir
 
 // Symbian QML components to Native
 data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\ApplicationWindow.qml                  RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\ApplicationWindow.qml

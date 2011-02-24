@@ -28,7 +28,6 @@
 import Qt 4.7
 import "." 1.0
 
-
 Item {
     id: root
 

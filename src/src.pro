@@ -10,5 +10,5 @@ meego {
 }
 
 symbian3 {
-    SUBDIRS += symbian symbian/themebridge
+    SUBDIRS += symbian
 }

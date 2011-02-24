@@ -26,7 +26,7 @@
 
 #include "sdeclarativeframe.h"
 #include "sframepool.h"
-#include "../sdeclarative.h"
+#include "sdeclarative.h"
 
 #include <qcoreapplication.h>
 #include <qpainter.h>
