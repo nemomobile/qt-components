@@ -33,12 +33,48 @@ ImplicitSizeItem {
 
     // Common Public API
     property alias checked: checkable.checked
-    property bool pressed: mouseArea.containsMouse && mouseArea.pressed
+    property bool pressed: stateGroup.state == "Pressed"
     signal clicked
 
     // Symbian specific API
     property alias exclusiveGroup: checkable.exclusiveGroup
     property alias text: label.text
+
+    QtObject {
+        id: internal
+        objectName: "internal"
+
+        function press() {
+            style.play(Symbian.BasicItem);
+        }
+
+        function toggle() {
+            checkable.toggle();
+            root.clicked();
+            style.play(Symbian.CheckBox);
+        }
+    }
+
+    StateGroup {
+        id: stateGroup
+
+        states: [
+            State { name: "Pressed" },
+            State { name: "Canceled" }
+        ]
+
+        transitions: [
+            Transition {
+                to: "Pressed"
+                ScriptAction { script: internal.press() }
+            },
+            Transition {
+                from: "Pressed"
+                to: ""
+                ScriptAction { script: internal.toggle() }
+            }
+        ]
+    }
 
     Style {
         id: style
@@ -100,12 +136,10 @@ ImplicitSizeItem {
         id: mouseArea
         anchors.fill: parent
 
-        onPressed: style.play(Symbian.BasicItem);
-        onClicked: {
-            checkable.toggle();
-            root.clicked();
-            style.play(Symbian.CheckBox);
-        }
+        onPressed: stateGroup.state = "Pressed"
+        onReleased: stateGroup.state = ""
+        onClicked: stateGroup.state = ""
+        onExited: stateGroup.state = "Canceled"
     }
 
     Keys.onPressed: {
