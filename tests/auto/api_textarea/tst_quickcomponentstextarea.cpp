@@ -440,7 +440,7 @@ void tst_quickcomponentstextarea::positionToRectangle()
 #ifdef Q_COMPONENTS_SYMBIAN
     QEXPECT_FAIL("", "Flickable inside Symbian TextArea breaks mapTo/From functions", Continue);
 #endif
-    QCOMPARE((int)retVal.toRectF().x(), fm.width(text.left(retValPos.toInt())));
+    QCOMPARE((int)root->mapRectToItem(textEdit, retVal.toRectF()).x(), fm.width(text.left(retValPos.toInt())));
 
     // the position shouldn't have changed
     QCOMPARE(oldPosition, componentObject->property("cursorPosition").toInt());
