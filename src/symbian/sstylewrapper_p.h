@@ -66,6 +66,7 @@ public:
     QVariant menuProperty(const QString &propertyName) const;
     QVariant choiceListProperty(const QString &propertyName) const;
     QVariant faderProperty(const QString &propertyName) const;
+    QVariant toolButtonProperty(const QString &propertyName) const;
 
     void _q_desktopWorkareaChanged();
     void _q_displayChanged();

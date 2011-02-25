@@ -1090,6 +1090,60 @@ QVariant SStyleWrapperPrivate::faderProperty(const QString &propertyName) const
     return QVariant();
 }
 
+QVariant SStyleWrapperPrivate::toolButtonProperty(const QString &propertyName) const
+{
+    if (propertyName == QLatin1String("background")) {
+        if (mode == QLatin1String("pressed"))
+            return imagePath(QLatin1String("qtg_fr_toolbutton_pressed"));
+        else if (mode == QLatin1String("disabled"))
+            return imagePath(QLatin1String("qtg_fr_toolbutton_disabled"));
+        else if (mode == QLatin1String("checked"))
+            return imagePath(QLatin1String("qtg_fr_toolbutton_latched"));
+        else if (mode == QLatin1String("suggested"))
+            return imagePath(QLatin1String("qtg_fr_toolbutton_normal_suggested"));
+        else
+            return imagePath(QLatin1String("qtg_fr_toolbutton_normal"));
+    }
+
+    // TODO: IconMargins and TextMargins are picked randomly
+    if (propertyName == QLatin1String("iconMarginLeft"))
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-left"));
+
+    if (propertyName == QLatin1String("iconMarginRight"))
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-right"));
+
+    if (propertyName == QLatin1String("textMarginLeft"))
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-left"));
+
+    if (propertyName == QLatin1String("textMarginLeftInner"))
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-middle-horizontal"));
+
+    if (propertyName == QLatin1String("textMarginRight"))
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-right"));
+    // End of suspicious style values
+
+    if (propertyName == QLatin1String("iconButtonWidth") || propertyName == QLatin1String("iconButtonHeight"))
+        return fetchLayoutParameter(QLatin1String("param-widget-toolbar-height"));
+
+    if (propertyName == QLatin1String("iconWidth"))
+        return fetchLayoutParameter(QLatin1String("param-widget-toolbar-height")) / 2;
+
+    if (propertyName == QLatin1String("iconHeight"))
+        return fetchLayoutParameter(QLatin1String("param-widget-toolbar-height")) / 2;
+
+    if (propertyName == QLatin1String("font"))
+        return fetchFont(SStyleWrapper::Primary, fetchLayoutParameter(QLatin1String("param-text-height-secondary")));
+
+    if (propertyName == QLatin1String("textButtonWidth")) {
+        if (fetchLayoutParameter(QLatin1String("param-screen-width")) < fetchLayoutParameter(QLatin1String("param-screen-height")))
+            return (fetchLayoutParameter(QLatin1String("param-screen-width")) - 2 * fetchLayoutParameter(QLatin1String("param-widget-toolbar-height")) - 20) / 2; // TODO: fetch 4*5(margin) from layout
+        else
+            return (fetchLayoutParameter(QLatin1String("param-screen-width")) - 2 * fetchLayoutParameter(QLatin1String("param-widget-toolbar-height")) - 110) / 2; // TODO: fetch 22*5(margin) from layout
+    }
+
+    return QVariant();
+}
+
 void SStyleWrapperPrivate::_q_desktopWorkareaChanged()
 {
     Q_Q(SStyleWrapper);

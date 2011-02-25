@@ -319,6 +319,8 @@ QVariant SStyleWrapper::get(const QString &propertyName)
         ret = d->faderProperty(propertyName);
     else if (styleClass() == QLatin1String("TabBar"))
         ret = d->tabBarProperty(propertyName);
+    else if (styleClass() == QLatin1String("ToolButton"))
+        ret = d->toolButtonProperty(propertyName);
 
     // this is for querying something else than component specific values...
     /*if(ret.isNull())
