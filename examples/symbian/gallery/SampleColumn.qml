@@ -252,4 +252,21 @@ Column {
             CheckBox { anchors.fill: parent; text: "tab3" }
         }
     }
+
+    ToolButton {
+        id: toolButton
+        text: "ToolButton"
+    }
+
+    ToolButton {
+        id: toolButton2
+        checkable: true
+        iconSource: "image://theme/qtg_small_radio_selected"
+    }
+
+    ToolButton {
+        id: toolButton3
+        text: "ToolButton"
+        iconSource: "image://theme/qtg_small_radio_selected"
+    }
 }
