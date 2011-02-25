@@ -1099,8 +1099,6 @@ QVariant SStyleWrapperPrivate::toolButtonProperty(const QString &propertyName) c
             return imagePath(QLatin1String("qtg_fr_toolbutton_disabled"));
         else if (mode == QLatin1String("checked"))
             return imagePath(QLatin1String("qtg_fr_toolbutton_latched"));
-        else if (mode == QLatin1String("suggested"))
-            return imagePath(QLatin1String("qtg_fr_toolbutton_normal_suggested"));
         else
             return imagePath(QLatin1String("qtg_fr_toolbutton_normal"));
     }

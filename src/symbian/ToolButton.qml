@@ -34,7 +34,6 @@ ImplicitSizeItem {
     property alias checkable: checkable.enabled
     property alias checked: checkable.checked
     property bool enabled: true
-    property bool suggested: false
 
     property alias exclusiveGroup: checkable.exclusiveGroup
     property alias text: label.text
@@ -70,8 +69,6 @@ ImplicitSizeItem {
                 return "pressed"
             else if (checkable.checked)
                 return "checked"
-            else if (suggested)
-                return "suggested"
             else
                 return "default"
         }

@@ -80,7 +80,6 @@
         <file alias="qtg_fr_toolbutton_disabled.svg">resources/defaulttheme/graphics/qtg_fr_toolbutton_disabled.svg</file>
         <file alias="qtg_fr_toolbutton_latched.svg">resources/defaulttheme/graphics/qtg_fr_toolbutton_latched.svg</file>
         <file alias="qtg_fr_toolbutton_normal.svg">resources/defaulttheme/graphics/qtg_fr_toolbutton_normal.svg</file>
-        <file alias="qtg_fr_toolbutton_normal_suggested.svg">resources/defaulttheme/graphics/qtg_fr_toolbutton_normal_suggested.svg</file>
     </qresource>
     <qresource prefix="/colors">
         <file alias="widgetcolorgroup.css">resources/defaulttheme/colors/widgetcolorgroup.css</file>

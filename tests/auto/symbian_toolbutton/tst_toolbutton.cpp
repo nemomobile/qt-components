@@ -60,7 +60,6 @@ void tst_toolbutton::existingProperties()
     QVERIFY(toolButton->property("checkable").isValid());
     QVERIFY(toolButton->property("checked").isValid());
     QVERIFY(toolButton->property("enabled").isValid());
-    QVERIFY(toolButton->property("suggested").isValid());
     QVERIFY(toolButton->property("text").isValid());
     QVERIFY(toolButton->property("iconSource").isValid());
     QVERIFY(toolButton->property("pressedIconSource").isValid());
@@ -100,13 +99,6 @@ void tst_toolbutton::propertiesFunctionality()
             QCOMPARE(property.read(toolButton).toBool(), true);
             property.write(toolButton,false);
             QCOMPARE(property.read(toolButton).toBool(), false);
-        }
-
-        if (property.name() == QString("suggested")) {
-            propertyCount++;
-            QCOMPARE(property.read(toolButton).toBool(), false);
-            property.write(toolButton,true);
-            QCOMPARE(property.read(toolButton).toBool(), true);
         }
 
         if (property.name() == QString("text")) {
@@ -150,7 +142,7 @@ void tst_toolbutton::propertiesFunctionality()
         }
     }
 
-    QCOMPARE(propertyCount, 11);
+    QCOMPARE(propertyCount, 10);
 }
 
 void tst_toolbutton::implicitSize()

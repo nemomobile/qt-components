@@ -85,7 +85,6 @@ Item {
 
         ToolButton {
             id: toolButton8
-            suggested: true
             text: "Group"
             exclusiveGroup: checkGroup
         }
