@@ -43,4 +43,5 @@ OTHER_FILES += \
     tests/Slider.qml \
     tests/Tabs.qml \
     tests/TextArea.qml \
+    tests/ToolButton.qml \
     tests/ViewMenu.qml
