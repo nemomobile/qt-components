@@ -76,7 +76,11 @@
         <file alias="qtg_fr_textfield_uneditable.svg">resources/defaulttheme/graphics/qtg_fr_textfield_uneditable.svg</file>
         <file alias="qtg_fr_textfield_editable.svg">resources/defaulttheme/graphics/qtg_fr_textfield_editable.svg</file>
         <file alias="qtg_fr_textfield_highlighted.svg">resources/defaulttheme/graphics/qtg_fr_textfield_highlighted.svg</file>
-		
+        <file alias="qtg_fr_toolbutton_pressed.svg">resources/defaulttheme/graphics/qtg_fr_toolbutton_pressed.svg</file>
+        <file alias="qtg_fr_toolbutton_disabled.svg">resources/defaulttheme/graphics/qtg_fr_toolbutton_disabled.svg</file>
+        <file alias="qtg_fr_toolbutton_latched.svg">resources/defaulttheme/graphics/qtg_fr_toolbutton_latched.svg</file>
+        <file alias="qtg_fr_toolbutton_normal.svg">resources/defaulttheme/graphics/qtg_fr_toolbutton_normal.svg</file>
+        <file alias="qtg_fr_toolbutton_normal_suggested.svg">resources/defaulttheme/graphics/qtg_fr_toolbutton_normal_suggested.svg</file>
     </qresource>
     <qresource prefix="/colors">
         <file alias="widgetcolorgroup.css">resources/defaulttheme/colors/widgetcolorgroup.css</file>
