@@ -65,6 +65,7 @@ symbian3 {
         symbian_tabgroup \
         symbian_textarea \
         symbian_textfield \
+        symbian_toolbutton \
         symbian_tooltip #TODO not yet finalized
 
     #TODO fail on mac, to be fixed
