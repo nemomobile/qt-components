@@ -65,7 +65,7 @@ ImplicitSizeItem {
         mode: orientation == Qt.Horizontal ? "horizontal" : "vertical"
     }
 
-    Frame {
+    BorderImage {
         id: track
         objectName: "track"
         property bool tapOnTrack: false
@@ -77,12 +77,16 @@ ImplicitSizeItem {
             State {
                 name: "Pressed"
                 when: handleMouseArea.pressed
-                PropertyChanges { target: track; frameName: style.current.get("trackPressed"); }
+                PropertyChanges { target: track; source: style.current.get("trackPressedBackground"); }
             }
         ]
 
-        frameName: style.current.get("trackFrame")
-        frameType: style.current.get("trackType")
+        source: style.current.get("trackBackground")
+
+        border.left: orientation == Qt.Horizontal ? 20 : 0
+        border.right: orientation == Qt.Horizontal ? 20 : 0
+        border.top: orientation == Qt.Horizontal ? 0 : 20
+        border.bottom: orientation == Qt.Horizontal ? 0 : 20
 
         anchors.left: orientation == Qt.Horizontal ? slider.left : undefined
         anchors.right: orientation == Qt.Horizontal ? slider.right : undefined

@@ -102,11 +102,11 @@ ImplicitSizeItem {
 
     Style { id: style; styleClass: "ToolTip" }
 
-    Frame {
+    BorderImage {
         id: frame
         anchors.fill: parent
-        frameName: style.current.get("frameName")
-        frameType: style.current.get("frameType")
+        source: style.current.get("background")
+        border { left: 20; top: 20; right: 20; bottom: 20 }
     }
 
     Text {

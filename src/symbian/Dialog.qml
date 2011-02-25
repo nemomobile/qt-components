@@ -77,9 +77,9 @@ Item {
         anchors.centerIn: parent
         animationDuration: 800
 
-        Frame {
-            frameName: style.current.get("popupFrameName")
-            frameType: style.current.get("popupFrameType")
+        BorderImage {
+            source: style.current.get("popupBackground")
+            border { left: 20; top: 20; right: 20; bottom: 20 }
             anchors.fill: parent
         }
 
@@ -98,9 +98,9 @@ Item {
                 right: parent.right
             }
 
-            Frame {
-                frameName: style.current.get("titleFrameName")
-                frameType: style.current.get("titleFrameType")
+            BorderImage {
+                source: style.current.get("titleBackground")
+                border { left: 40; top: 0; right: 40; bottom: 0 }
                 anchors.fill: parent
             }
 

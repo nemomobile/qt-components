@@ -40,10 +40,11 @@ ImplicitSizeItem {
     implicitWidth: style.current.preferredWidth
     implicitHeight: style.current.preferredHeight
 
-    Frame {
+    BorderImage {
+        source: style.current.get("background")
+        border { left: 28; top: 0; right: 28; bottom: 0 }
+        smooth: true
         anchors.fill: parent
-        frameName: style.current.get("frameName")
-        frameType: style.current.get("frameType")
     }
 
     Item {

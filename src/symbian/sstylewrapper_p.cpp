@@ -380,11 +380,8 @@ QVariant SStyleWrapperPrivate::buttonProperty(const QString &propertyName) const
 
 QVariant SStyleWrapperPrivate::textComponentProperty(const QString &propertyName) const
 {
-    if (propertyName == QLatin1String("frameName"))
-        return textComponentFrameName();
-
-    if (propertyName == QLatin1String("frameType"))
-        return SDeclarativeFrame::NinePieces;
+    if (propertyName == QLatin1String("background"))
+        return textComponentBackground();
 
     if (propertyName == QLatin1String("placeholderColor") || propertyName == QLatin1String("color"))
         return fetchThemeColor(QLatin1String("qtc_text_component_normal"));
@@ -435,11 +432,8 @@ QVariant SStyleWrapperPrivate::titleBarProperty(const QString &propertyName) con
 
 QVariant SStyleWrapperPrivate::listHeadingProperty(const QString &propertyName) const
 {
-    if (propertyName == QLatin1String("frameName"))
-        return QLatin1String("qtg_fr_list_heading_normal");
-
-    if (propertyName == QLatin1String("frameType"))
-        return SDeclarativeFrame::NinePieces;
+    if (propertyName == QLatin1String("background"))
+        return imagePath(QLatin1String("qtg_fr_list_heading_normal"));
 
     if (propertyName == QLatin1String("marginLeft"))
         return fetchLayoutParameter(QLatin1String("param-margin-gene-middle-horizontal"));
@@ -458,25 +452,19 @@ QVariant SStyleWrapperPrivate::listHeadingProperty(const QString &propertyName) 
 
 QVariant SStyleWrapperPrivate::listItemProperty(const QString &propertyName) const
 {
-    if (propertyName == QLatin1String("frameName"))
-        return QLatin1String("qtg_fr_list_normal");
+    if (propertyName == QLatin1String("background"))
+        return imagePath(QLatin1String("qtg_fr_list_normal"));
 
-    if (propertyName == QLatin1String("frameType"))
-        return SDeclarativeFrame::NinePieces;
-
-    if (propertyName == QLatin1String("frameFaderName")) {
+    if (propertyName == QLatin1String("faderBackground")) {
         if (mode == QLatin1String("default"))
-            return QLatin1String("qtg_fr_list_normal");
+            return imagePath(QLatin1String("qtg_fr_list_normal"));
         if (mode == QLatin1String("pressed"))
-            return QLatin1String("qtg_fr_list_pressed");
+            return imagePath(QLatin1String("qtg_fr_list_pressed"));
         if (mode == QLatin1String("focused"))
-            return QLatin1String("qtg_fr_list_highlight");
+            return imagePath(QLatin1String("qtg_fr_list_highlight"));
         if (mode == QLatin1String("disabled"))
-            return QLatin1String("qtg_fr_list_disabled");
+            return imagePath(QLatin1String("qtg_fr_list_disabled"));
     }
-
-    if (propertyName == QLatin1String("frameFaderType"))
-        return SDeclarativeFrame::NinePieces;
 
     if (propertyName == QLatin1String("horizontalSpacing"))
         return fetchLayoutParameter(QLatin1String("param-margin-gene-middle-horizontal"));
@@ -627,17 +615,11 @@ QVariant SStyleWrapperPrivate::dialogProperty(const QString &propertyName) const
     if (propertyName == QLatin1String("titleTextColor"))
         return fetchThemeColor(QLatin1String("qtc_popup_heading_normal"));
 
-    if (propertyName == QLatin1String("titleFrameName"))
-        return QLatin1String("qtg_fr_popup_heading");
+    if (propertyName == QLatin1String("titleBackground"))
+        return imagePath(QLatin1String("qtg_fr_popup_heading"));
 
-    if (propertyName == QLatin1String("titleFrameType"))
-        return SDeclarativeFrame::ThreePiecesHorizontal;
-
-    if (propertyName == QLatin1String("popupFrameName"))
-        return QLatin1String("qtg_fr_popup");
-
-    if (propertyName == QLatin1String("popupFrameType"))
-        return SDeclarativeFrame::NinePieces;
+    if (propertyName == QLatin1String("popupBackground"))
+        return imagePath(QLatin1String("qtg_fr_popup"));
 
     if (propertyName == QLatin1String("titleTextHeight"))
         return fetchLayoutParameter(QLatin1String("param-text-height-primary"));
@@ -773,19 +755,16 @@ QVariant SStyleWrapperPrivate::radioButtonProperty(const QString &propertyName) 
             return fetchThemeColor(QLatin1String("qtc_list_item_title_normal"));
     }
 
-    if (propertyName == QLatin1String("frameName")) {
+    if (propertyName == QLatin1String("background")) {
         if (mode == QLatin1String("pressed"))
-            return QLatin1String("qtg_fr_list_pressed");
+            return imagePath(QLatin1String("qtg_fr_list_pressed"));
         else if (mode == QLatin1String("focused") || mode == QLatin1String("checkedAndFocused"))
-            return QLatin1String("qtg_fr_list_highlight");
+            return imagePath(QLatin1String("qtg_fr_list_highlight"));
         else if (mode == QLatin1String("disabled") || mode == QLatin1String("checkedAndDisabled"))
-            return QLatin1String("qtg_fr_list_disabled");
+            return imagePath(QLatin1String("qtg_fr_list_disabled"));
         else
-            return QLatin1String("qtg_fr_list_normal");
+            return imagePath(QLatin1String("qtg_fr_list_normal"));
     }
-
-    if (propertyName == QLatin1String("frameType"))
-        return QVariant(SDeclarativeFrame::NinePieces);
 
     if (propertyName == QLatin1String("spacing"))
         return fetchLayoutParameter(QLatin1String("param-margin-gene-middle-horizontal"));
@@ -814,21 +793,18 @@ QVariant SStyleWrapperPrivate::radioButtonProperty(const QString &propertyName) 
 QVariant SStyleWrapperPrivate::sliderProperty(const QString &propertyName) const
 {
     // Graphic tiles
-    if (propertyName == QLatin1String("trackFrame")) {
+    if (propertyName == QLatin1String("trackBackground")) {
         if (mode == QLatin1String("horizontal"))
-            return QLatin1String("qtg_fr_slider_h_frame_normal");
+            return imagePath(QLatin1String("qtg_fr_slider_h_track_normal"));
         else
-            return QLatin1String("qtg_fr_slider_v_frame_normal");
-    } else if ( propertyName == QLatin1String("trackType") ) {
+            return imagePath(QLatin1String("qtg_fr_slider_v_track_normal"));
+    }
+    // TODO: pressed background graphics do not exist yet, returning normal graphics here
+    else if (propertyName == QLatin1String("trackPressedBackground")) {
         if (mode == QLatin1String("horizontal"))
-            return QVariant(SDeclarativeFrame::ThreePiecesHorizontal);
+            return imagePath(QLatin1String("qtg_fr_slider_h_track_normal"));
         else
-            return QVariant(SDeclarativeFrame::ThreePiecesVertical);
-    } else if (propertyName == QLatin1String("trackPressed")) {
-        if (mode == QLatin1String("horizontal"))
-            return QLatin1String("qtg_fr_slider_h_frame_pressed");
-        else
-            return QLatin1String("qtg_fr_slider_v_frame_pressed");
+            return imagePath(QLatin1String("qtg_fr_slider_v_track_normal"));
     } else if (propertyName == QLatin1String("handleIcon")) {
         if (mode == QLatin1String("horizontal"))
             return imagePath(QLatin1String("qtg_graf_slider_h_handle_normal"));
@@ -887,11 +863,8 @@ QVariant SStyleWrapperPrivate::sliderProperty(const QString &propertyName) const
 
 QVariant SStyleWrapperPrivate::toolTipProperty(const QString &propertyName) const
 {
-    if (propertyName == QLatin1String("frameName"))
-        return QLatin1String("qtg_fr_popup_preview");
-
-    if (propertyName == QLatin1String("frameType"))
-        return SDeclarativeFrame::NinePieces;
+    if (propertyName == QLatin1String("background"))
+        return imagePath(QLatin1String("qtg_fr_popup")); // TODO: real graphics missing
 
     if (propertyName == QLatin1String("horizontalMargin"))
         return fetchLayoutParameter(QLatin1String("param-margin-gene-middle-horizontal"));
@@ -921,11 +894,8 @@ QVariant SStyleWrapperPrivate::menuProperty(const QString &propertyName) const
     if (propertyName == QLatin1String("listMargin"))
         return QVariant(fetchLayoutParameter(QLatin1String("param-margin-gene-popup-list")));
 
-    if (propertyName == QLatin1String("frameName"))
-        return QLatin1String("qtg_fr_popup");
-
-    if (propertyName == QLatin1String("frameType"))
-        return SDeclarativeFrame::NinePieces;
+    if (propertyName == QLatin1String("background"))
+        return imagePath(QLatin1String("qtg_fr_popup"));
 
     if (propertyName == QLatin1String("titleTextHeight"))
         return fetchLayoutParameter(QLatin1String("param-text-height-secondary"));
@@ -933,11 +903,8 @@ QVariant SStyleWrapperPrivate::menuProperty(const QString &propertyName) const
     if (propertyName == QLatin1String("margin"))
         return fetchLayoutParameter(QLatin1String("param-margin-gene-popup-list"));
 
-    if (propertyName == QLatin1String("titleFrameName"))
-        return QLatin1String("qtg_fr_popup_heading");
-
-    if (propertyName == QLatin1String("titleFrameType"))
-        return SDeclarativeFrame::ThreePiecesHorizontal;
+    if (propertyName == QLatin1String("titleBackground"))
+        return imagePath(QLatin1String("qtg_fr_popup_heading"));
 
     if (propertyName == QLatin1String("titleTextColor"))
         return fetchThemeColor(QLatin1String("qtc_popup_heading_normal"));
@@ -945,15 +912,12 @@ QVariant SStyleWrapperPrivate::menuProperty(const QString &propertyName) const
     if (propertyName == QLatin1String("font"))
         return fetchFont(SStyleWrapper::Primary);
 
-    if (propertyName == QLatin1String("itemFrameName")) {
+    if (propertyName == QLatin1String("itemBackground")) {
         if (mode == QLatin1String("default"))
-            return QLatin1String("qtg_fr_popup_list_normal");
+            return imagePath(QLatin1String("qtg_fr_list_popup_normal"));
         else if (mode == QLatin1String("pressed"))
-            return QLatin1String("qtg_fr_popup_list_pressed");
+            return imagePath(QLatin1String("qtg_fr_list_pressed"));
     }
-
-    if (propertyName == QLatin1String("itemFrameType"))
-        return SDeclarativeFrame::NinePieces;
 
     if (propertyName == QLatin1String("itemMarginLeft"))
         return fetchLayoutParameter(QLatin1String("param-margin-gene-left"));
@@ -1003,6 +967,7 @@ QVariant SStyleWrapperPrivate::choiceListProperty(const QString &propertyName) c
     if (propertyName == QLatin1String("font"))
         return fetchFont(SStyleWrapper::Primary);
 
+    // TODO: change to use BorderImage when graphics are available
     if (propertyName == QLatin1String("frameName")) {
         if (mode == QLatin1String("normal"))
             return QLatin1String("qtg_fr_combobox_normal");
@@ -1038,21 +1003,18 @@ QVariant SStyleWrapperPrivate::choiceListProperty(const QString &propertyName) c
         return faderProperty(propertyName);
 
     // List indicator related properties
-    if (propertyName == QLatin1String("listIndicatorFrameName")) {
+    if (propertyName == QLatin1String("listIndicatorImage")) {
         if (mode == QLatin1String("normal"))
-            return QLatin1String("qtg_graf_combobox_button_normal");
+            return imagePath(QLatin1String("qtg_graf_combobox_button_normal"));
         else if (mode == QLatin1String("pressed"))
-            return QLatin1String("qtg_graf_combobox_button_pressed");
+            return imagePath(QLatin1String("qtg_graf_combobox_button_pressed"));
         else if (mode == QLatin1String("latched"))
-            return QLatin1String("qtg_graf_combobox_button_latched");
+            return imagePath(QLatin1String("qtg_graf_combobox_button_latched"));
         else if (mode == QLatin1String("disabled"))
-            return QLatin1String("qtg_graf_combobox_button_disabled");
+            return imagePath(QLatin1String("qtg_graf_combobox_button_disabled"));
         else
-            return QLatin1String("qtg_graf_combobox_button_normal");
+            return imagePath(QLatin1String("qtg_graf_combobox_button_normal"));
     }
-
-    if (propertyName == QLatin1String("listIndicatorFrameType"))
-        return SDeclarativeFrame::OnePiece;
 
     if (propertyName == QLatin1String("listIndicatorWidth"))
         return fetchLayoutParameter(QLatin1String("param-widget-combobox-height"));
@@ -1068,22 +1030,16 @@ QVariant SStyleWrapperPrivate::choiceListProperty(const QString &propertyName) c
             + fetchLayoutParameter(QLatin1String("param-margin-gene-bottom"));
 
     if ( propertyName == QLatin1String("listItemTextColor") )
-        return fetchThemeColor(QLatin1String("qtc_list_item_title_secondary_normal"));
+        return fetchThemeColor(QLatin1String("qtc_list_item_title_normal"));
 
-    if (propertyName == QLatin1String("listFrameName"))
-        return QLatin1String("qtg_fr_popup_secondary");
-
-    if (propertyName == QLatin1String("listFrameType"))
-        return SDeclarativeFrame::NinePieces;
+    if (propertyName == QLatin1String("listBackground"))
+        return imagePath(QLatin1String("qtg_fr_popup"));
 
     if (propertyName == QLatin1String("selectionIndicatorWidth"))
         return fetchLayoutParameter(QLatin1String("param-graphic-size-secondary"));
 
-    if (propertyName == QLatin1String("selectionIndicatorFrameName"))
-        return QLatin1String("qtg_mono_tick");
-
-    if (propertyName == QLatin1String("selectionIndicatorFrameType"))
-        return SDeclarativeFrame::OnePiece;
+    if (propertyName == QLatin1String("selectionIndicatorImage"))
+        return imagePath(QLatin1String("qtg_mono_tick"));
 
     if (propertyName == QLatin1String("scrollbarWidth"))
         return fetchLayoutParameter(QLatin1String("param-widget-scroll-bar-indicative-width"));
@@ -1091,22 +1047,19 @@ QVariant SStyleWrapperPrivate::choiceListProperty(const QString &propertyName) c
     if (propertyName == QLatin1String("listMargin"))
         return fetchLayoutParameter(QLatin1String("param-margin-gene-popup-list"));
 
-    if (propertyName == QLatin1String("listItemFrameName")) {
+    if (propertyName == QLatin1String("listItemBackground")) {
         if (mode == QLatin1String("normal"))
-            return QLatin1String("qtg_fr_popup_list_normal");
+            return imagePath(QLatin1String("qtg_fr_popup"));
         else if (mode == QLatin1String("pressed"))
-            return QLatin1String("qtg_fr_popup_list_pressed");
+            return imagePath(QLatin1String("qtg_fr_list_pressed"));
         else if (mode == QLatin1String("highlight"))
-            return QLatin1String("qtg_fr_popup_list_highlight");
+            return imagePath(QLatin1String("qtg_fr_list_highlight"));
         else
-            return QLatin1String("qtg_fr_popup_list_normal");
+            return imagePath(QLatin1String("qtg_fr_popup"));
     }
 
     if (propertyName == QLatin1String("listItemFont"))
         return fetchFont(SStyleWrapper::Primary);
-
-    if (propertyName == QLatin1String("listItemFrameType"))
-        return SDeclarativeFrame::NinePieces;
 
     return QVariant();
 }
@@ -1169,12 +1122,12 @@ QVariant SStyleWrapperPrivate::buttonPropertyTextColor() const
         return QVariant();
 }
 
-QVariant SStyleWrapperPrivate::textComponentFrameName() const
+QVariant SStyleWrapperPrivate::textComponentBackground() const
 {
     if (mode == QLatin1String("selected"))
-        return QLatin1String("qtg_fr_text_component_highlight");
+        return imagePath(QLatin1String("qtg_fr_textfield_highlighted"));
     else if (mode == QLatin1String("default"))
-        return QLatin1String("qtg_fr_text_component_normal");
+        return imagePath(QLatin1String("qtg_fr_textfield_editable"));
     else
         return QVariant();
 }

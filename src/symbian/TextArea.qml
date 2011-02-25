@@ -115,11 +115,11 @@ ImplicitSizeItem {
         styleClass: "TextArea"
     }
 
-    Frame {
+    BorderImage {
         id: background
         anchors.fill: parent
-        frameName: style.current.get("frameName")
-        frameType: style.current.get("frameType")
+        source: style.current.get("background")
+        border { left: 10; top: 10; right: 10; bottom: 10 }
     }
 
     Item {

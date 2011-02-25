@@ -130,9 +130,9 @@ ImplicitSizeItem {
             styleClass: "Menu"
         }
 
-        Frame {
-            frameName: style.current.get("frameName")
-            frameType: style.current.get("frameType")
+        BorderImage {
+            source: style.current.get("background")
+            border { left: 20; top: 20; right: 20; bottom: 20 }
             anchors.fill: parent
         }
 
@@ -145,9 +145,9 @@ ImplicitSizeItem {
             }
             height: titleText.text != "" ? style.current.get("titleTextHeight") + 2 * style.current.get("margin") : 0
 
-            Frame {
-                frameName: style.current.get("titleFrameName")
-                frameType: style.current.get("titleFrameType")
+            BorderImage {
+                source: style.current.get("titleBackground")
+                border { left: 20; top: 0; right: 20; bottom: 0 }
                 anchors.fill: parent
             }
 
@@ -220,9 +220,9 @@ ImplicitSizeItem {
                     mode: "default"
                 }
 
-                Frame {
-                    frameType: itemStyle.current.get("itemFrameType")
-                    frameName: itemStyle.current.get("itemFrameName")
+                BorderImage {
+                    source: itemStyle.current.get("itemBackground")
+                    border { left: 20; top: 20; right: 20; bottom: 20 }
                     anchors.fill: parent
                 }
 

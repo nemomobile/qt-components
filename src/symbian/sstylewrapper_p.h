@@ -80,7 +80,7 @@ private:
     // Helpers
     QVariant buttonPropertyBackground() const;
     QVariant buttonPropertyTextColor() const;
-    QVariant textComponentFrameName() const;
+    QVariant textComponentBackground() const;
     QString imagePath(const QString &fileName) const;
 
 private:

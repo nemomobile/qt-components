@@ -74,18 +74,18 @@ ImplicitSizeItem {
         property int imageSize: Symbian.Undefined
     }
 
-    Frame {
+    BorderImage {
         id: frame
-        frameName: itemStyle.current.get("frameName")
-        frameType: itemStyle.current.get("frameType")
+        source: itemStyle.current.get("background")
+        border { left: 20; top: 20; right: 20; bottom: 20 }
         anchors.fill: parent
 
-        Frame {
+        BorderImage {
             id: frameFader
             opacity: 0
             anchors.fill: frame
-            frameName: itemStyle.current.get("frameFaderName")
-            frameType: itemStyle.current.get("frameFaderType")
+            source: itemStyle.current.get("faderBackground")
+            border { left: 20; top: 20; right: 20; bottom: 20 }
         }
     }
 

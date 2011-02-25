@@ -94,8 +94,8 @@ qtc_progslider_normal:#ffffff;
 qtc_progslider_pressed:#FFFFFF;
 
 /* Main area - Text Components (TextField & TextArea) */
-qtc_text_component_normal:#ffffff;
-qtc_text_component_selected:#ffffff;
+qtc_text_component_normal:#000000;
+qtc_text_component_selected:#000000;
 qtc_text_component_marker_normal:#8ac0e9;
 qtc_text_component_hint_normal:#a6a6a6;
 qtc_text_component_cursor:#1a1a1a; /* empty in doc */

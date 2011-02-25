@@ -172,9 +172,9 @@ ImplicitSizeItem {
             anchors { top: parent.top; bottom: parent.bottom; left: valueArea.right }
             width: style.current.get("listIndicatorWidth");
 
-            Frame {
-                frameType: style.current.get("listIndicatorFrameType")
-                frameName: style.current.get("listIndicatorFrameName")
+            Image {
+                source: style.current.get("listIndicatorImage")
+                smooth: true
                 anchors.fill: parent
             }
         }
@@ -273,9 +273,10 @@ ImplicitSizeItem {
                 onOrientationChanged: orientationChangeTimer.start()
             }
 
-            Frame {
-                frameName: style.current.get("listFrameName")
-                frameType: style.current.get("listFrameType")
+            BorderImage {
+                source: style.current.get("listBackground")
+                border { left: 20; top: 20; right: 20; bottom: 20 }
+                smooth: true
                 anchors.fill: parent
             }
 
@@ -333,9 +334,11 @@ ImplicitSizeItem {
 
             Component {
                 id: popupListHighlight
-                Frame {
-                    frameType: highlightStyle.current.get("listItemFrameType")
-                    frameName: highlightStyle.current.get("listItemFrameName")
+
+                BorderImage {
+                    source: highlightStyle.current.get("listItemBackground")
+                    smooth: true
+                    border { left: 20; top: 20; right: 20; bottom: 20 }
                 }
             }
 
@@ -351,9 +354,10 @@ ImplicitSizeItem {
                         mode: "normal"
                     }
 
-                    Frame {
-                        frameType: itemStyle.current.get("listItemFrameType")
-                        frameName: itemStyle.current.get("listItemFrameName")
+                    BorderImage {
+                        source: itemStyle.current.get("listItemBackground")
+                        border { left: 20; top: 20; right: 20; bottom: 20 }
+                        smooth: true
                         anchors.fill: parent
                     }
 
@@ -369,9 +373,9 @@ ImplicitSizeItem {
                         }
                         width: itemStyle.current.get("selectionIndicatorWidth")
 
-                        Frame {
-                            frameName: style.current.get("selectionIndicatorFrameName")
-                            frameType: style.current.get("selectionIndicatorFrameType")
+                        Image {
+                            source: style.current.get("selectionIndicatorImage")
+                            smooth: true
                             visible: index == root.currentIndex
                             anchors.fill: parent
                         }

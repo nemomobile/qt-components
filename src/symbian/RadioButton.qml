@@ -103,9 +103,9 @@ ImplicitSizeItem {
     implicitWidth: style.current.get("marginLeft") + style.current.get("iconWidth") + style.current.get("spacing") + style.textWidth(label.text, label.font) + style.current.get("marginRight")
     implicitHeight: style.current.get("marginTop") + Math.max(style.current.get("iconHeight"), style.fontHeight(label.font)) + style.current.get("marginBottom")
 
-    Frame {
-        frameName: style.current.get("frameName")
-        frameType: style.current.get("frameType")
+    BorderImage {
+        source: style.current.get("background")
+        border { left: 20; top: 20; right: 20; bottom: 20 }
         anchors.fill: parent
 
         Image {
