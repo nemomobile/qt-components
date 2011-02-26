@@ -20,7 +20,8 @@ HEADERS += base/apicheckbase.h \
 !symbian3:HEADERS += \
            busyindicator/apicheck_busyindicator.h \
            buttoncolumn/apicheck_buttoncolumn.h \
-           buttonrow/apicheck_buttonrow.h
+           buttonrow/apicheck_buttonrow.h \
+           toolbar/apicheck_toolbar.h
 
 SOURCES += tst_apicheck.cpp \
            base/apicheckbase.cpp \
@@ -35,4 +36,5 @@ SOURCES += tst_apicheck.cpp \
 !symbian3:SOURCES += \
            busyindicator/apicheck_busyindicator.cpp \
            buttoncolumn/apicheck_buttoncolumn.cpp \
-           buttonrow/apicheck_buttonrow.cpp
+           buttonrow/apicheck_buttonrow.cpp \
+           toolbar/apicheck_toolbar.cpp

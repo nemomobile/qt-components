@@ -42,6 +42,7 @@
 #include "busyindicator/apicheck_busyindicator.h"
 #include "buttoncolumn/apicheck_buttoncolumn.h"
 #include "buttonrow/apicheck_buttonrow.h"
+#include "toolbar/apicheck_toolbar.h"
 #endif
 
 int main(int argc, char *argv[])
@@ -88,6 +89,7 @@ int main(int argc, char *argv[])
     ApiCheckBusyIndicator busyIndicator(engine, module);
     ApiCheckButtonColumn buttonColumn(engine, module);
     ApiCheckButtonRow buttonRow(engine, module);
+    ApiCheckToolBar toolBar(engine, module);
 #endif
 
     int ret = 0;
@@ -105,6 +107,7 @@ int main(int argc, char *argv[])
     ret |= QTest::qExec(&busyIndicator, args);
     ret |= QTest::qExec(&buttonColumn, args);
     ret |= QTest::qExec(&buttonRow, args);
+    ret |= QTest::qExec(&toolBar, args);
 #endif
 
     return ret;
