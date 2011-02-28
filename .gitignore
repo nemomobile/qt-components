@@ -19,6 +19,13 @@ qrc_*.cpp
 *.intermediate.manifest
 *.Debug
 *.Release
+*.sln
+*.suo
+*.vcproj
+*.vcxproj
+*.vcxproj.filters
+*.opensdf
+*.sdf
 *~
 debug/
 release/
