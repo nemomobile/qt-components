@@ -47,6 +47,7 @@ protected:
     void validateProperty(const QString &propertyName, const QString &typeName) const;
     void validateProperty(const QString &propertyName, QVariant::Type propertyType,
                           const QVariant &value = QVariant()) const;
+    void validateDeclarativeProperty(const QString &name, const QString &typeName) const;
     void validateSignal(const char *signalName) const;
     void validateMethod(const char *methodName) const;
 

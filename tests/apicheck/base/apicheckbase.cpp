@@ -96,6 +96,21 @@ void ApiCheckBase::validateProperty(const QString &name, QVariant::Type type, co
     }
 }
 
+void ApiCheckBase::validateDeclarativeProperty(const QString &name, const QString &typeName) const
+{
+    const QMetaObject *meta = m_object->metaObject();
+    const int propertyIndex = meta->indexOfProperty(name.toLatin1().data());
+
+    QVERIFY2(propertyIndex != -1,
+             qPrintable(QString("property '%1.%2' does not exist").arg(m_name, name)));
+
+    const QMetaProperty &metaProperty = meta->property(propertyIndex);
+
+    QVERIFY2(QString(metaProperty.typeName()).contains(typeName),
+             qPrintable(QString("property '%1.%2' has invalid type (expected: %3, had: %4)")
+                        .arg(m_name, name, typeName, metaProperty.typeName())));
+}
+
 void ApiCheckBase::validateSignal(const char *signalName) const
 {
     const QMetaObject *meta = m_object->metaObject();
