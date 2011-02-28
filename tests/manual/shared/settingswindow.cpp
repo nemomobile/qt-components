@@ -45,7 +45,7 @@ struct DisplayProfile {
     QString resolutionName;
     int resolutionWidth;
     int resolutionHeight;
-    qreal ppiValue;
+    qreal dpiValue;
 };
 
 // These are for desktop use only, do not alter the order of the array!
@@ -103,7 +103,7 @@ SettingsWindow::SettingsWindow(QDeclarativeView *view)
     for (int i = 0; i < displayProfilesCount; i++) {
         const DisplayProfile &profile = displayProfilesArray[i];
         QString resolutionName = profile.resolutionName;
-        qreal ppiValue = profile.ppiValue;
+        qreal dpiValue = profile.dpiValue;
 
         QString displayProfileAsText;
         displayProfileAsText.append(QString::number(profile.resolutionWidth));
@@ -114,7 +114,7 @@ SettingsWindow::SettingsWindow(QDeclarativeView *view)
         displayProfileAsText.append(" ");
 
         qreal diagonal = qSqrt(static_cast<qreal>(profile.resolutionWidth * profile.resolutionWidth + profile.resolutionHeight * profile.resolutionHeight)); // in "pixels"
-        QString inchSizeStr = QString::number(diagonal / ppiValue, 'g', 2);
+        QString inchSizeStr = QString::number(diagonal / dpiValue, 'g', 2);
         displayProfileAsText.append(inchSizeStr);
 
         resolutionTexts <<  displayProfileAsText;
@@ -129,10 +129,10 @@ SettingsWindow::SettingsWindow(QDeclarativeView *view)
     resolutionGroup->setLayout(resolutionLayout);
     boxLayout->addWidget(resolutionGroup);
 
-    ppiLineEdit = new QLineEdit(this);
-    connect(ppiLineEdit, SIGNAL(textEdited(QString)), this, SLOT(userEditedDisplayValues()));
-    connect(ppiLineEdit, SIGNAL(editingFinished()), this, SLOT(userEditingFinished()));
-    resolutionLayout->addRow(tr("&PPI:"), ppiLineEdit);
+    dpiLineEdit = new QLineEdit(this);
+    connect(dpiLineEdit, SIGNAL(textEdited(QString)), this, SLOT(userEditedDisplayValues()));
+    connect(dpiLineEdit, SIGNAL(editingFinished()), this, SLOT(userEditingFinished()));
+    resolutionLayout->addRow(tr("&DPI:"), dpiLineEdit);
 
     inchLineEdit = new QLineEdit(this);
     connect(inchLineEdit, SIGNAL(textEdited(QString)), this, SLOT(userEditedDisplayValues()));
@@ -170,7 +170,7 @@ int SettingsWindow::activeDisplayProfile()
 
         if (profile.resolutionWidth == screen->property("width").value<int>()
             && profile.resolutionHeight == screen->property("height").value<int>()
-            && qFuzzyCompare(profile.ppiValue, screen->property("ppi").value<qreal>())) {
+            && qFuzzyCompare(profile.dpiValue, screen->property("dpi").value<qreal>())) {
             return i;
         }
     }
@@ -188,8 +188,9 @@ void SettingsWindow::changeResolution(int index)
     if (index != -1) {
         DisplayProfile profile = displayProfilesArray[index];
         QMetaObject::invokeMethod(screen, "setDisplay",
-                                  Q_ARG(QSize, QSize(profile.resolutionWidth, profile.resolutionHeight)),
-                                  Q_ARG(qreal, profile.ppiValue));
+                                  Q_ARG(int, profile.resolutionWidth),
+                                  Q_ARG(int, profile.resolutionHeight),
+                                  Q_ARG(qreal, profile.dpiValue));
     }
 }
 
@@ -199,14 +200,14 @@ void SettingsWindow::displayChanged()
 
     const int newWidthValue = screen->property("width").value<int>();
     const int newHeightValue = screen->property("height").value<int>();
-    const qreal newPpiValue = screen->property("ppi").value<qreal>();
+    const qreal newDpiValue = screen->property("dpi").value<qreal>();
 
     resolutionComboBox->setCurrentIndex(activeDisplayProfile());
 
-    ppiLineEdit->setText(QString::number(newPpiValue, 'f', 2));
+    dpiLineEdit->setText(QString::number(newDpiValue, 'f', 2));
 
     qreal diagonal = qSqrt(static_cast<qreal>(newWidthValue * newWidthValue + newHeightValue * newHeightValue)); // in "pixels"
-    QString inchSizeStr = QString::number(diagonal / newPpiValue, 'f', 2);
+    QString inchSizeStr = QString::number(diagonal / newDpiValue, 'f', 2);
     inchLineEdit->setText(inchSizeStr);
 
     widthSpinBox->setValue(newWidthValue);
@@ -232,17 +233,18 @@ void SettingsWindow::userEditingFinished()
         return;
     userValueChanged = false;
 
-    qreal ppi(0.0);
+    qreal dpi(0.0);
     if (QObject::sender() == inchLineEdit) {
         const qreal inches = qreal(inchLineEdit->text().toDouble());
         const qreal diagonal = qSqrt(static_cast<qreal>(widthSpinBox->value() * widthSpinBox->value() + heightSpinBox->value() * heightSpinBox->value())); // in "pixels"
-        ppi = diagonal / inches;
+        dpi = diagonal / inches;
     } else {
-        ppi = ppiLineEdit->text().toDouble();
+        dpi = dpiLineEdit->text().toDouble();
     }
 
     QMetaObject::invokeMethod(screen, "setDisplay",
-                              Q_ARG(QSize, QSize(widthSpinBox->value(), heightSpinBox->value())),
-                              Q_ARG(qreal, ppi));
+                              Q_ARG(int, widthSpinBox->value()),
+                              Q_ARG(int, heightSpinBox->value()),
+                              Q_ARG(qreal, dpi));
 
 }

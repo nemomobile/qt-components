@@ -58,7 +58,7 @@ private:
     QComboBox *sensorComboBox;
     QComboBox *bordersComboBox;
 
-    QLineEdit *ppiLineEdit;
+    QLineEdit *dpiLineEdit;
     QLineEdit *inchLineEdit;
     QSpinBox *widthSpinBox;
     QSpinBox *heightSpinBox;

@@ -81,7 +81,6 @@ protected:
 #endif
 
 signals:
-    void minimize();
     void quit();
     void backClicked();
     void optionsClicked();

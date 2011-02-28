@@ -55,7 +55,7 @@ public:
     SDeclarativeScreen *q_ptr;
     SDeclarativeScreen::Orientation orientation;
 
-    qreal ppi;
+    qreal dpi;
 
     QSize screenSize;
     bool settingDisplay;

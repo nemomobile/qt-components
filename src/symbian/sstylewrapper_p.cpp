@@ -51,7 +51,7 @@
 #include <QFeedbackEffect>
 #endif //HAVE_QTMOBILITY
 
-static const qreal DEFAULT_DP_PER_PPI = 160.0;
+static const qreal DEFAULT_DP_PER_DPI = 160.0;
 
 // Use static variables. There are a lot of SStyleWrapper instances
 // which like to share the same data.
@@ -79,7 +79,7 @@ static void loadVariables(const QString &filename)
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QTextStream in(&file);
 
-        const qreal dpValue = styleData()->screen->property("ppi").value<qreal>() / DEFAULT_DP_PER_PPI;
+        const qreal dpValue = styleData()->screen->property("dpi").value<qreal>() / DEFAULT_DP_PER_DPI;
         while (!in.atEnd()) {
             QString line = in.readLine().trimmed();
 

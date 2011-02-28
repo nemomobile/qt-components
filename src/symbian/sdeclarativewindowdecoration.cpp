@@ -47,7 +47,7 @@
 #include <QDebug>
 #endif
 
-static const qreal DEFAULT_DP_PER_PPI = 160.0;
+static const qreal DEFAULT_DP_PER_DPI = 160.0;
 
 class SDeclarativeWindowDecorationPrivate
 {
@@ -181,7 +181,7 @@ void SDeclarativeWindowDecorationPrivate::_q_doUpdateFullScreen()
         q->setTopDecorationHeight(0);
         q->setBottomDecorationHeight(0);
     } else if (screenObject) {
-        const qreal dpValue = screenObject->property("ppi").value<qreal>() / DEFAULT_DP_PER_PPI;
+        const qreal dpValue = screenObject->property("dpi").value<qreal>() / DEFAULT_DP_PER_DPI;
         // Emulate Avkon decorator sizes in desktop.
         // TODO: This will be removed when decorators are done with QML
         //

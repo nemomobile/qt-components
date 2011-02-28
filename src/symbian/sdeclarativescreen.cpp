@@ -44,16 +44,15 @@
 #include <QDebug>
 #endif
 
-static const qreal DEFAULT_MM_PER_INCH = 25.4;
 static const qreal DEFAULT_TWIPS_PER_INCH = 1440.0;
-static const qreal DEFAULT_PPI = 211.7;
+static const qreal DEFAULT_DPI = 211.7;
 static const int DEFAULT_WIDTH = 360;
 static const int DEFAULT_HEIGHT = 640;
 
 SDeclarativeScreenPrivate::SDeclarativeScreenPrivate(SDeclarativeScreen *qq) :
     q_ptr(qq),
     orientation(SDeclarativeScreen::Automatic),
-    ppi(DEFAULT_PPI),
+    dpi(DEFAULT_DPI),
     screenSize(),
     settingDisplay(false),
     statusPaneChanged(false)
@@ -70,7 +69,7 @@ SDeclarativeScreenPrivate::SDeclarativeScreenPrivate(SDeclarativeScreen *qq) :
 
     if (HAL::Get(HALData::EDisplayXTwips, twipsHor) == KErrNone
         && HAL::Get(HALData::EDisplayYTwips, twipsVer) == KErrNone) {
-        ppi = 0.5 * ((initScreenSize.width() / (twipsHor / DEFAULT_TWIPS_PER_INCH)) +
+        dpi = 0.5 * ((initScreenSize.width() / (twipsHor / DEFAULT_TWIPS_PER_INCH)) +
                      (initScreenSize.height() / (twipsVer / DEFAULT_TWIPS_PER_INCH)));
     }
 #endif // __WINS__
@@ -230,17 +229,6 @@ SDeclarativeScreen::Orientation SDeclarativeScreen::orientation() const
     return d->orientation;
 }
 
-QString SDeclarativeScreen::orientationString() const
-{
-    Q_D(const SDeclarativeScreen);
-    if (d->orientation == SDeclarativeScreen::Automatic)
-        return QString();
-    int index = metaObject()->indexOfEnumerator("Orientation");
-    Q_ASSERT(index != -1);
-    QMetaEnum enumerator = metaObject()->enumerator(index);
-    return QLatin1String(enumerator.valueToKey(d->orientation));
-}
-
 void SDeclarativeScreen::setOrientation(Orientation orientation)
 {
     Q_D(SDeclarativeScreen);
@@ -301,24 +289,6 @@ int SDeclarativeScreen::rotation() const
     return angle;
 }
 
-bool SDeclarativeScreen::isMinimized() const
-{
-    QWidget *top = QApplication::activeWindow();
-    return !top || top->isMinimized();
-}
-
-void SDeclarativeScreen::setMinimized(bool minimized)
-{
-    Q_UNUSED(minimized);
-    QWidget *top = QApplication::activeWindow();
-    if (!top)
-        return;
-    if (minimized)
-        top->setWindowState(top->windowState() | Qt::WindowMinimized);
-    else
-        top->setWindowState(top->windowState() & ~Qt::WindowMinimized);
-}
-
 int SDeclarativeScreen::width() const
 {
     Q_D(const SDeclarativeScreen);
@@ -331,37 +301,24 @@ int SDeclarativeScreen::height() const
     return d->screenSize.height();
 }
 
-qreal SDeclarativeScreen::ppi() const
+qreal SDeclarativeScreen::dpi() const
 {
     Q_D(const SDeclarativeScreen);
-    return d->ppi;
+    return d->dpi;
 }
 
-qreal SDeclarativeScreen::ppmm() const
-{
-    Q_D(const SDeclarativeScreen);
-    return d->ppi / DEFAULT_MM_PER_INCH;
-}
-
-QSizeF SDeclarativeScreen::physicalSize() const
-{
-    Q_D(const SDeclarativeScreen);
-    QSizeF physicalSize = d->screenSize;
-    physicalSize /= ppmm(); // Do this in separate step in order to prevent implicit rounding!
-    return physicalSize;
-}
-
-void SDeclarativeScreen::setDisplay(const QSize &screenSize, qreal ppi)
+void SDeclarativeScreen::setDisplay(int width, int height, qreal dpi)
 {
 #ifdef Q_OS_SYMBIAN
-    Q_UNUSED(screenSize);
-    Q_UNUSED(ppi);
+    Q_UNUSED(width);
+    Q_UNUSED(height);
+    Q_UNUSED(dpi);
 #else
     Q_D(SDeclarativeScreen);
     d->settingDisplay = true;
-    d->ppi = ppi;
+    d->dpi = dpi;
     if (d->gv)
-        d->gv->resize(screenSize); // emulate the resizing done by the system
+        d->gv->resize(width, height); // emulate the resizing done by the system
     emit displayChanged();
     d->settingDisplay = false;
 #endif

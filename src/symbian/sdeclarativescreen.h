@@ -36,17 +36,11 @@ class SDeclarativeScreen : public QObject
     Q_OBJECT
 
     Q_PROPERTY(Orientation orientation READ orientation WRITE setOrientation NOTIFY orientationChanged FINAL)
-    Q_PROPERTY(QString orientationString READ orientationString NOTIFY orientationChanged FINAL)
 
-    Q_PROPERTY(int width READ width NOTIFY displayChanged)
-    Q_PROPERTY(int height READ height NOTIFY displayChanged)
+    Q_PROPERTY(int width READ width NOTIFY displayChanged FINAL)
+    Q_PROPERTY(int height READ height NOTIFY displayChanged FINAL)
+    Q_PROPERTY(qreal dpi READ dpi NOTIFY displayChanged FINAL)
     Q_PROPERTY(int rotation READ rotation NOTIFY orientationChanged FINAL)
-
-    Q_PROPERTY(qreal ppi READ ppi NOTIFY displayChanged)
-    Q_PROPERTY(qreal ppmm READ ppmm NOTIFY displayChanged)
-    Q_PROPERTY(QSizeF physicalSize READ physicalSize NOTIFY displayChanged)
-
-    Q_PROPERTY(bool minimized READ isMinimized WRITE setMinimized NOTIFY minimizedChanged FINAL)
 
     Q_ENUMS(Orientation)
 
@@ -63,26 +57,17 @@ public:
     };
 
     Orientation orientation() const;
-    QString orientationString() const;
     void setOrientation(Orientation orientation);
-
-    int rotation() const;
 
     int width() const;
     int height() const;
+    qreal dpi() const;
+    int rotation() const;
 
-    bool isMinimized() const;
-    void setMinimized(bool minimized);
-
-    qreal ppi() const;
-    qreal ppmm() const;
-    QSizeF physicalSize() const;
-
-    Q_INVOKABLE void setDisplay(const QSize &screenSize, qreal ppi);
+    Q_INVOKABLE void setDisplay(int width, int height, qreal dpi);
 
 Q_SIGNALS:
     void orientationChanged();
-    void minimizedChanged();
     void displayChanged();
     void statusPaneChanged();
 

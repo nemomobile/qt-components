@@ -29,9 +29,16 @@ import com.nokia.symbian 1.0
 
 Item {
 
+    function physicalWidth() {
+        return (screen.width / screen.dpi) * 25.4
+    }
+
+    function physicalHeight() {
+        return (screen.height / screen.dpi) * 25.4
+    }
+
     function diagonal() {
-        return Math.sqrt(screen.physicalSize.width * screen.physicalSize.width
-               + screen.physicalSize.height * screen.physicalSize.height) / 25.4
+        return Math.sqrt(screen.width * screen.width + screen.height * screen.height) / screen.dpi
     }
 
     function round(number) {
@@ -46,7 +53,7 @@ Item {
               + "Physical width (mm):\n"
               + "Physical height (mm):\n"
               + "Diagonal (inch):\n"
-              + "PPI:"
+              + "DPI:"
         anchors { fill: parent; margins: 20 }
         horizontalAlignment: Text.AlignLeft
     }
@@ -55,10 +62,10 @@ Item {
         font.pixelSize: 20
         text: screen.width + '\n'
               + screen.height + '\n'
-              + round(screen.physicalSize.width) + '\n'
-              + round(screen.physicalSize.height) + '\n'
+              + round(physicalWidth()) + '\n'
+              + round(physicalHeight()) + '\n'
               + round(diagonal()) + '\n'
-              + round(screen.ppi)
+              + round(screen.dpi)
         anchors { fill: parent; margins: 20 }
         horizontalAlignment: Text.AlignRight
     }

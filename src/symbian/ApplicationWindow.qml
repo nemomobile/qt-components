@@ -42,7 +42,6 @@ Window {
         statusBarVisible: !window.fullScreen
         titleBarVisible: !window.fullScreen
         backButtonVisible: pageStack.depth > 1
-        onMinimize: screen.minimized = true
         onQuit: Qt.quit()
         onBackClicked: pageStack.pop()
     }
