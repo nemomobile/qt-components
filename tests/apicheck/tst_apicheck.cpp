@@ -37,6 +37,7 @@
 #include "textarea/apicheck_textarea.h"
 #include "scrolldecorator/apicheck_scrolldecorator.h"
 #include "choicelist/apicheck_choicelist.h"
+#include "window/apicheck_window.h"
 #include "page/apicheck_page.h"
 #include "pagestack/apicheck_pagestack.h"
 
@@ -86,6 +87,7 @@ int main(int argc, char *argv[])
     ApiCheckTextArea textArea(engine, module);
     ApiCheckScrollDecorator scrollDecorator(engine, module);
     ApiCheckChoiceList choiceList(engine, module);
+    ApiCheckWindow window(engine, module);
     ApiCheckPage page(engine, module);
     ApiCheckPageStack pageStack(engine, module);
 
@@ -106,6 +108,7 @@ int main(int argc, char *argv[])
     ret |= QTest::qExec(&textArea, args);
     ret |= QTest::qExec(&scrollDecorator, args);
     ret |= QTest::qExec(&choiceList, args);
+    ret |= QTest::qExec(&window, args);
     ret |= QTest::qExec(&page, args);
     ret |= QTest::qExec(&pageStack, args);
 

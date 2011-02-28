@@ -16,6 +16,7 @@ HEADERS += base/apicheckbase.h \
            radiobutton/apicheck_radiobutton.h \
            textarea/apicheck_textarea.h \
            scrolldecorator/apicheck_scrolldecorator.h \
+           window/apicheck_window.h \
            page/apicheck_page.h \
            pagestack/apicheck_pagestack.h
 
@@ -34,6 +35,7 @@ SOURCES += tst_apicheck.cpp \
            textfield/apicheck_textfield.cpp \
            radiobutton/apicheck_radiobutton.cpp \
            textarea/apicheck_textarea.cpp \
+           window/apicheck_window.cpp \
            page/apicheck_page.cpp \
            pagestack/apicheck_pagestack.cpp
 
