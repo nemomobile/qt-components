@@ -1,4 +1,3 @@
-include (../../qt-components.pri)
 include (../tests.pri)
 
 TEMPLATE = app
