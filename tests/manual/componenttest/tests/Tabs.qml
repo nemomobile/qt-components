@@ -103,6 +103,10 @@ Item {
         return 0
     }
 
+    function inPortrait() {
+        return screen.height > screen.width
+    }
+
     TabBar {
         id: tabBar
         anchors.top: parent.top
@@ -152,6 +156,9 @@ Item {
     QtObject {
         id: priv
         property Item newItem
+        property int numberOfTabsOnNewPage
+        property bool lockNewPageInPortrait
+        property bool lockNewPageInLandscape
     }
 
     Component {
@@ -183,33 +190,167 @@ Item {
                 Rectangle { color: "blue"; height: parent.height; width: parent.width / 2; opacity: page ? (page.status == Symbian.PageActivating ? 1 : 0.1) : 0 }
             }
 
+            Grid {
+                id: editTabButtonGrid
+                height: inPortrait() ? 90 : 60
+                width: parent.width
+                columns: inPortrait() ? 1 : 2
+                spacing: 2
+
+                Text {
+                    id: editTabButtonLabel
+                    width: inPortrait() ? parent.width : parent.width / 3
+                    text: "Edit TabButton:"
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pointSize: 14
+                    color: "white"
+                }
+
+                Row {
+                    id: editTabButtonContent
+                    height: tabButtonIconChoiseList.preferredHeight
+                    width: inPortrait() ? parent.width : 2 * parent.width / 3
+                    TextField {
+                        id: editor
+                        width: parent.width / 2
+                        placeholderText: column.parent.titleString
+                        onTextChanged: {
+                            var tabButton = findButtonByContent(column.parent)
+                            if (tabButton)
+                                tabButton.text = text
+                            column.parent.titleString = text
+                        }
+                    }
+                    ChoiceList {
+                        id: tabButtonIconChoiseList
+                        Component.onCompleted: {
+                            // TODO: ChoiceList needs this to function.
+                            console.log("ChoiceList::onCompleted: " + currentValue + " " + currentIndex)
+                        }
+
+                        width: parent.width / 2
+                        onCurrentValueChanged: {
+                            var tabButton = findButtonByContent(column.parent)
+                            if (tabButton)
+                                tabButton.iconSource = currentValue != "<none>" ? "image://theme/:/" + currentValue : ""
+                        }
+                        model: ["<none>", "list1.png", "list2.png"]
+                    }
+                }
+            }
+
+            Grid {
+                id: newPageGrid
+                height: inPortrait() ? 90 : 60
+                width: parent.width
+                columns: inPortrait() ? 1 : 2
+                spacing: 2
+
+                Text {
+                    id: newPageLabel
+                    width: inPortrait() ? parent.width : parent.width / 3
+                    text: "New page tabs:"
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pointSize: 14
+                    color: "white"
+                }
+
+                Row {
+                    height: 40
+                    width: inPortrait() ? parent.width : 2 * parent.width / 3
+                    ChoiceList {
+                        id: numberOfTabsChoiseList
+                        Component.onCompleted: {
+                            // TODO: ChoiceList needs this to function.
+                            console.log("ChoiceList::onCompleted: " + currentValue + " " + currentIndex)
+                        }
+                        width: parent.width / 2
+                        onCurrentValueChanged: {
+                            priv.numberOfTabsOnNewPage = parseInt(currentValue)
+                        }
+                        model: ["0", "1", "2", "3", "4", "5", "6"]
+                    }
+
+                    Button {
+                        width: parent.width / 2
+                        text: "Launch new page"
+                        onClicked: startNewPage()
+                    }
+                }
+            }
+
             Row {
                 height: 40
                 width: parent.width
-                TextField {
-                    id: editor
-                    width: parent.width / 2
-                    placeholderText: column.parent.titleString
-                    onTextChanged: {
-                        var tabButton = findButtonByContent(column.parent)
-                        if (tabButton)
-                            tabButton.text = text
-                        column.parent.titleString = text
-                    }
-                }
-                ChoiceList {
-                    Component.onCompleted: {console.log("ChoiceList::onCompleted: " + currentValue + " " + currentIndex)}
-
-                    id: iconChoicelist
-                    width: parent.width / 2
-                    onCurrentValueChanged: {
-                        var tabButton = findButtonByContent(column.parent)
-                        if (tabButton)
-                            tabButton.iconSource = currentValue != "<none>" ? "image://theme/:/" + currentValue : ""
-                    }
-                    model: ["<none>", "list1.png", "list2.png"]
-                }
+                CheckBox { id: lockInPortrait; width: parent.width / 2; text: "lock in portrait" }
+                Binding{ target: priv; property: "lockNewPageInPortrait"; value: lockInPortrait.checked }
+                CheckBox { id: lockInLandscape; width: parent.width / 2; text: "lock in landscape" }
+                Binding{ target: priv; property: "lockNewPageInLandscape"; value: lockInLandscape.checked }
             }
+        }
+    }
+
+    // function startNewPage() crates a tabbed page described below. The
+    // content is created dynamically based on the tab amount requested.
+/*
+import Qt 4.7;
+import com.nokia.symbian 1.0;
+Page {
+    id: page;
+    TabBar {
+        id: tabBar;
+        TabButton { tab: tab1content; text: "1" }
+        TabButton { tab: tab2content; text: "2" }
+        TabButton { tab: tab3content; text: "3" }
+    }
+
+    TabGroup {
+        height: 100
+        width: 100
+        Text { id: tab1content; text: "tab1"; color: "white" }
+        Text { id: tab2content; text: "tab2"; color: "white" }
+        Text { id: tab3content; text: "tab3"; color: "white" }
+    }
+}
+*/
+
+    function startNewPage() {
+        var filePrefix =       "import Qt 4.7; import com.nokia.symbian 1.0; Page { id: page; "
+        var tabBarPrefix =         "TabBar { id: tabBar; "
+        var tabBarContent =            ""
+        var tabBarPostfix =        "} "
+        var tabGroupPrefix =       "TabGroup { anchors.top: tabBar.bottom; width: 100; height: 100; "
+        var tabGroupContent =          ""
+        var tabGroupPostfix =      "} "
+        var filePostfix =      "}"
+
+        for (var i = 1; i <= priv.numberOfTabsOnNewPage; ++i) {
+            // create tab button
+            // TabButton { tab: tab1content; text: \"1\" } "
+            tabBarContent += "TabButton { tab: tab"
+            tabBarContent += i.toString()
+            tabBarContent += "content; text: \""
+            tabBarContent += i.toString()
+            tabBarContent += "\" } "
+
+            // create group content
+            // Text { id: tab1content; text: \"tab1\"; color: \"white\" } "
+            tabGroupContent += "Text { id: tab"
+            tabGroupContent += i.toString()
+            tabGroupContent += "content; text: \"tab"
+            tabGroupContent += i.toString()
+            tabGroupContent += "\"; color: \"white\" } "
+
+        }
+
+        // combine as one long string
+        var fullQml = filePrefix + tabBarPrefix + tabBarContent + tabBarPostfix + tabGroupPrefix + tabGroupContent + tabGroupPostfix + filePostfix
+
+        var newObject = Qt.createQmlObject(fullQml, root);
+        if (newObject) {
+            newObject.lockInPortrait = priv.lockNewPageInPortrait
+            newObject.lockInLandscape = priv.lockNewPageInLandscape
+            testPage.pageStack.push(newObject)
         }
     }
 }
