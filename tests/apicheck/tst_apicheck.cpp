@@ -34,6 +34,7 @@
 #include "radiobutton/apicheck_radiobutton.h"
 #include "textfield/apicheck_textfield.h"
 #include "progressbar/apicheck_progressbar.h"
+#include "tabgroup/apicheck_tabgroup.h"
 #include "textarea/apicheck_textarea.h"
 #include "scrolldecorator/apicheck_scrolldecorator.h"
 #include "choicelist/apicheck_choicelist.h"
@@ -84,6 +85,7 @@ int main(int argc, char *argv[])
     ApiCheckTextField textField(engine, module);
     ApiCheckRadioButton radioButton(engine, module);
     ApiCheckProgressBar progressBar(engine, module);
+    ApiCheckTabGroup tabGroup(engine, module);
     ApiCheckTextArea textArea(engine, module);
     ApiCheckScrollDecorator scrollDecorator(engine, module);
     ApiCheckChoiceList choiceList(engine, module);
@@ -105,6 +107,7 @@ int main(int argc, char *argv[])
     ret |= QTest::qExec(&textField, args);
     ret |= QTest::qExec(&radioButton, args);
     ret |= QTest::qExec(&progressBar, args);
+    ret |= QTest::qExec(&tabGroup, args);
     ret |= QTest::qExec(&textArea, args);
     ret |= QTest::qExec(&scrollDecorator, args);
     ret |= QTest::qExec(&choiceList, args);
