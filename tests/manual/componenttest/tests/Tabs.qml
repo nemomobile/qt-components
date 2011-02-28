@@ -186,8 +186,8 @@ Item {
             Row {
                 height: 40
                 width: parent.width
-                Rectangle { color: "red"; height: parent.height; width: parent.width / 2; opacity: page ? (page.status == Symbian.PageDeactivating ? 1 : 0.1) : 0}
-                Rectangle { color: "blue"; height: parent.height; width: parent.width / 2; opacity: page ? (page.status == Symbian.PageActivating ? 1 : 0.1) : 0 }
+                Rectangle { color: "red"; height: parent.height; width: parent.width / 2; opacity: page ? (page.status == PageStatus.Deactivating ? 1 : 0.1) : 0}
+                Rectangle { color: "blue"; height: parent.height; width: parent.width / 2; opacity: page ? (page.status == PageStatus.Activating ? 1 : 0.1) : 0 }
             }
 
             Grid {

@@ -31,11 +31,11 @@ Item {
     id: root
 
     // The status of the page. One of the following:
-    //      Symbian.PageInactive - the page is not visible
-    //      Symbian.PageActivating - the page is transitioning into becoming the active page
-    //      Symbian.PageActive - the page is the current active page
-    //      Symbian.PageDeactivating - the page is transitioning into becoming inactive
-    property int status: Symbian.PageInactive
+    //      PageStatus.Inactive - the page is not visible
+    //      PageStatus.Activating - the page is transitioning into becoming the active page
+    //      PageStatus.Active - the page is the current active page
+    //      PageStatus.Deactivating - the page is transitioning into becoming inactive
+    property int status: PageStatus.Inactive
 
     property PageStack pageStack
     property bool lockInLandscape: false
@@ -53,17 +53,17 @@ Item {
     onHeightChanged: internal.previousHeight = visible ? height : internal.previousHeight
 
     onStatusChanged: {
-        if (status == Symbian.PageActivating)
+        if (status == PageStatus.Activating)
             internal.orientationLockCheck();
     }
 
     onLockInLandscapeChanged: {
-        if (status == Symbian.PageActivating || status == Symbian.PageActive)
+        if (status == PageStatus.Activating || status == PageStatus.Active)
             internal.orientationLockCheck();
     }
 
     onLockInPortraitChanged: {
-        if (status == Symbian.PageActivating || status == Symbian.PageActive)
+        if (status == PageStatus.Activating || status == PageStatus.Active)
             internal.orientationLockCheck();
     }
 

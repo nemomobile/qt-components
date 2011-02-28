@@ -223,18 +223,18 @@ void tst_tabgroup::testPageSignaling()
 
     // set group2tab1 as the current tab
     tabGroup2->setProperty("currentTab", qVariantFromValue(group2tab1));
-    QTRY_COMPARE(group2tab1->property("status").toInt(), 2 /*Symbian.PageActive*/);
-    QTRY_COMPARE(group2tab2->property("status").toInt(), 0 /*Symbian.PageInactive*/);
+    QTRY_COMPARE(group2tab1->property("status").toInt(), 2 /*PageStatus.Active*/);
+    QTRY_COMPARE(group2tab2->property("status").toInt(), 0 /*PageStatus.Inactive*/);
 
     // set group2tab2 as the current tab
     tabGroup2->setProperty("currentTab", qVariantFromValue(group2tab2));
 
-    QCOMPARE(group2tab2->property("status").toInt(), 1 /*Symbian.PageActivating*/);
-    QCOMPARE(group2tab1->property("status").toInt(), 3 /*Symbian.PageDeactivating*/);
+    QCOMPARE(group2tab2->property("status").toInt(), 1 /*PageStatus.Activating*/);
+    QCOMPARE(group2tab1->property("status").toInt(), 3 /*PageStatus.Deactivating*/);
 
     // wait for the effec to finish and update the statuses
-    QTRY_COMPARE(group2tab2->property("status").toInt(), 2 /*Symbian.PageActive*/);
-    QTRY_COMPARE(group2tab1->property("status").toInt(), 0 /*Symbian.PageInactive*/);
+    QTRY_COMPARE(group2tab2->property("status").toInt(), 2 /*PageStatus.Active*/);
+    QTRY_COMPARE(group2tab1->property("status").toInt(), 0 /*PageStatus.Inactive*/);
 }
 
 

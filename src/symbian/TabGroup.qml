@@ -104,7 +104,7 @@ Item {
             function incomingDone() {
                 state = ""
                 if (priv.incomingPage) {
-                    priv.incomingPage.status = Symbian.PageActive
+                    priv.incomingPage.status = PageStatus.Active
                     priv.incomingPage = null
                 }
             }
@@ -112,7 +112,7 @@ Item {
             function outgoingDone() {
                 state = "Hidden"
                 if (priv.outgoingPage) {
-                    priv.outgoingPage.status = Symbian.PageInactive
+                    priv.outgoingPage.status = PageStatus.Inactive
                     priv.outgoingPage.visible = false
                     priv.outgoingPage = null
                 }
@@ -163,7 +163,7 @@ Item {
                     if (tabContainer.state != "") {
                         if (tabContainer.children[0].status != undefined) {
                             incomingPage = tabContainer.children[0]
-                            incomingPage.status = Symbian.PageActivating
+                            incomingPage.status = PageStatus.Activating
                             incomingPage.visible = true
                             if (incomingPage == outgoingPage)
                                 outgoingPage = null
@@ -174,7 +174,7 @@ Item {
                     if (tabContainer.state != "Hidden") {
                         if (tabContainer.children.length > 0 && tabContainer.children[0].status != undefined) {
                             outgoingPage = tabContainer.children[0]
-                            outgoingPage.status = Symbian.PageDeactivating
+                            outgoingPage.status = PageStatus.Deactivating
                             if (incomingPage == outgoingPage)
                                 incomingPage = null
                         }

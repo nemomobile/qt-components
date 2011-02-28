@@ -37,7 +37,7 @@ class SDeclarative : public QObject
     Q_OBJECT
     Q_PROPERTY(InteractionMode listInteractionMode READ listInteractionMode WRITE setListInteractionMode NOTIFY listInteractionModeChanged FINAL)
 
-    Q_ENUMS(InteractionMode ImageSize ScrollBarVisibility PageStatus Feedback)
+    Q_ENUMS(InteractionMode ImageSize ScrollBarVisibility Feedback)
 
 public:
     SDeclarative(QObject *parent = 0);
@@ -60,13 +60,6 @@ public:
     enum ScrollBarVisibility {
         ScrollBarWhenNeeded = 0,
         ScrollBarWhenScrolling
-    };
-
-    enum PageStatus {
-        PageInactive,
-        PageActivating,
-        PageActive,
-        PageDeactivating
     };
 
     enum Feedback {
@@ -139,6 +132,20 @@ public:
         Open,
         Closing,
         Closed
+    };
+};
+
+class SPageStatus : public QObject
+{
+    Q_OBJECT
+    Q_ENUMS(Status)
+
+public:
+    enum Status {
+        Inactive,
+        Activating,
+        Active,
+        Deactivating
     };
 };
 

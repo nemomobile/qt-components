@@ -92,7 +92,7 @@ Item {
     // Called when the page stack visibility changes.
     onVisibleChanged: {
         if (currentPage) {
-            internal.setPageStatus(currentPage, visible ? Symbian.PageActive : Symbian.PageInactive);
+            internal.setPageStatus(currentPage, visible ? PageStatus.Active : PageStatus.Inactive);
             if (visible)
                 currentPage.visible = currentPage.parent.visible = true;
         }
@@ -107,10 +107,10 @@ Item {
         // Sets the page status.
         function setPageStatus(page, status) {
             if (page.status !== undefined) {
-                if (status == Symbian.PageActive && page.status == Symbian.PageInactive)
-                    page.status = Symbian.PageActivating;
-                else if (status == Symbian.PageInactive && page.status == Symbian.PageActive)
-                    page.status = Symbian.PageDeactivating;
+                if (status == PageStatus.Active && page.status == PageStatus.Inactive)
+                    page.status = PageStatus.Activating;
+                else if (status == PageStatus.Inactive && page.status == PageStatus.Active)
+                    page.status = PageStatus.Deactivating;
 
                 page.status = status;
             }
@@ -149,14 +149,14 @@ Item {
                 state = "";
                 page.visible = true;
                 if (root.visible && immediate)
-                    internal.setPageStatus(page, Symbian.PageActive);
+                    internal.setPageStatus(page, PageStatus.Active);
             }
 
             // Performs a push exit transition.
             function pushExit(replace, immediate) {
                 state = immediate ? "Hidden" : (replace ? "Back" : "Left");
                 if (root.visible && immediate)
-                    internal.setPageStatus(page, Symbian.PageInactive);
+                    internal.setPageStatus(page, PageStatus.Inactive);
                 if (replace) {
                     if (immediate)
                         cleanup();
@@ -172,14 +172,14 @@ Item {
                 state = "";
                 page.visible = true;
                 if (root.visible && immediate)
-                    internal.setPageStatus(page, Symbian.PageActive);
+                    internal.setPageStatus(page, PageStatus.Active);
             }
 
             // Performs a pop exit transition.
             function popExit(immediate) {
                 state = immediate ? "Hidden" : "Right";
                 if (root.visible && immediate)
-                    internal.setPageStatus(page, Symbian.PageInactive);
+                    internal.setPageStatus(page, PageStatus.Inactive);
                 if (immediate)
                     cleanup();
                 else
@@ -190,7 +190,7 @@ Item {
             function transitionStarted() {
                 internal.ongoingTransitionCount++;
                 if (root.visible)
-                    internal.setPageStatus(page, (state == "") ? Symbian.PageActivating : Symbian.PageDeactivating);
+                    internal.setPageStatus(page, (state == "") ? PageStatus.Activating : PageStatus.Deactivating);
             }
 
             // Called when a transition has ended.
@@ -198,7 +198,7 @@ Item {
                 if (state != "")
                     state = "Hidden";
                 if (root.visible)
-                    internal.setPageStatus(page, (state == "") ? Symbian.PageActive : Symbian.PageInactive);
+                    internal.setPageStatus(page, (state == "") ? PageStatus.Active : PageStatus.Inactive);
 
                 internal.ongoingTransitionCount--;
                 if (cleanupAfterTransition)
@@ -279,8 +279,8 @@ Item {
 
             // Cleans up the container and then destroys it.
             function cleanup() {
-                if (page.status == Symbian.PageActive)
-                    internal.setPageStatus(page, Symbian.PageInactive);
+                if (page.status == PageStatus.Active)
+                    internal.setPageStatus(page, PageStatus.Inactive);
                 if (owner != container) {
                     // container is not the owner of the page - re-parent back to original owner
                     page.visible = false;
