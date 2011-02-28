@@ -62,7 +62,6 @@ Item {
     Component.onDestruction: {
         if (parentCache.oldParent != null) {
             parent = parentCache.oldParent
-            fader.parent = root
         }
     }
 
