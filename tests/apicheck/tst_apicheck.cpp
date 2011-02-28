@@ -37,6 +37,7 @@
 #include "textarea/apicheck_textarea.h"
 #include "scrolldecorator/apicheck_scrolldecorator.h"
 #include "choicelist/apicheck_choicelist.h"
+#include "pagestack/apicheck_pagestack.h"
 
 #ifndef Q_COMPONENTS_SYMBIAN
 #include "busyindicator/apicheck_busyindicator.h"
@@ -84,6 +85,7 @@ int main(int argc, char *argv[])
     ApiCheckTextArea textArea(engine, module);
     ApiCheckScrollDecorator scrollDecorator(engine, module);
     ApiCheckChoiceList choiceList(engine, module);
+    ApiCheckPageStack pageStack(engine, module);
 
 #ifndef Q_COMPONENTS_SYMBIAN
     ApiCheckBusyIndicator busyIndicator(engine, module);
@@ -102,6 +104,7 @@ int main(int argc, char *argv[])
     ret |= QTest::qExec(&textArea, args);
     ret |= QTest::qExec(&scrollDecorator, args);
     ret |= QTest::qExec(&choiceList, args);
+    ret |= QTest::qExec(&pageStack, args);
 
 #ifndef Q_COMPONENTS_SYMBIAN
     ret |= QTest::qExec(&busyIndicator, args);

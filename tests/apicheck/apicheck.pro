@@ -15,7 +15,8 @@ HEADERS += base/apicheckbase.h \
            progressbar/apicheck_progressbar.h \
            radiobutton/apicheck_radiobutton.h \
            textarea/apicheck_textarea.h \
-           scrolldecorator/apicheck_scrolldecorator.h
+           scrolldecorator/apicheck_scrolldecorator.h \
+           pagestack/apicheck_pagestack.h
 
 !symbian3:HEADERS += \
            busyindicator/apicheck_busyindicator.h \
@@ -31,7 +32,8 @@ SOURCES += tst_apicheck.cpp \
            slider/apicheck_slider.cpp \
            textfield/apicheck_textfield.cpp \
            radiobutton/apicheck_radiobutton.cpp \
-           textarea/apicheck_textarea.cpp
+           textarea/apicheck_textarea.cpp \
+           pagestack/apicheck_pagestack.cpp
 
 !symbian3:SOURCES += \
            busyindicator/apicheck_busyindicator.cpp \
