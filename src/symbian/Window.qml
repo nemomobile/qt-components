@@ -44,7 +44,12 @@ Item {
             return false;
         popupObj.open();
        return true;
-   }
+    }
+
+    Rectangle {
+        anchors.fill: parent
+        color: "black"
+    }
 
     Binding { target: window; property: "height"; value: screen.height; when: screen.height > 0 }
     Binding { target: window; property: "width"; value: screen.width; when: screen.width > 0 }

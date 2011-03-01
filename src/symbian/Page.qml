@@ -100,9 +100,4 @@ Item {
                 screen.orientation = Screen.Portrait;
         }
     }
-
-    Rectangle {
-        anchors.fill: parent
-        color: "black"
-    }
 }
