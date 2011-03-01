@@ -86,7 +86,6 @@ private:
 
 private:
     mutable bool updateOnScreenAreaChange;
-    mutable bool listeningDisplayChange;
 };
 
 #endif // SSTYLEWRAPPER_P_H

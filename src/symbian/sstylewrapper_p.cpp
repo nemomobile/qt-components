@@ -57,10 +57,14 @@ static const qreal DEFAULT_DP_PER_DPI = 160.0;
 // which like to share the same data.
 struct SStyleWrapperData
 {
-    SStyleWrapperData() : screenAreaDependentParametersUpToDate(false), graphicsView(0) { }
+    SStyleWrapperData() :
+        screenAreaDependentParametersUpToDate(false),
+        instancesNotifiedOnScreenChange(0),
+        graphicsView(0) { }
     QHash<QString, quint32> colorMappings;
     QHash<QString, qreal> layoutParameterMappings;
     bool screenAreaDependentParametersUpToDate;
+    int instancesNotifiedOnScreenChange;
     QGraphicsView *graphicsView;
     QPointer<QObject> screen;
 };
@@ -133,6 +137,7 @@ static void loadVariables(const QString &filename)
 
 static void setScreenSizeParameters()
 {
+    // Cannot use the screen.size() because the geometry is not updated early enough on application start.
     QSize screenSize;
 #ifdef Q_OS_SYMBIAN
     screenSize = QApplication::desktop()->screenGeometry().size();
@@ -155,13 +160,15 @@ SStyleWrapperPrivate::SStyleWrapperPrivate(SStyleWrapper *qq) :
     styleClass(),
     styleType(),
     styleObjectName(),
-    updateOnScreenAreaChange(false),
-    listeningDisplayChange(false)
+    updateOnScreenAreaChange(false)
 {
 }
 
 SStyleWrapperPrivate::~SStyleWrapperPrivate()
 {
+    if (updateOnScreenAreaChange)
+        if ((--styleData()->instancesNotifiedOnScreenChange) == 0)
+            styleData()->screenAreaDependentParametersUpToDate = false;
 }
 
 QFont SStyleWrapperPrivate::fetchFont(SStyleWrapper::FontRole role, qreal textPaneHeight) const
@@ -246,7 +253,6 @@ qreal SStyleWrapperPrivate::fetchLayoutParameter(const QString &layoutParameterN
     if (!styleData()->layoutParameterMappings.count()) {
         loadVariables(QLatin1String(":/layouts/globalparameters.css"));
         setScreenSizeParameters();
-        styleData()->screenAreaDependentParametersUpToDate = true;
     }
 
     if (styleData()->layoutParameterMappings.contains(layoutParameterName)) {
@@ -266,6 +272,7 @@ qreal SStyleWrapperPrivate::fetchLayoutParameter(const QString &layoutParameterN
                     styleData()->graphicsView->installEventFilter(q_ptr);
 #endif
                 updateOnScreenAreaChange = true;
+                styleData()->instancesNotifiedOnScreenChange++;
             }
         }
 
@@ -315,16 +322,14 @@ void SStyleWrapperPrivate::initScreenPtr() const
         QDeclarativeContext *context = QDeclarativeEngine::contextForObject(q);
         if (context)
             styleData()->screen = qVariantValue<QObject *>(context->contextProperty(QLatin1String("screen")));
-    }
 
 #ifndef Q_OS_SYMBIAN
-    // Reloads the layout parameters when the display changes
-    // in symbian, the orientation switch does not result a "display change".
-    if (styleData()->screen && !listeningDisplayChange) {
-        QObject::connect(styleData()->screen, SIGNAL(displayChanged()), q, SLOT(_q_displayChanged()));
-        listeningDisplayChange = true;
-    }
+        // Reloads the layout parameters when the display changes.
+        // In Symbian, the orientation switch does not result a "display change".
+        if (styleData()->screen)
+            QObject::connect(styleData()->screen, SIGNAL(displayChanged()), q, SLOT(_q_displayChanged()));
 #endif // !Q_OS_SYMBIAN
+    }
 }
 
 QVariant SStyleWrapperPrivate::buttonProperty(const QString &propertyName) const
