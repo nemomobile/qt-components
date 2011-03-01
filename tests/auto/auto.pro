@@ -31,6 +31,7 @@ symbian3 {
     SUBDIRS += \
         api_button \
         api_checkbox \
+        api_dialog \
         api_slider \
         #api_pagestack \
         api_progressbar \
