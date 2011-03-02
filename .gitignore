@@ -50,6 +50,10 @@ release/
 /tests/auto/api_textarea/tst_quickcomponentstextarea
 /tests/auto/api_textfield/tst_quickcomponentstextfield
 /tests/auto/api_toolbar/tst_quickcomponentstoolbar
+/tests/auto/maketestselftest/checktest/checktest
+/tests/auto/maketestselftest/dummy_output
+/tests/auto/maketestselftest/test/tst_maketestselftest
+/tests/auto/maketestselftest/test/tst_maketestselftest.app
 /tests/auto/mlocalthemedaemonclient/mlocalthemedaemonclient
 /tests/auto/mremotethemedaemonclient/mremotethemedaemonclient
 /tests/auto/qrangemodel/qrangemodel
