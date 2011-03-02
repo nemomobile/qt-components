@@ -59,6 +59,13 @@ Item {
 
     visible: false
 
+    Component.onCompleted: {
+        if (!width)
+            width = style.current.preferredWidth
+        if (!height)
+            height = style.current.preferredHeight
+    }
+
     Popup {
         id: dialog
 
@@ -70,8 +77,8 @@ Item {
             return root.height > style.current.get("maxHeight") ? style.current.get("maxHeight") : root.height
         }
 
-        width: root.width ? getWidth() : style.current.preferredWidth
-        height: root.height ? getHeight() : style.current.preferredHeight
+        width: getWidth()
+        height: getHeight()
         state: "Hidden"
         visible: true
         anchors.centerIn: parent
