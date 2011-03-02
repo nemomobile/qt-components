@@ -64,13 +64,17 @@ SDeclarativeScreenPrivate::SDeclarativeScreenPrivate(SDeclarativeScreen *qq) :
     Q_UNUSED(DEFAULT_HEIGHT)
     QSize initScreenSize = currentScreenSize();
 #ifndef __WINS__
-    int twipsHor(0);
-    int twipsVer(0);
+    int twipsX(0);
+    int twipsY(0);
+    int pixelsX(0);
+    int pixelsY(0);
 
-    if (HAL::Get(HALData::EDisplayXTwips, twipsHor) == KErrNone
-        && HAL::Get(HALData::EDisplayYTwips, twipsVer) == KErrNone) {
-        dpi = 0.5 * ((initScreenSize.width() / (twipsHor / DEFAULT_TWIPS_PER_INCH)) +
-                     (initScreenSize.height() / (twipsVer / DEFAULT_TWIPS_PER_INCH)));
+    if (HAL::Get(HALData::EDisplayXTwips, twipsX) == KErrNone
+        && HAL::Get(HALData::EDisplayYTwips, twipsY) == KErrNone
+        && HAL::Get(HALData::EDisplayXPixels, pixelsX) == KErrNone
+        && HAL::Get(HALData::EDisplayYPixels, pixelsY) == KErrNone) {
+        dpi = 0.5 * ((pixelsX / (twipsX / DEFAULT_TWIPS_PER_INCH)) +
+                     (pixelsY / (twipsY / DEFAULT_TWIPS_PER_INCH)));
     }
 #endif // __WINS__
 #else
