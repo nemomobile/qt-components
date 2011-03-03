@@ -32,6 +32,7 @@
 #include <QSet>
 #include <QProcess>
 #include <QDebug>
+#include <QLibraryInfo>
 
 enum FindSubdirsMode {
     Flat = 0,
@@ -352,7 +353,8 @@ QStringList tst_MakeTestSelfTest::find_subdirs(QString const& pro_file, FindSubd
     env.insert("QMAKEFEATURES", features);
     proc.setProcessEnvironment(env);
 
-    proc.start("qmake", args);
+    QDir binDir(QLibraryInfo::location(QLibraryInfo::BinariesPath));
+    proc.start(binDir.filePath("qmake"), args);
     if (!proc.waitForStarted(10000)) {
         QTest::qFail(qPrintable(QString("Failed to run qmake: %1\nCommand: %2")
             .arg(proc.errorString())
