@@ -41,6 +41,7 @@ Item {
 
     function open() {
         dialog.open()
+        dialog.focus = true
     }
 
     function accept() {
