@@ -2,7 +2,7 @@ This source tree contains the Qt Components project.
 
 Building
 ========
-configure (for compiling specific component sets add '-config mx', '-config meego' and/or '-config symbian3')
+configure (for compiling specific component sets add '-config meego' and/or '-config symbian3')
 make
 make install
 
@@ -10,10 +10,9 @@ The project is divided into:
 
 - The module Qt.labs.components: _for now_ contains general purpose helpers for QML.
 
-and also (for the time being) three QML modules for component sets implemented using those components
+and also (for the time being) two QML modules for component sets implemented using those components
 
 - com.meego: components from MeeGo Touch UI library,
-- Qt.labs.Mx: set of UI components inspired by the Mx toolkit,
 - com.nokia.symbian: set of UI components for Symbian.
 
 The lib will install in QTDIR/lib, while the modules will go to QTDIR/imports.
