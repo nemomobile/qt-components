@@ -115,7 +115,7 @@ void tst_quickcomponentstextfield::initTestCase()
     // select a font from the database
     QFontDatabase database;
     family = database.families().at(0);
-    fontSize = database.smoothSizes(family, "Normal").at(0);
+    fontSize = database.smoothSizes(family, database.styles(family).at(0)).at(0);
 
     // create the font based on the one found in the system and set it
     mfont = QFont(family, fontSize);
