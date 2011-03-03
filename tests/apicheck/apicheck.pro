@@ -9,18 +9,18 @@ HEADERS += base/apicheckbase.h \
            button/apicheck_button.h \
            checkbox/apicheck_checkbox.h \
            choicelist/apicheck_choicelist.h \
+           page/apicheck_page.h \
+           pagestack/apicheck_pagestack.h \
+           progressbar/apicheck_progressbar.h \
+           radiobutton/apicheck_radiobutton.h \
+           scrolldecorator/apicheck_scrolldecorator.h \
            slider/apicheck_slider.h \
            tabbutton/apicheck_tabbutton.h \
            tabgroup/apicheck_tabgroup.h \
-           textfield/apicheck_textfield.h \
-           progressbar/apicheck_progressbar.h \
-           radiobutton/apicheck_radiobutton.h \
            textarea/apicheck_textarea.h \
-           scrolldecorator/apicheck_scrolldecorator.h \
-           window/apicheck_window.h \
-           page/apicheck_page.h \
-           pagestack/apicheck_pagestack.h \
-           toolbar/apicheck_toolbar.h
+           textfield/apicheck_textfield.h \
+           toolbar/apicheck_toolbar.h \
+           window/apicheck_window.h
 
 !symbian3:HEADERS += \
            busyindicator/apicheck_busyindicator.h \
@@ -32,16 +32,16 @@ SOURCES += tst_apicheck.cpp \
            button/apicheck_button.cpp \
            checkbox/apicheck_checkbox.cpp \
            choicelist/apicheck_choicelist.cpp \
+           page/apicheck_page.cpp \
+           pagestack/apicheck_pagestack.cpp \
+           radiobutton/apicheck_radiobutton.cpp \
            slider/apicheck_slider.cpp \
            tabbutton/apicheck_tabbutton.cpp \
            tabgroup/apicheck_tabgroup.cpp \
-           textfield/apicheck_textfield.cpp \
-           radiobutton/apicheck_radiobutton.cpp \
            textarea/apicheck_textarea.cpp \
-           window/apicheck_window.cpp \
-           page/apicheck_page.cpp \
-           pagestack/apicheck_pagestack.cpp \
-           toolbar/apicheck_toolbar.cpp
+           textfield/apicheck_textfield.cpp \
+           toolbar/apicheck_toolbar.cpp \
+           window/apicheck_window.cpp
 
 !symbian3:SOURCES += \
            busyindicator/apicheck_busyindicator.cpp \
