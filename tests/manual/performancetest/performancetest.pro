@@ -14,7 +14,7 @@ RESOURCES += performancetest.qrc
 symbian {
     TARGET.EPOCALLOWDLLDATA = 1
     TARGET.UID3 = 0x200346E6
-    TARGET.EPOCHEAPSIZE = 0x1000 0xF00000
+    TARGET.EPOCHEAPSIZE = 0x1000 0x1F00000
     TARGET.CAPABILITY = CAP_APPLICATION AllFiles
     performancetest_qmls1.sources = *.qml
     performancetest_qmls2.sources = tests/*.qml
