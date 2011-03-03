@@ -19,13 +19,13 @@ HEADERS += base/apicheckbase.h \
            scrolldecorator/apicheck_scrolldecorator.h \
            window/apicheck_window.h \
            page/apicheck_page.h \
-           pagestack/apicheck_pagestack.h
+           pagestack/apicheck_pagestack.h \
+           toolbar/apicheck_toolbar.h
 
 !symbian3:HEADERS += \
            busyindicator/apicheck_busyindicator.h \
            buttoncolumn/apicheck_buttoncolumn.h \
-           buttonrow/apicheck_buttonrow.h \
-           toolbar/apicheck_toolbar.h
+           buttonrow/apicheck_buttonrow.h
 
 SOURCES += tst_apicheck.cpp \
            base/apicheckbase.cpp \
@@ -40,10 +40,10 @@ SOURCES += tst_apicheck.cpp \
            textarea/apicheck_textarea.cpp \
            window/apicheck_window.cpp \
            page/apicheck_page.cpp \
-           pagestack/apicheck_pagestack.cpp
+           pagestack/apicheck_pagestack.cpp \
+           toolbar/apicheck_toolbar.cpp
 
 !symbian3:SOURCES += \
            busyindicator/apicheck_busyindicator.cpp \
            buttoncolumn/apicheck_buttoncolumn.cpp \
-           buttonrow/apicheck_buttonrow.cpp \
-           toolbar/apicheck_toolbar.cpp
+           buttonrow/apicheck_buttonrow.cpp

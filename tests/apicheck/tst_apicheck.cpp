@@ -42,13 +42,10 @@
 #include "window/apicheck_window.h"
 #include "page/apicheck_page.h"
 #include "pagestack/apicheck_pagestack.h"
-
-#ifndef Q_COMPONENTS_SYMBIAN
+#include "toolbar/apicheck_toolbar.h"
 #include "busyindicator/apicheck_busyindicator.h"
 #include "buttoncolumn/apicheck_buttoncolumn.h"
 #include "buttonrow/apicheck_buttonrow.h"
-#include "toolbar/apicheck_toolbar.h"
-#endif
 
 int main(int argc, char *argv[])
 {
@@ -94,12 +91,12 @@ int main(int argc, char *argv[])
     ApiCheckWindow window(engine, module);
     ApiCheckPage page(engine, module);
     ApiCheckPageStack pageStack(engine, module);
+    ApiCheckToolBar toolBar(engine, module);
 
 #ifndef Q_COMPONENTS_SYMBIAN
     ApiCheckBusyIndicator busyIndicator(engine, module);
     ApiCheckButtonColumn buttonColumn(engine, module);
     ApiCheckButtonRow buttonRow(engine, module);
-    ApiCheckToolBar toolBar(engine, module);
 #endif
 
     int ret = 0;
@@ -117,12 +114,12 @@ int main(int argc, char *argv[])
     ret |= QTest::qExec(&window, args);
     ret |= QTest::qExec(&page, args);
     ret |= QTest::qExec(&pageStack, args);
+    ret |= QTest::qExec(&toolBar, args);
 
 #ifndef Q_COMPONENTS_SYMBIAN
     ret |= QTest::qExec(&busyIndicator, args);
     ret |= QTest::qExec(&buttonColumn, args);
     ret |= QTest::qExec(&buttonRow, args);
-    ret |= QTest::qExec(&toolBar, args);
 #endif
 
     return ret;
