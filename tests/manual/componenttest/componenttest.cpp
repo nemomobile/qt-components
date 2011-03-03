@@ -24,7 +24,7 @@
 **
 ****************************************************************************/
 
-#if defined(Q_COMPONENTS_SYMBIAN3) && !defined(Q_OS_SYMBIAN)
+#if defined(Q_COMPONENTS_SYMBIAN) && !defined(Q_OS_SYMBIAN)
 #include "settingswindow.h"
 #endif
 #include "utils.h"
@@ -52,7 +52,7 @@ int main(int argc, char **argv)
     view.show();
 #endif
 
-#if defined(Q_COMPONENTS_SYMBIAN3) && !defined(Q_OS_SYMBIAN)
+#if defined(Q_COMPONENTS_SYMBIAN) && !defined(Q_OS_SYMBIAN)
     SettingsWindow settingsWindow(&view);
 #endif
     return app.exec();
