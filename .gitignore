@@ -19,6 +19,7 @@ qrc_*.cpp
 *.intermediate.manifest
 *.Debug
 *.Release
+*.xcodeproj
 *.sln
 *.suo
 *.vcproj
