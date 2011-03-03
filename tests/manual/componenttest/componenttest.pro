@@ -21,8 +21,10 @@ symbian {
     componenttest_qmls2.path = tests
     componenttest_qmls3.sources = tests/utils/*.qml
     componenttest_qmls3.path = tests/utils
+    componenttest_qmls4.sources = tests/content/*.qml
+    componenttest_qmls4.path = tests/content
     componenttest_js.sources = *.js
-    DEPLOYMENT += componenttest_qmls1 componenttest_qmls2 componenttest_qmls3 componenttest_js
+    DEPLOYMENT += componenttest_qmls1 componenttest_qmls2 componenttest_qmls3 componenttest_qmls4 componenttest_js
     BLD_INF_RULES.prj_exports += "componenttest.iby $$CORE_APP_LAYER_IBY_EXPORT_PATH(componenttest.iby)"
 }
 
@@ -43,5 +45,10 @@ OTHER_FILES += \
     tests/Slider.qml \
     tests/Tabs.qml \
     tests/TextArea.qml \
+    tests/TextField.qml \
+    tests/TextFieldFont.qml \
+    tests/TextFieldOther.qml \
+    tests/TextFieldSelection.qml \
     tests/ToolButton.qml \
-    tests/ViewMenu.qml
+    tests/ViewMenu.qml \
+    tests/content/InputMethodHints.qml
