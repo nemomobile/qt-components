@@ -75,6 +75,7 @@ QML_FILES = \
     TabGroup.qml \
     TextArea.qml \
     TextField.qml \
+    ToolBar.qml \
     ToolButton.qml \
     ToolTip.qml \
     ViewMenu.qml \
