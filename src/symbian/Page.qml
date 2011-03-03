@@ -37,6 +37,9 @@ Item {
     //      PageStatus.Deactivating - the page is transitioning into becoming inactive
     property int status: PageStatus.Inactive
 
+    // TODO: implement
+    property Item tools: null
+
     property PageStack pageStack
     property bool lockInLandscape: false
     property bool lockInPortrait: false

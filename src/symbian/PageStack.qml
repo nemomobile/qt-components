@@ -41,6 +41,9 @@ Item {
     property int depth: Engine.getDepth()
     property Item currentPage: null
 
+    // TODO: implement
+    property ToolBar toolBar: null
+
     // Indicates whether there is an ongoing page transition.
     property bool busy: internal.ongoingTransitionCount > 0
 
