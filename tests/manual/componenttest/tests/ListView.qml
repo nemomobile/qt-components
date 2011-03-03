@@ -287,6 +287,14 @@ Item {
                 notificationDialog.open()
             }
             onPressAndHold: objectmenu.open()
+
+            Keys.onPressed: {
+                if (event.key == Qt.Key_Backspace ||event.key == Qt.Key_Delete) {
+                    if (listView.currentIndex >= 0)
+                        listView.model.remove(listView.currentIndex)
+                }
+            }
+
         }
     }
 
