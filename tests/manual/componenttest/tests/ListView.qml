@@ -151,6 +151,7 @@ Item {
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
         }
+        onAccepted: listView.forceActiveFocus()
     }
 
     Dialog {
@@ -225,6 +226,7 @@ Item {
                 "disabled": false,
                 "selected": false,
                 "sectionIdentifier": 0} )
+            listView.forceActiveFocus()
         }
     }
 
