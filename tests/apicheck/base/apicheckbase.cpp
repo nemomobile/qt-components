@@ -28,7 +28,6 @@
 #include <QtDeclarative/qdeclarativeengine.h>
 #include <QtDeclarative/qdeclarativecomponent.h>
 
-
 ApiCheckBase::ApiCheckBase(QDeclarativeEngine *engine, const QString &module)
     : QObject(),
       m_module(module),
@@ -126,3 +125,4 @@ void ApiCheckBase::validateMethod(const char *methodName) const
     QVERIFY2(meta->indexOfMethod(methodName) != -1,
              qPrintable(QString("method '%1.%2' not found").arg(m_name).arg(methodName)));
 }
+

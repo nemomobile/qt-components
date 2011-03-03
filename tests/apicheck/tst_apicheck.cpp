@@ -31,6 +31,7 @@
 #include "slider/apicheck_slider.h"
 #include "button/apicheck_button.h"
 #include "checkbox/apicheck_checkbox.h"
+#include "dialog/apicheck_dialog.h"
 #include "radiobutton/apicheck_radiobutton.h"
 #include "textfield/apicheck_textfield.h"
 #include "progressbar/apicheck_progressbar.h"
@@ -42,10 +43,15 @@
 #include "window/apicheck_window.h"
 #include "page/apicheck_page.h"
 #include "pagestack/apicheck_pagestack.h"
-#include "toolbar/apicheck_toolbar.h"
 #include "busyindicator/apicheck_busyindicator.h"
 #include "buttoncolumn/apicheck_buttoncolumn.h"
 #include "buttonrow/apicheck_buttonrow.h"
+#include "contextmenu/apicheck_contextmenu.h"
+#include "menu/apicheck_menu.h"
+#include "menuitem/apicheck_menuitem.h"
+#include "querydialog/apicheck_querydialog.h"
+#include "selectiondialog/apicheck_selectiondialog.h"
+#include "toolbar/apicheck_toolbar.h"
 
 int main(int argc, char *argv[])
 {
@@ -80,46 +86,58 @@ int main(int argc, char *argv[])
     ApiCheckSlider slider(engine, module);
     ApiCheckButton button(engine, module);
     ApiCheckCheckBox checkbox(engine, module);
+    ApiCheckDialog dialog(engine, module);
     ApiCheckTextField textField(engine, module);
     ApiCheckRadioButton radioButton(engine, module);
     ApiCheckProgressBar progressBar(engine, module);
     ApiCheckTabButton tabButton(engine, module);
     ApiCheckTabGroup tabGroup(engine, module);
     ApiCheckTextArea textArea(engine, module);
+    ApiCheckToolBar toolBar(engine, module);
     ApiCheckScrollDecorator scrollDecorator(engine, module);
     ApiCheckChoiceList choiceList(engine, module);
     ApiCheckWindow window(engine, module);
     ApiCheckPage page(engine, module);
     ApiCheckPageStack pageStack(engine, module);
-    ApiCheckToolBar toolBar(engine, module);
 
 #ifndef Q_COMPONENTS_SYMBIAN
     ApiCheckBusyIndicator busyIndicator(engine, module);
     ApiCheckButtonColumn buttonColumn(engine, module);
     ApiCheckButtonRow buttonRow(engine, module);
+    ApiCheckContextMenu contextMenu(engine, module);
+    ApiCheckMenu menu(engine, module);
+    ApiCheckMenuItem menuItem(engine, module);
+    ApiCheckQueryDialog querydialog(engine, module);
+    ApiCheckSelectionDialog selectiondialog(engine, module);
 #endif
 
     int ret = 0;
     ret |= QTest::qExec(&slider, args);
     ret |= QTest::qExec(&button, args);
     ret |= QTest::qExec(&checkbox, args);
+    ret |= QTest::qExec(&dialog, args);
     ret |= QTest::qExec(&textField, args);
     ret |= QTest::qExec(&radioButton, args);
     ret |= QTest::qExec(&progressBar, args);
     ret |= QTest::qExec(&tabButton, args);
     ret |= QTest::qExec(&tabGroup, args);
+    ret |= QTest::qExec(&toolBar, argc);
     ret |= QTest::qExec(&textArea, args);
     ret |= QTest::qExec(&scrollDecorator, args);
     ret |= QTest::qExec(&choiceList, args);
     ret |= QTest::qExec(&window, args);
-    ret |= QTest::qExec(&page, args);
-    ret |= QTest::qExec(&pageStack, args);
-    ret |= QTest::qExec(&toolBar, args);
+    ret |= QTest::qExec(&page, argc);
+    ret |= QTest::qExec(&pageStack, argc);
 
 #ifndef Q_COMPONENTS_SYMBIAN
     ret |= QTest::qExec(&busyIndicator, args);
     ret |= QTest::qExec(&buttonColumn, args);
     ret |= QTest::qExec(&buttonRow, args);
+    ret |= QTest::qExec(&contextMenu, argc);
+    ret |= QTest::qExec(&menu, argc);
+    ret |= QTest::qExec(&menuItem, args);
+    ret |= QTest::qExec(&querydialog, args);
+    ret |= QTest::qExec(&selectiondialog, args);
 #endif
 
     return ret;
