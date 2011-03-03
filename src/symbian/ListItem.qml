@@ -200,7 +200,7 @@ ImplicitSizeItem {
         height: itemStyle.current.get("marginTop") + itemStyle.current.get("marginBottom")
     }
 
-    Item {
+    StateGroup {
         id: internal
 
         function press() {
