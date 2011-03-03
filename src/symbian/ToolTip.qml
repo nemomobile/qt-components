@@ -114,7 +114,9 @@ ImplicitSizeItem {
 
        clip: true
        color: style.current.get("color")
-       elide: Text.ElideRight
+       // TODO: See http://bugreports.qt.nokia.com/browse/QTBUG-16093
+       // Enable when Qt Quick 1.1 hit Qt.
+       // elide: Text.ElideRight
        font: style.current.get("font")
        verticalAlignment: Text.AlignVCenter
 
