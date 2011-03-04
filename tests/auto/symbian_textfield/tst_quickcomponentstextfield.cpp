@@ -28,6 +28,8 @@
 #include <QGraphicsObject>
 #include "tst_quickcomponentstest.h"
 
+static const QString EDITOR_STYLE_FONT = "Nokia Sans,-1,14,5,50,0,0,0,0,0";
+
 class tst_quickcomponentstextfield : public QObject
 {
     Q_OBJECT
@@ -37,9 +39,11 @@ private slots:
     void defaultPropertyValues();
     void acceptableInput();
     void implicitSize();
+    void font();
 
 private:
     QObject* m_componentObject;
+    QScopedPointer<QDeclarativeView> m_view;
 };
 
 void tst_quickcomponentstextfield::initTestCase()
@@ -47,21 +51,31 @@ void tst_quickcomponentstextfield::initTestCase()
     QString errors;
     m_componentObject = tst_quickcomponentstest::createComponentFromFile("tst_quickcomponentstextfield.qml", &errors);
     QVERIFY2(m_componentObject, qPrintable(errors));
+
+    m_view.reset(tst_quickcomponentstest::createDeclarativeView("tst_quickcomponentstextfield.qml"));
+    QTest::qWaitForWindowShown(m_view.data());
+    QVERIFY(m_view.data());
+    QVERIFY(m_view->rootObject());
+    QTRY_COMPARE(QApplication::activeWindow(), static_cast<QWidget *>(m_view.data()));
 }
 
 void tst_quickcomponentstextfield::defaultPropertyValues()
 {
     QGraphicsObject* textField = m_componentObject->findChild<QGraphicsObject*>("textField");
+    QGraphicsObject *placeHolder = m_view->rootObject()->findChild<QGraphicsObject*>("placeholder");
     QVERIFY(textField);
+    QVERIFY(placeHolder);
 
     QVERIFY(textField->property("placeholderText").isValid());
     QVERIFY(textField->property("placeholderText").toString().isEmpty());
+    QVERIFY(placeHolder->property("font").isValid());
+    QCOMPARE(placeHolder->property("font").toString(), EDITOR_STYLE_FONT);
 
     QVERIFY(textField->property("inputMethodHints").isValid());
     QCOMPARE(textField->property("inputMethodHints").toInt(), int(Qt::ImhNone));
 
     QVERIFY(textField->property("font").isValid());
-    QCOMPARE(textField->property("font").toString(), QString("Nokia Sans,-1,14,5,50,0,0,0,0,0"));
+    QCOMPARE(textField->property("font").toString(), EDITOR_STYLE_FONT);
 
     QVERIFY(textField->property("cursorPosition").isValid());
 
@@ -128,6 +142,26 @@ void tst_quickcomponentstextfield::implicitSize()
     textField->setProperty("font", font);
     QVERIFY(textField->property("implicitWidth").toInt() > implicitWidth);
     QVERIFY(textField->property("implicitHeight").toInt() > implicitHeight);
+}
+
+void tst_quickcomponentstextfield::font()
+{
+    QGraphicsObject *textField = m_view->rootObject()->findChild<QGraphicsObject*>("textField");
+    QGraphicsObject *textInput = m_view->rootObject()->findChild<QGraphicsObject*>("textInput");
+    QGraphicsObject *placeHolder = m_view->rootObject()->findChild<QGraphicsObject*>("placeholder");
+    QVERIFY(textField);
+    QVERIFY(textInput);
+    QVERIFY(placeHolder);
+
+    QFont font;
+    font.setBold(true);
+    font.setPixelSize(25);
+    font.setFamily("Arial");
+    textField->setProperty("font", font);
+
+    QCOMPARE(font, textField->property("font").value<QFont>());
+    QCOMPARE(font, textInput->property("font").value<QFont>());
+    QCOMPARE(font, placeHolder->property("font").value<QFont>());
 }
 
 QTEST_MAIN(tst_quickcomponentstextfield)

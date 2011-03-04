@@ -121,14 +121,16 @@ ImplicitSizeItem {
 
         Text {
             id: placeholder
+            objectName: "placeholder"
             anchors.fill: parent
             color: style.current.get("placeholderColor")
-            font: style.current.get("font")
+            font: textInput.font
             visible: !textInput.activeFocus && !textInput.text && text
         }
 
         TextInput {
             id: textInput
+            objectName: "textInput"
             anchors.fill: parent
             color: style.current.get("color")
             font: style.current.get("font")

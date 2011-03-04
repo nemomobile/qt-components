@@ -104,7 +104,7 @@ ImplicitSizeItem {
         id: privy
         // TODO: More consistent minimum width for empty TextArea than 20 * " " on current font?
         property real minImplicitWidth: placeholder.text ? placeholder.model.paintedWidth
-                                                         : style.textWidth("                    ", style.current.get("font"))
+                                                         : style.textWidth("                    ", textEdit.font)
         property real minImplicitHeight: placeholder.text ? placeholder.model.paintedHeight
                                                           : style.fontHeight(style.current.get("font"))
     }
@@ -140,7 +140,7 @@ ImplicitSizeItem {
 
             // TODO: See TODO: Refactor implicit size...
             property variant model: Text {
-                font: style.current.get("font")
+                font: textEdit.font
                 text: placeholder.text
                 visible: false
                 wrapMode: textEdit.wrapMode
@@ -152,7 +152,7 @@ ImplicitSizeItem {
             }
 
             color: style.current.get("placeholderColor")
-            font: style.current.get("font")
+            font: textEdit.font
             opacity: visible ? 1 : 0
             visible: (!textEdit.activeFocus || textEdit.activeFocus && textEdit.readOnly) && !textEdit.text && text
             wrapMode: textEdit.wrapMode
@@ -190,7 +190,7 @@ ImplicitSizeItem {
 
                 // TODO: See TODO: Refactor implicit size...
                 property variant model: TextEdit {
-                    font: style.current.get("font")
+                    font: textEdit.font
                     text: textEdit.text
                     horizontalAlignment: textEdit.horizontalAlignment
                     verticalAlignment: textEdit.verticalAlignment

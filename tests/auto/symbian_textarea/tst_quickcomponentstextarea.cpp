@@ -29,6 +29,8 @@
 #include <QFont>
 #include "tst_quickcomponentstest.h"
 
+static const QString EDITOR_STYLE_FONT = "Nokia Sans,-1,14,5,50,0,0,0,0,0";
+
 class tst_quickcomponentstextarea : public QObject
 {
     Q_OBJECT
@@ -41,6 +43,7 @@ private slots:
     void placeholderTextAndPresetText();
     void placeholderTextAndReadOnly();
     void implicitSize();
+    void font();
 
 private:
     QObject* m_componentObject;
@@ -95,12 +98,14 @@ void tst_quickcomponentstextarea::validateSymbianProperties()
 void tst_quickcomponentstextarea::defaultPropertyValues()
 {
     QGraphicsObject* textArea = m_componentObject->findChild<QGraphicsObject*>("testTextArea");
+    QGraphicsObject *placeHolder = m_view->rootObject()->findChild<QGraphicsObject*>("placeholder");
     QVERIFY(textArea);
+    QVERIFY(placeHolder);
     QVariant property;
 
     // Font
     property = textArea->property("font");
-    QCOMPARE(property.toString(), QString("Nokia Sans,-1,14,5,50,0,0,0,0,0"));
+    QCOMPARE(property.toString(), EDITOR_STYLE_FONT);
 
     // CursorPosition
     property = textArea->property("cursorPosition");
@@ -156,6 +161,8 @@ void tst_quickcomponentstextarea::defaultPropertyValues()
     property = textArea->property("placeholderText");
     QString promptText = property.toString();
     QVERIFY(promptText.isEmpty());
+    property = placeHolder->property("font");
+    QCOMPARE(property.toString(), EDITOR_STYLE_FONT); // same as editor's font
 }
 
 void tst_quickcomponentstextarea::placeholderText()
@@ -379,6 +386,26 @@ void tst_quickcomponentstextarea::implicitSize()
     // Type some more
     textArea->setProperty("text", textArea->property("text").toString() + QString("A"));
     QCOMPARE(implicitHeight, maxImplicitHeight);
+}
+
+void tst_quickcomponentstextarea::font()
+{
+    QGraphicsObject *textArea = m_view->rootObject()->findChild<QGraphicsObject*>("testTextArea");
+    QGraphicsObject *textEdit = m_view->rootObject()->findChild<QGraphicsObject*>("textEdit");
+    QGraphicsObject *placeHolder = m_view->rootObject()->findChild<QGraphicsObject*>("placeholder");
+    QVERIFY(textArea);
+    QVERIFY(textEdit);
+    QVERIFY(placeHolder);
+
+    QFont font;
+    font.setBold(true);
+    font.setPixelSize(25);
+    font.setFamily("Arial");
+    textArea->setProperty("font", font);
+
+    QCOMPARE(font, textArea->property("font").value<QFont>());
+    QCOMPARE(font, textEdit->property("font").value<QFont>());
+    QCOMPARE(font, placeHolder->property("font").value<QFont>());
 }
 
 QTEST_MAIN(tst_quickcomponentstextarea)
