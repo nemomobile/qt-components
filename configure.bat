@@ -32,16 +32,124 @@ cd /D %SOURCE_TREE%
 set SOURCE_TREE=%CD%
 cd /D %BUILD_TREE%
 
+set BUILD_MEEGO_STYLE=no
+set BUILD_SYMBIAN_STYLE=no
+set BUILD_EXAMPLES=yes
+set BUILD_TESTS=yes
+set QMAKE_CONFIG=
+
 set QMAKE=qmake
 if not "%QTDIR%" == "" set QMAKE=%QTDIR%\bin\qmake
 
 set QMAKE_CACHE=%BUILD_TREE%\.qmake.cache
 if exist "%QMAKE_CACHE%" del /Q %QMAKE_CACHE%
 
+shift
+:parse
+if "%0" == ""           goto qmake
+if "%0" == "-meego"     goto meego
+if "%0" == "-symbian"   goto symbian
+if "%0" == "-make"      goto make
+if "%0" == "-nomake"    goto nomake
+if "%0" == "-config"    goto config
+if "%0" == "-help"      goto help
+if "%0" == "-h"         goto help
+
+:unknown
+echo Unknown option: %0
+:clean
+if exist "%QMAKE_CACHE%" del /Q %QMAKE_CACHE%
+goto end
+
+:meego
+set BUILD_MEEGO_STYLE=yes
+shift
+goto parse
+
+:symbian
+set BUILD_SYMBIAN_STYLE=yes
+shift
+goto parse
+
+:make
+shift
+if "%0" == "examples" goto examples
+if "%0" == "tests" goto tests
+shift
+goto unknown
+
+:examples
+set BUILD_EXAMPLES=yes
+shift
+goto parse
+
+:tests
+set BUILD_TESTS=yes
+shift
+goto parse
+
+:nomake
+shift
+if "%0" == "examples" goto noexamples
+if "%0" == "tests" goto notests
+shift
+goto unknown
+
+:noexamples
+set BUILD_EXAMPLES=no
+shift
+goto parse
+
+:notests
+set BUILD_TESTS=no
+shift
+goto parse
+
+:config
+shift
+set QMAKE_CONFIG=%QMAKE_CONFIG% %0
+shift
+goto parse
+
+:help
+echo.
+echo Usage:  configure [-meego] [-symbian] [-config (config)]
+echo         [-make (part)] [-nomake (part)] [-help]
+echo.
+echo Options:
+echo.
+echo    -meego ............ Build MeeGo Style
+echo    -symbian .......... Build Symbian Style
+echo    -config (config) .. Configuration options recognized by qmake
+echo    -make (part) ...... Add part to the list of parts to be built at
+echo                        make time (available parts: examples tests)
+echo    -nomake (part) .... Exclude part from the list of parts to be built
+echo.
+goto end
+
+:qmake
+if "%BUILD_MEEGO_STYLE%" == "yes" set QMAKE_CONFIG=%QMAKE_CONFIG% meego
+if "%BUILD_SYMBIAN_STYLE%" == "yes" set QMAKE_CONFIG=%QMAKE_CONFIG% symbian3
+if "%BUILD_EXAMPLES%" == "yes" set QMAKE_CONFIG=%QMAKE_CONFIG% examples
+if "%BUILD_TESTS%" == "yes" set QMAKE_CONFIG=%QMAKE_CONFIG% tests
+
 echo Q_COMPONENTS_SOURCE_TREE = %SOURCE_TREE:\=/% > %QMAKE_CACHE%
 echo Q_COMPONENTS_BUILD_TREE = %BUILD_TREE:\=/% >> %QMAKE_CACHE%
 
 echo.
 echo Running qmake...
-call %QMAKE% -r %* %SOURCE_TREE%\qt-components.pro 2> NUL
-if errorlevel 1 echo ERROR: Unable to detect qmake. Set QTDIR=\path\to\qt and re-run configure.bat.
+call %QMAKE% -r "CONFIG+=%QMAKE_CONFIG%" %SOURCE_TREE%\qt-components.pro 2> NUL
+if errorlevel 1 echo ERROR: qmake run failed.
+
+echo.
+echo.
+echo Qt Components build configuration:
+echo Congiguration ....................%QMAKE_CONFIG%
+echo MeeGo Style ...................... %BUILD_MEEGO_STYLE%
+echo Symbian Style .................... %BUILD_SYMBIAN_STYLE%
+echo Examples ......................... %BUILD_EXAMPLES%
+echo Tests ............................ %BUILD_TESTS%
+echo.
+echo Qt Components is now configured for building. Just run '(n)make'.
+echo.
+:end
