@@ -42,6 +42,7 @@ private slots:
     void placeholderText();
     void placeholderTextAndPresetText();
     void placeholderTextAndReadOnly();
+    void placeholderTextAndRichText();
     void implicitSize();
     void font();
 
@@ -187,8 +188,7 @@ void tst_quickcomponentstextarea::placeholderText()
     QCOMPARE(textArea->property("text").toString(), QString(""));
 
     // Focus textArea
-    QTest::mouseClick(m_view->viewport(), Qt::LeftButton, 0, m_view->mapFromScene(textArea->scenePos()));
-    QApplication::processEvents();
+    textEdit->setFocus(Qt::MouseFocusReason);
 
     QVERIFY(!placeHolder->property("visible").toBool());
     QVERIFY(textEdit->property("visible").toBool());
@@ -203,8 +203,7 @@ void tst_quickcomponentstextarea::placeholderText()
     QCOMPARE(textArea->property("text").toString(), QString("Test"));
 
     // Focus another component
-    QTest::mouseClick(m_view->viewport(), Qt::LeftButton, 0, m_view->mapFromScene(button->scenePos()));
-    QApplication::processEvents();
+    textEdit->clearFocus();
 
     QVERIFY(!placeHolder->property("visible").toBool());
     QVERIFY(textEdit->property("visible").toBool());
@@ -216,12 +215,9 @@ void tst_quickcomponentstextarea::placeholderText()
     // To avoid virtual keyboard on symbian
     textArea->setProperty("readOnly", QVariant(true));
 #endif
-    QTest::mouseClick(m_view->viewport(), Qt::LeftButton, 0, m_view->mapFromScene(textArea->scenePos()));
-    QApplication::processEvents();
-
+    textEdit->setFocus(Qt::MouseFocusReason);
     textArea->setProperty("text", QString(""));
-    QTest::mouseClick(m_view->viewport(), Qt::LeftButton, 0, m_view->mapFromScene(button->scenePos()));
-    QApplication::processEvents();
+    textEdit->clearFocus();
 
     QVERIFY(placeHolder->property("visible").toBool());
     QVERIFY(textEdit->property("visible").toBool());
@@ -262,8 +258,7 @@ void tst_quickcomponentstextarea::placeholderTextAndPresetText()
     QCOMPARE(textArea->property("text").toString(), QString("Preset text here."));
 
     // Focus textArea
-    QTest::mouseClick(m_view->viewport(), Qt::LeftButton, 0, m_view->mapFromScene(textArea->scenePos()));
-    QApplication::processEvents();
+    textEdit->setFocus(Qt::MouseFocusReason);
 
     QVERIFY(!placeHolder->property("visible").toBool());
     QVERIFY(textEdit->property("visible").toBool());
@@ -271,8 +266,7 @@ void tst_quickcomponentstextarea::placeholderTextAndPresetText()
     QCOMPARE(textArea->property("text").toString(), QString("Preset text here."));
 
     // Focus out
-    QTest::mouseClick(m_view->viewport(), Qt::LeftButton, 0, m_view->mapFromScene(button->scenePos()));
-    QApplication::processEvents();
+    textEdit->clearFocus();
 
     QVERIFY(!placeHolder->property("visible").toBool());
     QVERIFY(textEdit->property("visible").toBool());
@@ -284,13 +278,9 @@ void tst_quickcomponentstextarea::placeholderTextAndPresetText()
     // To avoid virtual keyboard on symbian
     textArea->setProperty("readOnly", QVariant(true));
 #endif
-    QTest::mouseClick(m_view->viewport(), Qt::LeftButton, 0, m_view->mapFromScene(textArea->scenePos()));
-    QApplication::processEvents();
-
+    textEdit->setFocus(Qt::MouseFocusReason);
     textArea->setProperty("text", QString(""));
-
-    QTest::mouseClick(m_view->viewport(), Qt::LeftButton, 0, m_view->mapFromScene(button->scenePos()));
-    QApplication::processEvents();
+    textEdit->clearFocus();
 
     QVERIFY(placeHolder->property("visible").toBool());
     QVERIFY(textEdit->property("visible").toBool());
@@ -332,13 +322,47 @@ void tst_quickcomponentstextarea::placeholderTextAndReadOnly()
     QCOMPARE(textArea->property("text").toString(), QString(""));
 
     // Focus textArea
-    QTest::mouseClick(m_view->viewport(), Qt::LeftButton, 0, m_view->mapFromScene(textArea->scenePos()));
-    QApplication::processEvents();
+    textEdit->setFocus(Qt::MouseFocusReason);
 
-    QVERIFY(placeHolder->property("visible").toBool());
+    QVERIFY(!placeHolder->property("visible").toBool());
     QVERIFY(textEdit->property("visible").toBool());
     QCOMPARE(textArea->property("placeholderText").toString(), QString("placeholderText"));
     QCOMPARE(textArea->property("text").toString(), QString(""));
+
+    // Focus out
+    textEdit->clearFocus();
+}
+
+// rich text format is a special case, since in that case text property contains empty html tags
+void tst_quickcomponentstextarea::placeholderTextAndRichText()
+{
+    QGraphicsObject *textArea = m_view->rootObject()->findChild<QGraphicsObject*>("testTextArea");
+    QGraphicsObject *button = m_view->rootObject()->findChild<QGraphicsObject*>("testButton");
+    QGraphicsObject *textEdit = m_view->rootObject()->findChild<QGraphicsObject*>("textEdit");
+    QGraphicsObject *placeHolder = m_view->rootObject()->findChild<QGraphicsObject*>("placeholder");
+
+    QVERIFY(textArea);
+    QVERIFY(button);
+    QVERIFY(textEdit);
+    QVERIFY(placeHolder);
+
+    textArea->setProperty("text", QString(""));
+    textArea->setProperty("placeholderText", QString("placeholderText"));
+    textArea->setProperty("textFormat", QVariant(Qt::RichText));
+
+    // Prompt should be visible
+    QVERIFY(placeHolder->property("visible").toBool());
+    QVERIFY(textEdit->property("visible").toBool());
+    QCOMPARE(textArea->property("placeholderText").toString(), QString("placeholderText"));
+    QVERIFY(textArea->property("text").toString().length() > 0); // contains empty html tags
+
+    // Focus textArea
+    textEdit->setFocus(Qt::MouseFocusReason);
+
+    QVERIFY(!placeHolder->property("visible").toBool());
+    QVERIFY(textEdit->property("visible").toBool());
+    QCOMPARE(textArea->property("placeholderText").toString(), QString("placeholderText"));
+    QVERIFY(textArea->property("text").toString().length() > 0); // contains empty html tags
 }
 
 void tst_quickcomponentstextarea::implicitSize()

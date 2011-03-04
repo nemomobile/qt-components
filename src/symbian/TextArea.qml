@@ -153,8 +153,8 @@ ImplicitSizeItem {
 
             color: style.current.get("placeholderColor")
             font: textEdit.font
-            opacity: visible ? 1 : 0
-            visible: (!textEdit.activeFocus || textEdit.activeFocus && textEdit.readOnly) && !textEdit.text && text
+            visible: !textEdit.activeFocus && text &&
+                     (textEdit.paintedWidth == 0 && textEdit.paintedHeight <= textEdit.cursorRectangle.height)
             wrapMode: textEdit.wrapMode
             height: parent.height
             width: parent.width
