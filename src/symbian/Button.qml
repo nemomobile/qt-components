@@ -45,20 +45,19 @@ ImplicitSizeItem {
 
     property bool autoRepeat: false
     property bool longPress: false
-    property QtObject __style: style
 
     implicitWidth: {
         var prefWidth = 20;
 
         if (iconSource != "" && text)
             // leftMargin + iconWidth + padding + textWidth + rightMargin
-            prefWidth = icon.anchors.leftMargin + icon.sourceSize.width + label.anchors.leftMargin + style.textWidth(label.text, label.font) + label.anchors.rightMargin
+            prefWidth = icon.anchors.leftMargin + icon.sourceSize.width + label.anchors.leftMargin + privateStyle.textWidth(label.text, label.font) + label.anchors.rightMargin
         else if (iconSource != "")
             // leftMargin + iconWidth + rightMargin
             prefWidth = icon.anchors.leftMargin + icon.sourceSize.width + icon.anchors.rightMargin;
         else if (text)
             // leftMargin + textWidth + rightMargin
-            prefWidth = icon.anchors.leftMargin + style.textWidth(label.text, label.font) + label.anchors.rightMargin;
+            prefWidth = icon.anchors.leftMargin + privateStyle.textWidth(label.text, label.font) + label.anchors.rightMargin;
 
         return prefWidth;
     }
@@ -67,11 +66,11 @@ ImplicitSizeItem {
         var prefHeight = icon.anchors.topMargin + icon.anchors.bottomMargin;
 
         if (iconSource != "" && text)
-            prefHeight = prefHeight + Math.max(icon.sourceSize.height, style.fontHeight(label.font));
+            prefHeight = prefHeight + Math.max(icon.sourceSize.height, privateStyle.fontHeight(label.font));
         else if (iconSource != "")
             prefHeight = prefHeight + icon.sourceSize.height;
         else if (text)
-            prefHeight = prefHeight + style.fontHeight(label.font);
+            prefHeight = prefHeight + privateStyle.fontHeight(label.font);
 
         return prefHeight;
     }
@@ -82,6 +81,17 @@ ImplicitSizeItem {
 
         property int autoRepeatInterval: 50
 
+        function bg_postfix() {
+            if (stateGroup.state == "Pressed" || stateGroup.state == "PressAndHold")
+                return "pressed"
+            else if (focus && checked)
+                return "pressed"
+            else if (checked)
+                return "latched"
+            else
+                return "normal"
+        }
+
         function toggleChecked() {
             if (checkable)
                 checked = !checked;
@@ -89,9 +99,9 @@ ImplicitSizeItem {
 
         function press() {
             if (checkable && checked)
-                style.play(Symbian.SensitiveButton);
+                privateStyle.play(Symbian.SensitiveButton);
             else
-                style.play(Symbian.BasicButton);
+                privateStyle.play(Symbian.BasicButton);
         }
 
         function release() {
@@ -107,7 +117,7 @@ ImplicitSizeItem {
             clickedEffect.restart();
 
             if (!checkable || (checkable && !checked))
-                style.play(Symbian.BasicButton);
+                privateStyle.play(Symbian.BasicButton);
 
             button.clicked();
         }
@@ -123,7 +133,7 @@ ImplicitSizeItem {
 
         function repeat() {
             if (!checkable)
-                style.play(Symbian.SensitiveButton);
+                privateStyle.play(Symbian.SensitiveButton);
             button.clicked();
         }
     }
@@ -171,39 +181,24 @@ ImplicitSizeItem {
         ]
     }
 
-    Style {
-        id: style
-        styleClass: "Button"
-        mode: {
-            if (stateGroup.state == "Pressed" || stateGroup.state == "PressAndHold")
-                return "pressed"
-            else if (focus && checked)
-                return "pressed"
-            else if (checked)
-                return "checked"
-            else
-                return "default"
-        }
-    }
-
     BorderImage {
         id: background
-        source: style.current.get("background")
+        source: privateStyle.imagePath("qtg_fr_pushbutton_" + internal.bg_postfix());
         border { left: 20; top: 20; right: 20; bottom: 20 }
         anchors.fill: parent
     }
 
     Image {
         id: icon
-        sourceSize.width : style.current.get("iconWidth")
-        sourceSize.height : style.current.get("iconHeight")
+        sourceSize.width : platformStyle.graphicSizeSmall
+        sourceSize.height : platformStyle.graphicSizeSmall
         fillMode: Image.PreserveAspectFit
         smooth: true
 
-        anchors.leftMargin : style.current.get("iconMarginLeft")
-        anchors.rightMargin : style.current.get("iconMarginRight")
-        anchors.topMargin : style.current.get("iconMarginTop")
-        anchors.bottomMargin : style.current.get("iconMarginBottom")
+        anchors.leftMargin : platformStyle.paddingLarge
+        anchors.rightMargin : platformStyle.paddingLarge
+        anchors.topMargin : platformStyle.paddingLarge
+        anchors.bottomMargin : platformStyle.paddingLarge
         anchors.left: parent.left
         anchors.right: text == "" ? parent.right : undefined
         anchors.top: parent.top
@@ -213,8 +208,8 @@ ImplicitSizeItem {
     Text {
         id: label
         elide: Text.ElideRight
-        anchors.leftMargin: iconSource != "" ? style.current.get("textMarginLeftInner") : style.current.get("textMarginLeft")
-        anchors.rightMargin: style.current.get("textMarginRight")
+        anchors.leftMargin: iconSource != "" ? platformStyle.paddingMedium : platformStyle.paddingLarge
+        anchors.rightMargin: platformStyle.paddingLarge
 
         anchors.left: iconSource != "" ? icon.right : parent.left
         anchors.right: parent.right
@@ -223,8 +218,8 @@ ImplicitSizeItem {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
 
-        font: style.current.get("font")
-        color: style.current.get("textColor")
+        font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
+        color: platformStyle.colorNormalLight
     }
 
     MouseArea {

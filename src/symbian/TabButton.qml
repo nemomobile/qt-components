@@ -26,6 +26,7 @@
 
 import Qt 4.7
 
+//TODO: TabButton should not inherit Button as it has different style/layout spec
 Button {
     id: root
     property Item tab
@@ -35,10 +36,8 @@ Button {
             priv.tabGroup.currentTab = tab
     }
 
-    Component.onCompleted: __style.current.styleObjectName = "TabButton"
-
     checked: priv.tabGroup ? priv.tabGroup.currentTab == tab : false
-    implicitHeight: __style.current.preferredHeight
+    implicitHeight: screen.width < screen.height ? privateStyle.tabBarHeightPortrait : privateStyle.tabBarHeightLandscape
 
     QtObject {
         id: priv
