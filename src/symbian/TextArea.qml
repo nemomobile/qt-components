@@ -95,7 +95,7 @@ ImplicitSizeItem {
     }
 
     implicitHeight: {
-        var preferredHeight = Math.max(flick.contentHeight, privy.minImplicitHeight)
+        var preferredHeight = Math.max(flick.contentHeight, placeholder.model.paintedHeight)
         preferredHeight += container.anchors.topMargin + container.anchors.bottomMargin
         return Math.min(preferredHeight, root.maxImplicitHeight)
     }
@@ -105,8 +105,6 @@ ImplicitSizeItem {
         // TODO: More consistent minimum width for empty TextArea than 20 * " " on current font?
         property real minImplicitWidth: placeholder.text ? placeholder.model.paintedWidth
                                                          : style.textWidth("                    ", textEdit.font)
-        property real minImplicitHeight: placeholder.text ? placeholder.model.paintedHeight
-                                                          : style.fontHeight(style.current.get("font"))
     }
 
     Style {
