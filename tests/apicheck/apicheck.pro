@@ -4,7 +4,7 @@ TEMPLATE = app
 TARGET = tst_apicheck
 CONFIG += qtestlib testcase
 
-INCLUDEPATH += base
+INCLUDEPATH += . base
 
 HEADERS += base/apicheckbase.h \
            busyindicator/apicheck_busyindicator.h \
