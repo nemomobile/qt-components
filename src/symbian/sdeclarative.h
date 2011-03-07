@@ -135,6 +135,20 @@ public:
     };
 };
 
+class SPageOrientation : public QObject
+{
+    Q_OBJECT
+    Q_ENUMS(PageOrientation)
+
+public:
+    enum PageOrientation {
+        Automatic,
+        LockPortrait,
+        LockLandscape,
+        LockPrevious
+    };
+};
+
 class SPageStatus : public QObject
 {
     Q_OBJECT

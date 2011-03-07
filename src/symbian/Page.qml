@@ -41,8 +41,14 @@ Item {
     property Item tools: null
 
     property PageStack pageStack
-    property bool lockInLandscape: false
-    property bool lockInPortrait: false
+
+    property bool lockInLandscape: false // deprecated
+    onLockInLandscapeChanged: console.log("warning: Page.lockInLandscape is deprecated")
+    property bool lockInPortrait: false // deprecated
+    onLockInPortraitChanged: console.log("warning: Page.lockInPortrait is deprecated")
+
+    // Defines orientation lock for a page
+    property int orientationLock: PageOrientation.Automatic
 
     property string title // Deprecated
     onTitleChanged: console.log("warning: Page.title is deprecated")
@@ -60,12 +66,7 @@ Item {
             internal.orientationLockCheck();
     }
 
-    onLockInLandscapeChanged: {
-        if (status == PageStatus.Activating || status == PageStatus.Active)
-            internal.orientationLockCheck();
-    }
-
-    onLockInPortraitChanged: {
+    onOrientationLockChanged: {
         if (status == PageStatus.Activating || status == PageStatus.Active)
             internal.orientationLockCheck();
     }
@@ -84,23 +85,25 @@ Item {
         }
 
         function orientationLockCheck() {
-            // We are locked in both orientations
-            if (lockInLandscape && lockInPortrait) {
-                // lock to current orientation
-                screen.orientation = screen.orientation;
-                return;
+            switch (orientationLock) {
+            case PageOrientation.Automatic:
+                screen.orientation = Screen.Automatic
+                break
+            case PageOrientation.LockPortrait:
+                if (!isScreenInPortrait())
+                    screen.orientation = Screen.Portrait
+                break
+            case PageOrientation.LockLandscape:
+                if (!isScreenInLandscape())
+                    screen.orientation = Screen.Landscape
+                break
+            case PageOrientation.LockPrevious:
+                screen.orientation = screen.orientation
+                break
+            default:
+                // do nothing
+                break
             }
-
-            // We are not locked in any orientations
-            if (!lockInLandscape && !lockInPortrait) {
-                screen.orientation = Screen.Automatic;
-                return;
-            }
-
-            if (lockInLandscape && isScreenInPortrait())
-                screen.orientation = Screen.Landscape;
-            else if (lockInPortrait && isScreenInLandscape())
-                screen.orientation = Screen.Portrait;
         }
     }
 }

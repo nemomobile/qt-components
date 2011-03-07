@@ -71,6 +71,7 @@ public:
         qmlRegisterType<SStyleWrapper>(uri, 1, 0, "Style");
         qmlRegisterType<SDeclarativeImplicitSizeItem>(uri, 1, 0, "ImplicitSizeItem");
         qmlRegisterUncreatableType<SDialogStatus>(uri, 1, 0, "DialogStatus", "");
+        qmlRegisterUncreatableType<SPageOrientation>(uri, 1, 0, "PageOrientation", "");
         qmlRegisterUncreatableType<SPageStatus>(uri, 1, 0, "PageStatus", "");
     }
 };
