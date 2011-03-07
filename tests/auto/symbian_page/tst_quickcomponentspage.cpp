@@ -53,8 +53,7 @@ void tst_quickcomponentspage::validateProperties()
     QVERIFY(testPage);
     QVERIFY(testPage->property("status").isValid());
     QVERIFY(testPage->property("pageStack").isValid());
-    QVERIFY(testPage->property("lockInLandscape").isValid());
-    QVERIFY(testPage->property("lockInPortrait").isValid());
+    QVERIFY(testPage->property("orientationLock").isValid());
 }
 
 QTEST_MAIN(tst_quickcomponentspage)
