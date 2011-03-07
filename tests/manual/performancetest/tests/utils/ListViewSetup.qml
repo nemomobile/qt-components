@@ -34,6 +34,9 @@ Item {
     property int sectionInterval: 0
     property string heading: "Test"
     property alias cacheBuffer: listView.cacheBuffer
+    // For TDriver ->
+    // Triggers the InitializeModel()
+    property bool reInitModel: false
 
     Rectangle {
         anchors.fill: parent
@@ -55,6 +58,10 @@ Item {
     ScrollBar {
         flickableItem: listView
         anchors { top: listView.top; right: listView.right }
+    }
+
+    onReInitModelChanged: {
+        initializeModel()
     }
 
     function setupTest(testid) {
