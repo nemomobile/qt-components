@@ -118,8 +118,7 @@ ApplicationWindow {
 
                             onClicked: {
                                 startupOrientationButton.orientation = Screen.Portrait
-                                mainPage.lockInPortrait = true
-                                mainPage.lockInLandscape = false
+                                mainPage.orientationLock = PageOrientation.LockPortrait
                             }
                         }
                         Button {
@@ -130,9 +129,9 @@ ApplicationWindow {
                             height: parent.buttonHeight
 
                             onClicked: {
-                               startupOrientationButton.orientation = Screen.Landscape
-                               mainPage.lockInLandscape = true
-                               mainPage.lockInPortrait = false
+                                startupOrientationButton.orientation = Screen.Landscape
+                                mainPage.orientationLock = PageOrientation.LockLandscape
+
                             }
                         }
                         Button {
@@ -144,8 +143,7 @@ ApplicationWindow {
 
                             onClicked: {
                                 startupOrientationButton.orientation = Screen.Automatic
-                                mainPage.lockInLandscape = false
-                                mainPage.lockInPortrait = false
+                                mainPage.orientationLock = PageOrientation.Automatic
                             }
                         }
                         Button {
@@ -263,8 +261,8 @@ ApplicationWindow {
 
                                 Page {
                                     id: testPage
-                                    lockInLandscape: mainPage.lockInLandscape
-                                    lockInPortrait: mainPage.lockInPortrait
+
+                                    orientationLock: mainPage.orientationLock
 
                                     Flickable {
                                         id: testPageGroup
@@ -290,8 +288,8 @@ ApplicationWindow {
 
                                 Page {
                                     id: testPage
-                                    lockInLandscape: mainPage.lockInLandscape
-                                    lockInPortrait: mainPage.lockInPortrait
+
+                                    orientationLock: mainPage.orientationLock
 
                                     Rectangle {
                                         anchors { left: parent.left; top: parent.top }
