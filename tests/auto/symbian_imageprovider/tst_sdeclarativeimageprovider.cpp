@@ -94,8 +94,15 @@ void tst_SDeclarativeImageProvider::invalidImage()
     image->setProperty("source", QString("image://theme/notfound.xyz"));
     QCOMPARE(image->property("width").toInt(), 100);
     QCOMPARE(image->property("height").toInt(), 100);
-    QCOMPARE(image->property("sourceSize").toSize().width(), 0);
-    QCOMPARE(image->property("sourceSize").toSize().height(), 0);
+#if QT_VERSION < 0x040702
+    QEXPECT_FAIL("", "In Qt versions < 4.7.2 sourceSize was set to 0 after invalid image source", Continue);
+    QCOMPARE(image->property("sourceSize").toSize().width(), 60);
+    QEXPECT_FAIL("", "In Qt versions < 4.7.2 sourceSize was set to 0 after invalid image source", Continue);
+    QCOMPARE(image->property("sourceSize").toSize().height(), 60);
+#else
+    QCOMPARE(image->property("sourceSize").toSize().width(), 60);
+    QCOMPARE(image->property("sourceSize").toSize().height(), 60);
+#endif
     QVERIFY(!image->property("loadOk").toBool());
 }
 
