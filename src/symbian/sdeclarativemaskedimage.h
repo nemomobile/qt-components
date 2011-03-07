@@ -41,6 +41,10 @@ public:
     Q_PROPERTY(QString imageName READ imageName WRITE setImageName)
     Q_PROPERTY(QString maskName READ maskName WRITE setMaskName)
     Q_PROPERTY(SDeclarativeFrame::FrameType maskType READ maskType WRITE setMaskType)
+    Q_PROPERTY(int topMargin READ topMargin WRITE setTopMargin)
+    Q_PROPERTY(int bottomMargin READ bottomMargin WRITE setBottomMargin)
+    Q_PROPERTY(int leftMargin READ leftMargin WRITE setLeftMargin)
+    Q_PROPERTY(int rightMargin READ rightMargin WRITE setRightMargin)
     Q_PROPERTY(bool tiled READ isTiled WRITE setTiled)
     Q_PROPERTY(QPoint offset READ offset WRITE setOffset)
 
@@ -62,6 +66,18 @@ public:
 
     bool isTiled() const;
     void setTiled(bool tiled);
+
+    int topMargin() const;
+    void setTopMargin(int margin);
+
+    int bottomMargin() const;
+    void setBottomMargin(int margin);
+
+    int leftMargin() const;
+    void setLeftMargin(int margin);
+
+    int rightMargin() const;
+    void setRightMargin(int margin);
 
     virtual void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 

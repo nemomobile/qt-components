@@ -40,28 +40,46 @@ public:
     SDeclarativeMaskedImagePrivate(SDeclarativeMaskedImage *qq) :
         q_ptr(qq),
         maskType(SDeclarativeFrame::ThreePiecesHorizontal),
+        topMargin(-1),
+        bottomMargin(-1),
+        leftMargin(-1),
+        rightMargin(-1),
         offset(0, 0),
         tiled(false),
         pixmapsCreated(false),
         tileSize(0)
         {}
 
-    void createImagePixmap();
-    void createNonImagePixmap();
+    ~SDeclarativeMaskedImagePrivate();
+
+    void createTiledPixmap();
+    void createNonTiledPixmap();
     void createMask();
+    void releasePixmaps();
 
     SDeclarativeMaskedImage *q_ptr;
     QString imageName;
     QString maskName;
     SDeclarativeFrame::FrameType maskType;
+    int topMargin;
+    int bottomMargin;
+    int leftMargin;
+    int rightMargin;
     QPoint offset;
     bool tiled;
 
     bool pixmapsCreated;
     QSize createdSize;
-    QPixmap imagePixmap;
-    QBitmap imageMask;
+    QPixmap pixmap;
+    QBitmap mask;
     int tileSize;
+
+    struct IconParams {
+        QString fileName;
+        QSize size;
+    };
+
+    QList<IconParams> requestedFromIconPool;
 };
 
 #endif // SDECLARATIVEMASKEDIMAGE_P_H

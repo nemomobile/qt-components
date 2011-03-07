@@ -83,7 +83,7 @@ QPixmap SIconPool::get(const QString &fileName,
     QPixmap pixmap;
 
     // Accept non-valid size (will use default size) or user defined non-empty size
-    if (!fileName.isEmpty() && !size.isNull()) {
+    if (!fileName.isEmpty() && (!size.isValid() || !size.isEmpty())) {
         SIconPoolKey key(fileName, size, mode, color);
         SIconPoolData *pool = poolData();
 
@@ -117,10 +117,6 @@ QPixmap SIconPool::loadIcon(
         if (renderer->isValid()) {
             QSize renderSize = renderer->defaultSize();
 
-            // a bit of a hack: should we expose the aspect ratio flag?
-            if (fileName.contains("screen_bg")) {
-                mode = Qt::KeepAspectRatioByExpanding;
-            }
             if (size.isValid())
                 renderSize.scale(size, mode);
 

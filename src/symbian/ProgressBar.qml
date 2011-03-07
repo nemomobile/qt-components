@@ -44,10 +44,10 @@ ImplicitSizeItem {
         styleClass: "ProgressBar"
     }
 
-    Frame {
+    BorderImage {
         id: background
-        frameName: style.current.get("backgroundFrame")
-        frameType: style.current.get("backgroundType")
+        source: style.current.get("background")
+        border { left: 20; top: 0; right: 20; bottom: 0 }
 
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
@@ -101,10 +101,10 @@ ImplicitSizeItem {
         ParallelAnimation {
             id: indeterminateAnimation
             loops: Animation.Infinite
-            running:true
+            running: true
 
-            PropertyAnimation { target: indeterminateMaskedImage; property: "offset.x"; from: style.current.preferredHeight + 1; to: 1; easing.type: Easing.Linear; duration: style.current.preferredHeight * 25 }
-            PropertyAnimation { target: indeterminateMaskedImageExtra; property: "offset.x"; from: 0; to: -style.current.preferredHeight; easing.type: Easing.Linear; duration: style.current.preferredHeight * 25 }
+            PropertyAnimation { target: indeterminateMaskedImage; property: "offset.x"; from: height; to: 1; easing.type: Easing.Linear; duration: style.current.preferredHeight * 25 }
+            PropertyAnimation { target: indeterminateMaskedImageExtra; property: "offset.x"; from: 0; to: 1 - height; easing.type: Easing.Linear; duration: style.current.preferredHeight * 25 }
         }
 
         Item {
@@ -116,10 +116,10 @@ ImplicitSizeItem {
 
             width: model.position
 
-            Frame {
+            BorderImage {
                 id: frame
-                frameName: style.current.get("contentsFrame")
-                frameType: style.current.get("contentsType")
+                source: style.current.get("contentsBackground")
+                border { left: 20; top: 0; right: 20; bottom: 0 }
 
                 anchors.left: parent.left
                 anchors.top: parent.top
@@ -133,6 +133,11 @@ ImplicitSizeItem {
             id: indeterminateMaskedImage
             anchors.fill: parent
 
+            topMargin: 0
+            bottomMargin: 0
+            leftMargin: 20
+            rightMargin: 20
+
             tiled: true
             imageName: style.current.get("indeterminateIcon")
             maskName: style.current.get("indeterminateMask")
@@ -142,6 +147,11 @@ ImplicitSizeItem {
         MaskedImage {
             id: indeterminateMaskedImageExtra
             anchors.fill: parent
+
+            topMargin: 0
+            bottomMargin: 0
+            leftMargin: 20
+            rightMargin: 20
 
             tiled: false
             imageName: style.current.get("indeterminateIcon")

@@ -60,7 +60,7 @@ public:
 void SDeclarativeIconPrivate::releaseFromIconPool()
 {
     // Release previously loaded pixmap from icon pool
-    SIconPool::release(fileName, loadedSize);
+    SIconPool::release(fileName, loadedSize, Qt::KeepAspectRatio, iconColor);
     pixmap = QPixmap();
     iconLoadAttempted = false;
 }

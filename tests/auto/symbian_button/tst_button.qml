@@ -27,7 +27,7 @@ Item {
     Button {
         id: button3
         text: "test"
-        iconSource: "image://theme/qtg_small_selected"
+        iconSource: "image://theme/qtg_graf_radiobutton_normal_selected"
         x: 10
         y: 180
         width: 70
@@ -38,7 +38,7 @@ Item {
     Button {
         id: button4
         text: "test"
-        iconSource: "image://theme/qtg_small_unselected"
+        iconSource: "image://theme/qtg_graf_radiobutton_normal_unselected"
         x: 10
         y: 230
         width: 70
@@ -48,7 +48,7 @@ Item {
 
     Button {
         id: button5
-        iconSource: "image://theme/qtg_small_unselected"
+        iconSource: "image://theme/qtg_graf_radiobutton_normal_unselected"
         x: 10
         y: 280
         width: 70

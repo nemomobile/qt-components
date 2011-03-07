@@ -175,7 +175,7 @@ void tst_SDeclarativeIcon::testIcon_paint()
     QPainter painter2(&image2);
 
     TestDeclarativeIcon icon;
-    icon.setIconName("qtg_small_selected");
+    icon.setIconName("qtg_graf_radiobutton_normal_selected");
     icon.setSize(100, 100);
 
     // Paint to both painters to verify compareImages function works
@@ -186,21 +186,21 @@ void tst_SDeclarativeIcon::testIcon_paint()
     QVERIFY(fuzzyCompareImages(image1, image2, 0));
 
     // Keep same size but change icon name
-    icon.setIconName("qtg_small_unselected");
+    icon.setIconName("qtg_graf_radiobutton_normal_unselected");
 
     doPaint(&painter2, &icon);
     QVERIFY(!fuzzyCompareImages(image1, image2, 0));
 
     // Change size smaller
-    icon.setIconName("qtg_small_selected");
+    icon.setIconName("qtg_graf_radiobutton_normal_selected");
     icon.setSize(95, 95);
 
     doPaint(&painter2, &icon);
     // Same icons but different size, should be different result
     QVERIFY(!fuzzyCompareImages(image1, image2, 0));
 
-    // Use a mono icon
-    icon.setIconName("qtg_mono_back");
+    // Use a "mono" icon
+    icon.setIconName("qtg_graf_drill_down_indicator");
 
     doPaint(&painter1, &icon);
     icon.setIconColor(QColor("blue"));
@@ -212,7 +212,7 @@ void tst_SDeclarativeIcon::testIcon_paint()
 void tst_SDeclarativeIcon::testIcon_signals()
 {
     TestDeclarativeIcon icon;
-    icon.setIconName("qtg_small_selected");
+    icon.setIconName("qtg_graf_radiobutton_normal_selected");
     // Should have triggered signal
     QVERIFY(icon.iconNameChanged);
 
@@ -223,7 +223,7 @@ void tst_SDeclarativeIcon::testIcon_signals()
     icon.iconNameChanged = false;
     icon.iconColorChanged = false;
 
-    icon.setIconName("qtg_small_selected");
+    icon.setIconName("qtg_graf_radiobutton_normal_selected");
     QVERIFY(!icon.iconNameChanged);
 
     icon.setIconColor(QColor("red"));
@@ -233,7 +233,7 @@ void tst_SDeclarativeIcon::testIcon_signals()
     icon.iconNameChanged = false;
     icon.iconColorChanged = false;
 
-    icon.setIconName("qtg_small_unselected");
+    icon.setIconName("qtg_graf_radiobutton_normal_unselected");
     QVERIFY(icon.iconNameChanged);
 
     icon.setIconColor(QColor("blue"));

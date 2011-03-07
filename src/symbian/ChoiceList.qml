@@ -142,9 +142,10 @@ ImplicitSizeItem {
             anchors { top: parent.top; bottom: parent.bottom; left: parent.left }
             width: parent.width - listIndicator.width > 0 ? parent.width - listIndicator.width : listIndicator.width
 
-            Frame {
-                frameType: style.current.get("frameType")
-                frameName: style.current.get("frameName")
+            BorderImage {
+                source: style.current.get("background")
+                border { left: 10; top: 10; right: 10; bottom: 10 }
+                smooth: true
                 anchors.fill: parent
             }
 
@@ -337,7 +338,6 @@ ImplicitSizeItem {
 
                 BorderImage {
                     source: highlightStyle.current.get("listItemBackground")
-                    smooth: true
                     border { left: 20; top: 20; right: 20; bottom: 20 }
                 }
             }
@@ -357,7 +357,6 @@ ImplicitSizeItem {
                     BorderImage {
                         source: itemStyle.current.get("listItemBackground")
                         border { left: 20; top: 20; right: 20; bottom: 20 }
-                        smooth: true
                         anchors.fill: parent
                     }
 

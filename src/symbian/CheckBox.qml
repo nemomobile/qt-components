@@ -84,6 +84,8 @@ ImplicitSizeItem {
         mode: {
             if (checkbox.checked)
                 return "selected"
+            else if (checkbox.pressed)
+                return "pressed"
             else
                 return "default"
         }

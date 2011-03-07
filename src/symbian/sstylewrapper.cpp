@@ -293,8 +293,6 @@ QVariant SStyleWrapper::get(const QString &propertyName)
         ret = d->listItemProperty(propertyName);
     else if (styleClass() == QLatin1String("ListItemText"))
         ret = d->listItemTextProperty(propertyName);
-    else if (styleClass() == QLatin1String("PageContainer"))
-        ret = d->pageContainerProperty(propertyName);
     else if (styleClass() == QLatin1String("CheckBox"))
         ret = d->checkBoxProperty(propertyName);
     else if (styleClass() == QLatin1String("Dialog"))

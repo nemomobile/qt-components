@@ -115,7 +115,7 @@ void tst_button::testImplicitSize()
 
     // long text, some icon
     button->setProperty("text", "longer text than just 'short'");
-    button->setProperty("iconSource", "image://theme/qtg_small_selected");
+    button->setProperty("iconSource", "image://theme/qtg_graf_radiobutton_normal_selected");
     const qreal longTextSomeIconImplicitWidth = button->implicitWidth();
     const qreal longTextSomeIconImplicitHeight = button->implicitHeight();
     QVERIFY(longTextSomeIconImplicitWidth > longTextNoIconImplicitWidth);

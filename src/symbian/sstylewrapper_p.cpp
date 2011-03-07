@@ -568,17 +568,6 @@ QVariant SStyleWrapperPrivate::listItemTextProperty(const QString &propertyName)
     return QVariant();
 }
 
-QVariant SStyleWrapperPrivate::pageContainerProperty(const QString &propertyName) const
-{
-    if (propertyName == QLatin1String("backgroundImage")) {
-        if (mode == QLatin1String("landscape"))
-            return QLatin1String("qtg_graf_screen_bg_lsc");
-        else
-            return QLatin1String("qtg_graf_screen_bg_prt");
-    }
-    return QVariant();
-}
-
 QVariant SStyleWrapperPrivate::checkBoxProperty(const QString &propertyName) const
 {
     if (propertyName == QLatin1String("font"))
@@ -589,9 +578,17 @@ QVariant SStyleWrapperPrivate::checkBoxProperty(const QString &propertyName) con
 
     if (propertyName == QLatin1String("iconName")) {
         if (mode == QLatin1String("selected"))
-            return imagePath(QLatin1String("qtg_small_selected"));
+            return imagePath(QLatin1String("qtg_graf_checkbox_normal_selected"));
+        else if (mode == QLatin1String("unselected"))
+            return imagePath(QLatin1String("qtg_graf_checkbox_normal_unselected"));
+        else if (mode == QLatin1String("disabledAndSelected"))
+            return imagePath(QLatin1String("qtg_graf_checkbox_disabled_selected"));
+        else if (mode == QLatin1String("disabledAndUnselected"))
+            return imagePath(QLatin1String("qtg_graf_checkbox_disabled_unselected"));
+        else if (mode == QLatin1String("pressed"))
+            return imagePath(QLatin1String("qtg_graf_checkbox_pressed"));
         else
-            return imagePath(QLatin1String("qtg_small_unselected")); // Default
+            return imagePath(QLatin1String("qtg_graf_checkbox_normal_unselected")); // Default
     }
 
     if (propertyName == QLatin1String("padding"))
@@ -707,20 +704,17 @@ QVariant SStyleWrapperPrivate::scrollBarProperty(const QString &propertyName) co
 QVariant SStyleWrapperPrivate::progressBarProperty(const QString &propertyName) const
 {
     // Graphic tiles
-    if (propertyName == QLatin1String("backgroundFrame"))
-        return QLatin1String("qtg_fr_progbar_h_frame");
+    if (propertyName == QLatin1String("background"))
+        return imagePath(QLatin1String("qtg_fr_progressbar_track"));
 
-    if ((propertyName == QLatin1String("backgroundType")) || (propertyName == QLatin1String("contentsType")))
-        return SDeclarativeFrame::ThreePiecesHorizontal;
-
-    if (propertyName == QLatin1String("contentsFrame"))
-        return QLatin1String("qtg_fr_progbar_h_filled");
+    if (propertyName == QLatin1String("contentsBackground"))
+        return imagePath(QLatin1String("qtg_fr_progressbar_fill"));
 
     if (propertyName == QLatin1String("indeterminateIcon"))
-        return QLatin1String("qtg_graf_progbar_h_wait");
+        return QLatin1String("qtg_graf_progressbar_wait");
 
     if (propertyName == QLatin1String("indeterminateMask"))
-        return QLatin1String("qtg_fr_progbar_h_mask");
+        return QLatin1String("qtg_fr_progressbar_mask");
 
     // Sizes and measurements
     if ((propertyName == QLatin1String("height")))
@@ -732,18 +726,18 @@ QVariant SStyleWrapperPrivate::progressBarProperty(const QString &propertyName) 
 QVariant SStyleWrapperPrivate::radioButtonProperty(const QString &propertyName) const
 {
     if (propertyName == QLatin1String("iconName")) {
-        if (mode == QLatin1String("checked") || mode == QLatin1String("pressed"))
-            return imagePath(QLatin1String("qtg_small_radio_selected"));
-        else if (mode == QLatin1String("normal"))
-            return imagePath(QLatin1String("qtg_small_radio_unselected"));
-        else if (mode == QLatin1String("focused"))
-            return imagePath(QLatin1String("qtg_small_radio_unselected_highlight"));
+        if (mode == QLatin1String("checked") || mode == QLatin1String("checkedAndFocused"))
+            return imagePath(QLatin1String("qtg_graf_radiobutton_normal_selected"));
+        else if (mode == QLatin1String("pressed"))
+            return imagePath(QLatin1String("qtg_graf_radiobutton_pressed"));
+        else if (mode == QLatin1String("normal") || mode == QLatin1String("focused"))
+            return imagePath(QLatin1String("qtg_graf_radiobutton_normal_unselected"));
+        else if (mode == QLatin1String("disabled"))
+            return imagePath(QLatin1String("qtg_graf_radiobutton_disabled_unselected"));
         else if (mode == QLatin1String("checkedAndDisabled"))
-            return imagePath(QLatin1String("qtg_small_radio_selected_disabled"));
-        else if (mode == QLatin1String("checkedAndFocused"))
-            return imagePath(QLatin1String("qtg_small_radio_selected_highlight"));
+            return imagePath(QLatin1String("qtg_graf_radiobutton_disabled_selected"));
         else
-            return imagePath(QLatin1String("qtg_small_radio_unselected_disabled"));
+            return imagePath(QLatin1String("qtg_graf_radiobutton_normal_unselected"));
     }
 
     if (propertyName == QLatin1String("font"))
@@ -972,22 +966,8 @@ QVariant SStyleWrapperPrivate::choiceListProperty(const QString &propertyName) c
     if (propertyName == QLatin1String("font"))
         return fetchFont(SStyleWrapper::Primary);
 
-    // TODO: change to use BorderImage when graphics are available
-    if (propertyName == QLatin1String("frameName")) {
-        if (mode == QLatin1String("normal"))
-            return QLatin1String("qtg_fr_combobox_normal");
-        else if (mode == QLatin1String("pressed"))
-            return QLatin1String("qtg_fr_combobox_pressed");
-        else if (mode == QLatin1String("latched"))
-            return QLatin1String("qtg_fr_combobox_latched");
-        else if (mode == QLatin1String("disabled"))
-            return QLatin1String("qtg_fr_combobox_disabled");
-        else
-            return QLatin1String("qtg_fr_combobox_normal");
-    }
-
-    if (propertyName == QLatin1String("frameType"))
-        return SDeclarativeFrame::ThreePiecesHorizontal;
+    if (propertyName == QLatin1String("background"))
+        return imagePath(QLatin1String("qtg_fr_list_heading_normal"));
 
     if (propertyName == QLatin1String("marginLeft"))
         return fetchLayoutParameter(QLatin1String("param-margin-gene-left"));
@@ -1008,18 +988,8 @@ QVariant SStyleWrapperPrivate::choiceListProperty(const QString &propertyName) c
         return faderProperty(propertyName);
 
     // List indicator related properties
-    if (propertyName == QLatin1String("listIndicatorImage")) {
-        if (mode == QLatin1String("normal"))
-            return imagePath(QLatin1String("qtg_graf_combobox_button_normal"));
-        else if (mode == QLatin1String("pressed"))
-            return imagePath(QLatin1String("qtg_graf_combobox_button_pressed"));
-        else if (mode == QLatin1String("latched"))
-            return imagePath(QLatin1String("qtg_graf_combobox_button_latched"));
-        else if (mode == QLatin1String("disabled"))
-            return imagePath(QLatin1String("qtg_graf_combobox_button_disabled"));
-        else
-            return imagePath(QLatin1String("qtg_graf_combobox_button_normal"));
-    }
+    if (propertyName == QLatin1String("listIndicatorImage"))
+        return imagePath(QLatin1String("qtg_graf_drill_down_indicator"));
 
     if (propertyName == QLatin1String("listIndicatorWidth"))
         return fetchLayoutParameter(QLatin1String("param-widget-combobox-height"));
@@ -1038,13 +1008,13 @@ QVariant SStyleWrapperPrivate::choiceListProperty(const QString &propertyName) c
         return fetchThemeColor(QLatin1String("qtc_list_item_title_normal"));
 
     if (propertyName == QLatin1String("listBackground"))
-        return imagePath(QLatin1String("qtg_fr_popup"));
+        return imagePath(QLatin1String("qtg_fr_list_normal"));
 
     if (propertyName == QLatin1String("selectionIndicatorWidth"))
-        return fetchLayoutParameter(QLatin1String("param-graphic-size-secondary"));
+        return fetchLayoutParameter(QLatin1String("param-graphic-size-primary-small"));
 
     if (propertyName == QLatin1String("selectionIndicatorImage"))
-        return imagePath(QLatin1String("qtg_mono_tick"));
+        return imagePath(QLatin1String("qtg_graf_choice_list_indicator"));
 
     if (propertyName == QLatin1String("scrollbarWidth"))
         return fetchLayoutParameter(QLatin1String("param-widget-scroll-bar-indicative-width"));
@@ -1052,16 +1022,8 @@ QVariant SStyleWrapperPrivate::choiceListProperty(const QString &propertyName) c
     if (propertyName == QLatin1String("listMargin"))
         return fetchLayoutParameter(QLatin1String("param-margin-gene-popup-list"));
 
-    if (propertyName == QLatin1String("listItemBackground")) {
-        if (mode == QLatin1String("normal"))
-            return imagePath(QLatin1String("qtg_fr_popup"));
-        else if (mode == QLatin1String("pressed"))
-            return imagePath(QLatin1String("qtg_fr_list_pressed"));
-        else if (mode == QLatin1String("highlight"))
-            return imagePath(QLatin1String("qtg_fr_list_highlight"));
-        else
-            return imagePath(QLatin1String("qtg_fr_popup"));
-    }
+    if (propertyName == QLatin1String("listItemBackground"))
+        return imagePath(QLatin1String("qtg_fr_choice_list_normal"));
 
     if (propertyName == QLatin1String("listItemFont"))
         return fetchFont(SStyleWrapper::Primary);
