@@ -36,6 +36,7 @@ Item {
             font { bold: true; pixelSize: 16 }
             color: "white"
             anchors.fill: parent
+            anchors.leftMargin: 10
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
         }
@@ -77,6 +78,7 @@ Item {
             font { bold: true; pixelSize: 16 }
             color: "white"
             anchors.fill: parent
+            anchors.leftMargin: 10
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
         }
@@ -122,8 +124,10 @@ Item {
         id: dialogWithScrollBar
 
         title: Row {
-            width: parent.width
+            anchors.fill: parent
+            anchors.leftMargin: 10
             Text {
+                height: parent.height
                 width: parent.width - closeIcon.width
                 text: "Dialog with Scrolling"
                 font { bold: true; pixelSize: 16 }
@@ -131,17 +135,13 @@ Item {
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
             }
-            Rectangle {
-                id: closeIcon
 
-                radius: 5
-                width: 25
-                height: 25
-                color: "grey"
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: dialogWithScrollBar.reject()
-                }
+            ToolButton {
+                id: closeIcon
+                flat: true
+                width: parent.height + 20
+                iconSource: "image://theme/:/list1.png"
+                onClicked: dialogWithScrollBar.reject()
             }
         }
 

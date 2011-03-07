@@ -118,7 +118,6 @@ Item {
                 clip: true
                 anchors {
                     fill: parent
-                    margins: style.current.get("titleMargin")
                 }
             }
         }
