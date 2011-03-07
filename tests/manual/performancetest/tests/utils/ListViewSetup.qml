@@ -34,6 +34,7 @@ Item {
     property int sectionInterval: 0
     property string heading: "Test"
     property alias cacheBuffer: listView.cacheBuffer
+    property bool scrollBar: false
     // For TDriver ->
     // Triggers the InitializeModel()
     property bool reInitModel: false
@@ -55,9 +56,17 @@ Item {
         section.delegate: sectionInterval > 0 ? sectionDelegate : null
     }
 
-    ScrollBar {
-        flickableItem: listView
+    // Creates Scrollbar dynamically based on state of scrollBar flag
+    Loader {
+        sourceComponent: root.scrollBar ? scrollBar : undefined
         anchors { top: listView.top; right: listView.right }
+    }
+
+    Component {
+        id: scrollBar
+        ScrollBar {
+            flickableItem: listView
+        }
     }
 
     onReInitModelChanged: {
