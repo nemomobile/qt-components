@@ -107,6 +107,17 @@ Item {
         return screen.height > screen.width
     }
 
+    function updateOrientationLockValue(lockPortrait, lockLandscape) {
+        if (lockPortrait && lockLandscape)
+            priv.lockNewPageOrientation = PageOrientation.LockPrevious
+        else if (lockPortrait && !lockLandscape)
+            priv.lockNewPageOrientation = PageOrientation.LockPortrait
+        else if (!lockPortrait && lockLandscape)
+            priv.lockNewPageOrientation = PageOrientation.LockLandscape
+        else
+            priv.lockNewPageOrientation = PageOrientation.Automatic
+    }
+
     TabBar {
         id: tabBar
         anchors.top: parent.top
@@ -157,8 +168,7 @@ Item {
         id: priv
         property Item newItem
         property int numberOfTabsOnNewPage
-        property bool lockNewPageInPortrait
-        property bool lockNewPageInLandscape
+        property int lockNewPageOrientation
     }
 
     Component {
@@ -282,10 +292,28 @@ Item {
             Row {
                 height: 40
                 width: parent.width
-                CheckBox { id: lockInPortrait; width: parent.width / 2; text: "lock in portrait" }
-                Binding{ target: priv; property: "lockNewPageInPortrait"; value: lockInPortrait.checked }
-                CheckBox { id: lockInLandscape; width: parent.width / 2; text: "lock in landscape" }
-                Binding{ target: priv; property: "lockNewPageInLandscape"; value: lockInLandscape.checked }
+
+                CheckBox {
+                    id: lockInPortrait;
+
+                    width: parent.width / 2;
+                    text: "lock in portrait"
+
+                    onClicked: {
+                        updateOrientationLockValue(lockInPortrait.checked, lockInLandscape.checked)
+                    }
+                }
+
+                CheckBox {
+                    id: lockInLandscape;
+
+                    width: parent.width / 2;
+                    text: "lock in landscape"
+
+                    onClicked: {
+                        updateOrientationLockValue(lockInPortrait.checked, lockInLandscape.checked)
+                    }
+                }
             }
         }
     }
@@ -348,8 +376,7 @@ Page {
 
         var newObject = Qt.createQmlObject(fullQml, root);
         if (newObject) {
-            newObject.lockInPortrait = priv.lockNewPageInPortrait
-            newObject.lockInLandscape = priv.lockNewPageInLandscape
+            newObject.orientationLock = priv.lockNewPageOrientation
             testPage.pageStack.push(newObject)
         }
     }
