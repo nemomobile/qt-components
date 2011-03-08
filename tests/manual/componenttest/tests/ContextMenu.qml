@@ -28,26 +28,21 @@ import QtQuick 1.0
 import com.nokia.symbian 1.0
 
 Item {
-    ObjectMenu {
+    ContextMenu {
         id: menu
 
-        title: "Object menu title"
-        actions: ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"]
-
-        onTriggered: {
-            console.log("Item " + index + " selected")
-            signalLabel.text = "itemClicked(" + index + ")"
-        }
-
-        onCanceled: {
-            console.log("Menu canceled")
-            signalLabel.text = "canceled"
+        content: MenuLayout {
+            MenuItem {text: "Zero"; onClicked: signalLabel.text = "itemClicked(0)"}
+            MenuItem {text: "One"; onClicked: signalLabel.text = "itemClicked(1)"}
+            MenuItem {text: "Two"; onClicked: signalLabel.text = "itemClicked(2)"}
+            MenuItem {text: "Three"; onClicked: signalLabel.text = "itemClicked(3)"}
+            MenuItem {text: "Four"; onClicked: signalLabel.text = "itemClicked(4)"}
+            MenuItem {text: "Five"; onClicked: signalLabel.text = "itemClicked(5)"}
         }
     }
 
     Rectangle {
         id: triggerArea
-
         color: "lightblue"
         x: 50
         y: 20
@@ -62,13 +57,15 @@ Item {
 
         MouseArea {
             anchors.fill: parent
-            onPressAndHold: menu.open()
+            onPressAndHold: {
+                signalLabel.text = "No signal"
+                menu.open()
+            }
         }
     }
 
     Rectangle {
         id: triggerArea2
-
         color: "yellow"
         x: 50
         y: 120
@@ -85,6 +82,7 @@ Item {
             anchors.fill: parent
 
             onPressAndHold: {
+                signalLabel.text = "No signal"
                 menu.open()
                 menuDismissTimer.start()
             }
@@ -93,7 +91,6 @@ Item {
 
     Timer {
         id: menuDismissTimer
-
         interval: 2000
         onTriggered: menu.close()
     }
@@ -110,7 +107,6 @@ Item {
 
         Text {
             id: signalLabel
-
             objectName: "signalLabel"
             font { bold: true; pixelSize: 14 }
             color: "white"

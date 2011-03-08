@@ -33,11 +33,11 @@ OTHER_FILES += \
     tests/Button.qml \
     tests/CheckBox.qml \
     tests/ChoiceList.qml \
+    tests/ContextMenu.qml \
     tests/Dialog.qml \
     tests/ListItem.qml \
     tests/ListView.qml \
     tests/Metrics.qml \
-    tests/ObjectMenu.qml \
     tests/Menu.qml \
     tests/PageStack.qml \
     tests/ProgressBar.qml \

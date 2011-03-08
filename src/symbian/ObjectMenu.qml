@@ -37,6 +37,7 @@ Item {
     signal canceled()
 
     function open() {
+        console.log("warning: ObjectMenu is deprecated. Use ContextMenu instead")
         internalData.objectMenu = component.createObject(root);
         if (internalData.objectMenu != null) {
             internalData.objectMenu.show();
@@ -45,6 +46,7 @@ Item {
     }
 
     function close() {
+        console.log("warning: ObjectMenu is deprecated. Use ContextMenu instead")
         if (internalData.objectMenu != null) {
             if (internalData.objectMenu.state != "Hidden") {
                 root.canceled();
@@ -64,7 +66,7 @@ Item {
     Component {
         id: component
 
-        Menu {
+        MenuBaseOld {
             id: menu
 
             function menuY() {
@@ -116,7 +118,7 @@ Item {
 
             Style {
                 id: style
-                styleClass: "Menu"
+                styleClass: "MenuContent"
             }
 
             states: [
@@ -133,6 +135,8 @@ Item {
             transitions: Transition {
                 PropertyAnimation { target: menu; property: "opacity"; duration: internalData.animationTime }
             }
+
+            Component.onCompleted: console.log("warning: ObjectMenu is deprecated. Use ContextMenu instead")
         }
     }
 }

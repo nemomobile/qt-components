@@ -52,6 +52,7 @@ QML_FILES = \
     Button.qml \
     CheckBox.qml \
     ChoiceList.qml \
+    ContextMenu.qml \
     Dialog.qml \
     Fader.qml \
     ListHeading.qml \

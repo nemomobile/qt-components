@@ -154,14 +154,19 @@ Column {
     Button {
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width - parent.spacing
-        text: "ObjectMenu"
-        onClicked: objectMenu.open()
+        text: "ContextMenu"
+        onClicked: contextMenu.open()
     }
 
-    ObjectMenu {
-        id: objectMenu
-        title: "Object menu title"
-        actions: ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"]
+    ContextMenu {
+        id: contextMenu
+
+        content: MenuLayout {
+            MenuItem { text: "White"; onClicked: { column.parent.color = "White" } }
+            MenuItem { text: "Red"; onClicked: { column.parent.color = "Red" } }
+            MenuItem { text: "LightBlue"; onClicked: { column.parent.color = "LightBlue" } }
+            MenuItem { text: "LightGreen"; onClicked: { column.parent.color = "LightGreen" } }
+        }
     }
 
     Button {

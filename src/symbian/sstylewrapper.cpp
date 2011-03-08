@@ -177,6 +177,18 @@ qreal SStyleWrapper::preferredWidth() const
     if (styleClass() == QLatin1String("ProgressBar"))
         return 150; // TODO: get from layout
 
+    if (styleClass() == QLatin1String("ContextMenu")) {
+        qreal width = d->fetchLayoutParameter(QLatin1String("param-screen-width"));
+        qreal height = d->fetchLayoutParameter(QLatin1String("param-screen-height"));
+        if (width > height) {
+            return 2 * d->faderProperty(QLatin1String("appRectWidth")).toReal() / 3;
+        }
+        else {
+            return d->faderProperty(QLatin1String("appRectWidth")).toReal()
+                    - 4 * d->fetchLayoutParameter(QLatin1String("param-margin-gene-screen"));
+        }
+    }
+
     if (styleClass() == QLatin1String("Menu"))
         return d->fetchLayoutParameter(QLatin1String("param-screen-width"));
 		
