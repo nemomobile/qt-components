@@ -207,8 +207,8 @@ Item {
                     Image {
                         id: image5
                         source: "image://theme/:/list1.png"
-                        sourceSize.width: listItem3.preferredImageWidth(Symbian.Small)
-                        sourceSize.height: listItem3.preferredImageHeight(Symbian.Small)
+                        sourceSize.width: listItem5.preferredImageWidth(Symbian.Small)
+                        sourceSize.height: listItem5.preferredImageHeight(Symbian.Small)
                     }
 
                     ListItemText {
