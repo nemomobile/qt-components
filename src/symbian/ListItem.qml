@@ -196,8 +196,6 @@ ImplicitSizeItem {
             topMargin: itemStyle.current.get("marginTop")
             bottomMargin: itemStyle.current.get("marginBottom")
         }
-        width: itemStyle.current.get("marginLeft") + itemStyle.current.get("marginRight")
-        height: itemStyle.current.get("marginTop") + itemStyle.current.get("marginBottom")
     }
 
     StateGroup {

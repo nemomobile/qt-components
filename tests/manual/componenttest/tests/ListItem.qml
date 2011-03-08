@@ -198,7 +198,7 @@ Item {
             ListItem {
                 id: listItem5
                 objectName: "listItem5"
-                height: listItem5.padding.height + titleText5.height
+                height: listItem5.padding.anchors.topMargin + listItem5.padding.anchors.bottomMargin + titleText5.height
 
                 Row {
                     anchors.fill: listItem5.padding
