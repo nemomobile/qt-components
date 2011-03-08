@@ -42,15 +42,31 @@ ImplicitSizeItem {
         id: internal
         objectName: "internal"
 
+        function bg_postfix() {
+            if (!checkbox.enabled) {
+                if (checkbox.checked)
+                    return "disabled_selected"
+                else
+                    return "disabled_unselected"
+            } else {
+                if (checkbox.pressed)
+                    return "pressed"
+                else if (checkbox.checked)
+                    return "normal_selected"
+                else
+                    return "normal_unselected"
+            }
+        }
+
         function press() {
-            style.play(Symbian.BasicItem);
+            privateStyle.play(Symbian.BasicItem);
         }
 
         function toggle() {
             clickedEffect.restart();
             checkbox.checked = !checkbox.checked;
             checkbox.clicked();
-            style.play(Symbian.CheckBox);
+            privateStyle.play(Symbian.CheckBox);
         }
     }
 
@@ -75,51 +91,28 @@ ImplicitSizeItem {
         ]
     }
 
-    Style {
-        id: style
-        styleClass: "CheckBox"
-        mode: {
-            if (checkbox.pressed) {
-                return "pressed"
-            }
-            else if (checkbox.checked) {
-                if (!checkbox.enabled)
-                    return "checkedAndDisabled"
-                else
-                    return "checked"
-            }
-            else {
-                if (!checkbox.enabled)
-                    return "disabled"
-                else
-                    return "unchecked"
-            }
-        }
-    }
-
-    implicitWidth: label.text ? style.current.get("iconWidth") + style.current.get("padding") + style.textWidth(label.text, label.font)
-                              : style.current.get("iconWidth")
-    implicitHeight: label.text ? Math.max(style.current.get("iconHeight"), style.fontHeight(label.font))
-                               : style.current.get("iconHeight")
+    implicitWidth: label.text ? platformStyle.graphicSizeSmall + platformStyle.paddingMedium + privateStyle.textWidth(label.text, label.font)
+                              : platformStyle.graphicSizeSmall
+    implicitHeight: privateStyle.menuItemHeight
 
     Image {
         id: contentIcon
-        source: style.current.get("iconName")
+        source: privateStyle.imagePath("qtg_graf_checkbox_" + internal.bg_postfix());
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
-        sourceSize.width: style.current.get("iconWidth")
-        sourceSize.height: style.current.get("iconHeight")
+        sourceSize.width: platformStyle.graphicSizeSmall
+        sourceSize.height: platformStyle.graphicSizeSmall
     }
 
     Text {
         id: label
         anchors.left: contentIcon.right
-        anchors.leftMargin: text ? style.current.get("padding") : 0
+        anchors.leftMargin: text ? platformStyle.paddingMedium : 0
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
         elide: Text.ElideRight
-        font: style.current.get("font")
-        color: style.current.get("textColor")
+        font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
+        color: platformStyle.colorNormalLight
     }
 
     MouseArea {
