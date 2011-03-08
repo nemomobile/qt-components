@@ -132,6 +132,7 @@ ImplicitSizeItem {
             id: textInput
             objectName: "textInput"
             anchors.fill: parent
+            anchors.rightMargin: positionToRectangle(0).width
             color: style.current.get("color")
             font: style.current.get("font")
             // TODO: Use desktop text selection behaviour for now.
