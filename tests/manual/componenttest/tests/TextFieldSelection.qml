@@ -46,7 +46,6 @@ Item {
             right: parent.right
             margins: privy.margin
         }
-        placeholderText: "Enter text here"
         text: "Lorem ipsum dolor sit amet."
         onCursorPositionChanged: cursorPosition.value = textField.cursorPosition
 

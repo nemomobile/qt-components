@@ -49,7 +49,7 @@ Item {
         }
         readOnly: readOnly.checked
         enabled: !enabled.checked
-        text: "Lorem ipsum dolor sit amet."
+        placeholderText: "Enter text here"
     }
 
     Grid {
