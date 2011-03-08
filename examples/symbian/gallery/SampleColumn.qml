@@ -272,12 +272,12 @@ Column {
     ToolButton {
         id: toolButton2
         checkable: true
-        iconSource: "image://theme/qtg_small_radio_selected"
+        iconSource: "image://theme/qtg_graf_radiobutton_normal_selected"
     }
 
     ToolButton {
         id: toolButton3
         text: "ToolButton"
-        iconSource: "image://theme/qtg_small_radio_selected"
+        iconSource: "image://theme/qtg_graf_radiobutton_normal_selected"
     }
 }
