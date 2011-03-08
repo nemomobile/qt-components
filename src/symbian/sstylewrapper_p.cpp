@@ -883,7 +883,7 @@ QVariant SStyleWrapperPrivate::toolTipProperty(const QString &propertyName) cons
     return QVariant();
 }
 
-QVariant SStyleWrapperPrivate::menuProperty(const QString &propertyName) const
+QVariant SStyleWrapperPrivate::menuContentProperty(const QString &propertyName) const
 {
     if (propertyName == QLatin1String("itemHeight"))
         return QVariant(fetchLayoutParameter(QLatin1String("param-text-height-primary"))
@@ -940,6 +940,14 @@ QVariant SStyleWrapperPrivate::menuProperty(const QString &propertyName) const
         return faderProperty(propertyName);
 
     if (propertyName == QLatin1String("appRectWidth"))
+        return faderProperty(propertyName);
+
+    return QVariant();
+}
+
+QVariant SStyleWrapperPrivate::menuProperty(const QString &propertyName) const
+{
+    if (propertyName == QLatin1String("appRectHeight"))
         return faderProperty(propertyName);
 
     return QVariant();

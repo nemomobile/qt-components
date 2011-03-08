@@ -36,6 +36,7 @@ Item {
     signal canceled()
 
     function open() {
+        console.log("warning: use of deprecated component, use Menu instead")
         if (internalData.menuObject == null) {
             internalData.menuObject = component.createObject(root);
             if (internalData.menuObject != null) {
@@ -48,6 +49,7 @@ Item {
     }
 
     function close() {
+        console.log("warning: use of deprecated component, use Menu instead")
         if (internalData.menuObject != null) {
             if (internalData.menuObject.state != "Hidden") {
                 internalData.menuObject.state = "Hidden";
@@ -60,7 +62,7 @@ Item {
 
     Style {
         id: style
-        styleClass: "Menu"
+        styleClass: "MenuContent"
     }
 
     QtObject {
@@ -74,7 +76,7 @@ Item {
     Component {
         id: component
 
-        Menu {
+        MenuBaseOld {
             id: menu
 
             function menuY() {
@@ -130,4 +132,5 @@ Item {
             }
         }
     }
+    Component.onCompleted: console.log("warning: use of deprecated component, use Menu instead")
 }

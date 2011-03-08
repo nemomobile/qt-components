@@ -29,6 +29,7 @@ import com.nokia.symbian 1.0
 import Qt.labs.components 1.0
 
 Column {
+    id: column
 
     property alias title: titleText.text
     property alias titleStyleColor: titleText.styleColor
@@ -166,13 +167,18 @@ Column {
     Button {
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width - parent.spacing
-        text: "Viewmenu"
-        onClicked: viewmenu.open()
+        text: "Menu"
+        onClicked: menu.open()
     }
 
-    ViewMenu {
-        id: viewmenu
-        actions: ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"]
+    Menu {
+        id: menu
+
+        content: MenuLayout {
+            MenuItem { text: "Blue"; onClicked: { column.parent.color = "Blue" } }
+            MenuItem { text: "Green"; onClicked: { column.parent.color = "Green" } }
+            MenuItem { text: "Yellow"; onClicked: { column.parent.color = "Yellow" } }
+        }
     }
 
     ListView {

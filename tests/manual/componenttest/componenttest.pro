@@ -38,6 +38,7 @@ OTHER_FILES += \
     tests/ListView.qml \
     tests/Metrics.qml \
     tests/ObjectMenu.qml \
+    tests/Menu.qml \
     tests/PageStack.qml \
     tests/ProgressBar.qml \
     tests/RadioButton.qml \
@@ -51,5 +52,4 @@ OTHER_FILES += \
     tests/TextFieldOther.qml \
     tests/TextFieldSelection.qml \
     tests/ToolButton.qml \
-    tests/ViewMenu.qml \
     tests/content/InputMethodHints.qml

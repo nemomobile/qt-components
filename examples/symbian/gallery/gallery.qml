@@ -52,7 +52,7 @@ Window {
             id: content
             anchors.fill: parent
 
-            Item {
+            Rectangle {
                 width: defaultColumn.width + 2 * root.rowSpacing; height: defaultColumn.height + 2 * root.rowSpacing
                 anchors.topMargin: root.rowSpacing
 

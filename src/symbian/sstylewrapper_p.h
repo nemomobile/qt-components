@@ -62,6 +62,7 @@ public:
     QVariant radioButtonProperty(const QString &propertyName) const;
     QVariant sliderProperty(const QString &propertyName) const;
     QVariant toolTipProperty(const QString &propertyName) const;
+    QVariant menuContentProperty(const QString &propertyName) const;
     QVariant menuProperty(const QString &propertyName) const;
     QVariant choiceListProperty(const QString &propertyName) const;
     QVariant faderProperty(const QString &propertyName) const;

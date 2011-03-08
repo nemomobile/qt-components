@@ -24,67 +24,15 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.0
-import com.nokia.symbian 1.0
+import Qt 4.7
 
-Item {
+Column {
+    signal clicked
 
-    ViewMenu {
-        id: menu
-
-        actions: ["item0", "item1", "item2", "item3", "item4", "item5", "item6"]
-        onTriggered: signalLabel.text = "itemClicked(" + index + ")"
-        onCanceled: signalLabel.text = "canceled"
-    }
-
-    Button {
-        id: menuButton
-
-        x: 10
-        y: 50
-        width: 160
-        height: 50
-        text: "Show menu"
-
-        onClicked: menu.open()
-    }
-
-    Button {
-        id: menuButton2
-
-        x: 180
-        y: 50
-        width: 170
-        height: 50
-        text: "Menu, ext dismiss"
-
-        onClicked: {
-            menu.open()
-            menuDismissTimer.start()
-        }
-    }
-
-    Timer {
-        id: menuDismissTimer
-
-        interval: 3000
-        onTriggered: menu.close()
-    }
-
-    Row {
-        anchors { top: menuButton.bottom; topMargin: 20 }
-        x: 50
-
-        Text {
-            font { bold: true; pixelSize: 14 }
-            color: "white"
-            text: "Signal: "
-        }
-        Text {
-            id: signalLabel
-
-            font { bold: true; pixelSize: 14 }
-            color: "white"
+    Component.onCompleted: {
+        for (var i = 0; i < children.length; ++i) {
+            if (children[i].clicked != undefined)
+                children[i].clicked.connect(clicked)
         }
     }
 }

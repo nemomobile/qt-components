@@ -177,6 +177,9 @@ qreal SStyleWrapper::preferredWidth() const
     if (styleClass() == QLatin1String("ProgressBar"))
         return 150; // TODO: get from layout
 
+    if (styleClass() == QLatin1String("Menu"))
+        return d->fetchLayoutParameter(QLatin1String("param-screen-width"));
+		
     if (styleClass() == QLatin1String("TabBar"))
         return d->fetchLayoutParameter(QLatin1String("param-screen-width"));
 
@@ -251,6 +254,11 @@ qreal SStyleWrapper::preferredHeight() const
     if (styleClass() == QLatin1String("TabBar"))
         return 46; // TODO: get from layout. tab-bar-height: nHD 46
 
+    if (styleClass() == QLatin1String("MenuContent")) {
+        return d->faderProperty(QLatin1String("appRectHeight")).toReal()
+            - 4 * d->fetchLayoutParameter(QLatin1String("param-margin-gene-screen"));
+        }
+
     return 50;
 }
 
@@ -309,6 +317,8 @@ QVariant SStyleWrapper::get(const QString &propertyName)
         ret = d->sliderProperty(propertyName);
     else if (styleClass() == QLatin1String("ToolTip"))
         ret = d->toolTipProperty(propertyName);
+    else if (styleClass() == QLatin1String("MenuContent"))
+        ret = d->menuContentProperty(propertyName);
     else if (styleClass() == QLatin1String("Menu"))
         ret = d->menuProperty(propertyName);
     else if (styleClass() == QLatin1String("ChoiceList"))

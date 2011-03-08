@@ -7,6 +7,9 @@ Dialog 1.0 Dialog.qml
 ListHeading 1.0 ListHeading.qml
 ListItem 1.0 ListItem.qml
 ListItemText 1.0 ListItemText.qml
+Menu 1.0 Menu.qml
+MenuItem 1.0 MenuItem.qml
+MenuLayout 1.0 MenuLayout.qml
 ObjectMenu 1.0 ObjectMenu.qml
 Page 1.0 Page.qml
 PageStack 1.0 PageStack.qml

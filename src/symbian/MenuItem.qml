@@ -1,4 +1,3 @@
-
 /****************************************************************************
 **
 ** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
@@ -31,47 +30,43 @@ import "." 1.0
 Item {
     id: root
 
-    property alias visualParent: fader.visualParent
-    property int status: DialogStatus.Closed
-    property alias animationDuration: fader.animationDuration
+    property alias text: textArea.text
 
-    signal faderClicked
+    signal clicked
 
-    function open() {
-        status = DialogStatus.Opening
-        fader.state = "Visible"
+    width: parent.width; height: style.current.get("itemHeight")
+
+    Style {
+        id: style
+        styleClass: "MenuContent"
+        mode: mouseArea.pressed && mouseArea.containsMouse ? "pressed" : "default"
     }
 
-    function close() {
-        status = DialogStatus.Closing
-        fader.state = "Hidden"
-    }
-
-    Component.onCompleted: {
-        parentCache.oldParent = parent
-        fader.parent = parent
-        parent = fader
-    }
-
-    //if this is not given, application may crash in some cases
-    Component.onDestruction: {
-        if (parentCache.oldParent != null) {
-            parent = parentCache.oldParent
-        }
-    }
-
-    QtObject {
-        id: parentCache
-        property QtObject oldParent: null
-    }
-
-    //This eats mouse events when popup area is clicked
-    MouseArea {
+    BorderImage {
+        source: style.current.get("itemBackground")
+        border { left: 20; top: 20; right: 20; bottom: 20 }
         anchors.fill: parent
     }
 
-    Fader {
-        id: fader
-        onClicked: root.faderClicked()
+    Text {
+        id: textArea
+        anchors {
+            fill: parent
+            topMargin: style.current.get("itemMarginTop")
+            bottomMargin: style.current.get("itemMarginBottom")
+            leftMargin: style.current.get("itemMarginLeft")
+            rightMargin: style.current.get("itemMarginRight")
+        }
+        font: style.current.get("font")
+        color: style.current.get("color")
+    }
+
+    MouseArea {
+        id: mouseArea
+        anchors.fill: parent
+
+        onPressed: style.play(Symbian.BasicItem)
+        onClicked: root.clicked()
+        onReleased: style.play(Symbian.PopUpClose)
     }
 }

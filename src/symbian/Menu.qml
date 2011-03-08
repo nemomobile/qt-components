@@ -26,246 +26,88 @@
 
 import Qt 4.7
 import "." 1.0
-import "AppManager.js" as AppManager
 
-ImplicitSizeItem {
+Item {
     id: root
 
-    property alias actions: actionsRepeater.model
-    property int animationDuration: 500
-    property int maxVisibleItems: 5
-    property int timeout: 0
-    property alias title: titleText.text
+    default property alias content: menu.content
+    property alias visualParent: popup.visualParent
+    property alias status: popup.status
 
-    signal triggered(int index)
-    signal canceled()
-
-    function show() {
-        fader.state = "Visible";
-        content.enabled = true;
-        content.visible = true;
-        if (root.timeout > 0)
-            timeoutTimer.start();
+    function open() {
+        popup.open()
     }
 
-    function hide() {
-        if (fader.state == "Visible") {
-            content.enabled = false;
-            fader.state = "Hidden";
-            timeoutTimer.stop();
-        }
+    function close() {
+        popup.close()
     }
 
-    implicitHeight: internalData.getHeight()
-    implicitWidth: style.current.get("appRectWidth")
+    visible: false
 
-    QtObject {
-        id: internalData
+    Popup {
+        id: popup
 
-        property Item appRoot: AppManager.rootObject()
+        y: style.current.get("appRectHeight") - popup.height
+        animationDuration: 600
+        state: "Hidden"
+        visible: status != DialogStatus.Closed
+        enabled: status == DialogStatus.Open
+        width: style.current.preferredWidth
+        height: menu.height
 
-        function getHeight() {
-            var itemsShown = Math.min(actionsRepeater.model.length, root.maxVisibleItems);
-            itemsShown = Math.min(root.maxVisibleItems, itemsShown);
-            itemsShown = Math.max(itemsShown, 1);
-            var menuHeight = itemsShown * style.current.get("itemHeight");
-
-            if (menuTitle.height)
-                menuHeight += style.current.get("listMargin") + menuTitle.height;
-            else
-                menuHeight += 2 * style.current.get("listMargin");
-
-            while (menuHeight > style.current.get("appRectHeight") - style.current.get("screenMargin"))
-                menuHeight -= style.current.get("itemHeight");
-
-            return menuHeight;
-        }
-    }
-
-    Connections {
-        target: screen
-        onOrientationChanged: connectionTimer.start()
-    }
-
-    Fader {
-        id: fader
-        animationDuration: root.animationDuration
-        onClicked: {
-            if (fader.state == "Visible") {
-                root.canceled();
-                root.hide();
-                style.play(Symbian.PopupClose);
-            }
-        }
-    }
-
-    Timer {
-        id: connectionTimer
-        interval: 1
-        onTriggered: parent.implicitHeight = internalData.getHeight()
-    }
-
-    Timer {
-        id: timeoutTimer
-        repeat: true
-        interval: root.timeout
-        onTriggered: {
-            if (fader.state == "Visible") {
-                root.canceled();
-                root.hide();
-            }
-        }
-    }
-
-    Item {
-        id: content
-
-        parent: internalData.appRoot
-        opacity: root.opacity
-        width: root.width; height: root.height; x: root.x; y: root.y; z: fader.z + 1
-        visible: false
+        onFaderClicked: close()
 
         Style {
             id: style
             styleClass: "Menu"
         }
 
-        BorderImage {
-            source: style.current.get("background")
-            border { left: 20; top: 20; right: 20; bottom: 20 }
+        Flickable {
+            id: animationArea
+
             anchors.fill: parent
+            contentWidth: width
+            contentHeight: childrenRect.height
+            contentY: -height
+            interactive: false; clip: true
+
+            MenuContent {
+                id: menu
+                width: parent.width
+                onItemClicked: popup.close()
+            }
         }
 
-        Item {
-            id: menuTitle
-            anchors {
-                top: parent.top
-                left: parent.left
-                right: parent.right
+        states: [
+            State {
+                name: "Hidden"
+                when: status == DialogStatus.Closing || status == DialogStatus.Closed
+                PropertyChanges { target: animationArea; contentY: -animationArea.height - 5 }
+            },
+            State {
+                name: "Visible"
+                when: status == DialogStatus.Opening || status == DialogStatus.Open
+                PropertyChanges { target: animationArea; contentY: 0 }
             }
-            height: titleText.text != "" ? style.current.get("titleTextHeight") + 2 * style.current.get("margin") : 0
+        ]
 
-            BorderImage {
-                source: style.current.get("titleBackground")
-                border { left: 20; top: 0; right: 20; bottom: 0 }
-                anchors.fill: parent
-            }
-
-            Text {
-                id: titleText
-                anchors {
-                    fill: parent
-                    margins: style.current.get("margin")
+        transitions: [
+            Transition {
+                from: "Visible"; to: "Hidden"
+                SequentialAnimation {
+                    NumberAnimation { property: "contentY"; duration: popup.animationDuration }
+                    PropertyAction { target: animationArea; property: "opacity"; value: 0}
+                    PropertyAction { target: popup; property: "status"; value: DialogStatus.Closed }
                 }
-                color: style.current.get("titleTextColor")
-                font: style.current.get("font")
-                horizontalAlignment: Text.AlignHCenter
-            }
-        }
-
-        Repeater {
-            id: actionsRepeater
-
-            Item {
-                Component.onCompleted: actionModel.append({"itemText": modelData})
-            }
-        }
-
-        ListModel {
-            id: actionModel
-        }
-
-        // Popup list
-        ListView {
-            id: listView
-
-            property real contentBottom: contentY + height
-
-            onMovementStarted: timeoutTimer.stop();
-            onMovementEnded: timeoutTimer.start();
-            onFlickStarted: timeoutTimer.stop();
-            onFlickEnded: timeoutTimer.start();
-
-            anchors {
-                top: menuTitle.bottom
-                left: parent.left
-                right: parent.right
-                leftMargin: style.current.get("listMargin")
-                rightMargin: style.current.get("listMargin")
-                topMargin: menuTitle.height ? 0 : style.current.get("listMargin")
-            }
-            height: menuTitle.height ? parent.height - style.current.get("listMargin") - menuTitle.height :
-                    parent.height - style.current.get("listMargin") * 2
-            delegate: listDelegate
-            model: actionModel
-            clip: true
-            boundsBehavior: Flickable.StopAtBounds
-        }
-
-        Component {
-            id: listDelegate
-
-            Item {
-                id: activeItem
-
-                property bool outOfBounds: y > listView.contentBottom || y + height < listView.contentY
-
-                onOutOfBoundsChanged: if (!outOfBounds && listView.moving) style.play(Symbian.ItemScroll)
-
-                width: listView.width; height: style.current.get("itemHeight")
-
-                Style {
-                    id: itemStyle
-                    styleClass: "Menu"
-                    mode: "default"
-                }
-
-                BorderImage {
-                    source: itemStyle.current.get("itemBackground")
-                    border { left: 20; top: 20; right: 20; bottom: 20 }
-                    anchors.fill: parent
-                }
-
-                Text {
-                    anchors {
-                        fill: parent
-                        topMargin: itemStyle.current.get("itemMarginTop")
-                        bottomMargin: itemStyle.current.get("itemMarginBottom")
-                        leftMargin: itemStyle.current.get("itemMarginLeft")
-                        rightMargin: itemStyle.current.get("itemMarginRight")
-                    }
-                    font: itemStyle.current.get("font")
-                    color: itemStyle.current.get("color")
-                    text: itemText
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-
-                    onPressed: {
-                        itemStyle.mode = "pressed";
-                        timeoutTimer.stop();
-                        style.play(Symbian.BasicItem);
-                    }
-                    onReleased: {
-                        if (containsMouse) {
-                            itemStyle.mode = "default";
-                            timeoutTimer.start();
-                            root.triggered(index);
-                            root.hide();
-                            style.play(Symbian.PopupClose);
-                        }
-                    }
-                    onCanceled: {
-                        itemStyle.mode = "default";
-                        timeoutTimer.start();
-                    }
-                    onExited: {
-                        itemStyle.mode = "default";
-                        timeoutTimer.start();
-                    }
+            },
+            Transition {
+                from: "Hidden"; to: "Visible"
+                SequentialAnimation {
+                    PropertyAction { target: animationArea; property: "opacity"; value: 1}
+                    NumberAnimation { property: "contentY"; duration: popup.animationDuration }
+                    PropertyAction { target: popup; property: "status"; value: DialogStatus.Open }
                 }
             }
-        }
+        ]
     }
 }
