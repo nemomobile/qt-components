@@ -49,7 +49,7 @@ void ApiCheckDialog::buttons()
 
 void ApiCheckDialog::visualParent()
 {
-    validateProperty("visualParent", "QObject*");
+    validateProperty("visualParent", "QDeclarativeItem*");
 }
 
 void ApiCheckDialog::status()
