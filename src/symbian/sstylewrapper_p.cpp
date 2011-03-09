@@ -960,6 +960,15 @@ QVariant SStyleWrapperPrivate::menuContentProperty(const QString &propertyName) 
             return imagePath(QLatin1String("qtg_fr_list_pressed"));
     }
 
+    if (propertyName == QLatin1String("drillDownImage"))
+        return imagePath(QLatin1String("qtg_graf_drill_down_indicator.svg"));
+
+    if (propertyName == QLatin1String("indicatorWidth"))
+        return fetchLayoutParameter(QLatin1String("param-graphic-size-primary-small"));
+
+    if (propertyName == QLatin1String("indicatorHeight"))
+        return fetchLayoutParameter(QLatin1String("param-graphic-size-primary-small"));
+
     if (propertyName == QLatin1String("itemMarginLeft"))
         return fetchLayoutParameter(QLatin1String("param-margin-gene-left"));
 

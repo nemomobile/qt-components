@@ -31,6 +31,7 @@ Item {
     id: root
 
     property alias text: textArea.text
+    property alias drillDownIndicator: drillDown.visible
 
     signal clicked
 
@@ -59,6 +60,21 @@ Item {
         }
         font: style.current.get("font")
         color: style.current.get("color")
+    }
+
+    Image {
+        id: drillDown
+        visible: false
+        source: style.current.get("drillDownImage")
+        sourceSize.width: style.current.get("indicatorWidth")
+        sourceSize.height: style.current.get("indicatorHeight")
+        anchors {
+            right: parent.right
+            rightMargin: drillDownIndicator.visible ?
+                    drillDownIndicator.width + 2 * style.current.get("itemMarginRight") :
+                    style.current.get("itemMarginRight")
+            verticalCenter: parent.verticalCenter
+        }
     }
 
     MouseArea {
