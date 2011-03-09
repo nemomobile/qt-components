@@ -15,7 +15,7 @@ symbian {
     TARGET.EPOCALLOWDLLDATA = 1
     TARGET.UID3 = 0x200346E0
     TARGET.EPOCHEAPSIZE = 0x1000 0xF00000
-    TARGET.CAPABILITY = CAP_APPLICATION AllFiles
+    TARGET.CAPABILITY = ReadDeviceData SwEvent WriteDeviceData
     componenttest_qmls1.sources = *.qml
     componenttest_qmls2.sources = tests/*.qml
     componenttest_qmls2.path = tests

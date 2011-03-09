@@ -12,7 +12,7 @@ symbian {
     TARGET.EPOCALLOWDLLDATA = 1
     TARGET.UID3 = 0x200346E5
     TARGET.EPOCHEAPSIZE = 0x1000 0xF00000
-    TARGET.CAPABILITY = CAP_APPLICATION
+    TARGET.CAPABILITY = ReadDeviceData SwEvent WriteDeviceData
     gallery_qmls.sources = *.qml
     DEPLOYMENT += gallery_qmls
     BLD_INF_RULES.prj_exports += "qmlgallery.iby $$CORE_APP_LAYER_IBY_EXPORT_PATH(qmlgallery.iby)"
