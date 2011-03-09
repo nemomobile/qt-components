@@ -72,6 +72,9 @@ QML_FILES = \
     RadioButton.qml \
     ScrollBar.qml \
     ScrollDecorator.qml \
+    SectionScroller.js \
+    SectionScroller.qml \
+    SectionScrollerLabel.qml \
     Slider.qml \
     TabBar.qml \
     TabBarLayout.qml \

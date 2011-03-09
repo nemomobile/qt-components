@@ -18,6 +18,7 @@ ProgressBar 1.0 ProgressBar.qml
 RadioButton 1.0 RadioButton.qml
 ScrollBar 1.0 ScrollBar.qml
 ScrollDecorator 1.0 ScrollDecorator.qml
+SectionScroller 1.0 SectionScroller.qml
 Slider 1.0 Slider.qml
 TabBar 1.0 TabBar.qml
 TabBarLayout 1.0 TabBarLayout.qml

@@ -341,6 +341,8 @@ QVariant SStyleWrapper::get(const QString &propertyName)
         ret = d->tabBarProperty(propertyName);
     else if (styleClass() == QLatin1String("ToolButton"))
         ret = d->toolButtonProperty(propertyName);
+    else if (styleClass() == QLatin1String("SectionScroller"))
+        ret = d->sectionScrollerProperty(propertyName);
 
     // this is for querying something else than component specific values...
     /*if(ret.isNull())

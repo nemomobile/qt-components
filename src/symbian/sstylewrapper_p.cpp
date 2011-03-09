@@ -609,6 +609,48 @@ QVariant SStyleWrapperPrivate::checkBoxProperty(const QString &propertyName) con
     return QVariant();
 }
 
+QVariant SStyleWrapperPrivate::sectionScrollerProperty(const QString &propertyName) const
+{
+    if (propertyName == QLatin1String("backgroundHeight"))
+        return 192;     // TODO: 24 * padding-medium
+    if (propertyName == QLatin1String("backgroundImage"))
+        return imagePath(QLatin1String("qtg_fr_popup_transparent"));
+    if (propertyName == QLatin1String("backgroundWidth"))
+        return 264;     // TODO: portrait screen width - 8 * padding-large
+    if (propertyName == QLatin1String("smallSingleIndexWidth"))
+        return 100;     // TODO: get from layout
+    if (propertyName == QLatin1String("smallFont"))
+        return fetchFont(SStyleWrapper::Secondary, 22);
+    if (propertyName == QLatin1String("largeFont"))
+        return fetchFont(SStyleWrapper::Secondary, 160);
+    if (propertyName == QLatin1String("popupRightMargin"))
+        return 50;      // TODO: get from layout
+    if (propertyName == QLatin1String("dividerImage"))
+        return imagePath(QLatin1String("qtg_fr_popup_divider"));
+    if (propertyName == QLatin1String("dividerBufferSize"))
+        return 40;
+    if (propertyName == QLatin1String("dividerHeight"))
+        return 1;       // TODO: get from layout
+    if (propertyName == QLatin1String("graphicsSizeTiny"))
+        return fetchLayoutParameter(QLatin1String("param-graphic-size-tiny"));
+    if (propertyName == QLatin1String("indexLeftMargin"))
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-left"));
+    if (propertyName == QLatin1String("indexRightMargin"))
+        return fetchLayoutParameter(QLatin1String("param-margin-gene-right"));
+    if (propertyName == QLatin1String("textHeight"))
+        return 59;      // TODO: menu-item-height - round(graphic-size-tiny / 4)
+    if (propertyName == QLatin1String("TextMargin"))
+        return 40;      // TODO: get from layout
+    if (propertyName == QLatin1String("touchAreaWidth"))
+        return fetchLayoutParameter(QLatin1String("param-widget-scroll-bar-interactive-width"));
+    if (propertyName == QLatin1String("highlightedTextColor"))
+        return QColor(Qt::white);
+    if (propertyName == QLatin1String("textColor"))
+        return QColor(221, 221, 221, 255);
+
+    return QVariant();
+}
+
 QVariant SStyleWrapperPrivate::dialogProperty(const QString &propertyName) const
 {
     if (propertyName == QLatin1String("font"))

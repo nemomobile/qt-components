@@ -1,0 +1,284 @@
+/****************************************************************************
+**
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project on Qt Labs.
+**
+** No Commercial Usage
+** This file contains pre-release code and may not be distributed.
+** You may use this file in accordance with the terms and conditions contained
+** in the Technology Preview License Agreement accompanying this package.
+**
+** GNU Lesser General Public License Usage
+** Alternatively, this file may be used under the terms of the GNU Lesser
+** General Public License version 2.1 as published by the Free Software
+** Foundation and appearing in the file LICENSE.LGPL included in the
+** packaging of this file.  Please review the following information to
+** ensure the GNU Lesser General Public License version 2.1 requirements
+** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+**
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
+**
+****************************************************************************/
+
+import Qt 4.7
+import "SectionScroller.js" as Sections
+
+ImplicitSizeItem {
+    id: root
+
+    property ListView listView
+    property bool fullScreen: false
+
+    onListViewChanged: {
+        if (listView && listView.model) {
+            internal.initDirtyObserver();
+        } else if (listView) {
+            listView.modelChanged.connect(function() {
+                if (listView.model) {
+                    internal.initDirtyObserver();
+                }
+            })
+        }
+    }
+
+    Style {
+        id: style
+        styleClass: "SectionScroller"
+    }
+
+    Rectangle {
+        id: container
+
+        property bool dragging: false
+
+        color: "transparent"
+        width: fullScreen ? listView.width : style.current.get("touchAreaWidth")
+        height: listView.height
+        x: listView.x + listView.width - width
+
+        MouseArea {
+            id: dragArea
+            anchors { top: parent.top; bottom: parent.bottom; right: parent.right }
+            width: internal.dragAreaWidth
+            drag.axis: Drag.YAxis
+            drag.minimumY: listView.y
+            drag.maximumY: listView.y + listView.height - toolTip.height
+
+            onPressed: {
+                container.dragging = true;
+                internal.adjustContentPosition(dragArea.mouseY);
+            }
+
+            onReleased: {
+                container.dragging = false;
+            }
+
+            onPositionChanged: {
+                internal.adjustContentPosition(dragArea.mouseY);
+            }
+        }
+
+        BorderImage {
+            id: fullBackground
+            width: style.current.get("backgroundWidth")
+            height: style.current.get("backgroundHeight")
+            source: style.current.get("backgroundImage")
+            border { left: 10; top: 10; right: 10; bottom: 10 }
+            anchors.centerIn: parent
+            visible: fullScreen && parent.dragging
+
+            Text {
+                id: fullText
+                color: "white"
+                anchors.centerIn: parent
+                font: style.current.get("largeFont")
+                text: internal.currentArea
+            }
+        }
+
+        ImplicitSizeItem {
+            id: toolTip
+            visible: !fullScreen
+            opacity: container.dragging ? 1 : 0
+            anchors.right: parent.right
+            anchors.rightMargin: style.current.get("popupRightMargin")
+            anchors.verticalCenter: parent.verticalCenter
+            width: childrenRect.width
+            height: childrenRect.height
+
+            BorderImage {
+                id: background
+                width: childrenRect.width
+                height: childrenRect.height
+                anchors.left: parent.left
+                source: style.current.get("backgroundImage")
+                border { left: 10; top: 10; right: 10; bottom: 10 }
+
+                Column {
+                    width: Math.max(previousSectionLabel.text.length, currentSectionLabel.text.length, nextSectionLabel.text.length) == 1 ? style.current.get("smallSingleIndexWidth") : style.current.get("backgroundWidth")
+                    height: childrenRect.height
+
+                    SectionScrollerLabel {
+                        id: previousSectionLabel
+                        text: internal.prevSection
+                        highlighted: internal.currentArea === text
+                        up: !internal.down
+                        anchors.horizontalCenter: internal.prevSection.length == 1 ? parent.horizontalCenter : undefined
+                    }
+
+                    Image {
+                        source: style.current.get("dividerImage")
+                        sourceSize.width: style.current.get("dividerBufferSize")
+                        sourceSize.height: style.current.get("dividerBufferSize")
+                        width: parent.width - (style.current.get("indexLeftMargin") + style.current.get("indexRightMargin"))
+                        height: style.current.get("dividerHeight")
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+
+                    SectionScrollerLabel {
+                        id: currentSectionLabel
+                        text: internal.currentSection
+                        highlighted: internal.currentArea === text
+                        up: !internal.down
+                        anchors.horizontalCenter: internal.currentSection.length == 1 ? parent.horizontalCenter : undefined
+                    }
+
+                    Image {
+                        source: style.current.get("dividerImage")
+                        sourceSize.width: style.current.get("dividerBufferSize")
+                        sourceSize.height: style.current.get("dividerBufferSize")
+                        width: parent.width - (style.current.get("indexLeftMargin") + style.current.get("indexRightMargin"))
+                        height: style.current.get("dividerHeight")
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+
+                    SectionScrollerLabel {
+                        id: nextSectionLabel
+                        text: internal.nextSection
+                        highlighted: internal.currentArea === text
+                        up: !internal.down
+                        anchors.horizontalCenter: internal.nextSection.length == 1 ? parent.horizontalCenter : undefined
+                    }
+                }
+            }
+
+            states: [
+                State {
+                    name: "Visible"
+                    when: container.dragging
+                },
+
+                State {
+                    extend: "Visible"
+                    name: "AtTop"
+                    when: internal.currentPosition === "first"
+                    PropertyChanges {
+                        target: previousSectionLabel
+                        text: internal.currentSection
+                    }
+                    PropertyChanges {
+                        target: currentSectionLabel
+                        text: internal.nextSection
+                    }
+                    PropertyChanges {
+                        target: nextSectionLabel
+                        text: Sections.nextSection(internal.nextSection)
+                    }
+                },
+
+                State {
+                    extend: "Visible"
+                    name: "AtBottom"
+                    when: internal.currentPosition === "last"
+                    PropertyChanges {
+                        target: previousSectionLabel
+                        text: Sections.previousSection(internal.prevSection)
+                    }
+                    PropertyChanges {
+                        target: currentSectionLabel
+                        text: internal.prevSection
+                    }
+                    PropertyChanges {
+                        target: nextSectionLabel
+                        text: internal.currentSection
+                    }
+                }
+            ]
+
+            Behavior on opacity {
+                NumberAnimation { duration: 100 }
+            }
+        }
+    }
+
+    Timer {
+        id: dirtyTimer
+        interval: 100
+        running: false
+        onTriggered: {
+            Sections.initSectionData(listView);
+            internal.modelDirty = false;
+        }
+    }
+
+    QtObject {
+        id: internal
+
+        property string prevSection: ""
+        property string currentSection: listView.currentSection
+        property string nextSection: ""
+        property string currentArea: ""
+        property string currentPosition: "first"
+        property int oldY: 0
+        property bool modelDirty: false
+        property bool down: true
+        property int dragAreaWidth: 35
+
+        function initDirtyObserver() {
+            Sections.initSectionData(listView);
+            function dirtyObserver() {
+                if (!internal.modelDirty) {
+                    internal.modelDirty = true;
+                    dirtyTimer.running = true;
+                }
+            }
+
+            if (listView.model.countChanged)
+                listView.model.countChanged.connect(dirtyObserver);
+
+            if (listView.model.itemsChanged)
+                listView.model.itemsChanged.connect(dirtyObserver);
+
+            if (listView.model.itemsInserted)
+                listView.model.itemsInserted.connect(dirtyObserver);
+
+            if (listView.model.itemsMoved)
+                listView.model.itemsMoved.connect(dirtyObserver);
+
+            if (listView.model.itemsRemoved)
+                listView.model.itemsRemoved.connect(dirtyObserver);
+        }
+
+        function adjustContentPosition(y) {
+            if (y < 0 || y > dragArea.height) return;
+
+            internal.down = y > internal.oldY;
+            var sect = Sections.closestSection(y / dragArea.height, internal.down);
+            internal.oldY = y;
+            if (internal.currentArea != sect) {
+                internal.currentArea = sect;
+                internal.currentPosition = Sections.sectionPositionString(internal.currentArea);
+                var relativeSection = Sections.relativeSections(internal.currentArea);
+                internal.prevSection = relativeSection[0];
+                internal.currentSection = relativeSection[1];
+                internal.nextSection = relativeSection[2];
+                var idx = Sections.indexOf(sect);
+                listView.positionViewAtIndex(idx, ListView.Beginning);
+            }
+        }
+    }
+}
