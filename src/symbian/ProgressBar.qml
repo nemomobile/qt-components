@@ -36,17 +36,12 @@ ImplicitSizeItem {
     property alias value: model.value
     property bool indeterminate: false
 
-    implicitWidth: style.current.preferredWidth
-    implicitHeight: style.current.preferredHeight
-
-    Style {
-        id: style
-        styleClass: "ProgressBar"
-    }
+    implicitWidth: Math.max(50, screen.width / 2) // TODO: use screen.displayWidth
+    implicitHeight: privateStyle.sliderThickness
 
     BorderImage {
         id: background
-        source: style.current.get("background")
+        source: privateStyle.imagePath("qtg_fr_progressbar_track")
         border { left: 20; top: 0; right: 20; bottom: 0 }
 
         anchors.left: parent.left
@@ -103,8 +98,8 @@ ImplicitSizeItem {
             loops: Animation.Infinite
             running: true
 
-            PropertyAnimation { target: indeterminateMaskedImage; property: "offset.x"; from: height; to: 1; easing.type: Easing.Linear; duration: style.current.preferredHeight * 25 }
-            PropertyAnimation { target: indeterminateMaskedImageExtra; property: "offset.x"; from: 0; to: 1 - height; easing.type: Easing.Linear; duration: style.current.preferredHeight * 25 }
+            PropertyAnimation { target: indeterminateMaskedImage; property: "offset.x"; from: height; to: 1; easing.type: Easing.Linear; duration: privateStyle.sliderThickness * 25 }
+            PropertyAnimation { target: indeterminateMaskedImageExtra; property: "offset.x"; from: 0; to: 1 - height; easing.type: Easing.Linear; duration: privateStyle.sliderThickness * 25 }
         }
 
         Item {
@@ -118,7 +113,7 @@ ImplicitSizeItem {
 
             BorderImage {
                 id: frame
-                source: style.current.get("contentsBackground")
+                source: privateStyle.imagePath("qtg_fr_progressbar_fill")
                 border { left: 20; top: 0; right: 20; bottom: 0 }
 
                 anchors.left: parent.left
@@ -139,8 +134,8 @@ ImplicitSizeItem {
             rightMargin: 20
 
             tiled: true
-            imageName: style.current.get("indeterminateIcon")
-            maskName: style.current.get("indeterminateMask")
+            imageName: "qtg_graf_progressbar_wait"
+            maskName: "qtg_fr_progressbar_mask"
         }
 
         // Secondary tile to keep the bar full when the animation scrolls
@@ -154,8 +149,8 @@ ImplicitSizeItem {
             rightMargin: 20
 
             tiled: false
-            imageName: style.current.get("indeterminateIcon")
-            maskName: style.current.get("indeterminateMask")
+            imageName: "qtg_graf_progressbar_wait"
+            maskName: "qtg_fr_progressbar_mask"
         }
     }
 
