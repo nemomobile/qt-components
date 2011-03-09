@@ -43,6 +43,7 @@
 #include "window/apicheck_window.h"
 #include "page/apicheck_page.h"
 #include "pagestack/apicheck_pagestack.h"
+#include "sectionscroller/apicheck_sectionscroller.h"
 #include "busyindicator/apicheck_busyindicator.h"
 #include "buttoncolumn/apicheck_buttoncolumn.h"
 #include "buttonrow/apicheck_buttonrow.h"
@@ -99,6 +100,7 @@ int main(int argc, char *argv[])
     ApiCheckWindow window(engine, module);
     ApiCheckPage page(engine, module);
     ApiCheckPageStack pageStack(engine, module);
+    ApiCheckSectionScroller sectionScroller(engine, module);
 
 #ifndef Q_COMPONENTS_SYMBIAN
     ApiCheckBusyIndicator busyIndicator(engine, module);
@@ -128,6 +130,7 @@ int main(int argc, char *argv[])
     ret |= QTest::qExec(&window, args);
     ret |= QTest::qExec(&page, argc);
     ret |= QTest::qExec(&pageStack, argc);
+    ret |= QTest::qExec(&sectionScroller, args);
 
 #ifndef Q_COMPONENTS_SYMBIAN
     ret |= QTest::qExec(&busyIndicator, args);
