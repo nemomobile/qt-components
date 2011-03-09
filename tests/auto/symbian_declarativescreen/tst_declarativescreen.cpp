@@ -26,7 +26,7 @@
 
 #include "sdeclarativescreen.h"
 #include "tst_quickcomponentstest.h"
-#include <QtTest/QtTest>
+#include <QTest>
 #include <QUrl>
 #include <QDeclarativeComponent>
 #include <QDeclarativeEngine>
@@ -39,43 +39,29 @@ class tst_SDeclarativeScreen : public QObject
     Q_OBJECT
 private slots:
 
-    void init();
-    void cleanup();
     void initTestCase();
-    void cleanupTestCase();
-    void testScreenBasics();
-    void testChangeOrientation();
-    void testChangeScreenSize();
+    void defaults();
+    void changeOrientation();
+    void changeScreenSize();
+    void startupOrientation();
 
 private:
-    QDeclarativeView *window;
+
+    void initView(const QString &fileName);
     QObject *screen;
+    QScopedPointer<QDeclarativeView> view;
 };
-
-void tst_SDeclarativeScreen::init()
-{
-}
-
-void tst_SDeclarativeScreen::cleanup()
-{
-}
 
 void tst_SDeclarativeScreen::initTestCase()
 {
-    window = tst_quickcomponentstest::createDeclarativeView("tst_declarativescreen.qml");
-    window->show();
-    screen = qVariantValue<QObject *>(window->engine()->rootContext()->contextProperty("screen"));
+    initView("tst_declarativescreen.qml");
+    QVERIFY(screen);
+    QGraphicsObject* applicationWindow = view->rootObject();
+    QVERIFY(applicationWindow->property("initOk").toBool());
 }
 
-void tst_SDeclarativeScreen::cleanupTestCase()
+void tst_SDeclarativeScreen::defaults()
 {
-    delete window;
-    window = 0;
-}
-
-void tst_SDeclarativeScreen::testScreenBasics()
-{
-    QTest::qWaitForWindowShown(window);
     QVERIFY(screen->property("width").toInt() > 0);
     QVERIFY(screen->property("height").toInt() > 0);
 
@@ -88,7 +74,7 @@ void tst_SDeclarativeScreen::testScreenBasics()
     }
 }
 
-void tst_SDeclarativeScreen::testChangeOrientation()
+void tst_SDeclarativeScreen::changeOrientation()
 {
     QSignalSpy spy(screen, SIGNAL(orientationChanged()));
 
@@ -105,7 +91,7 @@ void tst_SDeclarativeScreen::testChangeOrientation()
     QCOMPARE(spy.count(), 1); // orientation changed once
 }
 
-void tst_SDeclarativeScreen::testChangeScreenSize()
+void tst_SDeclarativeScreen::changeScreenSize()
 {
     QMetaObject::invokeMethod(screen, "setDisplay",
                               Q_ARG(int, 360),
@@ -123,6 +109,31 @@ void tst_SDeclarativeScreen::testChangeScreenSize()
     QCOMPARE(screen->property("height").toInt(), 360);
     QCOMPARE(screen->property("orientation").toInt(), (int)SDeclarativeScreen::Landscape);
     QCOMPARE(screen->property("dpi").toDouble(), (double)120);
+}
+
+void tst_SDeclarativeScreen::startupOrientation()
+{
+    initView("tst_declarativescreen2.qml");
+    QGraphicsObject* applicationWindow = view->rootObject();
+    QVERIFY(applicationWindow->property("initOk").toBool());
+    QVERIFY(applicationWindow->property("width").toInt() > 0);
+    QVERIFY(applicationWindow->property("height").toInt() > 0);
+    QVERIFY(applicationWindow->property("width").toInt() > applicationWindow->property("height").toInt());
+    QCOMPARE(screen->property("orientation").toInt(), (int)SDeclarativeScreen::Landscape);
+
+}
+
+void tst_SDeclarativeScreen::initView(const QString &fileName)
+{
+    view.reset();
+    view.reset(tst_quickcomponentstest::createDeclarativeView(fileName));
+    view->show();
+    view->activateWindow();
+    QTest::qWaitForWindowShown(view.data());
+    QVERIFY(view);
+    QVERIFY(view->rootObject());
+    QTRY_COMPARE(QApplication::activeWindow(), static_cast<QWidget *>(view.data()));
+    screen = qVariantValue<QObject *>(view.data()->engine()->rootContext()->contextProperty("screen"));
 }
 
 QTEST_MAIN(tst_SDeclarativeScreen)

@@ -118,7 +118,7 @@ ApplicationWindow {
 
                             onClicked: {
                                 startupOrientationButton.orientation = Screen.Portrait
-                                mainPage.orientationLock = PageOrientation.LockPortrait
+                                screen.orientation = Screen.Portrait
                             }
                         }
                         Button {
@@ -130,7 +130,7 @@ ApplicationWindow {
 
                             onClicked: {
                                startupOrientationButton.orientation = Screen.Landscape
-                               mainPage.orientationLock = PageOrientation.LockLandscape
+                               screen.orientation = Screen.Landscape
                             }
                         }
                         Button {
@@ -142,7 +142,7 @@ ApplicationWindow {
 
                             onClicked: {
                                 startupOrientationButton.orientation = Screen.Automatic
-                                mainPage.orientationLock = PageOrientation.Automatic
+                                screen.orientation = Screen.Automatic
                             }
                         }
                         Button {
@@ -185,6 +185,15 @@ ApplicationWindow {
                         color: "red"
                         text: "Picked file: " + internal.fullPath
                     }
+
+                    Button {
+                        id: toggleFullscreenButton
+
+                        width: mainWindow.width
+                        height: 65
+                        text: "Toggle Fullscreen"
+                        onClicked: mainWindow.fullScreen = mainWindow.fullScreen ? false : true
+                    }
                     CheckBox {
                         id: flickableSetting
 
@@ -209,15 +218,6 @@ ApplicationWindow {
                         checkable: true
                         text: "Fill area"
                     }
-                    CheckBox {
-                        id: fullScreenSetting
-                        height: flickableSetting.height
-                        checked: false
-                        checkable: true
-                        text: "Fullscreen"
-                        onClicked: mainWindow.fullScreen = fullScreenSetting.checked
-                    }
-
                     Repeater {
                         id: componentsmodel
 

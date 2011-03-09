@@ -32,6 +32,16 @@ ApplicationWindow {
     objectName: "window"
     property bool initOk: false
 
+    Button {
+        id: button
+        width: 200
+        height: 200
+        text: "Test button text"
+    }
+
+    Component.onCompleted: {
+        screen.orientation = Screen.Landscape
+    }
     Connections {
         target: screen
         onPrivateScreenUpdated: initOk = true
