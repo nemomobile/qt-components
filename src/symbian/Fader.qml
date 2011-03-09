@@ -97,7 +97,6 @@ Item {
                             if (appRoot != null)
                                 root.parent = appRoot
                         }
-                        root.z = parent.z + 1
                     }
                 }
                 NumberAnimation {properties: "opacity"; duration: animationDuration}

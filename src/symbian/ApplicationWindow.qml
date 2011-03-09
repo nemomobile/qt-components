@@ -33,21 +33,7 @@ Window {
     default property alias content: contentItem.data
     property alias pageStack: stack
 
-    // To be replaced by StatusBar and ToolBar components
-    WindowDecoration {
-        id: decoration
-        z: 1 // decorators on top of content
-        anchors.fill: parent
-        orientation: screen.orientation
-        statusBarVisible: !window.fullScreen
-        titleBarVisible: !window.fullScreen
-        backButtonVisible: pageStack.depth > 1
-        onQuit: Qt.quit()
-        onBackClicked: pageStack.pop()
-    }
-
     Item {
-        z: 0 // content below decorators
         anchors.fill: parent
         Item {
             id: contentItem
@@ -60,5 +46,17 @@ Window {
                 anchors.fill: parent
             }
         }
+    }
+
+    // To be replaced by StatusBar and ToolBar components
+    WindowDecoration {
+        id: decoration
+        anchors.fill: parent
+        orientation: screen.orientation
+        statusBarVisible: !window.fullScreen
+        titleBarVisible: !window.fullScreen
+        backButtonVisible: pageStack.depth > 1
+        onQuit: Qt.quit()
+        onBackClicked: pageStack.pop()
     }
 }
