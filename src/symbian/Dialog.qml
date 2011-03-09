@@ -62,44 +62,56 @@ Item {
 
     Component.onCompleted: {
         if (!width)
-            width = style.current.preferredWidth
+            width = dialog.defaultWidth()
         if (!height)
-            height = style.current.preferredHeight
+            height = dialog.defaultHeight()
     }
 
     Popup {
         id: dialog
 
-        function getWidth() {
-            return root.width > style.current.get("maxWidth") ? style.current.get("maxWidth") : root.width
+        function defaultWidth() {
+            if (screen.width < screen.height)
+                return screen.width - 2 * platformStyle.paddingMedium
+            else
+                return privateStyle.dialogMaxSize
         }
 
-        function getHeight() {
-            return root.height > style.current.get("maxHeight") ? style.current.get("maxHeight") : root.height
+        function defaultHeight() {
+            return defaultWidth()
         }
 
-        width: getWidth()
-        height: getHeight()
+        function maxWidth() {
+            if (screen.width < screen.height)
+                return screen.width - 2 * platformStyle.paddingMedium
+            else
+                return privateStyle.dialogMaxSize
+        }
+
+        function maxHeight() {
+            if (screen.width < screen.height)
+                return privateStyle.dialogMaxSize
+            else
+                return screen.width - 2 * platformStyle.paddingMedium
+        }
+
+        width: Math.min(root.width, maxWidth())
+        height: Math.min(root.height, maxHeight())
         state: "Hidden"
         visible: true
         anchors.centerIn: parent
         animationDuration: 800
 
         BorderImage {
-            source: style.current.get("popupBackground")
+            source: privateStyle.imagePath("qtg_fr_popup")
             border { left: 20; top: 20; right: 20; bottom: 20 }
             anchors.fill: parent
-        }
-
-        Style {
-            id: style
-            styleClass: "Dialog"
         }
 
         Item {
             id: titleBar
 
-            height: style.current.get("titleTextHeight") + 2 * style.current.get("titleMargin")
+            height: platformStyle.graphicSizeSmall + 2 * platformStyle.paddingLarge
             anchors {
                 top: parent.top
                 left: parent.left
@@ -107,7 +119,7 @@ Item {
             }
 
             BorderImage {
-                source: style.current.get("titleBackground")
+                source: privateStyle.imagePath("qtg_fr_popup_heading")
                 border { left: 40; top: 0; right: 40; bottom: 0 }
                 anchors.fill: parent
             }
@@ -131,7 +143,7 @@ Item {
                 left: parent.left
                 right: parent.right
                 bottom: buttonItem.top
-                margins: style.current.get("contentMargin")
+                margins: platformStyle.paddingLarge
             }
         }
 
@@ -144,7 +156,7 @@ Item {
                 left: parent.left
                 right: parent.right
                 bottom: parent.bottom
-                topMargin: style.current.get("buttonMargin")
+                topMargin: platformStyle.paddingSmall
             }
         }
 
