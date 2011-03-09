@@ -47,20 +47,22 @@ Item {
     Popup {
         id: popup
 
-        y: style.current.get("appRectHeight") - popup.height
+        y: screen.height - popup.height - toolBarHeight()
+
+        function toolBarHeight() {
+            return (screen.width < screen.height)
+                ? privateStyle.toolBarHeightPortrait
+                : privateStyle.toolBarHeightLandscape
+        }
+
         animationDuration: 600
         state: "Hidden"
         visible: status != DialogStatus.Closed
         enabled: status == DialogStatus.Open
-        width: style.current.preferredWidth
+        width: screen.width
         height: menu.height
 
         onFaderClicked: close()
-
-        Style {
-            id: style
-            styleClass: "Menu"
-        }
 
         Flickable {
             id: animationArea

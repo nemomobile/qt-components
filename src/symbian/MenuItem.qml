@@ -35,16 +35,20 @@ Item {
 
     signal clicked
 
-    width: parent.width; height: style.current.get("itemHeight")
+    width: parent.width; height: privateStyle.menuItemHeight
 
-    Style {
-        id: style
-        styleClass: "MenuContent"
-        mode: mouseArea.pressed && mouseArea.containsMouse ? "pressed" : "default"
+    QtObject {
+        id: internal
+        function bg_postfix() {
+            if (mouseArea.pressed && mouseArea.containsMouse)
+                return "pressed"
+            else
+                return "popup_normal"
+        }
     }
 
     BorderImage {
-        source: style.current.get("itemBackground")
+        source: privateStyle.imagePath("qtg_fr_list_" + internal.bg_postfix())
         border { left: 20; top: 20; right: 20; bottom: 20 }
         anchors.fill: parent
     }
@@ -52,27 +56,27 @@ Item {
     Text {
         id: textArea
         anchors {
-            fill: parent
-            topMargin: style.current.get("itemMarginTop")
-            bottomMargin: style.current.get("itemMarginBottom")
-            leftMargin: style.current.get("itemMarginLeft")
-            rightMargin: style.current.get("itemMarginRight")
+            verticalCenter: parent.verticalCenter
+            left: parent.left
+            right: parent.right
+            leftMargin: platformStyle.paddingLarge
+            rightMargin: drillDownIndicator.visible ?
+                    drillDownIndicator.width + platformStyle.paddingMedium + privateStyle.scrollBarThickness :
+                    privateStyle.scrollBarThickness
         }
-        font: style.current.get("font")
-        color: style.current.get("color")
+        font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
+        color: platformStyle.colorNormalLight
     }
 
     Image {
         id: drillDown
         visible: false
-        source: style.current.get("drillDownImage")
-        sourceSize.width: style.current.get("indicatorWidth")
-        sourceSize.height: style.current.get("indicatorHeight")
+        source: privateStyle.imagePath("qtg_graf_drill_down_indicator.svg")
+        sourceSize.width: platformStyle.graphicSizeSmall
+        sourceSize.height: platformStyle.graphicSizeSmall
         anchors {
             right: parent.right
-            rightMargin: drillDownIndicator.visible ?
-                    drillDownIndicator.width + 2 * style.current.get("itemMarginRight") :
-                    style.current.get("itemMarginRight")
+            rightMargin: privateStyle.scrollBarThickness
             verticalCenter: parent.verticalCenter
         }
     }
@@ -81,8 +85,8 @@ Item {
         id: mouseArea
         anchors.fill: parent
 
-        onPressed: style.play(Symbian.BasicItem)
+        onPressed: privateStyle.play(Symbian.BasicItem)
         onClicked: root.clicked()
-        onReleased: style.play(Symbian.PopUpClose)
+        onReleased: privateStyle.play(Symbian.PopUpClose)
     }
 }

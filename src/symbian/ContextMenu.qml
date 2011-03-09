@@ -43,7 +43,12 @@ ImplicitSizeItem {
     }
 
     visible: false
-    implicitWidth: style.current.preferredWidth
+    implicitWidth: {
+        if (screen.width < screen.height)
+            screen.width - 2 * platformStyle.paddingLarge
+        else
+            privateStyle.dialogMaxSize
+    }
 
     Popup {
         id: popup
@@ -57,11 +62,6 @@ ImplicitSizeItem {
         height: menu.height
 
         onFaderClicked: close()
-
-        Style {
-            id: style
-            styleClass: "ContextMenu"
-        }
 
         MenuContent {
             id: menu

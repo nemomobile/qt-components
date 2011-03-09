@@ -34,16 +34,21 @@ Item {
 
     signal itemClicked()
 
-    height: flickableArea.height + 2 * style.current.get("listMargin")
+    height: flickableArea.height
     clip: true
 
-    Style {
-        id: style
-        styleClass: "MenuContent"
+    QtObject {
+        id: internal
+        function preferredHeight() {
+            if (screen.width < screen.height)
+                return screen.height - privateStyle.toolBarHeightPortrait - privateStyle.statusBarHeight
+            else
+                return screen.height - privateStyle.toolBarHeightLandscape - privateStyle.statusBarHeight
+        }
     }
 
     BorderImage {
-        source: style.current.get("background")
+        source: privateStyle.imagePath("qtg_fr_popup")
         border { left: 20; top: 20; right: 20; bottom: 20 }
         anchors.fill: parent
     }
@@ -60,31 +65,30 @@ Item {
     Flickable {
         id: flickableArea
 
-        property int itemsHidden: menuItemHeight == 0 ? 0 : Math.floor(contentY / menuItemHeight)
-        property int menuItemHeight: (contentArea.children[0] == undefined) || (contentArea.children[0].children[0] == undefined)
-            ? 1 : contentArea.children[0].children[0].height
-
-        x: style.current.get("listMargin"); y: style.current.get("listMargin")
-        height: contentArea.height; width: root.width - 2 * style.current.get("listMargin")
+        height: contentArea.height; width: root.width
         clip: true
         boundsBehavior: Flickable.StopAtBounds
         contentHeight: contentArea.childrenRect.height
         contentWidth: width
 
-        onItemsHiddenChanged: style.play(Symbian.ItemScroll)
-
         Item {
             id: contentArea
 
+            property int itemsHidden: Math.floor(contentY / menuItemHeight)
+            property int menuItemHeight: ((children[0] == undefined) || (children[0].children[0] == undefined))
+                ? 1 : Math.max(1, contentArea.children[0].children[0].height)
+
             width: flickableArea.width
-            height: childrenRect.height + 2 * style.current.get("listMargin") > style.current.preferredHeight
-                ? (style.current.preferredHeight - ((style.current.preferredHeight) % style.current.get("itemHeight")))
-                    : childrenRect.height
+            height: childrenRect.height > internal.preferredHeight()
+                ? (internal.preferredHeight() - (internal.preferredHeight() % menuItemHeight))
+                : childrenRect.height
 
             onWidthChanged: {
                 for (var i = 0; i < children.length; ++i)
                     children[i].width = width
             }
+
+            onItemsHiddenChanged: privateStyle.play(Symbian.ItemScroll)
 
             Component.onCompleted: {
                 for (var i = 0; i < children.length; ++i) {
