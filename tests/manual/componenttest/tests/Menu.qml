@@ -37,9 +37,9 @@ Item {
         content: MenuLayout {
             MenuItem {text: "Zero"; onClicked: signalLabel.text = "itemClicked(0)"}
             MenuItem {text: "One"; onClicked: signalLabel.text = "itemClicked(1)"}
-            MenuItem {text: "Two"; onClicked: signalLabel.text = "itemClicked(2)"}
+            MenuItem {text: "Two"; drillDownIndicator: true; onClicked: subMenu.open()}
             MenuItem {text: "Three"; onClicked: signalLabel.text = "itemClicked(3)"}
-            MenuItem {text: "Four"; onClicked: signalLabel.text = "itemClicked(4)"}
+            MenuItem {text: "Four"; drillDownIndicator: true; onClicked: subMenu.open()}
             MenuItem {text: "Five"; onClicked: signalLabel.text = "itemClicked(5)"}
         }
     }
@@ -92,6 +92,15 @@ Item {
             id: signalLabel
             font { bold: true; pixelSize: 14 }
             color: "white"
+        }
+    }
+
+    ContextMenu {
+        id: subMenu
+
+        content: MenuLayout {
+            MenuItem {text: "Zero"; onClicked: signalLabel.text = "subItemClicked(0)"}
+            MenuItem {text: "One"; onClicked: signalLabel.text = "subItemClicked(1)"}
         }
     }
 }
