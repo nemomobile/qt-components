@@ -26,6 +26,7 @@
 
 #include "sdeclarativewindowdecoration.h"
 #include "sdeclarativescreen.h"
+#include "sdeclarativescreen_p.h"
 
 #include <QApplication>
 #include <QDeclarativeEngine>
@@ -42,12 +43,14 @@
 #include <QFileInfo>
 #endif
 
-#undef Q_DEBUG_DECORATION
+//#define Q_DEBUG_DECORATION
 #ifdef Q_DEBUG_DECORATION
 #include <QDebug>
 #endif
 
+#ifndef Q_OS_SYMBIAN
 static const qreal DEFAULT_DP_PER_DPI = 160.0;
+#endif
 
 class SDeclarativeWindowDecorationPrivate
 {
@@ -56,7 +59,7 @@ class SDeclarativeWindowDecorationPrivate
 public:
     SDeclarativeWindowDecorationPrivate(SDeclarativeWindowDecoration *qq) :
         q_ptr(qq),
-        screenObject(0),
+        screen(0),
         backButtonVisible(false),
         topDecorationHeight(0),
         bottomDecorationHeight(0),
@@ -65,8 +68,7 @@ public:
         backAction(0),
         exitAction(0),
         rootWidget(0),
-        updatingFullScreen(false),
-        updatingCba(false)
+        updatingFullScreen(false)
     {
     }
 
@@ -96,8 +98,6 @@ public:
     }
 
     void updateCba();
-    void _q_doUpdateCba();
-
     void updateFullScreen();
     void _q_doUpdateFullScreen();
 
@@ -107,7 +107,7 @@ public:
     void _q_backSelected();
 
     SDeclarativeWindowDecoration *q_ptr;
-    QObject *screenObject;
+    SDeclarativeScreen *screen;
     int orientation;
     bool backButtonVisible;
     bool statusBarVisible;
@@ -121,35 +121,25 @@ public:
     QAction *exitAction;
     QWidget *rootWidget;
     bool updatingFullScreen;
-    bool updatingCba;
 };
 
 void SDeclarativeWindowDecorationPrivate::updateCba()
 {
-    Q_Q(SDeclarativeWindowDecoration);
-    // avoid flickering by updating asyncronously
-    if (rootWidget && !updatingCba) {
-        QMetaObject::invokeMethod(q, "_q_doUpdateCba", Qt::QueuedConnection);
-        updatingCba = true;
+#ifdef Q_DEBUG_DECORATION
+    qDebug() << "SDeclarativeWindowDecorationPrivate::updateCba()";
+#endif
+    if (rootWidget) {
+        exitAction->setSoftKeyRole(QAction::NoSoftKey);
+        backAction->setSoftKeyRole(QAction::NoSoftKey);
+        optionsAction->setSoftKeyRole(QAction::NoSoftKey);
+
+        optionsAction->setSoftKeyRole(QAction::PositiveSoftKey);
+        if (backButtonVisible) {
+            backAction->setSoftKeyRole(QAction::NegativeSoftKey);
+        } else {
+            exitAction->setSoftKeyRole(QAction::NegativeSoftKey);
+        }
     }
-}
-
-void SDeclarativeWindowDecorationPrivate::_q_doUpdateCba()
-{
-    Q_Q(SDeclarativeWindowDecoration);
-    updatingCba = false;
-
-    exitAction->setSoftKeyRole(QAction::NoSoftKey);
-    backAction->setSoftKeyRole(QAction::NoSoftKey);
-    optionsAction->setSoftKeyRole(QAction::NoSoftKey);
-
-    optionsAction->setSoftKeyRole(QAction::PositiveSoftKey);
-    if (backButtonVisible) {
-        backAction->setSoftKeyRole(QAction::NegativeSoftKey);
-    } else {
-        exitAction->setSoftKeyRole(QAction::NegativeSoftKey);
-    }
-    q->update();
 }
 
 void SDeclarativeWindowDecorationPrivate::updateFullScreen()
@@ -167,21 +157,31 @@ void SDeclarativeWindowDecorationPrivate::_q_doUpdateFullScreen()
     Q_Q(SDeclarativeWindowDecoration);
     updatingFullScreen = false;
 
+#ifdef Q_DEBUG_DECORATION
+    qDebug() << "SDeclarativeWindowDecorationPrivate::_q_doUpdateFullScreen()";
+#endif
+
 #ifdef Q_OS_SYMBIAN
     if (rootWidget) {
-        if (!statusBarVisible && !titleBarVisible) {
+        if (!statusBarVisible || !titleBarVisible) {
+            Qt::WindowFlags flags = rootWidget->windowFlags();
+            flags &= ~Qt::WindowSoftkeysVisibleHint;
+            rootWidget->setWindowFlags(flags);
+            rootWidget->setWindowState((rootWidget->windowState() & ~(Qt::WindowMinimized | Qt::WindowMaximized)) | Qt::WindowFullScreen);
             rootWidget->showFullScreen();
+            rootWidget->update();
         } else {
-            rootWidget->showMaximized();
             updateCba();
+            rootWidget->showMaximized();
+            rootWidget->update();
         }
     }
 #else
     if (!statusBarVisible && !titleBarVisible) {
         q->setTopDecorationHeight(0);
         q->setBottomDecorationHeight(0);
-    } else if (screenObject) {
-        const qreal dpValue = screenObject->property("dpi").value<qreal>() / DEFAULT_DP_PER_DPI;
+    } else if (screen) {
+        const qreal dpValue = screen->dpi() / DEFAULT_DP_PER_DPI;
         // Emulate Avkon decorator sizes in desktop.
         // TODO: This will be removed when decorators are done with QML
         //
@@ -197,8 +197,9 @@ void SDeclarativeWindowDecorationPrivate::_q_doUpdateFullScreen()
         q->setBottomDecorationHeight(q->isLandscape() ? qRound(34.0 * dpValue) : qRound(46.0 * dpValue));
     }
     updateCba();
-    q->update();
 #endif // Q_OS_SYMBIAN
+    SDeclarativeScreenPrivate::d_ptr(screen)->finalizeScreenUpdate();
+    q->update();
 }
 
 void SDeclarativeWindowDecorationPrivate::_q_desktopWorkareaChanged()
@@ -282,13 +283,12 @@ SDeclarativeWindowDecoration::SDeclarativeWindowDecoration(QDeclarativeItem *par
     foreach (QWidget *w, QApplication::allWidgets()) {
         QDeclarativeView *view = qobject_cast<QDeclarativeView *>(w);
         if (view) {
-            d->screenObject = qVariantValue<QObject *>(view->rootContext()->contextProperty("screen"));
-            connect(d->screenObject, SIGNAL(statusPaneChanged()), SLOT(_q_desktopWorkareaChanged()), Qt::QueuedConnection);
-            connect(d->screenObject, SIGNAL(displayChanged()), SLOT(_q_doUpdateFullScreen()), Qt::QueuedConnection);
+            QObject *screenObject = qVariantValue<QObject *>(view->rootContext()->contextProperty("screen"));
+            d->screen = qobject_cast<SDeclarativeScreen *>(screenObject);
+            connect(d->screen, SIGNAL(statusPaneChanged()), SLOT(_q_desktopWorkareaChanged()), Qt::QueuedConnection);
+            connect(d->screen, SIGNAL(displayChanged()), SLOT(_q_doUpdateFullScreen()), Qt::QueuedConnection);
         }
     }
-
-    d->updateFullScreen();
 }
 
 SDeclarativeWindowDecoration::~SDeclarativeWindowDecoration()

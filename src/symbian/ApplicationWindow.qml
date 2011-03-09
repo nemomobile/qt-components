@@ -25,6 +25,7 @@
 ****************************************************************************/
 
 import Qt 4.7
+import "." 1.0
 
 Window {
     id: window
@@ -40,7 +41,13 @@ Window {
             anchors.fill: parent
             anchors.topMargin: decoration.topDecorationHeight
             anchors.bottomMargin: decoration.bottomDecorationHeight
+            opacity: 0
 
+            Connections {
+                target: screen
+                onPrivateAboutToUpdateScreen: contentItem.opacity = 0
+                onPrivateScreenUpdated: contentItem.opacity = 1
+            }
             PageStack {
                 id: stack
                 anchors.fill: parent

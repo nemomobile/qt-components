@@ -99,7 +99,6 @@ protected:
 
 private:
     Q_PRIVATE_SLOT(d_func(), void _q_doUpdateFullScreen())
-    Q_PRIVATE_SLOT(d_func(), void _q_doUpdateCba())
     Q_PRIVATE_SLOT(d_func(), void _q_desktopWorkareaChanged())
     Q_PRIVATE_SLOT(d_func(), void _q_optionsSelected())
     Q_PRIVATE_SLOT(d_func(), void _q_exitSelected())
