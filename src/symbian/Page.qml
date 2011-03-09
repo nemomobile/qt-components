@@ -90,12 +90,10 @@ Item {
                 screen.orientation = Screen.Automatic
                 break
             case PageOrientation.LockPortrait:
-                if (!isScreenInPortrait())
-                    screen.orientation = Screen.Portrait
+                screen.orientation = Screen.Portrait
                 break
             case PageOrientation.LockLandscape:
-                if (!isScreenInLandscape())
-                    screen.orientation = Screen.Landscape
+                screen.orientation = Screen.Landscape
                 break
             case PageOrientation.LockPrevious:
                 screen.orientation = screen.orientation
