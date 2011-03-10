@@ -25,6 +25,7 @@ SUBDIRS += \
     symbian_tabgroup \
     symbian_textarea \
     symbian_textfield \
+    symbian_toolbar \
     symbian_toolbutton \
     symbian_tooltip #TODO not yet finalized
 

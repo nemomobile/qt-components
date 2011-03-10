@@ -86,6 +86,7 @@ release/
 /tests/auto/symbian_textarea/tst_symbian_textarea
 /tests/auto/symbian_textarea/tst_symbian_textfield
 /tests/auto/symbian_textfield/tst_symbian_textfield
+/tests/auto/symbian_toolbar/tst_symbian_toolbar
 /tests/auto/symbian_toolbutton/tst_symbian_toolbutton
 /tests/auto/symbian_tooltip/tst_symbian_tooltip
 /tests/auto/symbian_window/tst_window
