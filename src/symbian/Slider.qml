@@ -45,8 +45,8 @@ ImplicitSizeItem {
     property alias inverted: model.inverted
 
     signal valueChanged(real value)
-    implicitWidth: style.current.preferredWidth
-    implicitHeight: style.current.preferredHeight
+    implicitWidth: orientation == Qt.Horizontal ? 150 : platformStyle.graphicSizeSmall
+    implicitHeight: orientation == Qt.Horizontal ? platformStyle.graphicSizeSmall : 150
 
     QtComponents.RangeModel {
         id: model
@@ -59,29 +59,15 @@ ImplicitSizeItem {
         onValueChanged: slider.valueChanged(value)
     }
 
-    Style {
-        id: style
-        styleClass: "Slider"
-        mode: orientation == Qt.Horizontal ? "horizontal" : "vertical"
-    }
-
     BorderImage {
         id: track
         objectName: "track"
         property bool tapOnTrack: false
         property bool keysActive: false
 
-        height: orientation == Qt.Horizontal ? style.current.get("trackHeight") : undefined
-        width: orientation == Qt.Horizontal ? undefined : style.current.get("trackHeight")
-        states: [
-            State {
-                name: "Pressed"
-                when: handleMouseArea.pressed
-                PropertyChanges { target: track; source: style.current.get("trackPressedBackground"); }
-            }
-        ]
-
-        source: style.current.get("trackBackground")
+        height: orientation == Qt.Horizontal ? privateStyle.sliderThickness : undefined
+        width: orientation == Qt.Horizontal ? undefined : privateStyle.sliderThickness
+        source: privateStyle.imagePath(orientation == Qt.Horizontal ? "qtg_fr_slider_h_track_normal" : "qtg_fr_slider_v_track_normal")
 
         border.left: orientation == Qt.Horizontal ? 20 : 0
         border.right: orientation == Qt.Horizontal ? 20 : 0
@@ -95,10 +81,10 @@ ImplicitSizeItem {
         anchors.horizontalCenter: orientation == Qt.Horizontal ? undefined : slider.horizontalCenter
         anchors.verticalCenter: orientation == Qt.Horizontal ? slider.verticalCenter : undefined
 
-        anchors.leftMargin: style.current.get("marginLeft")
-        anchors.rightMargin: style.current.get("marginRight")
-        anchors.topMargin: style.current.get("marginTop")
-        anchors.bottomMargin: style.current.get("marginBottom")
+        anchors.leftMargin: platformStyle.paddingMedium
+        anchors.rightMargin: platformStyle.paddingMedium
+        anchors.topMargin: platformStyle.paddingMedium
+        anchors.bottomMargin: platformStyle.paddingMedium
 
         MouseArea {
             id: trackMouseArea
@@ -134,28 +120,26 @@ ImplicitSizeItem {
                 x: orientation == Qt.Horizontal ? model.position : 0
                 y: orientation == Qt.Horizontal ? 0 : model.position
 
-                sourceSize.height: style.current.get("handleHeight")
-                sourceSize.width: style.current.get("handleWidth")
+                sourceSize.height: platformStyle.graphicSizeSmall
+                sourceSize.width: platformStyle.graphicSizeSmall
 
                 anchors.verticalCenter: orientation == Qt.Horizontal ? parent.verticalCenter : undefined
                 anchors.horizontalCenter: orientation == Qt.Horizontal ? undefined : parent.horizontalCenter
 
-                states: [
-                    State {
-                        name: "Pressed"
-                        when: handleMouseArea.pressed
-                        PropertyChanges { target: handle; source: style.current.get("handlePressed"); }
-                    }
-                ]
-
-                source: style.current.get("handleIcon")
+                source: {
+                    var handleIcon = "qtg_graf_slider_"
+                        + (orientation == Qt.Horizontal ? "h" : "v")
+                        + "_handle_"
+                        + (handleMouseArea.pressed ? "pressed" : "normal")
+                    privateStyle.imagePath(handleIcon)
+                }
 
                 MouseArea {
                     id: handleMouseArea
                     objectName: "handleMouseArea"
 
-                    height: style.current.get("handleTouchAreaHeight")
-                    width: style.current.get("handleTouchAreaWidth")
+                    height: platformStyle.graphicSizeMedium
+                    width: platformStyle.graphicSizeMedium
                     anchors.verticalCenter: orientation == Qt.Horizontal ? parent.verticalCenter : undefined
                     anchors.horizontalCenter: orientation == Qt.Horizontal ? undefined : parent.horizontalCenter
 
@@ -172,11 +156,11 @@ ImplicitSizeItem {
                             toolTip.position()
                         }
                     }
-                    onPressed: style.play(Symbian.BasicSlider);
+                    onPressed: privateStyle.play(Symbian.BasicSlider);
                     onReleased: {
                         if (!updateValueWhileDragging)
                             model.position = orientation == Qt.Horizontal ? handle.x : handle.y
-                        style.play(Symbian.BasicSlider);
+                        privateStyle.play(Symbian.BasicSlider);
                     }
                 }
             }
@@ -201,7 +185,7 @@ ImplicitSizeItem {
     Loader {
         id:toolTip
 
-        property real spacing: style.current.get("toolTipSpacing")
+        property real spacing: 2 * platformStyle.paddingLarge
         sourceComponent: slider.pressed && toolTipVisible ? toolTipComponent : undefined
         onLoaded: position()
 
