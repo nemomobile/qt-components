@@ -38,6 +38,8 @@
 #include <QDesktopWidget>
 #include <QGraphicsView>
 
+#include <QDebug>
+
 #ifdef Q_OS_SYMBIAN
 #include <eikenv.h>
 #include <eikappui.h>
@@ -81,6 +83,13 @@ QString SStyleWrapper::styleClass() const
 void SStyleWrapper::setStyleClass(const QString &styleClass)
 {
     Q_D(SStyleWrapper);
+
+    static QSet<QString> deprecationMessages;
+    if (!deprecationMessages.contains(styleClass)) {
+        deprecationMessages.insert(styleClass);
+        qWarning() << QString(QLatin1String("warning: Style ('%1') is deprecated. Use platformStyle and privateStyle context properties instead")).arg(styleClass);
+    }
+
     if (styleClass == d->styleClass)
         return;
     d->styleClass = styleClass;
