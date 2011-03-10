@@ -23,6 +23,7 @@ SOURCES += \
     sdeclarativewindowdecoration.cpp \
     sframepool.cpp \
     siconpool.cpp \
+    sstyleengine.cpp \
     sstylewrapper.cpp \
     sstylewrapper_p.cpp
 
@@ -39,6 +40,7 @@ HEADERS += \
     sdeclarativewindowdecoration.h \
     sframepool.h \
     siconpool.h \
+    sstyleengine.h \
     sstylewrapper.h \
     sstylewrapper_p.h
 

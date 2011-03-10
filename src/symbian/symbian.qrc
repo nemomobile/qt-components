@@ -55,4 +55,9 @@
     <qresource prefix="/layouts">
         <file alias="globalparameters.css">resources/defaulttheme/layouts/globalparameters.css</file>
     </qresource>
+    <qresource prefix="/params">
+        <file alias="colors/default.params">resources/colors/default.params</file>
+        <file alias="layouts/fallback.params">resources/layouts/fallback.params</file>
+        <file alias="layouts/640_360_210.params">resources/layouts/640_360_210.params</file>
+    </qresource>
 </RCC>
