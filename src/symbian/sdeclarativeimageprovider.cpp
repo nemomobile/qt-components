@@ -39,8 +39,7 @@ SDeclarativeImageProvider::~SDeclarativeImageProvider()
 
 QPixmap SDeclarativeImageProvider::requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
 {
-    QPixmap pixmap = SIconPool::get(SDeclarative::resolveIconFileName(id),
-                                    requestedSize.isValid() ? requestedSize : QSize(200, 200), Qt::KeepAspectRatio);
+    QPixmap pixmap = SIconPool::get(SDeclarative::resolveIconFileName(id), requestedSize, Qt::KeepAspectRatio);
 
     if (!pixmap.isNull() && size)
         *size = pixmap.size();
