@@ -45,20 +45,14 @@ public:
 
     void initializeEngine(QDeclarativeEngine *engine, const char *uri) {
         QDeclarativeExtensionPlugin::initializeEngine(engine, uri);
-
         engine->addImageProvider(QLatin1String("theme"), new SDeclarativeImageProvider);
+        QDeclarativeContext *context = engine->rootContext();
 
-        SDeclarativeScreen *scr = new SDeclarativeScreen();
-        scr->setParent(engine->rootContext()); // context takes the ownership
+        SDeclarativeScreen *screen = new SDeclarativeScreen(context);
+        context->setContextProperty("screen", screen);
 
-        engine->rootContext()->setContextProperty("screen", scr);
-        qmlRegisterUncreatableType<SDeclarativeScreen>(uri, 1, 0,"Screen", "");
-
-        // context takes the ownership
-        SDeclarative *declarative = new SDeclarative();
-        declarative->setParent(engine->rootContext()); // context takes the ownership
-        engine->rootContext()->setContextProperty("symbian", declarative);
-        qmlRegisterUncreatableType<SDeclarative>(uri, 1, 0, "Symbian", "");
+        SDeclarative *declarative = new SDeclarative(context);
+        context->setContextProperty("symbian", declarative);
 
         QObject::connect(engine, SIGNAL(quit()), QCoreApplication::instance(), SLOT(quit()));
     }
@@ -70,6 +64,8 @@ public:
         qmlRegisterType<SDeclarativeMaskedImage>(uri, 1, 0, "MaskedImage");
         qmlRegisterType<SStyleWrapper>(uri, 1, 0, "Style");
         qmlRegisterType<SDeclarativeImplicitSizeItem>(uri, 1, 0, "ImplicitSizeItem");
+        qmlRegisterUncreatableType<SDeclarative>(uri, 1, 0, "Symbian", "");
+        qmlRegisterUncreatableType<SDeclarativeScreen>(uri, 1, 0, "Screen", "");
         qmlRegisterUncreatableType<SDialogStatus>(uri, 1, 0, "DialogStatus", "");
         qmlRegisterUncreatableType<SPageOrientation>(uri, 1, 0, "PageOrientation", "");
         qmlRegisterUncreatableType<SPageStatus>(uri, 1, 0, "PageStatus", "");

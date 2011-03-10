@@ -45,7 +45,7 @@ class SDeclarativeScreen : public QObject
     Q_ENUMS(Orientation)
 
 public:
-    explicit SDeclarativeScreen(QDeclarativeItem *parent = 0);
+    explicit SDeclarativeScreen(QObject *parent = 0);
     virtual ~SDeclarativeScreen();
 
     enum Orientation {

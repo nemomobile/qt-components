@@ -247,7 +247,7 @@ void SDeclarativeScreenPrivate::finalizeScreenUpdate()
     emit q->privateScreenUpdated();
 }
 
-SDeclarativeScreen::SDeclarativeScreen(QDeclarativeItem *parent)
+SDeclarativeScreen::SDeclarativeScreen(QObject *parent)
     : QObject(parent), d_ptr(new SDeclarativeScreenPrivate(this))
 {
 }
