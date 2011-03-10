@@ -6,6 +6,7 @@ SUBDIRS += \
     symbian_declarativeframe \
     symbian_declarativeicon \
     symbian_declarativeimplicitsizeitem \
+    symbian_declarativestyle \
     symbian_framepool \
     symbian_iconpool \
     symbian_imageprovider \
