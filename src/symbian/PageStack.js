@@ -81,6 +81,11 @@ function push(page, properties, replace, immediate) {
     if (oldContainer) {
         oldContainer.pushExit(replace, immediate);
     }
+     // sync tool bar
+    var tools = container.page.tools || null;
+    if (toolBar) {
+        toolBar.setTools(tools, immediate ? "set" : replace ? "replace" : "push");
+    }
     container.pushEnter(replace, immediate);
 
     return container.page;
@@ -149,7 +154,11 @@ function pop(page, immediate) {
         // perform page transition
         oldContainer.popExit(immediate);
         container.popEnter(immediate);
-
+        // sync tool bar
+        var tools = container.page.tools || null;
+        if (toolBar) {
+            toolBar.setTools(tools, immediate ? "set" : "pop");
+        }
         return oldContainer.page;
     } else {
         return null;

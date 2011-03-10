@@ -1168,6 +1168,29 @@ QVariant SStyleWrapperPrivate::toolButtonProperty(const QString &propertyName) c
     return QVariant();
 }
 
+QVariant SStyleWrapperPrivate::toolBarProperty(const QString &propertyName) const
+{
+    if (propertyName == QLatin1String("background"))
+        return imagePath(QLatin1String("qtg_fr_toolbar"));
+
+    if (propertyName == QLatin1String("toolbar-height"))
+        return fetchLayoutParameter(QLatin1String("param-widget-toolbar-height"));
+
+    if (propertyName == QLatin1String("toolbar-width"))
+        return fetchLayoutParameter(QLatin1String("param-screen-width"));
+
+    if (propertyName == QLatin1String("padding-large"))
+        return fetchLayoutParameter(QLatin1String("param-padding-large"));
+
+    if (propertyName == QLatin1String("border-margin")) {
+        if (fetchLayoutParameter(QLatin1String("param-screen-width")) > fetchLayoutParameter(QLatin1String("param-screen-height")))
+            return fetchLayoutParameter(QLatin1String("param-padding-large"));
+        else
+            return 0;
+    }
+    return QVariant();     
+}
+
 void SStyleWrapperPrivate::_q_desktopWorkareaChanged()
 {
     Q_Q(SStyleWrapper);

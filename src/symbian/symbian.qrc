@@ -42,6 +42,7 @@
         <file alias="qtg_fr_progressbar_mask.svg">resources/defaulttheme/graphics/qtg_fr_progressbar_mask.svg</file>
         <file alias="qtg_fr_progressbar_track.svg">resources/defaulttheme/graphics/qtg_fr_progressbar_track.svg</file>
         <file alias="qtg_graf_progressbar_wait.svg">resources/defaulttheme/graphics/qtg_graf_progressbar_wait.svg</file>
+        <file alias="qtg_fr_toolbar.svg">resources/defaulttheme/graphics/qtg_fr_toolbar.svg</file>
         <file alias="qtg_fr_toolbutton_pressed.svg">resources/defaulttheme/graphics/qtg_fr_toolbutton_pressed.svg</file>
         <file alias="qtg_fr_toolbutton_disabled.svg">resources/defaulttheme/graphics/qtg_fr_toolbutton_disabled.svg</file>
         <file alias="qtg_fr_toolbutton_latched.svg">resources/defaulttheme/graphics/qtg_fr_toolbutton_latched.svg</file>

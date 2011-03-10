@@ -37,9 +37,6 @@ Item {
     //      PageStatus.Deactivating - the page is transitioning into becoming inactive
     property int status: PageStatus.Inactive
 
-    // TODO: implement
-    property Item tools: null
-
     property PageStack pageStack
 
     property bool lockInLandscape: false // deprecated
@@ -52,6 +49,8 @@ Item {
 
     property string title // Deprecated
     onTitleChanged: console.log("warning: Page.title is deprecated")
+
+    property Item tools: null
 
     visible: false
 

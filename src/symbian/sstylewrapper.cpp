@@ -195,6 +195,9 @@ qreal SStyleWrapper::preferredWidth() const
     if (styleClass() == QLatin1String("TabBar"))
         return d->fetchLayoutParameter(QLatin1String("param-screen-width"));
 
+    if (styleClass() == QLatin1String("ToolBar"))
+        return d->fetchLayoutParameter(QLatin1String("param-screen-width"));
+
     return 50;
 }
 
@@ -269,7 +272,9 @@ qreal SStyleWrapper::preferredHeight() const
     if (styleClass() == QLatin1String("MenuContent")) {
         return d->faderProperty(QLatin1String("appRectHeight")).toReal()
             - 4 * d->fetchLayoutParameter(QLatin1String("param-margin-gene-screen"));
-        }
+    }
+    if (styleClass() == QLatin1String("ToolBar"))
+        return d->fetchLayoutParameter(QLatin1String("param-widget-toolbar-height"));
 
     return 50;
 }
@@ -343,6 +348,8 @@ QVariant SStyleWrapper::get(const QString &propertyName)
         ret = d->toolButtonProperty(propertyName);
     else if (styleClass() == QLatin1String("SectionScroller"))
         ret = d->sectionScrollerProperty(propertyName);
+    else if (styleClass() == QLatin1String("ToolBar"))
+        ret = d->toolBarProperty(propertyName);
 
     // this is for querying something else than component specific values...
     /*if(ret.isNull())

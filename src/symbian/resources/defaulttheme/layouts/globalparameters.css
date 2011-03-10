@@ -73,4 +73,11 @@ param-zoom-graphic-primary-small: 1;
 param-zoom-graphic-secondary: 1;
 param-zoom-text-primary: 1;
 param-zoom-text-secondary: 1;
+
+param-padding-large: 12;
+param-padding-medium: 8;
+param-padding-small: 4;
+
+param-toolbar-height-landscape: 46;
+param-toolbar-height-portrait: 60;
 }

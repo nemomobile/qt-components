@@ -92,6 +92,7 @@ QML_FILES = \
     TextArea.qml \
     TextField.qml \
     ToolBar.qml \
+    ToolBarLayout.qml \
     ToolButton.qml \
     ToolTip.qml \
     ViewMenu.qml \
