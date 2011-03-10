@@ -23,6 +23,7 @@ symbian3 {
         api_button \
         api_checkbox \
         api_dialog \
+        api_menu \
         api_slider \
         #api_pagestack \
         api_progressbar \
