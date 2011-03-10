@@ -380,7 +380,9 @@ Item {
 
 
     function initializeModel() {
-        listView.model.clear()
+        listView.model.destroy()
+        listView.model = Qt.createQmlObject('import Qt 4.7; ListModel {id: model}', listView)
+
         for (var i = 0; i < itemCount; i++) {
             listView.model.append( {
                 "title": "Title text - " + i,
@@ -389,7 +391,7 @@ Item {
                 "image": "image://theme/:/list1.png",
                 "disabled": false,
                 "selected": false,
-                "sectionIdentifier": Math.floor(i/sectionInterval)
+                "sectionIdentifier": sectionInterval > 0 ? Math.floor(i/sectionInterval) : 0
             } )
         }
     }
