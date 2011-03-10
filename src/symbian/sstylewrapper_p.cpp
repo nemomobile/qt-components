@@ -600,12 +600,6 @@ QVariant SStyleWrapperPrivate::checkBoxProperty(const QString &propertyName) con
     if (propertyName == QLatin1String("iconHeight"))
         return fetchLayoutParameter(QLatin1String("param-graphic-size-primary-small"));
 
-    if (propertyName == QLatin1String("topMargin"))
-        return fetchLayoutParameter(QLatin1String("param-margin-gene-top"));
-
-    if (propertyName == QLatin1String("bottomMargin"))
-        return fetchLayoutParameter(QLatin1String("param-margin-gene-bottom"));
-
     return QVariant();
 }
 

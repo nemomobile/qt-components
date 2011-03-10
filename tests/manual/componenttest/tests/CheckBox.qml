@@ -44,6 +44,14 @@ Item {
                 color: "#00000000"
                 border.color: "red"
             }
+
+            Rectangle {
+                anchors { left: parent.left; verticalCenter: parent.verticalCenter }
+                width: parent.implicitWidth
+                height: parent.implicitHeight
+                color: "#00000000"
+                border.color: "blue"
+            }
         }
 
         CheckBox {

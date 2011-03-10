@@ -91,8 +91,10 @@ ImplicitSizeItem {
         }
     }
 
-    implicitWidth: style.current.get("iconWidth") + style.current.get("padding") + style.textWidth(label.text, label.font)
-    implicitHeight: style.current.get("topMargin") + Math.max( style.current.get("iconHeight"), style.fontHeight(label.font) ) + style.current.get("bottomMargin")
+    implicitWidth: label.text ? style.current.get("iconWidth") + style.current.get("padding") + style.textWidth(label.text, label.font)
+                              : style.current.get("iconWidth")
+    implicitHeight: label.text ? Math.max(style.current.get("iconHeight"), style.fontHeight(label.font))
+                               : style.current.get("iconHeight")
 
     Image {
         id: contentIcon
@@ -106,10 +108,9 @@ ImplicitSizeItem {
     Text {
         id: label
         anchors.left: contentIcon.right
-        anchors.leftMargin: style.current.get("padding")
+        anchors.leftMargin: text ? style.current.get("padding") : 0
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
-
         elide: Text.ElideRight
         font: style.current.get("font")
         color: style.current.get("textColor")
