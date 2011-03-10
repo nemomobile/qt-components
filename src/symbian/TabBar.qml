@@ -31,22 +31,17 @@ ImplicitSizeItem {
     default property alias content: tabBarLayout.data
     property alias layout: tabBarLayout
 
-    implicitWidth: style.current.preferredWidth
-    implicitHeight: style.current.preferredHeight
+    implicitWidth: Math.max(50, screen.width) // TODO: use screen.displayWidth
+    implicitHeight: screen.width < screen.height ? privateStyle.tabBarHeightPortrait : privateStyle.tabBarHeightLandscape
 
     BorderImage {
         anchors.fill: parent
-        source: style.current.get("background")
+        source: privateStyle.imagePath("qtg_fr_tab_bar")
         border { left: 20; top: 20; right: 20; bottom: 20 }
     }
 
     TabBarLayout {
         id: tabBarLayout
         anchors.fill: parent
-    }
-
-    Style {
-        id: style
-        styleClass: "TabBar"
     }
 }
