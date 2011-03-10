@@ -36,11 +36,6 @@ ImplicitSizeItem {
     width: wrapper.width
     height: wrapper.height
 
-    Style {
-        id: style
-        styleClass: "SectionScroller"
-    }
-
     ImplicitSizeItem {
         id: wrapper
 
@@ -54,18 +49,18 @@ ImplicitSizeItem {
             property bool up: true
             property int shift: 30
 
-            height: style.current.get("textHeight")
-            width: parent.width - style.current.get("textMargin")
-            x: style.current.get("indexLeftMargin")
-            color: root.highlighted ? style.current.get("highlightedTextColor") : style.current.get("textColor")
-            font: style.current.get("smallFont")
+            height: privateStyle.menuItemHeight - Math.round(platformStyle.graphicSizeTiny / 4)
+            width: parent.width - 40
+            x: platformStyle.paddingLarge
+            color: root.highlighted ? platformStyle.colorNormalLight : platformStyle.colorNormalMid
+            font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
             verticalAlignment: Text.AlignVCenter
             onCurrentChanged: {
                 text = current;
             }
             onTextChanged: {
                 var w = paintedWidth
-                parent.width = w + style.current.get("indexLeftMargin") + style.current.get("indexRightMargin")
+                parent.width = w + 2 * platformStyle.paddingLarge
             }
 
             Behavior on current {

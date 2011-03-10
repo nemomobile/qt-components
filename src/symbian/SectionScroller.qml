@@ -45,18 +45,13 @@ ImplicitSizeItem {
         }
     }
 
-    Style {
-        id: style
-        styleClass: "SectionScroller"
-    }
-
     Rectangle {
         id: container
 
         property bool dragging: false
 
         color: "transparent"
-        width: fullScreen ? listView.width : style.current.get("touchAreaWidth")
+        width: fullScreen ? listView.width : 3 * platformStyle.scrollBarThickness
         height: listView.height
         x: listView.x + listView.width - width
 
@@ -84,9 +79,9 @@ ImplicitSizeItem {
 
         BorderImage {
             id: fullBackground
-            width: style.current.get("backgroundWidth")
-            height: style.current.get("backgroundHeight")
-            source: style.current.get("backgroundImage")
+            width: internal.backgroundWidth()
+            height: 24 * platformStyle.paddingMedium
+            source: privateStyle.imagePath("qtg_fr_popup_transparent")
             border { left: 10; top: 10; right: 10; bottom: 10 }
             anchors.centerIn: parent
             visible: fullScreen && parent.dragging
@@ -95,7 +90,7 @@ ImplicitSizeItem {
                 id: fullText
                 color: "white"
                 anchors.centerIn: parent
-                font: style.current.get("largeFont")
+                font { family: platformStyle.fontFamilyRegular; pixelSize: 8 * platformStyle.fontSizeMedium }
                 text: internal.currentArea
             }
         }
@@ -105,7 +100,7 @@ ImplicitSizeItem {
             visible: !fullScreen
             opacity: container.dragging ? 1 : 0
             anchors.right: parent.right
-            anchors.rightMargin: style.current.get("popupRightMargin")
+            anchors.rightMargin: 50 // TODO: use screen.displayWidth
             anchors.verticalCenter: parent.verticalCenter
             width: childrenRect.width
             height: childrenRect.height
@@ -115,11 +110,11 @@ ImplicitSizeItem {
                 width: childrenRect.width
                 height: childrenRect.height
                 anchors.left: parent.left
-                source: style.current.get("backgroundImage")
+                source: privateStyle.imagePath("qtg_fr_popup_transparent")
                 border { left: 10; top: 10; right: 10; bottom: 10 }
 
                 Column {
-                    width: Math.max(previousSectionLabel.text.length, currentSectionLabel.text.length, nextSectionLabel.text.length) == 1 ? style.current.get("smallSingleIndexWidth") : style.current.get("backgroundWidth")
+                    width: Math.max(previousSectionLabel.text.length, currentSectionLabel.text.length, nextSectionLabel.text.length) == 1 ? 100 : internal.backgroundWidth()
                     height: childrenRect.height
 
                     SectionScrollerLabel {
@@ -131,11 +126,11 @@ ImplicitSizeItem {
                     }
 
                     Image {
-                        source: style.current.get("dividerImage")
-                        sourceSize.width: style.current.get("dividerBufferSize")
-                        sourceSize.height: style.current.get("dividerBufferSize")
-                        width: parent.width - (style.current.get("indexLeftMargin") + style.current.get("indexRightMargin"))
-                        height: style.current.get("dividerHeight")
+                        source: privateStyle.imagePath("qtg_fr_popup_divider")
+                        sourceSize.width: 40
+                        sourceSize.height: 40
+                        width: parent.width - 2 * platformStyle.paddingLarge
+                        height: Math.round(platformStyle.graphicSizeTiny / 2)
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
 
@@ -148,11 +143,11 @@ ImplicitSizeItem {
                     }
 
                     Image {
-                        source: style.current.get("dividerImage")
-                        sourceSize.width: style.current.get("dividerBufferSize")
-                        sourceSize.height: style.current.get("dividerBufferSize")
-                        width: parent.width - (style.current.get("indexLeftMargin") + style.current.get("indexRightMargin"))
-                        height: style.current.get("dividerHeight")
+                        source: privateStyle.imagePath("qtg_fr_popup_divider")
+                        sourceSize.width: 40
+                        sourceSize.height: 40
+                        width: parent.width - 2 * platformStyle.paddingLarge
+                        height: Math.round(platformStyle.graphicSizeTiny / 2)
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
 
@@ -237,6 +232,10 @@ ImplicitSizeItem {
         property bool modelDirty: false
         property bool down: true
         property int dragAreaWidth: 35
+
+        function backgroundWidth() {
+            return Math.min(screen.width, screen.height) - 8 * platformStyle.paddingLarge
+        }
 
         function initDirtyObserver() {
             Sections.initSectionData(listView);
