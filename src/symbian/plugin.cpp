@@ -25,6 +25,7 @@
 ****************************************************************************/
 
 #include "sdeclarative.h"
+#include "sstylefactory.h"
 #include "sstylewrapper.h"
 #include "sdeclarativeicon.h"
 #include "sdeclarativeframe.h"
@@ -50,6 +51,10 @@ public:
 
         SDeclarativeScreen *screen = new SDeclarativeScreen(context);
         context->setContextProperty("screen", screen);
+
+        SStyleFactory *style = new SStyleFactory(screen, context);
+        context->setContextProperty("platformStyle", style->platformStyle());
+        context->setContextProperty("privateStyle", style->privateStyle());
 
         SDeclarative *declarative = new SDeclarative(context);
         context->setContextProperty("symbian", declarative);

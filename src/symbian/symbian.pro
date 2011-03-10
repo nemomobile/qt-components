@@ -20,10 +20,13 @@ SOURCES += \
     sdeclarativeimplicitsizeitem.cpp \
     sdeclarativemaskedimage.cpp \
     sdeclarativescreen.cpp \
+    sdeclarativestyle.cpp \
+    sdeclarativestyleinternal.cpp \
     sdeclarativewindowdecoration.cpp \
     sframepool.cpp \
     siconpool.cpp \
     sstyleengine.cpp \
+    sstylefactory.cpp \
     sstylewrapper.cpp \
     sstylewrapper_p.cpp
 
@@ -37,10 +40,13 @@ HEADERS += \
     sdeclarativemaskedimage_p.h \
     sdeclarativescreen.h \
     sdeclarativescreen_p.h \
+    sdeclarativestyle.h \
+    sdeclarativestyleinternal.h \
     sdeclarativewindowdecoration.h \
     sframepool.h \
     siconpool.h \
     sstyleengine.h \
+    sstylefactory.h \
     sstylewrapper.h \
     sstylewrapper_p.h
 
