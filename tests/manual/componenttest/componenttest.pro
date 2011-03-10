@@ -47,6 +47,9 @@ OTHER_FILES += \
     tests/ScrollDecorator.qml \
     tests/SectionScroller.qml \
     tests/Slider.qml \
+    tests/StyleColors.qml \
+    tests/StyleFonts.qml \
+    tests/StyleLayouts.qml \
     tests/Tabs.qml \
     tests/TextArea.qml \
     tests/TextField.qml \
