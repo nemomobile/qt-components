@@ -45,13 +45,40 @@ ImplicitSizeItem {
         objectName: "internal"
 
         function press() {
-            style.play(Symbian.BasicItem);
+            privateStyle.play(Symbian.BasicItem);
         }
 
         function toggle() {
             checkable.toggle();
             root.clicked();
-            style.play(Symbian.CheckBox);
+            privateStyle.play(Symbian.CheckBox);
+        }
+
+        function bg_postfix() {
+            if (pressed)
+                return "pressed"
+            else if (!root.enabled)
+                return "disabled"
+            else if (root.focus)
+                return "highlight"
+            else
+                return "normal"
+        }
+
+        function icon_postfix() {
+            if (pressed)
+                return "pressed"
+            else if (root.checked) {
+                if (!root.enabled)
+                    return "disabled_selected"
+                else
+                    return "normal_selected"
+            } else {
+                if (!root.enabled)
+                    return "disabled_unselected"
+                else
+                    return "normal_unselected"
+            }
         }
     }
 
@@ -76,59 +103,42 @@ ImplicitSizeItem {
         ]
     }
 
-    Style {
-        id: style
-        styleClass: "RadioButton"
-        mode: {
-            if (pressed)
-                return "pressed"
-            else if (root.checked) {
-                if (!root.enabled)
-                    return "checkedAndDisabled"
-                else if (root.focus)
-                    return "checkedAndFocused"
-                else
-                    return "checked"
-            } else {
-                if (!root.enabled)
-                    return "disabled"
-                else if (root.focus)
-                    return "focused"
-                else
-                    return "normal"
-            }
-        }
-    }
-
-    implicitWidth: style.current.get("marginLeft") + style.current.get("iconWidth") + style.current.get("spacing") + style.textWidth(label.text, label.font) + style.current.get("marginRight")
-    implicitHeight: style.current.get("marginTop") + Math.max(style.current.get("iconHeight"), style.fontHeight(label.font)) + style.current.get("marginBottom")
+    implicitWidth: platformStyle.paddingLarge + privateStyle.textWidth(label.text, label.font) + platformStyle.paddingMedium
+        + platformStyle.graphicSizeSmall + privateStyle.scrollBarThickness
+    implicitHeight: privateStyle.menuItemHeight
 
     BorderImage {
-        source: style.current.get("background")
+        source: privateStyle.imagePath("qtg_fr_list_" + internal.bg_postfix())
         border { left: 20; top: 20; right: 20; bottom: 20 }
         anchors.fill: parent
 
         Image {
             id: image
-            source: style.current.get("iconName")
+            source: privateStyle.imagePath("qtg_graf_radiobutton_" + internal.icon_postfix())
             anchors.left: parent.left
-            anchors.leftMargin: style.current.get("marginLeft")
+            anchors.leftMargin: platformStyle.paddingLarge
             anchors.verticalCenter: parent.verticalCenter
-            sourceSize.width: style.current.get("iconWidth")
-            sourceSize.height: style.current.get("iconHeight")
+            sourceSize.width: platformStyle.graphicSizeSmall
+            sourceSize.height: platformStyle.graphicSizeSmall
         }
         Text {
             id: label
             elide: Text.ElideRight
             anchors.left: image.right
-            anchors.leftMargin: style.current.get("spacing")
+            anchors.leftMargin: platformStyle.paddingMedium
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
-            anchors.rightMargin: style.current.get("marginRight")
-            anchors.bottomMargin: style.current.get("marginBottom")
+            anchors.rightMargin: platformStyle.paddingLarge
 
-            font: style.current.get("font")
-            color: style.current.get("textColor")
+            font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
+            color: {
+                if (!root.enabled)
+                    platformStyle.colorDisabledLight
+                else if (pressed)
+                    platformStyle.colorPressed
+                else
+                    platformStyle.colorNormalLight
+            }
         }
     }
 
