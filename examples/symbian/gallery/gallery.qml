@@ -35,7 +35,7 @@ Window {
 
     Flickable {
         id: flickable
-        anchors { left: parent.left; right: parent.right; top: parent.top; bottom: quitButton.top }
+        anchors { left: parent.left; right: parent.right; top: parent.top; bottom: toolbar.top }
         contentHeight: defaultColumn.height + 2 * root.rowSpacing
         clip: true
         boundsBehavior: Flickable.StopAtBounds
@@ -114,4 +114,46 @@ Window {
         text: "Quit"
         onClicked: Qt.quit()
     }
+    
+    ToolBar {
+        id: toolbar
+        tools: toolBarlayout
+        anchors.bottom: quitButton.top
+    }
+
+    Component {
+        id: textButton
+        ToolButton {
+            text:"button"
+        }
+    }
+
+    ToolBarLayout {
+        id: toolBarlayout
+        ToolButton {
+            flat: true
+            iconSource: "qrc:tb_back.svg"
+            onClicked: Qt.quit()
+        }
+
+        ToolButton {
+            iconSource: "qrc:tb_plus.png"
+            onClicked: {
+                if (toolBarlayout.children.length >= 4){
+                    for (var p = 1; p < toolBarlayout.children.length - 1; ++p){
+                        toolBarlayout.children[p].destroy()
+                    }
+                }
+                else {
+                    var button = textButton.createObject(null)
+                    var len = toolBarlayout.children.length
+                    var temp = toolBarlayout.children[len-1]
+                    temp.parent = null
+                    button.parent = toolBarlayout
+                    temp.parent = toolBarlayout
+                }
+            }
+        }
+    }
 }
+

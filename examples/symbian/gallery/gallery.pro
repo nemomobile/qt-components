@@ -7,6 +7,7 @@ CONFIG -= app_bundle
 win32:DESTDIR = $$OUT_PWD
 
 SOURCES += gallery.cpp
+RESOURCES += gallery.qrc
 
 symbian {
     TARGET.EPOCALLOWDLLDATA = 1
