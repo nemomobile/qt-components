@@ -56,5 +56,6 @@ OTHER_FILES += \
     tests/TextFieldFont.qml \
     tests/TextFieldOther.qml \
     tests/TextFieldSelection.qml \
+    tests/ToolBar.qml \
     tests/ToolButton.qml \
     tests/content/InputMethodHints.qml
