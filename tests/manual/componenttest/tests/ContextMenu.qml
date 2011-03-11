@@ -38,6 +38,16 @@ Item {
             MenuItem {text: "Three"; onClicked: signalLabel.text = "itemClicked(3)"}
             MenuItem {text: "Four"; onClicked: signalLabel.text = "itemClicked(4)"}
             MenuItem {text: "Five"; onClicked: signalLabel.text = "itemClicked(5)"}
+            MenuItem {text: "Six"; onClicked: signalLabel.text = "itemClicked(6)"}
+            MenuItem {text: "Seven"; onClicked: signalLabel.text = "itemClicked(7)"}
+            MenuItem {text: "Eight"; onClicked: signalLabel.text = "itemClicked(8)"}
+            MenuItem {text: "Nine"; onClicked: signalLabel.text = "itemClicked(9)"}
+            MenuItem {text: "Ten"; onClicked: signalLabel.text = "itemClicked(10)"}
+            MenuItem {text: "Eleven"; onClicked: signalLabel.text = "itemClicked(11)"}
+            MenuItem {text: "Twelve"; onClicked: signalLabel.text = "itemClicked(12)"}
+            MenuItem {text: "Thirteen"; onClicked: signalLabel.text = "itemClicked(13)"}
+            MenuItem {text: "Fourteen"; onClicked: signalLabel.text = "itemClicked(14)"}
+            MenuItem {text: "Fifteen"; onClicked: signalLabel.text = "itemClicked(15)"}
         }
     }
 

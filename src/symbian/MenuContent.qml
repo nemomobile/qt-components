@@ -34,9 +34,7 @@ Item {
 
     signal itemClicked()
 
-    height: contentArea.childrenRect.height + 2 * style.current.get("listMargin") > style.current.preferredHeight
-        ? (style.current.preferredHeight - (style.current.preferredHeight % style.current.get("itemHeight"))) + style.current.get("listMargin")
-                : contentArea.childrenRect.height + 2 * style.current.get("listMargin")
+    height: flickableArea.height + 2 * style.current.get("listMargin")
     clip: true
 
     Style {
@@ -66,10 +64,8 @@ Item {
         property int menuItemHeight: (contentArea.children[0] == undefined) || (contentArea.children[0].children[0] == undefined)
             ? 1 : contentArea.children[0].children[0].height
 
-        anchors {
-            fill: parent
-            margins: style.current.get("listMargin")
-        }
+        x: style.current.get("listMargin"); y: style.current.get("listMargin")
+        height: contentArea.height; width: root.width - 2 * style.current.get("listMargin")
         clip: true
         boundsBehavior: Flickable.StopAtBounds
         contentHeight: contentArea.childrenRect.height
@@ -80,8 +76,10 @@ Item {
         Item {
             id: contentArea
 
-            anchors.fill: parent
-            clip: true
+            width: flickableArea.width
+            height: childrenRect.height + 2 * style.current.get("listMargin") > style.current.preferredHeight
+                ? (style.current.preferredHeight - ((style.current.preferredHeight) % style.current.get("itemHeight")))
+                    : childrenRect.height
 
             onWidthChanged: {
                 for (var i = 0; i < children.length; ++i)
