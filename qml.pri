@@ -18,10 +18,18 @@
             !isEmpty(NATIVESUBPATH):NATIVE_DESTDIR = $$NATIVE_DESTDIR/$$NATIVESUBPATH
             NATIVE_DESTDIR = $$replace(NATIVE_DESTDIR, /, $$QMAKE_DIR_SEP)
 
-            contains(QMAKE_HOST.os, Windows):isEmpty(QMAKE_SH) {
-                CHK_DIR_EXISTS_MKDIR = $$QMAKE_CHK_DIR_EXISTS $$NATIVE_DESTDIR $$QMAKE_MKDIR $$NATIVE_DESTDIR
+            win32:!win32-g++* {
+                unixstyle = false
+            } else :win32-g++*:isEmpty(QMAKE_SH) {
+                unixstyle = false
             } else {
+                unixstyle = true
+            }
+
+            $$unixstyle {
                 CHK_DIR_EXISTS_MKDIR = $$QMAKE_CHK_DIR_EXISTS $$NATIVE_DESTDIR || $$QMAKE_MKDIR $$NATIVE_DESTDIR
+            } else {
+                CHK_DIR_EXISTS_MKDIR = $$QMAKE_CHK_DIR_EXISTS $$NATIVE_DESTDIR $$QMAKE_MKDIR $$NATIVE_DESTDIR
             }
 
             mkdir_native.commands += $$CHK_DIR_EXISTS_MKDIR
