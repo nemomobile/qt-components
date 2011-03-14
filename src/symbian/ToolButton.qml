@@ -51,46 +51,31 @@ ImplicitSizeItem {
 
     implicitWidth: {
         if (!text)
-            return style.current.get("iconButtonWidth")
+            return internal.iconButtonWidth()
         else if (!iconSource)
-            return Math.max(style.current.get("iconButtonWidth"), style.current.get("textButtonWidth"))
+            return Math.max(internal.iconButtonWidth(), internal.textButtonWidth())
         else
-            return style.current.get("iconButtonWidth") + style.current.get("textButtonWidth")
+            return internal.iconButtonWidth() + internal.textButtonWidth()
     }
-    implicitHeight: style.current.get("iconButtonHeight")
-
-    Style {
-        id: style
-        styleClass: "ToolButton"
-        mode: {
-            if (!enabled)
-                return "disabled"
-            else if (stateGroup.state == "Pressed" || stateGroup.state == "PressAndHold")
-                return "pressed"
-            else if (checkable.checked)
-                return "checked"
-            else
-                return "default"
-        }
-    }
+    implicitHeight: internal.iconButtonWidth()
 
     BorderImage {
         id: background
-        source: style.current.get("background")
+        source: privateStyle.imagePath("qtg_fr_toolbutton_" + internal.mode())
         border { left: 20; top: 20; right: 20; bottom: 20 }
         anchors.fill: parent
-        visible: style.mode != "default" || !flat
+        visible: internal.mode() != "normal" || !flat
     }
 
     Image {
         id: contentIcon
         visible: iconSource
-        sourceSize.width: style.current.get("iconWidth")
-        sourceSize.height: style.current.get("iconHeight")
+        sourceSize.width: platformStyle.graphicSizeSmall
+        sourceSize.height: platformStyle.graphicSizeSmall
         source: {
-            if (style.mode == "checked" && checkedIconSource)
+            if (internal.mode() == "latched" && checkedIconSource)
                 return checkedIconSource
-            else if (style.mode == "pressed" && pressedIconSource)
+            else if (internal.mode() == "pressed" && pressedIconSource)
                 return pressedIconSource
             else
                 return iconSource
@@ -99,7 +84,7 @@ ImplicitSizeItem {
             centerIn: !text ? parent : undefined
             verticalCenter: !text ? undefined : parent.verticalCenter
             left: !text ? undefined : parent.left
-            leftMargin: !text ? 0 : style.current.get("iconMarginLeft")
+            leftMargin: !text ? 0 : 2 * platformStyle.paddingMedium
         }
     }
 
@@ -108,13 +93,21 @@ ImplicitSizeItem {
         clip: true
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        font: style.current.get("font")
+        font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
+        color: {
+            if (!enabled)
+                platformStyle.colorDisabledLight
+            else if (stateGroup.state == "Pressed" || stateGroup.state == "PressAndHold")
+                platformStyle.colorPressed
+            else
+                platformStyle.colorNormalLight
+        }
         visible: text
         anchors {
             top: parent.top; bottom: parent.bottom
             left: iconSource ? contentIcon.right : parent.left; right: parent.right
-            leftMargin: iconSource ? style.current.get("textMarginLeftInner") : style.current.get("textMarginLeft")
-            rightMargin: style.current.get("textMarginRight")
+            leftMargin: iconSource ? platformStyle.paddingSmall : platformStyle.paddingMedium
+            rightMargin: platformStyle.paddingMedium
         }
     }
 
@@ -137,11 +130,30 @@ ImplicitSizeItem {
     QtObject {
         id: internal
 
+        function mode() {
+            if (!enabled)
+                return "disabled"
+            else if (stateGroup.state == "Pressed" || stateGroup.state == "PressAndHold")
+                return "pressed"
+            else if (checkable.checked)
+                return "latched"
+            else
+                return "normal"
+        }
+
+        function iconButtonWidth() {
+            return (screen.width < screen.height) ? privateStyle.toolBarHeightPortrait : privateStyle.toolBarHeightLandscape
+        }
+
+        function textButtonWidth() {
+            return platformStyle.paddingMedium * ((screen.width < screen.height) ? 15 : 25)
+        }
+
         function press() {
             if (checkable.enabled && checkable.checked)
-                style.play(Symbian.SensitiveButton)
+                privateStyle.play(Symbian.SensitiveButton)
             else
-                style.play(Symbian.BasicButton)
+                privateStyle.play(Symbian.BasicButton)
         }
 
         function release() {
@@ -153,7 +165,7 @@ ImplicitSizeItem {
             toolButton.clicked()
 
             if (!checkable.enabled || !checkable.checked)
-                style.play(Symbian.BasicButton)
+                privateStyle.play(Symbian.BasicButton)
         }
 
         function hold() {
