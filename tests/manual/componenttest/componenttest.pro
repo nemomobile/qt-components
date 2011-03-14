@@ -58,4 +58,5 @@ OTHER_FILES += \
     tests/TextFieldSelection.qml \
     tests/ToolBar.qml \
     tests/ToolButton.qml \
+    tests/ToolTip.qml \
     tests/content/InputMethodHints.qml
