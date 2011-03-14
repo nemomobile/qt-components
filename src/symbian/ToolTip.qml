@@ -52,9 +52,9 @@ ImplicitSizeItem {
     QtObject {
         id: privy
 
-        property real verticalMargin: style.current.get("verticalMargin")
-        property real horizontalMargin: style.current.get("horizontalMargin")
-        property real spacing: style.current.get("spacing")
+        property real verticalMargin: platformStyle.paddingMedium
+        property real horizontalMargin: platformStyle.paddingMedium
+        property real spacing: platformStyle.paddingLarge
         property real maxWidth: screen.width - spacing * 2
 
         function calculatePosition() {
@@ -100,23 +100,21 @@ ImplicitSizeItem {
         }
     }
 
-    Style { id: style; styleClass: "ToolTip" }
-
     BorderImage {
         id: frame
         anchors.fill: parent
-        source: style.current.get("background")
+        source: privateStyle.imagePath("qtg_fr_popup")
         border { left: 20; top: 20; right: 20; bottom: 20 }
     }
 
     Text {
        id: text
        clip: true
-       color: style.current.get("color")
+       color: platformStyle.colorNormalLight
        // TODO: See http://bugreports.qt.nokia.com/browse/QTBUG-16093
        // Enable when Qt Quick 1.1 hit Qt.
        // elide: Text.ElideRight
-       font: style.current.get("font")
+       font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeSmall }
        verticalAlignment: Text.AlignVCenter
 
        x: privy.horizontalMargin
