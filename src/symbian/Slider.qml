@@ -160,7 +160,7 @@ ImplicitSizeItem {
                     anchors.horizontalCenter: orientation == Qt.Horizontal ? undefined : parent.horizontalCenter
 
                     drag.target: handle
-                    drag.axis: orientation == Qt.Horizontal ? Drag.XAxis : Drag.YAxis
+                    drag.axis: Drag.XandYAxis
                     drag.minimumX: orientation == Qt.Horizontal ? model.positionAtMinimum : 0
                     drag.maximumX: orientation == Qt.Horizontal ? model.positionAtMaximum : 0
                     drag.minimumY: orientation == Qt.Horizontal ? 0 : model.positionAtMinimum
