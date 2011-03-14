@@ -35,7 +35,7 @@ Item {
     signal itemClicked()
 
     height: contentArea.childrenRect.height + 2 * style.current.get("listMargin") > style.current.preferredHeight
-        ? (style.current.preferredHeight - ((style.current.preferredHeight) % style.current.get("itemHeight"))) + style.current.get("listMargin")
+        ? (style.current.preferredHeight - (style.current.preferredHeight % style.current.get("itemHeight"))) + style.current.get("listMargin")
                 : contentArea.childrenRect.height + 2 * style.current.get("listMargin")
     clip: true
 
@@ -62,6 +62,10 @@ Item {
     Flickable {
         id: flickableArea
 
+        property int itemsHidden: menuItemHeight == 0 ? 0 : Math.floor(contentY / menuItemHeight)
+        property int menuItemHeight: (contentArea.children[0] == undefined) || (contentArea.children[0].children[0] == undefined)
+            ? 1 : contentArea.children[0].children[0].height
+
         anchors {
             fill: parent
             margins: style.current.get("listMargin")
@@ -70,6 +74,8 @@ Item {
         boundsBehavior: Flickable.StopAtBounds
         contentHeight: contentArea.childrenRect.height
         contentWidth: width
+
+        onItemsHiddenChanged: style.play(Symbian.ItemScroll)
 
         Item {
             id: contentArea
