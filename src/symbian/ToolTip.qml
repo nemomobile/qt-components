@@ -44,7 +44,7 @@ ImplicitSizeItem {
 
     onVisibleChanged: {
         if (visible) {
-            toolTip.parent = application.rootObject()
+            toolTip.parent = AppView.rootObject()
             privy.calculatePosition()
         }
     }
@@ -111,7 +111,6 @@ ImplicitSizeItem {
 
     Text {
        id: text
-
        clip: true
        color: style.current.get("color")
        // TODO: See http://bugreports.qt.nokia.com/browse/QTBUG-16093
