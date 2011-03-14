@@ -34,6 +34,13 @@ function getDepth() {
 
 // Pushes a page on the stack.
 function push(page, properties, replace, immediate) {
+    // page order sanity check
+    if ((!replace && page == currentPage)
+        || (replace && pageStack.length > 1
+        && page == pageStack[pageStack.length - 2].page)) {
+        throw new Error("Cannot navigate so that the resulting page stack has two consecutive entries of the same page instance.");
+    }
+
     // figure out if more than one page is being pushed
     var pages;
     if (page instanceof Array) {
