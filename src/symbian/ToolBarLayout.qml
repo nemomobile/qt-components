@@ -38,29 +38,26 @@ ImplicitSizeItem {
     //this space is always empty
     property bool backButton: true
 
-    implicitWidth: style.current.preferredWidth
-    implicitHeight: style.current.preferredHeight
+    implicitWidth: Math.max(50, screen.width) // TODO: use screen.displayWidth
+    implicitHeight: (screen.width < screen.height)
+        ? privateStyle.toolBarHeightPortrait
+        : privateStyle.toolBarHeightLandscape
     visible: false
 
-    Style {
-        id: style
-        styleClass: "ToolBar"
-    }
-
-    Style {
-        id: buttonStyle
-        styleClass: "ToolButton"
-        onCurrentStyleChanged:toolBarLayout.layoutChildren()
+    Connections {
+        target: privateStyle
+        onLayoutParametersChanged: toolBarLayout.layoutChildren()
     }
 
     function buttonWidth(child) {
         if (child.hasOwnProperty("implicitWidth")) {
             //ImplicitWidth for the ToolButton returns wrong value right after
-            //orientation change so to make sure everything is ok ask it
-            //directly from style. Buttons would work fine so to distinguish them from
+            //orientation change so to make sure everything is ok calculate the width here
+            //as the button would. Buttons would work fine so to distinguish them from
             //ToolButtons check that property flat exists in child.
-            if (child.hasOwnProperty("iconSource") && child.iconSource == "" && child.flat != undefined)
-                return buttonStyle.current.get("textButtonWidth")
+            if (child.hasOwnProperty("iconSource") && child.iconSource == "" && child.flat != undefined) {
+                return platformStyle.paddingMedium * ((screen.width < screen.height) ? 15 : 25)
+            }
             return child.implicitWidth
         }
         return child.width
@@ -89,8 +86,8 @@ ImplicitSizeItem {
             children[i].parent = toolBarLayout
             children[i].y = toolBarLayout.y
         }
-        var horizontalMargin = style.current.get("border-margin") * 2
-        var leftMargin = horizontalMargin + buttonStyle.current.get("iconButtonWidth")
+        var horizontalMargin = (screen.width < screen.height) ? 0 : 2 * platformStyle.paddingLarge
+        var leftMargin = horizontalMargin + (screen.width < screen.height) ? privateStyle.toolBarHeightPortrait : privateStyle.toolBarHeightLandscape
         var rightMargin = toolBarLayout.width  - horizontalMargin
 
         // |   X   |
@@ -151,7 +148,7 @@ ImplicitSizeItem {
     }
 
     Component.onCompleted: layoutChildren()
-    onChildrenChanged: layoutChildren()  
+    onChildrenChanged: layoutChildren()
     onBackButtonChanged: layoutChildren()
     onImplicitWidthChanged: layoutChildren()
 }

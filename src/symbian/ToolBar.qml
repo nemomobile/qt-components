@@ -48,19 +48,16 @@ ImplicitSizeItem {
         root.tools = tools
     }
 
-    implicitWidth: style.current.preferredWidth
-    implicitHeight: style.current.preferredHeight
+    implicitWidth: Math.max(50, screen.width) // TODO: use screen.displayWidth
+    implicitHeight: (screen.width < screen.height)
+        ? privateStyle.toolBarHeightPortrait
+        : privateStyle.toolBarHeightLandscape
 
     BorderImage {
         id: background
         anchors.fill: parent
-        source: style.current.get("background")
-        border { left: 20;  top: 20;  right: 20;  bottom: 20 }
-    }
-
-    Style {
-        id: style
-        styleClass: "ToolBar"
+        source: privateStyle.imagePath("qtg_fr_toolbar")
+        border { left: 20; top: 20; right: 20; bottom: 20 }
     }
 
     //Prevents mouse events from propagating to elements below the ToolBar
