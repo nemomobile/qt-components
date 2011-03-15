@@ -69,7 +69,7 @@ Item {
                 text: "Menu"
                 width: 100
                 anchors { right: parent.right; rightMargin: 10; verticalCenter: parent.verticalCenter }
-                onClicked: viewMenu.open()
+                onClicked: menu.open()
             }
         }
     }
@@ -96,30 +96,26 @@ Item {
         }
     }
 
-    ViewMenu {
-        id: viewMenu
-        actions: ["Show/Hide List header",
-            "Show/Hide Sections",
-            "Back"]
-        onTriggered: {
-            switch (index) {
-                case 0: {
-                    listView.header = (listView.header) ? null : listHeader
-                    break
-                }
-                case 1: {
+    Menu {
+        id: menu
+
+        content: MenuLayout {
+            MenuItem {
+                text: "Show/Hide List header"
+                onClicked: listView.header = listView.header ? null : listHeader
+            }
+            MenuItem {
+                text: "Show/Hide Sections"
+                onClicked: {
                     // Models field to group by
                     listView.section.property = "image"
                     // Delegate for section heading
                     listView.section.delegate = listView.section.delegate ? null : sectionDelegate
-                    break
                 }
-                case 2: {
-                    pageStack.pop()
-                    break
-                }
-               default:
-                   break
+            }
+            MenuItem {
+                text: "Back"
+                onClicked: pageStack.pop()
             }
         }
     }
