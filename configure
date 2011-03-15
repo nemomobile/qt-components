@@ -31,7 +31,6 @@ SOURCE_TREE=`cd "$SOURCE_TREE"; /bin/pwd`
 
 BUILD_MEEGO_STYLE=no
 BUILD_SYMBIAN_STYLE=no
-BUILD_MX_STYLE=no
 BUILD_EXAMPLES=yes
 BUILD_TESTS=yes
 HAVE_MEEGOTOUCH=no
@@ -76,7 +75,7 @@ while [ "$#" -gt 0 ]; do
         VAL=no
         ;;
     #Qt style yes options
-    -meego|-symbian|-mx|-meegotouch|-contextsubscriber|-xdamage|-meegographicssystem)
+    -meego|-symbian|-meegotouch|-contextsubscriber|-xdamage|-meegographicssystem)
         VAR=`echo $1 | sed 's,^-\(.*\),\1,'`
         VAL=yes
         ;;
@@ -105,9 +104,6 @@ while [ "$#" -gt 0 ]; do
         ;;
     symbian)
         BUILD_SYMBIAN_STYLE=yes
-        ;;
-    mx)
-        BUILD_MX_STYLE=yes
         ;;
     nomake)
         case "$1" in
@@ -223,7 +219,6 @@ fi
 
 [ "$BUILD_MEEGO_STYLE" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG meego"
 [ "$BUILD_SYMBIAN_STYLE" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG symbian3"
-[ "$BUILD_MX_STYLE" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG mx"
 [ "$BUILD_EXAMPLES" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG examples"
 [ "$BUILD_TESTS" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG tests"
 
@@ -256,7 +251,6 @@ if [ "$BUILD_MEEGO_STYLE" = "yes" ]; then
     echo "  MeeGo Graphics System support .. $HAVE_MEEGOGRAPHICSSYSTEM"
 fi
 echo "Symbian Style .................... $BUILD_SYMBIAN_STYLE"
-echo "Mx Style ......................... $BUILD_MX_STYLE"
 echo "Examples ......................... $BUILD_EXAMPLES"
 echo "Tests ............................ $BUILD_TESTS"
 echo
