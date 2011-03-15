@@ -41,6 +41,7 @@ private slots:
     void initTestCase();
     void setToolsA();
     void setToolsB();
+    void setToolsToNull();
     void toolbarlayout();
 
 private:
@@ -93,6 +94,14 @@ void tst_quickcomponentstoolbar::setToolsB()
     QVERIFY(retPage.isValid());
     layout = qvariant_cast<QObject*>(retPage);
     QVERIFY(isVisible(layout));
+}
+
+void tst_quickcomponentstoolbar::setToolsToNull()
+{
+    QVariant toolsNull;
+    QMetaObject::invokeMethod(componentObject, "setToolsToNull", Q_RETURN_ARG(QVariant, toolsNull));
+    QVERIFY(toolsNull.toBool());
+    QCOMPARE(componentObject->property("currentToolsName").toString(),QString("undefined"));
 }
 
 void tst_quickcomponentstoolbar::toolbarlayout()

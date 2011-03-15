@@ -37,6 +37,15 @@ Item {
         toolbar.setTools(commonToolsB)
     }
 
+    function setToolsToNull() {
+        try {
+            toolbar.setTools(null);
+        } catch (e) {
+            return false;
+        }
+        return true;
+    }
+
     function getLayout(which){
         if (which == "commonToolsA")
             return commonToolsA
