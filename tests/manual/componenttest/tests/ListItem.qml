@@ -388,7 +388,7 @@ Item {
 
                 CheckBox {
                     id: checkbox9
-                    anchors { right: listItem9.padding.right; top: listItem9.padding.top }
+                    anchors { right: listItem9.padding.right; verticalCenter: listItem9.padding.verticalCenter }
                 }
                 onClicked: {
                     checkbox9.checked = !checkbox9.checked
