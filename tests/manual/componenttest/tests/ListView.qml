@@ -74,30 +74,27 @@ Item {
         }
     }
 
-    ObjectMenu {
-           id: objectmenu
-           actions: ["Set disabled", "Add item", "Delete item"]
-           onTriggered: {
-               switch (index) {
-                   case 0: {
-                       // Switch state
-                       listView.model.set(listView.currentIndex, {"disabled": true})
-                       break
-                   }
-                   case 1: {
-                       createItemDialog.open()
-                       break
-                   }
-                   case 2: {
-                       if (listView.currentIndex >= 0)
-                           listView.model.remove(listView.currentIndex)
-                       break
-                   }
-                   default:
-                       break
-               }
-           }
-       }
+    ContextMenu {
+        id: contextMenu
+
+        content: MenuLayout {
+            MenuItem {
+                text: "Set disabled"
+                onClicked: listView.model.set(listView.currentIndex, {"disabled": true})
+            }
+            MenuItem {
+                text: "Add item"
+                onClicked: createItemDialog.open()
+            }
+            MenuItem {
+                text: "Delete item"
+                onClicked: {
+                    if (listView.currentIndex >= 0)
+                        listView.model.remove(listView.currentIndex)
+                }
+            }
+        }
+    }
 
     ViewMenu {
         id: viewMenu
@@ -288,7 +285,7 @@ Item {
                 notificationDialog.notificationText = "Activated item: " + title
                 notificationDialog.open()
             }
-            onPressAndHold: objectmenu.open()
+            onPressAndHold: contextMenu.open()
 
             Keys.onPressed: {
                 if (event.key == Qt.Key_Backspace ||event.key == Qt.Key_Delete) {
