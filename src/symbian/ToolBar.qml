@@ -42,7 +42,8 @@ ImplicitSizeItem {
     // Sets the tools with a transition.
     function setTools(tools, transition) {
         stateGroup.state = tools ? "" : "Hidden"
-        tools.height = root.height
+        if (tools)
+            tools.height = root.height
         priv.transition = transition
         root.tools = tools
     }
