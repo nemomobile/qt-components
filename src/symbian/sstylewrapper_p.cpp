@@ -577,18 +577,16 @@ QVariant SStyleWrapperPrivate::checkBoxProperty(const QString &propertyName) con
         return fetchThemeColor(QLatin1String("qtc_default_main_pane_normal"));
 
     if (propertyName == QLatin1String("iconName")) {
-        if (mode == QLatin1String("selected"))
-            return imagePath(QLatin1String("qtg_graf_checkbox_normal_selected"));
-        else if (mode == QLatin1String("unselected"))
-            return imagePath(QLatin1String("qtg_graf_checkbox_normal_unselected"));
-        else if (mode == QLatin1String("disabledAndSelected"))
-            return imagePath(QLatin1String("qtg_graf_checkbox_disabled_selected"));
-        else if (mode == QLatin1String("disabledAndUnselected"))
-            return imagePath(QLatin1String("qtg_graf_checkbox_disabled_unselected"));
-        else if (mode == QLatin1String("pressed"))
+        if (mode == QLatin1String("pressed"))
             return imagePath(QLatin1String("qtg_graf_checkbox_pressed"));
-        else
-            return imagePath(QLatin1String("qtg_graf_checkbox_normal_unselected")); // Default
+        else if (mode == QLatin1String("checked"))
+            return imagePath(QLatin1String("qtg_graf_checkbox_normal_selected"));
+        else if (mode == QLatin1String("unchecked"))
+            return imagePath(QLatin1String("qtg_graf_checkbox_normal_unselected"));
+        else if (mode == QLatin1String("disabled"))
+            return imagePath(QLatin1String("qtg_graf_checkbox_disabled_unselected"));
+        else if (mode == QLatin1String("checkedAndDisabled"))
+            return imagePath(QLatin1String("qtg_graf_checkbox_disabled_selected"));
     }
 
     if (propertyName == QLatin1String("padding"))

@@ -82,12 +82,21 @@ ImplicitSizeItem {
         id: style
         styleClass: "CheckBox"
         mode: {
-            if (checkbox.checked)
-                return "selected"
-            else if (checkbox.pressed)
+            if (checkbox.pressed) {
                 return "pressed"
-            else
-                return "default"
+            }
+            else if (checkbox.checked) {
+                if (!checkbox.enabled)
+                    return "checkedAndDisabled"
+                else
+                    return "checked"
+            }
+            else {
+                if (!checkbox.enabled)
+                    return "disabled"
+                else
+                    return "unchecked"
+            }
         }
     }
 
