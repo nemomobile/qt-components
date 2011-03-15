@@ -215,10 +215,10 @@ Item {
                 "title": titleField.text,
                 "subTitle": subTitleField.text,
                 "imageSize": imageSizeChoiceList.currentIndex,
-                "image": imageSizeChoiceList.currentIndex > 0 ? "image://theme/:/list1.png" : "",
+                "image": "image://theme/:/list1.png",
                 "disabled": false,
-                "selected": false,
-                "sectionIdentifier": 0} )
+                "selected": false
+            } )
             listView.forceActiveFocus()
         }
     }
@@ -235,8 +235,7 @@ Item {
                     "imageSize": j,
                     "image": "image://theme/:/list" + (i + 1) + ".png",
                     "disabled": false,
-                    "selected": false,
-                    "sectionIdentifier": 0
+                    "selected": false
                 } )
             }
         }
@@ -322,7 +321,7 @@ Item {
                 anchors.fill: sectionHeader.padding
                 style: sectionHeader.style
                 role: "Heading"
-                text: "Section separator"
+                text: "Section: " + section
             }
         }
     }
