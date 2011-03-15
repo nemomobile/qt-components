@@ -62,6 +62,11 @@ ImplicitSizeItem {
         styleClass: "ToolBar"
     }
 
+    //Prevents mouse events from propagating to elements below the ToolBar
+    MouseArea {
+        anchors.fill: parent
+    }
+
     Item {
         id: container
         anchors.fill: parent
