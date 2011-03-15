@@ -67,6 +67,7 @@ release/
 /tests/auto/symbian_declarativeicon/tst_symbian_declarativeicon
 /tests/auto/symbian_declarativeimplicitsizeitem/tst_symbian_declarativeimplicitsizeitem
 /tests/auto/symbian_declarativescreen/tst_declarativescreen
+/tests/auto/symbian_declarativestyle/tst_declarativestyle
 /tests/auto/symbian_framepool/tst_symbian_framepool
 /tests/auto/symbian_iconpool/tst_symbian_iconpool
 /tests/auto/symbian_imageprovider/tst_symbian_imageprovider
