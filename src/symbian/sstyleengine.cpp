@@ -79,13 +79,14 @@ void SStyleEnginePrivate::init()
 
 bool SStyleEnginePrivate::updateLayoutParameters()
 {
+    QString newDisplayConfig;
     if (screen->width() < 0 || screen->height() < 0)
-        return false;
-
-    QString longEdge = QString::number(qMax(screen->width(), screen->height()));
-    QString shortEdge = QString::number(qMin(screen->width(), screen->height()));
-    QString ppi = QString::number(qRound(screen->dpi() / 5.0) * 5); // round to closest 5
-    QString newDisplayConfig = longEdge + QLatin1Char('_') + shortEdge + QLatin1Char('_') + ppi;
+        // default
+        newDisplayConfig = QLatin1String("640_360_210");
+    else
+        newDisplayConfig = QString::number(qMax(screen->width(), screen->height()))
+            + QLatin1Char('_') + QString::number(qMin(screen->width(), screen->height()))
+            + QLatin1Char('_') + QString::number(qRound(screen->dpi() / 5.0) * 5); // round to closest 5
     
     if (displayConfig != newDisplayConfig) {
         layoutParameters.clear();
