@@ -280,4 +280,37 @@ Column {
         text: "ToolButton"
         iconSource: "image://theme/qtg_graf_radiobutton_normal_selected"
     }
+
+    Row {
+        spacing: 5
+
+        BusyIndicator {
+            id: busyInd1
+            width: 20
+            height: 20
+            running: true
+        }
+
+        BusyIndicator {
+            // default width/height is 40
+            id: busyInd2
+            running: true
+        }
+
+        BusyIndicator {
+            id: busyInd3
+            width: 60
+            height: 60
+            running: true
+        }
+
+        Button {
+            text: "Toggle"
+            onClicked: {
+                busyInd1.running = !busyInd1.running
+                busyInd2.running = !busyInd2.running
+                busyInd3.running = !busyInd3.running
+            }
+        }
+    }
 }
