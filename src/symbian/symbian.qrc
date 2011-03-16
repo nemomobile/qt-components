@@ -49,6 +49,16 @@
         <file alias="qtg_fr_toolbutton_normal.svg">resources/defaulttheme/graphics/qtg_fr_toolbutton_normal.svg</file>
         <file alias="qtg_fr_popup_transparent.svg">resources/defaulttheme/graphics/qtg_fr_popup_transparent.svg</file>
         <file alias="qtg_fr_popup_divider.svg">resources/defaulttheme/graphics/qtg_fr_popup_divider.svg</file>
+        <file alias="qtg_graf_busyindicator_1.svg">resources/defaulttheme/graphics/qtg_graf_busyindicator_1.svg</file>
+        <file alias="qtg_graf_busyindicator_2.svg">resources/defaulttheme/graphics/qtg_graf_busyindicator_2.svg</file>
+        <file alias="qtg_graf_busyindicator_3.svg">resources/defaulttheme/graphics/qtg_graf_busyindicator_3.svg</file>
+        <file alias="qtg_graf_busyindicator_4.svg">resources/defaulttheme/graphics/qtg_graf_busyindicator_4.svg</file>
+        <file alias="qtg_graf_busyindicator_5.svg">resources/defaulttheme/graphics/qtg_graf_busyindicator_5.svg</file>
+        <file alias="qtg_graf_busyindicator_6.svg">resources/defaulttheme/graphics/qtg_graf_busyindicator_6.svg</file>
+        <file alias="qtg_graf_busyindicator_7.svg">resources/defaulttheme/graphics/qtg_graf_busyindicator_7.svg</file>
+        <file alias="qtg_graf_busyindicator_8.svg">resources/defaulttheme/graphics/qtg_graf_busyindicator_8.svg</file>
+        <file alias="qtg_graf_busyindicator_9.svg">resources/defaulttheme/graphics/qtg_graf_busyindicator_9.svg</file>
+        <file alias="qtg_graf_busyindicator_10.svg">resources/defaulttheme/graphics/qtg_graf_busyindicator_10.svg</file>
     </qresource>
     <qresource prefix="/colors">
         <file alias="widgetcolorgroup.css">resources/defaulttheme/colors/widgetcolorgroup.css</file>
