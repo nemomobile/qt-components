@@ -58,6 +58,7 @@ QML_FILES = \
     ApplicationWindow.qml \
     AppManager.js \
     Button.qml \
+    BusyIndicator.qml \
     CheckBox.qml \
     ChoiceList.qml \
     ContextMenu.qml \

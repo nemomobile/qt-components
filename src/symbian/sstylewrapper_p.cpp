@@ -1183,6 +1183,18 @@ QVariant SStyleWrapperPrivate::toolBarProperty(const QString &propertyName) cons
     return QVariant();     
 }
 
+QVariant SStyleWrapperPrivate::busyIndicatorProperty(const QString &propertyName) const
+{
+    if (propertyName == QLatin1String("source"))
+        return imagePath(QLatin1String("qtg_graf_busyindicator_"));
+    if (propertyName == QLatin1String("frameCount"))
+        return 10;
+    if (propertyName == QLatin1String("duration"))
+        return 1000;
+
+    return QVariant();
+}
+
 void SStyleWrapperPrivate::_q_desktopWorkareaChanged()
 {
     Q_Q(SStyleWrapper);

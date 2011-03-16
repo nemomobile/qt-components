@@ -21,6 +21,7 @@ data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\qmldir                
 // Symbian QML components
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ApplicationWindow.qml                          RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ApplicationWindow.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\AppManager.js                                  RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\AppManager.js
+data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\BusyIndicator.qml                              RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\BusyIndicator.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\Button.qml                                     RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\Button.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\CheckBox.qml                                   RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\CheckBox.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ChoiceList.qml                                 RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ChoiceList.qml
@@ -69,6 +70,7 @@ data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\qmldir        
 // Symbian QML components to Native
 data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\ApplicationWindow.qml                  RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\ApplicationWindow.qml
 data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\AppManager.js                          RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\AppManager.js
+data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\BusyIndicator.qml                      RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\BusyIndicator.qml
 data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\Button.qml                             RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\Button.qml
 data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\CheckBox.qml                           RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\CheckBox.qml
 data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\ChoiceList.qml                         RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\ChoiceList.qml

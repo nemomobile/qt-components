@@ -207,6 +207,9 @@ qreal SStyleWrapper::preferredWidth() const
     if (styleClass() == QLatin1String("ToolBar"))
         return d->fetchLayoutParameter(QLatin1String("param-screen-width"));
 
+    if (styleClass() == QLatin1String("BusyIndicator"))
+        return 40;
+
     return 50;
 }
 
@@ -285,6 +288,9 @@ qreal SStyleWrapper::preferredHeight() const
     if (styleClass() == QLatin1String("ToolBar"))
         return d->fetchLayoutParameter(QLatin1String("param-widget-toolbar-height"));
 
+    if (styleClass() == QLatin1String("BusyIndicator"))
+        return 40;
+
     return 50;
 }
 
@@ -359,6 +365,8 @@ QVariant SStyleWrapper::get(const QString &propertyName)
         ret = d->sectionScrollerProperty(propertyName);
     else if (styleClass() == QLatin1String("ToolBar"))
         ret = d->toolBarProperty(propertyName);
+    else if (styleClass() == QLatin1String("BusyIndicator"))
+        ret = d->busyIndicatorProperty(propertyName);
 
     // this is for querying something else than component specific values...
     /*if(ret.isNull())
