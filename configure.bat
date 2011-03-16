@@ -37,6 +37,7 @@ set BUILD_SYMBIAN_STYLE=no
 set BUILD_EXAMPLES=yes
 set BUILD_TESTS=yes
 set QMAKE_CONFIG=
+set QMAKE_DEBUG=
 
 set QMAKE=qmake
 if not "%QTDIR%" == "" set QMAKE=%QTDIR%\bin\qmake
@@ -58,6 +59,7 @@ if "%0" == "-symbian"   goto symbian
 if "%0" == "-make"      goto make
 if "%0" == "-nomake"    goto nomake
 if "%0" == "-config"    goto config
+if "%0" == "-d"         goto debug
 if "%0" == "-help"      goto help
 if "%0" == "-h"         goto help
 
@@ -117,6 +119,11 @@ set QMAKE_CONFIG=%QMAKE_CONFIG% %0
 shift
 goto parse
 
+:debug
+set QMAKE_DEBUG=%QMAKE_DEBUG% -d
+shift
+goto parse
+
 :help
 echo.
 echo Usage:  configure [-meego] [-symbian] [-config (config)]
@@ -145,7 +152,7 @@ echo Q_COMPONENTS_BUILD_TREE = %BUILD_TREE:\=/% >> %QMAKE_CACHE%
 
 echo.
 echo Running qmake...
-call %QMAKE% -r \""CONFIG+=%QMAKE_CONFIG%"\" %SOURCE_TREE%\qt-components.pro
+call %QMAKE% %QMAKE_DEBUG% -r \""CONFIG+=%QMAKE_CONFIG%"\" %SOURCE_TREE%\qt-components.pro
 if errorlevel 1 echo ERROR: qmake run failed.
 
 echo.

@@ -38,6 +38,7 @@ HAVE_XDAMAGE=no
 HAVE_CONTEXTSUBSCRIBER=no
 HAVE_MEEGOGRAPHICSSYSTEM=no
 QMAKE_CONFIG=
+QMAKE_DEBUG=
 OPT_HELP=no
 
 QMAKE=`which qmake` 2> /dev/null
@@ -146,6 +147,9 @@ while [ "$#" -gt 0 ]; do
         QMAKE_CONFIG="$QMAKE_CONFIG $1"
         shift
         ;;
+    d)
+        QMAKE_DEBUG="$QMAKE_DEBUG -d"
+        ;;
     # autodetection overrides
     meegotouch)
         if [ "$VAL" = "yes" ] || [ "$VAL" = "no" ]; then
@@ -240,7 +244,7 @@ echo "Q_COMPONENTS_BUILD_TREE = $BUILD_TREE" >> $QMAKE_CACHE
 echo
 echo "Running qmake..."
 
-QMAKEFEATURES=$QMAKEFEATURES $QMAKE -r "CONFIG+=$QMAKE_CONFIG" $SOURCE_TREE/qt-components.pro
+QMAKEFEATURES=$QMAKEFEATURES $QMAKE $QMAKE_DEBUG -r "CONFIG+=$QMAKE_CONFIG" $SOURCE_TREE/qt-components.pro
 if [ $? != 0 ]; then
     echo "ERROR: qmake run failed."
     exit 1
