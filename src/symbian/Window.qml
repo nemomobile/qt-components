@@ -36,16 +36,6 @@ Item {
     signal orientationChangeStarted
     signal orientationChangeFinished
 
-    // Deprecated, use Dialog.open() instead
-    function showPopup(component) {
-        console.log("warning: use of deprecated method showPopup, use Dialog.open() instead")
-        var popupObj = component.createObject(window);
-        if (popupObj == null)
-            return false;
-        popupObj.open();
-       return true;
-    }
-
     Rectangle {
         anchors.fill: parent
         color: "black"
