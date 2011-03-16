@@ -85,16 +85,19 @@ function push(page, properties, replace, immediate) {
 
     // perform page transition
     immediate = immediate || !oldContainer;
+    var oc = false;
     if (oldContainer) {
-        oldContainer.pushExit(replace, immediate);
+        oc = orientationChanges(oldContainer.page, container.page);
+        oldContainer.pushExit(replace, immediate, oc);
     }
+
      // sync tool bar
     var tools = container.page.tools || null;
     if (toolBar) {
         toolBar.setTools(tools, immediate ? "set" : replace ? "replace" : "push");
     }
-    container.pushEnter(replace, immediate);
 
+    container.pushEnter(replace, immediate, oc);
     return container.page;
 }
 
@@ -159,8 +162,10 @@ function pop(page, immediate) {
         currentPage = container.page;
 
         // perform page transition
-        oldContainer.popExit(immediate);
-        container.popEnter(immediate);
+        var oc = orientationChanges(oldContainer.page, container.page);
+        oldContainer.popExit(immediate, oc);
+        container.popEnter(immediate, oc);
+
         // sync tool bar
         var tools = container.page.tools || null;
         if (toolBar) {
@@ -170,6 +175,13 @@ function pop(page, immediate) {
     } else {
         return null;
     }
+}
+
+// Checks if the orientation changes between oldPage and newPage
+function orientationChanges(oldPage, newPage) {
+    return newPage.orientationLock != PageOrientation.Automatic
+           && newPage.orientationLock != PageOrientation.LockPrevious
+           && newPage.orientationLock != oldPage.orientationLock
 }
 
 // Clears the page stack.

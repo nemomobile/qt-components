@@ -138,6 +138,9 @@ Item {
             // The owner of the page.
             property Item owner: null
 
+            // The width of the longer screen dimension
+            property int screenWidth: Math.max(screen.width, screen.height)
+
             // Duration of transition animation (in ms)
             property int transitionDuration: 500
 
@@ -145,9 +148,12 @@ Item {
             property bool cleanupAfterTransition: false
 
             // Performs a push enter transition.
-            function pushEnter(replace, immediate) {
+            function pushEnter(replace, immediate, orientationChanges) {
                 if (!immediate)
-                    state = replace ? "Front" : "Right";
+                    if (orientationChanges)
+                        state = replace ? "Front" : "LandscapeRight";
+                    else
+                        state = replace ? "Front" : "Right";
                 state = "";
                 page.visible = true;
                 if (root.visible && immediate)
@@ -155,8 +161,11 @@ Item {
             }
 
             // Performs a push exit transition.
-            function pushExit(replace, immediate) {
-                state = immediate ? "Hidden" : (replace ? "Back" : "Left");
+            function pushExit(replace, immediate, orientationChanges) {
+                if (orientationChanges)
+                    state = immediate ? "Hidden" : (replace ? "Back" : "LandscapeLeft");
+                else
+                    state = immediate ? "Hidden" : (replace ? "Back" : "Left");
                 if (root.visible && immediate)
                     internal.setPageStatus(page, PageStatus.Inactive);
                 if (replace) {
@@ -168,9 +177,9 @@ Item {
             }
 
             // Performs a pop enter transition.
-            function popEnter(immediate) {
+            function popEnter(immediate, orientationChanges) {
                 if (!immediate)
-                    state = "Left";
+                    state = orientationChanges ? "LandscapeLeft" : "Left";
                 state = "";
                 page.visible = true;
                 if (root.visible && immediate)
@@ -178,8 +187,12 @@ Item {
             }
 
             // Performs a pop exit transition.
-            function popExit(immediate) {
-                state = immediate ? "Hidden" : "Right";
+            function popExit(immediate, orientationChanges) {
+                if (orientationChanges)
+                    state = immediate ? "Hidden" : "LandscapeRight";
+                else
+                    state = immediate ? "Hidden" : "Right";
+
                 if (root.visible && immediate)
                     internal.setPageStatus(page, PageStatus.Inactive);
                 if (immediate)
@@ -218,10 +231,22 @@ Item {
                     name: "Left"
                     PropertyChanges { target: container; x: -width }
                 },
+                // Start state for pop entry, end state for push exit
+                // when exiting portrait and entering landscape.
+                State {
+                    name: "LandscapeLeft"
+                    PropertyChanges { target: container; x: -screenWidth }
+                },
                 // Start state for push entry, end state for pop exit.
                 State {
                     name: "Right"
                     PropertyChanges { target: container; x: width }
+                },
+                // Start state for push entry, end state for pop exit
+                // when exiting portrait and entering landscape.
+                State {
+                    name: "LandscapeRight"
+                    PropertyChanges { target: container; x: screenWidth }
                 },
                 // Start state for replace entry.
                 State {
@@ -250,6 +275,19 @@ Item {
                         ScriptAction { script: if (state == "Left") { transitionEnded(); } else { transitionStarted(); } }
                     }
                 },
+                // Pop entry and push exit transition when exiting portrait and entering landscape.
+                Transition {
+                    from: ""; to: "LandscapeLeft"; reversible: true
+                    SequentialAnimation {
+                        ScriptAction {
+                            script: if (state == "LandscapeLeft") { transitionStarted(); } else { transitionEnded(); }
+                        }
+                        PropertyAnimation { properties: "x"; easing.type: Easing.InOutExpo; duration: transitionDuration }
+                        ScriptAction {
+                            script: if (state == "LandscapeLeft") { transitionEnded(); } else { transitionStarted(); }
+                        }
+                    }
+                },
                 // Push entry and pop exit transition.
                 Transition {
                     from: ""; to: "Right"; reversible: true
@@ -257,6 +295,19 @@ Item {
                         ScriptAction { script: if (state == "Right") { transitionStarted(); } else { transitionEnded(); } }
                         PropertyAnimation { properties: "x"; easing.type: Easing.InOutExpo; duration: transitionDuration }
                         ScriptAction { script: if (state == "Right") { transitionEnded(); } else { transitionStarted(); } }
+                    }
+                },
+                // Push entry and pop exit transition when exiting portrait and entering landscape.
+                Transition {
+                    from: ""; to: "LandscapeRight"; reversible: true
+                    SequentialAnimation {
+                        ScriptAction {
+                            script: if (state == "LandscapeRight") { transitionStarted(); } else { transitionEnded(); }
+                        }
+                        PropertyAnimation { properties: "x"; easing.type: Easing.InOutExpo; duration: transitionDuration }
+                        ScriptAction {
+                            script: if (state == "LandscapeRight") { transitionEnded(); } else { transitionStarted(); }
+                        }
                     }
                 },
                 // Replace entry transition.
