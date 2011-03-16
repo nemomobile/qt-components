@@ -16,10 +16,10 @@ Item {
         anchors.fill: parent
         clip: true
     }
+
     Page {
         id: firstPage
         tools: bar1
-
         ToolBar {
             id: bar1
             anchors.bottom: parent.bottom
@@ -27,17 +27,7 @@ Item {
             z: firstPage.z+1
         }
         Column {
-
-            Text {
-                width:parent.width
-                wrapMode:Text.WordWrap
-                color: "white"
-                text: "backbutton sets the property to current layout.\n"+
-                      "If not selected, leftmost space is never occupied\n" +
-                      "'+' button pushes page2\n" +
-                      "Next Layout button changes the layout in toolbar"
-            }
-
+            id: columni
             Row {
                 width: firstPage.width
                 CheckBox {
@@ -51,7 +41,7 @@ Item {
                     onClicked: {
                         startupOrientationButton.orientation = Screen.Portrait
                         screen.orientation = Screen.Portrait
-                   }
+                    }
                 }
                 Button {
                     text: "Landscape"
@@ -61,7 +51,6 @@ Item {
                     }
                 }
             }
-
             Row {
                 CheckableGroup { id: group1 }
                 Row {
@@ -91,49 +80,32 @@ Item {
                     }
                 }
             }
-
             Row {
-                Button {
-                    text: "Next Layout"
-                    onClicked: {
-                        if (bar1.tools == null )
-                            bar1.setTools(layout,root.replaceMode)
-                        else if (bar1.tools == layout)
-                            bar1.setTools(layout2,root.replaceMode)
-                        else if (bar1.tools == layout2)
-                            bar1.setTools(layout3,root.replaceMode)
-                        else if (bar1.tools == layout3)
-                            bar1.setTools(layout4,root.replaceMode)
-                        else if (bar1.tools == layout4)
-                            bar1.setTools(layout5,root.replaceMode)
-                        else if (bar1.tools == layout5)
-                            bar1.setTools(layout6,root.replaceMode)
-                        else if (bar1.tools == layout6)
-                            bar1.setTools(layout7,root.replaceMode)
-                        else if (bar1.tools == layout7)
-                            bar1.setTools(layout8,root.replaceMode)
-                        else if (bar1.tools == layout8)
-                            bar1.setTools(layout9,root.replaceMode)
-                        else if (bar1.tools == layout9)
-                            bar1.setTools(layout10,root.replaceMode)
-                        else if (bar1.tools == layout10)
-                            bar1.setTools(layout11,root.replaceMode)
-                        else if (bar1.tools == layout11)
-                            bar1.setTools(layout12,root.replaceMode)
-                        else if (bar1.tools == layout12)
-                            bar1.setTools(layout13,root.replaceMode)
-                        else if (bar1.tools == layout13)
-                            bar1.setTools(layout,root.replaceMode)
-                    }
-                }
+                Button { text: "B"; onClicked: bar1.setTools(layout, root.replaceMode) }
+                Button { text: "B+M"; onClicked: bar1.setTools(layout1, root.replaceMode) }
+                Button { text: "B+T+M "; onClicked: bar1.setTools(layout2, root.replaceMode) }
+                Button { text: "B+2T+M"; onClicked: bar1.setTools(layout3, root.replaceMode) }
+            }
+            Row {
+                Button { text: "B+2T"; onClicked: bar1.setTools(layout4, root.replaceMode) }
+                Button { text: "2xT+M"; onClicked: bar1.setTools(layout5, root.replaceMode) }
+                Button { text: "B+I+M"; onClicked: bar1.setTools(layout6, root.replaceMode) }
+            }
+            Row {
+                Button { text: "B+2I+M"; onClicked: bar1.setTools(layout7, root.replaceMode) }
+                Button { text: "B+3I+M"; onClicked: bar1.setTools(layout8, root.replaceMode) }
+                Button { text: "mix"; onClicked: bar1.setTools(layout11, root.replaceMode) }
+                Button { text: "mix2"; onClicked: bar1.setTools(layout12, root.replaceMode) }
             }
         }
     }
 
     Page {
-        Text {
-            text: "Page2\n click next to go to \nthird page and back to return to first"
-            color: "white"
+        Column {
+            Text {
+                text: "Page2\n click next to go to \nthird page and back to return to first"
+                color: "white"
+            }
         }
         id: secondPage
         tools: bar2
@@ -143,11 +115,11 @@ Item {
             tools: ToolBarLayout {
                 backButton: true
                 ToolButton {
-                    iconSource: "qrc:tb_plus.svg"
+                    iconSource: "qrc:tb_back.svg"
                     onClicked: stack.pop()
                 }
                 ToolButton {
-                    text: "Next"
+                    text: "next"
                     onClicked: stack.push(thirdPage)
                 }
             }
@@ -156,20 +128,14 @@ Item {
 
     Page {
         id: thirdPage
-        tools: bar3
-        Text {
-            text: "Page3\n click back to return to second"
-            color: "white"
-        }
-        ToolBar {
-            id: bar3
-            anchors.bottom: parent.bottom
-            tools: ToolBarLayout {
-                backButton: true
-                ToolButton {
-                    iconSource: "qrc:tb_plus.png"
-                    onClicked: stack.pop()
-                }
+        Column {
+            Text {
+                text: "Page3\n no toolbar"
+                color: "white"
+            }
+            Button {
+                text: "back"
+                onClicked: stack.pop();
             }
         }
     }
@@ -180,10 +146,15 @@ Item {
         id: layout
         ToolButton {
             flat: parent.backButton
-            onClicked: stack.pop()
             iconSource: "qrc:tb_back.svg"
         }
+    }
+
+    ToolBarLayout {
+        id: layout1
+        backButton: showBackButton.checked
         ToolButton {
+            flat: parent.backButton
             iconSource: "qrc:tb_back.svg"
         }
         ToolButton {
@@ -196,7 +167,16 @@ Item {
         id: layout2
         backButton: showBackButton.checked
         ToolButton {
-            text:"button"
+            flat: parent.backButton
+            iconSource: "qrc:tb_back.svg"
+        }
+        ToolButton {
+            text: "button"
+        }
+
+        ToolButton {
+            onClicked: stack.push(secondPage)
+            iconSource: "qrc:tb_plus.png"
         }
     }
 
@@ -219,9 +199,23 @@ Item {
         }
     }
 
-
     ToolBarLayout {
         id: layout4
+        backButton: showBackButton.checked
+        ToolButton {
+            flat: parent.backButton
+            iconSource: "qrc:tb_back.svg"
+        }
+        ToolButton {
+            text: "click"
+        }
+        ToolButton {
+            text: "click"
+        }
+    }
+
+    ToolBarLayout {
+        id: layout5
         backButton: showBackButton.checked
         ToolButton {
             text: "click"
@@ -232,14 +226,6 @@ Item {
         ToolButton {
             onClicked: stack.push(secondPage)
             iconSource: "qrc:tb_plus.png"
-        }
-    }
-
-    ToolBarLayout {
-        id: layout5
-        backButton: showBackButton.checked
-        ToolButton {
-            iconSource: "qrc:tb_back.svg"
         }
     }
 
@@ -251,8 +237,12 @@ Item {
             iconSource: "qrc:tb_back.svg"
         }
         ToolButton {
-            onClicked: stack.push(secondPage)
+            flat: parent.backButton
             iconSource: "qrc:tb_back.svg"
+        }
+        ToolButton {
+            onClicked: stack.push(secondPage)
+            iconSource: "qrc:tb_plus.svg"
         }
     }
 
@@ -264,7 +254,10 @@ Item {
             iconSource: "qrc:tb_back.svg"
         }
         ToolButton {
-            text: "click"
+            iconSource: "qrc:tb_back.svg"
+        }
+        ToolButton {
+            iconSource: "qrc:tb_back.svg"
         }
         ToolButton {
             onClicked: stack.push(secondPage)
@@ -275,13 +268,22 @@ Item {
     ToolBarLayout {
         id: layout8
         backButton: showBackButton.checked
-
         ToolButton {
-            text: "click"
+            flat: parent.backButton
+            iconSource: "qrc:tb_back.svg"
+        }
+        ToolButton {
+            iconSource: "qrc:tb_back.svg"
+        }
+        ToolButton {
+            iconSource: "qrc:tb_back.svg"
+        }
+        ToolButton {
+            iconSource: "qrc:tb_back.svg"
         }
         ToolButton {
             onClicked: stack.push(secondPage)
-            iconSource: "qrc:tb_back.svg"
+            iconSource: "qrc:tb_plus.png"
         }
     }
 
@@ -308,7 +310,6 @@ Item {
     ToolBarLayout {
         id: layout10
         backButton: showBackButton.checked
-
         ToolButton {
             flat: parent.backButton
             iconSource: "qrc:tb_back.svg"
@@ -331,23 +332,17 @@ Item {
     ToolBarLayout {
         id: layout11
         backButton: showBackButton.checked
-        Item {
-            width: testbutton1.width
-            height: parent.height
-            Button {
-                y: parent.y + parent.height/2 - height/2
-                id: testbutton1
-                text: "Button"
-            }
+        Button {
+            anchors.verticalCenter: parent.verticalCenter
+            text: "Button"
         }
-        Item {
-            width: kekke2.width
-            height: parent.height
-            Button {
-                y: parent.y + parent.height/2 - height/2
-                id: kekke2
-                text: "Button"
-            }
+        Button {
+            anchors.verticalCenter: parent.verticalCenter
+            text: "Button"
+        }
+        Button {
+            anchors.verticalCenter: parent.verticalCenter
+            text: "Button"
         }
     }
 
@@ -358,68 +353,21 @@ Item {
         ToolButton {
             iconSource: "qrc:tb_plus.svg"
         }
-
-        Item {
-            width: children[0].width
-            height: parent.height
-            Button {
-                y: parent.y + parent.height/2 - height/2
-                text:"Button"
-            }
-        }
-        Item {
-            width: children[0].width
-            height: parent.height
-            Button {
-                y: parent.y + parent.height/2 - height/2
-                text: "Button"
-            }
-        }
-        Item {
-            width: children[0].width
-            height: parent.height
-            Button {
-                y: parent.y + parent.height/2 - height/2
-                text: "Button"
-            }
-        }
-        Item {
-            width: children[0].widthh
-            height: parent.height
-            Button {
-                y: parent.y + parent.height/2 - height/2
-                text: "Button"
-            }
-        }
-    }
-
-    ToolBarLayout {
-        id: layout13
-        backButton: showBackButton.checked
-        ToolButton {
-            iconSource: "qrc:tb_back.svg"
-        }
-
-        Item {
-            width: children[0].width
-            height: parent.height
-            Button {
-                y: parent.y + parent.height/2 - height/2
-                text: "Button 1"
-            }
-        }
-
         Button {
             anchors.verticalCenter: parent.verticalCenter
-            text: "Button 2"
+            text:"Button"
         }
         Button {
             anchors.verticalCenter: parent.verticalCenter
-            text: "Button 3"
+            text: "Button"
         }
         Button {
             anchors.verticalCenter: parent.verticalCenter
-            text: "Button 4"
+            text: "Button"
+        }
+        Button {
+            anchors.verticalCenter: parent.verticalCenter
+            text: "Button"
         }
     }
 }
