@@ -101,9 +101,9 @@ int main(int argc, char *argv[])
     ApiCheckPage page(engine, module);
     ApiCheckPageStack pageStack(engine, module);
     ApiCheckSectionScroller sectionScroller(engine, module);
+    ApiCheckBusyIndicator busyIndicator(engine, module);
 
 #ifndef Q_COMPONENTS_SYMBIAN
-    ApiCheckBusyIndicator busyIndicator(engine, module);
     ApiCheckButtonColumn buttonColumn(engine, module);
     ApiCheckButtonRow buttonRow(engine, module);
     ApiCheckContextMenu contextMenu(engine, module);
@@ -131,9 +131,9 @@ int main(int argc, char *argv[])
     ret |= QTest::qExec(&page, argc);
     ret |= QTest::qExec(&pageStack, argc);
     ret |= QTest::qExec(&sectionScroller, args);
+    ret |= QTest::qExec(&busyIndicator, args);
 
 #ifndef Q_COMPONENTS_SYMBIAN
-    ret |= QTest::qExec(&busyIndicator, args);
     ret |= QTest::qExec(&buttonColumn, args);
     ret |= QTest::qExec(&buttonRow, args);
     ret |= QTest::qExec(&contextMenu, argc);
