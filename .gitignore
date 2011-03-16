@@ -41,6 +41,7 @@ release/
 /bin/
 /lib/
 /imports/
+/features/qt-components-config.prf
 /examples/meego/calculator/calculator
 /examples/meego/widgetgallery/widgetgallery
 /examples/symbian/extrasgallery/qmlextrasgallery

@@ -1,8 +1,7 @@
-include (../../../qt-components.pri)
-
 TARGET = qmlextrasgallery
 TEMPLATE = app
 QT += declarative
+CONFIG += qt-components
 CONFIG -= app_bundle
 win32:DESTDIR = $$OUT_PWD
 

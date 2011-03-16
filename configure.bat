@@ -44,6 +44,12 @@ if not "%QTDIR%" == "" set QMAKE=%QTDIR%\bin\qmake
 set QMAKE_CACHE=%BUILD_TREE%\.qmake.cache
 if exist "%QMAKE_CACHE%" del /Q %QMAKE_CACHE%
 
+set QMAKEFEATURES=%SOURCE_TREE%\features
+if not exist "%BUILD_TREE%\features" mkdir "%BUILD_TREE%\features"
+
+set CONFIG_PRF=%BUILD_TREE%\features\qt-components-config.prf
+if exist "%CONFIG_PRF%" del /Q %CONFIG_PRF%
+
 shift
 :parse
 if "%0" == ""           goto qmake
@@ -133,12 +139,13 @@ if "%BUILD_SYMBIAN_STYLE%" == "yes" set QMAKE_CONFIG=%QMAKE_CONFIG% symbian3
 if "%BUILD_EXAMPLES%" == "yes" set QMAKE_CONFIG=%QMAKE_CONFIG% examples
 if "%BUILD_TESTS%" == "yes" set QMAKE_CONFIG=%QMAKE_CONFIG% tests
 
+echo CONFIG +=%QMAKE_CONFIG% > %CONFIG_PRF%
 echo Q_COMPONENTS_SOURCE_TREE = %SOURCE_TREE:\=/% > %QMAKE_CACHE%
 echo Q_COMPONENTS_BUILD_TREE = %BUILD_TREE:\=/% >> %QMAKE_CACHE%
 
 echo.
 echo Running qmake...
-call %QMAKE% -r \""CONFIG+=%QMAKE_CONFIG%"\" %SOURCE_TREE%\qt-components.pro 2> NUL
+call %QMAKE% -r \""CONFIG+=%QMAKE_CONFIG%"\" %SOURCE_TREE%\qt-components.pro
 if errorlevel 1 echo ERROR: qmake run failed.
 
 echo.
