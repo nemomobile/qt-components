@@ -27,7 +27,15 @@ qrc_*.cpp
 *.vcxproj.filters
 *.opensdf
 *.sdf
+*.mmp
+*.pkg
+*.mk
+*.loc
+*.rss
 *~
+bld.inf
+bld.inf.*
+qmakepluginstubs/
 debug/
 release/
 /bin/
