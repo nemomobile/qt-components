@@ -38,9 +38,6 @@ ImplicitSizeItem {
 
     property alias text: label.text
 
-    property bool checkable: true // Deprecated
-    onCheckableChanged: console.log("warning: CheckBox.checkable is deprecated")
-
     QtObject {
         id: internal
         objectName: "internal"
