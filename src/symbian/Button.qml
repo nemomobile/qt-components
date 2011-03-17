@@ -76,36 +76,6 @@ ImplicitSizeItem {
         return prefHeight;
     }
 
-    function toggleChecked() {
-        console.log("warning: Button.toggleChecked() is deprecated")
-        internal.toggleChecked()
-    }
-
-    function press() {
-        console.log("warning: Button.press() is deprecated")
-        internal.press()
-    }
-
-    function release() {
-        console.log("warning: Button.release() is deprecated")
-        internal.release()
-    }
-
-    function click() {
-        console.log("warning: Button.click() is deprecated")
-        internal.click()
-    }
-
-    function hold() {
-        console.log("warning: Button.hold() is deprecated")
-        internal.hold()
-    }
-
-    function repeat() {
-        console.log("warning: Button.repeat() is deprecated")
-        internal.repeat()
-    }
-
     QtObject {
         id: internal
         objectName: "internal"
