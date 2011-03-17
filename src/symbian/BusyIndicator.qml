@@ -31,8 +31,8 @@ ImplicitSizeItem {
 
     property bool running: false
 
-    implicitWidth: style.current.preferredWidth
-    implicitHeight: style.current.preferredHeight
+    implicitWidth: platformStyle.graphicSizeSmall
+    implicitHeight: platformStyle.graphicSizeSmall
 
     Image {
         id: spinner
@@ -44,19 +44,14 @@ ImplicitSizeItem {
         height: parent.height
         sourceSize.width: width
         sourceSize.height: height
-        source: style.current.get("source") + index + ".svg"
+        source: privateStyle.imagePath("qtg_graf_busyindicator_" + index)
         smooth: true
 
         NumberAnimation on index {
-            from: 1; to: style.current.get("frameCount")
-            duration: style.current.get("duration")
+            from: 1; to: 10
+            duration: 1000
             running: root.running && root.visible
             loops: Animation.Infinite
         }
-    }
-
-    Style {
-        id: style
-        styleClass: "BusyIndicator"
     }
 }
