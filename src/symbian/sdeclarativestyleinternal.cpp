@@ -126,6 +126,12 @@ int SDeclarativeStyleInternal::textFieldHeight() const
     return d->engine->layoutParameter(QLatin1String("text-field-height"));
 }
 
+int SDeclarativeStyleInternal::switchButtonHeight() const
+{
+    Q_D(const SDeclarativeStyleInternal);
+    return d->engine->layoutParameter(QLatin1String("switch-button-height"));
+}
+
 void SDeclarativeStyleInternal::play(int effect)
 {
 #ifdef HAVE_QTMOBILITY

@@ -127,9 +127,10 @@ void tst_SDeclarativeStyle::testPrivateStyle_data()
     QTest::newRow("scrollBarThickness") << "scrollBarThickness" << (int)QVariant::Int;
     QTest::newRow("sliderThickness") << "sliderThickness" << (int)QVariant::Int;
     QTest::newRow("menuItemHeight") << "menuItemHeight" << (int)QVariant::Int;
+    QTest::newRow("textFieldHeight") << "textFieldHeight" << (int)QVariant::Int;
+    QTest::newRow("switchButtonHeight") << "switchButtonHeight" << (int)QVariant::Int;
     QTest::newRow("dialogMinSize") << "dialogMinSize" << (int)QVariant::Int;
     QTest::newRow("dialogMaxSize") << "dialogMaxSize" << (int)QVariant::Int;
-    QTest::newRow("textFieldHeight") << "textFieldHeight" << (int)QVariant::Int;
 
     // invalid param
     QTest::newRow("__invalid__") << "__invalid__" << (int)QVariant::Invalid;

@@ -47,6 +47,7 @@ class SDeclarativeStyleInternal : public QObject
     Q_PROPERTY(int sliderThickness READ sliderThickness NOTIFY layoutParametersChanged FINAL)
     Q_PROPERTY(int menuItemHeight READ menuItemHeight NOTIFY layoutParametersChanged FINAL)
     Q_PROPERTY(int textFieldHeight READ textFieldHeight NOTIFY layoutParametersChanged FINAL)
+    Q_PROPERTY(int switchButtonHeight READ switchButtonHeight NOTIFY layoutParametersChanged FINAL)
     Q_PROPERTY(int dialogMinSize READ dialogMinSize NOTIFY layoutParametersChanged FINAL)
     Q_PROPERTY(int dialogMaxSize READ dialogMaxSize NOTIFY layoutParametersChanged FINAL)
 
@@ -64,6 +65,7 @@ public:
     int sliderThickness() const;
     int menuItemHeight() const;
     int textFieldHeight() const;
+    int switchButtonHeight() const;
     int dialogMinSize() const;
     int dialogMaxSize() const;
 

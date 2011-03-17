@@ -194,6 +194,12 @@ Item {
             "m_type": 2
         } )
         listModel.append( {
+            "m_size": privateStyle.switchButtonHeight,
+            "m_text": "switchButtonHeight",
+            "m_color": "darkgreen",
+            "m_type": 2
+        } )
+        listModel.append( {
             "m_size": privateStyle.dialogMinSize,
             "m_text": "dialogMinSize",
             "m_color": "seagreen",
@@ -235,8 +241,9 @@ Item {
                 listModel.setProperty(14, "m_size", privateStyle.sliderThickness)
                 listModel.setProperty(15, "m_size", privateStyle.menuItemHeight)
                 listModel.setProperty(16, "m_size", privateStyle.textFieldHeight)
-                listModel.setProperty(17, "m_size", privateStyle.dialogMinSize)
-                listModel.setProperty(18, "m_size", privateStyle.dialogMaxSize)
+                listModel.setProperty(17, "m_size", privateStyle.switchButtonHeight)
+                listModel.setProperty(18, "m_size", privateStyle.dialogMinSize)
+                listModel.setProperty(19, "m_size", privateStyle.dialogMaxSize)
             }
         }
     }
