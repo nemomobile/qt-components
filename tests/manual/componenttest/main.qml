@@ -198,24 +198,20 @@ ApplicationWindow {
                         id: flickableSetting
 
                         height: 30
-                        checkable: true
                         text: "Flickable"
                     }
                     CheckBox {
                         id: dragSetting
 
                         height: flickableSetting.height
-                        checkable: !flickableSetting.checked
                         text: "Drag-able"
                         checked: false
-                        opacity: checkable ? 1 : 0.5
                     }
                     CheckBox {
                         id: fillSetting
 
                         height: flickableSetting.height
                         checked: true
-                        checkable: true
                         text: "Fill area"
                     }
                     Repeater {
