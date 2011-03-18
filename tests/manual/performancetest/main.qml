@@ -118,7 +118,7 @@ ApplicationWindow {
 
                             onClicked: {
                                 startupOrientationButton.orientation = Screen.Portrait
-                                mainPage.orientationLock = PageOrientation.LockPortrait
+                                screen.orientation = Screen.Portrait
                             }
                         }
                         Button {
@@ -129,9 +129,8 @@ ApplicationWindow {
                             height: parent.buttonHeight
 
                             onClicked: {
-                                startupOrientationButton.orientation = Screen.Landscape
-                                mainPage.orientationLock = PageOrientation.LockLandscape
-
+                               startupOrientationButton.orientation = Screen.Landscape
+                               screen.orientation = Screen.Landscape
                             }
                         }
                         Button {
@@ -143,7 +142,7 @@ ApplicationWindow {
 
                             onClicked: {
                                 startupOrientationButton.orientation = Screen.Automatic
-                                mainPage.orientationLock = PageOrientation.Automatic
+                                screen.orientation = Screen.Automatic
                             }
                         }
                         Button {
@@ -186,31 +185,35 @@ ApplicationWindow {
                         color: "red"
                         text: "Picked file: " + internal.fullPath
                     }
+
+                    Button {
+                        id: toggleFullscreenButton
+
+                        width: mainWindow.width
+                        height: 65
+                        text: "Toggle Fullscreen"
+                        onClicked: mainWindow.fullScreen = mainWindow.fullScreen ? false : true
+                    }
                     CheckBox {
                         id: flickableSetting
 
                         height: 30
-                        checkable: true
                         text: "Flickable"
                     }
                     CheckBox {
                         id: dragSetting
 
                         height: flickableSetting.height
-                        checkable: !flickableSetting.checked
                         text: "Drag-able"
                         checked: false
-                        opacity: checkable ? 1 : 0.5
                     }
                     CheckBox {
                         id: fillSetting
 
                         height: flickableSetting.height
                         checked: true
-                        checkable: true
                         text: "Fill area"
                     }
-
                     Repeater {
                         id: componentsmodel
 
