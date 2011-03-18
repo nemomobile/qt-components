@@ -214,7 +214,8 @@ ImplicitSizeItem {
                 component.owner = tools.parent
                 tools.parent = component
                 tools.visible = true
-                tools.layoutChildren()
+                if (tools.layoutChildren != undefined && typeof tools.layoutChildren == 'function' )
+                    tools.layoutChildren()
             }
 
             // perform transition
