@@ -38,9 +38,9 @@ ImplicitSizeItem {
     property alias exclusiveGroup: checkable.exclusiveGroup
     property alias text: label.text
 
-    property string iconSource
-    property string pressedIconSource
-    property string checkedIconSource
+    property url iconSource
+    property url pressedIconSource
+    property url checkedIconSource
 
     property bool flat: false
 
@@ -52,7 +52,7 @@ ImplicitSizeItem {
     implicitWidth: {
         if (!text)
             return internal.iconButtonWidth()
-        else if (!iconSource)
+        else if (iconSource == "")
             return Math.max(internal.iconButtonWidth(), internal.textButtonWidth())
         else
             return internal.iconButtonWidth() + internal.textButtonWidth()
@@ -69,13 +69,13 @@ ImplicitSizeItem {
 
     Image {
         id: contentIcon
-        visible: iconSource
+        visible: iconSource != ""
         sourceSize.width: platformStyle.graphicSizeSmall
         sourceSize.height: platformStyle.graphicSizeSmall
         source: {
-            if (internal.mode() == "latched" && checkedIconSource)
+            if (internal.mode() == "latched" && checkedIconSource != "")
                 return checkedIconSource
-            else if (internal.mode() == "pressed" && pressedIconSource)
+            else if (internal.mode() == "pressed" && pressedIconSource != "")
                 return pressedIconSource
             else
                 return iconSource
@@ -105,8 +105,8 @@ ImplicitSizeItem {
         visible: text
         anchors {
             top: parent.top; bottom: parent.bottom
-            left: iconSource ? contentIcon.right : parent.left; right: parent.right
-            leftMargin: iconSource ? platformStyle.paddingSmall : platformStyle.paddingMedium
+            left: iconSource != "" ? contentIcon.right : parent.left; right: parent.right
+            leftMargin: iconSource != "" ? platformStyle.paddingSmall : platformStyle.paddingMedium
             rightMargin: platformStyle.paddingMedium
         }
     }

@@ -110,23 +110,24 @@ void tst_toolbutton::propertiesFunctionality()
 
         if (property.name() == QString("iconSource")) {
             propertyCount++;
-            QVERIFY(property.read(toolButton).toString().isNull());
+            QUrl url = property.read(toolButton).toUrl();
+            QVERIFY(property.read(toolButton).toUrl() == QUrl(""));
             property.write(toolButton,"icon_name");
-            QCOMPARE(property.read(toolButton).toString() , QString("icon_name"));
+            QCOMPARE(property.read(toolButton).toUrl() , QUrl("icon_name"));
         }
 
         if (property.name() == QString("pressedIconSource")) {
             propertyCount++;
-            QVERIFY(property.read(toolButton).toString().isNull());
+            QVERIFY(property.read(toolButton).toUrl() == QUrl(""));
             property.write(toolButton,"pressedicon_name");
-            QCOMPARE(property.read(toolButton).toString() , QString("pressedicon_name"));
+            QCOMPARE(property.read(toolButton).toUrl() , QUrl("pressedicon_name"));
         }
 
         if (property.name() == QString("checkedIconSource")) {
             propertyCount++;
-            QVERIFY(property.read(toolButton).toString().isNull());
+            QVERIFY(property.read(toolButton).toUrl() == QUrl(""));
             property.write(toolButton,"latchedicon_name");
-            QCOMPARE(property.read(toolButton).toString() , QString("latchedicon_name"));
+            QCOMPARE(property.read(toolButton).toUrl() , QUrl("latchedicon_name"));
         }
 
         if (property.name() == QString("flat")) {
