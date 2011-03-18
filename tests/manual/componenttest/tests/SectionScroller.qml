@@ -32,15 +32,14 @@ Window {
 
     Flickable {
         id: flickable
-        anchors { left: parent.left; right: parent.right; top: parent.top; bottom: fullScreen.top }
+        anchors { left: parent.left; right: parent.right; top: parent.top; bottom: singleRow.top }
         clip: true
         boundsBehavior: Flickable.StopAtBounds
 
         Item {
             id: leftList
             width: root.width
-            height: root.height - fullScreen.height
-            anchors.bottom: fullScreen.top
+            height: root.height - singleRow.height
 
             ListModel {
                 id: testModel
@@ -101,7 +100,6 @@ Window {
 
             ListView {
                 id: list
-
                 anchors.fill: parent
                 delegate:  Rectangle {
                     width: parent.width
@@ -146,9 +144,9 @@ Window {
     }
 
     CheckBox {
-        id: fullScreen
-        text: "Full Screen"
+        id: singleRow
+        text: "Single Row"
         anchors { left: parent.left; bottom: parent.bottom }
-        onClicked: sectionScroller.fullScreen = !sectionScroller.fullScreen
+        onClicked: sectionScroller.platformSingleRow = !sectionScroller.platformSingleRow
     }
 }
