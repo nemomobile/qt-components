@@ -34,6 +34,7 @@ ImplicitSizeItem {
     property real verticalSpacing: itemStyle.current.get("verticalSpacing")
     property real horizontalSpacing: itemStyle.current.get("horizontalSpacing")
     property bool enabled: true
+    property bool drillDownIndicator: false
 
     signal clicked
     signal pressAndHold
@@ -115,6 +116,28 @@ ImplicitSizeItem {
         }
     }
 
+    Loader {
+        id: drillDownLoader
+        sourceComponent: listItem.drillDownIndicator ? drillDown : undefined
+        anchors {
+            right: parent.right
+            rightMargin: privateStyle.scrollBarThickness
+            verticalCenter: parent.verticalCenter
+        }
+    }
+
+    Component {
+        id: drillDown
+
+        Image {
+            source: (internal.state == "default" || internal.state == "disabled") ?
+                    privateStyle.imagePath("qtg_graf_drill_down_indicator_white.svg") :
+                    privateStyle.imagePath("qtg_graf_drill_down_indicator.svg")
+            sourceSize.width: platformStyle.graphicSizeSmall
+            sourceSize.height: platformStyle.graphicSizeSmall
+        }
+    }
+
     Keys.onReleased: {
         if (listItem.enabled) {
             if (event.key == Qt.Key_Select || event.key == Qt.Key_Return) {
@@ -192,7 +215,9 @@ ImplicitSizeItem {
         anchors {
             fill: parent
             leftMargin: itemStyle.current.get("marginLeft")
-            rightMargin: itemStyle.current.get("marginRight")
+            rightMargin: drillDownLoader.status == Loader.Ready ?
+                    drillDownLoader.width + itemStyle.current.get("marginRight") + itemStyle.current.get("horizontalSpacing") :
+                    itemStyle.current.get("marginRight")
             topMargin: itemStyle.current.get("marginTop")
             bottomMargin: itemStyle.current.get("marginBottom")
         }
