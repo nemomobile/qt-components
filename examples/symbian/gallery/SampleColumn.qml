@@ -313,4 +313,107 @@ Column {
             }
         }
     }
+
+    Button {
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: parent.width - parent.spacing
+        text: "SectionScroller"
+        onClicked: sectionScroll.open()
+    }
+
+    Dialog {
+        id: sectionScroll
+        title: Text {
+            text: "Section Scroller"
+            font { bold: true; pixelSize: 16 }
+            color: "white"
+            anchors.fill: parent
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+        }
+        buttons:
+            Button {
+                text: "Close"
+                width: parent.width
+                height: 60
+                anchors.horizontalCenter: parent.horizontalCenter
+                onClicked: sectionScroll.close()
+            }
+        content:
+            Rectangle {
+            width: parent.width; height: parent.height - singleRow.height
+
+            ListModel {
+                id: testModel
+                ListElement { name: "A Cat 1"; alphabet: "A" }
+                ListElement { name: "A Cat 2"; alphabet: "A" }
+                ListElement { name: "Boo 1"; alphabet: "B" }
+                ListElement { name: "Boo 2"; alphabet: "B" }
+                ListElement { name: "Cat 1"; alphabet: "C" }
+                ListElement { name: "Cat 2"; alphabet: "C" }
+                ListElement { name: "Dog 1"; alphabet: "D" }
+                ListElement { name: "Dog 2"; alphabet: "D" }
+                ListElement { name: "Elephant 1"; alphabet: "E" }
+                ListElement { name: "Elephant 2"; alphabet: "E" }
+                ListElement { name: "FElephant 1"; alphabet: "F" }
+                ListElement { name: "FElephant 2"; alphabet: "F" }
+                ListElement { name: "Guinea pig"; alphabet: "G" }
+                ListElement { name: "Goose"; alphabet: "G" }
+                ListElement { name: "Horse"; alphabet: "H" }
+                ListElement { name: "Horse"; alphabet: "H" }
+                ListElement { name: "Parrot"; alphabet: "P" }
+                ListElement { name: "Parrot"; alphabet: "P" }
+            }
+
+            ListView {
+                id: list
+                anchors.fill: parent
+                clip: true
+                delegate:  Rectangle {
+                    width: list.width
+                    height: 20
+                    border.color: "#000"
+                    border.width: 1
+                    color: index % 2 == 0 ? "#ffffff" : "#eeeeee"
+                    property string section: name[0]
+                    Text {
+                        anchors.verticalCenter: parent.verticalCenter
+                        x: 20
+                        text: name + " (index " + index + ")"
+                    }
+                }
+
+                model: testModel
+                section.property: "alphabet"
+                section.criteria: ViewSection.FullString
+                section.delegate: Rectangle {
+                    width: list.width
+                    height: 30
+                    color: "#888"
+                    Text {
+                        anchors.verticalCenter: parent.verticalCenter
+                        x: 5
+                         text: section
+                         font.bold: true
+                         font.pointSize: 16
+                     }
+                }
+            }
+            ScrollDecorator {
+                flickableItem: list
+            }
+
+            SectionScroller {
+                id: sectionScroller
+                listView: list
+            }
+
+            CheckBox {
+                id: singleRow
+                anchors.top: parent.bottom
+                text: "Single Row"
+                onClicked: sectionScroller.platformSingleRow = !sectionScroller.platformSingleRow
+            }
+        }
+    }
 }
