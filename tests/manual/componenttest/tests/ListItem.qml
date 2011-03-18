@@ -423,6 +423,55 @@ Item {
                 onClicked: notification.text = "Clicked " + objectName
                 onPressAndHold: notification.text = "Press-and-hold " + objectName
             }
+            SelectionListItem {
+                id: listItem12
+                objectName: "listItem12"
+                title: "Unselected"
+
+                onClicked: subMenu12.open()
+                onPressAndHold: notification.text = "Press-and-hold " + objectName
+                // SelectionDialog is not implemented yet. Use Context menu instead.
+                // Todo: Switch to SelectionDialog
+                ContextMenu {
+                    id: subMenu12
+                    MenuLayout {
+                        MenuItem {text: "Zero"; onClicked: listItem12.title = "Zero"}
+                        MenuItem {text: "One"; onClicked: listItem12.title = "One"}
+                        MenuItem {text: "Two"; onClicked: listItem12.title = "Two"}
+                    }
+                }
+            }
+            SelectionListItem {
+                id: listItem13
+                objectName: "listItem13"
+                title: "Selected value"
+                subTitle: "Unselected"
+
+                onClicked: subMenu13.open()
+                onPressAndHold: notification.text = "Press-and-hold " + objectName
+                // SelectionDialog is not implemented yet. Use Context menu instead.
+                // Todo: Switch to SelectionDialog
+                ContextMenu {
+                    id: subMenu13
+                    MenuLayout {
+                        MenuItem {text: "Zero"; onClicked: listItem13.subTitle = "Zero"}
+                        MenuItem {text: "One"; onClicked: listItem13.subTitle = "One"}
+                        MenuItem {text: "Two"; onClicked: listItem13.subTitle = "Two"}
+                        MenuItem {text: "Three"; onClicked: listItem13.subTitle = "Three"}
+                        MenuItem {text: "Four"; onClicked: listItem13.subTitle = "Four"}
+                    }
+                }
+            }
+            SelectionListItem {
+                id: listItem14
+                objectName: "listItem14"
+                title: "Title"
+                subTitle: "Subtitle"
+                enabled: false
+
+                onClicked: notification.text = "Clicked " + objectName
+                onPressAndHold: notification.text = "Press-and-hold " + objectName
+            }
         }
     }
 
