@@ -84,6 +84,7 @@ QML_FILES = \
     SectionScroller.js \
     SectionScroller.qml \
     SectionScrollerLabel.qml \
+    SelectionListItem.qml \
     Slider.qml \
     TabBar.qml \
     TabBarLayout.qml \
