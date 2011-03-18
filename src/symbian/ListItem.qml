@@ -254,9 +254,9 @@ ImplicitSizeItem {
             State { name: "Pressed" },
             State { name: "PressAndHold" },
             State { name: "Disabled"; when: !listItem.enabled },
-            State { name: "" },
             State { name: "Focused"; when: (listItem.ListView.isCurrentItem &&
-                symbian.listInteractionMode == Symbian.KeyNavigation) }
+                symbian.listInteractionMode == Symbian.KeyNavigation) },
+            State { name: "" }
         ]
 
         transitions: [
