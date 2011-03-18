@@ -88,6 +88,27 @@ Item {
         }
 
         Button {
+            id: fontButton
+            text: scalableButton.font.family
+            property Item fontSelectionDialog: null
+            onClicked: {
+                if (fontSelectionDialog == null) {
+                    var component = Qt.createComponent("qrc:/FontSelectionDialog.qml")
+                    if (component.status == Component.Ready) {
+                        fontSelectionDialog = component.createObject(fontButton);
+                    } else {
+                        console.log(component.errorString())
+                        return
+                    }
+                }
+                fontSelectionDialog.open()
+            }
+
+            Binding { target: fontButton; property: "text"; value: fontButton.fontSelectionDialog != null ? fontButton.fontSelectionDialog.fontFamily: ""; when: fontButton.fontSelectionDialog != null }
+            Binding { target: scalableButton; property: "font.family"; value: fontButton.text; when: fontButton.fontSelectionDialog != null }
+        }
+
+        Button {
             id: checkableButton
             text: "Auto repeat / Long press"
             checkable: true

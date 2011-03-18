@@ -30,6 +30,7 @@ symbian {
 
 OTHER_FILES += \
     main.qml \
+    components/FontSelectionDialog.qml \
     tests/BusyIndicator.qml \
     tests/Button.qml \
     tests/CheckBox.qml \

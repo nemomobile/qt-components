@@ -36,6 +36,7 @@ ImplicitSizeItem {
     property bool pressed: (stateGroup.state == "Pressed" || stateGroup.state == "PressAndHold") && mouseArea.containsMouse
     property alias text: label.text
     property alias iconSource: icon.source
+    property alias font: label.font
 
     signal clicked
 

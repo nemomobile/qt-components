@@ -29,5 +29,6 @@
     <file alias="tb_back.svg">images/tb_back.svg</file>
     <file alias="tb_plus.svg">images/tb_plus.svg</file>    
     <file alias="tb_plus.png">images/tb_plus.png</file>        
+    <file alias="FontSelectionDialog.qml">components/FontSelectionDialog.qml</file>
 </qresource>
 </RCC>
