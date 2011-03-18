@@ -88,6 +88,7 @@ release/
 /tests/auto/symbian_progressbar/tst_symbian_progressbar
 /tests/auto/symbian_radiobutton/tst_symbian_radiobutton
 /tests/auto/symbian_scrollbar/tst_symbian_scrollbar
+/tests/auto/symbian_selectionlistitem/tst_symbian_selectionlistitem
 /tests/auto/symbian_slider/tst_symbian_slider
 /tests/auto/symbian_tabbar/tst_symbian_tabbar
 /tests/auto/symbian_tabbarlayout/tst_symbian_tabbarlayout

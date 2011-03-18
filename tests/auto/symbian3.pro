@@ -18,6 +18,7 @@ SUBDIRS += \
     symbian_progressbar \
     symbian_radiobutton \
     symbian_scrollbar \
+    symbian_selectionlistitem \
     symbian_slider \
     symbian_tabbar \
     symbian_tabbarlayout \
