@@ -41,11 +41,24 @@ ImplicitSizeItem {
     signal clicked
 
     // Symbian specific signals and properties
-    signal released
-    signal pressAndHold
+    signal platformReleased
+    signal platformPressAndHold
 
-    property bool autoRepeat: false
-    property bool longPress: false
+    property bool platformAutoRepeat: false
+    property bool platformLongPress: false
+
+    // deprecated on w11 ->
+    signal released // deprecated
+    signal pressAndHold // deprecated
+    property bool autoRepeat: false // deprecated
+    property bool longPress: false // deprecated
+    property QtObject __style: style // deprecated
+
+    Connections { target: button; onPlatformReleased: released() }
+    Connections { target: button; onPlatformPressAndHold: pressAndHold() }
+    onAutoRepeatChanged: { console.log("Button.autoRepeat deprecated, use platformAutoRepeat instead!"); button.platformAutoRepeat = button.autoRepeat }
+    onLongPressChanged: { console.log("Button.longPress deprecated, use platformLongPress instead!"); button.platformLongPress = button.longPress }
+    // <- deprecated
 
     implicitWidth: {
         var prefWidth = 20;
@@ -108,7 +121,7 @@ ImplicitSizeItem {
         function release() {
             if (tapRepeatTimer.running)
                 tapRepeatTimer.stop();
-            button.released();
+            button.platformReleased();
         }
 
         function click() {
@@ -125,11 +138,11 @@ ImplicitSizeItem {
 
         function hold() {
             // If autorepeat is enabled, do not emit long press, but repeat the tap action.
-            if (button.autoRepeat)
+            if (button.platformAutoRepeat)
                 tapRepeatTimer.start();
 
-            if (button.longPress)
-                button.pressAndHold();
+            if (button.platformLongPress)
+                button.platformPressAndHold();
         }
 
         function repeat() {
@@ -240,7 +253,7 @@ ImplicitSizeItem {
         }
 
         onPressAndHold: {
-            if (stateGroup.state != "Canceled" && (longPress || autoRepeat))
+            if (stateGroup.state != "Canceled" && (platformLongPress || platformAutoRepeat))
                 stateGroup.state = "PressAndHold";
         }
 

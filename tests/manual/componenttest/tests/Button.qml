@@ -115,19 +115,19 @@ Item {
             onCheckedChanged: {
                 if (checked) {
                     mixedButton.text = "Auto repeat"
-                    mixedButton.longPress = false;
-                    mixedButton.autoRepeat = true;
+                    mixedButton.platformLongPress = false;
+                    mixedButton.platformAutoRepeat = true;
                 } else {
                     mixedButton.text = "Long press"
-                    mixedButton.longPress = true;
-                    mixedButton.autoRepeat = false;
+                    mixedButton.platformLongPress = true;
+                    mixedButton.platformAutoRepeat = false;
                 }
             }
         }
 
         Button {
             id: mixedButton
-            longPress: true
+            platformLongPress: true
             text: "Long press"
 
             onClicked: {
