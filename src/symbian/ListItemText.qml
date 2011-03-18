@@ -28,7 +28,7 @@ import Qt 4.7
 
 ImplicitSizeItem {
     id: listItemText
-    property Style style: null // Enables binding to style of the parent component (ListItem / ListHeading).
+    property Style style: null // Enables binding to style of the parent component (ListItem / ListHeading / SelectionListItem).
     property string role: "Title"
     property alias text: textField.text
 
@@ -37,15 +37,32 @@ ImplicitSizeItem {
 
     Text {
         id: textField
-        font: textStyle.current.get("font")
-        color: textStyle.current.get("textColor")
-        height: textStyle.current.get("textHeight")
+        font {
+            family: platformStyle.fontFamilyRegular
+            pixelSize: (role == "Title" || role == "SelectionTitle") ? platformStyle.fontSizeLarge : platformStyle.fontSizeSmall
+            weight: (role == "SubTitle" || role == "SelectionSubTitle") ? Font.Light : Font.Normal
+        }
+        color: getColor()
     }
 
-    Style {
-        id: textStyle
-        styleClass: "ListItemText"
-        mode: (style != null) ? style.mode : "default"
-        styleObjectName: role
+    function getColor() {
+        if (style != null) {
+            if (style.mode == "default") {
+                if (role == "SelectionTitle")
+                    return platformStyle.colorNormalDark
+                else if (role == "SelectionSubtitle" || role == "SubTitle")
+                    return platformStyle.colorNormalMid
+                else
+                    return platformStyle.colorNormalLight
+            } else if (style.mode == "pressed") {
+                return platformStyle.colorPressed
+            } else if (style.mode == "focused") {
+                 return platformStyle.colorHighlighted
+            } else if (style.mode == "disabled") {
+                return platformStyle.colorDisabledLight
+            }
+        } else {
+            return platformStyle.colorNormalDark
+        }
     }
 }
