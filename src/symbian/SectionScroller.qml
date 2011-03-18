@@ -31,7 +31,7 @@ ImplicitSizeItem {
     id: root
 
     property ListView listView
-    property bool fullScreen: false
+    property bool platformSingleRow: false
 
     onListViewChanged: {
         if (listView && listView.model) {
@@ -51,7 +51,7 @@ ImplicitSizeItem {
         property bool dragging: false
 
         color: "transparent"
-        width: fullScreen ? listView.width : 3 * platformStyle.scrollBarThickness
+        width: platformSingleRow ? listView.width : 3 * privateStyle.scrollBarThickness
         height: listView.height
         x: listView.x + listView.width - width
 
@@ -64,16 +64,26 @@ ImplicitSizeItem {
             drag.maximumY: listView.y + listView.height - toolTip.height
 
             onPressed: {
-                container.dragging = true;
-                internal.adjustContentPosition(dragArea.mouseY);
+                mouseDownTimer.restart()
             }
 
             onReleased: {
                 container.dragging = false;
+                mouseDownTimer.stop()
             }
 
             onPositionChanged: {
                 internal.adjustContentPosition(dragArea.mouseY);
+            }
+
+            Timer {
+                id: mouseDownTimer
+                interval: 150
+
+                onTriggered: {
+                    container.dragging = true;
+                    internal.adjustContentPosition(dragArea.mouseY);
+                }
             }
         }
 
@@ -84,7 +94,7 @@ ImplicitSizeItem {
             source: privateStyle.imagePath("qtg_fr_popup_transparent")
             border { left: 10; top: 10; right: 10; bottom: 10 }
             anchors.centerIn: parent
-            visible: fullScreen && parent.dragging
+            visible: platformSingleRow && parent.dragging
 
             Text {
                 id: fullText
@@ -97,7 +107,7 @@ ImplicitSizeItem {
 
         ImplicitSizeItem {
             id: toolTip
-            visible: !fullScreen
+            visible: !platformSingleRow
             opacity: container.dragging ? 1 : 0
             anchors.right: parent.right
             anchors.rightMargin: 50 // TODO: use screen.displayWidth
@@ -130,7 +140,7 @@ ImplicitSizeItem {
                         sourceSize.width: 40
                         sourceSize.height: 40
                         width: parent.width - 2 * platformStyle.paddingLarge
-                        height: Math.round(platformStyle.graphicSizeTiny / 2)
+                        height: Math.round(platformStyle.graphicSizeTiny / 2) / 10
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
 
@@ -147,7 +157,7 @@ ImplicitSizeItem {
                         sourceSize.width: 40
                         sourceSize.height: 40
                         width: parent.width - 2 * platformStyle.paddingLarge
-                        height: Math.round(platformStyle.graphicSizeTiny / 2)
+                        height: Math.round(platformStyle.graphicSizeTiny / 2) / 10
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
 

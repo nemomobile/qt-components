@@ -200,7 +200,7 @@ qreal SStyleWrapper::preferredWidth() const
 
     if (styleClass() == QLatin1String("Menu"))
         return d->fetchLayoutParameter(QLatin1String("param-screen-width"));
-		
+
     if (styleClass() == QLatin1String("TabBar"))
         return d->fetchLayoutParameter(QLatin1String("param-screen-width"));
 

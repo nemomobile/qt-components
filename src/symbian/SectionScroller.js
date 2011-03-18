@@ -67,7 +67,7 @@ function relativeSections(current) {
 
 function closestSection(pos, down) {
     var tmp = (_sections.length) * pos;
-    var val = down ? Math.ceil(tmp) : Math.round(tmp); // TODO: better algorithm
+    var val = Math.ceil(tmp) // TODO: better algorithm
     val = val < 2 ? 1 : val;
     return _sections[val-1];
 }

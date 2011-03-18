@@ -612,9 +612,9 @@ QVariant SStyleWrapperPrivate::sectionScrollerProperty(const QString &propertyNa
     if (propertyName == QLatin1String("smallSingleIndexWidth"))
         return 100;     // TODO: get from layout
     if (propertyName == QLatin1String("smallFont"))
-        return fetchFont(SStyleWrapper::Secondary, 22);
+        return fetchFont(SStyleWrapper::Secondary, 30);
     if (propertyName == QLatin1String("largeFont"))
-        return fetchFont(SStyleWrapper::Secondary, 160);
+        return fetchFont(SStyleWrapper::Secondary, 200);
     if (propertyName == QLatin1String("popupRightMargin"))
         return 50;      // TODO: get from layout
     if (propertyName == QLatin1String("dividerImage"))
@@ -638,7 +638,7 @@ QVariant SStyleWrapperPrivate::sectionScrollerProperty(const QString &propertyNa
     if (propertyName == QLatin1String("highlightedTextColor"))
         return QColor(Qt::white);
     if (propertyName == QLatin1String("textColor"))
-        return QColor(221, 221, 221, 255);
+        return QColor(194, 194, 185, 255);
 
     return QVariant();
 }
