@@ -52,7 +52,7 @@ ImplicitSizeItem {
     signal pressAndHold // deprecated
     property bool autoRepeat: false // deprecated
     property bool longPress: false // deprecated
-    property QtObject __style: style // deprecated
+    property QtObject __style: null // deprecated
 
     Connections { target: button; onPlatformReleased: released() }
     Connections { target: button; onPlatformPressAndHold: pressAndHold() }
