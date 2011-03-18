@@ -83,6 +83,13 @@ Item {
                 onClicked: listView.model.set(listView.currentIndex, {"disabled": true})
             }
             MenuItem {
+                text: "Toggle drilldown"
+                onClicked: {
+                    var drillDownState = listView.model.get(listView.currentIndex).drilldown
+                    listView.model.set(listView.currentIndex, {"drilldown": !drillDownState})
+                }
+            }
+            MenuItem {
                 text: "Add item"
                 onClicked: createItemDialog.open()
             }
@@ -217,7 +224,8 @@ Item {
                 "imageSize": imageSizeChoiceList.currentIndex,
                 "image": "image://theme/:/list1.png",
                 "disabled": false,
-                "selected": false
+                "selected": false,
+                "drilldown": false
             } )
             listView.forceActiveFocus()
         }
@@ -235,7 +243,8 @@ Item {
                     "imageSize": j,
                     "image": "image://theme/:/list" + (i + 1) + ".png",
                     "disabled": false,
-                    "selected": false
+                    "selected": false,
+                    "drilldown": false
                 } )
             }
         }
@@ -249,6 +258,7 @@ Item {
             objectName: title
             width: listView.width
             enabled: !disabled // State from model
+            drillDownIndicator: drilldown
 
             Row {
                 anchors.fill: listItem.padding

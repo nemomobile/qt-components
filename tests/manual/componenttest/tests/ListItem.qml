@@ -423,6 +423,34 @@ Item {
                 onClicked: notification.text = "Clicked " + objectName
                 onPressAndHold: notification.text = "Press-and-hold " + objectName
             }
+
+            ListItem {
+                id: listItem11
+                objectName: "listItem11"
+                drillDownIndicator: true
+
+                Column {
+                    anchors.fill: listItem11.padding
+                    spacing: listItem11.verticalSpacing
+
+                    ListItemText {
+                        id: titleText11
+                        style: listItem11.style
+                        role: "Title"
+                        text: "Title text"
+                    }
+
+                    ListItemText {
+                        id: subTitleText11
+                        style: listItem11.style
+                        role: "SubTitle"
+                        text: "SubTitle text"
+                    }
+                }
+                onClicked: notification.text = "Clicked " + objectName
+                onPressAndHold: notification.text = "Press-and-hold " + objectName
+            }
+
             SelectionListItem {
                 id: listItem12
                 objectName: "listItem12"
@@ -441,6 +469,7 @@ Item {
                     }
                 }
             }
+
             SelectionListItem {
                 id: listItem13
                 objectName: "listItem13"
@@ -462,6 +491,7 @@ Item {
                     }
                 }
             }
+
             SelectionListItem {
                 id: listItem14
                 objectName: "listItem14"
