@@ -55,6 +55,18 @@ Item {
         height: 30
         objectName: "button5"
     }
+
+    Button {
+        id: buttonFont1
+        objectName: "buttonFont1"
+        font.family: "Arial"
+    }
+
+    Button {
+        id: buttonFont2
+        objectName: "buttonFont2"
+        font.pixelSize: 55
+    }
 }
 
 

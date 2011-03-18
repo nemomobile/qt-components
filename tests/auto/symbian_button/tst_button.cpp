@@ -40,6 +40,7 @@ private slots:
     void defaultPropertyValues();
     void properties();
     void testImplicitSize();
+    void testFont();
     void released();
     void pressAndHold();
 
@@ -62,6 +63,7 @@ void tst_button::defaultPropertyValues()
     QCOMPARE(testButton->property("platformAutoRepeat").toBool(), false);
     QVERIFY(testButton->property("platformLongPress").isValid());
     QCOMPARE(testButton->property("platformLongPress").toBool(), false);
+    QVERIFY(testButton->property("font").isValid());
 }
 
 void tst_button::properties()
@@ -120,6 +122,37 @@ void tst_button::testImplicitSize()
     const qreal longTextSomeIconImplicitHeight = button->implicitHeight();
     QVERIFY(longTextSomeIconImplicitWidth > longTextNoIconImplicitWidth);
     QVERIFY(longTextSomeIconImplicitHeight >= longTextNoIconImplicitHeight);
+}
+
+void tst_button::testFont()
+{
+    QDeclarativeItem *button = componentObject->findChild<QDeclarativeItem*>("testButton");
+    QVERIFY(button);
+    const QFont defaultFont = button->property("font").value<QFont>();
+
+
+    // override family
+    QDeclarativeItem *buttonFont1 = componentObject->findChild<QDeclarativeItem*>("buttonFont1");
+    QVERIFY(buttonFont1);
+    const QFont font1 = buttonFont1->property("font").value<QFont>();
+#if QT_VERSION < 0x040702
+    // http://bugreports.qt.nokia.com/browse/QTBUG-13719
+    QEXPECT_FAIL("", "Will fix in the 4.7.2 release", Continue);
+#endif // QT_VERSION
+    QCOMPARE(font1.family(), QString("Arial"));
+    QCOMPARE(font1.pixelSize(), defaultFont.pixelSize());
+
+    // override pixelSize
+    QDeclarativeItem *buttonFont2 = componentObject->findChild<QDeclarativeItem*>("buttonFont2");
+    QVERIFY(buttonFont2);
+    const QFont font2 = buttonFont2->property("font").value<QFont>();
+    QCOMPARE(font2.family(), defaultFont.family());
+#if QT_VERSION < 0x040702
+    // http://bugreports.qt.nokia.com/browse/QTBUG-13719
+    QEXPECT_FAIL("", "Will fix in the 4.7.2 release", Continue);
+#endif // QT_VERSION
+    QCOMPARE(font2.pixelSize(), 55);
+
 }
 
 void tst_button::released()
