@@ -2,7 +2,7 @@ This source tree contains the Qt Components project.
 
 Building
 ========
-configure (for compiling specific component sets add '-config meego' and/or '-config symbian3')
+configure (for compiling specific component sets add '-meego' and/or '-symbian')
 make
 make install
 
