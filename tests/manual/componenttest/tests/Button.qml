@@ -38,13 +38,12 @@ Item {
             return false;
     }
 
-
     Column {
         id: common
         anchors {
             top: parent.top
             left: parent.left
-            right: isLandscape() ? undefined : parent.right
+            right: isLandscape() ? parent.horizontalCenter : parent.right
             margins: 10
         }
         spacing: 10
@@ -69,6 +68,7 @@ Item {
                 onClicked: {
                     scalableButton.iconSource = ""
                     mixedButton.iconSource = ""
+                    iconChoicelist.currentIndex = 0
                 }
             }
         }
