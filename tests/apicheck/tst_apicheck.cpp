@@ -102,13 +102,13 @@ int main(int argc, char *argv[])
     ApiCheckPageStack pageStack(engine, module);
     ApiCheckSectionScroller sectionScroller(engine, module);
     ApiCheckBusyIndicator busyIndicator(engine, module);
+    ApiCheckContextMenu contextMenu(engine, module);
+    ApiCheckMenu menu(engine, module);
+    ApiCheckMenuItem menuItem(engine, module);
 
 #ifndef Q_COMPONENTS_SYMBIAN
     ApiCheckButtonColumn buttonColumn(engine, module);
     ApiCheckButtonRow buttonRow(engine, module);
-    ApiCheckContextMenu contextMenu(engine, module);
-    ApiCheckMenu menu(engine, module);
-    ApiCheckMenuItem menuItem(engine, module);
     ApiCheckQueryDialog querydialog(engine, module);
     ApiCheckSelectionDialog selectiondialog(engine, module);
 #endif
@@ -132,13 +132,13 @@ int main(int argc, char *argv[])
     ret |= QTest::qExec(&pageStack, argc);
     ret |= QTest::qExec(&sectionScroller, args);
     ret |= QTest::qExec(&busyIndicator, args);
+    ret |= QTest::qExec(&contextMenu, argc);
+    ret |= QTest::qExec(&menu, argc);
+    ret |= QTest::qExec(&menuItem, args);
 
 #ifndef Q_COMPONENTS_SYMBIAN
     ret |= QTest::qExec(&buttonColumn, args);
     ret |= QTest::qExec(&buttonRow, args);
-    ret |= QTest::qExec(&contextMenu, argc);
-    ret |= QTest::qExec(&menu, argc);
-    ret |= QTest::qExec(&menuItem, args);
     ret |= QTest::qExec(&querydialog, args);
     ret |= QTest::qExec(&selectiondialog, args);
 #endif
