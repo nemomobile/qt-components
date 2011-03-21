@@ -42,8 +42,7 @@ private slots:
     void status();
     void tools();
     void pageStack();
-    void lockInLandscape();
-    void lockInPortrait();
+    void orientationLock();
 };
 
 #endif

@@ -47,12 +47,7 @@ void ApiCheckPage::pageStack()
     validateDeclarativeProperty("pageStack", "PageStack_QMLTYPE");
 }
 
-void ApiCheckPage::lockInLandscape()
+void ApiCheckPage::orientationLock()
 {
-    validateProperty("lockInLandscape", QVariant::Bool);
-}
-
-void ApiCheckPage::lockInPortrait()
-{
-    validateProperty("lockInPortrait", QVariant::Bool);
+    validateProperty("orientationLock", QVariant::Int);
 }
