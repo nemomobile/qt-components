@@ -39,7 +39,7 @@ void ApiCheckMenu::content()
 
 void ApiCheckMenu::visualParent()
 {
-    validateProperty("visualParent", "QObject*");
+    validateProperty("visualParent", "QDeclarativeItem*");
 }
 
 void ApiCheckMenu::status()
