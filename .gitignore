@@ -1,5 +1,6 @@
 Makefile
 Makefile.*
+.make.cache
 .qmake.cache
 moc_*.cpp
 qrc_*.cpp
