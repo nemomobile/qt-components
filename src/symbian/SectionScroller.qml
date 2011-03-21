@@ -110,7 +110,7 @@ ImplicitSizeItem {
             visible: !platformSingleRow
             opacity: container.dragging ? 1 : 0
             anchors.right: parent.right
-            anchors.rightMargin: 50 // TODO: use screen.displayWidth
+            anchors.rightMargin: 50 // TODO: not aligned with the layout spec
             anchors.verticalCenter: parent.verticalCenter
             width: childrenRect.width
             height: childrenRect.height
@@ -137,8 +137,8 @@ ImplicitSizeItem {
 
                     Image {
                         source: privateStyle.imagePath("qtg_fr_popup_divider")
-                        sourceSize.width: 40
-                        sourceSize.height: 40
+                        sourceSize.width: 40    // TODO: not aligned with the layout spec
+                        sourceSize.height: 40   // TODO: not aligned with the layout spec
                         width: parent.width - 2 * platformStyle.paddingLarge
                         height: Math.round(platformStyle.graphicSizeTiny / 2) / 10
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -154,8 +154,8 @@ ImplicitSizeItem {
 
                     Image {
                         source: privateStyle.imagePath("qtg_fr_popup_divider")
-                        sourceSize.width: 40
-                        sourceSize.height: 40
+                        sourceSize.width: 40    // TODO: not aligned with the layout spec
+                        sourceSize.height: 40   // TODO: not aligned with the layout spec
                         width: parent.width - 2 * platformStyle.paddingLarge
                         height: Math.round(platformStyle.graphicSizeTiny / 2) / 10
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -241,7 +241,7 @@ ImplicitSizeItem {
         property int oldY: 0
         property bool modelDirty: false
         property bool down: true
-        property int dragAreaWidth: 35
+        property int dragAreaWidth: 35  // TODO: not aligned with the layout spec
 
         function backgroundWidth() {
             return Math.min(screen.width, screen.height) - 8 * platformStyle.paddingLarge
