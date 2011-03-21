@@ -40,19 +40,19 @@ Item {
             RadioButton {
                 id: button1
                 text: "1"
-                exclusiveGroup: group1
+                platformExclusiveGroup: group1
                 focus: true
             }
             RadioButton {
                 id: button2
                 text: "2"
-                exclusiveGroup: group1
+                platformExclusiveGroup: group1
                 checked: true
             }
             RadioButton {
                 id: button3
                 text: "3"
-                exclusiveGroup: group1
+                platformExclusiveGroup: group1
             }
         }
 
@@ -60,18 +60,18 @@ Item {
             RadioButton {
                 id: button4
                 text: "4"
-                exclusiveGroup: group2
+                platformExclusiveGroup: group2
             }
             RadioButton {
                 id: button5
                 text: "5"
-                exclusiveGroup: group2
+                platformExclusiveGroup: group2
                 checked: true
             }
             RadioButton {
                 id: button6
                 text: "6"
-                exclusiveGroup: group2
+                platformExclusiveGroup: group2
             }
         }
 
@@ -106,7 +106,7 @@ Item {
             RadioButton {
                 id: button9
                 text: "9"
-                exclusiveGroup: group3
+                platformExclusiveGroup: group3
             }
         }
     }

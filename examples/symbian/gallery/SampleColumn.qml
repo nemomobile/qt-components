@@ -71,11 +71,11 @@ Column {
         CheckableGroup { id: group }
 
         RadioButton {
-            exclusiveGroup: group
+            platformExclusiveGroup: group
         }
 
         RadioButton {
-            exclusiveGroup: group
+            platformExclusiveGroup: group
         }
     }
 

@@ -76,8 +76,8 @@ void tst_radiobutton::defaultPropertyValues()
     QVERIFY(componentObject->property("text").isValid());
     QVERIFY(componentObject->property("text").toString().isNull());
 
-    QVERIFY(componentObject->property("exclusiveGroup").isValid());
-    QVERIFY(componentObject->property("exclusiveGroup").toString().isNull());
+    QVERIFY(componentObject->property("platformExclusiveGroup").isValid());
+    QVERIFY(componentObject->property("platformExclusiveGroup").toString().isNull());
 }
 
 
