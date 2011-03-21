@@ -79,13 +79,11 @@ ImplicitSizeItem {
     }
 
     // API extensions
-    implicitWidth: style.current.get("leftMargin") +
-                   Math.max(style.textWidth(text, textInput.font), priv.minWidth) +
-                   style.current.get("rightMargin")
+    implicitWidth: 2 * platformStyle.paddingMedium +
+                   Math.max(privateStyle.textWidth(text, textInput.font), priv.minWidth)
 
-    implicitHeight: style.current.get("topMargin") +
-                    style.fontHeight(textInput.font) +
-                    style.current.get("bottomMargin")
+    implicitHeight: 2 * platformStyle.paddingMedium +
+                    privateStyle.fontHeight(textInput.font)
 
     // Private data
     QtObject {
@@ -93,20 +91,14 @@ ImplicitSizeItem {
         // Minimum width is either placeholder text lenght or 5 spaces on current font.
         // Using placeholder text lenght as minimum width prevents implicit sized item from
         // shrinking on focus gain.
-        property real minWidth: placeholder.text ? style.textWidth(placeholder.text, textInput.font)
-                                                 : style.textWidth("     ", textInput.font)
-    }
-
-    Style {
-        id: style
-        mode: textInput.activeFocus ? "selected" : "default"
-        styleClass: "TextField"
+        property real minWidth: placeholder.text ? privateStyle.textWidth(placeholder.text, textInput.font)
+                                                 : privateStyle.textWidth("     ", textInput.font)
     }
 
     BorderImage {
         id: frame
         anchors.fill: parent
-        source: style.current.get("background")
+        source: privateStyle.imagePath(textInput.activeFocus ? "qtg_fr_textfield_highlighted" : "qtg_fr_textfield_editable" )
         border { left: 10; top: 10; right: 10; bottom: 10 }
     }
 
@@ -114,8 +106,8 @@ ImplicitSizeItem {
         id: container
         anchors {
             fill: parent
-            leftMargin: style.current.get("leftMargin"); rightMargin: style.current.get("rightMargin")
-            topMargin: style.current.get("topMargin"); bottomMargin: style.current.get("bottomMargin")
+            leftMargin: platformStyle.paddingMedium; rightMargin: platformStyle.paddingMedium
+            topMargin: platformStyle.paddingMedium; bottomMargin: platformStyle.paddingMedium
         }
         clip: true
 
@@ -123,7 +115,7 @@ ImplicitSizeItem {
             id: placeholder
             objectName: "placeholder"
             anchors.fill: parent
-            color: style.current.get("placeholderColor")
+            color: platformStyle.colorNormalMid
             font: textInput.font
             visible: !textInput.activeFocus && !textInput.text && text
         }
@@ -133,14 +125,14 @@ ImplicitSizeItem {
             objectName: "textInput"
             anchors.fill: parent
             anchors.rightMargin: positionToRectangle(0).width
-            color: style.current.get("color")
-            font: style.current.get("font")
+            color: platformStyle.colorNormalDark
+            font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
             // TODO: Use desktop text selection behaviour for now.
             selectByMouse: true
-            selectedTextColor: style.current.get("selectionTextColor")
-            selectionColor: style.current.get("selectionColor")
+            selectedTextColor: platformStyle.colorNormalLight
+            selectionColor: platformStyle.colorTextSelection
             // TODO: Enable when Qt Mobility gets desktop backends for haptick feedback
-            //onFocusChanged: if (focus) style.play(ThemeEffect.Editor)
+            //onFocusChanged: if (focus) privateStyle.play(ThemeEffect.Editor)
         }
     }
 }

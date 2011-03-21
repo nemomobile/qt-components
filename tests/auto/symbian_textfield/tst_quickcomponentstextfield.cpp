@@ -28,7 +28,7 @@
 #include <QGraphicsObject>
 #include "tst_quickcomponentstest.h"
 
-static const QString EDITOR_STYLE_FONT = "Nokia Sans,-1,14,5,50,0,0,0,0,0";
+static const QString EDITOR_STYLE_FONT = "Nokia Sans,-1,20,5,50,0,0,0,0,0";
 
 class tst_quickcomponentstextfield : public QObject
 {

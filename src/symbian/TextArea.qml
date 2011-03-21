@@ -104,27 +104,21 @@ ImplicitSizeItem {
         id: privy
         // TODO: More consistent minimum width for empty TextArea than 20 * " " on current font?
         property real minImplicitWidth: placeholder.text ? placeholder.model.paintedWidth
-                                                         : style.textWidth("                    ", textEdit.font)
-    }
-
-    Style {
-        id: style
-        mode: textEdit.activeFocus ? "selected" : "default"
-        styleClass: "TextArea"
+                                                         : privateStyle.textWidth("                    ", textEdit.font)
     }
 
     BorderImage {
         id: background
         anchors.fill: parent
-        source: style.current.get("background")
+        source: privateStyle.imagePath(textEdit.activeFocus ? "qtg_fr_textfield_highlighted" : "qtg_fr_textfield_editable" )
         border { left: 10; top: 10; right: 10; bottom: 10 }
     }
 
     Item {
         id: container
         anchors {
-            leftMargin: style.current.get("leftMargin"); rightMargin: style.current.get("rightMargin")
-            topMargin: style.current.get("topMargin"); bottomMargin: style.current.get("bottomMargin")
+            leftMargin: platformStyle.paddingMedium; rightMargin: platformStyle.paddingMedium
+            topMargin: platformStyle.paddingMedium; bottomMargin: platformStyle.paddingMedium
         }
         x: anchors.leftMargin
         y: anchors.topMargin
@@ -149,7 +143,7 @@ ImplicitSizeItem {
                 opacity: 0
             }
 
-            color: style.current.get("placeholderColor")
+            color: platformStyle.colorNormalMid
             font: textEdit.font
             visible: !textEdit.activeFocus && text &&
                      (textEdit.paintedWidth == 0 && textEdit.paintedHeight <= textEdit.cursorRectangle.height)
@@ -199,10 +193,10 @@ ImplicitSizeItem {
                     width: root.maxImplicitWidth - container.anchors.leftMargin - container.anchors.rightMargin
                 }
 
-                font: style.current.get("font")
-                color: style.current.get("color")
-                selectedTextColor: style.current.get("selectionTextColor")
-                selectionColor: style.current.get("selectionColor")
+                font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
+                color: platformStyle.colorNormalDark
+                selectedTextColor: platformStyle.colorNormalLight
+                selectionColor: platformStyle.colorTextSelection
                 textFormat: TextEdit.AutoText
                 wrapMode: TextEdit.Wrap
                 // TODO: Use desktop text selection behaviour for now.
@@ -217,7 +211,7 @@ ImplicitSizeItem {
                         // TODO: Flash scroll bars
 
                         // TODO: Enable when decision made about Qt Mobility usage
-                        //style.play(ThemeEffect.Editor)
+                        //privateStyle.play(ThemeEffect.Editor)
                     }
                 }
             }
