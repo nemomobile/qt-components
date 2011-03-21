@@ -68,10 +68,6 @@ Item {
             opacity: 0.85
         }
 
-        Button {
-            text: "Flash Decorators"
-            onClicked: decorator.flashDecorators()
-        }
     }
 
     ScrollDecorator {

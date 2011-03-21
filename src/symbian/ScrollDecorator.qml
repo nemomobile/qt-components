@@ -32,14 +32,6 @@ Item {
     //Common Public API
     property Flickable flickableItem: null
 
-    function flashDecorators() {
-        console.log("warning: ScrollDecorator.flashDecorators() is deprecated. Use ScrollBar instead")
-        if (decorators.horizontal)
-            decorators.horizontal.flash()
-        if (decorators.vertical)
-            decorators.vertical.flash()
-    }
-
     anchors.fill: flickableItem
     QtObject {
         id: decorators
