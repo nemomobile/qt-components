@@ -35,10 +35,19 @@ ImplicitSizeItem {
     property alias checked: checkable.checked
     property bool pressed: stateGroup.state == "Pressed"
     signal clicked
+    property alias text: label.text
 
     // Symbian specific API
-    property alias exclusiveGroup: checkable.exclusiveGroup
-    property alias text: label.text
+    property alias platformExclusiveGroup: checkable.exclusiveGroup
+
+    // deprecated w12 ->
+    property variant exclusiveGroup
+    onExclusiveGroupChanged: {
+        console.log("warning: RadioButton.exclusiveGroup is deprecated. Use platformExclusiveGroup instead")
+        platformExclusiveGroup = exclusiveGroup
+    }
+    // <- deprecated w12
+
 
     QtObject {
         id: internal
