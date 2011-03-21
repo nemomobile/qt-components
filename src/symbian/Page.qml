@@ -39,16 +39,8 @@ Item {
 
     property PageStack pageStack
 
-    property bool lockInLandscape: false // deprecated
-    onLockInLandscapeChanged: console.log("warning: Page.lockInLandscape is deprecated")
-    property bool lockInPortrait: false // deprecated
-    onLockInPortraitChanged: console.log("warning: Page.lockInPortrait is deprecated")
-
     // Defines orientation lock for a page
     property int orientationLock: PageOrientation.Automatic
-
-    property string title // Deprecated
-    onTitleChanged: console.log("warning: Page.title is deprecated")
 
     property Item tools: null
 
