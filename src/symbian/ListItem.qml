@@ -130,7 +130,7 @@ ImplicitSizeItem {
         id: drillDown
 
         Image {
-            source: (internal.state == "default" || internal.state == "disabled") ?
+            source: (internal.state == "" || internal.state == "Disabled") ?
                     privateStyle.imagePath("qtg_graf_drill_down_indicator_white.svg") :
                     privateStyle.imagePath("qtg_graf_drill_down_indicator.svg")
             sourceSize.width: platformStyle.graphicSizeSmall
