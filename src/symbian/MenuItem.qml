@@ -37,7 +37,6 @@ Item {
         console.log("MenuItem.drillDownIndicator deprecated, use MenuItem.platformSubItemIndicator instead!");
         platformSubItemIndicator = drillDownIndicator
     }
-    property alias drillDownIndicator: drillDown.visible
 
     signal clicked
 
@@ -64,28 +63,35 @@ Item {
         anchors {
             verticalCenter: parent.verticalCenter
             left: parent.left
-            right: parent.right
             leftMargin: platformStyle.paddingLarge
-            rightMargin: drillDownIndicator.visible ?
-                    drillDownIndicator.width + platformStyle.paddingMedium + privateStyle.scrollBarThickness :
-                    privateStyle.scrollBarThickness
+            right: iconLoader.status == Loader.Ready ? iconLoader.left : parent.right
+            rightMargin: iconLoader.status == Loader.Ready ? platformStyle.paddingMedium : privateStyle.scrollBarThickness
         }
         font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
         color: platformStyle.colorNormalLight
+        elide: Text.ElideRight
     }
 
-    Image {
-        id: drillDown
-        visible: false
-        source: privateStyle.imagePath("qtg_graf_drill_down_indicator.svg")
-        sourceSize.width: platformStyle.graphicSizeSmall
-        sourceSize.height: platformStyle.graphicSizeSmall
+    Loader {
+        id: iconLoader
+        sourceComponent: root.platformSubItemIndicator ? subItemIcon : undefined
         anchors {
             right: parent.right
             rightMargin: privateStyle.scrollBarThickness
             verticalCenter: parent.verticalCenter
         }
     }
+
+    Component {
+        id: subItemIcon
+
+        Image {
+            source: privateStyle.imagePath("qtg_graf_drill_down_indicator.svg")
+            sourceSize.width: platformStyle.graphicSizeSmall
+            sourceSize.height: platformStyle.graphicSizeSmall
+        }
+    }
+
 
     MouseArea {
         id: mouseArea
