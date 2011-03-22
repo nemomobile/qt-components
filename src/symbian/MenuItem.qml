@@ -31,6 +31,12 @@ Item {
     id: root
 
     property alias text: textArea.text
+    property bool platformSubItemIndicator: false
+    property bool drillDownIndicator: false // deprecated
+    onDrillDownIndicatorChanged: { // TODO: Remove after grace period
+        console.log("MenuItem.drillDownIndicator deprecated, use MenuItem.platformSubItemIndicator instead!");
+        platformSubItemIndicator = drillDownIndicator
+    }
     property alias drillDownIndicator: drillDown.visible
 
     signal clicked
