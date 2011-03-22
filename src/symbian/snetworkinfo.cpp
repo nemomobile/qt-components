@@ -26,7 +26,7 @@
 
 #include "snetworkinfo.h"
 
-#ifdef HAVE_QTMOBILITY
+#ifdef HAVE_MOBILITY
 #include <QSystemNetworkInfo>
 using namespace QtMobility;
 #endif
@@ -38,7 +38,7 @@ class SNetworkInfoPrivate
 public:
     SNetworkInfoPrivate(SNetworkInfo *qq) : q_ptr(qq) {}
 
-#ifdef HAVE_QTMOBILITY
+#ifdef HAVE_MOBILITY
     void _q_networkModeChanged(QSystemNetworkInfo::NetworkMode mode);
     void _q_networkStatusChanged(QSystemNetworkInfo::NetworkMode mode, QSystemNetworkInfo::NetworkStatus status);
     void _q_networkSignalStrengthChanged(QSystemNetworkInfo::NetworkMode mode, int strength);
@@ -50,7 +50,7 @@ private:
     SNetworkInfo *q_ptr;
 };
 
-#ifdef HAVE_QTMOBILITY
+#ifdef HAVE_MOBILITY
 void SNetworkInfoPrivate::_q_networkModeChanged(QSystemNetworkInfo::NetworkMode mode)
 {
     emit q_ptr->networkModeChanged(static_cast<SNetworkInfo::NetworkMode>(mode));
@@ -70,7 +70,7 @@ void SNetworkInfoPrivate::_q_networkSignalStrengthChanged(QSystemNetworkInfo::Ne
 SNetworkInfo::SNetworkInfo(QObject *parent) :
     QObject(parent), d_ptr(new SNetworkInfoPrivate(this))
 {
-#ifdef HAVE_QTMOBILITY
+#ifdef HAVE_MOBILITY
     connect(&d_ptr->networkInfo, SIGNAL(networkModeChanged(QSystemNetworkInfo::NetworkMode)),
             this, SLOT(_q_networkModeChanged(QSystemNetworkInfo::NetworkMode)));
     connect(&d_ptr->networkInfo, SIGNAL(networkStatusChanged(QSystemNetworkInfo::NetworkMode, QSystemNetworkInfo::NetworkStatus)),
@@ -82,7 +82,7 @@ SNetworkInfo::SNetworkInfo(QObject *parent) :
 
 SNetworkInfo::NetworkMode SNetworkInfo::networkMode() const
 {
-#ifdef HAVE_QTMOBILITY
+#ifdef HAVE_MOBILITY
     return static_cast<SNetworkInfo::NetworkMode>(d_ptr->networkInfo.currentMode());
 #else
     return UnknownMode;
@@ -91,7 +91,7 @@ SNetworkInfo::NetworkMode SNetworkInfo::networkMode() const
 
 SNetworkInfo::NetworkStatus SNetworkInfo::networkStatus() const
 {
-#ifdef HAVE_QTMOBILITY
+#ifdef HAVE_MOBILITY
     return static_cast<SNetworkInfo::NetworkStatus>(d_ptr->networkInfo.networkStatus(d_ptr->networkInfo.currentMode()));
 #else
     return UndefinedStatus;
@@ -100,7 +100,7 @@ SNetworkInfo::NetworkStatus SNetworkInfo::networkStatus() const
 
 int SNetworkInfo::networkSignalStrength() const
 {
-#ifdef HAVE_QTMOBILITY
+#ifdef HAVE_MOBILITY
     return QSystemNetworkInfo::networkSignalStrength(d_ptr->networkInfo.currentMode());
 #else
     return 0;

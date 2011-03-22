@@ -47,9 +47,9 @@
 #include <eikappui.h>
 #endif
 
-#ifdef HAVE_QTMOBILITY
+#ifdef HAVE_MOBILITY
 #include <QFeedbackEffect>
-#endif //HAVE_QTMOBILITY
+#endif //HAVE_MOBILITY
 
 static const qreal DEFAULT_DP_PER_DPI = 160.0;
 
@@ -297,11 +297,11 @@ void SStyleWrapperPrivate::_q_displayChanged()
 
 void SStyleWrapperPrivate::play(int effect)
 {
-#ifdef HAVE_QTMOBILITY
+#ifdef HAVE_MOBILITY
     QtMobility::QFeedbackEffect::playThemeEffect(static_cast<QtMobility::QFeedbackEffect::ThemeEffect>(effect));
 #else
     Q_UNUSED( effect );
-#endif //HAVE_QTMOBILITY
+#endif //HAVE_MOBILITY
 }
 
 void SStyleWrapperPrivate::updateStyle()

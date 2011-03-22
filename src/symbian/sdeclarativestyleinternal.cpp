@@ -34,9 +34,9 @@
 
 #include <QObject>
 
-#ifdef HAVE_QTMOBILITY
+#ifdef HAVE_MOBILITY
 #include <QFeedbackEffect>
-#endif //HAVE_QTMOBILITY
+#endif //HAVE_MOBILITY
 
 
 class SDeclarativeStyleInternalPrivate
@@ -134,11 +134,11 @@ int SDeclarativeStyleInternal::switchButtonHeight() const
 
 void SDeclarativeStyleInternal::play(int effect)
 {
-#ifdef HAVE_QTMOBILITY
+#ifdef HAVE_MOBILITY
     QtMobility::QFeedbackEffect::playThemeEffect(static_cast<QtMobility::QFeedbackEffect::ThemeEffect>(effect));
 #else
     Q_UNUSED(effect);
-#endif //HAVE_QTMOBILITY
+#endif //HAVE_MOBILITY
 }
 
 int SDeclarativeStyleInternal::textWidth(const QString &text, const QFont &font) const

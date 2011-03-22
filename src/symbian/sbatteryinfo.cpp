@@ -26,7 +26,7 @@
 
 #include "sbatteryinfo.h"
 
-#ifdef HAVE_QTMOBILITY
+#ifdef HAVE_MOBILITY
 #include <QSystemDeviceInfo>
 using namespace QtMobility;
 #endif
@@ -38,7 +38,7 @@ class SBatteryInfoPrivate
 public:
     SBatteryInfoPrivate(SBatteryInfo *qq) : q_ptr(qq) {}
 
-#ifdef HAVE_QTMOBILITY
+#ifdef HAVE_MOBILITY
     void _q_batteryLevelChanged(int level);
     void _q_batteryStatusChanged(QSystemDeviceInfo::BatteryStatus status);
     void _q_powerStateChanged(QSystemDeviceInfo::PowerState state);
@@ -50,7 +50,7 @@ private:
     SBatteryInfo *q_ptr;
 };
 
-#ifdef HAVE_QTMOBILITY
+#ifdef HAVE_MOBILITY
 void SBatteryInfoPrivate::_q_batteryLevelChanged(int level)
 {
     qDebug() << "_q_batteryLevelChanged():" << level;
@@ -73,7 +73,7 @@ void SBatteryInfoPrivate::_q_powerStateChanged(QSystemDeviceInfo::PowerState sta
 SBatteryInfo::SBatteryInfo(QObject *parent) :
     QObject(parent), d_ptr(new SBatteryInfoPrivate(this))
 {
-#ifdef HAVE_QTMOBILITY
+#ifdef HAVE_MOBILITY
     connect(&d_ptr->deviceInfo, SIGNAL(batteryLevelChanged(int)),
             this, SLOT(_q_batteryLevelChanged(int)));
     connect(&d_ptr->deviceInfo, SIGNAL(batteryStatusChanged(QSystemDeviceInfo::BatteryStatus)),
@@ -85,7 +85,7 @@ SBatteryInfo::SBatteryInfo(QObject *parent) :
 
 int SBatteryInfo::batteryLevel() const
 {
-#ifdef HAVE_QTMOBILITY
+#ifdef HAVE_MOBILITY
     return d_ptr->deviceInfo.batteryLevel();
 #else
     return 0;
@@ -94,7 +94,7 @@ int SBatteryInfo::batteryLevel() const
 
 SBatteryInfo::BatteryStatus SBatteryInfo::batteryStatus() const
 {
-#ifdef HAVE_QTMOBILITY
+#ifdef HAVE_MOBILITY
     return static_cast<SBatteryInfo::BatteryStatus>(d_ptr->deviceInfo.batteryStatus());
 #else
     return NoBatteryLevel;
@@ -103,7 +103,7 @@ SBatteryInfo::BatteryStatus SBatteryInfo::batteryStatus() const
 
 SBatteryInfo::PowerState SBatteryInfo::powerState() const
 {
-#ifdef HAVE_QTMOBILITY
+#ifdef HAVE_MOBILITY
     return static_cast<SBatteryInfo::PowerState>(d_ptr->deviceInfo.currentPowerState());
 #else
     return UnknownPower;

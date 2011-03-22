@@ -12,5 +12,5 @@ symbian3 {
 }
 
 mobility {
-    DEFINES += HAVE_QTMOBILITY
+    DEFINES += HAVE_MOBILITY
 }

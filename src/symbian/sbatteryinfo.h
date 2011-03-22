@@ -76,7 +76,7 @@ protected:
     QScopedPointer<SBatteryInfoPrivate> d_ptr;
 
 private:
-#ifdef HAVE_QTMOBILITY
+#ifdef HAVE_MOBILITY
     Q_PRIVATE_SLOT(d_func(), void _q_batteryLevelChanged(int))
     Q_PRIVATE_SLOT(d_func(), void _q_batteryStatusChanged(QSystemDeviceInfo::BatteryStatus))
     Q_PRIVATE_SLOT(d_func(), void _q_powerStateChanged(QSystemDeviceInfo::PowerState))

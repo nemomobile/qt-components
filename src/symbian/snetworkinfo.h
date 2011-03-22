@@ -84,7 +84,7 @@ protected:
     QScopedPointer<SNetworkInfoPrivate> d_ptr;
 
 private:
-#ifdef HAVE_QTMOBILITY
+#ifdef HAVE_MOBILITY
     Q_PRIVATE_SLOT(d_func(), void _q_networkModeChanged(QSystemNetworkInfo::NetworkMode))
     Q_PRIVATE_SLOT(d_func(), void _q_networkStatusChanged(QSystemNetworkInfo::NetworkMode, QSystemNetworkInfo::NetworkStatus))
     Q_PRIVATE_SLOT(d_func(), void _q_networkSignalStrengthChanged(QSystemNetworkInfo::NetworkMode, int))
