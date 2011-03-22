@@ -9,7 +9,10 @@ INCLUDEPATH += $$PWD
 win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release build_all
 CONFIG += qt plugin copy_native install_native
 QT += declarative svg
-mobility:MOBILITY += feedback systeminfo
+mobility {
+    MOBILITY += feedback systeminfo
+    QT += network
+}
 
 SOURCES += \
     plugin.cpp \
@@ -26,6 +29,7 @@ SOURCES += \
     sdeclarativewindowdecoration.cpp \
     sframepool.cpp \
     siconpool.cpp \
+    snetworkinfo.cpp \
     sstyleengine.cpp \
     sstylefactory.cpp \
     sstylewrapper.cpp \
@@ -47,6 +51,7 @@ HEADERS += \
     sdeclarativewindowdecoration.h \
     sframepool.h \
     siconpool.h \
+    snetworkinfo.h \
     sstyleengine.h \
     sstylefactory.h \
     sstylewrapper.h \

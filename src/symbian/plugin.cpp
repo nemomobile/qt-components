@@ -35,6 +35,7 @@
 #include "sdeclarativescreen.h"
 #include "sdeclarativewindowdecoration.h"
 #include "sbatteryinfo.h"
+#include "snetworkinfo.h"
 
 #include <QCoreApplication>
 #include <QtDeclarative>
@@ -62,6 +63,10 @@ public:
 
         SBatteryInfo *batteryInfo = new SBatteryInfo(context);
         context->setContextProperty("batteryInfo", batteryInfo);
+
+        SNetworkInfo *networkInfo = new SNetworkInfo(context);
+        context->setContextProperty("networkInfo", networkInfo);
+
         QObject::connect(engine, SIGNAL(quit()), QCoreApplication::instance(), SLOT(quit()));
     }
 
@@ -78,6 +83,7 @@ public:
         qmlRegisterUncreatableType<SPageOrientation>(uri, 1, 0, "PageOrientation", "");
         qmlRegisterUncreatableType<SPageStatus>(uri, 1, 0, "PageStatus", "");
         qmlRegisterUncreatableType<SBatteryInfo>(uri, 1, 0, "BatteryInfo", "");
+        qmlRegisterUncreatableType<SNetworkInfo>(uri, 1, 0, "NetworkInfo", "");
     }
 };
 
