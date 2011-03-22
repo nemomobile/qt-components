@@ -9,10 +9,11 @@ INCLUDEPATH += $$PWD
 win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release build_all
 CONFIG += qt plugin copy_native install_native
 QT += declarative svg
-mobility:MOBILITY += feedback
+mobility:MOBILITY += feedback systeminfo
 
 SOURCES += \
     plugin.cpp \
+    sbatteryinfo.cpp \
     sdeclarative.cpp \
     sdeclarativeframe.cpp \
     sdeclarativeicon.cpp \
@@ -31,6 +32,7 @@ SOURCES += \
     sstylewrapper_p.cpp
 
 HEADERS += \
+    sbatteryinfo.h \
     sdeclarative.h \
     sdeclarativeframe.h \
     sdeclarativeicon.h \

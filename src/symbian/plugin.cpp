@@ -34,6 +34,7 @@
 #include "sdeclarativemaskedimage.h"
 #include "sdeclarativescreen.h"
 #include "sdeclarativewindowdecoration.h"
+#include "sbatteryinfo.h"
 
 #include <QCoreApplication>
 #include <QtDeclarative>
@@ -59,6 +60,8 @@ public:
         SDeclarative *declarative = new SDeclarative(context);
         context->setContextProperty("symbian", declarative);
 
+        SBatteryInfo *batteryInfo = new SBatteryInfo(context);
+        context->setContextProperty("batteryInfo", batteryInfo);
         QObject::connect(engine, SIGNAL(quit()), QCoreApplication::instance(), SLOT(quit()));
     }
 
@@ -74,6 +77,7 @@ public:
         qmlRegisterUncreatableType<SDialogStatus>(uri, 1, 0, "DialogStatus", "");
         qmlRegisterUncreatableType<SPageOrientation>(uri, 1, 0, "PageOrientation", "");
         qmlRegisterUncreatableType<SPageStatus>(uri, 1, 0, "PageStatus", "");
+        qmlRegisterUncreatableType<SBatteryInfo>(uri, 1, 0, "BatteryInfo", "");
     }
 };
 
