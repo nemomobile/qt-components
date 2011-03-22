@@ -37,9 +37,9 @@ Item {
         content: MenuLayout {
             MenuItem {text: "Zero"; onClicked: signalLabel.text = "itemClicked(0)"}
             MenuItem {text: "One"; onClicked: signalLabel.text = "itemClicked(1)"}
-            MenuItem {text: "Two"; drillDownIndicator: true; onClicked: subMenu.open()}
-            MenuItem {text: "Three"; onClicked: signalLabel.text = "itemClicked(3)"}
-            MenuItem {text: "Four"; drillDownIndicator: true; onClicked: subMenu.open()}
+            MenuItem {text: "Two"; platformSubItemIndicator: true; onClicked: subMenu.open()}
+            MenuItem {text: "Three - This is a long text which does not fit to the screen"; onClicked: signalLabel.text = "itemClicked(3)"}
+            MenuItem {text: "Four - This is a long text which does not fit to the screen"; platformSubItemIndicator: true; onClicked: subMenu.open()}
             MenuItem {text: "Five"; onClicked: signalLabel.text = "itemClicked(5)"}
         }
     }
