@@ -33,9 +33,14 @@ Window {
     property int rowSpacing: 24
     property int columnSpacing: 14
 
+    StatusBar {
+        id: statusBar
+        anchors.top: parent.top
+    }
+
     Flickable {
         id: flickable
-        anchors { left: parent.left; right: parent.right; top: parent.top; bottom: toolbar.top }
+        anchors { left: parent.left; right: parent.right; top: statusBar.visible ? statusBar.bottom: parent.top; bottom: quitButton.top }
         contentHeight: defaultColumn.height + 2 * root.rowSpacing
         clip: true
         boundsBehavior: Flickable.StopAtBounds
@@ -114,7 +119,7 @@ Window {
         text: "Quit"
         onClicked: Qt.quit()
     }
-    
+
     ToolBar {
         id: toolbar
         tools: toolBarlayout
