@@ -91,6 +91,7 @@ release/
 /tests/auto/symbian_scrollbar/tst_symbian_scrollbar
 /tests/auto/symbian_selectionlistitem/tst_symbian_selectionlistitem
 /tests/auto/symbian_slider/tst_symbian_slider
+/tests/auto/symbian_statusbar/tst_symbian_statusbar
 /tests/auto/symbian_tabbar/tst_symbian_tabbar
 /tests/auto/symbian_tabbarlayout/tst_symbian_tabbarlayout
 /tests/auto/symbian_tabbutton/tst_symbian_tabbutton

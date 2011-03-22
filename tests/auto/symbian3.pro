@@ -20,6 +20,7 @@ SUBDIRS += \
     symbian_scrollbar \
     symbian_selectionlistitem \
     symbian_slider \
+    symbian_statusbar \
     symbian_tabbar \
     symbian_tabbarlayout \
     symbian_tabbutton \
