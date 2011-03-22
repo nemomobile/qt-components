@@ -34,7 +34,12 @@ ImplicitSizeItem {
     property real verticalSpacing: itemStyle.current.get("verticalSpacing")
     property real horizontalSpacing: itemStyle.current.get("horizontalSpacing")
     property bool enabled: true
-    property bool drillDownIndicator: false
+    property bool subItemIndicator: false
+    property bool drillDownIndicator: false // deprecated
+    onDrillDownIndicatorChanged: { // TODO: Remove after grace period
+        console.log("ListItem.drillDownIndicator deprecated, use ListItem.subItemIndicator instead!");
+        subItemIndicator = drillDownIndicator
+    }
 
     signal clicked
     signal pressAndHold
@@ -117,8 +122,8 @@ ImplicitSizeItem {
     }
 
     Loader {
-        id: drillDownLoader
-        sourceComponent: listItem.drillDownIndicator ? drillDown : undefined
+        id: iconLoader
+        sourceComponent: listItem.subItemIndicator ? subItemIcon : undefined
         anchors {
             right: parent.right
             rightMargin: privateStyle.scrollBarThickness
@@ -127,7 +132,7 @@ ImplicitSizeItem {
     }
 
     Component {
-        id: drillDown
+        id: subItemIcon
 
         Image {
             source: (internal.state == "" || internal.state == "Disabled") ?
@@ -215,8 +220,8 @@ ImplicitSizeItem {
         anchors {
             fill: parent
             leftMargin: itemStyle.current.get("marginLeft")
-            rightMargin: drillDownLoader.status == Loader.Ready ?
-                    drillDownLoader.width + itemStyle.current.get("marginRight") + itemStyle.current.get("horizontalSpacing") :
+            rightMargin: iconLoader.status == Loader.Ready ?
+                    iconLoader.width + itemStyle.current.get("marginRight") + itemStyle.current.get("horizontalSpacing") :
                     itemStyle.current.get("marginRight")
             topMargin: itemStyle.current.get("marginTop")
             bottomMargin: itemStyle.current.get("marginBottom")

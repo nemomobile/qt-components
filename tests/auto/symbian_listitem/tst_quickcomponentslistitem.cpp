@@ -78,13 +78,13 @@ void tst_quickcomponentslistitem::validateProperties()
     enabled = m_componentObject->property("enabled");
     QCOMPARE(enabled.toBool(), false);
 
-    // drillDownIndicator
-    QVariant indicator = m_componentObject->property("drillDownIndicator");
+    // subItemIndicator
+    QVariant indicator = m_componentObject->property("subItemIndicator");
     QVERIFY(indicator.isValid());
     QVERIFY(indicator.canConvert(QVariant::Bool));
     QCOMPARE(indicator.toBool(), false);
-    m_componentObject->setProperty("drillDownIndicator", true);
-    indicator = m_componentObject->property("drillDownIndicator");
+    m_componentObject->setProperty("subItemIndicator", true);
+    indicator = m_componentObject->property("subItemIndicator");
     QCOMPARE(indicator.toBool(), true);
 }
 
