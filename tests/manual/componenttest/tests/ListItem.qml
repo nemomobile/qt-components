@@ -427,7 +427,7 @@ Item {
             ListItem {
                 id: listItem11
                 objectName: "listItem11"
-                drillDownIndicator: true
+                subItemIndicator: true
 
                 Column {
                     anchors.fill: listItem11.padding

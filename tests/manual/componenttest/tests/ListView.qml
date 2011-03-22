@@ -83,10 +83,10 @@ Item {
                 onClicked: listView.model.set(listView.currentIndex, {"disabled": true})
             }
             MenuItem {
-                text: "Toggle drilldown"
+                text: "Toggle subitem indicator"
                 onClicked: {
-                    var drillDownState = listView.model.get(listView.currentIndex).drilldown
-                    listView.model.set(listView.currentIndex, {"drilldown": !drillDownState})
+                    var indicatorState = listView.model.get(listView.currentIndex).indicator
+                    listView.model.set(listView.currentIndex, {"indicator": !indicatorState})
                 }
             }
             MenuItem {
@@ -225,7 +225,7 @@ Item {
                 "image": "image://theme/:/list1.png",
                 "disabled": false,
                 "selected": false,
-                "drilldown": false
+                "indicator": false
             } )
             listView.forceActiveFocus()
         }
@@ -244,7 +244,7 @@ Item {
                     "image": "image://theme/:/list" + (i + 1) + ".png",
                     "disabled": false,
                     "selected": false,
-                    "drilldown": false
+                    "indicator": false
                 } )
             }
         }
@@ -258,7 +258,7 @@ Item {
             objectName: title
             width: listView.width
             enabled: !disabled // State from model
-            drillDownIndicator: drilldown
+            subItemIndicator: indicator
 
             Row {
                 anchors.fill: listItem.padding
