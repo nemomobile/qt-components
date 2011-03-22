@@ -36,6 +36,7 @@ class SDeclarative : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(InteractionMode listInteractionMode READ listInteractionMode WRITE setListInteractionMode NOTIFY listInteractionModeChanged FINAL)
+    Q_PROPERTY(QString currentTime READ currentTime NOTIFY currentTimeChanged)
 
     Q_ENUMS(InteractionMode ImageSize ScrollBarVisibility Feedback)
 
@@ -113,8 +114,14 @@ public:
     InteractionMode listInteractionMode() const;
     void setListInteractionMode(InteractionMode mode);
 
+    static QString currentTime();
+
 Q_SIGNALS:
     void listInteractionModeChanged();
+    void currentTimeChanged();
+
+protected:
+    bool eventFilter(QObject *obj, QEvent *event);
 
 private:
     Q_DISABLE_COPY(SDeclarative)
