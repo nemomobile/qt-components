@@ -60,6 +60,16 @@
         <file alias="qtg_graf_busyindicator_8.svg">resources/defaulttheme/graphics/qtg_graf_busyindicator_8.svg</file>
         <file alias="qtg_graf_busyindicator_9.svg">resources/defaulttheme/graphics/qtg_graf_busyindicator_9.svg</file>
         <file alias="qtg_graf_busyindicator_10.svg">resources/defaulttheme/graphics/qtg_graf_busyindicator_10.svg</file>
+        <file alias="qtg_graf_signal_gprs_att_icon.svg">resources/defaulttheme/graphics/qtg_graf_signal_gprs_att_icon.svg</file>
+        <file alias="qtg_graf_signal_icon.svg">resources/defaulttheme/graphics/qtg_graf_signal_icon.svg</file>
+        <file alias="qtg_graf_signal_gprs_tdscdma_icon.svg">resources/defaulttheme/graphics/qtg_graf_signal_gprs_tdscdma_icon.svg</file>
+        <file alias="qtg_fr_statusbar.svg">resources/defaulttheme/graphics/qtg_fr_statusbar.svg</file>
+        <file alias="qtg_graf_battery_level_bg.svg">resources/defaulttheme/graphics/qtg_graf_battery_level_bg.svg</file>
+        <file alias="qtg_graf_battery_level_full.svg">resources/defaulttheme/graphics/qtg_graf_battery_level_full.svg</file>
+        <file alias="qtg_graf_battery_level_low.svg">resources/defaulttheme/graphics/qtg_graf_battery_level_low.svg</file>
+        <file alias="qtg_graf_battery_level_medium.svg">resources/defaulttheme/graphics/qtg_graf_battery_level_medium.svg</file>
+        <file alias="qtg_graf_signal_level_bg.svg">resources/defaulttheme/graphics/qtg_graf_signal_level_bg.svg</file>
+        <file alias="qtg_graf_signal_level_full.svg">resources/defaulttheme/graphics/qtg_graf_signal_level_full.svg</file>
     </qresource>
     <qresource prefix="/colors">
         <file alias="widgetcolorgroup.css">resources/defaulttheme/colors/widgetcolorgroup.css</file>
