@@ -1271,6 +1271,52 @@ QVariant SStyleWrapperPrivate::tabBarProperty(const QString &propertyName) const
     return QVariant();
 }
 
+QVariant SStyleWrapperPrivate::statusBarProperty(const QString &propertyName) const
+{
+    if (propertyName == QLatin1String("background"))
+        return imagePath(QLatin1String("qtg_fr_statusbar.svg"));
+    if (propertyName == QLatin1String("batteryFull"))
+        return imagePath(QLatin1String("qtg_graf_battery_level_full.svg"));
+    if (propertyName == QLatin1String("batteryMedium"))
+        return imagePath(QLatin1String("qtg_graf_battery_level_medium.svg"));
+    if (propertyName == QLatin1String("batteryLow"))
+        return imagePath(QLatin1String("qtg_graf_battery_level_low.svg"));
+    if (propertyName == QLatin1String("signalGprs"))
+        return imagePath(QLatin1String("qtg_graf_signal_gprs_att_icon.svg"));
+    if (propertyName == QLatin1String("signalGeneric"))
+        return imagePath(QLatin1String("qtg_graf_signal_icon.svg"));
+    if (propertyName == QLatin1String("signalBackground"))
+        return imagePath(QLatin1String("qtg_graf_signal_level_bg.svg"));
+    if (propertyName == QLatin1String("signalFull"))
+        return imagePath(QLatin1String("qtg_graf_signal_level_full.svg"));
+    if (propertyName == QLatin1String("batteryBackground"))
+        return imagePath(QLatin1String("qtg_graf_battery_level_bg.svg"));
+    if (propertyName == QLatin1String("height"))
+        return fetchLayoutParameter(QLatin1String("param-statusbar-height"));
+    if (propertyName == QLatin1String("signalHeight"))
+        return fetchLayoutParameter(QLatin1String("param-statusbar-signal-height"));
+    if (propertyName == QLatin1String("signalWidth"))
+        return fetchLayoutParameter(QLatin1String("param-statusbar-signal-width"));
+    if (propertyName == QLatin1String("signalLevelWidth"))
+        return fetchLayoutParameter(QLatin1String("param-statusbar-signallevel-width"));
+    if (propertyName == QLatin1String("signalLevelHeight"))
+        return fetchLayoutParameter(QLatin1String("param-statusbar-signallevel-height"));
+    if (propertyName == QLatin1String("batteryLevelWidth"))
+        return fetchLayoutParameter(QLatin1String("param-statusbar-batterylevel-width"));
+    if (propertyName == QLatin1String("batteryLevelHeight"))
+        return fetchLayoutParameter(QLatin1String("param-statusbar-batterylevel-height"));
+    if (propertyName == QLatin1String("timeWidth"))
+        return fetchLayoutParameter(QLatin1String("param-statusbar-time-width"));
+    if (propertyName == QLatin1String("timeHeight"))
+        return fetchLayoutParameter(QLatin1String("param-statusbar-time-height"));
+    if (propertyName == QLatin1String("rowMargins"))
+        return fetchLayoutParameter(QLatin1String("param-statusbar-row-margins"));
+    if (propertyName == QLatin1String("rowSpacing"))
+        return fetchLayoutParameter(QLatin1String("param-statusbar-row-spacing"));
+
+    return QVariant();
+}
+
 QString SStyleWrapperPrivate::imagePath(const QString &fileName) const
 {
     return QLatin1String("image://theme/") + fileName;

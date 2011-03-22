@@ -70,6 +70,7 @@ public:
     QVariant sectionScrollerProperty(const QString &propertyName) const;
     QVariant toolBarProperty(const QString &propertyName) const;
     QVariant busyIndicatorProperty(const QString &propertyName) const;
+    QVariant statusBarProperty(const QString &propertyName) const;
 
     void _q_desktopWorkareaChanged();
     void _q_displayChanged();

@@ -204,6 +204,9 @@ qreal SStyleWrapper::preferredWidth() const
     if (styleClass() == QLatin1String("TabBar"))
         return d->fetchLayoutParameter(QLatin1String("param-screen-width"));
 
+    if (styleClass() == QLatin1String("StatusBar"))
+        return d->fetchLayoutParameter(QLatin1String("param-screen-width"));
+
     if (styleClass() == QLatin1String("ToolBar"))
         return d->fetchLayoutParameter(QLatin1String("param-screen-width"));
 
@@ -291,6 +294,9 @@ qreal SStyleWrapper::preferredHeight() const
     if (styleClass() == QLatin1String("BusyIndicator"))
         return 40;
 
+    if (styleClass() == QLatin1String("StatusBar"))
+        return d->fetchLayoutParameter(QLatin1String("param-statusbar-height"));
+
     return 50;
 }
 
@@ -367,6 +373,8 @@ QVariant SStyleWrapper::get(const QString &propertyName)
         ret = d->toolBarProperty(propertyName);
     else if (styleClass() == QLatin1String("BusyIndicator"))
         ret = d->busyIndicatorProperty(propertyName);
+    else if (styleClass() == QLatin1String("StatusBar"))
+        ret = d->statusBarProperty(propertyName);
 
     // this is for querying something else than component specific values...
     /*if(ret.isNull())

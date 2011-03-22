@@ -93,6 +93,7 @@ QML_FILES = \
     SectionScrollerLabel.qml \
     SelectionListItem.qml \
     Slider.qml \
+    StatusBar.qml \
     TabBar.qml \
     TabBarLayout.qml \
     TabButton.qml \

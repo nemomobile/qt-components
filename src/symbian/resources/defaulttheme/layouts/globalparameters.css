@@ -80,4 +80,17 @@ param-padding-small: 4;
 
 param-toolbar-height-landscape: 46;
 param-toolbar-height-portrait: 60;
+
+param-statusbar-height: 26;
+param-statusbar-signal-height: 18;
+param-statusbar-signal-width: 18;
+param-statusbar-signallevel-height: 18;
+param-statusbar-signallevel-width: 19;
+param-statusbar-batterylevel-height: 18;
+param-statusbar-batterylevel-width: 24;
+param-statusbar-time-width: 44;
+param-statusbar-time-height: 18;
+param-statusbar-row-margins: 5;
+param-statusbar-row-spacing: 3;
+
 }
