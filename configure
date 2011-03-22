@@ -37,6 +37,7 @@ HAVE_MEEGOTOUCH=no
 HAVE_XDAMAGE=no
 HAVE_CONTEXTSUBSCRIBER=no
 HAVE_MEEGOGRAPHICSSYSTEM=no
+HAVE_MOBILITY=auto
 QMAKE_CONFIG=
 QMAKE_DEBUG=
 OPT_HELP=no
@@ -82,7 +83,7 @@ while [ "$#" -gt 0 ]; do
         VAL=no
         ;;
     #Qt style yes options
-    -meego|-symbian|-meegotouch|-contextsubscriber|-xdamage|-meegographicssystem)
+    -meego|-symbian|-meegotouch|-contextsubscriber|-xdamage|-meegographicssystem|-mobility)
         VAR=`echo $1 | sed 's,^-\(.*\),\1,'`
         VAL=yes
         ;;
@@ -179,6 +180,13 @@ while [ "$#" -gt 0 ]; do
             UNKNOWN_OPT=yes
         fi
         ;;
+    mobility)
+        if [ "$VAL" = "yes" ] || [ "$VAL" = "no" ]; then
+            HAVE_MOBILITY=$VAL
+        else
+            UNKNOWN_OPT=yes
+        fi
+        ;;
     *)
         UNKNOWN_OPT=yes
         ;;
@@ -222,6 +230,9 @@ Additional options:
     -no-meegographicssystem .. Do not compile MeeGo graphics system support
     -meegographicssystem ..... Compile MeeGo graphics system support
 
+    -no-mobility ............. Do not compile Qt Mobility support
+ +  -mobility ................ Compile Qt Mobility support
+
 EOF
     [ "x$ERROR" = "xyes" ] && exit 1
     exit 0
@@ -236,6 +247,9 @@ fi
 [ "$HAVE_CONTEXTSUBSCRIBER" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG contextsubscriber"
 [ "$HAVE_MEEGOGRAPHICSSYSTEM" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG meegographicssystem"
 [ "$HAVE_XDAMAGE" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG xdamage"
+
+[ "$HAVE_MOBILITY" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG mobility"
+[ "$HAVE_MOBILITY" = "no" ] && QMAKE_CONFIG="$QMAKE_CONFIG no_mobility"
 
 echo "CONFIG +=$QMAKE_CONFIG" > $CONFIG_PRF
 echo "Q_COMPONENTS_SOURCE_TREE = $SOURCE_TREE" > $QMAKE_CACHE
@@ -262,6 +276,9 @@ if [ "$BUILD_MEEGO_STYLE" = "yes" ]; then
     echo "  MeeGo Graphics System support .. $HAVE_MEEGOGRAPHICSSYSTEM"
 fi
 echo "Symbian Style .................... $BUILD_SYMBIAN_STYLE"
+if [ "$BUILD_SYMBIAN_STYLE" = "yes" ]; then
+    echo "  Qt Mobility support ............ $HAVE_MOBILITY"
+fi
 echo "Examples ......................... $BUILD_EXAMPLES"
 echo "Tests ............................ $BUILD_TESTS"
 echo

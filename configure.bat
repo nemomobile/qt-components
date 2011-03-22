@@ -36,6 +36,7 @@ set BUILD_MEEGO_STYLE=no
 set BUILD_SYMBIAN_STYLE=no
 set BUILD_EXAMPLES=yes
 set BUILD_TESTS=yes
+set HAVE_MOBILITY=auto
 set QMAKE_CONFIG=
 set QMAKE_DEBUG=
 
@@ -53,15 +54,17 @@ if exist "%CONFIG_PRF%" del /Q %CONFIG_PRF%
 
 shift
 :parse
-if "%0" == ""           goto qmake
-if "%0" == "-meego"     goto meego
-if "%0" == "-symbian"   goto symbian
-if "%0" == "-make"      goto make
-if "%0" == "-nomake"    goto nomake
-if "%0" == "-config"    goto config
-if "%0" == "-d"         goto debug
-if "%0" == "-help"      goto help
-if "%0" == "-h"         goto help
+if "%0" == ""               goto qmake
+if "%0" == "-meego"         goto meego
+if "%0" == "-symbian"       goto symbian
+if "%0" == "-mobility"      goto mobility
+if "%0" == "-no-mobility"   goto nomobility
+if "%0" == "-make"          goto make
+if "%0" == "-nomake"        goto nomake
+if "%0" == "-config"        goto config
+if "%0" == "-d"             goto debug
+if "%0" == "-help"          goto help
+if "%0" == "-h"             goto help
 
 :unknown
 echo Unknown option: %0
@@ -76,6 +79,16 @@ goto parse
 
 :symbian
 set BUILD_SYMBIAN_STYLE=yes
+shift
+goto parse
+
+:mobility
+set HAVE_MOBILITY=yes
+shift
+goto parse
+
+:nomobility
+set HAVE_MOBILITY=no
 shift
 goto parse
 
@@ -138,6 +151,15 @@ echo    -make (part) ...... Add part to the list of parts to be built at
 echo                        make time (available parts: examples tests)
 echo    -nomake (part) .... Exclude part from the list of parts to be built
 echo.
+echo Additional options:
+echo.
+echo A plus (+) denotes a default value that needs to be evaluated. If the
+echo evaluation succeeds, the feature is included. Here is a short explanation
+echo of each option:
+echo.
+echo    -no-mobility ............. Do not compile Qt Mobility support
+echo +  -mobility ................ Compile Qt Mobility support
+echo.
 goto end
 
 :qmake
@@ -145,6 +167,9 @@ if "%BUILD_MEEGO_STYLE%" == "yes" set QMAKE_CONFIG=%QMAKE_CONFIG% meego
 if "%BUILD_SYMBIAN_STYLE%" == "yes" set QMAKE_CONFIG=%QMAKE_CONFIG% symbian3
 if "%BUILD_EXAMPLES%" == "yes" set QMAKE_CONFIG=%QMAKE_CONFIG% examples
 if "%BUILD_TESTS%" == "yes" set QMAKE_CONFIG=%QMAKE_CONFIG% tests
+
+if "%HAVE_MOBILITY%" == "yes" set QMAKE_CONFIG=%QMAKE_CONFIG% mobility
+if "%HAVE_MOBILITY%" == "no" set QMAKE_CONFIG=%QMAKE_CONFIG% no_mobility
 
 echo CONFIG +=%QMAKE_CONFIG% > %CONFIG_PRF%
 echo Q_COMPONENTS_SOURCE_TREE = %SOURCE_TREE:\=/% > %QMAKE_CACHE%
@@ -161,6 +186,9 @@ echo Qt Components build configuration:
 echo Congiguration ....................%QMAKE_CONFIG%
 echo MeeGo Style ...................... %BUILD_MEEGO_STYLE%
 echo Symbian Style .................... %BUILD_SYMBIAN_STYLE%
+if "%BUILD_SYMBIAN_STYLE%" == "no" goto nosymbian
+  echo   Qt Mobility support ............ %HAVE_MOBILITY%
+:nosymbian
 echo Examples ......................... %BUILD_EXAMPLES%
 echo Tests ............................ %BUILD_TESTS%
 echo.
