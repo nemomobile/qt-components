@@ -33,6 +33,7 @@
 #include "checkbox/apicheck_checkbox.h"
 #include "dialog/apicheck_dialog.h"
 #include "radiobutton/apicheck_radiobutton.h"
+#include "ratingindicator/apicheck_ratingindicator.h"
 #include "textfield/apicheck_textfield.h"
 #include "progressbar/apicheck_progressbar.h"
 #include "tabbutton/apicheck_tabbutton.h"
@@ -71,6 +72,15 @@ int main(int argc, char *argv[])
         module = args.takeAt(moduleIdx++);
     }
 
+    // extras module
+    QString extrasModule("com.nokia.extras 1.0");
+    int extrasModuleIdx = args.indexOf("-extrasModule");
+
+    if (extrasModuleIdx != -1) {
+        args.removeAt(extrasModuleIdx);
+        extrasModule = args.takeAt(extrasModuleIdx++);
+    }
+
     // check for import path
     QString importPath(Q_COMPONENTS_BUILD_TREE"/imports");
     int pathIdx = args.indexOf("-importpath");
@@ -105,6 +115,7 @@ int main(int argc, char *argv[])
     ApiCheckContextMenu contextMenu(engine, module);
     ApiCheckMenu menu(engine, module);
     ApiCheckMenuItem menuItem(engine, module);
+    ApiCheckRatingIndicator ratingIndicator(engine, extrasModule);
 
 #ifndef Q_COMPONENTS_SYMBIAN
     ApiCheckButtonColumn buttonColumn(engine, module);
@@ -135,6 +146,7 @@ int main(int argc, char *argv[])
     ret |= QTest::qExec(&contextMenu, argc);
     ret |= QTest::qExec(&menu, argc);
     ret |= QTest::qExec(&menuItem, args);
+    ret |= QTest::qExec(&ratingIndicator, args);
 
 #ifndef Q_COMPONENTS_SYMBIAN
     ret |= QTest::qExec(&buttonColumn, args);
