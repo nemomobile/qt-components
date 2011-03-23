@@ -27,6 +27,7 @@ HEADERS += base/apicheckbase.h \
            sectionscroller/apicheck_sectionscroller.h \
            selectiondialog/apicheck_selectiondialog.h \
            slider/apicheck_slider.h \
+           switch/apicheck_switch.h \
            tabbutton/apicheck_tabbutton.h \
            tabgroup/apicheck_tabgroup.h \
            textarea/apicheck_textarea.h \
@@ -53,6 +54,7 @@ SOURCES += tst_apicheck.cpp \
            sectionscroller/apicheck_sectionscroller.cpp \
            selectiondialog/apicheck_selectiondialog.cpp \
            slider/apicheck_slider.cpp \
+           switch/apicheck_switch.cpp \
            tabbutton/apicheck_tabbutton.cpp \
            tabgroup/apicheck_tabgroup.cpp \
            textarea/apicheck_textarea.cpp \
