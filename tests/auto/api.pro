@@ -31,4 +31,5 @@ symbian3 {
         api_textfield \ #TODO not yet finalized
         api_textarea \ #TODO not yet finalized
         #api_toolbar
+        api_switch \
 }
