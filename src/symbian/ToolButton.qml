@@ -57,7 +57,13 @@ ImplicitSizeItem {
         else
             return internal.iconButtonWidth() + internal.textButtonWidth()
     }
-    implicitHeight: internal.iconButtonWidth()
+    implicitHeight: {
+        if (!text)
+            return internal.iconButtonWidth()
+        else
+            //Text button's frame height is always tool bar's height in landscape, regardless of the current orientation
+            return privateStyle.toolBarHeightLandscape
+    }
 
     BorderImage {
         id: background

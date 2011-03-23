@@ -84,7 +84,12 @@ ImplicitSizeItem {
         for (var i = 0; i < children.length; ++i) {
             //make sure all the children have correct parent and y
             children[i].parent = toolBarLayout
-            children[i].y = toolBarLayout.y
+            if (children[i].hasOwnProperty("iconSource") && children[i].iconSource != "")
+                //iconic buttons height is always the height of toolbar
+                children[i].y = 0
+            else
+                //any other childs center goes to middle of the toolbar
+                children[i].y = toolBarLayout.y + toolBarLayout.implicitHeight / 2 - children[i].implicitHeight / 2
         }
         var horizontalMargin = (screen.width < screen.height) ? 0 : 2 * platformStyle.paddingLarge
         var leftMargin = horizontalMargin + (screen.width < screen.height) ? privateStyle.toolBarHeightPortrait : privateStyle.toolBarHeightLandscape
@@ -109,13 +114,11 @@ ImplicitSizeItem {
         //for |X ... X| ToolButtons with icons
         if (leftItem != undefined){
             leftItem.x = toolBarLayout.x + horizontalMargin
-            leftItem.y = toolBarLayout.y
-            leftMargin = leftItem.x + buttonWidth(leftItem)
+            leftMargin = leftItem.x + privateStyle.toolBarHeightLandscape
         }
 
         if (rightItem != undefined){
-            rightItem.x = toolBarLayout.width - buttonWidth(rightItem) - horizontalMargin
-            rightItem.y = toolBarLayout.y
+            rightItem.x = toolBarLayout.width - ((screen.width < screen.height) ? privateStyle.toolBarHeightPortrait : privateStyle.toolBarHeightLandscape) - horizontalMargin
             rightMargin = rightItem.x
         }
 
@@ -151,4 +154,5 @@ ImplicitSizeItem {
     onChildrenChanged: layoutChildren()
     onBackButtonChanged: layoutChildren()
     onImplicitWidthChanged: layoutChildren()
+    onImplicitHeightChanged: layoutChildren()
 }

@@ -33,9 +33,14 @@ Item {
                 CheckBox {
                     id: showBackButton
                     checked: true
-                    checkable: true
-                    text: "back button"
+                    text: "back"
                 }
+                CheckBox {
+                    id: flatter
+                    checked: false
+                    text: "flat"
+                }
+
                 Button {
                     text: "Portrait"
                     onClicked: {
@@ -90,6 +95,7 @@ Item {
                 Button { text: "B+2T"; onClicked: bar1.setTools(layout4, root.replaceMode) }
                 Button { text: "2xT+M"; onClicked: bar1.setTools(layout5, root.replaceMode) }
                 Button { text: "B+I+M"; onClicked: bar1.setTools(layout6, root.replaceMode) }
+                Button { text: "mix2"; onClicked: bar1.setTools(layout12, root.replaceMode) }
             }
             Row {
                 Button { text: "B+2I+M"; onClicked: bar1.setTools(layout7, root.replaceMode) }
@@ -115,10 +121,12 @@ Item {
             tools: ToolBarLayout {
                 backButton: true
                 ToolButton {
+                    flat: flatter.checked
                     iconSource: "qrc:tb_back.svg"
                     onClicked: stack.pop()
                 }
                 ToolButton {
+                    flat: flatter.checked
                     text: "next"
                     onClicked: stack.push(thirdPage)
                 }
@@ -158,6 +166,7 @@ Item {
             iconSource: "qrc:tb_back.svg"
         }
         ToolButton {
+            flat: flatter.checked
             onClicked: stack.push(secondPage)
             iconSource: "qrc:tb_plus.png"
         }
@@ -171,10 +180,12 @@ Item {
             iconSource: "qrc:tb_back.svg"
         }
         ToolButton {
+            flat: flatter.checked
             text: "button"
         }
 
         ToolButton {
+            flat: flatter.checked
             onClicked: stack.push(secondPage)
             iconSource: "qrc:tb_plus.png"
         }
@@ -194,6 +205,7 @@ Item {
             text: "click"
         }
         ToolButton {
+            flat: flatter.checked
             onClicked: stack.push(secondPage)
             iconSource: "qrc:tb_plus.png"
         }
@@ -224,6 +236,7 @@ Item {
             text: "click"
         }
         ToolButton {
+            flat: flatter.checked
             onClicked: stack.push(secondPage)
             iconSource: "qrc:tb_plus.png"
         }
@@ -241,6 +254,7 @@ Item {
             iconSource: "qrc:tb_back.svg"
         }
         ToolButton {
+            flat: flatter.checked
             onClicked: stack.push(secondPage)
             iconSource: "qrc:tb_plus.svg"
         }
@@ -254,12 +268,15 @@ Item {
             iconSource: "qrc:tb_back.svg"
         }
         ToolButton {
+            flat: flatter.checked
             iconSource: "qrc:tb_back.svg"
         }
         ToolButton {
+            flat: flatter.checked
             iconSource: "qrc:tb_back.svg"
         }
         ToolButton {
+            flat: flatter.checked
             onClicked: stack.push(secondPage)
             iconSource: "qrc:tb_plus.png"
         }
@@ -273,15 +290,19 @@ Item {
             iconSource: "qrc:tb_back.svg"
         }
         ToolButton {
+            flat: flatter.checked
             iconSource: "qrc:tb_back.svg"
         }
         ToolButton {
+            flat: flatter.checked
             iconSource: "qrc:tb_back.svg"
         }
         ToolButton {
+            flat: flatter.checked
             iconSource: "qrc:tb_back.svg"
         }
         ToolButton {
+            flat: flatter.checked
             onClicked: stack.push(secondPage)
             iconSource: "qrc:tb_plus.png"
         }
@@ -296,12 +317,15 @@ Item {
             iconSource: "qrc:tb_back.svg"
         }
         ToolButton {
+            flat: flatter.checked
             iconSource: "qrc:tb_back.svg"
         }
         ToolButton {
+            flat: flatter.checked
             iconSource: "qrc:tb_back.svg"
         }
         ToolButton {
+            flat: flatter.checked
             onClicked: stack.push(secondPage)
             iconSource: "qrc:tb_plus.png"
         }
@@ -315,15 +339,19 @@ Item {
             iconSource: "qrc:tb_back.svg"
         }
         ToolButton {
+            flat: flatter.checked
             iconSource: "qrc:tb_back.svg"
         }
         ToolButton {
+            flat: flatter.checked
             iconSource: "qrc:tb_back.svg"
         }
         ToolButton {
+            flat: flatter.checked
             iconSource: "qrc:tb_back.svg"
         }
         ToolButton {
+            flat: flatter.checked
             onClicked: stack.push(secondPage)
             iconSource: "qrc:tb_plus.png"
         }
@@ -333,15 +361,12 @@ Item {
         id: layout11
         backButton: showBackButton.checked
         Button {
-            anchors.verticalCenter: parent.verticalCenter
             text: "Button"
         }
         Button {
-            anchors.verticalCenter: parent.verticalCenter
             text: "Button"
         }
         Button {
-            anchors.verticalCenter: parent.verticalCenter
             text: "Button"
         }
     }
@@ -351,23 +376,20 @@ Item {
         backButton: showBackButton.checked
 
         ToolButton {
+            flat: flatter.checked
             iconSource: "qrc:tb_plus.svg"
         }
         Button {
-            anchors.verticalCenter: parent.verticalCenter
-            text:"Button"
+            text: "Text"
         }
         Button {
-            anchors.verticalCenter: parent.verticalCenter
-            text: "Button"
+            text: "Text"
         }
         Button {
-            anchors.verticalCenter: parent.verticalCenter
-            text: "Button"
+            text: "Text"
         }
         Button {
-            anchors.verticalCenter: parent.verticalCenter
-            text: "Button"
+            text: "Text"
         }
     }
 }
