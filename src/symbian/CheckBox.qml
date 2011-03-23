@@ -128,5 +128,11 @@ ImplicitSizeItem {
         onReleased: stateGroup.state = ""
         onClicked: stateGroup.state = ""
         onExited: stateGroup.state = "Canceled"
+        onCanceled: {
+            // Mark as canceled
+            stateGroup.state = "Canceled"
+            // Reset state. Can't expect a release since mouse was ungrabbed
+            stateGroup.state = ""
+        }
     }
 }
