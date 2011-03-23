@@ -21,6 +21,7 @@ SUBDIRS += \
     symbian_selectionlistitem \
     symbian_slider \
     symbian_statusbar \
+    symbian_switch \
     symbian_tabbar \
     symbian_tabbarlayout \
     symbian_tabbutton \
