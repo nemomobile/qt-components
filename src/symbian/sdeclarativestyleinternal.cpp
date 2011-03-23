@@ -132,6 +132,18 @@ int SDeclarativeStyleInternal::switchButtonHeight() const
     return d->engine->layoutParameter(QLatin1String("switch-button-height"));
 }
 
+int SDeclarativeStyleInternal::ratingIndicatorImageWidth() const
+{
+    Q_D(const SDeclarativeStyleInternal);
+    return d->engine->layoutParameter(QLatin1String("rating-image-width"));
+}
+
+int SDeclarativeStyleInternal::ratingIndicatorImageHeight() const
+{
+    Q_D(const SDeclarativeStyleInternal);
+    return d->engine->layoutParameter(QLatin1String("rating-image-height"));
+}
+
 void SDeclarativeStyleInternal::play(int effect)
 {
 #ifdef HAVE_MOBILITY

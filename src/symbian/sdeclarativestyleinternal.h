@@ -50,6 +50,8 @@ class SDeclarativeStyleInternal : public QObject
     Q_PROPERTY(int switchButtonHeight READ switchButtonHeight NOTIFY layoutParametersChanged FINAL)
     Q_PROPERTY(int dialogMinSize READ dialogMinSize NOTIFY layoutParametersChanged FINAL)
     Q_PROPERTY(int dialogMaxSize READ dialogMaxSize NOTIFY layoutParametersChanged FINAL)
+    Q_PROPERTY(int ratingIndicatorImageWidth READ ratingIndicatorImageWidth NOTIFY layoutParametersChanged FINAL)
+    Q_PROPERTY(int ratingIndicatorImageHeight READ ratingIndicatorImageHeight NOTIFY layoutParametersChanged FINAL)
 
 public:
 
@@ -68,6 +70,8 @@ public:
     int switchButtonHeight() const;
     int dialogMinSize() const;
     int dialogMaxSize() const;
+    int ratingIndicatorImageWidth() const;
+    int ratingIndicatorImageHeight() const;
 
     Q_INVOKABLE void play(int effect);
     Q_INVOKABLE int textWidth(const QString &text, const QFont &font) const;

@@ -22,3 +22,5 @@ text-field-height:42
 switch-button-height:34
 dialog-min-size:182
 dialog-max-size:504
+rating-image-width:16
+rating-image-height:15

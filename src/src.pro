@@ -6,5 +6,5 @@ meego {
 }
 
 symbian3 {
-    SUBDIRS += symbian
+    SUBDIRS += symbian symbian/extras
 }

@@ -1,0 +1,16 @@
+#ifndef __QTCOMPONENTSEXTRAS_IBY__
+#define __QTCOMPONENTSEXTRAS_IBY__
+
+#include <bldvariant.hrh>
+
+REM QT
+
+// Symbian extras plugin
+file=ABI_DIR\BUILD_DIR\symbianextrasplugin.dll                                                           SHARED_LIB_DIR\symbianextrasplugin.dll PAGED
+data=\epoc32\data\z\resource\qt\imports\com\nokia\extras\symbianextrasplugin.qtplugin                    RESOURCE_FILES_DIR\qt\imports\com\nokia\extras\symbianextrasplugin.qtplugin
+data=\epoc32\data\z\resource\qt\imports\com\nokia\extras\qmldir                                          RESOURCE_FILES_DIR\qt\imports\com\nokia\extras\qmldir
+
+// Symbian extras QML components
+data=\epoc32\data\z\resource\qt\imports\com\nokia\extras\RatingIndicator.qml                             RESOURCE_FILES_DIR\qt\imports\com\nokia\extras\RatingIndicator.qml
+
+#endif //__QTCOMPONENTSEXTRAS_IBY__
