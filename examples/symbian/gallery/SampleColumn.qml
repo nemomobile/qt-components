@@ -91,6 +91,18 @@ Column {
         }
     }
 
+    Row {
+        anchors.horizontalCenter: parent.horizontalCenter
+        spacing: parent.spacing
+
+        Switch {
+        }
+
+        Switch {
+            checked: true
+        }
+    }
+
     ProgressBar {
         anchors.horizontalCenter: parent.horizontalCenter
 
