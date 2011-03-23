@@ -92,7 +92,7 @@ Item {
             if (screen.width < screen.height)
                 return privateStyle.dialogMaxSize
             else
-                return screen.width - 2 * platformStyle.paddingMedium
+                return screen.height - 2 * platformStyle.paddingMedium
         }
 
         width: Math.min(root.width, maxWidth())
