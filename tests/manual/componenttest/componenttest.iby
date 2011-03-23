@@ -35,6 +35,7 @@ data=DATAZ_\private\200346E0\tests\StyleColors.qml              \private\200346E
 data=DATAZ_\private\200346E0\tests\StyleFonts.qml               \private\200346E0\tests\StyleFonts.qml
 data=DATAZ_\private\200346E0\tests\StyleLayouts.qml             \private\200346E0\tests\StyleLayouts.qml
 data=DATAZ_\private\200346E0\tests\StatusBar.qml                \private\200346E0\tests\StatusBar.qml
+data=DATAZ_\private\200346E0\tests\Switch.qml                   \private\200346E0\tests\Switch.qml
 data=DATAZ_\private\200346E0\tests\Tabs.qml                     \private\200346E0\tests\Tabs.qml
 data=DATAZ_\private\200346E0\tests\TextArea.qml                 \private\200346E0\tests\TextArea.qml
 data=DATAZ_\private\200346E0\tests\TextField.qml                \private\200346E0\tests\TextField.qml

@@ -55,6 +55,7 @@ OTHER_FILES += \
     tests/StyleFonts.qml \
     tests/StyleLayouts.qml \
     tests/StatusBar.qml \
+    tests/Switch.qml \
     tests/Tabs.qml \
     tests/TextArea.qml \
     tests/TextField.qml \
