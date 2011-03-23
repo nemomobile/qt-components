@@ -23,6 +23,7 @@ SectionScroller 1.0 SectionScroller.qml
 SelectionListItem 1.0 SelectionListItem.qml
 Slider 1.0 Slider.qml
 StatusBar 1.0 StatusBar.qml
+Switch 1.0 Switch.qml
 TabBar 1.0 TabBar.qml
 TabBarLayout 1.0 TabBarLayout.qml
 TabButton 1.0 TabButton.qml

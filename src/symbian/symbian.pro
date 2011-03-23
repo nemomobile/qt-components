@@ -94,6 +94,7 @@ QML_FILES = \
     SelectionListItem.qml \
     Slider.qml \
     StatusBar.qml \
+    Switch.qml \
     TabBar.qml \
     TabBarLayout.qml \
     TabButton.qml \

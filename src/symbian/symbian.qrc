@@ -74,6 +74,12 @@
         <file alias="qtg_graf_rating_indicator_inverted.svg">resources/defaulttheme/graphics/qtg_graf_rating_indicator_inverted.svg</file>
         <file alias="qtg_graf_rating_indicator_background_normal.svg">resources/defaulttheme/graphics/qtg_graf_rating_indicator_background_normal.svg</file>
         <file alias="qtg_graf_rating_indicator_background_inverted.svg">resources/defaulttheme/graphics/qtg_graf_rating_indicator_background_inverted.svg</file>
+        <file alias="qtg_graf_switchbutton_disabled_off.svg">resources/defaulttheme/graphics/qtg_graf_switchbutton_disabled_off.svg</file>
+        <file alias="qtg_graf_switchbutton_disabled_on.svg">resources/defaulttheme/graphics/qtg_graf_switchbutton_disabled_on.svg</file>
+        <file alias="qtg_graf_switchbutton_fill.svg">resources/defaulttheme/graphics/qtg_graf_switchbutton_fill.svg</file>
+        <file alias="qtg_graf_switchbutton_handle_normal.svg">resources/defaulttheme/graphics/qtg_graf_switchbutton_handle_normal.svg</file>
+        <file alias="qtg_graf_switchbutton_handle_pressed.svg">resources/defaulttheme/graphics/qtg_graf_switchbutton_handle_pressed.svg</file>
+        <file alias="qtg_graf_switchbutton_track.svg">resources/defaulttheme/graphics/qtg_graf_switchbutton_track.svg</file>
     </qresource>
     <qresource prefix="/colors">
         <file alias="widgetcolorgroup.css">resources/defaulttheme/colors/widgetcolorgroup.css</file>
