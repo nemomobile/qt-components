@@ -70,6 +70,10 @@
         <file alias="qtg_graf_battery_level_medium.svg">resources/defaulttheme/graphics/qtg_graf_battery_level_medium.svg</file>
         <file alias="qtg_graf_signal_level_bg.svg">resources/defaulttheme/graphics/qtg_graf_signal_level_bg.svg</file>
         <file alias="qtg_graf_signal_level_full.svg">resources/defaulttheme/graphics/qtg_graf_signal_level_full.svg</file>
+        <file alias="qtg_graf_rating_indicator_normal.svg">resources/defaulttheme/graphics/qtg_graf_rating_indicator_normal.svg</file>
+        <file alias="qtg_graf_rating_indicator_inverted.svg">resources/defaulttheme/graphics/qtg_graf_rating_indicator_inverted.svg</file>
+        <file alias="qtg_graf_rating_indicator_background_normal.svg">resources/defaulttheme/graphics/qtg_graf_rating_indicator_background_normal.svg</file>
+        <file alias="qtg_graf_rating_indicator_background_inverted.svg">resources/defaulttheme/graphics/qtg_graf_rating_indicator_background_inverted.svg</file>
     </qresource>
     <qresource prefix="/colors">
         <file alias="widgetcolorgroup.css">resources/defaulttheme/colors/widgetcolorgroup.css</file>
