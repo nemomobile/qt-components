@@ -44,8 +44,11 @@ Item {
 
     QtObject {
         id: internal
+
         function bg_postfix() {
-            if (mouseArea.pressed && mouseArea.containsMouse)
+            if (activeFocus && symbian.listInteractionMode == Symbian.KeyNavigation)
+                return "highlight"
+            else if (mouseArea.pressed && mouseArea.containsMouse)
                 return "pressed"
             else
                 return "popup_normal"
@@ -97,8 +100,57 @@ Item {
         id: mouseArea
         anchors.fill: parent
 
-        onPressed: privateStyle.play(Symbian.BasicItem)
+        onPressed: {
+            symbian.listInteractionMode = Symbian.TouchInteraction
+            privateStyle.play(Symbian.BasicItem)
+        }
         onClicked: root.clicked()
         onReleased: privateStyle.play(Symbian.PopUpClose)
+    }
+
+    Keys.onPressed: {
+        event.accepted = true
+        switch (event.key) {
+            case Qt.Key_Select:
+            case Qt.Key_Return: {
+                if (symbian.listInteractionMode != Symbian.KeyNavigation)
+                    symbian.listInteractionMode = Symbian.KeyNavigation
+                else
+                    root.clicked()
+                break
+            }
+
+            case Qt.Key_Up: {
+                if (symbian.listInteractionMode != Symbian.KeyNavigation) {
+                    symbian.listInteractionMode = Symbian.KeyNavigation
+                    if (ListView.view != null)
+                        ListView.view.positionViewAtIndex(index, ListView.Beginning)
+                } else {
+                    if (ListView.view != null)
+                        ListView.view.decrementCurrentIndex()
+                    else
+                        event.accepted = false
+                }
+                break
+            }
+
+            case Qt.Key_Down: {
+                if (symbian.listInteractionMode != Symbian.KeyNavigation) {
+                    symbian.listInteractionMode = Symbian.KeyNavigation
+                    if (ListView.view != null)
+                        ListView.view.positionViewAtIndex(index, ListView.Beginning)
+                } else {
+                    if (ListView.view != null)
+                        ListView.view.incrementCurrentIndex()
+                    else
+                        event.accepted = false
+                }
+                break
+            }
+            default: {
+                event.accepted = false
+                break
+            }
+        }
     }
 }
