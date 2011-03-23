@@ -72,7 +72,7 @@ Item {
         id: dialogWithProgressBar
 
         width: 400
-        height: 200
+        height: 250
         title: Text {
             text: "Dialog with Progress"
             font { bold: true; pixelSize: 16 }
