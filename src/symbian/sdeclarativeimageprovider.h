@@ -27,7 +27,7 @@
 #ifndef SDECLARATIVEIMAGEPROVIDER_H
 #define SDECLARATIVEIMAGEPROVIDER_H
 
-#include <qdeclarativeimageprovider.h>
+#include <QtDeclarative/qdeclarativeimageprovider.h>
 
 class SDeclarativeImageProvider : public QDeclarativeImageProvider
 {

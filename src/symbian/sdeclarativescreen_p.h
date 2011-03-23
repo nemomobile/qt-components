@@ -28,8 +28,8 @@
 #define SDECLARATIVESCREEN_P_H
 
 #include "sdeclarativescreen.h"
-#include <QPointer>
-#include <QGraphicsView>
+#include <QtCore/qpointer.h>
+#include <QtGui/qgraphicsview.h>
 
 class SDeclarativeScreenPrivate
 {

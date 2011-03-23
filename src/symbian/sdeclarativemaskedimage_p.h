@@ -28,9 +28,7 @@
 #define SDECLARATIVEMASKEDIMAGE_P_H
 
 #include "sdeclarativeframe.h"
-#include <QDeclarativeItem>
-#include <QApplication>
-#include <qglobal.h>
+#include <QtDeclarative/qdeclarativeitem.h>
 
 class SDeclarativeMaskedImagePrivate
 {

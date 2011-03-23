@@ -27,7 +27,7 @@
 #ifndef SDECLARATIVESCREEN_H
 #define SDECLARATIVESCREEN_H
 
-#include <QDeclarativeItem>
+#include <QtDeclarative/qdeclarativeitem.h>
 
 class SDeclarativeScreenPrivate;
 

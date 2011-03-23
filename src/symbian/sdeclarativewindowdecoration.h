@@ -27,7 +27,7 @@
 #ifndef SDECLARATIVEWINDOWDECORATION_H
 #define SDECLARATIVEWINDOWDECORATION_H
 
-#include <QDeclarativeItem>
+#include <QtDeclarative/qdeclarativeitem.h>
 
 class SDeclarativeWindowDecorationPrivate;
 
