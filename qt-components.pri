@@ -3,7 +3,7 @@
     load(mobilityconfig, true):CONFIG += mobility
 }
 
-CONFIG += qt-components
+CONFIG += qt-components depend_includepath
 
 unix:!symbian {
     OBJECTS_DIR = .obj
