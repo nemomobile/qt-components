@@ -1,6 +1,6 @@
 !mobility:!no_mobility {
     # bool load(feature, ignore_error)
-    load(mobility, true):CONFIG += mobility
+    load(mobilityconfig, true):CONFIG += mobility
 }
 
 CONFIG += qt-components
