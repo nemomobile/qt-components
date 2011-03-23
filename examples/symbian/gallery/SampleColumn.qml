@@ -128,14 +128,14 @@ Column {
         buttons: Row {
             height: 60
             width: parent.width
-            Button {
+            ToolButton {
                 text: "Ok"
                 width: parent.width / 2
                 height: parent.height
                 onClicked: dialog.accept()
             }
 
-            Button {
+            ToolButton {
                 text: "Cancel"
                 width: parent.width / 2
                 height: parent.height
@@ -332,7 +332,7 @@ Column {
             verticalAlignment: Text.AlignVCenter
         }
         buttons:
-            Button {
+            ToolButton {
                 text: "Close"
                 width: parent.width
                 height: 60
