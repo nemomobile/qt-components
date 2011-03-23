@@ -14,7 +14,7 @@ symbian {
     TARGET.CAPABILITY = ReadDeviceData SwEvent WriteDeviceData
     gallery_qmls.sources = *.qml
     DEPLOYMENT += gallery_qmls
-    BLD_INF_RULES.prj_exports += "qmlextrasgallery.iby CORE_APP_LAYER_IBY_EXPORT_PATH(qmlextrasgallery.iby)"
+    BLD_INF_RULES.prj_exports += "qmlextrasgallery.iby $$CORE_APP_LAYER_IBY_EXPORT_PATH(qmlextrasgallery.iby)"
 }
 
 OTHER_FILES += \

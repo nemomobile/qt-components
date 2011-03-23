@@ -26,13 +26,28 @@
 
 import Qt 4.7
 import com.nokia.symbian 1.0
+import com.nokia.extras 1.0
 
 Window {
     id: root
 
+    Rectangle {
+        id: rect
+        width: 360
+        height:  50
+        color: "#f0f1f2"
+
+        RatingIndicator {
+            ratingValue: 3
+            maximumValue: 5
+            count: 3
+            anchors.centerIn: parent
+        }
+    }
+
     Flickable {
         id: flickable
-        anchors { left: parent.left; right: parent.right; top: parent.top; bottom: quitButton.top }
+        anchors { left: parent.left; right: parent.right; top: rect.bottom; bottom: quitButton.top }
         clip: true
         boundsBehavior: Flickable.StopAtBounds
 
