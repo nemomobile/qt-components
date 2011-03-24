@@ -30,11 +30,21 @@ import com.nokia.symbian 1.0
 Item {
     id: root
 
+    function isPortrait() {
+        return screen.height > screen.width
+    }
+
     Grid {
         id: sliderGrid
-        anchors.fill: parent
-        anchors.margins: 20
-        columns: screen.orientation == Qt.Horizontal ? sliderGrid.columns = 2 : sliderGrid.columns = 4;
+
+        anchors {
+            top: parent.top
+            left: parent.left
+            right: parent.right
+            bottom: slider3.top
+            margins: 20
+        }
+        columns: isPortrait() ? 2 : 4;
         spacing: 10
 
         Text {
@@ -97,5 +107,11 @@ Item {
             id: inversionToggle2
             text: "Inverted"
         }
+    }
+
+    Slider {
+        id: slider3
+        objectName: "slider3"
+        anchors { bottom: parent.bottom; left: parent.left; right: parent.right; margins: 20 }
     }
 }
