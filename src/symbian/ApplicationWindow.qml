@@ -35,35 +35,32 @@ Window {
     property alias pageStack: stack
 
     Item {
-        anchors.fill: parent
+        anchors.top: sbar.visible ? sbar.bottom : parent.top
+        anchors.bottom: tbar.visible ? tbar.top : parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
         Item {
             id: contentItem
             anchors.fill: parent
-            anchors.topMargin: decoration.topDecorationHeight
-            anchors.bottomMargin: decoration.bottomDecorationHeight
-            opacity: 0
-
-            Connections {
-                target: screen
-                onPrivateAboutToUpdateScreen: contentItem.opacity = 0
-                onPrivateScreenUpdated: contentItem.opacity = 1
-            }
             PageStack {
                 id: stack
                 anchors.fill: parent
+                toolBar: tbar
             }
         }
     }
 
-    // To be replaced by StatusBar and ToolBar components
-    WindowDecoration {
-        id: decoration
-        anchors.fill: parent
-        orientation: screen.orientation
-        statusBarVisible: !window.fullScreen
-        titleBarVisible: !window.fullScreen
-        backButtonVisible: pageStack.depth > 1
-        onQuit: Qt.quit()
-        onBackClicked: pageStack.pop()
+    StatusBar {
+        id: sbar
+        anchors.top: parent.top
+        width: parent.width
+        visible: !window.fullScreen
+    }
+
+    ToolBar {
+        id: tbar
+        anchors.bottom: parent.bottom
+        width: parent.width
+        visible: !window.fullScreen
     }
 }

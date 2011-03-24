@@ -69,10 +69,6 @@ public:
 Q_SIGNALS:
     void orientationChanged();
     void displayChanged();
-    void statusPaneChanged();
-    // correct underscore naming for private signals is not possible yet due to QTBUG-17950
-    void privateAboutToUpdateScreen();
-    void privateScreenUpdated();
 
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
@@ -84,7 +80,6 @@ private:
     Q_PRIVATE_SLOT(d_func(), void _q_desktopResized(int))
     Q_DISABLE_COPY(SDeclarativeScreen)
     Q_DECLARE_PRIVATE(SDeclarativeScreen)
-    friend class SDeclarativeWindowDecorationPrivate;
 };
 
 QML_DECLARE_TYPE(SDeclarativeScreen)

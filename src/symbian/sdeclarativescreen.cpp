@@ -32,10 +32,6 @@
 
 #ifdef Q_OS_SYMBIAN
 #include <aknappui.h>
-#include <eikenv.h>
-#include <eikaufty.h>
-#include <eikspane.h>
-#include <avkon.rsg>
 #include <hal.h>
 #endif
 
@@ -56,14 +52,12 @@ SDeclarativeScreenPrivate::SDeclarativeScreenPrivate(SDeclarativeScreen *qq) :
     startupOrientation(SDeclarativeScreen::Automatic),
     screenSize(),
     settingDisplay(false),
-    statusPaneChanged(false),
     initCalled(false),
     initDone(false)
 {
     Q_Q(SDeclarativeScreen);
     screenSize = currentScreenSize();
 #ifdef Q_OS_SYMBIAN
-    QCoreApplication::setAttribute(Qt::AA_S60DontConstructApplicationPanes);
     Q_UNUSED(DEFAULT_WIDTH)
     Q_UNUSED(DEFAULT_HEIGHT)
 #ifndef __WINS__
@@ -88,8 +82,12 @@ SDeclarativeScreenPrivate::SDeclarativeScreenPrivate(SDeclarativeScreen *qq) :
             break;
         }
     }
-    if (gv)
+    if (gv) {
         gv->installEventFilter(q);
+#ifdef Q_OS_SYMBIAN
+        gv->setWindowState(gv->windowState() | Qt::WindowFullScreen);
+#endif
+    }
     q->connect(QApplication::desktop(), SIGNAL(resized(int)), SLOT(_q_desktopResized(int)), Qt::QueuedConnection);
     QSize initViewSize;
 #ifndef Q_OS_SYMBIAN
@@ -145,9 +143,8 @@ void SDeclarativeScreenPrivate::_q_updateScreenSize(const QSize &size)
 void SDeclarativeScreenPrivate::_q_initView(const QSize &size)
 {
 #ifdef Q_DEBUG_SCREEN
-    qDebug() << "_q_initView() size" << size;
+    qDebug() << "_q_initView() size" << size << " gv:" << gv;
 #endif
-    setStatusPaneLayout();
     initCalled = true;
 #ifndef Q_OS_SYMBIAN
     // Emulate the resizing done by the system
@@ -178,7 +175,6 @@ void SDeclarativeScreenPrivate::_q_desktopResized(int screen)
         _q_updateScreenSize(current);
     }
 #endif
-    setStatusPaneLayout();
 }
 
 bool SDeclarativeScreenPrivate::isLandscapeScreen() const
@@ -208,43 +204,6 @@ QSize SDeclarativeScreenPrivate::adjustedSize(const QSize &size, SDeclarativeScr
     if (o == SDeclarativeScreen::Landscape || o == SDeclarativeScreen::LandscapeInverted)
         newSize.transpose();
     return newSize;
-}
-
-void SDeclarativeScreenPrivate::setStatusPaneLayout()
-{
-#ifdef Q_OS_SYMBIAN
-    Q_Q(SDeclarativeScreen);
-    // Change to flat status pane layout to make more space for QML view.
-    if (!statusPaneChanged) {
-#ifdef Q_DEBUG_SCREEN
-        qDebug() << "SDeclarativeScreenPrivate::setStatusPaneLayout()";
-#endif
-            MEikAppUiFactory *eikAppUiFactory = CEikonEnv::Static()->AppUiFactory();
-            if (eikAppUiFactory) {
-                CEikStatusPane *eikStatusPane = eikAppUiFactory->StatusPane();
-                if (eikStatusPane && eikStatusPane->CurrentLayoutResId()
-                        == R_AVKON_STATUS_PANE_LAYOUT_USUAL_EXT) {
-                    QT_TRAP_THROWING(eikStatusPane->SwitchLayoutL(R_AVKON_STATUS_PANE_LAYOUT_USUAL_FLAT));
-                    // If SwitchLayoutL is called when device is in landscape it does not have effect
-                    // So don't mark statusPane as changed yet if starting application when device is in landscape
-                    if (!isLandscapeScreen()) {
-                        statusPaneChanged = true;
-                        emit q->statusPaneChanged();
-                    }
-                }
-            }
-    }
-#endif
-}
-
-
-void SDeclarativeScreenPrivate::finalizeScreenUpdate()
-{
-#ifdef Q_DEBUG_SCREEN
-    qDebug() << "SDeclarativeScreen::finalizeScreenUpdate()";
-#endif
-    Q_Q(SDeclarativeScreen);
-    emit q->privateScreenUpdated();
 }
 
 SDeclarativeScreen::SDeclarativeScreen(QObject *parent)
@@ -308,18 +267,11 @@ bool SDeclarativeScreen::eventFilter(QObject *obj, QEvent *event)
     Q_UNUSED(obj);
     if (event->type() == QEvent::Resize) {
         QSize s = static_cast<QResizeEvent*>(event)->size();
-        // filter out unwanted events due to Symbian clientrect
-        // changes caused by the Symbian decorator changes
-        if (!(s.width() == width() || s.height() == height())) {
 #ifdef Q_DEBUG_SCREEN
-            qDebug() << "SDeclarativeScreen::eventFilter() size:" << s << " begin screen update";
+        qDebug() << "SDeclarativeScreen::eventFilter() size:" << s << " begin screen update";
 #endif
-            emit privateAboutToUpdateScreen();
-#ifndef Q_OS_SYMBIAN
-            d->_q_updateScreenSize(s);
-#endif
-            return false;
-        }
+        d->_q_updateScreenSize(s);
+        return false;
     }
     return QObject::eventFilter(obj, event);
 }

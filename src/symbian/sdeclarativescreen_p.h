@@ -45,8 +45,6 @@ public:
     bool isLandscapeScreen() const;
     QSize currentScreenSize() const;
     QSize adjustedSize(const QSize &size, SDeclarativeScreen::Orientation orientation) const;
-    void setStatusPaneLayout();
-    void finalizeScreenUpdate();
 
 public:
     SDeclarativeScreen *q_ptr;
@@ -56,7 +54,6 @@ public:
     QSize screenSize;
     bool settingDisplay;
     QPointer<QGraphicsView> gv;
-    bool statusPaneChanged;
     bool initCalled;
     bool initDone;
 

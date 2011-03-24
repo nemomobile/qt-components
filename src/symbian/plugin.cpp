@@ -33,7 +33,6 @@
 #include "sdeclarativeimageprovider.h"
 #include "sdeclarativemaskedimage.h"
 #include "sdeclarativescreen.h"
-#include "sdeclarativewindowdecoration.h"
 #include "sbatteryinfo.h"
 #include "snetworkinfo.h"
 
@@ -71,7 +70,6 @@ public:
     }
 
     void registerTypes(const char *uri) {
-        qmlRegisterType<SDeclarativeWindowDecoration>(uri, 1, 0, "WindowDecoration");
         qmlRegisterType<SDeclarativeIcon>(uri, 1, 0, "Icon");
         qmlRegisterType<SDeclarativeFrame>(uri, 1, 0, "Frame");
         qmlRegisterType<SDeclarativeMaskedImage>(uri, 1, 0, "MaskedImage");

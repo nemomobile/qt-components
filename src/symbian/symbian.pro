@@ -26,7 +26,6 @@ SOURCES += \
     sdeclarativescreen.cpp \
     sdeclarativestyle.cpp \
     sdeclarativestyleinternal.cpp \
-    sdeclarativewindowdecoration.cpp \
     sframepool.cpp \
     siconpool.cpp \
     snetworkinfo.cpp \
@@ -48,7 +47,6 @@ HEADERS += \
     sdeclarativescreen_p.h \
     sdeclarativestyle.h \
     sdeclarativestyleinternal.h \
-    sdeclarativewindowdecoration.h \
     sframepool.h \
     siconpool.h \
     snetworkinfo.h \
@@ -116,11 +114,8 @@ symbian {
     MMP_RULES += EXPORTUNFROZEN
     MMP_RULES += SMPSAFE
 
-    LIBS += -lfbscli
     LIBS += -lws32
     LIBS += -lcone
-    LIBS += -lapgrfx
-    LIBS += -leikcoctl
     LIBS += -leikcore
     LIBS += -lavkon
     LIBS += -lhal
