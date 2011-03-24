@@ -89,6 +89,7 @@ QString SDeclarativeFrame::frameName() const
 void SDeclarativeFrame::setFrameName(const QString &frameName)
 {
     Q_D(SDeclarativeFrame);
+    qDebug() << "WARNING: Frame element is deprecated. Use BorderImage instead.";
     if (frameName != d->frameName) {
         if (d->frameLoadAttempted) {
             // Release previous one from frame pool
