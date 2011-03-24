@@ -85,6 +85,7 @@ QML_FILES = \
     ProgressBar.qml \
     RadioButton.qml \
     ScrollBar.qml \
+    ScrollBarSizer.qml \
     ScrollDecorator.qml \
     SectionScroller.js \
     SectionScroller.qml \
