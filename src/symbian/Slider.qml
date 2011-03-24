@@ -196,6 +196,22 @@ ImplicitSizeItem {
             var point = null;
             if (orientation == Qt.Horizontal) {
                 point = slider.mapFromItem(track, handle.x + handle.width / 2 - toolTip.item.width / 2, 0)
+
+                // Check if tooltip will be positioned beyond the right or
+                // left boundaries and adjust if needed to keep it fully
+                // visible on screen. In case the tooltip is so wide that it
+                // does not fit the screen, it's positioned to left of the screen.
+                var rightStop = screen.width - platformStyle.paddingSmall
+                var tooltipLeftEdge = slider.mapToItem(null, point.x, 0)
+                var tooltipRightEdge = slider.mapToItem(null, point.x + toolTip.item.width, 0)
+
+                if ((tooltipLeftEdge.x < platformStyle.paddingSmall)
+                    || (tooltipLeftEdge.x < platformStyle.paddingSmall
+                    && tooltipRightEdge.x > rightStop))
+                    point.x = slider.mapFromItem(null, platformStyle.paddingSmall, 0).x
+                else if (tooltipRightEdge.x > rightStop)
+                    point.x = slider.mapFromItem(null, rightStop - toolTip.item.width, 0).x
+
                 toolTip.item.x = point.x
                 toolTip.item.y = point.y - toolTip.spacing - toolTip.item.height
             } else {
