@@ -107,30 +107,27 @@ Item {
         initializeModel()
     }
 
-    ObjectMenu {
-           id: objectmenu
-           actions: ["Set disabled", "Add item", "Delete item"]
-           onTriggered: {
-               switch (index) {
-                   case 0: {
-                       // Switch state
-                       listView.model.set(listView.currentIndex, {"disabled": true})
-                       break
-                   }
-                   case 1: {
-                       createItemDialog.open()
-                       break
-                   }
-                   case 2: {
-                       if (listView.currentIndex >= 0)
-                           listView.model.remove(listView.currentIndex)
-                       break
-                   }
-                   default:
-                       break
-               }
-           }
-       }
+    ContextMenu {
+        id: contextMenu
+
+        content: MenuLayout {
+            MenuItem {
+                text: "Set disabled"
+                onClicked: listView.model.set(listView.currentIndex, {"disabled": true})
+            }
+            MenuItem {
+                text: "Add item"
+                onClicked: createItemDialog.open()
+            }
+            MenuItem {
+                text: "Delete item"
+                onClicked: {
+                    if (listView.currentIndex >= 0)
+                        listView.model.remove(listView.currentIndex)
+                }
+            }
+        }
+    }
 
     Dialog {
         id: createItemDialog
@@ -267,7 +264,7 @@ Item {
                     text: subTitle // SubTitle from model
                 }
             }
-            onPressAndHold: objectmenu.open()
+            onPressAndHold: contextMenu.open()
         }
     }
 
@@ -284,7 +281,7 @@ Item {
                 sourceSize.width: parent.preferredImageWidth(imageSize)
                 source: image
             }
-            onPressAndHold: objectmenu.open()
+            onPressAndHold: contextMenu.open()
         }
     }
 
@@ -323,7 +320,7 @@ Item {
                     }
                 }
             }
-            onPressAndHold: objectmenu.open()
+            onPressAndHold: contextMenu.open()
         }
     }
 
@@ -374,7 +371,7 @@ Item {
                 checkbox.checked = !checkbox.checked
                 listView.model.set(index, { "selected": checkbox.checked })
             }
-            onPressAndHold: objectmenu.open()
+            onPressAndHold: contextMenu.open()
         }
     }
 
