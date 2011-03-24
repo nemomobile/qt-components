@@ -24,43 +24,39 @@
 **
 ****************************************************************************/
 
-#ifndef APICHECKBASE_H
-#define APICHECKBASE_H
+#ifndef APICHECK_SCREEN_H
+#define APICHECK_SCREEN_H
 
-#include <QtTest/QtTest>
-#include <QtCore/QObject>
-#include <QtCore/QVariant>
+#include "apicheckbase.h"
 
-
-class QDeclarativeEngine;
-
-class ApiCheckBase : public QObject
+class ApiCheckScreen : public ApiCheckBase
 {
     Q_OBJECT
 
 public:
-    ApiCheckBase(QDeclarativeEngine *engine, const QString &module);
-    virtual ~ApiCheckBase();
+    ApiCheckScreen(QDeclarativeEngine *engine, const QString &module)
+        : ApiCheckBase(engine, module) { }
 
-protected:
-    void init(const QString &name, const QString &body = QString());
-    void initContextProperty(const QString &name);
-    void validateProperty(const QString &propertyName, const QString &typeName) const;
-    void validateProperty(const QString &propertyName, QVariant::Type propertyType,
-                          const QVariant &value = QVariant()) const;
-    void validateDeclarativeProperty(const QString &name, const QString &typeName) const;
-    void validateEnumProperty(const QString &propertyName, const QVariant &value = QVariant()) const;
-    void validateFlagProperty(const QString &propertyName, const QVariant &value = QVariant()) const;
-    void validateSignal(const char *signalName) const;
-    void validateMethod(const char *methodName) const;
+private slots:
+    void initTestCase();
 
-private:
-    QMetaProperty metaProperty(const QString &name) const;
+    void width();
+    void height();
+    void displayWidth();
+    void displayHeight();
 
-    QString m_name;
-    QString m_module;
-    QObject *m_object;
-    QDeclarativeEngine *m_engine;
+    void rotation();
+    void currentOrientation();
+    void allowedOrientations();
+
+    void dpi();
+    void displayCategory();
+    void density();
+
+    void widthChanged();
+    void heightChanged();
+    void currentOrientationChanged();
+    void allowedOrientationsChanged();
 };
 
 #endif

@@ -23,6 +23,7 @@ HEADERS += base/apicheckbase.h \
            querydialog/apicheck_querydialog.h \
            radiobutton/apicheck_radiobutton.h \
            ratingindicator/apicheck_ratingindicator.h \
+           screen/apicheck_screen.h \
            scrolldecorator/apicheck_scrolldecorator.h \
            sectionscroller/apicheck_sectionscroller.h \
            selectiondialog/apicheck_selectiondialog.h \
@@ -51,6 +52,7 @@ SOURCES += tst_apicheck.cpp \
            querydialog/apicheck_querydialog.cpp \
            radiobutton/apicheck_radiobutton.cpp \
            ratingindicator/apicheck_ratingindicator.cpp \
+           screen/apicheck_screen.cpp \
            sectionscroller/apicheck_sectionscroller.cpp \
            selectiondialog/apicheck_selectiondialog.cpp \
            slider/apicheck_slider.cpp \

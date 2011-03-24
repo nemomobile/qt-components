@@ -27,6 +27,7 @@
 #include "apicheckbase.h"
 #include <QtDeclarative/qdeclarativeengine.h>
 #include <QtDeclarative/qdeclarativecomponent.h>
+#include <QtDeclarative/qdeclarativecontext.h>
 
 ApiCheckBase::ApiCheckBase(QDeclarativeEngine *engine, const QString &module)
     : QObject(),
@@ -45,7 +46,7 @@ ApiCheckBase::~ApiCheckBase()
 
 void ApiCheckBase::init(const QString &name, const QString &body)
 {
-    const QString &block = QString("import Qt 4.7\nimport %1\n%2 { %3 }")
+    const QString block = QString("import Qt 4.7\nimport %1\n%2 { %3 }")
         .arg(m_module).arg(name).arg(body);
 
     QDeclarativeComponent *component = new QDeclarativeComponent(m_engine);
@@ -55,6 +56,20 @@ void ApiCheckBase::init(const QString &name, const QString &body)
     m_object = component->create();
 
     QVERIFY2(m_object, qPrintable(QString("Could not create %1").arg(name)));
+}
+
+void ApiCheckBase::initContextProperty(const QString &name)
+{
+    const QString block = QString("import Qt 4.7\nimport %1\nItem{}").arg(m_module);
+
+    // Make sure the root context is initialized properly
+    QDeclarativeComponent *component = new QDeclarativeComponent(m_engine);
+    component->setData(block.toLatin1(), QUrl());
+
+    m_name = name;
+    m_object = qVariantValue<QObject *>(m_engine->rootContext()->contextProperty(name));
+
+    QVERIFY2(m_object, qPrintable(QString("Could not find %1").arg(name)));
 }
 
 void ApiCheckBase::validateProperty(const QString &name, const QString &typeName) const
@@ -99,6 +114,22 @@ void ApiCheckBase::validateDeclarativeProperty(const QString &name, const QStrin
     QVERIFY2(QString(property.typeName()).contains(typeName),
              qPrintable(QString("property '%1.%2' has invalid type (expected: %3, had: %4)")
                         .arg(m_name, name, typeName, property.typeName())));
+}
+
+void ApiCheckBase::validateEnumProperty(const QString &propertyName, const QVariant &value) const
+{
+    validateProperty(propertyName, QVariant::Int, value);
+    QMetaProperty property = metaProperty(propertyName);
+    QVERIFY2(property.isEnumType(),
+             qPrintable(QString("property '%1.%2' is not enum type as expected").arg(m_name, propertyName)));
+}
+
+void ApiCheckBase::validateFlagProperty(const QString &propertyName, const QVariant &value) const
+{
+    validateEnumProperty(propertyName, value);
+    QMetaProperty property = metaProperty(propertyName);
+    QVERIFY2(property.isFlagType(),
+             qPrintable(QString("property '%1.%2' is not flag type as expected").arg(m_name, propertyName)));
 }
 
 void ApiCheckBase::validateSignal(const char *signalName) const

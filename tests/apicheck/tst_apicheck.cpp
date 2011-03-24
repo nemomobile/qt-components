@@ -55,6 +55,7 @@
 #include "selectiondialog/apicheck_selectiondialog.h"
 #include "toolbar/apicheck_toolbar.h"
 #include "switch/apicheck_switch.h"
+#include "screen/apicheck_screen.h"
 
 int main(int argc, char *argv[])
 {
@@ -118,6 +119,7 @@ int main(int argc, char *argv[])
     ApiCheckMenuItem menuItem(engine, module);
     ApiCheckRatingIndicator ratingIndicator(engine, extrasModule);
     ApiCheckSwitch switchButton(engine, module);
+    ApiCheckScreen screen(engine, module);
 
 #ifndef Q_COMPONENTS_SYMBIAN
     ApiCheckButtonColumn buttonColumn(engine, module);
@@ -150,6 +152,7 @@ int main(int argc, char *argv[])
     ret |= QTest::qExec(&menuItem, args);
     ret |= QTest::qExec(&ratingIndicator, args);
     ret |= QTest::qExec(&switchButton, argc);
+    ret |= QTest::qExec(&screen, argc);
 
 #ifndef Q_COMPONENTS_SYMBIAN
     ret |= QTest::qExec(&buttonColumn, args);
