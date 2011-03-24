@@ -36,14 +36,7 @@ int main(int argc, char **argv)
 #ifndef Q_OS_SYMBIAN
     QDir::setCurrent(app.applicationDirPath());
 #endif
-
     view.setSource(QUrl::fromLocalFile("main.qml"));
-
-#ifdef Q_OS_SYMBIAN
-    view.showMaximized();
-#else
     view.show();
-#endif
-
     return app.exec();
 }

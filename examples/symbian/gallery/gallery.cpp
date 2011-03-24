@@ -38,12 +38,6 @@ int main(int argc, char **argv)
 #endif
 
     view.setSource(QUrl::fromLocalFile("gallery.qml"));
-
-#ifdef Q_OS_SYMBIAN
-    view.showMaximized();
-#else
     view.show();
-#endif
-
     return app.exec();
 }

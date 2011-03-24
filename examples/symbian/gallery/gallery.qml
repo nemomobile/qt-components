@@ -36,11 +36,17 @@ Window {
     StatusBar {
         id: statusBar
         anchors.top: parent.top
+        width: parent.width
     }
 
     Flickable {
         id: flickable
-        anchors { left: parent.left; right: parent.right; top: statusBar.visible ? statusBar.bottom: parent.top; bottom: quitButton.top }
+        anchors { 
+            left: parent.left
+            right: parent.right
+            top: statusBar.visible ? statusBar.bottom: parent.top
+            bottom: toolBar.visible ? toolBar.top: parent.bottom
+        }
         contentHeight: defaultColumn.height + 2 * root.rowSpacing
         clip: true
         boundsBehavior: Flickable.StopAtBounds
@@ -113,17 +119,10 @@ Window {
         anchors { top: flickable.top; right: flickable.right }
     }
 
-    Button {
-        id: quitButton
-        anchors { left: parent.left; right: parent.right; bottom: parent.bottom }
-        text: "Quit"
-        onClicked: Qt.quit()
-    }
-
     ToolBar {
-        id: toolbar
+        id: toolBar
         tools: toolBarlayout
-        anchors.bottom: quitButton.top
+        anchors.bottom: parent.bottom
     }
 
     Component {
