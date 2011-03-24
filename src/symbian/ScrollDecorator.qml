@@ -32,58 +32,45 @@ Item {
     //Common Public API
     property Flickable flickableItem: null
 
-    anchors.fill: flickableItem
-    QtObject {
+    Item {
         id: decorators
-        property Item vertical: null
-        property Item horizontal: null
-        property Component component: null
+        property bool completed: false
 
-        function destroyDecorators() {
-            if (vertical != null)
-                vertical.destroy()
-            if (horizontal != null)
-                horizontal.destroy()
-            if (component != null)
-                component.url = ""
+        Loader {
+            sourceComponent: decorators.completed ? vertical : undefined
         }
-        function createDecorators() {
-            if (flickableItem != null) {
-                component = Qt.createComponent("ScrollBar.qml")
-                if (component.status == Component.Ready)
-                    finishCreation()
-                else
-                    console.log("Error creating component")
+        Loader {
+            sourceComponent: decorators.completed ? horizontal : undefined
+        }
+        Component {
+            id: horizontal
+            ScrollBar {
+                parent: flickableItem
+                flickableItem: scrollDecorator.flickableItem
+                orientation: Qt.Horizontal
+                interactive: false
+                anchors {
+                    left: flickableItem.left
+                    bottom: flickableItem.bottom
+                    rightMargin: height
+                }
             }
         }
-        function finishCreation() {
-            decorators.vertical = component.createObject(scrollDecorator)
-            decorators.horizontal = component.createObject(scrollDecorator)
-            if (decorators.vertical == null || decorators.horizontal == null) {
-                console.log("Error creating objects vertical="+decorators.vertical+" and horizontal="+decorators.horizontal)
-                destroyDecorators()
-            } else {
-                decorators.horizontal.flickableItem = scrollDecorator.flickableItem
-                decorators.horizontal.orientation = Qt.Horizontal
-                decorators.horizontal.interactive = false
-                decorators.horizontal.anchors.bottom = scrollDecorator.bottom
-                decorators.horizontal.anchors.left = scrollDecorator.left
-                //set margin to make scrollBars not overlap each other
-                decorators.horizontal.anchors.rightMargin = decorators.vertical.width
-                decorators.vertical.flickableItem = scrollDecorator.flickableItem
-                decorators.vertical.orientation = Qt.Vertical
-                decorators.vertical.interactive = false
-                decorators.vertical.anchors.top = scrollDecorator.top
-                decorators.vertical.anchors.right = scrollDecorator.right
+        Component {
+            id: vertical
+            ScrollBar {
+                parent: flickableItem
+                flickableItem: scrollDecorator.flickableItem
+                orientation: Qt.Vertical
+                interactive: false
+                anchors { top: flickableItem.top; right: flickableItem.right }
             }
+        }
+        Component.onDestruction: {
+            decorators.completed = false
         }
     }
     onFlickableItemChanged: {
-        decorators.destroyDecorators()
-        decorators.createDecorators()
-    }
-    onFocusChanged: {
-        if (decorators.vertical == null)
-            decorators.vertical.focus = focus //for key navigation support
+        decorators.completed = flickableItem ? true : false
     }
 }

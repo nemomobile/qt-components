@@ -34,84 +34,163 @@ ImplicitSizeItem {
     property int orientation: Qt.Vertical
     property bool interactive: true
     property int policy: Symbian.ScrollBarWhenScrolling
-    property real position: internal.getPosition()
-    property real pageSize: internal.getPageSize()
+    property real position: internal.getPosition() // DEPRECATED
+    property real pageSize: internal.getPageSize() // DEPRECATED
 
-    //implicit values for qml designer
-    implicitHeight: orientation == Qt.Vertical ? 3 * style.current.get("minHandleSize") : style.current.get("thickness")
-    implicitWidth: orientation == Qt.Horizontal ? 3 * style.current.get("minHandleSize") : style.current.get("thickness")
-    height: internal.getHeight()
-    width: internal.getWidth()
+    //implicit values for qml designer when no Flickable is present
+    implicitHeight: privateStyle.scrollBarThickness * (orientation == Qt.Vertical ? 3 : 1)
+    implicitWidth: privateStyle.scrollBarThickness * (orientation == Qt.Horizontal ? 3 : 1)
+    height: {
+        if (flickableItem && orientation == Qt.Vertical)
+            return Math.floor(Math.round(flickableItem.height) - anchors.topMargin - anchors.bottomMargin)
+        return undefined
+    }
+    width: {
+        if (flickableItem && orientation == Qt.Horizontal)
+            return Math.floor(Math.round(flickableItem.width) - anchors.leftMargin - anchors.rightMargin)
+        return undefined
+    }
+    opacity: 0
 
     //For showing explicitly a ScrollBar if policy is Symbian.ScrollBarWhenScrolling
     function flash() {
-        if (!flashTimer.running)
-            flashTimer.running = true
-    }
-
-    Style { id: style; styleClass: "ScrollBar"; mode: interactive ? "interactive" : "indicative" }
-    Style { id: handleStyle; styleClass: "ScrollBar"; mode: "default" }
-
-    Timer {
-        id: flashTimer
-        interval: 100
-        running: true
-        onTriggered: {
-            if (policy == Symbian.ScrollBarWhenScrolling) {
-                scrollBar.state = "OnlyWhenScrolling"
-                scrollBar.state = "Hidden"
-            }
-        }
+        if (policy == Symbian.ScrollBarWhenScrolling && internal.scrollBarNeeded)
+            flashEffect.restart()
     }
 
     QtObject {
         id: internal
-        //Trigger for move the scrollBar handles when using keys
-        property bool keyNavigationTrigger: false
-        //internal styling values
-        property real handleOpacity: 0.7
-        //A light, semi-transparent background
-        property real trackOpacity: 0
-        property real handleTouchAreaOpacity: 0
-
-        function getHeight() {
-            if (flickableItem == null)
-                return undefined
+        property int hideTimeout: 2000
+        property int pageStepY: flickableItem ? Math.floor(flickableItem.visibleArea.heightRatio * flickableItem.contentHeight) : NaN
+        property int pageStepX: flickableItem ? Math.floor(flickableItem.visibleArea.widthRatio * flickableItem.contentWidth) : NaN
+        property int handleY: flickableItem ? Math.floor(handle.y / flickableItem.height * flickableItem.contentHeight) : NaN
+        property int handleX: flickableItem ? Math.floor(handle.x / flickableItem.width * flickableItem.contentWidth) : NaN
+        property int maximumY: flickableItem ? Math.floor(Math.min(flickableItem.contentHeight - scrollBar.height, flickableItem.contentY)) : NaN
+        property int maximumX: flickableItem ? Math.floor(Math.min(flickableItem.contentWidth - scrollBar.width, flickableItem.contentX)) : NaN
+        property bool scrollBarNeeded: hasScrollableContent()
+        /**
+         * Special handler for idle state ""
+         * - in case if no flicking (flickableItem.moving) has occured
+         * - but there is a need (contents of Flickable have changed) indicate scrollable content
+         *
+         * See also other transition/action pairs in StateGroup below
+         */
+        onScrollBarNeededChanged: {
+            if (stateGroup.state != "")
+                return
+            if (scrollBarNeeded)
+                stateGroup.state = "Indicate"
+            else
+                idleEffect.restart()
+        }
+        /**
+         * Checks whether ScrollBar is needed or not
+         * based on Flickable visibleArea height and width ratios
+         */
+        function hasScrollableContent() {
+            //TODO: Remove this commented logging code snippet
+            //console.log("flickableItem = "+flickableItem)
+            //console.log("flickableItem.visibleArea.heightRatio = "+flickableItem.visibleArea.heightRatio)
+            //console.log("flickableItem.visibleArea.widthRatio = "+flickableItem.visibleArea.widthRatio)
+            if (!flickableItem)
+                return false
+            var _ratio = orientation == Qt.Vertical ? flickableItem.visibleArea.heightRatio : flickableItem.visibleArea.widthRatio
+            return _ratio < 1.0 && _ratio > 0
+        }
+        /**
+         * Does Page by Page movement of flickableItem
+         * when ScrollBar Track is being clicked/pressed
+         *
+         * @see #moveToLongTapPosition
+         */
+        function doPageStep() {
             if (orientation == Qt.Vertical) {
-                if (anchors.topMargin > 0 || anchors.bottomMargin > 0)
-                    return flickableItem.height - style.current.get("thickness")
-                else
-                    return flickableItem.height
-            } else if (orientation == Qt.Horizontal) {
-                return style.current.get("thickness")
+                if (trackMouseArea.mouseY > (handle.height / 2 + handle.y)) {
+                    flickableItem.contentY += pageStepY
+                    flickableItem.contentY = maximumY
+                }
+                else if (trackMouseArea.mouseY < (handle.height / 2 + handle.y)) {
+                    flickableItem.contentY -= pageStepY
+                    flickableItem.contentY = Math.max(0, flickableItem.contentY)
+                }
+            } else {
+                if (trackMouseArea.mouseX > (handle.width / 2 + handle.x)) {
+                    flickableItem.contentX += pageStepX
+                    flickableItem.contentX = maximumX
+                }
+                else if (trackMouseArea.mouseX < (handle.width / 2 + handle.x)) {
+                    flickableItem.contentX -= pageStepX
+                    flickableItem.contentX = Math.max(0, flickableItem.contentX)
+                }
             }
         }
-
-        function getWidth() {
-            if (flickableItem == null)
-                return undefined
+        /**
+         * Does movement of flickableItem
+         * when ScrollBar Handle is being dragged
+         */
+        function moveToHandlePosition() {
+            if (orientation == Qt.Vertical)
+                flickableItem.contentY = handleY
+            else
+                flickableItem.contentX = handleX
+        }
+        /**
+         * Moves flickableItem's content according to given mouseArea movement
+         * when mouseArea is pressed long
+         * Tries to position the handle and content in center of mouse position enough
+         *
+         * @see #doPageStep
+         */
+        function moveToLongTapPosition(mouseArea) {
             if (orientation == Qt.Vertical) {
-                return style.current.get("thickness")
-            } else if (orientation == Qt.Horizontal) {
-                if (anchors.rightMargin > 0 || anchors.leftMargin > 0)
-                    return flickableItem.width - style.current.get("thickness")
-                else
-                    return flickableItem.width
+                if (Math.abs(mouseArea.mouseY - (handle.height / 2 + handle.y)) < privateStyle.scrollBarThickness)
+                    return //if change is not remarkable enough, do nothing otherwise it would cause annoying flickering effect
+                if (mouseArea.mouseY > (handle.height / 2 + handle.y)) {
+                    flickableItem.contentY += Math.floor(privateStyle.scrollBarThickness)
+                    flickableItem.contentY = maximumY
+                }
+                else if (mouseArea.mouseY < (handle.height / 2 + handle.y)) {
+                    flickableItem.contentY -= Math.floor(privateStyle.scrollBarThickness)
+                    flickableItem.contentY = Math.floor(Math.max(0, flickableItem.contentY))
+                }
+            } else {
+                if (Math.abs(mouseArea.mouseX - (handle.width / 2 + handle.x)) < privateStyle.scrollBarThickness)
+                    return //if change is not remarkable enough, do nothing otherwise it would cause annoying flickering effect
+                if (mouseArea.mouseX > (handle.width / 2 + handle.x)) {
+                    flickableItem.contentX += Math.floor(privateStyle.scrollBarThickness)
+                    flickableItem.contentX = maximumX
+                }
+                else if (mouseArea.mouseX < (handle.width / 2 + handle.x)) {
+                    flickableItem.contentX -= Math.floor(privateStyle.scrollBarThickness)
+                    flickableItem.contentX = Math.floor(Math.max(0, flickableItem.contentX))
+                }
             }
         }
-
+        /**
+         * DEPRECATED
+         * Dynamical binding of scrollBar.pageSize
+         *
+         * @see scrollBar.pageSize Flickable
+         */
         function getPageSize() {
-            if (flickableItem == null)
-                return 0//cannot return undefined as a double in qml
+            console.log("ScrollBar.pageSize deprecated, use flickableItem.visibleArea ratios instead!")
+            if (!flickableItem)
+                return NaN
             if (orientation == Qt.Vertical)
                 return flickableItem.visibleArea.heightRatio
             else
                 return flickableItem.visibleArea.widthRatio
         }
-
+        /**
+         * DEPRECATED
+         * Dynamical binding of scrollBar.position
+         *
+         * @see scrollBar.position Flickable
+         */
         function getPosition() {
-            if (flickableItem == null)
-                return 0//cannot return undefined as a double in qml
+            console.log("ScrollBar.position deprecated, use flickableItem.visibleArea positions instead!")
+            if (!flickableItem)
+                return NaN
             if (orientation == Qt.Vertical)
                 return flickableItem.visibleArea.yPosition
             else
@@ -119,206 +198,180 @@ ImplicitSizeItem {
         }
     }
 
-    onPositionChanged: {
-        if (policy == Symbian.ScrollBarWhenScrolling) {
-            // Trigger for OnlyWhenScrolling state
-            internal.keyNavigationTrigger =! internal.keyNavigationTrigger
-            // Trigger back to original value
-            internal.keyNavigationTrigger =! internal.keyNavigationTrigger
-        }
-    }
-
-    Keys.onPressed: {
-        if (event.key === Qt.Key_Up) {
-            if (flickableItem.contentY >= style.current.get("keyEventSize"))
-                flickableItem.contentY -= style.current.get("keyEventSize")
-            else
-                flickableItem.contentY = 0
-            event.accepted = false
-        }
-        else if (event.key === Qt.Key_Down) {
-            if (flickableItem.contentY <= flickableItem.contentHeight - flickableItem.parent.height - style.current.get("keyEventSize"))
-                flickableItem.contentY += style.current.get("keyEventSize")
-            else
-                flickableItem.contentY = flickableItem.contentHeight - flickableItem.parent.height
-            event.accepted = false
-        }
-        else if (event.key === Qt.Key_Left) {
-            if (flickableItem.contentX >= style.current.get("keyEventSize"))
-                flickableItem.contentX -= style.current.get("keyEventSize")
-            else
-                flickableItem.contentX = 0
-            event.accepted = false
-        }
-        else if (event.key === Qt.Key_Right) {
-            if (flickableItem.contentX <= flickableItem.contentWidth - flickableItem.parent.width - style.current.get("keyEventSize"))
-                flickableItem.contentX += style.current.get("keyEventSize")
-            else
-                flickableItem.contentX = flickableItem.contentWidth - flickableItem.parent.width
-            event.accepted = false
-        }
-        else {
-            event.accepted = false
-        }
-    }
-
-    Rectangle {
+    BorderImage {
         id: track
-        //to support component identification in tdriver tests
         objectName: "track"
-        anchors.fill: flickableItem != null ? scrollBar : undefined
-        radius: orientation == Qt.Vertical ? width / 2 - 2 : height / 2 - 2
-        color: style.current.get("trackColor")
-        opacity: internal.trackOpacity
+        source: privateStyle.imagePath(orientation == Qt.Vertical ? "qtg_fr_scrollbar_v_track_normal" : "qtg_fr_scrollbar_h_track_normal")
+        anchors.fill: parent
+        border.right: orientation == Qt.Horizontal ? 7 : 0
+        border.left: orientation == Qt.Horizontal ? 7 : 0
+        border.top: orientation == Qt.Vertical ? 7 : 0
+        border.bottom: orientation == Qt.Vertical ? 7 : 0
+        opacity: 0.5
     }
-
-    Rectangle {
-        id: handle
-        //to support component identification in tdriver tests
-        objectName: "handle"
-        x: orientation == Qt.Vertical ? 1 : Math.min(scrollBar.width - handle.width, Math.max(0, scrollBar.position * scrollBar.width))
-        y: orientation == Qt.Vertical ? Math.min(scrollBar.height - handle.height, Math.max(0, scrollBar.position * scrollBar.height)) : 1
-        width: {
-            if (orientation == Qt.Vertical)
-                return scrollBar.width - 2
-            else
-                return Math.max(style.current.get("minHandleSize"), scrollBar.pageSize * scrollBar.width)
-        }
-        height: {
-            if (orientation == Qt.Horizontal)
-                return scrollBar.height - 2
-            else
-                return Math.max(style.current.get("minHandleSize"), scrollBar.pageSize * scrollBar.height)
-        }
-        radius: orientation == Qt.Vertical ? width / 2 - 2 : height / 2 - 2
-        color: handleStyle.current.get("handleColor")
-        opacity: internal.handleOpacity
-    }
-
-    Rectangle {
-        id: handleTouchArea
-        //to support component identification in tdriver tests
-        objectName: "handleTouchArea"
-        x: handle.x
-        y: handle.y
-        anchors {
-            bottom: flickableItem != null && orientation == Qt.Horizontal ? handle.bottom : undefined
-            right: flickableItem != null && orientation == Qt.Vertical ? handle.right : undefined
-        }
-        width: orientation == Qt.Vertical ? style.current.get("touchAreaThickness") - scrollBar.width : handle.width
-        height: orientation == Qt.Horizontal ? style.current.get("touchAreaThickness") - scrollBar.height : handle.height
-        opacity: internal.handleTouchAreaOpacity
-    }
-
-    // MouseArea for the move content "page by page" by tapping
+    // MouseArea for the move content "page by page" by tapping and scroll to press-and-hold position
     MouseArea {
         id: trackMouseArea
-        //to support component identification in tdriver tests
         objectName: "trackMouseArea"
+        property bool longPressed: false
         enabled: interactive
-        anchors.fill: flickableItem != null ? track : undefined
-
-        onPressed: {
-            if (orientation == Qt.Vertical) {
-                if (mouseY > handle.y) {
-                    flickableItem.contentY += flickableItem.visibleArea.heightRatio * flickableItem.contentHeight
-                    flickableItem.contentY = Math.min(flickableItem.contentHeight - flickableItem.height, flickableItem.contentY)
-                }
-                else if (mouseY < handle.y) {
-                    flickableItem.contentY -= flickableItem.visibleArea.heightRatio * flickableItem.contentHeight
-                    flickableItem.contentY = Math.max(0, flickableItem.contentY)
-                }
-            }
-            else if (orientation == Qt.Horizontal) {
-                if (mouseX > handle.x) {
-                    flickableItem.contentX += flickableItem.visibleArea.widthRatio * flickableItem.contentWidth
-                    flickableItem.contentX = Math.min(flickableItem.contentWidth - flickableItem.width, flickableItem.contentX)
-                }
-                else if (mouseX < handle.x) {
-                    flickableItem.contentX -= flickableItem.visibleArea.widthRatio * flickableItem.contentWidth
-                    flickableItem.contentX = Math.max(0, flickableItem.contentX)
-                }
-            }
-        }
+        anchors.fill: flickableItem ? track : undefined
+        onPressAndHold: longPressed = true
+        onReleased: longPressed = false
+    }
+    Timer {
+        id: pressAndHoldTimer
+        running: trackMouseArea.longPressed
+        interval: 50
+        repeat: true
+        onTriggered: { internal.moveToLongTapPosition(trackMouseArea); privateStyle.play(Symbian.SensitiveSlider) }
     }
 
+    BorderImage {
+        id: handle
+        objectName: "handle"
+        property string mode: handleMouseArea.pressed ? "pressed" : "normal"
+        source: privateStyle.imagePath((orientation == Qt.Vertical ? "qtg_fr_scrollbar_v_handle_" : "qtg_fr_scrollbar_h_handle_") + mode)
+        x: orientation == Qt.Horizontal ? sizer.position : (!flickableItem ? NaN : flickableItem.x)
+        y: orientation == Qt.Vertical ? sizer.position : (!flickableItem ? NaN : flickableItem.y)
+        height: orientation == Qt.Vertical ? sizer.size : Math.floor(privateStyle.scrollBarThickness)
+        width: orientation == Qt.Horizontal ? sizer.size : Math.floor(privateStyle.scrollBarThickness)
+        border.right: orientation == Qt.Horizontal ? 7 : 0
+        border.left: orientation == Qt.Horizontal ? 7 : 0
+        border.top: orientation == Qt.Vertical ? 7 : 0
+        border.bottom: orientation == Qt.Vertical ? 7 : 0
+    }
+    ScrollBarSizer {
+        id: sizer
+        minSize: 3 * Math.floor(privateStyle.scrollBarThickness)
+        maxSize: !flickableItem ? NaN : (orientation == Qt.Vertical ? scrollBar.height : scrollBar.width)
+        positionRatio: !flickableItem ? NaN : (orientation == Qt.Vertical && flickableItem ? flickableItem.visibleArea.yPosition : flickableItem.visibleArea.xPosition)
+        sizeRatio: !flickableItem ? NaN : (orientation == Qt.Vertical ? flickableItem.visibleArea.heightRatio : flickableItem.visibleArea.widthRatio)
+    }
     MouseArea {
         id: handleMouseArea
-        //to support component identification in tdriver tests
         objectName: "handleMouseArea"
+        property real maxDragY: flickableItem ? flickableItem.height - handle.height - scrollBar.anchors.topMargin - scrollBar.anchors.bottomMargin : NaN
+        property real maxDragX: flickableItem ? flickableItem.width - handle.width - scrollBar.anchors.leftMargin - scrollBar.anchors.rightMargin : NaN
         enabled: interactive
-
+        width: orientation == Qt.Vertical ? 3 * privateStyle.scrollBarThickness : handle.width
+        height: orientation == Qt.Horizontal ? 3 * privateStyle.scrollBarThickness : handle.height
         anchors {
-            fill: flickableItem != null ? handleTouchArea : undefined
-            verticalCenter: flickableItem != null ? handle.verticalCenter : undefined
-            horizontalCenter: flickableItem != null ? handle.horizontalCenter : undefined
+            verticalCenter: flickableItem ? handle.verticalCenter : undefined
+            horizontalCenter: flickableItem ? handle.horizontalCenter : undefined
         }
-
         drag {
             target: handle
             axis: orientation == Qt.Vertical ? Drag.YAxis : Drag.XAxis
             minimumY: 0
-            maximumY: scrollBar.height - handle.height
+            maximumY: maxDragY
             minimumX: 0
-            maximumX: scrollBar.width - handle.width
+            maximumX: maxDragX
         }
-
-        onPressed: {
-            handleStyle.mode = "pressed"
-        }
-        onReleased: {
-            handleStyle.mode = "default"
-        }
-        onPositionChanged: {
-            if (orientation == Qt.Vertical)
-                flickableItem.contentY = handle.y / scrollBar.height * flickableItem.contentHeight
-            else if (orientation == Qt.Horizontal)
-                flickableItem.contentX = handle.x / scrollBar.width * flickableItem.contentWidth
-        }
-        Component.onCompleted: {
-            if (flickableItem != null && orientation == Qt.Vertical)
-                flickableItem.contentY = Math.max(0, handle.y / scrollBar.height * flickableItem.contentHeight)
-            else if (flickableItem != null && orientation == Qt.Horizontal)
-                flickableItem.contentX = Math.max(0, handle.x / scrollBar.width * flickableItem.contentWidth)
-        }
+        onPositionChanged: internal.moveToHandlePosition()
     }
 
-    states: [
-        State {
-            name: "OnlyWhenScrolling"
-            when: (flickableItem.moving || internal.keyNavigationTrigger) && policy == Symbian.ScrollBarWhenScrolling && ((orientation == Qt.Vertical && flickableItem.contentHeight > scrollBar.height) ||
-                   (orientation == Qt.Horizontal && flickableItem.contentWidth > scrollBar.width))
-            PropertyChanges { target: scrollBar; opacity: 1 }
-        },
-        State {
-            name: "Hidden"
-            when: policy == Symbian.ScrollBarWhenScrolling || policy == Symbian.ScrollBarWhenNeeded && ((orientation == Qt.Vertical && flickableItem.contentHeight < scrollBar.height) ||
-                    (orientation == Qt.Horizontal && flickableItem.contentWidth < scrollBar.width))
-            PropertyChanges { target: scrollBar; opacity: 0 }
-        },
-        State {
-            name: "OnlyWhenNeeded"
-            when: policy == Symbian.ScrollBarWhenNeeded && (orientation == Qt.Vertical && flickableItem.contentHeight > scrollBar.height) ||
-                    (orientation == Qt.Horizontal && flickableItem.contentWidth > scrollBar.width)
-            PropertyChanges { target: scrollBar; opacity: 1 }
+    PropertyAnimation {
+        id: indicateEffect
+
+        function play() {
+            idleEffect.stop()
+            restart()
         }
-    ]
-    transitions: [
-        Transition {
-            from: "OnlyWhenNeeded"
-            to: "OnlyWhenScrolling"
-            NumberAnimation {
-                properties: "opacity"
-                duration: style.current.get("hideTimeout")
-            }
-        },
-        Transition {
-            from: "OnlyWhenScrolling"
-            to: "Hidden"
-            NumberAnimation {
-                properties: "opacity"
-                duration: style.current.get("hideTimeout")
-            }
+
+        target: scrollBar
+        property: "opacity"
+        to: 1
+        duration: 0
+    }
+    PropertyAnimation {
+        id: idleEffect
+
+        function play() {
+            indicateEffect.stop()
+            if (internal.scrollBarNeeded && scrollBar.policy == Symbian.ScrollBarWhenScrolling)
+                restart()
         }
-    ]
+
+        target: scrollBar
+        property: "opacity"
+        to: 0
+        duration: internal.hideTimeout
+    }
+    SequentialAnimation {
+        id: flashEffect
+        PropertyAnimation {
+            target: scrollBar
+            to: 1
+            duration: 0
+        }
+        PropertyAnimation {
+            target: scrollBar
+            property: "opacity"
+            to: 0
+            duration: internal.hideTimeout
+        }
+    }
+    StateGroup {
+        id: stateGroup
+        states: [
+            State {
+                name: "Move"
+                when: handleMouseArea.pressed
+            },
+            State {
+                name: "Stepping"
+                when: trackMouseArea.longPressed
+            },
+            State {
+                name: "Step"
+                when: trackMouseArea.pressed && !trackMouseArea.longPressed
+            },
+            State {
+                name: "Indicate"
+                when: internal.scrollBarNeeded && flickableItem.moving
+            },
+            State {
+                name: ""
+            }
+        ]
+        transitions: [
+            Transition {
+                to: "Move"
+                ScriptAction { script: privateStyle.play(Symbian.BasicSlider) }
+                ScriptAction { script: indicateEffect.play() }
+            },
+            Transition {
+                to: "Step"
+                ScriptAction { script: internal.doPageStep() }
+                ScriptAction { script: privateStyle.play(Symbian.BasicSlider) }
+                ScriptAction { script: indicateEffect.play() }
+            },
+            Transition {
+                from: "Step"
+                to: "Stepping"
+                ScriptAction { script: indicateEffect.play() }
+            },
+            Transition {
+                from: "Move"
+                to: "Indicate"
+                ScriptAction { script: privateStyle.play(Symbian.BasicSlider) }
+                ScriptAction { script: indicateEffect.play() }
+            },
+            Transition {
+                to: "Indicate"
+                ScriptAction { script: indicateEffect.play() }
+            },
+            Transition {
+                from: "Move"
+                to: ""
+                ScriptAction { script: privateStyle.play(Symbian.BasicSlider) }
+                ScriptAction { script: idleEffect.play() }
+            },
+            Transition {
+                to: ""
+                ScriptAction { script: idleEffect.play() }
+            }
+        ]
+    }
 }
