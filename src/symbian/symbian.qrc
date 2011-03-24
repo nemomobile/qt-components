@@ -82,6 +82,15 @@
         <file alias="qtg_graf_switchbutton_track.svg">resources/defaulttheme/graphics/qtg_graf_switchbutton_track.svg</file>
         <file alias="qtg_toolbar_back.svg">resources/defaulttheme/graphics/qtg_toolbar_back.svg</file>
         <file alias="qtg_toolbar_options.svg">resources/defaulttheme/graphics/qtg_toolbar_options.svg</file>
+        <file alias="qtg_fr_scrollbar_h_handle_indicative.svg">resources/defaulttheme/graphics/qtg_fr_scrollbar_h_handle_indicative.svg</file>
+        <file alias="qtg_fr_scrollbar_h_handle_normal.svg">resources/defaulttheme/graphics/qtg_fr_scrollbar_h_handle_normal.svg</file>
+        <file alias="qtg_fr_scrollbar_h_handle_pressed.svg">resources/defaulttheme/graphics/qtg_fr_scrollbar_h_handle_pressed.svg</file>
+        <file alias="qtg_fr_scrollbar_h_track_normal.svg">resources/defaulttheme/graphics/qtg_fr_scrollbar_h_track_normal.svg</file>
+        <file alias="qtg_fr_scrollbar_h_track_pressed.svg">resources/defaulttheme/graphics/qtg_fr_scrollbar_h_track_pressed.svg</file>
+        <file alias="qtg_fr_scrollbar_v_handle_indicative.svg">resources/defaulttheme/graphics/qtg_fr_scrollbar_v_handle_indicative.svg</file>
+        <file alias="qtg_fr_scrollbar_v_handle_normal.svg">resources/defaulttheme/graphics/qtg_fr_scrollbar_v_handle_normal.svg</file>
+        <file alias="qtg_fr_scrollbar_v_handle_pressed.svg">resources/defaulttheme/graphics/qtg_fr_scrollbar_v_handle_pressed.svg</file>
+        <file alias="qtg_fr_scrollbar_v_track_normal.svg">resources/defaulttheme/graphics/qtg_fr_scrollbar_v_track_normal.svg</file>
     </qresource>
     <qresource prefix="/colors">
         <file alias="widgetcolorgroup.css">resources/defaulttheme/colors/widgetcolorgroup.css</file>
