@@ -50,11 +50,14 @@ void tst_quickcomponentslistheading::initTestCase()
 
 void tst_quickcomponentslistheading::validateProperties()
 {
-    // style
+    // style - TODO: Property deprecated. Remove unit test when the property is removed.
     QVERIFY(m_componentObject->property("style").isValid());
 
-    // padding
+    // padding - TODO: Property deprecated. Remove unit test when the property is removed.
     QVERIFY(m_componentObject->property("padding").isValid());
+
+    // paddingItem
+    QVERIFY(m_componentObject->property("paddingItem").isValid());
 }
 
 QTEST_MAIN(tst_quickcomponentslistheading)

@@ -52,18 +52,31 @@ void tst_quickcomponentsselectionlistitem::initTestCase()
 void tst_quickcomponentsselectionlistitem::validateProperties()
 {
     // style - from ListItem
+    // TODO: Property deprecated. Remove unit test when the property is removed.
     QVERIFY(m_componentObject->property("style").isValid());
 
+    // mode - from ListItem
+    QVariant mode = m_componentObject->property("mode");
+    QVERIFY(mode.isValid());
+    QVERIFY(mode.canConvert(QVariant::String));
+    QCOMPARE(mode.toString(), QString("normal"));
+
     // padding - from ListItem
+    // TODO: Property deprecated. Remove unit test when the property is removed.
     QVERIFY(m_componentObject->property("padding").isValid());
 
+    // paddingItem
+    QVERIFY(m_componentObject->property("paddingItem").isValid());
+
     // verticalSpacing - from ListItem
+    // TODO: Property deprecated. Remove unit test when the property is removed.
     QVariant verticalSpacing = m_componentObject->property("verticalSpacing");
     QVERIFY(verticalSpacing.isValid());
     QVERIFY(verticalSpacing.canConvert(QVariant::Double));
     QVERIFY(verticalSpacing.toReal() >= 0);
 
     // horizontalSpacing - from ListItem
+    // TODO: Property deprecated. Remove unit test when the property is removed.
     QVariant horizontalSpacing = m_componentObject->property("horizontalSpacing");
     QVERIFY(horizontalSpacing.isValid());
     QVERIFY(horizontalSpacing.canConvert(QVariant::Double));
