@@ -52,6 +52,8 @@ protected:
     void validateMethod(const char *methodName) const;
 
 private:
+    QMetaProperty metaProperty(const QString &name) const;
+
     QString m_name;
     QString m_module;
     QObject *m_object;

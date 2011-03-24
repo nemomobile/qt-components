@@ -59,35 +59,29 @@ void ApiCheckBase::init(const QString &name, const QString &body)
 
 void ApiCheckBase::validateProperty(const QString &name, const QString &typeName) const
 {
-    const QMetaObject *meta = m_object->metaObject();
-    const int propertyIndex = meta->indexOfProperty(name.toLatin1().data());
+    QMetaProperty property = metaProperty(name);
 
-    QVERIFY2(propertyIndex != -1,
+    QVERIFY2(property.isValid(),
              qPrintable(QString("property '%1.%2' does not exist").arg(m_name, name)));
 
-    const QMetaProperty &metaProperty = meta->property(propertyIndex);
-
-    QVERIFY2(metaProperty.typeName() == typeName,
+    QVERIFY2(property.typeName() == typeName,
              qPrintable(QString("property '%1.%2' has invalid type (expected: %3, had: %4)")
-                        .arg(m_name, name, typeName, metaProperty.typeName())));
+                        .arg(m_name, name, typeName, property.typeName())));
 }
 
 void ApiCheckBase::validateProperty(const QString &name, QVariant::Type type, const QVariant &value) const
 {
-    const QMetaObject *meta = m_object->metaObject();
-    const int propertyIndex = meta->indexOfProperty(name.toLatin1().data());
+    QMetaProperty property = metaProperty(name);
 
-    QVERIFY2(propertyIndex != -1,
+    QVERIFY2(property.isValid(),
              qPrintable(QString("property '%1.%2' does not exist").arg(m_name, name)));
 
-    const QMetaProperty &metaProperty = meta->property(propertyIndex);
-
-    QVERIFY2(metaProperty.type() == type,
+    QVERIFY2(property.type() == type,
              qPrintable(QString("property '%1.%2' has invalid type (expected: %3, had: %4)")
-                        .arg(m_name, name, QVariant::typeToName(type), metaProperty.typeName())));
+                        .arg(m_name, name, QVariant::typeToName(type), property.typeName())));
 
     if (value.isValid()) {
-        const QVariant &variant = metaProperty.read(m_object);
+        QVariant variant = property.read(m_object);
 
         QVERIFY2(variant == value,
                  qPrintable(QString("property '%1.%2' has wrong default value (expected: %3, had: %4)")
@@ -97,17 +91,14 @@ void ApiCheckBase::validateProperty(const QString &name, QVariant::Type type, co
 
 void ApiCheckBase::validateDeclarativeProperty(const QString &name, const QString &typeName) const
 {
-    const QMetaObject *meta = m_object->metaObject();
-    const int propertyIndex = meta->indexOfProperty(name.toLatin1().data());
+    QMetaProperty property = metaProperty(name);
 
-    QVERIFY2(propertyIndex != -1,
+    QVERIFY2(property.isValid(),
              qPrintable(QString("property '%1.%2' does not exist").arg(m_name, name)));
 
-    const QMetaProperty &metaProperty = meta->property(propertyIndex);
-
-    QVERIFY2(QString(metaProperty.typeName()).contains(typeName),
+    QVERIFY2(QString(property.typeName()).contains(typeName),
              qPrintable(QString("property '%1.%2' has invalid type (expected: %3, had: %4)")
-                        .arg(m_name, name, typeName, metaProperty.typeName())));
+                        .arg(m_name, name, typeName, property.typeName())));
 }
 
 void ApiCheckBase::validateSignal(const char *signalName) const
@@ -126,3 +117,9 @@ void ApiCheckBase::validateMethod(const char *methodName) const
              qPrintable(QString("method '%1.%2' not found").arg(m_name).arg(methodName)));
 }
 
+QMetaProperty ApiCheckBase::metaProperty(const QString &name) const
+{
+    const QMetaObject *meta = m_object->metaObject();
+    const int propertyIndex = meta->indexOfProperty(name.toLatin1().data());
+    return meta->property(propertyIndex);
+}
