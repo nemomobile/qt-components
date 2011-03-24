@@ -208,7 +208,7 @@ ImplicitSizeItem {
                 onCursorRectangleChanged: delayedEnsureVisible.start()
                 onFocusChanged: {
                     if (focus) {
-                        // TODO: Flash scroll bars
+                        // TODO: Use ScrollBar flash()
 
                         // TODO: Enable when decision made about Qt Mobility usage
                         //privateStyle.play(ThemeEffect.Editor)
