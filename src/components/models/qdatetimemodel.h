@@ -110,7 +110,7 @@ public Q_SLOTS:
     bool addSecs(int s);
 
     int daysTo(const QDateTime &date) const;
-    int	secsTo(const QDateTime &time) const;
+    int secsTo(const QDateTime &time) const;
 
 protected:
     QDateTimeModel(const QVariant &val, QVariant::Type parserType, QObject *parent = 0);
