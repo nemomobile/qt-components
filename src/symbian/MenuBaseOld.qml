@@ -84,7 +84,7 @@ ImplicitSizeItem {
 
     Connections {
         target: screen
-        onOrientationChanged: connectionTimer.start()
+        onCurrentOrientationChanged: connectionTimer.start()
     }
 
     Fader {

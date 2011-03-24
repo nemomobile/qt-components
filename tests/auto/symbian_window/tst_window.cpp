@@ -59,13 +59,13 @@ void tst_Window::initTestCase()
     QVERIFY(screen);
     QVERIFY(window);
 
-    QCOMPARE(screen->property("orientation").toInt(), static_cast<int>(SDeclarativeScreen::Portrait));
+    QCOMPARE(screen->property("currentOrientation").toInt(), static_cast<int>(SDeclarativeScreen::Portrait));
     QVERIFY(window->property("inPortrait").toBool());
 }
 
 void tst_Window::orientationChange()
 {
-    QCOMPARE(screen->property("orientation").toInt(), static_cast<int>(SDeclarativeScreen::Portrait));
+    QCOMPARE(screen->property("currentOrientation").toInt(), static_cast<int>(SDeclarativeScreen::Portrait));
     QVERIFY(!window->property("inLandscape").toBool());
     QVERIFY(window->property("inPortrait").toBool());
 
@@ -73,7 +73,7 @@ void tst_Window::orientationChange()
     QSignalSpy spy2(window, SIGNAL(orientationChangeStarted()));
     QSignalSpy spy3(window, SIGNAL(orientationChangeFinished()));
 
-    screen->setProperty("orientation", SDeclarativeScreen::Landscape);
+    screen->setProperty("allowedOrientations", SDeclarativeScreen::Landscape);
     QCoreApplication::sendPostedEvents();
 
     QTRY_COMPARE(spy1.count(), 1);

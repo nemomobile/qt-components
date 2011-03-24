@@ -61,7 +61,7 @@ ImplicitSizeItem {
 
         function getPopupAlignment() {
             var ret = Qt.AlignVCenter
-            if (screen.orientation == Screen.Portrait || screen.orientation == Screen.PortraitInverted) {
+            if (screen.currentOrientation == Screen.Portrait || screen.currentOrientation == Screen.PortraitInverted) {
                 var pos = mapRootToApplicationRoot()
                 var downside = style.current.get("appRectHeight") - (pos.y + choiceList.height)
                 var upside = pos.y
@@ -75,7 +75,7 @@ ImplicitSizeItem {
 
         function animationTime() {
             var timeout = animationDurationLandscape
-            if (screen.orientation == Screen.Portrait || screen.orientation == Screen.PortraitInverted)
+            if (screen.currentOrientation == Screen.Portrait || screen.currentOrientation == Screen.PortraitInverted)
                 timeout = visibleItems * animationDuration
             return timeout
         }
@@ -95,7 +95,7 @@ ImplicitSizeItem {
         function showPopup() {
             popupObject = popup.createObject(applicationRoot)
             if (popupObject != null) {
-                if (screen.orientation == Screen.Portrait || screen.orientation == Screen.PortraitInverted)
+                if (screen.currentOrientation == Screen.Portrait || screen.currentOrientation == Screen.PortraitInverted)
                     popupObject.state = "Visible"
                 else
                     popupObject.state = "VisibleLandscape"
@@ -103,7 +103,7 @@ ImplicitSizeItem {
         }
 
         function hidePopup() {
-            if (screen.orientation == Screen.Portrait || screen.orientation == Screen.PortraitInverted)
+            if (screen.currentOrientation == Screen.Portrait || screen.currentOrientation == Screen.PortraitInverted)
                 popupObject.state = "Hidden"
             else
                 popupObject.state = "HiddenLandscape"
@@ -254,7 +254,7 @@ ImplicitSizeItem {
             width: choiceList.width; height: getPopupHeight()
             contentWidth: width; contentHeight: height
             interactive: false; clip: true
-            state: screen.orientation == Screen.Portrait || screen.orientation == Screen.PortraitInverted ? "Hidden" : "HiddenLandscape"
+            state: screen.currentOrientation == Screen.Portrait || screen.currentOrientation == Screen.PortraitInverted ? "Hidden" : "HiddenLandscape"
             x: position.x; y: position.y
 
             Timer {
@@ -271,7 +271,7 @@ ImplicitSizeItem {
             Connections {
                 target: screen
                 // the screen.layoutRect is not correctly updated without this timer
-                onOrientationChanged: orientationChangeTimer.start()
+                onCurrentOrientationChanged: orientationChangeTimer.start()
             }
 
             BorderImage {

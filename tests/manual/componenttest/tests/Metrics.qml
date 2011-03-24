@@ -50,6 +50,8 @@ Item {
         font.pixelSize: 20
         text: "Pixel width:\n"
               + "Pixel height:\n"
+              + "Display width:\n"
+              + "Display height:\n"
               + "Physical width (mm):\n"
               + "Physical height (mm):\n"
               + "Diagonal (inch):\n"
@@ -62,6 +64,8 @@ Item {
         font.pixelSize: 20
         text: screen.width + '\n'
               + screen.height + '\n'
+              + screen.displayWidth + '\n'
+              + screen.displayHeight + '\n'
               + round(physicalWidth()) + '\n'
               + round(physicalHeight()) + '\n'
               + round(diagonal()) + '\n'

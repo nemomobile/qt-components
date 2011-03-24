@@ -37,7 +37,7 @@ Column {
     height: screen.height
     width: screen.width
 
-    Component.onCompleted: screen.orientation = Screen.Portrait
+    Component.onCompleted: screen.allowedOrientations = Screen.Portrait
 
     TextField {
         id: textField

@@ -44,14 +44,17 @@ public:
     void _q_desktopResized(int);
     bool isLandscapeScreen() const;
     QSize currentScreenSize() const;
-    QSize adjustedSize(const QSize &size, SDeclarativeScreen::Orientation orientation) const;
+    QSize adjustedSize(const QSize &size) const;
+    bool portraitAllowed() const;
+    bool landscapeAllowed() const;
 
 public:
     SDeclarativeScreen *q_ptr;
-    SDeclarativeScreen::Orientation orientation;
+    SDeclarativeScreen::Orientation currentOrientation;
+    SDeclarativeScreen::Orientations allowedOrientations;
     qreal dpi;
-    SDeclarativeScreen::Orientation startupOrientation;
-    QSize screenSize;
+    QSize screenSize;  // "logical" screen
+    QSize displaySize; // "physical" display
     bool settingDisplay;
     QPointer<QGraphicsView> gv;
     bool initCalled;

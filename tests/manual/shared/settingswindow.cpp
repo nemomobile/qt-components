@@ -151,6 +151,8 @@ SettingsWindow::SettingsWindow(QDeclarativeView *view)
 
     displayChanged();
     connect(screen, SIGNAL(displayChanged()), this, SLOT(displayChanged()), Qt::QueuedConnection);
+    connect(screen, SIGNAL(widthChanged()), this, SLOT(displayChanged()), Qt::QueuedConnection);
+    connect(screen, SIGNAL(heightChanged()), this, SLOT(displayChanged()), Qt::QueuedConnection);
     setObjectName("settingsWindow");
 
     qDebug() << "----- SettingsWindow: Enabling Ctrl+Alt+Shift+S shortcut -----";
@@ -187,7 +189,7 @@ void SettingsWindow::changeResolution(int index)
 {
     if (index != -1) {
         DisplayProfile profile = displayProfilesArray[index];
-        QMetaObject::invokeMethod(screen, "setDisplay",
+        QMetaObject::invokeMethod(screen, "privateSetDisplay",
                                   Q_ARG(int, profile.resolutionWidth),
                                   Q_ARG(int, profile.resolutionHeight),
                                   Q_ARG(qreal, profile.dpiValue));
@@ -242,7 +244,7 @@ void SettingsWindow::userEditingFinished()
         dpi = dpiLineEdit->text().toDouble();
     }
 
-    QMetaObject::invokeMethod(screen, "setDisplay",
+    QMetaObject::invokeMethod(screen, "privateSetDisplay",
                               Q_ARG(int, widthSpinBox->value()),
                               Q_ARG(int, heightSpinBox->value()),
                               Q_ARG(qreal, dpi));

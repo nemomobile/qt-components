@@ -153,7 +153,8 @@ public:
         Automatic,
         LockPortrait,
         LockLandscape,
-        LockPrevious
+        LockPrevious,
+        Manual
     };
 };
 

@@ -68,29 +68,32 @@ Item {
         property int previousHeight: 0
 
         function isScreenInPortrait() {
-            return screen.orientation == Screen.Portrait || screen.orientation == Screen.PortraitInverted;
+            return screen.currentOrientation == Screen.Portrait || screen.currentOrientation == Screen.PortraitInverted;
         }
 
         function isScreenInLandscape() {
-            return screen.orientation == Screen.Landscape || screen.orientation == Screen.LandscapeInverted;
+            return screen.currentOrientation == Screen.Landscape || screen.currentOrientation == Screen.LandscapeInverted;
         }
 
         function orientationLockCheck() {
             switch (orientationLock) {
             case PageOrientation.Automatic:
-                screen.orientation = Screen.Automatic
+                screen.allowedOrientations = Screen.Default
                 break
             case PageOrientation.LockPortrait:
-                screen.orientation = Screen.Portrait
+                screen.allowedOrientations = Screen.Portrait
                 break
             case PageOrientation.LockLandscape:
-                screen.orientation = Screen.Landscape
+                screen.allowedOrientations = Screen.Landscape
                 break
             case PageOrientation.LockPrevious:
-                screen.orientation = screen.orientation
+                screen.allowedOrientations = screen.currentOrientation
                 break
+            case PageOrientation.Manual:
             default:
-                // do nothing
+                // Do nothing
+                // In manual mode it is expected that orientation is set
+                // explicitly to "screen.allowedOrientations" by the user.
                 break
             }
         }

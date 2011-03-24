@@ -35,40 +35,61 @@ class SDeclarativeScreen : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(Orientation orientation READ orientation WRITE setOrientation NOTIFY orientationChanged FINAL)
+    Q_PROPERTY(int width READ width NOTIFY widthChanged FINAL)
+    Q_PROPERTY(int height READ height NOTIFY heightChanged FINAL)
+    Q_PROPERTY(int displayWidth READ displayWidth NOTIFY displayChanged FINAL)
+    Q_PROPERTY(int displayHeight READ displayHeight NOTIFY displayChanged FINAL)
 
-    Q_PROPERTY(int width READ width NOTIFY displayChanged FINAL)
-    Q_PROPERTY(int height READ height NOTIFY displayChanged FINAL)
+    Q_PROPERTY(int rotation READ rotation NOTIFY currentOrientationChanged FINAL)
+    Q_PROPERTY(Orientation orientation READ orientation WRITE setOrientation NOTIFY orientationChanged FINAL) // deprecated
+    Q_PROPERTY(Orientation currentOrientation READ currentOrientation NOTIFY currentOrientationChanged FINAL)
+    Q_PROPERTY(Orientations allowedOrientations READ allowedOrientations WRITE setAllowedOrientations NOTIFY allowedOrientationsChanged FINAL)
+
     Q_PROPERTY(qreal dpi READ dpi NOTIFY displayChanged FINAL)
-    Q_PROPERTY(int rotation READ rotation NOTIFY orientationChanged FINAL)
 
     Q_ENUMS(Orientation)
+    Q_FLAGS(Orientations)
 
 public:
     explicit SDeclarativeScreen(QObject *parent = 0);
     virtual ~SDeclarativeScreen();
 
     enum Orientation {
-        Automatic,
-        Portrait,
-        Landscape,
-        PortraitInverted,
-        LandscapeInverted
+        Default = 0,
+        Portrait = 1,
+        Landscape = 2,
+        PortraitInverted = 4,
+        LandscapeInverted = 8,
+        All = 15,
+        Automatic = All // deprecated
     };
 
-    Orientation orientation() const;
-    void setOrientation(Orientation orientation);
+    Q_DECLARE_FLAGS(Orientations, Orientation)
 
     int width() const;
     int height() const;
-    qreal dpi() const;
-    int rotation() const;
+    int displayWidth() const;
+    int displayHeight() const;
 
-    Q_INVOKABLE void setDisplay(int width, int height, qreal dpi);
+    int rotation() const;
+    Orientation orientation() const; //deprecated
+    void setOrientation(Orientation orientation); //deprecated
+    Orientation currentOrientation() const;
+    Orientations allowedOrientations() const;
+    void setAllowedOrientations(Orientations orientations);
+
+    qreal dpi() const;
+
+    Q_INVOKABLE void privateSetDisplay(int width, int height, qreal dpi);
 
 Q_SIGNALS:
-    void orientationChanged();
+    void widthChanged();
+    void heightChanged();
+    void orientationChanged(); // deprecated
+    void currentOrientationChanged();
+    void allowedOrientationsChanged();
     void displayChanged();
+    void privateAboutToChangeOrientation();
 
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
@@ -83,5 +104,7 @@ private:
 };
 
 QML_DECLARE_TYPE(SDeclarativeScreen)
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(SDeclarativeScreen::Orientations)
 
 #endif // SDECLARATIVESCREEN_H

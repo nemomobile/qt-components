@@ -45,14 +45,14 @@ Item {
                     text: "Portrait"
                     onClicked: {
                         startupOrientationButton.orientation = Screen.Portrait
-                        screen.orientation = Screen.Portrait
+                        screen.allowedOrientation = Screen.Portrait
                     }
                 }
                 Button {
                     text: "Landscape"
                     onClicked: {
                         startupOrientationButton.orientation = Screen.Landscape
-                        screen.orientation = Screen.Landscape
+                        screen.allowedOrientation = Screen.Landscape
                     }
                 }
             }

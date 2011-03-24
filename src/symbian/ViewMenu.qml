@@ -102,7 +102,7 @@ Item {
 
             Connections {
                 target: screen
-                onOrientationChanged: connectionTimer.start()
+                onCurrentOrientationChanged: connectionTimer.start()
             }
 
             Timer {

@@ -74,7 +74,7 @@ ApplicationWindow {
 
     Component.onCompleted: {
         internal.qmlPaths = fileAccess.qmlPaths()
-        screen.orientation = settings.orientation()
+        screen.allowedOrientations = settings.orientation()
         mainWindow.pageStack.push(component)
         // clear the toolBar pointer, prevents subpages from
         // accidentally removing common application tools
@@ -87,15 +87,7 @@ ApplicationWindow {
         Page {
             id: mainPage
             tools: commonTools
-
-            orientationLock: {
-                if (settings.orientation() == 0)
-                    return PageOrientation.Automatic;
-                else if (settings.orientation() == 1)
-                    return PageOrientation.LockPortrait;
-                else if (settings.orientation() ==2)
-                    return PageOrientation.LockLandscape;
-            }
+            orientationLock: PageOrientation.Manual
 
             anchors.fill: parent
 
@@ -111,6 +103,11 @@ ApplicationWindow {
                     return internal.testFilesPath + file
                 } else
                     return ""
+            }
+
+            onStatusChanged: {
+                if (status == PageStatus.Activating)
+                    screen.allowedOrientations = startupOrientationButton.orientation
             }
 
             Flickable {
@@ -144,7 +141,7 @@ ApplicationWindow {
 
                             onClicked: {
                                 startupOrientationButton.orientation = Screen.Portrait
-                                screen.orientation = Screen.Portrait
+                                screen.allowedOrientations = Screen.Portrait
                             }
                         }
                         Button {
@@ -155,8 +152,8 @@ ApplicationWindow {
                             height: parent.buttonHeight
 
                             onClicked: {
-                               startupOrientationButton.orientation = Screen.Landscape
-                               screen.orientation = Screen.Landscape
+                                startupOrientationButton.orientation = Screen.Landscape
+                                screen.allowedOrientations = Screen.Landscape
                             }
                         }
                         Button {
@@ -167,8 +164,8 @@ ApplicationWindow {
                             height: parent.buttonHeight
 
                             onClicked: {
-                                startupOrientationButton.orientation = Screen.Automatic
-                                screen.orientation = Screen.Automatic
+                                startupOrientationButton.orientation = Screen.Default
+                                screen.allowedOrientations = Screen.Default
                             }
                         }
                         Button {
@@ -180,6 +177,8 @@ ApplicationWindow {
                             text: "Save:" + orientation
                             width: parent.buttonWidth
                             height: parent.buttonHeight
+
+                            Component.onCompleted: orientation = settings.orientation()
 
                             // save orientation for next startup
                             onClicked: settings.setOrientation(orientation)

@@ -46,8 +46,8 @@ Item {
 
     Connections {
         target: screen
-        onOrientationChanged: window.orientationChangeFinished()
-        onDisplayChanged: {
+        onCurrentOrientationChanged: window.orientationChangeFinished()
+        onPrivateAboutToChangeOrientation: {
             window.orientationChangeAboutToStart()
             window.orientationChangeStarted()
         }

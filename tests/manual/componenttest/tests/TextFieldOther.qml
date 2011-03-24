@@ -35,8 +35,8 @@ Item {
 
     QtObject {
         id: privy
-        property bool portrait:    screen.orientation == Screen.Portrait
-                                || screen.orientation == Screen.PortraitInverted
+        property bool portrait:    screen.currentOrientation == Screen.Portrait
+                                || screen.currentOrientation == Screen.PortraitInverted
         property int margin: 5
     }
 

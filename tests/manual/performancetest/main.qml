@@ -61,7 +61,7 @@ ApplicationWindow {
 
     Component.onCompleted: {
         internal.qmlPaths = fileAccess.qmlPaths()
-        screen.orientation = settings.orientation()
+        screen.allowedOrientations = settings.orientation()
         mainWindow.pageStack.push(component)
     }
 
@@ -70,6 +70,10 @@ ApplicationWindow {
 
         Page {
             id: mainPage
+
+            // Set orientation lock to manual. The initial orientation is set directly to screen
+            // from the settings (and thus the Page must not touch the orientation at all).
+            orientationLock: PageOrientation.Manual
 
             anchors.fill: parent
 
@@ -85,6 +89,11 @@ ApplicationWindow {
                     return internal.testFilesPath + file
                 } else
                     return ""
+            }
+
+            onStatusChanged: {
+                if (status == PageStatus.Activating)
+                    screen.allowedOrientations = startupOrientationButton.orientation
             }
 
             Flickable {
@@ -118,7 +127,7 @@ ApplicationWindow {
 
                             onClicked: {
                                 startupOrientationButton.orientation = Screen.Portrait
-                                screen.orientation = Screen.Portrait
+                                screen.allowedOrientations = Screen.Portrait
                             }
                         }
                         Button {
@@ -130,7 +139,7 @@ ApplicationWindow {
 
                             onClicked: {
                                startupOrientationButton.orientation = Screen.Landscape
-                               screen.orientation = Screen.Landscape
+                               screen.allowedOrientations = Screen.Landscape
                             }
                         }
                         Button {
@@ -141,8 +150,8 @@ ApplicationWindow {
                             height: parent.buttonHeight
 
                             onClicked: {
-                                startupOrientationButton.orientation = Screen.Automatic
-                                screen.orientation = Screen.Automatic
+                                startupOrientationButton.orientation = Screen.Default
+                                screen.allowedOrientations = Screen.Default
                             }
                         }
                         Button {

@@ -62,50 +62,73 @@ void tst_SDeclarativeScreen::defaults()
 {
     QVERIFY(screen->property("width").toInt() > 0);
     QVERIFY(screen->property("height").toInt() > 0);
+    QVERIFY(screen->property("displayWidth").toInt() > 0);
+    QVERIFY(screen->property("displayHeight").toInt() > 0);
+    QVERIFY(screen->property("dpi").toDouble() > (double)0);
+    QCOMPARE(screen->property("allowedOrientations").toInt(), (int)SDeclarativeScreen::Default);
 
-    if (screen->property("orientation").toInt() == SDeclarativeScreen::Portrait
-        || (screen->property("orientation").toInt() == SDeclarativeScreen::PortraitInverted)) {
+    if (screen->property("currentOrientation").toInt() == SDeclarativeScreen::Portrait
+        || (screen->property("currentOrientation").toInt() == SDeclarativeScreen::PortraitInverted)) {
         QVERIFY(screen->property("width").toInt() < screen->property("height").toInt());
-    } else if (screen->property("orientation").toInt() == SDeclarativeScreen::Landscape
-        || screen->property("orientation").toInt() == SDeclarativeScreen::LandscapeInverted) {
+    } else if (screen->property("currentOrientation").toInt() == SDeclarativeScreen::Landscape
+        || screen->property("currentOrientation").toInt() == SDeclarativeScreen::LandscapeInverted) {
         QVERIFY(screen->property("height").toInt() < screen->property("width").toInt());
     }
 }
 
 void tst_SDeclarativeScreen::changeOrientation()
 {
-    QSignalSpy spy(screen, SIGNAL(orientationChanged()));
+    QSignalSpy currentOrientationSpy(screen, SIGNAL(currentOrientationChanged()));
+    QSignalSpy allowedOrientationsSpy(screen, SIGNAL(allowedOrientationsChanged()));
+    QSignalSpy widthSpy(screen, SIGNAL(widthChanged()));
+    QSignalSpy heightSpy(screen, SIGNAL(heightChanged()));
+    QSignalSpy displaySpy(screen, SIGNAL(displayChanged()));
 
-    if (screen->property("orientation").toInt() == SDeclarativeScreen::Portrait
-        || screen->property("orientation").toInt() == SDeclarativeScreen::PortraitInverted) {
-        screen->setProperty("orientation", SDeclarativeScreen::Landscape);
+    int displayWidth = screen->property("displayWidth").toInt();
+    int displayHeight = screen->property("displayHeight").toInt();
+
+    if (screen->property("currentOrientation").toInt() == SDeclarativeScreen::Portrait
+        || screen->property("currentOrientation").toInt() == SDeclarativeScreen::PortraitInverted) {
+        screen->setProperty("allowedOrientations", SDeclarativeScreen::Landscape);
+        QCOMPARE(screen->property("allowedOrientations").toInt(), (int)SDeclarativeScreen::Landscape);
         QVERIFY(screen->property("width").toInt() > screen->property("height").toInt());
     } else {
-        screen->setProperty("orientation", SDeclarativeScreen::Portrait);
+        screen->setProperty("allowedOrientations", SDeclarativeScreen::Portrait);
+        QCOMPARE(screen->property("allowedOrientations").toInt(), (int)SDeclarativeScreen::Portrait);
         QVERIFY(screen->property("height").toInt() > screen->property("width").toInt());
     }
+
     // ensure that resizeEvent gets handled
     QApplication::sendPostedEvents();
-    QCOMPARE(spy.count(), 1); // orientation changed once
+
+    // ensure that display size has not changed
+    QCOMPARE(screen->property("displayWidth").toInt(), displayWidth);
+    QCOMPARE(screen->property("displayHeight").toInt(), displayHeight);
+
+    QCOMPARE(currentOrientationSpy.count(), 1);
+    QCOMPARE(allowedOrientationsSpy.count(), 1);
+    QCOMPARE(widthSpy.count(), 1);
+    QCOMPARE(heightSpy.count(), 1);
+    QCOMPARE(displaySpy.count(), 0); // no "displayChanged" signal
 }
 
 void tst_SDeclarativeScreen::changeScreenSize()
 {
-    QMetaObject::invokeMethod(screen, "setDisplay",
+    QMetaObject::invokeMethod(screen, "privateSetDisplay",
                               Q_ARG(int, 360),
                               Q_ARG(int, 640),
                               Q_ARG(qreal, 200));
     QCOMPARE(screen->property("width").toInt(), 360);
     QCOMPARE(screen->property("height").toInt(), 640);
-    QCOMPARE(screen->property("orientation").toInt(), (int)SDeclarativeScreen::Portrait);
+    QCOMPARE(screen->property("currentOrientation").toInt(), (int)SDeclarativeScreen::Portrait);
     QCOMPARE(screen->property("dpi").toDouble(), (double)200);
-    QMetaObject::invokeMethod(screen, "setDisplay",
+    QMetaObject::invokeMethod(screen, "privateSetDisplay",
                               Q_ARG(int, 640),
                               Q_ARG(int, 360),
                               Q_ARG(qreal, 120));
     QCOMPARE(screen->property("width").toInt(), 640);
     QCOMPARE(screen->property("height").toInt(), 360);
-    QCOMPARE(screen->property("orientation").toInt(), (int)SDeclarativeScreen::Landscape);
+    QCOMPARE(screen->property("currentOrientation").toInt(), (int)SDeclarativeScreen::Landscape);
     QCOMPARE(screen->property("dpi").toDouble(), (double)120);
 }
 
@@ -117,8 +140,7 @@ void tst_SDeclarativeScreen::startupOrientation()
     QVERIFY(applicationWindow->property("width").toInt() > 0);
     QVERIFY(applicationWindow->property("height").toInt() > 0);
     QVERIFY(applicationWindow->property("width").toInt() > applicationWindow->property("height").toInt());
-    QCOMPARE(screen->property("orientation").toInt(), (int)SDeclarativeScreen::Landscape);
-
+    QCOMPARE(screen->property("currentOrientation").toInt(), (int)SDeclarativeScreen::Landscape);
 }
 
 void tst_SDeclarativeScreen::initView(const QString &fileName)
