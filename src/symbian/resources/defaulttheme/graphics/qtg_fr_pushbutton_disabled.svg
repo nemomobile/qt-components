@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 14.0.0, SVG Export Plug-In  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
-	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+    <!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
 ]>
 <svg version="1.1"
-	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-	 x="0px" y="0px" width="84px" height="42px" viewBox="0 0 84 42" enable-background="new 0 0 84 42" xml:space="preserve">
+     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+     x="0px" y="0px" width="84px" height="42px" viewBox="0 0 84 42" enable-background="new 0 0 84 42" xml:space="preserve">
 <defs>
 </defs>
 <path opacity="0.4" enable-background="new    " d="M77,0H7C3.14,0,0,3.141,0,7v28c0,3.859,3.14,7,7,7h70c3.859,0,7-3.141,7-7V7
-	C84,3.141,80.859,0,77,0z M83,35c0,3.309-2.691,6-6,6H7c-3.309,0-6-2.691-6-6V7c0-3.309,2.691-6,6-6h70c3.309,0,6,2.691,6,6V35z"/>
+    C84,3.141,80.859,0,77,0z M83,35c0,3.309-2.691,6-6,6H7c-3.309,0-6-2.691-6-6V7c0-3.309,2.691-6,6-6h70c3.309,0,6,2.691,6,6V35z"/>
 <linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="42.0005" y1="40.7231" x2="42.0005" y2="0.9276">
-	<stop  offset="0" style="stop-color:#999999"/>
-	<stop  offset="1" style="stop-color:#CCCCCC;stop-opacity:0.95"/>
+    <stop  offset="0" style="stop-color:#999999"/>
+    <stop  offset="1" style="stop-color:#CCCCCC;stop-opacity:0.95"/>
 </linearGradient>
 <path opacity="0.6" fill="url(#SVGID_1_)" enable-background="new    " d="M7,41c-3.309,0-6-2.691-6-6V7c0-3.309,2.691-6,6-6h70
-	c3.309,0,6,2.691,6,6v28c0,3.309-2.691,6-6,6H7z"/>
+    c3.309,0,6,2.691,6,6v28c0,3.309-2.691,6-6,6H7z"/>
 </svg>

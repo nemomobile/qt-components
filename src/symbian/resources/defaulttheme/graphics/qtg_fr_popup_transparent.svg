@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 15.0.2, SVG Export Plug-In  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Basic//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-basic.dtd" [
-	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+    <!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
 ]>
 <svg version="1.1" baseProfile="basic"
-	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-	 x="0px" y="0px" width="264px" height="192px" viewBox="0 0 264 192" overflow="visible" enable-background="new 0 0 264 192"
-	 xml:space="preserve">
+     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+     x="0px" y="0px" width="264px" height="192px" viewBox="0 0 264 192" overflow="visible" enable-background="new 0 0 264 192"
+     xml:space="preserve">
 <defs>
 </defs>
 <g opacity="0.95">
-	<path fill="#6D6D6D" d="M0,184c0,4.4179688,3.581543,8,8,8h248c4.4179688,0,8-3.5820312,8-8V8c0-4.418457-3.5820312-8-8-8H8
-		C3.581543,0,0,3.581543,0,8V184z"/>
+    <path fill="#6D6D6D" d="M0,184c0,4.4179688,3.581543,8,8,8h248c4.4179688,0,8-3.5820312,8-8V8c0-4.418457-3.5820312-8-8-8H8
+        C3.581543,0,0,3.581543,0,8V184z"/>
 </g>
 </svg>
