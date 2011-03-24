@@ -59,10 +59,26 @@ ApplicationWindow {
         property variant qmlPaths: []
     }
 
+    ToolBarLayout {
+        id: commonTools
+        ToolButton {
+            flat: true
+            iconSource: "image://theme/qtg_toolbar_back"
+            onClicked: pageStack.depth <= 1 ? Qt.quit() : pageStack.pop()
+        }
+        ToolButton {
+            flat: true
+            iconSource: "image://theme/qtg_toolbar_options"
+        }
+    }
+
     Component.onCompleted: {
         internal.qmlPaths = fileAccess.qmlPaths()
         screen.allowedOrientations = settings.orientation()
         mainWindow.pageStack.push(component)
+        // clear the toolBar pointer, prevents subpages from
+        // accidentally removing common application tools
+        mainWindow.pageStack.toolBar = null
     }
 
     Component {
@@ -70,9 +86,7 @@ ApplicationWindow {
 
         Page {
             id: mainPage
-
-            // Set orientation lock to manual. The initial orientation is set directly to screen
-            // from the settings (and thus the Page must not touch the orientation at all).
+            tools: commonTools
             orientationLock: PageOrientation.Manual
 
             anchors.fill: parent
@@ -163,6 +177,8 @@ ApplicationWindow {
                             text: "Save:" + orientation
                             width: parent.buttonWidth
                             height: parent.buttonHeight
+
+                            Component.onCompleted: orientation = settings.orientation()
 
                             // save orientation for next startup
                             onClicked: settings.setOrientation(orientation)
