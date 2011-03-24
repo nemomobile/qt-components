@@ -26,28 +26,24 @@
 
 import Qt 4.7
 
-ImplicitSizeItem {
+Text {
     id: listItemText
-    property Style style: null // Enables binding to style of the parent component (ListItem / ListHeading / SelectionListItem).
+    property Style style: null // deprecated. Use mode instead.
+    onStyleChanged: console.log("ListItemText.style deprecated, use ListItemText.mode instead !")
+    property string mode: "normal"
     property string role: "Title"
-    property alias text: textField.text
 
-    implicitWidth: 50
-    implicitHeight: textField.height
-
-    Text {
-        id: textField
-        font {
-            family: platformStyle.fontFamilyRegular
-            pixelSize: (role == "Title" || role == "SelectionTitle") ? platformStyle.fontSizeLarge : platformStyle.fontSizeSmall
-            weight: (role == "SubTitle" || role == "SelectionSubTitle") ? Font.Light : Font.Normal
-        }
-        color: getColor()
+    font {
+        family: platformStyle.fontFamilyRegular
+        pixelSize: (role == "Title" || role == "SelectionTitle") ? platformStyle.fontSizeLarge : platformStyle.fontSizeSmall
+        weight: (role == "SubTitle" || role == "SelectionSubTitle") ? Font.Light : Font.Normal
     }
+    color: getColor()
+    elide: Text.ElideRight
 
     function getColor() {
-        if (style != null) {
-            if (style.mode == "default") {
+        if (style) { // TODO: This block can be removed when style property is removed
+            if (style.mode == "normal") {
                 if (role == "SelectionTitle")
                     return platformStyle.colorNormalDark
                 else if (role == "SelectionSubtitle" || role == "SubTitle")
@@ -56,13 +52,26 @@ ImplicitSizeItem {
                     return platformStyle.colorNormalLight
             } else if (style.mode == "pressed") {
                 return platformStyle.colorPressed
-            } else if (style.mode == "focused") {
+            } else if (style.mode == "highlight") {
                  return platformStyle.colorHighlighted
             } else if (style.mode == "disabled") {
                 return platformStyle.colorDisabledLight
             }
         } else {
-            return platformStyle.colorNormalDark
+            if (listItemText.mode == "normal" || listItemText.mode == "") {
+                if (role == "SelectionTitle")
+                    return platformStyle.colorNormalDark
+                else if (role == "SelectionSubtitle" || role == "SubTitle")
+                    return platformStyle.colorNormalMid
+                else
+                    return platformStyle.colorNormalLight
+            } else if (listItemText.mode == "pressed") {
+                return platformStyle.colorPressed
+            } else if (listItemText.mode == "highlight") {
+                 return platformStyle.colorHighlighted
+            } else if (listItemText.mode == "disabled") {
+                return platformStyle.colorDisabledLight
+            }
         }
     }
 }

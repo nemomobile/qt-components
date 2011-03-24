@@ -29,10 +29,15 @@ import "." 1.0
 
 ImplicitSizeItem {
     id: listItem
-    property variant style: itemStyle
-    property alias padding: paddingRectangle
-    property real verticalSpacing: itemStyle.current.get("verticalSpacing")
-    property real horizontalSpacing: itemStyle.current.get("horizontalSpacing")
+    property alias style: itemStyle // deprecated
+    onStyleChanged: { console.log("warning: ListItem.style is deprecated.") }
+    property string mode: internal.getMode() // Read-only
+    property alias padding: paddingItem // Read-only
+    onPaddingChanged: { console.log("warning: ListItem.padding is deprecated. Use ListItem.paddigItem instead") }
+    property alias paddingItem: paddingItem // Read-only
+
+    property real verticalSpacing: 0 // deprecated
+    property real horizontalSpacing: platformStyle.paddingMedium // deprecated
     property bool enabled: true
     property bool subItemIndicator: false
     property bool drillDownIndicator: false // deprecated
@@ -44,45 +49,42 @@ ImplicitSizeItem {
     signal clicked
     signal pressAndHold
 
-    function preferredImageHeight(ListImageSize) {
-        imageStyle.imageSize = ListImageSize
-        return imageStyle.current.preferredHeight
+    function preferredImageHeight(ListImageSize) { // deprecated
+        console.log("warning: ListItem.preferredImageHeight is deprecated. Use platformStyle context properties instead")
+        switch (ListImageSize) {
+            case Symbian.Small: return platformStyle.graphicSizeTiny; break
+            case Symbian.Medium: return platformStyle.graphicSizeSmall; break
+            case Symbian.Large: return platformStyle.graphicSizeMedium; break
+            case Symbian.ImagePortrait: return platformStyle.graphicSizeLarge; break
+            default: return 0
+        }
     }
 
-    function preferredImageWidth(ListImageSize) {
-        imageStyle.imageSize = ListImageSize
-        return imageStyle.current.preferredWidth
+    function preferredImageWidth(ListImageSize) { // deprecated
+        console.log("warning: ListItem.preferredImageWidth is deprecated. Use platformStyle context properties instead")
+        switch (ListImageSize) {
+            case Symbian.Small: return platformStyle.graphicSizeTiny; break
+            case Symbian.Medium: return platformStyle.graphicSizeSmall; break
+            case Symbian.Large: return platformStyle.graphicSizeMedium; break
+            case Symbian.ImagePortrait: return platformStyle.graphicSizeLarge; break
+            default: return 0
+        }
     }
 
     clip: true
-    implicitWidth: itemStyle.current.preferredWidth
-    implicitHeight: itemStyle.current.preferredHeight
+    implicitWidth: ListView.view ? ListView.view.width : screen.width
+    implicitHeight: platformStyle.graphicSizeLarge
 
     Style {
         id: itemStyle
         styleClass: "ListItem"
         styleObjectName: "ListItem"
-        mode: {
-            if (internal.state == "Pressed" || internal.state == "PressAndHold")
-                return "pressed"
-            else if (internal.state == "Focused")
-                return "focused"
-            else if (internal.state == "Disabled")
-                return "disabled"
-            else
-                return "default"
-        }
-    }
-
-    Style {
-        id: imageStyle
-        styleClass: "ListItemImage"
-        property int imageSize: Symbian.Undefined
+        mode: internal.getMode()
     }
 
     BorderImage {
         id: frame
-        source: itemStyle.current.get("background")
+        source: privateStyle.imagePath("qtg_fr_list_normal")
         border { left: 20; top: 20; right: 20; bottom: 20 }
         anchors.fill: parent
 
@@ -90,7 +92,7 @@ ImplicitSizeItem {
             id: frameFader
             opacity: 0
             anchors.fill: frame
-            source: itemStyle.current.get("faderBackground")
+            source: privateStyle.imagePath("qtg_fr_list_" + mode)
             border { left: 20; top: 20; right: 20; bottom: 20 }
         }
     }
@@ -216,31 +218,42 @@ ImplicitSizeItem {
 
     Item {
         // non-visible item to create a padding boundary that content items can bind to
-        id: paddingRectangle
+        id: paddingItem
         anchors {
             fill: parent
-            leftMargin: itemStyle.current.get("marginLeft")
+            leftMargin: platformStyle.paddingLarge
             rightMargin: iconLoader.status == Loader.Ready ?
-                    iconLoader.width + itemStyle.current.get("marginRight") + itemStyle.current.get("horizontalSpacing") :
-                    itemStyle.current.get("marginRight")
-            topMargin: itemStyle.current.get("marginTop")
-            bottomMargin: itemStyle.current.get("marginBottom")
+                    privateStyle.scrollBarThickness + iconLoader.width + platformStyle.paddingMedium :
+                    privateStyle.scrollBarThickness
+            topMargin: platformStyle.paddingLarge
+            bottomMargin: platformStyle.paddingLarge
         }
     }
 
     StateGroup {
         id: internal
 
+        function getMode() {
+            if (internal.state == "Pressed" || internal.state == "PressAndHold")
+                return "pressed"
+            else if (internal.state == "Focused")
+                return "highlight"
+            else if (internal.state == "Disabled")
+                return "disabled"
+            else
+                return "normal"
+        }
+
         function press() {
             pressedEffect.restart()
-            itemStyle.play(Symbian.BasicItem)
+            privateStyle.play(Symbian.BasicItem)
             if (ListView.view)
                 ListView.view.currentIndex = index
         }
 
         function release() {
             releasedEffect.restart()
-            itemStyle.play(Symbian.BasicItem)
+            privateStyle.play(Symbian.BasicItem)
         }
 
         function hold() {

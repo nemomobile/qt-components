@@ -74,7 +74,7 @@ ListItem {
     Component {
         id: titleText
         ListItemText {
-            style: root.style
+            mode: root.mode
             role: "SelectionTitle"
             text: root.title
         }
@@ -82,7 +82,7 @@ ListItem {
    Component {
         id: subTitleText
         ListItemText {
-            style: root.style
+            mode: root.mode
             role: "SelectionSubTitle"
             text: root.subTitle
         }

@@ -29,19 +29,22 @@ import "." 1.0
 
 ImplicitSizeItem {
     id: listHeading
-    property variant style: style
-    property alias padding: paddingRectangle
+    property alias style: style // deprecated
+    onStyleChanged: { console.log("warning: ListHeading.style is deprecated") }
+    property alias padding: paddingItem
+    onPaddingChanged: { console.log("warning: ListHeading.padding is deprecated. Use ListItem.paddigItem instead") }
+    property alias paddingItem: paddingItem // Read-only
 
     Style {
         id: style
         styleClass: "ListHeading"
     }
 
-    implicitWidth: style.current.preferredWidth
-    implicitHeight: style.current.preferredHeight
+    implicitWidth: ListView.view ? ListView.view.width : screen.width
+    implicitHeight: platformStyle.graphicSizeSmall
 
     BorderImage {
-        source: style.current.get("background")
+        source: privateStyle.imagePath("qtg_fr_list_heading_normal")
         border { left: 28; top: 0; right: 28; bottom: 0 }
         smooth: true
         anchors.fill: parent
@@ -49,15 +52,13 @@ ImplicitSizeItem {
 
     Item {
         // non-visible item to create a padding boundary that content items can bind to
-        id: paddingRectangle
+        id: paddingItem
         anchors {
             fill: parent
-            leftMargin: style.current.get("marginLeft")
-            rightMargin: style.current.get("marginRight")
-            topMargin: style.current.get("marginTop")
-            bottomMargin: style.current.get("marginBottom")
+            leftMargin: platformStyle.paddingLarge
+            rightMargin: privateStyle.scrollBarThickness
+            topMargin: platformStyle.paddingSmall
+            bottomMargin: platformStyle.paddingSmall
         }
-        width: style.current.get("marginLeft") + style.current.get("marginRight")
-        height: style.current.get("marginTop") + style.current.get("marginBottom")
     }
 }
