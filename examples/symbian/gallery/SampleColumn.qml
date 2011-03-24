@@ -221,7 +221,7 @@ Column {
         ListHeading {
             width: parent.width
             ListItemText {
-                anchors.fill: parent.padding
+                anchors.fill: parent.paddingItem
                 role: "Heading"
                 text: "ListHeading"
             }
@@ -233,17 +233,14 @@ Column {
         ListItem {
             id: listItem
             Column {
-                anchors.fill: listItem.padding
-                spacing: listItem.verticalSpacing
+                anchors.fill: listItem.paddingItem
                 ListItemText {
-                    anchors.fill: parent.padding
-                    style: listItem.style
+                    mode: listItem.mode
                     role: "Title"
                     text: titleText
                 }
                 ListItemText {
-                    anchors.fill: parent.padding
-                    style: listItem.style
+                    mode: listItem.mode
                     role: "SubTitle"
                     text: subTitleText
                 }
