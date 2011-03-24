@@ -166,7 +166,7 @@ void tst_scrollbar::checkProperties(const QMetaProperty &property, QObject *obj,
 #ifdef QT_COMP_SCROLLBAR_UNIT_TEST_TRACES
         qDebug() << "default (implicitWidth) = " << property.read(obj).toString();
 #endif //QT_COMP_SCROLLBAR_UNIT_TEST_TRACES
-        QVERIFY(property.read(obj).toReal() > 5);
+        QVERIFY(!property.read(obj).isNull());
     }
     if (property.name() == QString("implicitHeight")) {
         (*propertyCount)++;
@@ -174,7 +174,7 @@ void tst_scrollbar::checkProperties(const QMetaProperty &property, QObject *obj,
 #ifdef QT_COMP_SCROLLBAR_UNIT_TEST_TRACES
         qDebug() << "default (implicitHeight) = " << property.read(obj).toString();
 #endif //QT_COMP_SCROLLBAR_UNIT_TEST_TRACES
-        QVERIFY(property.read(obj).toReal() > 5);
+        QVERIFY(!property.read(obj).isNull());
     }
 }
 
