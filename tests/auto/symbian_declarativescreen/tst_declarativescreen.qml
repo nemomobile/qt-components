@@ -30,10 +30,4 @@ import com.nokia.symbian 1.0
 ApplicationWindow {
     id: window
     objectName: "window"
-    property bool initOk: false
-
-    Connections {
-        target: screen
-        onPrivateScreenUpdated: initOk = true
-    }
 }

@@ -50,14 +50,12 @@ private:
     void initView(const QString &fileName);
     QObject *screen;
     QScopedPointer<QDeclarativeView> view;
+    QScopedPointer<QObject> applicationWindow;
 };
 
 void tst_SDeclarativeScreen::initTestCase()
 {
     initView("tst_declarativescreen.qml");
-    QVERIFY(screen);
-    QGraphicsObject* applicationWindow = view->rootObject();
-    QVERIFY(applicationWindow->property("initOk").toBool());
 }
 
 void tst_SDeclarativeScreen::defaults()
@@ -115,7 +113,7 @@ void tst_SDeclarativeScreen::startupOrientation()
 {
     initView("tst_declarativescreen2.qml");
     QGraphicsObject* applicationWindow = view->rootObject();
-    QVERIFY(applicationWindow->property("initOk").toBool());
+    QVERIFY(applicationWindow);
     QVERIFY(applicationWindow->property("width").toInt() > 0);
     QVERIFY(applicationWindow->property("height").toInt() > 0);
     QVERIFY(applicationWindow->property("width").toInt() > applicationWindow->property("height").toInt());
@@ -125,15 +123,23 @@ void tst_SDeclarativeScreen::startupOrientation()
 
 void tst_SDeclarativeScreen::initView(const QString &fileName)
 {
-    view.reset();
-    view.reset(tst_quickcomponentstest::createDeclarativeView(fileName));
-    view->show();
-    view->activateWindow();
-    QTest::qWaitForWindowShown(view.data());
+    if (view.isNull())
+        view.reset(tst_quickcomponentstest::createDeclarativeView(fileName));
     QVERIFY(view);
+    QDeclarativeView *v = view.data();
+    QString errors;
+    applicationWindow.reset(tst_quickcomponentstest::createComponentFromFile(fileName, &errors, &v));
+    QVERIFY2(applicationWindow, qPrintable(errors));
+
+    view->activateWindow();
+    QApplication::setActiveWindow(view.data());
+    view->show();
+    QTest::qWaitForWindowShown(view.data());
+
     QVERIFY(view->rootObject());
     QTRY_COMPARE(QApplication::activeWindow(), static_cast<QWidget *>(view.data()));
-    screen = qVariantValue<QObject *>(view.data()->engine()->rootContext()->contextProperty("screen"));
+    screen = qVariantValue<QObject *>(view->engine()->rootContext()->contextProperty("screen"));
+    QVERIFY(screen);
 }
 
 QTEST_MAIN(tst_SDeclarativeScreen)
