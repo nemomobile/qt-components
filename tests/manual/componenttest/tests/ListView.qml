@@ -214,14 +214,14 @@ Item {
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: parent.width - parent.spacing
                 currentIndex: 0
-                model: ["Undefined", "Small", "Medium", "Large", "ImagePortrait"]
+                model: ["Undefined", "Tiny", "Small", "Medium", "Large"]
             }
         }
         onAccepted: {
             listView.model.insert(listView.currentIndex + 1, {
                 "title": titleField.text,
                 "subTitle": subTitleField.text,
-                "imageSize": imageSizeChoiceList.currentIndex,
+                "imageSize": root.getSize(imageSizeChoiceList.currentIndex), // Fetch actual size in pixels based on index
                 "image": "image://theme/:/list1.png",
                 "disabled": false,
                 "selected": false,
@@ -240,7 +240,7 @@ Item {
                 listView.model.append( {
                     "title": "Title text - " + (5*i + j),
                     "subTitle": "SubTitle " + (5*i + j),
-                    "imageSize": j,
+                    "imageSize": root.getSize(j), // Fetch actual size in pixels based on index
                     "image": "image://theme/:/list" + (i + 1) + ".png",
                     "disabled": false,
                     "selected": false,
@@ -260,32 +260,37 @@ Item {
             enabled: !disabled // State from model
             subItemIndicator: indicator
 
-            Row {
-                anchors.fill: listItem.padding
-                spacing: listItem.horizontalSpacing
-
-                Image {
-                    sourceSize.height: listItem.preferredImageHeight(imageSize)
-                    sourceSize.width: listItem.preferredImageWidth(imageSize)
-                    source: imageSize == Symbian.Undefined ? "" : image
+            Image {
+                id: imageItem
+                anchors {
+                    left: imageSize == platformStyle.graphicSizeLarge ? listItem.left : listItem.paddingItem.left
+                    top: imageSize == platformStyle.graphicSizeLarge ? listItem.top : listItem.paddingItem.top
+                }
+                sourceSize.height: imageSize
+                sourceSize.width: imageSize
+                source: imageSize == 0 ? "" : image
+            }
+            Column {
+                anchors {
+                    top: listItem.paddingItem.top
+                    left: imageItem.right
+                    leftMargin: platformStyle.paddingMedium
+                    right: listItem.paddingItem.right
                 }
 
-                Column {
-                    spacing: listItem.verticalSpacing
+                ListItemText {
+                    mode: listItem.mode
+                    role: "Title"
+                    text: title // Title from model
+                }
 
-                    ListItemText {
-                        style: listItem.style
-                        role: "Title"
-                        text: title // Title from model
-                    }
-
-                    ListItemText {
-                        style: listItem.style
-                        role: "SubTitle"
-                        text: subTitle // SubTitle from model
-                    }
+                ListItemText {
+                    mode: listItem.mode
+                    role: "SubTitle"
+                    text: subTitle // SubTitle from model
                 }
             }
+
             onClicked: {
                 notificationDialog.notificationText = "Activated item: " + title
                 notificationDialog.open()
@@ -298,7 +303,6 @@ Item {
                         listView.model.remove(listView.currentIndex)
                 }
             }
-
         }
     }
 
@@ -311,8 +315,7 @@ Item {
 
             ListItemText {
                 id: txtHeading
-                anchors.fill: listHeader.padding
-                style: listHeader.style
+                anchors.fill: listHeader.paddingItem
                 role: "Heading"
                 text: "Test list"
             }
@@ -328,11 +331,20 @@ Item {
 
             ListItemText {
                 id: txtHeading
-                anchors.fill: sectionHeader.padding
-                style: sectionHeader.style
+                anchors.fill: sectionHeader.paddingItem
                 role: "Heading"
                 text: "Section: " + section
             }
+        }
+    }
+
+    function getSize(size) {
+        switch (size) {
+            case 1: return platformStyle.graphicSizeTiny; break
+            case 2: return platformStyle.graphicSizeSmall; break
+            case 3: return platformStyle.graphicSizeMedium; break
+            case 4: return platformStyle.graphicSizeLarge; break
+            default: return 0
         }
     }
 }

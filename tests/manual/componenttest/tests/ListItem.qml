@@ -79,19 +79,18 @@ Item {
                 objectName: "listItem2"
 
                 Column {
-                    anchors.fill: listItem2.padding
-                    spacing: listItem2.verticalSpacing
+                    anchors.fill: listItem2.paddingItem
 
                     ListItemText {
                         id: titleText2
-                        style: listItem2.style
+                        mode: listItem2.mode
                         role: "Title"
                         text: "Title text"
                     }
 
                     ListItemText {
                         id: subTitleText2
-                        style: listItem2.style
+                        mode: listItem2.mode
                         role: "SubTitle"
                         text: "SubTitle text"
                     }
@@ -106,31 +105,30 @@ Item {
 
                 Image {
                     id: image3
-                    anchors { left: listItem3.padding.left; top: listItem3.padding.top }
-                    sourceSize.width: listItem3.preferredImageWidth(Symbian.Small)
-                    sourceSize.height: listItem3.preferredImageHeight(Symbian.Small)
+                    anchors { left: listItem3.left; top: listItem3.top }
+                    sourceSize.width: platformStyle.graphicSizeLarge
+                    sourceSize.height: platformStyle.graphicSizeLarge
                     source: "image://theme/:/list1.png"
                 }
 
                 Column {
                     anchors {
-                        top: listItem3.padding.top
+                        top: listItem3.paddingItem.top
                         left: image3.right
-                        leftMargin: listItem3.horizontalSpacing
-                        right: listItem3.padding.right
+                        leftMargin: platformStyle.paddingMedium
+                        right: listItem3.paddingItem.right
                     }
-                    spacing: listItem3.verticalSpacing
 
                     ListItemText {
                         id: titleText3
-                        style: listItem3.style
+                        mode: listItem3.mode
                         role: "Title"
                         text: "Title text"
                     }
 
                     ListItemText {
                         id: subTitleText3
-                        style: listItem3.style
+                        mode: listItem3.mode
                         role: "SubTitle"
                         text: "SubTitle text"
                     }
@@ -145,24 +143,23 @@ Item {
 
                 Image {
                     id: image4
-                    anchors { left: listItem4.padding.left; top: listItem4.padding.top }
-                    sourceSize.width: listItem3.preferredImageWidth(Symbian.Large)
-                    sourceSize.height: listItem3.preferredImageHeight(Symbian.Large)
+                    anchors { left: listItem4.left; top: listItem4.top }
+                    sourceSize.width: platformStyle.graphicSizeLarge
+                    sourceSize.height: platformStyle.graphicSizeLarge
                     source: "image://theme/:/list1.png"
                 }
 
                 Column {
                     anchors {
-                        top: listItem4.padding.top
+                        top: listItem4.paddingItem.top
                         left: image4.right
-                        leftMargin: listItem4.horizontalSpacing
-                        right: listItem4.padding.right
+                        leftMargin: platformStyle.paddingMedium
+                        right: listItem4.paddingItem.right
                     }
-                    spacing: listItem4.verticalSpacing
 
                     ListItemText {
                         id: titleText4
-                        style: listItem4.style
+                        mode: listItem4.mode
                         role: "Title"
                         text: "Title text"
                     }
@@ -175,11 +172,11 @@ Item {
                         state: "normal"
                         onValueChanged: {
                             if (value >= progressBar4.maximumValue)
-                                syncTimer.running = false
+                                timer.running = false
                         }
 
                         Timer {
-                            id: syncTimer
+                            id: timer
                             interval: 50
                             running: true
                             repeat: true
@@ -189,7 +186,7 @@ Item {
                 }
                 onClicked: {
                     progressBar4.value = 0
-                    syncTimer.running = true
+                    timer.running = true
                     notification.text = "Clicked " + objectName
                 }
                 onPressAndHold: notification.text = "Press-and-hold " + objectName
@@ -198,22 +195,22 @@ Item {
             ListItem {
                 id: listItem5
                 objectName: "listItem5"
-                height: listItem5.padding.anchors.topMargin + listItem5.padding.anchors.bottomMargin + titleText5.height
+                height: listItem5.paddingItem.anchors.topMargin + listItem5.paddingItem.anchors.bottomMargin + titleText5.height
 
                 Row {
-                    anchors.fill: listItem5.padding
-                    spacing: listItem5.horizontalSpacing
+                    anchors.fill: listItem5.paddingItem
+                    spacing: platformStyle.paddingMedium
 
                     Image {
                         id: image5
                         source: "image://theme/:/list1.png"
-                        sourceSize.width: listItem5.preferredImageWidth(Symbian.Small)
-                        sourceSize.height: listItem5.preferredImageHeight(Symbian.Small)
+                        sourceSize.width: platformStyle.graphicSizeSmall
+                        sourceSize.height: platformStyle.graphicSizeSmall
                     }
 
                     ListItemText {
                         id: titleText5
-                        style: listItem5.style
+                        mode: listItem5.mode
                         role: "Title"
                         text: "Title text"
                     }
@@ -228,30 +225,29 @@ Item {
 
                 Image {
                     id: image6a
-                    anchors { left: listItem6.padding.left; top: listItem6.padding.top }
+                    anchors { left: listItem6.left; top: listItem6.top }
                     source: "image://theme/:/list1.png"
-                    sourceSize.width: listItem3.preferredImageWidth(Symbian.Large)
-                    sourceSize.height: listItem3.preferredImageHeight(Symbian.Large)
+                    sourceSize.width: platformStyle.graphicSizeLarge
+                    sourceSize.height: platformStyle.graphicSizeLarge
                 }
 
                 Column {
                     anchors {
-                        top: listItem6.padding.top
+                        top: listItem6.paddingItem.top
                         left: image6a.right
-                        leftMargin: listItem6.horizontalSpacing
+                        leftMargin: platformStyle.paddingMedium
                     }
-                    spacing: listItem6.verticalSpacing
 
                     ListItemText {
                         id: titleText6
-                        style: listItem6.style
+                        mode: listItem6.mode
                         role: "Title"
                         text: "Title text"
                     }
 
                     ListItemText {
                         id: subTitleText6
-                        style: listItem6.style
+                        mode: listItem6.mode
                         role: "SubTitle"
                         text: "SubTitle text"
                     }
@@ -259,10 +255,10 @@ Item {
 
                 Image {
                     id: image6b
-                    anchors { right: listItem6.padding.right; top: listItem6.padding.top }
+                    anchors { right: listItem6.paddingItem.right; top: listItem6.paddingItem.top }
                     source: "image://theme/:/list1.png"
-                    sourceSize.width: listItem3.preferredImageWidth(Symbian.Small)
-                    sourceSize.height: listItem3.preferredImageHeight(Symbian.Small)
+                    sourceSize.width: platformStyle.graphicSizeSmall
+                    sourceSize.height: platformStyle.graphicSizeSmall
                 }
                 onClicked: notification.text = "Clicked " + objectName
                 onPressAndHold: notification.text = "Press-and-hold " + objectName
@@ -274,20 +270,20 @@ Item {
 
                 Image {
                     id: image7a
-                    anchors { left: listItem7.padding.left; top: listItem7.padding.top }
+                    anchors { left: listItem7.left; top: listItem7.top }
                     source: "image://theme/:/list1.png"
-                    sourceSize.width: listItem3.preferredImageWidth(Symbian.Large)
-                    sourceSize.height: listItem3.preferredImageHeight(Symbian.Large)
+                    sourceSize.width: platformStyle.graphicSizeLarge
+                    sourceSize.height: platformStyle.graphicSizeLarge
                 }
 
                 ListItemText {
                     id: titleText7
-                    style: listItem7.style
+                    mode: listItem7.mode
                     role: "Title"
                     text: "Title text"
                     anchors {
                         left: image7a.right
-                        leftMargin: listItem7.horizontalSpacing
+                        leftMargin: platformStyle.paddingMedium
                         verticalCenter: parent.verticalCenter
                     }
                 }
@@ -295,9 +291,9 @@ Item {
                 Image {
                     id: image7b
                     source: "image://theme/:/list1.png"
-                    sourceSize.width: listItem3.preferredImageWidth(Symbian.Small)
-                    sourceSize.height: listItem3.preferredImageHeight(Symbian.Small)
-                    anchors { verticalCenter: parent.verticalCenter; right: listItem7.padding.right }
+                    sourceSize.width: platformStyle.graphicSizeSmall
+                    sourceSize.height: platformStyle.graphicSizeSmall
+                    anchors { verticalCenter: parent.verticalCenter; right: listItem7.paddingItem.right }
                 }
                 onClicked: notification.text = "Clicked " + objectName
                 onPressAndHold: notification.text = "Press-and-hold " + objectName
@@ -309,9 +305,9 @@ Item {
 
                 Rectangle {
                     id: rect8
-                    anchors { left: listItem8.padding.left; top: listItem8.padding.top }
+                    anchors { left: listItem8.paddingItem.left; top: listItem8.paddingItem.top }
                     width: height
-                    height: listItem8.padding.height
+                    height: listItem8.paddingItem.height
                     color: "Blue"
                     opacity: 0.5
                     radius: 4
@@ -329,12 +325,12 @@ Item {
 
                 ListItemText {
                     id: titleText8
-                    style: listItem8.style
+                    mode: listItem8.mode
                     role: "Title"
                     text: "Title text"
                     anchors {
                         left: rect8.right
-                        leftMargin: listItem8.horizontalSpacing
+                        leftMargin: platformStyle.paddingMedium
                         verticalCenter: parent.verticalCenter
                     }
                 }
@@ -342,9 +338,9 @@ Item {
                 Image {
                     id: image8b
                     source: "image://theme/:/list1.png"
-                    sourceSize.width: listItem3.preferredImageWidth(Symbian.Small)
-                    sourceSize.height: listItem3.preferredImageHeight(Symbian.Small)
-                    anchors { verticalCenter: parent.verticalCenter; right: listItem8.padding.right }
+                    sourceSize.width: platformStyle.graphicSizeSmall
+                    sourceSize.height: platformStyle.graphicSizeSmall
+                    anchors { verticalCenter: parent.verticalCenter; right: listItem8.paddingItem.right }
                 }
                 onClicked: notification.text = "Clicked " + objectName
                 onPressAndHold: notification.text = "Press-and-hold " + objectName
@@ -356,9 +352,9 @@ Item {
 
                 Rectangle {
                     id: rect9
-                    anchors { left: listItem9.padding.left; top: listItem9.padding.top }
+                    anchors { left: listItem9.paddingItem.left; top: listItem9.paddingItem.top }
                     width: height
-                    height: listItem9.padding.height
+                    height: listItem9.paddingItem.height
                     color: "Blue"
                     opacity: 0.5
                     radius: 4
@@ -376,19 +372,19 @@ Item {
 
                 ListItemText {
                     id: titleText9
-                    style: listItem9.style
+                    mode: listItem9.mode
                     role: "Title"
                     text: "Title text"
                     anchors {
                         left: rect9.right
-                        leftMargin: listItem9.horizontalSpacing
+                        leftMargin: platformStyle.paddingMedium
                         verticalCenter: parent.verticalCenter
                     }
                 }
 
                 CheckBox {
                     id: checkbox9
-                    anchors { right: listItem9.padding.right; verticalCenter: listItem9.padding.verticalCenter }
+                    anchors { right: listItem9.paddingItem.right; verticalCenter: listItem9.paddingItem.verticalCenter }
                 }
                 onClicked: {
                     checkbox9.checked = !checkbox9.checked
@@ -403,19 +399,19 @@ Item {
                 enabled: false
 
                 Column {
-                    anchors.fill: listItem10.padding
-                    spacing: listItem10.verticalSpacing
+                    anchors.fill: listItem10.paddingItem
+
 
                     ListItemText {
                         id: titleText10
-                        style: listItem10.style
+                        mode: listItem10.mode
                         role: "Title"
                         text: "Title text"
                     }
 
                     ListItemText {
                         id: subTitleText10
-                        style: listItem10.style
+                        mode: listItem10.mode
                         role: "SubTitle"
                         text: "SubTitle text"
                     }
@@ -430,19 +426,18 @@ Item {
                 subItemIndicator: true
 
                 Column {
-                    anchors.fill: listItem11.padding
-                    spacing: listItem11.verticalSpacing
+                    anchors.fill: listItem11.paddingItem
 
                     ListItemText {
                         id: titleText11
-                        style: listItem11.style
+                        mode: listItem11.mode
                         role: "Title"
                         text: "Title text"
                     }
 
                     ListItemText {
                         id: subTitleText11
-                        style: listItem11.style
+                        mode: listItem11.mode
                         role: "SubTitle"
                         text: "SubTitle text"
                     }
