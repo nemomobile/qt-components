@@ -144,7 +144,10 @@ Item {
                         text: "New page"
                         width: parent.width / 3
                         onClicked: {
-                            rootPageStack.push(pageComponent)
+                            if (rootPageStack.busy)
+                                rootPageStack.push(pageComponent, false, true);
+                            else
+                                rootPageStack.push(pageComponent);
                         }
                     }
                 }
