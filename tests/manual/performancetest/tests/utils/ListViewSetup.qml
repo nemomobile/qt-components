@@ -189,15 +189,15 @@ Item {
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: parent.width - parent.spacing
                 currentIndex: 0
-                model: ["Undefined", "Small", "Medium", "Large", "ImagePortrait"]
+                model: ["Undefined", "Tiny", "Small", "Medium", "Large"]
             }
         }
         onAccepted: {
             listView.model.insert(listView.currentIndex + 1, {
                 "title": titleField.text,
                 "subTitle": subTitleField.text,
-                "imageSize": imageSizeChoiceList.currentIndex,
-                "image": imageSizeChoiceList.currentIndex > 0 ? "image://theme/:/list1.png" : "",
+                "imageSize": root.getSize(imageSizeChoiceList.currentIndex), // Fetch actual size in pixels based on index
+                "image": "image://theme/:/list1.png",
                 "disabled": false,
                 "selected": false,
                 "sectionIdentifier": 0} )
@@ -213,8 +213,7 @@ Item {
 
             ListItemText {
                 id: txtHeading
-                anchors.fill: listHeader.padding
-                style: listHeader.style
+                anchors.fill: listHeader.paddingItem
                 role: "Heading"
                 text: root.heading
             }
@@ -225,13 +224,12 @@ Item {
         id: sectionDelegate
 
         ListHeading {
-            width: listView.width
             id: sectionHeader
+            width: listView.width
 
             ListItemText {
                 id: txtHeading
-                anchors.fill: sectionHeader.padding
-                style: sectionHeader.style
+                anchors.fill: sectionHeader.paddingItem
                 role: "Heading"
                 text: "Section separator"
             }
@@ -249,17 +247,16 @@ Item {
             enabled: !disabled // State from model
 
             Column {
-                anchors.fill: parent.padding
-                spacing: parent.verticalSpacing
+                anchors.fill: parent.paddingItem
 
                 ListItemText {
-                    style: listItem2.style
+                    mode: listItem2.mode
                     role: "Title"
                     text: title // Title from model
                 }
 
                 ListItemText {
-                    style: listItem2.style
+                    mode: listItem2.mode
                     role: "SubTitle"
                     text: subTitle // SubTitle from model
                 }
@@ -276,9 +273,9 @@ Item {
             enabled: !disabled // State from model
 
             Image {
-                anchors { left: parent.padding.left; top: parent.padding.top }
-                sourceSize.height: parent.preferredImageHeight(imageSize)
-                sourceSize.width: parent.preferredImageWidth(imageSize)
+                anchors { left: parent.paddingItem.left; top: parent.paddingItem.top }
+                sourceSize.height: imageSize
+                sourceSize.width: imageSize
                 source: image
             }
             onPressAndHold: contextMenu.open()
@@ -295,26 +292,25 @@ Item {
             enabled: !disabled // State from model
 
             Row {
-                anchors.fill: listItem3.padding
-                spacing: listItem3.horizontalSpacing
+                anchors.fill: listItem3.paddingItem
+                spacing: platformStyle.paddingMedium
 
                 Image {
-                    sourceSize.height: listItem3.preferredImageHeight(imageSize)
-                    sourceSize.width: listItem3.preferredImageWidth(imageSize)
+                    sourceSize.height: imageSize
+                    sourceSize.width: imageSize
                     source: image
                 }
 
                 Column {
-                    spacing: listItem3.verticalSpacing
 
                     ListItemText {
-                        style: listItem3.style
+                        mode: listItem3.mode
                         role: "Title"
                         text: title // Title from model
                     }
 
                     ListItemText {
-                        style: listItem3.style
+                        mode: listItem3.mode
                         role: "SubTitle"
                         text: subTitle // SubTitle from model
                     }
@@ -334,26 +330,25 @@ Item {
             enabled: !disabled // State from model
 
             Row {
-                anchors.fill: listItem4.padding
-                spacing: listItem4.horizontalSpacing
+                anchors.fill: listItem4.paddingItem
+                spacing: platformStyle.paddingMedium
 
                 Image {
-                    sourceSize.height: listItem4.preferredImageHeight(imageSize)
-                    sourceSize.width: listItem4.preferredImageWidth(imageSize)
+                    sourceSize.height: imageSize
+                    sourceSize.width: imageSize
                     source: image
                 }
 
                 Column {
-                    spacing: listItem4.verticalSpacing
 
                     ListItemText {
-                        style: listItem4.style
+                        mode: listItem4.mode
                         role: "Title"
                         text: title // Title from model
                     }
 
                     ListItemText {
-                        style: listItem4.style
+                        mode: listItem4.mode
                         role: "SubTitle"
                         text: subTitle // SubTitle from model
                     }
@@ -364,7 +359,7 @@ Item {
                 id: checkbox
                 enabled: listItem4.enabled
                 checked: selected
-                anchors { right: listItem4.padding.right; verticalCenter: listItem4.verticalCenter }
+                anchors { right: listItem4.paddingItem.right; verticalCenter: listItem4.verticalCenter }
                 onClicked: listView.model.set(index, { "selected": checkbox.checked })
             }
             onClicked: {
@@ -384,12 +379,22 @@ Item {
             listView.model.append( {
                 "title": "Title text - " + i,
                 "subTitle": i,
-                "imageSize": Symbian.Large,
+                "imageSize": platformStyle.graphicSizeMedium,
                 "image": "image://theme/:/list1.png",
                 "disabled": false,
                 "selected": false,
                 "sectionIdentifier": sectionInterval > 0 ? Math.floor(i/sectionInterval) : 0
             } )
+        }
+    }
+
+    function getSize(size) {
+        switch (size) {
+            case 1: return platformStyle.graphicSizeTiny; break
+            case 2: return platformStyle.graphicSizeSmall; break
+            case 3: return platformStyle.graphicSizeMedium; break
+            case 4: return platformStyle.graphicSizeLarge; break
+            default: return 0
         }
     }
 }

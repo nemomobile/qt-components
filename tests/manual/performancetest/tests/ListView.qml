@@ -76,17 +76,16 @@ Item {
             width: listView.width
 
             Column {
-                anchors.fill: parent.padding
-                spacing: parent.verticalSpacing
+                anchors.fill: parent.paddingItem
 
                 ListItemText {
-                    style: listItem.style
+                    mode: listItem.mode
                     role: "Title"
                     text: name // Title from model
                 }
 
                 ListItemText {
-                    style: listItem.style
+                    mode: listItem.mode
                     role: "SubTitle"
                     text: description // SubTitle from model
                 }
