@@ -367,7 +367,6 @@ ApplicationWindow {
 
                 anchors { top: flickable.top; right: flickable.right }
                 flickableItem: flickable
-                focus: true
             }
         }
     } // main page component

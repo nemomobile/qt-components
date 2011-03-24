@@ -95,6 +95,16 @@ Item {
             }
 
             ScrollBar {
+                id: vertical
+                anchors { top: flickableArea.top; right: flickableArea.right }
+                orientation: Qt.Vertical
+                interactive: interactiveSettingCheckBox.checked
+                visible: verticalScrollBarSettingCheckBox.checked
+                policy: policySetting
+                flickableItem: flickableArea
+            }
+
+            ScrollBar {
                 id: horizontal
                 anchors { left: flickableArea.left; bottom: flickableArea.bottom; rightMargin: verticalScrollBarSettingCheckBox.checked ? vertical.width : 0 }
                 orientation: Qt.Horizontal
@@ -102,21 +112,6 @@ Item {
                 visible: horizontalScrollBarSettingCheckBox.checked
                 policy: policySetting
                 flickableItem: flickableArea
-                position: flickableArea.visibleArea.xPosition
-                pageSize: flickableArea.visibleArea.widthRatio
-            }
-
-            ScrollBar {
-                id: vertical
-                anchors { top: flickableArea.top; right: flickableArea.right }
-                orientation: Qt.Vertical
-                interactive: interactiveSettingCheckBox.checked
-                visible: verticalScrollBarSettingCheckBox.checked
-                focus: keyNavigationSettingCheckBox.checked
-                policy: policySetting
-                flickableItem: flickableArea
-                position: flickableArea.visibleArea.yPosition
-                pageSize: flickableArea.visibleArea.heightRatio
             }
         }
     }
@@ -199,14 +194,6 @@ Item {
                     colorfulSquare.height = 1000
                 }
             }
-        }
-
-        CheckBox {
-            id: keyNavigationSettingCheckBox
-            width: 150
-            height: 50
-            text: "HW Keys"
-            checked: true
         }
     }
 }
