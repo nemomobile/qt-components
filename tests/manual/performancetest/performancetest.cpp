@@ -43,14 +43,11 @@ int main(int argc, char **argv)
     QDeclarativeView view;
     view.engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
 
-#ifdef Q_OS_SYMBIAN
-    view.setSource(QUrl::fromLocalFile("main.qml"));
-    view.showMaximized();
-#else
+#ifndef Q_OS_SYMBIAN
     QDir::setCurrent(app.applicationDirPath());
+#endif
     view.setSource(QUrl::fromLocalFile("main.qml"));
     view.show();
-#endif
 
 #if defined(Q_COMPONENTS_SYMBIAN3) && !defined(Q_OS_SYMBIAN)
     SettingsWindow settingsWindow(&view);

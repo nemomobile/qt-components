@@ -59,10 +59,26 @@ ApplicationWindow {
         property variant qmlPaths: []
     }
 
+    ToolBarLayout {
+        id: commonTools
+        ToolButton {
+            flat: true
+            iconSource: "image://theme/qtg_toolbar_back"
+            onClicked: pageStack.depth <= 1 ? Qt.quit() : pageStack.pop()
+        }
+        ToolButton {
+            flat: true
+            iconSource: "image://theme/qtg_toolbar_options"
+        }
+    }
+
     Component.onCompleted: {
         internal.qmlPaths = fileAccess.qmlPaths()
         screen.orientation = settings.orientation()
         mainWindow.pageStack.push(component)
+        // clear the toolBar pointer, prevents subpages from
+        // accidentally removing common application tools
+        mainWindow.pageStack.toolBar = null
     }
 
     Component {
@@ -70,6 +86,16 @@ ApplicationWindow {
 
         Page {
             id: mainPage
+            tools: commonTools
+
+            orientationLock: {
+                if (settings.orientation() == 0)
+                    return PageOrientation.Automatic;
+                else if (settings.orientation() == 1)
+                    return PageOrientation.LockPortrait;
+                else if (settings.orientation() ==2)
+                    return PageOrientation.LockLandscape;
+            }
 
             anchors.fill: parent
 
@@ -264,7 +290,6 @@ ApplicationWindow {
 
                                 Page {
                                     id: testPage
-
                                     orientationLock: mainPage.orientationLock
 
                                     Flickable {
@@ -291,7 +316,6 @@ ApplicationWindow {
 
                                 Page {
                                     id: testPage
-
                                     orientationLock: mainPage.orientationLock
 
                                     Rectangle {
@@ -353,7 +377,6 @@ ApplicationWindow {
 
         Page {
             id: listPage
-
             ListModel {
                 id: testfileModel
             }
