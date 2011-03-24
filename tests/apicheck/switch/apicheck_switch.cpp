@@ -30,7 +30,7 @@
 
 void ApiCheckSwitch::initTestCase()
 {
-    init("CheckBox");
+    init("Switch");
 }
 
 void ApiCheckSwitch::checked()
