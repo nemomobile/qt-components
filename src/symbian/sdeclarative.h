@@ -49,6 +49,7 @@ public:
         KeyNavigation
     };
 
+    // deprecated - Use platformStyle.graphicSizeXxxx instead
     enum ImageSize {
         Undefined = 0,
         Small,
