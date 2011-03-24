@@ -122,6 +122,8 @@ void tst_SDeclarativeScreen::changeScreenSize()
     QCOMPARE(screen->property("height").toInt(), 640);
     QCOMPARE(screen->property("currentOrientation").toInt(), (int)SDeclarativeScreen::Portrait);
     QCOMPARE(screen->property("dpi").toDouble(), (double)200);
+    QCOMPARE(screen->property("displayCategory").toInt(), (int)SDeclarativeScreen::Normal);
+    QCOMPARE(screen->property("density").toInt(), (int)SDeclarativeScreen::High);
     QMetaObject::invokeMethod(screen, "privateSetDisplay",
                               Q_ARG(int, 640),
                               Q_ARG(int, 360),
@@ -130,6 +132,8 @@ void tst_SDeclarativeScreen::changeScreenSize()
     QCOMPARE(screen->property("height").toInt(), 360);
     QCOMPARE(screen->property("currentOrientation").toInt(), (int)SDeclarativeScreen::Landscape);
     QCOMPARE(screen->property("dpi").toDouble(), (double)120);
+    QCOMPARE(screen->property("displayCategory").toInt(), (int)SDeclarativeScreen::Large);
+    QCOMPARE(screen->property("density").toInt(), (int)SDeclarativeScreen::Low);
 }
 
 void tst_SDeclarativeScreen::startupOrientation()

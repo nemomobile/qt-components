@@ -29,6 +29,7 @@
 #include <QApplication>
 #include <QResizeEvent>
 #include <QDesktopWidget>
+#include <qmath.h>
 
 #ifdef Q_OS_SYMBIAN
 #include <aknappui.h>
@@ -42,6 +43,12 @@ static const qreal DEFAULT_TWIPS_PER_INCH = 1440.0;
 static const qreal DEFAULT_DPI = 211.7;
 static const int DEFAULT_WIDTH = 360;
 static const int DEFAULT_HEIGHT = 640;
+static const qreal CATEGORY_SMALL_LIMIT = 3.2;
+static const qreal CATEGORY_MEDIUM_LIMIT = 4.5;
+static const qreal CATEGORY_LARGE_LIMIT = 7.0;
+static const qreal DENSITY_SMALL_LIMIT = 140.0;
+static const qreal DENSITY_MEDIUM_LIMIT = 180.0;
+static const qreal DENSITY_LARGE_LIMIT = 270.0;
 
 SDeclarativeScreenPrivate::SDeclarativeScreenPrivate(SDeclarativeScreen *qq) :
     q_ptr(qq),
@@ -376,6 +383,36 @@ qreal SDeclarativeScreen::dpi() const
 {
     Q_D(const SDeclarativeScreen);
     return d->dpi;
+}
+
+SDeclarativeScreen::DisplayCategory SDeclarativeScreen::displayCategory() const
+{
+    Q_D(const SDeclarativeScreen);
+    const int w = d->screenSize.width();
+    const int h = d->screenSize.height();
+    const qreal diagonal = qSqrt(static_cast<qreal>(w * w + h * h)) / d->dpi;
+
+    if (diagonal < CATEGORY_SMALL_LIMIT)
+        return Small;
+    else if (diagonal < CATEGORY_MEDIUM_LIMIT)
+        return Normal;
+    else if (diagonal < CATEGORY_LARGE_LIMIT)
+        return Large;
+    else
+        return ExtraLarge;
+}
+
+SDeclarativeScreen::Density SDeclarativeScreen::density() const
+{
+    Q_D(const SDeclarativeScreen);
+    if (d->dpi < DENSITY_SMALL_LIMIT)
+        return Low;
+    else if (d->dpi < DENSITY_MEDIUM_LIMIT)
+        return Medium;
+    else if (d->dpi < DENSITY_LARGE_LIMIT)
+        return High;
+    else
+        return ExtraHigh;
 }
 
 void SDeclarativeScreen::privateSetDisplay(int width, int height, qreal dpi)

@@ -46,8 +46,10 @@ class SDeclarativeScreen : public QObject
     Q_PROPERTY(Orientations allowedOrientations READ allowedOrientations WRITE setAllowedOrientations NOTIFY allowedOrientationsChanged FINAL)
 
     Q_PROPERTY(qreal dpi READ dpi NOTIFY displayChanged FINAL)
+    Q_PROPERTY(DisplayCategory displayCategory READ displayCategory NOTIFY displayChanged FINAL)
+    Q_PROPERTY(Density density READ density NOTIFY displayChanged FINAL)
 
-    Q_ENUMS(Orientation)
+    Q_ENUMS(Orientation DisplayCategory Density)
     Q_FLAGS(Orientations)
 
 public:
@@ -64,6 +66,20 @@ public:
         Automatic = All // deprecated
     };
 
+    enum DisplayCategory {
+        Small,
+        Normal,
+        Large,
+        ExtraLarge
+    };
+
+    enum Density {
+        Low,
+        Medium,
+        High,
+        ExtraHigh
+   };
+
     Q_DECLARE_FLAGS(Orientations, Orientation)
 
     int width() const;
@@ -79,6 +95,8 @@ public:
     void setAllowedOrientations(Orientations orientations);
 
     qreal dpi() const;
+    DisplayCategory displayCategory() const;
+    Density density() const;
 
     Q_INVOKABLE void privateSetDisplay(int width, int height, qreal dpi);
 
