@@ -80,6 +80,8 @@
         <file alias="qtg_graf_switchbutton_handle_normal.svg">resources/defaulttheme/graphics/qtg_graf_switchbutton_handle_normal.svg</file>
         <file alias="qtg_graf_switchbutton_handle_pressed.svg">resources/defaulttheme/graphics/qtg_graf_switchbutton_handle_pressed.svg</file>
         <file alias="qtg_graf_switchbutton_track.svg">resources/defaulttheme/graphics/qtg_graf_switchbutton_track.svg</file>
+        <file alias="qtg_toolbar_back.svg">resources/defaulttheme/graphics/qtg_toolbar_back.svg</file>
+        <file alias="qtg_toolbar_options.svg">resources/defaulttheme/graphics/qtg_toolbar_options.svg</file>
     </qresource>
     <qresource prefix="/colors">
         <file alias="widgetcolorgroup.css">resources/defaulttheme/colors/widgetcolorgroup.css</file>
