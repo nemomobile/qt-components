@@ -94,7 +94,7 @@ Item {
             id: start; objectName: "start"
             height: parent.h; width: parent.w;
             minimumValue: 0; maximumValue: textField.text.length
-            stepSize: 1; toolTipVisible: true; anchors.margins: privy.margin
+            stepSize: 1; valueIndicatorVisible: true; anchors.margins: privy.margin
             onValueChanged: if (pressed) textField.select(start.value, end.value)
 
             Text {
@@ -109,7 +109,7 @@ Item {
             id: end; objectName: "end"
             height: parent.h; width: parent.w;
             minimumValue: 0; maximumValue: textField.text.length
-            stepSize: 1; toolTipVisible: true; anchors.margins: privy.margin
+            stepSize: 1; valueIndicatorVisible: true; anchors.margins: privy.margin
             onValueChanged: if (pressed) textField.select(start.value, end.value)
 
             Text {
@@ -132,7 +132,7 @@ Item {
         }
         height: parent.height * (privy.portrait ? 1/6 : 1/2)
         minimumValue: 0; maximumValue: textField.text.length
-        stepSize: 1; toolTipVisible: true
+        stepSize: 1; valueIndicatorVisible: true
         value: textField.cursorPosition
         onValueChanged: if (pressed) textField.cursorPosition = value
 

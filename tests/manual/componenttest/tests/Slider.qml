@@ -63,13 +63,13 @@ Item {
             minimumValue: -125
             value: 150
             stepSize: 5
-            toolTipVisible: toolTipToggle.checked
+            valueIndicatorVisible: valueIndicatorToggle.checked
             inverted: inversionToggle.checked
         }
 
         CheckBox {
-            id: toolTipToggle
-            text: "Tool tip"
+            id: valueIndicatorToggle
+            text: "Value Ind."
             checked: true
         }
 
@@ -93,13 +93,13 @@ Item {
             maximumValue: 25
             stepSize: 1
             value: 25
-            toolTipVisible: toolTipToggle2.checked
+            valueIndicatorVisible: valueIndicatorToggle2.checked
             inverted: inversionToggle2.checked
         }
 
         CheckBox {
-            id: toolTipToggle2
-            text: "Tool tip"
+            id: valueIndicatorToggle2
+            text: "Value Ind."
             checked: true
         }
 
@@ -112,6 +112,8 @@ Item {
     Slider {
         id: slider3
         objectName: "slider3"
+        valueIndicatorVisible: true
+        valueIndicatorText: "Custom: " + (Math.round(value * 1000) / 1000)
         anchors { bottom: parent.bottom; left: parent.left; right: parent.right; margins: 20 }
     }
 }

@@ -191,7 +191,7 @@ Item {
             id: letterSpacing; objectName: "letterSpacing"
             height: parent.h; width: parent.w;
             minimumValue: -10; maximumValue: 10; stepSize: 1;
-            toolTipVisible: true; anchors.margins: privy.margin
+            valueIndicatorVisible: true; anchors.margins: privy.margin
             onValueChanged: if (pressed) textField.font.letterSpacing  = value
             Component.onCompleted: value = textField.font.letterSpacing
 
@@ -207,7 +207,7 @@ Item {
             id: wordSpacing; objectName: "wordSpacing"
             height: parent.h; width: parent.w;
             minimumValue: -10; maximumValue: 10; stepSize: 1;
-            toolTipVisible: true; anchors.margins: privy.margin
+            valueIndicatorVisible: true; anchors.margins: privy.margin
             onValueChanged: if (pressed) textField.font.wordSpacing  = value
             Component.onCompleted: value = textField.font.wordSpacing
 
@@ -223,7 +223,7 @@ Item {
             id: pointSize; objectName: "pointSize"
             height: parent.h; width: parent.w;
             minimumValue: 0; maximumValue: 25; stepSize: 1;
-            toolTipVisible: true; anchors.margins: privy.margin
+            valueIndicatorVisible: true; anchors.margins: privy.margin
             onValueChanged: if (pressed) textField.font.pointSize = value
             Component.onCompleted: value = textField.font.pointSize
 
@@ -239,7 +239,7 @@ Item {
             id: pixelSize; objectName: "pixelSize"
             height: parent.h; width: parent.w;
             minimumValue: 0; maximumValue: 25; stepSize: 1;
-            toolTipVisible: true; anchors.margins: privy.margin
+            valueIndicatorVisible: true; anchors.margins: privy.margin
             onValueChanged: if (pressed) textField.font.pixelSize = value
             Component.onCompleted: value = textField.font.pixelSize
 
