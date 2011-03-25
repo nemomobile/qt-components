@@ -44,7 +44,8 @@
     property int orientation // Qt.Horizontal (default) | Qt.Vertical
 
     property bool pressed // this activates in all the slider area
-    property bool updateValueWhileDragging // default = true
+    property bool valueIndicatorVisible // default = false
+    property string valueIndicatorText
     \endcode
 */
 

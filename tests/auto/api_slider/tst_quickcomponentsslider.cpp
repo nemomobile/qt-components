@@ -42,7 +42,8 @@ private slots:
     void minimumValue();
     void maximumValue();
     void orientation();
-    void updateValueWhileDragging();
+    void valueIndicatorVisible();
+    void valueIndicatorText();
     void pressed();
 
 private:
@@ -161,12 +162,20 @@ void tst_quickcomponentsslider::pressed()
     // internal members of the slider
 }
 
-void tst_quickcomponentsslider::updateValueWhileDragging()
+void tst_quickcomponentsslider::valueIndicatorVisible()
 {
     // test if setting/getting stepSize works properly
-    QVERIFY(componentObject->setProperty("updateValueWhileDragging", true));
-    QCOMPARE(componentObject->property("updateValueWhileDragging").toBool(),
+    QVERIFY(componentObject->setProperty("valueIndicatorVisible", true));
+    QCOMPARE(componentObject->property("valueIndicatorVisible").toBool(),
              true);
+}
+
+void tst_quickcomponentsslider::valueIndicatorText()
+{
+    // test if setting/getting stepSize works properly
+    QVERIFY(componentObject->setProperty("valueIndicatorText", "Label"));
+    QCOMPARE(componentObject->property("valueIndicatorText").toString(),
+             QString("Label"));
 }
 
 QTEST_MAIN(tst_quickcomponentsslider)
