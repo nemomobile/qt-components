@@ -73,11 +73,9 @@ QML_FILES = \
     ListItem.qml \
     ListItemText.qml \
     Menu.qml \
-    MenuBaseOld.qml \
     MenuContent.qml \
     MenuItem.qml \
     MenuLayout.qml \
-    ObjectMenu.qml \
     Page.qml \
     PageStack.js \
     PageStack.qml \
@@ -105,7 +103,6 @@ QML_FILES = \
     ToolBarLayout.qml \
     ToolButton.qml \
     ToolTip.qml \
-    ViewMenu.qml \
     Window.qml
 
 symbian {

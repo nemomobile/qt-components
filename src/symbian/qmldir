@@ -12,7 +12,6 @@ ListItemText 1.0 ListItemText.qml
 Menu 1.0 Menu.qml
 MenuItem 1.0 MenuItem.qml
 MenuLayout 1.0 MenuLayout.qml
-ObjectMenu 1.0 ObjectMenu.qml
 Page 1.0 Page.qml
 PageStack 1.0 PageStack.qml
 ProgressBar 1.0 ProgressBar.qml
@@ -34,5 +33,4 @@ ToolBar 1.0 ToolBar.qml
 ToolBarLayout 1.0 ToolBarLayout.qml
 ToolButton 1.0 ToolButton.qml
 ToolTip 1.0 ToolTip.qml
-ViewMenu 1.0 ViewMenu.qml
 Window 1.0 Window.qml

@@ -32,11 +32,9 @@ data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ListHeading.qml       
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ListItem.qml                                   RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ListItem.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ListItemText.qml                               RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ListItemText.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\Menu.qml                                       RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\Menu.qml
-data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\MenuBaseOld.qml                                RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\MenuBaseOld.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\MenuContent.qml                                RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\MenuContent.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\MenuItem.qml                                   RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\MenuItem.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\MenuLayout.qml                                 RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\MenuLayout.qml
-data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ObjectMenu.qml                                 RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ObjectMenu.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\Page.qml                                       RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\Page.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\PageStack.js                                   RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\PageStack.js
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\PageStack.qml                                  RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\PageStack.qml
@@ -64,7 +62,6 @@ data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ToolBar.qml           
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ToolBarLayout.qml                              RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ToolBarLayout.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ToolButton.qml                                 RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ToolButton.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ToolTip.qml                                    RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ToolTip.qml
-data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ViewMenu.qml                                   RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ViewMenu.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\Window.qml                                     RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\Window.qml
 
 // Symbian plugin to Native
@@ -85,11 +82,9 @@ data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\ListHeading.qm
 data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\ListItem.qml                           RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\ListItem.qml
 data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\ListItemText.qml                       RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\ListItemText.qml
 data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\Menu.qml                               RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\Menu.qml
-data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\MenuBaseOld.qml                        RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\MenuBaseOld.qml
 data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\MenuContent.qml                        RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\MenuContent.qml
 data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\MenuItem.qml                           RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\MenuItem.qml
 data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\MenuLayout.qml                         RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\MenuLayout.qml
-data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\ObjectMenu.qml                         RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\ObjectMenu.qml
 data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\Page.qml                               RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\Page.qml
 data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\PageStack.js                           RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\PageStack.js
 data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\PageStack.qml                          RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\PageStack.qml
@@ -116,7 +111,6 @@ data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\ToolBar.qml   
 data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\ToolBarLayout.qml                      RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\ToolBarLayout.qml
 data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\ToolButton.qml                         RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\ToolButton.qml
 data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\ToolTip.qml                            RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\ToolTip.qml
-data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\ViewMenu.qml                           RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\ViewMenu.qml
 data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\native\Window.qml                             RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\native\Window.qml
 
 #endif
