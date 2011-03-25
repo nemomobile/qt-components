@@ -62,7 +62,10 @@ Item {
         width: screen.width
         height: menu.height
 
-        onFaderClicked: close()
+        onFaderClicked: {
+            privateStyle.play(Symbian.PopUpClose)
+            close()
+        }
 
         Flickable {
             id: animationArea

@@ -61,7 +61,10 @@ ImplicitSizeItem {
         width: root.width
         height: menu.height
 
-        onFaderClicked: close()
+        onFaderClicked: {
+            privateStyle.play(Symbian.PopUpClose)
+            close()
+        }
 
         MenuContent {
             id: menu
