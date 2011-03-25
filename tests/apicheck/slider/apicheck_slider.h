@@ -46,6 +46,8 @@ private slots:
     void orientation(); //int
     void pressed(); //bool
     void updateValueWhileDragging(); //bool
+    void valueIndicatorVisible();
+    void valueIndicatorText();
 };
 
 #endif

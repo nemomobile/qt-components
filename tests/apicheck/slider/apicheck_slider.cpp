@@ -67,3 +67,13 @@ void ApiCheckSlider::updateValueWhileDragging()
 {
     validateProperty("updateValueWhileDragging", QVariant::Bool, true);
 }
+
+void ApiCheckSlider::valueIndicatorVisible()
+{
+    validateProperty("valueIndicatorVisible", QVariant::Bool, false);
+}
+
+void ApiCheckSlider::valueIndicatorText()
+{
+    validateProperty("valueIndicatorText", QVariant::String, "");
+}
