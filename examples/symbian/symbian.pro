@@ -1,2 +1,3 @@
 TEMPLATE = subdirs
-SUBDIRS += gallery extrasgallery
+SUBDIRS += gallery
+extras:SUBDIRS += extrasgallery
