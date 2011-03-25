@@ -92,6 +92,13 @@ ImplicitSizeItem {
             property Item owner: null
 
             states: [
+
+                // Active state
+                State {
+                    name: ""
+                    PropertyChanges { target: item; visible: true }
+                },
+
                 // Start state for pop entry, end state for push exit.
                 State {
                     name: "Prev"
