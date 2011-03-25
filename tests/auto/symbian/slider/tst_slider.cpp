@@ -69,8 +69,6 @@ void tst_slider::defaultPropertyValues()
 {
     QVERIFY(componentObject->property("inverted").isValid());
     QCOMPARE(componentObject->property("inverted").toBool(), false);
-    QVERIFY(componentObject->property("toolTipVisible").isValid());
-    QCOMPARE(componentObject->property("toolTipVisible").toBool(), true);
 }
 
 void tst_slider::properties()
@@ -81,13 +79,6 @@ void tst_slider::properties()
     // set the property and compare
     QVERIFY(componentObject->setProperty("inverted", true));
     QCOMPARE(componentObject->property("inverted").toBool(), true);
-
-    // check presence of the property "toolTipVisible" and set a value
-    QVERIFY(componentObject->setProperty("toolTipVisible", true));
-    QCOMPARE(componentObject->property("toolTipVisible").toBool(), true);
-    // set the property and compare
-    QVERIFY(componentObject->setProperty("toolTipVisible", false));
-    QCOMPARE(componentObject->property("toolTipVisible").toBool(), false);
 }
 
 QTEST_MAIN(tst_slider)
