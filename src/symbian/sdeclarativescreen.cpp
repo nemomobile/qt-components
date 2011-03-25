@@ -88,14 +88,14 @@ SDeclarativeScreenPrivate::SDeclarativeScreenPrivate(SDeclarativeScreen *qq) :
         }
     }
     if (gv) {
-        gv->installEventFilter(q);
-#ifdef Q_OS_SYMBIAN
+#if defined(Q_OS_SYMBIAN) || defined(Q_WS_SIMULATOR)
         gv->setWindowState(gv->windowState() | Qt::WindowFullScreen);
 #endif
+        gv->installEventFilter(q);
     }
     q->connect(QApplication::desktop(), SIGNAL(resized(int)), SLOT(_q_desktopResized(int)), Qt::QueuedConnection);
     QSize initViewSize;
-#ifndef Q_OS_SYMBIAN
+#if !defined(Q_OS_SYMBIAN) && !defined(Q_WS_SIMULATOR)
     initViewSize = displaySize;
 #endif
     QMetaObject::invokeMethod(q, "_q_initView", Qt::QueuedConnection, Q_ARG(QSize, initViewSize));
@@ -167,7 +167,7 @@ void SDeclarativeScreenPrivate::_q_initView(const QSize &size)
     qDebug() << "_q_initView() size" << size << " gv:" << gv;
 #endif
     initCalled = true;
-#ifndef Q_OS_SYMBIAN
+#if !defined(Q_OS_SYMBIAN) && !defined(Q_WS_SIMULATOR)
     // Emulate the resizing done by the system
     if (gv)
         gv->resize(adjustedSize(size));
@@ -184,7 +184,7 @@ void SDeclarativeScreenPrivate::_q_initView(const QSize &size)
 void SDeclarativeScreenPrivate::_q_desktopResized(int screen)
 {
     Q_UNUSED(screen)
-#ifdef Q_OS_SYMBIAN
+#if defined(Q_OS_SYMBIAN) || defined(Q_WS_SIMULATOR)
     if (screen == QApplication::desktop()->primaryScreen()) {
         QSize current = currentScreenSize();
         // Move view's scene rect to origin
@@ -205,13 +205,15 @@ bool SDeclarativeScreenPrivate::isLandscapeScreen() const
 
 QSize SDeclarativeScreenPrivate::currentScreenSize() const
 {
-#ifdef Q_OS_SYMBIAN
+#if defined(Q_OS_SYMBIAN)
     TPixelsTwipsAndRotation params;
     CWsScreenDevice *screenDevice = CEikonEnv::Static()->ScreenDevice();
     int mode = screenDevice->CurrentScreenMode();
     screenDevice->GetScreenModeSizeAndRotation(mode, params);
     QSize nSize(params.iPixelSize.iWidth, params.iPixelSize.iHeight);
     return nSize;
+#elif defined(Q_WS_SIMULATOR)
+    return QApplication::desktop()->screenGeometry().size();
 #else
     return screenSize;
 #endif
