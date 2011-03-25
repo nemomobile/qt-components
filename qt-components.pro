@@ -14,6 +14,7 @@ features.path = $$[QMAKE_MKSPECS]/features
 INSTALLS += features
 
 symbian {
-    BLD_INF_RULES.prj_exports += "features/qt-components.prf $$[QMAKE_MKSPECS]/features/qt-components.prf"
-    BLD_INF_RULES.prj_exports += "features/qt-components-config.prf $$[QMAKE_MKSPECS]/features/qt-components-config.prf"
+    features.path ~= s/^[A-Za-z]:/ # strip drive letter
+    BLD_INF_RULES.prj_exports += "features/qt-components.prf $$features.path/qt-components.prf"
+    BLD_INF_RULES.prj_exports += "features/qt-components-config.prf $$features.path/qt-components-config.prf"
 }
