@@ -149,11 +149,12 @@ Item {
 
             // Performs a push enter transition.
             function pushEnter(replace, immediate, orientationChanges) {
-                if (!immediate)
+                if (!immediate) {
                     if (orientationChanges)
                         state = replace ? "Front" : "LandscapeRight";
                     else
                         state = replace ? "Front" : "Right";
+                }
                 state = "";
                 page.visible = true;
                 if (root.visible && immediate)

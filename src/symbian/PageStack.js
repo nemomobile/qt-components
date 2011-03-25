@@ -85,10 +85,10 @@ function push(page, properties, replace, immediate) {
 
     // perform page transition
     immediate = immediate || !oldContainer;
-    var oc = false;
+    var orientationChange = false;
     if (oldContainer) {
-        oc = orientationChanges(oldContainer.page, container.page);
-        oldContainer.pushExit(replace, immediate, oc);
+        orientationChange = orientationChanges(oldContainer.page, container.page);
+        oldContainer.pushExit(replace, immediate, orientationChange);
     }
 
      // sync tool bar
@@ -97,7 +97,7 @@ function push(page, properties, replace, immediate) {
         toolBar.setTools(tools, immediate ? "set" : replace ? "replace" : "push");
     }
 
-    container.pushEnter(replace, immediate, oc);
+    container.pushEnter(replace, immediate, orientationChange);
     return container.page;
 }
 
@@ -162,9 +162,9 @@ function pop(page, immediate) {
         currentPage = container.page;
 
         // perform page transition
-        var oc = orientationChanges(oldContainer.page, container.page);
-        oldContainer.popExit(immediate, oc);
-        container.popEnter(immediate, oc);
+        var orientationChange = orientationChanges(oldContainer.page, container.page);
+        oldContainer.popExit(immediate, orientationChange);
+        container.popEnter(immediate, orientationChange);
 
         // sync tool bar
         var tools = container.page.tools || null;
