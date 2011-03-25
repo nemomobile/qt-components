@@ -36,6 +36,9 @@ Item {
     signal orientationChangeStarted
     signal orientationChangeFinished
 
+    width: screen.width > 0 ? screen.width : screen.displayWidth
+    height: screen.height > 0 ? screen.height : screen.displayHeight
+
     Rectangle {
         anchors.fill: parent
         color: "black"
