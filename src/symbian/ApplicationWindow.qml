@@ -63,4 +63,10 @@ Window {
         width: parent.width
         visible: !window.fullScreen
     }
+
+    // event preventer when page transition is active
+    MouseArea {
+        anchors.fill: parent
+        enabled: pageStack.busy
+    }
 }
