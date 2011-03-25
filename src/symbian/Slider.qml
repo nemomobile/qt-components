@@ -39,10 +39,17 @@ ImplicitSizeItem {
     property int orientation: Qt.Horizontal
     property bool pressed: handleMouseArea.pressed || track.keysActive
     property bool updateValueWhileDragging: true
+    property bool valueIndicatorVisible: false
+    property string valueIndicatorText: ""
 
     // Symbian specific
-    property bool toolTipVisible: true
+    property bool toolTipVisible: false // deprecated
     property alias inverted: model.inverted
+
+    onToolTipVisibleChanged: {
+        valueIndicatorVisible = toolTipVisible
+        console.log("warning: Slider.toolTipVisible is deprecated. Use Slider.valueIndicatorVisible instead")
+    }
 
     signal valueChanged(real value)
     implicitWidth: orientation == Qt.Horizontal ? 150 : platformStyle.graphicSizeSmall
@@ -153,7 +160,7 @@ ImplicitSizeItem {
                     onPositionChanged: {
                         if (updateValueWhileDragging) {
                             model.position = orientation == Qt.Horizontal ? handle.x : handle.y
-                            toolTip.position()
+                            valueIndicator.position()
                         }
                     }
                     onPressed: privateStyle.play(Symbian.BasicSlider);
@@ -177,47 +184,50 @@ ImplicitSizeItem {
         internal.handleKeyEvent(event)
         track.keysActive = true
         keyActivity.restart()
-        toolTip.position()
+        valueIndicator.position()
     }
 
-    Component { id: toolTipComponent; ToolTip { text:  model.value } }
+    Component {
+        id: valueIndicatorComponent
+        ToolTip { text: slider.valueIndicatorText == "" ? model.value : slider.valueIndicatorText }
+    }
 
     Loader {
-        id:toolTip
+        id: valueIndicator
 
-        property real spacing: 2 * platformStyle.paddingLarge
-        sourceComponent: slider.pressed && toolTipVisible ? toolTipComponent : undefined
+        property int spacing: 2 * platformStyle.paddingLarge
+        // Must match with the "maxWidth" padding defined in ToolTip
+        property int toolTipPadding: platformStyle.paddingLarge
+        sourceComponent: slider.pressed && valueIndicatorVisible ? valueIndicatorComponent : undefined
         onLoaded: position()
 
         function position() {
-            if (!toolTipVisible || status != Loader.Ready)
+            if (!valueIndicatorVisible || status != Loader.Ready)
                 return
 
             var point = null;
             if (orientation == Qt.Horizontal) {
-                point = slider.mapFromItem(track, handle.x + handle.width / 2 - toolTip.item.width / 2, 0)
+                point = slider.mapFromItem(track, handle.x + handle.width / 2 - valueIndicator.item.width / 2, 0)
 
-                // Check if tooltip will be positioned beyond the right or
+                // Check if valueIndicator will be positioned beyond the right or
                 // left boundaries and adjust if needed to keep it fully
-                // visible on screen. In case the tooltip is so wide that it
+                // visible on screen. In case the valueIndicator is so wide that it
                 // does not fit the screen, it's positioned to left of the screen.
-                var rightStop = screen.width - platformStyle.paddingSmall
-                var tooltipLeftEdge = slider.mapToItem(null, point.x, 0)
-                var tooltipRightEdge = slider.mapToItem(null, point.x + toolTip.item.width, 0)
+                var rightStop = screen.width - toolTipPadding
+                var valueIndicatorLeftEdge = slider.mapToItem(null, point.x, 0)
+                var valueIndicatorRightEdge = slider.mapToItem(null, point.x + valueIndicator.item.width, 0)
 
-                if ((tooltipLeftEdge.x < platformStyle.paddingSmall)
-                    || (tooltipLeftEdge.x < platformStyle.paddingSmall
-                    && tooltipRightEdge.x > rightStop))
-                    point.x = slider.mapFromItem(null, platformStyle.paddingSmall, 0).x
-                else if (tooltipRightEdge.x > rightStop)
-                    point.x = slider.mapFromItem(null, rightStop - toolTip.item.width, 0).x
+                if (valueIndicatorLeftEdge.x < toolTipPadding)
+                    point.x = slider.mapFromItem(null, toolTipPadding, 0).x
+                else if (valueIndicatorRightEdge.x > rightStop)
+                    point.x = slider.mapFromItem(null, rightStop - valueIndicator.item.width, 0).x
 
-                toolTip.item.x = point.x
-                toolTip.item.y = point.y - toolTip.spacing - toolTip.item.height
+                valueIndicator.item.x = point.x
+                valueIndicator.item.y = point.y - valueIndicator.spacing - valueIndicator.item.height
             } else {
-                point = slider.mapFromItem(track, 0, handle.y + handle.height / 2 - toolTip.item.height / 2)
-                toolTip.item.x = point.x - toolTip.spacing - toolTip.item.width
-                toolTip.item.y = point.y
+                point = slider.mapFromItem(track, 0, handle.y + handle.height / 2 - valueIndicator.item.height / 2)
+                valueIndicator.item.x = point.x - valueIndicator.spacing - valueIndicator.item.width
+                valueIndicator.item.y = point.y
             }
         }
     }
