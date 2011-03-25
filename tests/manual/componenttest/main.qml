@@ -275,9 +275,9 @@ ApplicationWindow {
                                         testButton.text = mainWindow.componentName
                                         buttons.checkedButton  = testButton
                                         if (flickableSetting.checked)
-                                            mainWindow.pageStack.push(flickableTestComponent)
+                                            mainWindow.pageStack.push(flickableTestComponent, null, true)
                                         else
-                                            mainWindow.pageStack.push(testComponent)
+                                            mainWindow.pageStack.push(testComponent, null, true)
                                     }
                                 componentName = ""
                                 }
