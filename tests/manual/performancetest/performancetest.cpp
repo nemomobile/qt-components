@@ -24,7 +24,7 @@
 **
 ****************************************************************************/
 
-#if defined(Q_COMPONENTS_SYMBIAN3) && !defined(Q_OS_SYMBIAN)
+#if defined(Q_COMPONENTS_SYMBIAN3) && !defined(Q_OS_SYMBIAN) && !defined(Q_WS_SIMULATOR)
 #include "settingswindow.h"
 #endif
 #include "utils.h"
@@ -49,7 +49,7 @@ int main(int argc, char **argv)
     view.setSource(QUrl::fromLocalFile("main.qml"));
     view.show();
 
-#if defined(Q_COMPONENTS_SYMBIAN3) && !defined(Q_OS_SYMBIAN)
+#if defined(Q_COMPONENTS_SYMBIAN3) && !defined(Q_OS_SYMBIAN) && !defined(Q_WS_SIMULATOR)
     SettingsWindow settingsWindow(&view);
 #endif
     return app.exec();
