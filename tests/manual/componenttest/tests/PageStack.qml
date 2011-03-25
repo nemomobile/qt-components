@@ -30,8 +30,9 @@ import com.nokia.symbian 1.0
 Item {
     id: root
 
-    property variant pages: [pageStatic2, pageStatic3, pageStatic4]
+    property variant pages: [page2, page3, page4]
     property string currentPageName: pageStack.currentPage == undefined? "0" : pageStack.currentPage.objectName
+    property Item rootPageStack: pageStack
 
     function inPortrait() {
         return screen.height > screen.width
@@ -42,98 +43,143 @@ Item {
     }
 
     Page {
-        id: pageStatic1
-        objectName: "page1"
+        id: staticPage1
+
+        objectName: "staticPage1"
+        Loader { sourceComponent: pageContent }
     }
 
     Component {
-        id: pageStatic2
-        Page { objectName: "page2" }
+        id: page2
+
+        Page {
+            objectName: "page2"
+            Loader { sourceComponent: pageContent }
+        }
     }
 
     Component {
-        id: pageStatic3
-        Page { objectName: "page3" }
+        id: page3
+
+        Page {
+            objectName: "page3"
+            Loader { sourceComponent: pageContent }
+        }
     }
 
-    Page {
-        id: pageStatic4
-        objectName: "page4"
+    Component {
+        id: page4
+
+        Page {
+            objectName: "page4"
+            Loader { sourceComponent: pageContent }
+        }
     }
 
-    Column {
+    Loader {
+        sourceComponent: pageContent
+        visible: rootPageStack.depth == 0 ? true : false
+    }
+
+    MouseArea {
         anchors.fill: parent
-        anchors.margins: 10
-        spacing: 10
+        enabled: rootPageStack.busy
+    }
 
-        Row {
-            spacing: parent.spacing / 2
-            Text { color: "white"; font.pointSize: 10; text: "depth: [ " + pageStack.depth + " ]" }
-            Text { color: "white"; font.pointSize: 10; text: "|  page: [ " + currentPageName + " ]" }
-        }
+    Component {
+        id: pageContent
 
-        Rectangle { color: "blue"; height: 40; width: parent.width; opacity: pageStack.busy ? 1 : 0.1 }
-
-        Grid {
-            height: inPortrait() ? parent.height / 5 : parent.height / 6
-            width: parent.width
-            columns: inPortrait() ? 1 : 2
-            spacing: parent.spacing / 3
+        Column {
+            x: root.x
+            y: root.y
+            width: root.width
+            height: root.height
+            spacing: 10
 
             Row {
-                spacing: parent.spacing
-                width: inPortrait() ? parent.width : parent.width / 2
-                Button { text: "Page 1"; width: parent.width / 2; onClicked: pageStack.push(pageStatic1); }
-                Button { text: "Page 2"; width: parent.width / 2; onClicked: pageStack.push(pageStatic2); }
+                spacing: parent.spacing / 2
+                Text { color: "white"; font.pixelSize: 15; text: "depth: [ " + rootPageStack.depth + " ]" }
+                Text { color: "white"; font.pixelSize: 15; text: "|  page: [ " + currentPageName + " ]" }
             }
 
-            Row {
-                spacing: parent.spacing
-                width: inPortrait() ? parent.width : parent.width / 2
-                Button { text: "Page 3"; width: parent.width / 2; onClicked: pageStack.push(pageStatic3); }
-                Button { text: "Page 4"; width: parent.width / 2; onClicked: pageStack.push(pageStatic4); }
-            }
-        }
+            Rectangle { color: "blue"; height: 40; width: parent.width; opacity: rootPageStack.busy ? 1 : 0.1 }
 
-        Grid {
-            height: inPortrait() ? parent.height / 5 : parent.height / 6
-            width: parent.width
-            columns: inPortrait() ? 1 : 2
-            spacing: parent.spacing / 3
+            Grid {
+                height: inPortrait() ? parent.height / 5 : parent.height / 6
+                width: parent.width
+                columns: inPortrait() ? 1 : 2
+                spacing: parent.spacing / 3
 
-            Row {
-                width: inPortrait() ? parent.width : parent.width / 2
-                spacing: parent.spacing
-                Button { text: "Push 2,3,4"; width: parent.width / 2; onClicked: pageStack.push(pages); }
-                Button { text: "Replace 2,3,4"; width: parent.width / 2; onClicked: pageStack.replace(pages); }
-            }
+                Row {
+                    spacing: parent.spacing
+                    width: inPortrait() ? parent.width : parent.width / 2
+                    Button { text: "staticPage 1"; width: parent.width / 2; onClicked: rootPageStack.push(staticPage1); }
+                    Button { text: "Page 2"; width: parent.width / 2; onClicked: rootPageStack.push(page2); }
+                }
 
-            Row {
-                width: inPortrait() ? parent.width : parent.width / 2
-                spacing: parent.spacing
-                Button { text: "Rewind to 3"; width: parent.width / 2; onClicked: pageStack.pop(pageStack.find(function(page) { return page.objectName == "page3" })); }
-                Button { text: "Find non-existent"; width: parent.width / 2; onClicked: pageStack.pop(pageStack.find(function(page) { return page.objectName == "unknown" })); }
-            }
-        }
-
-        Grid {
-            height: inPortrait() ? parent.height / 5 : parent.height / 6
-            width: parent.width
-            columns: inPortrait() ? 1 : 2
-            spacing: parent.spacing / 3
-
-            Row {
-                width: inPortrait() ? parent.width : parent.width / 2
-                spacing:  parent.spacing
-                Button { text: "Replace 2"; width: parent.width / 2; onClicked: pageStack.replace(pageStatic2); }
-                Button { text: "Replace 3"; width: parent.width / 2; onClicked: pageStack.replace(pageStatic3); }
+                Row {
+                    spacing: parent.spacing
+                    width: inPortrait() ? parent.width : parent.width / 2
+                    Button { text: "Page 3"; width: parent.width / 2; onClicked: rootPageStack.push(page3); }
+                    Button { text: "Page 4"; width: parent.width / 2; onClicked: rootPageStack.push(page4); }
+                }
             }
 
-            Row {
-                width: inPortrait() ? parent.width : parent.width / 2
-                spacing:  parent.spacing
-                Button { text: "Back"; width: parent.width / 2; onClicked: pageStack.pop(); }
-                Button { text: "Clear stack"; width: parent.width / 2; onClicked: pageStack.clear(); }
+            Grid {
+                height: inPortrait() ? parent.height / 5 : parent.height / 6
+                width: parent.width
+                columns: inPortrait() ? 1 : 2
+                spacing: parent.spacing / 3
+
+                Row {
+                    width: inPortrait() ? parent.width : parent.width / 2
+                    spacing: parent.spacing
+                    Button { text: "Push 2,3,4"; width: parent.width / 2; onClicked: rootPageStack.push(pages); }
+                    Button { text: "Replace 2,3,4"; width: parent.width / 2; onClicked: rootPageStack.replace(pages); }
+                }
+
+                Row {
+                    width: inPortrait() ? parent.width : parent.width / 2
+                    spacing: parent.spacing
+
+                    Button {
+                        text: "Rewind to 3";
+                        width: parent.width / 2;
+                        onClicked: {
+                            if (currentPageName == "page3")
+                                rootPageStack.pop(undefined,true);
+                            rootPageStack.pop(rootPageStack.find(function(page) { return page.objectName == "page3" }));
+                        }
+                    }
+
+                    Button {
+                        text: "Find non-existent";
+                        width: parent.width / 2;
+                        onClicked: {
+                            rootPageStack.pop(rootPageStack.find(function(page) { return page.objectName == "unknown" }));
+                        }
+                    }
+                }
+            }
+
+            Grid {
+                height: inPortrait() ? parent.height / 5 : parent.height / 6
+                width: parent.width
+                columns: inPortrait() ? 1 : 2
+                spacing: parent.spacing / 3
+
+                Row {
+                    width: inPortrait() ? parent.width : parent.width / 2
+                    spacing:  parent.spacing
+                    Button { text: "Replace 3"; width: parent.width / 2; onClicked: rootPageStack.replace(page3); }
+                    Button { text: "Clear stack"; width: parent.width / 2; onClicked: rootPageStack.clear(); }
+                }
+
+                Button {
+                    text: "Back";
+                    width: inPortrait() ? parent.width / 2 : parent.width / 4;
+                    onClicked: rootPageStack.pop();
+                }
             }
         }
     }
