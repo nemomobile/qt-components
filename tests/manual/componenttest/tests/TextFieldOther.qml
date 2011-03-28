@@ -59,7 +59,6 @@ Item {
         anchors {
             left: parent.left
             top: privy.portrait ? textField.bottom : parent.top
-            bottom: privy.portrait ? undefined : parent.bottom
             margins: privy.margin
         }
         columns: privy.portrait ? 3 : 1

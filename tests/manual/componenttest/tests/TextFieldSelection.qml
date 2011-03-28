@@ -87,7 +87,7 @@ Item {
         }
         columns: privy.portrait ? 1 : 2
         rows: privy.portrait ? 2 : 1
-        height: parent.height * (privy.portrait ? 1/3 : 1/2)
+        height: parent.height * 1/3
         spacing: privy.margin
 
         Slider {
@@ -125,12 +125,11 @@ Item {
         id: position; objectName: "position"
         anchors {
             left: privy.portrait ? parent.left : cursorAndButtons.right
-            bottom: privy.portrait ? undefined : parent.bottom
             right: parent.right
             top: selection.bottom
             margins: privy.margin
         }
-        height: parent.height * (privy.portrait ? 1/6 : 1/2)
+        height: parent.height * (privy.portrait ? 1/6 : 1/3)
         minimumValue: 0; maximumValue: textField.text.length
         stepSize: 1; valueIndicatorVisible: true
         value: textField.cursorPosition
