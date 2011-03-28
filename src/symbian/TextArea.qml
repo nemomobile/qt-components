@@ -173,9 +173,6 @@ ImplicitSizeItem {
             contentHeight: textEdit.model.paintedHeight
             contentWidth: textEdit.model.paintedWidth
 
-            // To avoid too early loading of ScrollDecorator when Flickable is not ready
-            Component.onCompleted: { scroll.flickableItem = flick }
-
             TextEdit {
                 id: textEdit
                 objectName: "textEdit"
@@ -206,19 +203,29 @@ ImplicitSizeItem {
                 // TODO: Make bug report?
                 // Called too early (before TextEdit size is adjusted) delay ensureVisible call a bit
                 onCursorRectangleChanged: delayedEnsureVisible.start()
-                onFocusChanged: {
-                    if (focus) {
-                        // TODO: Use ScrollBar flash()
-
-                        // TODO: Enable when decision made about Qt Mobility usage
-                        //privateStyle.play(ThemeEffect.Editor)
+                onActiveFocusChanged: {
+                    if (activeFocus) {
+                        horizontal.flash()
+                        vertical.flash()
                     }
                 }
             }
         }
 
-        ScrollDecorator {
-            id: scroll
+        ScrollBar {
+            id: vertical
+            anchors { top: flick.top; right: flick.right }
+            flickableItem: flick
+            interactive: false
+            orientation: Qt.Vertical
+        }
+
+        ScrollBar {
+            id: horizontal
+            anchors { left: flick.left; bottom: flick.bottom; rightMargin: vertical.opacity ? vertical.width : 0 }
+            flickableItem: flick
+            interactive: false
+            orientation: Qt.Horizontal
         }
 
         Timer {
