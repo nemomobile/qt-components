@@ -120,8 +120,8 @@ void tst_button::testImplicitSize()
     button->setProperty("iconSource", "image://theme/qtg_graf_radiobutton_normal_selected");
     const qreal longTextSomeIconImplicitWidth = button->implicitWidth();
     const qreal longTextSomeIconImplicitHeight = button->implicitHeight();
-    QVERIFY(longTextSomeIconImplicitWidth > longTextNoIconImplicitWidth);
-    QVERIFY(longTextSomeIconImplicitHeight >= longTextNoIconImplicitHeight);
+    QVERIFY(longTextSomeIconImplicitWidth >= longTextNoIconImplicitWidth);
+    QVERIFY(longTextSomeIconImplicitHeight > longTextNoIconImplicitHeight);
 }
 
 void tst_button::testFont()

@@ -64,13 +64,12 @@ ImplicitSizeItem {
         var prefWidth = 20;
 
         if (iconSource != "" && text)
-            // leftMargin + iconWidth + padding + textWidth + rightMargin
-            prefWidth = icon.anchors.leftMargin + icon.sourceSize.width + label.anchors.leftMargin + privateStyle.textWidth(label.text, label.font) + label.anchors.rightMargin
+            prefWidth = icon.sourceSize.width > privateStyle.textWidth(label.text, label.font)
+                ? icon.anchors.leftMargin + icon.sourceSize.width + icon.anchors.rightMargin
+                : label.anchors.leftMargin + privateStyle.textWidth(label.text, label.font) + label.anchors.rightMargin
         else if (iconSource != "")
-            // leftMargin + iconWidth + rightMargin
             prefWidth = icon.anchors.leftMargin + icon.sourceSize.width + icon.anchors.rightMargin;
         else if (text)
-            // leftMargin + textWidth + rightMargin
             prefWidth = icon.anchors.leftMargin + privateStyle.textWidth(label.text, label.font) + label.anchors.rightMargin;
 
         return prefWidth;
@@ -80,7 +79,7 @@ ImplicitSizeItem {
         var prefHeight = icon.anchors.topMargin + icon.anchors.bottomMargin;
 
         if (iconSource != "" && text)
-            prefHeight = prefHeight + Math.max(icon.sourceSize.height, privateStyle.fontHeight(label.font));
+            prefHeight = prefHeight + icon.sourceSize.height + privateStyle.fontHeight(label.font);
         else if (iconSource != "")
             prefHeight = prefHeight + icon.sourceSize.height;
         else if (text)
@@ -202,38 +201,45 @@ ImplicitSizeItem {
         anchors.fill: parent
     }
 
-    Image {
-        id: icon
-        sourceSize.width : platformStyle.graphicSizeSmall
-        sourceSize.height : platformStyle.graphicSizeSmall
-        fillMode: Image.PreserveAspectFit
-        smooth: true
+    Item {
+        id: layout
+        width: implicitWidth < button.width ? implicitWidth : button.width
+        height: implicitHeight < button.height ? implicitHeight : button.height
+        anchors.centerIn: parent
 
-        anchors.leftMargin : platformStyle.paddingLarge
-        anchors.rightMargin : platformStyle.paddingLarge
-        anchors.topMargin : platformStyle.paddingLarge
-        anchors.bottomMargin : platformStyle.paddingLarge
-        anchors.left: parent.left
-        anchors.right: text == "" ? parent.right : undefined
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-    }
+        Image {
+            id: icon
+            sourceSize.width : platformStyle.graphicSizeSmall
+            sourceSize.height : platformStyle.graphicSizeSmall
+            fillMode: Image.PreserveAspectFit
+            smooth: true
 
-    Text {
-        id: label
-        elide: Text.ElideRight
-        anchors.leftMargin: iconSource != "" ? platformStyle.paddingMedium : platformStyle.paddingLarge
-        anchors.rightMargin: platformStyle.paddingLarge
+            anchors {
+                horizontalCenter: layout.horizontalCenter
+                verticalCenter: layout.verticalCenter
+                verticalCenterOffset: text ? -platformStyle.paddingLarge : 0
+                margins: platformStyle.paddingLarge
+            }
+        }
 
-        anchors.left: iconSource != "" ? icon.right : parent.left
-        anchors.right: parent.right
-        anchors.verticalCenter: parent.verticalCenter
+        Text {
+            id: label
+            elide: layout.width >= button.width ? Text.ElideRight : Text.ElideNone
+            anchors {
+                leftMargin: platformStyle.paddingLarge
+                rightMargin: platformStyle.paddingLarge
+                left: layout.left
+                right: layout.right
+                top: iconSource != "" ? icon.bottom : layout.top
+                bottom: layout.bottom
+            }
 
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
 
-        font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
-        color: platformStyle.colorNormalLight
+            font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
+            color: platformStyle.colorNormalLight
+        }
     }
 
     MouseArea {
@@ -287,5 +293,4 @@ ImplicitSizeItem {
             event.accepted = true;
         }
     }
-
 }
