@@ -195,5 +195,15 @@ Item {
                 }
             }
         }
+
+        Button {
+            id: flash; objectName: "flash"
+            height: 50; width: 150
+            text: "flash"
+            onClicked: {
+                vertical.flash()
+                horizontal.flash()
+            }
+        }
     }
 }
