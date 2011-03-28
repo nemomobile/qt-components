@@ -171,7 +171,7 @@ ImplicitSizeItem {
             boundsBehavior: Flickable.StopAtBounds
             clip: true
             contentHeight: textEdit.model.paintedHeight
-            contentWidth: textEdit.model.paintedWidth
+            contentWidth: textEdit.model.paintedWidth + textEdit.cursorRectangle.width
 
             TextEdit {
                 id: textEdit
