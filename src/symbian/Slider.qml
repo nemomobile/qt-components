@@ -72,21 +72,66 @@ ImplicitSizeItem {
         property bool tapOnTrack: false
         property bool keysActive: false
 
-        height: orientation == Qt.Horizontal ? privateStyle.sliderThickness : undefined
-        width: orientation == Qt.Horizontal ? undefined : privateStyle.sliderThickness
-        source: privateStyle.imagePath(orientation == Qt.Horizontal ? "qtg_fr_slider_h_track_normal" : "qtg_fr_slider_v_track_normal")
+        states: [
+            State {
+                name: "Horizontal"
+                when: orientation == Qt.Horizontal
 
-        border.left: orientation == Qt.Horizontal ? 20 : 0
-        border.right: orientation == Qt.Horizontal ? 20 : 0
-        border.top: orientation == Qt.Horizontal ? 0 : 20
-        border.bottom: orientation == Qt.Horizontal ? 0 : 20
+                PropertyChanges {
+                    target: track
+                    height: privateStyle.sliderThickness
+                    width: undefined
+                    source: privateStyle.imagePath("qtg_fr_slider_h_track_normal")
+                    border {
+                        left: 20
+                        right: 20
+                        top: 0
+                        bottom: 0
+                    }
+                }
 
-        anchors.left: orientation == Qt.Horizontal ? slider.left : undefined
-        anchors.right: orientation == Qt.Horizontal ? slider.right : undefined
-        anchors.top: orientation == Qt.Horizontal ? undefined : slider.top
-        anchors.bottom: orientation == Qt.Horizontal ? undefined : slider.bottom
-        anchors.horizontalCenter: orientation == Qt.Horizontal ? undefined : slider.horizontalCenter
-        anchors.verticalCenter: orientation == Qt.Horizontal ? slider.verticalCenter : undefined
+                AnchorChanges {
+                    target: track
+                    anchors {
+                        left: slider.left
+                        right: slider.right
+                        top: undefined
+                        bottom: undefined
+                        horizontalCenter: undefined
+                        verticalCenter: slider.verticalCenter
+                    }
+                }
+            },
+            State {
+                name: "Vertical"
+                when: orientation == Qt.Vertical
+
+                PropertyChanges {
+                    target: track
+                    height: undefined
+                    width: privateStyle.sliderThickness
+                    source: privateStyle.imagePath("qtg_fr_slider_v_track_normal")
+                    border {
+                        left: 0
+                        right: 0
+                        top: 20
+                        bottom: 20
+                    }
+                }
+
+                AnchorChanges {
+                    target: track
+                    anchors {
+                        left: undefined
+                        right: undefined
+                        top: slider.top
+                        bottom: slider.bottom
+                        horizontalCenter: slider.horizontalCenter
+                        verticalCenter: undefined
+                    }
+                }
+            }
+        ]
 
         anchors.leftMargin: platformStyle.paddingMedium
         anchors.rightMargin: platformStyle.paddingMedium
