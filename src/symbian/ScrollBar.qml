@@ -51,6 +51,10 @@ ImplicitSizeItem {
         return undefined
     }
     opacity: 0
+    Component.onCompleted: { // TODO: Remove when position and pageSize properties are removed
+        console.log("ScrollBar.pageSize deprecated, use flickableItem.visibleArea ratios instead!")
+        console.log("ScrollBar.position deprecated, use flickableItem.visibleArea positions instead!")
+    }
 
     //For showing explicitly a ScrollBar if policy is Symbian.ScrollBarWhenScrolling
     function flash() {
@@ -173,7 +177,6 @@ ImplicitSizeItem {
          * @see scrollBar.pageSize Flickable
          */
         function getPageSize() {
-            console.log("ScrollBar.pageSize deprecated, use flickableItem.visibleArea ratios instead!")
             if (!flickableItem)
                 return NaN
             if (orientation == Qt.Vertical)
@@ -188,7 +191,6 @@ ImplicitSizeItem {
          * @see scrollBar.position Flickable
          */
         function getPosition() {
-            console.log("ScrollBar.position deprecated, use flickableItem.visibleArea positions instead!")
             if (!flickableItem)
                 return NaN
             if (orientation == Qt.Vertical)
