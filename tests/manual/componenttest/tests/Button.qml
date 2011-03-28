@@ -30,6 +30,7 @@ import Qt.labs.components 1.0
 
 Item {
     id: root
+    anchors.fill: parent
 
     function isLandscape() {
         if ( screen.width > screen.height )
@@ -46,7 +47,7 @@ Item {
             right: isLandscape() ? parent.horizontalCenter : parent.right
             margins: 10
         }
-        spacing: 10
+        spacing: isLandscape() ? 1 : 5
 
         Row {
             ChoiceList {
@@ -74,10 +75,10 @@ Item {
         }
 
         Row {
-            spacing: 10
+            spacing: 5
             Text {
                 color: "white"
-                font.pointSize: 12
+                font.pointSize: 11
                 text: "Button text:"
             }
 
@@ -156,7 +157,7 @@ Item {
 
         anchors {
             top: isLandscape() ? parent.top : common.bottom;
-            left: isLandscape() ? common.right : parent.left;
+            left: isLandscape() ? parent.horizontalCenter : parent.left;
             right: parent.right
             bottom: parent.bottom
             margins: 10
