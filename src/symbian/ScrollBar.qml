@@ -277,6 +277,7 @@ ImplicitSizeItem {
         id: indicateEffect
 
         function play() {
+            flashEffect.stop()
             idleEffect.stop()
             restart()
         }
@@ -304,6 +305,7 @@ ImplicitSizeItem {
         id: flashEffect
         PropertyAnimation {
             target: scrollBar
+            property: "opacity"
             to: 1
             duration: 0
         }
