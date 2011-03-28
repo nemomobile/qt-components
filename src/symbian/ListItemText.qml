@@ -46,7 +46,7 @@ Text {
             if (style.mode == "normal") {
                 if (role == "SelectionTitle")
                     return platformStyle.colorNormalDark
-                else if (role == "SelectionSubtitle" || role == "SubTitle")
+                else if (role == "SelectionSubTitle" || role == "SubTitle")
                     return platformStyle.colorNormalMid
                 else
                     return platformStyle.colorNormalLight
@@ -61,7 +61,7 @@ Text {
             if (listItemText.mode == "normal" || listItemText.mode == "") {
                 if (role == "SelectionTitle")
                     return platformStyle.colorNormalDark
-                else if (role == "SelectionSubtitle" || role == "SubTitle")
+                else if (role == "SelectionSubTitle" || role == "SubTitle")
                     return platformStyle.colorNormalMid
                 else
                     return platformStyle.colorNormalLight
