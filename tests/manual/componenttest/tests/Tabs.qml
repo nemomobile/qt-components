@@ -244,7 +244,7 @@ Item {
                             if (tabButton)
                                 tabButton.iconSource = currentValue != "<none>" ? "image://theme/:/" + currentValue : ""
                         }
-                        model: ["<none>", "list1.png", "list2.png"]
+                        model: ["<none>", "list1.png", "list2.png", "qtg_graf_drill_down_indicator.svg"]
                     }
                 }
             }
