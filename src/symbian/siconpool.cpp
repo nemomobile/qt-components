@@ -82,8 +82,18 @@ QPixmap SIconPool::get(const QString &fileName,
 {
     QPixmap pixmap;
 
-    // Accept non-valid size (will use default size) or user defined non-empty size
-    if (!fileName.isEmpty() && (!size.isValid() || !size.isEmpty())) {
+    // Size (-n,-n) uses icon's default size (where (-n) is a negative number).
+
+    // Sizes (-n,x) and (x,-n) use the defined dimension (x) and scale the
+    // undefined dimension (-n) keeping the aspect ratio.
+
+    // Notice: QML seems to prevent setting (-1,x) or (x,-1) as a size.
+    // You can, however, use (-2,x) or (x, -2). There's a "undefined"
+    // constant (Symbian.UndefinedSourceDimension) defined in Symbian
+    // namespace that can be used for this purpose.
+
+    // If icon width or height is zero, can simply return default constructed QPixmap
+    if (!fileName.isEmpty() && size.width() && size.height()) {
         SIconPoolKey key(fileName, size, mode, color);
         SIconPoolData *pool = poolData();
 
@@ -117,8 +127,23 @@ QPixmap SIconPool::loadIcon(
         if (renderer->isValid()) {
             QSize renderSize = renderer->defaultSize();
 
-            if (size.isValid())
+            // If given size is valid, scale default size to it using the given aspect ratio mode
+            if (size.isValid()) {
                 renderSize.scale(size, mode);
+
+            // If only one dimension is valid, scale other dimension keeping the aspect ratio
+            } else if (size.height() > 0) {
+                Qt::AspectRatioMode scaleMode = size.height() > renderSize.height()
+                    ? Qt::KeepAspectRatioByExpanding
+                    : Qt::KeepAspectRatio;
+                renderSize.scale(renderSize.width(), size.height(), scaleMode);
+            } else if (size.width() > 0) {
+                Qt::AspectRatioMode scaleMode = size.width() > renderSize.width()
+                    ? Qt::KeepAspectRatioByExpanding
+                    : Qt::KeepAspectRatio;
+                renderSize.scale(size.width(), renderSize.height(), scaleMode);
+            }
+            //  Otherwise (-1,-1) was given as size, leave renderSize as icon's default size
 
             pm = QPixmap(renderSize);
             pm.fill(QColor(0, 0, 0, 0));
