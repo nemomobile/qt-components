@@ -89,6 +89,7 @@ QML_FILES = \
     SectionScroller.js \
     SectionScroller.qml \
     SectionScrollerLabel.qml \
+    SelectionDialog.qml \
     SelectionListItem.qml \
     Slider.qml \
     StatusBar.qml \
