@@ -82,16 +82,31 @@ ImplicitSizeItem {
         mode: internal.getMode()
     }
 
-    BorderImage {
-        id: frame
-        source: privateStyle.imagePath("qtg_fr_list_normal")
-        border { left: 20; top: 20; right: 20; bottom: 20 }
+    Item {
+        id: background
         anchors.fill: parent
 
-        BorderImage {
-            id: frameFader
+        Rectangle {
+            height: 1
+            color: privateStyle.listItemSeparatorColor
+            anchors {
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.right
+            }
+        }
+        Loader {
+            id: faderLoader
             opacity: 0
-            anchors.fill: frame
+            anchors.fill: background
+            sourceComponent: root.mode != "normal" ? fader : undefined
+        }
+    }
+
+    Component {
+        id: fader
+
+        BorderImage {
             source: privateStyle.imagePath("qtg_fr_list_" + mode)
             border { left: 20; top: 20; right: 20; bottom: 20 }
         }
@@ -206,12 +221,12 @@ ImplicitSizeItem {
 
     SequentialAnimation {
         id: pressedEffect
-        PropertyAnimation { target: frameFader; property: "opacity"; to: 1; easing.type: Easing.Linear; duration: 100 }
+        PropertyAnimation { target: faderLoader; property: "opacity"; to: 1; easing.type: Easing.Linear; duration: 100 }
     }
 
     SequentialAnimation {
         id: releasedEffect
-        PropertyAnimation { target: frameFader; property: "opacity"; to: 0; easing.type: Easing.Linear; duration: 100 }
+        PropertyAnimation { target: faderLoader; property: "opacity"; to: 0; easing.type: Easing.Linear; duration: 100 }
     }
 
     Item {
@@ -259,11 +274,11 @@ ImplicitSizeItem {
         }
 
         function disable() {
-            frameFader.opacity = 1
+            faderLoader.opacity = 1
         }
 
         function focus() {
-            frameFader.opacity = 1
+            faderLoader.opacity = 1
         }
 
         states: [
