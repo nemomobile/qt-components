@@ -71,7 +71,6 @@ ImplicitSizeItem {
         }
     }
 
-    clip: true
     implicitWidth: ListView.view ? ListView.view.width : screen.width
     implicitHeight: platformStyle.graphicSizeLarge
 
@@ -209,6 +208,7 @@ ImplicitSizeItem {
     }
 
     ListView.onRemove: SequentialAnimation {
+        PropertyAction { target: root; property: "clip"; value: true }
         PropertyAction { target: root; property: "ListView.delayRemove"; value: true }
         NumberAnimation { target: root; property: "height"; to: 0; duration: 500; easing.type: Easing.InOutQuad }
         PropertyAction { target: root; property: "ListView.delayRemove"; value: false }
