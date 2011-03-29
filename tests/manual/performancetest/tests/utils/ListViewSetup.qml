@@ -273,7 +273,10 @@ Item {
             enabled: !disabled // State from model
 
             Image {
-                anchors { left: parent.paddingItem.left; top: parent.paddingItem.top }
+                anchors {
+                    left: imageSize == platformStyle.graphicSizeLarge ? parent.left : parent.paddingItem.left
+                    top: imageSize == platformStyle.graphicSizeLarge ? parent.top : parent.paddingItem.top
+                }
                 sourceSize.height: imageSize
                 sourceSize.width: imageSize
                 source: image
@@ -291,29 +294,35 @@ Item {
             width: listView.width
             enabled: !disabled // State from model
 
-            Row {
-                anchors.fill: listItem3.paddingItem
-                spacing: platformStyle.paddingMedium
 
-                Image {
-                    sourceSize.height: imageSize
-                    sourceSize.width: imageSize
-                    source: image
+            Image {
+                id: imageItem
+                anchors {
+                    left: imageSize == platformStyle.graphicSizeLarge ? listItem3.left : listItem3.paddingItem.left
+                    top: imageSize == platformStyle.graphicSizeLarge ? listItem3.top : listItem3.paddingItem.top
+                }
+                sourceSize.height: imageSize
+                sourceSize.width: imageSize
+                source: imageSize == 0 ? "" : image
+            }
+            Column {
+                anchors {
+                    top: listItem3.paddingItem.top
+                    left: imageItem.right
+                    leftMargin: platformStyle.paddingMedium
+                    right: listItem3.paddingItem.right
                 }
 
-                Column {
+                ListItemText {
+                    mode: listItem3.mode
+                    role: "Title"
+                    text: title // Title from model
+                }
 
-                    ListItemText {
-                        mode: listItem3.mode
-                        role: "Title"
-                        text: title // Title from model
-                    }
-
-                    ListItemText {
-                        mode: listItem3.mode
-                        role: "SubTitle"
-                        text: subTitle // SubTitle from model
-                    }
+                ListItemText {
+                    mode: listItem3.mode
+                    role: "SubTitle"
+                    text: subTitle // SubTitle from model
                 }
             }
             onPressAndHold: contextMenu.open()
