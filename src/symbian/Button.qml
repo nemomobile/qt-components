@@ -92,7 +92,7 @@ ImplicitSizeItem {
         id: internal
         objectName: "internal"
 
-        property int autoRepeatInterval: 50
+        property int autoRepeatInterval: 60
 
         function bg_postfix() {
             if (stateGroup.state == "Pressed" || stateGroup.state == "PressAndHold")
