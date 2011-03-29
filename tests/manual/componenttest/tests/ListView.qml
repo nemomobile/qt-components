@@ -80,13 +80,17 @@ Item {
         content: MenuLayout {
             MenuItem {
                 text: "Set disabled"
-                onClicked: listView.model.set(listView.currentIndex, {"disabled": true})
+                onClicked: {
+                    listView.model.set(listView.currentIndex, {"disabled": true})
+                    listView.forceActiveFocus()
+                }
             }
             MenuItem {
                 text: "Toggle subitem indicator"
                 onClicked: {
                     var indicatorState = listView.model.get(listView.currentIndex).indicator
                     listView.model.set(listView.currentIndex, {"indicator": !indicatorState})
+                    listView.forceActiveFocus()
                 }
             }
             MenuItem {
@@ -98,6 +102,7 @@ Item {
                 onClicked: {
                     if (listView.currentIndex >= 0)
                         listView.model.remove(listView.currentIndex)
+                    listView.forceActiveFocus()
                 }
             }
         }
