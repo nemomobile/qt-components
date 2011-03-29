@@ -29,20 +29,23 @@ import "." 1.0
 
 ImplicitSizeItem {
     id: root
-    implicitWidth: style.current.preferredWidth
-    implicitHeight: style.current.preferredHeight
+    implicitWidth: screen.width
+    implicitHeight: privateStyle.statusBarHeight
 
     Component.onCompleted: priv.updateBatteryStatus()
 
     QtObject {
         id: priv
         objectName: "priv"
+
+        property int imageHeight: privateStyle.statusBarHeight - 2 * platformStyle.paddingSmall
         function batteryImage(level) {
             if (level == 100)
-                return style.current.get("batteryFull");
+                return privateStyle.imagePath("qtg_graf_battery_level_full")
             else if (level > 20)
-                return style.current.get("batteryMedium");
-            return style.current.get("batteryLow");
+                return privateStyle.imagePath("qtg_graf_battery_level_medium")
+            else
+                return privateStyle.imagePath("qtg_graf_battery_level_low")
         }
 
         function updateBatteryStatus() {
@@ -75,7 +78,7 @@ ImplicitSizeItem {
         }
 
         function animationStarted() {
-            batteryLevelImage.source = style.current.get("batteryFull");
+            batteryLevelImage.source = privateStyle.imagePath("qtg_graf_battery_level_full")
         }
 
         function updateBatteryImage() {
@@ -93,14 +96,9 @@ ImplicitSizeItem {
     }
 
     BorderImage {
-        source: style.current.get("background")
+        source: privateStyle.imagePath("qtg_fr_statusbar")
         anchors.fill: parent
         width: parent.width
-
-        Style {
-            id: style
-            styleClass: "StatusBar"
-        }
 
         Connections {
             target: batteryInfo
@@ -109,112 +107,119 @@ ImplicitSizeItem {
             onBatteryStatusChanged: priv.updateBatteryStatus()
         }
 
-        Row {
-            id: signalRow
-            anchors.right: parent.right
-            anchors.margins: style.current.get("rowMargins")
-            spacing: style.current.get("rowSpacing")
-            // icon for network signal type e.g. 3G, GPRS etc
-            Image {
-                id: networkMode
-                sourceSize.width: style.current.get("signalWidth")
-                sourceSize.height: style.current.get("signalHeight")
-                anchors.verticalCenter: signalRow.verticalCenter
-                source: (networkInfo.networkMode == NetworkInfo.GsmMode)
-                         ? style.current.get("signalGprs") : style.current.get("signalGeneric")
+        // icon for network signal type e.g. 3G, GPRS etc
+        Image {
+            id: networkMode
+            sourceSize.height: priv.imageHeight
+            sourceSize.width: Symbian.UndefinedSourceDimension
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: signalBackground.left
+            anchors.rightMargin: platformStyle.paddingSmall
+            fillMode: Image.PreserveAspectFit
+            source: privateStyle.imagePath(networkInfo.networkMode == NetworkInfo.GsmMode
+                ? "qtg_graf_signal_gprs_att_icon" : "qtg_graf_signal_icon")
+        }
+        Image {
+            id: signalBackground
+            sourceSize.height: priv.imageHeight
+            sourceSize.width: Symbian.UndefinedSourceDimension
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: batteryBackground.left
+            anchors.rightMargin: platformStyle.paddingSmall
+            fillMode: Image.PreserveAspectFit
+            source: privateStyle.imagePath("qtg_graf_signal_level_bg")
+            Item {
+                id: signalLevelItem
+                height: parent.height
+                width: priv.signalWidthPercentage(networkInfo.networkSignalStrength) * parent.width
+                clip: true
+                Image {
+                    sourceSize.height: priv.imageHeight
+                    sourceSize.width: Symbian.UndefinedSourceDimension
+                    anchors.left: parent.left
+                    anchors.top: parent.top
+                    fillMode: Image.PreserveAspectFit
+                    source: privateStyle.imagePath("qtg_graf_signal_level_full")
+                }
             }
-            Image {
-                id: signalBackground
-                sourceSize.width: style.current.get("signalLevelWidth")
-                sourceSize.height: style.current.get("signalLevelHeight")
-                height: style.current.get("signalLevelHeight")
-                source: style.current.get("signalBackground")
-                Item {
-                    id: signalLevelItem
-                    height: parent.height
-                    width: priv.signalWidthPercentage(networkInfo.networkSignalStrength) * parent.width
-                    Image {
-                        fillMode: Image.PreserveAspectCrop
-                        smooth: true
-                        clip: true
-                        anchors.fill: parent
-                        source: style.current.get("signalFull")
-                     }
-                 }
-             }
-
-            Image {
-                id: batteryBackground
-                width: style.current.get("batteryLevelWidth")
-                height: style.current.get("batteryLevelHeight")
-                anchors.verticalCenter: signalRow.verticalCenter
-                source: style.current.get("batteryBackground")
-                fillMode: Image.PreserveAspectCrop
-                smooth: true
-                state: "Normal"
-                Item {
-                    id: batteryLevelItem
+        }
+        Image {
+            id: batteryBackground
+            sourceSize.height: priv.imageHeight
+            sourceSize.width: Symbian.UndefinedSourceDimension
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: timeItem.left
+            anchors.rightMargin: platformStyle.paddingSmall
+            fillMode: Image.PreserveAspectFit
+            source: privateStyle.imagePath("qtg_graf_battery_level_bg")
+            smooth: true
+            state: "Normal"
+            Item {
+                id: batteryLevelItem
+                anchors.right: parent.right
+                clip: true
+                width: parent.width
+                height: parent.height
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                Image {
+                    id: batteryLevelImage
+                    fillMode: Image.PreserveAspectCrop
+                    smooth: true
+                    clip:  true
                     anchors.right: parent.right
-                    clip: true
-                    width: parent.width
-                    height: parent.height
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
-                    Image {
-                        id: batteryLevelImage
-                        fillMode: Image.PreserveAspectCrop
-                        smooth: true
-                        clip:  true
-                        anchors.right: parent.right
-                        anchors.top: parent.top
-                        anchors.bottom: parent.bottom
-                        source: (batteryInfo.batteryStatus >= BatteryInfo.BatteryVeryLow)
-                                 ? style.current.get("batteryFull") : style.current.get("batteryLow")
-                    }
-                }
-                states: [
-                    State {
-                        name:"Charging"
-                        PropertyChanges { target: batteryLevelImage; source: style.current.get("batteryFull") }
-                    },
-                    State {
-                        name:"Normal"
-                        PropertyChanges { target: batteryLevelImage; width: batteryBackground.width; source: priv.batteryImage(batteryInfo.batteryLevel); }
-                    },
-                    State {
-                        name:"PowerSave"
-                        PropertyChanges { target: batteryLevelImage; source: ""; width: 0 }
-                    }
-                ]
-                SequentialAnimation {
-                    id: batteryChargingAnimation
-                    loops: Animation.Infinite
-                    ScriptAction { script: priv.animationStarted(); }
-                    NumberAnimation {
-                        target: batteryLevelItem
-                        property: "width"
-                        from: 0.2 * batteryBackground.width
-                        to: 0.5 * batteryBackground.width
-                        duration: 2000
-                    }
-                    NumberAnimation {
-                        target: batteryLevelItem
-                        property: "width"
-                        from: 0.5 * batteryBackground.width
-                        to: batteryBackground.width * .8
-                        duration: 2000
-                    }
-                    ScriptAction { script: priv.updateBatteryImage(); }
+                    source: privateStyle.imagePath(batteryInfo.batteryStatus >= BatteryInfo.BatteryVeryLow
+                        ? "qtg_graf_battery_level_full" : "qtg_graf_battery_level_low")
                 }
             }
-            Text {
-                id: timeItem
-                width: style.current.get("timeWidth")
-                height: style.current.get("timeHeight")
-                color: "white"
-                anchors.verticalCenter: signalRow.verticalCenter
-                text: symbian.currentTime
+            states: [
+                State {
+                    name:"Charging"
+                    PropertyChanges { target: batteryLevelImage; source: privateStyle.imagePath("qtg_graf_battery_level_full") }
+                },
+                State {
+                    name:"Normal"
+                    PropertyChanges { target: batteryLevelImage; width: batteryBackground.width; source: priv.batteryImage(batteryInfo.batteryLevel); }
+                },
+                State {
+                    name:"PowerSave"
+                    PropertyChanges { target: batteryLevelImage; source: ""; width: 0 }
+                }
+            ]
+            SequentialAnimation {
+                id: batteryChargingAnimation
+                loops: Animation.Infinite
+                ScriptAction { script: priv.animationStarted(); }
+                NumberAnimation {
+                    target: batteryLevelItem
+                    property: "width"
+                    from: 0.2 * batteryBackground.width
+                    to: 0.5 * batteryBackground.width
+                    duration: 2000
+                }
+                NumberAnimation {
+                    target: batteryLevelItem
+                    property: "width"
+                    from: 0.5 * batteryBackground.width
+                    to: batteryBackground.width * .8
+                    duration: 2000
+                }
+                ScriptAction { script: priv.updateBatteryImage(); }
             }
+        }
+        Text {
+            id: timeItem
+            // TODO: what's the correct way of defining the width?
+            width: privateStyle.textWidth("23:59", timeItem.font)
+            color: platformStyle.colorNormalLight
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
+            anchors.rightMargin: platformStyle.paddingSmall
+            horizontalAlignment: Text.AlignRight
+            text: symbian.currentTime
+            font { family: platformStyle.fontFamilyRegular; pixelSize: 0.8 * priv.imageHeight }
         }
     }
 }
