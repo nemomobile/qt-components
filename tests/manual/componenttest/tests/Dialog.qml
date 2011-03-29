@@ -205,6 +205,20 @@ Item {
         }
     }
 
+    SelectionDialog {
+        id: selectionDialog
+        titleText: "Dialog Header #1 123456789012345678901234567890"
+        selectedIndex: 1
+
+        model: ListModel {
+            ListElement { name: "ListTitle #1" }
+            ListElement { name: "ListTitle #2" }
+            ListElement { name: "ListTitle #3" }
+            ListElement { name: "ListTitle #4" }
+            ListElement { name: "ListTitle #5. 123456789012345678901234567890" }
+        }
+    }
+
     Button {
         x: 10
         y: 50
@@ -234,5 +248,15 @@ Item {
         text: "Show Dialog 3"
 
         onClicked: dialogWithScrollBar.open()
+    }
+
+    Button {
+        x: 10
+        y: 350
+        width: 160
+        height: 50
+        text: "Show Selection Dialog"
+
+        onClicked: selectionDialog.open()
     }
 }
