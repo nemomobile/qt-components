@@ -59,6 +59,7 @@ release/
 /tests/auto/api_progressbar/tst_quickcomponentsprogressbar
 /tests/auto/api_radiobutton/tst_quickcomponentsradiobutton
 /tests/auto/api_scrolldecorator/tst_quickcomponentsscrolldecorator
+/tests/auto/api_selectiondialog/tst_quickcomponentsselectiondialog
 /tests/auto/api_slider/tst_quickcomponentsslider
 /tests/auto/api_switch/tst_quickcomponentsswitch
 /tests/auto/api_textarea/tst_quickcomponentstextarea
