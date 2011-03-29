@@ -25,22 +25,188 @@
 ****************************************************************************/
 
 import Qt 4.7
+import "." 1.0
 
-//TODO: TabButton should not inherit Button as it has different style/layout spec
-Button {
+ImplicitSizeItem {
     id: root
+
+    // Common Public API
     property Item tab
+    property bool checked: internal.tabGroup && internal.tabGroup.currentTab == tab
+    property bool pressed: stateGroup.state == "Pressed" && mouseArea.containsMouse
+    property alias text: label.text
+    property alias iconSource: imageLoader.source
 
-    onClicked: {
-        if (priv.tabGroup)
-            priv.tabGroup.currentTab = tab
-    }
+    signal clicked
 
-    checked: priv.tabGroup ? priv.tabGroup.currentTab == tab : false
-    implicitHeight: screen.width < screen.height ? privateStyle.tabBarHeightPortrait : privateStyle.tabBarHeightLandscape
+    implicitWidth: Math.max(2 * imageLoader.width, 2 * platformStyle.paddingMedium + privateStyle.textWidth(label.text, label.font))
+    implicitHeight: internal.portrait ? privateStyle.tabBarHeightPortrait : privateStyle.tabBarHeightLandscape
 
     QtObject {
-        id: priv
-        property Item tabGroup: root.tab ? (root.tab.parent ? root.tab.parent.parent : null) : null
+        id: internal
+
+        property Item tabGroup: (root.tab && root.tab.parent) ? root.tab.parent.parent : null
+        property bool portrait: screen.orientation == Screen.Portrait || screen.orientation == Screen.PortraitInverted
+
+        function click() {
+            root.clicked()
+            privateStyle.play(Symbian.BasicButton)
+            if (internal.tabGroup)
+                internal.tabGroup.currentTab = tab
+        }
+    }
+
+    StateGroup {
+        id: stateGroup
+
+        states: [
+            State { name: "Pressed" },
+            State { name: "Canceled" }
+        ]
+        transitions: [
+            Transition {
+                from: "Pressed"
+                to: ""
+                ScriptAction { script: internal.click() }
+            }
+        ]
+    }
+
+    BorderImage {
+        id: background
+
+        function postfix() {
+            if (root.checked)
+                return "active"
+            else if (root.pressed)
+                return "passive_pressed"
+            return "passive_normal"
+        }
+
+        source: privateStyle.imagePath("qtg_fr_tab_" + postfix())
+        anchors.fill: parent
+        border {
+            left: platformStyle.borderSizeMedium
+            top: platformStyle.borderSizeMedium
+            right: platformStyle.borderSizeMedium
+            bottom: platformStyle.borderSizeMedium
+        }
+    }
+
+    Text {
+        id: label
+
+        anchors {
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+            leftMargin: platformStyle.paddingMedium
+            rightMargin: platformStyle.paddingMedium
+            bottomMargin: platformStyle.paddingSmall
+        }
+        elide: Text.ElideRight
+        horizontalAlignment: Text.AlignHCenter
+        font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeSmall }
+        color: {
+            if (root.checked)
+                return platformStyle.colorNormalLight
+            if (root.pressed)
+                return platformStyle.colorPressed
+            return platformStyle.colorNormalMid
+        }
+    }
+
+    Loader {
+        // imageLoader acts as wrapper for Image and Icon items. The Image item is
+        // shown when the source points to a image (jpg, png). Icon item is used for
+        // locigal theme icons which are colorised.
+        id: imageLoader
+
+        property url source
+        property string iconId
+
+        // function tries to figure out if the source is image or icon
+        function inspectSource() {
+            var fileName = imageLoader.source.toString()
+            if (fileName.length) {
+                fileName = fileName.substr(fileName.lastIndexOf("/") + 1)
+                var fileBaseName = fileName
+                if (fileName.indexOf(".") >= 0)
+                    fileBaseName = fileName.substr(0, fileName.indexOf("."))
+
+                // empty file extension and .svg are treated as icons
+                if (fileName == fileBaseName || fileName.substr(fileName.length - 4).toLowerCase() == ".svg")
+                    imageLoader.iconId = fileBaseName
+                else
+                    imageLoader.iconId = ""
+            } else {
+                imageLoader.iconId = ""
+            }
+        }
+
+        Component.onCompleted: inspectSource()
+        onSourceChanged: inspectSource()
+
+        // Hide in landscape if text is provided
+        visible: internal.portrait || !root.text
+        width : platformStyle.graphicSizeSmall
+        height : platformStyle.graphicSizeSmall
+        sourceComponent: {
+            if (iconId)
+                return iconComponent
+            if (source.toString())
+                return imageComponent
+            return undefined
+        }
+        anchors {
+            top: parent.top
+            topMargin : !parent.text ? (parent.height - imageLoader.height) / 2 : platformStyle.paddingSmall
+            horizontalCenter: parent.horizontalCenter
+        }
+
+        Component {
+            id: imageComponent
+
+            Image {
+                id: image
+
+                objectName: "image"
+                source: imageLoader.iconId ? "" : imageLoader.source
+                sourceSize.width: width
+                sourceSize.height: height
+                fillMode: Image.PreserveAspectFit
+                smooth: true
+                anchors.fill: parent
+            }
+        }
+
+        Component {
+            id: iconComponent
+
+            Icon {
+                id: icon
+
+                objectName: "icon"
+                anchors.fill: parent
+                iconColor: label.color
+                iconName: imageLoader.iconId
+            }
+        }
+    }
+
+    MouseArea {
+        id: mouseArea
+
+        onPressed: stateGroup.state = "Pressed"
+        onReleased: stateGroup.state = ""
+        onCanceled: {
+            // Mark as canceled
+            stateGroup.state = "Canceled"
+            // Reset state
+            stateGroup.state = ""
+        }
+        onExited: stateGroup.state = "Canceled"
+
+        anchors.fill: parent
     }
 }
