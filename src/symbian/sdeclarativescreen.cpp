@@ -93,7 +93,9 @@ SDeclarativeScreenPrivate::SDeclarativeScreenPrivate(SDeclarativeScreen *qq) :
 #endif
         gv->installEventFilter(q);
     }
+#if defined(Q_WS_SIMULATOR)
     q->connect(QApplication::desktop(), SIGNAL(resized(int)), SLOT(_q_desktopResized(int)), Qt::QueuedConnection);
+#endif
     QSize initViewSize;
 #if !defined(Q_OS_SYMBIAN) && !defined(Q_WS_SIMULATOR)
     initViewSize = displaySize;
@@ -184,7 +186,7 @@ void SDeclarativeScreenPrivate::_q_initView(const QSize &size)
 void SDeclarativeScreenPrivate::_q_desktopResized(int screen)
 {
     Q_UNUSED(screen)
-#if defined(Q_OS_SYMBIAN) || defined(Q_WS_SIMULATOR)
+#if defined(Q_WS_SIMULATOR)
     if (screen == QApplication::desktop()->primaryScreen()) {
         QSize current = currentScreenSize();
         // Move view's scene rect to origin
