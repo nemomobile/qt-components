@@ -38,7 +38,8 @@ ImplicitSizeItem {
     property alias value: model.value
     property int orientation: Qt.Horizontal
     property bool pressed: handleMouseArea.pressed || track.keysActive
-    property bool updateValueWhileDragging: true
+    property bool updateValueWhileDragging: true // deprecated
+    onUpdateValueWhileDraggingChanged: console.log("warning: Slider.updateValueWhileDragging is deprecated.")
     property bool valueIndicatorVisible: false
     property string valueIndicatorText: ""
 
