@@ -30,6 +30,7 @@
 #include <QtCore/qobject.h>
 #include <QtCore/qvariant.h>
 #include <QtCore/qscopedpointer.h>
+#include <QtGui/qcolor.h>
 
 class SDeclarativeStyleInternalPrivate;
 class SStyleEngine;
@@ -52,6 +53,7 @@ class SDeclarativeStyleInternal : public QObject
     Q_PROPERTY(int dialogMaxSize READ dialogMaxSize NOTIFY layoutParametersChanged FINAL)
     Q_PROPERTY(int ratingIndicatorImageWidth READ ratingIndicatorImageWidth NOTIFY layoutParametersChanged FINAL)
     Q_PROPERTY(int ratingIndicatorImageHeight READ ratingIndicatorImageHeight NOTIFY layoutParametersChanged FINAL)
+    Q_PROPERTY(QColor listItemSeparatorColor READ listItemSeparatorColor NOTIFY colorParametersChanged FINAL)
 
 public:
 
@@ -72,6 +74,7 @@ public:
     int dialogMaxSize() const;
     int ratingIndicatorImageWidth() const;
     int ratingIndicatorImageHeight() const;
+    QColor listItemSeparatorColor() const;
 
     Q_INVOKABLE void play(int effect);
     Q_INVOKABLE int textWidth(const QString &text, const QFont &font) const;
@@ -80,6 +83,7 @@ public:
 
 Q_SIGNALS:
     void layoutParametersChanged();
+    void colorParametersChanged();
 
 protected:
     QScopedPointer<SDeclarativeStyleInternalPrivate> d_ptr;

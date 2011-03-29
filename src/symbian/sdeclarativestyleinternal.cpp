@@ -54,6 +54,7 @@ SDeclarativeStyleInternal::SDeclarativeStyleInternal(SStyleEngine *engine, QObje
     Q_D(SDeclarativeStyleInternal);
     d->engine = engine;
     QObject::connect(engine, SIGNAL(layoutParametersChanged()), this, SIGNAL(layoutParametersChanged()));
+    QObject::connect(engine, SIGNAL(colorParametersChanged()), this, SIGNAL(colorParametersChanged()));
 }
 
 SDeclarativeStyleInternal::~SDeclarativeStyleInternal()
@@ -144,6 +145,11 @@ int SDeclarativeStyleInternal::ratingIndicatorImageHeight() const
     return d->engine->layoutParameter(QLatin1String("rating-image-height"));
 }
 
+QColor SDeclarativeStyleInternal::listItemSeparatorColor() const
+{
+    Q_D(const SDeclarativeStyleInternal);
+    return d->engine->colorParameter(QLatin1String("color-list-item-separator"));
+}
 void SDeclarativeStyleInternal::play(int effect)
 {
 #ifdef HAVE_MOBILITY

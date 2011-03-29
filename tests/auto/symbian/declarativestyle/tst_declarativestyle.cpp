@@ -131,6 +131,7 @@ void tst_SDeclarativeStyle::testPrivateStyle_data()
     QTest::newRow("switchButtonHeight") << "switchButtonHeight" << (int)QVariant::Int;
     QTest::newRow("dialogMinSize") << "dialogMinSize" << (int)QVariant::Int;
     QTest::newRow("dialogMaxSize") << "dialogMaxSize" << (int)QVariant::Int;
+    QTest::newRow("listItemSeparatorColor") << "listItemSeparatorColor" << (int)QVariant::Color;
 
     // invalid param
     QTest::newRow("__invalid__") << "__invalid__" << (int)QVariant::Invalid;
