@@ -28,7 +28,7 @@ import Qt 4.7
 import "." 1.0
 
 ImplicitSizeItem {
-    id: checkbox
+    id: root
 
     // Common Public API
     property bool checked: false
@@ -43,15 +43,15 @@ ImplicitSizeItem {
         objectName: "internal"
 
         function bg_postfix() {
-            if (!checkbox.enabled) {
-                if (checkbox.checked)
+            if (!root.enabled) {
+                if (root.checked)
                     return "disabled_selected"
                 else
                     return "disabled_unselected"
             } else {
-                if (checkbox.pressed)
+                if (root.pressed)
                     return "pressed"
-                else if (checkbox.checked)
+                else if (root.checked)
                     return "normal_selected"
                 else
                     return "normal_unselected"
@@ -64,8 +64,8 @@ ImplicitSizeItem {
 
         function toggle() {
             clickedEffect.restart();
-            checkbox.checked = !checkbox.checked;
-            checkbox.clicked();
+            root.checked = !root.checked;
+            root.clicked();
             privateStyle.play(Symbian.CheckBox);
         }
     }

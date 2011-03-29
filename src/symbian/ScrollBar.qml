@@ -28,7 +28,7 @@ import Qt 4.7
 import "." 1.0
 
 ImplicitSizeItem {
-    id: scrollBar
+    id: root
 
     property Flickable flickableItem: null
     property int orientation: Qt.Vertical
@@ -69,8 +69,8 @@ ImplicitSizeItem {
         property int pageStepX: flickableItem ? Math.floor(flickableItem.visibleArea.widthRatio * flickableItem.contentWidth) : NaN
         property int handleY: flickableItem ? Math.floor(handle.y / flickableItem.height * flickableItem.contentHeight) : NaN
         property int handleX: flickableItem ? Math.floor(handle.x / flickableItem.width * flickableItem.contentWidth) : NaN
-        property int maximumY: flickableItem ? Math.floor(Math.min(flickableItem.contentHeight - scrollBar.height, flickableItem.contentY)) : NaN
-        property int maximumX: flickableItem ? Math.floor(Math.min(flickableItem.contentWidth - scrollBar.width, flickableItem.contentX)) : NaN
+        property int maximumY: flickableItem ? Math.floor(Math.min(flickableItem.contentHeight - root.height, flickableItem.contentY)) : NaN
+        property int maximumX: flickableItem ? Math.floor(Math.min(flickableItem.contentWidth - root.width, flickableItem.contentX)) : NaN
         property bool scrollBarNeeded: hasScrollableContent()
         /**
          * Special handler for idle state ""
@@ -246,15 +246,15 @@ ImplicitSizeItem {
     ScrollBarSizer {
         id: sizer
         minSize: 3 * Math.floor(privateStyle.scrollBarThickness)
-        maxSize: !flickableItem ? NaN : (orientation == Qt.Vertical ? scrollBar.height : scrollBar.width)
+        maxSize: !flickableItem ? NaN : (orientation == Qt.Vertical ? root.height : root.width)
         positionRatio: !flickableItem ? NaN : (orientation == Qt.Vertical && flickableItem ? flickableItem.visibleArea.yPosition : flickableItem.visibleArea.xPosition)
         sizeRatio: !flickableItem ? NaN : (orientation == Qt.Vertical ? flickableItem.visibleArea.heightRatio : flickableItem.visibleArea.widthRatio)
     }
     MouseArea {
         id: handleMouseArea
         objectName: "handleMouseArea"
-        property real maxDragY: flickableItem ? flickableItem.height - handle.height - scrollBar.anchors.topMargin - scrollBar.anchors.bottomMargin : NaN
-        property real maxDragX: flickableItem ? flickableItem.width - handle.width - scrollBar.anchors.leftMargin - scrollBar.anchors.rightMargin : NaN
+        property real maxDragY: flickableItem ? flickableItem.height - handle.height - root.anchors.topMargin - root.anchors.bottomMargin : NaN
+        property real maxDragX: flickableItem ? flickableItem.width - handle.width - root.anchors.leftMargin - root.anchors.rightMargin : NaN
         enabled: interactive
         width: orientation == Qt.Vertical ? 3 * privateStyle.scrollBarThickness : handle.width
         height: orientation == Qt.Horizontal ? 3 * privateStyle.scrollBarThickness : handle.height
@@ -282,7 +282,7 @@ ImplicitSizeItem {
             restart()
         }
 
-        target: scrollBar
+        target: root
         property: "opacity"
         to: 1
         duration: 0
@@ -292,11 +292,11 @@ ImplicitSizeItem {
 
         function play() {
             indicateEffect.stop()
-            if (internal.scrollBarNeeded && scrollBar.policy == Symbian.ScrollBarWhenScrolling)
+            if (internal.scrollBarNeeded && root.policy == Symbian.ScrollBarWhenScrolling)
                 restart()
         }
 
-        target: scrollBar
+        target: root
         property: "opacity"
         to: 0
         duration: internal.hideTimeout
@@ -304,13 +304,13 @@ ImplicitSizeItem {
     SequentialAnimation {
         id: flashEffect
         PropertyAnimation {
-            target: scrollBar
+            target: root
             property: "opacity"
             to: 1
             duration: 0
         }
         PropertyAnimation {
-            target: scrollBar
+            target: root
             property: "opacity"
             to: 0
             duration: internal.hideTimeout

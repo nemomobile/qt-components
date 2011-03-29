@@ -28,7 +28,7 @@ import Qt 4.7
 import "." 1.0
 
 Item {
-    id: window
+    id: root
 
     property bool inPortrait: height > width
 
@@ -44,15 +44,15 @@ Item {
         color: "black"
     }
 
-    Binding { target: window; property: "height"; value: screen.height; when: screen.height > 0 }
-    Binding { target: window; property: "width"; value: screen.width; when: screen.width > 0 }
+    Binding { target: root; property: "height"; value: screen.height; when: screen.height > 0 }
+    Binding { target: root; property: "width"; value: screen.width; when: screen.width > 0 }
 
     Connections {
         target: screen
-        onCurrentOrientationChanged: window.orientationChangeFinished()
+        onCurrentOrientationChanged: root.orientationChangeFinished()
         onPrivateAboutToChangeOrientation: {
-            window.orientationChangeAboutToStart()
-            window.orientationChangeStarted()
+            root.orientationChangeAboutToStart()
+            root.orientationChangeStarted()
         }
     }
 }

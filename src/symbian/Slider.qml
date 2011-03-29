@@ -29,7 +29,7 @@ import "." 1.0
 import Qt.labs.components 1.0 as QtComponents
 
 ImplicitSizeItem {
-    id: slider
+    id: root
 
     // Common Public API
     property alias stepSize: model.stepSize
@@ -64,7 +64,7 @@ ImplicitSizeItem {
         maximumValue: 1.0
         positionAtMinimum: 0
         positionAtMaximum: orientation == Qt.Horizontal ? track.width - handle.width : track.height - handle.height
-        onValueChanged: slider.valueChanged(value)
+        onValueChanged: root.valueChanged(value)
     }
 
     BorderImage {
@@ -94,12 +94,12 @@ ImplicitSizeItem {
                 AnchorChanges {
                     target: track
                     anchors {
-                        left: slider.left
-                        right: slider.right
+                        left: root.left
+                        right: root.right
                         top: undefined
                         bottom: undefined
                         horizontalCenter: undefined
-                        verticalCenter: slider.verticalCenter
+                        verticalCenter: root.verticalCenter
                     }
                 }
             },
@@ -125,9 +125,9 @@ ImplicitSizeItem {
                     anchors {
                         left: undefined
                         right: undefined
-                        top: slider.top
-                        bottom: slider.bottom
-                        horizontalCenter: slider.horizontalCenter
+                        top: root.top
+                        bottom: root.bottom
+                        horizontalCenter: root.horizontalCenter
                         verticalCenter: undefined
                     }
                 }
@@ -235,7 +235,7 @@ ImplicitSizeItem {
 
     Component {
         id: valueIndicatorComponent
-        ToolTip { text: slider.valueIndicatorText == "" ? model.value : slider.valueIndicatorText }
+        ToolTip { text: root.valueIndicatorText == "" ? model.value : root.valueIndicatorText }
     }
 
     Loader {
@@ -244,7 +244,7 @@ ImplicitSizeItem {
         property int spacing: 2 * platformStyle.paddingLarge
         // Must match with the "maxWidth" padding defined in ToolTip
         property int toolTipPadding: platformStyle.paddingLarge
-        sourceComponent: slider.pressed && valueIndicatorVisible ? valueIndicatorComponent : undefined
+        sourceComponent: root.pressed && valueIndicatorVisible ? valueIndicatorComponent : undefined
         onLoaded: position()
 
         function position() {
@@ -253,25 +253,25 @@ ImplicitSizeItem {
 
             var point = null;
             if (orientation == Qt.Horizontal) {
-                point = slider.mapFromItem(track, handle.x + handle.width / 2 - valueIndicator.item.width / 2, 0)
+                point = root.mapFromItem(track, handle.x + handle.width / 2 - valueIndicator.item.width / 2, 0)
 
                 // Check if valueIndicator will be positioned beyond the right or
                 // left boundaries and adjust if needed to keep it fully
                 // visible on screen. In case the valueIndicator is so wide that it
                 // does not fit the screen, it's positioned to left of the screen.
                 var rightStop = screen.width - toolTipPadding
-                var valueIndicatorLeftEdge = slider.mapToItem(null, point.x, 0)
-                var valueIndicatorRightEdge = slider.mapToItem(null, point.x + valueIndicator.item.width, 0)
+                var valueIndicatorLeftEdge = root.mapToItem(null, point.x, 0)
+                var valueIndicatorRightEdge = root.mapToItem(null, point.x + valueIndicator.item.width, 0)
 
                 if (valueIndicatorLeftEdge.x < toolTipPadding)
-                    point.x = slider.mapFromItem(null, toolTipPadding, 0).x
+                    point.x = root.mapFromItem(null, toolTipPadding, 0).x
                 else if (valueIndicatorRightEdge.x > rightStop)
-                    point.x = slider.mapFromItem(null, rightStop - valueIndicator.item.width, 0).x
+                    point.x = root.mapFromItem(null, rightStop - valueIndicator.item.width, 0).x
 
                 valueIndicator.item.x = point.x
                 valueIndicator.item.y = point.y - valueIndicator.spacing - valueIndicator.item.height
             } else {
-                point = slider.mapFromItem(track, 0, handle.y + handle.height / 2 - valueIndicator.item.height / 2)
+                point = root.mapFromItem(track, 0, handle.y + handle.height / 2 - valueIndicator.item.height / 2)
                 valueIndicator.item.x = point.x - valueIndicator.spacing - valueIndicator.item.width
                 valueIndicator.item.y = point.y
             }

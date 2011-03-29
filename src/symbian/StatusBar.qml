@@ -28,7 +28,7 @@ import Qt 4.7
 import "." 1.0
 
 ImplicitSizeItem {
-    id: statusBar
+    id: root
     implicitWidth: style.current.preferredWidth
     implicitHeight: style.current.preferredHeight
 

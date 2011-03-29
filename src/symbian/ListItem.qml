@@ -28,7 +28,7 @@ import Qt 4.7
 import "." 1.0
 
 ImplicitSizeItem {
-    id: listItem
+    id: root
     property alias style: itemStyle // deprecated
     onStyleChanged: { console.log("warning: ListItem.style is deprecated.") }
     property string mode: internal.getMode() // Read-only
@@ -100,14 +100,14 @@ ImplicitSizeItem {
     MouseArea {
         id: mouseArea
         anchors.fill: parent
-        enabled: listItem.enabled
+        enabled: root.enabled
         onPressed: {
             symbian.listInteractionMode = Symbian.TouchInteraction
             internal.state = "Pressed"
         }
         onClicked: {
             internal.state = ""
-            listItem.clicked()
+            root.clicked()
         }
         onCanceled: {
             internal.state = ""
@@ -125,7 +125,7 @@ ImplicitSizeItem {
 
     Loader {
         id: iconLoader
-        sourceComponent: listItem.subItemIndicator ? subItemIcon : undefined
+        sourceComponent: root.subItemIndicator ? subItemIcon : undefined
         anchors {
             right: parent.right
             rightMargin: privateStyle.scrollBarThickness
@@ -146,7 +146,7 @@ ImplicitSizeItem {
     }
 
     Keys.onReleased: {
-        if (listItem.enabled) {
+        if (root.enabled) {
             if (event.key == Qt.Key_Select || event.key == Qt.Key_Return) {
                 event.accepted = true
                 internal.state = "Focused"
@@ -161,8 +161,8 @@ ImplicitSizeItem {
                 if (symbian.listInteractionMode != Symbian.KeyNavigation)
                     symbian.listInteractionMode = Symbian.KeyNavigation
                 else
-                    if (listItem.enabled)
-                        listItem.clicked()
+                    if (root.enabled)
+                        root.clicked()
                 event.accepted = true
                 break
             }
@@ -196,14 +196,14 @@ ImplicitSizeItem {
     }
 
     ListView.onRemove: SequentialAnimation {
-        PropertyAction { target: listItem; property: "ListView.delayRemove"; value: true }
-        NumberAnimation { target: listItem; property: "height"; to: 0; duration: 500; easing.type: Easing.InOutQuad }
-        PropertyAction { target: listItem; property: "ListView.delayRemove"; value: false }
+        PropertyAction { target: root; property: "ListView.delayRemove"; value: true }
+        NumberAnimation { target: root; property: "height"; to: 0; duration: 500; easing.type: Easing.InOutQuad }
+        PropertyAction { target: root; property: "ListView.delayRemove"; value: false }
     }
 
     ListView.onAdd: SequentialAnimation {
-         PropertyAction { target: listItem; property: "height"; value: 0 }
-         NumberAnimation { target: listItem; property: "height"; to: listItem.height; duration: 500; easing.type: Easing.InOutQuad }
+         PropertyAction { target: root; property: "height"; value: 0 }
+         NumberAnimation { target: root; property: "height"; to: root.height; duration: 500; easing.type: Easing.InOutQuad }
     }
 
     SequentialAnimation {
@@ -257,7 +257,7 @@ ImplicitSizeItem {
         }
 
         function hold() {
-            listItem.pressAndHold()
+            root.pressAndHold()
         }
 
         function disable() {
@@ -271,8 +271,8 @@ ImplicitSizeItem {
         states: [
             State { name: "Pressed" },
             State { name: "PressAndHold" },
-            State { name: "Disabled"; when: !listItem.enabled },
-            State { name: "Focused"; when: (listItem.ListView.isCurrentItem &&
+            State { name: "Disabled"; when: !root.enabled },
+            State { name: "Focused"; when: (root.ListView.isCurrentItem &&
                 symbian.listInteractionMode == Symbian.KeyNavigation) },
             State { name: "" }
         ]

@@ -28,7 +28,7 @@ import Qt 4.7
 import "AppManager.js" as AppView
 
 ImplicitSizeItem {
-    id: toolTip
+    id: root
 
     //API
     property alias font: text.font
@@ -44,7 +44,7 @@ ImplicitSizeItem {
 
     onVisibleChanged: {
         if (visible) {
-            toolTip.parent = AppView.rootObject()
+            root.parent = AppView.rootObject()
             privy.calculatePosition()
         }
     }
@@ -62,41 +62,41 @@ ImplicitSizeItem {
                 return
 
             // Determine and set the main position for the ToolTip, order: top, right, left, bottom
-            var targetPos = toolTip.parent.mapFromItem(target, 0, 0)
+            var targetPos = root.parent.mapFromItem(target, 0, 0)
 
             // Top
-            if (targetPos.y >= (toolTip.height + privy.verticalMargin + privy.spacing)) {
-                toolTip.x = targetPos.x + (target.width / 2) - (toolTip.width / 2)
-                toolTip.y = targetPos.y - toolTip.height - privy.verticalMargin
+            if (targetPos.y >= (root.height + privy.verticalMargin + privy.spacing)) {
+                root.x = targetPos.x + (target.width / 2) - (root.width / 2)
+                root.y = targetPos.y - root.height - privy.verticalMargin
 
             // Right
-            } else if (targetPos.x <= (screen.width - target.width - privy.horizontalMargin - toolTip.width - privy.spacing)) {
-                toolTip.x = targetPos.x + target.width + privy.horizontalMargin;
-                toolTip.y = targetPos.y + (target.height / 2) - (toolTip.height / 2)
+            } else if (targetPos.x <= (screen.width - target.width - privy.horizontalMargin - root.width - privy.spacing)) {
+                root.x = targetPos.x + target.width + privy.horizontalMargin;
+                root.y = targetPos.y + (target.height / 2) - (root.height / 2)
 
             // Left
-            } else if (targetPos.x >= (toolTip.width + privy.horizontalMargin + privy.spacing)) {
-                toolTip.x = targetPos.x - toolTip.width - privy.horizontalMargin
-                toolTip.y = targetPos.y + (target.height / 2) - (toolTip.height / 2)
+            } else if (targetPos.x >= (root.width + privy.horizontalMargin + privy.spacing)) {
+                root.x = targetPos.x - root.width - privy.horizontalMargin
+                root.y = targetPos.y + (target.height / 2) - (root.height / 2)
 
             // Bottom
             } else {
-                toolTip.x = targetPos.x + (target.width / 2) - (toolTip.width / 2)
-                toolTip.y = targetPos.y + target.height + privy.verticalMargin
+                root.x = targetPos.x + (target.width / 2) - (root.width / 2)
+                root.y = targetPos.y + target.height + privy.verticalMargin
             }
 
             // Fine-tune the ToolTip position based on the screen borders
-            if (toolTip.x > (screen.width - privy.spacing - toolTip.width))
-                toolTip.x = screen.width - toolTip.width - privy.spacing
+            if (root.x > (screen.width - privy.spacing - root.width))
+                root.x = screen.width - root.width - privy.spacing
 
-            if (toolTip.x < privy.spacing)
-                toolTip.x = privy.spacing;
+            if (root.x < privy.spacing)
+                root.x = privy.spacing;
 
-            if (toolTip.y > (screen.height - toolTip.height - privy.spacing))
-                toolTip.y = screen.height - toolTip.height - privy.spacing
+            if (root.y > (screen.height - root.height - privy.spacing))
+                root.y = screen.height - root.height - privy.spacing
 
-            if (toolTip.y < privy.spacing)
-                toolTip.y = privy.spacing
+            if (root.y < privy.spacing)
+                root.y = privy.spacing
         }
     }
 

@@ -31,7 +31,7 @@ import Qt 4.7
 import "." 1.0
 
 ImplicitSizeItem {
-    id: toolBarLayout
+    id: root
 
     //Determines wether the first child (if it has iconSource) is used as backButton
     //Backbutton occupies the leftmost space in layout. If there is no backbutton
@@ -46,7 +46,7 @@ ImplicitSizeItem {
 
     Connections {
         target: privateStyle
-        onLayoutParametersChanged: toolBarLayout.layoutChildren()
+        onLayoutParametersChanged: root.layoutChildren()
     }
 
     function buttonWidth(child) {
@@ -77,23 +77,23 @@ ImplicitSizeItem {
         //4. If the remaining items are iconbuttons the they are distributed evenly along
         //the toolbar area
 
-        if (parent == null || toolBarLayout.width == 0)
+        if (parent == null || root.width == 0)
             return
 
         var numChildren = children.length
         for (var i = 0; i < children.length; ++i) {
             //make sure all the children have correct parent and y
-            children[i].parent = toolBarLayout
+            children[i].parent = root
             if (children[i].hasOwnProperty("iconSource") && children[i].iconSource != "")
                 //iconic buttons height is always the height of toolbar
                 children[i].y = 0
             else
                 //any other childs center goes to middle of the toolbar
-                children[i].y = toolBarLayout.y + toolBarLayout.implicitHeight / 2 - children[i].implicitHeight / 2
+                children[i].y = root.y + root.implicitHeight / 2 - children[i].implicitHeight / 2
         }
         var horizontalMargin = (screen.width < screen.height) ? 0 : 2 * platformStyle.paddingLarge
         var leftMargin = horizontalMargin + (screen.width < screen.height) ? privateStyle.toolBarHeightPortrait : privateStyle.toolBarHeightLandscape
-        var rightMargin = toolBarLayout.width  - horizontalMargin
+        var rightMargin = root.width  - horizontalMargin
 
         // |   X   |
         if (numChildren == 1) {
@@ -101,7 +101,7 @@ ImplicitSizeItem {
                 if (backButton)
                     children[0].x = horizontalMargin
                 else
-                    children[0].x = toolBarLayout.width - buttonWidth(children[0]) - horizontalMargin
+                    children[0].x = root.width - buttonWidth(children[0]) - horizontalMargin
             }
             else
                 children[0].x = width / 2 - buttonWidth(children[0]) / 2
@@ -113,12 +113,12 @@ ImplicitSizeItem {
 
         //for |X ... X| ToolButtons with icons
         if (leftItem != undefined){
-            leftItem.x = toolBarLayout.x + horizontalMargin
+            leftItem.x = root.x + horizontalMargin
             leftMargin = leftItem.x + privateStyle.toolBarHeightLandscape
         }
 
         if (rightItem != undefined){
-            rightItem.x = toolBarLayout.width - ((screen.width < screen.height) ? privateStyle.toolBarHeightPortrait : privateStyle.toolBarHeightLandscape) - horizontalMargin
+            rightItem.x = root.width - ((screen.width < screen.height) ? privateStyle.toolBarHeightPortrait : privateStyle.toolBarHeightLandscape) - horizontalMargin
             rightMargin = rightItem.x
         }
 
@@ -129,13 +129,13 @@ ImplicitSizeItem {
 
         //Lone child always goes to middle
         if (childsLeft == 1) {
-            children[leftItem ? 1 : 0].x = toolBarLayout.width / 2 - buttonWidth(children[leftItem ? 1 : 0]) / 2
+            children[leftItem ? 1 : 0].x = root.width / 2 - buttonWidth(children[leftItem ? 1 : 0]) / 2
         }
         else {
             //text buttons are distributed around the center
             if (childsLeft == 2 && children[leftItem ? 1 : 0].hasOwnProperty("iconSource") && children[leftItem ? 1 : 0].iconSource == "") {
-                children[leftItem ? 1 : 0].x = toolBarLayout.width / 2 - buttonWidth(children[leftItem ? 1 : 0])
-                children[leftItem ? 2 : 1].x = toolBarLayout.width / 2
+                children[leftItem ? 1 : 0].x = root.width / 2 - buttonWidth(children[leftItem ? 1 : 0])
+                children[leftItem ? 2 : 1].x = root.width / 2
             }
             else{
                 //iconic buttons are deployed evenly

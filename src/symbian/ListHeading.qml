@@ -28,7 +28,7 @@ import Qt 4.7
 import "." 1.0
 
 ImplicitSizeItem {
-    id: listHeading
+    id: root
     property alias style: style // deprecated
     onStyleChanged: { console.log("warning: ListHeading.style is deprecated") }
     property alias padding: paddingItem

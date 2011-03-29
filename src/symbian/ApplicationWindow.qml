@@ -28,7 +28,7 @@ import Qt 4.7
 import "." 1.0
 
 Window {
-    id: window
+    id: root
 
     property bool fullScreen: false
     default property alias content: contentItem.data
@@ -54,14 +54,14 @@ Window {
         id: sbar
         anchors.top: parent.top
         width: parent.width
-        visible: !window.fullScreen
+        visible: !root.fullScreen
     }
 
     ToolBar {
         id: tbar
         anchors.bottom: parent.bottom
         width: parent.width
-        visible: !window.fullScreen
+        visible: !root.fullScreen
     }
 
     // event preventer when page transition is active

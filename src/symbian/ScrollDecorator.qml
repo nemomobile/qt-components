@@ -27,7 +27,7 @@
 import Qt 4.7
 
 Item {
-    id: scrollDecorator
+    id: root
 
     //Common Public API
     property Flickable flickableItem: null
@@ -46,7 +46,7 @@ Item {
             id: horizontal
             ScrollBar {
                 parent: flickableItem
-                flickableItem: scrollDecorator.flickableItem
+                flickableItem: root.flickableItem
                 orientation: Qt.Horizontal
                 interactive: false
                 anchors {
@@ -60,7 +60,7 @@ Item {
             id: vertical
             ScrollBar {
                 parent: flickableItem
-                flickableItem: scrollDecorator.flickableItem
+                flickableItem: root.flickableItem
                 orientation: Qt.Vertical
                 interactive: false
                 anchors { top: flickableItem.top; right: flickableItem.right }

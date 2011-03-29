@@ -28,7 +28,7 @@ import Qt 4.7
 import Qt.labs.components 1.0
 
 ImplicitSizeItem {
-    id: progressBar
+    id: root
 
     // Common Public API
     property alias minimumValue: model.minimumValue
@@ -119,7 +119,7 @@ ImplicitSizeItem {
                 anchors.left: parent.left
                 anchors.top: parent.top
 
-                width: progressBar.width
+                width: root.width
                 height: parent.height
             }
         }

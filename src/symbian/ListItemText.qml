@@ -27,7 +27,7 @@
 import Qt 4.7
 
 Text {
-    id: listItemText
+    id: root
     property Style style: null // deprecated. Use mode instead.
     onStyleChanged: console.log("ListItemText.style deprecated, use ListItemText.mode instead !")
     property string mode: "normal"
@@ -58,18 +58,18 @@ Text {
                 return platformStyle.colorDisabledLight
             }
         } else {
-            if (listItemText.mode == "normal" || listItemText.mode == "") {
+            if (root.mode == "normal" || root.mode == "") {
                 if (role == "SelectionTitle")
                     return platformStyle.colorNormalDark
                 else if (role == "SelectionSubTitle" || role == "SubTitle")
                     return platformStyle.colorNormalMid
                 else
                     return platformStyle.colorNormalLight
-            } else if (listItemText.mode == "pressed") {
+            } else if (root.mode == "pressed") {
                 return platformStyle.colorPressed
-            } else if (listItemText.mode == "highlight") {
+            } else if (root.mode == "highlight") {
                  return platformStyle.colorHighlighted
-            } else if (listItemText.mode == "disabled") {
+            } else if (root.mode == "disabled") {
                 return platformStyle.colorDisabledLight
             }
         }

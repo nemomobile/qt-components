@@ -29,7 +29,7 @@ import Qt.labs.components 1.0
 import "." 1.0
 
 ImplicitSizeItem {
-    id: toolButton
+    id: root
 
     property alias checkable: checkable.enabled
     property alias checked: checkable.checked
@@ -121,16 +121,16 @@ ImplicitSizeItem {
         id: mouseArea
         anchors.fill: parent
 
-        onPressed: if (toolButton.enabled) stateGroup.state = "Pressed"
-        onReleased: if (toolButton.enabled) stateGroup.state = ""
+        onPressed: if (root.enabled) stateGroup.state = "Pressed"
+        onReleased: if (root.enabled) stateGroup.state = ""
         onCanceled: {
-            if (toolButton.enabled) {
+            if (root.enabled) {
                 stateGroup.state = ""
                 internal.release()
             }
         }
-        onPressAndHold: if (stateGroup.state != "Canceled" && toolButton.enabled) stateGroup.state = "PressAndHold"
-        onExited: if (toolButton.enabled) stateGroup.state = "Canceled"
+        onPressAndHold: if (stateGroup.state != "Canceled" && root.enabled) stateGroup.state = "PressAndHold"
+        onExited: if (root.enabled) stateGroup.state = "Canceled"
     }
 
     QtObject {
@@ -163,20 +163,20 @@ ImplicitSizeItem {
         }
 
         function release() {
-            toolButton.released()
+            root.released()
         }
 
         function click() {
             checkable.toggle()
-            toolButton.clicked()
+            root.clicked()
 
             if (!checkable.enabled || !checkable.checked)
                 privateStyle.play(Symbian.BasicButton)
         }
 
         function hold() {
-            if (toolButton.longPress)
-                toolButton.pressAndHold()
+            if (root.longPress)
+                root.pressAndHold()
         }
     }
 
@@ -226,6 +226,6 @@ ImplicitSizeItem {
 
     Checkable {
         id: checkable
-        value: toolButton.text
+        value: root.text
     }
 }
