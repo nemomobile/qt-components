@@ -28,6 +28,7 @@
 #include <QTest>
 #include <QGraphicsObject>
 #include <QDeclarativeItem>
+#include <QDeclarativeContext>
 
 class tst_tabbutton : public QObject
 {
@@ -38,16 +39,23 @@ private slots:
     void defaultPropertyValues();
     void testClicked();
     void testChecked();
+    void testGraphicsVisibility();
 
 private:
     QScopedPointer<QObject> componentObject;
+    QScopedPointer<QDeclarativeView> view;
 };
 
 void tst_tabbutton::initTestCase()
 {
+    QDeclarativeView *initView = 0;
     QString errors;
-    componentObject.reset(tst_quickcomponentstest::createComponentFromFile("tst_tabbutton.qml", &errors));
+    componentObject.reset(tst_quickcomponentstest::createComponentFromFile("tst_tabbutton.qml", &errors, &initView));
     QVERIFY2(componentObject, qPrintable(errors));
+    initView->show();
+    QApplication::setActiveWindow(initView);
+    QTest::qWaitForWindowShown(initView);
+    view.reset(initView);
 }
 
 void tst_tabbutton::defaultPropertyValues()
@@ -58,6 +66,11 @@ void tst_tabbutton::defaultPropertyValues()
     QCOMPARE(testButton->property("tab").value<QDeclarativeItem*>(), (QDeclarativeItem*)0);
     QVERIFY(testButton->property("width").value<qreal>() > 0);
     QVERIFY(testButton->property("height").value<qreal>() > 0);
+
+    QVERIFY(testButton->property("checked").isValid());
+    QVERIFY(testButton->property("pressed").isValid());
+    QVERIFY(testButton->property("text").isValid());
+    QVERIFY(testButton->property("iconSource").isValid());
 }
 
 void tst_tabbutton::testClicked()
@@ -74,11 +87,11 @@ void tst_tabbutton::testClicked()
     QVERIFY(testButton2);
 
     // press testButton1 to activate tab1
-    QMetaObject::invokeMethod(testButton1, "onClicked");
+    QMetaObject::invokeMethod(testButton1, "clicked");
     QCOMPARE(tabGroup->property("currentTab").value<QGraphicsObject*>(), testButton1->property("tab").value<QGraphicsObject*>());
 
     // press testButton2 to activate tab2
-    QMetaObject::invokeMethod(testButton2, "onClicked");
+    QMetaObject::invokeMethod(testButton2, "clicked");
     QCOMPARE(tabGroup->property("currentTab").value<QGraphicsObject*>(), testButton2->property("tab").value<QGraphicsObject*>());
 }
 
@@ -104,6 +117,56 @@ void tst_tabbutton::testChecked()
     tabGroup->setProperty("currentTab", testButton2->property("tab") );
     QVERIFY(testButton2->property("checked").value<bool>());
     QVERIFY(!testButton1->property("checked").value<bool>());
+}
+
+void tst_tabbutton::testGraphicsVisibility()
+{
+    QGraphicsObject *testButton = componentObject->findChild<QGraphicsObject*>("testButton");
+    QVERIFY(testButton);
+
+    QGraphicsObject *image = testButton->findChild<QGraphicsObject*>("image");
+    QVERIFY(!image);
+
+    QGraphicsObject *icon = testButton->findChild<QGraphicsObject*>("icon");
+    QVERIFY(!icon);
+
+    // set text
+    testButton->setProperty("text", QVariant("teb button text"));
+
+    // set portrait orientation
+    QDeclarativeContext *context = QDeclarativeEngine::contextForObject(testButton);
+    QVERIFY(context);
+    QObject *screen = context->contextProperty("screen").value<QObject*>();
+    QVERIFY(screen);
+    screen->setProperty("orientation", QVariant(1)); // 1 = SDeclarativeScreen::Portrait
+
+    // Set graphic source to jpg
+    testButton->setProperty("iconSource", QVariant("qrc:/non_exisingting_image.jpg"));
+
+    image = testButton->findChild<QGraphicsObject*>("image");
+    QVERIFY(image);
+    icon = testButton->findChild<QGraphicsObject*>("icon");
+    QVERIFY(!icon);
+    QGraphicsObject *imageContainer = qobject_cast<QGraphicsObject *>(image->parent());
+    QVERIFY(imageContainer);
+
+    // Set graphic source to logical icon #1
+    testButton->setProperty("iconSource", QVariant("qtg_graf_drill_down_indicator"));
+    icon = testButton->findChild<QGraphicsObject*>("icon");
+    QVERIFY(icon);
+
+    // Set graphic source to logical icon #2
+    testButton->setProperty("iconSource", QVariant("image://theme/qtg_graf_drill_down_indicator.svg"));
+    icon = testButton->findChild<QGraphicsObject*>("icon");
+    QVERIFY(icon);
+
+    // set landscape orientation -> this should hide the imageContainer
+    screen->setProperty("orientation", QVariant(2)); // 2 = SDeclarativeScreen::Landscape
+    QVERIFY(!imageContainer->isVisible());
+
+    // remove the text -> imageContainer should be visible again
+    testButton->setProperty("text", QVariant(""));
+    QVERIFY(imageContainer->isVisible());
 }
 
 
