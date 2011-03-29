@@ -290,7 +290,7 @@ ApplicationWindow {
                                 Page {
                                     id: testPage
 
-                                    orientationLock: mainPage.orientationLock
+                                    orientationLock: PageOrientation.Automatic
 
                                     Flickable {
                                         id: testPageGroup
@@ -317,7 +317,7 @@ ApplicationWindow {
                                 Page {
                                     id: testPage
 
-                                    orientationLock: mainPage.orientationLock
+                                    orientationLock: PageOrientation.Automatic
 
                                     Rectangle {
                                         anchors { left: parent.left; top: parent.top }
