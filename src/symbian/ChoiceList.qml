@@ -46,6 +46,9 @@ ImplicitSizeItem {
             internal.showPopup()
     }
 
+    // Deprecated since 29-03-2011
+    Component.onCompleted: console.log("warning: ChoiceList is deprecated. Use SelectionListItem and SelectionDialog instead!")
+
     QtObject {
         id: internal
 
@@ -93,6 +96,7 @@ ImplicitSizeItem {
         }
 
         function showPopup() {
+            console.log("warning: ChoiceList is deprecated. Use SelectionListItem and SelectionDialog instead!")
             popupObject = popup.createObject(applicationRoot)
             if (popupObject != null) {
                 if (screen.currentOrientation == Screen.Portrait || screen.currentOrientation == Screen.PortraitInverted)
@@ -103,6 +107,7 @@ ImplicitSizeItem {
         }
 
         function hidePopup() {
+            console.log("warning: ChoiceList is deprecated. Use SelectionListItem and SelectionDialog instead!")
             if (screen.currentOrientation == Screen.Portrait || screen.currentOrientation == Screen.PortraitInverted)
                 popupObject.state = "Hidden"
             else
