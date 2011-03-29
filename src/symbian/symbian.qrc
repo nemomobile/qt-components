@@ -28,7 +28,6 @@
         <file alias="qtg_fr_choice_list_normal.svg">resources/defaulttheme/graphics/qtg_fr_choice_list_normal.svg</file>
         <file alias="qtg_graf_choice_list_indicator.svg">resources/defaulttheme/graphics/qtg_graf_choice_list_indicator.svg</file>
         <file alias="qtg_graf_drill_down_indicator.svg">resources/defaulttheme/graphics/qtg_graf_drill_down_indicator.svg</file>
-        <file alias="qtg_graf_drill_down_indicator_white.svg">resources/defaulttheme/graphics/qtg_graf_drill_down_indicator_white.svg</file>
         <file alias="qtg_graf_checkbox_normal_selected.svg">resources/defaulttheme/graphics/qtg_graf_checkbox_normal_selected.svg</file>
         <file alias="qtg_graf_checkbox_normal_unselected.svg">resources/defaulttheme/graphics/qtg_graf_checkbox_normal_unselected.svg</file>
         <file alias="qtg_graf_checkbox_disabled_selected.svg">resources/defaulttheme/graphics/qtg_graf_checkbox_disabled_selected.svg</file>
