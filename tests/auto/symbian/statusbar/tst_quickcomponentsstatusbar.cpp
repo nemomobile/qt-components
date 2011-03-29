@@ -40,8 +40,8 @@ class tst_quickcomponentsstatusbar : public QObject
 
 private slots:
     void initTestCase();
-    void batteryImage();
     void signalWidth();
+    void batteryWidth();
     void position();
     void height();
 
@@ -69,45 +69,43 @@ void tst_quickcomponentsstatusbar::initTestCase()
 void tst_quickcomponentsstatusbar::signalWidth()
 {
     QVariant returnedValue = 0;
-    QVariant widthPercentage = 0;
-
+    int signalLevel = 0;
     QMetaObject::invokeMethod(priv, "signalWidthPercentage",
                               Q_RETURN_ARG(QVariant, returnedValue),
-                              Q_ARG(QVariant, widthPercentage));
-
-    QCOMPARE(returnedValue.toInt(), 0);
-
-    widthPercentage = 100;
-    returnedValue = 0;
+                              Q_ARG(QVariant, signalLevel));
+    float percentage = returnedValue.toFloat();
+    signalLevel = 50;
     QMetaObject::invokeMethod(priv, "signalWidthPercentage",
                               Q_RETURN_ARG(QVariant, returnedValue),
-                              Q_ARG(QVariant, widthPercentage));
-
-    QCOMPARE(returnedValue.toInt(), 1);
+                              Q_ARG(QVariant, signalLevel));
+    QVERIFY(percentage < returnedValue.toFloat());
+    percentage = returnedValue.toFloat();
+    signalLevel = 100;
+    QMetaObject::invokeMethod(priv, "signalWidthPercentage",
+                              Q_RETURN_ARG(QVariant, returnedValue),
+                              Q_ARG(QVariant, signalLevel));
+    QVERIFY(percentage < returnedValue.toFloat());
 }
 
-void tst_quickcomponentsstatusbar::batteryImage()
+void tst_quickcomponentsstatusbar::batteryWidth()
 {
     QVariant returnedValue = 0;
     int batteryLevel = 0;
-    QMetaObject::invokeMethod(priv, "batteryImage",
+    QMetaObject::invokeMethod(priv, "batteryWidthPercentage",
                               Q_RETURN_ARG(QVariant, returnedValue),
                               Q_ARG(QVariant, batteryLevel));
-
-    QString imagePath = returnedValue.toString();
-    batteryLevel = 25;
-    QMetaObject::invokeMethod(priv, "batteryImage",
+    float percentage = returnedValue.toFloat();
+    batteryLevel = 50;
+    QMetaObject::invokeMethod(priv, "batteryWidthPercentage",
                               Q_RETURN_ARG(QVariant, returnedValue),
                               Q_ARG(QVariant, batteryLevel));
-
-    QVERIFY(imagePath != returnedValue.toString());
-    imagePath = returnedValue.toString();
+    QVERIFY(percentage < returnedValue.toFloat());
+    percentage = returnedValue.toFloat();
     batteryLevel = 100;
-    QMetaObject::invokeMethod(priv, "batteryImage",
+    QMetaObject::invokeMethod(priv, "batteryWidthPercentage",
                               Q_RETURN_ARG(QVariant, returnedValue),
                               Q_ARG(QVariant, batteryLevel));
-
-    QVERIFY(imagePath != returnedValue.toString());
+    QVERIFY(percentage < returnedValue.toFloat());
 }
 
 void tst_quickcomponentsstatusbar::position()

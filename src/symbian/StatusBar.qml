@@ -32,35 +32,11 @@ ImplicitSizeItem {
     implicitWidth: screen.width
     implicitHeight: privateStyle.statusBarHeight
 
-    Component.onCompleted: priv.updateBatteryStatus()
-
     QtObject {
         id: priv
         objectName: "priv"
 
         property int imageHeight: privateStyle.statusBarHeight - 2 * platformStyle.paddingSmall
-        function batteryImage(level) {
-            if (level == 100)
-                return privateStyle.imagePath("qtg_graf_battery_level_full")
-            else if (level > 20)
-                return privateStyle.imagePath("qtg_graf_battery_level_medium")
-            else
-                return privateStyle.imagePath("qtg_graf_battery_level_low")
-        }
-
-        function updateBatteryStatus() {
-            if (batteryInfo.powerState == BatteryInfo.WallPowerChargingBattery) {
-                batteryBackground.state = "Charging";
-                batteryChargingAnimation.start();
-            } else if (batteryInfo.batteryStatus == BatteryInfo.BatteryCritical) {
-                batteryBackground.state = "PowerSave";
-                batteryChargingAnimation.stop();
-            } else {
-                batteryBackground.state = "Normal";
-                batteryChargingAnimation.stop();
-            }
-            updateBatteryImage();
-        }
 
         function signalWidthPercentage(signalStrength) {
             if (signalStrength < 10)
@@ -77,21 +53,8 @@ ImplicitSizeItem {
                 return 1;
         }
 
-        function animationStarted() {
-            batteryLevelImage.source = privateStyle.imagePath("qtg_graf_battery_level_full")
-        }
-
-        function updateBatteryImage() {
-            if (batteryInfo.powerState != BatteryInfo.WallPowerChargingBattery) {
-                if (batteryInfo.batteryStatus >= BatteryInfo.BatteryVeryLow) {
-                    batteryLevelItem.width = batteryBackground.width;
-                    batteryLevelImage.width = batteryBackground.width;
-                    batteryChargingAnimation.stop();
-                    batteryLevelImage.source = priv.batteryImage(batteryInfo.batteryLevel);
-                } else {
-                    batteryLevelImage.source = "";
-                }
-            }
+        function batteryWidthPercentage(batteryLevel) {
+            return 0.2 + (0.6 * batteryLevel / 100)
         }
     }
 
@@ -99,13 +62,6 @@ ImplicitSizeItem {
         source: privateStyle.imagePath("qtg_fr_statusbar")
         anchors.fill: parent
         width: parent.width
-
-        Connections {
-            target: batteryInfo
-            onPowerStateChanged: priv.updateBatteryStatus()
-            onBatteryLevelChanged: priv.updateBatteryStatus()
-            onBatteryStatusChanged: priv.updateBatteryStatus()
-        }
 
         // icon for network signal type e.g. 3G, GPRS etc
         Image {
@@ -152,61 +108,36 @@ ImplicitSizeItem {
             anchors.rightMargin: platformStyle.paddingSmall
             fillMode: Image.PreserveAspectFit
             source: privateStyle.imagePath("qtg_graf_battery_level_bg")
-            smooth: true
-            state: "Normal"
             Item {
                 id: batteryLevelItem
+                property int animatedLevel
                 anchors.right: parent.right
-                clip: true
-                width: parent.width
-                height: parent.height
                 anchors.top: parent.top
-                anchors.bottom: parent.bottom
+                height: parent.height
+                width: parent.width * priv.batteryWidthPercentage(
+                    batteryInfo.powerState == BatteryInfo.WallPowerChargingBattery
+                    ? animatedLevel : batteryInfo.batteryLevel)
+                clip: true
                 Image {
-                    id: batteryLevelImage
-                    fillMode: Image.PreserveAspectCrop
-                    smooth: true
-                    clip:  true
+                    sourceSize.height: priv.imageHeight
+                    sourceSize.width: Symbian.UndefinedSourceDimension
                     anchors.right: parent.right
                     anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-                    source: privateStyle.imagePath(batteryInfo.batteryStatus >= BatteryInfo.BatteryVeryLow
-                        ? "qtg_graf_battery_level_full" : "qtg_graf_battery_level_low")
+                    fillMode: Image.PreserveAspectFit
+                    source: privateStyle.imagePath("qtg_graf_battery_level_full")
                 }
             }
-            states: [
-                State {
-                    name:"Charging"
-                    PropertyChanges { target: batteryLevelImage; source: privateStyle.imagePath("qtg_graf_battery_level_full") }
-                },
-                State {
-                    name:"Normal"
-                    PropertyChanges { target: batteryLevelImage; width: batteryBackground.width; source: priv.batteryImage(batteryInfo.batteryLevel); }
-                },
-                State {
-                    name:"PowerSave"
-                    PropertyChanges { target: batteryLevelImage; source: ""; width: 0 }
-                }
-            ]
             SequentialAnimation {
                 id: batteryChargingAnimation
                 loops: Animation.Infinite
-                ScriptAction { script: priv.animationStarted(); }
+                running: batteryInfo.powerState == BatteryInfo.WallPowerChargingBattery
                 NumberAnimation {
                     target: batteryLevelItem
-                    property: "width"
-                    from: 0.2 * batteryBackground.width
-                    to: 0.5 * batteryBackground.width
-                    duration: 2000
+                    property: "animatedLevel"
+                    from: 0
+                    to: 100
+                    duration: 4000
                 }
-                NumberAnimation {
-                    target: batteryLevelItem
-                    property: "width"
-                    from: 0.5 * batteryBackground.width
-                    to: batteryBackground.width * .8
-                    duration: 2000
-                }
-                ScriptAction { script: priv.updateBatteryImage(); }
             }
         }
         Text {
