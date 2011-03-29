@@ -126,6 +126,35 @@ Column {
         onClicked: dialog.open()
     }
 
+    SelectionDialog {
+        id: singleSelectionDialog
+        titleText: "Select background color"
+        selectedIndex: 1
+
+        model: ListModel {
+            id: colorModel
+
+            ListElement { name: "Red" }
+            ListElement { name: "Blue" }
+            ListElement { name: "Green" }
+            ListElement { name: "Yellow" }
+            ListElement { name: "Black" }
+            ListElement { name: "White" }
+            ListElement { name: "Grey" }
+            ListElement { name: "Orange" }
+            ListElement { name: "Pink" }
+        }
+
+        onAccepted: { column.parent.color = colorModel.get(selectedIndex).name }
+    }
+
+    Button {
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: parent.width - parent.spacing
+        text: "Selection Dialog"
+        onClicked: singleSelectionDialog.open()
+    }
+
     Dialog {
         id: dialog
 
