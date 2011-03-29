@@ -133,7 +133,6 @@ Item {
         property real w: (width - spacing * (columns - 1)) / columns
         anchors.top: privy.portrait ? alignment.bottom : wrapAndContent.bottom
         anchors.left: parent.left
-        anchors.bottom: privy.portrait ? undefined : parent.bottom
         anchors.topMargin: privy.margin
         columns: privy.portrait ? 3 : 1
         rows: privy.portrait ? 1 : 3
