@@ -183,7 +183,7 @@ Item {
                 text: (page ? "page: " : "item: ") + column.parent.titleString
                 width: parent.width
                 horizontalAlignment: Text.AlignHCenter
-                font.pointSize: 30
+                font.pixelSize: platformStyle.fontSizeLarge * 1.5
                 color: "white"
             }
 
@@ -212,7 +212,7 @@ Item {
                     width: inPortrait() ? parent.width : parent.width / 3
                     text: "Edit TabButton:"
                     horizontalAlignment: Text.AlignHCenter
-                    font.pointSize: 14
+                    font.pixelSize: platformStyle.fontSizeLarge
                     color: "white"
                 }
 
@@ -261,7 +261,7 @@ Item {
                     width: inPortrait() ? parent.width : parent.width / 3
                     text: "New page tabs:"
                     horizontalAlignment: Text.AlignHCenter
-                    font.pointSize: 14
+                    font.pixelSize: platformStyle.fontSizeLarge
                     color: "white"
                 }
 
