@@ -143,7 +143,6 @@ Item {
                 left: parent.left
                 right: parent.right
                 bottom: buttonItem.top
-                margins: platformStyle.paddingLarge
             }
         }
 
