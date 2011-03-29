@@ -66,6 +66,7 @@ QML_FILES = \
     BusyIndicator.qml \
     CheckBox.qml \
     ChoiceList.qml \
+    CommonDialog.qml \
     ContextMenu.qml \
     Dialog.qml \
     Fader.qml \
