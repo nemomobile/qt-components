@@ -18,6 +18,7 @@ SOURCES += \
     plugin.cpp \
     sbatteryinfo.cpp \
     sdeclarative.cpp \
+    sdeclarativefocusscopeitem.cpp \
     sdeclarativeframe.cpp \
     sdeclarativeicon.cpp \
     sdeclarativeimageprovider.cpp \
@@ -37,6 +38,7 @@ SOURCES += \
 HEADERS += \
     sbatteryinfo.h \
     sdeclarative.h \
+    sdeclarativefocusscopeitem.h \
     sdeclarativeframe.h \
     sdeclarativeicon.h \
     sdeclarativeimageprovider.h \

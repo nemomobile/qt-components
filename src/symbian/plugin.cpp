@@ -29,6 +29,7 @@
 #include "sstylewrapper.h"
 #include "sdeclarativeicon.h"
 #include "sdeclarativeframe.h"
+#include "sdeclarativefocusscopeitem.h"
 #include "sdeclarativeimplicitsizeitem.h"
 #include "sdeclarativeimageprovider.h"
 #include "sdeclarativemaskedimage.h"
@@ -75,6 +76,7 @@ public:
         qmlRegisterType<SDeclarativeMaskedImage>(uri, 1, 0, "MaskedImage");
         qmlRegisterType<SStyleWrapper>(uri, 1, 0, "Style");
         qmlRegisterType<SDeclarativeImplicitSizeItem>(uri, 1, 0, "ImplicitSizeItem");
+        qmlRegisterType<SDeclarativeFocusScopeItem>(uri, 1, 0, "FocusScopeItem");
         qmlRegisterUncreatableType<SDeclarative>(uri, 1, 0, "Symbian", "");
         qmlRegisterUncreatableType<SDeclarativeScreen>(uri, 1, 0, "Screen", "");
         qmlRegisterUncreatableType<SDialogStatus>(uri, 1, 0, "DialogStatus", "");
