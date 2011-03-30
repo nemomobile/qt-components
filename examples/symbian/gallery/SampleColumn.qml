@@ -454,4 +454,24 @@ Column {
             }
         }
     }
+
+    ButtonRow {
+       id: buttonRow1
+       width: parent.width - parent.spacing
+       exclusive: true
+       checkedButton: b2
+
+       Button { text: "b1" }
+       Button { text: "b2" }
+       Button { text: "b3" }
+   }
+
+   ButtonRow {
+       id: buttonRow2
+       width: parent.width - parent.spacing
+       exclusive: true
+
+       ToolButton { text: "tb1" }
+       ToolButton { text: "tb2" }
+   }
 }
