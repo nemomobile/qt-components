@@ -64,6 +64,7 @@ QML_FILES = \
     AppManager.js \
     Button.qml \
     ButtonGroup.js \
+    ButtonRow.qml \
     BusyIndicator.qml \
     CheckBox.qml \
     ChoiceList.qml \
