@@ -94,19 +94,19 @@ void tst_quickcomponentsbuttonrow::checkedButton()
 {
     QVariant variant;
     QObject *child;
-    QObject *tmp;
+    QDeclarativeItem *tmp;
     const QObjectList children = componentObject->children();
     // Get each ButtonRow's child and emit its clicked signal, in order to set the checked property to true
     for (int i = 0; i < children.size(); ++i) {
         child = children.at(i);
         if (child->objectName().contains("child_")) {
-            QVERIFY2(QMetaObject::invokeMethod(child, "clicked"), "ButtonColumn's child, does not have clicked() signal");
+            QVERIFY2(QMetaObject::invokeMethod(child, "clicked"), "ButtonRow's child, does not have clicked() signal");
             variant = componentObject->property("checkedButton");
             QVERIFY(variant.isValid());
-            tmp = variant.value<QObject*>();
+            tmp = variant.value<QDeclarativeItem*>();
             // When the clicked event is emited, the component gets its checked property set to true, hence
             // ButtonRow's checkedButton must keep this component
-            QVERIFY2(child->objectName() == tmp->objectName(), "Error, the returned object is not the one thar was previously set");
+            QVERIFY2(child->objectName() == tmp->objectName(), "Error, the returned object is not the one that was previously set");
         }
     }
 }
