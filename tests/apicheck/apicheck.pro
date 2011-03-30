@@ -34,6 +34,8 @@ HEADERS += base/apicheckbase.h \
            textarea/apicheck_textarea.h \
            textfield/apicheck_textfield.h \
            toolbar/apicheck_toolbar.h \
+           tumbler/apicheck_tumbler.h \
+           tumbler/apicheck_tumblercolumn.h \
            window/apicheck_window.h
 
 SOURCES += tst_apicheck.cpp \
@@ -62,4 +64,6 @@ SOURCES += tst_apicheck.cpp \
            textarea/apicheck_textarea.cpp \
            textfield/apicheck_textfield.cpp \
            toolbar/apicheck_toolbar.cpp \
+           tumbler/apicheck_tumbler.cpp \
+           tumbler/apicheck_tumblercolumn.cpp \
            window/apicheck_window.cpp

@@ -56,6 +56,8 @@
 #include "toolbar/apicheck_toolbar.h"
 #include "switch/apicheck_switch.h"
 #include "screen/apicheck_screen.h"
+#include "tumbler/apicheck_tumbler.h"
+#include "tumbler/apicheck_tumblercolumn.h"
 
 int main(int argc, char *argv[])
 {
@@ -120,6 +122,8 @@ int main(int argc, char *argv[])
     ApiCheckRatingIndicator ratingIndicator(engine, extrasModule);
     ApiCheckSwitch switchButton(engine, module);
     ApiCheckScreen screen(engine, module);
+    ApiCheckTumbler tumbler(engine, extrasModule);
+    ApiCheckTumblerColumn tumblerColumn(engine, extrasModule);
 
 #ifndef Q_COMPONENTS_SYMBIAN
     ApiCheckButtonColumn buttonColumn(engine, module);
@@ -153,6 +157,8 @@ int main(int argc, char *argv[])
     ret |= QTest::qExec(&ratingIndicator, args);
     ret |= QTest::qExec(&switchButton, argc);
     ret |= QTest::qExec(&screen, argc);
+    ret |= QTest::qExec(&tumbler, args);
+    ret |= QTest::qExec(&tumblerColumn, args);
 
 #ifndef Q_COMPONENTS_SYMBIAN
     ret |= QTest::qExec(&buttonColumn, args);
