@@ -95,7 +95,6 @@ Item {
                 Button { text: "B+2T"; onClicked: bar1.setTools(layout4, root.replaceMode) }
                 Button { text: "2xT+M"; onClicked: bar1.setTools(layout5, root.replaceMode) }
                 Button { text: "B+I+M"; onClicked: bar1.setTools(layout6, root.replaceMode) }
-                Button { text: "mix2"; onClicked: bar1.setTools(layout12, root.replaceMode) }
             }
             Row {
                 Button { text: "B+2I+M"; onClicked: bar1.setTools(layout7, root.replaceMode) }
@@ -256,7 +255,7 @@ Item {
         ToolButton {
             flat: flatter.checked
             onClicked: stack.push(secondPage)
-            iconSource: "qrc:tb_plus.svg"
+            iconSource: "qrc:tb_plus.png"
         }
     }
 
@@ -377,7 +376,7 @@ Item {
 
         ToolButton {
             flat: flatter.checked
-            iconSource: "qrc:tb_plus.svg"
+            iconSource: "qrc:tb_plus.png"
         }
         Button {
             text: "Text"
