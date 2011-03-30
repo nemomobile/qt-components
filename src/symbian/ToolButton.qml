@@ -67,7 +67,7 @@ ImplicitSizeItem {
 
     BorderImage {
         id: background
-        source: privateStyle.imagePath("qtg_fr_toolbutton_" + internal.mode())
+        source: internal.imageSource()
         border { left: 20; top: 20; right: 20; bottom: 20 }
         anchors.fill: parent
         visible: internal.mode() != "normal" || !flat
@@ -177,6 +177,25 @@ ImplicitSizeItem {
         function hold() {
             if (root.longPress)
                 root.pressAndHold()
+        }
+
+        // The function imageSource() handles fetching correct graphics for the ToolButton.
+        // If the parent of a ToolButton is ButtonRow, segmented-style graphics are used to create a
+        // seamless row of buttons. Otherwise normal ToolButton graphics are utilized.
+        function imageSource() {
+            if (parent && parent.hasOwnProperty("checkedButton") && parent.hasOwnProperty("__direction") && parent.__direction == Qt.Horizontal && parent.children.length > 1) {
+                var imageName = "qtg_fr_toolbutton_segmented"
+                if (root === parent.children[0])
+                    imageName += "_l_"
+                else if(root === parent.children[parent.children.length - 1])
+                    imageName += "_r_"
+                else
+                    imageName += "_c_"
+
+                return privateStyle.imagePath(imageName + internal.mode())
+            }
+
+            return privateStyle.imagePath("qtg_fr_toolbutton_" + internal.mode())
         }
     }
 
