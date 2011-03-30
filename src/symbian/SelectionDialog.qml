@@ -35,7 +35,7 @@ CommonDialog {
     property int selectedIndex: -1
     property Component delegate: defaultDelegate
 
-    closeIcon: true
+    privateCloseIcon: true
     content: contentItem
     height: contentItem.height + platformStyle.graphicSizeSmall + 2 * platformStyle.paddingLarge
 

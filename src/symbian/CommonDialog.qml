@@ -31,7 +31,7 @@ Dialog {
     id: root
 
     property alias titleText: titleTextArea.text
-    property bool closeIcon: false
+    property bool privateCloseIcon: false
 
     title: Row {
         id: titleArea
@@ -59,7 +59,7 @@ Dialog {
         Loader {
             id: iconLoader
 
-            sourceComponent: closeIcon ? closeIconComponent : undefined
+            sourceComponent: privateCloseIcon ? closeIconComponent : undefined
             anchors.verticalCenter: parent.verticalCenter
         }
 
