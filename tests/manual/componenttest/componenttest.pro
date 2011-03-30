@@ -33,6 +33,7 @@ OTHER_FILES += \
     components/FontSelectionDialog.qml \
     tests/BusyIndicator.qml \
     tests/Button.qml \
+    tests/ButtonRow.qml \
     tests/CheckBox.qml \
     tests/ChoiceList.qml \
     tests/ContextMenu.qml \
