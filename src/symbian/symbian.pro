@@ -63,6 +63,7 @@ QML_FILES = \
     ApplicationWindow.qml \
     AppManager.js \
     Button.qml \
+    ButtonColumn.qml \
     ButtonGroup.js \
     ButtonRow.qml \
     BusyIndicator.qml \
