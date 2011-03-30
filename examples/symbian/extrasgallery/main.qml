@@ -28,148 +28,109 @@ import Qt 4.7
 import com.nokia.symbian 1.0
 import com.nokia.extras 1.0
 
-Window {
+ApplicationWindow {
     id: root
 
-    Rectangle {
-        id: rect
-        width: 360
-        height:  50
-        color: "#f0f1f2"
-
-        RatingIndicator {
-            ratingValue: 3
-            maximumValue: 5
-            count: 3
-            anchors.centerIn: parent
+    ToolBarLayout {
+        id: commonTools
+        ToolButton {
+            flat: true
+            iconSource: "image://theme/qtg_toolbar_back"
+            onClicked: root.pageStack.depth <= 1 ? Qt.quit() : root.pageStack.pop()
+        }
+        ToolButton {
+            flat: true
+            iconSource: "image://theme/qtg_toolbar_options"
         }
     }
 
-    Flickable {
-        id: flickable
-        anchors { left: parent.left; right: parent.right; top: rect.bottom; bottom: quitButton.top }
-        clip: true
-        boundsBehavior: Flickable.StopAtBounds
+    Component.onCompleted: {
+        root.pageStack.push(pageComponent)
+        // clear the toolBar pointer, prevents subpages from
+        // accidentally removing common application tools
+        root.pageStack.toolBar = null
+    }
 
-        Item {
-            id: leftList
-            width:360
-            height:640
+    Component {
+        id: pageComponent
 
-            ListModel {
-                id: testModel
+        Page {
+            id: testPage
+            tools: commonTools
 
-                ListElement { name: "A Cat 1"; alphabet: "A" }
-                ListElement { name: "A Cat 2"; alphabet: "A" }
-                ListElement { name: "A Cat 3"; alphabet: "A" }
-                ListElement { name: "A Cat 1"; alphabet: "A" }
-                ListElement { name: "A Cat 2"; alphabet: "A" }
-                ListElement { name: "A Cat 3"; alphabet: "A" }
-                ListElement { name: "Boo 1"; alphabet: "B" }
-                ListElement { name: "Boo 2"; alphabet: "B" }
-                ListElement { name: "Boo 3"; alphabet: "B" }
-                ListElement { name: "Cat 1"; alphabet: "C" }
-                ListElement { name: "Cat 2"; alphabet: "C" }
-                ListElement { name: "Cat 3"; alphabet: "C" }
-                ListElement { name: "Cat 4"; alphabet: "C" }
-                ListElement { name: "Cat 5"; alphabet: "C" }
-                ListElement { name: "Cat 6"; alphabet: "C" }
-                ListElement { name: "Dog 1"; alphabet: "D" }
-                ListElement { name: "Dog 2"; alphabet: "D" }
-                ListElement { name: "Dog 3"; alphabet: "D" }
-                ListElement { name: "Dog 4"; alphabet: "D" }
-                ListElement { name: "Dog 5"; alphabet: "D" }
-                ListElement { name: "Dog 6"; alphabet: "D" }
-                ListElement { name: "Dog 7"; alphabet: "D" }
-                ListElement { name: "Dog 8"; alphabet: "D" }
-                ListElement { name: "Dog 9"; alphabet: "D" }
-                ListElement { name: "Elephant 1"; alphabet: "E" }
-                ListElement { name: "Elephant 2"; alphabet: "E" }
-                ListElement { name: "Elephant 3"; alphabet: "E" }
-                ListElement { name: "Elephant 4"; alphabet: "E" }
-                ListElement { name: "Elephant 5"; alphabet: "E" }
-                ListElement { name: "Elephant 6"; alphabet: "E" }
-                ListElement { name: "FElephant 1"; alphabet: "F" }
-                ListElement { name: "FElephant 2"; alphabet: "F" }
-                ListElement { name: "FElephant 3"; alphabet: "F" }
-                ListElement { name: "FElephant 4"; alphabet: "F" }
-                ListElement { name: "FElephant 5"; alphabet: "F" }
-                ListElement { name: "FElephant 6"; alphabet: "F" }
-                ListElement { name: "Guinea pig"; alphabet: "G" }
-                ListElement { name: "Goose"; alphabet: "G" }
-                ListElement { name: "Giraffe"; alphabet: "G" }
-                ListElement { name: "Guinea pig"; alphabet: "G" }
-                ListElement { name: "Goose"; alphabet: "G" }
-                ListElement { name: "Giraffe"; alphabet: "G" }
-                ListElement { name: "Guinea pig"; alphabet: "G" }
-                ListElement { name: "Goose"; alphabet: "G" }
-                ListElement { name: "Giraffe"; alphabet: "G" }
-                ListElement { name: "Horse"; alphabet: "H" }
-                ListElement { name: "Horse"; alphabet: "H" }
-                ListElement { name: "Horse"; alphabet: "H" }
-                ListElement { name: "Parrot"; alphabet: "P" }
-                ListElement { name: "Parrot"; alphabet: "P" }
-                ListElement { name: "Parrot"; alphabet: "P" }
-                ListElement { name: "Parrot"; alphabet: "P" }
-            }
-
-            ListView {
-                id: list
-
+            Item {
+                id: testList
                 anchors.fill: parent
-                delegate:  Rectangle {
-                    width: parent.width
-                    height: 50  // magic
-                    border.color: "#000"
-                    border.width: 1
-                    color: index % 2 == 0 ? "#ffffff" : "#eeeeee"
-                    property string section: name[0]
-                    Text {
-                        anchors.verticalCenter: parent.verticalCenter
-                        x: 20  // magic
-                        text: name + " (index " + index + ")"
+
+                function openFile(file) {
+                    var component = Qt.createComponent(file)
+
+                    if (component.status == Component.Ready) {
+                        root.pageStack.push(component);
+                        console.log("Loading component okay");
+                    }
+                    else {
+                        console.log("Error loading component:", component.errorString());
                     }
                 }
 
-                model: testModel
-                section.property: "alphabet"
-                section.criteria: ViewSection.FullString
-                section.delegate: Rectangle {
-                    width: list.width
-                    height: 30  // magic
-                    color: "#888"
-                    Text {
-                        anchors.verticalCenter: parent.verticalCenter
-                        x: 5  // magic
-                         text: section
-                         font.bold: true
-                         font.pointSize: 16
-                     }
+                ListModel {
+                    id: pagesModel
+
+                    ListElement {
+                        page: "RatingIndicator.qml"
+                        title: "RatingIndicator"
+                        subtitle: "Indicates ratings"
+                    }
+                    ListElement {
+                        page: "Tumbler.qml"
+                        title: "Tumbler"
+                        subtitle: "Show tumbler"
+                    }
                 }
-            }
 
-            ScrollDecorator {
-                flickableItem: list
-            }
-        }
-    }
+                ListView {
+                    id: list
+                    model: pagesModel
+                    anchors.fill: parent
 
-    SectionScroller {
-        id: sectionScroller
-        listView: list
-    }
+                    delegate: ListItem {
+                        id: listItem
+                        height: 68
 
-    Button {
-        id: quitButton
-        anchors { left: parent.left; bottom: parent.bottom }
-        text: "Quit"
-        onClicked: Qt.quit()
-    }
+                        Row {
+                            id: listItemRow
+                            anchors.fill: parent
+                            anchors.leftMargin: 18
 
-    CheckBox {
-        id: fullScreen
-        text: "Full Screen"
-        anchors { left: quitButton.right; verticalCenter: quitButton.verticalCenter}
-        onClicked: sectionScroller.fullScreen = !sectionScroller.fullScreen
-    }
+                            Column {
+                                anchors.verticalCenter: parent.verticalCenter
+
+                                ListItemText {
+                                    id: mainText
+                                    style: listItem.style
+                                    role: "Title"
+                                    text: title
+                                }
+
+                                ListItemText {
+                                    id: subText
+                                    style: listItem.style
+                                    role: "SubTitle"
+                                    text: subtitle
+                                    visible: text != ""
+                                }
+                            }
+                        }
+
+                        onClicked: { testList.openFile(page); }
+                    } // listItem
+                } // listView
+
+                ScrollDecorator {
+                    flickableItem: list
+                }
+            } // item
+        } // page
+    } // component
 }

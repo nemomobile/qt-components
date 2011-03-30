@@ -18,4 +18,6 @@ symbian {
 }
 
 OTHER_FILES += \
-    main.qml
+    main.qml \
+    RatingIndicator.qml \
+    Tumbler.qml
