@@ -45,6 +45,28 @@ Item {
         return Math.round(number * 100) / 100
     }
 
+    function category() {
+        if (screen.displayCategory == Screen.Small)
+            return "Small"
+        else if (screen.displayCategory == Screen.Normal)
+            return "Normal"
+        else if (screen.displayCategory == Screen.Large)
+            return "Large"
+        else
+            return "ExtraLarge"
+    }
+
+    function density() {
+        if (screen.density == Screen.Low)
+            return "Low"
+        else if (screen.density == Screen.Medium)
+            return "Medium"
+        else if (screen.density == Screen.High)
+            return "High"
+        else
+            return "ExtraHigh"
+    }
+
     Text {
         color: "white"
         font.pixelSize: 20
@@ -55,7 +77,9 @@ Item {
               + "Physical width (mm):\n"
               + "Physical height (mm):\n"
               + "Diagonal (inch):\n"
-              + "DPI:"
+              + "DPI:\n"
+              + "Category:\n"
+              + "Density:"
         anchors { fill: parent; margins: 20 }
         horizontalAlignment: Text.AlignLeft
     }
@@ -69,7 +93,9 @@ Item {
               + round(physicalWidth()) + '\n'
               + round(physicalHeight()) + '\n'
               + round(diagonal()) + '\n'
-              + round(screen.dpi)
+              + round(screen.dpi) + '\n'
+              + category() + '\n'
+              + density()
         anchors { fill: parent; margins: 20 }
         horizontalAlignment: Text.AlignRight
     }
