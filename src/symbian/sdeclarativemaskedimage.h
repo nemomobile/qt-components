@@ -27,7 +27,6 @@
 #ifndef SDECLARATIVEMASKEDIMAGE_H
 #define SDECLARATIVEMASKEDIMAGE_H
 
-#include "sdeclarativeframe.h"
 #include <QtDeclarative/qdeclarativeitem.h>
 
 class SDeclarativeMaskedImagePrivate;
@@ -39,7 +38,6 @@ class SDeclarativeMaskedImage : public QDeclarativeItem
 public:
     Q_PROPERTY(QString imageName READ imageName WRITE setImageName)
     Q_PROPERTY(QString maskName READ maskName WRITE setMaskName)
-    Q_PROPERTY(SDeclarativeFrame::FrameType maskType READ maskType WRITE setMaskType)
     Q_PROPERTY(int topMargin READ topMargin WRITE setTopMargin)
     Q_PROPERTY(int bottomMargin READ bottomMargin WRITE setBottomMargin)
     Q_PROPERTY(int leftMargin READ leftMargin WRITE setLeftMargin)
@@ -56,9 +54,6 @@ public:
 
     QString maskName() const;
     void setMaskName(const QString &name);
-
-    SDeclarativeFrame::FrameType maskType() const;
-    void setMaskType(SDeclarativeFrame::FrameType type);
 
     QPoint offset() const;
     void setOffset(const QPoint &offset);

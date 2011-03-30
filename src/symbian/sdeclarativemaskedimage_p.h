@@ -27,7 +27,6 @@
 #ifndef SDECLARATIVEMASKEDIMAGE_P_H
 #define SDECLARATIVEMASKEDIMAGE_P_H
 
-#include "sdeclarativeframe.h"
 #include <QtDeclarative/qdeclarativeitem.h>
 
 class SDeclarativeMaskedImagePrivate
@@ -37,7 +36,6 @@ class SDeclarativeMaskedImagePrivate
 public:
     SDeclarativeMaskedImagePrivate(SDeclarativeMaskedImage *qq) :
         q_ptr(qq),
-        maskType(SDeclarativeFrame::ThreePiecesHorizontal),
         topMargin(-1),
         bottomMargin(-1),
         leftMargin(-1),
@@ -58,7 +56,6 @@ public:
     SDeclarativeMaskedImage *q_ptr;
     QString imageName;
     QString maskName;
-    SDeclarativeFrame::FrameType maskType;
     int topMargin;
     int bottomMargin;
     int leftMargin;

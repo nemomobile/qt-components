@@ -31,7 +31,6 @@
 
 #include "sdeclarativemaskedimage.h"
 #include "sdeclarativemaskedimage_p.h"
-#include "sframepool.h"
 #include "siconpool.h"
 #include "sdeclarative.h"
 
@@ -89,7 +88,7 @@ void SDeclarativeMaskedImagePrivate::createMask()
     mask.fill(Qt::white);
     QPainter painter(&mask);
 
-    // If margins is set, draw the mask like QML BorderImage draws the image.
+    // If margins are set, draw the mask like QML BorderImage draws the image.
     if (topMargin >= 0 && bottomMargin >= 0 && leftMargin >= 0 && rightMargin >= 0) {
         IconParams params;
         params.fileName = SDeclarative::resolveIconFileName(maskName);
@@ -101,125 +100,6 @@ void SDeclarativeMaskedImagePrivate::createMask()
         QMargins margins(leftMargin, topMargin, rightMargin, bottomMargin);
         QTileRules rules(Qt::StretchTile, Qt::StretchTile);
         qDrawBorderPixmap(&painter, QRect(0, 0, width, height), margins, mask, mask.rect(), margins, rules);
-    }
-
-    else {
-        // TODO: this whole branch is deprecated functionality, removed soon.
-
-        switch (maskType) {
-        case SDeclarativeFrame::OnePiece: {
-            QPixmap mask;
-            QString maskFileName = QString(":/graphics/%1.svg").arg(maskName);
-
-            if (!mask.load(maskFileName))
-                qWarning() << "Fail to load icon: " << maskFileName;
-
-            painter.drawPixmap(QRect(0, 0, mask.width(), mask.height()), mask);
-            break;
-        }
-        case SDeclarativeFrame::ThreePiecesHorizontal: {
-            QPixmap maskLeft;
-            QPixmap maskCenter;
-            QPixmap maskRight;
-
-            QString maskLeftFileName = QString(":/graphics/%1_l.svg").arg(maskName);
-            QString maskCenterFileName = QString(":/graphics/%1_c.svg").arg(maskName);
-            QString maskRightFileName = QString(":/graphics/%1_r.svg").arg(maskName);
-
-            if (!maskLeft.load(maskLeftFileName))
-                qWarning() << "Fail to load icon: " << maskLeftFileName;
-            if (!maskCenter.load(maskCenterFileName))
-                qWarning() << "Fail to load icon: " << maskCenterFileName;
-            if (!maskRight.load(maskRightFileName))
-                qWarning() << "Fail to load icon: " << maskRightFileName;
-
-            const int borderWidth = maskLeft.width();
-
-            painter.drawPixmap(QRect(0, 0, borderWidth, height), maskLeft);
-            painter.drawPixmap(QRect(borderWidth, 0, width - 2 * borderWidth, height), maskCenter);
-            painter.drawPixmap(QRect(width - borderWidth, 0, borderWidth, height), maskRight);
-            break;
-        }
-        case SDeclarativeFrame::ThreePiecesVertical: {
-            QPixmap maskTop;
-            QPixmap maskCenter;
-            QPixmap maskBottom;
-
-            QString maskTopFileName = QString(":/graphics/%1_t.svg").arg(maskName);
-            QString maskCenterFileName = QString(":/graphics/%1_c.svg").arg(maskName);
-            QString maskBottomFileName = QString(":/graphics/%1_b.svg").arg(maskName);
-
-            if (!maskTop.load(maskTopFileName))
-                qWarning() << "Fail to load icon: " << maskTopFileName;
-            if (!maskCenter.load(maskCenterFileName))
-                qWarning() << "Fail to load icon: " << maskCenterFileName;
-            if (!maskBottom.load(maskBottomFileName))
-                qWarning() << "Fail to load icon: " << maskBottomFileName;
-
-            const int borderHeight = maskTop.height();
-
-            painter.drawPixmap(QRect(0, 0, width, borderHeight), maskTop);
-            painter.drawPixmap(QRect(0, borderHeight, width, height - 2 * borderHeight), maskCenter);
-            painter.drawPixmap(QRect(0, height - borderHeight, width, borderHeight), maskBottom);
-            break;
-        }
-        case SDeclarativeFrame::NinePieces: {
-            QPixmap maskTopLeft;
-            QPixmap maskTop;
-            QPixmap maskTopRight;
-            QPixmap maskLeft;
-            QPixmap maskCenter;
-            QPixmap maskRight;
-            QPixmap maskBottomLeft;
-            QPixmap maskBottom;
-            QPixmap maskBottomRight;
-
-            QString maskTopLeftFileName = QString(":/graphics/%1_tl.svg").arg(maskName);
-            QString maskTopFileName = QString(":/graphics/%1_t.svg").arg(maskName);
-            QString maskTopRightFileName = QString(":/graphics/%1_tr.svg").arg(maskName);
-            QString maskLeftFileName = QString(":/graphics/%1_l.svg").arg(maskName);
-            QString maskCenterFileName = QString(":/graphics/%1_c.svg").arg(maskName);
-            QString maskRightFileName = QString(":/graphics/%1_r.svg").arg(maskName);
-            QString maskBottomLeftFileName = QString(":/graphics/%1_bl.svg").arg(maskName);
-            QString maskBottomFileName = QString(":/graphics/%1_b.svg").arg(maskName);
-            QString maskBottomRightFileName = QString(":/graphics/%1_br.svg").arg(maskName);
-
-            if (!maskTopLeft.load(maskTopLeftFileName))
-                qWarning() << "Fail to load icon: " << maskTopLeftFileName;
-            if (!maskTop.load(maskTopFileName))
-                qWarning() << "Fail to load icon: " << maskTopFileName;
-            if (!maskTopRight.load(maskTopRightFileName))
-                qWarning() << "Fail to load icon: " << maskTopRightFileName;
-            if (!maskLeft.load(maskLeftFileName))
-                qWarning() << "Fail to load icon: " << maskLeftFileName;
-            if (!maskCenter.load(maskCenterFileName))
-                qWarning() << "Fail to load icon: " << maskCenterFileName;
-            if (!maskRight.load(maskRightFileName))
-                qWarning() << "Fail to load icon: " << maskRightFileName;
-            if (!maskBottomLeft.load(maskBottomLeftFileName))
-                qWarning() << "Fail to load icon: " << maskBottomLeftFileName;
-            if (!maskBottom.load(maskBottomFileName))
-                qWarning() << "Fail to load icon: " << maskBottomFileName;
-            if (!maskBottomRight.load(maskBottomRightFileName))
-                qWarning() << "Fail to load icon: " << maskBottomRightFileName;
-
-            const int borderWidth = maskLeft.width();
-            const int borderHeight = maskTop.height();
-
-            painter.drawPixmap(QRect(0, 0, borderWidth, borderHeight), maskTopLeft);
-            painter.drawPixmap(QRect(borderWidth, 0, width - 2 * borderWidth, borderHeight), maskTop);
-            painter.drawPixmap(QRect(width - borderWidth, 0, borderWidth, borderHeight), maskTopRight);
-            painter.drawPixmap(QRect(0, borderHeight, borderWidth, height - borderHeight), maskLeft);
-            painter.drawPixmap(QRect(borderWidth, borderHeight, width - 2 * borderWidth, height - borderHeight), maskCenter);
-            painter.drawPixmap(QRect(width - borderWidth, borderHeight, borderWidth, height - borderHeight), maskRight);
-            painter.drawPixmap(QRect(0, height - borderHeight, borderWidth, borderHeight), maskBottomLeft);
-            painter.drawPixmap(QRect(borderWidth, height - borderHeight, width - 2 * borderWidth, borderHeight), maskBottom);
-            painter.drawPixmap(QRect(width - borderWidth, height - borderHeight, borderWidth, borderHeight), maskBottomRight);
-            break;
-        }
-        default:
-            break;
-        }
     }
 
     painter.end();
@@ -270,23 +150,6 @@ void SDeclarativeMaskedImage::setMaskName(const QString &name)
     Q_D(SDeclarativeMaskedImage);
     if (d->maskName != name) {
         d->maskName = name;
-        d->releasePixmaps();
-    }
-}
-
-SDeclarativeFrame::FrameType SDeclarativeMaskedImage::maskType() const
-{
-    Q_D(const SDeclarativeMaskedImage);
-    qWarning() << "WARNING: MaskedImage.maskType is deprecated and will be removed soon.";
-    return d->maskType;
-}
-
-void SDeclarativeMaskedImage::setMaskType(SDeclarativeFrame::FrameType type)
-{
-    Q_D(SDeclarativeMaskedImage);
-    qWarning() << "WARNING: MaskedImage.maskType is deprecated and will be removed soon.";
-    if (d->maskType != type) {
-        d->maskType = type;
         d->releasePixmaps();
     }
 }
