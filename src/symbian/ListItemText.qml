@@ -38,39 +38,48 @@ Text {
         pixelSize: (role == "Title" || role == "SelectionTitle") ? platformStyle.fontSizeLarge : platformStyle.fontSizeSmall
         weight: (role == "SubTitle" || role == "SelectionSubTitle") ? Font.Light : Font.Normal
     }
-    color: getColor()
+    color: internal.getColor()
     elide: Text.ElideRight
 
     function getColor() {
-        if (style) { // TODO: This block can be removed when style property is removed
-            if (style.mode == "normal") {
-                if (role == "SelectionTitle")
-                    return platformStyle.colorNormalDark
-                else if (role == "SelectionSubTitle" || role == "SubTitle")
-                    return platformStyle.colorNormalMid
-                else
-                    return platformStyle.colorNormalLight
-            } else if (style.mode == "pressed") {
-                return platformStyle.colorPressed
-            } else if (style.mode == "highlight") {
-                 return platformStyle.colorHighlighted
-            } else if (style.mode == "disabled") {
-                return platformStyle.colorDisabledLight
-            }
-        } else {
-            if (root.mode == "normal" || root.mode == "") {
-                if (role == "SelectionTitle")
-                    return platformStyle.colorNormalDark
-                else if (role == "SelectionSubTitle" || role == "SubTitle")
-                    return platformStyle.colorNormalMid
-                else
-                    return platformStyle.colorNormalLight
-            } else if (root.mode == "pressed") {
-                return platformStyle.colorPressed
-            } else if (root.mode == "highlight") {
-                 return platformStyle.colorHighlighted
-            } else if (root.mode == "disabled") {
-                return platformStyle.colorDisabledLight
+        console.log("ListItemText.getColor deprecated!")
+        return internal.getColor()
+    }
+
+    QtObject {
+        id: internal
+
+        function getColor() {
+            if (style) { // TODO: This block can be removed when style property is removed
+                if (style.mode == "normal") {
+                    if (role == "SelectionTitle")
+                        return platformStyle.colorNormalDark
+                    else if (role == "SelectionSubTitle" || role == "SubTitle")
+                        return platformStyle.colorNormalMid
+                    else
+                        return platformStyle.colorNormalLight
+                } else if (style.mode == "pressed") {
+                    return platformStyle.colorPressed
+                } else if (style.mode == "highlight") {
+                     return platformStyle.colorHighlighted
+                } else if (style.mode == "disabled") {
+                    return platformStyle.colorDisabledLight
+                }
+            } else {
+                if (root.mode == "normal" || root.mode == "") {
+                    if (role == "SelectionTitle")
+                        return platformStyle.colorNormalDark
+                    else if (role == "SelectionSubTitle" || role == "SubTitle")
+                        return platformStyle.colorNormalMid
+                    else
+                        return platformStyle.colorNormalLight
+                } else if (root.mode == "pressed") {
+                    return platformStyle.colorPressed
+                } else if (root.mode == "highlight") {
+                     return platformStyle.colorHighlighted
+                } else if (root.mode == "disabled") {
+                    return platformStyle.colorDisabledLight
+                }
             }
         }
     }
