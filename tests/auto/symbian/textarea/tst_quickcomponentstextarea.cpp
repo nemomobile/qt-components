@@ -45,6 +45,8 @@ private slots:
     void placeholderTextAndRichText();
     void implicitSize();
     void font();
+    void focus();
+    void cursorRectangle();
 
 private:
     QObject* m_componentObject;
@@ -188,8 +190,7 @@ void tst_quickcomponentstextarea::placeholderText()
     QCOMPARE(textArea->property("text").toString(), QString(""));
 
     // Focus textArea
-    textEdit->setFocus(Qt::MouseFocusReason);
-
+    textArea->setFocus(Qt::OtherFocusReason);
     QVERIFY(!placeHolder->property("visible").toBool());
     QVERIFY(textEdit->property("visible").toBool());
     QCOMPARE(textArea->property("placeholderText").toString(), QString("placeholderText"));
@@ -203,7 +204,7 @@ void tst_quickcomponentstextarea::placeholderText()
     QCOMPARE(textArea->property("text").toString(), QString("Test"));
 
     // Focus another component
-    textEdit->clearFocus();
+    button->setFocus(Qt::OtherFocusReason);
 
     QVERIFY(!placeHolder->property("visible").toBool());
     QVERIFY(textEdit->property("visible").toBool());
@@ -215,9 +216,9 @@ void tst_quickcomponentstextarea::placeholderText()
     // To avoid virtual keyboard on symbian
     textArea->setProperty("readOnly", QVariant(true));
 #endif
-    textEdit->setFocus(Qt::MouseFocusReason);
+    textArea->setFocus(Qt::OtherFocusReason);
     textArea->setProperty("text", QString(""));
-    textEdit->clearFocus();
+    button->setFocus(Qt::OtherFocusReason);
 
     QVERIFY(placeHolder->property("visible").toBool());
     QVERIFY(textEdit->property("visible").toBool());
@@ -258,7 +259,7 @@ void tst_quickcomponentstextarea::placeholderTextAndPresetText()
     QCOMPARE(textArea->property("text").toString(), QString("Preset text here."));
 
     // Focus textArea
-    textEdit->setFocus(Qt::MouseFocusReason);
+    textArea->setFocus(Qt::OtherFocusReason);
 
     QVERIFY(!placeHolder->property("visible").toBool());
     QVERIFY(textEdit->property("visible").toBool());
@@ -266,7 +267,7 @@ void tst_quickcomponentstextarea::placeholderTextAndPresetText()
     QCOMPARE(textArea->property("text").toString(), QString("Preset text here."));
 
     // Focus out
-    textEdit->clearFocus();
+    button->setFocus(Qt::OtherFocusReason);
 
     QVERIFY(!placeHolder->property("visible").toBool());
     QVERIFY(textEdit->property("visible").toBool());
@@ -278,9 +279,9 @@ void tst_quickcomponentstextarea::placeholderTextAndPresetText()
     // To avoid virtual keyboard on symbian
     textArea->setProperty("readOnly", QVariant(true));
 #endif
-    textEdit->setFocus(Qt::MouseFocusReason);
+    textArea->setFocus(Qt::OtherFocusReason);
     textArea->setProperty("text", QString(""));
-    textEdit->clearFocus();
+    button->setFocus(Qt::OtherFocusReason);
 
     QVERIFY(placeHolder->property("visible").toBool());
     QVERIFY(textEdit->property("visible").toBool());
@@ -322,7 +323,7 @@ void tst_quickcomponentstextarea::placeholderTextAndReadOnly()
     QCOMPARE(textArea->property("text").toString(), QString(""));
 
     // Focus textArea
-    textEdit->setFocus(Qt::MouseFocusReason);
+    textArea->setFocus(Qt::OtherFocusReason);
 
     QVERIFY(!placeHolder->property("visible").toBool());
     QVERIFY(textEdit->property("visible").toBool());
@@ -330,7 +331,7 @@ void tst_quickcomponentstextarea::placeholderTextAndReadOnly()
     QCOMPARE(textArea->property("text").toString(), QString(""));
 
     // Focus out
-    textEdit->clearFocus();
+    button->setFocus(Qt::OtherFocusReason);
 }
 
 // rich text format is a special case, since in that case text property contains empty html tags
@@ -357,7 +358,7 @@ void tst_quickcomponentstextarea::placeholderTextAndRichText()
     QVERIFY(textArea->property("text").toString().length() > 0); // contains empty html tags
 
     // Focus textArea
-    textEdit->setFocus(Qt::MouseFocusReason);
+    textArea->setFocus(Qt::OtherFocusReason);
 
     QVERIFY(!placeHolder->property("visible").toBool());
     QVERIFY(textEdit->property("visible").toBool());
@@ -430,6 +431,64 @@ void tst_quickcomponentstextarea::font()
     QCOMPARE(font, textArea->property("font").value<QFont>());
     QCOMPARE(font, textEdit->property("font").value<QFont>());
     QCOMPARE(font, placeHolder->property("font").value<QFont>());
+}
+
+void tst_quickcomponentstextarea::focus()
+{
+    QGraphicsObject *textArea = m_view->rootObject()->findChild<QGraphicsObject*>("testTextArea");
+    QGraphicsObject *textEdit = m_view->rootObject()->findChild<QGraphicsObject*>("textEdit");
+    QGraphicsObject *button = m_view->rootObject()->findChild<QGraphicsObject*>("testButton");
+
+    button->setFocus(Qt::OtherFocusReason);
+
+    QVERIFY(!textArea->property("focus").toBool());
+    QVERIFY(!textArea->property("activeFocus").toBool());
+    QVERIFY(textEdit->property("focus").toBool());
+    QVERIFY(!textEdit->property("activeFocus").toBool());
+
+    textArea->setFocus(Qt::OtherFocusReason);
+
+    QVERIFY(textArea->property("focus").toBool());
+    QVERIFY(textArea->property("activeFocus").toBool());
+    QVERIFY(textEdit->property("focus").toBool());
+    QVERIFY(textEdit->property("activeFocus").toBool());
+
+    button->setFocus(Qt::OtherFocusReason);
+
+    QVERIFY(!textArea->property("focus").toBool());
+    QVERIFY(!textArea->property("activeFocus").toBool());
+    QVERIFY(textEdit->property("focus").toBool());
+    QVERIFY(!textEdit->property("activeFocus").toBool());
+
+    textArea->setFocus(Qt::OtherFocusReason);
+
+    QVERIFY(textArea->property("focus").toBool());
+    QVERIFY(textArea->property("activeFocus").toBool());
+    QVERIFY(textEdit->property("focus").toBool());
+    QVERIFY(textEdit->property("activeFocus").toBool());
+}
+
+void tst_quickcomponentstextarea::cursorRectangle()
+{
+    QGraphicsObject *textArea = m_view->rootObject()->findChild<QGraphicsObject*>("testTextArea");
+    QGraphicsObject *button = m_view->rootObject()->findChild<QGraphicsObject*>("testButton");
+    QVariant cursorRect;
+
+    QVERIFY2(QMetaObject::invokeMethod(textArea,
+                                       "positionToRectangle",
+                                       Q_RETURN_ARG(QVariant, cursorRect),
+                                       Q_ARG(QVariant, textArea->property("cursorPosition").toInt())),
+                                       "Could not call positionToRectangle");
+
+    button->setFocus(Qt::OtherFocusReason);
+    QVERIFY(!m_view->scene()->inputMethodQuery(Qt::ImMicroFocus).isValid());
+    QVERIFY(!QApplication::focusWidget()->inputMethodQuery(Qt::ImMicroFocus).isValid());
+
+    textArea->setFocus(Qt::OtherFocusReason);
+    QVERIFY(m_view->scene()->inputMethodQuery(Qt::ImMicroFocus).isValid());
+    QCOMPARE(m_view->scene()->inputMethodQuery(Qt::ImMicroFocus), cursorRect);
+    QVERIFY(QApplication::focusWidget()->inputMethodQuery(Qt::ImMicroFocus).isValid());
+    QCOMPARE(QApplication::focusWidget()->inputMethodQuery(Qt::ImMicroFocus), cursorRect);
 }
 
 QTEST_MAIN(tst_quickcomponentstextarea)

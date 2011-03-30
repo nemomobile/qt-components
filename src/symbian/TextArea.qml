@@ -26,7 +26,7 @@
 
 import Qt 4.7
 
-ImplicitSizeItem {
+FocusScopeItem {
     id: root
 
     // Common public API
@@ -190,6 +190,7 @@ ImplicitSizeItem {
                     width: root.maxImplicitWidth - container.anchors.leftMargin - container.anchors.rightMargin
                 }
 
+                focus: true
                 font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
                 color: platformStyle.colorNormalDark
                 selectedTextColor: platformStyle.colorNormalLight
