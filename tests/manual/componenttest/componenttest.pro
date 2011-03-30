@@ -34,6 +34,7 @@ OTHER_FILES += \
     tests/BusyIndicator.qml \
     tests/Button.qml \
     tests/ButtonRow.qml \
+    tests/ButtonColumn.qml \
     tests/CheckBox.qml \
     tests/ChoiceList.qml \
     tests/ContextMenu.qml \
