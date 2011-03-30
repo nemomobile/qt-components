@@ -6,6 +6,7 @@ ButtonColumn 1.0 ButtonColumn.qml
 ButtonRow 1.0 ButtonRow.qml
 CheckBox 1.0 CheckBox.qml
 ChoiceList 1.0 ChoiceList.qml
+CommonDialog 1.0 CommonDialog.qml
 ContextMenu 1.0 ContextMenu.qml
 Dialog 1.0 Dialog.qml
 ListHeading 1.0 ListHeading.qml
