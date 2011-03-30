@@ -15,7 +15,12 @@ SOURCES += \
 
 QML_FILES = \
     qmldir \
-    RatingIndicator.qml
+    Constants.js \
+    RatingIndicator.qml \
+    Tumbler.js \
+    Tumbler.qml \
+    TumblerColumn.qml \
+    TumblerTemplate.qml
 
 symbian {
     TARGET.EPOCALLOWDLLDATA = 1

@@ -1,2 +1,4 @@
 plugin symbianextrasplugin
 RatingIndicator 1.0 RatingIndicator.qml
+Tumbler 1.0 Tumbler.qml
+TumblerColumn 1.0 TumblerColumn.qml
