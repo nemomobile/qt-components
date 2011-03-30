@@ -100,6 +100,8 @@ int main(int argc, char *argv[])
     // create tests
     ApiCheckSlider slider(engine, module);
     ApiCheckButton button(engine, module);
+    ApiCheckButtonColumn buttonColumn(engine, module);
+    ApiCheckButtonRow buttonRow(engine, module);
     ApiCheckCheckBox checkbox(engine, module);
     ApiCheckDialog dialog(engine, module);
     ApiCheckTextField textField(engine, module);
@@ -126,8 +128,6 @@ int main(int argc, char *argv[])
     ApiCheckTumblerColumn tumblerColumn(engine, extrasModule);
 
 #ifndef Q_COMPONENTS_SYMBIAN
-    ApiCheckButtonColumn buttonColumn(engine, module);
-    ApiCheckButtonRow buttonRow(engine, module);
     ApiCheckQueryDialog querydialog(engine, module);
     ApiCheckSelectionDialog selectiondialog(engine, module);
 #endif
@@ -135,6 +135,8 @@ int main(int argc, char *argv[])
     int ret = 0;
     ret |= QTest::qExec(&slider, args);
     ret |= QTest::qExec(&button, args);
+    ret |= QTest::qExec(&buttonColumn, args);
+    ret |= QTest::qExec(&buttonRow, args);
     ret |= QTest::qExec(&checkbox, args);
     ret |= QTest::qExec(&dialog, args);
     ret |= QTest::qExec(&textField, args);
@@ -161,8 +163,6 @@ int main(int argc, char *argv[])
     ret |= QTest::qExec(&tumblerColumn, args);
 
 #ifndef Q_COMPONENTS_SYMBIAN
-    ret |= QTest::qExec(&buttonColumn, args);
-    ret |= QTest::qExec(&buttonRow, args);
     ret |= QTest::qExec(&querydialog, args);
     ret |= QTest::qExec(&selectiondialog, args);
 #endif

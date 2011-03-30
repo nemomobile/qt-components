@@ -21,6 +21,8 @@ meego {
 symbian3 {
     SUBDIRS += \
         api_button \
+        api_buttoncolumn \
+        api_buttonrow \
         api_checkbox \
         api_dialog \
         api_menu \
