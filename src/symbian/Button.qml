@@ -148,6 +148,24 @@ ImplicitSizeItem {
                 privateStyle.play(Symbian.SensitiveButton);
             button.clicked();
         }
+
+        // The function imageSource() handles fetching correct graphics for the Button.
+        // If the parent of a Button is ButtonRow, segmented-style graphics are used to create a
+        // seamless row of buttons. Otherwise normal Button graphics are utilized.
+        function imageSource() {
+            if (parent && parent.hasOwnProperty("checkedButton") && parent.hasOwnProperty("__direction") && parent.__direction == Qt.Horizontal && parent.children.length > 1) {
+                var imageName = "qtg_fr_pushbutton_segmented"
+                if (button === parent.children[0])
+                    imageName += "_l_"
+                else if(button === parent.children[parent.children.length - 1])
+                    imageName += "_r_"
+                else
+                    imageName += "_c_"
+
+                return privateStyle.imagePath(imageName + internal.bg_postfix())
+            }
+            return privateStyle.imagePath("qtg_fr_pushbutton_" + internal.bg_postfix())
+        }
     }
 
     StateGroup {
@@ -195,7 +213,7 @@ ImplicitSizeItem {
 
     BorderImage {
         id: background
-        source: privateStyle.imagePath("qtg_fr_pushbutton_" + internal.bg_postfix());
+        source: internal.imageSource()
         border { left: 20; top: 20; right: 20; bottom: 20 }
         anchors.fill: parent
     }
