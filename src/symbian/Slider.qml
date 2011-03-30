@@ -170,8 +170,8 @@ ImplicitSizeItem {
             Image {
                 id: handle
                 objectName: "handle"
-                x: orientation == Qt.Horizontal ? model.position : 0
-                y: orientation == Qt.Horizontal ? 0 : model.position
+                x: orientation == Qt.Horizontal ? (handleMouseArea.pressed ? x : model.position) : 0
+                y: orientation == Qt.Horizontal ? 0 : (handleMouseArea.pressed ? y : model.position)
 
                 sourceSize.height: platformStyle.graphicSizeSmall
                 sourceSize.width: platformStyle.graphicSizeSmall
@@ -285,21 +285,17 @@ ImplicitSizeItem {
             if (orientation == Qt.Horizontal) {
                 if (keyEvent.key == Qt.Key_Left) {
                     model.value = inverted ? model.value + model.stepSize : model.value - model.stepSize;
-                    handle.x = model.position;
                     keyEvent.accepted = true;
                 } else if (keyEvent.key == Qt.Key_Right) {
                     model.value = inverted ? model.value - model.stepSize : model.value + model.stepSize;
-                    handle.x = model.position;
                     keyEvent.accepted = true;
                 }
             } else { //Vertical
                 if (keyEvent.key == Qt.Key_Up) {
                     model.value = inverted ? model.value + model.stepSize : model.value - model.stepSize;
-                    handle.x = model.position;
                     keyEvent.accepted = true;
                 } else if (keyEvent.key == Qt.Key_Down) {
                     model.value = inverted ? model.value - model.stepSize : model.value + model.stepSize;
-                    handle.x = model.position;
                     keyEvent.accepted = true;
                 }
             }
