@@ -40,6 +40,8 @@ private slots:
     void acceptableInput();
     void implicitSize();
     void font();
+    void focus();
+    void cursorRectangle();
 
 private:
     QObject* m_componentObject;
@@ -162,6 +164,72 @@ void tst_quickcomponentstextfield::font()
     QCOMPARE(font, textField->property("font").value<QFont>());
     QCOMPARE(font, textInput->property("font").value<QFont>());
     QCOMPARE(font, placeHolder->property("font").value<QFont>());
+}
+
+void tst_quickcomponentstextfield::focus()
+{
+    QGraphicsObject *textField = m_view->rootObject()->findChild<QGraphicsObject*>("textField");
+    QGraphicsObject *textInput = m_view->rootObject()->findChild<QGraphicsObject*>("textInput");
+    QGraphicsObject *textFieldImpSize = m_view->rootObject()->findChild<QGraphicsObject*>("textFieldImpSize");
+
+    QVERIFY(!textField->property("focus").toBool());
+    QVERIFY(!textField->property("activeFocus").toBool());
+    QVERIFY(textInput->property("focus").toBool());
+    QVERIFY(!textInput->property("activeFocus").toBool());
+    QVERIFY(!textFieldImpSize->property("focus").toBool());
+    QVERIFY(!textFieldImpSize->property("activeFocus").toBool());
+
+    textField->setFocus(Qt::OtherFocusReason);
+
+    QVERIFY(textField->property("focus").toBool());
+    QVERIFY(textField->property("activeFocus").toBool());
+    QVERIFY(textInput->property("focus").toBool());
+    QVERIFY(textInput->property("activeFocus").toBool());
+    QVERIFY(!textFieldImpSize->property("focus").toBool());
+    QVERIFY(!textFieldImpSize->property("activeFocus").toBool());
+
+    textFieldImpSize->setFocus(Qt::OtherFocusReason);
+
+    QVERIFY(!textField->property("focus").toBool());
+    QVERIFY(!textField->property("activeFocus").toBool());
+    QVERIFY(textInput->property("focus").toBool());
+    QVERIFY(!textInput->property("activeFocus").toBool());
+    QVERIFY(textFieldImpSize->property("focus").toBool());
+    QVERIFY(textFieldImpSize->property("activeFocus").toBool());
+
+    textField->setFocus(Qt::OtherFocusReason);
+
+    QVERIFY(textField->property("focus").toBool());
+    QVERIFY(textField->property("activeFocus").toBool());
+    QVERIFY(textInput->property("focus").toBool());
+    QVERIFY(textInput->property("activeFocus").toBool());
+    QVERIFY(!textFieldImpSize->property("focus").toBool());
+    QVERIFY(!textFieldImpSize->property("activeFocus").toBool());
+}
+
+void tst_quickcomponentstextfield::cursorRectangle()
+{
+    QGraphicsObject *textField = m_view->rootObject()->findChild<QGraphicsObject*>("textField");
+    QGraphicsObject *button = m_view->rootObject()->findChild<QGraphicsObject*>("testButton");
+    QVariant cursorRect;
+
+    button->setFocus(Qt::OtherFocusReason);
+    QVERIFY(!m_view->scene()->inputMethodQuery(Qt::ImMicroFocus).isValid());
+    QVERIFY(!QApplication::focusWidget()->inputMethodQuery(Qt::ImMicroFocus).isValid());
+
+    textField->setFocus(Qt::OtherFocusReason);
+    QVERIFY2(QMetaObject::invokeMethod(textField,
+                                       "positionToRectangle",
+                                       Q_RETURN_ARG(QVariant, cursorRect),
+                                       Q_ARG(QVariant, textField->property("cursorPosition").toInt())),
+                                       "Could not call positionToRectangle");
+
+    QVERIFY(m_view->scene()->inputMethodQuery(Qt::ImMicroFocus).isValid());
+    QEXPECT_FAIL("", "inputMethodQuery(Qt::ImMicroFocus) fot TextInput return quite wide cursor rectangle, http://bugreports.qt.nokia.com/browse/QTBUG-18343", Continue);
+    QCOMPARE(m_view->scene()->inputMethodQuery(Qt::ImMicroFocus), cursorRect);
+    QVERIFY(QApplication::focusWidget()->inputMethodQuery(Qt::ImMicroFocus).isValid());
+    QEXPECT_FAIL("", "inputMethodQuery(Qt::ImMicroFocus) fot TextInput return quite wide cursor rectangle, http://bugreports.qt.nokia.com/browse/QTBUG-18343", Continue);
+    QCOMPARE(QApplication::focusWidget()->inputMethodQuery(Qt::ImMicroFocus), cursorRect);
 }
 
 QTEST_MAIN(tst_quickcomponentstextfield)

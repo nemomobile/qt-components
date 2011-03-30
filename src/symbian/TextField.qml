@@ -25,7 +25,7 @@
 ****************************************************************************/
 import Qt 4.7
 
-ImplicitSizeItem {
+FocusScopeItem {
     id: root
 
     // Common Public API
@@ -102,37 +102,32 @@ ImplicitSizeItem {
         border { left: 10; top: 10; right: 10; bottom: 10 }
     }
 
-    Item {
-        id: container
+    TextInput {
+        id: textInput; objectName: "textInput"
         anchors {
             fill: parent
             leftMargin: platformStyle.paddingMedium; rightMargin: platformStyle.paddingMedium
             topMargin: platformStyle.paddingMedium; bottomMargin: platformStyle.paddingMedium
         }
         clip: true
+        color: platformStyle.colorNormalDark
+        focus: true
+        font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
+        // TODO: Use desktop text selection behaviour for now.
+        selectByMouse: true
+        selectedTextColor: platformStyle.colorNormalLight
+        selectionColor: platformStyle.colorTextSelection
+    }
 
-        Text {
-            id: placeholder
-            objectName: "placeholder"
-            anchors.fill: parent
-            color: platformStyle.colorNormalMid
-            font: textInput.font
-            visible: !textInput.activeFocus && !textInput.text && text
+    Text {
+        id: placeholder; objectName: "placeholder"
+        anchors {
+            fill: parent
+            leftMargin: platformStyle.paddingMedium; rightMargin: platformStyle.paddingMedium
+            topMargin: platformStyle.paddingMedium; bottomMargin: platformStyle.paddingMedium
         }
-
-        TextInput {
-            id: textInput
-            objectName: "textInput"
-            anchors.fill: parent
-            anchors.rightMargin: positionToRectangle(0).width
-            color: platformStyle.colorNormalDark
-            font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
-            // TODO: Use desktop text selection behaviour for now.
-            selectByMouse: true
-            selectedTextColor: platformStyle.colorNormalLight
-            selectionColor: platformStyle.colorTextSelection
-            // TODO: Enable when Qt Mobility gets desktop backends for haptick feedback
-            //onFocusChanged: if (focus) privateStyle.play(ThemeEffect.Editor)
-        }
+        color: platformStyle.colorNormalMid
+        font: textInput.font
+        visible: !textInput.activeFocus && !textInput.text && text
     }
 }

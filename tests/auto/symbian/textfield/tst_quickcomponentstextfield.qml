@@ -34,8 +34,8 @@ Column {
     anchors.rightMargin: 5
     anchors.bottomMargin: 5
     spacing: 5
-    height: screen.height
-    width: screen.width
+    height: 360
+    width: 640
 
     Component.onCompleted: screen.allowedOrientations = Screen.Portrait
 
@@ -58,4 +58,12 @@ Column {
         id: textFieldImpSize
         objectName: "textFieldImpSize"
     }
+	
+    Button {
+        id: testButton
+        objectName: "testButton"
+        text: "Click Me!"
+        width: parent.width
+        onClicked: forceActiveFocus()
+    }	
 }
