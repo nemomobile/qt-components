@@ -96,6 +96,7 @@ ImplicitSizeItem {
     Text {
         id: label
 
+        objectName: "label"
         // hide in landscape if icon is present
         visible: !(iconSource.toString() && !internal.portrait)
         anchors {

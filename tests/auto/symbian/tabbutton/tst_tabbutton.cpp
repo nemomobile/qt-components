@@ -130,6 +130,9 @@ void tst_tabbutton::testGraphicsVisibility()
     QGraphicsObject *icon = testButton->findChild<QGraphicsObject*>("icon");
     QVERIFY(!icon);
 
+    QGraphicsObject *label = testButton->findChild<QGraphicsObject*>("label");
+    QVERIFY(label);
+
     // set text
     testButton->setProperty("text", QVariant("teb button text"));
 
@@ -149,6 +152,8 @@ void tst_tabbutton::testGraphicsVisibility()
     QVERIFY(!icon);
     QGraphicsObject *imageContainer = qobject_cast<QGraphicsObject *>(image->parent());
     QVERIFY(imageContainer);
+    QVERIFY(imageContainer->isVisible());
+    QVERIFY(label->isVisible());
 
     // Set graphic source to logical icon #1
     testButton->setProperty("iconSource", QVariant("qtg_graf_drill_down_indicator"));
@@ -160,13 +165,14 @@ void tst_tabbutton::testGraphicsVisibility()
     icon = testButton->findChild<QGraphicsObject*>("icon");
     QVERIFY(icon);
 
-    // set landscape orientation -> this should hide the imageContainer
+    // set landscape orientation -> this should hide the label
     screen->setProperty("orientation", QVariant(2)); // 2 = SDeclarativeScreen::Landscape
-    QVERIFY(!imageContainer->isVisible());
-
-    // remove the text -> imageContainer should be visible again
-    testButton->setProperty("text", QVariant(""));
     QVERIFY(imageContainer->isVisible());
+    QVERIFY(!label->isVisible());
+
+    // remove the image -> text should be visible again
+    testButton->setProperty("iconSource", QVariant(""));
+    QVERIFY(label->isVisible());
 }
 
 
