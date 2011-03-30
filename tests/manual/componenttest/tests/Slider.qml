@@ -90,9 +90,9 @@ Item {
             width: 50
             height: parent.height / 2
             orientation: Qt.Vertical
-            maximumValue: 25
+            maximumValue: 5
             stepSize: 1
-            value: 25
+            value: 5
             valueIndicatorVisible: valueIndicatorToggle2.checked
             inverted: inversionToggle2.checked
         }
