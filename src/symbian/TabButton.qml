@@ -96,6 +96,8 @@ ImplicitSizeItem {
     Text {
         id: label
 
+        // hide in landscape if icon is present
+        visible: !(iconSource.toString() && !internal.portrait)
         anchors {
             left: parent.left
             right: parent.right
@@ -147,8 +149,6 @@ ImplicitSizeItem {
         Component.onCompleted: inspectSource()
         onSourceChanged: inspectSource()
 
-        // Hide in landscape if text is provided
-        visible: internal.portrait || !root.text
         width : platformStyle.graphicSizeSmall
         height : platformStyle.graphicSizeSmall
         sourceComponent: {
@@ -160,7 +160,7 @@ ImplicitSizeItem {
         }
         anchors {
             top: parent.top
-            topMargin : !parent.text ? (parent.height - imageLoader.height) / 2 : platformStyle.paddingSmall
+            topMargin : !parent.text || !internal.portrait ? (parent.height - imageLoader.height) / 2 : platformStyle.paddingSmall
             horizontalCenter: parent.horizontalCenter
         }
 
