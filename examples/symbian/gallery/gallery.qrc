@@ -1,6 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
-    <file alias="tb_back.svg">images/tb_back.svg</file>
-    <file alias="tb_plus.png">images/tb_plus.png</file>
+    <file alias="tb_quit.svg">images/tb_quit.svg</file>
+    <file alias="tb_options.svg">images/tb_options.svg</file>
 </qresource>
 </RCC>

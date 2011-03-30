@@ -30,85 +30,27 @@ import com.nokia.symbian 1.0
 Window {
     id: root
 
-    property int rowSpacing: 24
-    property int columnSpacing: 14
-
     StatusBar {
         id: statusBar
-        anchors.top: parent.top
-        width: parent.width
+        anchors.top: root.top
     }
 
     Flickable {
         id: flickable
         anchors { 
-            left: parent.left
-            right: parent.right
-            top: statusBar.visible ? statusBar.bottom: parent.top
-            bottom: toolBar.visible ? toolBar.top: parent.bottom
+            left: root.left
+            right: root.right
+            top: statusBar.visible ? statusBar.bottom: root.top
+            bottom: toolBar.visible ? toolBar.top: root.bottom
         }
-        contentHeight: defaultColumn.height + 2 * root.rowSpacing
-        clip: true
-        boundsBehavior: Flickable.StopAtBounds
+        contentHeight: column.height
 
-        Component.onCompleted: {
-            var cWidth = 0;
-            for (var i = 0; i < content.children.length; ++i) {
-                cWidth += content.children[i].width;
-            }
-            flickable.contentWidth = cWidth;
-        }
-
-        Row {
-            id: content
-            anchors.fill: parent
-
-            Rectangle {
-                width: defaultColumn.width + 2 * root.rowSpacing; height: defaultColumn.height + 2 * root.rowSpacing
-                anchors.topMargin: root.rowSpacing
-
-                SampleColumn {
-                    id: defaultColumn
-                    spacing: root.columnSpacing
-                    anchors.centerIn: parent
-                    title: "Default:"; titleColor: "#333"; titleStyleColor: "white"
-                }
-            }
-
-            Item {
-                width: disabledColumn.width + 2 * root.rowSpacing; height: disabledColumn.height + 2 * root.rowSpacing
-
-                SampleColumn {
-                    id: disabledColumn
-                    enabled: false
-                    spacing: root.columnSpacing
-                    anchors.centerIn: parent
-                    title: "Disabled:"; titleColor: "#333"; titleStyleColor: "white"
-                }
-            }
-
-            Rectangle {
-                width: coloredColumn.width + 2 * root.rowSpacing; height: coloredColumn.height + 2 * root.rowSpacing
-                color: "#666"; border.color: "#444"
-
-                SampleColumn {
-                    id: coloredColumn
-                    spacing: root.columnSpacing
-                    anchors.centerIn: parent
-                    title: "Colored:"; titleColor: "white"; titleStyleColor: "#333"
-                }
-            }
-
-            Rectangle {
-                width: customColumn.width + 2 * root.rowSpacing; height: customColumn.height + 2 * root.rowSpacing
-                color: "#ccc"; border.color: "#444"
-
-                SampleColumn {
-                    id: customColumn
-                    spacing: root.columnSpacing
-                    anchors.centerIn: parent
-                    title: "Custom:"; titleColor: "#333"; titleStyleColor: "white"
-                }
+        SampleColumn {
+            id: column
+            anchors {
+                left: parent.left
+                right: parent.right
+                margins: column.spacing
             }
         }
     }
@@ -119,43 +61,29 @@ Window {
 
     ToolBar {
         id: toolBar
-        tools: toolBarlayout
-        anchors.bottom: parent.bottom
-    }
-
-    Component {
-        id: textButton
-        ToolButton {
-            text:"button"
-        }
-    }
-
-    ToolBarLayout {
-        id: toolBarlayout
-        ToolButton {
-            flat: true
-            iconSource: "qrc:tb_back.svg"
-            onClicked: Qt.quit()
-        }
-
-        ToolButton {
-            iconSource: "qrc:tb_plus.png"
-            onClicked: {
-                if (toolBarlayout.children.length >= 4){
-                    for (var p = 1; p < toolBarlayout.children.length - 1; ++p){
-                        toolBarlayout.children[p].destroy()
-                    }
-                }
-                else {
-                    var button = textButton.createObject(null)
-                    var len = toolBarlayout.children.length
-                    var temp = toolBarlayout.children[len-1]
-                    temp.parent = null
-                    button.parent = toolBarlayout
-                    temp.parent = toolBarlayout
-                }
+        anchors.bottom: root.bottom
+        tools: ToolBarLayout {
+            id: toolBarlayout
+            ToolButton {
+                flat: true
+                iconSource: "qrc:tb_quit.svg"
+                onClicked: Qt.quit()
+            }
+            ToolButton {
+                iconSource: "qrc:tb_options.svg"
+                onClicked: menu.open()
             }
         }
     }
-}
 
+    Menu {
+        id: menu
+        content: MenuLayout {
+            MenuItem {
+                text: column.enabled ? "Disable" : "Enable"
+                onClicked: column.enabled = !column.enabled
+            }
+            MenuItem { text: "Quit"; onClicked: Qt.quit() }
+        }
+    }
+}

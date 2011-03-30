@@ -30,16 +30,13 @@ import Qt.labs.components 1.0
 
 Column {
     id: column
-
-    property alias title: titleText.text
-    property alias titleStyleColor: titleText.styleColor
-    property alias titleColor: titleText.color
+    spacing: 14
 
     Text {
-        id: titleText
         anchors.horizontalCenter: parent.horizontalCenter
-        font.bold: true
-        styleColor: "white"; color:"#333"; style: "Raised"
+        text: "Qt Components " + (enabled ? "(enabled)" : "(disabled)")
+        font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
+        color: platformStyle.colorNormalLight
     }
 
     Button {
@@ -230,23 +227,6 @@ Column {
             MenuItem { text: "Red"; onClicked: { column.parent.color = "Red" } }
             MenuItem { text: "LightBlue"; onClicked: { column.parent.color = "LightBlue" } }
             MenuItem { text: "LightGreen"; onClicked: { column.parent.color = "LightGreen" } }
-        }
-    }
-
-    Button {
-        anchors.horizontalCenter: parent.horizontalCenter
-        width: parent.width - parent.spacing
-        text: "Menu"
-        onClicked: menu.open()
-    }
-
-    Menu {
-        id: menu
-
-        content: MenuLayout {
-            MenuItem { text: "Blue"; onClicked: { column.parent.color = "Blue" } }
-            MenuItem { text: "Green"; onClicked: { column.parent.color = "Green" } }
-            MenuItem { text: "Yellow"; onClicked: { column.parent.color = "Yellow" } }
         }
     }
 
