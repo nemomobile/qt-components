@@ -95,7 +95,7 @@ void tst_quickcomponentsbuttoncolumn::checkedButton()
     // get ButtonColumn first Button child
     QVariant variant;
     QObject *child;
-    QObject *tmp;
+    QDeclarativeItem  *tmp;
     const QObjectList children = componentObject->children();
     for (int i = 0; i < children.size(); ++i) {
         child = children.at(i);
@@ -103,8 +103,8 @@ void tst_quickcomponentsbuttoncolumn::checkedButton()
             QVERIFY2(QMetaObject::invokeMethod(child, "clicked"), "ButtonColumn's child, does not have clicked() signal");
             variant = componentObject->property("checkedButton");
             QVERIFY(variant.isValid());
-            tmp = variant.value<QObject*>();
-            QVERIFY2(child->objectName() == tmp->objectName(), "Error, the returned object is not the one thar was previously set");
+            tmp = variant.value<QDeclarativeItem*>();
+            QVERIFY2(child->objectName() == tmp->objectName(), "Error, the returned object is not the one that was previously set");
         }
     }
 }
