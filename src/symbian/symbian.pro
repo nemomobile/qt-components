@@ -63,6 +63,7 @@ QML_FILES = \
     ApplicationWindow.qml \
     AppManager.js \
     Button.qml \
+    ButtonGroup.js \
     BusyIndicator.qml \
     CheckBox.qml \
     ChoiceList.qml \
