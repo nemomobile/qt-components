@@ -474,4 +474,15 @@ Column {
        ToolButton { text: "tb1" }
        ToolButton { text: "tb2" }
    }
+
+   ButtonColumn {
+       id: buttonColumn
+       width: parent.width - parent.spacing
+       exclusive: true
+
+       Button { text: "b4" }
+       Button { text: "b5" }
+       Button { text: "b6" }
+       Button { text: "b7" }
+   }
 }
