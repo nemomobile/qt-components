@@ -449,19 +449,22 @@ Item {
             SelectionListItem {
                 id: listItem12
                 objectName: "listItem12"
-                title: "Unselected"
+                title: selectionDialog12.selectedIndex < 0 ? "Unselected" : selectionDialog12.model.get(selectionDialog12.selectedIndex).name
 
-                onClicked: subMenu12.open()
+                onClicked: selectionDialog12.open()
                 onPressAndHold: notification.text = "Press-and-hold " + objectName
-                // SelectionDialog is not implemented yet. Use Context menu instead.
-                // Todo: Switch to SelectionDialog
-                ContextMenu {
-                    id: subMenu12
-                    MenuLayout {
-                        MenuItem {text: "Zero"; onClicked: listItem12.title = "Zero"}
-                        MenuItem {text: "One"; onClicked: listItem12.title = "One"}
-                        MenuItem {text: "Two"; onClicked: listItem12.title = "Two"}
+
+                SelectionDialog {
+                    id: selectionDialog12
+                    titleText: "Select one of the values"
+                    selectedIndex: -1
+                    model: ListModel {
+                        ListElement { name: "Zero" }
+                        ListElement { name: "One" }
+                        ListElement { name: "Two" }
                     }
+                    // Clear existing selection
+                    onRejected: selectedIndex = -1
                 }
             }
 
@@ -469,20 +472,21 @@ Item {
                 id: listItem13
                 objectName: "listItem13"
                 title: "Selected value"
-                subTitle: "Unselected"
+                subTitle: selectionDialog13.model.get(selectionDialog13.selectedIndex).name
 
-                onClicked: subMenu13.open()
+                onClicked: selectionDialog13.open()
                 onPressAndHold: notification.text = "Press-and-hold " + objectName
-                // SelectionDialog is not implemented yet. Use Context menu instead.
-                // Todo: Switch to SelectionDialog
-                ContextMenu {
-                    id: subMenu13
-                    MenuLayout {
-                        MenuItem {text: "Zero"; onClicked: listItem13.subTitle = "Zero"}
-                        MenuItem {text: "One"; onClicked: listItem13.subTitle = "One"}
-                        MenuItem {text: "Two"; onClicked: listItem13.subTitle = "Two"}
-                        MenuItem {text: "Three"; onClicked: listItem13.subTitle = "Three"}
-                        MenuItem {text: "Four"; onClicked: listItem13.subTitle = "Four"}
+
+                SelectionDialog {
+                    id: selectionDialog13
+                    titleText: "Select one of the values"
+                    selectedIndex: 0
+                    model: ListModel {
+                        ListElement { name: "Zero" }
+                        ListElement { name: "One" }
+                        ListElement { name: "Two" }
+                        ListElement { name: "Three" }
+                        ListElement { name: "Four" }
                     }
                 }
             }
