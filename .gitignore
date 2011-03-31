@@ -33,6 +33,7 @@ qrc_*.cpp
 *.mk
 *.loc
 *.rss
+.DS_Store
 *~
 bld.inf
 bld.inf.*
