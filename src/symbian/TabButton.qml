@@ -113,7 +113,9 @@ ImplicitSizeItem {
             bottom: parent.bottom
             leftMargin: platformStyle.paddingMedium
             rightMargin: platformStyle.paddingMedium
-            bottomMargin: platformStyle.paddingSmall
+            bottomMargin: iconSource.toString()
+                ? platformStyle.paddingSmall
+                : (parent.height - label.height) / 2
         }
         elide: Text.ElideRight
         horizontalAlignment: Text.AlignHCenter
@@ -170,7 +172,9 @@ ImplicitSizeItem {
         }
         anchors {
             top: parent.top
-            topMargin : !parent.text || !internal.portrait ? (parent.height - imageLoader.height) / 2 : platformStyle.paddingSmall
+            topMargin : !parent.text || !internal.portrait
+                ? (parent.height - imageLoader.height) / 2
+                : platformStyle.paddingSmall
             horizontalCenter: parent.horizontalCenter
         }
 
