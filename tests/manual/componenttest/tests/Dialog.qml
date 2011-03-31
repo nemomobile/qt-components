@@ -62,7 +62,6 @@ Item {
             text: "This is content text."
             font.bold: true
             font.pixelSize: 18
-            anchors.fill: parent
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
         }
@@ -148,7 +147,9 @@ Item {
         content: Item {
             id: page
 
-            anchors.fill: parent
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: mainWindow.inPortrait ? screen.height / 2 : screen.width / 2
             Flickable {
                 id: flickableArea
 
