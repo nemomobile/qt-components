@@ -27,6 +27,8 @@
 #include <QtTest/QtTest>
 #include <QGraphicsObject>
 #include <QFont>
+#include <QtCore/qmath.h>
+#include <QIntValidator>
 #include "tst_quickcomponentstest.h"
 
 static const QString EDITOR_STYLE_FONT = "Nokia Sans,-1,20,5,50,0,0,0,0,0";
@@ -68,7 +70,7 @@ void tst_quickcomponentstextarea::initTestCase()
 
 void tst_quickcomponentstextarea::validateSymbianProperties()
 {
-    QGraphicsObject* textArea = m_componentObject->findChild<QGraphicsObject*>("testTextArea");
+    QGraphicsObject *textArea = m_componentObject->findChild<QGraphicsObject*>("textArea");
     QVERIFY(textArea);
     QVariant property;
 
@@ -100,7 +102,7 @@ void tst_quickcomponentstextarea::validateSymbianProperties()
 
 void tst_quickcomponentstextarea::defaultPropertyValues()
 {
-    QGraphicsObject* textArea = m_componentObject->findChild<QGraphicsObject*>("testTextArea");
+    QGraphicsObject *textArea = m_componentObject->findChild<QGraphicsObject*>("textArea");
     QGraphicsObject *placeHolder = m_view->rootObject()->findChild<QGraphicsObject*>("placeholder");
     QVERIFY(textArea);
     QVERIFY(placeHolder);
@@ -170,8 +172,8 @@ void tst_quickcomponentstextarea::defaultPropertyValues()
 
 void tst_quickcomponentstextarea::placeholderText()
 {
-    QGraphicsObject* textArea = m_view->rootObject()->findChild<QGraphicsObject*>("testTextArea");
-    QGraphicsObject *button = m_view->rootObject()->findChild<QGraphicsObject*>("testButton");
+    QGraphicsObject *textArea = m_view->rootObject()->findChild<QGraphicsObject*>("textArea");
+    QGraphicsObject *button = m_view->rootObject()->findChild<QGraphicsObject*>("click");
     QGraphicsObject *textEdit = m_view->rootObject()->findChild<QGraphicsObject*>("textEdit");
     QGraphicsObject *placeHolder = m_view->rootObject()->findChild<QGraphicsObject*>("placeholder");
 
@@ -239,8 +241,8 @@ void tst_quickcomponentstextarea::placeholderText()
 
 void tst_quickcomponentstextarea::placeholderTextAndPresetText()
 {
-    QGraphicsObject* textArea = m_view->rootObject()->findChild<QGraphicsObject*>("testTextArea");
-    QGraphicsObject *button = m_view->rootObject()->findChild<QGraphicsObject*>("testButton");
+    QGraphicsObject *textArea = m_view->rootObject()->findChild<QGraphicsObject*>("textArea");
+    QGraphicsObject *button = m_view->rootObject()->findChild<QGraphicsObject*>("click");
     QGraphicsObject *textEdit = m_view->rootObject()->findChild<QGraphicsObject*>("textEdit");
     QGraphicsObject *placeHolder = m_view->rootObject()->findChild<QGraphicsObject*>("placeholder");
 
@@ -302,8 +304,8 @@ void tst_quickcomponentstextarea::placeholderTextAndPresetText()
 
 void tst_quickcomponentstextarea::placeholderTextAndReadOnly()
 {
-    QGraphicsObject* textArea = m_view->rootObject()->findChild<QGraphicsObject*>("testTextArea");
-    QGraphicsObject *button = m_view->rootObject()->findChild<QGraphicsObject*>("testButton");
+    QGraphicsObject *textArea = m_view->rootObject()->findChild<QGraphicsObject*>("textArea");
+    QGraphicsObject *button = m_view->rootObject()->findChild<QGraphicsObject*>("click");
     QGraphicsObject *textEdit = m_view->rootObject()->findChild<QGraphicsObject*>("textEdit");
     QGraphicsObject *placeHolder = m_view->rootObject()->findChild<QGraphicsObject*>("placeholder");
 
@@ -337,8 +339,8 @@ void tst_quickcomponentstextarea::placeholderTextAndReadOnly()
 // rich text format is a special case, since in that case text property contains empty html tags
 void tst_quickcomponentstextarea::placeholderTextAndRichText()
 {
-    QGraphicsObject *textArea = m_view->rootObject()->findChild<QGraphicsObject*>("testTextArea");
-    QGraphicsObject *button = m_view->rootObject()->findChild<QGraphicsObject*>("testButton");
+    QGraphicsObject *textArea = m_view->rootObject()->findChild<QGraphicsObject*>("textArea");
+    QGraphicsObject *button = m_view->rootObject()->findChild<QGraphicsObject*>("click");
     QGraphicsObject *textEdit = m_view->rootObject()->findChild<QGraphicsObject*>("textEdit");
     QGraphicsObject *placeHolder = m_view->rootObject()->findChild<QGraphicsObject*>("placeholder");
 
@@ -368,54 +370,62 @@ void tst_quickcomponentstextarea::placeholderTextAndRichText()
 
 void tst_quickcomponentstextarea::implicitSize()
 {
-    QGraphicsObject* textArea = m_componentObject->findChild<QGraphicsObject*>("testTextArea");
+    QGraphicsObject *textArea = m_componentObject->findChild<QGraphicsObject*>("textArea");
     QVERIFY(textArea);
 
     QFontMetricsF metrics(textArea->property("font").value<QFont>());
-    qreal parentHeight = m_componentObject->property("height").toDouble();
-    qreal parentWidth = m_componentObject->property("width").toDouble();
-    qreal implicitHeight = textArea->property("implicitHeight").toDouble();
-    qreal implicitWidth = textArea->property("implicitWidth").toDouble();
-    qreal maxImplicitHeight = textArea->property("maxImplicitHeight").toDouble();
-    qreal maxImplicitWidth = textArea->property("maxImplicitWidth").toDouble();
+    qreal parentHeight = m_componentObject->property("height").toReal();
+    qreal parentWidth = m_componentObject->property("width").toReal();
+    qreal implicitHeight = textArea->property("implicitHeight").toReal();
+    qreal implicitWidth = textArea->property("implicitWidth").toReal();
+    qreal maxImplicitHeight = textArea->property("maxImplicitHeight").toReal();
+    qreal maxImplicitWidth = textArea->property("maxImplicitWidth").toReal();
 
     QVERIFY(implicitHeight >= metrics.height());
     QVERIFY(implicitWidth >= metrics.width("                    "));
-    QCOMPARE(maxImplicitHeight, parentHeight);
-    QCOMPARE(maxImplicitWidth, parentWidth);
+    QCOMPARE(maxImplicitHeight, parentHeight - textArea->property("y").toReal());
+    QCOMPARE(maxImplicitWidth, parentWidth - textArea->property("x").toReal());
 
-    textArea->setProperty("text", QString("TestString"));
-    implicitHeight = textArea->property("implicitHeight").toDouble();
-    implicitWidth = textArea->property("implicitWidth").toDouble();
+    textArea->setProperty("text", QString("test"));
+    implicitHeight = textArea->property("implicitHeight").toReal();
+    implicitWidth = textArea->property("implicitWidth").toReal();
 
     QVERIFY(implicitHeight >= metrics.height());
-    QVERIFY(implicitWidth >= metrics.width("TestString"));
+    QVERIFY(implicitWidth >= metrics.width("test"));
 
     // Type over parent width
     do {
-        textArea->setProperty("text", textArea->property("text").toString() + QString("Aaaaaa"));
-        implicitWidth = textArea->property("implicitWidth").toDouble();
-    } while (implicitHeight <= metrics.height());
+        textArea->setProperty("text", textArea->property("text").toString() + QString("a"));
+    } while (qFuzzyCompare(implicitHeight, textArea->property("implicitHeight").toReal()));
+
+    int pos = 0;
+    int width = qCeil(textArea->property("width").toReal());
+    QIntValidator range(width - qCeil(metrics.width("a")), qCeil(maxImplicitWidth), 0);
+    QString impWidth = textArea->property("implicitWidth").toString();
+    QCOMPARE(range.validate(impWidth,pos), QValidator::Acceptable);
 
     // Type some more
-    textArea->setProperty("text", textArea->property("text").toString() + QString("Aaaaaa"));
+    textArea->setProperty("text", textArea->property("text").toString() + QString("a"));
+    implicitWidth = textArea->property("implicitWidth").toReal();
     QVERIFY(implicitWidth <= maxImplicitWidth);
 
     // Type until parent height
     do {
         textArea->setProperty("text", textArea->property("text").toString() + QString("Aaaaaaaaaa"));
-        implicitHeight = textArea->property("implicitHeight").toDouble();
+        implicitHeight = textArea->property("implicitHeight").toReal();
         QVERIFY(implicitHeight >= metrics.height());
     } while (implicitHeight < maxImplicitHeight);
+    QCOMPARE(implicitHeight, textArea->property("height").toReal());
 
     // Type some more
     textArea->setProperty("text", textArea->property("text").toString() + QString("A"));
+    implicitHeight = textArea->property("implicitHeight").toReal();
     QCOMPARE(implicitHeight, maxImplicitHeight);
 }
 
 void tst_quickcomponentstextarea::font()
 {
-    QGraphicsObject *textArea = m_view->rootObject()->findChild<QGraphicsObject*>("testTextArea");
+    QGraphicsObject *textArea = m_view->rootObject()->findChild<QGraphicsObject*>("textArea");
     QGraphicsObject *textEdit = m_view->rootObject()->findChild<QGraphicsObject*>("textEdit");
     QGraphicsObject *placeHolder = m_view->rootObject()->findChild<QGraphicsObject*>("placeholder");
     QVERIFY(textArea);
@@ -435,9 +445,12 @@ void tst_quickcomponentstextarea::font()
 
 void tst_quickcomponentstextarea::focus()
 {
-    QGraphicsObject *textArea = m_view->rootObject()->findChild<QGraphicsObject*>("testTextArea");
+    QGraphicsObject *textArea = m_view->rootObject()->findChild<QGraphicsObject*>("textArea");
     QGraphicsObject *textEdit = m_view->rootObject()->findChild<QGraphicsObject*>("textEdit");
-    QGraphicsObject *button = m_view->rootObject()->findChild<QGraphicsObject*>("testButton");
+    QGraphicsObject *button = m_view->rootObject()->findChild<QGraphicsObject*>("click");
+    QVERIFY(textArea);
+    QVERIFY(textEdit);
+    QVERIFY(button);
 
     button->setFocus(Qt::OtherFocusReason);
 
@@ -470,10 +483,13 @@ void tst_quickcomponentstextarea::focus()
 
 void tst_quickcomponentstextarea::cursorRectangle()
 {
-    QGraphicsObject *textArea = m_view->rootObject()->findChild<QGraphicsObject*>("testTextArea");
-    QGraphicsObject *button = m_view->rootObject()->findChild<QGraphicsObject*>("testButton");
-    QVariant cursorRect;
+    QGraphicsObject *textArea = m_view->rootObject()->findChild<QGraphicsObject*>("textArea");
+    QGraphicsObject *button = m_view->rootObject()->findChild<QGraphicsObject*>("click");
+    QVERIFY(textArea);
+    QVERIFY(button);
 
+    QVariant cursorRect;
+    textArea->setProperty("text", "");
     QVERIFY2(QMetaObject::invokeMethod(textArea,
                                        "positionToRectangle",
                                        Q_RETURN_ARG(QVariant, cursorRect),
@@ -485,10 +501,12 @@ void tst_quickcomponentstextarea::cursorRectangle()
     QVERIFY(!QApplication::focusWidget()->inputMethodQuery(Qt::ImMicroFocus).isValid());
 
     textArea->setFocus(Qt::OtherFocusReason);
-    QVERIFY(m_view->scene()->inputMethodQuery(Qt::ImMicroFocus).isValid());
-    QCOMPARE(m_view->scene()->inputMethodQuery(Qt::ImMicroFocus), cursorRect);
-    QVERIFY(QApplication::focusWidget()->inputMethodQuery(Qt::ImMicroFocus).isValid());
-    QCOMPARE(QApplication::focusWidget()->inputMethodQuery(Qt::ImMicroFocus), cursorRect);
+    QVariant cursorRectFromScene = m_view->scene()->inputMethodQuery(Qt::ImMicroFocus);
+    QVariant cursorRectFromApp = QApplication::focusWidget()->inputMethodQuery(Qt::ImMicroFocus);
+    QVERIFY(cursorRectFromScene.isValid());
+    QCOMPARE(textArea-> mapRectFromScene(cursorRectFromScene.toRectF()), cursorRect.toRectF());
+    QVERIFY(cursorRectFromApp.isValid());
+    QCOMPARE(textArea-> mapRectFromScene(cursorRectFromApp.toRectF()), cursorRect.toRectF());
 }
 
 QTEST_MAIN(tst_quickcomponentstextarea)

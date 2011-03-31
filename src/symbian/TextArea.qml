@@ -85,8 +85,8 @@ FocusScopeItem {
     // http://bugreports.qt.nokia.com/browse/QTBUG-16665
     // http://bugreports.qt.nokia.com/browse/QTBUG-16710 (fixed in Qt 4.7.2)
     // http://bugreports.qt.nokia.com/browse/QTBUG-12305 (fixed in QtQuick1.1)
-    property real maxImplicitWidth: parent ? parent.width : screen.width
-    property real maxImplicitHeight: parent ? parent.height : screen.height
+    property real maxImplicitWidth: (parent ? parent.width : screen.width) - root.x
+    property real maxImplicitHeight: (parent ? parent.height : screen.height) - root.y
 
     implicitWidth: {
         var preferredWidth = Math.max(flick.contentWidth, privy.minImplicitWidth)
@@ -117,13 +117,10 @@ FocusScopeItem {
     Item {
         id: container
         anchors {
+            fill: parent
             leftMargin: platformStyle.paddingMedium; rightMargin: platformStyle.paddingMedium
             topMargin: platformStyle.paddingMedium; bottomMargin: platformStyle.paddingMedium
         }
-        x: anchors.leftMargin
-        y: anchors.topMargin
-        height: parent.height - anchors.bottomMargin - y
-        width: parent.width - anchors.rightMargin - x
 
         // TODO: Should placeholder also be scrollable?
         Text {
@@ -171,7 +168,8 @@ FocusScopeItem {
             boundsBehavior: Flickable.StopAtBounds
             clip: true
             contentHeight: textEdit.model.paintedHeight
-            contentWidth: textEdit.model.paintedWidth + textEdit.cursorRectangle.width
+            contentWidth: textEdit.model.paintedWidth +
+                         (textEdit.wrapMode == TextEdit.NoWrap ? textEdit.cursorRectangle.width : 0)
 
             TextEdit {
                 id: textEdit
