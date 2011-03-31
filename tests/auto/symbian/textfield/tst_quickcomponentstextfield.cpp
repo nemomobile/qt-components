@@ -225,10 +225,10 @@ void tst_quickcomponentstextfield::cursorRectangle()
                                        "Could not call positionToRectangle");
 
     QVERIFY(m_view->scene()->inputMethodQuery(Qt::ImMicroFocus).isValid());
-    QEXPECT_FAIL("", "inputMethodQuery(Qt::ImMicroFocus) fot TextInput return quite wide cursor rectangle, http://bugreports.qt.nokia.com/browse/QTBUG-18343", Continue);
+    QEXPECT_FAIL("", "inputMethodQuery(Qt::ImMicroFocus) returns quite wide cursor rectangle for TextInput, http://bugreports.qt.nokia.com/browse/QTBUG-18343", Continue);
     QCOMPARE(m_view->scene()->inputMethodQuery(Qt::ImMicroFocus), cursorRect);
     QVERIFY(QApplication::focusWidget()->inputMethodQuery(Qt::ImMicroFocus).isValid());
-    QEXPECT_FAIL("", "inputMethodQuery(Qt::ImMicroFocus) fot TextInput return quite wide cursor rectangle, http://bugreports.qt.nokia.com/browse/QTBUG-18343", Continue);
+    QEXPECT_FAIL("", "inputMethodQuery(Qt::ImMicroFocus) returns quite wide cursor rectangle for TextInput, http://bugreports.qt.nokia.com/browse/QTBUG-18343", Continue);
     QCOMPARE(QApplication::focusWidget()->inputMethodQuery(Qt::ImMicroFocus), cursorRect);
 }
 
