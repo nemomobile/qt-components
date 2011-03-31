@@ -47,6 +47,7 @@ OTHER_FILES += \
     tests/Page.qml \
     tests/PageStack.qml \
     tests/ProgressBar.qml \
+    tests/QueryDialog.qml \
     tests/RadioButton.qml \
     tests/RatingIndicator.qml \
     tests/ScrollBar.qml \
