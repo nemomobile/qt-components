@@ -1,11 +1,13 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
+    applicationwindow \
     button \
     checkbox \
     declarativeframe \
     declarativeicon \
     declarativeimplicitsizeitem \
+    declarativescreen \
     declarativestyle \
     framepool \
     iconpool \
@@ -30,10 +32,5 @@ SUBDIRS += \
     textfield \
     toolbar \
     toolbutton \
-    tooltip #TODO not yet finalized
-
-#TODO fail on mac, to be fixed
-!macx:SUBDIRS += \
-    applicationwindow \
-    declarativescreen \
+    tooltip \ #TODO not yet finalized
     window
