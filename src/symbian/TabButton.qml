@@ -76,11 +76,12 @@ ImplicitSizeItem {
         id: background
 
         function postfix() {
-            if (root.checked)
-                return "active"
-            else if (root.pressed)
+            if (root.pressed)
                 return "passive_pressed"
-            return "passive_normal"
+            else if (root.checked)
+                return "active"
+            else
+                return "passive_normal"
         }
 
         source: privateStyle.imagePath("qtg_fr_tab_" + postfix())
@@ -111,11 +112,12 @@ ImplicitSizeItem {
         horizontalAlignment: Text.AlignHCenter
         font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeSmall }
         color: {
-            if (root.checked)
-                return platformStyle.colorNormalLight
             if (root.pressed)
-                return platformStyle.colorPressed
-            return platformStyle.colorNormalMid
+                platformStyle.colorPressed
+            else if (root.checked)
+                platformStyle.colorNormalLight
+            else
+                platformStyle.colorNormalMid
         }
     }
 
