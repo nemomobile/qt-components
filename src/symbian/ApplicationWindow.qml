@@ -34,6 +34,8 @@ Window {
     default property alias content: contentItem.data
     property alias pageStack: stack
 
+    Component.onCompleted: console.log("warning: ApplicationWindow is an experimental component. Use Window instead.")
+
     Item {
         anchors.top: sbar.visible ? sbar.bottom : parent.top
         anchors.bottom: tbar.visible ? tbar.top : parent.bottom
