@@ -127,10 +127,7 @@ int main(int argc, char *argv[])
     ApiCheckTumbler tumbler(engine, extrasModule);
     ApiCheckTumblerColumn tumblerColumn(engine, extrasModule);
     ApiCheckQueryDialog querydialog(engine, module);
-
-#ifndef Q_COMPONENTS_SYMBIAN
     ApiCheckSelectionDialog selectiondialog(engine, module);
-#endif
 
     int ret = 0;
     ret |= QTest::qExec(&slider, args);
@@ -162,10 +159,7 @@ int main(int argc, char *argv[])
     ret |= QTest::qExec(&tumbler, args);
     ret |= QTest::qExec(&tumblerColumn, args);
     ret |= QTest::qExec(&querydialog, args);
-
-#ifndef Q_COMPONENTS_SYMBIAN
     ret |= QTest::qExec(&selectiondialog, args);
-#endif
 
     return ret;
 }
