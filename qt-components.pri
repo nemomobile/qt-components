@@ -6,6 +6,13 @@
 CONFIG += qt-components depend_includepath
 
 unix:!symbian {
-    OBJECTS_DIR = .obj
-    MOC_DIR = .moc
+    CONFIG(release, debug|release) {
+        OBJECTS_DIR = .release
+        MOC_DIR = .release
+        RCC_DIR = .release
+    } else {
+        OBJECTS_DIR = .debug
+        MOC_DIR = .debug
+        RCC_DIR = .debug
+    }
 }
