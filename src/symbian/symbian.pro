@@ -87,6 +87,7 @@ QML_FILES = \
     PageStack.qml \
     Popup.qml \
     ProgressBar.qml \
+    QueryDialog.qml \
     RadioButton.qml \
     ScrollBar.qml \
     ScrollBarSizer.qml \

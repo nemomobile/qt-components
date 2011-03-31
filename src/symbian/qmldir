@@ -18,6 +18,7 @@ MenuLayout 1.0 MenuLayout.qml
 Page 1.0 Page.qml
 PageStack 1.0 PageStack.qml
 ProgressBar 1.0 ProgressBar.qml
+QueryDialog 1.0 QueryDialog.qml
 RadioButton 1.0 RadioButton.qml
 ScrollBar 1.0 ScrollBar.qml
 ScrollDecorator 1.0 ScrollDecorator.qml
