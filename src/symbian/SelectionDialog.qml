@@ -31,7 +31,7 @@ CommonDialog {
     id: root
 
     // Common API
-    property ListModel model: ListModel{}
+    property QtObject model: ListModel{}
     property int selectedIndex: -1
     property Component delegate: defaultDelegate
 
