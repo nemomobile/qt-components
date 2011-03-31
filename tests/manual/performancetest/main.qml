@@ -129,7 +129,6 @@ ApplicationWindow {
                     Row {
                         id: orientationButtons
 
-                        property real buttonHeight: 50
                         property real buttonWidth: parent.width / children.length
 
                         Button {
@@ -137,7 +136,6 @@ ApplicationWindow {
 
                             text: "Port."
                             width: parent.buttonWidth
-                            height: parent.buttonHeight
 
                             onClicked: {
                                 startupOrientationButton.orientation = Screen.Portrait
@@ -149,11 +147,10 @@ ApplicationWindow {
 
                             text: "Land."
                             width: parent.buttonWidth
-                            height: parent.buttonHeight
 
                             onClicked: {
-                               startupOrientationButton.orientation = Screen.Landscape
-                               screen.allowedOrientations = Screen.Landscape
+                                startupOrientationButton.orientation = Screen.Landscape
+                                screen.allowedOrientations = Screen.Landscape
                             }
                         }
                         Button {
@@ -161,7 +158,6 @@ ApplicationWindow {
 
                             text: "Auto"
                             width: parent.buttonWidth
-                            height: parent.buttonHeight
 
                             onClicked: {
                                 startupOrientationButton.orientation = Screen.Default
@@ -176,7 +172,6 @@ ApplicationWindow {
 
                             text: "Save:" + orientation
                             width: parent.buttonWidth
-                            height: parent.buttonHeight
 
                             Component.onCompleted: orientation = settings.orientation()
 
@@ -188,7 +183,6 @@ ApplicationWindow {
                         id: pickFromFileButton
 
                         width: mainWindow.width
-                        height: 65
                         text: {
                             // Append qmlpaths to the button label
                             var buttonLabel = "Choose a file from "
@@ -206,38 +200,35 @@ ApplicationWindow {
                         id: currentFileLabel
 
                         width: mainWindow.width
-                        height: 30
                         color: "red"
                         text: "Picked file: " + internal.fullPath
+                        font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeSmall }
                     }
 
                     Button {
                         id: toggleFullscreenButton
 
                         width: mainWindow.width
-                        height: 65
                         text: "Toggle Fullscreen"
                         onClicked: mainWindow.fullScreen = mainWindow.fullScreen ? false : true
                     }
                     CheckBox {
                         id: flickableSetting
-
-                        height: 30
+                        height: platformStyle.graphicSizeSmall
                         text: "Flickable"
+                        checked: false
                     }
                     CheckBox {
                         id: dragSetting
-
-                        height: flickableSetting.height
+                        height: platformStyle.graphicSizeSmall
                         text: "Drag-able"
                         checked: false
                     }
                     CheckBox {
                         id: fillSetting
-
-                        height: flickableSetting.height
-                        checked: true
+                        height: platformStyle.graphicSizeSmall
                         text: "Fill area"
+                        checked: true
                     }
                     Repeater {
                         id: componentsmodel
@@ -256,7 +247,6 @@ ApplicationWindow {
 
                             text: modelData
                             width: mainWindow.width
-                            height: 50
 
                             onClicked: {
                                 buttons.checkedButton = testButton
