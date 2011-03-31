@@ -62,8 +62,6 @@ void tst_toolbutton::existingProperties()
     QVERIFY(toolButton->property("enabled").isValid());
     QVERIFY(toolButton->property("text").isValid());
     QVERIFY(toolButton->property("iconSource").isValid());
-    QVERIFY(toolButton->property("pressedIconSource").isValid());
-    QVERIFY(toolButton->property("checkedIconSource").isValid());
     QVERIFY(toolButton->property("flat").isValid());
     QVERIFY(toolButton->property("pressed").isValid());
 }
@@ -116,20 +114,6 @@ void tst_toolbutton::propertiesFunctionality()
             QCOMPARE(property.read(toolButton).toUrl() , QUrl("icon_name"));
         }
 
-        if (property.name() == QString("pressedIconSource")) {
-            propertyCount++;
-            QVERIFY(property.read(toolButton).toUrl() == QUrl(""));
-            property.write(toolButton,"pressedicon_name");
-            QCOMPARE(property.read(toolButton).toUrl() , QUrl("pressedicon_name"));
-        }
-
-        if (property.name() == QString("checkedIconSource")) {
-            propertyCount++;
-            QVERIFY(property.read(toolButton).toUrl() == QUrl(""));
-            property.write(toolButton,"latchedicon_name");
-            QCOMPARE(property.read(toolButton).toUrl() , QUrl("latchedicon_name"));
-        }
-
         if (property.name() == QString("flat")) {
             propertyCount++;
             QCOMPARE(property.read(toolButton).toBool(), false);
@@ -143,7 +127,7 @@ void tst_toolbutton::propertiesFunctionality()
         }
     }
 
-    QCOMPARE(propertyCount, 10);
+    QCOMPARE(propertyCount, 8);
 }
 
 void tst_toolbutton::implicitSize()

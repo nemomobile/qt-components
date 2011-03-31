@@ -62,7 +62,7 @@ Item {
         ToolButton {
             id: toolButton4
             text: "Group"
-            exclusiveGroup: checkGroup
+            platformExclusiveGroup: checkGroup
         }
 
         ToolButton {
@@ -74,7 +74,7 @@ Item {
         ToolButton {
             id: toolButton6
             text: "Group"
-            exclusiveGroup: checkGroup
+            platformExclusiveGroup: checkGroup
         }
 
         ToolButton {
@@ -86,7 +86,7 @@ Item {
         ToolButton {
             id: toolButton8
             text: "Group"
-            exclusiveGroup: checkGroup
+            platformExclusiveGroup: checkGroup
         }
 
         ChoiceList {
