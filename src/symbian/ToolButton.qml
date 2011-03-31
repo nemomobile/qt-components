@@ -31,23 +31,44 @@ import "." 1.0
 ImplicitSizeItem {
     id: root
 
+    // Common API
     property alias checkable: checkable.enabled
     property alias checked: checkable.checked
-    property bool enabled: true
-
-    property alias exclusiveGroup: checkable.exclusiveGroup
+    property bool enabled: true // overridden from base class
     property alias text: label.text
-
-    property url iconSource
-    property url pressedIconSource
-    property url checkedIconSource
-
+    property alias iconSource: contentIcon.source
     property bool flat: false
-
     property bool pressed: mouseArea.containsMouse && (stateGroup.state == "Pressed" || stateGroup.state == "PressAndHold")
+
+    // Platform API
+    property alias platformExclusiveGroup: checkable.exclusiveGroup
+
+    // Common API
     signal clicked
+
+    // Platform API
+    signal platformReleased
+    signal platformPressAndHold
+
+    // Deprecated on w13 ->
+    property QtObject exclusiveGroup
+    onExclusiveGroupChanged: {
+        console.log("ToolButton.exclusiveGroup is deprecated. Use platformExclusiveGroup instead.")
+        platformExclusiveGroup = exclusiveGroup
+    }
+    property url pressedIconSource
+    onPressedIconSourceChanged: {
+        console.log("ToolButton.pressedIconSource is deprecated. Use onPressedChanged to control the iconSource.")
+    }
+
+    property url checkedIconSource
+    onCheckedIconSourceChanged: {
+        console.log("ToolButton.checkedIconSource is deprecated. Use onCheckedChanged to control the iconSource.")
+    }
+
     signal released
     signal pressAndHold
+    // <- Deprecated on w13
 
     implicitWidth: {
         if (!text)
@@ -78,14 +99,6 @@ ImplicitSizeItem {
         visible: iconSource != ""
         sourceSize.width: platformStyle.graphicSizeSmall
         sourceSize.height: platformStyle.graphicSizeSmall
-        source: {
-            if (internal.mode() == "latched" && checkedIconSource != "")
-                return checkedIconSource
-            else if (internal.mode() == "pressed" && pressedIconSource != "")
-                return pressedIconSource
-            else
-                return iconSource
-        }
         anchors {
             centerIn: !text ? parent : undefined
             verticalCenter: !text ? undefined : parent.verticalCenter
@@ -163,6 +176,7 @@ ImplicitSizeItem {
         }
 
         function release() {
+            root.platformReleased()
             root.released()
         }
 
@@ -175,8 +189,10 @@ ImplicitSizeItem {
         }
 
         function hold() {
-            if (root.longPress)
+            if (root.longPress) {
+                root.platformPressAndHold()
                 root.pressAndHold()
+            }
         }
 
         // The function imageSource() handles fetching correct graphics for the ToolButton.
