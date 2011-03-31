@@ -5,6 +5,7 @@ CONFIG += qt-components
 CONFIG -= app_bundle
 win32:DESTDIR = $$OUT_PWD
 
+ICON = icon.svg
 SOURCES += gallery.cpp
 RESOURCES += gallery.qrc
 
