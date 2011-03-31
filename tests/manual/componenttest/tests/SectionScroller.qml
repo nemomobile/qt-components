@@ -123,6 +123,7 @@ Window {
                     height: 30  // magic
                     color: "#888"
                     Text {
+                        objectName: "Label" + section
                         anchors.verticalCenter: parent.verticalCenter
                         x: 5  // magic
                          text: section

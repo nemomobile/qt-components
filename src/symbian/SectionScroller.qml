@@ -57,6 +57,7 @@ ImplicitSizeItem {
 
         MouseArea {
             id: dragArea
+            objectName: "dragArea"
             anchors { top: parent.top; bottom: parent.bottom; right: parent.right }
             width: internal.dragAreaWidth
             drag.axis: Drag.YAxis
@@ -88,7 +89,8 @@ ImplicitSizeItem {
         }
 
         BorderImage {
-            id: fullBackground
+            id: singleRowBackground
+            objectName: "singleRowBackground"
             width: internal.backgroundWidth()
             height: 24 * platformStyle.paddingMedium
             source: privateStyle.imagePath("qtg_fr_popup_transparent")
@@ -97,7 +99,8 @@ ImplicitSizeItem {
             visible: platformSingleRow && parent.dragging
 
             Text {
-                id: fullText
+                id: singleRowText
+                objectName: "singleRowText"
                 color: "white"
                 anchors.centerIn: parent
                 font { family: platformStyle.fontFamilyRegular; pixelSize: 8 * platformStyle.fontSizeMedium }
@@ -107,6 +110,7 @@ ImplicitSizeItem {
 
         ImplicitSizeItem {
             id: toolTip
+            objectName: "toolTip"
             visible: !platformSingleRow
             opacity: container.dragging ? 1 : 0
             anchors.right: parent.right
@@ -129,6 +133,7 @@ ImplicitSizeItem {
 
                     SectionScrollerLabel {
                         id: previousSectionLabel
+                        objectName: "previousSectionLabel"
                         text: internal.prevSection
                         highlighted: internal.currentArea === text
                         up: !internal.down
@@ -136,6 +141,7 @@ ImplicitSizeItem {
                     }
 
                     Image {
+                        objectName: "divider1"
                         source: privateStyle.imagePath("qtg_fr_popup_divider")
                         sourceSize.width: 40    // TODO: not aligned with the layout spec
                         sourceSize.height: 40   // TODO: not aligned with the layout spec
@@ -146,6 +152,7 @@ ImplicitSizeItem {
 
                     SectionScrollerLabel {
                         id: currentSectionLabel
+                        objectName: "currentSectionLabel"
                         text: internal.currentSection
                         highlighted: internal.currentArea === text
                         up: !internal.down
@@ -153,6 +160,7 @@ ImplicitSizeItem {
                     }
 
                     Image {
+                        objectName: "divider2"
                         source: privateStyle.imagePath("qtg_fr_popup_divider")
                         sourceSize.width: 40    // TODO: not aligned with the layout spec
                         sourceSize.height: 40   // TODO: not aligned with the layout spec
@@ -163,6 +171,7 @@ ImplicitSizeItem {
 
                     SectionScrollerLabel {
                         id: nextSectionLabel
+                        objectName: "nextSectionLabel"
                         text: internal.nextSection
                         highlighted: internal.currentArea === text
                         up: !internal.down
