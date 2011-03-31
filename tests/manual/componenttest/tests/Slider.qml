@@ -33,6 +33,23 @@ Item {
     function isPortrait() {
         return screen.height > screen.width
     }
+    property variant focusItem: slider1.activeFocus ? slider1
+                              : slider2.activeFocus ? slider2
+                              : slider3.activeFocus ? slider3
+                              : null
+
+    Component.onCompleted: slider1.forceActiveFocus()
+
+    Rectangle {
+        border {color: "steelblue"; width: 5}
+        color: "#00000000"; radius: 5; opacity: 0.80
+        property int margins: focusItem && focusItem.parent ? focusItem.parent.anchors.margins : 0
+        x: focusItem ? focusItem.x + margins : 0
+        y: focusItem ? focusItem.y + margins : 0
+        height: focusItem ? focusItem.height : 0
+        width: focusItem ? focusItem.width : 0
+        visible: focusItem ? focusItem.activeFocus : false
+    }
 
     Grid {
         id: sliderGrid
@@ -65,6 +82,11 @@ Item {
             stepSize: 5
             valueIndicatorVisible: valueIndicatorToggle.checked
             inverted: inversionToggle.checked
+
+            KeyNavigation.up: slider3
+            KeyNavigation.down: slider2
+            KeyNavigation.left: slider3
+            KeyNavigation.right: slider2
         }
 
         CheckBox {
@@ -95,6 +117,11 @@ Item {
             value: 5
             valueIndicatorVisible: valueIndicatorToggle2.checked
             inverted: inversionToggle2.checked
+
+            KeyNavigation.up: slider1
+            KeyNavigation.down: slider3
+            KeyNavigation.left: slider1
+            KeyNavigation.right: slider3
         }
 
         CheckBox {
@@ -114,6 +141,12 @@ Item {
         objectName: "slider3"
         valueIndicatorVisible: true
         valueIndicatorText: "Custom: " + (Math.round(value * 1000) / 1000)
+        stepSize: 0.0001
         anchors { bottom: parent.bottom; left: parent.left; right: parent.right; margins: 20 }
+
+        KeyNavigation.up: slider2
+        KeyNavigation.down: slider1
+        KeyNavigation.left: slider2
+        KeyNavigation.right: slider1
     }
 }
