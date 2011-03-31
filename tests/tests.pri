@@ -15,5 +15,4 @@ DEFINES += Q_COMPONENTS_BUILD_TREE=\"\\\"$${Q_COMPONENTS_BUILD_TREE}\\\"\"
 # idea here is that the tests can run using the .so in the working directory,
 # because the .so we are testing is not installed in a visible library directory
 # on the system, because it is part of a QML module.
-QMAKE_RPATHDIR = $$Q_COMPONENTS_BUILD_TREE/lib $$QMAKE_RPATHDIR
-QMAKE_RPATHDIR = $$Q_COMPONENTS_BUILD_TREE/imports/Qt/labs/components $$QMAKE_RPATHDIR
+QMAKE_RPATHDIR += $$Q_COMPONENTS_BUILD_TREE/imports/Qt/labs/components
