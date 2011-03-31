@@ -31,8 +31,6 @@
 #include <QIntValidator>
 #include "tst_quickcomponentstest.h"
 
-static const QString EDITOR_STYLE_FONT = "Nokia Sans,-1,20,5,50,0,0,0,0,0";
-
 class tst_quickcomponentstextarea : public QObject
 {
     Q_OBJECT
@@ -108,10 +106,6 @@ void tst_quickcomponentstextarea::defaultPropertyValues()
     QVERIFY(placeHolder);
     QVariant property;
 
-    // Font
-    property = textArea->property("font");
-    QCOMPARE(property.toString(), EDITOR_STYLE_FONT);
-
     // CursorPosition
     property = textArea->property("cursorPosition");
     int cursorPosition = property.toInt();
@@ -167,7 +161,7 @@ void tst_quickcomponentstextarea::defaultPropertyValues()
     QString promptText = property.toString();
     QVERIFY(promptText.isEmpty());
     property = placeHolder->property("font");
-    QCOMPARE(property.toString(), EDITOR_STYLE_FONT); // same as editor's font
+    QCOMPARE(property.toString(), textArea->property("font").toString()); // same as editor's font
 }
 
 void tst_quickcomponentstextarea::placeholderText()
