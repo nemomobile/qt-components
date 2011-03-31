@@ -48,6 +48,9 @@ ImplicitSizeItem {
         property Item tabGroup: (root.tab && root.tab.parent) ? root.tab.parent.parent : null
         property bool portrait: screen.orientation == Screen.Portrait || screen.orientation == Screen.PortraitInverted
 
+        function press() {
+            privateStyle.play(Symbian.BasicButton)
+        }
         function click() {
             root.clicked()
             privateStyle.play(Symbian.BasicButton)
@@ -64,6 +67,10 @@ ImplicitSizeItem {
             State { name: "Canceled" }
         ]
         transitions: [
+            Transition {
+                to: "Pressed"
+                ScriptAction { script: internal.press() }
+            },
             Transition {
                 from: "Pressed"
                 to: ""
