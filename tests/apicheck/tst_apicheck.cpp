@@ -126,9 +126,9 @@ int main(int argc, char *argv[])
     ApiCheckScreen screen(engine, module);
     ApiCheckTumbler tumbler(engine, extrasModule);
     ApiCheckTumblerColumn tumblerColumn(engine, extrasModule);
+    ApiCheckQueryDialog querydialog(engine, module);
 
 #ifndef Q_COMPONENTS_SYMBIAN
-    ApiCheckQueryDialog querydialog(engine, module);
     ApiCheckSelectionDialog selectiondialog(engine, module);
 #endif
 
@@ -161,9 +161,9 @@ int main(int argc, char *argv[])
     ret |= QTest::qExec(&screen, argc);
     ret |= QTest::qExec(&tumbler, args);
     ret |= QTest::qExec(&tumblerColumn, args);
+    ret |= QTest::qExec(&querydialog, args);
 
 #ifndef Q_COMPONENTS_SYMBIAN
-    ret |= QTest::qExec(&querydialog, args);
     ret |= QTest::qExec(&selectiondialog, args);
 #endif
 
