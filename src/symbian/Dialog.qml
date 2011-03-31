@@ -78,7 +78,10 @@ Item {
         }
 
         function defaultHeight() {
-            return defaultWidth()
+            if (contentItem.childrenRect.height > 0)
+                return titleBar.height + contentItem.childrenRect.height + buttonItem.height
+
+            return 0
         }
 
         function maxWidth() {
@@ -95,8 +98,8 @@ Item {
                 return screen.height - 2 * platformStyle.paddingMedium
         }
 
-        width: Math.min(root.width, maxWidth())
-        height: Math.min(root.height, maxHeight())
+        width:  Math.max(Math.min(root.width, maxWidth()), privateStyle.dialogMinSize)
+        height: Math.max(Math.min(root.height, maxHeight()), privateStyle.dialogMinSize)
         state: "Hidden"
         visible: true
         anchors.centerIn: parent
