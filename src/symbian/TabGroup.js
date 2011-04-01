@@ -48,11 +48,11 @@ function ensureContainers() {
     var somethingChanged = false
 
     // check if we need to create a container
-    for (var i = 0; i < root.contents.length; ++i) {
-        var content = root.contents[i]
+    for (var i = 0; i < root.privateContents.length; ++i) {
+        var content = root.privateContents[i]
         addContent(content)
         if (!hasContainer(content)) {
-            var newContainer = tabContainerComponent.createObject(root)
+            var newContainer = tabContainerComponent.createObject(containerHost)
             content.parent = newContainer
             allContainers.push(newContainer)
             somethingChanged = true
@@ -63,7 +63,7 @@ function ensureContainers() {
 
 function addTab(content) {
     if (addContent(content)) {
-        var newContainer = tabContainerComponent.createObject(root)
+        var newContainer = tabContainerComponent.createObject(containerHost)
         content.parent = newContainer
         allContainers.push(newContainer)
     }

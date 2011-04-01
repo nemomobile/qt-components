@@ -30,3 +30,10 @@ function rootObject() {
         next = next.parent
     return next
 }
+
+function findParent(child, propertyName) {
+    var next = child.parent
+    while (next && !next.hasOwnProperty(propertyName))
+        next = next.parent
+    return next
+}

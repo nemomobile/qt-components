@@ -26,6 +26,7 @@
 
 import Qt 4.7
 import "." 1.0
+import "AppManager.js" as Utils
 
 ImplicitSizeItem {
     id: root
@@ -45,7 +46,7 @@ ImplicitSizeItem {
     QtObject {
         id: internal
 
-        property Item tabGroup: (root.tab && root.tab.parent) ? root.tab.parent.parent : null
+        property Item tabGroup: Utils.findParent(tab, "currentTab")
         property bool portrait: screen.currentOrientation == Screen.Portrait || screen.currentOrientation == Screen.PortraitInverted
 
         function press() {

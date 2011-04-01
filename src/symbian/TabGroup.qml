@@ -32,21 +32,45 @@ Item {
     id: root
     property Item currentTab
 
+    property list<Item> privateContents
+    // Qt defect: cannot have list as default property
+    default property alias privateContentsDefault: root.privateContents
+
+    onChildrenChanged: {
+        //  [0] is containerHost
+        if (children.length > 1)
+            Engine.addTab(children[1])
+    }
+
+    onPrivateContentsChanged: {
+        Engine.ensureContainers()
+    }
+
+    Item {
+        id: containerHost
+        objectName: "containerHost"
+        anchors.fill: parent
+    }
+
+    // deprecated on w13 ->
     property list<Item> contents
-    // defect: cannot have list as default property
-    default property alias contentsDefault: root.contents
+    property alias contentsDefault: root.contents
+
+    onContentsChanged: {
+        console.log("TabGroup.content and contentsDefault are deprecated.")
+        privateContents = contents
+    }
 
     function addTab(content){
-        Engine.addTab(content)
+        console.log("TabGroup.addTab is deprecated. (Re)parent to TabGroup instance instead.")
+        content.parent = root
     }
 
     function removeTab(content){
-        Engine.removeTab(content)
+        console.log("TabGroup.removeTab is deprecated. Destroy item directly.")
+        content.destroy()
     }
-
-    onContentsChanged: {
-        Engine.ensureContainers()
-    }
+    // <- deprecated w13
 
     Component {
         id: tabContainerComponent
@@ -80,22 +104,22 @@ Item {
                 if (typeof(root) != "undefined" && !root.currentTab) {
                     // selected one deleted. try to activate the neighbour
                     var removedIndex = -1
-                    for (var i = 0; i < root.children.length; i++) {
-                        if (root.children[i] == tabContainerItem) {
+                    for (var i = 0; i < containerHost.children.length; i++) {
+                        if (containerHost.children[i] == tabContainerItem) {
                             removedIndex = i
                             break
                         }
                     }
                     var newIndex = -1
                     if (removedIndex != -1) {
-                        if (removedIndex != root.children.length - 1)
+                        if (removedIndex != containerHost.children.length - 1)
                             newIndex = removedIndex + 1
                         else if (removedIndex != 0)
                             newIndex = removedIndex - 1
                     }
 
                     if (newIndex != -1)
-                        root.currentTab = root.children[newIndex].children[0]
+                        root.currentTab = containerHost.children[newIndex].children[0]
                     else
                         root.currentTab = null
                 }
@@ -156,8 +180,8 @@ Item {
         property Item outgoingPage
 
         onCurrentTabContainerChanged: {
-            for (var i = 0; i < root.children.length; i++) {
-                var tabContainer = root.children[i]
+            for (var i = 0; i < containerHost.children.length; i++) {
+                var tabContainer = containerHost.children[i]
                 var isNewTab = (tabContainer == currentTabContainer)
                 if (isNewTab) {
                     if (tabContainer.state != "") {
