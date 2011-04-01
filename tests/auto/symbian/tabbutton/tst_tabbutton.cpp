@@ -141,7 +141,7 @@ void tst_tabbutton::testGraphicsVisibility()
     QVERIFY(context);
     QObject *screen = context->contextProperty("screen").value<QObject*>();
     QVERIFY(screen);
-    screen->setProperty("orientation", QVariant(1)); // 1 = SDeclarativeScreen::Portrait
+    screen->setProperty("allowedOrientations", QVariant(1)); // 1 = SDeclarativeScreen::Portrait
 
     // Set graphic source to jpg
     testButton->setProperty("iconSource", QVariant("qrc:/non_exisingting_image.jpg"));
@@ -166,7 +166,7 @@ void tst_tabbutton::testGraphicsVisibility()
     QVERIFY(icon);
 
     // set landscape orientation -> this should hide the label
-    screen->setProperty("orientation", QVariant(2)); // 2 = SDeclarativeScreen::Landscape
+    screen->setProperty("allowedOrientations", QVariant(2)); // 2 = SDeclarativeScreen::Landscape
     QVERIFY(imageContainer->isVisible());
     QVERIFY(!label->isVisible());
 
