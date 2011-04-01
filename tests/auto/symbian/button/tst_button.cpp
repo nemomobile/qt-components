@@ -41,8 +41,8 @@ private slots:
     void properties();
     void testImplicitSize();
     void testFont();
-    void released();
-    void pressAndHold();
+    void platformReleased();
+    void platformPressAndHold();
 
 private:
     QObject *componentObject;
@@ -155,7 +155,7 @@ void tst_button::testFont()
 
 }
 
-void tst_button::released()
+void tst_button::platformReleased()
 {
     QGraphicsObject *testButton = componentObject->findChild<QGraphicsObject*>("button3");
     QVERIFY(testButton);
@@ -170,7 +170,7 @@ void tst_button::released()
     QCOMPARE(releasedSpy.count(), 1);
 }
 
-void tst_button::pressAndHold()
+void tst_button::platformPressAndHold()
 {
     QGraphicsObject *testButton = componentObject->findChild<QGraphicsObject*>("button3");
     QVERIFY(testButton);
