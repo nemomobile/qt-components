@@ -47,18 +47,6 @@ ImplicitSizeItem {
     property bool platformAutoRepeat: false
     property bool platformLongPress: false
 
-    // deprecated on w11 ->
-    signal released // deprecated
-    signal pressAndHold // deprecated
-    property bool autoRepeat: false // deprecated
-    property bool longPress: false // deprecated
-
-    Connections { target: button; onPlatformReleased: released() }
-    Connections { target: button; onPlatformPressAndHold: pressAndHold() }
-    onAutoRepeatChanged: { console.log("Button.autoRepeat deprecated, use platformAutoRepeat instead!"); button.platformAutoRepeat = button.autoRepeat }
-    onLongPressChanged: { console.log("Button.longPress deprecated, use platformLongPress instead!"); button.platformLongPress = button.longPress }
-    // <- deprecated
-
     implicitWidth: {
         var prefWidth = 20;
 
