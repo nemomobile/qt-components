@@ -90,7 +90,7 @@ Window {
             height: parent.h; width: parent.width
             highlight: activeFocus ? highlight : null
             highlightFollowsCurrentItem: false
-            Component.onCompleted: forceActiveFocus()
+            focus: true
             KeyNavigation.down: textAreas
         }
 
