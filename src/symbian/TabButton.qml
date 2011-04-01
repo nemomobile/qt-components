@@ -46,7 +46,7 @@ ImplicitSizeItem {
         id: internal
 
         property Item tabGroup: (root.tab && root.tab.parent) ? root.tab.parent.parent : null
-        property bool portrait: screen.orientation == Screen.Portrait || screen.orientation == Screen.PortraitInverted
+        property bool portrait: screen.currentOrientation == Screen.Portrait || screen.currentOrientation == Screen.PortraitInverted
 
         function press() {
             privateStyle.play(Symbian.BasicButton)
