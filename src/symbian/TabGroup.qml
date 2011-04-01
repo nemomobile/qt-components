@@ -77,7 +77,7 @@ Item {
             }
 
             Component.onDestruction: {
-                if (!root.currentTab) {
+                if (typeof(root) != "undefined" && !root.currentTab) {
                     // selected one deleted. try to activate the neighbour
                     var removedIndex = -1
                     for (var i = 0; i < root.children.length; i++) {
