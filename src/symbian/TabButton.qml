@@ -32,7 +32,7 @@ ImplicitSizeItem {
 
     // Common Public API
     property Item tab
-    property bool checked: internal.tabGroup && internal.tabGroup.currentTab == tab
+    property bool checked: internal.tabGroup != null && internal.tabGroup.currentTab == tab
     property bool pressed: stateGroup.state == "Pressed" && mouseArea.containsMouse
     property alias text: label.text
     property alias iconSource: imageLoader.source
