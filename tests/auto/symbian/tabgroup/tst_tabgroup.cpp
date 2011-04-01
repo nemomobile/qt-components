@@ -137,9 +137,9 @@ void tst_tabgroup::testReparentingStatic()
     QVERIFY(group1tab2);
 
     QVERIFY(group1tab1->parent());
-    QCOMPARE(group1tab1->parentItem()->parentItem(), tabGroup1);
+    QCOMPARE(group1tab1->parentItem()->parentItem()->parentItem(), tabGroup1);
     QVERIFY(group1tab2->parent());
-    QCOMPARE(group1tab2->parentItem()->parentItem(), tabGroup1);
+    QCOMPARE(group1tab2->parentItem()->parentItem()->parentItem(), tabGroup1);
 }
 
 void tst_tabgroup::testReparentingDynamic()
@@ -156,9 +156,9 @@ void tst_tabgroup::testReparentingDynamic()
     QVERIFY(group2tab2);
 
     QVERIFY(group2tab1->parentItem());
-    QCOMPARE(group2tab1->parentItem()->parentItem(), tabGroup2);
+    QCOMPARE(group2tab1->parentItem()->parentItem()->parentItem(), tabGroup2);
     QVERIFY(group2tab2->parentItem());
-    QCOMPARE(group2tab2->parentItem()->parentItem(), tabGroup2);
+    QCOMPARE(group2tab2->parentItem()->parentItem()->parentItem(), tabGroup2);
 }
 
 void tst_tabgroup::testAddRemoveTabs()
@@ -172,39 +172,41 @@ void tst_tabgroup::testAddRemoveTabs()
     // test reparenting works for dynamic addition/removal
 
     QDeclarativeItem *tabGroup2 = componentObject->findChild<QDeclarativeItem*>("tabGroup2");
-    QVERIFY(tabGroup2);
+    QDeclarativeItem *containerHost = tabGroup2->findChild<QDeclarativeItem*>("containerHost");
+    QVERIFY(containerHost);
 
-    QDeclarativeItem *group2tab1 = qobject_cast<QDeclarativeItem*>(findQmlChild(tabGroup2,"group2tab1"));
+    QDeclarativeItem *group2tab1 = qobject_cast<QDeclarativeItem*>(findQmlChild(containerHost,"group2tab1"));
     QVERIFY(group2tab1);
 
-    QDeclarativeItem *group2tab2 = qobject_cast<QDeclarativeItem*>(findQmlChild(tabGroup2,"group2tab2"));
+    QDeclarativeItem *group2tab2 = qobject_cast<QDeclarativeItem*>(findQmlChild(containerHost,"group2tab2"));
     QVERIFY(group2tab2);
 
-    QCOMPARE(tabGroup2->childItems().count(), 2);
+    QCOMPARE(containerHost->childItems().count(), 2);
 
     // create new tab
     QString errors;
     QDeclarativeItem *newTabContent = qobject_cast<QDeclarativeItem*>(tst_quickcomponentstest::createComponentFromString(componentData, &errors));
     QVERIFY2(newTabContent, qPrintable(errors));
+
     // stick it into the tab group
-    QMetaObject::invokeMethod(tabGroup2, "addTab", Q_ARG(QVariant, qVariantFromValue(newTabContent)));
+    newTabContent->setParentItem(tabGroup2);
 
     QVERIFY(newTabContent->parentItem());
-    QCOMPARE(newTabContent->parentItem()->parentItem(), tabGroup2);
-    QCOMPARE(tabGroup2->childItems().count(), 3);
+    QCOMPARE(newTabContent->parentItem()->parentItem(), containerHost);
+    QCOMPARE(containerHost->childItems().count(), 3);
 
     // delete first tab
-    QMetaObject::invokeMethod(tabGroup2, "removeTab", Q_ARG(QVariant, qVariantFromValue(group2tab1)));
+    delete group2tab1;
 
     // qml_object.destroy() is called which deletes the istance via event loop
     // let's complete the deletion.
     QCoreApplication::processEvents(QEventLoop::DeferredDeletion);
-    QCOMPARE(tabGroup2->childItems().count(), 2);
+    QCOMPARE(containerHost->childItems().count(), 2);
 
     // delete new first (orignal second) tab
     delete group2tab2;
     QCoreApplication::processEvents(QEventLoop::DeferredDeletion);
-    QCOMPARE(tabGroup2->childItems().count(), 1);
+    QCOMPARE(containerHost->childItems().count(), 1);
 }
 
 void tst_tabgroup::testPageSignaling()

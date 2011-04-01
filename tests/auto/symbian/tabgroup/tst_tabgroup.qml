@@ -28,13 +28,11 @@ Item {
         objectName: "tabGroup2"
 
         Component.onCompleted: {
-            var tab1 = tabPageComponent.createObject(null)
+            var tab1 = tabPageComponent.createObject(tabGroup2)
             tab1.objectName = "group2tab1"
-            tabGroup2.addTab(tab1)
 
-            var tab2 = tabPageComponent.createObject(null)
+            var tab2 = tabPageComponent.createObject(tabGroup2)
             tab2.objectName = "group2tab2"
-            tabGroup2.addTab(tab2)
 
             currentTab = tab2
         }
