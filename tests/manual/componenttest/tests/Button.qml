@@ -137,7 +137,7 @@ Item {
                     rect.x = mixedButton.x + mixedButton.width + 10;
             }
 
-            onPressAndHold: {
+            onPlatformPressAndHold: {
                 var menu = Qt.createQmlObject('import Qt 4.7; Rectangle { id: tempMenu; color: "lightsteelblue"; width: 200; height: 100; anchors.centerIn: parent; opacity: 0.8; Text { id: text1; text: "Click to close"; font.pointSize: 12; anchors.top: parent.top;}  MouseArea { anchors.fill: parent; onClicked: {tempMenu.destroy(); } } }', scalableButton.parent, "menu");
             }
 
