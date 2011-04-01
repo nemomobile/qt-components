@@ -49,10 +49,9 @@ Item {
     function addTab(component) {
         var title = "tab " + currentIndex.toString()
         currentIndex++
-        var newItem = component.createObject(null)
+        var newItem = component.createObject(tabGroup)
         newItem.titleString = title
         priv.newItem = newItem
-        tabGroup.addTab(newItem)
 
         // Array properties cannot be manipulated. Using temporary array for pushing.
         var tempArray = []
