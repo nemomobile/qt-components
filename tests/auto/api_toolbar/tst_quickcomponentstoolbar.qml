@@ -37,18 +37,18 @@ Item {
         id: commonToolsA
         visible: false
         objectName: "toolsA"
-        ToolItem { iconId: "icon-m-toolbar-home"; }
-        ToolItem { iconId: "icon-m-toolbar-view-menu"; }
-        ToolItem { iconId: "icon-m-toolbar-back"; }
+        ToolButton { iconSource: "icon-m-toolbar-home"; }
+        ToolButton { iconSource: "icon-m-toolbar-view-menu"; }
+        ToolButton { iconSource: "icon-m-toolbar-back"; }
     }
 
     ToolBarLayout {
         id: commonToolsB
         visible: false
         objectName: "toolsB"
-        ToolItem { iconId: "icon-m-toolbar-home"; }
-        ToolItem { iconId: "icon-m-toolbar-view-menu"; }
-        ToolItem { iconId: "icon-m-toolbar-back"; }
+        ToolButton { iconSource: "icon-m-toolbar-home"; }
+        ToolButton { iconSource: "icon-m-toolbar-view-menu"; }
+        ToolButton { iconSource: "icon-m-toolbar-back"; }
     }
 
     function setToolsA()
