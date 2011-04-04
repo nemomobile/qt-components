@@ -28,7 +28,6 @@
 #define QT_NO_CAST_TO_ASCII
 
 #include "sstylewrapper.h"
-#include "sdeclarativeframe.h"
 #include "sstylewrapper_p.h"
 #include "sdeclarative.h"
 

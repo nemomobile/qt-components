@@ -29,7 +29,6 @@
 
 #include "sstylewrapper.h"
 #include "sstylewrapper_p.h"
-#include "sdeclarativeframe.h"
 
 #include <QFile>
 #include <QTextStream>
@@ -425,9 +424,6 @@ QVariant SStyleWrapperPrivate::titleBarProperty(const QString &propertyName) con
 
     if (propertyName == QLatin1String("frame"))
         return QLatin1String("qtg_fr_titlebar_normal");
-
-    if (propertyName == QLatin1String("frameType"))
-        return SDeclarativeFrame::ThreePiecesHorizontal;
 
     if (propertyName == QLatin1String("font"))
         return fetchFont(SStyleWrapper::Title);

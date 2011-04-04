@@ -19,7 +19,6 @@ SOURCES += \
     sbatteryinfo.cpp \
     sdeclarative.cpp \
     sdeclarativefocusscopeitem.cpp \
-    sdeclarativeframe.cpp \
     sdeclarativeicon.cpp \
     sdeclarativeimageprovider.cpp \
     sdeclarativeimplicitsizeitem.cpp \
@@ -27,7 +26,6 @@ SOURCES += \
     sdeclarativescreen.cpp \
     sdeclarativestyle.cpp \
     sdeclarativestyleinternal.cpp \
-    sframepool.cpp \
     siconpool.cpp \
     snetworkinfo.cpp \
     sstyleengine.cpp \
@@ -39,7 +37,6 @@ HEADERS += \
     sbatteryinfo.h \
     sdeclarative.h \
     sdeclarativefocusscopeitem.h \
-    sdeclarativeframe.h \
     sdeclarativeicon.h \
     sdeclarativeimageprovider.h \
     sdeclarativeimplicitsizeitem.h \
@@ -49,7 +46,6 @@ HEADERS += \
     sdeclarativescreen_p.h \
     sdeclarativestyle.h \
     sdeclarativestyleinternal.h \
-    sframepool.h \
     siconpool.h \
     snetworkinfo.h \
     sstyleengine.h \
