@@ -20,19 +20,22 @@ meego {
 
 symbian3 {
     SUBDIRS += \
+        api_busyindicator \
         api_button \
         api_buttoncolumn \
         api_buttonrow \
         api_checkbox \
+        api_choicelist \
         api_dialog \
         api_menu \
-        api_slider \
-        #api_pagestack \
+        #api_pagestack \ # TODO: update test
         api_progressbar \
+        api_radiobutton \
         api_scrolldecorator \
         api_selectiondialog \
-        api_textfield \ #TODO not yet finalized
-        api_textarea \ #TODO not yet finalized
-        #api_toolbar
+        api_slider \
         api_switch \
+        api_textarea \
+        api_textfield \
+        api_toolbar
 }
