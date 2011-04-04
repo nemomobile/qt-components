@@ -40,15 +40,6 @@ ImplicitSizeItem {
     // Symbian specific API
     property alias platformExclusiveGroup: checkable.exclusiveGroup
 
-    // deprecated w12 ->
-    property variant exclusiveGroup
-    onExclusiveGroupChanged: {
-        console.log("warning: RadioButton.exclusiveGroup is deprecated. Use platformExclusiveGroup instead")
-        platformExclusiveGroup = exclusiveGroup
-    }
-    // <- deprecated w12
-
-
     QtObject {
         id: internal
         objectName: "internal"
