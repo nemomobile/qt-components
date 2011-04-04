@@ -134,7 +134,7 @@ void tst_tabbutton::testGraphicsVisibility()
     QVERIFY(label);
 
     // set text
-    testButton->setProperty("text", QVariant("teb button text"));
+    testButton->setProperty("text", QVariant("tab button text"));
 
     // set portrait orientation
     QDeclarativeContext *context = QDeclarativeEngine::contextForObject(testButton);
@@ -142,9 +142,10 @@ void tst_tabbutton::testGraphicsVisibility()
     QObject *screen = context->contextProperty("screen").value<QObject*>();
     QVERIFY(screen);
     screen->setProperty("allowedOrientations", QVariant(1)); // 1 = SDeclarativeScreen::Portrait
+    QTRY_COMPARE(screen->property("currentOrientation"), QVariant(1));
 
     // Set graphic source to jpg
-    testButton->setProperty("iconSource", QVariant("qrc:/non_exisingting_image.jpg"));
+    testButton->setProperty("iconSource", QVariant("qrc:/non_existing_image.jpg"));
 
     image = testButton->findChild<QGraphicsObject*>("image");
     QVERIFY(image);
@@ -153,7 +154,7 @@ void tst_tabbutton::testGraphicsVisibility()
     QGraphicsObject *imageContainer = qobject_cast<QGraphicsObject *>(image->parent());
     QVERIFY(imageContainer);
     QVERIFY(imageContainer->isVisible());
-    QVERIFY(label->isVisible());
+    QTRY_VERIFY(label->isVisible());
 
     // Set graphic source to logical icon #1
     testButton->setProperty("iconSource", QVariant("qtg_graf_drill_down_indicator"));
@@ -167,12 +168,13 @@ void tst_tabbutton::testGraphicsVisibility()
 
     // set landscape orientation -> this should hide the label
     screen->setProperty("allowedOrientations", QVariant(2)); // 2 = SDeclarativeScreen::Landscape
+    QTRY_COMPARE(screen->property("currentOrientation"), QVariant(2));
     QVERIFY(imageContainer->isVisible());
-    QVERIFY(!label->isVisible());
+    QTRY_VERIFY(!label->isVisible());
 
     // remove the image -> text should be visible again
     testButton->setProperty("iconSource", QVariant(""));
-    QVERIFY(label->isVisible());
+    QTRY_VERIFY(label->isVisible());
 }
 
 
