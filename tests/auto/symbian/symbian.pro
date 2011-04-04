@@ -4,12 +4,10 @@ SUBDIRS += \
     applicationwindow \
     button \
     checkbox \
-    declarativeframe \
     declarativeicon \
     declarativeimplicitsizeitem \
     declarativescreen \
     declarativestyle \
-    framepool \
     iconpool \
     imageprovider \
     listheading \
