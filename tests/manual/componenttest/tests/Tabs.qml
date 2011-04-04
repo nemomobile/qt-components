@@ -217,7 +217,7 @@ Item {
 
                 Row {
                     id: editTabButtonContent
-                    height: tabButtonIconChoiseList.preferredHeight
+                    height: tabButtonIconSelectionListItem.preferredHeight
                     width: inPortrait() ? parent.width : 2 * parent.width / 3
                     TextField {
                         id: editor
@@ -230,20 +230,39 @@ Item {
                             column.parent.titleString = text
                         }
                     }
-                    ChoiceList {
-                        id: tabButtonIconChoiseList
-                        Component.onCompleted: {
-                            // TODO: ChoiceList needs this to function.
-                            console.log("ChoiceList::onCompleted: " + currentValue + " " + currentIndex)
-                        }
 
+                    SelectionListItem {
+                        id: tabButtonIconSelectionListItem
+                        objectName: "tabButtonIconSelectionListItem"
+                        title: tabButtonIconSelectionDialog ? tabButtonIconSelectionDialog.model.get(tabButtonIconSelectionDialog.selectedIndex).name : "<none>"
                         width: parent.width / 2
-                        onCurrentValueChanged: {
+                        property SelectionDialog tabButtonIconSelectionDialog
+
+                        onTitleChanged: {
                             var tabButton = findButtonByContent(column.parent)
                             if (tabButton)
-                                tabButton.iconSource = currentValue != "<none>" ? "image://theme/:/" + currentValue : ""
+                                tabButton.iconSource = title != "<none>" ? "image://theme/:/" + title : ""
                         }
-                        model: ["<none>", "list1.png", "list2.png", "qtg_graf_drill_down_indicator.svg"]
+
+                        onClicked: {
+                            if (!tabButtonIconSelectionDialog)
+                                tabButtonIconSelectionDialog = tabButtonIconSelectionComponent.createObject(column)
+                            tabButtonIconSelectionDialog.open()
+                        }
+
+                        Component {
+                            id: tabButtonIconSelectionComponent
+                            SelectionDialog {
+                                titleText: "Select TabButton image"
+                                selectedIndex: 0
+                                model: ListModel {
+                                    ListElement { name: "<none>" }
+                                    ListElement { name: "list1.png" }
+                                    ListElement { name: "list2.png" }
+                                    ListElement { name: "qtg_graf_drill_down_indicator.svg" }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -267,17 +286,38 @@ Item {
                 Row {
                     height: 40
                     width: inPortrait() ? parent.width : 2 * parent.width / 3
-                    ChoiceList {
-                        id: numberOfTabsChoiseList
-                        Component.onCompleted: {
-                            // TODO: ChoiceList needs this to function.
-                            console.log("ChoiceList::onCompleted: " + currentValue + " " + currentIndex)
-                        }
+
+                    SelectionListItem {
+                        title: numberOfTabsSelectionDialog ? numberOfTabsSelectionDialog.model.get(numberOfTabsSelectionDialog.selectedIndex).name : "2"
                         width: parent.width / 2
-                        onCurrentValueChanged: {
-                            priv.numberOfTabsOnNewPage = parseInt(currentValue)
+                        property SelectionDialog numberOfTabsSelectionDialog
+
+                        onTitleChanged: {
+                            priv.numberOfTabsOnNewPage = parseInt(title)
                         }
-                        model: ["0", "1", "2", "3", "4", "5", "6"]
+
+                        onClicked: {
+                            if (!numberOfTabsSelectionDialog)
+                                numberOfTabsSelectionDialog = numberOfTabsSelectionComponent.createObject(column)
+                            numberOfTabsSelectionDialog.open()
+                        }
+
+                        Component {
+                            id: numberOfTabsSelectionComponent
+                            SelectionDialog {
+                                titleText: "Select number of tabs"
+                                selectedIndex: 2
+                                model: ListModel {
+                                    ListElement { name: "0" }
+                                    ListElement { name: "1" }
+                                    ListElement { name: "2" }
+                                    ListElement { name: "3" }
+                                    ListElement { name: "4" }
+                                    ListElement { name: "5" }
+                                    ListElement { name: "6" }
+                                }
+                            }
+                        }
                     }
 
                     Button {
