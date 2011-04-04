@@ -32,6 +32,8 @@ function rootObject() {
 }
 
 function findParent(child, propertyName) {
+    if (!child)
+        return null
     var next = child.parent
     while (next && !next.hasOwnProperty(propertyName))
         next = next.parent
