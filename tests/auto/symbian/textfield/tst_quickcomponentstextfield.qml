@@ -58,12 +58,12 @@ Column {
         id: textFieldImpSize
         objectName: "textFieldImpSize"
     }
-    
+
     Button {
         id: testButton
         objectName: "testButton"
         text: "Click Me!"
         width: parent.width
         onClicked: forceActiveFocus()
-    }    
+    }
 }
