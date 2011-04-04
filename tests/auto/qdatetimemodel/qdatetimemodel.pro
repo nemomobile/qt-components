@@ -1,5 +1,7 @@
-include (../../tests.pri)
+include(../../tests.pri)
 
 TEMPLATE = app
 SOURCES += tst_qdatetimemodel.cpp
-CONFIG += testcase
+
+include(../components.pri)
+include(../auto.pri)
