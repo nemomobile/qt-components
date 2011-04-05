@@ -36,6 +36,7 @@ HEADERS += base/apicheckbase.h \
            toolbar/apicheck_toolbar.h \
            tumbler/apicheck_tumbler.h \
            tumbler/apicheck_tumblercolumn.h \
+           tumblerdialog/apicheck_tumblerdialog.h \
            window/apicheck_window.h
 
 SOURCES += tst_apicheck.cpp \
@@ -66,4 +67,5 @@ SOURCES += tst_apicheck.cpp \
            toolbar/apicheck_toolbar.cpp \
            tumbler/apicheck_tumbler.cpp \
            tumbler/apicheck_tumblercolumn.cpp \
+           tumblerdialog/apicheck_tumblerdialog.cpp \
            window/apicheck_window.cpp

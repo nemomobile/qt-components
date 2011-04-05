@@ -58,6 +58,7 @@
 #include "screen/apicheck_screen.h"
 #include "tumbler/apicheck_tumbler.h"
 #include "tumbler/apicheck_tumblercolumn.h"
+#include "tumblerdialog/apicheck_tumblerdialog.h"
 
 int main(int argc, char *argv[])
 {
@@ -126,6 +127,7 @@ int main(int argc, char *argv[])
     ApiCheckScreen screen(engine, module);
     ApiCheckTumbler tumbler(engine, extrasModule);
     ApiCheckTumblerColumn tumblerColumn(engine, extrasModule);
+    ApiCheckTumblerDialog tumblerDialog(engine, extrasModule);
     ApiCheckQueryDialog querydialog(engine, module);
     ApiCheckSelectionDialog selectiondialog(engine, module);
 
@@ -158,6 +160,7 @@ int main(int argc, char *argv[])
     ret |= QTest::qExec(&screen, argc);
     ret |= QTest::qExec(&tumbler, args);
     ret |= QTest::qExec(&tumblerColumn, args);
+    ret |= QTest::qExec(&tumblerDialog, args);
     ret |= QTest::qExec(&querydialog, args);
     ret |= QTest::qExec(&selectiondialog, args);
 
