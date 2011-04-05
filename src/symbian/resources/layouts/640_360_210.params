@@ -24,3 +24,6 @@ dialog-min-size:182
 dialog-max-size:504
 rating-image-width:16
 rating-image-height:15
+tumbler-height-portrait:256
+tumbler-height-landscape:192
+tumbler-width:344

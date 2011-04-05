@@ -55,6 +55,10 @@ function initialize() {
             columns[i].width = __autoColumnWidth;
             columns[i].privateIsAutoWidth = true;
         }
+        if (columns[i].label) {
+            // enable label for the tumbler
+            internal.hasLabel = true;
+        }
         newObj.height = root.height;
         newObj.index = i;
         newObj.tumblerColumn = columns[i];

@@ -78,7 +78,7 @@ Item {
         id: container
         anchors.top: list.bottom
         width: tumblerColumn ? tumblerColumn.width : 0
-        height: C.TUMBLER_LABEL_HEIGHT
+        height: internal.hasLabel ? C.TUMBLER_LABEL_HEIGHT : 0 // internal.hasLabel is from root tumbler
 
         Text {
             id: label

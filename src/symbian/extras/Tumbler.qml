@@ -25,10 +25,11 @@
 ****************************************************************************/
 
 import Qt 4.7
+import com.nokia.symbian 1.0
 import "Tumbler.js" as Engine
 import "Constants.js" as C
 
-Item {
+ImplicitSizeItem {
     id: root
 
     property list<Item> columns
@@ -36,6 +37,11 @@ Item {
 
     property bool privateDelayInit: false
     property list<Item> privateTemplates
+
+    implicitWidth: privateStyle.tumblerWidth
+    implicitHeight: screen.width > screen.height ?
+                        privateStyle.tumblerHeightLandscape :
+                        privateStyle.tumblerHeightPortrait
 
     function privateInitialize() {
         if (!internal.initialized) {
@@ -48,7 +54,6 @@ Item {
         Engine.forceUpdate();
     }
 
-    anchors.fill: parent
     clip: true
     Component.onCompleted: {
         if (!privateDelayInit && !internal.initialized) {
@@ -83,6 +88,7 @@ Item {
         property int movementCount: 0
         property bool initialized: false
         property bool reInit: false
+        property bool hasLabel: false
 
         property Timer timer: Timer {
             id: initializeTimer
@@ -94,19 +100,23 @@ Item {
         }
     }
 
-    Rectangle {
-        width: parent.width
-        height: root.height - C.TUMBLER_LABEL_HEIGHT - 2*C.TUMBLER_BORDER_MARGIN // decrease by bottom text & border height
-        color: C.TUMBLER_COLOR
-        anchors { top: parent.top; topMargin: C.TUMBLER_BORDER_MARGIN }
-    }
-
     BorderImage {
         width: parent.width
-        height: root.height - C.TUMBLER_LABEL_HEIGHT  // decrease by bottom text height
+        height: internal.hasLabel ?
+                    root.height - C.TUMBLER_LABEL_HEIGHT : // decrease by bottom text height
+                    root.height
         source: privateStyle.imagePath("qtg_graf_tumbler_background")
         anchors.top: parent.top
         border { left: 1; top: 1; right: 1; bottom: 1 }
+    }
+
+    Rectangle {
+        width: parent.width
+        height: internal.hasLabel ?
+                    root.height - C.TUMBLER_LABEL_HEIGHT - 2*C.TUMBLER_BORDER_MARGIN : // decrease by bottom text & border height
+                    root.height - 2*C.TUMBLER_BORDER_MARGIN
+        color: C.TUMBLER_COLOR
+        anchors { top: parent.top; topMargin: C.TUMBLER_BORDER_MARGIN }
     }
 
     Row {

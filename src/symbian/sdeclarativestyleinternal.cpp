@@ -150,6 +150,25 @@ QColor SDeclarativeStyleInternal::listItemSeparatorColor() const
     Q_D(const SDeclarativeStyleInternal);
     return d->engine->colorParameter(QLatin1String("color-list-item-separator"));
 }
+
+int SDeclarativeStyleInternal::tumblerHeightPortrait() const
+{
+    Q_D(const SDeclarativeStyleInternal);
+    return d->engine->layoutParameter(QLatin1String("tumbler-height-portrait"));
+}
+
+int SDeclarativeStyleInternal::tumblerHeightLandscape() const
+{
+    Q_D(const SDeclarativeStyleInternal);
+    return d->engine->layoutParameter(QLatin1String("tumbler-height-landscape"));
+}
+
+int SDeclarativeStyleInternal::tumblerWidth() const
+{
+    Q_D(const SDeclarativeStyleInternal);
+    return d->engine->layoutParameter(QLatin1String("tumbler-width"));
+}
+
 void SDeclarativeStyleInternal::play(int effect)
 {
 #ifdef HAVE_MOBILITY
