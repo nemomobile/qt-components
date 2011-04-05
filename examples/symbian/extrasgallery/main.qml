@@ -87,6 +87,11 @@ ApplicationWindow {
                         title: "Tumbler"
                         subtitle: "Show tumbler"
                     }
+                    ListElement {
+                        page: "TumblerDialog.qml"
+                        title: "TumblerDialog"
+                        subtitle: "Show tumbler dialog"
+                    }
                 }
 
                 ListView {
