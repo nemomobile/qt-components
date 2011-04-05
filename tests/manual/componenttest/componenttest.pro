@@ -70,4 +70,5 @@ OTHER_FILES += \
     tests/ToolButton.qml \
     tests/ToolTip.qml \
     tests/Tumbler.qml \
+    tests/TumblerDialog.qml \
     tests/content/InputMethodHints.qml
