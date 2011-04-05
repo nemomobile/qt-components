@@ -48,9 +48,10 @@ ImplicitSizeItem {
         smooth: true
 
         NumberAnimation on index {
-            from: 1; to: 10
+            from: 1; to: 12
             duration: 1000
-            running: root.running && root.visible
+            running: root.visible
+            paused: !root.running
             loops: Animation.Infinite
         }
     }
