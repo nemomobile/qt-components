@@ -7,7 +7,7 @@ meego {
         api_slider \
         api_busyindicator \
         #api_radiobutton \ #TODO missing component
-        api_pagestack \
+        #api_pagestack \ #TODO fix PageStack
         api_progressbar \
         #api_scrolldecorator \ #TODO fix flickableItem
         #api_choicelist \ #TODO missing component
@@ -28,7 +28,7 @@ symbian3 {
         api_choicelist \
         api_dialog \
         api_menu \
-        #api_pagestack \ # TODO: update test
+        api_pagestack \
         api_progressbar \
         api_radiobutton \
         api_scrolldecorator \

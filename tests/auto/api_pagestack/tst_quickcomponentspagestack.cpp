@@ -123,6 +123,9 @@ void tst_quickcomponentspagestack::popPage()
     QMetaObject::invokeMethod(componentObject, "popPage", Qt::DirectConnection, Q_RETURN_ARG(QVariant, retPage));
     retVal = componentObject->property("depth").toString();
     QVERIFY(retVal != QString("0"));
+
+    // Always one page is left to stack (first page pushed into stack was "dynamicpage")
+    QCOMPARE(componentObject->property("currentPageName").toString(), QString("dynamicpage"));
 }
 
 void tst_quickcomponentspagestack::clear()
@@ -132,9 +135,7 @@ void tst_quickcomponentspagestack::clear()
 
     QMetaObject::invokeMethod(componentObject, "clearStack", Qt::DirectConnection, Q_RETURN_ARG(QVariant, retPage));
     retVal = componentObject->property("depth").toString();
-    // Always one page is left to stack (first page pushed into stack was "dynamicpage")
-    QCOMPARE(componentObject->property("currentPageName").toString(), QString("dynamicpage"));
-    QVERIFY(retVal != QString("0"));
+    QVERIFY(retVal == QString("0"));
 }
 
 
