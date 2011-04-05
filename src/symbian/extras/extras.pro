@@ -20,6 +20,8 @@ QML_FILES = \
     Tumbler.js \
     Tumbler.qml \
     TumblerColumn.qml \
+    TumblerDialog.qml \
+    TumblerIndexHelper.js \
     TumblerTemplate.qml
 
 symbian {

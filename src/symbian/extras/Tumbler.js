@@ -62,6 +62,7 @@ function initialize() {
         newObj.visibleChanged.connect(layout);
         __columns.push(newObj);
     }
+    privateTemplates = __columns;
 }
 
 function clear() {

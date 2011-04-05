@@ -35,6 +35,7 @@ Item {
     signal changed(int index)
 
     property bool privateDelayInit: false
+    property list<Item> privateTemplates
 
     function privateInitialize() {
         if (!internal.initialized) {
