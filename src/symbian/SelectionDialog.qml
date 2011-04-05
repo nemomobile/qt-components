@@ -36,8 +36,6 @@ CommonDialog {
     property Component delegate: defaultDelegate
 
     privateCloseIcon: true
-    content: contentItem
-    height: contentItem.height + platformStyle.graphicSizeSmall + 2 * platformStyle.paddingLarge
 
     Component {
         id: defaultDelegate
@@ -51,24 +49,19 @@ CommonDialog {
         }
     }
 
-    Item {
+    content: Item {
         id: contentItem
 
         property int listViewHeight: root.model.count * privateStyle.menuItemHeight
 
         function preferredHeight() {
-            var maxHeight
-            if (screen.width < screen.height)
-                maxHeight = privateStyle.dialogMaxSize
-            else
-                maxHeight = screen.width - 2 * platformStyle.paddingMedium
-            maxHeight -= platformStyle.graphicSizeSmall + 2 * platformStyle.paddingLarge
+            var maxHeight = root.platformContentMaximumHeight
             maxHeight -= maxHeight % privateStyle.menuItemHeight
             return Math.min(maxHeight, listViewHeight)
         }
 
         height: preferredHeight()
-        width: parent.width
+        width: root.platformContentMaximumWidth
 
         ListView {
             id: listView

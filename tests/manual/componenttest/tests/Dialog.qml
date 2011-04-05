@@ -147,9 +147,9 @@ Item {
         content: Item {
             id: page
 
-            anchors.left: parent.left
-            anchors.right: parent.right
-            height: mainWindow.inPortrait ? screen.height / 2 : screen.width / 2
+            height: dialogWithScrollBar.platformContentMaximumHeight
+            width: dialogWithScrollBar.platformContentMaximumWidth
+
             Flickable {
                 id: flickableArea
 
@@ -220,44 +220,33 @@ Item {
         }
     }
 
-    Button {
-        x: 10
-        y: 50
-        width: 160
-        height: 50
-        text: "Show Dialog"
+    Column {
+        anchors.fill: parent
+        anchors.margins: platformStyle.paddingSmall
+        spacing: platformStyle.paddingSmall
 
-        onClicked: dialog.open()
-    }
+        Button {
+            width: button4.width
+            text: "Dialog 1"
+            onClicked: dialog.open()
+        }
 
-    Button {
-        id: button2
-        x: 10
-        y: 150
-        width: 160
-        height: 50
-        text: "Show Dialog 2"
+        Button {
+            width: button4.width
+            text: "Dialog 2"
+            onClicked: dialogWithProgressBar.open()
+        }
 
-        onClicked: dialogWithProgressBar.open()
-    }
+        Button {
+            width: button4.width
+            text: "Dialog 3"
+            onClicked: dialogWithScrollBar.open()
+        }
 
-    Button {
-        x: 10
-        y: 250
-        width: 160
-        height: 50
-        text: "Show Dialog 3"
-
-        onClicked: dialogWithScrollBar.open()
-    }
-
-    Button {
-        x: 10
-        y: 350
-        width: 160
-        height: 50
-        text: "Show Selection Dialog"
-
-        onClicked: selectionDialog.open()
+        Button {
+            id: button4
+            text: "Selection Dialog"
+            onClicked: selectionDialog.open()
+        }
     }
 }

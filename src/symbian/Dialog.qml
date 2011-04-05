@@ -36,6 +36,12 @@ Item {
     property alias visualParent: dialog.visualParent
     property alias status: dialog.status
 
+    // read-only
+    property int platformContentMaximumWidth: dialog.maxWidth()
+    // read-only
+    property int platformContentMaximumHeight:
+        dialog.maxHeight() - titleBar.height - buttonItem.height
+
     signal accepted
     signal rejected
 
@@ -60,28 +66,22 @@ Item {
 
     visible: false
 
-    Component.onCompleted: {
-        if (!width)
-            width = dialog.defaultWidth()
-        if (!height)
-            height = dialog.defaultHeight()
-    }
-
     Popup {
         id: dialog
 
         function defaultWidth() {
-            if (screen.width < screen.height)
-                return screen.width - 2 * platformStyle.paddingMedium
+            if (root.width > 0)
+                return root.width
             else
-                return privateStyle.dialogMaxSize
+                return Math.max(titleBar.childrenRect.width,
+                    Math.max(contentItem.childrenRect.width, buttonItem.childrenRect.width))
         }
 
         function defaultHeight() {
-            if (contentItem.childrenRect.height > 0)
+            if (root.height > 0)
+                return root.height
+            else
                 return titleBar.height + contentItem.childrenRect.height + buttonItem.height
-
-            return 0
         }
 
         function maxWidth() {
@@ -98,8 +98,13 @@ Item {
                 return screen.height - 2 * platformStyle.paddingMedium
         }
 
-        width:  Math.max(Math.min(root.width, maxWidth()), privateStyle.dialogMinSize)
-        height: Math.max(Math.min(root.height, maxHeight()), privateStyle.dialogMinSize)
+        function minWidth() {
+            return Math.min(screen.displayWidth, screen.displayHeight) - 2 * platformStyle.paddingMedium
+        }
+
+        width: Math.max(Math.min(defaultWidth(), maxWidth()), minWidth())
+        height: Math.max(Math.min(defaultHeight(), maxHeight()), privateStyle.dialogMinSize)
+
         state: "Hidden"
         visible: true
         anchors.centerIn: parent
@@ -158,7 +163,6 @@ Item {
                 left: parent.left
                 right: parent.right
                 bottom: parent.bottom
-                topMargin: platformStyle.paddingSmall
             }
         }
 
