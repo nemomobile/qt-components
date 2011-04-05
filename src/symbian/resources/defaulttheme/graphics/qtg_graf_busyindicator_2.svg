@@ -5,15 +5,14 @@
 ]>
 <svg version="1.1"
      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-     x="0px" y="0px" width="40px" height="40px" viewBox="0 0 40 40" overflow="visible" enable-background="new 0 0 40 40"
+     x="0px" y="0px" width="60px" height="60px" viewBox="0 0 60 60" overflow="visible" enable-background="new 0 0 60 60"
      xml:space="preserve">
 <defs>
 </defs>
-<radialGradient id="SVGID_1_" cx="42.9463" cy="-1.1558" r="70.1663" gradientTransform="matrix(0.7632 0.4691 -0.4631 0.7533 15.7301 -6.9121)" gradientUnits="userSpaceOnUse">
-    <stop  offset="0.0836" style="stop-color:#FFFFFF"/>
-    <stop  offset="0.4736" style="stop-color:#333333"/>
+<radialGradient id="SVGID_1_" cx="57.8242" cy="3.042" r="77.3294" gradientUnits="userSpaceOnUse">
+    <stop  offset="0" style="stop-color:#FFFFFF"/>
+    <stop  offset="0.4969" style="stop-color:#414042"/>
 </radialGradient>
-<path fill="url(#SVGID_1_)" d="M40,20C40,5.183,34.812,0,20,0C5.183,0,0,5.183,0,20s5.183,20,20,20C34.812,40,40,34.817,40,20z
-     M20,37.5C7.032,37.5,2.5,32.966,2.5,20C2.5,7.036,7.032,2.5,20,2.5c12.962,0,17.5,4.536,17.5,17.5C37.5,32.966,32.962,37.5,20,37.5
-    z"/>
+<path fill="url(#SVGID_1_)" d="M30,0C7.773,0,0,7.775,0,30s7.773,30,30,30c22.219,0,30-7.775,30-30S52.219,0,30,0z M30,56.25
+    C10.549,56.25,3.75,49.447,3.75,30S10.549,3.75,30,3.75c19.443,0,26.25,6.803,26.25,26.25S49.443,56.25,30,56.25z"/>
 </svg>
