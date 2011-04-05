@@ -111,7 +111,7 @@ Item {
                     anchors.fill: parent
                     onClicked: {
                         if (list.interactive) {
-                            list.currentIndex = index;  // got index from delegate
+                            tumblerColumn.selectedIndex = index;  // got index from delegate
                             root.changed(template.index);
                         }
                     }

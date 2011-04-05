@@ -103,18 +103,18 @@ ImplicitSizeItem {
     BorderImage {
         width: parent.width
         height: internal.hasLabel ?
-                    root.height - C.TUMBLER_LABEL_HEIGHT : // decrease by bottom text height
-                    root.height
+                    parent.height - C.TUMBLER_LABEL_HEIGHT : // decrease by bottom text height
+                    parent.height
         source: privateStyle.imagePath("qtg_graf_tumbler_background")
         anchors.top: parent.top
-        border { left: 1; top: 1; right: 1; bottom: 1 }
+        border { left: C.TUMBLER_BORDER_MARGIN; top: C.TUMBLER_BORDER_MARGIN; right: C.TUMBLER_BORDER_MARGIN; bottom: C.TUMBLER_BORDER_MARGIN }
     }
 
     Rectangle {
         width: parent.width
         height: internal.hasLabel ?
-                    root.height - C.TUMBLER_LABEL_HEIGHT - 2*C.TUMBLER_BORDER_MARGIN : // decrease by bottom text & border height
-                    root.height - 2*C.TUMBLER_BORDER_MARGIN
+                    parent.height - C.TUMBLER_LABEL_HEIGHT - 2*C.TUMBLER_BORDER_MARGIN : // decrease by bottom text & border height
+                    parent.height - 2*C.TUMBLER_BORDER_MARGIN
         color: C.TUMBLER_COLOR
         anchors { top: parent.top; topMargin: C.TUMBLER_BORDER_MARGIN }
     }
