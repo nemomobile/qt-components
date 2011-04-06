@@ -44,18 +44,18 @@ ImplicitSizeItem {
         property bool canceled
 
         function press() {
-            internal.canceled = false;
-            privateStyle.play(Symbian.BasicItem);
+            internal.canceled = false
+            privateStyle.play(Symbian.BasicItem)
         }
 
         function toggle() {
-            root.checked = !root.checked;
-            root.clicked();
-            privateStyle.play(Symbian.CheckBox);
+            root.checked = !root.checked
+            root.clicked()
+            privateStyle.play(Symbian.CheckBox)
         }
 
         function cancel() {
-            internal.canceled = true;
+            internal.canceled = true
         }
     }
 
@@ -71,16 +71,16 @@ ImplicitSizeItem {
         transitions: [
             Transition {
                 to: "Pressed"
-                ScriptAction { script: internal.press(); }
+                ScriptAction { script: internal.press() }
             },
             Transition {
                 from: "Pressed"
                 to: ""
-                ScriptAction { script: internal.toggle(); }
+                ScriptAction { script: internal.toggle() }
             },
             Transition {
                 to: "Canceled"
-                ScriptAction { script: internal.cancel(); }
+                ScriptAction { script: internal.cancel() }
             }
         ]
     }
@@ -101,7 +101,7 @@ ImplicitSizeItem {
                 return "track"
         }
 
-        source: privateStyle.imagePath("qtg_graf_switchbutton_" + track.trackPostfix());
+        source: privateStyle.imagePath("qtg_graf_switchbutton_" + track.trackPostfix())
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
         sourceSize.width: 2 * privateStyle.switchButtonHeight
@@ -118,7 +118,7 @@ ImplicitSizeItem {
         visible: root.enabled
 
         Image {
-            source: privateStyle.imagePath("qtg_graf_switchbutton_fill");
+            source: privateStyle.imagePath("qtg_graf_switchbutton_fill")
             anchors.left: parent.left
             anchors.top: parent.top
             height: parent.height
@@ -127,7 +127,8 @@ ImplicitSizeItem {
 
     Image {
         id: handle
-        source: privateStyle.imagePath("qtg_graf_switchbutton_" + (root.pressed ? "handle_pressed" : "handle_normal"));
+        source: privateStyle.imagePath("qtg_graf_switchbutton_"
+                                       + (root.pressed ? "handle_pressed" : "handle_normal"))
         anchors.verticalCenter: root.verticalCenter
         sourceSize.width: privateStyle.switchButtonHeight
         sourceSize.height: privateStyle.switchButtonHeight
