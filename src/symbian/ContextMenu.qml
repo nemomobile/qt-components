@@ -68,6 +68,7 @@ ImplicitSizeItem {
 
         MenuContent {
             id: menu
+            containingPopup: popup
             width: parent.width
             onItemClicked: popup.close()
         }

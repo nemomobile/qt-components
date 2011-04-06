@@ -31,6 +31,7 @@ Item {
     id: root
 
     property alias content: contentArea.children
+    property Popup containingPopup: null
 
     signal itemClicked()
 
@@ -39,12 +40,7 @@ Item {
 
     QtObject {
         id: internal
-        function preferredHeight() {
-            if (screen.width < screen.height)
-                return screen.height - privateStyle.toolBarHeightPortrait - privateStyle.statusBarHeight
-            else
-                return screen.height - privateStyle.toolBarHeightLandscape - privateStyle.statusBarHeight
-        }
+        property int preferredHeight: screen.height * ((screen.width < screen.height) ? 0.45 : 0.6)
     }
 
     BorderImage {
@@ -73,8 +69,8 @@ Item {
             property int itemsHidden: Math.floor(flickableArea.contentY / flickableArea.itemHeight)
 
             width: flickableArea.width
-            height: childrenRect.height > internal.preferredHeight()
-                ? (internal.preferredHeight() - (internal.preferredHeight() % flickableArea.itemHeight))
+            height: childrenRect.height > internal.preferredHeight
+                ? internal.preferredHeight - (internal.preferredHeight % flickableArea.itemHeight)
                 : childrenRect.height
 
             onWidthChanged: {
@@ -128,12 +124,21 @@ Item {
     }
 
     ScrollBar {
+        id: scrollBar
         flickableItem: flickableArea
         interactive: false
         visible: flickableArea.height < flickableArea.contentHeight
         anchors {
             top: flickableArea.top
             right: flickableArea.right
+        }
+    }
+
+    Connections {
+        target: containingPopup
+        onStatusChanged: {
+            if (containingPopup.status == DialogStatus.Open)
+                scrollBar.flash(Symbian.FadeInFadeOut)
         }
     }
 }
