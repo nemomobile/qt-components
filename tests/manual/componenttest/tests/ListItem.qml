@@ -452,7 +452,7 @@ Item {
                 title: selectionDialog12.selectedIndex < 0 ? "Unselected" : selectionDialog12.model.get(selectionDialog12.selectedIndex).name
 
                 onClicked: selectionDialog12.open()
-                onPressAndHold: notification.text = "Press-and-hold " + objectName
+                onPressAndHold: selectionDialog12.open()
 
                 SelectionDialog {
                     id: selectionDialog12
@@ -475,7 +475,7 @@ Item {
                 subTitle: selectionDialog13.model.get(selectionDialog13.selectedIndex).name
 
                 onClicked: selectionDialog13.open()
-                onPressAndHold: notification.text = "Press-and-hold " + objectName
+                onPressAndHold: selectionDialog13.open()
 
                 SelectionDialog {
                     id: selectionDialog13
