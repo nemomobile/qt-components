@@ -61,25 +61,25 @@ Item {
                 Row {
                     RadioButton {
                         id: rb1
-                        exclusiveGroup: group1
+                        platformExclusiveGroup: group1
                         text: "set"
                         onClicked: root.replaceMode = "set"
                     }
                     RadioButton {
                         id: rb2
-                        exclusiveGroup: group1
+                        platformExclusiveGroup: group1
                         text: "push"
                         onClicked: root.replaceMode = "push"
                     }
                     RadioButton {
                         id: rb3
-                        exclusiveGroup: group1
+                        platformExclusiveGroup: group1
                         text: "pop"
                         onClicked: root.replaceMode = "pop"
                     }
                     RadioButton {
                         id: rb4
-                        exclusiveGroup: group1
+                        platformExclusiveGroup: group1
                         text: "replace"
                         onClicked: root.replaceMode = "replace"
                     }
