@@ -104,7 +104,7 @@ void tst_quickcomponentsbuttonrow::checkedButton()
             variant = componentObject->property("checkedButton");
             QVERIFY(variant.isValid());
             tmp = variant.value<QDeclarativeItem*>();
-            // When the clicked event is emited, the component gets its checked property set to true, hence
+            // When the clicked event is emitted, the component gets its checked property set to true, hence
             // ButtonRow's checkedButton must keep this component
             QVERIFY2(child->objectName() == tmp->objectName(), "Error, the returned object is not the one that was previously set");
         }

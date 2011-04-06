@@ -203,7 +203,7 @@ void tst_tabgroup::testAddRemoveTabs()
     QCoreApplication::processEvents(QEventLoop::DeferredDeletion);
     QCOMPARE(containerHost->childItems().count(), 2);
 
-    // delete new first (orignal second) tab
+    // delete new first (original second) tab
     delete group2tab2;
     QCoreApplication::processEvents(QEventLoop::DeferredDeletion);
     QCOMPARE(containerHost->childItems().count(), 1);

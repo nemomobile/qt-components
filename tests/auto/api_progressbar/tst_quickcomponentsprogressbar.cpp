@@ -82,7 +82,7 @@ void tst_quickcomponentsprogressbar::minimumValue()
     QVERIFY( componentObject->setProperty( "minimumValue", -1.0 ) );
     QCOMPARE( componentObject->property("minimumValue").toReal(), -1.0 );
 
-    // try to set value below the mimimum value set previously
+    // try to set value below the minimum value set previously
     componentObject->setProperty( "value", -2.0 );
     // the minimum limit must be respected, so setting a value bellow minimumValue should set value to minimumValue
     QVERIFY( componentObject->property("value") == componentObject->property ("minimumValue"));
