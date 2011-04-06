@@ -78,7 +78,11 @@ Item {
                     children[i].width = width
             }
 
-            onItemsHiddenChanged: privateStyle.play(Symbian.ItemScroll)
+            onItemsHiddenChanged: {
+                // Check that popup is really open in order to prevent unnecessary feedback
+                if (containingPopup.status == DialogStatus.Open)
+                    privateStyle.play(Symbian.ItemScroll)
+            }
 
             Component.onCompleted: {
                 for (var i = 0; i < children.length; ++i) {
