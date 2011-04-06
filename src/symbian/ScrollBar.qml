@@ -57,9 +57,11 @@ ImplicitSizeItem {
     }
 
     //For showing explicitly a ScrollBar if policy is Symbian.ScrollBarWhenScrolling
-    function flash() {
-        if (policy == Symbian.ScrollBarWhenScrolling && internal.scrollBarNeeded)
+    function flash(type) {
+        if (policy == Symbian.ScrollBarWhenScrolling && internal.scrollBarNeeded) {
+            flashEffect.type = (type == undefined) ? Symbian.FadeOut : type
             flashEffect.restart()
+        }
     }
 
     QtObject {
@@ -303,11 +305,13 @@ ImplicitSizeItem {
     }
     SequentialAnimation {
         id: flashEffect
+        property int type: Symbian.FadeOut
+
         PropertyAnimation {
             target: root
             property: "opacity"
             to: 1
-            duration: 0
+            duration: (flashEffect.type == Symbian.FadeInFadeOut) ? internal.hideTimeout / 4 : 0
         }
         PropertyAnimation {
             target: root

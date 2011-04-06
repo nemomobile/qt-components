@@ -38,7 +38,7 @@ class SDeclarative : public QObject
     Q_PROPERTY(InteractionMode listInteractionMode READ listInteractionMode WRITE setListInteractionMode NOTIFY listInteractionModeChanged FINAL)
     Q_PROPERTY(QString currentTime READ currentTime NOTIFY currentTimeChanged)
 
-    Q_ENUMS(InteractionMode ImageSize ScrollBarVisibility SourceSize Feedback)
+    Q_ENUMS(InteractionMode ImageSize ScrollBarVisibility SourceSize EffectType Feedback)
 
 public:
     SDeclarative(QObject *parent = 0);
@@ -66,6 +66,11 @@ public:
 
     enum SourceSize {
         UndefinedSourceDimension = -2
+    };
+
+    enum EffectType {
+        FadeOut,
+        FadeInFadeOut
     };
 
     enum Feedback {
