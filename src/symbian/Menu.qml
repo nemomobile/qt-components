@@ -61,39 +61,30 @@ Item {
         enabled: status == DialogStatus.Open
         width: screen.width
         height: menu.height
+        clip: true
 
         onFaderClicked: {
             privateStyle.play(Symbian.PopUpClose)
             close()
         }
 
-        Flickable {
-            id: animationArea
-
-            anchors.fill: parent
-            contentWidth: width
-            contentHeight: childrenRect.height
-            contentY: -height
-            interactive: false; clip: true
-
-            MenuContent {
-                id: menu
-                containingPopup: popup
-                width: parent.width
-                onItemClicked: popup.close()
-            }
+        MenuContent {
+            id: menu
+            containingPopup: popup
+            width: parent.width
+            onItemClicked: popup.close()
         }
 
         states: [
             State {
                 name: "Hidden"
                 when: status == DialogStatus.Closing || status == DialogStatus.Closed
-                PropertyChanges { target: animationArea; contentY: -animationArea.height - 5 }
+                PropertyChanges { target: menu; y: menu.height + 5 }
             },
             State {
                 name: "Visible"
                 when: status == DialogStatus.Opening || status == DialogStatus.Open
-                PropertyChanges { target: animationArea; contentY: 0 }
+                PropertyChanges { target: menu; y: 0 }
             }
         ]
 
@@ -101,16 +92,14 @@ Item {
             Transition {
                 from: "Visible"; to: "Hidden"
                 SequentialAnimation {
-                    NumberAnimation { property: "contentY"; duration: popup.animationDuration }
-                    PropertyAction { target: animationArea; property: "opacity"; value: 0}
+                    NumberAnimation { target: menu; property: "y"; duration: popup.animationDuration }
                     PropertyAction { target: popup; property: "status"; value: DialogStatus.Closed }
                 }
             },
             Transition {
                 from: "Hidden"; to: "Visible"
                 SequentialAnimation {
-                    PropertyAction { target: animationArea; property: "opacity"; value: 1}
-                    NumberAnimation { property: "contentY"; duration: popup.animationDuration }
+                    NumberAnimation { target: menu; property: "y"; duration: popup.animationDuration }
                     PropertyAction { target: popup; property: "status"; value: DialogStatus.Open }
                 }
             }
