@@ -184,33 +184,57 @@ ImplicitSizeItem {
 
     MouseArea {
         id: mouseArea
+
+        property real lastX
+
+        function isChecked() {
+            return (handle.x + handle.width / 2 > track.x + (track.width / 2))
+        }
+        function updateHandlePos() {
+            // The middle of the handle follows mouse, the handle is bound to the track
+            handle.x = Math.max(track.x, Math.min(mouseArea.lastX - handle.width / 2,
+                                                  track.x + track.width - handle.width))
+        }
+
         anchors.fill: parent
-
-        property bool overHandle: mouseX >= handle.x && mouseX <= handle.x + handle.width && mouseY >= handle.y && mouseY <= handle.y + handle.height
-
         onPressed: stateGroup.state = "Pressed"
-        onReleased: stateGroup.state = ""
-        onClicked: stateGroup.state = ""
-        onExited: stateGroup.state = "Canceled"
+        onReleased: {
+            if (root.checked == isChecked())
+                stateGroup.state = "Canceled"
+            stateGroup.state = ""
+        }
+        onClicked: {
+            // Only toggle if released didn't
+            if (internal.canceled)
+                internal.toggle()
+        }
         onCanceled: {
             // Mark as canceled
             stateGroup.state = "Canceled"
             // Reset state. Can't expect a release since mouse was ungrabbed
             stateGroup.state = ""
         }
-
+        onPositionChanged: {
+            mouseArea.lastX = mouse.x
+            if (mouseArea.drag.active)
+                updateHandlePos()
+        }
         drag {
+            // The handle is moved manually but MouseArea can be used to decide when dragging
+            // should start (QApplication::startDragDistance). A dummy target needs to be bound or
+            // dragging won't get activated.
+            target: Item { visible: false }
+
             axis: Drag.XAxis
-            target: mouseArea.pressed && overHandle ? handle : null
             minimumX: track.x
             maximumX: mouseArea.drag.minimumX + track.width - handle.width
-
             onActiveChanged: {
-                if (mouseArea.drag.active)
-                    stateGroup.state = "Dragging";
-                else if (!mouseArea.drag.active && !internal.canceled &&
-                         root.checked != (handle.x > mouseArea.drag.minimumX + (mouseArea.drag.maximumX -  mouseArea.drag.minimumX) / 2))
+                if (mouseArea.drag.active) {
+                    updateHandlePos()
+                    stateGroup.state = "Dragging"
+                } else if (!internal.canceled && root.checked != isChecked()) {
                     internal.toggle()
+                }
             }
         }
     }
