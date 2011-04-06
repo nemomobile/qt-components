@@ -353,7 +353,7 @@ Item {
 
             ButtonColumn {
                 id: buttonColumn6
-                exclusive: true
+                exclusive: toggleExclusive4.checked
                 checkedButton: tb1
 
                 ToolButton {
@@ -376,6 +376,12 @@ Item {
                     text: "tb3"
                     onClicked: text6.text = "Clicked " + objectName
                 }
+            }
+
+            CheckBox {
+                id: toggleExclusive4
+                checked: true
+                text: "Exclusive"
             }
         }
 
@@ -415,6 +421,46 @@ Item {
                     iconSource: "image://theme/:/list7.png"
                     onClicked: text7.text = "Clicked " + objectName
                 }
+            }
+        }
+
+        Column {
+            id: toolBtnCol3
+            anchors.left: toolBtnCol2.right
+            spacing: 10
+
+            Text {
+                id: text8
+                text: "Dyn.TB"
+                color: "white"
+            }
+
+            Row {
+                Button {
+                    id: addToolButton
+                    text: "Add TB"
+
+                    onClicked: {
+                        var item = Qt.createQmlObject('import Qt 4.7; import com.nokia.symbian 1.0;  ToolButton { text: \"ToolBtn' + buttonColumn8.children.length +'\" }', buttonColumn8, "dynButton");
+                    }
+                }
+
+                Button {
+                    id: delToolButton
+                    text: "Del TB"
+
+                    onClicked: {
+                        for (var i = 0; i < buttonColumn8.children.length; i++) {
+                            if (buttonColumn8.children[i].checked)
+                                buttonColumn8.children[i].destroy();
+                        }
+                    }
+                }
+            }
+
+            ButtonColumn {
+                id: buttonColumn8
+                width: parent.width / 3
             }
         }
     }
