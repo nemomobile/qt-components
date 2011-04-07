@@ -32,6 +32,7 @@
 #include <QDeclarativeEngine>
 #include <QDeclarativeContext>
 #include <QDeclarativeView>
+#include <QMainWindow>
 #include <QSignalSpy>
 
 class tst_SDeclarativeScreen : public QObject
@@ -44,6 +45,8 @@ private slots:
     void changeOrientation();
     void changeScreenSize();
     void startupOrientation();
+    void twoDeclarativeViews();
+    void graphicsView();
 
 private:
 
@@ -166,6 +169,82 @@ void tst_SDeclarativeScreen::initView(const QString &fileName)
     QTRY_COMPARE(QApplication::activeWindow(), static_cast<QWidget *>(view.data()));
     screen = qVariantValue<QObject *>(view->engine()->rootContext()->contextProperty("screen"));
     QVERIFY(screen);
+}
+
+void tst_SDeclarativeScreen::twoDeclarativeViews()
+{
+    QDeclarativeView *view2 = tst_quickcomponentstest::createDeclarativeView("tst_declarativescreen.qml");
+    QVERIFY(view2);
+
+    // set another top level widget as parent
+    QScopedPointer<QMainWindow> rootWindow(new QMainWindow);
+    view2->setParent(rootWindow.data());
+    rootWindow->setGeometry(view2->x() + view2->width() + 20, view->y(), 100, 100);
+    view2->setGeometry(0,0,rootWindow->width(), rootWindow->height());
+
+    QString errors;
+    QScopedPointer<QObject> applicationWindow2(
+        tst_quickcomponentstest::createComponentFromFile("tst_declarativescreen.qml", &errors, &view2));
+    QVERIFY2(applicationWindow2.data(), qPrintable(errors));
+
+    rootWindow->activateWindow();
+    QApplication::setActiveWindow(rootWindow.data());
+    rootWindow->show();
+    QTest::qWaitForWindowShown(rootWindow.data());
+
+    QVERIFY(view2->rootObject());
+    QTRY_COMPARE(QApplication::activeWindow(), static_cast<QWidget *>(rootWindow.data()));
+    QObject *screen2 = qVariantValue<QObject *>(view2->engine()->rootContext()->contextProperty("screen"));
+    QVERIFY(screen2);
+
+    // screen1 portrait, screen2 landscape
+    screen->setProperty("allowedOrientations", SDeclarativeScreen::Portrait);
+    screen2->setProperty("allowedOrientations", SDeclarativeScreen::Landscape);
+    QTRY_VERIFY(applicationWindow->property("width").toReal() < applicationWindow->property("height").toReal());
+    QTRY_VERIFY(applicationWindow2->property("width").toReal() > applicationWindow2->property("height").toReal());
+
+    // screen1 landscape, screen2 portrait
+    screen2->setProperty("allowedOrientations", SDeclarativeScreen::Portrait);
+    screen->setProperty("allowedOrientations", SDeclarativeScreen::Landscape);
+    QTRY_VERIFY(applicationWindow2->property("width").toReal() < applicationWindow2->property("height").toReal());
+    QTRY_VERIFY(applicationWindow->property("width").toReal() > applicationWindow->property("height").toReal());
+}
+
+void tst_SDeclarativeScreen::graphicsView()
+{
+    QScopedPointer<QGraphicsView> graphicsView(new QGraphicsView());
+    QGraphicsScene *scene = new QGraphicsScene(graphicsView.data());
+    graphicsView->setScene(scene);
+    QDeclarativeEngine *engine = new QDeclarativeEngine(graphicsView.data());
+    engine->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
+
+    QDeclarativeComponent *component = new QDeclarativeComponent(engine);
+    QFile file("tst_declarativescreen.qml");
+    file.open(QFile::ReadOnly);
+    component->setData(file.readAll(), QUrl());
+    QObject* out = component->create();
+    QVERIFY(out);
+    QDeclarativeItem *rootItem = qobject_cast<QDeclarativeItem *>(out);
+    QVERIFY(rootItem);
+    file.close();
+
+    scene->addItem(rootItem);
+    graphicsView->show();
+    QApplication::setActiveWindow(graphicsView.data());
+
+    QTest::qWaitForWindowShown(graphicsView.data());
+
+    QTRY_COMPARE(QApplication::activeWindow(), static_cast<QWidget *>(graphicsView.data()));
+    QObject *screen2 = qVariantValue<QObject *>(engine->rootContext()->contextProperty("screen"));
+    QVERIFY(screen2);
+
+    // set portrait
+    screen2->setProperty("allowedOrientations", SDeclarativeScreen::Portrait);
+    QVERIFY(screen2->property("width").toInt() < screen2->property("height").toInt());
+
+    // set landscape
+    screen2->setProperty("allowedOrientations", SDeclarativeScreen::Landscape);
+    QVERIFY(screen2->property("width").toInt() > screen2->property("height").toInt());
 }
 
 QTEST_MAIN(tst_SDeclarativeScreen)
