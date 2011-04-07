@@ -144,12 +144,15 @@ Item {
                         text: "New page"
                         width: parent.width / 3
                         onClicked: {
-                            if (rootPageStack.busy)
-                                rootPageStack.push(pageComponent, false, true);
-                            else
-                                rootPageStack.push(pageComponent);
+                            rootPageStack.push(pageComponent);
                         }
                     }
+                }
+
+                Row {
+                    spacing: 3
+                    width: parent.width
+                    Rectangle { color: "blue"; height: 40; width: parent.width; opacity: rootPageStack.busy ? 1 : 0.1 }
                 }
             }
         }
