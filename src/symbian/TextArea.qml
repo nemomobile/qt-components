@@ -100,6 +100,15 @@ FocusScopeItem {
         return Math.min(preferredHeight, root.maxImplicitHeight)
     }
 
+    Connections {
+         target: screen
+         onCurrentOrientationChanged: {
+             delayedEnsureVisible.start()
+             fade.start()
+             scroll.start()
+         }
+    }
+
     QtObject {
         id: privy
         // TODO: More consistent minimum width for empty TextArea than 20 * " " on current font?
@@ -209,6 +218,9 @@ FocusScopeItem {
                     }
                 }
             }
+
+            PropertyAnimation { id: fade; target: textEdit; property: "opacity"; from: 0; to: 1; duration: 250 }
+            PropertyAnimation { id: scroll; target: flick; property: "contentY"; duration: 250 }
         }
 
         ScrollBar {
