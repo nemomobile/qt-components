@@ -42,6 +42,9 @@ private slots:
     void font();
     void focus();
     void cursorRectangle();
+    void placeholderText();
+    void placeholderTextAndPresetText();
+    void placeholderTextAndReadOnly();
 
 private:
     QObject* m_componentObject;
@@ -230,6 +233,178 @@ void tst_quickcomponentstextfield::cursorRectangle()
     QVERIFY(QApplication::focusWidget()->inputMethodQuery(Qt::ImMicroFocus).isValid());
     QEXPECT_FAIL("", "inputMethodQuery(Qt::ImMicroFocus) returns quite wide cursor rectangle for TextInput, http://bugreports.qt.nokia.com/browse/QTBUG-18343", Continue);
     QCOMPARE(QApplication::focusWidget()->inputMethodQuery(Qt::ImMicroFocus), cursorRect);
+}
+
+void tst_quickcomponentstextfield::placeholderText()
+{
+    QGraphicsObject *textField = m_view->rootObject()->findChild<QGraphicsObject*>("textField");
+    QVERIFY(textField);
+
+    QGraphicsObject *button = m_view->rootObject()->findChild<QGraphicsObject*>("testButton");
+    QGraphicsObject *textInput = textField->findChild<QGraphicsObject*>("textInput");
+    QGraphicsObject *placeHolder = textField->findChild<QGraphicsObject*>("placeholder");
+
+    QVERIFY(button);
+    QVERIFY(textInput);
+    QVERIFY(placeHolder);
+
+    //move focus
+    button->setFocus(Qt::OtherFocusReason);
+
+    textField->setProperty("text", QString(""));
+    textField->setProperty("placeholderText", QString("placeholderText"));
+
+    // Place holder should be visible
+    QCOMPARE(placeHolder->property("visible").toBool(), true);
+    QCOMPARE(textInput->property("visible").toBool(), true);
+    QCOMPARE(textField->property("placeholderText").toString(), QString("placeholderText"));
+    QCOMPARE(textField->property("text").toString(), QString(""));
+
+    // Focus textField
+    textField->setFocus(Qt::OtherFocusReason);
+    QCOMPARE(placeHolder->property("visible").toBool(), false);
+    QCOMPARE(textInput->property("visible").toBool(), true);
+    QCOMPARE(textField->property("placeholderText").toString(), QString("placeholderText"));
+    QCOMPARE(textField->property("text").toString(), QString(""));
+
+    //Type something
+    textField->setProperty("text", QString("Test"));
+    QCOMPARE(placeHolder->property("visible").toBool(), false);
+    QCOMPARE(textInput->property("visible").toBool(), true);
+    QCOMPARE(textField->property("placeholderText").toString(), QString("placeholderText"));
+    QCOMPARE(textField->property("text").toString(), QString("Test"));
+
+    // Focus another component
+    button->setFocus(Qt::OtherFocusReason);
+
+    QCOMPARE(placeHolder->property("visible").toBool(), false);
+    QCOMPARE(textInput->property("visible").toBool(), true);
+    QCOMPARE(textField->property("placeholderText").toString(), QString("placeholderText"));
+    QCOMPARE(textField->property("text").toString(), QString("Test"));
+
+    // Focus back, empty text and focus out again
+#ifdef Q_OS_SYMBIAN
+    // To avoid virtual keyboard on symbian
+    textField->setProperty("readOnly", true);
+#endif
+    textField->setFocus(Qt::OtherFocusReason);
+    textField->setProperty("text", QString(""));
+    button->setFocus(Qt::OtherFocusReason);
+
+    QCOMPARE(placeHolder->property("visible").toBool(), true);
+    QCOMPARE(textInput->property("visible").toBool(), true);
+    QCOMPARE(textField->property("placeholderText").toString(), QString("placeholderText"));
+    QCOMPARE(textField->property("text").toString(), QString(""));
+#ifdef Q_OS_SYMBIAN
+    // To avoid virtual keyboard on symbian
+    textField->setProperty("readOnly", false);
+#endif
+
+    // Empty prompt text
+    textField->setProperty("placeholderText", QString(""));
+    QCOMPARE(placeHolder->property("visible").toBool(), false);
+    QCOMPARE(textInput->property("visible").toBool(), true);
+    QCOMPARE(textField->property("placeholderText").toString(), QString(""));
+    QCOMPARE(textField->property("text").toString(), QString(""));
+}
+
+void tst_quickcomponentstextfield::placeholderTextAndPresetText()
+{
+    QGraphicsObject *textField = m_view->rootObject()->findChild<QGraphicsObject*>("textField");
+    QVERIFY(textField);
+
+    QGraphicsObject *button = m_view->rootObject()->findChild<QGraphicsObject*>("testButton");
+    QGraphicsObject *textInput = textField->findChild<QGraphicsObject*>("textInput");
+    QGraphicsObject *placeHolder = textField->findChild<QGraphicsObject*>("placeholder");
+
+    QVERIFY(button);
+    QVERIFY(textInput);
+    QVERIFY(placeHolder);
+
+    textField->setProperty("text", QString("Preset text here."));
+    textField->setProperty("placeholderText", QString("placeholderText"));
+
+    // Preset text should displayed
+    QCOMPARE(placeHolder->property("visible").toBool(), false);
+    QCOMPARE(textInput->property("visible").toBool(), true);
+    QCOMPARE(textField->property("placeholderText").toString(), QString("placeholderText"));
+    QCOMPARE(textField->property("text").toString(), QString("Preset text here."));
+
+    // Focus textField
+    textField->setFocus(Qt::OtherFocusReason);
+
+    QCOMPARE(placeHolder->property("visible").toBool(), false);
+    QCOMPARE(textInput->property("visible").toBool(), true);
+    QCOMPARE(textField->property("placeholderText").toString(), QString("placeholderText"));
+    QCOMPARE(textField->property("text").toString(), QString("Preset text here."));
+
+    // Focus out
+    button->setFocus(Qt::OtherFocusReason);
+
+    QCOMPARE(placeHolder->property("visible").toBool(), false);
+    QCOMPARE(textInput->property("visible").toBool(), true);
+    QCOMPARE(textField->property("placeholderText").toString(), QString("placeholderText"));
+    QCOMPARE(textField->property("text").toString(), QString("Preset text here."));
+
+    // Focus back and empty text and focus out again
+#ifdef Q_OS_SYMBIAN
+    // To avoid virtual keyboard on symbian
+    textField->setProperty("readOnly", true);
+#endif
+    textField->setFocus(Qt::OtherFocusReason);
+    textField->setProperty("text", QString(""));
+    button->setFocus(Qt::OtherFocusReason);
+
+    QCOMPARE(placeHolder->property("visible").toBool(), true);
+    QCOMPARE(textInput->property("visible").toBool(), true);
+    QCOMPARE(textField->property("placeholderText").toString(), QString("placeholderText"));
+    QCOMPARE(textField->property("text").toString(), QString(""));
+#ifdef Q_OS_SYMBIAN
+    // To avoid virtual keyboard on symbian
+    textField->setProperty("readOnly", false);
+#endif
+
+    // Empty prompt text
+    textField->setProperty("placeholderText", QString(""));
+    QCOMPARE(placeHolder->property("visible").toBool(), false);
+    QCOMPARE(textInput->property("visible").toBool(), true);
+    QCOMPARE(textField->property("placeholderText").toString(), QString(""));
+    QCOMPARE(textField->property("text").toString(), QString(""));
+}
+
+void tst_quickcomponentstextfield::placeholderTextAndReadOnly()
+{
+    QGraphicsObject *textField = m_view->rootObject()->findChild<QGraphicsObject*>("textField");
+    QVERIFY(textField);
+
+    QGraphicsObject *button = m_view->rootObject()->findChild<QGraphicsObject*>("testButton");
+    QGraphicsObject *textInput = textField->findChild<QGraphicsObject*>("textInput");
+    QGraphicsObject *placeHolder = textField->findChild<QGraphicsObject*>("placeholder");
+
+    QVERIFY(button);
+    QVERIFY(textInput);
+    QVERIFY(placeHolder);
+
+    textField->setProperty("text", QString(""));
+    textField->setProperty("placeholderText", QString("placeholderText"));
+    textField->setProperty("readOnly", true);
+
+    // Prompt should be visible
+    QCOMPARE(placeHolder->property("visible").toBool(), true);
+    QCOMPARE(textInput->property("visible").toBool(), true);
+    QCOMPARE(textField->property("placeholderText").toString(), QString("placeholderText"));
+    QCOMPARE(textField->property("text").toString(), QString(""));
+
+    // Focus textField
+    textField->setFocus(Qt::OtherFocusReason);
+
+    QCOMPARE(placeHolder->property("visible").toBool(), true);
+    QCOMPARE(textInput->property("visible").toBool(), true);
+    QCOMPARE(textField->property("placeholderText").toString(), QString("placeholderText"));
+    QCOMPARE(textField->property("text").toString(), QString(""));
+
+    // Focus out
+    button->setFocus(Qt::OtherFocusReason);
 }
 
 QTEST_MAIN(tst_quickcomponentstextfield)

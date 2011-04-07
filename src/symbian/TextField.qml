@@ -128,6 +128,6 @@ FocusScopeItem {
         }
         color: platformStyle.colorNormalMid
         font: textInput.font
-        visible: !textInput.activeFocus && !textInput.text && text
+        visible: (!textInput.activeFocus || readOnly) && !textInput.text && text
     }
 }
