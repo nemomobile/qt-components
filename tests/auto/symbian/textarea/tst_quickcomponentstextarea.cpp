@@ -210,7 +210,7 @@ void tst_quickcomponentstextarea::placeholderText()
     // Focus back, empty text and focus out again
 #ifdef Q_OS_SYMBIAN
     // To avoid virtual keyboard on symbian
-    textArea->setProperty("readOnly", QVariant(true));
+    textArea->setProperty("readOnly", true);
 #endif
     textArea->setFocus(Qt::OtherFocusReason);
     textArea->setProperty("text", QString(""));
@@ -222,7 +222,7 @@ void tst_quickcomponentstextarea::placeholderText()
     QCOMPARE(textArea->property("text").toString(), QString(""));
 #ifdef Q_OS_SYMBIAN
     // To avoid virtual keyboard on symbian
-    textArea->setProperty("readOnly", QVariant(false));
+    textArea->setProperty("readOnly", false);
 #endif
 
     // Empty prompt text
@@ -273,7 +273,7 @@ void tst_quickcomponentstextarea::placeholderTextAndPresetText()
     // Focus back and empty text and focus out again
 #ifdef Q_OS_SYMBIAN
     // To avoid virtual keyboard on symbian
-    textArea->setProperty("readOnly", QVariant(true));
+    textArea->setProperty("readOnly", true);
 #endif
     textArea->setFocus(Qt::OtherFocusReason);
     textArea->setProperty("text", QString(""));
@@ -285,7 +285,7 @@ void tst_quickcomponentstextarea::placeholderTextAndPresetText()
     QCOMPARE(textArea->property("text").toString(), QString(""));
 #ifdef Q_OS_SYMBIAN
     // To avoid virtual keyboard on symbian
-    textArea->setProperty("readOnly", QVariant(false));
+    textArea->setProperty("readOnly", false);
 #endif
 
     // Empty prompt text
@@ -310,7 +310,7 @@ void tst_quickcomponentstextarea::placeholderTextAndReadOnly()
 
     textArea->setProperty("text", QString(""));
     textArea->setProperty("placeholderText", QString("placeholderText"));
-    textArea->setProperty("readOnly", QVariant(true));
+    textArea->setProperty("readOnly", true);
 
     // Prompt should be visible
     QVERIFY(placeHolder->property("visible").toBool());
@@ -321,13 +321,16 @@ void tst_quickcomponentstextarea::placeholderTextAndReadOnly()
     // Focus textArea
     textArea->setFocus(Qt::OtherFocusReason);
 
-    QVERIFY(!placeHolder->property("visible").toBool());
+    QVERIFY(placeHolder->property("visible").toBool());
     QVERIFY(textEdit->property("visible").toBool());
     QCOMPARE(textArea->property("placeholderText").toString(), QString("placeholderText"));
     QCOMPARE(textArea->property("text").toString(), QString(""));
 
     // Focus out
     button->setFocus(Qt::OtherFocusReason);
+
+    // Reset property
+    textArea->setProperty("readOnly", false);
 }
 
 // rich text format is a special case, since in that case text property contains empty html tags
@@ -360,6 +363,36 @@ void tst_quickcomponentstextarea::placeholderTextAndRichText()
     QVERIFY(textEdit->property("visible").toBool());
     QCOMPARE(textArea->property("placeholderText").toString(), QString("placeholderText"));
     QVERIFY(textArea->property("text").toString().length() > 0); // contains empty html tags
+
+    // Focus out
+    button->setFocus(Qt::OtherFocusReason);
+
+    // Prompt should be visible
+    QVERIFY(placeHolder->property("visible").toBool());
+    QVERIFY(textEdit->property("visible").toBool());
+    QCOMPARE(textArea->property("placeholderText").toString(), QString("placeholderText"));
+    QVERIFY(textArea->property("text").toString().length() > 0); // contains empty html tags
+
+    textArea->setProperty("readOnly", true);
+
+    // Prompt should be visible
+    QVERIFY(placeHolder->property("visible").toBool());
+    QVERIFY(textEdit->property("visible").toBool());
+    QCOMPARE(textArea->property("placeholderText").toString(), QString("placeholderText"));
+    QVERIFY(textArea->property("text").toString().length() > 0); // contains empty html tags
+
+    // Focus textArea
+    textArea->setFocus(Qt::OtherFocusReason);
+
+    QVERIFY(placeHolder->property("visible").toBool());
+    QVERIFY(textEdit->property("visible").toBool());
+    QCOMPARE(textArea->property("placeholderText").toString(), QString("placeholderText"));
+    QVERIFY(textArea->property("text").toString().length() > 0); // contains empty html tags
+
+    // Reset properties
+    textArea->setProperty("textFormat", QVariant(Qt::AutoText));
+    textArea->setProperty("text", QString(""));
+    textArea->setProperty("readOnly", false);
 }
 
 void tst_quickcomponentstextarea::implicitSize()

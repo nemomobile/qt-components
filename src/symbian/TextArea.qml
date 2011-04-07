@@ -151,8 +151,12 @@ FocusScopeItem {
 
             color: platformStyle.colorNormalMid
             font: textEdit.font
-            visible: !textEdit.activeFocus && text &&
-                     (textEdit.paintedWidth == 0 && textEdit.paintedHeight <= textEdit.cursorRectangle.height)
+            visible: {
+                if (text && (textEdit.paintedWidth == 0 && textEdit.paintedHeight <= textEdit.cursorRectangle.height))
+                    return (readOnly || !textEdit.activeFocus)
+                else
+                    return false
+            }
             wrapMode: textEdit.wrapMode
             height: parent.height
             width: parent.width
