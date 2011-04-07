@@ -40,6 +40,7 @@ private slots:
     void pushPageArray();
     void replacePage();
     void popPage();
+    void pushAndPopTwoPages();
     void clearStack();
     void findPage();
     void busyChanged();
@@ -106,6 +107,16 @@ void tst_quickcomponentspagestack::popPage()
     // pop doesn't clear the stack. One page is always left to the stack.
     QMetaObject::invokeMethod(componentObject.data(), "popPage", Qt::DirectConnection);
     QVERIFY(componentObject.data()->property("depth").toString() != QString("0"));
+}
+
+void tst_quickcomponentspagestack::pushAndPopTwoPages()
+{
+    QMetaObject::invokeMethod(componentObject.data(), "pushPage", Qt::DirectConnection);
+    QMetaObject::invokeMethod(componentObject.data(), "pushPage", Qt::DirectConnection);
+    QTRY_COMPARE(componentObject.data()->property("busy").toBool(), false);
+    QMetaObject::invokeMethod(componentObject.data(), "popPage", Qt::DirectConnection);
+    QMetaObject::invokeMethod(componentObject.data(), "popPage", Qt::DirectConnection);
+    QTRY_COMPARE(componentObject.data()->property("busy").toBool(), false);
 }
 
 void tst_quickcomponentspagestack::clearStack()

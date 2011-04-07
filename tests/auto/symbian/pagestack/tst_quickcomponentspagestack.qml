@@ -35,6 +35,8 @@ Item {
 
     property alias depth: pageStack.depth
 
+    property bool busy: pageStack.busy
+
     property bool busyChangedTriggered: false
 
     property string currentPageName: pageStack.currentPage==undefined? "0" : pageStack.currentPage.objectName
