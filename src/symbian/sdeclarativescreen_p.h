@@ -31,11 +31,13 @@
 #include <QtCore/qpointer.h>
 #include <QtGui/qgraphicsview.h>
 
+QT_FORWARD_DECLARE_CLASS(QDeclarativeEngine)
+
 class SDeclarativeScreenPrivate
 {
     Q_DECLARE_PUBLIC(SDeclarativeScreen)
 public:
-    SDeclarativeScreenPrivate(SDeclarativeScreen *qq);
+    SDeclarativeScreenPrivate(SDeclarativeScreen *qq, QDeclarativeEngine *engine);
     ~SDeclarativeScreenPrivate();
 
     void updateOrientationAngle();
@@ -59,6 +61,7 @@ public:
     QPointer<QGraphicsView> gv;
     bool initCalled;
     bool initDone;
+    QDeclarativeEngine *engine;
 
     static SDeclarativeScreenPrivate *d_ptr(SDeclarativeScreen *screen) {
         Q_ASSERT(screen);

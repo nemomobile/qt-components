@@ -29,6 +29,8 @@
 #include <QApplication>
 #include <QResizeEvent>
 #include <QDesktopWidget>
+#include <QDeclarativeEngine>
+#include <QDeclarativeView>
 #include <qmath.h>
 
 #ifdef Q_OS_SYMBIAN
@@ -50,7 +52,21 @@ static const qreal DENSITY_SMALL_LIMIT = 140.0;
 static const qreal DENSITY_MEDIUM_LIMIT = 180.0;
 static const qreal DENSITY_LARGE_LIMIT = 270.0;
 
-SDeclarativeScreenPrivate::SDeclarativeScreenPrivate(SDeclarativeScreen *qq) :
+static QDeclarativeView *findDeclarativeView(
+    const QWidgetList &widgets, const QDeclarativeEngine *engine)
+{
+    QDeclarativeView *result = 0;
+    for (int i = 0; i < widgets.count() && !result; i++) {
+         QDeclarativeView *declarativeView = qobject_cast<QDeclarativeView *>(widgets.at(i));
+         if (declarativeView && declarativeView->engine() == engine)
+             result = declarativeView;
+    }
+    return result;
+}
+
+SDeclarativeScreenPrivate::SDeclarativeScreenPrivate(
+    SDeclarativeScreen *qq,
+    QDeclarativeEngine *engine) :
     q_ptr(qq),
     currentOrientation(SDeclarativeScreen::Default),
     allowedOrientations(SDeclarativeScreen::Default),
@@ -59,7 +75,8 @@ SDeclarativeScreenPrivate::SDeclarativeScreenPrivate(SDeclarativeScreen *qq) :
     displaySize(QSize(DEFAULT_WIDTH, DEFAULT_HEIGHT)),
     settingDisplay(false),
     initCalled(false),
-    initDone(false)
+    initDone(false),
+    engine(engine)
 {
     Q_Q(SDeclarativeScreen);
     screenSize = currentScreenSize();
@@ -80,13 +97,19 @@ SDeclarativeScreenPrivate::SDeclarativeScreenPrivate(SDeclarativeScreen *qq) :
     }
 #endif // __WINS__
 #endif // Q_OS_SYMBIAN
-    foreach (QWidget *w, QApplication::allWidgets()) {
-        QGraphicsView *graphicsView = qobject_cast<QGraphicsView *>(w);
-        if (graphicsView) {
-            gv = graphicsView;
-            break;
-        }
-    }
+
+    // Find the corresponding QDeclarativeView
+    // First check only the top level widgets which is a fast and most likely
+    gv = findDeclarativeView(QApplication::topLevelWidgets(), engine);
+    if (!gv)
+        // check all the widgets as fallback
+        gv = findDeclarativeView(QApplication::allWidgets(), engine);
+
+#ifdef Q_DEBUG_SCREEN
+    if (!gv)
+        qDebug() << "SDeclarativeScreen() cannot find QDeclarativeView";
+#endif
+
     if (gv) {
 #if defined(Q_OS_SYMBIAN) || defined(Q_WS_SIMULATOR)
         gv->setWindowState(gv->windowState() | Qt::WindowFullScreen);
@@ -171,8 +194,15 @@ void SDeclarativeScreenPrivate::_q_initView(const QSize &size)
     initCalled = true;
 #if !defined(Q_OS_SYMBIAN) && !defined(Q_WS_SIMULATOR)
     // Emulate the resizing done by the system
-    if (gv)
-        gv->resize(adjustedSize(size));
+    const QSize initialSize(adjustedSize(size));
+    if (gv && gv->size() != initialSize)
+        // Set the graphics view size to match the display size.
+        // Resize event handling calls _q_updateScreenSize to
+        // finalize the initialization.
+        gv->resize(initialSize);
+    else
+        // Finalize the initialization directly.
+        _q_updateScreenSize(initialSize);
 #else
     Q_UNUSED(size);
     Q_Q(SDeclarativeScreen);
@@ -248,8 +278,8 @@ bool SDeclarativeScreenPrivate::landscapeAllowed() const
         || allowedOrientations & (SDeclarativeScreen::Landscape | SDeclarativeScreen::LandscapeInverted);
 }
 
-SDeclarativeScreen::SDeclarativeScreen(QObject *parent)
-    : QObject(parent), d_ptr(new SDeclarativeScreenPrivate(this))
+SDeclarativeScreen::SDeclarativeScreen(QDeclarativeEngine *engine, QObject *parent)
+    : QObject(parent), d_ptr(new SDeclarativeScreenPrivate(this, engine))
 {
 }
 
@@ -316,7 +346,11 @@ void SDeclarativeScreen::setAllowedOrientations(Orientations orientations)
     QSize newSize(d->adjustedSize(d->screenSize));
     if (newSize != d->screenSize) {
         if (d->gv)
+            // update screen size via resize event
             d->gv->resize(newSize); // emulate the resizing done by the system
+        else
+            // update screen size directly
+            d->_q_updateScreenSize(newSize);
     }
 #endif
 }
@@ -434,7 +468,12 @@ void SDeclarativeScreen::privateSetDisplay(int width, int height, qreal dpi)
 
     d->dpi = dpi;
     if (d->gv)
+        // update screen size via resize event
         d->gv->resize(width, height); // emulate the resizing done by the system
+    else
+        // update screen size directly
+        d->_q_updateScreenSize(QSize(width, height));
+
     if (oldDpi != d->dpi || oldDisplaySize != d->displaySize)
         emit displayChanged();
     d->settingDisplay = false;

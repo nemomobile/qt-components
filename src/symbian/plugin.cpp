@@ -50,7 +50,7 @@ public:
         engine->addImageProvider(QLatin1String("theme"), new SDeclarativeImageProvider);
         QDeclarativeContext *context = engine->rootContext();
 
-        SDeclarativeScreen *screen = new SDeclarativeScreen(context);
+        SDeclarativeScreen *screen = new SDeclarativeScreen(engine, context); // context as parent
         context->setContextProperty("screen", screen);
 
         SStyleFactory *style = new SStyleFactory(screen, context);

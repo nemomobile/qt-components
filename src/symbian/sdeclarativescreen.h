@@ -30,6 +30,7 @@
 #include <QtDeclarative/qdeclarativeitem.h>
 
 class SDeclarativeScreenPrivate;
+QT_FORWARD_DECLARE_CLASS(QDeclarativeEngine)
 
 class SDeclarativeScreen : public QObject
 {
@@ -53,7 +54,7 @@ class SDeclarativeScreen : public QObject
     Q_FLAGS(Orientations)
 
 public:
-    explicit SDeclarativeScreen(QObject *parent = 0);
+    explicit SDeclarativeScreen(QDeclarativeEngine *engine, QObject *parent = 0);
     virtual ~SDeclarativeScreen();
 
     enum Orientation {
