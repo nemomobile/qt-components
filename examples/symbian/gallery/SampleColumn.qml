@@ -372,17 +372,22 @@ Column {
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
         }
-        buttons:
+        buttons: Row {
             ToolButton {
                 text: "Close"
-                width: parent.width
-                height: 60
-                anchors.horizontalCenter: parent.horizontalCenter
+                height: parent.height
                 onClicked: sectionScroll.close()
             }
+            CheckBox {
+                id: singleRow
+                text: "Single Row"
+                anchors.verticalCenter: parent.verticalCenter
+            }
+        }
         content:
             Rectangle {
-            width: parent.width; height: parent.height - singleRow.height
+            width: parent.width
+            height: Math.round(screen.height / 3)
 
             ListModel {
                 id: testModel
@@ -447,13 +452,7 @@ Column {
             SectionScroller {
                 id: sectionScroller
                 listView: list
-            }
-
-            CheckBox {
-                id: singleRow
-                anchors.top: parent.bottom
-                text: "Single Row"
-                onClicked: sectionScroller.platformSingleRow = !sectionScroller.platformSingleRow
+                platformSingleRow: singleRow.checked
             }
         }
     }
