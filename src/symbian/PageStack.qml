@@ -147,15 +147,45 @@ Item {
             // Flag that indicates the container should be cleaned up after the transition has ended.
             property bool cleanupAfterTransition: false
 
+            // Flag that indicates if page transition animation is running
+            property bool transitionAnimationRunning: false
+
+            // State to be set after previous state change animation has finished
+            property string pendingState: "none"
+
+            // Ensures that transition finish actions are executed
+            // in case the object is destroyed before reaching the
+            // end state of an ongoing transition
+            Component.onDestruction: {
+                if (transitionAnimationRunning)
+                    transitionEnded();
+            }
+
+            // Sets pending state as current if state change is delayed
+            onTransitionAnimationRunningChanged: {
+                if (!transitionAnimationRunning && pendingState != "none") {
+                    state = pendingState;
+                    pendingState = "none";
+                }
+            }
+
+            // Handles state change depening on transition animation status
+            function setState(newState) {
+                if (transitionAnimationRunning)
+                    pendingState = newState;
+                else
+                    state = newState;
+            }
+
             // Performs a push enter transition.
             function pushEnter(replace, immediate, orientationChanges) {
                 if (!immediate) {
                     if (orientationChanges)
-                        state = replace ? "Front" : "LandscapeRight";
+                        setState(replace ? "Front" : "LandscapeRight");
                     else
-                        state = replace ? "Front" : "Right";
+                        setState(replace ? "Front" : "Right");
                 }
-                state = "";
+                setState("");
                 page.visible = true;
                 if (root.visible && immediate)
                     internal.setPageStatus(page, PageStatus.Active);
@@ -164,9 +194,9 @@ Item {
             // Performs a push exit transition.
             function pushExit(replace, immediate, orientationChanges) {
                 if (orientationChanges)
-                    state = immediate ? "Hidden" : (replace ? "Back" : "LandscapeLeft");
+                    setState(immediate ? "Hidden" : (replace ? "Back" : "LandscapeLeft"));
                 else
-                    state = immediate ? "Hidden" : (replace ? "Back" : "Left");
+                    setState(immediate ? "Hidden" : (replace ? "Back" : "Left"));
                 if (root.visible && immediate)
                     internal.setPageStatus(page, PageStatus.Inactive);
                 if (replace) {
@@ -181,7 +211,7 @@ Item {
             function popEnter(immediate, orientationChanges) {
                 if (!immediate)
                     state = orientationChanges ? "LandscapeLeft" : "Left";
-                state = "";
+                setState("");
                 page.visible = true;
                 if (root.visible && immediate)
                     internal.setPageStatus(page, PageStatus.Active);
@@ -190,9 +220,9 @@ Item {
             // Performs a pop exit transition.
             function popExit(immediate, orientationChanges) {
                 if (orientationChanges)
-                    state = immediate ? "Hidden" : "LandscapeRight";
+                    setState(immediate ? "Hidden" : "LandscapeRight");
                 else
-                    state = immediate ? "Hidden" : "Right";
+                    setState(immediate ? "Hidden" : "Right");
 
                 if (root.visible && immediate)
                     internal.setPageStatus(page, PageStatus.Inactive);
@@ -204,6 +234,7 @@ Item {
 
             // Called when a transition has started.
             function transitionStarted() {
+                transitionAnimationRunning = true;
                 internal.ongoingTransitionCount++;
                 if (root.visible)
                     internal.setPageStatus(page, (state == "") ? PageStatus.Activating : PageStatus.Deactivating);
@@ -217,6 +248,7 @@ Item {
                     internal.setPageStatus(page, (state == "") ? PageStatus.Active : PageStatus.Inactive);
 
                 internal.ongoingTransitionCount--;
+                transitionAnimationRunning = false;
                 if (cleanupAfterTransition)
                     cleanup();
             }
@@ -342,9 +374,7 @@ Item {
                 }
                 container.destroy();
             }
-
         }
     }
-
 }
 
