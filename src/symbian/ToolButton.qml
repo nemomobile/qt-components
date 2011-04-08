@@ -200,17 +200,9 @@ ImplicitSizeItem {
         // seamless row of buttons. Otherwise normal ToolButton graphics are utilized.
         function imageSource() {
             if (parent && parent.hasOwnProperty("checkedButton") && parent.hasOwnProperty("__direction") && parent.__direction == Qt.Horizontal && parent.children.length > 1) {
-                var imageName = "qtg_fr_toolbutton_segmented"
-                if (root === parent.children[0])
-                    imageName += "_l_"
-                else if(root === parent.children[parent.children.length - 1])
-                    imageName += "_r_"
-                else
-                    imageName += "_c_"
-
+                var imageName = parent.__graphicsName(root, 1);
                 return privateStyle.imagePath(imageName + internal.mode())
             }
-
             return privateStyle.imagePath("qtg_fr_toolbutton_" + internal.mode())
         }
     }

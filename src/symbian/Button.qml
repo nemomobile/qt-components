@@ -142,14 +142,7 @@ ImplicitSizeItem {
         // seamless row of buttons. Otherwise normal Button graphics are utilized.
         function imageSource() {
             if (parent && parent.hasOwnProperty("checkedButton") && parent.hasOwnProperty("__direction") && parent.__direction == Qt.Horizontal && parent.children.length > 1) {
-                var imageName = "qtg_fr_pushbutton_segmented"
-                if (button === parent.children[0])
-                    imageName += "_l_"
-                else if(button === parent.children[parent.children.length - 1])
-                    imageName += "_r_"
-                else
-                    imageName += "_c_"
-
+                var imageName = parent.__graphicsName(button, 0);
                 return privateStyle.imagePath(imageName + internal.bg_postfix())
             }
             return privateStyle.imagePath("qtg_fr_pushbutton_" + internal.bg_postfix())

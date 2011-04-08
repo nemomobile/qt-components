@@ -36,6 +36,34 @@ Row {
 
     property int __direction: Qt.Horizontal
 
+    function __graphicsName(button, buttonType) {
+        var siblingButtons = Engine.visibleItems(root)
+        var imageName
+
+        if (siblingButtons.length > 1) {
+            if (buttonType == 0)
+                imageName = "qtg_fr_pushbutton_segmented"
+            else if (buttonType == 1)
+                imageName = "qtg_fr_toolbutton_segmented"
+
+            if (button === siblingButtons[0])
+                imageName += "_l_"
+            else if (button === siblingButtons[siblingButtons.length - 1])
+                imageName += "_r_"
+            else
+                imageName += "_c_"
+
+            return imageName
+        }
+
+        if (buttonType == 0)
+            imageName = "qtg_fr_pushbutton_"
+        else if (buttonType == 1)
+            imageName = "qtg_fr_toolbutton_"
+
+        return imageName
+    }
+
     Component.onCompleted: Engine.create(root)
 
     Component.onDestruction: Engine.destroy()

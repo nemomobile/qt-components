@@ -27,8 +27,6 @@
 var self;
 var clickHandlers = [];
 var visibleButtons = [];
-var nonVisibleButtons = [];
-var checkedButton;
 
 function create(that) {
     self = that;
@@ -48,41 +46,31 @@ function destroy() {
 
 function exclusiveChanged() {
     if (self.exclusive) {
-        for (var i = 0; i < visibleButtons.length; i++)
-            visibleButtons[i].checked = false;
+        for (var i = 0; i < self.children.length; i++)
+            self.children[i].checked = false;
     }
     build();
 }
 
 function childrenChanged() {
     visibleButtons = [];
-    nonVisibleButtons = [];
 
     for (var i = 0; i < self.children.length; i++) {
         var item = self.children[i];
-        if (!item.visible)
-            nonVisibleButtons.push(item);
 
-        visibleButtons.push(item);
+        if (item.visible)
+            visibleButtons.push(item);
+
+        if (self.exclusive && item.hasOwnProperty("checkable"))
+            item.checkable = true;
     }
-
-    if (self.exclusive)
-        setButtonsCheckable(true);
 
     build();
-}
-
-function setButtonsCheckable(checkable) {
-    for (var i = 0; i < self.children.length; i++) {
-        if (self.children[i].hasOwnProperty("checkable"))
-            self.children[i].checkable = checkable;
-    }
 }
 
 function build() {
     cleanup();
     visibleButtons = [];
-    nonVisibleButtons = [];
 
     for (var i = 0; i < self.children.length; i++) {
         var item = self.children[i];
@@ -90,47 +78,56 @@ function build() {
         if (!item.hasOwnProperty("checked"))
             continue;
 
+        if (self.exclusive && item.hasOwnProperty("checkable"))
+            item.checkable = true;
+
         item.visibleChanged.connect(build);
         if (!item.visible) {
-            nonVisibleButtons.push(item);
+            if (self.exclusive && item === self.checkedButton) {
+                item.checked = false;
+                self.checkedButton = null;
+            }
             continue;
         }
         visibleButtons.push(item);
 
         if (self.exclusive) {
-            setButtonsCheckable(true);
             clickHandlers[i] = checkExclusive(item);
             item.clicked.connect(clickHandlers[i]);
         }
     }
 
     if (self.exclusive) {
-        if (self.checkedButton) {
+        if (self.checkedButton !== null) {
             self.checkedButton.checked = true;
         }
-        else if (self.checkedButton == null && visibleButtons.length > 0) {
+        else if (self.checkedButton === null && visibleButtons.length > 0) {
             self.checkedButton = visibleButtons[0];
             self.checkedButton.checked = true;
         }
+        else {
+            for (var i = 0; i < visibleButtons.length; i++) {
+                if (visibleButtons[i].checked) {
+                    self.checkedButton = visibleButtons[i];
+                    break;
+                }
+            }
+        }
     }
-
     resizeButtons();
 }
 
 function cleanup() {
-    for (var i = 0; i < visibleButtons.length; i++) {
-        var item = visibleButtons[i];
+
+    for (var i = 0; i < self.children.length; i++) {
+        var item = self.children[i];
 
         if (clickHandlers[i])
             item.clicked.disconnect(clickHandlers[i]);
         item.visibleChanged.disconnect(build);
     }
-    clickHandlers = [];
 
-    for (var j = 0; j < nonVisibleButtons.length; j++) {
-        var item = nonVisibleButtons[j];
-        item.visibleChanged.disconnect(build);
-    }
+    clickHandlers = [];
 }
 
 function checkExclusive(item) {
@@ -149,4 +146,13 @@ function resizeButtons() {
     var buttonWidth = self.width / visibleButtons.length;
     for (var i = 0; i < visibleButtons.length; i++)
         visibleButtons[i].width = buttonWidth;
+}
+
+function visibleItems(item) {
+    visibleButtons = [];
+    for (var i = 0; i < item.children.length; i++) {
+        if (item.children[i].visible)
+            visibleButtons.push(item.children[i]);
+    }
+    return visibleButtons;
 }
