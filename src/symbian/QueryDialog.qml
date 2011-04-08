@@ -70,39 +70,40 @@ Dialog {
 
     content: Item {
         id: content
-        height: Math.min(label.height, preferredHeight)
+        height: internal.getContentAreaHeight()
         width: parent.width
 
-        property real nonContentHeight: title.height + buttons.height + 2 * platformStyle.paddingLarge
-        property real minContentHeight: privateStyle.dialogMinSize - nonContentHeight
+        Item {
+            Flickable {
+                id: flickable
+                anchors.fill: parent
+                contentHeight: label.height
+                flickableDirection: Flickable.VerticalFlick
+                clip: true
+                interactive: label.height > flickable.height
 
-        property real visualContentHeight: Math.max(visualParent.height - nonContentHeight, minContentHeight)
-        property real parentContentHeight: Math.max(parent.parent.height - nonContentHeight, minContentHeight)
-
-        property real preferredHeight: visualParent ? visualContentHeight : parent.parent ? parentContentHeight : 0
-
-        Flickable {
-            id: flickable
-            anchors.fill: parent
-            contentHeight: label.height
-            flickableDirection: Flickable.VerticalFlick
-            clip: true
-            interactive: label.height > content.preferredHeight
-
-            Text {
-                id: label
-                width: flickable.width
-                horizontalAlignment: Text.AlignHCenter
-                font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
-                color: platformStyle.colorNormalLight
-                wrapMode: Text.WordWrap
-                text: root.message
+                Text {
+                    id: label
+                    width: flickable.width - privateStyle.scrollBarThickness
+                    font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
+                    color: platformStyle.colorNormalLight
+                    wrapMode: Text.WordWrap
+                    text: root.message
+                    anchors { right: parent.right; rightMargin: privateStyle.scrollBarThickness }
+                }
             }
-        }
 
-        ScrollDecorator {
-            id: scrollDecorator
-            flickableItem: flickable
+            ScrollDecorator {
+                id: scrollDecorator
+                flickableItem: flickable
+            }
+
+            anchors {
+                top: parent.top; topMargin: platformStyle.paddingLarge
+                bottom: parent.bottom; bottomMargin: platformStyle.paddingLarge
+                left: parent.left; leftMargin: platformStyle.paddingLarge
+                right: parent.right
+            }
         }
     }
 
@@ -113,18 +114,36 @@ Dialog {
         Row {
             id: buttonRow
             anchors.centerIn: parent
+            spacing: platformStyle.paddingMedium
 
             ToolButton {
                 id: acceptButton
-                width: buttons.width / 2
+                width: (buttons.width - 3 * platformStyle.paddingMedium) / 2
                 onClicked: accept()
                 visible: text != ""
             }
             ToolButton {
                 id: rejectButton
-                width: buttons.width / 2
+                width: (buttons.width - 3 * platformStyle.paddingMedium) / 2
                 onClicked: reject()
                 visible: text != ""
+            }
+        }
+    }
+
+    QtObject {
+        id: internal
+
+        function getContentAreaHeight() {
+            var nonContentHeight = title.height + buttons.height;
+            var contentHeight = label.height + 2 * platformStyle.paddingLarge;
+
+            if (contentHeight > platformContentMaximumHeight) {
+                return platformContentMaximumHeight;
+            } else if (contentHeight < (privateStyle.dialogMinSize - nonContentHeight)) {
+                return privateStyle.dialogMinSize - nonContentHeight;
+            } else {
+                return contentHeight;
             }
         }
     }
