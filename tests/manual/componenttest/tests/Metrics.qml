@@ -67,6 +67,17 @@ Item {
             return "ExtraHigh"
     }
 
+    function orientation() {
+        if (screen.orientation == Screen.Portrait)
+            return "Portrait"
+        else if (screen.orientation == Screen.Landscape)
+            return "Landscape"
+        else if (screen.orientation == Screen.PortraitInverted)
+            return "PortraitInverted"
+        else
+            return "LandscapeInverted"
+    }
+
     Text {
         color: "white"
         font.pixelSize: 20
@@ -78,6 +89,8 @@ Item {
               + "Physical height (mm):\n"
               + "Diagonal (inch):\n"
               + "DPI:\n"
+              + "Rotation:\n"
+              + "Orientation:\n"
               + "Category:\n"
               + "Density:"
         anchors { fill: parent; margins: 20 }
@@ -94,6 +107,8 @@ Item {
               + round(physicalHeight()) + '\n'
               + round(diagonal()) + '\n'
               + round(screen.dpi) + '\n'
+              + screen.rotation + '\n'
+              + orientation() + '\n'
               + category() + '\n'
               + density()
         anchors { fill: parent; margins: 20 }
