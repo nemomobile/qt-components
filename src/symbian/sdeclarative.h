@@ -41,7 +41,7 @@ class SDeclarative : public QObject
     Q_ENUMS(InteractionMode ImageSize ScrollBarVisibility SourceSize EffectType Feedback)
 
 public:
-    SDeclarative(QObject *parent = 0);
+    explicit SDeclarative(QObject *parent = 0);
     virtual ~SDeclarative();
 
     enum InteractionMode {

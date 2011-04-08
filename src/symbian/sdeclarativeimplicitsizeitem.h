@@ -37,7 +37,7 @@ class SDeclarativeImplicitSizeItem : public QDeclarativeItem
     Q_PROPERTY(qreal implicitHeight READ implicitHeight WRITE setImplicitHeightNotify NOTIFY implicitHeightChanged)
 
 public:
-    SDeclarativeImplicitSizeItem(QDeclarativeItem *parent = 0);
+    explicit SDeclarativeImplicitSizeItem(QDeclarativeItem *parent = 0);
     virtual ~SDeclarativeImplicitSizeItem();
 
 Q_SIGNALS:

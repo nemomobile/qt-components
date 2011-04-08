@@ -39,7 +39,7 @@ class SDeclarativeIcon : public QDeclarativeItem
     Q_PROPERTY(QColor iconColor READ iconColor WRITE setIconColor NOTIFY iconColorChanged)
 
 public:
-    SDeclarativeIcon(QDeclarativeItem *parent = 0);
+    explicit SDeclarativeIcon(QDeclarativeItem *parent = 0);
     virtual ~SDeclarativeIcon();
 
     QString iconName() const;
