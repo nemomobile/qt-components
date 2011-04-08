@@ -374,18 +374,19 @@ int SDeclarativeScreen::rotation() const
 {
     Q_D(const SDeclarativeScreen);
     int angle = 0;
+    bool nativePortrait = d->displaySize.width() < d->displaySize.height();
     switch (d->currentOrientation) {
     case Portrait:
-        angle = 0;
+        angle = nativePortrait ? 0 : 90;
         break;
     case Landscape:
-        angle = 270;
+        angle = nativePortrait ? 270 : 0;
         break;
     case PortraitInverted:
-        angle = 180;
+        angle = nativePortrait ? 180 : 270;
         break;
     case LandscapeInverted:
-        angle = 90;
+        angle = nativePortrait ? 90 : 180;
         break;
     default:
         break;
