@@ -96,6 +96,7 @@ Item {
             id: buttonRow1
             width: parent.width
             exclusive: toggleExclusive.checked
+            checkedButton:  b2
 
             Button {
                 id: b1
@@ -133,7 +134,6 @@ Item {
         }
 
         Row {
-
             visible: toggleExclusive.checked && buttonRow1.checkedButton !== null
 
             Text {
@@ -202,7 +202,7 @@ Item {
 
             Button {
                 id: addButton
-                text: "Add Btn"
+                text: "Add"
 
                 onClicked: {
                     var item = Qt.createQmlObject('import Qt 4.7; import com.nokia.symbian 1.0;  Button { text: \"Btn' +buttonRow3.children.length +'\" }', buttonRow3, "dynButton");
@@ -211,7 +211,7 @@ Item {
 
             Button {
                 id: delButton
-                text: "Del checked"
+                text: "Del"
 
                 onClicked: {
                     for (var i = 0; i < buttonRow3.children.length; i++) {
@@ -222,10 +222,34 @@ Item {
             }
         }
 
+        Row {
+            width: parent.width
+
+            TextField {
+                id: indexTextField
+                placeholderText: "index: "
+            }
+
+            Button {
+                id: toggleShowButton
+                text: "Hide/show"
+                onClicked: {
+                    if (buttonRow3.children[indexTextField.text])
+                        buttonRow3.children[indexTextField.text].visible = !buttonRow3.children[indexTextField.text].visible
+                }
+            }
+
+            CheckBox {
+                id: toggleExclusive2
+                checked: true
+                text: "Exclusive"
+            }
+        }
+
         ButtonRow {
             id: buttonRow3
             width: parent.width
-            exclusive: true
+            exclusive: toggleExclusive2.checked
         }
     }
 
@@ -440,10 +464,34 @@ Item {
             }
         }
 
+        Row {
+            width: parent.width
+
+            TextField {
+                id: indexTextField2
+                placeholderText: "index: "
+            }
+
+            Button {
+                id: toggleShowButton2
+                text: "Hide/show"
+                onClicked: {
+                    if (buttonRow8.children[indexTextField2.text])
+                        buttonRow8.children[indexTextField2.text].visible = !buttonRow8.children[indexTextField2.text].visible
+                }
+            }
+
+            CheckBox {
+                id: toggleExclusive6
+                checked: true
+                text: "Exclusive"
+            }
+        }
+
         ButtonRow {
             id: buttonRow8
             width: parent.width
-            exclusive: true
+            exclusive: toggleExclusive6.checked
         }
     }
 
