@@ -30,6 +30,8 @@ import com.nokia.symbian 1.0
 Window {
     id: root
 
+    property Menu menu
+
     StatusBar {
         id: statusBar
         anchors.top: root.top
@@ -71,19 +73,25 @@ Window {
             }
             ToolButton {
                 iconSource: "qrc:tb_options.svg"
-                onClicked: menu.open()
+                onClicked: {
+                    if (!menu)
+                        menu = menuComponent.createObject(root)
+                    menu.open()
+                }
             }
         }
     }
 
-    Menu {
-        id: menu
-        content: MenuLayout {
-            MenuItem {
-                text: column.enabled ? "Disable" : "Enable"
-                onClicked: column.enabled = !column.enabled
+    Component {
+        id: menuComponent
+        Menu {
+            content: MenuLayout {
+                MenuItem {
+                    text: column.enabled ? "Disable" : "Enable"
+                    onClicked: column.enabled = !column.enabled
+                }
+                MenuItem { text: "Quit"; onClicked: Qt.quit() }
             }
-            MenuItem { text: "Quit"; onClicked: Qt.quit() }
         }
     }
 }

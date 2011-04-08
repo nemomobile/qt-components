@@ -116,119 +116,160 @@ Column {
         indeterminate: true
     }
 
+    Component {
+        id: dialogComponent
+        Dialog {
+            id: dialog
+            title: Text {
+                text: "Dialog"
+                font { bold: true; pixelSize: 16 }
+                color: "white"
+                anchors.fill: parent
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+            }
+            buttons: Row {
+                height: 60
+                width: parent.width
+                ToolButton {
+                    text: "Ok"
+                    width: parent.width / 2
+                    height: parent.height
+                    onClicked: dialog.accept()
+                }
+
+                ToolButton {
+                    text: "Cancel"
+                    width: parent.width / 2
+                    height: parent.height
+                    onClicked: dialog.reject()
+                }
+            }
+            content: Text {
+                text: "This is the content"
+                font { bold: true; pixelSize: 16 }
+                anchors.fill: parent
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+    }
+
     Button {
+        property Dialog dialog
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width - parent.spacing
         text: "Dialog"
-        onClicked: dialog.open()
-    }
-
-    SelectionDialog {
-        id: singleSelectionDialog
-        titleText: "Select background color"
-        selectedIndex: 1
-
-        model: ListModel {
-            id: colorModel
-
-            ListElement { name: "Red" }
-            ListElement { name: "Blue" }
-            ListElement { name: "Green" }
-            ListElement { name: "Yellow" }
-            ListElement { name: "Black" }
-            ListElement { name: "White" }
-            ListElement { name: "Grey" }
-            ListElement { name: "Orange" }
-            ListElement { name: "Pink" }
+        onClicked: {
+            if (!dialog)
+                dialog = dialogComponent.createObject(column)
+            dialog.open()
         }
-
-        onAccepted: { column.parent.color = colorModel.get(selectedIndex).name }
     }
 
-    Button {
+    Component {
+        id: singleSelectionDialogComponent
+        SelectionDialog {
+            titleText: "Select background color"
+            selectedIndex: 1
+
+            model: ListModel {
+                id: colorModel
+
+                ListElement { name: "Red" }
+                ListElement { name: "Blue" }
+                ListElement { name: "Green" }
+                ListElement { name: "Yellow" }
+                ListElement { name: "Black" }
+                ListElement { name: "White" }
+                ListElement { name: "Grey" }
+                ListElement { name: "Orange" }
+                ListElement { name: "Pink" }
+            }
+
+            onAccepted: { selectionDialogButton.parent.color = colorModel.get(selectedIndex).name }
+        }
+    }
+
+    Rectangle {
         anchors.horizontalCenter: parent.horizontalCenter
+        height: selectionDialogButton.height
         width: parent.width - parent.spacing
-        text: "Selection Dialog"
-        onClicked: singleSelectionDialog.open()
-    }
+        radius: 10
+        color: "black"
+        Button {
+            id: selectionDialogButton
+            property SelectionDialog singleSelectionDialog
+            anchors.centerIn: parent
+            text: "Selection Dialog"
 
-    Dialog {
-        id: dialog
-
-        title: Text {
-            text: "Dialog"
-            font { bold: true; pixelSize: 16 }
-            color: "white"
-            anchors.fill: parent
-            horizontalAlignment: Text.AlignLeft
-            verticalAlignment: Text.AlignVCenter
-        }
-        buttons: Row {
-            height: 60
-            width: parent.width
-            ToolButton {
-                text: "Ok"
-                width: parent.width / 2
-                height: parent.height
-                onClicked: dialog.accept()
+            onClicked: {
+                if (!singleSelectionDialog)
+                    singleSelectionDialog = singleSelectionDialogComponent.createObject(column)
+                singleSelectionDialog.open()
             }
-
-            ToolButton {
-                text: "Cancel"
-                width: parent.width / 2
-                height: parent.height
-                onClicked: dialog.reject()
-            }
-        }
-        content: Text {
-            text: "This is the content"
-            font { bold: true; pixelSize: 16 }
-            anchors.fill: parent
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
         }
     }
 
     Button {
+        property QueryDialog queryDialog
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width - parent.spacing
         text: "QueryDialog"
-        onClicked: queryDialog.open()
+        onClicked: {
+            if (!queryDialog)
+                queryDialog = queryDialogComponent.createObject(column)
+            queryDialog.open()
+        }
     }
 
-    QueryDialog {
-        id: queryDialog
+    Component {
+        id: queryDialogComponent
+        QueryDialog {
+            titleText: "Query Dialog"
+            message: "Lorem ipsum dolor sit amet, consectetur adipisici elit,"
+                     + "sed eiusmod tempor incidunt ut labore et dolore magna aliqua."
+                     + "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris"
+                     + "nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit"
+                     + "in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+                     + "Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui"
+                     + "officia deserunt mollit anim id est laborum."
 
-        titleText: "Query Dialog"
-        message: "Lorem ipsum dolor sit amet, consectetur adipisici elit,"
-                 + "sed eiusmod tempor incidunt ut labore et dolore magna aliqua."
-                 + "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris"
-                 + "nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit"
-                 + "in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-                 + "Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui"
-                 + "officia deserunt mollit anim id est laborum."
+            acceptButtonText: "Ok"
+            rejectButtonText: "Cancel"
 
-        acceptButtonText: "Ok"
-        rejectButtonText: "Cancel"
-
-        icon: "image://theme/qtg_graf_busyindicator_1"
+            icon: "image://theme/qtg_graf_busyindicator_1"
+        }
     }
 
-    Button {
+    Rectangle {
         anchors.horizontalCenter: parent.horizontalCenter
+        height: contentMenuButton.height
         width: parent.width - parent.spacing
-        text: "ContextMenu"
-        onClicked: contextMenu.open()
+        radius: 10
+        color: "black"
+        Button {
+            id: contentMenuButton
+            property ContextMenu contextMenu
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: "ContextMenu"
+            onClicked: {
+                if (!contextMenu)
+                    contextMenu = contextMenuComponent.createObject(column)
+                contextMenu.open()
+            }
+        }
     }
 
-    ContextMenu {
-        id: contextMenu
-
-        content: MenuLayout {
-            MenuItem { text: "White"; onClicked: { column.parent.color = "White" } }
-            MenuItem { text: "Red"; onClicked: { column.parent.color = "Red" } }
-            MenuItem { text: "LightBlue"; onClicked: { column.parent.color = "LightBlue" } }
-            MenuItem { text: "LightGreen"; onClicked: { column.parent.color = "LightGreen" } }
+    Component {
+        id: contextMenuComponent
+        ContextMenu {
+            content: MenuLayout {
+                MenuItem { text: "White"; onClicked: { contentMenuButton.parent.color = "White" } }
+                MenuItem { text: "Red"; onClicked: { contentMenuButton.parent.color = "Red" } }
+                MenuItem { text: "LightBlue"; onClicked: { contentMenuButton.parent.color = "LightBlue" } }
+                MenuItem { text: "LightGreen"; onClicked: { contentMenuButton.parent.color = "LightGreen" } }
+            }
         }
     }
 
@@ -282,12 +323,44 @@ Column {
         }
     }
 
-    ChoiceList {
+    SelectionListItem {
+        property SelectionDialog selectionDialog
+        title: {
+            if (selectionDialog) {
+                if (selectionDialog.selectedIndex >= 0)
+                    return selectionDialog.model.get(selectionDialog.selectedIndex).name
+            }
+            return "Three"
+        }
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width - parent.spacing
-        currentIndex: 2
-        model: ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"]
+
+        onClicked: {
+            if (!selectionDialog)
+                selectionDialog = selectionDialogComponent.createObject(column)
+            selectionDialog.open()
+        }
+
+        Component {
+            id: selectionDialogComponent
+            SelectionDialog {
+                titleText: "Select"
+                selectedIndex: 2
+                model: ListModel {
+                    ListElement { name: "One" }
+                    ListElement { name: "Two" }
+                    ListElement { name: "Three" }
+                    ListElement { name: "Four" }
+                    ListElement { name: "Five" }
+                    ListElement { name: "Six" }
+                    ListElement { name: "Seven" }
+                    ListElement { name: "Eight" }
+                    ListElement { name: "Nine" }
+                }
+            }
+        }
     }
+
 
     TabBar {
         width: parent.width - parent.spacing
@@ -300,7 +373,13 @@ Column {
         height: 100
         width: parent.width - parent.spacing
         Button { id: tab1content; text: "tab1" }
-        Text { id: tab2content; text: "tab2"; horizontalAlignment: "AlignHCenter"; verticalAlignment: "AlignVCenter" }
+        Text {
+            id: tab2content
+            text: "tab2"
+            horizontalAlignment: "AlignHCenter"
+            verticalAlignment: "AlignVCenter"
+            color: platformStyle.colorNormalLight
+        }
         Page {
             id: tab3content
             CheckBox { anchors.fill: parent; text: "tab3" }
@@ -358,103 +437,111 @@ Column {
     }
 
     Button {
+        property Dialog sectionScroll
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width - parent.spacing
         text: "SectionScroller"
-        onClicked: sectionScroll.open()
+        onClicked: {
+            if (!sectionScroll)
+                sectionScroll = sectionScrollComponent.createObject(column)
+            sectionScroll.open()
+        }
     }
 
-    Dialog {
-        id: sectionScroll
-        title: Text {
-            text: "Section Scroller"
-            font { bold: true; pixelSize: 16 }
-            color: "white"
-            anchors.fill: parent
-            horizontalAlignment: Text.AlignLeft
-            verticalAlignment: Text.AlignVCenter
-        }
-        buttons: Row {
-            ToolButton {
-                text: "Close"
-                height: parent.height
-                onClicked: sectionScroll.close()
-            }
-            CheckBox {
-                id: singleRow
-                text: "Single Row"
-                anchors.verticalCenter: parent.verticalCenter
-            }
-        }
-        content:
-            Rectangle {
-            width: parent.width
-            height: Math.round(screen.height / 3)
-
-            ListModel {
-                id: testModel
-                ListElement { name: "A Cat 1"; alphabet: "A" }
-                ListElement { name: "A Cat 2"; alphabet: "A" }
-                ListElement { name: "Boo 1"; alphabet: "B" }
-                ListElement { name: "Boo 2"; alphabet: "B" }
-                ListElement { name: "Cat 1"; alphabet: "C" }
-                ListElement { name: "Cat 2"; alphabet: "C" }
-                ListElement { name: "Dog 1"; alphabet: "D" }
-                ListElement { name: "Dog 2"; alphabet: "D" }
-                ListElement { name: "Elephant 1"; alphabet: "E" }
-                ListElement { name: "Elephant 2"; alphabet: "E" }
-                ListElement { name: "FElephant 1"; alphabet: "F" }
-                ListElement { name: "FElephant 2"; alphabet: "F" }
-                ListElement { name: "Guinea pig"; alphabet: "G" }
-                ListElement { name: "Goose"; alphabet: "G" }
-                ListElement { name: "Horse"; alphabet: "H" }
-                ListElement { name: "Horse"; alphabet: "H" }
-                ListElement { name: "Parrot"; alphabet: "P" }
-                ListElement { name: "Parrot"; alphabet: "P" }
-            }
-
-            ListView {
-                id: list
+    Component {
+        id: sectionScrollComponent
+        Dialog {
+            id: sectionScroll
+            title: Text {
+                text: "Section Scroller"
+                font { bold: true; pixelSize: 16 }
+                color: "white"
                 anchors.fill: parent
-                clip: true
-                delegate:  Rectangle {
-                    width: list.width
-                    height: 20
-                    border.color: "#000"
-                    border.width: 1
-                    color: index % 2 == 0 ? "#ffffff" : "#eeeeee"
-                    property string section: name[0]
-                    Text {
-                        anchors.verticalCenter: parent.verticalCenter
-                        x: 20
-                        text: name + " (index " + index + ")"
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+            }
+            buttons: Row {
+                ToolButton {
+                    text: "Close"
+                    height: parent.height
+                    onClicked: sectionScroll.close()
+                }
+                CheckBox {
+                    id: singleRow
+                    text: "Single Row"
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+            content:
+                Rectangle {
+                width: parent.width
+                height: Math.round(screen.height / 3)
+
+                ListModel {
+                    id: testModel
+                    ListElement { name: "A Cat 1"; alphabet: "A" }
+                    ListElement { name: "A Cat 2"; alphabet: "A" }
+                    ListElement { name: "Boo 1"; alphabet: "B" }
+                    ListElement { name: "Boo 2"; alphabet: "B" }
+                    ListElement { name: "Cat 1"; alphabet: "C" }
+                    ListElement { name: "Cat 2"; alphabet: "C" }
+                    ListElement { name: "Dog 1"; alphabet: "D" }
+                    ListElement { name: "Dog 2"; alphabet: "D" }
+                    ListElement { name: "Elephant 1"; alphabet: "E" }
+                    ListElement { name: "Elephant 2"; alphabet: "E" }
+                    ListElement { name: "FElephant 1"; alphabet: "F" }
+                    ListElement { name: "FElephant 2"; alphabet: "F" }
+                    ListElement { name: "Guinea pig"; alphabet: "G" }
+                    ListElement { name: "Goose"; alphabet: "G" }
+                    ListElement { name: "Horse"; alphabet: "H" }
+                    ListElement { name: "Horse"; alphabet: "H" }
+                    ListElement { name: "Parrot"; alphabet: "P" }
+                    ListElement { name: "Parrot"; alphabet: "P" }
+                }
+
+                ListView {
+                    id: list
+                    anchors.fill: parent
+                    clip: true
+                    delegate:  Rectangle {
+                        width: list.width
+                        height: 20
+                        border.color: "#000"
+                        border.width: 1
+                        color: index % 2 == 0 ? "#ffffff" : "#eeeeee"
+                        property string section: name[0]
+                        Text {
+                            anchors.verticalCenter: parent.verticalCenter
+                            x: 20
+                            text: name + " (index " + index + ")"
+                        }
+                    }
+
+                    model: testModel
+                    section.property: "alphabet"
+                    section.criteria: ViewSection.FullString
+                    section.delegate: Rectangle {
+                        width: list.width
+                        height: 30
+                        color: "#888"
+                        Text {
+                            anchors.verticalCenter: parent.verticalCenter
+                            x: 5
+                            text: section
+                            font.bold: true
+                            font.pointSize: 16
+                        }
                     }
                 }
-
-                model: testModel
-                section.property: "alphabet"
-                section.criteria: ViewSection.FullString
-                section.delegate: Rectangle {
-                    width: list.width
-                    height: 30
-                    color: "#888"
-                    Text {
-                        anchors.verticalCenter: parent.verticalCenter
-                        x: 5
-                         text: section
-                         font.bold: true
-                         font.pointSize: 16
-                     }
+                ScrollDecorator {
+                    flickableItem: list
                 }
-            }
-            ScrollDecorator {
-                flickableItem: list
-            }
 
-            SectionScroller {
-                id: sectionScroller
-                listView: list
-                platformSingleRow: singleRow.checked
+                SectionScroller {
+                    id: sectionScroller
+                    listView: list
+                    platformSingleRow: singleRow.checked
+                }
             }
         }
     }
