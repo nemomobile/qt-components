@@ -239,6 +239,11 @@ ImplicitSizeItem {
         }
     }
 
+    Connections {
+        target: root.listView
+        onCurrentSectionChanged: internal.currentArea = container.dragging ? internal.currentArea : ""
+    }
+
     QtObject {
         id: internal
 
