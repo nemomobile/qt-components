@@ -210,6 +210,8 @@ Column {
 
         acceptButtonText: "Ok"
         rejectButtonText: "Cancel"
+
+        icon: "image://theme/qtg_graf_busyindicator_1"
     }
 
     Button {
