@@ -279,23 +279,22 @@ ImplicitSizeItem {
         id: internal
 
         function handleKeyEvent(keyEvent) {
+            var oldValue = model.value
             if (orientation == Qt.Horizontal) {
                 if (keyEvent.key == Qt.Key_Left) {
                     model.value = inverted ? model.value + model.stepSize : model.value - model.stepSize
-                    keyEvent.accepted = true
                 } else if (keyEvent.key == Qt.Key_Right) {
                     model.value = inverted ? model.value - model.stepSize : model.value + model.stepSize
-                    keyEvent.accepted = true
                 }
             } else { //Vertical
                 if (keyEvent.key == Qt.Key_Up) {
                     model.value = inverted ? model.value + model.stepSize : model.value - model.stepSize
-                    keyEvent.accepted = true
                 } else if (keyEvent.key == Qt.Key_Down) {
                     model.value = inverted ? model.value - model.stepSize : model.value + model.stepSize
-                    keyEvent.accepted = true
                 }
             }
+            if (oldValue != model.value)
+                keyEvent.accepted = true
             if (keyEvent.accepted) {
                 track.keysActive = true
                 keyActivity.restart()
