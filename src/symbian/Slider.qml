@@ -228,9 +228,6 @@ ImplicitSizeItem {
 
     Keys.onPressed: {
         internal.handleKeyEvent(event)
-        track.keysActive = true
-        keyActivity.restart()
-        valueIndicator.position()
     }
 
     Component {
@@ -298,6 +295,11 @@ ImplicitSizeItem {
                     model.value = inverted ? model.value - model.stepSize : model.value + model.stepSize
                     keyEvent.accepted = true
                 }
+            }
+            if (keyEvent.accepted) {
+                track.keysActive = true
+                keyActivity.restart()
+                valueIndicator.position()
             }
         }
     }
