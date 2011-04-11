@@ -217,12 +217,12 @@ ImplicitSizeItem {
                     }
                 }
             }
+        }
 
-            Timer {
-                id: keyActivity
-                interval: 750
-                onTriggered: track.keysActive = false
-            }
+        Timer {
+            id: keyActivity
+            interval: 750
+            onTriggered: track.keysActive = false
         }
     }
 
