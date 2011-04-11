@@ -209,11 +209,11 @@ ImplicitSizeItem {
                             valueIndicator.position()
                         }
                     }
-                    onPressed: privateStyle.play(Symbian.BasicSlider);
+                    onPressed: privateStyle.play(Symbian.BasicSlider)
                     onReleased: {
                         if (!updateValueWhileDragging)
                             model.position = orientation == Qt.Horizontal ? handle.x : handle.y
-                        privateStyle.play(Symbian.BasicSlider);
+                        privateStyle.play(Symbian.BasicSlider)
                     }
                 }
             }
@@ -251,7 +251,7 @@ ImplicitSizeItem {
             if (!valueIndicatorVisible || status != Loader.Ready)
                 return
 
-            var point = null;
+            var point = null
             if (orientation == Qt.Horizontal) {
                 point = root.mapFromItem(track, handle.x + handle.width / 2 - valueIndicator.item.width / 2, 0)
 
@@ -284,19 +284,19 @@ ImplicitSizeItem {
         function handleKeyEvent(keyEvent) {
             if (orientation == Qt.Horizontal) {
                 if (keyEvent.key == Qt.Key_Left) {
-                    model.value = inverted ? model.value + model.stepSize : model.value - model.stepSize;
-                    keyEvent.accepted = true;
+                    model.value = inverted ? model.value + model.stepSize : model.value - model.stepSize
+                    keyEvent.accepted = true
                 } else if (keyEvent.key == Qt.Key_Right) {
-                    model.value = inverted ? model.value - model.stepSize : model.value + model.stepSize;
-                    keyEvent.accepted = true;
+                    model.value = inverted ? model.value - model.stepSize : model.value + model.stepSize
+                    keyEvent.accepted = true
                 }
             } else { //Vertical
                 if (keyEvent.key == Qt.Key_Up) {
-                    model.value = inverted ? model.value + model.stepSize : model.value - model.stepSize;
-                    keyEvent.accepted = true;
+                    model.value = inverted ? model.value + model.stepSize : model.value - model.stepSize
+                    keyEvent.accepted = true
                 } else if (keyEvent.key == Qt.Key_Down) {
-                    model.value = inverted ? model.value - model.stepSize : model.value + model.stepSize;
-                    keyEvent.accepted = true;
+                    model.value = inverted ? model.value - model.stepSize : model.value + model.stepSize
+                    keyEvent.accepted = true
                 }
             }
         }
