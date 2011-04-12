@@ -34,6 +34,7 @@ Item {
 
     ButtonRow {
         id: navButtonRow
+        objectName: "navButtonRow"
         anchors.top:  parent.top
         anchors.margins: 20
         width: parent.width
@@ -42,6 +43,7 @@ Item {
 
         Button {
             id: navButton1
+            objectName: "navButton1"
             text: "Buttons"
             opacity: 0.6
             KeyNavigation.left: navButton4
@@ -51,6 +53,7 @@ Item {
 
         Button {
             id: navButton2
+            objectName: "navButton2"
             text: "CheckBoxes"
             opacity: 0.6
             KeyNavigation.left: navButton1
@@ -60,6 +63,7 @@ Item {
 
         Button {
             id: navButton3
+            objectName: "navButton3"
             text: "RadioButtons"
             opacity: 0.6
             KeyNavigation.left: navButton2
@@ -69,6 +73,7 @@ Item {
 
         Button {
             id: navButton4
+            objectName: "navButton4"
             text: "ToolButtons"
             opacity: 0.6
             KeyNavigation.left: navButton3
@@ -94,6 +99,7 @@ Item {
 
         ButtonRow {
             id: buttonRow1
+            objectName: "buttonRow1"
             width: parent.width
             exclusive: toggleExclusive.checked
             checkedButton:  b2
@@ -129,6 +135,7 @@ Item {
 
         CheckBox {
             id: toggleExclusive
+            objectName: "toggleExclusive"
             text: "exclusive"
             checked: true
         }
@@ -159,6 +166,7 @@ Item {
 
         ButtonRow {
             id: buttonRow2
+            objectName: "buttonRow2"
             width: parent.width
 
             Button {
@@ -202,6 +210,7 @@ Item {
 
             Button {
                 id: addButton
+                objectName: "addButton"
                 text: "Add"
 
                 onClicked: {
@@ -211,6 +220,7 @@ Item {
 
             Button {
                 id: delButton
+                objectName: "delButton"
                 text: "Del"
 
                 onClicked: {
@@ -227,11 +237,13 @@ Item {
 
             TextField {
                 id: indexTextField
+                objectName: "indexTextField"
                 placeholderText: "index: "
             }
 
             Button {
                 id: toggleShowButton
+                objectName: "toggleShowButton"
                 text: "Hide/show"
                 onClicked: {
                     if (buttonRow3.children[indexTextField.text])
@@ -241,6 +253,7 @@ Item {
 
             CheckBox {
                 id: toggleExclusive2
+                objectName: "toggleExclusive2"
                 checked: true
                 text: "Exclusive"
             }
@@ -248,6 +261,7 @@ Item {
 
         ButtonRow {
             id: buttonRow3
+            objectName: "buttonRow3"
             width: parent.width
             exclusive: toggleExclusive2.checked
         }
@@ -269,6 +283,7 @@ Item {
 
         ButtonRow {
             id: buttonRow4
+            objectName: "buttonRow4"
             width: parent.width
             checkedButton: checkBox3
             exclusive: toggleExclusive3.checked
@@ -297,6 +312,7 @@ Item {
 
         CheckBox {
             id: toggleExclusive3
+            objectName: "toggleExclusive3"
             checked: true
             text: "Exclusive"
         }
@@ -319,6 +335,7 @@ Item {
 
         ButtonRow {
             id: buttonRow5
+            objectName: "buttonRow5"
             width: parent.width
             exclusive: toggleExclusive4.checked
 
@@ -346,6 +363,7 @@ Item {
 
         CheckBox {
             id: toggleExclusive4
+            objectName: "toggleExclusive4"
             checked: true
             text: "exclusive"
         }
@@ -368,6 +386,7 @@ Item {
 
         ButtonRow {
             id: buttonRow6
+            objectName: "buttonRow6"
             width: parent.width
             exclusive: true
             checkedButton: tb1
@@ -402,6 +421,7 @@ Item {
 
         ButtonRow {
             id: buttonRow7
+            objectName: "buttonRow7"
             width: parent.width
             exclusive: toggleExclusive5.checked
             checkedButton: tb4
@@ -430,6 +450,7 @@ Item {
 
         CheckBox {
             id: toggleExclusive5
+            objectName: "toggleExclusive5"
             checked: true
             text: "Exclusive"
         }
@@ -446,6 +467,7 @@ Item {
 
             Button {
                 id: addToolButton
+                objectName: "addToolButton"
                 text: "Add ToolBtn"
 
                 onClicked: {
@@ -455,6 +477,7 @@ Item {
 
             Button {
                 id: delToolButton
+                objectName: "delToolButton"
                 text: "Del checked"
 
                 onClicked: {
@@ -474,6 +497,7 @@ Item {
 
             Button {
                 id: toggleShowButton2
+                objectName: "toggleShowButton2"
                 text: "Hide/show"
                 onClicked: {
                     if (buttonRow8.children[indexTextField2.text])
@@ -483,6 +507,7 @@ Item {
 
             CheckBox {
                 id: toggleExclusive6
+                objectName: "toggleExclusive6"
                 checked: true
                 text: "Exclusive"
             }
@@ -490,6 +515,7 @@ Item {
 
         ButtonRow {
             id: buttonRow8
+            objectName: "buttonRow8"
             width: parent.width
             exclusive: toggleExclusive6.checked
         }
