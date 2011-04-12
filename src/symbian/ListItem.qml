@@ -124,7 +124,7 @@ ImplicitSizeItem {
             root.clicked()
         }
         onCanceled: {
-            internal.state = ""
+            internal.state = "Canceled"
         }
         onPressAndHold: {
             internal.state = "PressAndHold"
@@ -281,12 +281,17 @@ ImplicitSizeItem {
             faderLoader.opacity = 1
         }
 
+        function canceled() {
+            releasedEffect.restart()
+        }
+
         states: [
             State { name: "Pressed" },
             State { name: "PressAndHold" },
             State { name: "Disabled"; when: !root.enabled },
             State { name: "Focused"; when: (root.ListView.isCurrentItem &&
                 symbian.listInteractionMode == Symbian.KeyNavigation) },
+            State { name: "Canceled" },
             State { name: "" }
         ]
 
@@ -311,6 +316,10 @@ ImplicitSizeItem {
             Transition {
                 to: "Focused"
                 ScriptAction { script: internal.focus() }
+            },
+            Transition {
+                to: "Canceled"
+                ScriptAction { script: internal.canceled() }
             }
         ]
     }
