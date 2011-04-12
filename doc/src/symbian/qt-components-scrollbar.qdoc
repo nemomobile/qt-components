@@ -1,0 +1,238 @@
+/****************************************************************************
+**
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project on Qt Labs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** No Commercial Usage
+** This file contains pre-release code and may not be distributed.
+** You may use this file in accordance with the terms and conditions
+** contained in the Technology Preview License Agreement accompanying
+** this package.
+**
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of this
+** file.
+**
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+/*!
+
+    \qmlclass ScrollBar
+    \ingroup qt-components
+    \ingroup qt-components-symbian
+    \since 4.7f
+    \inherits Item
+    \brief Symbian: Adds a visual indication of the position and interaction of a Flickable item's contents with relation to its viewport
+
+    ScrollBar can be used with Flickable items as well as items derived from it,
+    such as ListView and GridView items. ScrollBar should be a sibling of the
+    Flickable item it is attached to. Because ScrollBar is not a child of
+    Flickable, it has to be, unlike ScrollDecorator, \bold explicitly \bold
+    anchored to Flickable. This enables also vertical ScrollBar anchoring for
+    right-to-left (R2L) layouts/languages. ScrollBar does not contain any
+    visible content by default.
+
+    \section1 Using ScrollBar with ListView
+
+    \code
+    Item {
+        x: 10
+        width: 400
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+
+        ListView {
+            id: list
+            anchors.fill: parent
+            ...
+        }
+
+        ScrollBar {
+            flickableItem: list
+            anchors { right: list.right; top: list.top }
+        }
+    }
+    \endcode
+
+    \section1 Using a right-to-left vertical ScrollBar with ListView
+
+    \code
+    Item {
+        x: 10
+        width: 400
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+
+        ListView {
+            id: list
+            anchors.fill: parent
+            ...
+        }
+
+        ScrollBar {
+            flickableItem: list
+            anchors { left: list.left; top: list.top }
+        }
+    }
+    \endcode
+
+    \section1 Using a horizontal ScrollBar with GridView
+    \code
+    Item {
+        x: 10
+        width: 400
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+
+        GridView {
+            id: grid
+            anchors.fill: parent
+            ...
+        }
+
+        ScrollBar {
+            flickableItem: grid
+            orientation: Qt.Horizontal
+            anchors { left: grid.left; bottom: grid.bottom }
+        }
+    }
+    \endcode
+
+
+    \section1 Using a vertical indicative ScrollBar with a Flickable item that has key navigation support
+    \code
+    Item {
+        x: 10
+        width: 400
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+
+        Flickable {
+            id: flickableArea
+            anchors.fill: parent
+            ...
+        }
+
+        ScrollBar {
+            flickableItem: flickableArea
+            interactive: false
+            focus: true // to activate key navigation support
+            anchors { right: flickableArea.right; top: flickableArea.top }
+        }
+    }
+    \endcode
+
+    \sa Flickable, GridView, ListView, ScrollDecorator
+
+*/
+
+/*!
+    \qmlproperty bool ScrollBar::focus
+
+    If focus is \c true , the \c flickableItem content can be moved by
+    navigation keys when available Up,Down,Left,Right depending on orientation
+
+    If focus is \c false , the \c flickableItem content \bold cannot be moved by
+    navigation keys when available Up,Down,Left,Right depending on orientation
+
+    Especially with combination of ListView and Vertical ScrollBar navigation
+    (Up,Down keys), it is not likely feasible to set this property \c true to
+    make list's own navigation working as expected.
+
+    \sa Item::focus, interactive, ListView, GridView
+*/
+
+/*!
+    \qmlproperty Flickable ScrollBar::flickableItem
+
+    \c Flickable to be indicated or interacted with.
+
+    If the value is not set, the scroll bar is not shown. The default value of
+    the property is \c null.
+
+*/
+
+/*!
+    \qmlproperty int ScrollBar::orientation
+
+    The orientation of the scroll bar, either vertical \c Qt.Vertical, or horizontal \c Qt.Horizontal.
+    The default value is \c Qt.Vertical.
+
+*/
+/*!
+    \qmlproperty bool ScrollBar::interactive
+
+    If interactive is \c true , the user can move the flickableItem content by
+    touching and dragging the scroll bar handle. If interactive is \c false, the
+    user can not do like this. Furthermore, if interactive is \c false, the
+    scroll bar is indicative, that is, similar to ScrollDecorator. Setting the
+    interactive to \c false does not affect the key navigation support of
+    ScrollBar that can be defined with \c Item::focus.
+
+    The property value is \c true by default.
+
+*/
+/*!
+    \qmlproperty int ScrollBar::policy
+
+    When the scroll bar is shown depends on the scroll bar's policy. A scroll bar can have the following policies:
+
+
+    \list
+
+      \o  \c Symbian.ScrollBarWhenScrolling: Scroll bar is shown when the user scrolls a
+      Flickable or drags and starts hideout. This policy inherits the \c
+      Symbian.ScrollBarWhenNeeded policy.
+
+      \o  \c Symbian.ScrollBarWhenNeeded - Scroll bar is shown when the content of flickableItem does not fit in the screen.
+
+    \endlist
+
+    The property value is \c Symbian.ScrollBarWhenScrolling by default.
+
+    \sa flash()
+*/
+
+/*!
+    \qmlproperty double ScrollBar::position read-only
+
+    \e Deprecated.
+
+    Instead, use Flickable.visibleArea.xPosition or Flickable.visibleArea.yPosition
+
+    The position of the scroll bar's handle in relation to ContentY or ContentX
+    value of Flickable depending on screen the orientation. The value is between
+    \c 0 and \c 1.0.
+
+*/
+
+/*!
+    \qmlproperty double ScrollBar::pageSize read-only
+
+    \e Deprecated.
+
+    Instead, use Flickable.visibleArea.heightRatio or Flickable.visibleArea.widthRatio
+
+    Shown visible pageSize ratio of Flickable depending on orientation. The
+    value is between \c 0 and \c 1.0.
+
+*/
+
+/*!
+    \qmlmethod ScrollBar::flash()
+
+    Shows and then hides the scroll bar indicating to the user that there is
+    scrollable content available in flickableItem. This method is most
+    applicable when the policy is \c Symbian.ScrollBarWhenScrolling and the
+    scrollbar is already hidden.
+
+*/

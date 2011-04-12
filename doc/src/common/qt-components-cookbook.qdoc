@@ -1,0 +1,11 @@
+/*!
+
+  \group qt-components-pattern
+  \title Common interface designs
+  \target components-cookbook
+
+  This is a list of common user interface patterns that are used in applications. The code in each example shows how to use the components together to create these patterns with QML.
+
+  \generatelist related
+
+*/

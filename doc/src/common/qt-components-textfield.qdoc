@@ -28,47 +28,214 @@
     \qmlclass TextField
     \ingroup qt-components
     \since 4.7
-    \brief The TextField component accepts key inputs.
+    \inherits Item
+    \brief
+    A TextField accepts key inputs.
 
-    TextField is resizes to fit all input characters or can be fitted onto a
+    A TextField is resized to fit all input characters or can be fitted onto a
     fixed size. The line edit can also mask the input characters as when the
     user enters their password.
 
-\snippet src/snippets/MeeGo/snippet-lineedit.qml 0
-\snippet src/snippets/MeeGo/snippet-lineedit.qml 99
-\snippet src/snippets/MeeGo/snippet-lineedit.qml 2
-\snippet src/snippets/MeeGo/snippet-lineedit.qml 98
+    \section1 Using a TextField
+
+    \snippet src/snippets/MeeGo/snippet-lineedit.qml 0
+    \snippet src/snippets/MeeGo/snippet-lineedit.qml 99
+    \snippet src/snippets/MeeGo/snippet-lineedit.qml 2
+    \snippet src/snippets/MeeGo/snippet-lineedit.qml 98
+
+*/
+
+/*!
+    \qmlproperty string TextField::placeholderText
+
+    The text that is shown in the text field before the user enters any text.
+    When the user starts entering text, the placeholder text is hidden.
+
+*/
+
+/*!
+    \qmlproperty int TextField::inputMethodHints
+
+    Settings that indicate what kind of input can be accepted by text field. The
+    value is from Qt::InputMethodHints
+
+    \sa TextInput::inputMethodHints
+
+*/
+
+/*!
+    \qmlproperty font TextField::font
+
+    Font information for the text in the text field.
+
+    \sa TextInput::font
+
+*/
+
+/*!
+    \qmlproperty int TextField::cursorPosition
+
+    The position of the cursor in the TextField.
+
+    \sa TextInput::cursorPosition
+
+*/
+
+/*!
+    \qmlproperty bool TextField::readOnly
+
+    If this is \c true, the text field can only be viewed, it cannot be edited.
+
+    If this is \c false, the text field can be edited.
+
+    \sa TextInput::readOnly
+*/
+
+/*!
+    \qmlproperty int TextField::echoMode
+
+    Specifies how (or if) the text is displayed when the user enters text into
+    the text field.  For example, you can set the echo mode to \c Password so
+    that the entered text is shown as asterisks.
+
+    \sa TextInput::echoMode
+
+*/
+
+/*!
+    \qmlproperty bool TextField::acceptableInput
+
+    Indicates if the text being input is acceptable according to the validator
+    or input mask.
+
+    \sa inputMask, validator, TextInput::acceptableInput
+
+*/
+
+/*!
+    \qmlproperty string TextField::inputMask
+
+    Allows you to restrict what can be entered into the text field. See
+    QLineEdit::inputMask for details about how to define the input mask.
+
+    \sa acceptableInput, validator, TextInput::inputMask
+*/
+
+/*!
+    \qmlproperty validator TextField::validator
+
+    Allows you to set a validator (IntValidator, DoubleValidator or
+    RegExpValidator) for the text field. See TextInput::validator for details.
+
+    \sa acceptableInput, inputMask,
+*/
+
+/*!
+    \qmlproperty string TextField::selectedText
+
+    This read-only property provides the text that is currently selected in the
+    text field.
+
+    \sa TextInput::selectedText
+*/
+
+/*!
+    \qmlproperty int TextField::selectionEnd
+
+    The cursor position after the last character in the current selection.
+
+    \sa selectionstart, selectedText, cursorPosition, TextInput::selectionEnd
+
+*/
+
+/*!
+    \qmlproperty int TextField::selectionStart
+
+    The cursor position before the first character in the current selection.
+
+    \sa selectionEnd, selectedText, cursorPosition, TextInput::selectionStart
+
+*/
+
+/*!
+    \qmlproperty string TextField::text
+
+    The text that has been entered into the text field.
+
+*/
+
+/*!
+    \qmlmethod TextField::copy()
+
+    Copies the currently selected text to the system clipboard.
+
+    \sa paste, cut, TextInput::copy()
+
+*/
+
+/*!
+    \qmlmethod TextField::paste()
+
+    Replaces the currently selected text by the contents of the system
+    clipboard.
+
+    \sa copy, cut, TextInput::paste()
+*/
+
+/*!
+    \qmlmethod TextField::cut()
+
+    Moves the currently selected text to the system clipboard.
+
+    \sa TextInput::cut()
+*/
+
+/*!
+    \qmlmethod TextField::select(start, end)
+
+    Causes the text from \a start to \a end to be selected.
+
+    \sa selectionStart, selectionEnd, TextInput::select()
+*/
+
+/*!
+    \qmlmethod TextField::selectAll()
+
+    Causes all text in the text field to be selected.
+
+    \sa TextInput::selectAll()
+
+*/
+
+/*!
+    \qmlmethod TextField::selectWord()
+
+    Causes the word closest to the current cursor position to be selected.
+
+    \sa TextInput::selectWord()
+
+*/
+
+/*!
+    \qmlmethod TextField::positionAt(x)
+
+    Returns the character position at x pixels from the left edge of the text field.
+
+    \sa TextInput::positionAt()
+
+*/
 
 
-    \section1 Sample Implementation
-    \code
-// uses a TextInput in the implementation, but provides styling frame and default fonts
-Item {
-    property string text
-    property string placeholderText
-    property int inputMethodHints
-    property font font // alias to textInput.font
+/*!
+    \qmlmethod TextField::positionToRectangle(pos)
 
-    property int cursorPosition
-    property bool readOnly // defaults to false
-    property int echoMode // { Normal, Password }
-    property bool acceptableInput // this is a read-only property
-    property string inputMask
-    property Validator validator
-    property string selectedText // read-only
-    property int selectionEnd // read-only
-    property int selectionStart // read-only
+    Returns the rectangle that the cursor would occupy if it was placed at \a
+    pos character position.
 
-    // functions
-    copy
-    paste
-    cut
-    select(int start, int end)
-    selectAll
-    selectWord
-    positionAt(int x)
-    positionToRectangle(int pos)
-}
-    \endcode
+    This is similar to setting the cursorPosition, and then querying the cursor
+    rectangle, but the cursorPosition is not changed.
+
+    \sa cursorPosition, TextInput::positionToRectangle()
+
 */
 

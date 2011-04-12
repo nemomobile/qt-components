@@ -1,0 +1,179 @@
+/****************************************************************************
+**
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project on Qt Labs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** No Commercial Usage
+** This file contains pre-release code and may not be distributed.
+** You may use this file in accordance with the terms and conditions
+** contained in the Technology Preview License Agreement accompanying
+** this package.
+**
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of this
+** file.
+**
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+
+    \qmlclass Page
+    \ingroup qt-components
+    \since 4.7
+    \inherits Item
+    \brief
+    A Page defines one screen of user interface content.
+
+    The screen area of a mobile device is small, so an application's user
+    interface is often composed of a set of separate screens of content or
+    "pages". You can use pages in conjunction with the PageStack component to
+    provide a navigation system for your application. Another navigation
+    alternative is the Tab component that provides parallel sets of content.
+
+    See the \l{Creating pages and navigating to them} overview for a higher
+    level discussion about pages and page stacks.
+
+
+    \section1 Defining the content of a page
+
+    Usually you base the pages (screens of content) of your application on the
+    Page component but you can use other components or elements if you wish.
+    However, the benefit of the Page component is that it defines a contract for
+    how the page and page stack and work together. A Page-component based page
+    is notified when it becomes active or inactive and this allows you to
+    perform various page-specific operations while the page is animated into
+    view or animated out of view.
+
+    You can implement an application page either as a \e {QML item} or as a \e
+    {QML component}. One way to think of the difference between an item and a
+    component is to think of a QML item as a particular page object and a QML
+    component as defining a class of page objects. If your page is an item, you
+    use the page directly as you have defined it. If you want to use a component
+    page, you have to create an instance of that component page and use that
+    instance. Note that PageStack works transparently with either type of page.
+    The main thing you need to consider is how long you want the page to be
+    staying around in memory.
+
+    \section2 Example of a QML page as an item
+
+    Here is an example page defined as an item. It is a page with a text
+    that can be accessed externally.
+
+    \snippet src/snippets/common/snippet-pagestack-page.qml 1
+
+
+    \section2 Example of a QML page in a component file
+
+    The page described above can also be declared in its own file. This is
+    probably the type of page you will use most often because it encapsulates
+    the page in its own file which makes for easier maintenance. The following
+    code snippet comes from a file called \c FilePage.qml.
+
+    \snippet src/snippets/common/FilePage.qml 0
+
+    \section2 Example of a QML component page
+
+    The page described earlier is an example of a simple page declared
+    as a QML item. Declaring this same page as a component would look like
+    this:
+
+    \snippet src/snippets/common/snippet-pagestack-page.qml 0
+
+
+    \section1 Adding a toolbar to a page
+
+    ###TBD. See ToolBar, ToolButton and ToolBarLayout.
+
+    \section1 Using the lifecycle signals of a Page
+
+    The page lifecycle goes from instantiation to activation to deactivation to
+    destruction, moving any number of times between activation and deactivation.
+    When a page is activated it means it is visible on the screen and can be
+    considered to be "the current" page. If the page stack itself is not
+    visible, then the top-most page in the stack is deactivated and is not
+    visible. When the page stack becomes visible, the top-most page in the stack
+    is activated. Likewise, if the page stack is made hidden the top-most page
+    is deactivated. Popping the page off the top of the stack at this point does
+    not result in further deactivation since the page is not active.
+
+    The Page::status property indicates the current state of the page. Combined
+    with the normal Component.onComplete() and Component.onDestruction() signals
+    you can follow the entire life cycle of the page as follows:
+
+    \list 1
+      \o Created: Component.onCompleted()
+      \o Activating: onStatusChanged (status is PageStatus.Activating)
+      \o Activated: onStatusChanged (status is PageStatus.Active)
+      \o Deactivating: onStatusChanged (status is PageStatus.Deactivating)
+      \o Deactivated: onStatusChanged (status is PageStatus.Inactive)
+      \o Destruction: Component.onDestruction()
+    \endlist
+
+    \sa PageStack
+
+*/
+
+/*!
+    \qmlproperty  int Page::status
+
+    This is the status of the page. It can be one of the following values:
+
+    \list
+      \o PageStatus.Inactive - the page is not visible
+      \o PageStatus.Activating - the page is transitioning into becoming the active page
+      \o PageStatus.Active - the page is the current active page
+      \o PageStatus.Deactivating - the page is transitioning into becoming inactive
+    \endlist
+
+*/
+
+/*!
+    \qmlproperty  Item Page::tools
+
+    Defines the tools for the page; null for none.
+
+    ### Need more details here.
+
+*/
+
+/*!
+    \qmlproperty int Page::orientationLock
+
+    Defines the page's orientation. Possible values:
+
+    \list
+
+        \o PageOrientation.Automatic (default) - the orientation switches to
+        match how the user is holding the device.
+
+        \o PageOrientation.LockPortrait - lock this page in portrait mode,
+        irrespective of how the user is holding the device.
+
+        \o PageOrientation.LockLandscape - lock this page in landscape mode,
+        irrespective of how the user is holding the device.
+
+        \o PageOrientation.LockPrevious - keep this page in the current
+        orientation. The orientation will not be changed if the user rotates the
+        device.
+
+    \endlist
+
+
+*/
+
+/*!
+    \qmlproperty  PageStack Page::pageStack
+
+    The page stack that this page is owned by.
+
+*/

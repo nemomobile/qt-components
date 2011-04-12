@@ -1,0 +1,117 @@
+/****************************************************************************
+**
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project on Qt Labs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** No Commercial Usage
+** This file contains pre-release code and may not be distributed.
+** You may use this file in accordance with the terms and conditions
+** contained in the Technology Preview License Agreement accompanying
+** this package.
+**
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of this
+** file.
+**
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+/*!
+    \qmlproperty string ListItem::mode read-only
+
+    \e {Symbian:}
+    The Mode of the ListItem
+
+    Mode property can be used to create association between ListItem and
+    ListItemText. This way ListItemText is aware of internal state
+    of the ListItem.
+
+    \code
+    ListItem {
+        id: listItem
+
+        ListItemText {
+            anchors.fill: listItem.padding
+            role: "Title"
+            mode: listItem.mode
+            text: "Hello world!"
+        }
+    }
+    \endcode
+*/
+
+/*!
+    \qmlproperty Item ListItem::paddingItem read-only
+
+    \e {Symbian:}
+    The invisible padding rectangle for the ListItem that items can be anchored to.
+*/
+
+/*!
+    \qmlproperty bool ListItem::enabled
+
+    \e {Symbian:}
+    If \c true, the user can interact with this list item. If \c false, the list
+    item is disabled and does nothing when the user selects it.
+
+*/
+
+/*!
+    \qmlproperty bool ListItem::subItemIndicator
+
+    \e {Symbian:}
+    If \c true, this list item will indicate that pressing the item will take user
+    to some other item. For example another ListView will be shown to the user when
+    the item is pressed. Note: It's up a developer to implement actual logic by
+    handling pressed signal.
+
+    \image symbian/listitem_subitemindicator.png
+    \e ListItem with witn the subitem indicator
+*/
+
+/*!
+    \qmlmethod ListItem::preferredImageHeight(ListImageSize)
+
+*/
+
+/*!
+    \qmlmethod ListItem::preferredImageWidth(ListImageSize)
+
+*/
+
+/*!
+    \qmlproperty bool ListItem::drillDownIndicator
+
+*/
+
+/*!
+    \qmlproperty double ListItem::horizontalSpacing
+
+*/
+
+/*!
+    \qmlproperty double ListItem::verticalSpacing
+
+*/
+
+/*!
+    \qmlproperty style ListItem::style
+*/
+
+/*!
+    \qmlsignal ListItem::pressAndHold()
+
+    \e {Symbian:}
+    This signal is emitted when the user presses on the list item for the "long
+    press" period of time. The length of time for a long press is the same as
+    for MouseArea::onPressAndHold() which is currently 800ms.
+
+*/

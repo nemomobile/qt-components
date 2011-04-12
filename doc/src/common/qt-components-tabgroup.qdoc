@@ -1,0 +1,152 @@
+/****************************************************************************
+**
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project on Qt Labs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** No Commercial Usage
+** This file contains pre-release code and may not be distributed.
+** You may use this file in accordance with the terms and conditions
+** contained in the Technology Preview License Agreement accompanying
+** this package.
+**
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of this
+** file.
+**
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+
+    \qmlclass TabGroup
+    \ingroup qt-components
+    \since 4.7
+    \inherits Item
+
+    \brief TabGroup is a set of pages for a tabbed interface.
+
+    A tabbed interface is made up of tab buttons plus content for each button. A
+    TabGroup component has, as its children, each page of content in the
+    interface. These pages can be any QML item but are typically Page components
+    for a single page of content or PageStack components when a hierarchical
+    navigation system is required for the tab content.
+
+    As well as being the container for the tabbed interface content, TabGroup
+    displays the content of the pages. It will layout the content to fill
+    itself, so you must anchor the tab group item appropriately. Generally this
+    means you anchor it to the bottom of the TabLayout item that contains the
+    buttons and then to the sides and bottom of the screen.
+
+    A TabGroup and a TabBarLayout go hand-in-hand. The layout contains the
+    buttons and each button refers to a content page in the group. This is
+    illustrated in the following diagram.
+
+    \image common/tabbed-interface-relations.png
+
+    If you use Page components for your tab content, the Page::status property
+    of each page is updated appropriately when the current tab is changed: the
+    current page has status PageStatus.Active and other pages have the status
+    PageStatus.Inactive. During page transitions, PageStatus.Activating (for the
+    page that is becoming the current page) and PageStatus.Deactivating (for the
+    page that was the current page) statuses are also set.
+
+    ###Because of the platform specific transition requirements, these children might
+    be reparented internally i.e. refer to the TabGroup from content with \c id instead
+    of \c parent.
+
+
+    \section1 Creating a static tabbed interface
+
+    If the tabs in your tabbed interface are always the same, you can create
+    your tabbed interface simply as a set of items.
+
+    The following code creates a TabGroup with three items in it.
+
+    \snippet src/snippets/common/snippet-tabgroup.qml 0
+
+    \section1 Creating a dynamic tabbed interface
+
+    In some cases you might want to be able to add or remove tabs in the
+    interface. This makes things a little more complicated.
+
+    \section2 Creating a blank tabbed interface
+
+    The TabBarLayout and TabGroup go together
+
+    \snippet src/snippets/common/snippet-tab-interface-dynamic.qml 0
+
+    \section2 Adding pages to the interface
+
+    Generally you add the pages in the onCompleted() signal handler. The snippet
+    here creates three different pages. Each page has a button which is added to
+    the tab bar layout and content which is added to the tab group.
+
+    \snippet src/snippets/common/snippet-tab-interface-dynamic.qml 7
+
+    To keep the code tidier, a simple addTab function implements the actual
+    adding of the button and content.
+
+    \snippet src/snippets/common/snippet-tab-interface-dynamic.qml 4
+
+    \section2 Removing pages from the interface
+
+    As well as adding pages to a tabbed interface, you might need to remove
+    pages. You do this by calling the TabGroup's removeTab() function to delete
+    the page content and then you delete the button for the tab. Each tab
+    buttons is a child of the TabBarLayout so, either you keep track of the
+    buttons in a separate list, or you search the children of the TabBarLayout
+    to find the button. The code snippet here uses the searching option.
+
+    \snippet src/snippets/common/snippet-tab-interface-dynamic.qml 6
+
+    \section2 Managing the tabs
+
+    A good way to manage the tabs in your interface is to maintain a separate
+    list of the tab buttons. When you create a new tab, you can add the button
+    to the list. When you delete a tab, you can delete the button from the list
+    (after first using removeTab to delete the actual content).
+
+    Using a list of tab buttons makes it easy to reorder the tabs. You can
+    simply change the order in your main list and then apply this newly ordered
+    list to the layout.
+
+    ### Needs expanding and code snippets
+
+    \section2 Finding a particular tab in a tab bar layout
+
+    If you don't have an array keeping track of the buttons, you can also search
+    the child items of the tab bar layout item to find the tab you want.
+
+    \snippet src/snippets/common/snippet-tab-interface-dynamic.qml 5
+
+
+
+*/
+
+/*!
+    \qmlproperty Item TabGroup::currentTab
+
+    The tab that is currently active and visible to the user.
+
+    The \c currentTab property is initialized to \c null and is automatically
+    set to point to the first tab when content is added. You can set the
+    currentTab at any time to activate a particular tab.
+
+*/
+
+/*!
+    \qmlproperty list<Item> TabGroup::contents
+
+    A list of all the children of the tab group. You can traverse the list to
+    search for information about particular pages.
+
+*/

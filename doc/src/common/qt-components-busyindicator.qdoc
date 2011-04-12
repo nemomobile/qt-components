@@ -30,15 +30,15 @@
     \ingroup qt-components
     \since 4.7
     \brief
-    A BusyIndicator API.
+    The BusyIndicator shows the user that the application is not ready to be
+    used at present.
 
-    \section1 Common API
 
-    \code
-    property bool running // default = false
-    \endcode
 */
+
 /*!
     \qmlproperty bool BusyIndicator::running
-    default = false
+
+    \c True if the application is shown, otherwise \c false.
+
 */

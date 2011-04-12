@@ -1,0 +1,105 @@
+/****************************************************************************
+**
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project on Qt Labs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** No Commercial Usage
+** This file contains pre-release code and may not be distributed.
+** You may use this file in accordance with the terms and conditions
+** contained in the Technology Preview License Agreement accompanying
+** this package.
+**
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of this
+** file.
+**
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+
+/*!
+
+    \qmlclass ToolBarLayout
+    \ingroup qt-components
+    \since 4.7
+    \inherits Item
+
+    \brief ToolBarLayout is a container for items on a toolbar that
+    automatically implements an appropriate layout for its children.
+
+    \section1 Using the ToolBarLayout
+
+    You use a ToolBarLayout when you specify the tools that go into a tool bar. The toolbar layout container lays out the tools appropriately for the platform.
+
+    The code snippet below gives an example of how to use a ToolBarLayout.
+
+    ### needs to come from a real application
+    \code
+    // Create a tool bar
+    ToolBar {
+        id: bar3
+        anchors.bottom: parent.bottom
+        // Inside a toolbar layout, specify one toolbar tool and the back button
+        tools: ToolBarLayout {
+            backButton: true
+            ToolButton {
+                iconSource: "qrc:tb_plus.png"
+                onClicked: stack.pop()
+            }
+        }
+    }
+    \endcode
+*/
+
+
+/*!
+     \qmlproperty  bool ToolBarLayout::backButton
+
+     This determines whether or not the first child is a back button. The back
+     button always occupies the leftmost space in layout. If there is no
+     backbutton this space is always empty.
+
+*/
+
+/*!
+    \qmlmethod ToolBarLayout::layoutChildren()
+
+    Applies the layout rules to the buttons in the toolbar.
+
+    In the case of a Symbian toolbar, the layout rules are as follows:
+
+    \list 1
+
+        \o The BackButton occupies the leftmost space separate with margin in
+        landscape if there is no backbutton the space is left empty
+
+        \o last icon button occupies rightmost space. If there is no rightmost
+        iconbutton the space can be use for something else
+
+        \o If the remaining items are text buttons, they are distributed around
+        the center of empty space in the middle of toolbar
+
+        \o If the remaining items are iconbuttons the they are distributed
+        evenly along the toolbar area
+
+    \endlist
+
+
+*/
+
+/*!
+    \qmlmethod ToolBarLayout::buttonWidth(child)
+
+    Returns the width of the given \c child button in the toolbar layout.
+
+*/
+

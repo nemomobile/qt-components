@@ -1,0 +1,27 @@
+/*!
+    \contentspage {Qt Quick components contents}
+    \page contents.html
+
+    \title Qt Quick components table of contents
+
+    \list
+        \o \l {Introduction to the Qt Quick components}
+        \o \l {All Qt Quick components}
+        \list
+            \o \l {All Symbian-specific Qt Quick components}
+        \endlist
+        \o \l {Qt Quick components examples and demos}
+        \list
+            \o \l {Flickr example}
+            \o \l {Music Player example}
+            \o \l {Components Gallery for Symbian}
+        \endlist
+        \o \l {Common interface designs}
+        \o \l {Building the Qt Quick components}
+        \list
+            \o \l {Building the Qt Quick components for Symbian}
+        \endlist
+        \o \l {Release notes for the Qt Quick components documentation}
+    \endlist
+
+*/

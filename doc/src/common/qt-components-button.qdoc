@@ -25,69 +25,174 @@
 **
 ****************************************************************************/
 /*!
+
     \qmlclass Button
     \ingroup qt-components
-    \since 4.7f
-    \brief A button component that has basic event handling and text label.
+    \since 4.7
+    \inherits Item
 
-    A Button is an Item-like class.
+    \brief
+    A button component has an icon and a text and can be clicked by the user.
 
-    A button is a component that accepts user input and send a click() event for
-    the application to handle. The button has resizable properties, event
-    handling, and can undergo state changes and transitions.
+    A button component enables the user to perform a command. The button has a
+    rectangular shape and typically there is a text describing its command and
+    an icon shown on the button. When the user presses the button, it sends a
+    clicked signal.
 
-    \section1 Common API
-    \code
-    // toggled via clicked()
-    property bool checked
-    property bool checkable
-    property bool pressed
+    You can set a button to be a toggle button by enabling the checkable
+    property. A toggle button is a button that can be set to two states, 'on'
+    and 'off'. A toggle button is 'on' when its checked property is \c true;
+    otherwise the button is 'off'. If the toggle button's state is 'on', its
+    background is highlighted, otherwise it looks the same as a button that is
+    not a toggle button. The user can click the toggle button to switch it 'on'
+    or 'off', for example, to switch between bold and plain style in selected
+    text.
 
-    signal clicked
+    You can also set a button to respond to a long-press. If the button's
+    platformAutoRepeat property is \c true, the button sends the clicked signal
+    repeatedly as long as the user presses the button. If the button's platformLongPress
+    property is \c true, the button sends platformPressAndHold signal once when the user
+    presses the button for a long period of time.
 
-    // label visibility depends on string presence
-    property string text
-    // icon visibility depends on iconSource presence
-    // state-dependent resources should be assigned by ternary operators comparing e.g. checked state
-    property url iconSource
-    \endcode
+    \target Responding to a long-press
+    \section1 Responding to a long-press
 
-    \section1 Example Usage
+    \note This use case illustrates Symbian-specific platformAutoRepeat and platformLongPress
+    properties as well as platformPressAndHold and platformReleased signals.
 
-    Following is a basic button declaration. The button simply displays
-    "Click Me!". The \l onClicked handler will assign "Thank You!" when there is
-    a \l clicked() signal detected.
-    \snippet src/snippets/MeeGo/snippet-button-simple.qml 0
+    You can define how a button responds to a long-press by using the button's
+    \c platformAutoRepeat and \c platformLongPress properties. When the button is pressed, it
+    sends:
+
+    \list
+    \o a clicked signal as long as the button is pressed if its platformAutoRepeat
+    property is \c true.
+    \o a platformPressAndHold signal if its platformLongPress property is \c true.
+    \endlist
+
+    In this example the user can enable and disable the 'Signals' button's (id:
+    btnSignals) platformAutoRepeat property with the \c platformAutoRepeat check box and
+    platformLongPress property with the \c platformLongPress check box.
+
+    \snippet src/snippets/symbian/snippet-button.qml 1
+
+    The 'Signals' button's platformAutoRepeat property is bound to the \c platformAutoRepeat
+    checkbox's checked property. When the user checks/unchecks the \c platformAutoRepeat
+    checkbox, the 'Signals' button's platformAutoRepeat property is set/unset
+    respectively. The same pattern applies to the 'Signal' button's platformLongPress
+    property and the \c platformLongPress checkbox's checked property.
+
+    The application shows what signals the 'Signals' button sends depending on
+    platformAutoRepeat and platformLongPress values and the duration of the pressing. The button
+    sends:
+
+    \list
+    \o a platformReleased signal every time the user releases the 'Signals' button.
+    \o a clicked signal when the user presses and then releases the 'Signals'
+    button in a short period of time, regardless of platformAutoRepeat and platformLongPress
+    values.
+    \o a clicked signal repeatedly as long as the user keeps the 'Signals'
+    button pressed if the button's platformAutoRepeat property is \c true. The sending
+    starts after a short delay.
+    \o a platformPressAndHold signal when the user keeps the 'Signals' button pressed
+    if the button's  \c platformLongPress property is \c true.
+    \endlist
+
+    \snippet src/snippets/symbian/snippet-button.qml 0
+
+    The screenshot below illustrates the case where the user has set the
+    'Signals' button's platformAutoRepeat property to \c true. When the user presses the
+    'Signals' button it sends a clicked signal repeatedly as long as the user
+    keeps the button pressed. When the user releases the button it
+    sends in Symbian environment a platformReleased signal.
+
+    \image symbian/button_platformautorepeat.png
+
+    \section1 Using a button as a toggle button.
+
+    A button can be used as a toggle button when its \c checkable property is
+    \c true. The user can switch the toggle button 'on' and 'off' by pressing
+    it.
+
+    In this example the user can enable and disable the button's \c checkable
+    property with the checkable check box. The 'Signal' button's checkable
+    property is bound to \c checkable checkbox's checked property in the same
+    way as its platformAutoRepeat and platformLongPress properties in the
+    \l {Responding to a long-press} use case.
+
+    The screenshot below illustrates the case where the 'Signals' button is used
+    as a toggle button. The user has changed the 'Signals' button to a toggle
+    button by checking the checkable check box. Then the user has switched 'on'
+    the 'Signals' button by clicking it. When the user presses and then releases
+    the button it sends a 'clicked' signal and in Symbian environment also
+    a 'platformReleased' signal.
+
+    \image symbian/button_checkable.png
+
 */
+
 /*!
+
     \qmlproperty bool Button::checkable
 
-    If a button's \c checkable property is set to \c true, then it can have
-    two alternative \c checked states, on or off. The \c checkable property is
-    set to \c false by default.
-
-    \snippet src/snippets/MeeGo/snippet-button.qml 3
+    If a button's \c checkable property is \c true, it can be used as a toggle
+    button. The toggle button can be switched between two states, 'on' and
+    'off'. The \c checkable value is \c false by default.
 
     \sa Button::checked
+
 */
+
 /*!
     \qmlproperty bool Button::checked
 
-    If the button is checked, then \c checked is true. The property is set to
-    \c false by default.
+     The toggle button is:
 
-    \snippet src/snippets/MeeGo/snippet-button.qml 3
+    \list
+    \o 'on', if its checked value is \c true.
+    \o 'off', if its checked value is \c false. The default value if \c false.
+    \endlist
+
     \sa Button::checkable
 */
+
+/*!
+    \qmlproperty font Button::font
+
+     Holds the font of the button's label.
+
+*/
+
+/*!
+    \qmlsignal Button::clicked()
+
+    This signal is emitted after the button is pressed and then released.
+
+    The signal handler, onClicked(), can bind to state changes or other actions.
+
+*/
+
+/*!
+    \qmlproperty url Button::iconSource
+
+    URL for the icon that is displayed on the button. By default there is no
+    icon.
+
+*/
+
+
 /*!
     \qmlproperty bool Button::pressed
 
-    \sa Button::clicked()
+    Indicates if the button is currently pressed or not.
 */
-/*!
-    \qmlsignal Button::clicked()
-    Signal for detecting button clicks. If the button is pressed, released, then
-    this signal will be emitted.
 
-    The signal handler, onClicked(), can bind to state changes or other actions.
+
+/*!
+    \qmlproperty string Button::text
+
+    The text is displayed as the button's label. The default \c text is an
+    empty string.
 */
+
+

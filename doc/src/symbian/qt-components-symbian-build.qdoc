@@ -1,0 +1,99 @@
+/****************************************************************************
+**
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project on Qt Labs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** No Commercial Usage
+** This file contains pre-release code and may not be distributed.
+** You may use this file in accordance with the terms and conditions
+** contained in the Technology Preview License Agreement accompanying
+** this package.
+**
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of this
+** file.
+**
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+\page qt-components-symbian-build.html
+
+\title Building the Qt Quick components for Symbian
+
+\section1 Prerequisites
+
+\list 1
+  \o Windows XP or later
+  \o Qt SDK 1.1 or later installed. This has the build
+     tools for Symbian devices.
+  \o Retrieve the latest source from the Qt Quick components
+     repository:  \l {http://qt.gitorious.org/qt-components}.
+  \o Start the \e{Qt for Desktop (MinGW)} command shell so
+     you can run the following build steps from this command shell.
+     Running a command shell in this way sets up the Qt environment properly.
+\endlist
+
+\section1 Configuring the Symbian Components
+
+If you have a previous build, you should cleanup first with:
+\code
+mingw32-make distclean
+\endcode
+
+
+In the Qt Quick components repository root:
+
+\code
+configure -symbian -nomake tests
+mingw32-make clean
+\endcode
+
+\section1 Building for Symbian devices
+
+After the configure step, run:
+\code
+sbs -c armv5_urel
+\endcode
+This will build all the binaries and export the iby's, qmls etc to correct folders also for test applications. No separate install is needed.
+
+\section1 Building for Windows
+
+After the configure step, run the following commands (make sure you don't have any apps running in QML Viewer or the install will fail):
+\code
+mingw32-make
+mingw32-make install
+\endcode
+
+
+\section1 Configuring your environment
+
+The components are installed in \c C:\QtSDK\Desktop\Qt\4.7.1\mingw\imports\Qt\labs\components, so you need to add that to your system path before you can run any components-based applications.
+
+\section1 Testing the components (Windows)
+
+You can test that the components work by running one of the example applications.
+
+\list
+  \o Go to the directory: \tt{$QTCOMPONENTS/examples/symbian/gallery/}
+  \o Build the example
+    \code
+    qmake
+    mingw32-make
+    \endcode
+  \o Run the example
+    \code
+    qmlgallery.exe
+    \endcode
+\endlist
+
+*/

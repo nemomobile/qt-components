@@ -1,0 +1,224 @@
+/****************************************************************************
+**
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project on Qt Labs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** No Commercial Usage
+** This file contains pre-release code and may not be distributed.
+** You may use this file in accordance with the terms and conditions
+** contained in the Technology Preview License Agreement accompanying
+** this package.
+**
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of this
+** file.
+**
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \page qt-components-example-musicplayer.html
+    \ingroup qt-components-example
+    \title Music Player example
+    \brief Simple music player demo
+
+    This demo uses Qt Quick components and Qt Mobility's QML bindings to create
+    a simple music player. The Qt Quick components are used for the user
+    interface. Qt Mobility APIs are used for other parts of the functionality:
+    Multimedia API for audio playback and Document Gallery API for retrieving
+    the audio files on the device. A simple file picker is implemented for
+    platforms that don't have document gallery support.
+    Please download sources and follow build instructions included in a package:
+    http://qt.nokia.com/products/qt-addons/mobility. QML's built-in Local
+    Storage API is used to save settings when the application is closed and to
+    load them again on application startup.
+
+    The user interface supports different orientations and resolutions. It is
+    built with the following Qt Quick components: Window, Page, PageStack,
+    Button, CheckBox, Menu, ToolBar, ToolBarLayout, ToolButton, Slider,
+    StatusBar and ScrollDecorator.
+
+    Known Issues: Some issues with playback on Windows, works fine on e,g, N8.
+
+    Source:  \l {Music Player example source code}{Browse here}
+
+    \image example-musicplayer-portrait.png
+
+    \section1 Application structure
+
+    The application is mostly written in QML but has a little C++ code as well.
+    The C++ part includes the main.cpp which is always needed in a Qt Quick
+    application to view the main QML file. In this demo it loads the
+    mainwindow.qml file. Before loading the main QML file, a context property
+    "documentGallery" is set to the root context providing information on
+    whether the document gallery is supported or not. This information is used
+    in mainwindow.qml to dynamically create either the document gallery page or
+    the file picker page.
+
+    \snippet demos/musicplayer/main.cpp 0
+
+    In addition to the main.cpp file, the application has one C++ class called
+    MediaKeysObserver which is used to make media key events of a device
+    accessible from QML. Media key events include the up/down volume keys on a
+    device and headset remote control.
+
+    The functional parts of the application are implemented in the \c Player.qml
+    and \c storage.js files. Player.qml encapsulates a component that provides
+    the API for audio playback and playlist functionalities. storage.js provides
+    the API for storing and retrieving the playlist and settings using the Local
+    Storage API. The storage.js is used by the Player component.
+
+    The user interface of the Music Player is made up of a mainwindow containing
+    a StatusBar, a PageStack that manages three pages, and a ToolBar.
+
+    \section1 Main Window
+
+    The mainwindow's root item is a Window component. This provides orientation
+    support for the application. The three pages that are used in conjunction
+    with the page stack are controlsPage, playlistPage and musicPickerPage.
+    musicPickerPage is dynamically created on application startup from
+    GalleryPage or FilePickerPage components depending on the document gallery
+    support. They are all instantiated from the mainwindow.qml. mainwindow.qml
+    also creates an instance of the Player component and pushes the controlsPage
+    instance to the pagestack as the initial page. In case an empty playlist is
+    loaded, the playlistPage and the musicPickerPage instances are pushed onto
+    the page stack. This way the music player starts directly from the view
+    where the user can add songs to the playlist.
+
+    \snippet demos/musicplayer/qml/mainwindow.qml 0
+
+    \section1 Controls page
+
+    ControlsPage is the main interface of the Music Player. It provides controls
+    for seeking, playing, pausing and jumping to the next or previous song. In
+    landscape orientation, the ControlsPage also contains a simplified playlist
+    that the user can browse and pick songs from. The toolbar in ControlsPage
+    allow the user to quit the application, toggle shuffle and repeat modes on
+    and off and navigate to the playlist page.
+
+    \image example-musicplayer-landscape.png
+
+    ControlsPage and all the other pages have a Page component as their root
+    item.
+
+    \snippet demos/musicplayer/qml/ControlsPage.qml 0
+
+    The Page component has a property "tools" which is assigned an instance of
+    ToolBarLayout. This ToolBarLayout defines the toolbar for that page. Inside
+    the ToolBarLayout is a set of ToolButtons with appropriate images or text
+    and actions assigned to them. The ToolButtons also have properties defining
+    whether they have a border image and if the buttons should be checkable, and
+    in case of checkable buttons, if the button is checked or not.
+
+    \snippet demos/musicplayer/qml/ControlsPage.qml 2
+
+    The song position indicator can also be used for seeking within a song. It
+    is implemented using the Slider component. The maximum value of the slider
+    is bound to the duration of the current song. The song duration is measured
+    in milliseconds so, to make a step size of one second, the stepSize value is
+    set to 1000 (milliseconds). The slider value is not directly bound to the
+    player.position but instead a Binding element is used because we want the
+    slider value to track the song position only when the slider is not dragged.
+    In order to allow smooth dragging, the seek function only takes effect after
+    dragging has finished. This also prevents a binding loop from occurring.
+
+    \snippet demos/musicplayer/qml/ControlsPage.qml 1
+
+    \section1 Playlist component
+
+    The playlist views in ControlPage and in PlaylistPage are defined in a
+    separate Playlist component to prevent duplicating code. The simplification
+    of the playlist in ControlPage is accomplished by querying the listview's
+    width in the delegate and hiding song durations accordingly. A
+    ScrollDecorator component is used in conjunction with the Playlist's
+    ListView element to provide information about the current position in the
+    list while scrolling or flicking.
+
+    \snippet demos/musicplayer/qml/Playlist.qml 1
+
+    \section1 Playlist page
+
+    The PlaylistPage provides a full screen playlist view with controls to add
+    and remove songs.
+
+    \image example-musicplayer-playlist.png
+
+    Removing songs is done by switching to the remove mode, selecting the songs
+    to be removed and then confirming the removal. A custom property
+    numOfSelectedItems is used to track the number of selected items so that
+    remove button can be disabled when no songs are selected.
+
+    \image example-musicplayer-removemode.png
+
+    The CheckBox component is used in the playlist delegate to provide the
+    selecting functionality in the remove mode.
+
+    \snippet demos/musicplayer/qml/Playlist.qml 0
+
+    In the remove mode the PlaylistPage also provides a menu for
+    selecting/unselecting all items. The menu is implemented using a Menu
+    component populated with MenuItem components.
+
+    \snippet demos/musicplayer/qml/PlaylistPage.qml 1
+
+    \image example-musicplayer-menu.png
+
+    PlaylistPage has two ToolBarLayout items. Each ToolBarLayout defines a
+    toolbar with several ToolButtons. One toolbar is shown in the default mode
+    and the other is shown in the remove mode. The default tools in the
+    PlaylistPage allow the user to navigate back to the controls page, navigate
+    to the music picker page to add songs, or to switch to the remove mode. The
+    tools in the remove mode allow the user to confirm or cancel the removal or
+    to bring up the menu for selecting/unselecting all items. Changing between
+    the two ToolBarLayouts is done by calling the ToolBar's setTools method with
+    "replace" transition.
+
+    \snippet demos/musicplayer/qml/PlaylistPage.qml 0
+
+    \section1 Gallery Page
+
+    GalleryPage is used as a music picker page on platforms where Qt Mobility's
+    Document Gallery API is supported. It provides a list of all supported audio
+    files on the device.
+
+    \image example-musicplayer-gallery.png
+
+    In GalleryPage the user can add songs to the playlist. This is done in the
+    same way as removing songs in the PlaylistPage's remove mode: the user
+    selects the songs to be added and then confirms that the songs should be
+    added to the playlist. GalleryPage also provides a menu for selecting and
+    unselecting all songs.
+
+    The DocumentGalleryModel component from Qt Mobiliy APIs is used as the data
+    model for the ListView in GalleryPage. It provides the artist, title, file
+    path and duration information of all accessible and supported audio files on
+    the device.
+
+    \snippet demos/musicplayer/qml/GalleryPage.qml 0
+
+    As the model is not custom made for this demo, we can't just add a
+    "selected" property like was done in the playlist. Instead, we create an
+    additional ListModel is created that is used to hold the selection status
+    for each item in the document gallery model.
+
+    \snippet demos/musicplayer/qml/GalleryPage.qml 1
+
+    \section1 File Picker Page
+
+    FilePickerPage is used as a music picker page on platforms that don't
+    support the Document Gallery API. It provides a simple single-select view
+    for adding a song from the file system to the playlist. The data model used
+    is the FolderListModel in the Qt labs folderlistmodel plugin.
+
+    \image example-musicplayer-filepicker.png
+
+*/

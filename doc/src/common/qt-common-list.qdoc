@@ -1,0 +1,194 @@
+/****************************************************************************
+**
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project on Qt Labs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** No Commercial Usage
+** This file contains pre-release code and may not be distributed.
+** You may use this file in accordance with the terms and conditions
+** contained in the Technology Preview License Agreement accompanying
+** this package.
+**
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of this
+** file.
+**
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+/*
+\page common.html
+\title Qt Quick Components
+
+\keyword quick-component-button
+\section1 Button
+
+    A Button component is a basic clickable component. A text label is set by
+binding to the \c text property. The Button dimension also defines the clickable
+area. The \c pressed property evaluating to \c true denotes that an input is
+pressing the Button's area.
+
+    \section2 Basic Properties
+        \list
+        \o \c bool checked
+        \o \c bool checkable
+        \o \c bool pressed
+        \o \c string text
+        \o \c signal pressed
+        \o \l{Button}{view more properties...}
+        \endlist
+
+\keyword quick-component-checkbox
+\section1 CheckBox
+
+    A CheckBox component is a checkable and clickable component. A text label is
+    set by binding to the \c text property. The Button dimension also defines
+    the clickable area. The \c pressed property evaluating to \c true denotes
+    that an input is pressing the Button's area.
+
+    \section2 Basic Properties
+        \list
+        \o \c bool checked
+        \o \c bool pressed
+        \o \c string text
+        \o \c signal pressed
+        \o \l {CheckBox}{view more properties...}
+        \endlist
+
+\keyword quick-component-slider
+\section1 Slider
+
+    The Slider component allows the user to set a value by dragging a slider to
+a position along a path.
+
+    \section2 Basic Properties
+        \list
+        \o real stepSize
+        \o real minimumValue
+        \o real maximumValue
+        \o real value
+        \o \l{Slider}{view more properties...}
+        \endlist
+
+\keyword quick-component-progressbar
+\section1 ProgressBar
+    The ProgressBar component displays the progress of an action or task by
+filling the completed time between two intervals.
+
+    \section2 Basic Properties
+        \list
+        \o real minimumValue
+        \o real maximumValue
+        \o real value
+        \o bool indeterminate
+        \o \l{ProgressBar}{view more properties...}
+        \endlist
+
+\keyword quick-component-scrolldecorator
+\section1 ScrollDecorator
+    Places hints in Flickable objects to portray the visible screen relative
+to the overall Flickable object.
+
+    \section2 Basic Properties
+        \list
+        \o Flickable flickableitem
+        \o \l{ScrollDecorator}{view more properties...}
+        \endlist
+
+\keyword quick-component-textfield
+\section1 TextField
+    A single line text field for accepting and displaying text input. The
+TextField component has text editing functionalities such as cut, paste, copy,
+and character selection.
+
+    \section2 Basic Properties
+        \list
+        \o copy()
+        \o paste
+        \o cut
+        \o int echoMode
+        \o font font
+        \o \l{TextField}{view more properties...}
+        \endlist
+
+\keyword quick-component-textarea
+\section1 TextArea
+    A multiple line text field for accepting and displaying text input. The
+TextArea component has cut, paste, copy, and character selection
+functionalities.
+
+    \section2 Basic Properties
+        \list
+        \o copy()
+        \o paste
+        \o cut
+        \o int echoMode
+        \o font font
+        \o \l{TextArea}{view more properties...}
+        \endlist
+
+\keyword quick-component-radiobutton
+\section1 RadioButton
+    A RadioButton component is a checkable and clickable component. A collection
+    of radio buttons in a ButtonRow or ButtonColumn exhibit exclusivity, so that
+    only one radio button is selected. A text label is set by binding to the
+    \c text property. The Button dimension also defines the clickable area. The
+    \c pressed property evaluating to \c true denotes that an input is pressing
+    the Button's area.
+
+    \section2 Basic Properties
+        \list
+        \o \c bool checked
+        \o \c bool pressed
+        \o \c string text
+        \o \c signal pressed
+        \o \l{RadioButton}{view more properties...}
+        \endlist
+
+\keyword quick-component-dialog
+\section1 Dialog
+    A Dialog component allows the existence of dialogs in an application. There
+    are several functions that correspond to users' wishes.
+
+    \section2 Basic Properties
+        \list
+        \o open()
+        \o accept()
+        \o reject()
+        \o close()
+        \o \l{Dialog}{view more properties...}
+        \endlist
+
+\keyword quick-component-rowcolumn
+\section1 ButtonRow and ButtonColumn
+    ButtonRow and ButtonColumn components arranges Buttons, CheckBoxes, or
+    RadioButtons along a row or column. They also add exclusivity to checkable
+    Buttons or RadioButtons, so that only one may remain checked at a time.
+
+    \section2 Basic Properties
+        \list
+        \o bool exclusive
+        \o Item checkedButton
+        \o \l{ButtonRow} documentation
+        \o \l{ButtonColumn} documentation
+        \endlist
+
+\keyword quick-component-choicelist
+\section1 ChoiceList
+    Provides a selectable group of components in a list.
+    \section2 Basic Properties
+        \list
+        \o model model
+        \o int currentIndex
+        \o \l {ChoiceList}{view more properties...}
+        \endlist
+
+*/

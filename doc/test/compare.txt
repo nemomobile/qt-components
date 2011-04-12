@@ -1,0 +1,4 @@
+load documentation implementation
+expand all
+select all.files
+file-report layout:side-by-side options:display-mismatches,ignore-unimportant output-to:%1 output-options:html-color

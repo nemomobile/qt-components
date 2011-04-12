@@ -1,0 +1,34 @@
+Compile Instructions:
+
+1) Copy the qdoc files to $QTDIR/doc/src/declarative/qt-components.
+
+  Create the directory if it doesn't already exist.
+
+2) Run 'make docs' in the $QTDIR directory
+
+  example: user@machine:qtdir$ make docs
+
+3) View the html files in the $QTDIR/doc/html directory.
+
+  The components will have a "qml-" prefix.
+  For example, qml-button.html is the file for the Button component.
+
+====================================================================
+
+Notes:
+There is no easy way to link the qt-components documentation to
+Qt Quick documents if they are not in the $QTDIR/doc directory.
+The steps outlined above will suffice for now.
+
+QML related markup:
+\qmlclass
+\qmlproperty <type> <element>::<name>
+\qmlattachedproperty
+\inherits
+\qmlsignal
+\qmlattachedsignal
+\qmlmethod <type> <element>::<name>(<param>, ...)
+\qmlattachedmethod
+\default
+\qmlbasictype
+\qml  ...insert qml code... \endqml

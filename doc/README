@@ -1,0 +1,33 @@
+Installing Qt Components help
+=============================
+The qtcomponents.qch is a Qt Help file containing documentation for the Qt
+Components. You can install it in Qt Creator to get F1 help for Qt Components.
+
+1. Copy the qtcomponents.qch to the documentation folder for your Qt
+installation. For example, in the Qt SDK on Windows, this folder is
+C:\QtSDK\Documentation.
+
+2. Open Qt Creator and, from the main menu, select "Tools" -> "Options..."
+
+3. Select the "Help" settings, and the "Documentation" tab
+
+4. Click the "Add..." button then navigate to and open the qtcomponents.qch file.
+
+5. You should now have a "com.nokia.qtcomponents" in the list of registered
+documentation.
+
+6. Click OK to close the Options dialog.
+
+
+Using the help
+==============
+Once you have installed the Qt Components help, you will be able to access the
+content from the help reader in Qt Creator. F1 Help is also enabled, so, in your
+code, you can move the cursor to a Qt Component name and press F1 to see the
+class reference for that component.
+
+
+Updating the help
+=================
+The help documentation is being continuously updated. When you get a new
+qtcomponents.qch file, you can just copy it over the old file.

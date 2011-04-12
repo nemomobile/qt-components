@@ -109,5 +109,6 @@ release/
 /tests/auto/symbian/tooltip/tst_symbian_tooltip
 /tests/auto/symbian/window/tst_window
 /tests/apicheck/tst_apicheck
+/doc/html
 /tests/manual/componenttest/componenttest
 /tests/manual/performancetest/performancetest
