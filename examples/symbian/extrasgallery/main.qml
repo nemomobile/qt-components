@@ -97,6 +97,11 @@ ApplicationWindow {
                         title: "DatePickerDialog"
                         subtitle: "Show date picker dialog"
                     }
+                    ListElement {
+                        page: "TimePickerDialog.qml"
+                        title: "TimePickerDialog"
+                        subtitle: "Show time picker dialog"
+                    }
                 }
 
                 ListView {

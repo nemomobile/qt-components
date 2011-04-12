@@ -41,4 +41,5 @@ OTHER_FILES += \
     main.qml \
     DatePickerDialog.qml \
     RatingIndicator.qml \
+    TimePickerDialog.qml \
     Tumbler.qml

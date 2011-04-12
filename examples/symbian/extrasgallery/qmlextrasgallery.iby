@@ -11,6 +11,7 @@ data=ZSYSTEM\install\qmlextrasgallery_stub.sis                     System\Instal
 data=DATAZ_\private\2003A914\main.qml                     \private\2003A914\main.qml
 data=DATAZ_\private\2003A914\DatePickerDialog.qml         \private\2003A914\DatePickerDialog.qml
 data=DATAZ_\private\2003A914\RatingIndicator.qml          \private\2003A914\RatingIndicator.qml
+data=DATAZ_\private\2003A914\TimePickerDialog.qml         \private\2003A914\TimePickerDialog.qml
 data=DATAZ_\private\2003A914\Tumbler.qml                  \private\2003A914\Tumbler.qml
 
 #endif //QMLEXTRASGALLERY_IBY
