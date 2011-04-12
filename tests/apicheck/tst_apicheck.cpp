@@ -60,6 +60,7 @@
 #include "tumbler/apicheck_tumblercolumn.h"
 #include "tumblerdialog/apicheck_tumblerdialog.h"
 #include "datepickerdialog/apicheck_datepickerdialog.h"
+#include "timepickerdialog/apicheck_timepickerdialog.h"
 
 int main(int argc, char *argv[])
 {
@@ -132,6 +133,7 @@ int main(int argc, char *argv[])
     ApiCheckQueryDialog querydialog(engine, module);
     ApiCheckSelectionDialog selectiondialog(engine, module);
     ApiCheckDatePickerDialog datepickerdialog(engine, extrasModule);
+    ApiCheckTimePickerDialog timepickerdialog(engine, extrasModule);
 
     QStringList failures;
     if (QTest::qExec(&slider, args)) failures.append("slider");
@@ -166,6 +168,7 @@ int main(int argc, char *argv[])
     if (QTest::qExec(&querydialog, args)) failures.append("querydialog");
     if (QTest::qExec(&selectiondialog, args)) failures.append("selectiondialog");
     if (QTest::qExec(&datepickerdialog, args)) failures.append("datepickerdialog");
+    if (QTest::qExec(&timepickerdialog, args)) failures.append("timepickerdialog");
 
     if (!failures.isEmpty())
         qWarning("FAILED : %s", qPrintable(failures.join(", ")));

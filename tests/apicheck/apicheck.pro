@@ -34,6 +34,7 @@ HEADERS += base/apicheckbase.h \
            tabgroup/apicheck_tabgroup.h \
            textarea/apicheck_textarea.h \
            textfield/apicheck_textfield.h \
+           timepickerdialog/apicheck_timepickerdialog.h \
            toolbar/apicheck_toolbar.h \
            tumbler/apicheck_tumbler.h \
            tumbler/apicheck_tumblercolumn.h \
@@ -66,6 +67,7 @@ SOURCES += tst_apicheck.cpp \
            tabgroup/apicheck_tabgroup.cpp \
            textarea/apicheck_textarea.cpp \
            textfield/apicheck_textfield.cpp \
+           timepickerdialog/apicheck_timepickerdialog.cpp \
            toolbar/apicheck_toolbar.cpp \
            tumbler/apicheck_tumbler.cpp \
            tumbler/apicheck_tumblercolumn.cpp \
