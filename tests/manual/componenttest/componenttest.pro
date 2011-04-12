@@ -88,6 +88,7 @@ OTHER_FILES += \
     tests/TextFieldOther.qml \
     tests/TextFieldSelection.qml \
     tests/TextFocus.qml \
+    tests/TimePickerDialog.qml \
     tests/ToolBar.qml \
     tests/ToolButton.qml \
     tests/ToolTip.qml \
