@@ -37,7 +37,7 @@ ImplicitSizeItem {
     property alias maximumValue: model.maximumValue
     property alias value: model.value
     property int orientation: Qt.Horizontal
-    property bool pressed: handleMouseArea.pressed || track.keysActive
+    property bool pressed: track.inputActive
     property bool updateValueWhileDragging: true // deprecated
     onUpdateValueWhileDraggingChanged: console.log("warning: Slider.updateValueWhileDragging is deprecated.")
     property bool valueIndicatorVisible: false
@@ -56,6 +56,11 @@ ImplicitSizeItem {
     implicitWidth: orientation == Qt.Horizontal ? 150 : platformStyle.graphicSizeSmall
     implicitHeight: orientation == Qt.Horizontal ? platformStyle.graphicSizeSmall : 150
 
+    onActiveFocusChanged: {
+        if (!root.activeFocus)
+            track.activeKey = undefined
+    }
+
     QtComponents.RangeModel {
         id: model
         value: 0.0
@@ -71,7 +76,16 @@ ImplicitSizeItem {
         id: track
         objectName: "track"
         property bool tapOnTrack: false
-        property bool keysActive: false
+        property variant activeKey
+        property bool inputActive: handleMouseArea.pressed || !!track.activeKey
+        onInputActiveChanged: {
+            if (!valueIndicatorVisible)
+                return
+            if (inputActive)
+                valueIndicator.show = true
+            else
+                indicatorTimer.restart()
+        }
 
         states: [
             State {
@@ -187,6 +201,9 @@ ImplicitSizeItem {
                     privateStyle.imagePath(handleIcon)
                 }
 
+                onXChanged: valueIndicator.position()
+                onYChanged: valueIndicator.position()
+
                 MouseArea {
                     id: handleMouseArea
                     objectName: "handleMouseArea"
@@ -204,10 +221,8 @@ ImplicitSizeItem {
                     drag.maximumY: orientation == Qt.Horizontal ? 0 : model.positionAtMaximum
 
                     onPositionChanged: {
-                        if (updateValueWhileDragging) {
+                        if (updateValueWhileDragging)
                             model.position = orientation == Qt.Horizontal ? handle.x : handle.y
-                            valueIndicator.position()
-                        }
                     }
                     onPressed: privateStyle.play(Symbian.BasicSlider)
                     onReleased: {
@@ -218,16 +233,14 @@ ImplicitSizeItem {
                 }
             }
         }
-
-        Timer {
-            id: keyActivity
-            interval: 750
-            onTriggered: track.keysActive = false
-        }
     }
 
     Keys.onPressed: {
-        internal.handleKeyEvent(event)
+        internal.handleKeyPressEvent(event)
+    }
+
+    Keys.onReleased: {
+        internal.handleKeyReleaseEvent(event)
     }
 
     Component {
@@ -241,7 +254,8 @@ ImplicitSizeItem {
         property int spacing: 2 * platformStyle.paddingLarge
         // Must match with the "maxWidth" padding defined in ToolTip
         property int toolTipPadding: platformStyle.paddingLarge
-        sourceComponent: root.pressed && valueIndicatorVisible ? valueIndicatorComponent : undefined
+        property bool show: false
+        sourceComponent: valueIndicator.show ? valueIndicatorComponent : undefined
         onLoaded: position()
 
         function position() {
@@ -273,12 +287,21 @@ ImplicitSizeItem {
                 valueIndicator.item.y = point.y
             }
         }
+
+        Timer {
+            id: indicatorTimer
+            interval: 750
+            onTriggered: {
+                if (!track.inputActive)
+                    valueIndicator.show = false
+            }
+        }
     }
 
     QtObject {
         id: internal
 
-        function handleKeyEvent(keyEvent) {
+        function handleKeyPressEvent(keyEvent) {
             var oldValue = model.value
             if (orientation == Qt.Horizontal) {
                 if (keyEvent.key == Qt.Key_Left) {
@@ -295,10 +318,15 @@ ImplicitSizeItem {
             }
             if (oldValue != model.value)
                 keyEvent.accepted = true
-            if (keyEvent.accepted) {
-                track.keysActive = true
-                keyActivity.restart()
-                valueIndicator.position()
+            if (keyEvent.accepted)
+                track.activeKey = keyEvent.key
+        }
+
+        function handleKeyReleaseEvent(keyEvent) {
+            if (track.activeKey == keyEvent.key) {
+                if (!keyEvent.isAutoRepeat)
+                    track.activeKey = undefined
+                keyEvent.accepted = true
             }
         }
     }
