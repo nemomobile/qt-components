@@ -108,6 +108,7 @@ ImplicitSizeItem {
             anchors.rightMargin: platformStyle.paddingSmall
             fillMode: Image.PreserveAspectFit
             source: privateStyle.imagePath("qtg_graf_battery_level_bg")
+            transform: Scale { origin.x: batteryBackground.width / 2; xScale: -1 }
             Item {
                 id: batteryLevelItem
                 property int animatedLevel
