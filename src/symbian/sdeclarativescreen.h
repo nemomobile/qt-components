@@ -38,17 +38,17 @@ class SDeclarativeScreen : public QObject
 
     Q_PROPERTY(int width READ width NOTIFY widthChanged FINAL)
     Q_PROPERTY(int height READ height NOTIFY heightChanged FINAL)
-    Q_PROPERTY(int displayWidth READ displayWidth NOTIFY displayChanged FINAL)
-    Q_PROPERTY(int displayHeight READ displayHeight NOTIFY displayChanged FINAL)
+    Q_PROPERTY(int displayWidth READ displayWidth CONSTANT FINAL)
+    Q_PROPERTY(int displayHeight READ displayHeight CONSTANT FINAL)
 
     Q_PROPERTY(int rotation READ rotation NOTIFY currentOrientationChanged FINAL)
     Q_PROPERTY(Orientation orientation READ orientation WRITE setOrientation NOTIFY orientationChanged FINAL) // deprecated
     Q_PROPERTY(Orientation currentOrientation READ currentOrientation NOTIFY currentOrientationChanged FINAL)
     Q_PROPERTY(Orientations allowedOrientations READ allowedOrientations WRITE setAllowedOrientations NOTIFY allowedOrientationsChanged FINAL)
 
-    Q_PROPERTY(qreal dpi READ dpi NOTIFY displayChanged FINAL)
-    Q_PROPERTY(DisplayCategory displayCategory READ displayCategory NOTIFY displayChanged FINAL)
-    Q_PROPERTY(Density density READ density NOTIFY displayChanged FINAL)
+    Q_PROPERTY(qreal dpi READ dpi CONSTANT FINAL)
+    Q_PROPERTY(DisplayCategory displayCategory READ displayCategory CONSTANT FINAL)
+    Q_PROPERTY(Density density READ density CONSTANT FINAL)
 
     Q_ENUMS(Orientation DisplayCategory Density)
     Q_FLAGS(Orientations)

@@ -48,12 +48,12 @@ public:
     void initializeEngine(QDeclarativeEngine *engine, const char *uri) {
         QDeclarativeExtensionPlugin::initializeEngine(engine, uri);
         engine->addImageProvider(QLatin1String("theme"), new SDeclarativeImageProvider);
-        QDeclarativeContext *context = engine->rootContext();
+        context = engine->rootContext();
 
-        SDeclarativeScreen *screen = new SDeclarativeScreen(engine, context); // context as parent
+        screen = new SDeclarativeScreen(engine, context); // context as parent
         context->setContextProperty("screen", screen);
 
-        SStyleFactory *style = new SStyleFactory(screen, context);
+        style = new SStyleFactory(screen, context);
         context->setContextProperty("platformStyle", style->platformStyle());
         context->setContextProperty("privateStyle", style->privateStyle());
 
@@ -67,6 +67,12 @@ public:
         context->setContextProperty("networkInfo", networkInfo);
 
         QObject::connect(engine, SIGNAL(quit()), QCoreApplication::instance(), SLOT(quit()));
+        QObject::connect(screen, SIGNAL(displayChanged()), this, SLOT(resetScreen()));
+        QObject::connect(style->platformStyle(), SIGNAL(fontParametersChanged()), this, SLOT(resetPlatformStyle()));
+        QObject::connect(style->platformStyle(), SIGNAL(layoutParametersChanged()), this, SLOT(resetPlatformStyle()));
+        QObject::connect(style->platformStyle(), SIGNAL(colorParametersChanged()), this, SLOT(resetPlatformStyle()));
+        QObject::connect(style->privateStyle(), SIGNAL(layoutParametersChanged()), this, SLOT(resetPrivateStyle()));
+        QObject::connect(style->privateStyle(), SIGNAL(colorParametersChanged()), this, SLOT(resetPrivateStyle()));
     }
 
     void registerTypes(const char *uri) {
@@ -83,6 +89,25 @@ public:
         qmlRegisterUncreatableType<SBatteryInfo>(uri, 1, 0, "BatteryInfo", "");
         qmlRegisterUncreatableType<SNetworkInfo>(uri, 1, 0, "NetworkInfo", "");
     }
+
+public slots:
+
+    void resetScreen() {
+        context->setContextProperty("screen", screen);
+    }
+
+    void resetPlatformStyle() {
+        context->setContextProperty("platformStyle", style->platformStyle());
+    }
+
+    void resetPrivateStyle() {
+        context->setContextProperty("privateStyle", style->privateStyle());
+    }
+
+private:
+    QDeclarativeContext *context;
+    SDeclarativeScreen *screen;
+    SStyleFactory *style;
 };
 
 #include "plugin.moc"
