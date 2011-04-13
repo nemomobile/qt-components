@@ -39,6 +39,7 @@ Window {
 
     Flickable {
         id: flickable
+        clip: true
         anchors { 
             left: root.left
             right: root.right
