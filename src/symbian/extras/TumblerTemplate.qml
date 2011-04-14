@@ -31,6 +31,7 @@ import "Constants.js" as C
 
 Item {
     id: template
+    objectName: "tumblerColumn" + index
 
     property Item tumblerColumn
     property alias listView: list

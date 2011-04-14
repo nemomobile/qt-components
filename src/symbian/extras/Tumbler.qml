@@ -31,6 +31,7 @@ import "Constants.js" as C
 
 ImplicitSizeItem {
     id: root
+    objectName: "root"
 
     property list<Item> columns
     signal changed(int index)

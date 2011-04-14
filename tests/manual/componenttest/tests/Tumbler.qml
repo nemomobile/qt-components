@@ -87,14 +87,16 @@ Rectangle {
             }
 
             Button {
-                text: "Select"
+                text: "Set Today"
                 width: parent.buttonWidth
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        dayColumn.selectedIndex = 20;
-                        monthColumn.selectedIndex = 3;
-                        yearColumn.selectedIndex = 79;
+                        var d = new Date();
+                        dayColumn.selectedIndex = d.getDate() - 1;
+                        monthColumn.selectedIndex = d.getMonth();
+                        yearColumn.selectedIndex = d.getFullYear() - 2000;
+                        extraColumn.selectedIndex = d.getDay();
                     }
                 }
             }
@@ -105,9 +107,10 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        dayColumn.label = "LOL";
-                        monthColumn.label = "CATZ";
-                        yearColumn.label = "PWNED";
+                        dayColumn.label = "JOUR";
+                        monthColumn.label = "MOIS";
+                        yearColumn.label = "ANNEE";
+                        extraColumn.label = "DATTE";
                     }
                 }
             }
@@ -121,6 +124,7 @@ Rectangle {
                         dayColumn.label = "";
                         monthColumn.label = "";
                         yearColumn.label = "";
+                        extraColumn.label = "";
                     }
                 }
             }
@@ -145,6 +149,7 @@ Rectangle {
                     dayColumn.enabled = !dayColumn.enabled;
                     monthColumn.enabled = !monthColumn.enabled;
                     yearColumn.enabled = !yearColumn.enabled;
+                    extraColumn.enabled = !extraColumn.enabled;
                 }
             }
 
@@ -185,13 +190,11 @@ Rectangle {
     }
 
     function initializeDataModels() {
-        for (var year = 1900; year <= 2011; year++) {
+        for (var year = 2000; year <= 2020; year++)
             yearsList.append({"value" : year});
-        }
 
-        for (var day = 1; day <= 31; day++) {
+        for (var day = 1; day <= 31; day++)
             daysList.append({"value" : day});
-        }
     }
 
     Component.onCompleted: {
@@ -247,7 +250,7 @@ Rectangle {
         id: yearColumn
 
         label: "YEAR"
-        selectedIndex: 88
+        selectedIndex: 10
         items: yearsList
         visible: yearButton.checked
 
@@ -259,14 +262,16 @@ Rectangle {
     TumblerColumn {
         id: extraColumn
 
-        label: "EXTRA"
+        label: "DATE"
         selectedIndex: 2
         items: ListModel {
-            ListElement { value: "ichi" }
-            ListElement { value: "ni" }
-            ListElement { value: "san" }
-            ListElement { value: "yon" }
-            ListElement { value: "go" }
+            ListElement { value: "Sun" }
+            ListElement { value: "Mon" }
+            ListElement { value: "Tue" }
+            ListElement { value: "Wed" }
+            ListElement { value: "Thr" }
+            ListElement { value: "Fri" }
+            ListElement { value: "Sat" }
         }
 
         onSelectedIndexChanged: {
