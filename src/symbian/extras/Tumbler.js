@@ -79,7 +79,7 @@ function clear() {
 
 function forceUpdate() {
     for (var i = 0; i < columns.length; i++) {
-        columns[i].selectedIndex = __columns[i].listView.currentIndex;
+        columns[i].selectedIndex = __columns[i].pathView.currentIndex;
     }
 }
 

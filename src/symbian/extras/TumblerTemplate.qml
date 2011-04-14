@@ -34,7 +34,7 @@ Item {
     objectName: "tumblerColumn" + index
 
     property Item tumblerColumn
-    property alias listView: list
+    property alias pathView: pView
     property int index: -1
 
     opacity: enabled ? C.TUMBLER_OPACITY_FULL : C.TUMBLER_OPACITY
@@ -42,25 +42,29 @@ Item {
     visible: tumblerColumn ? tumblerColumn.visible : false
     enabled: tumblerColumn ? tumblerColumn.enabled : true
 
-    ListView {
-        id: list
+    Image {
+        id: divider
+        anchors.left: parent.left
+        height: pView.height
+        source: privateStyle.imagePath("qtg_graf_tumbler_divider")
+    }
 
-        property real entryHeight: currentItem ? currentItem.height : 0
+    PathView {
+        id: pView
 
+        anchors.left: divider.right
         model: tumblerColumn ? tumblerColumn.items : undefined
         currentIndex: tumblerColumn ? tumblerColumn.selectedIndex : 0
-        preferredHighlightBegin: Math.floor((height - entryHeight) / 2)
-        preferredHighlightEnd: preferredHighlightBegin + entryHeight
-        highlightRangeMode: ListView.StrictlyEnforceRange
+        preferredHighlightBegin: (height / 2) / (C.TUMBLER_ROW_HEIGHT * pView.count)
+        preferredHighlightEnd: preferredHighlightBegin
+        highlightRangeMode: PathView.StrictlyEnforceRange
         clip: true
         delegate: defaultDelegate
         highlight: defaultHighlight
         interactive: template.enabled
         width: tumblerColumn ? tumblerColumn.width : 0
         height: parent.height - container.height - 2*C.TUMBLER_BORDER_MARGIN // decrease by text & border heights
-        maximumFlickVelocity: C.TUMBLER_FLICK_VELOCITY
 
-        Component.onCompleted: positionViewAtIndex(currentIndex, ListView.Center)
         onMovementStarted: {
             internal.movementCount++;
         }
@@ -69,15 +73,18 @@ Item {
             root.changed(template.index) // got index from delegate
         }
 
-        Image {
-            height: parent.height
-            source: privateStyle.imagePath("qtg_graf_tumbler_divider")
+        path: Path {
+             startX: template.width / 2; startY: 0
+             PathLine {
+                 x: template.width / 2
+                 y: C.TUMBLER_ROW_HEIGHT * pView.count
+             }
         }
     }
 
     Item {
         id: container
-        anchors.top: list.bottom
+        anchors.top: pView.bottom
         width: tumblerColumn ? tumblerColumn.width : 0
         height: internal.hasLabel ? C.TUMBLER_LABEL_HEIGHT : 0 // internal.hasLabel is from root tumbler
 
@@ -111,7 +118,7 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        if (list.interactive) {
+                        if (pView.interactive) {
                             tumblerColumn.selectedIndex = index;  // got index from delegate
                             root.changed(template.index);
                         }
@@ -127,7 +134,7 @@ Item {
         Image {
             id: highlight
             objectName: "highlight"
-            width: tumblerColumn.width
+            width: tumblerColumn ? tumblerColumn.width : 0
             source: privateStyle.imagePath("qtg_graf_tumbler_highlighted")
             fillMode: Image.TileHorizontally
         }

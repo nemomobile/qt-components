@@ -37,7 +37,15 @@ function restoreIndex(src) {
     for (var i = 0; i < __origIndex.length; i++) {
         // position view at the right index then make sure selectedIndex
         // is updated to reflect that
-        src.privateTemplates[i].listView.positionViewAtIndex(__origIndex[i], ListView.Center);
+        if (src.privateTemplates[i].pathView.currentIndex > __origIndex[i]) {
+            while (src.privateTemplates[i].pathView.currentIndex != __origIndex[i]) {
+                src.privateTemplates[i].pathView.decrementCurrentIndex()
+            }
+        } else if (src.privateTemplates[i].pathView.currentIndex < __origIndex[i]) {
+            while (src.privateTemplates[i].pathView.currentIndex != __origIndex[i]) {
+                src.privateTemplates[i].pathView.incrementCurrentIndex()
+            }
+        }
         src.columns[i].selectedIndex = __origIndex[i];
     }
 }
