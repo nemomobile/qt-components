@@ -33,6 +33,7 @@
 class SDateTime : public QObject
 {
     Q_OBJECT
+    Q_ENUMS(TimeUnit HourMode)
 
 public:
     explicit SDateTime(QObject *parent = 0);
@@ -41,6 +42,21 @@ public:
     Q_INVOKABLE static QString shortMonthName(int month);
     Q_INVOKABLE static bool isLeapYear(int year);
     Q_INVOKABLE static int daysInMonth(int year, int month);
+    Q_INVOKABLE static QString amText();
+    Q_INVOKABLE static QString pmText();
+    Q_INVOKABLE static int hourMode();
+
+    enum TimeUnit {
+        Hours = 1,
+        Minutes = 2,
+        Seconds = 4,
+        All = 7
+    };
+
+    enum HourMode {
+        TwelveHours = 1,
+        TwentyFourHours = 2
+    };
 
 private:
     Q_DISABLE_COPY(SDateTime)

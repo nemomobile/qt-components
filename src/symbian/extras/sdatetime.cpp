@@ -26,6 +26,12 @@
 
 #include "sdatetime.h"
 #include <QDate>
+#include <QLocale>
+#if defined(Q_OS_WIN)
+#include <qt_windows.h>
+#elif defined(Q_OS_SYMBIAN)
+#include <e32std.h>
+#endif
 
 SDateTime::SDateTime(QObject *parent) : QObject(parent)
 {
@@ -48,6 +54,31 @@ bool SDateTime::isLeapYear(int year)
 int SDateTime::daysInMonth(int year, int month)
 {
     return QDate(year, month, 1).daysInMonth();
+}
+
+QString SDateTime::amText()
+{
+    return QLocale().amText();
+}
+
+QString SDateTime::pmText()
+{
+    return QLocale().pmText();
+}
+
+int SDateTime::hourMode()
+{
+    bool format12h = false;
+#if defined(Q_OS_WIN)
+    wchar_t data[10];
+    GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, data, 10);
+    format12h = QString::fromWCharArray(data).startsWith(QLatin1Char('h'));
+#elif defined(Q_OS_SYMBIAN)
+    TExtendedLocale loc;
+    loc.LoadSystemSettings();
+    format12h = loc.GetLocale()->TimeFormat() == ETime12;
+#endif
+    return format12h ? TwelveHours : TwentyFourHours;
 }
 
 #include "moc_sdatetime.cpp"
