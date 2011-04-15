@@ -38,8 +38,6 @@ Item {
                               : slider3.activeFocus ? slider3
                               : null
 
-    Component.onCompleted: slider1.forceActiveFocus()
-
     Rectangle {
         border {color: "steelblue"; width: 5}
         color: "#00000000"; radius: 5; opacity: 0.80

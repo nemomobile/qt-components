@@ -37,8 +37,6 @@ Item {
                               : postText.activeFocus ? postText
                               : null
 
-    Component.onCompleted: addText.forceActiveFocus()
-
     Rectangle {
         border {color: "steelblue"; width: 5}
         color: "#00000000"; radius: 5; opacity: 0.80
@@ -68,6 +66,7 @@ Item {
                 objectName: "addText"
                 width: parent.bw; height: parent.bh
                 text: "Add text"
+                focus: true
 
                 KeyNavigation.right: clearText
                 KeyNavigation.down: preText

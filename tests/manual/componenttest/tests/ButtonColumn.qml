@@ -44,6 +44,7 @@ Item {
             id: navButton1
             text: "Buttons"
             opacity: 0.6
+            focus: true
             onClicked: root.state = "buttonsInCol"
             KeyNavigation.left: navButton4
             KeyNavigation.right: navButton2
@@ -75,8 +76,6 @@ Item {
             KeyNavigation.left: navButton3
             KeyNavigation.right: navButton1
         }
-
-        Component.onCompleted: navButton1.forceActiveFocus()
     }
 
     Item {

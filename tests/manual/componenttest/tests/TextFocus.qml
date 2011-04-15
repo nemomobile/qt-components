@@ -31,6 +31,7 @@ FocusScope {
     property variant focusItem: textFields.activeFocus ? textFields : textAreas.activeFocus
                                                        ? textAreas  : textInputs.activeFocus
                                                        ? textInputs : null
+    focus: true
     Rectangle {
         anchors.fill: parent
         color: "black"
@@ -90,7 +91,7 @@ FocusScope {
             height: parent.h; width: parent.width
             highlight: activeFocus ? highlight : null
             highlightFollowsCurrentItem: false
-            Component.onCompleted: forceActiveFocus()
+            focus: true
             KeyNavigation.down: textAreas
         }
 

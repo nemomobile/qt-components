@@ -341,7 +341,7 @@ ApplicationWindow {
                                             anchors { left: parent.left; top: parent.top }
                                             width: if (fillSetting.checked) parent.width
                                             height: if (fillSetting.checked) parent.height
-
+                                            focus: true
                                             visible: loader.status !== Loader.Error
                                             source: mainPage.resolveSource()
                                         }// Loader

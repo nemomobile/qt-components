@@ -46,6 +46,7 @@ Item {
             objectName: "navButton1"
             text: "Buttons"
             opacity: 0.6
+            focus: true
             KeyNavigation.left: navButton4
             KeyNavigation.right: navButton2
             onClicked: root.state = "buttonsInRow"
@@ -80,7 +81,6 @@ Item {
             KeyNavigation.right: navButton1
             onClicked: root.state = "toolButtonsInRow"
         }
-        Component.onCompleted: navButton1.forceActiveFocus()
     }
 
     Column {
