@@ -155,6 +155,7 @@ Item {
 
     Dialog {
         id: selectInputMethodHints
+        height: parent.height; width: parent.width
 
         title: Text {
             text: "InputMethodHints"
@@ -195,7 +196,7 @@ Item {
 
             ListItemText {
                 id: listText
-                style: parent.style; role: "SubTitle"; text: title
+                role: "SubTitle"; text: title
                 anchors {
                     left: listItem.padding.left; right:checkBox.left
                     verticalCenter: parent.verticalCenter
@@ -230,7 +231,7 @@ Item {
 
             ListItemText {
                 anchors.fill: sectionHeader.padding
-                style: sectionHeader.style; role: "Heading"; text: section
+                role: "Heading"; text: section
             }
         }
     }
