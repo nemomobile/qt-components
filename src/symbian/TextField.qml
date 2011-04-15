@@ -34,7 +34,6 @@ FocusScopeItem {
     property alias font: textInput.font
     property alias cursorPosition: textInput.cursorPosition
     property alias readOnly: textInput.readOnly
-    // TODO FIX: when new enum available
     property alias echoMode: textInput.echoMode
     property alias acceptableInput: textInput.acceptableInput
     property alias inputMask: textInput.inputMask
@@ -84,6 +83,7 @@ FocusScopeItem {
 
     implicitHeight: 2 * platformStyle.paddingMedium +
                     privateStyle.fontHeight(textInput.font)
+    property bool enabled: true // overriding due to QTBUG-15797 and related bugs
 
     // Private data
     QtObject {
@@ -109,6 +109,7 @@ FocusScopeItem {
             leftMargin: platformStyle.paddingMedium; rightMargin: platformStyle.paddingMedium
             topMargin: platformStyle.paddingMedium; bottomMargin: platformStyle.paddingMedium
         }
+        enabled: root.enabled
         clip: true
         color: platformStyle.colorNormalDark
         focus: true
@@ -117,6 +118,14 @@ FocusScopeItem {
         selectByMouse: true
         selectedTextColor: platformStyle.colorNormalLight
         selectionColor: platformStyle.colorTextSelection
+        onEnabledChanged: {
+            if (!enabled) {
+                select(0, 0)
+                // De-focusing requires setting focus elsewhere, in this case editor's parent
+                if (root.parent)
+                    root.parent.forceActiveFocus()
+            }
+        }
     }
 
     Text {

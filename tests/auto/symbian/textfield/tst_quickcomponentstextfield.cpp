@@ -45,6 +45,7 @@ private slots:
     void placeholderText();
     void placeholderTextAndPresetText();
     void placeholderTextAndReadOnly();
+    void enabled();
 
 private:
     QObject* m_componentObject;
@@ -405,6 +406,34 @@ void tst_quickcomponentstextfield::placeholderTextAndReadOnly()
 
     // Focus out
     button->setFocus(Qt::OtherFocusReason);
+}
+
+void tst_quickcomponentstextfield::enabled()
+{
+    QGraphicsObject *textField = m_view->rootObject()->findChild<QGraphicsObject*>("textField");
+    QGraphicsObject *textInput = m_view->rootObject()->findChild<QGraphicsObject*>("textInput");
+    QVERIFY(textField);
+    QVERIFY(textInput);
+    QVERIFY(textField->property("enabled").toBool());
+    QVERIFY(textInput->property("enabled").toBool());
+
+    textField->setProperty("text", QString("Some text"));
+    // Focus textArea
+    textField->setFocus(Qt::OtherFocusReason);
+    QVERIFY(textField->property("activeFocus").toBool());
+    QVERIFY(textInput->property("cursorVisible").toBool());
+    // Make selection
+    QVERIFY(QMetaObject::invokeMethod(textField, "selectAll"));
+    QVERIFY(textField->property("selectionEnd").toInt() >
+            textField->property("selectionStart").toInt());
+
+    // Make sure that setting to disabled behaves as expected
+    textField->setProperty("enabled", false);
+    QVERIFY(!textField->property("enabled").toBool());
+    QVERIFY(!textField->property("activeFocus").toBool());
+    QVERIFY(!textInput->property("cursorVisible").toBool());
+    QCOMPARE(textField->property("selectionEnd").toInt(),
+             textField->property("selectionStart").toInt()); // no selection
 }
 
 QTEST_MAIN(tst_quickcomponentstextfield)
