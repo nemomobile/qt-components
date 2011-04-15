@@ -47,6 +47,7 @@ private slots:
     void font();
     void focus();
     void cursorRectangle();
+    void enabled();
 
 private:
     QObject* m_componentObject;
@@ -534,6 +535,34 @@ void tst_quickcomponentstextarea::cursorRectangle()
     QCOMPARE(textArea-> mapRectFromScene(cursorRectFromScene.toRectF()), cursorRect.toRectF());
     QVERIFY(cursorRectFromApp.isValid());
     QCOMPARE(textArea-> mapRectFromScene(cursorRectFromApp.toRectF()), cursorRect.toRectF());
+}
+
+void tst_quickcomponentstextarea::enabled()
+{
+    QGraphicsObject *textArea = m_view->rootObject()->findChild<QGraphicsObject*>("textArea");
+    QGraphicsObject *textEdit = m_view->rootObject()->findChild<QGraphicsObject*>("textEdit");
+    QVERIFY(textArea);
+    QVERIFY(textEdit);
+    QVERIFY(textArea->property("enabled").toBool());
+    QVERIFY(textEdit->property("enabled").toBool());
+
+    textArea->setProperty("text", QString("Some text"));
+    // Focus textArea
+    textArea->setFocus(Qt::OtherFocusReason);
+    QVERIFY(textArea->property("activeFocus").toBool());
+    QVERIFY(textEdit->property("cursorVisible").toBool());
+    // Make selection
+    QVERIFY(QMetaObject::invokeMethod(textArea, "selectAll"));
+    QVERIFY(textArea->property("selectionEnd").toInt() >
+            textArea->property("selectionStart").toInt());
+
+    // Make sure that setting to disabled behaves as expected
+    textArea->setProperty("enabled", false);
+    QVERIFY(!textArea->property("enabled").toBool());
+    QVERIFY(!textArea->property("activeFocus").toBool());
+    QVERIFY(!textEdit->property("cursorVisible").toBool());
+    QCOMPARE(textArea->property("selectionEnd").toInt(),
+             textArea->property("selectionStart").toInt()); // no selection
 }
 
 QTEST_MAIN(tst_quickcomponentstextarea)

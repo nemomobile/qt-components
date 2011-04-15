@@ -87,6 +87,7 @@ FocusScopeItem {
     // http://bugreports.qt.nokia.com/browse/QTBUG-12305 (fixed in QtQuick1.1)
     property real maxImplicitWidth: (parent ? parent.width : screen.width) - root.x
     property real maxImplicitHeight: (parent ? parent.height : screen.height) - root.y
+    property bool enabled: true // overriding due to QTBUG-15797 and related bugs
 
     implicitWidth: {
         var preferredWidth = Math.max(flick.contentWidth, privy.minImplicitWidth)
@@ -183,6 +184,7 @@ FocusScopeItem {
             contentHeight: textEdit.model.paintedHeight
             contentWidth: textEdit.model.paintedWidth +
                          (textEdit.wrapMode == TextEdit.NoWrap ? textEdit.cursorRectangle.width : 0)
+            interactive: root.enabled
 
             TextEdit {
                 id: textEdit
@@ -200,7 +202,7 @@ FocusScopeItem {
                     height: root.maxImplicitHeight - container.anchors.topMargin - container.anchors.bottomMargin
                     width: root.maxImplicitWidth - container.anchors.leftMargin - container.anchors.rightMargin
                 }
-
+                enabled: root.enabled
                 focus: true
                 font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
                 color: platformStyle.colorNormalDark
@@ -219,6 +221,14 @@ FocusScopeItem {
                     if (activeFocus) {
                         horizontal.flash()
                         vertical.flash()
+                    }
+                }
+                onEnabledChanged: {
+                    if (!enabled) {
+                        select(0, 0)
+                        // De-focusing requires setting focus elsewhere, in this case editor's parent
+                        if (root.parent)
+                            root.parent.forceActiveFocus()
                     }
                 }
             }
