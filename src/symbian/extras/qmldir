@@ -1,6 +1,7 @@
 plugin symbianextrasplugin
 DatePickerDialog 1.0 DatePickerDialog.qml
 RatingIndicator 1.0 RatingIndicator.qml
+TimePickerDialog 1.0 TimePickerDialog.qml
 Tumbler 1.0 Tumbler.qml
 TumblerColumn 1.0 TumblerColumn.qml
 TumblerDialog 1.0 TumblerDialog.qml

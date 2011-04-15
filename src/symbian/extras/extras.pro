@@ -21,6 +21,7 @@ QML_FILES = \
     Constants.js \
     DatePickerDialog.qml \
     RatingIndicator.qml \
+    TimePickerDialog.qml \
     Tumbler.js \
     Tumbler.qml \
     TumblerColumn.qml \
