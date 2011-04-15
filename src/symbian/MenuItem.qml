@@ -112,6 +112,7 @@ Item {
         event.accepted = true
         switch (event.key) {
             case Qt.Key_Select:
+            case Qt.Key_Enter:
             case Qt.Key_Return: {
                 if (symbian.listInteractionMode != Symbian.KeyNavigation)
                     symbian.listInteractionMode = Symbian.KeyNavigation
