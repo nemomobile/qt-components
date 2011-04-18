@@ -27,7 +27,7 @@
 import Qt 4.7
 import com.nokia.symbian 1.0
 
-Window {
+Item {
     id: root
 
     Flickable {
