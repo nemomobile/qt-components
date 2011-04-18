@@ -46,6 +46,7 @@ private slots:
     void placeholderTextAndPresetText();
     void placeholderTextAndReadOnly();
     void enabled();
+    void platformMaximumLength();
 
 private:
     QObject* m_componentObject;
@@ -435,6 +436,27 @@ void tst_quickcomponentstextfield::enabled()
     QCOMPARE(textField->property("selectionEnd").toInt(),
              textField->property("selectionStart").toInt()); // no selection
 }
+
+void tst_quickcomponentstextfield::platformMaximumLength()
+{
+    QGraphicsObject* textField = m_componentObject->findChild<QGraphicsObject*>("textField");
+    QVERIFY(textField);
+
+    // Set a value to the maximum length
+    QVERIFY(textField->setProperty("platformMaximumLength", 20));
+    QCOMPARE(textField->property("platformMaximumLength").toInt(), 20);
+
+    // Set a text that is as long as the set value for the max length
+    QString testText("12345678901234567890");
+    QVERIFY(textField->setProperty("text", testText));
+    QCOMPARE(textField->property("text").toString(), testText);
+
+    // Set a longer text than the set value for max length is
+    QVERIFY(textField->setProperty("text", QString("12345678901234567890asdfghjkl")));
+    // The text should be truncated to the length of max length
+    QCOMPARE(textField->property("text").toString(), testText);
+}
+
 
 QTEST_MAIN(tst_quickcomponentstextfield)
 
