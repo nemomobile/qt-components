@@ -80,7 +80,8 @@ Item {
 
             onItemsHiddenChanged: {
                 // Check that popup is really open in order to prevent unnecessary feedback
-                if (containingPopup.status == DialogStatus.Open)
+                if (containingPopup.status == DialogStatus.Open
+                    && symbian.listInteractionMode == Symbian.TouchInteraction)
                     privateStyle.play(Symbian.ItemScroll)
             }
 
