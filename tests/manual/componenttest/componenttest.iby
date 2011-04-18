@@ -43,6 +43,7 @@ data=DATAZ_\private\200346E0\tests\Tabs.qml                     \private\200346E
 data=DATAZ_\private\200346E0\tests\TextArea.qml                 \private\200346E0\tests\TextArea.qml
 data=DATAZ_\private\200346E0\tests\TextField.qml                \private\200346E0\tests\TextField.qml
 data=DATAZ_\private\200346E0\tests\TextFieldFont.qml            \private\200346E0\tests\TextFieldFont.qml
+data=DATAZ_\private\200346E0\tests\TextFieldMaxLength.qml       \private\200346E0\tests\TextFieldMaxLength.qml
 data=DATAZ_\private\200346E0\tests\TextFieldOther.qml           \private\200346E0\tests\TextFieldOther.qml
 data=DATAZ_\private\200346E0\tests\TextFieldSelection.qml       \private\200346E0\tests\TextFieldSelection.qml
 data=DATAZ_\private\200346E0\tests\TextFocus.qml                \private\200346E0\tests\TextFocus.qml

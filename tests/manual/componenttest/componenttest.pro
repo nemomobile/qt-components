@@ -63,6 +63,7 @@ OTHER_FILES += \
     tests/TextArea.qml \
     tests/TextField.qml \
     tests/TextFieldFont.qml \
+    tests/TextFieldMaxLength.qml \
     tests/TextFieldOther.qml \
     tests/TextFieldSelection.qml \
     tests/TextFocus.qml \

@@ -37,6 +37,7 @@ Item {
         TabButton { tab: selection; text: "Selection" }
         TabButton { tab: font; text: "Font" }
         TabButton { tab: other; text: "Other" }
+        TabButton { tab: maxLength; text: "MaxLength" }
     }
 
     TabGroup {
@@ -50,5 +51,6 @@ Item {
         TextFieldSelection { id: selection }
         TextFieldFont { id: font }
         TextFieldOther { id: other }
+        TextFieldMaxLength { id: maxLength }
     }
 }
