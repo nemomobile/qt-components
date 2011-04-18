@@ -102,15 +102,15 @@ Window {
                 id: list
                 anchors.fill: parent
                 delegate:  Rectangle {
-                    width: parent.width
-                    height: 50  // magic
-                    border.color: "#000"
-                    border.width: 1
-                    color: index % 2 == 0 ? "#ffffff" : "#eeeeee"
                     property string section: name[0]
+
+                    width: parent.width
+                    height: childrenRect.height + (2 * platformStyle.paddingLarge)
+                    border { color: "#000"; width: 1 }
+                    color: index % 2 == 0 ? "#ffffff" : "#eeeeee"
                     Text {
-                        anchors.verticalCenter: parent.verticalCenter
-                        x: 20  // magic
+                        x: platformStyle.paddingLarge
+                        y: platformStyle.paddingLarge
                         text: name + " (index " + index + ")"
                     }
                 }
@@ -120,16 +120,16 @@ Window {
                 section.criteria: ViewSection.FullString
                 section.delegate: Rectangle {
                     width: list.width
-                    height: 30  // magic
+                    height: childrenRect.height + (2 * platformStyle.paddingSmall)
                     color: "#888"
                     Text {
+                        id: sectScrollerTitleDelegate
                         objectName: "Label" + section
-                        anchors.verticalCenter: parent.verticalCenter
-                        x: 5  // magic
-                         text: section
-                         font.bold: true
-                         font.pointSize: 16
-                     }
+                        x: platformStyle.paddingSmall
+                        y: platformStyle.paddingSmall
+                        text: section
+                        font { bold: true; pointSize: platformStyle.fontSizeLarge }
+                    }
                 }
             }
 

@@ -504,32 +504,30 @@ Column {
                     anchors.fill: parent
                     clip: true
                     delegate:  Rectangle {
-                        width: list.width
-                        height: 20
-                        border.color: "#000"
-                        border.width: 1
-                        color: index % 2 == 0 ? "#ffffff" : "#eeeeee"
                         property string section: name[0]
+
+                        width: list.width
+                        height: childrenRect.height + (2 * platformStyle.paddingSmall)
+                        border { color: "#000"; width: 1 }
+                        color: index % 2 == 0 ? "#ffffff" : "#eeeeee"
                         Text {
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: 20
+                            x: platformStyle.paddingSmall
+                            y: platformStyle.paddingSmall
                             text: name + " (index " + index + ")"
                         }
                     }
-
                     model: testModel
                     section.property: "alphabet"
                     section.criteria: ViewSection.FullString
                     section.delegate: Rectangle {
                         width: list.width
-                        height: 30
+                        height: childrenRect.height + (2 * platformStyle.paddingSmall)
                         color: "#888"
                         Text {
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: 5
+                            x: platformStyle.paddingSmall
+                            y: platformStyle.paddingSmall
                             text: section
-                            font.bold: true
-                            font.pointSize: 16
+                            font { bold: true; pointSize: platformStyle.fontSizeMedium }
                         }
                     }
                 }
