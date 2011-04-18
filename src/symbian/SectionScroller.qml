@@ -52,7 +52,7 @@ ImplicitSizeItem {
 
         color: "transparent"
         width: platformSingleRow ? listView.width : 3 * privateStyle.scrollBarThickness
-        height: listView.height
+        height: listView ? listView.height : 0
         x: listView.x + listView.width - width
 
         MouseArea {
@@ -61,8 +61,8 @@ ImplicitSizeItem {
             anchors { top: parent.top; bottom: parent.bottom; right: parent.right }
             width: internal.dragAreaWidth
             drag.axis: Drag.YAxis
-            drag.minimumY: listView.y
-            drag.maximumY: listView.y + listView.height - toolTip.height
+            drag.minimumY: listView ? listView.y : 0
+            drag.maximumY: listView ? (listView.y + listView.height - toolTip.height) : 0
 
             onPressed: {
                 mouseDownTimer.restart()
@@ -248,7 +248,7 @@ ImplicitSizeItem {
         id: internal
 
         property string prevSection: ""
-        property string currentSection: listView.currentSection
+        property string currentSection: listView ? listView.currentSection : ""
         property string nextSection: ""
         property string currentArea: ""
         property string currentPosition: "first"
