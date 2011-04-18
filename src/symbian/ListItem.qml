@@ -29,7 +29,7 @@ import "." 1.0
 
 ImplicitSizeItem {
     id: root
-    property string mode: internal.getMode() // Read-only
+    property string mode: "normal" // Read-only
     property alias paddingItem: paddingItem // Read-only
 
     property bool enabled: true
@@ -262,6 +262,10 @@ ImplicitSizeItem {
             else
                 return "normal"
         }
+
+        // Performance optimization:
+        // Use value assignment when property changes instead of binding to js function
+        onStateChanged: { root.mode = internal.getMode() }
 
         function press() {
             privateStyle.play(Symbian.BasicItem)
