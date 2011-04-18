@@ -38,24 +38,32 @@ ImplicitSizeItem {
 
     property alias text: label.text
 
+    // Performance optimization:
+    // Use value assignment when property changes instead of binding to js function
+    onCheckedChanged: { contentIcon.source = internal.iconSource() }
+    onPressedChanged: { contentIcon.source = internal.iconSource() }
+    onEnabledChanged: { contentIcon.source = internal.iconSource() }
+
     QtObject {
         id: internal
         objectName: "internal"
 
-        function bg_postfix() {
+        function iconSource() {
+            var id
             if (!root.enabled) {
                 if (root.checked)
-                    return "disabled_selected"
+                    id = "disabled_selected"
                 else
-                    return "disabled_unselected"
+                    id = "disabled_unselected"
             } else {
                 if (root.pressed)
-                    return "pressed"
+                    id = "pressed"
                 else if (root.checked)
-                    return "normal_selected"
+                    id = "normal_selected"
                 else
-                    return "normal_unselected"
+                    id = "normal_unselected"
             }
+            return privateStyle.imagePath("qtg_graf_checkbox_" + id)
         }
 
         function press() {
@@ -97,7 +105,7 @@ ImplicitSizeItem {
 
     Image {
         id: contentIcon
-        source: privateStyle.imagePath("qtg_graf_checkbox_" + internal.bg_postfix());
+        source: privateStyle.imagePath("qtg_graf_checkbox_normal_unselected");
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
         sourceSize.width: privateStyle.buttonSize
