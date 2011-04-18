@@ -37,27 +37,33 @@ Text {
         pixelSize: (role == "Title" || role == "SelectionTitle") ? platformStyle.fontSizeLarge : platformStyle.fontSizeSmall
         weight: (role == "SubTitle" || role == "SelectionSubTitle") ? Font.Light : Font.Normal
     }
-    color: internal.getColor()
+    color: internal.normalColor
     elide: Text.ElideRight
+
+    // Performance optimization:
+    // Use value assignment when property changes instead of binding to js function
+    onModeChanged: { color = internal.getColor() }
 
     QtObject {
         id: internal
 
+        // Performance optmization:
+        // Use tertiary operations even though it doesn't look that good
+        property color normalColor: root.role == "SelectionTitle"
+            ? platformStyle.colorNormalDark
+            : (root.role == "SelectionSubTitle" || root.role == "SubTitle")
+                ? platformStyle.colorNormalMid
+                : platformStyle.colorNormalLight
+
         function getColor() {
-            if (root.mode == "normal" || root.mode == "") {
-                if (role == "SelectionTitle")
-                    return platformStyle.colorNormalDark
-                else if (role == "SelectionSubTitle" || role == "SubTitle")
-                    return platformStyle.colorNormalMid
-                else
-                    return platformStyle.colorNormalLight
-            } else if (root.mode == "pressed") {
+            if (root.mode == "pressed")
                 return platformStyle.colorPressed
-            } else if (root.mode == "highlighted") {
+            else if (root.mode == "highlighted")
                  return platformStyle.colorHighlighted
-            } else if (root.mode == "disabled") {
+            else if (root.mode == "disabled")
                 return platformStyle.colorDisabledLight
-            }
+            else 
+                return normalColor
         }
     }
 }
