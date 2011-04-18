@@ -44,6 +44,7 @@ release/
 /lib/
 /imports/
 /features/qt-components-config.prf
+/demos/flickr/flickr
 /examples/meego/calculator/calculator
 /examples/meego/widgetgallery/widgetgallery
 /examples/native/focus/focus
