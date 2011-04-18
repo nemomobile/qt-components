@@ -85,6 +85,8 @@ FocusScopeItem {
                     privateStyle.fontHeight(textInput.font)
     property bool enabled: true // overriding due to QTBUG-15797 and related bugs
 
+    property alias platformMaximumLength: textInput.maximumLength
+
     // Private data
     QtObject {
         id: priv
