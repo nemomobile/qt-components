@@ -266,7 +266,8 @@ ImplicitSizeItem {
 
         function release() {
             releasedEffect.restart()
-            privateStyle.play(Symbian.BasicItem)
+            if (symbian.listInteractionMode != Symbian.KeyNavigation)
+                privateStyle.play(Symbian.BasicItem)
         }
 
         function hold() {
