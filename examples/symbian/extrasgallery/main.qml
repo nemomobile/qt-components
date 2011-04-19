@@ -92,6 +92,11 @@ ApplicationWindow {
                         title: "TumblerDialog"
                         subtitle: "Show tumbler dialog"
                     }
+                    ListElement {
+                        page: "DatePickerDialog.qml"
+                        title: "DatePickerDialog"
+                        subtitle: "Show date picker dialog"
+                    }
                 }
 
                 ListView {

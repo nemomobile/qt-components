@@ -19,5 +19,6 @@ symbian {
 
 OTHER_FILES += \
     main.qml \
+    DatePickerDialog.qml \
     RatingIndicator.qml \
     Tumbler.qml
