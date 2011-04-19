@@ -36,6 +36,7 @@ Item {
     property Item tumblerColumn
     property alias pathView: pView
     property int index: -1
+    property bool lastColumn: false
 
     opacity: enabled ? C.TUMBLER_OPACITY_FULL : C.TUMBLER_OPACITY
     width: childrenRect.width
@@ -63,8 +64,8 @@ Item {
         delegate: defaultDelegate
         highlight: defaultHighlight
         interactive: template.enabled
-        width: tumblerColumn ? tumblerColumn.width : 0
-        height: parent.height - container.height - 2*C.TUMBLER_BORDER_MARGIN // decrease by text & border heights
+        width: tumblerColumn ? tumblerColumn.width - C.TUMBLER_BORDER_MARGIN : 0
+        height: root.height - container.height - 2*C.TUMBLER_BORDER_MARGIN // decrease by text & border heights
 
         onMovementStarted: {
             internal.movementCount++;
@@ -81,6 +82,13 @@ Item {
                  y: C.TUMBLER_ROW_HEIGHT * pView.count
              }
         }
+    }
+
+    Image {
+        id: divider2
+        anchors.right: pView.right
+        height: lastColumn ? pView.height : 0
+        source: privateStyle.imagePath("qtg_graf_tumbler_divider")
     }
 
     Item {

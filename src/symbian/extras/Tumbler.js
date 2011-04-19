@@ -45,7 +45,7 @@ function initialize() {
     }
     // allocate the rest to auto width columns
     if ((columns.length - requestedCount - invisibleCount) > 0) {
-        __autoColumnWidth = Math.floor((parent.width - requestedWidth) / (columns.length - requestedCount - invisibleCount));
+        __autoColumnWidth = Math.floor((root.width - requestedWidth) / (columns.length - requestedCount - invisibleCount));
     }
 
     for (var i = 0; i < columns.length; i++) {
@@ -65,6 +65,7 @@ function initialize() {
         newObj.visibleChanged.connect(layout);
         __columns.push(newObj);
     }
+    __columns[__columns.length - 1].lastColumn = true;
     privateTemplates = __columns;
 }
 
@@ -107,7 +108,7 @@ function layout() {
     }
 
     if ((columns.length - requestedCount - invisibleCount) > 0) {
-        __autoColumnWidth = Math.floor((parent.width - requestedWidth) / (columns.length - requestedCount - invisibleCount));
+        __autoColumnWidth = Math.floor((root.width - requestedWidth) / (columns.length - requestedCount - invisibleCount));
     }
 
     // guard against onWidthChanged triggering again during this process
