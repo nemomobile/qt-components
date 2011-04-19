@@ -64,6 +64,11 @@ ImplicitSizeItem {
         }
     }
 
+    Connections {
+        target: screen
+        onCurrentOrientationChanged: flash()
+    }
+
     QtObject {
         id: internal
         property int hideTimeout: 2000
