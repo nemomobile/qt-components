@@ -12,12 +12,13 @@ data=\epoc32\data\z\resource\qt\imports\com\nokia\extras\qmldir                 
 
 // Symbian extras QML components
 data=\epoc32\data\z\resource\qt\imports\com\nokia\extras\Constants.js                                    RESOURCE_FILES_DIR\qt\imports\com\nokia\extras\Constants.js
+data=\epoc32\data\z\resource\qt\imports\com\nokia\extras\DatePickerDialog.qml                            RESOURCE_FILES_DIR\qt\imports\com\nokia\extras\DatePickerDialog.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\extras\RatingIndicator.qml                             RESOURCE_FILES_DIR\qt\imports\com\nokia\extras\RatingIndicator.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\extras\Tumbler.js                                      RESOURCE_FILES_DIR\qt\imports\com\nokia\extras\Tumbler.js
 data=\epoc32\data\z\resource\qt\imports\com\nokia\extras\Tumbler.qml                                     RESOURCE_FILES_DIR\qt\imports\com\nokia\extras\Tumbler.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\extras\TumblerColumn.qml                               RESOURCE_FILES_DIR\qt\imports\com\nokia\extras\TumblerColumn.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\extras\TumblerDialog.qml                               RESOURCE_FILES_DIR\qt\imports\com\nokia\extras\TumblerDialog.qml
-data=\epoc32\data\z\resource\qt\imports\com\nokia\extras\TumblerIndexHelper.js                                 RESOURCE_FILES_DIR\qt\imports\com\nokia\extras\TumblerIndexHelper.js
+data=\epoc32\data\z\resource\qt\imports\com\nokia\extras\TumblerIndexHelper.js                           RESOURCE_FILES_DIR\qt\imports\com\nokia\extras\TumblerIndexHelper.js
 data=\epoc32\data\z\resource\qt\imports\com\nokia\extras\TumblerTemplate.qml                             RESOURCE_FILES_DIR\qt\imports\com\nokia\extras\TumblerTemplate.qml
 
 #endif //__QTCOMPONENTSEXTRAS_IBY__

@@ -20,6 +20,7 @@ SOURCES += \
 QML_FILES = \
     qmldir \
     Constants.js \
+    DatePickerDialog.qml \
     RatingIndicator.qml \
     Tumbler.js \
     Tumbler.qml \
