@@ -64,7 +64,10 @@ ImplicitSizeItem {
         id: stateGroup
 
         states: [
-            State { name: "Pressed" },
+            State {
+                name: "Pressed"
+                PropertyChanges { target: pressedGraphics; opacity: 1 }
+            },
             State { name: "Canceled" }
         ]
         transitions: [
@@ -75,6 +78,13 @@ ImplicitSizeItem {
             Transition {
                 from: "Pressed"
                 to: ""
+                NumberAnimation {
+                    target: pressedGraphics
+                    property: "opacity"
+                    to: 0
+                    duration: 150
+                    easing.type: Easing.Linear
+                }
                 ScriptAction { script: internal.click() }
             }
         ]
@@ -84,9 +94,7 @@ ImplicitSizeItem {
         id: background
 
         function postfix() {
-            if (root.pressed)
-                return "passive_pressed"
-            else if (root.checked)
+            if (root.checked)
                 return "active"
             else
                 return "passive_normal"
@@ -94,6 +102,21 @@ ImplicitSizeItem {
 
         source: privateStyle.imagePath("qtg_fr_tab_" + postfix())
         anchors.fill: parent
+        border {
+            left: platformStyle.borderSizeMedium
+            top: platformStyle.borderSizeMedium
+            right: platformStyle.borderSizeMedium
+            bottom: platformStyle.borderSizeMedium
+        }
+    }
+
+    BorderImage {
+        id: pressedGraphics
+
+        source: privateStyle.imagePath("qtg_fr_tab_passive_pressed")
+        anchors.fill: parent
+        opacity: 0
+
         border {
             left: platformStyle.borderSizeMedium
             top: platformStyle.borderSizeMedium
@@ -220,7 +243,10 @@ ImplicitSizeItem {
             // Reset state
             stateGroup.state = ""
         }
-        onExited: stateGroup.state = "Canceled"
+        onExited: {
+            if (pressed)
+                stateGroup.state = "Canceled"
+        }
 
         anchors.fill: parent
     }

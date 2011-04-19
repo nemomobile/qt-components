@@ -157,14 +157,14 @@ Item {
                 Transition {
                     to: "Incoming"
                     SequentialAnimation {
-                        PropertyAnimation { properties: "opacity"; easing.type: Easing.OutCubic; duration: 500 }
+                        PropertyAnimation { properties: "opacity"; easing.type: Easing.Linear; duration: 250 }
                         ScriptAction { script: incomingDone() }
                     }
                 },
                 Transition {
                     to: "Outgoing"
                     SequentialAnimation {
-                        PropertyAnimation { properties: "opacity"; easing.type: Easing.OutCubic; duration: 500 }
+                        PropertyAnimation { properties: "opacity"; easing.type: Easing.Linear; duration: 250 }
                         ScriptAction { script: outgoingDone() }
                     }
                 }
