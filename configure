@@ -31,6 +31,7 @@ SOURCE_TREE=`cd "$SOURCE_TREE"; /bin/pwd`
 
 BUILD_MEEGO_STYLE=no
 BUILD_SYMBIAN_STYLE=no
+BUILD_DEMOS=yes
 BUILD_EXAMPLES=yes
 BUILD_EXTRAS=yes
 BUILD_TESTS=yes
@@ -116,6 +117,10 @@ while [ "$#" -gt 0 ]; do
         ;;
     nomake)
         case "$1" in
+        demos)
+            BUILD_DEMOS=no
+            shift
+            ;;
         examples)
             BUILD_EXAMPLES=no
             shift
@@ -136,6 +141,9 @@ while [ "$#" -gt 0 ]; do
         ;;
     make)
         case "$1" in
+        demos)
+            BUILD_DEMOS=yes
+            ;;
         examples)
             BUILD_EXAMPLES=yes
             ;;
@@ -217,7 +225,7 @@ Configure options:
     -symbian ................. Build Symbian Style
     -config (config) ......... Configuration options recognized by qmake
     -make (part) ............. Add part to the list of parts to be built at
-                               make time (available parts: examples extras tests)
+                               make time (available parts: demos examples extras tests)
     -nomake (part) ........... Exclude part from the list of parts to be built
 
 Additional options:
@@ -248,6 +256,7 @@ fi
 
 [ "$BUILD_MEEGO_STYLE" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG meego"
 [ "$BUILD_SYMBIAN_STYLE" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG symbian3"
+[ "$BUILD_DEMOS" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG demos"
 [ "$BUILD_EXAMPLES" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG examples"
 [ "$BUILD_EXTRAS" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG extras"
 [ "$BUILD_TESTS" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG tests"
@@ -289,6 +298,7 @@ if [ "$BUILD_SYMBIAN_STYLE" = "yes" ]; then
     echo "  Qt Mobility support ............ $HAVE_MOBILITY"
 fi
 echo "  Extras ......................... $BUILD_EXTRAS"
+echo "Demos ............................ $BUILD_DEMOS"
 echo "Examples ......................... $BUILD_EXAMPLES"
 echo "Tests ............................ $BUILD_TESTS"
 echo

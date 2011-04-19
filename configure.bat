@@ -34,6 +34,7 @@ cd /D %BUILD_TREE%
 
 set BUILD_MEEGO_STYLE=no
 set BUILD_SYMBIAN_STYLE=no
+set BUILD_DEMOS=yes
 set BUILD_EXAMPLES=yes
 set BUILD_EXTRAS=yes
 set BUILD_TESTS=yes
@@ -95,11 +96,17 @@ goto parse
 
 :make
 shift
+if "%0" == "demos" goto demos
 if "%0" == "examples" goto examples
 if "%0" == "extras" goto extras
 if "%0" == "tests" goto tests
 shift
 goto unknown
+
+:demos
+set BUILD_DEMOS=yes
+shift
+goto parse
 
 :examples
 set BUILD_EXAMPLES=yes
@@ -118,11 +125,17 @@ goto parse
 
 :nomake
 shift
+if "%0" == "demos" goto nodemos
 if "%0" == "examples" goto noexamples
 if "%0" == "extras" goto noextras
 if "%0" == "tests" goto notests
 shift
 goto unknown
+
+:nodemos
+set BUILD_DEMOS=no
+shift
+goto parse
 
 :noexamples
 set BUILD_EXAMPLES=no
@@ -161,7 +174,7 @@ echo    -meego ............ Build MeeGo Style
 echo    -symbian .......... Build Symbian Style
 echo    -config (config) .. Configuration options recognized by qmake
 echo    -make (part) ...... Add part to the list of parts to be built at
-echo                        make time (available parts: examples extras tests)
+echo                        make time (available parts: demos examples extras tests)
 echo    -nomake (part) .... Exclude part from the list of parts to be built
 echo.
 echo Additional options:
@@ -178,6 +191,7 @@ goto end
 :qmake
 if "%BUILD_MEEGO_STYLE%" == "yes" set QMAKE_CONFIG=%QMAKE_CONFIG% meego
 if "%BUILD_SYMBIAN_STYLE%" == "yes" set QMAKE_CONFIG=%QMAKE_CONFIG% symbian3
+if "%BUILD_DEMOS%" == "yes" set QMAKE_CONFIG=%QMAKE_CONFIG% demos
 if "%BUILD_EXAMPLES%" == "yes" set QMAKE_CONFIG=%QMAKE_CONFIG% examples
 if "%BUILD_EXTRAS%" == "yes" set QMAKE_CONFIG=%QMAKE_CONFIG% extras
 if "%BUILD_TESTS%" == "yes" set QMAKE_CONFIG=%QMAKE_CONFIG% tests
@@ -204,6 +218,7 @@ if "%BUILD_SYMBIAN_STYLE%" == "no" goto nosymbian
   echo   Qt Mobility support ............ %HAVE_MOBILITY%
 :nosymbian
 echo   Extras ......................... %BUILD_EXTRAS%
+echo Demos ............................ %BUILD_DEMOS%
 echo Examples ......................... %BUILD_EXAMPLES%
 echo Tests ............................ %BUILD_TESTS%
 echo.
