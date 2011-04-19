@@ -22,6 +22,19 @@ symbian {
         "OPTION SRCDIR ."\
         "END"
     BLD_INF_RULES.prj_extensions = stubsis
+
+    vendor_info = \
+            " " \
+            "; Localised Vendor name" \
+            "%{\"Nokia\"}" \
+            " " \
+            "; Unique Vendor name" \
+            ":\"Nokia\"" \
+            " "
+
+    header = "$${LITERAL_HASH}{\"qmlextrasgallery\"},(0x2003A914),1,0,0,TYPE=SA,RU"
+    package.pkg_prerules += vendor_info header
+    DEPLOYMENT += package
 }
 
 OTHER_FILES += \

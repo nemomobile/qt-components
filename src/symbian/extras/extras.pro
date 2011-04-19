@@ -44,6 +44,19 @@ symbian {
         "OPTION SRCDIR ."\
         "END"
     BLD_INF_RULES.prj_extensions = stubsis
+
+    vendor_info = \
+            " " \
+            "; Localised Vendor name" \
+            "%{\"Nokia\"}" \
+            " " \
+            "; Unique Vendor name" \
+            ":\"Nokia\"" \
+            " "
+
+    header = "$${LITERAL_HASH}{\"symbianextrasplugin\"},(0x2003A913),1,0,0,TYPE=SA,RU"
+    package.pkg_prerules += vendor_info header
+    DEPLOYMENT += package
 }
 
 include(../../../qml.pri)
