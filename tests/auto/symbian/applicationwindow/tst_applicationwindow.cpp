@@ -73,7 +73,7 @@ void tst_ApplicationWindow::contentArea()
     QVERIFY(content->scenePos().y() > 0.0);
     applicationWindow->setProperty("fullScreen", true);
     QCoreApplication::sendPostedEvents();
-    QCOMPARE(content->scenePos().y(), 0.0);
+    QTRY_COMPARE(content->scenePos().y(), 0.0);
 }
 
 QTEST_MAIN(tst_ApplicationWindow)
