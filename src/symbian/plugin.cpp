@@ -47,8 +47,16 @@ public:
 
     void initializeEngine(QDeclarativeEngine *engine, const char *uri) {
         QDeclarativeExtensionPlugin::initializeEngine(engine, uri);
-        engine->addImageProvider(QLatin1String("theme"), new SDeclarativeImageProvider);
         context = engine->rootContext();
+
+        // Make sure global data is instantiated only once.
+        // initializeEngine() might be called twice: once from
+        // import com.nokia.symbian 1.0, and another time from
+        // import Qt.labs.components.native 1.0
+        if (context->contextProperty("symbian").isValid())
+            return;
+
+        engine->addImageProvider(QLatin1String("theme"), new SDeclarativeImageProvider);
 
         screen = new SDeclarativeScreen(engine, context); // context as parent
         context->setContextProperty("screen", screen);
