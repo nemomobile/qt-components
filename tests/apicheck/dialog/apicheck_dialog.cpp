@@ -86,3 +86,8 @@ void ApiCheckDialog::rejected()
 {
     validateSignal("rejected()");
 }
+
+void ApiCheckDialog::clickedOutside()
+{
+    validateSignal("clickedOutside()");
+}

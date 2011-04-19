@@ -50,6 +50,7 @@ private slots:
     void status();
     void accepted();
     void rejected();
+    void clickedOutside();
 };
 
 #endif
