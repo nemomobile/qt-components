@@ -37,8 +37,8 @@ Window {
     Component.onCompleted: console.log("warning: ApplicationWindow is an experimental component. Use Window instead.")
 
     Item {
-        anchors.top: sbar.visible ? sbar.bottom : parent.top
-        anchors.bottom: tbar.visible ? tbar.top : parent.bottom
+        anchors.top: sbar.bottom
+        anchors.bottom: tbar.top
         anchors.left: parent.left
         anchors.right: parent.right
         Item {
@@ -54,16 +54,72 @@ Window {
 
     StatusBar {
         id: sbar
-        anchors.top: parent.top
+
         width: parent.width
-        visible: !root.fullScreen
+        state: root.fullScreen ? "Hidden" : "Visible"
+
+        states: [
+            State {
+                name: "Visible"
+                PropertyChanges { target: sbar; y: 0; opacity: 1 }
+            },
+            State {
+                name: "Hidden"
+                PropertyChanges { target: sbar; y: -height; opacity: 0 }
+            }
+        ]
+
+        transitions: [
+            Transition {
+                from: "Hidden"; to: "Visible"
+                ParallelAnimation {
+                    NumberAnimation { target: sbar; properties: "y"; duration: 200; easing.type: Easing.OutQuad }
+                    NumberAnimation { target: sbar; properties: "opacity"; duration: 200; easing.type: Easing.Linear }
+                }
+            },
+            Transition {
+                from: "Visible"; to: "Hidden"
+                ParallelAnimation {
+                    NumberAnimation { target: sbar; properties: "y"; duration: 200; easing.type: Easing.Linear }
+                    NumberAnimation { target: sbar; properties: "opacity"; duration: 200; easing.type: Easing.Linear }
+                }
+            }
+        ]
     }
 
     ToolBar {
         id: tbar
-        anchors.bottom: parent.bottom
+
         width: parent.width
-        visible: !root.fullScreen
+        state: root.fullScreen ? "Hidden" : "Visible"
+
+        states: [
+            State {
+                name: "Visible"
+                PropertyChanges { target: tbar; y: parent.height - height; opacity: 1 }
+            },
+            State {
+                name: "Hidden"
+                PropertyChanges { target: tbar; y: parent.height; opacity: 0 }
+            }
+        ]
+
+        transitions: [
+            Transition {
+                from: "Hidden"; to: "Visible"
+                ParallelAnimation {
+                    NumberAnimation { target: tbar; properties: "y"; duration: 200; easing.type: Easing.OutQuad }
+                    NumberAnimation { target: tbar; properties: "opacity"; duration: 200; easing.type: Easing.Linear }
+                }
+            },
+            Transition {
+                from: "Visible"; to: "Hidden"
+                ParallelAnimation {
+                    NumberAnimation { target: tbar; properties: "y"; duration: 200; easing.type: Easing.Linear }
+                    NumberAnimation { target: tbar; properties: "opacity"; duration: 200; easing.type: Easing.Linear }
+                }
+            }
+        ]
     }
 
     // event preventer when page transition is active
