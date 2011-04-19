@@ -24,23 +24,30 @@
 **
 ****************************************************************************/
 
-#include <QtDeclarative>
 #include "sdatetime.h"
+#include <QDate>
 
-class SymbianExtrasPlugin : public QDeclarativeExtensionPlugin
+SDateTime::SDateTime(QObject *parent) : QObject(parent)
 {
-    Q_OBJECT
-public:
-    void initializeEngine(QDeclarativeEngine *engine, const char *uri) {
-        QDeclarativeExtensionPlugin::initializeEngine(engine, uri);
-        engine->rootContext()->setContextProperty("dateTime", new SDateTime(engine->rootContext()));
-    }
+}
 
-    void registerTypes(const char *uri) {
-        qmlRegisterUncreatableType<SDateTime>(uri, 1, 0, "DateTime", "");
-    }
-};
+SDateTime::~SDateTime()
+{
+}
 
-#include "plugin.moc"
+QString SDateTime::shortMonthName(int month)
+{
+    return QDate::shortMonthName(month);
+}
 
-Q_EXPORT_PLUGIN2(sybmianextrasplugin, SymbianExtrasPlugin);
+bool SDateTime::isLeapYear(int year)
+{
+    return QDate::isLeapYear(year);
+}
+
+int SDateTime::daysInMonth(int year, int month)
+{
+    return QDate(year, month, 1).daysInMonth();
+}
+
+#include "moc_sdatetime.cpp"

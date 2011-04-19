@@ -10,8 +10,12 @@ win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release build_all
 CONFIG += qt plugin
 QT += declarative
 
+HEADERS += \
+    sdatetime.h
+
 SOURCES += \
-    plugin.cpp
+    plugin.cpp \
+    sdatetime.cpp
 
 QML_FILES = \
     qmldir \
