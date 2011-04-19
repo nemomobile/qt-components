@@ -26,18 +26,20 @@
 
 #include "sdeclarative.h"
 #include <QCoreApplication>
-#include <QLocale>
 #include <QTime>
 #include <QTimer>
-#if defined(Q_OS_WIN)
-#include <qt_windows.h>
-#elif defined(Q_OS_SYMBIAN)
+#ifdef Q_OS_SYMBIAN
 #include <e32std.h>
+#include <AknUtils.h>
 #endif
 
 //#define Q_DEBUG_SDECLARATIVE
 
 static const int MINUTE_MS = 60*1000;
+
+#ifdef Q_OS_SYMBIAN
+_LIT(KTimeFormat, "%J%:1%T");
+#endif
 
 class SDeclarativePrivate
 {
@@ -45,38 +47,14 @@ public:
     SDeclarativePrivate() :
         mListInteractionMode(SDeclarative::TouchInteraction) {}
 
-    void updateTimeFormat();
-
     SDeclarative::InteractionMode mListInteractionMode;
     QTimer timer;
-    static QString timeFormat;
 };
-
-QString SDeclarativePrivate::timeFormat;
-
-void SDeclarativePrivate::updateTimeFormat()
-{
-    QString timeSeparator;
-#if defined(Q_OS_WIN)
-    wchar_t data[10];
-    GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIME, data, 10);
-    timeSeparator = QString::fromWCharArray(data);
-#elif defined(Q_OS_SYMBIAN)
-    TExtendedLocale loc;
-    loc.LoadSystemSettings();
-    // From TLocale 'S0 XX S1 YY S2 ZZ S3', we need S1 separator
-    timeSeparator = QChar(loc.GetLocale()->TimeSeparator(1));
-#else
-    timeSeparator = QLatin1Char(':');
-#endif
-    timeFormat = QString("h%1mm").arg(timeSeparator);
-}
 
 SDeclarative::SDeclarative(QObject *parent) :
     QObject(parent),
     d_ptr(new SDeclarativePrivate)
 {
-    d_ptr->updateTimeFormat();
     d_ptr->timer.start(MINUTE_MS);
     connect(&d_ptr->timer, SIGNAL(timeout()), this, SIGNAL(currentTimeChanged()));
     QCoreApplication::instance()->installEventFilter(this);
@@ -102,20 +80,27 @@ void SDeclarative::setListInteractionMode(SDeclarative::InteractionMode mode)
 
 QString SDeclarative::currentTime()
 {
-    return QLocale().toString(QTime::currentTime(), SDeclarativePrivate::timeFormat);
+#ifdef Q_OS_SYMBIAN
+    TBuf<15> time;
+    TTime homeTime;
+    homeTime.HomeTime();
+    TRAP_IGNORE(homeTime.FormatL(time, KTimeFormat));
+    // Do the possible arabic indic digit etc. conversions
+    AknTextUtils::DisplayTextLanguageSpecificNumberConversion(time);
+    return QString(reinterpret_cast<const QChar *>(time.Ptr()), time.Length());
+#else
+    return QTime::currentTime().toString(QLatin1String("h:mm"));
+#endif
 }
 
 bool SDeclarative::eventFilter(QObject *obj, QEvent *event)
 {
     if (obj == QCoreApplication::instance()) {
         if (event->type() == QEvent::ApplicationActivate) {
-            d_ptr->updateTimeFormat();
             emit currentTimeChanged();
             d_ptr->timer.start(MINUTE_MS);
         } else if (event->type() == QEvent::ApplicationDeactivate) {
             d_ptr->timer.stop();
-        } else if (event->type() == QEvent::LocaleChange) {
-            d_ptr->updateTimeFormat();
         }
     }
     return QObject::eventFilter(obj, event);
