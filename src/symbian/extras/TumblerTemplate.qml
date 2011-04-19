@@ -41,6 +41,7 @@ Item {
     width: childrenRect.width
     visible: tumblerColumn ? tumblerColumn.visible : false
     enabled: tumblerColumn ? tumblerColumn.enabled : true
+    height: parent ? parent.height : undefined
 
     Image {
         id: divider

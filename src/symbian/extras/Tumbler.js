@@ -59,7 +59,6 @@ function initialize() {
             // enable label for the tumbler
             internal.hasLabel = true;
         }
-        newObj.height = root.height;
         newObj.index = i;
         newObj.tumblerColumn = columns[i];
         newObj.widthChanged.connect(layout);
