@@ -14,6 +14,7 @@ HEADERS += base/apicheckbase.h \
            checkbox/apicheck_checkbox.h \
            choicelist/apicheck_choicelist.h \
            contextmenu/apicheck_contextmenu.h \
+           datepickerdialog/apicheck_datepickerdialog.h \
            dialog/apicheck_dialog.h \
            menu/apicheck_menu.h \
            menuitem/apicheck_menuitem.h \
@@ -47,6 +48,7 @@ SOURCES += tst_apicheck.cpp \
            buttonrow/apicheck_buttonrow.cpp \
            checkbox/apicheck_checkbox.cpp \
            choicelist/apicheck_choicelist.cpp \
+           datepickerdialog/apicheck_datepickerdialog.cpp \
            dialog/apicheck_dialog.cpp \
            menu/apicheck_menu.cpp \
            menuitem/apicheck_menuitem.cpp \

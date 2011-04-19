@@ -59,6 +59,7 @@
 #include "tumbler/apicheck_tumbler.h"
 #include "tumbler/apicheck_tumblercolumn.h"
 #include "tumblerdialog/apicheck_tumblerdialog.h"
+#include "datepickerdialog/apicheck_datepickerdialog.h"
 
 int main(int argc, char *argv[])
 {
@@ -130,6 +131,7 @@ int main(int argc, char *argv[])
     ApiCheckTumblerDialog tumblerDialog(engine, extrasModule);
     ApiCheckQueryDialog querydialog(engine, module);
     ApiCheckSelectionDialog selectiondialog(engine, module);
+    ApiCheckDatePickerDialog datepickerdialog(engine, extrasModule);
 
     int ret = 0;
     ret |= QTest::qExec(&slider, args);
@@ -163,6 +165,7 @@ int main(int argc, char *argv[])
     ret |= QTest::qExec(&tumblerDialog, args);
     ret |= QTest::qExec(&querydialog, args);
     ret |= QTest::qExec(&selectiondialog, args);
+    ret |= QTest::qExec(&datepickerdialog, args);
 
     return ret;
 }
