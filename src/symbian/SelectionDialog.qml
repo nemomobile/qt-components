@@ -80,6 +80,8 @@ CommonDialog {
         }
     }
 
+    onClickedOutside: reject()
+
     onStatusChanged: {
         if (status == DialogStatus.Opening)
             listView.positionViewAtIndex(selectedIndex, ListView.Center)
