@@ -38,6 +38,7 @@ OTHER_FILES += \
     tests/CheckBox.qml \
     tests/ChoiceList.qml \
     tests/ContextMenu.qml \
+    tests/DatePickerDialog.qml \
     tests/Dialog.qml \
     tests/KeyNavigation.qml \
     tests/ListItem.qml \
