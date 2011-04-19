@@ -54,7 +54,7 @@ Rectangle {
         id: col
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        width: inPortrait() ? parent.width : parent.width / 3
+        width: inPortrait() ? parent.width : parent.width - tumbler.width
 
         Grid {
             id: grid
@@ -183,6 +183,25 @@ Rectangle {
                     anchors.fill: parent
                     onClicked: {
                         tumbler.columns = [dayColumn, yearColumn]
+                    }
+                }
+            }
+
+            Button {
+                text: "Rotate"
+                objectName: "rotate"
+                width: parent.buttonWidth
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        if (screen.currentOrientation == Screen.Landscape)
+                            screen.allowedOrientations = Screen.Portrait;
+                        else if (screen.currentOrientation == Screen.Portrait)
+                            screen.allowedOrientations = Screen.LandscapeInverted;
+                        else if (screen.currentOrientation == Screen.LandscapeInverted)
+                            screen.allowedOrientations = Screen.PortraitInverted;
+                        else if (screen.currentOrientation == Screen.PortraitInverted)
+                            screen.allowedOrientations = Screen.Landscape;
                     }
                 }
             }
