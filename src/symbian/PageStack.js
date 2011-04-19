@@ -97,7 +97,7 @@ function push(page, properties, replace, immediate) {
         toolBar.setTools(tools, immediate ? "set" : replace ? "replace" : "push");
     }
 
-    container.pushEnter(replace, immediate, orientationChange);
+    container.pushEnter(immediate, orientationChange);
     return container.page;
 }
 

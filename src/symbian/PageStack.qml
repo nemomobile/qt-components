@@ -142,7 +142,7 @@ Item {
             property int screenWidth: Math.max(screen.width, screen.height)
 
             // Duration of transition animation (in ms)
-            property int transitionDuration: 500
+            property int transitionDuration: 200
 
             // Flag that indicates the container should be cleaned up after the transition has ended.
             property bool cleanupAfterTransition: false
@@ -178,12 +178,12 @@ Item {
             }
 
             // Performs a push enter transition.
-            function pushEnter(replace, immediate, orientationChanges) {
+            function pushEnter(immediate, orientationChanges) {
                 if (!immediate) {
                     if (orientationChanges)
-                        setState(replace ? "Front" : "LandscapeRight");
+                        setState("LandscapeRight");
                     else
-                        setState(replace ? "Front" : "Right");
+                        setState("Right");
                 }
                 setState("");
                 page.visible = true;
@@ -194,9 +194,9 @@ Item {
             // Performs a push exit transition.
             function pushExit(replace, immediate, orientationChanges) {
                 if (orientationChanges)
-                    setState(immediate ? "Hidden" : (replace ? "Back" : "LandscapeLeft"));
+                    setState(immediate ? "Hidden" : "LandscapeLeft");
                 else
-                    setState(immediate ? "Hidden" : (replace ? "Back" : "Left"));
+                    setState(immediate ? "Hidden" : "Left");
                 if (root.visible && immediate)
                     internal.setPageStatus(page, PageStatus.Inactive);
                 if (replace) {
@@ -257,39 +257,29 @@ Item {
                 // Explicit properties for default state.
                 State {
                     name: ""
-                    PropertyChanges { target: container; visible: true }
+                    PropertyChanges { target: container; visible: true; opacity: 1 }
                 },
                 // Start state for pop entry, end state for push exit.
                 State {
                     name: "Left"
-                    PropertyChanges { target: container; x: -width }
+                    PropertyChanges { target: container; x: -width / 2; opacity: 0 }
                 },
                 // Start state for pop entry, end state for push exit
                 // when exiting portrait and entering landscape.
                 State {
                     name: "LandscapeLeft"
-                    PropertyChanges { target: container; x: -screenWidth }
+                    PropertyChanges { target: container; x: -screenWidth / 2; opacity: 0 }
                 },
                 // Start state for push entry, end state for pop exit.
                 State {
                     name: "Right"
-                    PropertyChanges { target: container; x: width }
+                    PropertyChanges { target: container; x: width / 2; opacity: 0 }
                 },
                 // Start state for push entry, end state for pop exit
                 // when exiting portrait and entering landscape.
                 State {
                     name: "LandscapeRight"
-                    PropertyChanges { target: container; x: screenWidth }
-                },
-                // Start state for replace entry.
-                State {
-                    name: "Front"
-                    PropertyChanges { target: container; scale: 1.5; opacity: 0.0 }
-                },
-                // End state for replace exit.
-                State {
-                    name: "Back"
-                    PropertyChanges { target: container; scale: 0.5; opacity: 0.0 }
+                    PropertyChanges { target: container; x: screenWidth / 2; opacity: 0 }
                 },
                 // Inactive state.
                 State {
@@ -299,67 +289,101 @@ Item {
             ]
 
             transitions: [
-                // Pop entry and push exit transition.
+                // Push exit transition
                 Transition {
-                    from: ""; to: "Left"; reversible: true
+                    from: ""; to: "Left"
                     SequentialAnimation {
-                        ScriptAction { script: if (state == "Left") { transitionStarted(); } else { transitionEnded(); } }
-                        PropertyAnimation { properties: "x"; easing.type: Easing.InOutExpo; duration: transitionDuration }
-                        ScriptAction { script: if (state == "Left") { transitionEnded(); } else { transitionStarted(); } }
-                    }
-                },
-                // Pop entry and push exit transition when exiting portrait and entering landscape.
-                Transition {
-                    from: ""; to: "LandscapeLeft"; reversible: true
-                    SequentialAnimation {
-                        ScriptAction {
-                            script: if (state == "LandscapeLeft") { transitionStarted(); } else { transitionEnded(); }
+                        ScriptAction { script: transitionStarted() }
+                        ParallelAnimation {
+                            PropertyAnimation { properties: "x"; easing.type: Easing.InQuad; duration: transitionDuration }
+                            PropertyAnimation { properties: "opacity"; easing.type: Easing.Linear; duration: transitionDuration }
                         }
-                        PropertyAnimation { properties: "x"; easing.type: Easing.InOutExpo; duration: transitionDuration }
-                        ScriptAction {
-                            script: if (state == "LandscapeLeft") { transitionEnded(); } else { transitionStarted(); }
+                        ScriptAction { script: transitionEnded() }
+                    }
+                },
+                // Pop entry transition
+                Transition {
+                    from: "Left"; to: ""
+                    SequentialAnimation {
+                        ScriptAction { script: transitionStarted() }
+                        ParallelAnimation {
+                            PropertyAnimation { properties: "x"; easing.type: Easing.OutQuad; duration: transitionDuration }
+                            PropertyAnimation { properties: "opacity"; easing.type: Easing.Linear; duration: transitionDuration }
                         }
+                        ScriptAction { script: transitionEnded() }
                     }
                 },
-                // Push entry and pop exit transition.
+                // Push exit transition landscape
                 Transition {
-                    from: ""; to: "Right"; reversible: true
+                    from: ""; to: "LandscapeLeft"
                     SequentialAnimation {
-                        ScriptAction { script: if (state == "Right") { transitionStarted(); } else { transitionEnded(); } }
-                        PropertyAnimation { properties: "x"; easing.type: Easing.InOutExpo; duration: transitionDuration }
-                        ScriptAction { script: if (state == "Right") { transitionEnded(); } else { transitionStarted(); } }
-                    }
-                },
-                // Push entry and pop exit transition when exiting portrait and entering landscape.
-                Transition {
-                    from: ""; to: "LandscapeRight"; reversible: true
-                    SequentialAnimation {
-                        ScriptAction {
-                            script: if (state == "LandscapeRight") { transitionStarted(); } else { transitionEnded(); }
+                        ScriptAction { script: transitionStarted() }
+                        ParallelAnimation {
+                            PropertyAnimation { properties: "x"; easing.type: Easing.InQuad; duration: transitionDuration }
+                            PropertyAnimation { properties: "opacity"; easing.type: Easing.Linear; duration: transitionDuration }
                         }
-                        PropertyAnimation { properties: "x"; easing.type: Easing.InOutExpo; duration: transitionDuration }
-                        ScriptAction {
-                            script: if (state == "LandscapeRight") { transitionEnded(); } else { transitionStarted(); }
+                        ScriptAction { script: transitionEnded() }
+                    }
+                },
+                // Pop entry transition landscape
+                Transition {
+                    from: "LandscapeLeft"; to: ""
+                    SequentialAnimation {
+                        ScriptAction { script: transitionStarted() }
+                        ParallelAnimation {
+                            PropertyAnimation { properties: "x"; easing.type: Easing.OutQuad; duration: transitionDuration }
+                            PropertyAnimation { properties: "opacity"; easing.type: Easing.Linear; duration: transitionDuration }
                         }
+                        ScriptAction { script: transitionEnded() }
                     }
                 },
-                // Replace entry transition.
+                // Pop exit transition
                 Transition {
-                    from: "Front"; to: "";
+                    from: ""; to: "Right"
                     SequentialAnimation {
-                        ScriptAction { script: transitionStarted(); }
-                        PropertyAnimation { properties: "scale,opacity"; easing.type: Easing.InOutExpo; duration: transitionDuration }
-                        ScriptAction { script: transitionEnded(); }
+                        ScriptAction { script: transitionStarted() }
+                        ParallelAnimation {
+                            PropertyAnimation { properties: "x"; easing.type: Easing.InQuad; duration: transitionDuration }
+                            PropertyAnimation { properties: "opacity"; easing.type: Easing.Linear; duration: transitionDuration }
+                        }
+                        ScriptAction { script: transitionEnded() }
                     }
                 },
-                // Replace exit transition.
+                // Push entry transition
                 Transition {
-                    from: ""; to: "Back";
+                    from: "Right"; to: ""
                     SequentialAnimation {
-                        ScriptAction { script: transitionStarted(); }
-                        PropertyAnimation { properties: "scale,opacity"; easing.type: Easing.InOutExpo; duration: transitionDuration }
-                        ScriptAction { script: transitionEnded(); }
-                   }
+                        ScriptAction { script: transitionStarted() }
+                        ParallelAnimation {
+                            PropertyAnimation { properties: "x"; easing.type: Easing.OutQuad; duration: transitionDuration }
+                            PropertyAnimation { properties: "opacity"; easing.type: Easing.Linear; duration: transitionDuration }
+                        }
+                        ScriptAction { script: transitionEnded() }
+                    }
+                },
+                // Pop exit transition landscape
+                Transition {
+                    from: ""; to: "LandscapeRight"
+                    SequentialAnimation {
+                        ScriptAction { script: transitionStarted() }
+                        ParallelAnimation {
+                            PropertyAnimation { properties: "x"; easing.type: Easing.InQuad; duration: transitionDuration }
+                            PropertyAnimation { properties: "opacity"; easing.type: Easing.Linear; duration: transitionDuration }
+                        }
+                        ScriptAction { script: transitionEnded() }
+                    }
+                },
+                // Push entry transition landscape
+                Transition {
+                    from: "LandscapeRight"; to: ""
+                    SequentialAnimation {
+                        ScriptAction { script: transitionStarted() }
+                        ParallelAnimation {
+                            PropertyAnimation { properties: "x"; easing.type: Easing.OutQuad; duration: transitionDuration }
+                            PropertyAnimation { properties: "opacity"; easing.type: Easing.Linear; duration: transitionDuration }
+                        }
+                        ScriptAction { script: transitionEnded() }
+                    }
                 }
             ]
 
