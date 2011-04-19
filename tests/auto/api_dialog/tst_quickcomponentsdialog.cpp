@@ -42,6 +42,7 @@ private slots:
     void status();
     void accepted();
     void rejected();
+    void clickedOutside();
 
 private:
     QObject *componentObject;
@@ -104,6 +105,14 @@ void tst_quickcomponentsdialog::rejected()
     QVERIFY(rejectedSpy.isValid());
     QVERIFY(QMetaObject::invokeMethod(componentObject, "reject"));
     QCOMPARE(rejectedSpy.count(), 1);
+}
+
+void tst_quickcomponentsdialog::clickedOutside()
+{
+    QSignalSpy clickedOutsideSpy(componentObject, SIGNAL(clickedOutside()));
+    QVERIFY(clickedOutsideSpy.isValid());
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "clickedOutside"));
+    QCOMPARE(clickedOutsideSpy.count(), 1);
 }
 
 QTEST_MAIN(tst_quickcomponentsdialog)
