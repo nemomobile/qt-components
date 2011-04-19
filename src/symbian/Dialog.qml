@@ -44,6 +44,7 @@ Item {
 
     signal accepted
     signal rejected
+    signal clickedOutside
 
     function open() {
         dialog.open()
@@ -101,6 +102,8 @@ Item {
         function minWidth() {
             return Math.min(screen.displayWidth, screen.displayHeight) - 2 * platformStyle.paddingMedium
         }
+
+        onFaderClicked: root.clickedOutside()
 
         width: Math.max(Math.min(defaultWidth(), maxWidth()), minWidth())
         height: Math.max(Math.min(defaultHeight(), maxHeight()), privateStyle.dialogMinSize)
