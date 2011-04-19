@@ -206,12 +206,12 @@ ImplicitSizeItem {
         id: track
         objectName: "track"
         source: privateStyle.imagePath(orientation == Qt.Vertical ? "qtg_fr_scrollbar_v_track_normal" : "qtg_fr_scrollbar_h_track_normal")
+        visible: interactive
         anchors.fill: parent
         border.right: orientation == Qt.Horizontal ? 7 : 0
         border.left: orientation == Qt.Horizontal ? 7 : 0
         border.top: orientation == Qt.Vertical ? 7 : 0
         border.bottom: orientation == Qt.Vertical ? 7 : 0
-        opacity: 0.5
     }
     // MouseArea for the move content "page by page" by tapping and scroll to press-and-hold position
     MouseArea {
@@ -234,16 +234,27 @@ ImplicitSizeItem {
     BorderImage {
         id: handle
         objectName: "handle"
-        property string mode: handleMouseArea.pressed ? "pressed" : "normal"
-        source: privateStyle.imagePath((orientation == Qt.Vertical ? "qtg_fr_scrollbar_v_handle_" : "qtg_fr_scrollbar_h_handle_") + mode)
+        source: privateStyle.imagePath(handleFileName())
         x: orientation == Qt.Horizontal ? sizer.position : (!flickableItem ? NaN : flickableItem.x)
         y: orientation == Qt.Vertical ? sizer.position : (!flickableItem ? NaN : flickableItem.y)
-        height: orientation == Qt.Vertical ? sizer.size : Math.floor(privateStyle.scrollBarThickness)
-        width: orientation == Qt.Horizontal ? sizer.size : Math.floor(privateStyle.scrollBarThickness)
+        height: orientation == Qt.Vertical ? sizer.size : root.height
+        width: orientation == Qt.Horizontal ? sizer.size : root.width
         border.right: orientation == Qt.Horizontal ? 7 : 0
         border.left: orientation == Qt.Horizontal ? 7 : 0
         border.top: orientation == Qt.Vertical ? 7 : 0
         border.bottom: orientation == Qt.Vertical ? 7 : 0
+
+        function handleFileName() {
+            var fileName = (orientation == Qt.Vertical ? "qtg_fr_scrollbar_v_handle_" :
+                            "qtg_fr_scrollbar_h_handle_")
+            if (!interactive)
+                fileName += "indicative"
+            else if (handleMouseArea.pressed)
+                fileName += "pressed"
+            else
+                fileName += "normal"
+            return fileName
+        }
     }
     ScrollBarSizer {
         id: sizer
