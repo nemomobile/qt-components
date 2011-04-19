@@ -27,30 +27,46 @@
 
 import Qt 4.7
 import "." 1.0
+import "AppManager.js" as Utils
 
 Item {
     id: root
 
-    property alias visualParent: fader.visualParent
+    property Item visualParent
     property int status: DialogStatus.Closed
-    property alias animationDuration: fader.animationDuration
+    property int animationDuration: 500
+    property Item fader
 
     signal faderClicked
 
     function open() {
+        fader = faderComponent.createObject(visualParent ? visualParent : Utils.rootObject())
+        fader.animationDuration = root.animationDuration
+        root.parent = fader
         status = DialogStatus.Opening
         fader.state = "Visible"
     }
 
     function close() {
-        status = DialogStatus.Closing
-        fader.state = "Hidden"
+        if (status != DialogStatus.Closed) {
+            status = DialogStatus.Closing
+            if (fader)
+                fader.state = "Hidden"
+        }
+    }
+
+    onStatusChanged: {
+        if (status == DialogStatus.Closed && fader) {
+            // Temporarily setting root window as parent
+            // otherwise transition animation jams
+            root.parent = null
+            fader.destroy()
+            root.parent = parentCache.oldParent
+        }
     }
 
     Component.onCompleted: {
         parentCache.oldParent = parent
-        fader.parent = parent
-        parent = fader
     }
 
     //if this is not given, application may crash in some cases
@@ -70,8 +86,11 @@ Item {
         anchors.fill: parent
     }
 
-    Fader {
-        id: fader
-        onClicked: root.faderClicked()
+    Component {
+        id: faderComponent
+
+        Fader {
+            onClicked: root.faderClicked()
+        }
     }
 }

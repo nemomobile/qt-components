@@ -45,18 +45,6 @@ Item {
         opacity: 0.0
         color: "black"
 
-        property QtObject originalParent: parent
-
-        function findRoot() {
-            var next = parent
-
-            if (next != null) {
-                while (next.parent)
-                    next = next.parent
-            }
-            return next
-        }
-
         //eat mouse events
         MouseArea {
             id: mouseEventEater
@@ -80,34 +68,11 @@ Item {
     transitions: [
         Transition {
             from: "Hidden"; to: "Visible"
-            //reparent fader whenever it is going to be visible
-            SequentialAnimation {
-                ScriptAction {script: {
-                        // the algorithm works in the following way:
-                        // First:  Check if visualParent property is set; if yes, center the fader in visualParent
-                        // Second: If not, center inside window content element
-                        // Third:  If no window was found, use root window
-                        fader.originalParent = root.parent
-                        if (visualParent != null) {
-                            root.parent = visualParent
-                        } else if (typeof window != "undefined") {
-                            root.parent = window
-                        } else {
-                            var appRoot = fader.findRoot()
-                            if (appRoot != null)
-                                root.parent = appRoot
-                        }
-                    }
-                }
-                NumberAnimation {properties: "opacity"; duration: animationDuration}
-            }
+            NumberAnimation { properties: "opacity"; duration: animationDuration; easing.type: Easing.Linear }
         },
         Transition {
             from: "Visible"; to: "Hidden"
-            SequentialAnimation {
-                NumberAnimation { properties: "opacity"; duration: animationDuration }
-                ScriptAction { script: root.parent = fader.originalParent }
-            }
+            NumberAnimation { properties: "opacity"; duration: animationDuration; easing.type: Easing.Linear }
         }
     ]
 }
