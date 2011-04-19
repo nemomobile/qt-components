@@ -37,6 +37,13 @@ symbian {
     MMP_RULES += SMPSAFE
 
     BLD_INF_RULES.prj_exports += "qtcomponentsextras.iby $$CORE_MW_LAYER_IBY_EXPORT_PATH(qtcomponentsextras.iby)"
+
+    stubsis = \
+        "START EXTENSION app-services.buildstubsis" \
+        "OPTION SISNAME symbianextrasplugin_stub" \
+        "OPTION SRCDIR ."\
+        "END"
+    BLD_INF_RULES.prj_extensions = stubsis
 }
 
 include(../../../qml.pri)

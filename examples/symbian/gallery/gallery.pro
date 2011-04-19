@@ -17,6 +17,13 @@ symbian {
     gallery_qmls.sources = *.qml
     DEPLOYMENT += gallery_qmls
     BLD_INF_RULES.prj_exports += "gallery.iby $$CORE_APP_LAYER_IBY_EXPORT_PATH(qmlgallery.iby)"
+
+    stubsis = \
+        "START EXTENSION app-services.buildstubsis" \
+        "OPTION SISNAME qmlgallery_stub" \
+        "OPTION SRCDIR ."\
+        "END"
+    BLD_INF_RULES.prj_extensions = stubsis
 }
 
 OTHER_FILES += \

@@ -8,6 +8,7 @@ REM QT
 S60_APP_EXE(componenttest)
 // Application registration file.
 data=DATAZ_\private\10003a3f\import\apps\componenttest_reg.rsc      \private\10003a3f\import\apps\componenttest_reg.rsc
+data=ZSYSTEM\install\componenttest_stub.sis                         System\Install\componenttest_stub.sis
 
 // resources
 data=DATAZ_\private\200346E0\main.qml                           \private\200346E0\main.qml

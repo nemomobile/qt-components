@@ -12,11 +12,13 @@ data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\qmldir               
 data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\Checkable.qml                                 RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\Checkable.qml
 data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\CheckableGroup.qml                            RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\CheckableGroup.qml
 data=\epoc32\data\z\resource\qt\imports\Qt\labs\components\CheckableGroup.js                             RESOURCE_FILES_DIR\qt\imports\Qt\labs\components\CheckableGroup.js
+data=ZSYSTEM\install\qtcomponentsplugin_stub.sis                                                         System\Install\qtcomponentsplugin_stub.sis
 
 // Symbian plugin
 file=ABI_DIR\BUILD_DIR\symbianplugin.dll                                                                 SHARED_LIB_DIR\symbianplugin.dll PAGED
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\symbianplugin.qtplugin                         RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\symbianplugin.qtplugin
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\qmldir                                         RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\qmldir
+data=ZSYSTEM\install\symbianplugin_stub.sis                                                              System\Install\symbianplugin_stub.sis
 
 // Symbian QML components
 data=\epoc32\data\z\resource\qt\imports\com\nokia\symbian\ApplicationWindow.qml                          RESOURCE_FILES_DIR\qt\imports\com\nokia\symbian\ApplicationWindow.qml

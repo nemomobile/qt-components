@@ -9,6 +9,7 @@ REM QT
 file=ABI_DIR\BUILD_DIR\symbianextrasplugin.dll                                                           SHARED_LIB_DIR\symbianextrasplugin.dll PAGED
 data=\epoc32\data\z\resource\qt\imports\com\nokia\extras\symbianextrasplugin.qtplugin                    RESOURCE_FILES_DIR\qt\imports\com\nokia\extras\symbianextrasplugin.qtplugin
 data=\epoc32\data\z\resource\qt\imports\com\nokia\extras\qmldir                                          RESOURCE_FILES_DIR\qt\imports\com\nokia\extras\qmldir
+data=ZSYSTEM\install\symbianextrasplugin_stub.sis                                                        System\Install\symbianextrasplugin_stub.sis
 
 // Symbian extras QML components
 data=\epoc32\data\z\resource\qt\imports\com\nokia\extras\Constants.js                                    RESOURCE_FILES_DIR\qt\imports\com\nokia\extras\Constants.js
