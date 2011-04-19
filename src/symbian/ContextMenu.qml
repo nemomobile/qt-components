@@ -53,7 +53,7 @@ ImplicitSizeItem {
     Popup {
         id: popup
 
-        animationDuration: 600
+        animationDuration: 250
         state: "Hidden"
         anchors.centerIn: parent
         visible: status != DialogStatus.Closed
@@ -90,14 +90,14 @@ ImplicitSizeItem {
             Transition {
                 from: "Visible"; to: "Hidden"
                 SequentialAnimation {
-                    NumberAnimation { properties: "opacity"; duration: popup.animationDuration }
+                    NumberAnimation { properties: "opacity"; duration: popup.animationDuration; easing.type: Easing.Linear }
                     PropertyAction { target: popup; property: "status"; value: DialogStatus.Closed }
                 }
             },
             Transition {
                 from: "Hidden"; to: "Visible"
                 SequentialAnimation {
-                    NumberAnimation { properties: "opacity"; duration: popup.animationDuration }
+                    NumberAnimation { properties: "opacity"; duration: popup.animationDuration; easing.type: Easing.Linear }
                     PropertyAction { target: popup; property: "status"; value: DialogStatus.Open }
                 }
             }
