@@ -55,7 +55,7 @@ Item {
                 : privateStyle.toolBarHeightLandscape
         }
 
-        animationDuration: 600
+        animationDuration: 200
         state: "Hidden"
         visible: status != DialogStatus.Closed
         enabled: status == DialogStatus.Open
@@ -79,12 +79,12 @@ Item {
             State {
                 name: "Hidden"
                 when: status == DialogStatus.Closing || status == DialogStatus.Closed
-                PropertyChanges { target: menu; y: menu.height + 5 }
+                PropertyChanges { target: menu; y: menu.height + 5; opacity: 0 }
             },
             State {
                 name: "Visible"
                 when: status == DialogStatus.Opening || status == DialogStatus.Open
-                PropertyChanges { target: menu; y: 0 }
+                PropertyChanges { target: menu; y: 0; opacity: 1 }
             }
         ]
 
@@ -92,14 +92,40 @@ Item {
             Transition {
                 from: "Visible"; to: "Hidden"
                 SequentialAnimation {
-                    NumberAnimation { target: menu; property: "y"; duration: popup.animationDuration }
+                    ParallelAnimation {
+                        NumberAnimation {
+                            target: menu
+                            property: "y"
+                            duration: popup.animationDuration
+                            easing.type: Easing.Linear
+                        }
+                        NumberAnimation {
+                            target: menu
+                            property: "opacity"
+                            duration: popup.animationDuration
+                            easing.type: Easing.Linear
+                        }
+                    }
                     PropertyAction { target: popup; property: "status"; value: DialogStatus.Closed }
                 }
             },
             Transition {
                 from: "Hidden"; to: "Visible"
                 SequentialAnimation {
-                    NumberAnimation { target: menu; property: "y"; duration: popup.animationDuration }
+                    ParallelAnimation {
+                        NumberAnimation {
+                            target: menu
+                            property: "y"
+                            duration: popup.animationDuration
+                            easing.type: Easing.OutQuad
+                        }
+                        NumberAnimation {
+                            target: menu
+                            property: "opacity"
+                            duration: popup.animationDuration
+                            easing.type: Easing.Linear
+                        }
+                    }
                     PropertyAction { target: popup; property: "status"; value: DialogStatus.Open }
                 }
             }
