@@ -108,7 +108,7 @@ Item {
         state: "Hidden"
         visible: true
         anchors.centerIn: parent
-        animationDuration: 800
+        animationDuration: 250
 
         BorderImage {
             source: privateStyle.imagePath("qtg_fr_popup")
@@ -170,12 +170,12 @@ Item {
             State {
                 name: "Visible"
                 when: status == DialogStatus.Opening || status == DialogStatus.Open
-                PropertyChanges { target: dialog; opacity: 1.0 }
+                PropertyChanges { target: dialog; opacity: 1.0; scale: 1; }
             },
             State {
                 name: "Hidden"
                 when: status == DialogStatus.Closing || status == DialogStatus.Closed
-                PropertyChanges { target: dialog; opacity: 0.0 }
+                PropertyChanges { target: dialog; opacity: 0.0; scale: 0.9; }
             }
         ]
 
@@ -184,7 +184,18 @@ Item {
                 from: "Visible"; to: "Hidden"
                 SequentialAnimation {
                     ScriptAction {script: status = DialogStatus.Closing }
-                    NumberAnimation { properties: "opacity"; duration: dialog.animationDuration }
+                    ParallelAnimation {
+                        NumberAnimation {
+                            properties: "opacity"
+                            duration: dialog.animationDuration
+                            easing.type: Easing.Linear
+                        }
+                        NumberAnimation {
+                            property: "scale"
+                            duration: dialog.animationDuration
+                            easing.type: Easing.InQuad
+                        }
+                    }
                     ScriptAction {script: status = DialogStatus.Closed }
                 }
             },
@@ -192,7 +203,19 @@ Item {
                 from: "Hidden"; to: "Visible"
                 SequentialAnimation {
                     ScriptAction { script: status = DialogStatus.Opening }
-                    NumberAnimation { properties: "opacity"; duration: dialog.animationDuration }
+                    PropertyAction { target: dialog; property: "visible"; value: true}
+                    ParallelAnimation {
+                        NumberAnimation {
+                            properties: "opacity"
+                            duration: dialog.animationDuration
+                            easing.type: Easing.Linear
+                        }
+                        NumberAnimation {
+                            property: "scale"
+                            duration: dialog.animationDuration
+                            easing.type: Easing.OutQuad
+                        }
+                    }
                     ScriptAction { script: status = DialogStatus.Open }
                 }
             }
