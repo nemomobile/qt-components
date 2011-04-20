@@ -149,6 +149,13 @@ ImplicitSizeItem {
     QtObject {
         id: internal
 
+        function belongsToExclusiveGroup() {
+            return checkable.exclusiveGroup
+                   || (root.parent
+                   && root.parent.hasOwnProperty("checkedButton")
+                   && root.parent.exclusive)
+        }
+
         function mode() {
             if (!enabled)
                 return "disabled"
@@ -169,10 +176,14 @@ ImplicitSizeItem {
         }
 
         function press() {
-            if (checkable.enabled && checkable.checked)
-                privateStyle.play(Symbian.SensitiveButton)
-            else
+            if (!belongsToExclusiveGroup()) {
+                if (checkable.enabled && checkable.checked)
+                    privateStyle.play(Symbian.SensitiveButton)
+                else
+                    privateStyle.play(Symbian.BasicButton)
+            } else if (checkable.enabled && !checkable.checked) {
                 privateStyle.play(Symbian.BasicButton)
+            }
         }
 
         function release() {
