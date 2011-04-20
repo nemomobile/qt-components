@@ -1,3 +1,6 @@
+isEmpty(TARGETPATH):error($$basename(_PRO_FILE_) must define TARGETPATH)
+DESTDIR = $$Q_COMPONENTS_BUILD_TREE/imports/$$member(TARGETPATH, 0)
+
 NATIVE_FILES = $$QML_FILES native/qmldir
 NATIVE_FILES -= qmldir
 
@@ -52,24 +55,38 @@ NATIVE_FILES -= qmldir
 
 OTHER_FILES += $$QML_FILES
 
-target.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH
+target.path = $$[QT_INSTALL_IMPORTS]/$$member(TARGETPATH, 0)
+INSTALLS += target
 
-qmlfiles.files = $$QML_FILES
-qmlfiles.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH
+for(targetpath, $$list($$unique(TARGETPATH))) {
+    !isEqual(targetpath, $$member(TARGETPATH, 0)) {
+        qmltarget = qmltarget_$$replace(targetpath, /, _)
+        eval($${qmltarget}.CONFIG += no_check_exist executable)
+        eval($${qmltarget}.files = $$DESTDIR/$(TARGET))
+        eval($${qmltarget}.files += stfu)
+        eval($${qmltarget}.path = $$[QT_INSTALL_IMPORTS]/$$targetpath)
+        INSTALLS += $${qmltarget}
+    }
 
-qmlimages.files = $$QML_IMAGES
-qmlimages.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH/images
+    qmlfiles = qmlfiles_$$replace(targetpath, /, _)
+    eval($${qmlfiles}.files = $$QML_FILES)
+    eval($${qmlfiles}.path = $$[QT_INSTALL_IMPORTS]/$$targetpath)
 
-INSTALLS += target qmlfiles qmlimages
+    qmlimages = qmlimages_$$replace(targetpath, /, _)
+    eval($${qmlimages}.files = $$QML_FILES)
+    eval($${qmlimages}.path = $$[QT_INSTALL_IMPORTS]/$$targetpath/images)
 
-symbian {
-    pluginstub.sources = $$symbianRemoveSpecialCharacters($$basename(TARGET)).dll
-    pluginstub.path = $$QT_IMPORTS_BASE_DIR/$$TARGETPATH
+    INSTALLS += $${qmlfiles} $${qmlimages}
 
-    resources.sources = $$QML_FILES
-    resources.path = $$QT_IMPORTS_BASE_DIR/$$TARGETPATH
+    symbian {
+        pluginstub.sources = $$symbianRemoveSpecialCharacters($$basename(TARGET)).dll
+        pluginstub.path = $$QT_IMPORTS_BASE_DIR/$$targetpath
 
-    DEPLOYMENT += pluginstub resources
+        resources.sources = $$QML_FILES
+        resources.path = $$QT_IMPORTS_BASE_DIR/$$targetpath
+
+        DEPLOYMENT += pluginstub resources
+    }
 }
 
 install_native {

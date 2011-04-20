@@ -3,7 +3,6 @@ include (../../../qt-components.pri)
 TARGETPATH = com/nokia/extras
 TEMPLATE = lib
 TARGET = $$qtLibraryTarget(symbianextrasplugin)
-DESTDIR = $$Q_COMPONENTS_BUILD_TREE/imports/$$TARGETPATH
 INCLUDEPATH += $$PWD
 
 win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release build_all

@@ -3,7 +3,6 @@ include (../../qt-components.pri)
 TARGETPATH = Qt/labs/components
 TEMPLATE = lib
 TARGET = $$qtLibraryTarget(qtcomponentsplugin)
-DESTDIR = $$Q_COMPONENTS_BUILD_TREE/imports/$$TARGETPATH
 INCLUDEPATH += $$PWD $$PWD/models
 
 win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release build_all
