@@ -14,3 +14,7 @@ symbian3 {
 mobility {
     DEFINES += HAVE_MOBILITY
 }
+
+symbian_internal {
+    DEFINES += HAVE_SYMBIAN_INTERNAL
+}

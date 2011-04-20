@@ -40,6 +40,7 @@ HAVE_XDAMAGE=no
 HAVE_CONTEXTSUBSCRIBER=no
 HAVE_MEEGOGRAPHICSSYSTEM=no
 HAVE_MOBILITY=auto
+HAVE_SYMBIAN_INTERNAL=no
 QMAKE_CONFIG=
 QMAKE_DEBUG=
 OPT_HELP=no
@@ -114,6 +115,9 @@ while [ "$#" -gt 0 ]; do
         ;;
     symbian)
         BUILD_SYMBIAN_STYLE=yes
+        ;;
+    symbian-internal)
+        HAVE_SYMBIAN_INTERNAL=yes
         ;;
     nomake)
         case "$1" in
@@ -269,6 +273,8 @@ fi
 [ "$HAVE_MOBILITY" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG mobility"
 [ "$HAVE_MOBILITY" = "no" ] && QMAKE_CONFIG="$QMAKE_CONFIG no_mobility"
 
+[ "$HAVE_SYMBIAN_INTERNAL" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG symbian_internal"
+
 echo "CONFIG +=$QMAKE_CONFIG" > $CONFIG_PRF
 echo "Q_COMPONENTS_SOURCE_TREE = $SOURCE_TREE" > $QMAKE_CACHE
 echo "Q_COMPONENTS_BUILD_TREE = $BUILD_TREE" >> $QMAKE_CACHE
@@ -296,6 +302,7 @@ fi
 echo "Symbian Style .................... $BUILD_SYMBIAN_STYLE"
 if [ "$BUILD_SYMBIAN_STYLE" = "yes" ]; then
     echo "  Qt Mobility support ............ $HAVE_MOBILITY"
+    echo "  Symbian internal SDK ........... $HAVE_SYMBIAN_INTERNAL"
 fi
 echo "  Extras ......................... $BUILD_EXTRAS"
 echo "Demos ............................ $BUILD_DEMOS"

@@ -39,6 +39,7 @@ set BUILD_EXAMPLES=yes
 set BUILD_EXTRAS=yes
 set BUILD_TESTS=yes
 set HAVE_MOBILITY=auto
+set HAVE_SYMBIAN_INTERNAL=no
 set QMAKE_CONFIG=
 set QMAKE_DEBUG=
 
@@ -56,17 +57,18 @@ if exist "%CONFIG_PRF%" del /Q %CONFIG_PRF%
 
 shift
 :parse
-if "%0" == ""               goto qmake
-if "%0" == "-meego"         goto meego
-if "%0" == "-symbian"       goto symbian
-if "%0" == "-mobility"      goto mobility
-if "%0" == "-no-mobility"   goto nomobility
-if "%0" == "-make"          goto make
-if "%0" == "-nomake"        goto nomake
-if "%0" == "-config"        goto config
-if "%0" == "-d"             goto debug
-if "%0" == "-help"          goto help
-if "%0" == "-h"             goto help
+if "%0" == ""                   goto qmake
+if "%0" == "-meego"             goto meego
+if "%0" == "-symbian"           goto symbian
+if "%0" == "-mobility"          goto mobility
+if "%0" == "-symbian-internal"  goto symbian_internal
+if "%0" == "-no-mobility"       goto nomobility
+if "%0" == "-make"              goto make
+if "%0" == "-nomake"            goto nomake
+if "%0" == "-config"            goto config
+if "%0" == "-d"                 goto debug
+if "%0" == "-help"              goto help
+if "%0" == "-h"                 goto help
 
 :unknown
 echo Unknown option: %0
@@ -86,6 +88,11 @@ goto parse
 
 :mobility
 set HAVE_MOBILITY=yes
+shift
+goto parse
+
+:symbian_internal
+set HAVE_SYMBIAN_INTERNAL=yes
 shift
 goto parse
 
@@ -199,6 +206,8 @@ if "%BUILD_TESTS%" == "yes" set QMAKE_CONFIG=%QMAKE_CONFIG% tests
 if "%HAVE_MOBILITY%" == "yes" set QMAKE_CONFIG=%QMAKE_CONFIG% mobility
 if "%HAVE_MOBILITY%" == "no" set QMAKE_CONFIG=%QMAKE_CONFIG% no_mobility
 
+if "%HAVE_SYMBIAN_INTERNAL%" == "yes" set QMAKE_CONFIG=%QMAKE_CONFIG% symbian_internal
+
 echo CONFIG +=%QMAKE_CONFIG% > %CONFIG_PRF%
 echo Q_COMPONENTS_SOURCE_TREE = %SOURCE_TREE:\=/% > %QMAKE_CACHE%
 echo Q_COMPONENTS_BUILD_TREE = %BUILD_TREE:\=/% >> %QMAKE_CACHE%
@@ -216,6 +225,7 @@ echo MeeGo Style ...................... %BUILD_MEEGO_STYLE%
 echo Symbian Style .................... %BUILD_SYMBIAN_STYLE%
 if "%BUILD_SYMBIAN_STYLE%" == "no" goto nosymbian
   echo   Qt Mobility support ............ %HAVE_MOBILITY%
+  echo   Symbian internal SDK ........... %HAVE_SYMBIAN_INTERNAL%
 :nosymbian
 echo   Extras ......................... %BUILD_EXTRAS%
 echo Demos ............................ %BUILD_DEMOS%
