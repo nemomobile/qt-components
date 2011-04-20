@@ -250,7 +250,7 @@ ImplicitSizeItem {
             if (internal.state == "Pressed" || internal.state == "PressAndHold")
                 return "pressed"
             else if (internal.state == "Focused")
-                return "highlight"
+                return "highlighted"
             else if (internal.state == "Disabled")
                 return "disabled"
             else

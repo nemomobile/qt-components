@@ -14,7 +14,7 @@
         <file alias="qtg_fr_tab_passive_pressed.svg">resources/defaulttheme/graphics/qtg_fr_tab_passive_pressed.svg</file>
         <file alias="qtg_fr_list_disabled.svg">resources/defaulttheme/graphics/qtg_fr_list_disabled.svg</file>
         <file alias="qtg_fr_list_heading_normal.svg">resources/defaulttheme/graphics/qtg_fr_list_heading_normal.svg</file>
-        <file alias="qtg_fr_list_highlight.svg">resources/defaulttheme/graphics/qtg_fr_list_highlight.svg</file>
+        <file alias="qtg_fr_list_highlighted.svg">resources/defaulttheme/graphics/qtg_fr_list_highlighted.svg</file>
         <file alias="qtg_fr_list_normal.svg">resources/defaulttheme/graphics/qtg_fr_list_normal.svg</file>
         <file alias="qtg_fr_list_popup_normal.svg">resources/defaulttheme/graphics/qtg_fr_list_popup_normal.svg</file>
         <file alias="qtg_fr_list_pressed.svg">resources/defaulttheme/graphics/qtg_fr_list_pressed.svg</file>

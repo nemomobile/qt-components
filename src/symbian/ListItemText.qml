@@ -33,6 +33,7 @@ Text {
     property string mode: "normal"
     property string role: "Title"
 
+    // Also role "Heading" taken into account although not explicitely used in evaluations below
     font {
         family: platformStyle.fontFamilyRegular
         pixelSize: (role == "Title" || role == "SelectionTitle") ? platformStyle.fontSizeLarge : platformStyle.fontSizeSmall
@@ -60,7 +61,7 @@ Text {
                         return platformStyle.colorNormalLight
                 } else if (style.mode == "pressed") {
                     return platformStyle.colorPressed
-                } else if (style.mode == "highlight") {
+                } else if (style.mode == "highlighted") {
                      return platformStyle.colorHighlighted
                 } else if (style.mode == "disabled") {
                     return platformStyle.colorDisabledLight
@@ -75,7 +76,7 @@ Text {
                         return platformStyle.colorNormalLight
                 } else if (root.mode == "pressed") {
                     return platformStyle.colorPressed
-                } else if (root.mode == "highlight") {
+                } else if (root.mode == "highlighted") {
                      return platformStyle.colorHighlighted
                 } else if (root.mode == "disabled") {
                     return platformStyle.colorDisabledLight
