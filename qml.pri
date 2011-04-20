@@ -59,22 +59,24 @@ target.path = $$[QT_INSTALL_IMPORTS]/$$member(TARGETPATH, 0)
 INSTALLS += target
 
 for(targetpath, $$list($$unique(TARGETPATH))) {
+    installpath = $$[QT_INSTALL_IMPORTS]/$$targetpath
+    installpath = $$replace(installpath, \\\\, /)
     !isEqual(targetpath, $$member(TARGETPATH, 0)) {
         qmltarget = qmltarget_$$replace(targetpath, /, _)
         eval($${qmltarget}.CONFIG += no_check_exist executable)
         eval($${qmltarget}.files = $$DESTDIR/$(TARGET))
         eval($${qmltarget}.files += stfu)
-        eval($${qmltarget}.path = $$[QT_INSTALL_IMPORTS]/$$targetpath)
+        eval($${qmltarget}.path = $$installpath)
         INSTALLS += $${qmltarget}
     }
 
     qmlfiles = qmlfiles_$$replace(targetpath, /, _)
     eval($${qmlfiles}.files = $$QML_FILES)
-    eval($${qmlfiles}.path = $$[QT_INSTALL_IMPORTS]/$$targetpath)
+    eval($${qmlfiles}.path = $$installpath)
 
     qmlimages = qmlimages_$$replace(targetpath, /, _)
     eval($${qmlimages}.files = $$QML_FILES)
-    eval($${qmlimages}.path = $$[QT_INSTALL_IMPORTS]/$$targetpath/images)
+    eval($${qmlimages}.path = $$installpath/images)
 
     INSTALLS += $${qmlfiles} $${qmlimages}
 
