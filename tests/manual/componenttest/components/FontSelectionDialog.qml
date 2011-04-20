@@ -27,65 +27,41 @@
 import QtQuick 1.0
 import com.nokia.symbian 1.0
 
-Dialog {
+CommonDialog {
     id: root
     property string fontFamily
 
-    title: Text {
-        text: "Select font"
-        font { bold: true; pixelSize: 16 }
-        color: "white"
-        horizontalAlignment: Text.AlignLeft
-        verticalAlignment: Text.AlignVCenter
-    }
+    titleText: "Select font"
 
     content: ListView {
-        id: listView
-        anchors.fill: parent
+        height: root.platformContentMaximumHeight
+        width: root.platformContentMaximumWidth
         focus: true
         clip: true
         model: Qt.fontFamilies()
-        delegate: defaultDelegate
+        delegate: fontSelectionDelegate
     }
 
+    onClickedOutside: root.reject()
+
     Component {
-        id: defaultDelegate
+        id: fontSelectionDelegate
 
         ListItem {
-            id: listItem
-            width: listView.width
-            height: 30
+            height: privateStyle.menuItemHeight
 
-            Text {
-                id: listItemText
+            ListItemText {
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.leftMargin: platformStyle.paddingMedium
                 text: modelData
                 font.family: modelData
-                color: textStyle.current.get("textColor")
-                Style {
-                    id: textStyle
-                    styleClass: "ListItemText"
-                    mode: listItem.style.mode
-                    styleObjectName: "Title"
-                }
             }
 
             onClicked: {
                 fontFamily = modelData
-                root.close()
+                root.accept()
             }
-        }
-    }
-
-    buttons: Row {
-        height: 60
-        width: parent.width
-
-        Button {
-            text: "Cancel"
-            width: parent.width / 2
-            height: parent.height
-            x: parent.width / 2
-            onClicked: root.close()
         }
     }
 }
