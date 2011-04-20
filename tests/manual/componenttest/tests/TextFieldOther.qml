@@ -174,7 +174,7 @@ Item {
         content: ListView {
                     id: listView
                     height: parent.height; width: parent.width
-                    focus: true; clip: true
+                    clip: true
                     model: InputMethodHints { }
                     delegate: textFieldDelegate
                     section.property: "category"
