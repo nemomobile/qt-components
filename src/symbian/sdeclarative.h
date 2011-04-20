@@ -125,6 +125,7 @@ public:
     void setListInteractionMode(InteractionMode mode);
 
     static QString currentTime();
+    Q_INVOKABLE void privateShowIndicatorPopup();
 
 Q_SIGNALS:
     void listInteractionModeChanged();

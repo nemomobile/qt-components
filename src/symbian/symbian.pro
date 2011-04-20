@@ -115,11 +115,13 @@ symbian {
     MMP_RULES += EXPORTUNFROZEN
     MMP_RULES += SMPSAFE
 
-    LIBS += -lws32
-    LIBS += -lcone
-    LIBS += -leikcore
-    LIBS += -lavkon
-    LIBS += -lhal
+    LIBS += -lws32 // For CWsScreenDevice
+    LIBS += -lcone // For EikonEnv / CoeEnv
+    LIBS += -leikcore // For EikonEnv
+    LIBS += -leikcoctl // For CEikStatusPane
+    LIBS += -lavkon // For AknAppui SetOrientationL
+    LIBS += -lhal   // For calculating DPI values
+    symbian_internal: LIBS += -laknnotify // For CAknSmallIndicator
 
     BLD_INF_RULES.prj_exports += "qtcomponents.iby $$CORE_MW_LAYER_IBY_EXPORT_PATH(qtcomponents.iby)"
 

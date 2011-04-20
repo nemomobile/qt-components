@@ -58,6 +58,14 @@ ImplicitSizeItem {
         }
     }
 
+    MouseArea {
+        anchors.fill: parent
+        onClicked: {
+            privateStyle.play(Symbian.PopUp)
+            symbian.privateShowIndicatorPopup()
+        }
+    }
+
     BorderImage {
         source: privateStyle.imagePath("qtg_fr_statusbar")
         anchors.fill: parent
