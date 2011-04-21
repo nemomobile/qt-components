@@ -62,7 +62,7 @@ ImplicitSizeItem {
         height: menu.height
 
         onFaderClicked: {
-            privateStyle.play(Symbian.PopUpClose)
+            privateStyle.play(Symbian.PopupClose)
             close()
         }
 

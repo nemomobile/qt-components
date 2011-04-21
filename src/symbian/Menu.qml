@@ -64,7 +64,7 @@ Item {
         clip: true
 
         onFaderClicked: {
-            privateStyle.play(Symbian.PopUpClose)
+            privateStyle.play(Symbian.PopupClose)
             close()
         }
 

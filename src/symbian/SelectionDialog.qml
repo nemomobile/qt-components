@@ -80,7 +80,10 @@ CommonDialog {
         }
     }
 
-    onClickedOutside: reject()
+    onClickedOutside: {
+        privateStyle.play(Symbian.PopupClose)
+        reject()
+    }
 
     onStatusChanged: {
         if (status == DialogStatus.Opening)

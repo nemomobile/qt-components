@@ -105,7 +105,7 @@ Item {
             privateStyle.play(Symbian.BasicItem)
         }
         onClicked: root.clicked()
-        onReleased: privateStyle.play(Symbian.PopUpClose)
+        onReleased: privateStyle.play(Symbian.PopupClose)
     }
 
     Keys.onPressed: {
