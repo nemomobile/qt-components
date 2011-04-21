@@ -29,8 +29,6 @@ import "." 1.0
 
 ImplicitSizeItem {
     id: root
-    property alias style: itemStyle // deprecated
-    onStyleChanged: { console.log("warning: ListItem.style is deprecated.") }
     property string mode: internal.getMode() // Read-only
     property alias padding: paddingItem // Read-only
     onPaddingChanged: { console.log("warning: ListItem.padding is deprecated. Use ListItem.paddigItem instead") }
@@ -73,13 +71,6 @@ ImplicitSizeItem {
 
     implicitWidth: ListView.view ? ListView.view.width : screen.width
     implicitHeight: platformStyle.graphicSizeLarge
-
-    Style {
-        id: itemStyle
-        styleClass: "ListItem"
-        styleObjectName: "ListItem"
-        mode: internal.getMode()
-    }
 
     Item {
         id: background
