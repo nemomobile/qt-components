@@ -67,6 +67,7 @@ ApplicationWindow {
             onClicked: pageStack.depth <= 1 ? Qt.quit() : pageStack.pop()
         }
         ToolButton {
+            id: optionsButton
             flat: true
             iconSource: "image://theme/qtg_toolbar_options"
         }
