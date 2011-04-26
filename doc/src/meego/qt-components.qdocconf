@@ -1,18 +1,18 @@
 project         = qt-components
 description     = "Qt-Components Documentation"
 
-headerdirs =    $QTCOMPONENTS/src \
-                $QTCOMPONENTS/doc/src
-sourcedirs =    $QTCOMPONENTS/doc/src \
-                $QTCOMPONENTS/src
+headerdirs =    $Q_COMPONENTS_SOURCE_TREE/src \
+                $Q_COMPONENTS_SOURCE_TREE/doc/src
+sourcedirs =    $Q_COMPONENTS_SOURCE_TREE/doc/src \
+                $Q_COMPONENTS_SOURCE_TREE/src
 
-outputdir  =    $QTCOMPONENTS/doc/html
+outputdir  =    $Q_COMPONENTS_SOURCE_TREE/doc/html
 outputformats = HTML
 sources.fileextensions = "*.cpp *.doc *.qdoc *.h *.qml"
-exampledirs =   $QTCOMPONENTS/doc
-imagedirs =     $QTCOMPONENTS/doc
+exampledirs =   $Q_COMPONENTS_SOURCE_TREE/doc
+imagedirs =     $Q_COMPONENTS_SOURCE_TREE/doc
 
-indexes = $QTDIR/doc/html/qt.index
+indexes = $QT_INSTALL_DOCS/html/qt.index
 
 #from macros.qdocconf
 
@@ -237,8 +237,8 @@ extraimages.HTML        = qt-logo \
                           dynamiclayouts-example.png
 
 # This stuff is used by the new doc format.
-scriptdirs              = $QT_SOURCE_TREE/doc/src/template/scripts
-styledirs               = $QT_SOURCE_TREE/doc/src/template/style
+scriptdirs              = $Q_COMPONENTS_SOURCE_TREE/doc/src/template/scripts
+styledirs               = $Q_COMPONENTS_SOURCE_TREE/doc/src/template/style
 
 scripts.HTML            = functions.js \
                           narrow.js \

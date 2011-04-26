@@ -19,3 +19,5 @@ symbian {
     BLD_INF_RULES.prj_exports += "features/qt-components.prf $$features.path/qt-components.prf"
     BLD_INF_RULES.prj_exports += "features/qt-components-config.prf $$features.path/qt-components-config.prf"
 }
+
+include(doc/doc.pri)

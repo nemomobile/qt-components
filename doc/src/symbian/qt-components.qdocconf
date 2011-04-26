@@ -1,22 +1,22 @@
 project         = qt-components
 description     = "Qt Quick Components Documentation"
 
-#headerdirs =    $QTCOMPONENTS/src \
-#                $QTCOMPONENTS/doc/src
-sourcedirs =    $QTCOMPONENTS/doc/src/common \
-                $QTCOMPONENTS/doc/src/symbian \
-                $QTCOMPONENTS/doc/src/examples
+#headerdirs =    $Q_COMPONENTS_SOURCE_TREE/src \
+#                $Q_COMPONENTS_SOURCE_TREE/doc/src
+sourcedirs =    $Q_COMPONENTS_SOURCE_TREE/doc/src/common \
+                $Q_COMPONENTS_SOURCE_TREE/doc/src/symbian \
+                $Q_COMPONENTS_SOURCE_TREE/doc/src/examples
                 #$QTSRC/src/declarative
 
-outputdir  =    $QTCOMPONENTS/doc/html
+outputdir  =    $Q_COMPONENTS_SOURCE_TREE/doc/html
 outputformats = HTML
 sources.fileextensions = "*.cpp *.doc *.qdoc *.h *.qml"
 examples.fileextensions = "*.cpp *.h *.js *.qml"
-exampledirs =   $QTCOMPONENTS/doc $QTCOMPONENTS
-imagedirs =     $QTCOMPONENTS/doc/src/images $QTCOMPONENTS/doc/src/templates/images
+exampledirs =   $Q_COMPONENTS_SOURCE_TREE/doc $Q_COMPONENTS_SOURCE_TREE
+imagedirs =     $Q_COMPONENTS_SOURCE_TREE/doc/src/images $Q_COMPONENTS_SOURCE_TREE/doc/src/templates/images
 
 
-indexes = $QTDIR/doc/html/qt.index
+indexes = $QT_INSTALL_DOCS/html/qt.index
 
 qhp.projects            = QtComponents
 qhp.QtComponents.file             = qtcomponents.qhp
@@ -258,8 +258,8 @@ extraimages.HTML        = qt-logo \
                           dynamiclayouts-example.png
 
 # This stuff is used by the new doc format.
-scriptdirs              = $QTCOMPONENTS/doc/src/templates/scripts
-styledirs               = $QTCOMPONENTS/doc/src/templates/style
+scriptdirs              = $Q_COMPONENTS_SOURCE_TREE/doc/src/templates/scripts
+styledirs               = $Q_COMPONENTS_SOURCE_TREE/doc/src/templates/style
 
 scripts.HTML            = functions.js \
                           narrow.js \
