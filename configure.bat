@@ -220,7 +220,7 @@ if errorlevel 1 echo ERROR: qmake run failed.
 echo.
 echo.
 echo Qt Components build configuration:
-echo Congiguration ....................%QMAKE_CONFIG%
+echo Configuration ....................%QMAKE_CONFIG%
 echo MeeGo Style ...................... %BUILD_MEEGO_STYLE%
 echo Symbian Style .................... %BUILD_SYMBIAN_STYLE%
 if "%BUILD_SYMBIAN_STYLE%" == "no" goto nosymbian
