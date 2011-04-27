@@ -10,7 +10,7 @@ ContextMenu 1.0 ContextMenu.qml
 Dialog 1.0 Dialog.qml
 Menu 1.0 Menu.qml
 MenuItem 1.0 MenuItem.qml
-ObjectMenu 1.0 ObjectMenu.qml
+MenuLayout 1.0 MenuLayout.qml
 Page 1.0 Page.qml
 PageStack 1.0 PageStack.qml
 ProgressBar 1.0 ProgressBar.qml
@@ -23,6 +23,7 @@ Slider 1.0 Slider.qml
 StatusBar 1.0 StatusBar.qml
 Switch 1.0 Switch.qml
 TabBar 1.0 TabBar.qml
+TabBarLayout 1.0 TabBarLayout.qml
 TabButton 1.0 TabButton.qml
 TabGroup 1.0 TabGroup.qml
 TextArea 1.0 TextArea.qml
