@@ -8,10 +8,13 @@ S60_APP_RESOURCE(qmlextrasgallery)
 data=DATAZ_\private\10003a3f\import\apps\qmlextrasgallery_reg.rsc  \private\10003a3f\import\apps\qmlextrasgallery_reg.rsc
 data=ZSYSTEM\install\qmlextrasgallery_stub.sis                     System\Install\qmlextrasgallery_stub.sis
 
-data=DATAZ_\private\2003A914\main.qml                     \private\2003A914\main.qml
-data=DATAZ_\private\2003A914\DatePickerDialog.qml         \private\2003A914\DatePickerDialog.qml
-data=DATAZ_\private\2003A914\RatingIndicator.qml          \private\2003A914\RatingIndicator.qml
-data=DATAZ_\private\2003A914\TimePickerDialog.qml         \private\2003A914\TimePickerDialog.qml
-data=DATAZ_\private\2003A914\Tumbler.qml                  \private\2003A914\Tumbler.qml
+data=DATAZ_\private\2003A914\main.qml                              \private\2003A914\main.qml
+data=DATAZ_\private\2003A914\DatePickerDialog.qml                  \private\2003A914\DatePickerDialog.qml
+data=DATAZ_\private\2003A914\InfoBannerPage.qml                    \private\2003A914\InfoBannerPage.qml
+data=DATAZ_\private\2003A914\InfoBannerSamples.qml                 \private\2003A914\InfoBannerSamples.qml
+data=DATAZ_\private\2003A914\assets\info_banner_thumbnail.png      \private\2003A914\assets\info_banner_thumbnail.png
+data=DATAZ_\private\2003A914\RatingIndicator.qml                   \private\2003A914\RatingIndicator.qml
+data=DATAZ_\private\2003A914\TimePickerDialog.qml                  \private\2003A914\TimePickerDialog.qml
+data=DATAZ_\private\2003A914\Tumbler.qml                           \private\2003A914\Tumbler.qml
 
 #endif //QMLEXTRASGALLERY_IBY

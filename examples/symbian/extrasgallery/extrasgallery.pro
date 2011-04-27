@@ -13,7 +13,9 @@ symbian {
     TARGET.EPOCHEAPSIZE = 0x1000 0xF00000
     TARGET.CAPABILITY = ReadDeviceData SwEvent WriteDeviceData
     gallery_qmls.sources = *.qml
-    DEPLOYMENT += gallery_qmls
+    gallery_images.sources = assets/*.png
+    gallery_images.path = assets
+    DEPLOYMENT += gallery_qmls gallery_images
     BLD_INF_RULES.prj_exports += "qmlextrasgallery.iby $$CORE_APP_LAYER_IBY_EXPORT_PATH(qmlextrasgallery.iby)"
 
     stubsis = \
@@ -40,6 +42,8 @@ symbian {
 OTHER_FILES += \
     main.qml \
     DatePickerDialog.qml \
+    InfoBannerPage.qml \
+    InfoBannerSamples.qml \
     RatingIndicator.qml \
     TimePickerDialog.qml \
     Tumbler.qml

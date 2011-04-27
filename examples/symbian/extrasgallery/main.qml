@@ -78,6 +78,12 @@ ApplicationWindow {
                     id: pagesModel
 
                     ListElement {
+                        page: "InfoBannerPage.qml"
+                        title: "InfoBanner"
+                        subtitle: "Info Banner"
+                    }
+
+                    ListElement {
                         page: "RatingIndicator.qml"
                         title: "RatingIndicator"
                         subtitle: "Indicates ratings"
