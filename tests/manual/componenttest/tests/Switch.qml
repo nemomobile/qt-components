@@ -47,7 +47,6 @@ Column {
     Switch {
         id: switch2
         width: switch1.width
-        text: "switch2"
         checked: true
 
         Rectangle {
@@ -58,18 +57,33 @@ Column {
         }
 
         Rectangle {
+            id: implSizeRect
             anchors { left: parent.left; verticalCenter: parent.verticalCenter }
             width: parent.implicitWidth
             height: parent.implicitHeight
             color: "#00000000"
             border.color: "blue"
         }
+
+        Text {
+            text: "switch2"
+            anchors { left: implSizeRect.right; leftMargin: 10; verticalCenter: switch2.verticalCenter }
+            font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
+            color: platformStyle.colorNormalLight
+        }
     }
 
-    Switch {
-        id: switch3
-        width: switch2.width
-        enabled: switch2.checked
-        text: switch2.checked ? "enabled" : "disabled"
+    Row {
+        spacing: 10
+        Switch {
+            id: switch3
+            enabled: switch2.checked
+        }
+        Text {
+            text: switch3.checked ? "On" : "Off"
+            anchors.verticalCenter: switch3.verticalCenter
+            font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
+            color: platformStyle.colorNormalLight
+        }
     }
 }
