@@ -15,6 +15,7 @@
     <file alias="list13.png" >images/list13.png</file>
     <file alias="list14.png" >images/list14.png</file>
     <file alias="list15.png" >images/list15.png</file>
+    <file alias="info_banner_thumbnail.png">images/info_banner_thumbnail.png</file>
     <file alias="richtexteditor.png" >images/richtexteditor.png</file>
     <file alias="qtg_fr_btn_normal.svg" >images/qtg_fr_btn_normal.svg</file>
     <file alias="qtg_fr_btn_normal_tl.svg" >images/qtg_fr_btn_normal_tl.svg</file>
