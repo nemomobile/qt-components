@@ -20,6 +20,7 @@ QML_FILES = \
     qmldir \
     Constants.js \
     DatePickerDialog.qml \
+    InfoBanner.qml \
     RatingIndicator.qml \
     TimePickerDialog.qml \
     Tumbler.js \

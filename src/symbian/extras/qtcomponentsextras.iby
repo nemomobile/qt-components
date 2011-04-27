@@ -14,6 +14,7 @@ data=ZSYSTEM\install\symbianextrasplugin_stub.sis                               
 // Symbian extras QML components
 data=\epoc32\data\z\resource\qt\imports\com\nokia\extras\Constants.js                                    RESOURCE_FILES_DIR\qt\imports\com\nokia\extras\Constants.js
 data=\epoc32\data\z\resource\qt\imports\com\nokia\extras\DatePickerDialog.qml                            RESOURCE_FILES_DIR\qt\imports\com\nokia\extras\DatePickerDialog.qml
+data=\epoc32\data\z\resource\qt\imports\com\nokia\extras\InfoBanner.qml                                  RESOURCE_FILES_DIR\qt\imports\com\nokia\extras\InfoBanner.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\extras\RatingIndicator.qml                             RESOURCE_FILES_DIR\qt\imports\com\nokia\extras\RatingIndicator.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\extras\TimePickerDialog.qml                            RESOURCE_FILES_DIR\qt\imports\com\nokia\extras\TimePickerDialog.qml
 data=\epoc32\data\z\resource\qt\imports\com\nokia\extras\Tumbler.js                                      RESOURCE_FILES_DIR\qt\imports\com\nokia\extras\Tumbler.js

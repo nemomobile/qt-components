@@ -120,6 +120,7 @@
         <file alias="qtg_fr_toolbutton_segmented_r_latched.svg">resources/defaulttheme/graphics/qtg_fr_toolbutton_segmented_r_latched.svg</file>
         <file alias="qtg_fr_toolbutton_segmented_r_normal.svg">resources/defaulttheme/graphics/qtg_fr_toolbutton_segmented_r_normal.svg</file>
         <file alias="qtg_fr_toolbutton_segmented_r_pressed.svg">resources/defaulttheme/graphics/qtg_fr_toolbutton_segmented_r_pressed.svg</file>
+        <file alias="qtg_fr_popup_infobanner.svg">resources/defaulttheme/graphics/qtg_fr_popup_infobanner.svg</file>
     </qresource>
     <qresource prefix="/colors">
         <file alias="widgetcolorgroup.css">resources/defaulttheme/colors/widgetcolorgroup.css</file>
