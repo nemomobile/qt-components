@@ -32,10 +32,13 @@ ImplicitSizeItem {
 
     // Common Public API
     property bool checked: false
-    signal clicked
-    // Symbian specific
     property bool pressed: stateGroup.state == "Pressed" || stateGroup.state == "Dragging"
-    property alias text: label.text
+
+    signal clicked
+
+    // Symbian specific
+    property alias text: label.text // DEPRECATED
+    onTextChanged: { console.log("warning: Switch.text is deprecated") }
 
     QtObject {
         id: internal
