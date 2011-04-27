@@ -49,9 +49,6 @@ void tst_quickcomponentslistitemtext::initTestCase()
 
 void tst_quickcomponentslistitemtext::validateProperties()
 {
-    // style - TODO: Property deprecated. Remove unit test when the property is removed.
-    QVERIFY(m_componentObject->property("style").isValid());
-
     // mode
     QVariant mode = m_componentObject->property("mode");
     QVERIFY(mode.isValid());

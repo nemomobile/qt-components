@@ -129,14 +129,12 @@ ApplicationWindow {
 
                                 ListItemText {
                                     id: mainText
-                                    style: listItem.style
                                     role: "Title"
                                     text: title
                                 }
 
                                 ListItemText {
                                     id: subText
-                                    style: listItem.style
                                     role: "SubTitle"
                                     text: subtitle
                                     visible: text != ""

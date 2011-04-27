@@ -40,11 +40,6 @@ Text {
     color: internal.getColor()
     elide: Text.ElideRight
 
-    function getColor() {
-        console.log("ListItemText.getColor deprecated!")
-        return internal.getColor()
-    }
-
     QtObject {
         id: internal
 
