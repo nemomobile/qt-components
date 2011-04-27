@@ -34,8 +34,6 @@ ImplicitSizeItem {
     property int orientation: Qt.Vertical
     property bool interactive: true
     property int policy: Symbian.ScrollBarWhenScrolling
-    property real position: internal.getPosition() // DEPRECATED
-    property real pageSize: internal.getPageSize() // DEPRECATED
 
     //implicit values for qml designer when no Flickable is present
     implicitHeight: privateStyle.scrollBarThickness * (orientation == Qt.Vertical ? 3 : 1)
@@ -51,10 +49,6 @@ ImplicitSizeItem {
         return undefined
     }
     opacity: 0
-    Component.onCompleted: { // TODO: Remove when position and pageSize properties are removed
-        console.log("ScrollBar.pageSize deprecated, use flickableItem.visibleArea ratios instead!")
-        console.log("ScrollBar.position deprecated, use flickableItem.visibleArea positions instead!")
-    }
 
     //For showing explicitly a ScrollBar if policy is Symbian.ScrollBarWhenScrolling
     function flash(type) {
@@ -176,34 +170,6 @@ ImplicitSizeItem {
                     flickableItem.contentX = Math.floor(Math.max(0, flickableItem.contentX))
                 }
             }
-        }
-        /**
-         * DEPRECATED
-         * Dynamical binding of scrollBar.pageSize
-         *
-         * @see scrollBar.pageSize Flickable
-         */
-        function getPageSize() {
-            if (!flickableItem)
-                return NaN
-            if (orientation == Qt.Vertical)
-                return flickableItem.visibleArea.heightRatio
-            else
-                return flickableItem.visibleArea.widthRatio
-        }
-        /**
-         * DEPRECATED
-         * Dynamical binding of scrollBar.position
-         *
-         * @see scrollBar.position Flickable
-         */
-        function getPosition() {
-            if (!flickableItem)
-                return NaN
-            if (orientation == Qt.Vertical)
-                return flickableItem.visibleArea.yPosition
-            else
-                return flickableItem.visibleArea.xPosition
         }
     }
 

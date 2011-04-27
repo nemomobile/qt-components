@@ -282,20 +282,6 @@ void tst_scrollbar::testValidScrollBar_data()
                                    +"    Flickable { id: flickableArea }\n"
                                    +"    ScrollBar { orientation: Qt.Horizontal; flickableItem: flickableArea }\n"
                                    +"}";
-    QByteArray onPositionChangedScrollbar = "import Qt 4.7\n"
-                                            +QT_COMP_IMPORT_STRING_SYMBIAN
-                                            +"Item {\n"
-                                            +"    id: root\n"
-                                            +"    Flickable { id: flickableArea }\n"
-                                            +"    ScrollBar { onPositionChanged: {} flickableItem: flickableArea; }\n"
-                                            +"}";
-    QByteArray onPageSizeChangedScrollbar = "import Qt 4.7\n"
-                                            +QT_COMP_IMPORT_STRING_SYMBIAN
-                                            +"Item {\n"
-                                            +"    id: root\n"
-                                            +"    Flickable { id: flickableArea }\n"
-                                            +"    ScrollBar { onPageSizeChanged: {} flickableItem: flickableArea }\n"
-                                            +"}";
     QByteArray twoScrollbars = "import Qt 4.7\n"
                                +QT_COMP_IMPORT_STRING_SYMBIAN
                                +"Item {\n"
@@ -313,8 +299,6 @@ void tst_scrollbar::testValidScrollBar_data()
     QTest::newRow("ScrollBar policy set to Symbian.ScrollBarWhenNeeded") << showWhenNeededScrollbar << true;
     QTest::newRow("ScrollBar orientation set to Qt.Horizontal") << horizontalScrollbar << true;
     QTest::newRow("ScrollBar orientation set to Qt.Vertical") << verticalScrollbar << true;
-    QTest::newRow("ScrollBar with (position property) onPositionChanged") << onPositionChangedScrollbar << true;
-    QTest::newRow("ScrollBar with (pageSize property) onPageSizeChanged") << onPageSizeChangedScrollbar << true;
     QTest::newRow("Two Scrollbars, one default and one Horizontal") << twoScrollbars << true;
 }
 
@@ -340,8 +324,6 @@ void tst_scrollbar::testPropertiesScrollBar()
     QVERIFY(obj->property("flickableItem").isValid());
     QVERIFY(obj->property("orientation").isValid());
     QVERIFY(obj->property("policy").isValid());
-    QVERIFY(obj->property("position").isValid());
-    QVERIFY(obj->property("pageSize").isValid());
     QVERIFY(obj->property("implicitWidth").isValid());
     QVERIFY(obj->property("implicitHeight").isValid());
 
@@ -356,7 +338,7 @@ void tst_scrollbar::testPropertiesScrollBar()
         QMetaProperty property = metaInfo->property(i);
         checkProperties(property, obj, &propertyCount);
     }
-    QCOMPARE(propertyCount, 8);
+    QCOMPARE(propertyCount, 6);
     delete obj;
 }
 
