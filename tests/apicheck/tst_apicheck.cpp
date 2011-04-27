@@ -32,6 +32,7 @@
 #include "button/apicheck_button.h"
 #include "checkbox/apicheck_checkbox.h"
 #include "dialog/apicheck_dialog.h"
+#include "infobanner/apicheck_infobanner.h"
 #include "radiobutton/apicheck_radiobutton.h"
 #include "ratingindicator/apicheck_ratingindicator.h"
 #include "textfield/apicheck_textfield.h"
@@ -107,6 +108,7 @@ int main(int argc, char *argv[])
     ApiCheckButtonRow buttonRow(engine, module);
     ApiCheckCheckBox checkbox(engine, module);
     ApiCheckDialog dialog(engine, module);
+    ApiCheckInfoBanner infoBanner(engine, extrasModule);
     ApiCheckTextField textField(engine, module);
     ApiCheckRadioButton radioButton(engine, module);
     ApiCheckProgressBar progressBar(engine, module);
@@ -142,6 +144,7 @@ int main(int argc, char *argv[])
     if (QTest::qExec(&buttonRow, args)) failures.append("buttonRow");
     if (QTest::qExec(&checkbox, args)) failures.append("checkbox");
     if (QTest::qExec(&dialog, args)) failures.append("dialog");
+    if (QTest::qExec(&infoBanner, args)) failures.append("infoBanner");
     if (QTest::qExec(&textField, args)) failures.append("textField");
     if (QTest::qExec(&radioButton, args)) failures.append("radioButton");
     if (QTest::qExec(&progressBar, args)) failures.append("progressBar");
