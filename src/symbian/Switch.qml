@@ -86,7 +86,7 @@ ImplicitSizeItem {
     }
 
     implicitWidth: label.text ? 2 * privateStyle.switchButtonHeight + platformStyle.paddingMedium + privateStyle.textWidth(label.text, label.font)
-                              : 2 * privateStyle.switchButtonHeight
+                              : 8 / 5 * privateStyle.switchButtonHeight
     implicitHeight: privateStyle.switchButtonHeight
 
     Image {
