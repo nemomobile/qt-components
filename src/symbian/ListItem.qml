@@ -30,44 +30,13 @@ import "." 1.0
 ImplicitSizeItem {
     id: root
     property string mode: internal.getMode() // Read-only
-    property alias padding: paddingItem // Read-only
-    onPaddingChanged: { console.log("warning: ListItem.padding is deprecated. Use ListItem.paddigItem instead") }
     property alias paddingItem: paddingItem // Read-only
 
-    property real verticalSpacing: 0 // deprecated
-    property real horizontalSpacing: platformStyle.paddingMedium // deprecated
     property bool enabled: true
     property bool subItemIndicator: false
-    property bool drillDownIndicator: false // deprecated
-    onDrillDownIndicatorChanged: { // TODO: Remove after grace period
-        console.log("ListItem.drillDownIndicator deprecated, use ListItem.subItemIndicator instead!");
-        subItemIndicator = drillDownIndicator
-    }
 
     signal clicked
     signal pressAndHold
-
-    function preferredImageHeight(ListImageSize) { // deprecated
-        console.log("warning: ListItem.preferredImageHeight is deprecated. Use platformStyle context properties instead")
-        switch (ListImageSize) {
-            case Symbian.Small: return platformStyle.graphicSizeTiny; break
-            case Symbian.Medium: return platformStyle.graphicSizeSmall; break
-            case Symbian.Large: return platformStyle.graphicSizeMedium; break
-            case Symbian.ImagePortrait: return platformStyle.graphicSizeLarge; break
-            default: return 0
-        }
-    }
-
-    function preferredImageWidth(ListImageSize) { // deprecated
-        console.log("warning: ListItem.preferredImageWidth is deprecated. Use platformStyle context properties instead")
-        switch (ListImageSize) {
-            case Symbian.Small: return platformStyle.graphicSizeTiny; break
-            case Symbian.Medium: return platformStyle.graphicSizeSmall; break
-            case Symbian.Large: return platformStyle.graphicSizeMedium; break
-            case Symbian.ImagePortrait: return platformStyle.graphicSizeLarge; break
-            default: return 0
-        }
-    }
 
     implicitWidth: ListView.view ? ListView.view.width : screen.width
     implicitHeight: platformStyle.graphicSizeLarge
