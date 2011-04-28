@@ -46,8 +46,6 @@ ImplicitSizeItem {
 
         function press() {
             privateStyle.play(Symbian.BasicItem)
-            highlight.source = privateStyle.imagePath("qtg_fr_list_pressed")
-            highlight.opacity = 1
         }
 
         function toggle() {
@@ -55,15 +53,6 @@ ImplicitSizeItem {
             clickedEffect.restart()
             checkable.toggle()
             root.clicked()
-        }
-
-        function bg_postfix() {
-            if (!root.enabled)
-                return "disabled"
-            else if (root.focus)
-                return "highlight"
-            else
-                return "normal"
         }
 
         function icon_postfix() {
@@ -108,44 +97,32 @@ ImplicitSizeItem {
         + platformStyle.graphicSizeSmall + privateStyle.scrollBarThickness
     implicitHeight: privateStyle.menuItemHeight
 
-    BorderImage {
-        source: privateStyle.imagePath("qtg_fr_list_" + internal.bg_postfix())
-        border { left: 20; top: 20; right: 20; bottom: 20 }
-        anchors.fill: parent
+    Image {
+        id: image
+        source: privateStyle.imagePath("qtg_graf_radiobutton_" + internal.icon_postfix())
+        anchors.left: parent.left
+        anchors.leftMargin: platformStyle.paddingLarge
+        anchors.verticalCenter: parent.verticalCenter
+        sourceSize.width: platformStyle.graphicSizeSmall
+        sourceSize.height: platformStyle.graphicSizeSmall
+    }
+    Text {
+        id: label
+        elide: Text.ElideRight
+        anchors.left: image.right
+        anchors.leftMargin: platformStyle.paddingMedium
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.right: parent.right
+        anchors.rightMargin: platformStyle.paddingLarge
 
-        BorderImage {
-            id: highlight
-            opacity: 0
-            anchors.fill: parent
-        }
-
-        Image {
-            id: image
-            source: privateStyle.imagePath("qtg_graf_radiobutton_" + internal.icon_postfix())
-            anchors.left: parent.left
-            anchors.leftMargin: platformStyle.paddingLarge
-            anchors.verticalCenter: parent.verticalCenter
-            sourceSize.width: platformStyle.graphicSizeSmall
-            sourceSize.height: platformStyle.graphicSizeSmall
-        }
-        Text {
-            id: label
-            elide: Text.ElideRight
-            anchors.left: image.right
-            anchors.leftMargin: platformStyle.paddingMedium
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.right: parent.right
-            anchors.rightMargin: platformStyle.paddingLarge
-
-            font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
-            color: {
-                if (!root.enabled)
-                    platformStyle.colorDisabledLight
-                else if (pressed)
-                    platformStyle.colorPressed
-                else
-                    platformStyle.colorNormalLight
-            }
+        font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
+        color: {
+            if (!root.enabled)
+                platformStyle.colorDisabledLight
+            else if (pressed)
+                platformStyle.colorPressed
+            else
+                platformStyle.colorNormalLight
         }
     }
 
@@ -156,10 +133,7 @@ ImplicitSizeItem {
         onPressed: stateGroup.state = "Pressed"
         onReleased: stateGroup.state = ""
         onClicked: stateGroup.state = ""
-        onExited: {
-            fadeOut.restart()
-            stateGroup.state = "Canceled"
-        }
+        onExited: stateGroup.state = "Canceled"
         onCanceled: {
             // Mark as canceled
             stateGroup.state = "Canceled"
@@ -188,21 +162,6 @@ ImplicitSizeItem {
                 duration: 170
             }
         }
-        PropertyAnimation {
-            target: highlight
-            property: "opacity"
-            to: 0
-            easing.type: Easing.Linear
-            duration: 150
-        }
-    }
-    PropertyAnimation {
-        id: fadeOut
-        target: highlight
-        property: "opacity"
-        to: 0
-        easing.type: Easing.Linear
-        duration: 150
     }
 
     Keys.onPressed: {
