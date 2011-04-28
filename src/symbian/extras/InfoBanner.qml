@@ -35,8 +35,9 @@ ImplicitSizeItem {
     property alias timeout : timer.interval
 
     function open() {
+        root.visible = true;
         animationShow.running = true;
-        if (root.timerEnabled) //for backward compability
+        if (root.timerEnabled && timer.interval) //for backward compability
             timer.restart();
     }
     function close() {
@@ -73,6 +74,7 @@ ImplicitSizeItem {
     implicitHeight: Math.max(image.height, text.paintedHeight) + platformStyle.paddingLarge * 2
     implicitWidth: parent ? parent.width - platformStyle.paddingMedium * 2 : screen.width - platformStyle.paddingMedium * 2
     scale: 0
+    visible: false
 
     BorderImage {
         id: background
@@ -138,8 +140,11 @@ ImplicitSizeItem {
                           duration: CONSTANTS.INFOBANNER_ANIMATION_DURATION }
     }
 
-    NumberAnimation {
+    SequentialAnimation {
         id: animationHide
-        target: root; property: "scale"; to: 0; duration: CONSTANTS.INFOBANNER_ANIMATION_DURATION; easing.type: Easing.InExpo
+        NumberAnimation {
+            target: root; property: "scale"; to: 0; duration: CONSTANTS.INFOBANNER_ANIMATION_DURATION; easing.type: Easing.InExpo
+        }
+        ScriptAction { script: root.visible = false }
     }
 }
