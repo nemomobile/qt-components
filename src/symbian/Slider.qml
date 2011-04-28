@@ -53,8 +53,8 @@ ImplicitSizeItem {
     }
 
     signal valueChanged(real value)
-    implicitWidth: orientation == Qt.Horizontal ? 150 : platformStyle.graphicSizeSmall
-    implicitHeight: orientation == Qt.Horizontal ? platformStyle.graphicSizeSmall : 150
+    implicitWidth: orientation == Qt.Horizontal ? 150 : privateStyle.menuItemHeight
+    implicitHeight: orientation == Qt.Horizontal ? privateStyle.menuItemHeight : 150
 
     onActiveFocusChanged: {
         if (!root.activeFocus)
