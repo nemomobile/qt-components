@@ -5,11 +5,6 @@ import com.nokia.extras 1.0
 Item {
     id: container
 
-    Rectangle {
-        anchors.fill: parent
-        color: "pink"
-    }
-
     Text {
         id: title
         anchors { top: parent.top; topMargin: platformStyle.paddingLarge }
