@@ -138,8 +138,10 @@ ImplicitSizeItem {
         onReleased: if (root.enabled) stateGroup.state = ""
         onCanceled: {
             if (root.enabled) {
+                // Mark as canceled
+                stateGroup.state = "Canceled"
+                // Reset state. Can't expect a release since mouse was ungrabbed
                 stateGroup.state = ""
-                internal.release()
             }
         }
         onPressAndHold: if (stateGroup.state != "Canceled" && root.enabled) stateGroup.state = "PressAndHold"
