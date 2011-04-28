@@ -55,14 +55,16 @@ Dialog {
     }
     content: Item {
         id: content
-        height: tumbler.height
+        height: tumbler.height + platformStyle.paddingLarge * 2
         width: parent.width
 
         Tumbler {
             id: tumbler
 
             columns: [hourColumn, minuteColumn, secondColumn, meridiemColumn]
+            anchors.centerIn: parent
             height: privateStyle.menuItemHeight * 4
+            width: parent.width - platformStyle.paddingMedium * 4
             privateDelayInit: true
             states: State {
                 when: screen.currentOrientation == Screen.Landscape || screen.currentOrientation == Screen.LandscapeInverted
