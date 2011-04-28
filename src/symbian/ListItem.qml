@@ -58,7 +58,14 @@ ImplicitSizeItem {
             id: faderLoader
             opacity: 0
             anchors.fill: background
-            sourceComponent: root.mode != "normal" ? fader : undefined
+            sourceComponent: root.mode != "normal" && root.mode != "pressed" ? fader : undefined
+        }
+
+        BorderImage {
+            id: highlight
+            border { left: 20; top: 20; right: 20; bottom: 20 }
+            opacity: 0
+            anchors.fill: background
         }
     }
 
@@ -133,8 +140,12 @@ ImplicitSizeItem {
                 if (symbian.listInteractionMode != Symbian.KeyNavigation)
                     symbian.listInteractionMode = Symbian.KeyNavigation
                 else
-                    if (root.enabled)
+                    if (root.enabled) {
+                        highlight.source = privateStyle.imagePath("qtg_fr_list_pressed")
+                        highlight.opacity = 1
+                        releasedEffect.restart()
                         root.clicked()
+                    }
                 event.accepted = true
                 break
             }
@@ -168,25 +179,60 @@ ImplicitSizeItem {
     }
 
     ListView.onRemove: SequentialAnimation {
-        PropertyAction { target: root; property: "clip"; value: true }
         PropertyAction { target: root; property: "ListView.delayRemove"; value: true }
-        NumberAnimation { target: root; property: "height"; to: 0; duration: 500; easing.type: Easing.InOutQuad }
+        ParallelAnimation {
+            SequentialAnimation {
+                PauseAnimation { duration: 50 }
+                NumberAnimation {
+                    target: root
+                    property: "height"
+                    to: 0
+                    duration: 200
+                    easing.type: Easing.OutQuad
+                }
+            }
+            NumberAnimation {
+                target: root
+                property: "opacity"
+                from: 1
+                to: 0
+                duration: 200
+                easing.type: Easing.Linear
+            }
+        }
         PropertyAction { target: root; property: "ListView.delayRemove"; value: false }
     }
 
     ListView.onAdd: SequentialAnimation {
-         PropertyAction { target: root; property: "height"; value: 0 }
-         NumberAnimation { target: root; property: "height"; to: root.height; duration: 500; easing.type: Easing.InOutQuad }
-    }
-
-    SequentialAnimation {
-        id: pressedEffect
-        PropertyAnimation { target: faderLoader; property: "opacity"; to: 1; easing.type: Easing.Linear; duration: 100 }
+        PropertyAction { target: root; property: "height"; value: 0 }
+        ParallelAnimation {
+            NumberAnimation {
+                target: root
+                property: "height"
+                to: root.height
+                duration: 250
+                easing.type: Easing.OutQuad
+            }
+            NumberAnimation {
+                target: root
+                property: "opacity"
+                from: 0
+                to: 1
+                duration: 250
+                easing.type: Easing.Linear
+            }
+        }
     }
 
     SequentialAnimation {
         id: releasedEffect
-        PropertyAnimation { target: faderLoader; property: "opacity"; to: 0; easing.type: Easing.Linear; duration: 100 }
+        PropertyAnimation {
+            target: highlight
+            property: "opacity"
+            to: 0
+            easing.type: Easing.Linear
+            duration: 150
+        }
     }
 
     Item {
@@ -218,16 +264,17 @@ ImplicitSizeItem {
         }
 
         function press() {
-            pressedEffect.restart()
             privateStyle.play(Symbian.BasicItem)
+            highlight.source = privateStyle.imagePath("qtg_fr_list_pressed")
+            highlight.opacity = 1
             if (ListView.view)
                 ListView.view.currentIndex = index
         }
 
         function release() {
-            releasedEffect.restart()
             if (symbian.listInteractionMode != Symbian.KeyNavigation)
                 privateStyle.play(Symbian.BasicItem)
+            releasedEffect.restart()
         }
 
         function hold() {
