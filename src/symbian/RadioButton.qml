@@ -45,19 +45,20 @@ ImplicitSizeItem {
         objectName: "internal"
 
         function press() {
-            privateStyle.play(Symbian.BasicItem);
+            privateStyle.play(Symbian.BasicItem)
+            highlight.source = privateStyle.imagePath("qtg_fr_list_pressed")
+            highlight.opacity = 1
         }
 
         function toggle() {
-            checkable.toggle();
-            root.clicked();
-            privateStyle.play(Symbian.CheckBox);
+            privateStyle.play(Symbian.CheckBox)
+            clickedEffect.restart()
+            checkable.toggle()
+            root.clicked()
         }
 
         function bg_postfix() {
-            if (pressed)
-                return "pressed"
-            else if (!root.enabled)
+            if (!root.enabled)
                 return "disabled"
             else if (root.focus)
                 return "highlight"
@@ -112,6 +113,12 @@ ImplicitSizeItem {
         border { left: 20; top: 20; right: 20; bottom: 20 }
         anchors.fill: parent
 
+        BorderImage {
+            id: highlight
+            opacity: 0
+            anchors.fill: parent
+        }
+
         Image {
             id: image
             source: privateStyle.imagePath("qtg_graf_radiobutton_" + internal.icon_postfix())
@@ -149,7 +156,10 @@ ImplicitSizeItem {
         onPressed: stateGroup.state = "Pressed"
         onReleased: stateGroup.state = ""
         onClicked: stateGroup.state = ""
-        onExited: stateGroup.state = "Canceled"
+        onExited: {
+            fadeOut.restart()
+            stateGroup.state = "Canceled"
+        }
         onCanceled: {
             // Mark as canceled
             stateGroup.state = "Canceled"
@@ -158,11 +168,49 @@ ImplicitSizeItem {
         }
     }
 
+    ParallelAnimation {
+        id: clickedEffect
+        SequentialAnimation {
+            PropertyAnimation {
+                target: image
+                property: "scale"
+                from: 1.0
+                to: 0.8
+                easing.type: Easing.Linear
+                duration: 50
+            }
+            PropertyAnimation {
+                target: image
+                property: "scale"
+                from: 0.8
+                to: 1.0
+                easing.type: Easing.OutQuad
+                duration: 170
+            }
+        }
+        PropertyAnimation {
+            target: highlight
+            property: "opacity"
+            to: 0
+            easing.type: Easing.Linear
+            duration: 150
+        }
+    }
+    PropertyAnimation {
+        id: fadeOut
+        target: highlight
+        property: "opacity"
+        to: 0
+        easing.type: Easing.Linear
+        duration: 150
+    }
+
     Keys.onPressed: {
         if (event.key == Qt.Key_Select || event.key == Qt.Key_Return) {
-            checkable.toggle();
-            root.clicked();
-            event.accepted = true;
+            checkable.toggle()
+            clickedEffect.restart()
+            root.clicked()
+            event.accepted = true
         }
     }
 
