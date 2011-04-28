@@ -59,14 +59,14 @@ ImplicitSizeItem {
         }
 
         function press() {
-            privateStyle.play(Symbian.BasicItem);
+            privateStyle.play(Symbian.BasicItem)
         }
 
         function toggle() {
-            clickedEffect.restart();
-            root.checked = !root.checked;
-            root.clicked();
-            privateStyle.play(Symbian.CheckBox);
+            privateStyle.play(Symbian.CheckBox)
+            clickedEffect.restart()
+            root.checked = !root.checked
+            root.clicked()
         }
     }
 
@@ -102,6 +102,7 @@ ImplicitSizeItem {
         anchors.verticalCenter: parent.verticalCenter
         sourceSize.width: platformStyle.graphicSizeSmall
         sourceSize.height: platformStyle.graphicSizeSmall
+        smooth: true
     }
 
     Text {
@@ -121,7 +122,22 @@ ImplicitSizeItem {
 
         SequentialAnimation {
             id: clickedEffect
-            PropertyAnimation { target: contentIcon; property: "scale"; from: 0.8; to: 1.0; easing.type: "OutQuad"; duration: 300 }
+            PropertyAnimation {
+                target: contentIcon
+                property: "scale"
+                from: 1.0
+                to: 0.8
+                easing.type: Easing.Linear
+                duration: 50
+            }
+            PropertyAnimation {
+                target: contentIcon
+                property: "scale"
+                from: 0.8
+                to: 1.0
+                easing.type: Easing.OutQuad
+                duration: 170
+            }
         }
 
         onPressed: stateGroup.state = "Pressed"
