@@ -105,7 +105,7 @@ Dialog {
                 items: ListModel {
                     id: meridiemList
                 }
-                selectedIndex: (root.hourMode == DateTime.TwelveHours && root.hour > 11) ? 1: 0
+                selectedIndex: root.hour > 11 ? 1: 0
                 visible: root.hourMode == DateTime.TwelveHours
             }
         }
@@ -169,7 +169,7 @@ Dialog {
     onHourChanged: {
         internal.validateTime()
         hourColumn.selectedIndex = root.hour - ((root.hourMode == DateTime.TwelveHours && root.hour > 11) ? 12 : 0)
-        meridiemColumn.selectedIndex = (root.hourMode == DateTime.TwelveHours && root.hour > 11) ? 1: 0
+        meridiemColumn.selectedIndex = root.hour > 11 ? 1: 0
     }
     onMinuteChanged: {
         internal.validateTime()
