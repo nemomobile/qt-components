@@ -154,7 +154,7 @@ Item {
         id: component
         TimePickerDialog {
             id: dialog
-            titleText: "Time of birth"
+            titleText: "Time"
             acceptButtonText: "Ok"
             rejectButtonText: "Cancel"
             onAccepted: {
