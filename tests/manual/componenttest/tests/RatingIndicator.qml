@@ -69,7 +69,12 @@ Item {
         Button {
             id: removeCount
             text: "Decrease votes counted"
-            onClicked: { indicator.count-- }
+            onClicked: {
+                indicator.count--
+                if (indicator.count < 0) {
+                    indicator.count = -1
+                }
+            }
         }
         Button {
             id: negativeButton
