@@ -47,7 +47,75 @@ Column {
 
     TextField {
         anchors.horizontalCenter: parent.horizontalCenter
+        placeholderText: "TextField"
         width: parent.width - parent.spacing
+    }
+
+    TextField {
+        id: clearable
+        anchors.horizontalCenter: parent.horizontalCenter
+        placeholderText: "Clearable TextField"
+        text: "Clearable TextField"
+        platformRightMargin: clearText.width + platformStyle.paddingMedium * 2
+        width: parent.width - parent.spacing
+
+        Image {
+            id: clearText
+            anchors { top: parent.top; right: parent.right; margins: platformStyle.paddingMedium }
+            fillMode: Image.PreserveAspectFit
+            smooth: true; visible: parent.text
+            source: clear.pressed ? "qrc:clear_pressed.svg" : "qrc:clear_normal.svg"
+            height: parent.height - platformStyle.paddingMedium * 2
+            width: parent.height - platformStyle.paddingMedium * 2
+
+            MouseArea {
+                id: clear
+                anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
+                height: clearable.height; width: clearable.height
+                onClicked: clearable.text = ""
+            }
+        }
+    }
+
+    TextField {
+        id: customOperation
+        anchors.horizontalCenter: parent.horizontalCenter
+        placeholderText: "Custom operation"
+        platformRightMargin: addText.width + platformStyle.paddingMedium
+        width: parent.width - parent.spacing
+
+        Image {
+            id: addText
+            anchors { top: parent.top; right: parent.right }
+            smooth: true
+            fillMode: Image.PreserveAspectFit
+            source: add.pressed ? "qrc:add_pressed.svg" : "qrc:add_normal.svg"
+            height: parent.height; width: parent.height
+
+            MouseArea {
+                id: add
+                anchors.fill: parent
+                onClicked: textSelection.open()
+            }
+
+            SelectionDialog {
+                id: textSelection
+                titleText: "Preset Texts"
+                selectedIndex: -1
+                model: ListModel {
+                    ListElement { name: "Lorem ipsum." }
+                    ListElement { name: "Lorem ipsum dolor sit amet." }
+                    ListElement { name: "Lorem ipsum dolor sit amet ipsum." }
+                }
+
+                onAccepted: {
+                    customOperation.text = textSelection.model.get(textSelection.selectedIndex).name
+                    customOperation.forceActiveFocus()
+                }
+
+                onRejected: selectedIndex = -1
+            }
+        }
     }
 
     TextArea {
