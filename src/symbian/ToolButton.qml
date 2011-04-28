@@ -88,10 +88,17 @@ ImplicitSizeItem {
 
     BorderImage {
         id: background
-        source: internal.imageSource()
+        source: privateStyle.imagePath(internal.imageName() + internal.mode())
         border { left: 20; top: 20; right: 20; bottom: 20 }
         anchors.fill: parent
-        visible: internal.mode() != "normal" || !flat
+        visible: !flat
+
+        BorderImage {
+            id: highlight
+            border { left: 20; top: 20; right: 20; bottom: 20 }
+            anchors.fill: background
+            opacity: 0
+        }
     }
 
     Image {
@@ -105,6 +112,7 @@ ImplicitSizeItem {
             left: !text ? undefined : parent.left
             leftMargin: !text ? 0 : 2 * platformStyle.paddingMedium
         }
+        smooth: true
     }
 
     Text {
@@ -128,6 +136,7 @@ ImplicitSizeItem {
             leftMargin: iconSource != "" ? platformStyle.paddingSmall : platformStyle.paddingMedium
             rightMargin: platformStyle.paddingMedium
         }
+        smooth: true
     }
 
     MouseArea {
@@ -186,19 +195,32 @@ ImplicitSizeItem {
             } else if (checkable.enabled && !checkable.checked) {
                 privateStyle.play(Symbian.BasicButton)
             }
+
+            if (flat)
+                background.visible = true
+            highlight.source = privateStyle.imagePath(internal.imageName() + "pressed")
+            label.scale = 0.95
+            contentIcon.scale = 0.95
+            highlight.opacity = 1
         }
 
         function release() {
+            label.scale = 1
+            contentIcon.scale = 1
+            highlight.opacity = 0;
             root.platformReleased()
             root.released()
         }
 
         function click() {
-            checkable.toggle()
-            root.clicked()
-
             if (!checkable.enabled || !checkable.checked)
                 privateStyle.play(Symbian.BasicButton)
+            if (flat)
+                visibleEffect.restart()
+            else
+                clickedEffect.restart()
+            checkable.toggle()
+            root.clicked()
         }
 
         function hold() {
@@ -208,15 +230,13 @@ ImplicitSizeItem {
             }
         }
 
-        // The function imageSource() handles fetching correct graphics for the ToolButton.
+        // The function imageName() handles fetching correct graphics for the ToolButton.
         // If the parent of a ToolButton is ButtonRow, segmented-style graphics are used to create a
         // seamless row of buttons. Otherwise normal ToolButton graphics are utilized.
-        function imageSource() {
-            if (parent && parent.hasOwnProperty("checkedButton") && parent.hasOwnProperty("__direction") && parent.__direction == Qt.Horizontal && parent.children.length > 1) {
-                var imageName = parent.__graphicsName(root, 1);
-                return privateStyle.imagePath(imageName + internal.mode())
-            }
-            return privateStyle.imagePath("qtg_fr_toolbutton_" + internal.mode())
+        function imageName() {
+            if (parent && parent.hasOwnProperty("checkedButton") && parent.hasOwnProperty("__direction") && parent.__direction == Qt.Horizontal && parent.children.length > 1)
+                return parent.__graphicsName(root, 1);
+            return "qtg_fr_toolbutton_"
         }
     }
 
@@ -262,6 +282,69 @@ ImplicitSizeItem {
                 ScriptAction { script: internal.release() }
             }
         ]
+    }
+
+    ParallelAnimation {
+        id: clickedEffect
+        PropertyAnimation {
+            target: label
+            property: "scale"
+            from: 0.95
+            to: 1.0
+            easing.type: Easing.Linear
+            duration: 100
+        }
+        PropertyAnimation {
+            target: contentIcon
+            property: "scale"
+            from: 0.95
+            to: 1.0
+            easing.type: Easing.Linear
+            duration: 100
+        }
+        PropertyAnimation {
+            target: highlight
+            property: "opacity"
+            from: 1
+            to: 0
+            easing.type: Easing.Linear
+            duration: 150
+        }
+    }
+
+    SequentialAnimation {
+        id: visibleEffect
+        ParallelAnimation {
+            PropertyAnimation {
+                target: label
+                property: "scale"
+                from: 0.95
+                to: 1.0
+                easing.type: Easing.Linear
+                duration: 100
+            }
+            PropertyAnimation {
+                target: contentIcon
+                property: "scale"
+                from: 0.95
+                to: 1.0
+                easing.type: Easing.Linear
+                duration: 100
+            }
+            PropertyAnimation {
+                target: highlight
+                property: "opacity"
+                from: 1
+                to: 0
+                easing.type: Easing.Linear
+                duration: 150
+            }
+        }
+        PropertyAction {
+            target: background
+            property: "visible"
+            value: false
+        }
     }
 
     Checkable {
