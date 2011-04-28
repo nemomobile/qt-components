@@ -45,7 +45,6 @@ Page {
             onClicked: {
                 var t = new Date()
                 launchDialog(t.getHours(), t.getMinutes(), t.getSeconds(), DateTime.TwelveHours)
-                signalValue.text = "None"
             }
         }
 
@@ -56,23 +55,6 @@ Page {
             onClicked: {
                 var t = new Date()
                 launchDialog(t.getHours(), t.getMinutes(), t.getSeconds(), DateTime.TwentyFourHours)
-                signalValue.text = "None"
-            }
-        }
-
-        Row {
-            Text {
-                id: signalName
-                color: "white"
-                font { bold: true; pixelSize: 16}
-                text : "Signal / Func: "
-            }
-            Text {
-                id: signalValue
-                objectName: "signalValue"
-                color: "white"
-                font.pixelSize: 16
-                text : "None"
             }
         }
 
@@ -80,7 +62,7 @@ Page {
             Text {
                 color: "white"
                 font { bold: true; pixelSize: 16}
-                text : "dialogValue: "
+                text : "Dialog Value: "
             }
             Text {
                 id: dialogValue
@@ -109,18 +91,16 @@ Page {
         id: component
         TimePickerDialog {
             id: dialog
-            titleText: "Time of birth"
+            titleText: "Time"
             acceptButtonText: "Ok"
             rejectButtonText: "Cancel"
             onAccepted: {
-                signalValue.text = "Accept"
                 dialogValue.text = (dialog.fields & DateTime.Hours ? (dialog.hourMode & DateTime.TwentyFourHours ? dialog.hour : (dialog.hour > 12 ? dialog.hour - 12 : dialog.hour)) : "") +
                         (dialog.fields & DateTime.Minutes ? ":" + (dialog.minute < 10 ? "0" : "" ) + dialog.minute : "") +
                         (dialog.fields & DateTime.Seconds ? ":" + (dialog.second < 10 ? "0" : "") + dialog.second : "") +
                         (dialog.hourMode & DateTime.TwentyFourHours ? "" : (dialog.hour > 11 ? " pm" : " am"))
                 }
             onRejected: {
-                signalValue.text = "Reject"
                 dialogValue.text = (dialog.fields & DateTime.Hours ? (dialog.hourMode & DateTime.TwentyFourHours ? dialog.hour : (dialog.hour > 12 ? dialog.hour - 12 : dialog.hour)) : "") +
                         (dialog.fields & DateTime.Minutes ? ":" + (dialog.minute < 10 ? "0" : "" ) + dialog.minute : "") +
                         (dialog.fields & DateTime.Seconds ? ":" + (dialog.second < 10 ? "0" : "") + dialog.second : "") +
