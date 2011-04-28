@@ -5,11 +5,6 @@ import com.nokia.extras 1.0
 Page {
     id: container
 
-    Rectangle {
-        anchors.fill: parent
-        color: "pink"
-    }
-
     Text {
         id: title
         color: platformStyle.colorNormalLight
@@ -18,7 +13,7 @@ Page {
     }
 
     Column {
-        anchors { top: title.bottom; topMargin: platformStyle.paddingLarge; left: parent.left; leftMargin: platformStyle.paddingLarge }
+        anchors { top: title.bottom; topMargin: platformStyle.paddingMedium; left: parent.left; leftMargin: platformStyle.paddingLarge }
         spacing: platformStyle.paddingMedium
 
         TextField {

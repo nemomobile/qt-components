@@ -5,11 +5,6 @@ import com.nokia.extras 1.0
 Page {
     id: infoBannerSamples
 
-    Rectangle {
-        anchors.fill: parent
-        color: "pink"
-    }
-
     Flickable {
         anchors { left: parent.left; right: parent.right; leftMargin: platformStyle.paddingLarge; rightMargin: platformStyle.paddingLarge }
         height: parent.height
