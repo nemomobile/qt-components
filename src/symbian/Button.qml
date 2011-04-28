@@ -82,9 +82,7 @@ ImplicitSizeItem {
         property int autoRepeatInterval: 60
 
         function bg_postfix() {
-            if (stateGroup.state == "Pressed" || stateGroup.state == "PressAndHold")
-                return "pressed"
-            else if (focus && checked)
+            if (activeFocus && checked)
                 return "pressed"
             else if (checked)
                 return "latched"
@@ -102,23 +100,24 @@ ImplicitSizeItem {
                 privateStyle.play(Symbian.SensitiveButton);
             else
                 privateStyle.play(Symbian.BasicButton);
+            highlight.source = privateStyle.imagePath(internal.imageName() + "pressed")
+            layout.scale = 0.95;
+            highlight.opacity = 1;
         }
 
         function release() {
+            layout.scale = 1;
+            highlight.opacity = 0;
             if (tapRepeatTimer.running)
                 tapRepeatTimer.stop();
             button.platformReleased();
         }
 
         function click() {
-            internal.toggleChecked();
-
-            // Just to show some effect, TODO: real effect from theme
-            clickedEffect.restart();
-
             if (!checkable || (checkable && !checked))
                 privateStyle.play(Symbian.BasicButton);
-
+            internal.toggleChecked();
+            clickedEffect.restart();
             button.clicked();
         }
 
@@ -137,15 +136,13 @@ ImplicitSizeItem {
             button.clicked();
         }
 
-        // The function imageSource() handles fetching correct graphics for the Button.
+        // The function imageName() handles fetching correct graphics for the Button.
         // If the parent of a Button is ButtonRow, segmented-style graphics are used to create a
         // seamless row of buttons. Otherwise normal Button graphics are utilized.
-        function imageSource() {
-            if (parent && parent.hasOwnProperty("checkedButton") && parent.hasOwnProperty("__direction") && parent.__direction == Qt.Horizontal && parent.children.length > 1) {
-                var imageName = parent.__graphicsName(button, 0);
-                return privateStyle.imagePath(imageName + internal.bg_postfix())
-            }
-            return privateStyle.imagePath("qtg_fr_pushbutton_" + internal.bg_postfix())
+        function imageName() {
+            if (parent && parent.hasOwnProperty("checkedButton") && parent.hasOwnProperty("__direction") && parent.__direction == Qt.Horizontal && parent.children.length > 1)
+                return parent.__graphicsName(button, 0)
+            return "qtg_fr_pushbutton_"
         }
     }
 
@@ -193,10 +190,16 @@ ImplicitSizeItem {
     }
 
     BorderImage {
-        id: background
-        source: internal.imageSource()
+        source: privateStyle.imagePath(internal.imageName() + internal.bg_postfix())
         border { left: 20; top: 20; right: 20; bottom: 20 }
         anchors.fill: parent
+
+        BorderImage {
+            id: highlight
+            border { left: 20; top: 20; right: 20; bottom: 20 }
+            opacity: 0
+            anchors.fill: parent
+        }
     }
 
     Item {
@@ -271,11 +274,24 @@ ImplicitSizeItem {
         onTriggered: internal.repeat()
     }
 
-    // TODO: Temporary sequential animation
-    SequentialAnimation {
+    ParallelAnimation {
         id: clickedEffect
-        PropertyAnimation { target: label; property: "scale"; to: 0.95; easing.type: Easing.Linear; duration: 100 }
-        PropertyAnimation { target: label; property: "scale"; to: 1.0; easing.type: Easing.Linear; duration: 100 }
+        PropertyAnimation {
+            target: layout
+            property: "scale"
+            from: 0.95
+            to: 1.0
+            easing.type: Easing.Linear
+            duration: 100
+        }
+        PropertyAnimation {
+            target: highlight
+            property: "opacity"
+            from: 1
+            to: 0
+            easing.type: Easing.Linear
+            duration: 150
+        }
     }
 
     Keys.onPressed: {
