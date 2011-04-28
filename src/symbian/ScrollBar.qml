@@ -65,7 +65,7 @@ ImplicitSizeItem {
 
     QtObject {
         id: internal
-        property int hideTimeout: 2000
+        property int hideTimeout: 500
         property int pageStepY: flickableItem ? Math.floor(flickableItem.visibleArea.heightRatio * flickableItem.contentHeight) : NaN
         property int pageStepX: flickableItem ? Math.floor(flickableItem.visibleArea.widthRatio * flickableItem.contentWidth) : NaN
         property int handleY: flickableItem ? Math.floor(handle.y / flickableItem.height * flickableItem.contentHeight) : NaN
@@ -293,7 +293,7 @@ ImplicitSizeItem {
             target: root
             property: "opacity"
             to: 1
-            duration: (flashEffect.type == Symbian.FadeInFadeOut) ? internal.hideTimeout / 4 : 0
+            duration: (flashEffect.type == Symbian.FadeInFadeOut) ? internal.hideTimeout : 0
         }
         PropertyAnimation {
             target: root
