@@ -26,6 +26,8 @@
 
 #include <QtTest/QtTest>
 #include <QGraphicsObject>
+#include <QDeclarativeEngine>
+#include <QDeclarativeContext>
 #include "tst_quickcomponentstest.h"
 
 static const QString EDITOR_STYLE_FONT = "Nokia Sans,-1,20,5,50,0,0,0,0,0";
@@ -70,8 +72,10 @@ void tst_quickcomponentstextfield::defaultPropertyValues()
 {
     QGraphicsObject* textField = m_componentObject->findChild<QGraphicsObject*>("textField");
     QGraphicsObject *placeHolder = m_view->rootObject()->findChild<QGraphicsObject*>("placeholder");
+    QObject* platformStyle = m_view->engine()->rootContext()->contextProperty("platformStyle").value<QObject*>();
     QVERIFY(textField);
     QVERIFY(placeHolder);
+    QVERIFY(platformStyle);
 
     QVERIFY(textField->property("placeholderText").isValid());
     QVERIFY(textField->property("placeholderText").toString().isEmpty());
@@ -110,6 +114,12 @@ void tst_quickcomponentstextfield::defaultPropertyValues()
 
     QVERIFY(textField->property("text").isValid());
     QCOMPARE(textField->property("text").toString(), QString("test"));
+
+    QVERIFY(textField->property("platformLeftMargin").isValid());
+    QCOMPARE(textField->property("platformLeftMargin"), platformStyle->property("paddingMedium"));
+
+    QVERIFY(textField->property("platformRightMargin").isValid());
+    QCOMPARE(textField->property("platformRightMargin"), platformStyle->property("paddingMedium"));
 }
 
 void tst_quickcomponentstextfield::acceptableInput()

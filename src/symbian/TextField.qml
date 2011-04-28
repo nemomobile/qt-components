@@ -83,9 +83,11 @@ FocusScopeItem {
 
     implicitHeight: 2 * platformStyle.paddingMedium +
                     privateStyle.fontHeight(textInput.font)
-    property bool enabled: true // overriding due to QTBUG-15797 and related bugs
 
+    property bool enabled: true // overriding due to QTBUG-15797 and related bugs
     property alias platformMaximumLength: textInput.maximumLength
+    property real platformLeftMargin: platformStyle.paddingMedium
+    property real platformRightMargin: platformStyle.paddingMedium
 
     // Private data
     QtObject {
@@ -108,7 +110,7 @@ FocusScopeItem {
         id: textInput; objectName: "textInput"
         anchors {
             fill: parent
-            leftMargin: platformStyle.paddingMedium; rightMargin: platformStyle.paddingMedium
+            leftMargin: root.platformLeftMargin; rightMargin: root.platformRightMargin
             topMargin: platformStyle.paddingMedium; bottomMargin: platformStyle.paddingMedium
         }
         enabled: root.enabled
@@ -134,7 +136,7 @@ FocusScopeItem {
         id: placeholder; objectName: "placeholder"
         anchors {
             fill: parent
-            leftMargin: platformStyle.paddingMedium; rightMargin: platformStyle.paddingMedium
+            leftMargin: root.platformLeftMargin; rightMargin: root.platformRightMargin
             topMargin: platformStyle.paddingMedium; bottomMargin: platformStyle.paddingMedium
         }
         color: platformStyle.colorNormalMid
