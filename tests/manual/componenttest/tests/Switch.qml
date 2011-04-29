@@ -34,6 +34,7 @@ Column {
 
     Switch {
         id: switch1
+        objectName: "switch1"
         width: parent.width
 
         Rectangle {
@@ -46,6 +47,7 @@ Column {
 
     Switch {
         id: switch2
+        objectName: "switch2"
         width: switch1.width
         checked: true
 
@@ -77,6 +79,7 @@ Column {
         spacing: 10
         Switch {
             id: switch3
+            objectName: "switch3"
             enabled: switch2.checked
         }
         Text {
