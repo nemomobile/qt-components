@@ -207,7 +207,9 @@ ImplicitSizeItem {
         function release() {
             label.scale = 1
             contentIcon.scale = 1
-            highlight.opacity = 0;
+            highlight.opacity = 0
+            if (flat)
+                visibleEffect.restart()
             root.platformReleased()
             root.released()
         }
