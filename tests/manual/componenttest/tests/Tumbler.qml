@@ -45,7 +45,7 @@ Item {
         Tumbler {
             id: tumbler
             anchors { top: parent.top; topMargin: 32; horizontalCenter: parent.horizontalCenter }
-            columns: [dayColumn, monthColumn, yearColumn]
+            columns: [monthColumn, dayColumn, yearColumn]
         }
     }
 
@@ -170,7 +170,7 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        tumbler.columns = [dayColumn, monthColumn, yearColumn, extraColumn]
+                        tumbler.columns = [monthColumn, dayColumn, yearColumn, extraColumn]
                     }
                 }
             }
