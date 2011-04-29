@@ -26,6 +26,7 @@
 
 import Qt 4.7
 import "SectionScroller.js" as Sections
+import "." 1.0
 
 ImplicitSizeItem {
     id: root

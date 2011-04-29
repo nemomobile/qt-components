@@ -26,6 +26,7 @@
 
 import Qt 4.7
 import Qt.labs.components 1.0
+import "." 1.0
 
 ImplicitSizeItem {
     id: root
