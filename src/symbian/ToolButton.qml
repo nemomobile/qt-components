@@ -170,8 +170,6 @@ ImplicitSizeItem {
         function mode() {
             if (!enabled)
                 return "disabled"
-            else if (stateGroup.state == "Pressed" || stateGroup.state == "PressAndHold")
-                return "pressed"
             else if (checkable.checked)
                 return "latched"
             else
