@@ -60,6 +60,7 @@ var TUMBLER_ROW_HEIGHT = 64;
 var TUMBLER_LABEL_HEIGHT = 54;
 var TUMBLER_MARGIN = 16;
 var TUMBLER_BORDER_MARGIN = 1;
+var TUMBLER_DIVIDER_WIDTH = 3;
 
 /* Button styles */
 // Normal

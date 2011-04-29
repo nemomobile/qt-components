@@ -33,6 +33,7 @@ function initialize() {
     var requestedWidth = 0;
     var requestedCount = 0;
     var invisibleCount = 0;
+    var firstColumn = false;
     for (var i = 0; i < columns.length; i++) {
         if (columns[i].visible) {
             if (columns[i].width > 0 && !columns[i].privateIsAutoWidth) {
@@ -60,13 +61,17 @@ function initialize() {
             // enable label for the tumbler
             internal.hasLabel = true;
         }
+        if (columns[i].visible && !firstColumn) {
+            firstColumn = true;
+            newObj.firstColumn = true;
+        }
+        newObj.height = root.height;
         newObj.index = i;
         newObj.tumblerColumn = columns[i];
         newObj.widthChanged.connect(layout);
         newObj.visibleChanged.connect(layout);
         __columns.push(newObj);
     }
-    __columns[__columns.length - 1].lastColumn = true;
     privateTemplates = __columns;
 }
 
@@ -92,6 +97,7 @@ function layout() {
     var requestedWidth = 0;
     var requestedCount = 0;
     var invisibleCount = 0;
+    var firstColumn = false;
     for (var i = 0; i < columns.length; i++) {
         if (columns[i].visible) {
             var w = columns[i].width;
@@ -117,6 +123,12 @@ function layout() {
     for (var i = 0; i < columns.length; i++) {
         if (columns[i].privateIsAutoWidth) {
             columns[i].width = __autoColumnWidth;
+        }
+        if (columns[i].visible && !firstColumn) {
+            firstColumn = true;
+            __columns[i].firstColumn = true;
+        } else if (__columns[i]) {
+            __columns[i].firstColumn = false;
         }
     }
     __suppressLayoutUpdates = false;

@@ -122,6 +122,6 @@ ImplicitSizeItem {
 
     Row {
         id: tumblerRow
-        anchors { fill: parent; topMargin: 1 }
+        anchors { fill: parent }
     }
 }

@@ -36,19 +36,19 @@ Item {
     property Item tumblerColumn
     property alias pathView: pView
     property int index: -1
-    property bool lastColumn: false
+    property bool firstColumn: false
 
     opacity: enabled ? C.TUMBLER_OPACITY_FULL : C.TUMBLER_OPACITY
     width: childrenRect.width
     visible: tumblerColumn ? tumblerColumn.visible : false
     enabled: tumblerColumn ? tumblerColumn.enabled : true
-    height: parent ? parent.height : undefined
 
     Image {
         id: divider
         anchors.left: parent.left
-        height: pView.height
-        source: privateStyle.imagePath("qtg_graf_tumbler_divider")
+        height: firstColumn ? 0 : pView.height
+        width: firstColumn ? 0 : C.TUMBLER_DIVIDER_WIDTH
+        source: privateStyle.imagePath("qtg_fr_tumbler_divider")
     }
 
     PathView {
@@ -82,13 +82,6 @@ Item {
                  y: C.TUMBLER_ROW_HEIGHT * pView.count
              }
         }
-    }
-
-    Image {
-        id: divider2
-        anchors.right: pView.right
-        height: lastColumn ? pView.height : 0
-        source: privateStyle.imagePath("qtg_graf_tumbler_divider")
     }
 
     Item {
