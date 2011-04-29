@@ -57,15 +57,17 @@ Item {
         anchors.left: divider.right
         model: tumblerColumn ? tumblerColumn.items : undefined
         currentIndex: tumblerColumn ? tumblerColumn.selectedIndex : 0
-        preferredHighlightBegin: (height / 2) / (C.TUMBLER_ROW_HEIGHT * pView.count)
+        // highlight locates in the middle (ratio 0.5) if items do not fully occupy the Tumbler
+        preferredHighlightBegin: privateStyle.menuItemHeight * pView.count > height ?
+                                     (pView.height / 2) / (privateStyle.menuItemHeight * pView.count) : 0.5
         preferredHighlightEnd: preferredHighlightBegin
         highlightRangeMode: PathView.StrictlyEnforceRange
         clip: true
         delegate: defaultDelegate
         highlight: defaultHighlight
         interactive: template.enabled
-        width: tumblerColumn ? tumblerColumn.width - C.TUMBLER_BORDER_MARGIN : 0
-        height: root.height - container.height - 2*C.TUMBLER_BORDER_MARGIN // decrease by text & border heights
+        width: tumblerColumn ? tumblerColumn.width - divider.width : 0
+        height: root.height - container.height // decrease by text
 
         onMovementStarted: {
             internal.movementCount++;
@@ -76,10 +78,13 @@ Item {
         }
 
         path: Path {
-             startX: template.width / 2; startY: 0
+            startX: pView.width / 2;
+            startY: privateStyle.menuItemHeight * pView.count > pView.height ?
+                        0 : (pView.height - privateStyle.menuItemHeight * pView.count) / 2
              PathLine {
-                 x: template.width / 2
-                 y: C.TUMBLER_ROW_HEIGHT * pView.count
+                 x: pView.width / 2
+                 y: privateStyle.menuItemHeight * pView.count > pView.height ?
+                        privateStyle.menuItemHeight * pView.count : (pView.height + privateStyle.menuItemHeight * pView.count) / 2
              }
         }
     }
@@ -97,7 +102,7 @@ Item {
             elide: Text.ElideRight
             horizontalAlignment: "AlignHCenter"
             color: C.TUMBLER_COLOR_LABEL
-            font { family: C.FONT_FAMILY_LIGHT; pixelSize: C.FONT_LIGHT_SIZE }
+            font { family: C.FONT_FAMILY_LIGHT; pixelSize: platformStyle.fontSizeLarge }
             anchors { fill: parent; margins: C.TUMBLER_MARGIN}
         }
     }
@@ -106,15 +111,17 @@ Item {
         id: defaultDelegate
 
         Item {
+            id: delegateItem
             width: tumblerColumn.width
-            height: C.TUMBLER_ROW_HEIGHT
+            height: privateStyle.menuItemHeight
 
             Text {
                 text: !!value ? value : ""
                 elide: Text.ElideRight
                 horizontalAlignment: "AlignHCenter"
-                color: C.TUMBLER_COLOR_TEXT
-                font { family: C.FONT_FAMILY_BOLD; pixelSize: C.FONT_DEFAULT_SIZE }
+                verticalAlignment: "AlignVCenter"
+                color: delegateItem.PathView.isCurrentItem ? platformStyle.colorHighlighted : platformStyle.colorNormalLight
+                font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
                 anchors { fill: parent; margins: C.TUMBLER_MARGIN }
 
                 MouseArea {
@@ -137,7 +144,8 @@ Item {
             id: highlight
             objectName: "highlight"
             width: tumblerColumn ? tumblerColumn.width : 0
-            source: privateStyle.imagePath("qtg_graf_tumbler_highlighted")
+            height: privateStyle.menuItemHeight
+            source: privateStyle.imagePath("qtg_fr_tumbler_highlight")
             fillMode: Image.TileHorizontally
         }
     }
