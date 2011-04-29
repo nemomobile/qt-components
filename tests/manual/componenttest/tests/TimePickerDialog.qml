@@ -92,15 +92,14 @@ Item {
             text: "Rotate"
             objectName: "rotateButton"
             onClicked: {
-                if(screen.currentOrientation == Screen.Landscape) {
-                      screen.allowedOrientations = Screen.Portrait;
-                } else if(screen.currentOrientation == Screen.Portrait) {
-                      screen.allowedOrientations = Screen.LandscapeInverted;
-                } else if(screen.currentOrientation == Screen.LandscapeInverted) {
-                      screen.allowedOrientations = Screen.PortraitInverted;
-                } else if(screen.currentOrientation == Screen.PortraitInverted) {
-                      screen.allowedOrientations = Screen.Landscape;
-                }
+                if (screen.currentOrientation == Screen.Landscape)
+                    screen.allowedOrientations = Screen.Portrait
+                else if (screen.currentOrientation == Screen.Portrait)
+                    screen.allowedOrientations = Screen.LandscapeInverted
+                else if (screen.currentOrientation == Screen.LandscapeInverted)
+                    screen.allowedOrientations = Screen.PortraitInverted
+                else if (screen.currentOrientation == Screen.PortraitInverted)
+                    screen.allowedOrientations = Screen.Landscape
             }
         }
 
