@@ -35,7 +35,6 @@
     \qml
         TumblerColumn {
             id: dayColumn
-            label: "DAY"
             selectedIndex: 9
             items: daysList
 
@@ -46,7 +45,6 @@
 
         TumblerColumn {
             id: monthColumn
-            label: "MONTH"
             selectedIndex: 4
             items: monthsList
         }
@@ -69,7 +67,6 @@
 
         TumblerColumn {
             id: yearColumn
-            label: "YEAR"
             selectedIndex: 88
             items: yearsList
 
@@ -80,7 +77,7 @@
 
         TumblerDialog {
             titleText: "Date of birth"
-            columns: [ dayColumn, monthColumn, yearColumn ]
+            columns: [ monthColumn, dayColumn, yearColumn ]
             onAccepted: callbackFunction()
         }
     \endqml
