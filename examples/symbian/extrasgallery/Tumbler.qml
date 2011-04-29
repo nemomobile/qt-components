@@ -28,9 +28,8 @@ import Qt 4.7
 import com.nokia.symbian 1.0
 import com.nokia.extras 1.0
 
-Rectangle {
+Page {
     anchors.fill: parent
-    color: "pink"
 
     function inPortrait() {
         return screen.height > screen.width

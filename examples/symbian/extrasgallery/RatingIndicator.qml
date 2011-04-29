@@ -28,7 +28,7 @@ import Qt 4.7
 import com.nokia.symbian 1.0
 import com.nokia.extras 1.0
 
-Item {
+Page {
     id: root
 
     Column {
