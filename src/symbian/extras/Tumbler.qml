@@ -106,18 +106,18 @@ ImplicitSizeItem {
         height: internal.hasLabel ?
                     parent.height - C.TUMBLER_LABEL_HEIGHT : // decrease by bottom text height
                     parent.height
-        source: privateStyle.imagePath("qtg_graf_tumbler_background")
+        source: privateStyle.imagePath("qtg_fr_tumbler")
         anchors.top: parent.top
-        border { left: C.TUMBLER_BORDER_MARGIN; top: C.TUMBLER_BORDER_MARGIN; right: C.TUMBLER_BORDER_MARGIN; bottom: C.TUMBLER_BORDER_MARGIN }
+        border { left: platformStyle.borderSizeMedium; top: platformStyle.borderSizeMedium; right: platformStyle.borderSizeMedium; bottom: platformStyle.borderSizeMedium }
     }
 
     Rectangle {
         width: parent.width
         height: internal.hasLabel ?
-                    parent.height - C.TUMBLER_LABEL_HEIGHT - 2*C.TUMBLER_BORDER_MARGIN : // decrease by bottom text & border height
-                    parent.height - 2*C.TUMBLER_BORDER_MARGIN
-        color: C.TUMBLER_COLOR
-        anchors { top: parent.top; topMargin: C.TUMBLER_BORDER_MARGIN }
+                    parent.height - C.TUMBLER_LABEL_HEIGHT - 2*platformStyle.borderSizeMedium : // decrease by bottom text & border height
+                    parent.height - 2*platformStyle.borderSizeMedium
+        color: platformStyle.colorNormalMid
+        anchors { top: parent.top; topMargin: platformStyle.borderSizeMedium }
     }
 
     Row {
