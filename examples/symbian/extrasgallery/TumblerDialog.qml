@@ -44,8 +44,8 @@ Item {
 
     function displaySelections() {
         button.text =
-            dayList.get(dayColumn.selectedIndex).value + " " +
             monthList.get(monthColumn.selectedIndex).value + " " +
+            dayList.get(dayColumn.selectedIndex).value + " " +
             yearList.get(yearColumn.selectedIndex).value;
     }
 
@@ -54,7 +54,7 @@ Item {
         titleText: "Date of birth"
         acceptButtonText: "Ok"
         rejectButtonText: "Cancel"
-        columns: [ dayColumn, monthColumn, yearColumn ]
+        columns: [ monthColumn, dayColumn, yearColumn ]
         onAccepted: displaySelections()
     }
 
