@@ -49,10 +49,24 @@ Dialog {
         elide: Text.ElideRight
     }
 
-    content: Tumbler {
-        id: tumbler
+    content: Item {
+        id: content
+        height: tumbler.height + platformStyle.paddingLarge * 2
         width: parent.width
-        privateDelayInit: true
+
+        Tumbler {
+            id: tumbler
+            anchors.centerIn: parent
+            height: privateStyle.menuItemHeight * 4
+            width: parent.width - platformStyle.paddingMedium * 4
+            privateDelayInit: true
+            states: State {
+                when: screen.currentOrientation == Screen.Landscape || screen.currentOrientation == Screen.LandscapeInverted
+                PropertyChanges {
+                    target: tumbler; height: privateStyle.menuItemHeight * 3
+                }
+            }
+        }
     }
 
     buttons: ToolBar {
