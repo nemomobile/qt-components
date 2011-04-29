@@ -38,7 +38,6 @@
     \qml
         TumblerColumn {
             id: dayColumn
-            label: "DAY"
             selectedIndex: 9
             items: daysList
 
@@ -49,7 +48,6 @@
 
         TumblerColumn {
             id: monthColumn
-            label: "MONTH"
             selectedIndex: 4
             items: monthsList
         }
@@ -72,7 +70,6 @@
 
         TumblerColumn {
             id: yearColumn
-            label: "YEAR"
             selectedIndex: 88
             items: yearsList
 
@@ -82,7 +79,7 @@
         }
 
         Tumbler {
-             columns: [dayColumn, monthColumn, yearColumn]
+             columns: [monthColumn, dayColumn, yearColumn]
         }
     \endqml
 
@@ -110,6 +107,7 @@
     \qmlproperty string TumblerColumn::label
 
     A string for the label of a Tumbler column.
+    TODO: Do not use label as it will be deprecated.
 */
 
 /*!
