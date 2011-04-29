@@ -55,6 +55,7 @@ function initialize() {
             columns[i].width = __autoColumnWidth;
             columns[i].privateIsAutoWidth = true;
         }
+        // TODO: Do not use Tumbler label as it will be deprecated.
         if (columns[i].label) {
             // enable label for the tumbler
             internal.hasLabel = true;

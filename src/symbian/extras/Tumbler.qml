@@ -89,7 +89,7 @@ ImplicitSizeItem {
         property int movementCount: 0
         property bool initialized: false
         property bool reInit: false
-        property bool hasLabel: false
+        property bool hasLabel: false // TODO: Do not use Tumbler label as it will be deprecated.
 
         property Timer timer: Timer {
             id: initializeTimer
