@@ -70,7 +70,13 @@ static const DisplayProfile displayProfilesArray[] = {
     {"NHD Landscape", 640, 360, 183.6},
     // 4.0" WVGA
     {"WVGA Portrait", 480, 864, 247.1},
-    {"WVGA Landscape", 864, 480, 247.1}
+    {"WVGA Landscape", 864, 480, 247.1},
+    // 7.0" WSVGA
+    {"WSVGA Portrait", 600, 1024, 169},
+    {"WSVGA Landscape", 1024, 600, 169},
+    // 11" XGA
+    {"XGA Portrait", 768, 1024, 132},
+    {"XGA Landscape", 1024, 768, 132}
 };
 
 static const int displayProfilesCount = sizeof(displayProfilesArray) / sizeof(DisplayProfile);
