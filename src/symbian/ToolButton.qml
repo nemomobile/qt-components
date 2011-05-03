@@ -213,7 +213,7 @@ ImplicitSizeItem {
         }
 
         function click() {
-            if (!checkable.enabled || !checkable.checked)
+            if ((checkable.enabled && checkable.checked && !belongsToExclusiveGroup()) || !checkable.enabled)
                 privateStyle.play(Symbian.BasicButton)
             if (flat)
                 visibleEffect.restart()
