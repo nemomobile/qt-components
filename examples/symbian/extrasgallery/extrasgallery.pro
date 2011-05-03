@@ -43,7 +43,6 @@ OTHER_FILES += \
     main.qml \
     DatePickerDialog.qml \
     InfoBannerPage.qml \
-    InfoBannerSamples.qml \
     RatingIndicator.qml \
     TimePickerDialog.qml \
     Tumbler.qml

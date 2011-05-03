@@ -48,15 +48,6 @@ Page {
                 text: "Hide"
                 onClicked: banner.close();
             }
-
-            Button {
-                text: "More Samples"
-                onClicked: {
-                    var component = Qt.createComponent("InfoBannerSamples.qml")
-                    if (component.status == Component.Ready)
-                        root.pageStack.push(component);
-                }
-            }
         }
     }
 
