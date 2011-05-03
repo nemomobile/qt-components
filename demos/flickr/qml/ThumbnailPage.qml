@@ -31,7 +31,7 @@ import "UIConstants.js" as UI
 FlickrPage {
     id: thumbnailPage
 
-    property alias tags: photoFeedModel.tags
+    property XmlListModel model
     property bool inPortrait
 
     signal backClicked
@@ -49,10 +49,7 @@ FlickrPage {
 
         ToolButton {
             iconSource: "images/tb_reload.svg"
-            onClicked: {
-                photoFeedModel.reload();
-                thumbnailPage.reloadClicked();
-            }
+            onClicked: thumbnailPage.reloadClicked();
         }
 
         ToolButton {
@@ -60,8 +57,6 @@ FlickrPage {
             onClicked: thumbnailPage.searchClicked();
         }
     }
-
-    PhotoFeedModel { id: photoFeedModel }
 
     GridView {
         property int thumbnailsInRow: 4
@@ -80,7 +75,7 @@ FlickrPage {
                                            date, description, tags, title);
             }
         }
-        model: photoFeedModel
+        model: thumbnailPage.model
         visible: !thumbnailPage.inPortrait
 
         onWidthChanged: {
@@ -97,7 +92,7 @@ FlickrPage {
                                            date, description, tags, title);
             }
         }
-        model: photoFeedModel
+        model: thumbnailPage.model
         visible: thumbnailPage.inPortrait
     }
 }

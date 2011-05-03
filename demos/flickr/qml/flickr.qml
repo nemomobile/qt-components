@@ -51,7 +51,7 @@ Window {
 
         anchors.top: statusBar.bottom
         width: statusBar.width
-        onSearchTagChanged: thumbnailPage.tags = searchTag
+        onSearchTagChanged: photoFeedModel.tags = searchTag
     }
 
     ToolBar {
@@ -66,9 +66,16 @@ Window {
 
         anchors { fill: parent; topMargin: statusBar.height; bottomMargin: toolBar.height }
         inPortrait: window.inPortrait
+        model: PhotoFeedModel {
+            id: photoFeedModel
+        }
         onBackClicked: Qt.quit();
         onSearchClicked: searchBar.searching ? searchBar.hideSearch() : searchBar.search();
-        onReloadClicked: if (searchBar.searching) searchBar.hideSearch();
+        onReloadClicked: {
+            photoFeedModel.reload();
+            if (searchBar.searching)
+                searchBar.hideSearch();
+        }
         onPhotoClicked: {
             largeImagePage.setPhotoData(url, photoWidth, photoHeight);
             detailsPage.setPhotoData(author, date, description, tags, title,
