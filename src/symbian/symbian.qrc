@@ -25,6 +25,7 @@
         <file alias="qtg_fr_textfield_uneditable.svg">resources/defaulttheme/graphics/qtg_fr_textfield_uneditable.svg</file>
         <file alias="qtg_fr_textfield_editable.svg">resources/defaulttheme/graphics/qtg_fr_textfield_editable.svg</file>
         <file alias="qtg_fr_textfield_highlighted.svg">resources/defaulttheme/graphics/qtg_fr_textfield_highlighted.svg</file>
+        <file alias="qtg_fr_textfield_error.svg">resources/defaulttheme/graphics/qtg_fr_textfield_error.svg</file>
         <file alias="qtg_fr_choice_list_normal.svg">resources/defaulttheme/graphics/qtg_fr_choice_list_normal.svg</file>
         <file alias="qtg_graf_choice_list_indicator.svg">resources/defaulttheme/graphics/qtg_graf_choice_list_indicator.svg</file>
         <file alias="qtg_graf_drill_down_indicator.svg">resources/defaulttheme/graphics/qtg_graf_drill_down_indicator.svg</file>
