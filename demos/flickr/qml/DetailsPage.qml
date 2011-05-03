@@ -39,9 +39,6 @@ FlickrPage {
     property int photoHeight
     property int photoWidth
 
-    signal backClicked
-    signal infoClicked
-
     function setPhotoData(author, date, description, tags, title, photoWidth, photoHeight) {
         details.photoAuthor = author;
         details.photoDate = date;
@@ -50,18 +47,6 @@ FlickrPage {
         details.photoTitle = title;
         details.photoHeight = photoHeight;
         details.photoWidth = photoWidth;
-    }
-
-    tools: ToolBarLayout {
-        ToolButton {
-            iconSource: "images/tb_back.svg"
-            onClicked: details.backClicked();
-        }
-        ToolButton {
-            iconSource: "images/tb_info.svg"
-            checked: true
-            onClicked: details.infoClicked();
-        }
     }
 
     Flickable {

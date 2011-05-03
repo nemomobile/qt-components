@@ -36,9 +36,6 @@ FlickrPage {
     property int photoWidth
     property real chromeOpacity: 1.0
 
-    signal backClicked
-    signal infoClicked
-
     function setPhotoData(url, photoWidth, photoHeight) {
         largeImage.photoUrl = url;
         largeImage.photoHeight = photoHeight;
@@ -51,20 +48,6 @@ FlickrPage {
         else
             chromeOpacity = 0;
     }
-
-    //![3]
-    tools: ToolBarLayout {
-        ToolButton {
-            iconSource: "images/tb_back.svg"
-            onClicked: largeImage.backClicked();
-        }
-        ToolButton {
-            iconSource: "images/tb_info.svg"
-            checked: false
-            onClicked: largeImage.infoClicked();
-        }
-    }
-    //![3]
 
     onVisibleChanged: {
         if (!visible) {

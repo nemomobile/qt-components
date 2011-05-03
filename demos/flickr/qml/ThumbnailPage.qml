@@ -34,29 +34,9 @@ FlickrPage {
     property XmlListModel model
     property bool inPortrait
 
-    signal backClicked
-    signal reloadClicked
-    signal searchClicked
     signal photoClicked(string url, int photoWidth, int photoHeight,
                         string author, string date, string description,
                         string tags, string title)
-
-    tools: ToolBarLayout {
-        ToolButton {
-            iconSource: "images/tb_back.svg"
-            onClicked: thumbnailPage.backClicked();
-        }
-
-        ToolButton {
-            iconSource: "images/tb_reload.svg"
-            onClicked: thumbnailPage.reloadClicked();
-        }
-
-        ToolButton {
-            iconSource: "images/tb_search.svg"
-            onClicked: thumbnailPage.searchClicked();
-        }
-    }
 
     GridView {
         property int thumbnailsInRow: 4

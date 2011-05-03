@@ -69,11 +69,22 @@ Window {
         model: PhotoFeedModel {
             id: photoFeedModel
         }
-        onBackClicked: Qt.quit();
-        onSearchClicked: searchBar.toggle();
-        onReloadClicked: {
-            photoFeedModel.reload();
-            searchBar.close();
+        tools: ToolBarLayout {
+            ToolButton {
+                iconSource: "images/tb_back.svg"
+                onClicked: Qt.quit();
+            }
+            ToolButton {
+                iconSource: "images/tb_reload.svg"
+                onClicked: {
+                    photoFeedModel.reload();
+                    searchBar.close();
+                }
+            }
+            ToolButton {
+                iconSource: "images/tb_search.svg"
+                onClicked: searchBar.toggle();
+            }
         }
         onPhotoClicked: {
             largeImagePage.setPhotoData(url, photoWidth, photoHeight);
@@ -86,16 +97,35 @@ Window {
     LargeImagePage {
         id: largeImagePage
 
-        onBackClicked: pageStack.pop();
-        onInfoClicked: pageStack.replace(detailsPage);
+        tools: ToolBarLayout {
+            ToolButton {
+                iconSource: "images/tb_back.svg"
+                onClicked: pageStack.pop();
+            }
+            ToolButton {
+                iconSource: "images/tb_info.svg"
+                checked: false
+                onClicked: pageStack.replace(detailsPage);
+            }
+        }
     }
 
     DetailsPage {
         id: detailsPage
 
         anchors { fill: parent; topMargin: statusBar.height; bottomMargin: toolBar.height }
-        onBackClicked: pageStack.pop();
-        onInfoClicked: pageStack.replace(largeImagePage);
+
+        tools: ToolBarLayout {
+            ToolButton {
+                iconSource: "images/tb_back.svg"
+                onClicked: pageStack.pop();
+            }
+            ToolButton {
+                iconSource: "images/tb_info.svg"
+                checked: true
+                onClicked: pageStack.replace(largeImagePage);
+            }
+        }
     }
 
     Splash {
