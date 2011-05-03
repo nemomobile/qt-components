@@ -36,7 +36,7 @@ Window {
 
         anchors.fill: parent
         toolBar: toolBar
-        onDepthChanged: searchBar.hideSearch();
+        onDepthChanged: searchBar.close();
     }
 
     StatusBar {
@@ -70,11 +70,10 @@ Window {
             id: photoFeedModel
         }
         onBackClicked: Qt.quit();
-        onSearchClicked: searchBar.searching ? searchBar.hideSearch() : searchBar.search();
+        onSearchClicked: searchBar.toggle();
         onReloadClicked: {
             photoFeedModel.reload();
-            if (searchBar.searching)
-                searchBar.hideSearch();
+            searchBar.close();
         }
         onPhotoClicked: {
             largeImagePage.setPhotoData(url, photoWidth, photoHeight);

@@ -34,15 +34,22 @@ Rectangle {
     property string searchTag
     property bool searching: searchBar.visible
 
-    function search() {
+    function open() {
         searchBar.focus = true;
         searchBar.visible = true;
     }
 
-    function hideSearch() {
+    function close() {
         searchBar.focus = false;
         searchBar.visible = false;
         searchBar.state = "";
+    }
+
+    function toggle() {
+        if (searching)
+            close();
+        else
+            open();
     }
 
     function accept() {
@@ -92,7 +99,7 @@ Rectangle {
 
         Keys.onReturnPressed: searchBar.accept();
         Keys.onEnterPressed: searchBar.accept();
-        Keys.onEscapePressed: searchBar.hideSearch();
+        Keys.onEscapePressed: searchBar.close();
     }
 
     transitions: Transition {
