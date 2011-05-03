@@ -35,13 +35,12 @@ ImplicitSizeItem {
     property alias timeout : timer.interval
 
     function open() {
-        root.visible = true;
-        animationShow.running = true;
+        root.state = "Visible"
         if (root.timerEnabled && timer.interval) //for backward compability
             timer.restart();
     }
     function close() {
-        animationHide.running = true;
+        root.state = "Hidden"
     }
 
     // Deprecated ->
@@ -69,12 +68,10 @@ ImplicitSizeItem {
     }
     // <- Deprecated
 
-    x: platformStyle.paddingMedium;
-    y: platformStyle.paddingMedium;
+    x: 0
     implicitHeight: Math.max(image.height, text.paintedHeight) + platformStyle.paddingLarge * 2
-    implicitWidth: parent ? parent.width - platformStyle.paddingMedium * 2 : screen.width - platformStyle.paddingMedium * 2
-    scale: 0
-    visible: false
+    implicitWidth: screen.width
+    state: "Hidden"
 
     BorderImage {
         id: background
@@ -113,14 +110,6 @@ ImplicitSizeItem {
         }
     }
 
-    QtObject {
-        id: internal
-
-        function getScaleValue() {
-            return platformStyle.paddingMedium * 2 / root.width + 1;
-        }
-    }
-
     Timer {
         id: timer
         interval: CONSTANTS.INFOBANNER_DISMISS_TIMER
@@ -132,19 +121,26 @@ ImplicitSizeItem {
         onClicked: close()
     }
 
-    SequentialAnimation {
-        id: animationShow
-        NumberAnimation { target: root; property: "scale"; from: 0; to: internal.getScaleValue();
-                          duration: CONSTANTS.INFOBANNER_ANIMATION_DURATION; easing.type: Easing.OutQuad }
-        NumberAnimation { target: root; property: "scale"; from: internal.getScaleValue(); to: 1;
-                          duration: CONSTANTS.INFOBANNER_ANIMATION_DURATION }
-    }
 
-    SequentialAnimation {
-        id: animationHide
-        NumberAnimation {
-            target: root; property: "scale"; to: 0; duration: CONSTANTS.INFOBANNER_ANIMATION_DURATION; easing.type: Easing.InExpo
+    states: [
+        State {
+            name: "Visible"
+            PropertyChanges { target: root; y: 0 }
+        },
+        State {
+            name: "Hidden"
+            PropertyChanges { target: root; y: -height }
         }
-        ScriptAction { script: root.visible = false }
-    }
+    ]
+
+    transitions: [
+        Transition {
+            from: "Hidden"; to: "Visible"
+            NumberAnimation { target: root; properties: "y"; duration: CONSTANTS.INFOBANNER_ANIMATION_DURATION; easing.type: Easing.OutQuad }
+        },
+        Transition {
+            from: "Visible"; to: "Hidden"
+            NumberAnimation { target: root; properties: "y"; duration: CONSTANTS.INFOBANNER_ANIMATION_DURATION; easing.type: Easing.OutQuad }
+        }
+    ]
 }
