@@ -38,42 +38,51 @@ FlickrPage {
                         string author, string date, string description,
                         string tags, string title)
 
-    GridView {
-        property int thumbnailsInRow: 4
+    Loader {
+        sourceComponent: inPortrait ? listComponent : gridComponent
+        anchors { fill: parent; margins: UI.LISTVIEW_MARGIN }
+    }
 
-        function cellWidth() {
-            return Math.floor(width / thumbnailsInRow);
-        }
+    Component {
+        id: gridComponent
 
-        anchors { fill: parent; margins: UI.GRIDVIEW_MARGIN }
-        cacheBuffer: 2 * height
-        cellHeight: cellWidth
-        cellWidth: cellWidth()
-        delegate: GridDelegate {
-            onPhotoClicked: {
-                thumbnailPage.photoClicked(url, photoWidth, photoHeight, author,
-                                           date, description, tags, title);
+        GridView {
+            property int thumbnailsInRow: 4
+
+            function cellWidth() {
+                return Math.floor(width / thumbnailsInRow);
             }
-        }
-        model: thumbnailPage.model
-        visible: !thumbnailPage.inPortrait
 
-        onWidthChanged: {
-            thumbnailsInRow = width / (UI.THUMBNAIL_WRAPPER_SIDE + UI.THUMBNAIL_SPACING);
+            cacheBuffer: 2 * height
+            cellHeight: cellWidth
+            cellWidth: cellWidth()
+            delegate: GridDelegate {
+                onPhotoClicked: {
+                    thumbnailPage.photoClicked(url, photoWidth, photoHeight, author,
+                                               date, description, tags, title);
+                }
+            }
+            model: thumbnailPage.model
+
+            onWidthChanged: {
+                thumbnailsInRow = width / (UI.THUMBNAIL_WRAPPER_SIDE + UI.THUMBNAIL_SPACING);
+            }
         }
     }
 
-    ListView {
-        anchors { fill: parent; margins: UI.LISTVIEW_MARGIN }
-        cacheBuffer: 2 * height
-        delegate: ListDelegate {
-            onPhotoClicked: {
-                thumbnailPage.photoClicked(url, photoWidth, photoHeight, author,
-                                           date, description, tags, title);
+    Component {
+        id: listComponent
+
+        ListView {
+            cacheBuffer: 2 * height
+            delegate: ListDelegate {
+                onPhotoClicked: {
+                    thumbnailPage.photoClicked(url, photoWidth, photoHeight, author,
+                                               date, description, tags, title);
+                }
             }
+            model: thumbnailPage.model
         }
-        model: thumbnailPage.model
-        visible: thumbnailPage.inPortrait
     }
 }
 //![0]
