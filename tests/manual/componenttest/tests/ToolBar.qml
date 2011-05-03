@@ -102,6 +102,9 @@ Item {
                 Button { text: "mix"; onClicked: bar1.setTools(layout11, root.replaceMode) }
                 Button { text: "mix2"; onClicked: bar1.setTools(layout12, root.replaceMode) }
             }
+            Row {
+                Button { text: "TabButtons in ButtonRow"; onClicked: stack.push(buttonRowPage) }
+            }
         }
     }
 
@@ -143,6 +146,79 @@ Item {
             Button {
                 text: "back"
                 onClicked: stack.pop();
+            }
+        }
+    }
+
+    Page {
+        id: buttonRowPage
+        tools: buttonRowToolBar
+
+        Text {
+            text: "Current tab: " + tabGroup.currentTab.objectName
+            color: "red"
+        }
+
+        TabGroup {
+            id: tabGroup
+            anchors { bottom: buttonRowToolBar.top; top: parent.top; left: parent.left; right: parent.right }
+
+            Item {
+                id: tab1
+                objectName: "tab1"
+                anchors.fill: parent
+                BusyIndicator {
+                    anchors.centerIn: parent
+                    running: true
+                    width: 60
+                    height: 60
+                }
+            }
+
+            Item {
+                id: tab2
+                objectName: "tab2"
+                anchors.fill: parent
+                BusyIndicator {
+                    anchors.centerIn: parent
+                    running: true
+                    width: 120
+                    height: 120
+                }
+            }
+
+            Item {
+                id: tab3
+                objectName: "tab3"
+                anchors.fill: parent
+                BusyIndicator {
+                    anchors.centerIn: parent
+                    running: true
+                    width: 240
+                    height: 240
+                }
+            }
+        }
+
+        ToolBar {
+            id: buttonRowToolBar
+            anchors.bottom: parent.bottom
+            //make sure the content of the page does not hide the toolbar
+            z: buttonRowPage.z+1
+            tools: ToolBarLayout {
+                backButton: true
+                ToolButton {
+                    id: backButton
+                    iconSource: "qrc:tb_back.svg"
+                    onClicked: stack.pop()
+                }
+                ButtonRow {
+                    anchors { top: parent.top; bottom: parent.bottom; left: backButton.right; right: parent.right }
+
+                    TabButton { id: tabButton1; tab: tab1; text: "Tab1"; }
+                    TabButton { id: tabButton2; tab: tab2; text: "Tab2"; }
+                    TabButton { id: tabButton3; tab: tab3; text: "Tab3"; }
+                }
             }
         }
     }
