@@ -1,0 +1,29 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/ControlsPage.qml</file>
+        <file>qml/FilePickerPage.qml</file>
+        <file>qml/GalleryPage.qml</file>
+        <file>qml/mainwindow.qml</file>
+        <file>qml/PageHeading.qml</file>
+        <file>qml/Player.qml</file>
+        <file>qml/Playlist.qml</file>
+        <file>qml/PlaylistPage.qml</file>
+        <file>qml/Storage.js</file>
+        <file>qml/images/bg_lsc.png</file>
+        <file>qml/images/bg_prt.png</file>
+        <file>qml/images/folder.svg</file>
+        <file>qml/images/i_current_track_pause.svg</file>
+        <file>qml/images/i_current_track_play.svg</file>
+        <file>qml/images/i_fast_forward.svg</file>
+        <file>qml/images/i_pause.svg</file>
+        <file>qml/images/i_play.svg</file>
+        <file>qml/images/i_rewind.svg</file>
+        <file>qml/images/tb_back.svg</file>
+        <file>qml/images/tb_list.svg</file>
+        <file>qml/images/tb_menu.svg</file>
+        <file>qml/images/tb_minus.svg</file>
+        <file>qml/images/tb_plus.svg</file>
+        <file>qml/images/tb_random.svg</file>
+        <file>qml/images/tb_repeat.svg</file>
+    </qresource>
+</RCC>

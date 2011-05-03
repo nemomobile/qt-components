@@ -1,2 +1,2 @@
 TEMPLATE = subdirs
-SUBDIRS += flickr
+SUBDIRS += flickr musicplayer
