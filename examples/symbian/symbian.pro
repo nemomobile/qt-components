@@ -1,3 +1,3 @@
 TEMPLATE = subdirs
-SUBDIRS += gallery
+SUBDIRS += gallery scalefm
 extras:SUBDIRS += extrasgallery

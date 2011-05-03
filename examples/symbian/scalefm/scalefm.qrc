@@ -1,0 +1,25 @@
+<RCC>
+    <qresource prefix="/layouts">
+        <file alias="AppStyle.qml">resources/layouts/AppStyle.qml</file>
+        <file alias="480_320/180/AppStyle.qml">resources/layouts/480_320/180/AppStyle.qml</file>
+        <file alias="640_360/185/AppStyle.qml">resources/layouts/640_360/185/AppStyle.qml</file>
+        <file alias="640_360/210/AppStyle.qml">resources/layouts/640_360/210/AppStyle.qml</file>
+        <file alias="640_480/325/AppStyle.qml">resources/layouts/640_480/325/AppStyle.qml</file>
+        <file alias="864_480/245/AppStyle.qml">resources/layouts/864_480/245/AppStyle.qml</file>
+        <file alias="1024_600/170/AppStyle.qml">resources/layouts/1024_600/170/AppStyle.qml</file>
+        <file alias="1024_768/130/AppStyle.qml">resources/layouts/1024_768/130/AppStyle.qml</file>
+        <file alias="Normal/High/AppStyle.qml">resources/layouts/Normal/High/AppStyle.qml</file>
+    </qresource>
+    <qresource prefix="/graphics">
+        <file alias="qtg_fr_lcd.svg">resources/graphics/qtg_fr_lcd.svg</file>
+        <file alias="qtg_fr_lcd_overlay.svg">resources/graphics/qtg_fr_lcd_overlay.svg</file>
+        <file alias="qtg_large_tone.svg">resources/graphics/qtg_large_tone.svg</file>
+        <file alias="qtg_mono_favourites.svg">resources/graphics/qtg_mono_favourites.svg</file>
+        <file alias="qtg_mono_next.svg">resources/graphics/qtg_mono_next.svg</file>
+        <file alias="qtg_mono_previous.svg">resources/graphics/qtg_mono_previous.svg</file>
+        <file alias="qtg_mono_radio_stations.svg">resources/graphics/qtg_mono_radio_stations.svg</file>
+        <file alias="qtg_mono_speaker.svg">resources/graphics/qtg_mono_speaker.svg</file>
+        <file alias="qtg_small_favorite.svg">resources/graphics/qtg_small_favorite.svg</file>
+        <file alias="qtg_small_star_non_favourited.svg">resources/graphics/qtg_small_star_non_favourited.svg</file>
+    </qresource>
+</RCC>

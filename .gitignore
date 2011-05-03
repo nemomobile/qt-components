@@ -51,6 +51,7 @@ release/
 /examples/native/focus/focus
 /examples/symbian/extrasgallery/qmlextrasgallery
 /examples/symbian/gallery/qmlgallery
+/examples/symbian/scalefm/scalefm
 /tests/auto/api_busyindicator/tst_quickcomponentsbusyindicator
 /tests/auto/api_button/tst_quickcomponentsbutton
 /tests/auto/api_buttoncolumn/tst_quickcomponentsbuttoncolumn

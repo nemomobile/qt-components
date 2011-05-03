@@ -1,0 +1,30 @@
+#ifndef SCALEFM_IBY
+#define SCALEFM_IBY
+
+#include <bldvariant.hrh>
+
+REM QT
+
+S60_APP_EXE(scalefm)
+S60_APP_RESOURCE(scalefm)
+
+// Application registration file.
+data=DATAZ_\private\10003a3f\import\apps\scalefm_reg.rsc      \private\10003a3f\import\apps\scalefm_reg.rsc
+
+// resources
+data=DATAZ_\private\2003DE90\scalefm.qml \private\2003DE90\scalefm.qml
+data=DATAZ_\private\2003DE90\core\DisplaySelectionDialog.qml \private\2003DE90\core\DisplaySelectionDialog.qml
+data=DATAZ_\private\2003DE90\core\FrequencyStrip.qml \private\2003DE90\core\FrequencyStrip.qml
+data=DATAZ_\private\2003DE90\core\MagnifyingTool.qml \private\2003DE90\core\MagnifyingTool.qml
+data=DATAZ_\private\2003DE90\core\MobileView.qml \private\2003DE90\core\MobileView.qml
+data=DATAZ_\private\2003DE90\core\RadioConsole.qml \private\2003DE90\core\RadioConsole.qml
+data=DATAZ_\private\2003DE90\core\RadioControls.qml \private\2003DE90\core\RadioControls.qml
+data=DATAZ_\private\2003DE90\core\StationList.qml \private\2003DE90\core\StationList.qml
+data=DATAZ_\private\2003DE90\core\StationListItem.qml \private\2003DE90\core\StationListItem.qml
+data=DATAZ_\private\2003DE90\core\StationListView.qml \private\2003DE90\core\StationListView.qml
+data=DATAZ_\private\2003DE90\core\StationModel.qml \private\2003DE90\core\StationModel.qml
+data=DATAZ_\private\2003DE90\core\TabletView.qml \private\2003DE90\core\TabletView.qml
+data=DATAZ_\private\2003DE90\core\ViewContainer.qml \private\2003DE90\core\ViewContainer.qml
+data=DATAZ_\private\2003DE90\core\StyleLoader.js \private\2003DE90\core\StyleLoader.js
+
+#endif
