@@ -19,6 +19,7 @@ scroll-bar-thickness:18
 slider-thickness:28
 menu-item-height:90
 text-field-height:60
-switch-button-height:48
+switch-button-height:60
 dialog-min-size:250
 dialog-max-size:500
+button-size:58

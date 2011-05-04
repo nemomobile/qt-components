@@ -151,6 +151,12 @@ QColor SDeclarativeStyleInternal::listItemSeparatorColor() const
     return d->engine->colorParameter(QLatin1String("color-list-item-separator"));
 }
 
+int SDeclarativeStyleInternal::buttonSize() const
+{
+    Q_D(const SDeclarativeStyleInternal);
+    return d->engine->layoutParameter(QLatin1String("button-size"));
+}
+
 void SDeclarativeStyleInternal::play(int effect)
 {
 #ifdef HAVE_MOBILITY

@@ -19,7 +19,7 @@ scroll-bar-thickness:1.75un
 slider-thickness:3un
 menu-item-height:9.75un
 text-field-height:6.5un
-switch-button-height:5.25un
+switch-button-height:6.75un
 dialog-min-size:27un
 dialog-max-size:76un
 rating-image-width:2.4un
@@ -27,3 +27,4 @@ rating-image-height:2.25un
 tumbler-height-portrait:38.4un
 tumbler-height-landscape:28.8un
 tumbler-width:51.6un
+button-size:6.25un

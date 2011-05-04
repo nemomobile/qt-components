@@ -54,6 +54,7 @@ class SDeclarativeStyleInternal : public QObject
     Q_PROPERTY(int ratingIndicatorImageWidth READ ratingIndicatorImageWidth CONSTANT FINAL)
     Q_PROPERTY(int ratingIndicatorImageHeight READ ratingIndicatorImageHeight CONSTANT FINAL)
     Q_PROPERTY(QColor listItemSeparatorColor READ listItemSeparatorColor CONSTANT FINAL)
+    Q_PROPERTY(int buttonSize READ buttonSize CONSTANT FINAL)
 
 public:
 
@@ -75,6 +76,7 @@ public:
     int ratingIndicatorImageWidth() const;
     int ratingIndicatorImageHeight() const;
     QColor listItemSeparatorColor() const;
+    int buttonSize() const;
 
     Q_INVOKABLE void play(int effect);
     Q_INVOKABLE int textWidth(const QString &text, const QFont &font) const;
