@@ -39,7 +39,7 @@ void ApiCheckSelectionDialog::titleText()
 
 void ApiCheckSelectionDialog::model()
 {
-    validateProperty("model", "QObject*");
+    validateProperty("model", "QVariant");
 }
 
 void ApiCheckSelectionDialog::selectedIndex()
