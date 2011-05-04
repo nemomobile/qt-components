@@ -13,7 +13,7 @@ Page {
     }
 
     Column {
-        anchors { top: title.bottom; topMargin: platformStyle.paddingMedium; left: parent.left; leftMargin: platformStyle.paddingLarge }
+        anchors { top: title.bottom; left: parent.left; right: parent.right; margins: platformStyle.paddingMedium }
         spacing: platformStyle.paddingMedium
 
         TextField {
