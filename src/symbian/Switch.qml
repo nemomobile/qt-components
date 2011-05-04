@@ -89,7 +89,7 @@ ImplicitSizeItem {
     }
 
     implicitWidth: label.text ? 2 * privateStyle.switchButtonHeight + platformStyle.paddingMedium + privateStyle.textWidth(label.text, label.font)
-                              : 8 / 5 * privateStyle.switchButtonHeight
+                              : track.width
     implicitHeight: privateStyle.switchButtonHeight
 
     Image {
@@ -107,7 +107,7 @@ ImplicitSizeItem {
         source: privateStyle.imagePath("qtg_graf_switchbutton_" + track.trackPostfix())
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
-        sourceSize.width: 2 * privateStyle.switchButtonHeight
+        sourceSize.width: Symbian.UndefinedSourceDimension
         sourceSize.height: privateStyle.switchButtonHeight
     }
 
