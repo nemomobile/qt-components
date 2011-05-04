@@ -198,7 +198,7 @@ Item {
                 id: listText
                 role: "SubTitle"; text: title
                 anchors {
-                    left: listItem.padding.left; right:checkBox.left
+                    left: listItem.paddingItem.left; right:checkBox.left
                     verticalCenter: parent.verticalCenter
                 }
             }
@@ -206,7 +206,7 @@ Item {
             CheckBox {
                 id: checkBox
                 checked: selected
-                anchors { right:listItem.padding.right; verticalCenter: parent.verticalCenter }
+                anchors { right:listItem.paddingItem.right; verticalCenter: parent.verticalCenter }
                 onClicked: {
                     textField.inputMethodHints ^= flag
                     listView.model.set(index, { "selected": checkBox.checked })
@@ -230,7 +230,7 @@ Item {
             id: sectionHeader
 
             ListItemText {
-                anchors.fill: sectionHeader.padding
+                anchors.fill: sectionHeader.paddingItem
                 role: "Heading"; text: section
             }
         }
