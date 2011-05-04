@@ -27,22 +27,12 @@
 import QtQuick 1.0
 import com.nokia.symbian 1.0
 
-CommonDialog {
+SelectionDialog {
     id: root
     property string fontFamily
-
     titleText: "Select font"
-
-    content: ListView {
-        height: root.platformContentMaximumHeight
-        width: root.platformContentMaximumWidth
-        focus: true
-        clip: true
-        model: Qt.fontFamilies()
-        delegate: fontSelectionDelegate
-    }
-
-    onClickedOutside: root.reject()
+    model: Qt.fontFamilies()
+    delegate: fontSelectionDelegate
 
     Component {
         id: fontSelectionDelegate
@@ -59,7 +49,7 @@ CommonDialog {
             }
 
             onClicked: {
-                fontFamily = modelData
+                root.fontFamily = modelData
                 root.accept()
             }
         }
