@@ -31,7 +31,7 @@ CommonDialog {
     id: root
 
     // Common API
-    property QtObject model: ListModel{}
+    property alias model: listView.model
     property int selectedIndex: -1
     property Component delegate: defaultDelegate
 
@@ -41,7 +41,7 @@ CommonDialog {
         id: defaultDelegate
 
         MenuItem {
-            text: name
+            text: modelData
             onClicked: {
                 selectedIndex = index
                 root.accept()
@@ -52,12 +52,12 @@ CommonDialog {
     content: Item {
         id: contentItem
 
-        property int listViewHeight: root.model.count * privateStyle.menuItemHeight
-
         function preferredHeight() {
+            // Need to create artifical binding to listView.delegate because of QTBUG-19037
+            var dummy = listView.delegate
             var maxHeight = root.platformContentMaximumHeight
             maxHeight -= maxHeight % privateStyle.menuItemHeight
-            return Math.min(maxHeight, listViewHeight)
+            return Math.min(maxHeight, listView.count * privateStyle.menuItemHeight)
         }
 
         height: preferredHeight()
@@ -68,7 +68,6 @@ CommonDialog {
 
             currentIndex : -1
             anchors.fill: parent
-            model: root.model
             delegate: root.delegate
             clip: true
         }
