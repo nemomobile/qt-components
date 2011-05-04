@@ -47,7 +47,7 @@ Item {
         id: divider
         anchors.left: parent.left
         height: firstColumn ? 0 : pView.height
-        width: firstColumn ? 0 : C.TUMBLER_DIVIDER_WIDTH
+        width: firstColumn ? 0 : Math.round(platformStyle.graphicSizeTiny / 2)
         source: privateStyle.imagePath("qtg_fr_tumbler_divider")
     }
 
