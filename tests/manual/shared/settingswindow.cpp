@@ -53,21 +53,15 @@ static const DisplayProfile displayProfilesArray[] = {
     // ~3.47" NHD
     {"NHD Portrait", 360, 640, 211.7},
     {"NHD Landscape", 640, 360, 211.7},
-    // 3.2" NHD
-    //{"NHD Portrait", 360, 640, 229},
-    //{"NHD Landscape", 640, 360, 229},
+    // ~3.95" NHD
+    {"NHD Portrait", 360, 640, 186.1},
+    {"NHD Landscape", 640, 360, 186.1},
     // ~2.46" VGA
     {"VGA Portrait", 480, 640, 325.6},
     {"VGA Landscape", 640, 480, 325.6},
-    // 3.2" VGA
-    //{"VGA Portrait", 480, 640, 250},
-    //{"VGA Landscape", 640, 480, 250},
     // 3.2" HVGA
     {"HVGA Portrait", 320, 480, 180},
     {"HVGA Landscape", 480, 320, 180},
-    // 4.0" NHD
-    {"NHD Portrait", 360, 640, 183.6},
-    {"NHD Landscape", 640, 360, 183.6},
     // 4.0" WVGA
     {"WVGA Portrait", 480, 864, 247.1},
     {"WVGA Landscape", 864, 480, 247.1},

@@ -132,6 +132,7 @@
     <qresource prefix="/params">
         <file alias="colors/default.params">resources/colors/default.params</file>
         <file alias="layouts/fallback.params">resources/layouts/fallback.params</file>
+        <file alias="layouts/640_360_185.params">resources/layouts/640_360_185.params</file>
         <file alias="layouts/640_360_210.params">resources/layouts/640_360_210.params</file>
         <file alias="layouts/640_480_325.params">resources/layouts/640_480_325.params</file>
     </qresource>
