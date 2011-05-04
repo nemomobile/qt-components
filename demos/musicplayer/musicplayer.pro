@@ -1,5 +1,5 @@
 TEMPLATE = app
-
+TARGET = musicplayer
 QT += declarative
 
 SOURCES += main.cpp
@@ -17,6 +17,7 @@ OTHER_FILES += \
     qml/Storage.js
 
 symbian {
+    TARGET.UID3 = 0x2003DE92
     SOURCES += mediakeysobserver.cpp
     LIBS += -lremconinterfacebase -lremconcoreapi
     DEFINES += DOCUMENT_GALLERY
