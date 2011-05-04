@@ -27,7 +27,6 @@
 #include <QtTest>
 #include <QSignalSpy>
 #include <QDeclarativeItem>
-#include <QStringListModel>
 
 #include "tst_quickcomponentstest.h"
 
@@ -45,7 +44,6 @@ private slots:
     void accepted();
     void rejected();
 // Test cases for SelectionDialog API
-    void model();
     void selectedIndex();
     void delegate();
     void titleText();
@@ -111,11 +109,6 @@ void tst_quickcomponentsselectiondialog::rejected()
     QVERIFY(rejectedSpy.isValid());
     QVERIFY(QMetaObject::invokeMethod(componentObject, "reject"));
     QCOMPARE(rejectedSpy.count(), 1);
-}
-
-void tst_quickcomponentsselectiondialog::model()
-{
-    QVERIFY(componentObject->property("model").isValid());
 }
 
 void tst_quickcomponentsselectiondialog::selectedIndex()
