@@ -86,8 +86,12 @@ CommonDialog {
     }
 
     onStatusChanged: {
-        if (status == DialogStatus.Opening)
-            listView.positionViewAtIndex(selectedIndex, ListView.Center)
+        if (status == DialogStatus.Opening) {
+            if (selectedIndex <= 0)
+                listView.positionViewAtIndex(0, ListView.Beginning)
+            else
+                listView.positionViewAtIndex(selectedIndex, ListView.Center)
+        }
         else if (status == DialogStatus.Open)
             listView.focus = true
     }
