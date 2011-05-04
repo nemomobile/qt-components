@@ -86,20 +86,28 @@ FocusScopeItem {
     // http://bugreports.qt.nokia.com/browse/QTBUG-16665
     // http://bugreports.qt.nokia.com/browse/QTBUG-16710 (fixed in Qt 4.7.2)
     // http://bugreports.qt.nokia.com/browse/QTBUG-12305 (fixed in QtQuick1.1)
-    property real maxImplicitWidth: (parent ? parent.width : screen.width) - root.x
-    property real maxImplicitHeight: (parent ? parent.height : screen.height) - root.y
+    property real maxImplicitWidth: (parent ? parent.width : screen.width) - root.x // DEPRECATED
+    property real maxImplicitHeight: (parent ? parent.height : screen.height) - root.y // DEPRECATED
     property bool enabled: true // overriding due to QTBUG-15797 and related bugs
+    property real platformMaxImplicitWidth: (parent ? parent.width : screen.width) - root.x
+    property real platformMaxImplicitHeight: (parent ? parent.height : screen.height) - root.y
 
     implicitWidth: {
         var preferredWidth = Math.max(flick.contentWidth, privy.minImplicitWidth)
         preferredWidth += container.anchors.leftMargin + container.anchors.rightMargin
-        return Math.min(preferredWidth, root.maxImplicitWidth)
+        return Math.min(preferredWidth, root.platformMaxImplicitWidth)
     }
 
     implicitHeight: {
         var preferredHeight = Math.max(flick.contentHeight, placeholder.model.paintedHeight)
         preferredHeight += container.anchors.topMargin + container.anchors.bottomMargin
-        return Math.min(preferredHeight, root.maxImplicitHeight)
+        return Math.min(preferredHeight, root.platformMaxImplicitHeight)
+    }
+
+    // TODO: Remove when maxImplicitWidth and maxImplicitHeight are removed
+    Component.onCompleted: {
+        console.log("TextArea.maxImplicitWidth deprecated, use TextArea.platformMaxImplicitWidth instead!")
+        console.log("TextArea.maxImplicitHeight deprecated, use TextArea.platformMaxImplicitHeight instead!")
     }
 
     Connections {
@@ -146,8 +154,8 @@ FocusScopeItem {
                 wrapMode: textEdit.wrapMode
                 horizontalAlignment: textEdit.horizontalAlignment
                 verticalAlignment: textEdit.verticalAlignment
-                height: root.maxImplicitHeight - container.anchors.topMargin - container.anchors.bottomMargin
-                width: root.maxImplicitWidth - container.anchors.leftMargin - container.anchors.rightMargin
+                height: root.platformMaxImplicitHeight - container.anchors.topMargin - container.anchors.bottomMargin
+                width: root.platformMaxImplicitWidth - container.anchors.leftMargin - container.anchors.rightMargin
                 opacity: 0
             }
 
@@ -200,8 +208,8 @@ FocusScopeItem {
                     wrapMode: textEdit.wrapMode
                     visible: false
                     opacity: 0
-                    height: root.maxImplicitHeight - container.anchors.topMargin - container.anchors.bottomMargin
-                    width: root.maxImplicitWidth - container.anchors.leftMargin - container.anchors.rightMargin
+                    height: root.platformMaxImplicitHeight - container.anchors.topMargin - container.anchors.bottomMargin
+                    width: root.platformMaxImplicitWidth - container.anchors.leftMargin - container.anchors.rightMargin
                 }
                 enabled: root.enabled
                 focus: true

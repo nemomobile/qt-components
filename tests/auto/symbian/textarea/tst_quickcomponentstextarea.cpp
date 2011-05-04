@@ -88,13 +88,13 @@ void tst_quickcomponentstextarea::validateSymbianProperties()
     QVERIFY(property.isValid());
     QVERIFY(property.canConvert(QVariant::Double));
 
-    // maxImplicitHeight
-    property = textArea->property("maxImplicitHeight");
+    // platformMaxImplicitHeight
+    property = textArea->property("platformMaxImplicitHeight");
     QVERIFY(property.isValid());
     QVERIFY(property.canConvert(QVariant::Double));
 
-    // maxImplicitWidth
-    property = textArea->property("maxImplicitWidth");
+    // platformMaxImplicitWidth
+    property = textArea->property("platformMaxImplicitWidth");
     QVERIFY(property.isValid());
     QVERIFY(property.canConvert(QVariant::Double));
 }
@@ -406,8 +406,8 @@ void tst_quickcomponentstextarea::implicitSize()
     qreal parentWidth = m_componentObject->property("width").toReal();
     qreal implicitHeight = textArea->property("implicitHeight").toReal();
     qreal implicitWidth = textArea->property("implicitWidth").toReal();
-    qreal maxImplicitHeight = textArea->property("maxImplicitHeight").toReal();
-    qreal maxImplicitWidth = textArea->property("maxImplicitWidth").toReal();
+    qreal maxImplicitHeight = textArea->property("platformMaxImplicitHeight").toReal();
+    qreal maxImplicitWidth = textArea->property("platformMaxImplicitWidth").toReal();
 
     QVERIFY(implicitHeight >= metrics.height());
     QVERIFY(implicitWidth >= metrics.width("                    "));
