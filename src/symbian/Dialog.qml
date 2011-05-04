@@ -70,14 +70,6 @@ Item {
     Popup {
         id: dialog
 
-        function defaultWidth() {
-            if (root.width > 0)
-                return root.width
-            else
-                return Math.max(titleBar.childrenRect.width,
-                    Math.max(contentItem.childrenRect.width, buttonItem.childrenRect.width))
-        }
-
         function defaultHeight() {
             if (root.height > 0)
                 return root.height
@@ -105,7 +97,7 @@ Item {
 
         onFaderClicked: root.clickedOutside()
 
-        width: Math.max(Math.min(defaultWidth(), maxWidth()), minWidth())
+        width: Math.max(Math.min(root.width, maxWidth()), minWidth())
         height: Math.max(Math.min(defaultHeight(), maxHeight()), privateStyle.dialogMinSize)
 
         state: "Hidden"
