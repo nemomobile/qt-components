@@ -214,19 +214,16 @@ ApplicationWindow {
                     }
                     CheckBox {
                         id: flickableSetting
-                        height: platformStyle.graphicSizeSmall
                         text: "Flickable"
                         checked: false
                     }
                     CheckBox {
                         id: dragSetting
-                        height: platformStyle.graphicSizeSmall
                         text: "Drag-able"
                         checked: false
                     }
                     CheckBox {
                         id: fillSetting
-                        height: platformStyle.graphicSizeSmall
                         text: "Fill area"
                         checked: true
                     }
