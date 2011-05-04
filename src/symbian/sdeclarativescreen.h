@@ -42,7 +42,6 @@ class SDeclarativeScreen : public QObject
     Q_PROPERTY(int displayHeight READ displayHeight CONSTANT FINAL)
 
     Q_PROPERTY(int rotation READ rotation NOTIFY currentOrientationChanged FINAL)
-    Q_PROPERTY(Orientation orientation READ orientation WRITE setOrientation NOTIFY orientationChanged FINAL) // deprecated
     Q_PROPERTY(Orientation currentOrientation READ currentOrientation NOTIFY currentOrientationChanged FINAL)
     Q_PROPERTY(Orientations allowedOrientations READ allowedOrientations WRITE setAllowedOrientations NOTIFY allowedOrientationsChanged FINAL)
 
@@ -63,8 +62,7 @@ public:
         Landscape = 2,
         PortraitInverted = 4,
         LandscapeInverted = 8,
-        All = 15,
-        Automatic = All // deprecated
+        All = 15
     };
 
     enum DisplayCategory {
@@ -89,8 +87,6 @@ public:
     int displayHeight() const;
 
     int rotation() const;
-    Orientation orientation() const; //deprecated
-    void setOrientation(Orientation orientation); //deprecated
     Orientation currentOrientation() const;
     Orientations allowedOrientations() const;
     void setAllowedOrientations(Orientations orientations);
@@ -104,7 +100,6 @@ public:
 Q_SIGNALS:
     void widthChanged();
     void heightChanged();
-    void orientationChanged(); // deprecated
     void currentOrientationChanged();
     void allowedOrientationsChanged();
     void displayChanged();

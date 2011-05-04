@@ -143,10 +143,8 @@ void SDeclarativeScreenPrivate::updateOrientationAngle()
     qDebug() << "SDeclarativeScreen::updateOrientationAngle():" << newOrientation;
 #endif
     currentOrientation = newOrientation;
-    if (currentOrientation != oldOrientation) {
+    if (currentOrientation != oldOrientation)
         emit q->currentOrientationChanged();
-        emit q->orientationChanged(); // deprecated signal
-    }
 }
 
 void SDeclarativeScreenPrivate::_q_updateScreenSize(const QSize &size)
@@ -285,19 +283,6 @@ SDeclarativeScreen::SDeclarativeScreen(QDeclarativeEngine *engine, QObject *pare
 
 SDeclarativeScreen::~SDeclarativeScreen()
 {
-}
-
-SDeclarativeScreen::Orientation SDeclarativeScreen::orientation() const
-{
-    Q_D(const SDeclarativeScreen);
-    qWarning() << "warning: screen.orientation is deprecated. use screen.currentOrientation and screen.allowedOrientations instead";
-    return d->currentOrientation;
-}
-
-void SDeclarativeScreen::setOrientation(Orientation orientation)
-{
-    qWarning() << "warning: screen.orientation is deprecated. use screen.currentOrientation and screen.allowedOrientations instead";
-    setAllowedOrientations(orientation);
 }
 
 SDeclarativeScreen::Orientation SDeclarativeScreen::currentOrientation() const
