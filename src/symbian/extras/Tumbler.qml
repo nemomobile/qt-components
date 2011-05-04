@@ -114,10 +114,10 @@ ImplicitSizeItem {
     Rectangle {
         width: parent.width
         height: internal.hasLabel ?
-                    parent.height - C.TUMBLER_LABEL_HEIGHT - 2*platformStyle.borderSizeMedium : // decrease by bottom text & border height
-                    parent.height - 2*platformStyle.borderSizeMedium
+                    parent.height - C.TUMBLER_LABEL_HEIGHT : // decrease by bottom text
+                    parent.height
         color: platformStyle.colorNormalMid
-        anchors { top: parent.top; topMargin: platformStyle.borderSizeMedium }
+        anchors.top: parent.top
     }
 
     Row {
