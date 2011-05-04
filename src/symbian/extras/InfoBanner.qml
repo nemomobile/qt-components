@@ -35,12 +35,13 @@ ImplicitSizeItem {
     property alias timeout : timer.interval
 
     function open() {
-        root.state = "Visible"
+        root.parent = internal.rootObject()
+        stateGroup.state = "Visible"
         if (root.timerEnabled && timer.interval) //for backward compability
             timer.restart();
     }
     function close() {
-        root.state = "Hidden"
+        stateGroup.state = "Hidden"
     }
 
     // Deprecated ->
@@ -71,7 +72,6 @@ ImplicitSizeItem {
     x: 0
     implicitHeight: Math.max(image.height, text.paintedHeight) + platformStyle.paddingLarge * 2
     implicitWidth: screen.width
-    state: "Hidden"
 
     BorderImage {
         id: background
@@ -121,26 +121,39 @@ ImplicitSizeItem {
         onClicked: close()
     }
 
-
-    states: [
-        State {
-            name: "Visible"
-            PropertyChanges { target: root; y: 0 }
-        },
-        State {
-            name: "Hidden"
-            PropertyChanges { target: root; y: -height }
+    QtObject {
+        id: internal
+        function rootObject() {
+            var next = parent
+            while (next && next.parent)
+                next = next.parent
+            return next
         }
-    ]
+    }
 
-    transitions: [
-        Transition {
-            from: "Hidden"; to: "Visible"
-            NumberAnimation { target: root; properties: "y"; duration: CONSTANTS.INFOBANNER_ANIMATION_DURATION; easing.type: Easing.OutQuad }
-        },
-        Transition {
-            from: "Visible"; to: "Hidden"
-            NumberAnimation { target: root; properties: "y"; duration: CONSTANTS.INFOBANNER_ANIMATION_DURATION; easing.type: Easing.OutQuad }
-        }
-    ]
+    StateGroup {
+        id: stateGroup
+        state: "Hidden"
+
+        states: [
+            State {
+                name: "Visible"
+                PropertyChanges { target: root; y: 0 }
+            },
+            State {
+                name: "Hidden"
+                PropertyChanges { target: root; y: -height }
+            }
+        ]
+        transitions: [
+            Transition {
+                from: "Hidden"; to: "Visible"
+                NumberAnimation { target: root; properties: "y"; duration: CONSTANTS.INFOBANNER_ANIMATION_DURATION; easing.type: Easing.OutQuad }
+            },
+            Transition {
+                from: "Visible"; to: "Hidden"
+                NumberAnimation { target: root; properties: "y"; duration: CONSTANTS.INFOBANNER_ANIMATION_DURATION; easing.type: Easing.OutQuad }
+            }
+        ]
+    }
 }
