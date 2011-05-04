@@ -91,8 +91,8 @@ ImplicitSizeItem {
         ]
     }
 
-    implicitWidth: label.text ? platformStyle.graphicSizeSmall + platformStyle.paddingMedium + privateStyle.textWidth(label.text, label.font)
-                              : platformStyle.graphicSizeSmall
+    implicitWidth: label.text ? privateStyle.buttonSize + platformStyle.paddingMedium + privateStyle.textWidth(label.text, label.font)
+                              : privateStyle.buttonSize
     implicitHeight: privateStyle.menuItemHeight
 
     Image {
@@ -100,8 +100,8 @@ ImplicitSizeItem {
         source: privateStyle.imagePath("qtg_graf_checkbox_" + internal.bg_postfix());
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
-        sourceSize.width: platformStyle.graphicSizeSmall
-        sourceSize.height: platformStyle.graphicSizeSmall
+        sourceSize.width: privateStyle.buttonSize
+        sourceSize.height: privateStyle.buttonSize
         smooth: true
     }
 

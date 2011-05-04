@@ -94,7 +94,7 @@ ImplicitSizeItem {
     }
 
     implicitWidth: platformStyle.paddingLarge + privateStyle.textWidth(label.text, label.font) + platformStyle.paddingMedium
-        + platformStyle.graphicSizeSmall + privateStyle.scrollBarThickness
+        + privateStyle.buttonSize + privateStyle.scrollBarThickness
     implicitHeight: privateStyle.menuItemHeight
 
     Image {
@@ -103,8 +103,8 @@ ImplicitSizeItem {
         anchors.left: parent.left
         anchors.leftMargin: platformStyle.paddingLarge
         anchors.verticalCenter: parent.verticalCenter
-        sourceSize.width: platformStyle.graphicSizeSmall
-        sourceSize.height: platformStyle.graphicSizeSmall
+        sourceSize.width: privateStyle.buttonSize
+        sourceSize.height: privateStyle.buttonSize
     }
     Text {
         id: label
