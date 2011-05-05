@@ -49,6 +49,7 @@ Item {
         }
         readOnly: readOnly.checked
         enabled: !enabled.checked
+        errorHighlight: errorHlgt.checked
         placeholderText: "Enter text here"
     }
 
@@ -120,8 +121,8 @@ Item {
             bottom: parent.bottom
             margins: privy.margin
         }
-        columns: privy.portrait ? 1 : 2
-        rows: privy.portrait ? 4 : 2
+        columns: privy.portrait ? 1 : 3
+        rows: privy.portrait ? 5 : 3
         spacing: privy.margin
 
         Button {
@@ -136,6 +137,13 @@ Item {
             height: parent.h; width: parent.w
             checkable: true
             text: checked ? "Disabled" : "Enabled"
+        }
+
+        Button {
+            id: errorHlgt; objectName: "errorHlgt"
+            height: parent.h; width: parent.w
+            checkable: true
+            text: checked ? "ErrorHighlight" : "No ErrorHighlight"
         }
 
         Button {
