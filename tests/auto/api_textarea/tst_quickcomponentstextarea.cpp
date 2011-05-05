@@ -60,6 +60,7 @@ private slots:
     void positionAt();
     void positionToRectangle();
     void wrapMode();
+    void errorHighlight();
 
 private:
     QObject *findTextEdit(QObject *root);
@@ -314,6 +315,14 @@ void tst_quickcomponentstextarea::wrapMode()
             && componentObject->property("wrapMode").toInt()
             >= (int)Qt::LogText);
 
+}
+
+void tst_quickcomponentstextarea::errorHighlight()
+{
+    QVERIFY(componentObject->setProperty("errorHighlight",false));
+    QCOMPARE(componentObject->property("errorHighlight").toBool(),false);
+    QVERIFY(componentObject->setProperty("errorHighlight",true));
+    QCOMPARE(componentObject->property("errorHighlight").toBool(),true);
 }
 
 void tst_quickcomponentstextarea::copypaste()
