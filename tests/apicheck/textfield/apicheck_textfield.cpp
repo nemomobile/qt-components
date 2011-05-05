@@ -98,6 +98,11 @@ void ApiCheckTextField::text()
     validateProperty("text", QVariant::String);
 }
 
+void ApiCheckTextField::errorHighlight()
+{
+    validateProperty("errorHighlight", QVariant::Bool, false);
+}
+
 void ApiCheckTextField::copy()
 {
     validateMethod("copy()");

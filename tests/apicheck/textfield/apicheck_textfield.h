@@ -60,6 +60,7 @@ private slots:
     void selectWord();
     void positionAt();
     void positionToRectangle();
+    void errorHighlight();
 };
 
 #endif
