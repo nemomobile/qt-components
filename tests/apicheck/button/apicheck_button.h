@@ -45,6 +45,7 @@ private slots:
     void text();
     void iconSource();
     void clicked();
+    void font();
 };
 
 #endif

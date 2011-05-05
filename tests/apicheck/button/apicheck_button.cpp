@@ -62,3 +62,8 @@ void ApiCheckButton::clicked()
 {
     validateSignal("clicked()");
 }
+
+void ApiCheckButton::font()
+{
+    validateProperty("font", QVariant::Font);
+}
