@@ -115,6 +115,12 @@ Item {
             "m_type": 0
         } )
         listModel.append( {
+            "m_size": privateStyle.buttonSize,
+            "m_text": "buttonSize",
+            "m_color": "red",
+            "m_type": 0
+        } )
+        listModel.append( {
             "m_size": platformStyle.paddingLarge,
             "m_text": "paddingLarge",
             "m_color": "orange",
