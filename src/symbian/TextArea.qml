@@ -42,6 +42,7 @@ FocusScopeItem {
     property alias text: textEdit.text
     property alias textFormat: textEdit.textFormat
     property alias wrapMode: textEdit.wrapMode
+    property bool errorHighlight: false
 
     function copy() {
         textEdit.copy()
@@ -124,12 +125,21 @@ FocusScopeItem {
         // TODO: More consistent minimum width for empty TextArea than 20 * " " on current font?
         property real minImplicitWidth: placeholder.text ? placeholder.model.paintedWidth
                                                          : privateStyle.textWidth("                    ", textEdit.font)
+
+        function bg_postfix() {
+            if (root.errorHighlight)
+                return "error"
+            else if (textEdit.activeFocus)
+                return "highlighted"
+            else
+                return "editable"
+        }
     }
 
     BorderImage {
         id: background
         anchors.fill: parent
-        source: privateStyle.imagePath(textEdit.activeFocus ? "qtg_fr_textfield_highlighted" : "qtg_fr_textfield_editable" )
+        source: privateStyle.imagePath("qtg_fr_textfield_" + privy.bg_postfix())
         border { left: 10; top: 10; right: 10; bottom: 10 }
     }
 
