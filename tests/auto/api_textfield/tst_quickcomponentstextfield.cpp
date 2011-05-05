@@ -32,6 +32,7 @@
 #include <QDeclarativeItem>
 #include <QDeclarativeExpression>
 #include <QRegExpValidator>
+#include <QIntValidator>
 #include <QFontDatabase>
 #include <QFontMetrics>
 
@@ -62,6 +63,7 @@ private slots:
     void selectionStart();
     void text();
     void acceptableInput();
+    void errorHighlight();
 
     // Functions
     void copyAndPaste();
@@ -332,6 +334,28 @@ void tst_quickcomponentstextfield::acceptableInput()
     QValidator *reset = 0;
     componentObject->setProperty("validator", QVariant::fromValue(reset));
     QCOMPARE(componentObject->property("acceptableInput").toBool(), true);
+}
+
+void tst_quickcomponentstextfield::errorHighlight()
+{
+    QVERIFY(componentObject->setProperty("errorHighlight",false));
+    QCOMPARE(componentObject->property("errorHighlight").toBool(),false);
+    QVERIFY(componentObject->setProperty("errorHighlight",true));
+    QCOMPARE(componentObject->property("errorHighlight").toBool(),true);
+
+    // create and set a validator
+    QValidator *validator = new QIntValidator(2, 11, this);
+    componentObject->setProperty("validator", QVariant::fromValue(validator));
+    QCOMPARE(componentObject->property("errorHighlight").toBool(),true);
+    componentObject->setProperty("text", "1");
+    QCOMPARE(componentObject->property("errorHighlight").toBool(),true);
+    componentObject->setProperty("text", "11");
+    QCOMPARE(componentObject->property("errorHighlight").toBool(),false);
+
+    // validator reset
+    QValidator *reset = 0;
+    componentObject->setProperty("validator", QVariant::fromValue(reset));
+    QCOMPARE(componentObject->property("errorHighlight").toBool(),false);
 }
 
 void tst_quickcomponentstextfield::copyAndPaste()
