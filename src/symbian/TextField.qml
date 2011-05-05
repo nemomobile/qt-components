@@ -43,6 +43,7 @@ FocusScopeItem {
     property alias selectionEnd: textInput.selectionEnd
     property alias selectionStart: textInput.selectionStart
     property alias text: textInput.text
+    property bool errorHighlight: !acceptableInput
 
     function copy() {
         textInput.copy()
@@ -98,12 +99,21 @@ FocusScopeItem {
         // shrinking on focus gain.
         property real minWidth: placeholder.text ? privateStyle.textWidth(placeholder.text, textInput.font)
                                                  : privateStyle.textWidth("     ", textInput.font)
+
+        function bg_postfix() {
+            if (root.errorHighlight)
+                return "error"
+            else if (textInput.activeFocus)
+                return "highlighted"
+            else
+                return "editable"
+        }
     }
 
     BorderImage {
         id: frame
         anchors.fill: parent
-        source: privateStyle.imagePath(textInput.activeFocus ? "qtg_fr_textfield_highlighted" : "qtg_fr_textfield_editable" )
+        source: privateStyle.imagePath("qtg_fr_textfield_" + priv.bg_postfix())
         border { left: 10; top: 10; right: 10; bottom: 10 }
     }
 
