@@ -120,6 +120,9 @@ void tst_quickcomponentstextfield::defaultPropertyValues()
 
     QVERIFY(textField->property("platformRightMargin").isValid());
     QCOMPARE(textField->property("platformRightMargin"), platformStyle->property("paddingMedium"));
+    
+    QVERIFY(textField->property("errorHighlight").isValid());
+    QVERIFY(!textField->property("errorHighlight").toBool());
 }
 
 void tst_quickcomponentstextfield::acceptableInput()
