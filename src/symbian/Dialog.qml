@@ -77,6 +77,10 @@ Item {
                 return titleBar.height + contentItem.childrenRect.height + buttonItem.height
         }
 
+        function defaultWidth() {
+            return root.width > 0 ? root.width : maxWidth()
+        }
+
         function maxWidth() {
             if (screen.width < screen.height)
                 return screen.width - 2 * platformStyle.paddingMedium
@@ -97,7 +101,7 @@ Item {
 
         onFaderClicked: root.clickedOutside()
 
-        width: Math.max(Math.min(root.width, maxWidth()), minWidth())
+        width: Math.max(Math.min(defaultWidth(), maxWidth()), minWidth())
         height: Math.max(Math.min(defaultHeight(), maxHeight()), privateStyle.dialogMinSize)
 
         state: "Hidden"

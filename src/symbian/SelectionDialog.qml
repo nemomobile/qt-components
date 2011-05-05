@@ -73,8 +73,11 @@ CommonDialog {
         }
 
         ScrollBar {
+            id: scrollBar
+
             flickableItem: listView
             interactive: false
+            visible: listView.contentHeight > contentItem.height
             anchors { top: listView.top; right: listView.right }
         }
     }
@@ -91,7 +94,10 @@ CommonDialog {
             else
                 listView.positionViewAtIndex(selectedIndex, ListView.Center)
         }
-        else if (status == DialogStatus.Open)
+        else if (status == DialogStatus.Open) {
             listView.focus = true
+            if (listView.contentHeight > contentItem.height)
+                scrollBar.flash(Symbian.FadeInFadeOut)
+        }
     }
 }
