@@ -31,12 +31,17 @@ ListItem {
     id: root
     property string title: ""
     property string subTitle: ""
+    implicitHeight: background.height + 2 * platformStyle.paddingLarge
 
     BorderImage {
         id: background
+        height: privateStyle.menuItemHeight - platformStyle.paddingSmall // from layout spec.
         anchors {
-            fill: parent
-            margins: platformStyle.paddingLarge
+            left: parent.left
+            leftMargin: platformStyle.paddingLarge
+            right: parent.right
+            rightMargin: privateStyle.scrollBarThickness
+            verticalCenter: parent.verticalCenter
         }
         source: privateStyle.imagePath("qtg_fr_choice_list_normal")
         border { left: 20; top: 20; right: 20; bottom: 20 }
