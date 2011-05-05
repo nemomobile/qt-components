@@ -57,10 +57,12 @@ ListItem {
 
             Loader {
                 sourceComponent: title != "" ? titleText : undefined
+                width: parent.width // elide requires explicit width
             }
 
             Loader {
                 sourceComponent: subTitle != "" ? subTitleText : undefined
+                width: parent.width // elide requires explicit width
             }
         }
         Image {

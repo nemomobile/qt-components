@@ -501,6 +501,14 @@ Item {
                 onClicked: notification.text = "Clicked " + objectName
                 onPressAndHold: notification.text = "Press-and-hold " + objectName
             }
+
+            SelectionListItem {
+                id: listItem15
+                objectName: "listItem15"
+                title: "Static item with too long text to fit in list item"
+                subTitle: "Strings should elide nicely from the end"
+                enabled: true
+            }
         }
     }
 
