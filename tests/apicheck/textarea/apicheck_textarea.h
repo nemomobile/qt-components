@@ -50,6 +50,7 @@ private slots:
     void text();
     void textFormat();
     void wrapMode();
+    void errorHighlight();
 
     void copy();
     void paste();

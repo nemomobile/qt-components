@@ -88,6 +88,11 @@ void ApiCheckTextArea::wrapMode()
     validateProperty("wrapMode", QVariant::Int);
 }
 
+void ApiCheckTextArea::errorHighlight()
+{
+    validateProperty("errorHighlight", QVariant::Bool, false);
+}
+
 void ApiCheckTextArea::copy()
 {
     validateMethod("copy()");
