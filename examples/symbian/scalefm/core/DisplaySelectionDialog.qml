@@ -33,20 +33,20 @@ SelectionDialog {
     model: displayModel
     ListModel {
         id: displayModel
-        ListElement { name: "3.5\" NHD Portrait"; width: 360; height: 640; dpi: 210 }
-        ListElement { name: "3.5\" NHD Landscape"; width: 640; height: 360; dpi: 210 }
-        ListElement { name: "2.5\" VGA Portrait"; width: 480; height: 640; dpi: 325 }
-        ListElement { name: "2.5\" VGA Landscape"; width: 640; height: 480; dpi: 325 }
-        ListElement { name: "3.2\" HVGA Portrait"; width: 320; height: 480; dpi: 180 }
-        ListElement { name: "3.2\" HVGA Landscape"; width: 480; height: 320; dpi: 180 }
-        ListElement { name: "4.0\" NHD Portrait"; width: 360; height: 640; dpi: 185 }
-        ListElement { name: "4.0\" NHD Landscape"; width: 640; height: 360; dpi: 185 }
-        ListElement { name: "4.0\" WVGA Portrait"; width: 480; height: 864; dpi: 245 }
-        ListElement { name: "4.0\" WVGA Landscape"; width: 864; height: 480; dpi: 245 }
-        ListElement { name: "7.0\" WSVGA Portrait"; width: 600; height: 1024; dpi: 170 }
-        ListElement { name: "7.0\" WSVGA Landscape"; width: 1024; height: 600; dpi: 170 }
-        ListElement { name: "11.0\" XGA Portrait"; width: 768; height: 1024; dpi: 130 }
-        ListElement { name: "11.0\" XGA Landscape"; width: 1024; height: 768; dpi: 130 }
+        ListElement { modelData: "3.5\" NHD Portrait"; width: 360; height: 640; dpi: 210 }
+        ListElement { modelData: "3.5\" NHD Landscape"; width: 640; height: 360; dpi: 210 }
+        ListElement { modelData: "2.5\" VGA Portrait"; width: 480; height: 640; dpi: 325 }
+        ListElement { modelData: "2.5\" VGA Landscape"; width: 640; height: 480; dpi: 325 }
+        ListElement { modelData: "3.2\" HVGA Portrait"; width: 320; height: 480; dpi: 180 }
+        ListElement { modelData: "3.2\" HVGA Landscape"; width: 480; height: 320; dpi: 180 }
+        ListElement { modelData: "4.0\" NHD Portrait"; width: 360; height: 640; dpi: 185 }
+        ListElement { modelData: "4.0\" NHD Landscape"; width: 640; height: 360; dpi: 185 }
+        ListElement { modelData: "4.0\" WVGA Portrait"; width: 480; height: 864; dpi: 245 }
+        ListElement { modelData: "4.0\" WVGA Landscape"; width: 864; height: 480; dpi: 245 }
+        ListElement { modelData: "7.0\" WSVGA Portrait"; width: 600; height: 1024; dpi: 170 }
+        ListElement { modelData: "7.0\" WSVGA Landscape"; width: 1024; height: 600; dpi: 170 }
+        ListElement { modelData: "11.0\" XGA Portrait"; width: 768; height: 1024; dpi: 130 }
+        ListElement { modelData: "11.0\" XGA Landscape"; width: 1024; height: 768; dpi: 130 }
     }
     onAccepted: {
         screen.privateSetDisplay(
