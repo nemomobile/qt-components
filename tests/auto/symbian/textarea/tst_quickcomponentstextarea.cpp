@@ -157,6 +157,11 @@ void tst_quickcomponentstextarea::defaultPropertyValues()
     QTextOption::WrapMode wrapMode = static_cast<QTextOption::WrapMode>(property.toInt());
     QCOMPARE(wrapMode, QTextOption::WrapAtWordBoundaryOrAnywhere);
 
+    // ErrorHighlight
+    property = textArea->property("errorHighlight");
+    bool errorHighlight = property.toBool();
+    QCOMPARE(errorHighlight, false);
+
     //placeholderText
     property = textArea->property("placeholderText");
     QString promptText = property.toString();
