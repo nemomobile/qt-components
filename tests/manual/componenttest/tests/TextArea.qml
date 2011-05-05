@@ -134,9 +134,9 @@ Item {
         anchors.top: privy.portrait ? alignment.bottom : wrapAndContent.bottom
         anchors.left: parent.left
         anchors.topMargin: privy.margin
-        columns: privy.portrait ? 3 : 1
-        rows: privy.portrait ? 1 : 3
-        height: parent.height * (privy.portrait ? 1/9 : 8/9)
+        columns: privy.portrait ? 2 : 1
+        rows: privy.portrait ? 2 : 4
+        height: parent.height * (privy.portrait ? 2/9 : 8/9)
         width: parent.width * (privy.portrait ? 1 : 1/5)
         spacing: privy.margin
 
@@ -159,6 +159,17 @@ Item {
             onClicked: {
                 textArea.enabled = checked ? false : true
                 text = checked ? "Disabled" : "Enabled"
+            }
+        }
+
+        Button {
+            id: errorHighlight; objectName: "errorHighlight"
+            checkable: true
+            height: buttons.h; width: buttons.w
+            text: "No ErrorHighlight"
+            onClicked: {
+                textArea.errorHighlight = checked
+                text = checked ? "ErrorHighlight" : "No ErrorHighlight"
             }
         }
 
