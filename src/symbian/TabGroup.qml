@@ -46,6 +46,12 @@ Item {
         Engine.ensureContainers()
     }
 
+    Component.onCompleted: {
+        // Set first tabs as current if currentTab is not set by application
+        if (currentTab == null && containerHost.children[0] && containerHost.children[0].children[0])
+            currentTab = containerHost.children[0].children[0]
+    }
+
     Item {
         id: containerHost
         objectName: "containerHost"
@@ -84,9 +90,6 @@ Item {
                 else if (children.length == 1) {
                     children[0].width = width
                     children[0].height = height
-                    // tab content created. set the first tab as current (if not set before)
-                    if (root.currentTab == null)
-                        root.currentTab = children[0]
                 }
             }
 
