@@ -52,11 +52,11 @@ Item {
         id: textForHugeFont
         font.family: platformStyle.fontFamilyRegular
         font.pixelSize: {
-            if((screen.currentOrientation == Screen.Landscape))
+            if (screen.currentOrientation == Screen.Landscape)
                 return 2.5 * platformStyle.fontSizeLarge
             else
                 return 2 * platformStyle.fontSizeLarge
-            }
+        }
     }
     Text {
         id: textForLargeFont
