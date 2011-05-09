@@ -38,6 +38,14 @@ Item {
         }
     }
 
+    TabGroup {
+        id: tabGroup3
+        objectName: "tabGroup3"
+        currentTab: group3tab2
+        Item { id: group3tab1; objectName: "group3tab1" }
+        Item { id: group3tab2; objectName: "group3tab2" }
+    }
+
     Component {
         id: tabPageComponent
         Page {

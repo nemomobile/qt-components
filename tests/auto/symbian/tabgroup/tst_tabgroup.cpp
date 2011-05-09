@@ -42,6 +42,7 @@ private slots:
     void cleanup();
     void defaultPropertyValues();
     void testCurrentTabInitializationStatic();
+    void testCurrentTabInitializationStatic2();
     void testCurrentTabInitializationDynamic();
     void testReparentingStatic();
     void testReparentingDynamic();
@@ -86,6 +87,19 @@ void tst_tabgroup::testCurrentTabInitializationStatic()
     QVERIFY(group1tab1);
 
     QVERIFY(tabGroup1->property("currentTab").value<QDeclarativeItem*>() == group1tab1);
+}
+
+void tst_tabgroup::testCurrentTabInitializationStatic2()
+{
+    // check that user can override the initial current tab
+
+    QGraphicsObject *tabGroup3 = componentObject->findChild<QGraphicsObject*>("tabGroup3");
+    QVERIFY(tabGroup3);
+
+    QGraphicsObject *group3tab2 = componentObject->findChild<QGraphicsObject*>("group3tab2");
+    QVERIFY(group3tab2);
+
+    QVERIFY(tabGroup3->property("currentTab").value<QDeclarativeItem*>() == group3tab2);
 }
 
 QObject *findQmlChild(QObject *object, const QString &objectName) {
