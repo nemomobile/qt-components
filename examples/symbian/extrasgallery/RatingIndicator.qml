@@ -47,7 +47,6 @@ Page {
 
                 ratingValue: 3
                 maximumValue: 5
-                count: 3
             }
         }
 
@@ -60,21 +59,6 @@ Page {
             id: removeButton
             text: "Decrease rating"
             onClicked: { indicator.ratingValue-- }
-        }
-        Button {
-            id: addCount
-            text: "Increase counts"
-            onClicked: { indicator.count++ }
-        }
-        Button {
-            id: removeCount
-            text: "Decrease counts"
-            onClicked: {
-                indicator.count--
-                if (indicator.count < 0) {
-                    indicator.count = -1
-                }
-            }
         }
         Button {
             id: negativeButton
