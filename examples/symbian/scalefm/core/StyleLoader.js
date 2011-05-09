@@ -70,7 +70,7 @@ function loadStyle(componentName, container, forceFallback) {
 
     if (!forceFallback)
         source = Math.max(screen.width, screen.height) + "_" + Math.min(screen.width, screen.height) + "/" + roundNearestFive(screen.dpi) + "/"
-        
+
     sourcePath = path(componentName, source)
     if (sourcePath != prevPath) {
         console.log("Loading: " + sourcePath)
