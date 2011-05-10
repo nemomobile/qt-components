@@ -18,12 +18,11 @@ tool-bar-height-landscape:46
 scroll-bar-thickness:12
 slider-thickness:18
 menu-item-height:60
-text-field-height:40
-switch-button-height:32
 dialog-min-size:182
 dialog-max-size:504
+text-field-height:40
+switch-button-height:42
+button-size:40
+
 rating-image-width:16
 rating-image-height:15
-tumbler-height-portrait:256
-tumbler-height-landscape:192
-tumbler-width:344
