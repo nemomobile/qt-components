@@ -103,6 +103,11 @@ void ApiCheckTextField::errorHighlight()
     validateProperty("errorHighlight", QVariant::Bool, false);
 }
 
+void ApiCheckTextField::maximumLength()
+{
+    validateProperty("maximumLength", QVariant::Int);
+}
+
 void ApiCheckTextField::copy()
 {
     validateMethod("copy()");

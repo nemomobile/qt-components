@@ -61,6 +61,7 @@ private slots:
     void positionAt();
     void positionToRectangle();
     void errorHighlight();
+    void maximumLength();
 };
 
 #endif
