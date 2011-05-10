@@ -115,12 +115,6 @@ Item {
             "m_type": 0
         } )
         listModel.append( {
-            "m_size": privateStyle.buttonSize,
-            "m_text": "buttonSize",
-            "m_color": "red",
-            "m_type": 0
-        } )
-        listModel.append( {
             "m_size": platformStyle.paddingLarge,
             "m_text": "paddingLarge",
             "m_color": "orange",
@@ -206,6 +200,12 @@ Item {
             "m_type": 2
         } )
         listModel.append( {
+            "m_size": privateStyle.buttonSize,
+            "m_text": "buttonSize",
+            "m_color": "red",
+            "m_type": 0
+        } )
+        listModel.append( {
             "m_size": privateStyle.dialogMinSize,
             "m_text": "dialogMinSize",
             "m_color": "seagreen",
@@ -248,8 +248,9 @@ Item {
                 listModel.setProperty(15, "m_size", privateStyle.menuItemHeight)
                 listModel.setProperty(16, "m_size", privateStyle.textFieldHeight)
                 listModel.setProperty(17, "m_size", privateStyle.switchButtonHeight)
-                listModel.setProperty(18, "m_size", privateStyle.dialogMinSize)
-                listModel.setProperty(19, "m_size", privateStyle.dialogMaxSize)
+                listModel.setProperty(18, "m_size", privateStyle.buttonSize)
+                listModel.setProperty(19, "m_size", privateStyle.dialogMinSize)
+                listModel.setProperty(20, "m_size", privateStyle.dialogMaxSize)
             }
         }
     }
