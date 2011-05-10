@@ -47,6 +47,7 @@ private slots:
     void pressed(); //bool
     void valueIndicatorVisible();
     void valueIndicatorText();
+    void inverted();
 };
 
 #endif

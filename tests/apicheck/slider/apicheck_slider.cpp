@@ -72,3 +72,8 @@ void ApiCheckSlider::valueIndicatorText()
 {
     validateProperty("valueIndicatorText", QVariant::String, "");
 }
+
+void ApiCheckSlider::inverted()
+{
+    validateProperty("inverted", QVariant::Bool, false);
+}
