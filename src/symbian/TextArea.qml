@@ -130,6 +130,8 @@ FocusScopeItem {
         function bg_postfix() {
             if (root.errorHighlight)
                 return "error"
+            else if (root.readOnly || !root.enabled)
+                return "uneditable"
             else if (textEdit.activeFocus)
                 return "highlighted"
             else
