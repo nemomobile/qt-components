@@ -59,7 +59,7 @@ Item {
             id: lengthIndicator
             anchors.horizontalCenter: textField.horizontalCenter
             color: "white"
-            text: textField.text.length + "/" + textField.platformMaximumLength
+            text: textField.text.length + "/" + textField.maximumLength
         }
 
         Row {
@@ -113,7 +113,7 @@ Item {
 
             KeyNavigation.up: charsToGenerate
 
-            onValueChanged: textField.platformMaximumLength = value
+            onValueChanged: textField.maximumLength = value
         }
     }
 }
