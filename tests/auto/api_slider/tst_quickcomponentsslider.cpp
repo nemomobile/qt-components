@@ -45,6 +45,7 @@ private slots:
     void valueIndicatorVisible();
     void valueIndicatorText();
     void pressed();
+    void inverted();
 
 private:
     QObject *componentObject;
@@ -176,6 +177,13 @@ void tst_quickcomponentsslider::valueIndicatorText()
     QVERIFY(componentObject->setProperty("valueIndicatorText", "Label"));
     QCOMPARE(componentObject->property("valueIndicatorText").toString(),
              QString("Label"));
+}
+
+void tst_quickcomponentsslider::inverted()
+{
+    // test if setting/getting inverted works properly
+    QVERIFY(componentObject->setProperty("inverted", true));
+    QCOMPARE(componentObject->property("inverted").toBool(), true);
 }
 
 QTEST_MAIN(tst_quickcomponentsslider)
