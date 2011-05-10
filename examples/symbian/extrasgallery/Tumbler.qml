@@ -44,7 +44,9 @@ Page {
 
         Tumbler {
             id: tumbler
-            anchors { top: parent.top; topMargin: 32; horizontalCenter: parent.horizontalCenter }
+            anchors { top: parent.top; topMargin: 2; horizontalCenter: parent.horizontalCenter }
+            width: inPortrait() ? screen.width - 6 * platformStyle.paddingMedium
+                     : screen.width - 18 * platformStyle.paddingLarge
             columns: [monthColumn, dayColumn, yearColumn]
         }
     }
@@ -53,7 +55,7 @@ Page {
         id: col
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        width: inPortrait() ? parent.width : parent.width / 3
+        width: inPortrait() ? parent.width : parent.width - tumbler.width
 
         Grid {
             id: grid
