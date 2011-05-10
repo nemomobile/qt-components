@@ -38,20 +38,11 @@ ImplicitSizeItem {
     property alias value: model.value
     property int orientation: Qt.Horizontal
     property bool pressed: track.inputActive
-    property bool updateValueWhileDragging: true // deprecated
-    onUpdateValueWhileDraggingChanged: console.log("warning: Slider.updateValueWhileDragging is deprecated.")
     property bool valueIndicatorVisible: false
     property string valueIndicatorText: ""
-
-    // Symbian specific
-    property bool toolTipVisible: false // deprecated
     property alias inverted: model.inverted
 
-    onToolTipVisibleChanged: {
-        valueIndicatorVisible = toolTipVisible
-        console.log("warning: Slider.toolTipVisible is deprecated. Use Slider.valueIndicatorVisible instead")
-    }
-
+    // Symbian specific
     signal valueChanged(real value)
     implicitWidth: orientation == Qt.Horizontal ? 150 : privateStyle.menuItemHeight
     implicitHeight: orientation == Qt.Horizontal ? privateStyle.menuItemHeight : 150
@@ -220,16 +211,9 @@ ImplicitSizeItem {
                     drag.minimumY: orientation == Qt.Horizontal ? 0 : model.positionAtMinimum
                     drag.maximumY: orientation == Qt.Horizontal ? 0 : model.positionAtMaximum
 
-                    onPositionChanged: {
-                        if (updateValueWhileDragging)
-                            model.position = orientation == Qt.Horizontal ? handle.x : handle.y
-                    }
+                    onPositionChanged: model.position = orientation == Qt.Horizontal ? handle.x : handle.y
                     onPressed: privateStyle.play(Symbian.BasicSlider)
-                    onReleased: {
-                        if (!updateValueWhileDragging)
-                            model.position = orientation == Qt.Horizontal ? handle.x : handle.y
-                        privateStyle.play(Symbian.BasicSlider)
-                    }
+                    onReleased: privateStyle.play(Symbian.BasicSlider)
                 }
             }
         }
