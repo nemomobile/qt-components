@@ -44,7 +44,9 @@ Item {
 
         Tumbler {
             id: tumbler
-            anchors { top: parent.top; topMargin: 32; horizontalCenter: parent.horizontalCenter }
+            anchors { top: parent.top; topMargin: 2; horizontalCenter: parent.horizontalCenter }
+            width: inPortrait() ? screen.width - 6 * platformStyle.paddingMedium
+                     : screen.width - 18 * platformStyle.paddingLarge
             columns: [monthColumn, dayColumn, yearColumn]
         }
     }
