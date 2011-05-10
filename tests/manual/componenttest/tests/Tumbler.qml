@@ -106,7 +106,10 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
+                        var tmp = dayColumn.selectedIndex;
                         dayColumn.items = yearsList;
+                        dayColumn.selectedIndex = -1;
+                        dayColumn.selectedIndex = tmp;
                     }
                 }
             }
