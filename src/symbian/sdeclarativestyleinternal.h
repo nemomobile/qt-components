@@ -54,9 +54,6 @@ class SDeclarativeStyleInternal : public QObject
     Q_PROPERTY(int ratingIndicatorImageWidth READ ratingIndicatorImageWidth CONSTANT FINAL)
     Q_PROPERTY(int ratingIndicatorImageHeight READ ratingIndicatorImageHeight CONSTANT FINAL)
     Q_PROPERTY(QColor listItemSeparatorColor READ listItemSeparatorColor CONSTANT FINAL)
-    Q_PROPERTY(int tumblerHeightPortrait READ tumblerHeightPortrait CONSTANT FINAL)
-    Q_PROPERTY(int tumblerHeightLandscape READ tumblerHeightLandscape CONSTANT FINAL)
-    Q_PROPERTY(int tumblerWidth READ tumblerWidth CONSTANT FINAL)
 
 public:
 
@@ -78,9 +75,6 @@ public:
     int ratingIndicatorImageWidth() const;
     int ratingIndicatorImageHeight() const;
     QColor listItemSeparatorColor() const;
-    int tumblerHeightPortrait() const;
-    int tumblerHeightLandscape() const;
-    int tumblerWidth() const;
 
     Q_INVOKABLE void play(int effect);
     Q_INVOKABLE int textWidth(const QString &text, const QFont &font) const;

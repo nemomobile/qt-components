@@ -39,10 +39,8 @@ ImplicitSizeItem {
     property bool privateDelayInit: false
     property list<Item> privateTemplates
 
-    implicitWidth: privateStyle.tumblerWidth
-    implicitHeight: screen.width > screen.height ?
-                        privateStyle.tumblerHeightLandscape :
-                        privateStyle.tumblerHeightPortrait
+    implicitWidth: screen.width - 6 * platformStyle.paddingMedium
+    implicitHeight: 4 * privateStyle.menuItemHeight
 
     function privateInitialize() {
         if (!internal.initialized) {
@@ -104,7 +102,7 @@ ImplicitSizeItem {
     BorderImage {
         width: parent.width
         height: internal.hasLabel ?
-                    parent.height - C.TUMBLER_LABEL_HEIGHT : // decrease by bottom text height
+                    parent.height - privateStyle.menuItemHeight : // decrease by bottom text height
                     parent.height
         source: privateStyle.imagePath("qtg_fr_tumbler")
         anchors.top: parent.top
@@ -114,7 +112,7 @@ ImplicitSizeItem {
     Rectangle {
         width: parent.width
         height: internal.hasLabel ?
-                    parent.height - C.TUMBLER_LABEL_HEIGHT : // decrease by bottom text
+                    parent.height - privateStyle.menuItemHeight : // decrease by bottom text
                     parent.height
         color: platformStyle.colorNormalMid
         anchors.top: parent.top

@@ -93,7 +93,7 @@ Item {
         id: container
         anchors.top: pView.bottom
         width: tumblerColumn ? tumblerColumn.width : 0
-        height: internal.hasLabel ? C.TUMBLER_LABEL_HEIGHT : 0 // internal.hasLabel is from root tumbler
+        height: internal.hasLabel ? privateStyle.menuItemHeight : 0 // internal.hasLabel is from root tumbler
 
         Text {
             id: label
@@ -101,9 +101,10 @@ Item {
             text: tumblerColumn ? tumblerColumn.label : ""
             elide: Text.ElideRight
             horizontalAlignment: "AlignHCenter"
-            color: C.TUMBLER_COLOR_LABEL
-            font { family: C.FONT_FAMILY_LIGHT; pixelSize: platformStyle.fontSizeLarge }
-            anchors { fill: parent; margins: C.TUMBLER_MARGIN}
+            verticalAlignment: "AlignVCenter"
+            color: platformStyle.colorNormalLight
+            font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
+            anchors.fill: parent
         }
     }
 
@@ -122,7 +123,7 @@ Item {
                 verticalAlignment: "AlignVCenter"
                 color: delegateItem.PathView.isCurrentItem ? platformStyle.colorHighlighted : platformStyle.colorNormalLight
                 font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
-                anchors { fill: parent; margins: C.TUMBLER_MARGIN }
+                anchors.fill: parent
 
                 MouseArea {
                     anchors.fill: parent
