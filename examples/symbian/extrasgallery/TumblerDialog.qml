@@ -38,24 +38,117 @@ Item {
         anchors.left: parent.left
         anchors.leftMargin: 16
         width: 206
-        text: "Open Tumbler"
-        onClicked: dialog.open()
+        text: "Date"
+        onClicked: dialogBirth.open()
+    }
+    Button {
+        id: button2
+        anchors.top: button.bottom
+        anchors.topMargin: 26
+        anchors.left: parent.left
+        anchors.leftMargin: 16
+        width: 206
+        text: "Restaurant"
+        onClicked: dialogRestaurant.open()
+    }
+    Row {
+        id: row
+        anchors.top: button2.bottom
+        anchors.topMargin: 26
+        anchors.left: parent.left
+        anchors.leftMargin: 16
+        Text {
+            id: signalName
+            color: "white"
+            font { bold: true; pixelSize: 16}
+            text : "Signal / Func: "
+        }
+        Text {
+            id: signalValue
+            objectName: "signalValue"
+            color: "white"
+            font.pixelSize: 16
+            text : "None"
+        }
+    }
+    Text {
+        id: text
+        anchors.top: row.bottom
+        anchors.left: parent.left
+        anchors.leftMargin: 16
+        font { bold: true; pixelSize: 16 }
+        color: "white"
+        text: "Search category: "
+    }
+    Text {
+        id: searchCat1
+        objectName: "searchCat1"
+        anchors.top: text.bottom
+        anchors.left: parent.left
+        anchors.leftMargin: 16
+        font.pixelSize: 16
+        color: "white"
+        text: ""
+    }
+    Text {
+        id: searchCat2
+        objectName: "searchCat2"
+        anchors.top: searchCat1.bottom
+        anchors.left: parent.left
+        anchors.leftMargin: 16
+        font.pixelSize: 16
+        color: "white"
+        text: ""
+    }
+    Text {
+        id: searchCat3
+        objectName: "searchCat3"
+        anchors.top: searchCat2.bottom
+        anchors.left: parent.left
+        anchors.leftMargin: 16
+        font.pixelSize: 16
+        color: "white"
+        text: ""
     }
 
-    function displaySelections() {
+    function displayBirthday() {
         button.text =
             monthList.get(monthColumn.selectedIndex).value + " " +
             dayList.get(dayColumn.selectedIndex).value + " " +
             yearList.get(yearColumn.selectedIndex).value;
     }
 
+    function displayRestaurant() {
+        signalValue.text = "Accept"
+        searchCat1.text = cuisineList.get(cuisineColumn.selectedIndex).value;
+        searchCat2.text = mealList.get(mealColumn.selectedIndex).value;
+        searchCat3.text = priceList.get(priceColumn.selectedIndex).value;
+    }
+
+    function displayRejectResult() {
+        signalValue.text = "Reject"
+        searchCat1.text = 'None';
+        searchCat2.text = 'None';
+        searchCat3.text = 'None';
+    }
+
     TumblerDialog {
-        id: dialog
+        id: dialogBirth
         titleText: "Date of birth"
         acceptButtonText: "Ok"
         rejectButtonText: "Cancel"
         columns: [ monthColumn, dayColumn, yearColumn ]
-        onAccepted: displaySelections()
+        onAccepted: displayBirthday()
+    }
+
+    TumblerDialog {
+        id: dialogRestaurant
+        titleText: "Search restaurant"
+        acceptButtonText: "Ok"
+        rejectButtonText: "Cancel"
+        columns: [ cuisineColumn, mealColumn, priceColumn ]
+        onAccepted: displayRestaurant()
+        onRejected: displayRejectResult()
     }
 
     function initializeDataModels() {
@@ -102,5 +195,59 @@ Item {
         id: yearColumn
         items: ListModel { id: yearList }
         selectedIndex: 10
+    }
+
+    TumblerColumn {
+        id: cuisineColumn
+        items: ListModel {
+            id: cuisineList
+            ListElement { value: "African" }
+            ListElement { value: "American" }
+            ListElement { value: "Asian" }
+            ListElement { value: "Australian" }
+            ListElement { value: "Brazilian" }
+            ListElement { value: "French" }
+            ListElement { value: "German" }
+            ListElement { value: "Greek" }
+            ListElement { value: "Indian" }
+            ListElement { value: "Italian" }
+            ListElement { value: "Japanese" }
+            ListElement { value: "Korean" }
+            ListElement { value: "Mexican" }
+            ListElement { value: "Other" }
+        }
+        selectedIndex: 1
+    }
+
+    TumblerColumn {
+        id: mealColumn
+        items: ListModel {
+               id: mealList
+               ListElement { value: "Appetizers" }
+               ListElement { value: "Soup" }
+               ListElement { value: "Salad" }
+               ListElement { value: "Entree" }
+               ListElement { value: "Dessert" }
+               ListElement { value: "Wine" }
+               ListElement { value: "Breakfast" }
+               ListElement { value: "Lunch" }
+               ListElement { value: "Dinner" }
+        }
+        selectedIndex: 1
+    }
+
+    TumblerColumn {
+        id: priceColumn
+        items: ListModel {
+            id: priceList
+            ListElement { value: "< 10" }
+            ListElement { value: "10-20" }
+            ListElement { value: "20-30" }
+            ListElement { value: "30-50" }
+            ListElement { value: "50-80" }
+            ListElement { value: "80-100" }
+            ListElement { value: "> 100" }
+        }
+        selectedIndex: 1
     }
 }
