@@ -53,6 +53,9 @@ static const DisplayProfile displayProfilesArray[] = {
     // ~3.47" NHD
     {"NHD Portrait", 360, 640, 211.7},
     {"NHD Landscape", 640, 360, 211.7},
+    // ~3.17" NHD
+    {"NHD Portrait", 360, 640, 232.0},
+    {"NHD Landscape", 640, 360, 232.0},
     // ~3.95" NHD
     {"NHD Portrait", 360, 640, 186.1},
     {"NHD Landscape", 640, 360, 186.1},
