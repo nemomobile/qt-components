@@ -34,6 +34,7 @@ FocusScopeItem {
     property alias font: textEdit.font
     property alias cursorPosition: textEdit.cursorPosition
     property alias horizontalAlignment: textEdit.horizontalAlignment
+    property alias inputMethodHints: textEdit.inputMethodHints
     property alias verticalAlignment: textEdit.verticalAlignment
     property alias readOnly: textEdit.readOnly
     property alias selectedText: textEdit.selectedText

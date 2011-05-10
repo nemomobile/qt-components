@@ -42,6 +42,7 @@ private slots:
     void font();
     void cursorPosition();
     void horizontalAlignment();
+    void inputMethodHints();
     void verticalAlignment();
     void readOnly();
     void selectedText();

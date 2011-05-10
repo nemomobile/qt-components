@@ -60,6 +60,7 @@ private slots:
     void positionAt();
     void positionToRectangle();
     void wrapMode();
+    void inputMethodHints();
     void errorHighlight();
 
 private:
@@ -454,6 +455,15 @@ void tst_quickcomponentstextarea::positionToRectangle()
     // the position shouldn't have changed
     QCOMPARE(oldPosition, componentObject->property("cursorPosition").toInt());
 
+}
+
+void tst_quickcomponentstextarea::inputMethodHints()
+{
+    QVERIFY( componentObject->setProperty("inputMethodHints", Qt::ImhPreferNumbers) );
+    QCOMPARE( componentObject->property("inputMethodHints"), QVariant(Qt::ImhPreferNumbers) );
+
+    QVERIFY( componentObject->setProperty("inputMethodHints", QVariant(Qt::ImhNoAutoUppercase | Qt::ImhUppercaseOnly | Qt::ImhNoPredictiveText)) );
+    QCOMPARE( componentObject->property("inputMethodHints"), QVariant(Qt::ImhNoAutoUppercase | Qt::ImhUppercaseOnly | Qt::ImhNoPredictiveText) );
 }
 
 QTEST_MAIN(tst_quickcomponentstextarea)

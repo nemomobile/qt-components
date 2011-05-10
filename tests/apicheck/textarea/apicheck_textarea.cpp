@@ -132,3 +132,7 @@ void ApiCheckTextArea::positionToRectangle()
 {
     validateMethod("positionToRectangle(QVariant)");
 }
+void ApiCheckTextArea::inputMethodHints()
+{
+    validateProperty("inputMethodHints", QVariant::Int);
+}
