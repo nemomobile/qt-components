@@ -51,6 +51,7 @@ Item {
         enabled: !enabled.checked
         errorHighlight: errorHlgt.checked
         placeholderText: "Enter text here"
+        inputMethodHints: selectInputMethodHints.inputMethodHintsFlag
     }
 
     Grid {
@@ -161,86 +162,7 @@ Item {
         }
     }
 
-    Dialog {
+    InputMethodHintsDialog {
         id: selectInputMethodHints
-        height: parent.height; width: parent.width
-
-        title: Text {
-            text: "InputMethodHints"
-            anchors.fill: parent
-            color: "white"
-            font { pointSize: 16; bold: true }
-            horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter
-        }
-
-        buttons: Button {
-                    text: "Close"
-                    width: parent.width
-                    onClicked: selectInputMethodHints.accept()
-                }
-
-        content: ListView {
-                    id: listView
-                    height: parent.height; width: parent.width
-                    clip: true
-                    model: InputMethodHints { }
-                    delegate: textFieldDelegate
-                    section.property: "category"
-                    section.criteria: ViewSection.FullString
-                    section.delegate: sectionDelegate
-                    ScrollBar {
-                        flickableItem: listView
-                        anchors { top: listView.top; right: listView.right }
-                    }
-                }
-    }
-
-    Component {
-        id:textFieldDelegate
-
-        ListItem {
-            id: listItem
-            height: listView.height / 7; width: listView.width
-
-            ListItemText {
-                id: listText
-                role: "SubTitle"; text: title
-                anchors {
-                    left: listItem.paddingItem.left; right:checkBox.left
-                    verticalCenter: parent.verticalCenter
-                }
-            }
-
-            CheckBox {
-                id: checkBox
-                checked: selected
-                anchors { right:listItem.paddingItem.right; verticalCenter: parent.verticalCenter }
-                onClicked: {
-                    textField.inputMethodHints ^= flag
-                    listView.model.set(index, { "selected": checkBox.checked })
-                }
-
-            }
-
-            onClicked: {
-                textField.inputMethodHints ^= flag
-                checkBox.checked = !checkBox.checked
-                listView.model.set(index, { "selected": checkBox.checked })
-            }
-        }
-    }
-
-    Component {
-        id: sectionDelegate
-
-        ListHeading {
-            width: listView.width
-            id: sectionHeader
-
-            ListItemText {
-                anchors.fill: sectionHeader.paddingItem
-                role: "Heading"; text: section
-            }
-        }
     }
 }

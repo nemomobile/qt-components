@@ -26,6 +26,7 @@
 
 import Qt 4.7
 import com.nokia.symbian 1.0
+import "content"
 
 Item {
     id: root
@@ -127,69 +128,76 @@ Item {
         }
     }
 
-    Grid {
-        id: buttons
-        property real h: (height - spacing * (rows - 1)) / rows
-        property real w: (width - spacing * (columns - 1)) / columns
-        anchors.top: privy.portrait ? alignment.bottom : wrapAndContent.bottom
-        anchors.left: parent.left
-        anchors.topMargin: privy.margin
-        columns: privy.portrait ? 2 : 1
-        rows: privy.portrait ? 2 : 4
-        height: parent.height * (privy.portrait ? 2/9 : 8/9)
-        width: parent.width * (privy.portrait ? 1 : 1/5)
-        spacing: privy.margin
+    ButtonRow {
+        id: rowOne
+        exclusive: false
+        anchors {
+            top: privy.portrait ? alignment.bottom : wrapAndContent.bottom
+            left: parent.left
+            right: parent.right
+            topMargin: 5
+        }
 
         Button {
             id: readOnly; objectName: "readOnly"
             checkable: true;
-            height: buttons.h; width: buttons.w
             text: "Editable"
-            onClicked: {
-                textArea.readOnly = checked ? true : false
-                text = checked ? "ReadOnly" : "Editable"
-            }
+            onClicked: text = checked ? "ReadOnly" : "Editable"
         }
 
         Button {
             id: enable; objectName: "enable"
             checkable: true
-            height: buttons.h; width: buttons.w
             text: "Enabled"
-            onClicked: {
-                textArea.enabled = checked ? false : true
-                text = checked ? "Disabled" : "Enabled"
-            }
+            onClicked: text = checked ? "Disabled" : "Enabled"
         }
 
         Button {
             id: errorHighlight; objectName: "errorHighlight"
             checkable: true
-            height: buttons.h; width: buttons.w
-            text: "No ErrorHighlight"
-            onClicked: {
-                textArea.errorHighlight = checked
-                text = checked ? "ErrorHighlight" : "No ErrorHighlight"
-            }
+            text: "No Error"
+            onClicked: text = checked ? "Error" : "No Error"
+        }
+    }
+
+    ButtonRow {
+        id: rowTwo
+        anchors { top: rowOne.bottom; left: parent.left; right: parent.right }
+        exclusive: false
+
+        Button {
+            id: inputMethodHints; objectName: "inputMethodHints"
+            text: "ImHints"
+            onClicked: selectInputMethodHints.open()
         }
 
         Button {
             id: defocus; objectName: "defocus"
-            height: buttons.h; width: buttons.w
-            text: "Defocus"
+            text: "Unfocus"
             onClicked: forceActiveFocus()
         }
     }
 
+    InputMethodHintsDialog {
+        id: selectInputMethodHints
+    }
+
     TextArea {
         id: textArea; objectName: "textArea"
-        anchors.top: privy.portrait ? buttons.bottom : wrapAndContent.bottom
-        anchors.left: privy.portrait ? parent.left : buttons.right
-        anchors.right: parent.right; anchors.bottom: parent.bottom
-        anchors.leftMargin: privy.portrait ? 0 : privy.margin
-        anchors.topMargin: privy.margin
+        anchors {
+            top: rowTwo.bottom
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+            leftMargin: privy.portrait ? 0 : privy.margin
+            topMargin: privy.margin
+        }
         height: parent.height * (privy.portrait ? 2/3 : 8/9)
         width: parent.width
         placeholderText: "Enter text here"
+        inputMethodHints: selectInputMethodHints.inputMethodHintsFlag
+        readOnly: readOnly.checked
+        enabled: !enable.checked
+        errorHighlight: errorHighlight.checked
     }
 }

@@ -95,4 +95,5 @@ OTHER_FILES += \
     tests/ToolTip.qml \
     tests/Tumbler.qml \
     tests/TumblerDialog.qml \
-    tests/content/InputMethodHints.qml
+    tests/content/InputMethodHints.qml \
+    tests/content/InputMethodHintsDialog.qml
