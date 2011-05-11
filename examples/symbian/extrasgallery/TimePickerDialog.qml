@@ -78,7 +78,8 @@ Page {
         if (!timeDialog)
             timeDialog = component.createObject(root)
         timeDialog.hourMode = (hoursMode != undefined ? hoursMode : dateTime.hourMode());
-        timeDialog.fields = (visibleColumns != undefined ? visibleColumns : DateTime.All);
+        // Do not show seconds by default
+        timeDialog.fields = (visibleColumns != undefined ? visibleColumns : DateTime.Hours | DateTime.Minutes);
         if (hour) {
             timeDialog.hour = hour;
             timeDialog.minute = minute;
