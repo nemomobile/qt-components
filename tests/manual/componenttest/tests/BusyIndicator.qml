@@ -60,6 +60,10 @@ Item {
             height: 200
         }
 
+        BusyIndicator {
+            id: bi5
+        }
+
         Button {
             text: "Toggle Running"
             onClicked: {
@@ -67,6 +71,7 @@ Item {
                 bi2.running = !bi2.running
                 bi3.running = !bi3.running
                 bi4.running = !bi4.running
+                bi5.running = !bi5.running
             }
         }
     }
