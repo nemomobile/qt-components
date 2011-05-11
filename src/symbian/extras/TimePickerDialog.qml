@@ -37,7 +37,7 @@ Dialog {
     property int hour: 0
     property int minute: 0
     property int second: 0
-    property int fields: DateTime.All
+    property int fields: DateTime.Hours | DateTime.Minutes // Seconds not shown by default
     property int hourMode: dateTime.hourMode()
     property alias acceptButtonText: acceptButton.text
     property alias rejectButtonText: rejectButton.text
