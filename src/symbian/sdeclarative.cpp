@@ -53,10 +53,11 @@ class SDeclarativePrivate
 {
 public:
     SDeclarativePrivate() :
-        mListInteractionMode(SDeclarative::TouchInteraction) {}
+        mListInteractionMode(SDeclarative::TouchInteraction), foreground(true) {}
 
     SDeclarative::InteractionMode mListInteractionMode;
     QTimer timer;
+    bool foreground;
 };
 
 SDeclarative::SDeclarative(QObject *parent) :
@@ -125,14 +126,23 @@ void SDeclarative::privateShowIndicatorPopup()
 #endif // Q_OS_SYMBIAN && HAVE_SYMBIAN_INTERNAL
 }
 
+bool SDeclarative::isForeground()
+{
+    return d_ptr->foreground;
+}
+
 bool SDeclarative::eventFilter(QObject *obj, QEvent *event)
 {
     if (obj == QCoreApplication::instance()) {
         if (event->type() == QEvent::ApplicationActivate) {
             emit currentTimeChanged();
             d_ptr->timer.start(MINUTE_MS);
+            d_ptr->foreground = true;
+            emit foregroundChanged();
         } else if (event->type() == QEvent::ApplicationDeactivate) {
             d_ptr->timer.stop();
+            d_ptr->foreground = false;
+            emit foregroundChanged();
         }
     }
     return QObject::eventFilter(obj, event);

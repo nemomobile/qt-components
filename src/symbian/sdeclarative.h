@@ -37,6 +37,7 @@ class SDeclarative : public QObject
     Q_OBJECT
     Q_PROPERTY(InteractionMode listInteractionMode READ listInteractionMode WRITE setListInteractionMode NOTIFY listInteractionModeChanged FINAL)
     Q_PROPERTY(QString currentTime READ currentTime NOTIFY currentTimeChanged)
+    Q_PROPERTY(bool foreground READ isForeground NOTIFY foregroundChanged)
 
     Q_ENUMS(InteractionMode ImageSize ScrollBarVisibility SourceSize EffectType Feedback)
 
@@ -127,9 +128,12 @@ public:
     static QString currentTime();
     Q_INVOKABLE void privateShowIndicatorPopup();
 
+    bool isForeground();
+
 Q_SIGNALS:
     void listInteractionModeChanged();
     void currentTimeChanged();
+    void foregroundChanged();
 
 protected:
     bool eventFilter(QObject *obj, QEvent *event);

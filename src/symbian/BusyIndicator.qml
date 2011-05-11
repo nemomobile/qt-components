@@ -25,6 +25,7 @@
 ****************************************************************************/
 
 import Qt 4.7
+import com.nokia.symbian 1.0
 import "." 1.0
 
 ImplicitSizeItem {
@@ -49,11 +50,27 @@ ImplicitSizeItem {
         smooth: true
 
         NumberAnimation on index {
+            id: numAni
             from: 1; to: 12
             duration: 1000
             running: root.visible
-            paused: !root.running
+            // QTBUG-19080 is preventing the following line from working
+            // We will have to use workaround for now
+            // http://bugreports.qt.nokia.com/browse/QTBUG-19080
+            // paused: !root.running || !symbian.foreground
             loops: Animation.Infinite
         }
+
+        // START workaround for QTBUG-19080
+        Component {
+            id: bindingCom
+            Binding {
+                target: numAni
+                property: "paused"
+                value: !root.running || !symbian.foreground
+            }
+        }
+        Component.onCompleted: bindingCom.createObject(numAni)
+        // END workaround
     }
 }
