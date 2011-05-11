@@ -101,9 +101,9 @@
 /*!
     \qmlproperty int TimePickerDialog::fields
 
-    property default is DateTime.All
+    property default is DateTime.Hours | DateTime.Minutes
 
-    Sets if the time picker should hours (DateTime.Hours) and/or
+    Sets if the time picker shows hours (DateTime.Hours) and/or
     minutes (DateTime.Minutes) and/or seconds (DateTime.Seconds). Modifying
     this value after initialization will uninitialize everything.
 */
