@@ -67,7 +67,7 @@ ImplicitSizeItem {
             Binding {
                 target: numAni
                 property: "paused"
-                value: !root.running || !symbian.foreground
+                value: numAni.running ? (!root.running || !symbian.foreground) : false
             }
         }
         Component.onCompleted: bindingCom.createObject(numAni)
