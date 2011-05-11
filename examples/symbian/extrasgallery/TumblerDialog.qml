@@ -51,85 +51,12 @@ Item {
         text: "Restaurant"
         onClicked: dialogRestaurant.open()
     }
-    Row {
-        id: row
-        anchors.top: button2.bottom
-        anchors.topMargin: 26
-        anchors.left: parent.left
-        anchors.leftMargin: 16
-        Text {
-            id: signalName
-            color: "white"
-            font { bold: true; pixelSize: 16}
-            text : "Signal / Func: "
-        }
-        Text {
-            id: signalValue
-            objectName: "signalValue"
-            color: "white"
-            font.pixelSize: 16
-            text : "None"
-        }
-    }
-    Text {
-        id: text
-        anchors.top: row.bottom
-        anchors.left: parent.left
-        anchors.leftMargin: 16
-        font { bold: true; pixelSize: 16 }
-        color: "white"
-        text: "Search category: "
-    }
-    Text {
-        id: searchCat1
-        objectName: "searchCat1"
-        anchors.top: text.bottom
-        anchors.left: parent.left
-        anchors.leftMargin: 16
-        font.pixelSize: 16
-        color: "white"
-        text: ""
-    }
-    Text {
-        id: searchCat2
-        objectName: "searchCat2"
-        anchors.top: searchCat1.bottom
-        anchors.left: parent.left
-        anchors.leftMargin: 16
-        font.pixelSize: 16
-        color: "white"
-        text: ""
-    }
-    Text {
-        id: searchCat3
-        objectName: "searchCat3"
-        anchors.top: searchCat2.bottom
-        anchors.left: parent.left
-        anchors.leftMargin: 16
-        font.pixelSize: 16
-        color: "white"
-        text: ""
-    }
 
     function displayBirthday() {
         button.text =
             monthList.get(monthColumn.selectedIndex).value + " " +
             dayList.get(dayColumn.selectedIndex).value + " " +
             yearList.get(yearColumn.selectedIndex).value;
-    }
-
-    function displayRestaurant() {
-        signalValue.text = "Accept"
-        searchCat1.text = cuisineList.get(cuisineColumn.selectedIndex).value;
-        searchCat2.text = mealList.get(mealColumn.selectedIndex).value;
-        searchCat3.text = priceList.get(priceColumn.selectedIndex).value;
-    }
-
-    function displayRejectResult() {
-        signalValue.text = "Reject"
-        searchCat1.text = 'None';
-        searchCat2.text = 'None';
-        searchCat3.text = 'None';
     }
 
     TumblerDialog {
@@ -147,8 +74,6 @@ Item {
         acceptButtonText: "Ok"
         rejectButtonText: "Cancel"
         columns: [ cuisineColumn, mealColumn, priceColumn ]
-        onAccepted: displayRestaurant()
-        onRejected: displayRejectResult()
     }
 
     function initializeDataModels() {
