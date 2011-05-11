@@ -53,7 +53,7 @@ Item {
             text: "No Seconds: 8:35PM"
             width: parent.width
             onClicked: {
-                launchDialog(20, 35, 0, DateTime.TwelveHours, DateTime.Hours | DateTime.Minutes)
+                launchDialog(20, 35, 0, DateTime.TwelveHours)
                 signalValue.text = "None"
             }
         }
@@ -73,7 +73,7 @@ Item {
             text: "12-hour: 4:12:35PM"
             width: parent.width
             onClicked: {
-                launchDialog(16, 12, 35, DateTime.TwelveHours)
+                launchDialog(16, 12, 35, DateTime.TwelveHours, DateTime.All)
                 signalValue.text = "None"
             }
         }
@@ -83,7 +83,7 @@ Item {
             text: "24-hour: 18:27:39"
             width: parent.width
             onClicked: {
-                launchDialog(18, 27, 39, DateTime.TwentyFourHours)
+                launchDialog(18, 27, 39, DateTime.TwentyFourHours, DateTime.All)
                 signalValue.text = "None"
             }
         }
@@ -139,7 +139,8 @@ Item {
         if (!timeDialog)
             timeDialog = component.createObject(root)
         timeDialog.hourMode = (hoursMode != undefined ? hoursMode : dateTime.hourMode());
-        timeDialog.fields = (visibleColumns != undefined ? visibleColumns : DateTime.All);
+        // Do not show seconds by default
+        timeDialog.fields = (visibleColumns != undefined ? visibleColumns : DateTime.Hours | DateTime.Minutes);
         if (hour) {
             timeDialog.hour = hour;
             timeDialog.minute = minute;
