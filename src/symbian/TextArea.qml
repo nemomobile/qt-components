@@ -101,8 +101,11 @@ FocusScopeItem {
     }
 
     implicitHeight: {
+        // first check content's height (text or placeholder) and reserve room for paddings
         var preferredHeight = Math.max(flick.contentHeight, placeholder.model.paintedHeight)
         preferredHeight += container.anchors.topMargin + container.anchors.bottomMargin
+        // layout spec gives minimum height (textFieldHeight) which includes required padding
+        preferredHeight = Math.max(privateStyle.textFieldHeight, preferredHeight)
         return Math.min(preferredHeight, root.platformMaxImplicitHeight)
     }
 

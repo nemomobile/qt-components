@@ -83,9 +83,8 @@ FocusScopeItem {
     // API extensions
     implicitWidth: 2 * platformStyle.paddingMedium +
                    Math.max(privateStyle.textWidth(text, textInput.font), priv.minWidth)
-
-    implicitHeight: 2 * platformStyle.paddingMedium +
-                    privateStyle.fontHeight(textInput.font)
+    implicitHeight: Math.max(privateStyle.textFieldHeight,
+                             2 * platformStyle.paddingMedium + privateStyle.fontHeight(textInput.font))
 
     property bool enabled: true // overriding due to QTBUG-15797 and related bugs
     // deprecated on w18 ->
