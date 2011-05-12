@@ -119,7 +119,7 @@ Item {
             Text {
                 text: !!value ? value : ""
                 elide: Text.ElideRight
-                horizontalAlignment: "AlignHCenter"
+                horizontalAlignment: tumblerColumn.textAlignment == undefined ? "AlignHCenter" : tumblerColumn.textAlignment
                 verticalAlignment: "AlignVCenter"
                 color: delegateItem.PathView.isCurrentItem ? platformStyle.colorHighlighted : platformStyle.colorNormalLight
                 font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }

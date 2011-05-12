@@ -33,6 +33,7 @@ Item {
     property string label
     property int selectedIndex: 0
     property bool enabled: true
+    property string textAlignment: "AlignHCenter"
 
     // private
     property bool privateIsAutoWidth: false
