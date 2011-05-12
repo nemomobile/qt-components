@@ -1,17 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 15.0.2, SVG Export Plug-In  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
-    <!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
-]>
-<svg version="1.1"
-     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-     x="0px" y="0px" width="264px" height="192px" viewBox="0 0 264 192" overflow="visible" enable-background="new 0 0 264 192"
-     xml:space="preserve">
-<defs>
-</defs>
-<g>
-    <g>
-        <rect fill="#FFFFFF" width="264" height="192"/>
-    </g>
-</g>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Tiny//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-tiny.dtd">
+<svg baseProfile="tiny" height="10px" version="1.1" viewBox="0.001 0 344 10" width="344px" x="0px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px">
+<rect fill="none" height="10" width="344.001"/>
+<rect fill="#FFFFFF" fill-opacity="0.2" height="1" stroke-opacity="0.2" width="320" x="12" y="5"/>
+<rect fill="#231F20" fill-opacity="0.4" height="1" stroke-opacity="0.4" width="320" x="12" y="4"/>
 </svg>

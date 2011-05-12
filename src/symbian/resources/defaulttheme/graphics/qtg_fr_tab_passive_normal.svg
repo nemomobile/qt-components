@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Tiny//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-tiny.dtd">
-<svg baseProfile="tiny" height="46px" version="1.1" viewBox="0 0 90 46" width="90px" x="0px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px">
-<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_1_" x1="44.9995" x2="44.9995" y1="3" y2="42.8193">
-<stop offset="0" style="stop-color:#B3B3B3"/>
-<stop offset="1" style="stop-color:#4D4D4D"/>
+<svg baseProfile="tiny" height="48px" version="1.1" viewBox="0 0 90 48" width="90px" x="0px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px">
+<rect height="48" width="90"/>
+<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_1_" x1="44.9995" x2="44.9995" y1="0" y2="47.7404">
+<stop offset="0" style="stop-color:#FFFFFF"/>
+<stop offset="1" style="stop-color:#FFFFFF;stop-opacity:0.1"/>
 </linearGradient>
-<path d="M88,43H2V11c0-4.418,3.582-8,8-8h70c4.418,0,8,3.582,8,8V43z" fill="url(#SVGID_1_)"/>
-<path d="M80,3H10c-4.418,0-8,3.582-8,8v34h86V11C88,6.582,84.418,3,80,3z M85,42  H5V11c0-2.757,2.243-5,5-5h70c2.757,0,5,2.243,5,5V42z" fill="url(#SVGID_2_)"/>
-<path d="M80,3H10c-4.418,0-8,3.582-8,8v34h86V11C88,6.582,84.418,3,80,3z M86,43  H4V11c0-3.309,2.691-6,6-6h70c3.309,0,6,2.691,6,6V43z" fill="url(#SVGID_2_)"/>
-<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_4_" x1="44.9995" x2="44.9995" y1="3" y2="42.4958">
-<stop offset="0" style="stop-color:#FFFFFF;stop-opacity:0.15"/>
-<stop offset="1" style="stop-color:#FFFFFF;stop-opacity:0"/>
+<rect fill="url(#SVGID_1_)" fill-opacity="0.3" height="48" stroke-opacity="0.3" width="90"/>
+<rect fill="#FFFFFF" fill-opacity="0.1" height="1" stroke-opacity="0.1" width="90" y="1"/>
+<rect fill-opacity="0.35" height="1" stroke-opacity="0.35" width="90"/>
+<rect fill="#FFFFFF" fill-opacity="0.05" height="1" stroke-opacity="0.05" width="90" y="47"/>
+<rect fill-opacity="0.35" height="1" stroke-opacity="0.35" width="90" y="46"/>
+<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_2_" x1="0.5" x2="0.5" y1="1.3833" y2="47.0005">
+<stop offset="0" style="stop-color:#FFFFFF"/>
+<stop offset="1" style="stop-color:#FFFFFF;stop-opacity:0.1"/>
 </linearGradient>
-<path d="M80,3H10c-4.418,0-8,3.582-8,8v32h86V11C88,6.582,84.418,3,80,3z M87,42  H3V11c0-3.859,3.141-7,7-7h70c3.859,0,7,3.141,7,7V42z" fill="url(#SVGID_4_)"/>
-<rect fill="none" height="46" width="90"/>
-<defs>
-<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_2_" x1="44.9995" x2="44.9995" y1="3" y2="42.4476">
-<stop offset="0" style="stop-color:#FFFFFF;stop-opacity:0.15"/>
-<stop offset="1" style="stop-color:#FFFFFF;stop-opacity:0"/>
-</linearGradient>
-</defs>
+<rect fill="url(#SVGID_2_)" fill-opacity="0.05" height="46" stroke-opacity="0.05" width="1" y="1"/>
 </svg>

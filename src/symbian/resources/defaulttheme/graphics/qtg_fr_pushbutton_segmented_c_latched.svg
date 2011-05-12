@@ -1,26 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 14.0.0, SVG Export Plug-In  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
-    <!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
-]>
-<svg version="1.1"
-     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-     x="0px" y="0px" width="84px" height="42px" viewBox="0 0 84 42" enable-background="new 0 0 84 42" xml:space="preserve">
-<defs>
-</defs>
-<rect opacity="0.65" enable-background="new    " width="84" height="1"/>
-<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="41.9995" y1="1.1138" x2="41.9995" y2="41.0013">
-    <stop  offset="0" style="stop-color:#A1D3FF"/>
-    <stop  offset="1" style="stop-color:#5CB4FF"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Tiny//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-tiny.dtd">
+<svg baseProfile="tiny" height="42px" version="1.1" viewBox="0 0 110 42" width="110px" x="0px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px">
+<rect height="42" width="110"/>
+<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_1_" x1="54.9995" x2="54.9995" y1="0" y2="41.7572">
+<stop offset="0" style="stop-color:#FFFFFF;stop-opacity:0.85"/>
+<stop offset="1" style="stop-color:#FFFFFF;stop-opacity:0.3"/>
 </linearGradient>
-<rect y="1" fill="url(#SVGID_1_)" enable-background="new    " width="84" height="40"/>
-<rect y="38" opacity="0.15" fill="#FFFFFF" enable-background="new    " width="84" height="3"/>
-<rect y="1" opacity="0.15" fill="#FFFFFF" enable-background="new    " width="84" height="3"/>
-<rect y="39" opacity="0.15" fill="#FFFFFF" enable-background="new    " width="84" height="2"/>
-<rect y="1" opacity="0.15" fill="#FFFFFF" enable-background="new    " width="84" height="2"/>
-<rect y="1" opacity="0.15" fill="#FFFFFF" enable-background="new    " width="84" height="1"/>
-<rect y="40" opacity="0.15" fill="#FFFFFF" enable-background="new    " width="84" height="1"/>
-<rect y="1" opacity="0.3" fill="#FFFFFF" width="1" height="40"/>
-<rect x="83" y="1" opacity="0.3" width="1" height="40"/>
-<rect y="41" opacity="0.65" enable-background="new    " width="84" height="1"/>
+<rect fill="url(#SVGID_1_)" fill-opacity="0.6" height="42" stroke-opacity="0.6" width="110"/>
+<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_2_" x1="54.9995" x2="54.9995" y1="-0.0415" y2="42.1814">
+<stop offset="0" style="stop-color:#FFFFFF;stop-opacity:0.2"/>
+<stop offset="1" style="stop-color:#000000;stop-opacity:0.9"/>
+</linearGradient>
+<rect fill="url(#SVGID_2_)" height="1" width="110" y="41"/>
+<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_3_" x1="54.9995" x2="54.9995" y1="-0.042" y2="42.1809">
+<stop offset="0" style="stop-color:#FFFFFF;stop-opacity:0.2"/>
+<stop offset="1" style="stop-color:#000000;stop-opacity:0.9"/>
+</linearGradient>
+<rect fill="url(#SVGID_3_)" height="1" width="110"/>
+<rect fill="#FFFFFF" fill-opacity="0.05" height="40" stroke-opacity="0.05" width="1" y="1"/>
+<rect fill="#FFFFFF" fill-opacity="0.05" height="40" stroke-opacity="0.05" width="1" x="109" y="1"/>
 </svg>
