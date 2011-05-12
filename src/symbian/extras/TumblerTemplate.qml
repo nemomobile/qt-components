@@ -123,7 +123,7 @@ Item {
                 verticalAlignment: "AlignVCenter"
                 color: delegateItem.PathView.isCurrentItem ? platformStyle.colorHighlighted : platformStyle.colorNormalLight
                 font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
-                anchors.fill: parent
+                anchors { fill: parent; margins: platformStyle.paddingLarge }
 
                 MouseArea {
                     anchors.fill: parent

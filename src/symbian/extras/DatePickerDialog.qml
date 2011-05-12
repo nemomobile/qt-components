@@ -54,7 +54,7 @@ Dialog {
     }
     content: Item {
         id: dialogContent
-        height: tumbler.height
+        height: tumbler.height + platformStyle.paddingLarge * 2
         width: parent.width
 
         Tumbler {
@@ -80,7 +80,9 @@ Dialog {
             onChanged: {
                 _handleTumblerChanges(index);
             }
+            anchors.centerIn: parent
             height: privateStyle.menuItemHeight * 4
+            width: parent.width - platformStyle.paddingMedium * 4
             privateDelayInit: true
             states: State {
                 when: screen.currentOrientation == Screen.Landscape || screen.currentOrientation == Screen.LandscapeInverted
