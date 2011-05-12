@@ -53,7 +53,7 @@ Page {
             Text {
                 font { bold: true; pixelSize: 16 }
                 color: "white"
-                text: "Dialog Value (d/m/yyyy): "
+                text: "Dialog Value (m/d/yyyy): "
             }
             Text {
                 id: dialogValue
@@ -69,14 +69,14 @@ Page {
         id: component
         DatePickerDialog {
             id: dialog
-            titleText: "Date of birth"
+            titleText: "Date"
             acceptButtonText: "Ok"
             rejectButtonText: "Cancel"
             onAccepted: {
-                dialogValue.text = dialog.day + " " + dialog.month + " " + dialog.year
+                dialogValue.text = dialog.month + " " + dialog.day + " " + dialog.year
             }
             onRejected: {
-                dialogValue.text = dialog.day + " " + dialog.month + " " + dialog.year
+                dialogValue.text = dialog.month + " " + dialog.day + " " + dialog.year
             }
         }
     }
