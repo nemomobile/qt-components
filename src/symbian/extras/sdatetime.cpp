@@ -41,9 +41,9 @@ SDateTime::~SDateTime()
 {
 }
 
-QString SDateTime::shortMonthName(int month)
+QString SDateTime::longMonthName(int month)
 {
-    return QDate::shortMonthName(month);
+    return QDate::longMonthName(month);
 }
 
 bool SDateTime::isLeapYear(int year)

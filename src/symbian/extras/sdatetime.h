@@ -39,7 +39,7 @@ public:
     explicit SDateTime(QObject *parent = 0);
     virtual ~SDateTime();
 
-    Q_INVOKABLE static QString shortMonthName(int month);
+    Q_INVOKABLE static QString longMonthName(int month);
     Q_INVOKABLE static bool isLeapYear(int year);
     Q_INVOKABLE static int daysInMonth(int year, int month);
     Q_INVOKABLE static QString amText();
