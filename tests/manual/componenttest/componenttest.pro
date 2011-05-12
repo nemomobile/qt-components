@@ -14,7 +14,7 @@ RESOURCES += componenttest.qrc
 symbian {
     TARGET.EPOCALLOWDLLDATA = 1
     TARGET.UID3 = 0x200346E0
-    TARGET.EPOCHEAPSIZE = 0x1000 0xF00000
+    TARGET.EPOCHEAPSIZE = 0x1000 0x1F00000 # 32 MB heap
     TARGET.CAPABILITY = ReadDeviceData SwEvent WriteDeviceData
     componenttest_qmls1.sources = *.qml
     componenttest_qmls2.sources = tests/*.qml
@@ -50,6 +50,7 @@ symbian {
 
 OTHER_FILES += \
     main.qml \
+    ../shared/MemoryDisplay.qml \
     components/FontSelectionDialog.qml \
     tests/BusyIndicator.qml \
     tests/Button.qml \

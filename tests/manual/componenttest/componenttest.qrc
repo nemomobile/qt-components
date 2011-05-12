@@ -1,5 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
+    <file alias="memory_card.svg">images/memory_card.svg</file>
     <file alias="list1.png" >images/list1.png</file>
     <file alias="list2.png" >images/list2.png</file>
     <file alias="list3.png" >images/list3.png</file>
@@ -31,5 +32,6 @@
     <file alias="tb_next.svg">images/tb_next.svg</file>
     <file alias="tb_plus.png">images/tb_plus.png</file>
     <file alias="FontSelectionDialog.qml">components/FontSelectionDialog.qml</file>
+    <file alias="MemoryDisplay.qml">../shared/MemoryDisplay.qml</file>
 </qresource>
 </RCC>

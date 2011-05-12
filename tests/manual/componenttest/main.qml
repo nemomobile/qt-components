@@ -34,6 +34,8 @@ ApplicationWindow {
 
     objectName: "mainWindow"
 
+    property Menu memoryToolsMenu
+
     // For TDriver tests - setting component name to this property will open the corresponding
     // component page "automatically"
     property string componentName
@@ -59,12 +61,28 @@ ApplicationWindow {
         property variant qmlPaths: []
     }
 
+    Loader {
+        id: memoryDisplay
+        visible: false
+        source: visible ? "qrc:/MemoryDisplay.qml" : ""
+    }
+
     ToolBarLayout {
         id: commonTools
         ToolButton {
             flat: true
             iconSource: "image://theme/qtg_toolbar_back"
             onClicked: pageStack.depth <= 1 ? Qt.quit() : pageStack.pop()
+        }
+        ToolButton {
+            id: memoryToolsButton
+            flat: true
+            iconSource: "qrc:memory_card.svg"
+            onClicked: {
+                if (!memoryToolsMenu)
+                    memoryToolsMenu = memToolsMenuComponent.createObject(mainWindow)
+                memoryToolsMenu.open()
+            }
         }
         ToolButton {
             id: optionsButton
@@ -113,8 +131,9 @@ ApplicationWindow {
 
             Flickable {
                 id: flickable
-
                 anchors.fill: parent
+                anchors.topMargin: memoryDisplay.visible ? memoryDisplay.height : 0
+
                 contentHeight: buttons.height
                 contentWidth: parent.width
                 flickableDirection: Flickable.VerticalFlick
@@ -350,6 +369,7 @@ ApplicationWindow {
                     }
                 }
             }
+
             ScrollBar {
                 id: scrollbar
 
@@ -376,7 +396,7 @@ ApplicationWindow {
                     fileNames = fileAccess.qmlFileNames(internal.qmlPaths[i])
                     fileFullPaths = fileAccess.qmlFilePaths(internal.qmlPaths[i])
                     for (var j = 0; j < fileNames.length; j++) {
-                       console.log("adding file from disk: " + fileNames[j])
+                        console.log("adding file from disk: " + fileNames[j])
                         testfileModel.append({"fileName": fileNames[j] + ".qml", "fileFullPath": fileFullPaths[j]})
                     }
                 }
@@ -405,4 +425,16 @@ ApplicationWindow {
             }// listView
         }// listPage
     }// listPageComponent
+
+    Component {
+        id: memToolsMenuComponent
+        Menu {
+            content: MenuLayout {
+                MenuItem { text: "Clear icon caches"; onClicked: symbian.privateClearIconCaches() }
+                MenuItem { text: "Clear component cache"; onClicked: symbian.privateClearComponentCache() }
+                MenuItem { text: "Run garbage collector"; onClicked: gc() }
+                MenuItem { text: "Toggle memory display"; onClicked: { memoryDisplay.visible = !memoryDisplay.visible }}
+            }
+        }
+    }
 }
