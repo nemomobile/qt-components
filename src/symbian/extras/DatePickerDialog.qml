@@ -61,7 +61,7 @@ Dialog {
             id: tumbler
 
             function _handleTumblerChanges(index) {
-                if (index == 1 || index == 2) {
+                if (index == 0 || index == 2) {
                     var curYear = yearColumn.selectedIndex + yearList.get(0).value;
                     var curMonth = monthColumn.selectedIndex + 1;
 
@@ -76,7 +76,7 @@ Dialog {
                 }
             }
 
-            columns:  [dayColumn, monthColumn, yearColumn]
+            columns:  [monthColumn, dayColumn, yearColumn]
             onChanged: {
                 _handleTumblerChanges(index);
             }
