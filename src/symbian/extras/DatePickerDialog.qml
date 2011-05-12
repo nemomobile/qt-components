@@ -100,6 +100,7 @@ Dialog {
 
             TumblerColumn {
                 id: monthColumn
+                textAlignment: "AlignLeft"
                 items: ListModel {
                     id: monthList
                 }
