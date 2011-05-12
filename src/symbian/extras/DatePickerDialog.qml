@@ -91,6 +91,7 @@ Dialog {
 
             TumblerColumn {
                 id: dayColumn
+                width: privateStyle.menuItemHeight
                 items: ListModel {
                     id: dayList
                 }
@@ -107,6 +108,7 @@ Dialog {
 
             TumblerColumn {
                 id: yearColumn
+                width: privateStyle.menuItemHeight * 1.25
                 items: ListModel {
                     id: yearList
                 }
