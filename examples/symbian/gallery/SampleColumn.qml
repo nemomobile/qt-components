@@ -186,31 +186,30 @@ Column {
 
     Component {
         id: dialogComponent
-        Dialog {
+        CommonDialog {
             id: dialog
-            title: Text {
-                text: "Dialog"
-                font { bold: true; pixelSize: 16 }
-                color: "white"
-                anchors.fill: parent
-                horizontalAlignment: Text.AlignLeft
-                verticalAlignment: Text.AlignVCenter
-            }
-            buttons: Row {
-                height: 60
-                width: parent.width
-                ToolButton {
-                    text: "Ok"
-                    width: parent.width / 2
-                    height: parent.height
-                    onClicked: dialog.accept()
-                }
+            titleText: "Dialog"
 
-                ToolButton {
-                    text: "Cancel"
-                    width: parent.width / 2
-                    height: parent.height
-                    onClicked: dialog.reject()
+            buttons: ToolBar {
+                id: buttons
+                width: parent.width
+                height: privateStyle.toolBarHeightLandscape + 2 * platformStyle.paddingSmall
+
+                tools: Row {
+                    anchors.centerIn: parent
+                    spacing: platformStyle.paddingMedium
+
+                    ToolButton {
+                        text: "Ok"
+                        width: (buttons.width - 3 * platformStyle.paddingMedium) / 2
+                        onClicked: dialog.accept()
+                    }
+
+                    ToolButton {
+                        text: "Cancel"
+                        width: (buttons.width - 3 * platformStyle.paddingMedium) / 2
+                        onClicked: dialog.reject()
+                    }
                 }
             }
             content: Text {

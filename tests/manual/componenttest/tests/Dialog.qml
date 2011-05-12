@@ -29,12 +29,14 @@ import com.nokia.symbian 1.0
 
 Item {
     Dialog {
-        id: dialog
+        id: customDialog
+        width: 400
+        height: 250
 
         title: Text {
-            text: "Dialog"
-            font { bold: true; pixelSize: 16 }
-            color: "white"
+            text: "Custom layout and font"
+            font { bold: true; pixelSize: 22 }
+            color: "yellow"
             anchors.fill: parent
             anchors.leftMargin: 10
             horizontalAlignment: Text.AlignLeft
@@ -48,101 +50,71 @@ Item {
                 text: "Ok"
                 width: parent.width / 2
                 height: parent.height
-                onClicked: dialog.accept()
+                onClicked: customDialog.accept()
             }
-
             Button {
                 text: "Cancel"
                 width: parent.width / 2
                 height: parent.height
-                onClicked: dialog.reject()
+                onClicked: customDialog.reject()
             }
         }
         content: Text {
             text: "This is content text."
             font.bold: true
-            font.pixelSize: 18
+            font.pixelSize: 40
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
         }
     }
 
-    Dialog {
+    CommonDialog {
         id: dialogWithProgressBar
+        titleText: "Dialog with Progress"
 
-        width: 400
-        height: 250
-        title: Text {
-            text: "Dialog with Progress"
-            font { bold: true; pixelSize: 16 }
-            color: "white"
-            anchors.fill: parent
-            anchors.leftMargin: 10
-            horizontalAlignment: Text.AlignLeft
-            verticalAlignment: Text.AlignVCenter
-        }
-        buttons: Row {
-            height: 60
+        buttons: ToolBar {
+            id: buttons
             width: parent.width
-            Button {
+            height: privateStyle.toolBarHeightLandscape + 2 * platformStyle.paddingSmall
+
+            tools: ToolButton {
+                id: acceptButton
+                anchors.centerIn: parent
+                width: (buttons.width - 3 * platformStyle.paddingMedium) / 2
                 text: "Ok"
-                width: parent.width
-                height: parent.height
                 onClicked: dialogWithProgressBar.accept()
             }
         }
+
         content: Item {
             height: 250
-            x: 20
-            y: 20
+            width: parent.width
 
             ProgressBar {
                 id: horizontalBarWithAnimation
 
                 value: 1
                 indeterminate: true
-                x: 0
+                x: 30
                 y: 0
                 height: 30
-                width: 180
             }
 
             ProgressBar {
                 id: horizontalBar
 
                 value: 75 // Default minimum and maximum are 0 - 100
-                x: 0
+                x: 30
                 y: 30
                 height: 30
-                width: 180
             }
         }
     }
 
-    Dialog {
+    CommonDialog {
         id: dialogWithScrollBar
-
-        title: Row {
-            anchors.fill: parent
-            anchors.leftMargin: 10
-            Text {
-                height: parent.height
-                width: parent.width - closeIcon.width
-                text: "Dialog with Scrolling"
-                font { bold: true; pixelSize: 16 }
-                color: "white"
-                horizontalAlignment: Text.AlignLeft
-                verticalAlignment: Text.AlignVCenter
-            }
-
-            ToolButton {
-                id: closeIcon
-                flat: true
-                width: parent.height + 20
-                iconSource: "image://theme/:/list1.png"
-                onClicked: dialogWithScrollBar.reject()
-            }
-        }
+        titleText: "Dialog with scrolling"
+        privateCloseIcon: true
 
         content: Item {
             id: page
@@ -228,19 +200,19 @@ Item {
         Button {
             width: button4.width
             text: "Dialog 1"
-            onClicked: dialog.open()
-        }
-
-        Button {
-            width: button4.width
-            text: "Dialog 2"
             onClicked: dialogWithProgressBar.open()
         }
 
         Button {
             width: button4.width
-            text: "Dialog 3"
+            text: "Dialog 2"
             onClicked: dialogWithScrollBar.open()
+        }
+
+        Button {
+            width: button4.width
+            text: "Custom dialog"
+            onClicked: customDialog.open()
         }
 
         Button {

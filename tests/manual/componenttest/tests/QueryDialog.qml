@@ -32,14 +32,38 @@ Item {
     anchors.fill: parent
 
     CheckBox {
-        id: checkBox
-        text: "Icon"
-        anchors { bottom: button.top; bottomMargin: 15; horizontalCenter: parent.horizontalCenter }
+        id: sizerCheckBox
+        text: "Enable dialog sizers"
+        anchors {
+            top: parent.top; topMargin: 5
+            horizontalCenter: parent.horizontalCenter
+        }
+    }
+
+    CheckBox {
+        id: iconCheckBox
+        text: "Custom Icon"
+        anchors {
+            top: sizerCheckBox.bottom; bottomMargin: 5
+            horizontalCenter: parent.horizontalCenter
+        }
+    }
+
+    CheckBox {
+        id: oneButtonCheckBox
+        text: "One Button Only"
+        anchors {
+            top: iconCheckBox.bottom; bottomMargin: 5
+            horizontalCenter: parent.horizontalCenter
+        }
     }
 
     Button {
         id: button
-        anchors.centerIn: parent
+        anchors {
+            top: oneButtonCheckBox.bottom; bottomMargin: 5
+            horizontalCenter: parent.horizontalCenter
+        }
         width: parent.width - parent.spacing
         text: "Open Query Dialog"
         onClicked: queryDialog.open()
@@ -52,10 +76,38 @@ Item {
         font.pixelSize: 30
     }
 
+    Slider {
+        id: heightSlider
+        x: 60
+        y: screen.height - height - 120
+        maximumValue: screen.height
+        minimumValue: 1
+        orientation: Qt.Vertical
+        value: 100
+        stepSize: 1
+        valueIndicatorVisible: true
+        visible: sizerCheckBox.checked
+    }
+
+    Slider {
+        id: widthSlider
+        x: screen.width < screen.height ? heightSlider.x + heightSlider.width + 20 : 60
+        y: screen.width < screen.height ? heightSlider.y + heightSlider.height - 75 : heightSlider.y - height
+        maximumValue: screen.width
+        minimumValue: 1
+        orientation: Qt.Horizontal
+        value: 100
+        stepSize: 1
+        valueIndicatorVisible: true
+        visible: sizerCheckBox.checked
+    }
+
     QueryDialog {
         id: queryDialog
+        height: sizerCheckBox.checked ? heightSlider.value : undefined
+        width: sizerCheckBox.checked ? widthSlider.value : undefined
 
-        icon: checkBox.checked ? "qrc:tb_plus.png" : ""
+        icon: iconCheckBox.checked ? "qrc:tb_plus.png" : ""
         titleText: "Query Dialog"
         message: "This is a test. This is a Test. This is a Test. This is a Test. This is a Test."
                  + "This is a test. This is a Test. This is a Test. This is a Test. This is a Test."
@@ -72,7 +124,7 @@ Item {
                  + "This is a test. This is a Test. This is a Test. This is a Test. This is a Test."
 
         acceptButtonText: "Ok"
-        rejectButtonText: "Cancel"
+        rejectButtonText: oneButtonCheckBox.checked ? "" : "Cancel"
 
         onAccepted: { text.text = "Ok clicked" }
         onRejected: { text.text = "Cancel clicked" }
