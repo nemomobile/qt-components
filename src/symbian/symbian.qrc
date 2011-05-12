@@ -110,7 +110,6 @@
         <file alias="qtg_fr_scrollbar_v_handle_normal.svg">resources/defaulttheme/graphics/qtg_fr_scrollbar_v_handle_normal.svg</file>
         <file alias="qtg_fr_scrollbar_v_handle_pressed.svg">resources/defaulttheme/graphics/qtg_fr_scrollbar_v_handle_pressed.svg</file>
         <file alias="qtg_fr_scrollbar_v_track_normal.svg">resources/defaulttheme/graphics/qtg_fr_scrollbar_v_track_normal.svg</file>
-        <file alias="qtg_graf_dialog_close_icon.svg">resources/defaulttheme/graphics/qtg_graf_dialog_close_icon.svg</file>
         <file alias="qtg_fr_tumbler_divider.svg">resources/defaulttheme/graphics/qtg_fr_tumbler_divider.svg</file>
         <file alias="qtg_fr_tumbler_highlight.svg">resources/defaulttheme/graphics/qtg_fr_tumbler_highlight.svg</file>
         <file alias="qtg_fr_tumbler.svg">resources/defaulttheme/graphics/qtg_fr_tumbler.svg</file>
