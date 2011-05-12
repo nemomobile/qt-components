@@ -37,7 +37,7 @@ Item {
     property alias status: dialog.status
 
     // read-only
-    property int platformContentMaximumWidth: dialog.maxWidth()
+    property int platformContentMaximumWidth: dialog.width
     // read-only
     property int platformContentMaximumHeight:
         dialog.maxHeight() - titleBar.height - buttonItem.height

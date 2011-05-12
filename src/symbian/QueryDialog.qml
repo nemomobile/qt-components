@@ -55,8 +55,9 @@ Dialog {
 
         Text {
             font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
-            color: platformStyle.colorNormalLight
+            color: platformStyle.colorNormalLink
             text: root.titleText
+            horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
 
@@ -110,21 +111,26 @@ Dialog {
     buttons: ToolBar {
         id: buttons
         width: parent.width
-
-        Row {
+        height: privateStyle.toolBarHeightLandscape + 2 * platformStyle.paddingSmall
+        tools: Row {
             id: buttonRow
             anchors.centerIn: parent
             spacing: platformStyle.paddingMedium
 
             ToolButton {
                 id: acceptButton
-                width: (buttons.width - 3 * platformStyle.paddingMedium) / 2
+                // Different widths for 1 and 2 button cases
+                width: rejectButton.text == ""
+                    ? Math.round((privateStyle.dialogMaxSize - 3 * platformStyle.paddingMedium) / 2)
+                    : (buttons.width - 3 * platformStyle.paddingMedium) / 2
                 onClicked: accept()
                 visible: text != ""
             }
             ToolButton {
                 id: rejectButton
-                width: (buttons.width - 3 * platformStyle.paddingMedium) / 2
+                width: acceptButton.text == ""
+                    ? Math.round((privateStyle.dialogMaxSize - 3 * platformStyle.paddingMedium) / 2)
+                    : (buttons.width - 3 * platformStyle.paddingMedium) / 2
                 onClicked: reject()
                 visible: text != ""
             }

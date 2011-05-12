@@ -33,60 +33,57 @@ Dialog {
     property alias titleText: titleTextArea.text
     property bool privateCloseIcon: false
 
-    title: Row {
-        id: titleArea
-
-        anchors {
-            fill: parent
-            leftMargin: platformStyle.paddingLarge
-            rightMargin: platformStyle.paddingLarge
-        }
+    title: Item {
+        anchors.fill: parent
 
         Text {
             id: titleTextArea
+
+            anchors {
+                left: parent.left
+                leftMargin: platformStyle.paddingLarge
+                right: iconMouseArea.left
+                top: parent.top
+                bottom: parent.bottom
+            }
 
             font {
                 family: platformStyle.fontFamilyRegular
                 pixelSize: platformStyle.fontSizeLarge
             }
-            color: platformStyle.colorNormalLight
+            color: platformStyle.colorNormalLink
             clip: true
             elide: Text.ElideRight
-            width: parent.width - iconLoader.width
-            anchors.verticalCenter: parent.verticalCenter
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
         }
 
-        Loader {
-            id: iconLoader
+        MouseArea {
+            id: iconMouseArea
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
 
-            sourceComponent: privateCloseIcon ? closeIconComponent : undefined
-            anchors.verticalCenter: parent.verticalCenter
-        }
+            width: privateCloseIcon ? 2 * platformStyle.paddingLarge + platformStyle.graphicSizeSmall : 0
+            onPressed: privateStyle.play(Symbian.BasicButton)
+            onClicked: root.reject()
 
-        Component {
-            id: closeIconComponent
+            Loader {
+                id: iconLoader
+                anchors.centerIn: parent
+                sourceComponent: privateCloseIcon ? closeIconComponent : undefined
+            }
 
-            Item {
-                id: closeIconArea
+            Component {
+                id: closeIconComponent
 
-                height: platformStyle.graphicSizeSmall
-                width: platformStyle.graphicSizeSmall + platformStyle.paddingLarge
-
-                // Extra Item is needed here to get ToolButton positioned correctly
-                Item {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    width: platformStyle.graphicSizeSmall
-
-                    ToolButton {
-                        iconSource: privateStyle.imagePath("qtg_graf_dialog_close_icon.svg")
-                        anchors.centerIn: parent
-                        flat: true
-                        // ToolButton size is increased by 15 to get larger mousearea
-                        width: platformStyle.graphicSizeSmall + 15
-                        height: width
-                        onClicked: root.reject()
-                    }
+                Image {
+                    sourceSize.height: platformStyle.graphicSizeSmall
+                    sourceSize.width: platformStyle.graphicSizeSmall
+                    smooth: true
+                    source: privateStyle.imagePath(iconMouseArea.pressed && iconMouseArea.containsMouse
+                        ? "qtg_graf_popup_close_pressed"
+                        : "qtg_graf_popup_close_normal")
                 }
             }
         }
