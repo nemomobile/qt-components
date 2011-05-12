@@ -146,4 +146,6 @@ symbian {
     DEPLOYMENT += package
 }
 
+win32: LIBS += -lpsapi # for allocated memory info
+
 include(../../qml.pri)

@@ -25,9 +25,13 @@
 ****************************************************************************/
 
 #include "sdeclarative.h"
+#include "siconpool.h"
 #include <QCoreApplication>
 #include <QTime>
 #include <QTimer>
+#include <QDeclarativeContext>
+#include <QDeclarativeEngine>
+#include <QPixmapCache>
 #ifdef Q_OS_SYMBIAN
 #include <e32std.h>
 #include <AknUtils.h>
@@ -37,6 +41,11 @@
 #include <aknappui.h>
 #include <avkon.rsg>
 #endif // Q_OS_SYMBIAN
+
+#ifdef Q_OS_WIN
+#include <windows.h>
+#include <psapi.h>
+#endif
 
 //#define Q_DEBUG_SDECLARATIVE
 #if defined(Q_DEBUG_SDECLARATIVE)
@@ -55,10 +64,28 @@ public:
     SDeclarativePrivate() :
         mListInteractionMode(SDeclarative::TouchInteraction), foreground(true) {}
 
+    int allocatedMemory() const;
+
     SDeclarative::InteractionMode mListInteractionMode;
     QTimer timer;
     bool foreground;
 };
+
+int SDeclarativePrivate::allocatedMemory() const
+{
+#if defined(Q_OS_SYMBIAN)
+    TInt totalAllocated;
+    User::AllocSize(totalAllocated);
+    return totalAllocated;
+#elif defined(Q_OS_WIN)
+    PROCESS_MEMORY_COUNTERS pmc;
+    if (!GetProcessMemoryInfo(GetCurrentProcess(), &pmc, sizeof(pmc)))
+        return -1;
+    return pmc.WorkingSetSize;
+#else
+    return -1;
+#endif
+}
 
 SDeclarative::SDeclarative(QObject *parent) :
     QObject(parent),
@@ -118,6 +145,24 @@ static void DoShowIndicatorPopupL()
     CleanupStack::PopAndDestroy(indicator);
 }
 #endif // Q_OS_SYMBIAN && HAVE_SYMBIAN_INTERNAL
+
+int SDeclarative::privateAllocatedMemory() const
+{
+    return d_ptr->allocatedMemory();
+}
+
+void SDeclarative::privateClearIconCaches()
+{
+    SIconPool::releaseAll();
+    QPixmapCache::clear();
+}
+
+void SDeclarative::privateClearComponentCache()
+{
+    QDeclarativeContext *context = qobject_cast<QDeclarativeContext*>(this->parent());
+    if (context)
+        context->engine()->clearComponentCache();
+}
 
 void SDeclarative::privateShowIndicatorPopup()
 {
