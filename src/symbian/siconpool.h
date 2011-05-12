@@ -41,6 +41,7 @@ class SIconPool
 public:
     static QPixmap get(const QString &fileName, const QSize &size, Qt::AspectRatioMode mode = Qt::KeepAspectRatio, const QColor &color = QColor());
     static void release(const QString &fileName, const QSize &size, Qt::AspectRatioMode mode = Qt::KeepAspectRatio, const QColor &color = QColor());
+    static void releaseAll();
 
     static QSize defaultSize(const QString &fileName);
 

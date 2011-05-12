@@ -197,6 +197,10 @@ void SIconPool::release(
     }
 }
 
+void SIconPool::releaseAll() {
+    poolData()->clear();
+}
+
 QSize SIconPool::defaultSize(const QString &fileName)
 {
     QSize defSize;
