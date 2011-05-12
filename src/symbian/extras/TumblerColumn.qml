@@ -37,4 +37,5 @@ Item {
 
     // private
     property bool privateIsAutoWidth: false
+    property bool privateResizeToFit: false
 }

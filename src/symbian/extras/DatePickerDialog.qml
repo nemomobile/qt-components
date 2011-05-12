@@ -111,11 +111,11 @@ Dialog {
 
             TumblerColumn {
                 id: yearColumn
-                width: privateStyle.menuItemHeight * 1.25
                 items: ListModel {
                     id: yearList
                 }
                 selectedIndex: yearList.length > 0 ? root.year - yearList.get(0).value : 0
+                privateResizeToFit: true
             }
         }
     }
