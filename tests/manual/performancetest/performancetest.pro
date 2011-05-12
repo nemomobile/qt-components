@@ -14,7 +14,7 @@ RESOURCES += performancetest.qrc
 symbian {
     TARGET.EPOCALLOWDLLDATA = 1
     TARGET.UID3 = 0x200346E6
-    TARGET.EPOCHEAPSIZE = 0x1000 0x1F00000
+    TARGET.EPOCHEAPSIZE = 0x1000 0x3E00000 # 64 MB heap
     TARGET.CAPABILITY = ReadDeviceData SwEvent WriteDeviceData
     performancetest_qmls1.sources = *.qml
     performancetest_qmls2.sources = tests/*.qml
@@ -47,6 +47,7 @@ symbian {
 }
 
 OTHER_FILES += \
+    ../shared/MemoryDisplay.qml \
     main.qml \
     tests/ListView.qml \
     tests/utils/ListViewSetup.qml

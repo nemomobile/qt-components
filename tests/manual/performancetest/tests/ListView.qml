@@ -27,12 +27,27 @@
 import QtQuick 1.0
 import com.nokia.symbian 1.0
 import FileAccess 1.0
+import "utils"
 
 Item {
     id: root
 
     anchors.fill: parent
-    property Component testPage: Qt.createComponent("utils/ListViewSetup.qml")
+    property int testIndex: 0
+
+    Component {
+        id: listViewSetup
+        ListViewSetup {
+            anchors.fill: parent
+            testId: root.testIndex
+            onVisibleChanged:
+                if (!visible) {
+                    symbian.privateClearIconCaches()
+                    symbian.privateClearComponentCache()
+                    gc()
+                }
+        }
+    }
 
     ListView {
         id: listView
@@ -91,12 +106,8 @@ Item {
                 }
             }
             onClicked: {
-                if (testPage.status == Component.Ready) {
-                    var page = testPage.createObject(root)
-                    // Select test setup based on clicked item
-                    page.setupTest(index)
-                    mainWindow.pageStack.push(page)
-                }
+                    root.testIndex = index
+                    mainWindow.pageStack.push(listViewSetup)
             }
         }
     }

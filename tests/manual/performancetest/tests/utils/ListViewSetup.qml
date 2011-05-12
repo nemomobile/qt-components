@@ -30,6 +30,7 @@ import com.nokia.symbian 1.0
 Item {
     id: root
     anchors.fill: parent
+    property int testId: 0
     property int itemCount: 2000
     property int sectionInterval: 0
     property string heading: "Test"
@@ -38,6 +39,8 @@ Item {
     // For TDriver ->
     // Triggers the InitializeModel()
     property bool reInitModel: false
+
+    Component.onCompleted: setupTest(testId)
 
     Rectangle {
         anchors.fill: parent
@@ -380,9 +383,13 @@ Item {
     }
 
 
+    ListModel {
+        id: listModel
+    }
+
     function initializeModel() {
-        listView.model.destroy()
-        listView.model = Qt.createQmlObject('import Qt 4.7; ListModel {id: model}', listView)
+        listModel.clear()
+        listView.model = listModel
 
         for (var i = 0; i < itemCount; i++) {
             listView.model.append( {

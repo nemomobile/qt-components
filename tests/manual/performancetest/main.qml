@@ -34,6 +34,8 @@ ApplicationWindow {
 
     objectName: "mainWindow"
 
+    property Menu memoryToolsMenu
+
     // For TDriver tests - setting component name to this property will open the corresponding
     // component page "automatically"
     property string componentName
@@ -55,8 +57,14 @@ ApplicationWindow {
         // Path to test qml-files shown on the main view
         property string testFilesPath: "tests/"
 
-        // Diretories from where qmlfiles can be loaded
+        // Directories from where qmlfiles can be loaded
         property variant qmlPaths: []
+    }
+
+    Loader {
+        id: memoryDisplay
+        visible: false
+        source: visible ? "qrc:/MemoryDisplay.qml" : ""
     }
 
     ToolBarLayout {
@@ -67,6 +75,17 @@ ApplicationWindow {
             onClicked: pageStack.depth <= 1 ? Qt.quit() : pageStack.pop()
         }
         ToolButton {
+            id: memoryToolsButton
+            flat: true
+            iconSource: "qrc:memory_card.svg"
+            onClicked: {
+                if (!memoryToolsMenu)
+                    memoryToolsMenu = memToolsMenuComponent.createObject(mainWindow)
+                memoryToolsMenu.open()
+            }
+        }
+        ToolButton {
+            id: optionsButton
             flat: true
             iconSource: "image://theme/qtg_toolbar_options"
         }
@@ -92,28 +111,16 @@ ApplicationWindow {
             anchors.fill: parent
 
             function resolveSource() {
-                if (buttons.checkedButton
-                    && buttons.checkedButton.text == "Load chosen file"
-                    && internal.fullPath.length > 0)
-                    return "file:///" + internal.fullPath
-                else if (buttons.checkedButton
-                         && buttons.checkedButton.text != "Load chosen file") {
-                    // All tests are under tests folder
-                    var file = buttons.checkedButton.text.replace(" ", "") + ".qml"
-                    return internal.testFilesPath + file
-                } else
-                    return ""
-            }
-
-            onStatusChanged: {
-                if (status == PageStatus.Activating)
-                    screen.allowedOrientations = startupOrientationButton.orientation
+                // All tests are under tests folder
+                var file = buttons.checkedButton.text.replace(" ", "") + ".qml"
+                return internal.testFilesPath + file
             }
 
             Flickable {
                 id: flickable
 
                 anchors.fill: parent
+                anchors.topMargin: memoryDisplay.visible ? memoryDisplay.height : 0
                 contentHeight: buttons.height
                 contentWidth: parent.width
                 flickableDirection: Flickable.VerticalFlick
@@ -164,45 +171,6 @@ ApplicationWindow {
                                 screen.allowedOrientations = Screen.Default
                             }
                         }
-                        Button {
-                            id: startupOrientationButton
-
-                            // Holds the numerical value of the orientation
-                            property int orientation
-
-                            text: "Save:" + orientation
-                            width: parent.buttonWidth
-
-                            Component.onCompleted: orientation = settings.orientation()
-
-                            // save orientation for next startup
-                            onClicked: settings.setOrientation(orientation)
-                        }
-                    }
-                    Button {
-                        id: pickFromFileButton
-
-                        width: mainWindow.width
-                        text: {
-                            // Append qmlpaths to the button label
-                            var buttonLabel = "Choose a file from "
-                            for (var i = 0; i < internal.qmlPaths.length; i++) {
-                                buttonLabel += internal.qmlPaths[i];
-                                if (!((i+1) == internal.qmlPaths.length))
-                                    buttonLabel += " or "
-                            }
-                            return buttonLabel
-                        }
-
-                        onClicked: mainWindow.pageStack.push(listPageComponent)
-                    }
-                    Text {
-                        id: currentFileLabel
-
-                        width: mainWindow.width
-                        color: "red"
-                        text: "Picked file: " + internal.fullPath
-                        font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeSmall }
                     }
 
                     Button {
@@ -212,31 +180,16 @@ ApplicationWindow {
                         text: "Toggle Fullscreen"
                         onClicked: mainWindow.fullScreen = mainWindow.fullScreen ? false : true
                     }
-                    CheckBox {
-                        id: flickableSetting
-                        text: "Flickable"
-                        checked: false
-                    }
-                    CheckBox {
-                        id: dragSetting
-                        text: "Drag-able"
-                        checked: false
-                    }
-                    CheckBox {
-                        id: fillSetting
-                        text: "Fill area"
-                        checked: true
-                    }
+
                     Repeater {
                         id: componentsmodel
 
                         // Model is populated with the qml-files found from
                         // the tests folder
                         model: {
-                            var entry = new Array("Load chosen file")
                             var components = new Array()
                             components = fileAccess.qmlFileNames(internal.testFilesPath)
-                            return entry.concat(components)
+                            return components
                         }
 
                         Button {
@@ -247,10 +200,7 @@ ApplicationWindow {
 
                             onClicked: {
                                 buttons.checkedButton = testButton
-                                if (flickableSetting.checked == true)
-                                    mainWindow.pageStack.push(flickableTestComponent)
-                                else
-                                    mainWindow.pageStack.push(testComponent)
+                                mainWindow.pageStack.push(testComponent)
                             }
 
                             // For TDriver ->
@@ -261,43 +211,13 @@ ApplicationWindow {
                                     if (componentName) {
                                         testButton.text = mainWindow.componentName
                                         buttons.checkedButton  = testButton
-                                        if (flickableSetting.checked)
-                                            mainWindow.pageStack.push(flickableTestComponent)
-                                        else
-                                            mainWindow.pageStack.push(testComponent)
+                                        mainWindow.pageStack.push(testComponent)
                                     }
                                 componentName = ""
                                 }
                             }
                             // <- for TDriver
 
-                            Component {
-                                id: flickableTestComponent
-
-                                Page {
-                                    id: testPage
-
-                                    orientationLock: PageOrientation.Automatic
-
-                                    Flickable {
-                                        id: testPageGroup
-
-                                        anchors.fill: parent
-                                        contentWidth: width
-                                        contentHeight: 1.2 * screen.height
-                                        flickableDirection:Flickable.AutoFlickDirection
-
-                                        Loader {
-                                            id: loader
-
-                                            width: testPageGroup.contentWidth
-                                            height: testPageGroup.contentHeight
-                                            visible: loader.status !== Loader.Error
-                                            source: mainPage.resolveSource()
-                                        }
-                                    }
-                                }
-                            }// flickableTestComponent
                             Component {
                                 id: testComponent
 
@@ -312,35 +232,9 @@ ApplicationWindow {
                                         height: parent.height
                                         color: "#1000FF00"
 
-                                        property int dragStartX
-                                        property int dragStartY
-                                        property int dragStartWidth
-                                        property int dragStartHeight
-
-                                        MouseArea {
-                                            anchors.fill: parent
-
-                                            onPressed: {
-                                                parent.dragStartX = mouse.x
-                                                parent.dragStartY = mouse.y
-                                                parent.dragStartWidth = parent.width
-                                                parent.dragStartHeight = parent.height
-                                            }
-
-                                            onPositionChanged: {
-                                                parent.width = parent.dragStartWidth + mouse.x - parent.dragStartX
-                                                parent.height = parent.dragStartHeight + mouse.y - parent.dragStartY
-                                            }
-
-                                            visible: dragSetting.checked
-                                        }
                                         Loader {
                                             id: loader
-
-                                            anchors { left: parent.left; top: parent.top }
-                                            width: if (fillSetting.checked) parent.width
-                                            height: if (fillSetting.checked) parent.height
-
+                                            anchors.fill: parent
                                             visible: loader.status !== Loader.Error
                                             source: mainPage.resolveSource()
                                         }// Loader
@@ -348,63 +242,21 @@ ApplicationWindow {
                                 }
                             } // testComponent
                         }
-                    }
+                   } // Repeater
                 }
-            }
-            ScrollBar {
-                id: scrollbar
-
-                anchors { top: flickable.top; right: flickable.right }
-                flickableItem: flickable
             }
         }
     } // main page component
+
     Component {
-        id: listPageComponent
-
-        Page {
-            id: listPage
-
-            ListModel {
-                id: testfileModel
+        id: memToolsMenuComponent
+        Menu {
+            content: MenuLayout {
+                MenuItem { text: "Clear icon caches"; onClicked: symbian.privateClearIconCaches() }
+                MenuItem { text: "Clear component cache"; onClicked: symbian.privateClearComponentCache() }
+                MenuItem { text: "Run garbage collector"; onClicked: gc() }
+                MenuItem { text: "Toggle memory display"; onClicked: { memoryDisplay.visible = !memoryDisplay.visible }}
             }
-
-            // fill the model based on files in C or E-drives
-            Component.onCompleted: {
-                console.log("listpage completed")
-                var fileNames = new Array()
-                var fileFullPaths = new Array()
-                for (var i = 0; i < internal.qmlPaths.length; i++) {
-                    fileNames = fileAccess.qmlFileNames(internal.qmlPaths[i])
-                    fileFullPaths = fileAccess.qmlFilePaths(internal.qmlPaths[i])
-                    for (var j = 0; j < fileNames.length; j++) {
-                       console.log("adding file from disk: " + fileNames[j])
-                        testfileModel.append({"fileName": fileNames[j] + ".qml", "fileFullPath": fileFullPaths[j]})
-                    }
-                }
-            }
-
-            ListView {
-                id: listView
-
-                model: testfileModel
-                pressDelay: 50
-                anchors.fill: parent
-                delegate:
-                ListItem {
-                    onClicked: {
-                        internal.fullPath = listTextId.fullPath
-                        mainWindow.pageStack.pop(listPageComponent)
-                    }
-                    ListItemText {
-                        id: listTextId
-
-                        property string fullPath: fileFullPath
-
-                        text: fileName
-                    }
-                }
-            }// listView
-        }// listPage
-    }// listPageComponent
+        }
+    }
 }
