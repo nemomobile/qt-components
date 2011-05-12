@@ -195,7 +195,7 @@ Dialog {
             for (var d = 1; d <= nDays; ++d)
                 dayList.append({"value" : d})  // day
             for (var m = 1; m <= 12; ++m)
-                monthList.append({"value" : dateTime.shortMonthName(m)});
+                monthList.append({"value" : dateTime.longMonthName(m)});
 
             tumbler.privateInitialize()
             internal.initialised = true;
