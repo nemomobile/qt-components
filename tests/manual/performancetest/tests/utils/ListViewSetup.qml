@@ -41,15 +41,22 @@ Item {
     property bool reInitModel: false
 
     Component.onCompleted: setupTest(testId)
+    onReInitModelChanged: initializeModel()
 
-    Rectangle {
-        anchors.fill: parent
-        color: "Black"
+    BusyIndicator {
+        id: busyIndicator
+        visible: !listModel.initialized
+        running: true
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
+        height: 150
+        width: 150
     }
 
     ListView {
         id: listView
         anchors.fill: parent
+        opacity: !listModel.initialized ? 0 : 1
         focus: true
         clip: true
         model: ListModel { id: model }
@@ -70,10 +77,6 @@ Item {
         ScrollBar {
             flickableItem: listView
         }
-    }
-
-    onReInitModelChanged: {
-        initializeModel()
     }
 
     function setupTest(testid) {
@@ -385,23 +388,25 @@ Item {
 
     ListModel {
         id: listModel
+        property bool initialized: false
+    }
+
+    WorkerScript {
+        id: worker
+        source: "listmodelloader.js"
+        onMessage: listModel.initialized = true
     }
 
     function initializeModel() {
         listModel.clear()
         listView.model = listModel
-
-        for (var i = 0; i < itemCount; i++) {
-            listView.model.append( {
-                "title": "Title text - " + i,
-                "subTitle": i,
-                "imageSize": platformStyle.graphicSizeMedium,
-                "image": "image://theme/:/list1.png",
-                "disabled": false,
-                "selected": false,
-                "sectionIdentifier": sectionInterval > 0 ? Math.floor(i/sectionInterval) : 0
-            } )
-        }
+        var msg = { 'listModel': listModel,
+            'imageSize': platformStyle.graphicSizeMedium,
+            'image': "image://theme/:/list1.png",
+            'sectionInterval': sectionInterval,
+            'itemCount': root.itemCount
+            };
+        worker.sendMessage(msg)
     }
 
     function getSize(size) {
@@ -414,4 +419,3 @@ Item {
         }
     }
 }
-

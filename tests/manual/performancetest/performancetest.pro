@@ -21,7 +21,8 @@ symbian {
     performancetest_qmls2.path = tests
     performancetest_qmls3.sources = tests/utils/*.qml
     performancetest_qmls3.path = tests/utils
-    performancetest_js.sources = *.js
+    performancetest_js.sources = tests/utils/*.js
+    performancetest_js.path = tests/utils
     DEPLOYMENT += performancetest_qmls1 performancetest_qmls2 performancetest_qmls3 performancetest_js
     BLD_INF_RULES.prj_exports += "performancetest.iby $$CORE_APP_LAYER_IBY_EXPORT_PATH(performancetest.iby)"
 
@@ -50,4 +51,5 @@ OTHER_FILES += \
     ../shared/MemoryDisplay.qml \
     main.qml \
     tests/ListView.qml \
-    tests/utils/ListViewSetup.qml
+    tests/utils/ListViewSetup.qml \
+    tests/utils/listmodelloader.js
