@@ -34,64 +34,107 @@ Item {
     objectName: "tumblerColumn" + index
 
     property Item tumblerColumn
-    property alias pathView: pView
     property int index: -1
     property bool firstColumn: false
+    property Item view: viewContainer.item
 
     opacity: enabled ? C.TUMBLER_OPACITY_FULL : C.TUMBLER_OPACITY
     width: childrenRect.width
     visible: tumblerColumn ? tumblerColumn.visible : false
     enabled: tumblerColumn ? tumblerColumn.enabled : true
+    onTumblerColumnChanged: {
+        if (tumblerColumn)
+            viewContainer.sourceComponent = tumblerColumn.privateLoopAround ? pViewComponent : lViewComponent
+    }
+
+    Loader {
+        id: viewContainer
+        anchors.left: divider.right
+        width: tumblerColumn ? tumblerColumn.width - divider.width : 0
+        height: root.height - container.height // decrease by text
+    }
 
     Image {
         id: divider
         anchors.left: parent.left
-        height: firstColumn ? 0 : pView.height
+        height: firstColumn ? 0 : viewContainer.height
         width: firstColumn ? 0 : Math.round(platformStyle.graphicSizeTiny / 2)
         source: privateStyle.imagePath("qtg_fr_tumbler_divider")
     }
 
-    PathView {
-        id: pView
+    Component {
+        // Component for loop around column
+        id: pViewComponent
 
-        anchors.left: divider.right
-        model: tumblerColumn ? tumblerColumn.items : undefined
-        currentIndex: tumblerColumn ? tumblerColumn.selectedIndex : 0
-        // highlight locates in the middle (ratio 0.5) if items do not fully occupy the Tumbler
-        preferredHighlightBegin: privateStyle.menuItemHeight * pView.count > height ?
-                                     (pView.height / 2) / (privateStyle.menuItemHeight * pView.count) : 0.5
-        preferredHighlightEnd: preferredHighlightBegin
-        highlightRangeMode: PathView.StrictlyEnforceRange
-        clip: true
-        delegate: defaultDelegate
-        highlight: defaultHighlight
-        interactive: template.enabled
-        width: tumblerColumn ? tumblerColumn.width - divider.width : 0
-        height: root.height - container.height // decrease by text
+        PathView {
+            id: pView
 
-        onMovementStarted: {
-            internal.movementCount++;
+            model: tumblerColumn ? tumblerColumn.items : undefined
+            currentIndex: tumblerColumn ? tumblerColumn.selectedIndex : 0
+            // highlight locates in the middle (ratio 0.5) if items do not fully occupy the Tumbler
+            preferredHighlightBegin: privateStyle.menuItemHeight * pView.count > height ?
+                                         (pView.height / 2) / (privateStyle.menuItemHeight * pView.count) : 0.5
+            preferredHighlightEnd: preferredHighlightBegin
+            highlightRangeMode: PathView.StrictlyEnforceRange
+            clip: true
+            delegate: defaultDelegate
+            highlight: defaultHighlight
+            interactive: template.enabled
+            anchors.fill: parent
+
+            onMovementStarted: {
+                internal.movementCount++
+            }
+            onMovementEnded: {
+                internal.movementCount--
+                root.changed(template.index) // got index from delegate
+            }
+
+            path: Path {
+                startX: pView.width / 2;
+                startY: privateStyle.menuItemHeight * pView.count > pView.height ?
+                            0 : (pView.height - privateStyle.menuItemHeight * pView.count) / 2
+                 PathLine {
+                     x: pView.width / 2
+                     y: privateStyle.menuItemHeight * pView.count > pView.height ?
+                            privateStyle.menuItemHeight * pView.count : (pView.height + privateStyle.menuItemHeight * pView.count) / 2
+                 }
+            }
         }
-        onMovementEnded: {
-            internal.movementCount--;
-            root.changed(template.index) // got index from delegate
-        }
+    }
 
-        path: Path {
-            startX: pView.width / 2;
-            startY: privateStyle.menuItemHeight * pView.count > pView.height ?
-                        0 : (pView.height - privateStyle.menuItemHeight * pView.count) / 2
-             PathLine {
-                 x: pView.width / 2
-                 y: privateStyle.menuItemHeight * pView.count > pView.height ?
-                        privateStyle.menuItemHeight * pView.count : (pView.height + privateStyle.menuItemHeight * pView.count) / 2
-             }
+    Component {
+        // Component for non loop around column
+        id: lViewComponent
+
+        ListView {
+            id: lView
+
+            model: tumblerColumn ? tumblerColumn.items : undefined
+            currentIndex: tumblerColumn ? tumblerColumn.selectedIndex : 0
+            // highlight locates in the middle (ratio 0.5) if items do not fully occupy the Tumbler
+            preferredHighlightBegin: Math.floor((height - privateStyle.menuItemHeight) / 2)
+            preferredHighlightEnd: preferredHighlightBegin + privateStyle.menuItemHeight
+            highlightRangeMode: ListView.StrictlyEnforceRange
+            clip: true
+            delegate: defaultDelegate
+            highlight: defaultHighlight
+            interactive: template.enabled
+            anchors.fill: parent
+
+            onMovementStarted: {
+                internal.movementCount++
+            }
+            onMovementEnded: {
+                internal.movementCount--
+                root.changed(template.index) // got index from delegate
+            }
         }
     }
 
     Item {
         id: container
-        anchors.top: pView.bottom
+        anchors.top: viewContainer.bottom
         width: tumblerColumn ? tumblerColumn.width : 0
         height: internal.hasLabel ? privateStyle.menuItemHeight : 0 // internal.hasLabel is from root tumbler
 
@@ -121,7 +164,8 @@ Item {
                 elide: tumblerColumn.privateResizeToFit ? Text.ElideNone : Text.ElideRight
                 horizontalAlignment: tumblerColumn.textAlignment == undefined ? "AlignHCenter" : tumblerColumn.textAlignment
                 verticalAlignment: "AlignVCenter"
-                color: delegateItem.PathView.isCurrentItem ? platformStyle.colorHighlighted : platformStyle.colorNormalLight
+                color: (tumblerColumn.privateLoopAround ? delegateItem.PathView.isCurrentItem : delegateItem.ListView.isCurrentItem) ?
+                        platformStyle.colorHighlighted : platformStyle.colorNormalLight
                 font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
                 anchors { fill: parent; margins: platformStyle.paddingLarge }
 

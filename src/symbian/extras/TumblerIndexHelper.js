@@ -37,13 +37,13 @@ function restoreIndex(src) {
     for (var i = 0; i < __origIndex.length; i++) {
         // position view at the right index then make sure selectedIndex
         // is updated to reflect that
-        if (src.privateTemplates[i].pathView.currentIndex > __origIndex[i]) {
-            while (src.privateTemplates[i].pathView.currentIndex != __origIndex[i]) {
-                src.privateTemplates[i].pathView.decrementCurrentIndex()
+        if (src.privateTemplates[i].view.currentIndex > __origIndex[i]) {
+            while (src.privateTemplates[i].view.currentIndex != __origIndex[i]) {
+                src.privateTemplates[i].view.decrementCurrentIndex()
             }
-        } else if (src.privateTemplates[i].pathView.currentIndex < __origIndex[i]) {
-            while (src.privateTemplates[i].pathView.currentIndex != __origIndex[i]) {
-                src.privateTemplates[i].pathView.incrementCurrentIndex()
+        } else if (src.privateTemplates[i].view.currentIndex < __origIndex[i]) {
+            while (src.privateTemplates[i].view.currentIndex != __origIndex[i]) {
+                src.privateTemplates[i].view.incrementCurrentIndex()
             }
         }
         src.columns[i].selectedIndex = __origIndex[i];

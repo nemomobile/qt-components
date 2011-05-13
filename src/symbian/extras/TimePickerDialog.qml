@@ -107,6 +107,7 @@ Dialog {
                 }
                 selectedIndex: root.hour > 11 ? 1: 0
                 visible: root.hourMode == DateTime.TwelveHours
+                privateLoopAround: false
             }
         }
     }

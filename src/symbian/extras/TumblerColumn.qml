@@ -38,4 +38,5 @@ Item {
     // private
     property bool privateIsAutoWidth: false
     property bool privateResizeToFit: false
+    property bool privateLoopAround: true
 }
