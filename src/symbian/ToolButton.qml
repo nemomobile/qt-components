@@ -50,26 +50,6 @@ ImplicitSizeItem {
     signal platformReleased
     signal platformPressAndHold
 
-    // Deprecated on w13 ->
-    property QtObject exclusiveGroup
-    onExclusiveGroupChanged: {
-        console.log("ToolButton.exclusiveGroup is deprecated. Use platformExclusiveGroup instead.")
-        platformExclusiveGroup = exclusiveGroup
-    }
-    property url pressedIconSource
-    onPressedIconSourceChanged: {
-        console.log("ToolButton.pressedIconSource is deprecated. Use onPressedChanged to control the iconSource.")
-    }
-
-    property url checkedIconSource
-    onCheckedIconSourceChanged: {
-        console.log("ToolButton.checkedIconSource is deprecated. Use onCheckedChanged to control the iconSource.")
-    }
-
-    signal released
-    signal pressAndHold
-    // <- Deprecated on w13
-
     implicitWidth: {
         if (!text)
             return internal.iconButtonWidth()
@@ -209,7 +189,6 @@ ImplicitSizeItem {
             if (flat)
                 visibleEffect.restart()
             root.platformReleased()
-            root.released()
         }
 
         function click() {
@@ -226,7 +205,6 @@ ImplicitSizeItem {
         function hold() {
             if (root.longPress) {
                 root.platformPressAndHold()
-                root.pressAndHold()
             }
         }
 
