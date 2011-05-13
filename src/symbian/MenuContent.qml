@@ -40,11 +40,14 @@ Item {
 
     QtObject {
         id: internal
-        property int preferredHeight: screen.height * ((screen.width < screen.height) ? 0.45 : 0.6)
+        property int preferredHeight: Math.floor(
+            screen.height * ((screen.width < screen.height) ? 0.45 : 0.6) / privateStyle.menuItemHeight)
+            * privateStyle.menuItemHeight
     }
 
     BorderImage {
-        source: privateStyle.imagePath("qtg_fr_popup")
+        source: containingPopup.objectName == "OptionsMenu"
+            ? privateStyle.imagePath("qtg_fr_popup_options") : privateStyle.imagePath("qtg_fr_popup") 
         border { left: 20; top: 20; right: 20; bottom: 20 }
         anchors.fill: parent
     }

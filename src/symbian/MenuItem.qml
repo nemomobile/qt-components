@@ -42,11 +42,20 @@ Item {
 
         function bg_postfix() {
             if (activeFocus && symbian.listInteractionMode == Symbian.KeyNavigation)
-                return "highlight"
+                return "highlighted"
             else if (mouseArea.pressed && mouseArea.containsMouse)
                 return "pressed"
             else
                 return "popup_normal"
+        }
+
+        function textColor() {
+            if (activeFocus && symbian.listInteractionMode == Symbian.KeyNavigation)
+                return platformStyle.colorHighlighted
+            else if (mouseArea.pressed && mouseArea.containsMouse)
+                return platformStyle.colorPressed
+            else
+                return platformStyle.colorNormalLight
         }
     }
 
@@ -66,7 +75,8 @@ Item {
             rightMargin: iconLoader.status == Loader.Ready ? platformStyle.paddingMedium : privateStyle.scrollBarThickness
         }
         font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
-        color: platformStyle.colorNormalLight
+        color: internal.textColor()
+        horizontalAlignment: Text.AlignLeft
         elide: Text.ElideRight
     }
 

@@ -46,6 +46,7 @@ Item {
 
     Popup {
         id: popup
+        objectName: "OptionsMenu"
 
         y: screen.height - popup.height - toolBarHeight()
 
