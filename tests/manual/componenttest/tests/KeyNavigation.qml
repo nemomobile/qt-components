@@ -28,139 +28,127 @@ import Qt 4.7
 import com.nokia.symbian 1.0
 import Qt.labs.components 1.0
 
-Item {
+FocusScope {
     id: root
+    anchors.fill: parent
+    focus: true
 
-    property variant focusItem: addText.activeFocus ? addText
-                              : clearText.activeFocus ? clearText
-                              : preText.activeFocus ? preText
-                              : postText.activeFocus ? postText
-                              : null
-
-    Rectangle {
-        border {color: "steelblue"; width: 5}
-        color: "#00000000"; radius: 5; opacity: 0.80
-        x: focusItem ? focusItem.x + column.anchors.margins : 0
-        y: focusItem ? focusItem.y + column.anchors.margins : 0
-        height: focusItem ? focusItem.height + focusItem.anchors.margins : 0
-        width: focusItem ? focusItem.width + focusItem.anchors.margins * 2 : 0
-        visible: focusItem ? focusItem.activeFocus : false
+    Component {
+        id: highlight
+        Rectangle {
+            visible: GridView.view.activeFocus
+            border {color: "steelblue"; width: 5}
+            color: "#00000000"; radius: 5;
+            z: 5
+        }
     }
 
-    Column {
-        id: column
-        anchors {fill: parent; margins: 20}
-        spacing: 10
+    ListModel {
+        id: buttonsModel
+        ListElement {
+            objectName: "addText"
+            title: "Add text"
+            action: "Add"
+            checkableButton: false
+            buttonChecked: false
+        }
+        ListElement {
+            objectName: "clearText"
+            title: "Clear text"
+            action: "Clear"
+            checkableButton: false
+            buttonChecked: false
+        }
+        ListElement {
+            objectName: "preText"
+            title: "Toggle start"
+            action: ""
+            checkableButton: true
+            buttonChecked: false
+        }
+        ListElement {
+            objectName: "postText"
+            title: "Toggle end"
+            action: ""
+            checkableButton: true
+            buttonChecked: false
+        }
+    }
 
-        Grid {
-            id: buttons
-
-            property real bh: (height - spacing * (rows - 1)) / rows
-            property real bw: (width - spacing * (columns - 1)) / columns
-
-            columns: 2; rows: 2; spacing: 10
-            width: parent.width; height: parent.height / 3
-
-            Button {
-                id: addText
-                objectName: "addText"
-                width: parent.bw; height: parent.bh
-                text: "Add text"
-                focus: true
-
-                KeyNavigation.right: clearText
-                KeyNavigation.down: preText
-
-                onClicked: editor.text = (preText.checked ? "Toggled:" : "")
-                            + "Lorem ipsum" + (postText.checked ? ":Toggled\n" : "\n") + editor.text
-            }
-
-            Button {
-                id: clearText
-                objectName: "clearText"
-                text: "Clear text"
-                width: parent.bw; height: parent.bh
-
-                KeyNavigation.left: addText
-                KeyNavigation.down: postText
-
-                onClicked: editor.text = ""
-            }
-
-            Button {
-                id: preText
-                objectName: "preText"
-                text: "Toggle start"
-                checkable: true
-                width: parent.bw; height: parent.bh
-
-                KeyNavigation.up: addText
-                KeyNavigation.right: postText
-                KeyNavigation.down: one
-            }
-
-            Button {
-                id: postText
-                objectName: "postText"
-                text: "Toggle end"
-                checkable: true
-                width: parent.bw; height: parent.bh
-
-                KeyNavigation.up: clearText
-                KeyNavigation.left: preText
-                KeyNavigation.down: three
+    Component {
+        id: buttonsDelegate
+        Button {
+            objectName: objectName
+            width: buttons.cellWidth; height: buttons.cellHeight
+            text: title
+            checkable: checkableButton
+            onClicked: {
+                if (action == "Add")
+                    editor.text = (buttonsModel.get(2).buttonChecked ? "Toggled:" : "") + ("Lorem ipsum") + (buttonsModel.get(3).buttonChecked ? ":Toggled\n" : "\n") + (editor.text)
+                else if (action == "Clear")
+                    editor.text = ""
+                buttonsModel.set(index, {"buttonChecked": checked})
             }
         }
+    }
 
-        TextArea {
-            id: editor
-            objectName: "editor"
-            width: parent.width; height: parent.height / 3
-            anchors.horizontalCenter: parent.horizontalCenter
-            readOnly: true
-            enabled: false
+    GridView {
+        id: buttons
+        anchors {top: parent.top; horizontalCenter: parent.horizontalCenter; margins: platformStyle.paddingSmall }
+        width: parent.width - anchors.margins * 2; height: parent.height * 3 / 6 - anchors.margins * 2
+        cellWidth: width / 2 - anchors.margins; cellHeight: height / 2 - anchors.margins
+        highlight: highlight
+        focus: true
+        model: buttonsModel
+        delegate: buttonsDelegate
+        KeyNavigation.down: radioButtons
+    }
+
+    TextArea {
+        id: editor
+        objectName: "editor"
+        anchors { top: buttons.bottom; horizontalCenter: parent.horizontalCenter; margins: platformStyle.paddingSmall }
+        width: parent.width - anchors.margins * 2; height: parent.height * 2 / 6 - anchors.margins * 2
+        readOnly: true
+        enabled: false
+    }
+
+    ListModel {
+        id: radioButtonsModel
+        ListElement {
+            objectName: "one"
+            title: "one"
         }
-
-        Row {
-            id: radioButtons
-
-            property real bw: width / children.length
-
-            width: parent.width; height: parent.height / 3
-
-            CheckableGroup { id: group }
-
-            RadioButton {
-                id: one
-                objectName: "one"
-                platformExclusiveGroup: group
-                width: parent.bw
-                text: "one"
-
-                KeyNavigation.up: preText
-                KeyNavigation.right: two
-            }
-            RadioButton {
-                id: two
-                objectName: "two"
-                platformExclusiveGroup: group
-                width: parent.bw
-                text: "two"
-
-                KeyNavigation.up: preText
-                KeyNavigation.left: one
-                KeyNavigation.right: three
-            }
-            RadioButton {
-                id: three
-                objectName: "three"
-                platformExclusiveGroup: group
-                width: parent.bw
-                text: "three"
-
-                KeyNavigation.up: postText
-                KeyNavigation.left: two
-            }
+        ListElement {
+            objectName: "two"
+            title: "two"
         }
+        ListElement {
+            objectName: "three"
+            title: "three"
+        }
+    }
+
+    Component {
+        id: radioButtonsDelegate
+        RadioButton {
+            objectName: objectName
+            width: radioButtons.cellWidth; height: radioButtons.cellHeight
+            platformExclusiveGroup: group
+            text: title
+        }
+    }
+
+    CheckableGroup { id: group }
+
+    GridView {
+        id: radioButtons
+        anchors { top: editor.bottom; horizontalCenter: parent.horizontalCenter; margins: platformStyle.paddingSmall; }
+        width: parent.width - anchors.margins * 2; height: parent.height  * 1 / 6 - anchors.margins * 2
+        cellWidth: width / 3 - anchors.margins; cellHeight: height - anchors.margins
+        highlight: highlight
+        model: radioButtonsModel
+        delegate: radioButtonsDelegate
+        KeyNavigation.up: buttons
     }
 }
