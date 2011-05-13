@@ -59,26 +59,6 @@ Item {
         anchors.fill: parent
     }
 
-    // deprecated on w13 ->
-    property list<Item> contents
-    property alias contentsDefault: root.contents
-
-    onContentsChanged: {
-        console.log("TabGroup.content and contentsDefault are deprecated.")
-        privateContents = contents
-    }
-
-    function addTab(content){
-        console.log("TabGroup.addTab is deprecated. (Re)parent to TabGroup instance instead.")
-        content.parent = root
-    }
-
-    function removeTab(content){
-        console.log("TabGroup.removeTab is deprecated. Destroy item directly.")
-        content.destroy()
-    }
-    // <- deprecated w13
-
     Component {
         id: tabContainerComponent
         Item {
