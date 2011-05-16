@@ -46,12 +46,12 @@ ImplicitSizeItem {
         height: parent.height
         sourceSize.width: width
         sourceSize.height: height
-        source: privateStyle.imagePath("qtg_graf_busyindicator_" + index)
+        source: privateStyle.imagePath("qtg_anim_spinner_large_" + index)
         smooth: true
 
         NumberAnimation on index {
             id: numAni
-            from: 1; to: 12
+            from: 1; to: 10
             duration: 1000
             running: root.visible
             // QTBUG-19080 is preventing the following line from working

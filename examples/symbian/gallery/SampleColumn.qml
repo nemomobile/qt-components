@@ -305,7 +305,7 @@ Column {
             acceptButtonText: "Ok"
             rejectButtonText: "Cancel"
 
-            icon: "image://theme/qtg_graf_busyindicator_1"
+            icon: "image://theme/qtg_anim_spinner_large_1"
         }
     }
 
