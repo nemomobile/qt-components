@@ -246,6 +246,7 @@ Item {
 
             ButtonColumn {
                 id: buttonColumn4
+                spacing: platformStyle.paddingMedium
                 checkedButton: checkBox3
                 exclusive: toggleExclusive2.checked
 
@@ -298,6 +299,7 @@ Item {
 
             ButtonColumn {
                 id: buttonColumn5
+                spacing: platformStyle.paddingMedium
                 width: parent.width
                 exclusive: toggleExclusive3.checked
 

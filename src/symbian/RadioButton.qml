@@ -93,15 +93,13 @@ ImplicitSizeItem {
         ]
     }
 
-    implicitWidth: platformStyle.paddingLarge + privateStyle.textWidth(label.text, label.font) + platformStyle.paddingMedium
-        + privateStyle.buttonSize + privateStyle.scrollBarThickness
-    implicitHeight: privateStyle.menuItemHeight
+    implicitWidth: privateStyle.textWidth(label.text, label.font) + platformStyle.paddingMedium + privateStyle.buttonSize
+    implicitHeight: privateStyle.buttonSize
 
     Image {
         id: image
         source: privateStyle.imagePath("qtg_graf_radiobutton_" + internal.icon_postfix())
         anchors.left: parent.left
-        anchors.leftMargin: platformStyle.paddingLarge
         anchors.verticalCenter: parent.verticalCenter
         sourceSize.width: privateStyle.buttonSize
         sourceSize.height: privateStyle.buttonSize
@@ -113,7 +111,6 @@ ImplicitSizeItem {
         anchors.leftMargin: platformStyle.paddingMedium
         anchors.verticalCenter: parent.verticalCenter
         anchors.right: parent.right
-        anchors.rightMargin: platformStyle.paddingLarge
 
         font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
         color: {

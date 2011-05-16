@@ -101,7 +101,7 @@ ImplicitSizeItem {
 
     implicitWidth: label.text ? privateStyle.buttonSize + platformStyle.paddingMedium + privateStyle.textWidth(label.text, label.font)
                               : privateStyle.buttonSize
-    implicitHeight: privateStyle.menuItemHeight
+    implicitHeight: privateStyle.buttonSize
 
     Image {
         id: contentIcon
