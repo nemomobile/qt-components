@@ -39,6 +39,9 @@
 #include <QCoreApplication>
 #include <QtDeclarative>
 
+static const int VERSION_MAJOR = 1;
+static const int VERSION_MINOR = 0;
+
 class SymbianPlugin : public QDeclarativeExtensionPlugin
 {
     Q_OBJECT
@@ -49,12 +52,21 @@ public:
         QDeclarativeExtensionPlugin::initializeEngine(engine, uri);
         context = engine->rootContext();
 
-        // Make sure global data is instantiated only once.
-        // initializeEngine() might be called twice: once from
-        // import com.nokia.symbian 1.0, and another time from
-        // import Qt.labs.components.native 1.0
-        if (context->contextProperty("symbian").isValid())
+        // QVariant.toInt() defaults to zero if QVariant is invalid.
+        int versionMajor = context->property("symbianComponentsVersionMajor").toInt();
+        int versionMinor = context->property("symbianComponentsVersionMinor").toInt();
+        if (versionMajor > VERSION_MAJOR ||
+            (versionMajor == VERSION_MAJOR && versionMinor >= VERSION_MINOR)) {
+            // Either newer or this version of plugin already initialized.
+            // The same plugin might initialized twice: once from 
+            // "import com.nokia.symbian", and another time from
+            // "import Qt.labs.components.native".
             return;
+        } else {
+            // Intentionally override possible older version of the plugin.
+            context->setProperty("symbianComponentsVersionMajor", VERSION_MAJOR);
+            context->setProperty("symbianComponentsVersionMinor", VERSION_MINOR);
+        }
 
         engine->addImageProvider(QLatin1String("theme"), new SDeclarativeImageProvider);
 
