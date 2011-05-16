@@ -118,12 +118,16 @@ Item {
             if (itemAvailable && (event.key == Qt.Key_Down || event.key == Qt.Key_Up)) {
                 if (event.key == Qt.Key_Down && index < contentArea.children[0].children.length - 1) {
                     index++
-                    if (index * itemHeight > contentY + height - itemHeight)
+                    if (index * itemHeight > contentY + height - itemHeight) {
                         contentY = index * itemHeight - height + itemHeight
+                        scrollBar.flash(Symbian.FadeOut)
+                    }
                 } else if (event.key == Qt.Key_Up && index > 0) {
                     index--
-                    if (index * itemHeight < contentY)
+                    if (index * itemHeight < contentY) {
                         contentY = index * itemHeight
+                        scrollBar.flash(Symbian.FadeOut)
+                    }
                 }
                 contentArea.children[0].children[index].focus = true
                 event.accepted = true

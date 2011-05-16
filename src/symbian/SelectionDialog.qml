@@ -71,6 +71,13 @@ CommonDialog {
             anchors.fill: parent
             delegate: root.delegate
             clip: true
+
+            // Flash scrollbar when navigating to hidden
+            // listItem with hw keys
+            onContentYChanged: {
+                if (!moving)
+                    scrollBar.flash(Symbian.FadeOut)
+            }
         }
 
         ScrollBar {
