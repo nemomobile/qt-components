@@ -103,14 +103,22 @@ Item {
 
     MouseArea {
         id: mouseArea
+
+        property bool canceled: false
+
         anchors.fill: parent
 
         onPressed: {
+            canceled = false
             symbian.listInteractionMode = Symbian.TouchInteraction
             privateStyle.play(Symbian.BasicItem)
         }
         onClicked: root.clicked()
-        onReleased: privateStyle.play(Symbian.PopupClose)
+        onReleased: {
+            if (!canceled)
+                privateStyle.play(Symbian.PopupClose)
+        }
+        onExited: canceled = true
     }
 
     Keys.onPressed: {
