@@ -1,10 +1,11 @@
 /*!
 
-  \group qt-components-symbian
-  \title All Symbian-specific Qt Quick components
+    \group qt-components-symbian
+    \title All Symbian-specific Qt Quick components
 
-  This is a list of all the Symbian-specific Qt Quick components that are available.
+    This is a list of all the Symbian-specific Qt Quick components that are available.
 
+    For functional grouping, view the \l{Functional List of Symbian Components} page.
   \generatelist related
 
 */

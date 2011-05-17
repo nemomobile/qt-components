@@ -73,6 +73,7 @@
                 \endlist
             \o
                 \list
+                    \o \l{Functional List of Symbian Components}{List of the Symbian Components}
                     \o \l{qt-components}{Components reference}
                     \o \l{Building the Qt Quick components}
                     \o \l{Release notes for the Qt Quick components documentation}{Documentation notes}
