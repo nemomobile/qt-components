@@ -44,7 +44,7 @@ Page {
 
         Tumbler {
             id: tumbler
-            anchors { top: parent.top; topMargin: 2; horizontalCenter: parent.horizontalCenter }
+            anchors { top: parent.top; topMargin: 32; horizontalCenter: parent.horizontalCenter }
             width: inPortrait() ? screen.width - 6 * platformStyle.paddingMedium
                      : screen.width - 18 * platformStyle.paddingLarge
             columns: [monthColumn, dayColumn, yearColumn]
@@ -90,29 +90,12 @@ Page {
             Button {
                 text: "Set Today"
                 width: parent.buttonWidth
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        var d = new Date();
-                        dayColumn.selectedIndex = d.getDate() - 1;
-                        monthColumn.selectedIndex = d.getMonth();
-                        yearColumn.selectedIndex = d.getFullYear() - 2000;
-                        extraColumn.selectedIndex = d.getDay();
-                    }
-                }
-            }
-
-            Button {
-                text: "Set model"
-                width: parent.buttonWidth
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        var tmp = dayColumn.selectedIndex;
-                        dayColumn.items = yearsList;
-                        dayColumn.selectedIndex = -1;
-                        dayColumn.selectedIndex = tmp;
-                    }
+                onClicked: {
+                    var d = new Date();
+                    dayColumn.selectedIndex = d.getDate() - 1;
+                    monthColumn.selectedIndex = d.getMonth();
+                    yearColumn.selectedIndex = d.getFullYear() - 2000;
+                    extraColumn.selectedIndex = d.getDay();
                 }
             }
 
@@ -130,35 +113,33 @@ Page {
             }
 
             Button {
-                text: "Set width"
-                width: parent.buttonWidth
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        dayColumn.width = 200;
-                        yearColumn.width = 80;
-                    }
-                }
-            }
-
-            Button {
+                id: col4
+                checkable: true
                 text: "4 columns"
+                checked: false
                 width: parent.buttonWidth
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        tumbler.columns = [monthColumn, dayColumn, yearColumn, extraColumn]
+                onClicked: {
+                    if (checked) {
+                        tumbler.columns = [monthColumn, dayColumn, yearColumn, extraColumn];
+                        col2.checked = false;
+                    } else {
+                        tumbler.columns = [monthColumn, dayColumn, yearColumn]
                     }
                 }
             }
 
             Button {
+                id: col2
+                checkable: true
                 text: "2 columns"
+                checked: false
                 width: parent.buttonWidth
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        tumbler.columns = [dayColumn, yearColumn]
+                onClicked: {
+                    if (checked) {
+                        tumbler.columns = [dayColumn, yearColumn];
+                        col4.checked = false;
+                    } else {
+                        tumbler.columns = [monthColumn, dayColumn, yearColumn]
                     }
                 }
             }
