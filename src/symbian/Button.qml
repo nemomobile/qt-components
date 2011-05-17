@@ -114,9 +114,9 @@ ImplicitSizeItem {
         }
 
         function click() {
+            internal.toggleChecked();
             if (!checkable || (checkable && !checked))
                 privateStyle.play(Symbian.BasicButton);
-            internal.toggleChecked();
             clickedEffect.restart();
             button.clicked();
         }
