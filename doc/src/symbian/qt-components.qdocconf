@@ -23,13 +23,9 @@ qhp.QtComponentsSymbian.namespace        = com.nokia.qtcomponentssymbian.010
 qhp.QtComponentsSymbian.virtualFolder    = doc
 qhp.QtComponentsSymbian.indexTitle       = Qt Quick Components for Symbian
 qhp.QtComponentsSymbian.filterAttributes = QtComponents 0.1.0
-qhp.QtComponentsSymbian.customFilters.QtComponentsSymbian.name = Qt Quick Components 0.1.0
-qhp.QtComponentsSymbian.customFilters.QtComponentsSymbian.filterAttributes = qtcomponents 0.1.0
-qhp.QtComponentsSymbian.extraFiles          = scripts/functions.js \
-									scripts/jquery.js \
-									scripts/narrow.js \
-									scripts/superfish.js \
-									style/offline.css
+qhp.QtComponentsSymbian.customFilters.QtComponentsSymbian.name = Qt Quick Components for Symbian 0.1.0
+qhp.QtComponentsSymbian.customFilters.QtComponentsSymbian.filterAttributes = QtComponents 0.1.0
+qhp.QtComponentsSymbian.extraFiles          = style/offline.css
 qhp.QtComponentsSymbian.indexRoot        =
 
 qhp.QtComponentsSymbian.subprojects = manual
@@ -266,111 +262,77 @@ extraimages.HTML        = qt-logo \
 
 # This stuff is used by the new doc format.
 
-HTML.templatedir = $Q_COMPONENTS_SOURCE_TREE/doc/src/symbian/template
+HTML.templatedir = $Q_COMPONENTS_SOURCE_TREE/doc/src/templates
+
 
 HTML.scripts		+= scripts/functions.js \
 			     scripts/narrow.js \
 			     scripts/superfish.js \
 			        scripts/jquery.js
 
-HTML.stylesheets        = style/style.css \
-                          style/style_ie7.css \
-                          style/style_ie8.css \
-                          style/style_ie6.css
+HTML.stylesheets = style/offline.css
 
-#HTML.headerstyles = \
-#    "  <link rel=\"stylesheet\" type=\"text/css\" href=\"style/offline.css\" />\n"
+HTML.scripts     =
 
-HTML.postheader         = " <div class=\"header\" id=\"qtdocheader\">\n" \
-                          "    <div class=\"content\"> \n" \
-                          "    <div id=\"nav-logo\">\n" \
-                          "      <a href=\"index.html\">Home</a></div>\n" \
-                          "    <a href=\"index.html\" class=\"qtref\"><span>Qt Quick Components for Symbian</span></a>\n" \
-                          "    <div id=\"nav-topright\">\n" \
-                          "      <ul>\n" \
-                          "        <li class=\"nav-topright-home\"><a href=\"http://qt.nokia.com/\">Qt HOME</a></li>\n" \
-                          "        <li class=\"nav-topright-dev\"><a href=\"http://developer.qt.nokia.com/\">DEV</a></li>\n" \
-                          "        <li class=\"nav-topright-labs\"><a href=\"http://labs.qt.nokia.com/blogs/\">LABS</a></li>\n" \
-                          "        <li class=\"nav-topright-doc nav-topright-doc-active\"><a href=\"http://doc.qt.nokia.com/\">\n" \
-                          "          DOC</a></li>\n" \
-                          "        <li class=\"nav-topright-blog\"><a href=\"http://blog.qt.nokia.com/\">BLOG</a></li>\n" \
-                          "      </ul>\n" \
-                          "    </div>\n" \
-                          "    <div id=\"shortCut\">\n" \
-                          "      <ul>\n" \
-                          "        <li class=\"shortCut-topleft-inactive\"><span><a href=\"index.html\">Qt 4.7</a></span></li>\n" \
-                          "        <li class=\"shortCut-topleft-active\"><a href=\"http://doc.qt.nokia.com\">ALL VERSIONS" \
-                          "        </a></li>\n" \
-                          "      </ul>\n" \
-                          "     </div>\n" \
-                          "    </div>\n" \
-                          "  </div>\n" \
-                          "  <div class=\"wrapper\">\n" \
-                          "    <div class=\"hd\">\n" \
-                          "      <span></span>\n" \
-                          "    </div>\n" \
-                          "    <div class=\"bd group\">\n" \
-                          "      <div class=\"sidebar\">\n" \
-                          "        <div class=\"searchlabel\">\n" \
-                          "          Search index:</div>\n" \
-                          "        <div class=\"search\">\n" \
-                          "          <form id=\"qtdocsearch\" action=\"\" onsubmit=\"return false;\">\n" \
-                          "            <fieldset>\n" \
-                          "              <input type=\"text\" name=\"searchstring\" id=\"pageType\" value=\"\" />\n" \
-                          " <div id=\"resultdialog\"> \n" \
-                          " <a href=\"#\" id=\"resultclose\">Close</a> \n" \
-                          " <p id=\"resultlinks\" class=\"all\"><a href=\"#\" id=\"showallresults\">All</a> | <a href=\"#\" id=\"showapiresults\">API</a> | <a href=\"#\" id=\"showarticleresults\">Articles</a> | <a href=\"#\" id=\"showexampleresults\">Examples</a></p> \n" \
-                          " <p id=\"searchcount\" class=\"all\"><span id=\"resultcount\"></span><span id=\"apicount\"></span><span id=\"articlecount\"></span><span id=\"examplecount\"></span>&nbsp;results:</p> \n" \
-                          " <ul id=\"resultlist\" class=\"all\"> \n" \
-                          " </ul> \n" \
-                          " </div> \n" \
-                          "            </fieldset>\n" \
-                          "          </form>\n" \
-                          "        </div>\n" \
-                          "      </div>\n" \
-                          "      <div class=\"wrap\">\n" \
-                          "        <div class=\"toolbar\">\n" \
-                          "          <div class=\"breadcrumb toolblock\">\n" \
-                          "            <ul>\n" \
-                          "              <li class=\"first\"><a href=\"index.html\">Home</a></li>\n" \
-                          "              <!--  Bread crumbs goes here -->\n"
+# Files not referenced in any qdoc file (last four needed by qtdemo)
+# See also qhp.Qt.extraFiles
+extraimages.HTML        = qt-logo.png \
+                          arrow_down.png \
+                          breadcrumb.png \
+                          bullet_gt.png \
+                          bullet_dn.png \
+                          bullet_sq.png \
+                          bullet_up.png \
+                          horBar.png \
+                          sprites-combined.png
 
-HTML.postpostheader     = "            </ul>\n" \
-                          "          </div>\n" \
-                          "          <div class=\"toolbuttons toolblock\">\n" \
-                          "            <ul>\n" \
-                          "              <li id=\"smallA\" class=\"t_button\">A</li>\n" \
-                          "              <li id=\"medA\" class=\"t_button active\">A</li>\n" \
-                          "              <li id=\"bigA\" class=\"t_button\">A</li>\n" \
-                          "              <li id=\"print\" class=\"t_button\"><a href=\"javascript:this.print();\">\n" \
-                          "                <span>Print</span></a></li>\n" \
-                          "            </ul>\n" \
-                          "        </div>\n" \
-                          "        </div>\n" \
-                          "        <div class=\"content mainContent\">\n"
+# Include the style sheets and scripts used.
 
-HTML.footer             = "" \
-                          "    </div>\n" \
-                          "    </div> \n" \
-                          "    <div class=\"ft\">\n" \
-                          "      <span></span>\n" \
-                          "    </div>\n" \
-                          "  </div> \n" \
-                          "  <div class=\"footer\">\n" \
-                          "    <p>\n" \
-                          "      <acronym title=\"Copyright\">&copy;</acronym> 2008-2011 Nokia Corporation and/or its\n" \
-                          "      subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation \n" \
-                          "      in Finland and/or other countries worldwide.</p>\n" \
-                          "    <p>\n" \
-                          "      All other trademarks are property of their respective owners. <a title=\"Privacy Policy\"\n" \
-                          "        href=\"http://qt.nokia.com/about/privacy-policy\">Privacy Policy</a></p>\n" \
-                          "    <br />\n" \
-                          "    <p>\n" \
-                          "      Licensees holding valid Qt Commercial licenses may use this document in accordance with the" \
-                          "      Qt Commercial License Agreement provided with the Software or, alternatively, in accordance" \
-                          "      with the terms contained in a written agreement between you and Nokia.</p>\n" \
-                          "    <p>\n" \
-                          "      Alternatively, this document may be used under the terms of the <a href=\"http://www.gnu.org/licenses/fdl.html\">GNU\n" \
-                          "      Free Documentation License version 1.3</a>\n" \
-                          "      as published by the Free Software Foundation.</p>\n" \
-                          "  </div>\n" \
+HTML.headerstyles = \
+    "  <link rel=\"stylesheet\" type=\"text/css\" href=\"style/offline.css\" />\n"
+
+HTML.headerscripts = 
+
+HTML.endheader = \
+    "</head>\n" \
+    "<body>\n"
+
+HTML.postheader = \
+    "<div class=\"header\" id=\"qtdocheader\">\n" \
+    "  <div class=\"content\"> \n" \
+    "    <a href=\"index.html\" class=\"qtref\"><span>Qt Quick Components for Symbian</span></a>\n" \
+    "  </div>\n" \
+    "  <div class=\"breadcrumb toolblock\">\n" \
+    "    <ul>\n" \
+    "      <li class=\"first\"><a href=\"index.html\">Home</a></li>\n" \
+    "      <!--  Breadcrumbs go here -->\n"
+
+HTML.postpostheader = \
+    "    </ul>\n" \
+    "  </div>\n" \
+    "</div>\n" \
+    "<div class=\"content mainContent\">\n"
+
+HTML.footer = \
+    "  <div class=\"ft\">\n" \
+    "    <span></span>\n" \
+    "  </div>\n" \
+    "</div> \n" \
+    "<div class=\"footer\">\n" \
+    "  <p>\n" \
+    "     <acronym title=\"Copyright\">&copy;</acronym> 2008-2011 Nokia Corporation and/or its\n" \
+    "     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation \n" \
+    "     in Finland and/or other countries worldwide.</p>\n" \
+    "  <p>\n" \
+    "     All other trademarks are property of their respective owners. <a title=\"Privacy Policy\"\n" \
+    "     href=\"http://qt.nokia.com/about/privacy-policy\">Privacy Policy</a></p>\n" \
+    "  <br />\n" \
+    "  <p>\n" \
+    "    Licensees holding valid Qt Commercial licenses may use this document in accordance with the" \
+    "    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance" \
+    "    with the terms contained in a written agreement between you and Nokia.</p>\n" \
+    "  <p>\n" \
+    "    Alternatively, this document may be used under the terms of the <a href=\"http://www.gnu.org/licenses/fdl.html\">GNU\n" \
+    "    Free Documentation License version 1.3</a>\n" \
+    "    as published by the Free Software Foundation.</p>\n" \
+    "</div>\n" \

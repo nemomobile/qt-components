@@ -21,7 +21,7 @@ meego:QDOCCONF = $${Q_COMPONENTS_SOURCE_TREE}/doc/src/meego/qt-components.qdocco
         html_docs.commands = (set QT_INSTALL_DOCS=$$[QT_INSTALL_DOCS]&& set Q_COMPONENTS_SOURCE_TREE=$${Q_COMPONENTS_SOURCE_TREE}&& $$QDOC $$QDOCCONF)
     }
     qch_docs.depends = html_docs
-    qch_docs.commands = (cd $${Q_COMPONENTS_SOURCE_TREE} && $$QHELPGENERATOR doc/html/qtcomponents.qhp -o doc/qch/qtcomponents.qch)
+    qch_docs.commands = (cd $${Q_COMPONENTS_SOURCE_TREE} && $$QHELPGENERATOR doc/html/qtcomponentssymbian.qhp -o doc/qch/qtcomponentssymbian.qch)
     QMAKE_EXTRA_TARGETS += html_docs qch_docs
 }
 
