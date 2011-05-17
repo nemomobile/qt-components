@@ -43,7 +43,7 @@ Item {
         function bg_postfix() {
             if (activeFocus && symbian.listInteractionMode == Symbian.KeyNavigation)
                 return "highlighted"
-            else if (mouseArea.pressed && mouseArea.containsMouse)
+            else if (mouseArea.pressed && mouseArea.containsMouse && !mouseArea.canceled)
                 return "pressed"
             else
                 return "popup_normal"
@@ -113,7 +113,10 @@ Item {
             symbian.listInteractionMode = Symbian.TouchInteraction
             privateStyle.play(Symbian.BasicItem)
         }
-        onClicked: root.clicked()
+        onClicked: {
+            if (!canceled)
+                root.clicked()
+        }
         onReleased: {
             if (!canceled)
                 privateStyle.play(Symbian.PopupClose)
