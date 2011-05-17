@@ -138,7 +138,7 @@ symbian {
             "%{\"Nokia\"}" \
             " " \
             "; Unique Vendor name" \
-            ":\"Nokia\"" \
+            ":\"Nokia, Qt\"" \
             " "
 
     header = "$${LITERAL_HASH}{\"symbianplugin\"},(0x200346DD),1,0,0,TYPE=SA,RU"

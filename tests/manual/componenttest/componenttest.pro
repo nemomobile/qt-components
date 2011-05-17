@@ -40,7 +40,7 @@ symbian {
             "%{\"Nokia\"}" \
             " " \
             "; Unique Vendor name" \
-            ":\"Nokia\"" \
+            ":\"Nokia, Qt\"" \
             " "
 
     header = "$${LITERAL_HASH}{\"componenttest\"},(0x200346E0),1,0,0,TYPE=SA,RU"

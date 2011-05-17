@@ -31,7 +31,7 @@ symbian {
             "%{\"Nokia\"}" \
             " " \
             "; Unique Vendor name" \
-            ":\"Nokia\"" \
+            ":\"Nokia, Qt\"" \
             " "
 
     header = "$${LITERAL_HASH}{\"qmlextrasgallery\"},(0x2003A914),1,0,0,TYPE=SA,RU"

@@ -37,7 +37,7 @@ symbian {
             "%{\"Nokia\"}" \
             " " \
             "; Unique Vendor name" \
-            ":\"Nokia\"" \
+            ":\"Nokia, Qt\"" \
             " "
 
     header = "$${LITERAL_HASH}{\"qtcomponentsplugin\"},(0x200346E1),1,0,0,TYPE=SA,RU"
