@@ -1,4 +1,4 @@
-import Qt 4.7
+import QtQuick 1.0
 import Qt.labs.components 1.0
 
 /// This is an example of a button component with 'checkable' abilities, it can

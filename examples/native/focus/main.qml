@@ -23,7 +23,7 @@
 ** Nokia at qt-info@nokia.com.
 **
 ****************************************************************************/
-import Qt 4.7
+import QtQuick 1.0
 import Qt.labs.components.native 1.0
 
 Window {
