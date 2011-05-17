@@ -45,6 +45,7 @@ Item {
         id: splash
 
         anchors.fill: parent
+        fillMode: Image.PreserveAspectCrop
         source: root.image
     }
 
