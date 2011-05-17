@@ -412,8 +412,8 @@ qreal SDeclarativeScreen::dpi() const
 SDeclarativeScreen::DisplayCategory SDeclarativeScreen::displayCategory() const
 {
     Q_D(const SDeclarativeScreen);
-    const int w = d->screenSize.width();
-    const int h = d->screenSize.height();
+    const int w = d->displaySize.width();
+    const int h = d->displaySize.height();
     const qreal diagonal = qSqrt(static_cast<qreal>(w * w + h * h)) / d->dpi;
 
     if (diagonal < CATEGORY_SMALL_LIMIT)
