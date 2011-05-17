@@ -23,7 +23,7 @@
 ** Nokia at qt-info@nokia.com.
 **
 ****************************************************************************/
-import Qt 4.7
+import QtQuick 1.0
 import "." 1.0
 
 FocusScopeItem {

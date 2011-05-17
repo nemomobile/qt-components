@@ -25,7 +25,7 @@
 **
 ****************************************************************************/
 
-import Qt 4.7
+import QtQuick 1.0
 import "." 1.0
 import "AppManager.js" as Utils
 

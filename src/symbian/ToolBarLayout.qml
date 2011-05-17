@@ -27,7 +27,7 @@
 // ToolBarLayout is a container for items on a toolbar that automatically
 // implements an appropriate layout for its children.
 
-import Qt 4.7
+import QtQuick 1.0
 import "." 1.0
 
 ImplicitSizeItem {

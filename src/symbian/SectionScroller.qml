@@ -24,7 +24,7 @@
 **
 ****************************************************************************/
 
-import Qt 4.7
+import QtQuick 1.0
 import "SectionScroller.js" as Sections
 import "." 1.0
 
