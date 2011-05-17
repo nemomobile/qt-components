@@ -29,25 +29,12 @@ import com.nokia.symbian 1.0
 import "Constants.js" as C
 import "TumblerIndexHelper.js" as IH
 
-Dialog {
+CommonDialog {
     id: root
 
-    property alias titleText: title.text
     property alias columns: tumbler.columns
     property alias acceptButtonText: acceptButton.text
     property alias rejectButtonText: rejectButton.text
-
-    title: Text {
-        id: title
-        visible: text.length > 0
-        anchors {
-            left: parent.left; leftMargin: platformStyle.paddingLarge; right: parent.right;
-            rightMargin: platformStyle.paddingLarge; verticalCenter: parent.verticalCenter
-        }
-        font { family: platformStyle.fontFamilyRegular; pixelSize: C.FONT_DEFAULT_SIZE }
-        color: platformStyle.colorNormalLight
-        elide: Text.ElideRight
-    }
 
     content: Item {
         id: content
@@ -72,20 +59,21 @@ Dialog {
     buttons: ToolBar {
         id: buttons
         width: parent.width
-
+        height: privateStyle.toolBarHeightLandscape + 2 * platformStyle.paddingSmall
         Row {
             id: buttonRow
             anchors.centerIn: parent
+            spacing: platformStyle.paddingMedium
 
             ToolButton {
                 id: acceptButton
-                width: buttons.width / 2
+                width: (buttons.width - 3 * platformStyle.paddingMedium) / 2
                 onClicked: accept()
                 visible: text != ""
             }
             ToolButton {
                 id: rejectButton
-                width: buttons.width / 2
+                width: (buttons.width - 3 * platformStyle.paddingMedium) / 2
                 onClicked: reject()
                 visible: text != ""
             }

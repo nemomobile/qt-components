@@ -29,10 +29,9 @@ import com.nokia.symbian 1.0
 import "Constants.js" as C
 import "TumblerIndexHelper.js" as TH
 
-Dialog {
+CommonDialog {
     id: root
 
-    property alias titleText: title.text
     property int year: 0
     property int month: 1
     property int day: 1
@@ -43,15 +42,6 @@ Dialog {
 
     // TODO do not dismiss the dialog when empty area is clicked
 
-    title: Text {
-        id: title
-        objectName: "title"
-        visible: text.length > 0
-        color: platformStyle.colorNormalLight
-        font { pixelSize: platformStyle.fontSizeSmall; family: platformStyle.fontFamilyRegular }
-        anchors { verticalCenter: parent.verticalCenter; left: parent.left; leftMargin: platformStyle.paddingLarge }
-        elide: Text.ElideRight
-    }
     content: Item {
         id: dialogContent
         height: tumbler.height + platformStyle.paddingLarge * 2
@@ -122,20 +112,21 @@ Dialog {
     buttons: ToolBar {
         id: buttons
         width: parent.width
-
+        height: privateStyle.toolBarHeightLandscape + 2 * platformStyle.paddingSmall
         Row {
             id: buttonRow
             anchors.centerIn: parent
+            spacing: platformStyle.paddingMedium
 
             ToolButton {
                 id: confirmButton
-                width: buttons.width / 2
+                width: (buttons.width - 3 * platformStyle.paddingMedium) / 2
                 onClicked: accept()
                 visible: text != ""
             }
             ToolButton {
                 id: rejectButton
-                width: buttons.width / 2
+                width: (buttons.width - 3 * platformStyle.paddingMedium) / 2
                 onClicked: reject()
                 visible: text != ""
             }
