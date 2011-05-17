@@ -46,7 +46,7 @@ ApiCheckBase::~ApiCheckBase()
 
 void ApiCheckBase::init(const QString &name, const QString &body)
 {
-    const QString block = QString("import Qt 4.7\nimport %1\n%2 { %3 }")
+    const QString block = QString("import QtQuick 1.0\nimport %1\n%2 { %3 }")
         .arg(m_module).arg(name).arg(body);
 
     QDeclarativeComponent *component = new QDeclarativeComponent(m_engine);
@@ -60,7 +60,7 @@ void ApiCheckBase::init(const QString &name, const QString &body)
 
 void ApiCheckBase::initContextProperty(const QString &name)
 {
-    const QString block = QString("import Qt 4.7\nimport %1\nItem{}").arg(m_module);
+    const QString block = QString("import QtQuick 1.0\nimport %1\nItem{}").arg(m_module);
 
     // Make sure the root context is initialized properly
     QDeclarativeComponent *component = new QDeclarativeComponent(m_engine);

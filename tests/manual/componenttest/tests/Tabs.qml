@@ -24,7 +24,7 @@
 **
 ****************************************************************************/
 
-import Qt 4.7
+import QtQuick 1.0
 import com.nokia.symbian 1.0
 
 Item {
@@ -360,7 +360,7 @@ Item {
     // function startNewPage() crates a tabbed page described below. The
     // content is created dynamically based on the tab amount requested.
 /*
-import Qt 4.7;
+import QtQuick 1.0;
 import com.nokia.symbian 1.0;
 Page {
     id: page;
@@ -382,7 +382,7 @@ Page {
 */
 
     function startNewPage() {
-        var filePrefix =       "import Qt 4.7; import com.nokia.symbian 1.0; Page { id: page; "
+        var filePrefix =       "import QtQuick 1.0; import com.nokia.symbian 1.0; Page { id: page; "
         var tabBarPrefix =         "TabBar { id: tabBar; "
         var tabBarContent =            ""
         var tabBarPostfix =        "} "

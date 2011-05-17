@@ -24,7 +24,7 @@
 **
 ****************************************************************************/
 
-import Qt 4.7
+import QtQuick 1.0
 import com.nokia.symbian 1.0
 
 Item {
@@ -214,7 +214,7 @@ Item {
                 text: "Add"
 
                 onClicked: {
-                    var item = Qt.createQmlObject('import Qt 4.7; import com.nokia.symbian 1.0;  Button { text: \"Btn' +buttonRow3.children.length +'\" }', buttonRow3, "dynButton");
+                    var item = Qt.createQmlObject('import QtQuick 1.0; import com.nokia.symbian 1.0;  Button { text: \"Btn' +buttonRow3.children.length +'\" }', buttonRow3, "dynButton");
                 }
             }
 
@@ -471,7 +471,7 @@ Item {
                 text: "Add ToolBtn"
 
                 onClicked: {
-                    var item = Qt.createQmlObject('import Qt 4.7; import com.nokia.symbian 1.0;  ToolButton { text: \"Btn' +buttonRow8.children.length +'\" }', buttonRow8, "dynButton");
+                    var item = Qt.createQmlObject('import QtQuick 1.0; import com.nokia.symbian 1.0;  ToolButton { text: \"Btn' +buttonRow8.children.length +'\" }', buttonRow8, "dynButton");
                 }
             }
 

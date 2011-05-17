@@ -24,7 +24,7 @@
 **
 ****************************************************************************/
 
-import Qt 4.7
+import QtQuick 1.0
 import com.nokia.symbian 1.0
 import Qt.labs.components 1.0
 
@@ -138,7 +138,7 @@ Item {
             }
 
             onPlatformPressAndHold: {
-                var menu = Qt.createQmlObject('import Qt 4.7; Rectangle { id: tempMenu; color: "lightsteelblue"; width: 200; height: 100; anchors.centerIn: parent; opacity: 0.8; Text { id: text1; text: "Click to close"; font.pointSize: 12; anchors.top: parent.top;}  MouseArea { anchors.fill: parent; onClicked: {tempMenu.destroy(); } } }', scalableButton.parent, "menu");
+                var menu = Qt.createQmlObject('import QtQuick 1.0; Rectangle { id: tempMenu; color: "lightsteelblue"; width: 200; height: 100; anchors.centerIn: parent; opacity: 0.8; Text { id: text1; text: "Click to close"; font.pointSize: 12; anchors.top: parent.top;}  MouseArea { anchors.fill: parent; onClicked: {tempMenu.destroy(); } } }', scalableButton.parent, "menu");
             }
 
             Rectangle {

@@ -178,7 +178,7 @@ void tst_tabgroup::testReparentingDynamic()
 void tst_tabgroup::testAddRemoveTabs()
 {
     const QString componentData(
-        "import Qt 4.7\n"
+        "import QtQuick 1.0\n"
         "import com.nokia.symbian 1.0\n"
         "Page {\n"
         "}\n");
