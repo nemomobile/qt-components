@@ -64,7 +64,7 @@ Column {
             anchors { top: parent.top; right: parent.right; margins: platformStyle.paddingMedium }
             fillMode: Image.PreserveAspectFit
             smooth: true; visible: parent.text
-            source: clear.pressed ? "qrc:clear_pressed.svg" : "qrc:clear_normal.svg"
+            source: clear.pressed ? "image://theme/qtg_graf_textfield_clear_pressed" : "image://theme/qtg_graf_textfield_clear_normal"
             height: parent.height - platformStyle.paddingMedium * 2
             width: parent.height - platformStyle.paddingMedium * 2
 
@@ -89,7 +89,7 @@ Column {
             anchors { top: parent.top; right: parent.right }
             smooth: true
             fillMode: Image.PreserveAspectFit
-            source: add.pressed ? "qrc:add_pressed.svg" : "qrc:add_normal.svg"
+            source: add.pressed ? "image://theme/qtg_graf_textfield_add_pressed" : "image://theme/qtg_graf_textfield_add_normal"
             height: parent.height; width: parent.height
 
             MouseArea {
@@ -460,14 +460,14 @@ Column {
 
     ToolButton {
         id: toolButton2
-        checkable: true
-        iconSource: "image://theme/qtg_graf_radiobutton_normal_selected"
+        flat: true
+        iconSource: "qrc:ok.svg"
     }
 
     ToolButton {
         id: toolButton3
         text: "ToolButton"
-        iconSource: "image://theme/qtg_graf_radiobutton_normal_selected"
+        iconSource: "qrc:close_stop.svg"
     }
 
     Row {

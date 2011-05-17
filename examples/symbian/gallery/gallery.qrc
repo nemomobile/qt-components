@@ -1,10 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file alias="tb_quit.svg">images/tb_quit.svg</file>
-        <file alias="tb_options.svg">images/tb_options.svg</file>
-        <file alias="clear_pressed.svg">images/clear_pressed.svg</file>
-        <file alias="add_normal.svg">images/add_normal.svg</file>
-        <file alias="add_pressed.svg">images/add_pressed.svg</file>
-        <file alias="clear_normal.svg">images/clear_normal.svg</file>
+        <file alias="close_stop.svg">images/close_stop.svg</file>
+        <file alias="ok.svg">images/ok.svg</file>
     </qresource>
 </RCC>

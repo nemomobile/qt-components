@@ -69,11 +69,11 @@ Window {
             id: toolBarlayout
             ToolButton {
                 flat: true
-                iconSource: "qrc:tb_quit.svg"
+                iconSource: "image://theme/qtg_toolbar_back"
                 onClicked: Qt.quit()
             }
             ToolButton {
-                iconSource: "qrc:tb_options.svg"
+                iconSource: "image://theme/qtg_toolbar_options"
                 onClicked: {
                     if (!menu)
                         menu = menuComponent.createObject(root)
