@@ -55,8 +55,10 @@
         function showBanner2() {
             // disable "self-dismissing" timer, banner has to be dismissed manually
             banner.timeout = 0;
+            // interactive infobanner. click signal will be triggered when clicked.
+            banner.interactive =  true
             // display info banner
-            banner.show();
+            banner.open();
         }
 
         function closeBanner() {
@@ -99,4 +101,12 @@
     Property default is \c 3000
 
     For setting how long Info Banner stays visible to user before being dismissed
+*/
+
+/*!
+    \qmlproperty bool InfoBanner::interactive
+
+    Property default is false
+
+    true: the banner is interactive; false: informative banner
 */
