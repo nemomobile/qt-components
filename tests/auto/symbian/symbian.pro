@@ -15,6 +15,7 @@ SUBDIRS += \
     listitemtext \
     page \
     pagestack \
+    popupmanager \
     progressbar \
     radiobutton \
     scrollbar \
