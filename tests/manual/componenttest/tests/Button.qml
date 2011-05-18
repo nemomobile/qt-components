@@ -74,11 +74,13 @@ Item {
             }
         }
 
-        Row {
+        Grid {
+            columns: 2
             spacing: 5
+
             Text {
-                color: "white"
-                font.pointSize: 11
+                color: platformStyle.colorNormalLight
+                font.pointSize: platformStyle.fontSizeSmall
                 text: "Button text:"
             }
 
@@ -86,27 +88,47 @@ Item {
                 id: buttonTextEditor
                 text: "Hello QML"
             }
-        }
 
-        Button {
-            id: fontButton
-            text: scalableButton.font.family
-            property Item fontSelectionDialog: null
-            onClicked: {
-                if (fontSelectionDialog == null) {
-                    var component = Qt.createComponent("qrc:/FontSelectionDialog.qml")
-                    if (component.status == Component.Ready) {
-                        fontSelectionDialog = component.createObject(fontButton);
-                    } else {
-                        console.log(component.errorString())
-                        return
-                    }
-                }
-                fontSelectionDialog.open()
+            Text {
+                color: platformStyle.colorNormalLight
+                font.pointSize: platformStyle.fontSizeSmall
+                text: "Label font:"
             }
 
-            Binding { target: fontButton; property: "text"; value: fontButton.fontSelectionDialog != null ? fontButton.fontSelectionDialog.fontFamily: ""; when: fontButton.fontSelectionDialog != null }
-            Binding { target: scalableButton; property: "font.family"; value: fontButton.text; when: fontButton.fontSelectionDialog != null }
+            Button {
+                id: fontButton
+                text: scalableButton.font.family
+                property Item fontSelectionDialog: null
+                onClicked: {
+                    if (fontSelectionDialog == null) {
+                        var component = Qt.createComponent("qrc:/FontSelectionDialog.qml")
+                        if (component.status == Component.Ready) {
+                            fontSelectionDialog = component.createObject(fontButton);
+                        } else {
+                            console.log(component.errorString())
+                            return
+                        }
+                    }
+                    fontSelectionDialog.open()
+                }
+
+                Binding { target: fontButton; property: "text"; value: fontButton.fontSelectionDialog != null ? fontButton.fontSelectionDialog.fontFamily: ""; when: fontButton.fontSelectionDialog != null }
+                Binding { target: scalableButton; property: "font.family"; value: fontButton.text; when: fontButton.fontSelectionDialog != null }
+            }
+
+            Text {
+                color: platformStyle.colorNormalLight
+                font.pointSize: platformStyle.fontSizeSmall
+                text: "Label font size:"
+            }
+
+            Slider {
+                id: "labelSizeSlider"
+                minimumValue: 1; maximumValue: 50; stepSize: 1;
+                valueIndicatorVisible: true
+                value: scalableButton.font.pixelSize
+                onValueChanged: if (pressed) scalableButton.font.pixelSize = value
+            }
         }
 
         Button {

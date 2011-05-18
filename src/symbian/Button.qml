@@ -47,39 +47,16 @@ ImplicitSizeItem {
     property bool platformAutoRepeat: false
     property bool platformLongPress: false
 
-    implicitWidth: {
-        var prefWidth = 20;
-
-        if (iconSource != "" && text)
-            prefWidth = icon.sourceSize.width > privateStyle.textWidth(label.text, label.font)
-                ? icon.anchors.leftMargin + icon.sourceSize.width + icon.anchors.rightMargin
-                : label.anchors.leftMargin + privateStyle.textWidth(label.text, label.font) + label.anchors.rightMargin
-        else if (iconSource != "")
-            prefWidth = icon.anchors.leftMargin + icon.sourceSize.width + icon.anchors.rightMargin;
-        else if (text)
-            prefWidth = icon.anchors.leftMargin + privateStyle.textWidth(label.text, label.font) + label.anchors.rightMargin;
-
-        return prefWidth;
-    }
-
-    implicitHeight: {
-        var prefHeight = icon.anchors.topMargin + icon.anchors.bottomMargin;
-
-        if (iconSource != "" && text)
-            prefHeight = prefHeight + icon.sourceSize.height + privateStyle.fontHeight(label.font);
-        else if (iconSource != "")
-            prefHeight = prefHeight + icon.sourceSize.height;
-        else if (text)
-            prefHeight = prefHeight + privateStyle.fontHeight(label.font);
-
-        return prefHeight;
-    }
+    implicitWidth: Math.max(container.contentWidth + 2 * internal.horizontalPadding, privateStyle.buttonSize)
+    implicitHeight: Math.max(container.contentHeight + 2 * internal.verticalPadding, privateStyle.buttonSize)
 
     QtObject {
         id: internal
         objectName: "internal"
 
         property int autoRepeatInterval: 60
+        property int verticalPadding: (privateStyle.buttonSize - platformStyle.graphicSizeSmall) / 2
+        property int horizontalPadding: label.text ? platformStyle.paddingLarge : verticalPadding
 
         function bg_postfix() {
             if (activeFocus && checked)
@@ -101,12 +78,12 @@ ImplicitSizeItem {
             else
                 privateStyle.play(Symbian.BasicButton);
             highlight.source = privateStyle.imagePath(internal.imageName() + "pressed")
-            layout.scale = 0.95;
+            container.scale = 0.95;
             highlight.opacity = 1;
         }
 
         function release() {
-            layout.scale = 1;
+            container.scale = 1;
             highlight.opacity = 0;
             if (tapRepeatTimer.running)
                 tapRepeatTimer.stop();
@@ -203,41 +180,39 @@ ImplicitSizeItem {
     }
 
     Item {
-        id: layout
-        width: implicitWidth < button.width ? implicitWidth : button.width
-        height: implicitHeight < button.height ? implicitHeight : button.height
+        id: container
+
+        // Having both icon and text simultaneously is unspecified but supported by implementation
+        property int spacing: (icon.height && label.text) ? platformStyle.paddingSmall : 0
+        property int contentWidth: Math.max(icon.width, label.textWidth)
+        property int contentHeight: icon.height + spacing + label.height
+
+        width: Math.min(contentWidth, button.width - 2 * internal.horizontalPadding)
+        height: Math.min(contentHeight, button.height - 2 * internal.verticalPadding)
+        clip: true
         anchors.centerIn: parent
 
         Image {
             id: icon
-            sourceSize.width : platformStyle.graphicSizeSmall
-            sourceSize.height : platformStyle.graphicSizeSmall
-            fillMode: Image.PreserveAspectFit
+            sourceSize.width: platformStyle.graphicSizeSmall
+            sourceSize.height: platformStyle.graphicSizeSmall
             smooth: true
-
-            anchors {
-                horizontalCenter: layout.horizontalCenter
-                verticalCenter: layout.verticalCenter
-                verticalCenterOffset: text ? -platformStyle.paddingLarge : 0
-                margins: platformStyle.paddingLarge
-            }
+            anchors.top: parent.top
+            anchors.horizontalCenter: parent.horizontalCenter
         }
-
         Text {
             id: label
-            elide: layout.width >= button.width ? Text.ElideRight : Text.ElideNone
+            elide: Text.ElideRight
+            property int textWidth: text ? privateStyle.textWidth(text, font) : 0
             anchors {
-                leftMargin: platformStyle.paddingLarge
-                rightMargin: platformStyle.paddingLarge
-                left: layout.left
-                right: layout.right
-                top: iconSource != "" ? icon.bottom : layout.top
-                bottom: layout.bottom
+                top: icon.bottom
+                topMargin: parent.spacing
+                left: parent.left
+                right: parent.right
             }
-
+            height: text ? privateStyle.fontHeight(font) : 0
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-
             font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
             color: {
                 if (!button.enabled)
@@ -286,7 +261,7 @@ ImplicitSizeItem {
     ParallelAnimation {
         id: clickedEffect
         PropertyAnimation {
-            target: layout
+            target: container
             property: "scale"
             from: 0.95
             to: 1.0
