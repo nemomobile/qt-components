@@ -238,8 +238,17 @@ ImplicitSizeItem {
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
 
-            font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
-            color: platformStyle.colorNormalLight
+            font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
+            color: {
+                if (!button.enabled)
+                    return platformStyle.colorDisabledLight
+                else if (button.pressed)
+                    return platformStyle.colorPressed
+                else if (button.checked)
+                    return platformStyle.colorChecked
+                else
+                    return platformStyle.colorNormalLight
+            }
         }
     }
 
