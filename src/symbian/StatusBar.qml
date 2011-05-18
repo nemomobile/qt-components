@@ -71,6 +71,23 @@ ImplicitSizeItem {
         anchors.fill: parent
         width: parent.width
 
+        UniversalIndicators {
+            height: indicatorHeight
+            anchors {
+                right: networkMode.left
+                rightMargin: platformStyle.paddingSmall / 4
+                verticalCenter: parent.verticalCenter
+                }
+
+            width: platformStyle.paddingSmall / 2 + 3 * indicatorWidth
+
+            indicatorColor: platformStyle.colorNormalLight
+            indicatorWidth: Math.round(privateStyle.statusBarHeight * 18 / 26)
+            indicatorHeight: Math.round(privateStyle.statusBarHeight * 18 / 26)
+            indicatorPadding: Math.round(platformStyle.paddingSmall / 4)
+            maxIndicatorCount: 3
+        }
+
         // icon for network signal type e.g. 3G, GPRS etc
         Image {
             id: networkMode

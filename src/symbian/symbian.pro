@@ -3,7 +3,7 @@ include (../../qt-components.pri)
 TARGETPATH = com/nokia/symbian
 TEMPLATE = lib
 TARGET = $$qtLibraryTarget(symbianplugin)
-INCLUDEPATH += $$PWD
+INCLUDEPATH += $$PWD $$PWD/indicators
 
 win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release build_all
 CONFIG += qt plugin copy_native install_native
@@ -31,7 +31,16 @@ SOURCES += \
     sstyleengine.cpp \
     sstylefactory.cpp \
     sstylewrapper.cpp \
-    sstylewrapper_p.cpp
+    sstylewrapper_p.cpp \
+    indicators/sdeclarativeindicatorcontainer.cpp
+
+symbian:symbian_internal {
+    SOURCES += \
+        indicators/sdeclarativeindicator.cpp \
+        indicators/sdeclarativeindicatordata.cpp \
+        indicators/sdeclarativeindicatordatahandler.cpp \
+        indicators/sdeclarativestatuspanedatasubscriber.cpp
+}
 
 HEADERS += \
     sbatteryinfo.h \
@@ -52,7 +61,16 @@ HEADERS += \
     sstyleengine.h \
     sstylefactory.h \
     sstylewrapper.h \
-    sstylewrapper_p.h
+    sstylewrapper_p.h \
+    indicators/sdeclarativeindicatorcontainer.h
+
+symbian:symbian_internal {
+    HEADERS +=  \
+        indicators/sdeclarativeindicator.h \
+        indicators/sdeclarativeindicatordata.h \
+        indicators/sdeclarativeindicatordatahandler.h \
+        indicators/sdeclarativestatuspanedatasubscriber.h
+}
 
 RESOURCES += \
     symbian.qrc
@@ -123,7 +141,14 @@ symbian {
     LIBS += -leikcoctl // For CEikStatusPane
     LIBS += -lavkon // For AknAppui SetOrientationL
     LIBS += -lhal   // For calculating DPI values
-    symbian_internal: LIBS += -laknnotify // For CAknSmallIndicator
+
+    symbian_internal {
+        LIBS += -laknicon // For AknIconUtils
+        LIBS += -laknnotify // For CAknSmallIndicator
+        LIBS += -laknskins // For AknsUtils
+        LIBS += -lbafl // For TResourceReader
+        LIBS += -lfbscli // For CFbsBitmap
+    }
 
     BLD_INF_RULES.prj_exports += "qtcomponents.iby $$CORE_MW_LAYER_IBY_EXPORT_PATH(qtcomponents.iby)"
 
