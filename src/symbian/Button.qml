@@ -70,48 +70,48 @@ ImplicitSizeItem {
 
         function toggleChecked() {
             if (checkable)
-                checked = !checked;
+                checked = !checked
         }
 
         function press() {
             if (checkable && checked)
-                privateStyle.play(Symbian.SensitiveButton);
+                privateStyle.play(Symbian.SensitiveButton)
             else
-                privateStyle.play(Symbian.BasicButton);
+                privateStyle.play(Symbian.BasicButton)
             highlight.source = privateStyle.imagePath(internal.imageName() + "pressed")
-            container.scale = 0.95;
-            highlight.opacity = 1;
+            container.scale = 0.95
+            highlight.opacity = 1
         }
 
         function release() {
-            container.scale = 1;
-            highlight.opacity = 0;
+            container.scale = 1
+            highlight.opacity = 0
             if (tapRepeatTimer.running)
-                tapRepeatTimer.stop();
-            button.platformReleased();
+                tapRepeatTimer.stop()
+            button.platformReleased()
         }
 
         function click() {
-            internal.toggleChecked();
+            internal.toggleChecked()
             if (!checkable || (checkable && !checked))
-                privateStyle.play(Symbian.BasicButton);
-            clickedEffect.restart();
-            button.clicked();
+                privateStyle.play(Symbian.BasicButton)
+            clickedEffect.restart()
+            button.clicked()
         }
 
         function hold() {
             // If autorepeat is enabled, do not emit long press, but repeat the tap action.
             if (button.platformAutoRepeat)
-                tapRepeatTimer.start();
+                tapRepeatTimer.start()
 
             if (button.platformLongPress)
-                button.platformPressAndHold();
+                button.platformPressAndHold()
         }
 
         function repeat() {
             if (!checkable)
-                privateStyle.play(Symbian.SensitiveButton);
-            button.clicked();
+                privateStyle.play(Symbian.SensitiveButton)
+            button.clicked()
         }
 
         // The function imageName() handles fetching correct graphics for the Button.
@@ -128,41 +128,41 @@ ImplicitSizeItem {
         id: stateGroup
 
         states: [
-            State { name: "Pressed"; },
-            State { name: "PressAndHold"; },
-            State { name: "Canceled"; }
+            State { name: "Pressed" },
+            State { name: "PressAndHold" },
+            State { name: "Canceled" }
         ]
 
         transitions: [
             Transition {
                 to: "Pressed"
-                ScriptAction { script: internal.press(); }
+                ScriptAction { script: internal.press() }
             },
             Transition {
                 from: "Pressed"
                 to: "PressAndHold"
-                ScriptAction { script: internal.hold(); }
+                ScriptAction { script: internal.hold() }
             },
             Transition {
                 from: "Pressed"
                 to: ""
-                ScriptAction { script: internal.release(); }
-                ScriptAction { script: internal.click(); }
+                ScriptAction { script: internal.release() }
+                ScriptAction { script: internal.click() }
             },
             Transition {
                 from: "PressAndHold"
                 to: ""
-                ScriptAction { script: internal.release(); }
+                ScriptAction { script: internal.release() }
             },
             Transition {
                 from: "Pressed"
                 to: "Canceled"
-                ScriptAction { script: internal.release(); }
+                ScriptAction { script: internal.release() }
             },
             Transition {
                 from: "PressAndHold"
                 to: "Canceled"
-                ScriptAction { script: internal.release(); }
+                ScriptAction { script: internal.release() }
             }
         ]
     }
@@ -239,14 +239,14 @@ ImplicitSizeItem {
 
         onCanceled: {
             // Mark as canceled
-            stateGroup.state = "Canceled";
+            stateGroup.state = "Canceled"
             // Reset state. Can't expect a release since mouse was ungrabbed
-            stateGroup.state = "";
+            stateGroup.state = ""
         }
 
         onPressAndHold: {
             if (stateGroup.state != "Canceled" && (platformLongPress || platformAutoRepeat))
-                stateGroup.state = "PressAndHold";
+                stateGroup.state = "PressAndHold"
         }
 
         onExited: stateGroup.state = "Canceled"
@@ -281,15 +281,15 @@ ImplicitSizeItem {
 
     Keys.onPressed: {
         if (event.key == Qt.Key_Select || event.key == Qt.Key_Return) {
-            stateGroup.state = "Pressed";
-            event.accepted = true;
+            stateGroup.state = "Pressed"
+            event.accepted = true
         }
     }
 
     Keys.onReleased: {
         if (event.key == Qt.Key_Select || event.key == Qt.Key_Return) {
-            stateGroup.state = "";
-            event.accepted = true;
+            stateGroup.state = ""
+            event.accepted = true
         }
     }
 }
