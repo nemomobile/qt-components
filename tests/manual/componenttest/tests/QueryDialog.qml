@@ -78,6 +78,7 @@ Item {
 
     Slider {
         id: heightSlider
+        objectName: 'heightSlider'
         x: 60
         y: screen.height - height - 120
         maximumValue: screen.height
@@ -91,6 +92,7 @@ Item {
 
     Slider {
         id: widthSlider
+        objectName: 'widthSlider'
         x: screen.width < screen.height ? heightSlider.x + heightSlider.width + 20 : 60
         y: screen.width < screen.height ? heightSlider.y + heightSlider.height - 75 : heightSlider.y - height
         maximumValue: screen.width
