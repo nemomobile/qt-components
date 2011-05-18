@@ -62,7 +62,7 @@ ImplicitSizeItem {
         anchors.fill: parent
         onClicked: {
             privateStyle.play(Symbian.PopUp)
-            symbian.privateShowIndicatorPopup()
+            platformPopupManager.privateShowIndicatorPopup()
         }
     }
 

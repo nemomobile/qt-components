@@ -45,6 +45,7 @@ Item {
         root.parent = fader
         status = DialogStatus.Opening
         fader.state = "Visible"
+        platformPopupManager.privateNotifyPopupOpen()
     }
 
     function close() {
@@ -62,6 +63,7 @@ Item {
             root.parent = null
             fader.destroy()
             root.parent = parentCache.oldParent
+            platformPopupManager.privateNotifyPopupClose()
         }
     }
 

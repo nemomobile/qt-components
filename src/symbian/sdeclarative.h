@@ -126,12 +126,11 @@ public:
     void setListInteractionMode(InteractionMode mode);
 
     static QString currentTime();
+    bool isForeground();
+
     Q_INVOKABLE int privateAllocatedMemory() const;
     Q_INVOKABLE void privateClearIconCaches();
     Q_INVOKABLE void privateClearComponentCache();
-    Q_INVOKABLE void privateShowIndicatorPopup();
-
-    bool isForeground();
 
 Q_SIGNALS:
     void listInteractionModeChanged();

@@ -27,6 +27,7 @@ SOURCES += \
     sdeclarativestyleinternal.cpp \
     siconpool.cpp \
     snetworkinfo.cpp \
+    spopupmanager.cpp \
     sstyleengine.cpp \
     sstylefactory.cpp \
     sstylewrapper.cpp \
@@ -47,6 +48,7 @@ HEADERS += \
     sdeclarativestyleinternal.h \
     siconpool.h \
     snetworkinfo.h \
+    spopupmanager.h \
     sstyleengine.h \
     sstylefactory.h \
     sstylewrapper.h \

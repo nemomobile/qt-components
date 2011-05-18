@@ -32,14 +32,9 @@
 #include <QDeclarativeContext>
 #include <QDeclarativeEngine>
 #include <QPixmapCache>
+
 #ifdef Q_OS_SYMBIAN
-#include <e32std.h>
 #include <AknUtils.h>
-#if defined(HAVE_SYMBIAN_INTERNAL)
-#include <aknsmallindicator.h>
-#endif // HAVE_SYMBIAN_INTERNAL
-#include <aknappui.h>
-#include <avkon.rsg>
 #endif // Q_OS_SYMBIAN
 
 #ifdef Q_OS_WIN
@@ -129,22 +124,10 @@ QString SDeclarative::currentTime()
 #endif
 }
 
-#if defined(Q_OS_SYMBIAN) && defined(HAVE_SYMBIAN_INTERNAL)
-static void DoShowIndicatorPopupL()
+bool SDeclarative::isForeground()
 {
-    MEikAppUiFactory *factory = CEikonEnv::Static()->AppUiFactory();
-    if (factory) {
-        CEikStatusPane* statusPane = factory->StatusPane();
-        if (statusPane && statusPane->CurrentLayoutResId() != R_AVKON_WIDESCREEN_PANE_LAYOUT_IDLE_FLAT_NO_SOFTKEYS) {
-            // statusPane SwitchLayoutL is needed for positioning Avkon indicator popup (opened from StatusBar) correctly
-            statusPane->SwitchLayoutL(R_AVKON_WIDESCREEN_PANE_LAYOUT_IDLE_FLAT_NO_SOFTKEYS);
-        }
-    }
-    CAknSmallIndicator* indicator = CAknSmallIndicator::NewLC(TUid::Uid(0));
-    indicator->HandleIndicatorTapL();
-    CleanupStack::PopAndDestroy(indicator);
+    return d_ptr->foreground;
 }
-#endif // Q_OS_SYMBIAN && HAVE_SYMBIAN_INTERNAL
 
 int SDeclarative::privateAllocatedMemory() const
 {
@@ -162,18 +145,6 @@ void SDeclarative::privateClearComponentCache()
     QDeclarativeContext *context = qobject_cast<QDeclarativeContext*>(this->parent());
     if (context)
         context->engine()->clearComponentCache();
-}
-
-void SDeclarative::privateShowIndicatorPopup()
-{
-#if defined(Q_OS_SYMBIAN) && defined(HAVE_SYMBIAN_INTERNAL)
-    QT_TRAP_THROWING(DoShowIndicatorPopupL());
-#endif // Q_OS_SYMBIAN && HAVE_SYMBIAN_INTERNAL
-}
-
-bool SDeclarative::isForeground()
-{
-    return d_ptr->foreground;
 }
 
 bool SDeclarative::eventFilter(QObject *obj, QEvent *event)

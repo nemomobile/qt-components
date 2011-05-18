@@ -35,6 +35,7 @@
 #include "sdeclarativescreen.h"
 #include "sbatteryinfo.h"
 #include "snetworkinfo.h"
+#include "spopupmanager.h"
 
 #include <QCoreApplication>
 #include <QtDeclarative>
@@ -79,6 +80,9 @@ public:
 
         SDeclarative *declarative = new SDeclarative(context);
         context->setContextProperty("symbian", declarative);
+
+        SPopupManager *popupManager = new SPopupManager(context);
+        context->setContextProperty("platformPopupManager", popupManager);
 
         SBatteryInfo *batteryInfo = new SBatteryInfo(context);
         context->setContextProperty("batteryInfo", batteryInfo);
