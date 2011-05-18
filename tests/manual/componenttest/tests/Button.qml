@@ -172,6 +172,15 @@ Item {
                 radius: 10
             }
         }
+
+        Button {
+            id: disabledButton
+            enabled: false
+            text: "Disabled button"
+            checkable: true // not really checkable since disabled
+            onPressedChanged: text = "Error: onPressedChanged" // should never be seen
+            onCheckedChanged: text = "Error: onCheckedChanged" // should never be seen
+        }
     }
 
     Button {

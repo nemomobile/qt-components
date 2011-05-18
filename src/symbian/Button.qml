@@ -58,10 +58,11 @@ ImplicitSizeItem {
         property int verticalPadding: (privateStyle.buttonSize - platformStyle.graphicSizeSmall) / 2
         property int horizontalPadding: label.text ? platformStyle.paddingLarge : verticalPadding
 
+        // "pressed" is a transient state, see press() function
         function bg_postfix() {
-            if (activeFocus && checked)
-                return "pressed"
-            else if (checked)
+            if (!button.enabled)
+                return "disabled"
+            else if (button.checked)
                 return "latched"
             else
                 return "normal"
