@@ -45,3 +45,8 @@ void ApiCheckInfoBanner::timeout()
 {
     validateProperty("timeout", QVariant::Int);
 }
+
+void ApiCheckInfoBanner::interative()
+{
+    validateProperty("interactive", QVariant::Bool);
+}

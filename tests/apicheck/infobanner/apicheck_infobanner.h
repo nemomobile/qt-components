@@ -42,6 +42,7 @@ private slots:
     void iconSource();
     void text();
     void timeout();
+    void interative();
 };
 
 #endif
