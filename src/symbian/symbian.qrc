@@ -154,6 +154,9 @@
         <file alias="qtg_graf_toolbutton_normal.svg">resources/defaulttheme/graphics/qtg_graf_toolbutton_normal.svg</file>
         <file alias="qtg_graf_toolbutton_pressed.svg">resources/defaulttheme/graphics/qtg_graf_toolbutton_pressed.svg</file>
         <file alias="qtg_graf_unread_indicator.svg">resources/defaulttheme/graphics/qtg_graf_unread_indicator.svg</file>
+        <file alias="qtg_fr_popup_infobanner.svg">resources/defaulttheme/graphics/qtg_fr_popup_infobanner.svg</file>
+        <file alias="qtg_fr_popup_infobanner_normal.svg">resources/defaulttheme/graphics/qtg_fr_popup_infobanner_normal.svg</file>
+        <file alias="qtg_fr_popup_infobanner_pressed.svg">resources/defaulttheme/graphics/qtg_fr_popup_infobanner_pressed.svg</file>
     </qresource>
     <qresource prefix="/colors">
         <file alias="widgetcolorgroup.css">resources/defaulttheme/colors/widgetcolorgroup.css</file>

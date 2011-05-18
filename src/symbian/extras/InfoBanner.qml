@@ -33,9 +33,14 @@ ImplicitSizeItem {
     property alias iconSource: image.source
     property alias text: text.text
     property alias timeout : timer.interval
+    property bool interactive : false
+
+    signal clicked
 
     function open() {
         root.parent = internal.rootObject()
+        background.source = root.interactive ? privateStyle.imagePath("qtg_fr_popup_infobanner_normal")
+                                             : privateStyle.imagePath("qtg_fr_popup_infobanner")
         stateGroup.state = "Visible"
         if (root.timerEnabled && timer.interval) //for backward compability
             timer.restart();
@@ -70,13 +75,12 @@ ImplicitSizeItem {
     // <- Deprecated
 
     x: 0
-    implicitHeight: Math.max(image.height, text.paintedHeight) + platformStyle.paddingLarge * 2
+    implicitHeight: internal.bannerHeight()
     implicitWidth: screen.width
 
     BorderImage {
         id: background
 
-        source: privateStyle.imagePath("qtg_fr_popup_infobanner")
         anchors.fill: parent
         horizontalTileMode: BorderImage.Stretch
         verticalTileMode: BorderImage.Stretch
@@ -84,28 +88,29 @@ ImplicitSizeItem {
                  right: CONSTANTS.INFOBANNER_BORDER_MARGIN; bottom: CONSTANTS.INFOBANNER_BORDER_MARGIN }
         opacity: CONSTANTS.INFOBANNER_OPACITY
 
-        Row {
-            anchors { fill: parent; margins: platformStyle.paddingLarge; }
-            spacing: platformStyle.paddingMedium
-            Image {
-                id: image
+        Image {
+            id: image
 
-                sourceSize { width: platformStyle.graphicSizeSmall; height: platformStyle.graphicSizeSmall }
-                visible: source != ""
-            }
-            Text {
-                id: text
+            anchors { top: parent.top; topMargin: platformStyle.paddingLarge;
+                      left: parent.left; leftMargin:  platformStyle.paddingLarge; }
+            sourceSize { width: platformStyle.graphicSizeSmall; height: platformStyle.graphicSizeSmall }
+            visible: source != ""
+        }
 
-                width: image.visible ? (root.width - image.width - platformStyle.paddingLarge * 2 - platformStyle.paddingMedium)
-                                     : (root.width - platformStyle.paddingLarge * 2);
-                verticalAlignment: Text.AlignVCenter
-                color: platformStyle.colorNormalLight
-                wrapMode: Text.Wrap
-                font {
-                    pixelSize: platformStyle.fontSizeMedium
-                    family: platformStyle.fontFamilyRegular
-                    letterSpacing: CONSTANTS.INFOBANNER_LETTER_SPACING
-                }
+        Text {
+            id: text
+
+            anchors { top: parent.top; topMargin: internal.textTopMargin(); left: image.visible ? image.right : parent.left;
+                      leftMargin: image.visible ? platformStyle.paddingMedium : platformStyle.paddingLarge }
+            width: image.visible ? (root.width - image.width - platformStyle.paddingLarge * 2 - platformStyle.paddingMedium)
+                                 : (root.width - platformStyle.paddingLarge * 2);
+            verticalAlignment: Text.AlignVCenter
+            color: mouseArea.pressed ?  platformStyle.colorPressed : platformStyle.colorNormalLight
+            wrapMode: Text.Wrap
+            font {
+                pixelSize: platformStyle.fontSizeMedium
+                family: platformStyle.fontFamilyRegular
+                letterSpacing: CONSTANTS.INFOBANNER_LETTER_SPACING
             }
         }
     }
@@ -117,17 +122,65 @@ ImplicitSizeItem {
     }
 
     MouseArea {
+        id: mouseArea
+
         anchors.fill: parent
-        onClicked: close()
+        onPressed: if (root.interactive) stateGroup.state = "Pressed"
+        onReleased: if (root.interactive) stateGroup.state = "Released"
+                    else stateGroup.state = "Hidden"
+        onPressAndHold: if (root.interactive) {
+                            if (timer.running) timer.stop()
+                            stateGroup.state = "PressAndHold";
+                        }
+        onExited: if (root.interactive) {
+                      if (stateGroup.state == "Pressed") {
+                          stateGroup.state = "Cancelled";
+                      } else if (stateGroup.state == "PressAndHold") {
+                          stateGroup.state = "Cancelled";
+                          if (root.timerEnabled && timer.interval) timer.restart()
+                      } else stateGroup.state = "Hidden"
+                  }
     }
 
     QtObject {
         id: internal
+
         function rootObject() {
             var next = parent
             while (next && next.parent)
                 next = next.parent
             return next
+        }
+
+        function bannerHeight() {
+            if (text.paintedHeight > privateStyle.fontHeight(text.font))
+                return textTopMargin() + text.paintedHeight + platformStyle.paddingLarge;
+            return Math.max(image.height, text.paintedHeight) + platformStyle.paddingLarge * 2;
+        }
+
+        function textTopMargin() {
+            if (image.visible)
+                return platformStyle.paddingLarge + image.height / 2 - privateStyle.fontHeight(text.font) / 2;
+            return platformStyle.paddingLarge;
+        }
+
+        function press() {
+            if (root.interactive) {
+                privateStyle.play(Symbian.BasicButton);
+                background.source = privateStyle.imagePath("qtg_fr_popup_infobanner_pressed");
+            }
+        }
+
+        function release() {
+            if (root.interactive)
+                background.source = privateStyle.imagePath("qtg_fr_popup_infobanner_normal");
+        }
+
+        function click() {
+            if (root.interactive) {
+                privateStyle.play(Symbian.BasicButton);
+                root.clicked();
+            }
         }
     }
 
@@ -143,15 +196,40 @@ ImplicitSizeItem {
             State {
                 name: "Hidden"
                 PropertyChanges { target: root; y: -height }
-            }
+            },
+            State { name: "Pressed" },
+            State { name: "PressAndHold" },
+            State { name: "Released" },
+            State { name: "Cancelled" }
         ]
         transitions: [
             Transition {
-                from: "Hidden"; to: "Visible"
-                NumberAnimation { target: root; properties: "y"; duration: CONSTANTS.INFOBANNER_ANIMATION_DURATION; easing.type: Easing.OutQuad }
+                to: "Pressed"
+                ScriptAction { script: internal.press(); }
             },
             Transition {
-                from: "Visible"; to: "Hidden"
+                from: "Pressed"; to: "Released"
+                ScriptAction { script: internal.release(); }
+                ScriptAction { script: internal.click(); }
+            },
+            Transition {
+                from: "Cancelled"; to: "Released"
+                ScriptAction { script: internal.release(); }
+            },
+            Transition {
+                from: "PressAndHold"; to: "Released"
+                ScriptAction { script: internal.release(); }
+                ScriptAction { script: internal.click(); }
+            },
+            Transition {
+                from: "Hidden"; to: "Visible"
+                SequentialAnimation {
+                    NumberAnimation { target: root; properties: "y"; duration: CONSTANTS.INFOBANNER_ANIMATION_DURATION; easing.type: Easing.OutQuad }
+                    ScriptAction { script: privateStyle.play(Symbian.PopUp) }
+                }
+            },
+            Transition {
+                to: "Hidden"
                 NumberAnimation { target: root; properties: "y"; duration: CONSTANTS.INFOBANNER_ANIMATION_DURATION; easing.type: Easing.OutQuad }
             }
         ]
