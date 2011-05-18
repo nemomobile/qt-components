@@ -10,6 +10,7 @@ SUBDIRS += \
     declarativestyle \
     iconpool \
     imageprovider \
+    indicatorcontainer \
     listheading \
     listitem \
     listitemtext \
