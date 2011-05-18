@@ -28,6 +28,12 @@ import QtQuick 1.0
 import com.nokia.symbian 1.0
 
 Item {
+
+    Connections {
+        target: platformPopupManager
+        onPopupStackDepthChanged: console.log("Popup stack depth: ", platformPopupManager.popupStackDepth)
+    }
+
     Dialog {
         id: customDialog
         width: 400
@@ -59,12 +65,19 @@ Item {
                 onClicked: customDialog.reject()
             }
         }
-        content: Text {
-            text: "This is content text."
-            font.bold: true
-            font.pixelSize: 40
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
+        content: Column {
+            Text {
+                text: "Popup stack depth: "+platformPopupManager.popupStackDepth
+                font.bold: true
+                color: "white"
+                font.pixelSize: 18
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+            Button {
+                text: "Open dialog"
+                onClicked: dialogWithProgressBar.open()
+            }
         }
     }
 
@@ -85,28 +98,27 @@ Item {
                 onClicked: dialogWithProgressBar.accept()
             }
         }
-
-        content: Item {
-            height: 250
-            width: parent.width
-
+        content: Column {
             ProgressBar {
                 id: horizontalBarWithAnimation
-
                 value: 1
                 indeterminate: true
-                x: 30
-                y: 0
                 height: 30
             }
 
             ProgressBar {
                 id: horizontalBar
-
                 value: 75 // Default minimum and maximum are 0 - 100
-                x: 30
-                y: 30
                 height: 30
+            }
+            Button {
+                text: "Open dialog"
+                onClicked: dialogWithScrollBar.open()
+            }
+            Text {
+                text: "Popup stack depth: "+platformPopupManager.popupStackDepth
+                color: "white"
+                font.pointSize: 10
             }
         }
     }
@@ -174,6 +186,11 @@ Item {
                     left: flickableArea.left
                     rightMargin: verticalScrollbar.width
                 }
+            }
+            Text {
+                text: "Popup stack depth: "+platformPopupManager.popupStackDepth
+                color: "white"
+                font.pointSize: 10
             }
         }
     }

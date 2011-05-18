@@ -31,6 +31,11 @@ Item {
     id: root
     anchors.fill: parent
 
+    Connections {
+        target: platformPopupManager
+        onPopupStackDepthChanged: if (platformPopupManager.popupStackDepth == 0) listView.forceActiveFocus()
+    }
+
     Column {
         anchors.fill: parent
 
@@ -44,7 +49,6 @@ Item {
             delegate: defaultDelegate
             Component.onCompleted: {
                  initializeDefault() // Initial fill of the model
-                 listView.forceActiveFocus()
              }
             ScrollBar {
                 flickableItem: listView
@@ -82,7 +86,6 @@ Item {
                 text: "Set disabled"
                 onClicked: {
                     listView.model.set(listView.currentIndex, {"disabled": true})
-                    listView.forceActiveFocus()
                 }
             }
             MenuItem {
@@ -90,7 +93,6 @@ Item {
                 onClicked: {
                     var indicatorState = listView.model.get(listView.currentIndex).indicator
                     listView.model.set(listView.currentIndex, {"indicator": !indicatorState})
-                    listView.forceActiveFocus()
                 }
             }
             MenuItem {
@@ -102,7 +104,6 @@ Item {
                 onClicked: {
                     if (listView.currentIndex >= 0)
                         listView.model.remove(listView.currentIndex)
-                    listView.forceActiveFocus()
                 }
             }
         }
@@ -156,7 +157,6 @@ Item {
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
         }
-        onAccepted: listView.forceActiveFocus()
     }
 
     Dialog {
@@ -232,7 +232,6 @@ Item {
                 "selected": false,
                 "indicator": false
             } )
-            listView.forceActiveFocus()
         }
     }
 
