@@ -99,6 +99,11 @@ ImplicitSizeItem {
         }
     }
 
+    Row {
+        id: tumblerRow
+        anchors { fill: parent }
+    }
+
     BorderImage {
         width: parent.width
         height: internal.hasLabel ?
@@ -107,19 +112,5 @@ ImplicitSizeItem {
         source: privateStyle.imagePath("qtg_fr_tumbler")
         anchors.top: parent.top
         border { left: platformStyle.borderSizeMedium; top: platformStyle.borderSizeMedium; right: platformStyle.borderSizeMedium; bottom: platformStyle.borderSizeMedium }
-    }
-
-    Rectangle {
-        width: parent.width
-        height: internal.hasLabel ?
-                    parent.height - privateStyle.menuItemHeight : // decrease by bottom text
-                    parent.height
-        color: platformStyle.colorNormalMid
-        anchors.top: parent.top
-    }
-
-    Row {
-        id: tumblerRow
-        anchors { fill: parent }
     }
 }

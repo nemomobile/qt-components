@@ -49,8 +49,8 @@ Item {
 
     Loader {
         id: viewContainer
-        anchors.left: divider.right
-        width: tumblerColumn ? tumblerColumn.width - divider.width : 0
+        anchors.left: parent.left
+        width: tumblerColumn ? tumblerColumn.width + divider.width : 0
         height: root.height - container.height // decrease by text
     }
 
@@ -58,7 +58,7 @@ Item {
         id: divider
         anchors.left: parent.left
         height: firstColumn ? 0 : viewContainer.height
-        width: firstColumn ? 0 : Math.round(platformStyle.graphicSizeTiny / 2)
+        width: firstColumn ? 0 : Math.round(platformStyle.paddingSmall / 2)
         source: privateStyle.imagePath("qtg_fr_tumbler_divider")
     }
 
@@ -74,7 +74,7 @@ Item {
             // highlight locates in the middle (ratio 0.5) if items do not fully occupy the Tumbler
             preferredHighlightBegin: privateStyle.menuItemHeight * pView.count > height ?
                 ((privateStyle.menuItemHeight / 2) + (pView.height / 2)) /
-                    ((privateStyle.menuItemHeight * pView.count) + (privateStyle.menuItemHeight / 2)) :
+                    (privateStyle.menuItemHeight * pView.count) :
                 0.5
             preferredHighlightEnd: preferredHighlightBegin
             highlightRangeMode: PathView.StrictlyEnforceRange
@@ -100,7 +100,7 @@ Item {
                 PathLine {
                     x: pView.width / 2
                     y: privateStyle.menuItemHeight * pView.count > pView.height ?
-                        privateStyle.menuItemHeight * pView.count :
+                        privateStyle.menuItemHeight * pView.count - (privateStyle.menuItemHeight / 2) :
                         (pView.height + privateStyle.menuItemHeight * pView.count) / 2
                 }
             }
@@ -116,7 +116,6 @@ Item {
 
             model: tumblerColumn ? tumblerColumn.items : undefined
             currentIndex: tumblerColumn ? tumblerColumn.selectedIndex : 0
-            // highlight locates in the middle (ratio 0.5) if items do not fully occupy the Tumbler
             preferredHighlightBegin: Math.floor((height - privateStyle.menuItemHeight) / 2)
             preferredHighlightEnd: preferredHighlightBegin + privateStyle.menuItemHeight
             highlightRangeMode: ListView.StrictlyEnforceRange
@@ -184,7 +183,7 @@ Item {
                 }
 
                 Component.onCompleted: {
-                    if (tumblerColumn.privateResizeToFit && paintedHeight > templateInternal.columnFitWidth)
+                    if (tumblerColumn.privateResizeToFit && paintedWidth > templateInternal.columnFitWidth)
                         templateInternal.columnFitWidth = paintedWidth;
                     templateInternal.delegatesCount++;
                 }
@@ -198,7 +197,7 @@ Item {
         Image {
             id: highlight
             objectName: "highlight"
-            width: tumblerColumn ? tumblerColumn.width : 0
+            width: tumblerColumn ? tumblerColumn.width + divider.width : 0
             height: privateStyle.menuItemHeight
             source: privateStyle.imagePath("qtg_fr_tumbler_highlight")
             fillMode: Image.TileHorizontally
