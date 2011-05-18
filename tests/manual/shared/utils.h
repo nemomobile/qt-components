@@ -45,12 +45,22 @@ public:
 class Settings : public QObject
 {
     Q_OBJECT
-
+    Q_ENUMS(IndicatorIds)
 public:
+
+    enum IndicatorIds {
+        IndicatorEMail = 2,
+        IndicatorSecuredConnection = 6,
+        IndicatorBluetooth = 12,
+        IndicatorUsb = 28
+    };
+
     explicit Settings(QObject *parent = 0);
+    ~Settings();
 
     Q_INVOKABLE void setOrientation(int orientation);
     Q_INVOKABLE int orientation() const;
+    Q_INVOKABLE void setIndicatorState(int indicatorId, bool on) const;
 };
 
 #endif // UTILS_H

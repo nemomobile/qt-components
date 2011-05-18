@@ -62,6 +62,7 @@ OTHER_FILES += \
     tests/DatePickerDialog.qml \
     tests/InfoBanner.qml \
     tests/Dialog.qml \
+    tests/Indicators.qml \
     tests/KeyNavigation.qml \
     tests/ListItem.qml \
     tests/ListView.qml \

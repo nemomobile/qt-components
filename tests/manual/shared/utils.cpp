@@ -31,6 +31,18 @@
 #include <QFileInfo>
 #include <QDebug>
 #include <QDir>
+#include <QDeclarativeEngine>
+#include <QDeclarativeContext>
+#include <QDeclarativeItem>
+
+
+#if defined(Q_OS_SYMBIAN) && defined(HAVE_SYMBIAN_INTERNAL)
+#include <avkon.hrh>
+#include <aknsmallindicator.h>
+#else
+// RnD: hosts fake indicator rectangles.
+QHash<int, QDeclarativeItem *> indicatorItems;
+#endif // Q_OS_SYMBIAN & HAVE_SYMBIAN_INTERNAL
 
 #ifdef Q_OS_SYMBIAN
 static const QStringList QML_PATHS = QStringList() << "e:/qmlc" << "c:/data/qmlc";
@@ -78,6 +90,13 @@ Settings::Settings(QObject *parent) : QObject(parent)
 {
 }
 
+Settings::~Settings()
+{
+#if !defined(Q_OS_SYMBIAN) || !defined(HAVE_SYMBIAN_INTERNAL)
+    indicatorItems.clear();
+#endif
+}
+
 void Settings::setOrientation(int orientation) {
     QFileInfo info(QApplication::applicationFilePath());
     QSettings settings("Nokia", info.baseName());
@@ -88,4 +107,49 @@ int Settings::orientation() const {
     QFileInfo info(QApplication::applicationFilePath());
     QSettings settings("Nokia", info.baseName());
     return settings.value("orientation").toInt();
+}
+
+void Settings::setIndicatorState(int indicatorId, bool on) const
+{
+#if defined(Q_OS_SYMBIAN) && defined(HAVE_SYMBIAN_INTERNAL)
+    QT_TRAP_THROWING({
+        CAknSmallIndicator* smallIndicator = CAknSmallIndicator::NewLC( TUid::Uid( indicatorId ) );
+        smallIndicator->SetIndicatorStateL( on ? EAknIndicatorStateOn : EAknIndicatorStateOff );
+        CleanupStack::PopAndDestroy( smallIndicator );
+    });
+#else
+    // Rnd: add rectanges to represent real indicators
+
+    // find indicator container via root:
+    const QObject *root = this;
+    while (root->parent())
+        root = root->parent();
+
+    QDeclarativeItem *indicatorContainer = root->findChild<QDeclarativeItem *>(QLatin1String("indicators"));
+
+    if (indicatorContainer) {
+        QDeclarativeItem *item = 0;
+        if (!indicatorItems.contains(indicatorId)) {
+            QDeclarativeEngine *engine = QDeclarativeEngine::contextForObject(indicatorContainer)->engine();
+            QDeclarativeComponent component(engine);
+            component.setData("import Qt 4.7\nRectangle { border.color: parent ? parent.indicatorColor : \"gray\" }", QUrl());
+            item = qobject_cast<QDeclarativeItem *>(component.create(QDeclarativeEngine::contextForObject(indicatorContainer)));
+            if (component.isError()) {
+                qDebug() << component.errorString();
+                return;
+            }
+
+            // use "random" color
+            QColor color(qptrdiff(item)%255,qptrdiff(item)%255,qptrdiff(item)%255);
+            item->setProperty("color", QVariant::fromValue(color));
+            item->setParentItem(indicatorContainer);
+            indicatorItems.insert(indicatorId, item);
+        }
+
+        item = indicatorItems.value(indicatorId);
+        item->setVisible(on);
+        QMetaObject::invokeMethod(indicatorContainer, "layoutChildren");
+    }
+
+#endif // Q_OS_SYMBIAN & HAVE_SYMBIAN_INTERNAL
 }

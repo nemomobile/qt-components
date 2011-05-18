@@ -21,6 +21,7 @@ data=DATAZ_\private\200346E0\tests\ChoiceList.qml               \private\200346E
 data=DATAZ_\private\200346E0\tests\ContextMenu.qml              \private\200346E0\tests\ContextMenu.qml
 data=DATAZ_\private\200346E0\tests\DatePickerDialog.qml         \private\200346E0\tests\DatePickerDialog.qml
 data=DATAZ_\private\200346E0\tests\Dialog.qml                   \private\200346E0\tests\Dialog.qml
+data=DATAZ_\private\200346E0\tests\Indicators.qml               \private\200346E0\tests\Indicators.qml
 data=DATAZ_\private\200346E0\tests\InfoBanner.qml               \private\200346E0\tests\InfoBanner.qml
 data=DATAZ_\private\200346E0\tests\KeyNavigation.qml            \private\200346E0\tests\KeyNavigation.qml
 data=DATAZ_\private\200346E0\tests\ListItem.qml                 \private\200346E0\tests\ListItem.qml
