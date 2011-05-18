@@ -17,16 +17,28 @@ Item {
         anchors { top: title.bottom; left: parent.left; right: parent.right; margins: platformStyle.paddingLarge }
         spacing: platformStyle.paddingMedium
 
-        TextField {
-            id: textField
+        TextArea {
+            id: textArea
             width: parent.width
             text: "Information to be shown to user"
         }
 
-        CheckBox {
-            id: iconCheckBox
-            checked: true
-            text: "Enable icon"
+        Row {
+            spacing: platformStyle.paddingMedium
+            CheckBox {
+                id: iconCheckBox
+                checked: true
+                text: "Enable icon"
+            }
+            CheckBox {
+                id: interactive
+                checked: false
+                text: "Interactive"
+            }
+            Text {
+                id: clicked
+                color: "green"
+            }
         }
 
         Row {
@@ -42,7 +54,8 @@ Item {
 
             Button {
                 text: "Show"
-                onClicked: banner.open();
+                onClicked: { clicked.text = ""; banner.open() }
+
             }
 
             Button {
@@ -54,8 +67,11 @@ Item {
 
     InfoBanner {
         id: banner
-        text: textField.text
+
+        text: textArea.text
         iconSource: iconCheckBox.checked ? "qrc:info_banner_thumbnail.png" : ""
         timeout: durationSlider.value*1000
+        interactive: interactive.checked
+        onClicked: clicked.text = "clicked"
     }
 }
