@@ -34,7 +34,6 @@ ImplicitSizeItem {
     property alias maximumValue: model.maximumValue
     property alias ratingValue: model.value
     property int count: -1
-    property bool inverted: false
 
     implicitHeight: Math.max(background.height, text.paintedHeight);
     implicitWidth: background.width + (count >= 0 ? internal.textSpacing + text.paintedWidth : 0);
@@ -48,31 +47,26 @@ ImplicitSizeItem {
 
     QtObject {
         id: internal
-        property int indicatorSpacing: 5  // spacing between images
         property int textSpacing: 8  // spacing between image and text
-        property string backgroundImageSource: inverted ?
-                                                   "qtg_graf_rating_indicator_background_inverted" :
-                                                   "qtg_graf_rating_indicator_background_normal"
-        property string indicatorImageSource: inverted ?
-                                                  "qtg_graf_rating_indicator_inverted" :
-                                                  "qtg_graf_rating_indicator_normal"
 
-        // TODO: internal for now until UI spec is complete & colors are available in style
-        property string textColor: inverted ? "#fafafa" : "#505050"
+        property string backgroundImageSource: "qtg_graf_rating_unrated.svg"
+        property string indicatorImageSource: "qtg_graf_rating_rated.svg"
+
+        property string textColor: platformStyle.colorNormalLight
     }
 
     Image {
         id: background
-        width: privateStyle.ratingIndicatorImageWidth * maximumValue + Math.max(Math.ceil(maximumValue - 1), 0) * internal.indicatorSpacing
-        height: privateStyle.ratingIndicatorImageHeight
+        width: platformStyle.graphicSizeTiny * maximumValue
+        height: platformStyle.graphicSizeTiny
         anchors.verticalCenter: height < text.paintedHeight ? text.verticalCenter : undefined
         fillMode: Image.Tile
         source: privateStyle.imagePath(internal.backgroundImageSource)
 
         Image {
             id: indicator
-            width: privateStyle.ratingIndicatorImageWidth * ratingValue + Math.max((Math.ceil(ratingValue) - 1), 0) * internal.indicatorSpacing
-            height: privateStyle.ratingIndicatorImageHeight
+            width: platformStyle.graphicSizeTiny * ratingValue
+            height: platformStyle.graphicSizeTiny
             fillMode: Image.Tile
             source: privateStyle.imagePath(internal.indicatorImageSource)
         }

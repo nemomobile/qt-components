@@ -42,7 +42,6 @@ private slots:
     void maximumValue();
     void ratingValue();
     void count();
-    void inverted();
 };
 
 #endif

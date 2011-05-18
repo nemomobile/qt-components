@@ -47,8 +47,3 @@ void ApiCheckRatingIndicator::count()
 {
     validateProperty("count", QVariant::Int);
 }
-
-void ApiCheckRatingIndicator::inverted()
-{
-    validateProperty("inverted", QVariant::Bool);
-}

@@ -39,7 +39,7 @@ Page {
             id: rect
             width: 200
             height: 50
-            color: "#f0f1f2"
+            color: "#000000"
 
             RatingIndicator {
                 id: indicator
@@ -59,21 +59,6 @@ Page {
             id: removeButton
             text: "Decrease rating"
             onClicked: { indicator.ratingValue-- }
-        }
-        Button {
-            id: negativeButton
-            checkable: true
-            text: "Inverted colors"
-            onCheckedChanged: {
-                if (rect.color == "#f0f1f2") {
-                    indicator.inverted = true
-                    rect.color = "#000000"
-                }
-                else {
-                    indicator.inverted = false
-                    rect.color = "#f0f1f2"
-                }
-            }
         }
     }
 }
