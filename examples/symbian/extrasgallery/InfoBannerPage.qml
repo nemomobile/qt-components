@@ -5,57 +5,30 @@ import com.nokia.extras 1.0
 Page {
     id: container
 
-    Text {
-        id: title
-        color: platformStyle.colorNormalLight
-        text: "Create Custom InfoBanner"
-        font.bold: true
-    }
+    Row {
+        anchors.centerIn: parent
 
-    Column {
-        anchors { top: title.bottom; left: parent.left; right: parent.right; margins: platformStyle.paddingMedium }
-        spacing: platformStyle.paddingMedium
+        spacing: platformStyle.paddingLarge * 4
 
-        TextField {
-            id: textField
-            width: parent.width
-            text: "Information to be shown to user"
+        Button {
+            text: "Show"
+            onClicked: banner.open();
         }
 
-        CheckBox {
-            id: iconCheckBox
-            checked: true
-            text: "Enable icon"
-        }
-
-        Row {
-            spacing: platformStyle.paddingSmall
-            Text { text: "Time to dismiss:"; color: platformStyle.colorNormalLight }
-            Text { text: durationSlider.value; color: "green" }
-            Text { text: "sec"; color: "green" }
-            Slider { id: durationSlider; maximumValue: 9; minimumValue: 0; stepSize:1; value: 3 }
-        }
-
-        Row {
-            spacing: platformStyle.paddingLarge
-
-            Button {
-                text: "Show"
-                onClicked: banner.open();
-            }
-
-            Button {
-                text: "Hide"
-                onClicked: banner.close();
-            }
+        Button {
+            text: "Hide"
+            onClicked: banner.close();
         }
     }
 
     InfoBanner {
         id: banner
 
-        text: textField.text
-        iconSource: iconCheckBox.checked ? "assets/info_banner_thumbnail.png" : ""
-        timeout: durationSlider.value*1000
+        text: "Information to be shown to user"
+        iconSource: "assets/info_banner_thumbnail.png"
+        timeout: 4000
+        interactive: true
     }
+
+    Component.onCompleted: banner.open()
 }
