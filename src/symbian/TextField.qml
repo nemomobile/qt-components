@@ -129,9 +129,9 @@ FocusScopeItem {
     TextInput {
         id: textInput; objectName: "textInput"
         anchors {
-            fill: parent
-            leftMargin: root.platformLeftMargin; rightMargin: root.platformRightMargin
-            topMargin: platformStyle.paddingMedium; bottomMargin: platformStyle.paddingMedium
+            left: root.left; leftMargin: root.platformLeftMargin
+            right: root.right; rightMargin: root.platformRightMargin
+            verticalCenter : root.verticalCenter
         }
         enabled: root.enabled
         clip: true
@@ -155,9 +155,9 @@ FocusScopeItem {
     Text {
         id: placeholder; objectName: "placeholder"
         anchors {
-            fill: parent
-            leftMargin: root.platformLeftMargin; rightMargin: root.platformRightMargin
-            topMargin: platformStyle.paddingMedium; bottomMargin: platformStyle.paddingMedium
+            left: root.left; leftMargin: root.platformLeftMargin
+            right: root.right; rightMargin: root.platformRightMargin
+            verticalCenter : root.verticalCenter
         }
         color: platformStyle.colorNormalMid
         font: textInput.font
