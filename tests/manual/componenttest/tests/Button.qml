@@ -80,7 +80,7 @@ Item {
 
             Text {
                 color: platformStyle.colorNormalLight
-                font.pointSize: platformStyle.fontSizeSmall
+                font.pixelSize: platformStyle.fontSizeSmall
                 text: "Button text:"
             }
 
@@ -91,7 +91,7 @@ Item {
 
             Text {
                 color: platformStyle.colorNormalLight
-                font.pointSize: platformStyle.fontSizeSmall
+                font.pixelSize: platformStyle.fontSizeSmall
                 text: "Label font:"
             }
 
@@ -118,7 +118,7 @@ Item {
 
             Text {
                 color: platformStyle.colorNormalLight
-                font.pointSize: platformStyle.fontSizeSmall
+                font.pixelSize: platformStyle.fontSizeSmall
                 text: "Label font size:"
             }
 
