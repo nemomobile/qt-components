@@ -34,6 +34,7 @@
 #include "sdeclarativemaskedimage.h"
 #include "sdeclarativescreen.h"
 #include "sdeclarativeindicatorcontainer.h"
+#include "sdeclarativenetworkindicator.h"
 #include "sbatteryinfo.h"
 #include "snetworkinfo.h"
 #include "spopupmanager.h"
@@ -107,6 +108,7 @@ public:
         qmlRegisterType<SDeclarativeImplicitSizeItem>(uri, 1, 0, "ImplicitSizeItem");
         qmlRegisterType<SDeclarativeFocusScopeItem>(uri, 1, 0, "FocusScopeItem");
         qmlRegisterType<SDeclarativeIndicatorContainer>(uri, 1, 0, "UniversalIndicators");
+        qmlRegisterType<SDeclarativeNetworkIndicator>(uri, 1, 0, "NetworkIndicator");
         qmlRegisterUncreatableType<SDeclarative>(uri, 1, 0, "Symbian", "");
         qmlRegisterUncreatableType<SDeclarativeScreen>(uri, 1, 0, "Screen", "");
         qmlRegisterUncreatableType<SDialogStatus>(uri, 1, 0, "DialogStatus", "");

@@ -36,7 +36,7 @@ ImplicitSizeItem {
         id: priv
         objectName: "priv"
 
-        property int imageHeight: privateStyle.statusBarHeight - 2 * platformStyle.paddingSmall
+        property int imageHeight: Math.round(privateStyle.statusBarHeight * 18 / 26)
 
         function signalWidthPercentage(signalStrength) {
             if (signalStrength < 10)
@@ -82,23 +82,21 @@ ImplicitSizeItem {
             width: platformStyle.paddingSmall / 2 + 3 * indicatorWidth
 
             indicatorColor: platformStyle.colorNormalLight
-            indicatorWidth: Math.round(privateStyle.statusBarHeight * 18 / 26)
-            indicatorHeight: Math.round(privateStyle.statusBarHeight * 18 / 26)
+            indicatorWidth: priv.imageHeight
+            indicatorHeight: priv.imageHeight
             indicatorPadding: Math.round(platformStyle.paddingSmall / 4)
             maxIndicatorCount: 3
         }
 
         // icon for network signal type e.g. 3G, GPRS etc
-        Image {
+        NetworkIndicator {
             id: networkMode
-            sourceSize.height: priv.imageHeight
-            sourceSize.width: Symbian.UndefinedSourceDimension
+            height: priv.imageHeight
+            width: priv.imageHeight
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: signalBackground.left
             anchors.rightMargin: platformStyle.paddingSmall
-            fillMode: Image.PreserveAspectFit
-            source: privateStyle.imagePath(networkInfo.networkMode == NetworkInfo.GsmMode
-                ? "qtg_graf_signal_gprs_att_icon" : "qtg_graf_signal_icon")
+            color: platformStyle.colorNormalLight
         }
         Image {
             id: signalBackground

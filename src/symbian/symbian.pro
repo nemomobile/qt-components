@@ -32,14 +32,19 @@ SOURCES += \
     sstylefactory.cpp \
     sstylewrapper.cpp \
     sstylewrapper_p.cpp \
-    indicators/sdeclarativeindicatorcontainer.cpp
+    indicators/sdeclarativeindicatorcontainer.cpp \
+    indicators/sdeclarativenetworkindicator.cpp
 
 symbian:symbian_internal {
     SOURCES += \
         indicators/sdeclarativeindicator.cpp \
         indicators/sdeclarativeindicatordata.cpp \
         indicators/sdeclarativeindicatordatahandler.cpp \
+        indicators/sdeclarativenetworkindicator_p_symbian.cpp \
         indicators/sdeclarativestatuspanedatasubscriber.cpp
+} else {
+    SOURCES += \
+        indicators/sdeclarativenetworkindicator_p.cpp
 }
 
 HEADERS += \
@@ -62,7 +67,9 @@ HEADERS += \
     sstylefactory.h \
     sstylewrapper.h \
     sstylewrapper_p.h \
-    indicators/sdeclarativeindicatorcontainer.h
+    indicators/sdeclarativeindicatorcontainer.h \
+    indicators/sdeclarativenetworkindicator.h \
+    indicators/sdeclarativenetworkindicator_p.h
 
 symbian:symbian_internal {
     HEADERS +=  \
