@@ -387,7 +387,6 @@ Item {
                     anchors { right: listItem9.paddingItem.right; verticalCenter: listItem9.paddingItem.verticalCenter }
                 }
                 onClicked: {
-                    checkbox9.checked = !checkbox9.checked
                     notification.text = "Clicked " + objectName
                 }
                 onPressAndHold: notification.text = "Press-and-hold " + objectName
