@@ -68,11 +68,11 @@ Item {
     }
 
     function orientation() {
-        if (screen.orientation == Screen.Portrait)
+        if (screen.currentOrientation == Screen.Portrait)
             return "Portrait"
-        else if (screen.orientation == Screen.Landscape)
+        else if (screen.currentOrientation == Screen.Landscape)
             return "Landscape"
-        else if (screen.orientation == Screen.PortraitInverted)
+        else if (screen.currentOrientation == Screen.PortraitInverted)
             return "PortraitInverted"
         else
             return "LandscapeInverted"
