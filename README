@@ -41,8 +41,16 @@ Running on Desktop
 ==================
 - Pass -graphicssystem native
 
+Building the Documentation
+==================
 
+To generate the Symbian components documentation:
+configure -symbian
+make docs
 
+This will generate HTML files in the doc/html directory. Also, a qch file will
+be generated in the doc/qch directory. This qch file can be loaded in
+Qt Assistant or Qt Creator.
 
 Build instructions for MeeGoTouch (quickstart)
 ==============================================
