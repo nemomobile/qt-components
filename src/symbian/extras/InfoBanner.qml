@@ -110,7 +110,6 @@ ImplicitSizeItem {
             font {
                 pixelSize: platformStyle.fontSizeMedium
                 family: platformStyle.fontFamilyRegular
-                letterSpacing: CONSTANTS.INFOBANNER_LETTER_SPACING
             }
         }
     }
