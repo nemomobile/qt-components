@@ -14,6 +14,7 @@ SUBDIRS += \
     listheading \
     listitem \
     listitemtext \
+    networkindicator \
     page \
     pagestack \
     popupmanager \
