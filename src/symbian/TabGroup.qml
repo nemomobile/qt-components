@@ -35,6 +35,7 @@ Item {
     property list<Item> privateContents
     // Qt defect: cannot have list as default property
     default property alias privateContentsDefault: root.privateContents
+    property bool platformAnimated: true
 
     onChildrenChanged: {
         //  [0] is containerHost
@@ -181,7 +182,10 @@ Item {
                             if (incomingPage == outgoingPage)
                                 outgoingPage = null
                         }
-                        tabContainer.state = "Incoming"
+                        if (platformAnimated)
+                            tabContainer.state = "Incoming"
+                        else
+                            tabContainer.incomingDone()
                     }
                 } else {
                     if (tabContainer.state != "Hidden") {
@@ -191,7 +195,10 @@ Item {
                             if (incomingPage == outgoingPage)
                                 incomingPage = null
                         }
-                        tabContainer.state = "Outgoing"
+                        if (platformAnimated)
+                            tabContainer.state = "Outgoing"
+                        else
+                            tabContainer.outgoingDone()
                     }
                 }
             }
