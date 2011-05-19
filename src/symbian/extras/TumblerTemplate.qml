@@ -175,7 +175,7 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        if (pView.interactive) {
+                        if (template.view.interactive) {
                             tumblerColumn.selectedIndex = index;  // got index from delegate
                             root.changed(template.index);
                         }
