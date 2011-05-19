@@ -49,11 +49,8 @@ Text {
 
         // Performance optmization:
         // Use tertiary operations even though it doesn't look that good
-        property color normalColor: root.role == "SelectionTitle"
-            ? platformStyle.colorNormalDark
-            : (root.role == "SelectionSubTitle" || root.role == "SubTitle")
-                ? platformStyle.colorNormalMid
-                : platformStyle.colorNormalLight
+        property color normalColor: (root.role == "SelectionSubTitle" || root.role == "SubTitle")
+                                        ? platformStyle.colorNormalMid : platformStyle.colorNormalLight
 
         function getColor() {
             if (root.mode == "pressed")

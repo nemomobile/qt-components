@@ -124,10 +124,5 @@ Item {
             "m_text": "colorTextSelection",
             "m_inverse": false
         } )
-        listView.model.append( {
-            "m_color": privateStyle.listItemSeparatorColor,
-            "m_text": "listItemSeparatorColor",
-            "m_inverse": false
-        } )
     }
 }

@@ -145,12 +145,6 @@ int SDeclarativeStyleInternal::ratingIndicatorImageHeight() const
     return d->engine->layoutParameter(QLatin1String("rating-image-height"));
 }
 
-QColor SDeclarativeStyleInternal::listItemSeparatorColor() const
-{
-    Q_D(const SDeclarativeStyleInternal);
-    return d->engine->colorParameter(QLatin1String("color-list-item-separator"));
-}
-
 int SDeclarativeStyleInternal::buttonSize() const
 {
     Q_D(const SDeclarativeStyleInternal);

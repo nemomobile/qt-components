@@ -47,7 +47,7 @@ ImplicitSizeItem {
 
         Rectangle {
             height: 1
-            color: privateStyle.listItemSeparatorColor
+            color: platformStyle.colorDisabledMid
             anchors {
                 bottom: parent.bottom
                 left: parent.left
