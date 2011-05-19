@@ -48,6 +48,7 @@ private slots:
     void testReparentingDynamic();
     void testAddRemoveTabs();
     void testPageSignaling();
+    void testPageSignalingNoAnimation();
 
 private:
     QScopedPointer<QObject> componentObject;
@@ -229,6 +230,7 @@ void tst_tabgroup::testPageSignaling()
 
     QDeclarativeItem *tabGroup2 = componentObject->findChild<QDeclarativeItem*>("tabGroup2");
     QVERIFY(tabGroup2);
+    tabGroup2->setProperty("platformAnimated", true);
 
     // tabs are Page instances
     QDeclarativeItem *group2tab1 = qobject_cast<QDeclarativeItem*>(findQmlChild(tabGroup2,"group2tab1"));
@@ -251,6 +253,32 @@ void tst_tabgroup::testPageSignaling()
     // wait for the effec to finish and update the statuses
     QTRY_COMPARE(group2tab2->property("status").toInt(), 2 /*PageStatus.Active*/);
     QTRY_COMPARE(group2tab1->property("status").toInt(), 0 /*PageStatus.Inactive*/);
+}
+
+void tst_tabgroup::testPageSignalingNoAnimation()
+{
+    QDeclarativeItem *tabGroup2 = componentObject->findChild<QDeclarativeItem*>("tabGroup2");
+    QVERIFY(tabGroup2);
+    tabGroup2->setProperty("platformAnimated", false);
+
+    // tabs are Page instances
+    QDeclarativeItem *group2tab1 = qobject_cast<QDeclarativeItem*>(findQmlChild(tabGroup2,"group2tab1"));
+    QVERIFY(group2tab1);
+
+    QDeclarativeItem *group2tab2 = qobject_cast<QDeclarativeItem*>(findQmlChild(tabGroup2,"group2tab2"));
+    QVERIFY(group2tab2);
+
+    // set group2tab1 as the current tab
+    tabGroup2->setProperty("currentTab", qVariantFromValue(group2tab1));
+    QTRY_COMPARE(group2tab1->property("status").toInt(), 2 /*PageStatus.Active*/);
+    QTRY_COMPARE(group2tab2->property("status").toInt(), 0 /*PageStatus.Inactive*/);
+
+    // set group2tab2 as the current tab
+    tabGroup2->setProperty("currentTab", qVariantFromValue(group2tab2));
+
+    QTRY_COMPARE(group2tab2->property("status").toInt(), 2 /*PageStatus.Active*/);
+    QTRY_COMPARE(group2tab1->property("status").toInt(), 0 /*PageStatus.Inactive*/);
+
 }
 
 
