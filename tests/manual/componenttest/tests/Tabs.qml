@@ -419,4 +419,20 @@ Page {
             testPage.pageStack.push(newObject)
         }
     }
+
+    Menu {
+        id: optionsMenu
+
+        content: MenuLayout {
+            MenuItem {
+                text: tabGroup.platformAnimated ? "Disable animation" : "Enable animation"
+                onClicked: tabGroup.platformAnimated = !tabGroup.platformAnimated
+            }
+        }
+    }
+
+    Connections {
+        target: optionsButton
+        onClicked: optionsMenu.open()
+    }
 }
