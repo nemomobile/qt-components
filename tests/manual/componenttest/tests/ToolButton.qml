@@ -56,7 +56,7 @@ Item {
 
         ToolButton {
             id: toolButton3
-            iconSource: "image://theme/:/list1.png"
+            iconSource: imageDialog.currentImage
         }
 
         ToolButton {
@@ -67,7 +67,7 @@ Item {
 
         ToolButton {
             id: toolButton5
-            iconSource: "image://theme/:/list1.png"
+            iconSource: imageDialog.currentImage
             flat: true
         }
 
@@ -79,7 +79,7 @@ Item {
 
         ToolButton {
             id: toolButton7
-            iconSource: "image://theme/:/list1.png"
+            iconSource: imageDialog.currentImage
             text: "Icon&text"
         }
 
@@ -89,23 +89,53 @@ Item {
             platformExclusiveGroup: checkGroup
         }
 
-        ChoiceList {
-            Component.onCompleted: {console.log("ChoiceList::onCompleted: " + currentValue + " " + currentIndex)}
-
-            id: iconChoicelist
-            width: toolButtonTest.width / 2
-            onCurrentValueChanged: {
-                currentValue != "<none>" ? toolButton3.iconSource = "image://theme/:/" + currentValue : toolButton3.iconSource = ""
-                currentValue != "<none>" ? toolButton5.iconSource = "image://theme/:/" + currentValue : toolButton5.iconSource = ""
-                currentValue != "<none>" ? toolButton7.iconSource = "image://theme/:/" + currentValue : toolButton7.iconSource = ""
-            }
-            model: ["list1.png", "list2.png", "list3.png", "<none>"]
-        }
-
         ToolButton {
             id: toolButton9
             text: "Disabled"
             enabled: false
+        }
+
+        Item {
+            // empty grid item
+            width: 1
+            height: 1
+        }
+
+        Item {
+            property int labelPadding: 10
+            height: privateStyle.fontHeight(selectImageLabel.font) + 2 * labelPadding
+            width: privateStyle.textWidth(selectImageLabel.text, selectImageLabel.font) + 2 * labelPadding
+            Text {
+                id: selectImageLabel
+                anchors.fill: parent
+                anchors.margins: parent.labelPadding
+                text: "Select image:"
+                color: platformStyle.colorNormalLight
+                font.family: platformStyle.fontFamilyRegular
+                font.pixelSize: platformStyle.fontSizeMedium
+            }
+        }
+
+        ToolButton {
+            id: imageButton
+            text: imageDialog.model[imageDialog.selectedIndex]
+            onClicked: imageDialog.open()
+
+            SelectionDialog {
+                id: imageDialog
+                titleText: "Select image"
+                selectedIndex: 1
+                property string currentImage
+                currentImage: {
+                    if (selectedIndex <= 0)
+                        return ""
+                    return "qrc:/" + model[selectedIndex]
+                }
+
+                model: ["<none>", "list1.png", "list2.png", "list3.png", "list4.png", "list5.png",
+                        "list6.png", "list7.png", "list8.png", "list9.png", "list10.png",
+                        "list11.png", "list12.png", "list13.png", "list14.png", "list15.png"]
+            }
         }
     }
 }
