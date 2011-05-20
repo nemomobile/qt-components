@@ -113,103 +113,6 @@ Item {
         initializeModel()
     }
 
-    ContextMenu {
-        id: contextMenu
-
-        content: MenuLayout {
-            MenuItem {
-                text: "Set disabled"
-                onClicked: listView.model.set(listView.currentIndex, {"disabled": true})
-            }
-            MenuItem {
-                text: "Add item"
-                onClicked: createItemDialog.open()
-            }
-            MenuItem {
-                text: "Delete item"
-                onClicked: {
-                    if (listView.currentIndex >= 0)
-                        listView.model.remove(listView.currentIndex)
-                }
-            }
-        }
-    }
-
-    Dialog {
-        id: createItemDialog
-        title: Text {
-            text: "Create new list item"
-            font { bold: true; pixelSize: 16 }
-            color: "white"
-            anchors.fill: parent
-            horizontalAlignment: Text.AlignLeft
-            verticalAlignment: Text.AlignVCenter
-        }
-        buttons: Row {
-            height: 60
-            width: parent.width
-
-            Button {
-                text: "Ok"
-                width: parent.width / 2
-                height: parent.height
-                onClicked: createItemDialog.accept()
-            }
-
-            Button {
-                text: "Cancel"
-                width: parent.width / 2
-                height: parent.height
-                onClicked: createItemDialog.reject()
-            }
-        }
-        content: Column {
-            anchors.fill: parent
-
-            Text {
-                text: "Enter title"
-            }
-
-            TextField {
-                id: titleField
-                text: "New item - Title"
-                width: parent.width
-            }
-
-            Text {
-                text: "Enter subtitle"
-            }
-
-            TextField {
-                id: subTitleField
-                text: "New item - SubTitle"
-                width: parent.width
-            }
-
-            Text {
-                text: "Select image size"
-            }
-
-            ChoiceList {
-                id: imageSizeChoiceList
-                anchors.horizontalCenter: parent.horizontalCenter
-                width: parent.width - parent.spacing
-                currentIndex: 0
-                model: ["Undefined", "Tiny", "Small", "Medium", "Large"]
-            }
-        }
-        onAccepted: {
-            listView.model.insert(listView.currentIndex + 1, {
-                "title": titleField.text,
-                "subTitle": subTitleField.text,
-                "imageSize": root.getSize(imageSizeChoiceList.currentIndex), // Fetch actual size in pixels based on index
-                "image": "image://theme/:/list1.png",
-                "disabled": false,
-                "selected": false,
-                "sectionIdentifier": 0} )
-        }
-    }
-
     Component {
         id: listHeader
 
@@ -250,7 +153,6 @@ Item {
             id: listItem2
             objectName: title
             width: listView.width
-            enabled: !disabled // State from model
 
             Column {
                 anchors.fill: parent.paddingItem
@@ -267,7 +169,6 @@ Item {
                     text: subTitle // SubTitle from model
                 }
             }
-            onPressAndHold: contextMenu.open()
         }
     }
 
@@ -276,7 +177,6 @@ Item {
 
         ListItem {
             width: listView.width
-            enabled: !disabled // State from model
 
             Image {
                 anchors {
@@ -287,7 +187,6 @@ Item {
                 sourceSize.width: imageSize
                 source: image
             }
-            onPressAndHold: contextMenu.open()
         }
     }
 
@@ -298,8 +197,6 @@ Item {
             id: listItem3
             objectName: title
             width: listView.width
-            enabled: !disabled // State from model
-
 
             Image {
                 id: imageItem
@@ -331,7 +228,6 @@ Item {
                     text: subTitle // SubTitle from model
                 }
             }
-            onPressAndHold: contextMenu.open()
         }
     }
 
@@ -342,7 +238,6 @@ Item {
             id: listItem4
             objectName: title
             width: listView.width
-            enabled: !disabled // State from model
 
             Row {
                 anchors.fill: listItem4.paddingItem
@@ -381,7 +276,6 @@ Item {
                 checkbox.checked = !checkbox.checked
                 listView.model.set(index, { "selected": checkbox.checked })
             }
-            onPressAndHold: contextMenu.open()
         }
     }
 
@@ -407,15 +301,5 @@ Item {
             'itemCount': root.itemCount
             };
         worker.sendMessage(msg)
-    }
-
-    function getSize(size) {
-        switch (size) {
-            case 1: return platformStyle.graphicSizeTiny; break
-            case 2: return platformStyle.graphicSizeSmall; break
-            case 3: return platformStyle.graphicSizeMedium; break
-            case 4: return platformStyle.graphicSizeLarge; break
-            default: return 0
-        }
     }
 }
