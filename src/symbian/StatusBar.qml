@@ -36,7 +36,9 @@ ImplicitSizeItem {
         id: priv
         objectName: "priv"
 
-        property int imageHeight: Math.round(privateStyle.statusBarHeight * 18 / 26)
+        property int contentHeight: Math.round(privateStyle.statusBarHeight * 18 / 26)
+        property int paddingSmallOneQuarter: Math.round(platformStyle.paddingSmall / 4)
+        property int paddingSmallThreeQuarters: Math.round(platformStyle.paddingSmall * 3 / 4)
 
         function signalWidthPercentage(signalStrength) {
             if (signalStrength < 10)
@@ -53,8 +55,9 @@ ImplicitSizeItem {
                 return 1;
         }
 
-        function batteryWidthPercentage(batteryLevel) {
-            return 0.2 + (0.6 * batteryLevel / 100)
+        function convertedBatteryLevel(level) {
+            // Convert scale 1-100 to 1-7
+            return Math.floor(1 + (level * 6.9999 / 100))
         }
     }
 
@@ -75,106 +78,117 @@ ImplicitSizeItem {
             height: indicatorHeight
             anchors {
                 right: networkMode.left
-                rightMargin: platformStyle.paddingSmall / 4
+                rightMargin: priv.paddingSmallOneQuarter
                 verticalCenter: parent.verticalCenter
                 }
 
-            width: platformStyle.paddingSmall / 2 + 3 * indicatorWidth
+            width: priv.paddingSmallOneQuarter * 2 + 3 * indicatorWidth
 
             indicatorColor: platformStyle.colorNormalLight
-            indicatorWidth: priv.imageHeight
-            indicatorHeight: priv.imageHeight
-            indicatorPadding: Math.round(platformStyle.paddingSmall / 4)
+            indicatorWidth: priv.contentHeight // same as height
+            indicatorHeight: priv.contentHeight
+            indicatorPadding: priv.paddingSmallOneQuarter
             maxIndicatorCount: 3
         }
 
         // icon for network signal type e.g. 3G, GPRS etc
         NetworkIndicator {
             id: networkMode
-            height: priv.imageHeight
-            width: priv.imageHeight
+            height: priv.contentHeight
+            width: priv.contentHeight // same as height
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: signalBackground.left
-            anchors.rightMargin: platformStyle.paddingSmall
+            anchors.rightMargin: priv.paddingSmallThreeQuarters
             color: platformStyle.colorNormalLight
         }
+        // signal strength
         Image {
             id: signalBackground
-            sourceSize.height: priv.imageHeight
-            sourceSize.width: Symbian.UndefinedSourceDimension
+            sourceSize.height: priv.contentHeight
+            sourceSize.width: Math.round(privateStyle.statusBarHeight * 19 / 26)
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: batteryBackground.left
-            anchors.rightMargin: platformStyle.paddingSmall
+            anchors.rightMargin: priv.paddingSmallThreeQuarters
             fillMode: Image.PreserveAspectFit
             source: privateStyle.imagePath("qtg_graf_signal_level_bg")
             Item {
                 id: signalLevelItem
+                anchors.left: parent.left
+                anchors.top: parent.top
                 height: parent.height
                 width: priv.signalWidthPercentage(networkInfo.networkSignalStrength) * parent.width
                 clip: true
                 Image {
-                    sourceSize.height: priv.imageHeight
-                    sourceSize.width: Symbian.UndefinedSourceDimension
-                    anchors.left: parent.left
-                    anchors.top: parent.top
+                    sourceSize.width: signalBackground.sourceSize.width
+                    sourceSize.height: signalBackground.sourceSize.height
                     fillMode: Image.PreserveAspectFit
                     source: privateStyle.imagePath("qtg_graf_signal_level_full")
                 }
             }
         }
+        // battery indicator
         Image {
             id: batteryBackground
-            sourceSize.height: priv.imageHeight
-            sourceSize.width: Symbian.UndefinedSourceDimension
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: timeItem.left
-            anchors.rightMargin: platformStyle.paddingSmall
+            anchors.rightMargin: priv.paddingSmallThreeQuarters
+            sourceSize.height: priv.contentHeight
+            sourceSize.width: Math.round(privateStyle.statusBarHeight * 24 / 26)
             fillMode: Image.PreserveAspectFit
             source: privateStyle.imagePath("qtg_graf_battery_level_bg")
-            transform: Scale { origin.x: batteryBackground.width / 2; xScale: -1 }
+
             Item {
-                id: batteryLevelItem
+                id: batteryLevel
+
                 property int animatedLevel
-                anchors.right: parent.right
+
+                anchors.left: parent.left
                 anchors.top: parent.top
+                width: Math.round(privateStyle.statusBarHeight
+                    * (priv.convertedBatteryLevel(batteryInfo.powerState == BatteryInfo.WallPowerChargingBattery
+                    ? animatedLevel : batteryInfo.batteryLevel) + 2) / 13)
                 height: parent.height
-                width: parent.width * priv.batteryWidthPercentage(
-                    batteryInfo.powerState == BatteryInfo.WallPowerChargingBattery
-                    ? animatedLevel : batteryInfo.batteryLevel)
                 clip: true
+
                 Image {
-                    sourceSize.height: priv.imageHeight
-                    sourceSize.width: Symbian.UndefinedSourceDimension
-                    anchors.right: parent.right
-                    anchors.top: parent.top
+                    sourceSize.width: batteryBackground.sourceSize.width
+                    sourceSize.height: batteryBackground.sourceSize.height
+
                     fillMode: Image.PreserveAspectFit
+
+                    // Battery state mappings: Levels 0 and 1 are low, 2-4 are medium, 5-7 are full.
+                    // Currently all levels use same graphics with white color.
+
                     source: privateStyle.imagePath("qtg_graf_battery_level_full")
                 }
             }
-            SequentialAnimation {
+
+            NumberAnimation {
                 id: batteryChargingAnimation
                 loops: Animation.Infinite
                 running: batteryInfo.powerState == BatteryInfo.WallPowerChargingBattery
-                NumberAnimation {
-                    target: batteryLevelItem
-                    property: "animatedLevel"
-                    from: 0
-                    to: 100
-                    duration: 4000
-                }
+                target: batteryLevel
+                property: "animatedLevel"
+                from: 1
+                to: 100
+                duration: 3500
             }
         }
+        // clock
         Text {
             id: timeItem
-            // TODO: what's the correct way of defining the width?
-            width: privateStyle.textWidth("23:59", timeItem.font)
+            width: Math.round(privateStyle.statusBarHeight * 44 / 26)
             color: platformStyle.colorNormalLight
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
             anchors.rightMargin: platformStyle.paddingSmall
             horizontalAlignment: Text.AlignRight
             text: symbian.currentTime
-            font { family: platformStyle.fontFamilyRegular; pixelSize: 0.8 * priv.imageHeight }
+            font {
+                family: platformStyle.fontFamilyRegular;
+                pixelSize: priv.contentHeight
+                weight: Font.Light
+            }
         }
     }
 }

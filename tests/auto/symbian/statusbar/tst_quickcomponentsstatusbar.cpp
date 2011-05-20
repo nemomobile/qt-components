@@ -41,7 +41,7 @@ class tst_quickcomponentsstatusbar : public QObject
 private slots:
     void initTestCase();
     void signalWidth();
-    void batteryWidth();
+    void batteryLevel();
     void position();
     void height();
 
@@ -87,25 +87,30 @@ void tst_quickcomponentsstatusbar::signalWidth()
     QVERIFY(percentage < returnedValue.toFloat());
 }
 
-void tst_quickcomponentsstatusbar::batteryWidth()
+void tst_quickcomponentsstatusbar::batteryLevel()
 {
     QVariant returnedValue = 0;
     int batteryLevel = 0;
-    QMetaObject::invokeMethod(priv, "batteryWidthPercentage",
+    QMetaObject::invokeMethod(priv, "convertedBatteryLevel",
                               Q_RETURN_ARG(QVariant, returnedValue),
                               Q_ARG(QVariant, batteryLevel));
-    float percentage = returnedValue.toFloat();
+    int converted = returnedValue.toInt();
+    QVERIFY(converted == 1); // Min value should be 1
+
     batteryLevel = 50;
-    QMetaObject::invokeMethod(priv, "batteryWidthPercentage",
+
+    QMetaObject::invokeMethod(priv, "convertedBatteryLevel",
                               Q_RETURN_ARG(QVariant, returnedValue),
                               Q_ARG(QVariant, batteryLevel));
-    QVERIFY(percentage < returnedValue.toFloat());
-    percentage = returnedValue.toFloat();
+
+    QVERIFY(converted < returnedValue.toInt());
     batteryLevel = 100;
-    QMetaObject::invokeMethod(priv, "batteryWidthPercentage",
+
+    QMetaObject::invokeMethod(priv, "convertedBatteryLevel",
                               Q_RETURN_ARG(QVariant, returnedValue),
                               Q_ARG(QVariant, batteryLevel));
-    QVERIFY(percentage < returnedValue.toFloat());
+
+    QVERIFY(returnedValue.toInt() == 7); // Max value should be 7
 }
 
 void tst_quickcomponentsstatusbar::position()
