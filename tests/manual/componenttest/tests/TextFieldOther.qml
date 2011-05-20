@@ -88,29 +88,6 @@ Item {
         }
     }
 
-    ChoiceList {
-        id: echoMode; objectName: "echoMode"
-        anchors {
-            left: privy.portrait ? parent.left : copyPasteCut.right
-            right: parent.right
-            top: privy.portrait ? copyPasteCut.bottom : textField.bottom
-            margins: privy.margin
-        }
-        height: parent.height * 1/10
-        currentIndex: 0
-        model: ["Normal", "Password", "NoEcho", "PwEchoOnEdit"]
-        onCurrentIndexChanged: {
-            if (currentIndex == 0)
-                textField.echoMode = TextInput.Normal
-            else if (currentIndex == 1)
-                textField.echoMode = TextInput.Password
-            else if (currentIndex == 2)
-                textField.echoMode = TextInput.NoEcho
-            else if (currentIndex == 3)
-                textField.echoMode = TextInput.PasswordEchoOnEdit
-        }
-    }
-
     Grid {
         id: buttons
         property real h: (height - spacing * (rows - 1)) / rows
@@ -118,13 +95,40 @@ Item {
         anchors {
             left: privy.portrait ? parent.left : copyPasteCut.right
             right: parent.right
-            top: echoMode.bottom
+            top: privy.portrait ? copyPasteCut.bottom : textField.bottom
             bottom: parent.bottom
             margins: privy.margin
         }
-        columns: privy.portrait ? 1 : 3
-        rows: privy.portrait ? 5 : 3
+        columns: privy.portrait ? 1 : 2
+        rows: privy.portrait ? 6 : 3
         spacing: privy.margin
+
+        Button {
+            id: echoModeButton
+            height: parent.h; width: parent.w
+            text: "Echo mode: " + (echoModeDialog.selectedIndex >= 0
+                                   ? echoModeDialog.model[echoModeDialog.selectedIndex] : "default")
+            onClicked: echoModeDialog.open()
+
+            SelectionDialog {
+                id: echoModeDialog
+                titleText: "Select echo mode"
+                selectedIndex: -1
+
+                onAccepted: {
+                    if (selectedIndex == 0)
+                        textField.echoMode = TextInput.Normal
+                    else if (selectedIndex == 1)
+                        textField.echoMode = TextInput.Password
+                    else if (selectedIndex == 2)
+                        textField.echoMode = TextInput.NoEcho
+                    else if (selectedIndex == 3)
+                        textField.echoMode = TextInput.PasswordEchoOnEdit
+                }
+
+                model: ["Normal", "Password", "NoEcho", "PwEchoOnEdit"]
+            }
+        }
 
         Button {
             id: readOnly; objectName: "readOnly"
