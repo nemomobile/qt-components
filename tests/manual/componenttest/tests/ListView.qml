@@ -26,11 +26,12 @@
 
 import QtQuick 1.0
 import com.nokia.symbian 1.0
+import Qt.labs.components 1.0
 
 Item {
     id: root
     anchors.fill: parent
-
+    property variant imageSizes: ["Undefined", "Tiny", "Small", "Medium", "Large"]
     Connections {
         target: platformPopupManager
         onPopupStackDepthChanged: if (platformPopupManager.popupStackDepth == 0) listView.forceActiveFocus()
@@ -163,8 +164,8 @@ Item {
         id: createItemDialog
         title: Text {
             text: "Create new list item"
-            font { bold: true; pixelSize: 16 }
-            color: "white"
+            font.pixelSize: platformStyle.fontSizeMedium
+            color: platformStyle.colorNormalLight
             anchors.fill: parent
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
@@ -187,51 +188,99 @@ Item {
                 onClicked: createItemDialog.reject()
             }
         }
-        content: Column {
-            anchors.fill: parent
+        content: Item {
+            id: createItemContainer
+            height: createItemGrid.height
+            width: createItemDialog.platformContentMaximumWidth
+            CheckableGroup { id: imageSizeGroup }
 
-            Text {
-                text: "Enter title"
-            }
+            Grid {
+                id: createItemGrid
+                columns: 2
+                spacing: platformStyle.paddingSmall
+                property int cellWidth: (createItemContainer.width / 2) - spacing
 
-            TextField {
-                id: titleField
-                text: "New item - Title"
-                width: parent.width
-            }
+                Text {
+                    id: titleLabel
+                    color: platformStyle.colorNormalLight
+                    font.family: platformStyle.fontFamilyRegular
+                    font.pixelSize: platformStyle.fontSizeMedium
+                    text: "Title:"
+                    width: createItemGrid.cellWidth
+                }
 
-            Text {
-                text: "Enter subtitle"
-            }
+                TextField {
+                    id: titleField
+                    text: "New item - Title"
+                    width: createItemGrid.cellWidth
+                }
 
-            TextField {
-                id: subTitleField
-                text: "New item - SubTitle"
-                width: parent.width
-            }
+                Text {
+                    id: subTitleLabel
+                    color: platformStyle.colorNormalLight
+                    font.family: platformStyle.fontFamilyRegular
+                    font.pixelSize: platformStyle.fontSizeMedium
+                    text: "Subtitle:"
+                    width: createItemGrid.cellWidth
+                }
 
-            Text {
-                text: "Select image size"
-            }
+                TextField {
+                    id: subTitleField
+                    text: "New item - SubTitle"
+                    width: createItemGrid.cellWidth
+                }
 
-            ChoiceList {
-                id: imageSizeChoiceList
-                anchors.horizontalCenter: parent.horizontalCenter
-                width: parent.width - parent.spacing
-                currentIndex: 0
-                model: ["Undefined", "Tiny", "Small", "Medium", "Large"]
+                Text {
+                    id: imageSizeLabel
+                    color: platformStyle.colorNormalLight
+                    font.family: platformStyle.fontFamilyRegular
+                    font.pixelSize: platformStyle.fontSizeMedium
+                    text: "Image size:"
+                    width: createItemGrid.cellWidth
+                }
+
+                Column {
+                    spacing: platformStyle.paddingSmall
+                    RadioButton {
+                        text: root.imageSizes[0]
+                        platformExclusiveGroup: imageSizeGroup
+                        width: createItemGrid.cellWidth
+                    }
+                    RadioButton {
+                        text: root.imageSizes[1]
+                        platformExclusiveGroup: imageSizeGroup
+                        width: createItemGrid.cellWidth
+                    }
+                    RadioButton {
+                        text: root.imageSizes[2]
+                        platformExclusiveGroup: imageSizeGroup
+                        width: createItemGrid.cellWidth
+                    }
+                    RadioButton {
+                        text: root.imageSizes[3]
+                        platformExclusiveGroup: imageSizeGroup
+                        width: createItemGrid.cellWidth
+                    }
+                    RadioButton {
+                        text: root.imageSizes[4]
+                        platformExclusiveGroup: imageSizeGroup
+                        checked: true
+                        width: createItemGrid.cellWidth
+                    }
+                }
             }
         }
         onAccepted: {
             listView.model.insert(listView.currentIndex + 1, {
-                "title": titleField.text,
-                "subTitle": subTitleField.text,
-                "imageSize": root.getSize(imageSizeChoiceList.currentIndex), // Fetch actual size in pixels based on index
-                "image": "image://theme/:/list1.png",
-                "disabled": false,
-                "selected": false,
-                "indicator": false
-            } )
+                                  "title": titleField.text,
+                                  "subTitle": subTitleField.text,
+                                  // Fetch actual size in pixels based on index
+                                  "imageSize": root.getSize(imageSizeGroup.selectedValue),
+                                  "image": "image://theme/:/list1.png",
+                                  "disabled": false,
+                                  "selected": false,
+                                  "indicator": false
+        } )
         }
     }
 
@@ -240,16 +289,16 @@ Item {
         listView.section.property = "image" // Models field to group by
         listView.section.delegate = sectionDelegate // Delegate for section headings
         for (var i = 0; i < 4; i++) {
-            for (var j = 0; j < 5; j++) {
+            for (var j = 0; j < root.imageSizes.length; j++) {
                 listView.model.append( {
-                    "title": "Title text - " + (5*i + j),
-                    "subTitle": "SubTitle " + (5*i + j),
-                    "imageSize": root.getSize(j), // Fetch actual size in pixels based on index
-                    "image": "image://theme/:/list" + (i + 1) + ".png",
-                    "disabled": false,
-                    "selected": false,
-                    "indicator": false
-                } )
+                                      "title": "Title text - " + (5 * i + j),
+                                      "subTitle": "SubTitle " + (5 * i + j),
+                                      "imageSize": root.getSize(root.imageSizes[j]), // Fetch actual size in pixels based on index
+                                      "image": "image://theme/:/list" + (i + 1) + ".png",
+                                      "disabled": false,
+                                      "selected": false,
+                                      "indicator": false
+            } )
             }
         }
     }
@@ -344,10 +393,11 @@ Item {
 
     function getSize(size) {
         switch (size) {
-            case 1: return platformStyle.graphicSizeTiny; break
-            case 2: return platformStyle.graphicSizeSmall; break
-            case 3: return platformStyle.graphicSizeMedium; break
-            case 4: return platformStyle.graphicSizeLarge; break
+            case "Undefined": return 0; break
+            case "Tiny": return platformStyle.graphicSizeTiny; break
+            case "Small": return platformStyle.graphicSizeSmall; break
+            case "Medium": return platformStyle.graphicSizeMedium; break
+            case "Large": return platformStyle.graphicSizeLarge; break
             default: return 0
         }
     }
