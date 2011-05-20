@@ -26,178 +26,132 @@
 
 import QtQuick 1.0
 import com.nokia.symbian 1.0
-import "content"
+import "../components"
 
-Item {
+FocusScope {
     id: root
-    anchors.fill: parent
-    anchors.margins: privy.margin
 
     QtObject {
         id: privy
         property bool portrait:    screen.currentOrientation == Screen.Portrait
                                 || screen.currentOrientation == Screen.PortraitInverted
-        property int margin: 5
-    }
 
-    Row {
-        id: wrapAndContent
-        property real w: (width - spacing * (children.length - 1)) / children.length
-        anchors.top: parent.top; anchors.left: parent.left
-        anchors.bottomMargin: privy.margin
-        height: parent.height * 1/9
-        width: parent.width * (privy.portrait ? 1 : 1/2)
-        spacing: privy.margin
-
-        ChoiceList {
-            id: wrap; objectName: "wrap"
-            height: parent.height; width: wrapAndContent.w
-            currentIndex: 0
-            model: ["Wrap", "NoWrap", "WordWrap", "Anywhere"]
-            onCurrentIndexChanged: {
-                if (currentIndex == 0)
-                    textArea.wrapMode = TextEdit.Wrap
-                else if (currentIndex == 1)
-                    textArea.wrapMode = TextEdit.NoWrap
-                else if (currentIndex == 2)
-                    textArea.wrapMode = TextEdit.WordWrap
-                else if (currentIndex == 3)
-                    textArea.wrapMode = TextEdit.WrapAnywhere
-            }
-        }
-
-        ChoiceList {
-            id: content; objectName: "content"
-            height: parent.height; width: wrapAndContent.w
-            currentIndex: 0
-            model: ["Clean", "Long text", "Rich text"]
-            onClosed: {
-                if (currentValue == "Clean")
-                    textArea.text = ""
-                else if (currentValue == "Long text")
-                    textArea.text = "This is a really long piece of text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tristique augue ac mauris cursus vel porta tortor aliquet. Sed porttitor tempus nunc a porta. Etiam sit amet sem eros, quis sollicitudin est. Nullam commodo, augue et pulvinar tristique, leo purus consequat mi, commodo tempor ligula orci id enim. Donec varius urna et lacus consequat in placerat orci vestibulum. Etiam semper, velit sed tincidunt hendrerit, augue tortor gravida velit, a aliquam elit nulla vitae risus. In vitae enim eget est molestie dignissim at at turpis. Nam id purus at orci convallis ultrices. Vivamus at nisl id lacus tempor varius et nec tellus. Mauris posuere lorem ut mauris rutrum porttitor. Nunc at metus turpis, non volutpat erat. Sed bibendum imperdiet tellus, sit amet imperdiet augue tincidunt id. Morbi ultrices dapibus augue, at placerat magna luctus in.This is a really long piece of text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tristique augue ac mauris cursus vel porta tortor aliquet. Sed porttitor tempus nunc a porta. Etiam sit amet sem eros, quis sollicitudin est. Nullam commodo, augue et pulvinar tristique, leo purus consequat mi, commodo tempor ligula orci id enim. Donec varius urna et lacus consequat in placerat orci vestibulum. Etiam semper, velit sed tincidunt hendrerit, augue tortor gravida velit, a aliquam elit nulla vitae risus. In vitae enim eget est molestie dignissim at at turpis. Nam id purus at orci convallis ultrices. Vivamus at nisl id lacus tempor varius et nec tellus. Mauris posuere lorem ut mauris rutrum porttitor. Nunc at metus turpis, non volutpat erat. Sed bibendum imperdiet tellus, sit amet imperdiet augue tincidunt id. Morbi ultrices dapibus augue, at placerat magna luctus in."
-                else if (currentValue == "Rich text")
-                    textArea.text = "<p align=center><b>Lorem, Lorem</b></p><p><b>Lorem ipsum dolor sit amet, <i>consectetur adipisicing elit</i>, <u>sed do</u></b> eiusmod tempor <i><u style=color:'red'>incididunt</i><img src=\":/richtexteditor\"></img></u> ut labore et dolore <big style=color:'green'>magna</big> aliqua.<p>"
-            }
-        }
-    }
-
-    Row {
-        id: alignment
-        property real w: (width - spacing * (children.length - 1)) / children.length
-        anchors.top: privy.portrait ? wrapAndContent.bottom : parent.top
-        anchors.left: privy.portrait ? parent.left : wrapAndContent.right
-        anchors.right: parent.right
-        anchors.topMargin: privy.portrait ? privy.margin : 0
-        anchors.leftMargin: privy.portrait ? 0 : privy.margin
-        height: parent.height * 1/9
-        width: parent.width * (privy.portrait ? 1 : 1/2)
-        spacing: privy.margin
-
-        ChoiceList {
-            id: hAlignment; objectName: "hAlignment"
-            height: parent.height; width: alignment.w
-            currentIndex: 0
-            model: ["Left", "Center", "Right", "Justify"]
-
-            onCurrentIndexChanged: {
-                if (currentIndex == 0)
-                    textArea.horizontalAlignment = TextEdit.AlignLeft
-                else if (currentIndex == 1)
-                    textArea.horizontalAlignment = TextEdit.AlignHCenter
-                else if (currentIndex == 2)
-                    textArea.horizontalAlignment = TextEdit.AlignRight
-                else if (currentIndex == 3)
-                    textArea.horizontalAlignment = TextEdit.AlignJustify
-            }
-        }
-
-        ChoiceList {
-            id: vAlignment; objectName: "vAlignment"
-            height: parent.height; width: alignment.w
-            currentIndex: 0
-            model: ["Top", "Center", "Bottom"]
-            onCurrentIndexChanged: {
-                if (currentIndex == 0)
-                    textArea.verticalAlignment  = TextEdit.AlignTop
-                else if (currentIndex == 1)
-                    textArea.verticalAlignment  = TextEdit.AlignVCenter
-                else if (currentIndex == 2)
-                    textArea.verticalAlignment  = TextEdit.AlignBottom
-            }
-        }
+        property real contentHeight: parent.height * (privy.portrait ? 7/8 : 5/6) - platformStyle.paddingSmall * 3
     }
 
     ButtonRow {
-        id: rowOne
+        id: buttons
+
+        property real h: parent.height * (privy.portrait ? 1/8 : 1/6)
+
+        anchors { top: parent.top; left: parent.left; right: parent.right }
         exclusive: false
-        anchors {
-            top: privy.portrait ? alignment.bottom : wrapAndContent.bottom
-            left: parent.left
-            right: parent.right
-            topMargin: 5
-        }
 
         Button {
-            id: readOnly; objectName: "readOnly"
-            checkable: true;
-            text: "Editable"
-            onClicked: text = checked ? "ReadOnly" : "Editable"
+            id: editable; objectName: "readOnly"
+            checked: true; checkable: true
+            height: parent.h; text: checked ? "Editable" : "ReadOnly"
         }
 
         Button {
             id: enable; objectName: "enable"
-            checkable: true
-            text: "Enabled"
-            onClicked: text = checked ? "Disabled" : "Enabled"
+            checked: true; checkable: true
+            height: parent.h; text: checked ? "Enabled": "Disabled"
         }
 
         Button {
-            id: errorHighlight; objectName: "errorHighlight"
-            checkable: true
-            text: "No Error"
-            onClicked: text = checked ? "Error" : "No Error"
+            id: error; objectName: "error"
+            checkable: true; height: parent.h
+            text: "Error"
         }
     }
 
-    ButtonRow {
-        id: rowTwo
-        anchors { top: rowOne.bottom; left: parent.left; right: parent.right }
-        exclusive: false
+    Column {
+        id: style
+
+        property real h: (height - spacing * (children.length - 1)) / children.length
+
+        anchors { top: buttons.bottom; left: parent.left }
+        height: privy.contentHeight * (privy.portrait ? 2/3 : 1)
+        width: parent.height * (privy.portrait ? 1/8 : 1/6)
 
         Button {
-            id: inputMethodHints; objectName: "inputMethodHints"
-            text: "ImHints"
-            onClicked: selectInputMethodHints.open()
+            id: bold; objectName: "bold"
+            height: parent.h; width: parent.width
+            checkable: true; text: "B"
         }
 
         Button {
-            id: defocus; objectName: "defocus"
-            text: "Unfocus"
-            onClicked: forceActiveFocus()
+            id: italic; objectName: "italic"
+            height: parent.h; width: parent.width
+            checkable: true; text: "I"
         }
-    }
 
-    InputMethodHintsDialog {
-        id: selectInputMethodHints
+        Button {
+            id: strikeout; objectName: "strikeout"
+            height: parent.h; width: parent.width
+            checkable: true; text: "S"
+        }
+
+        Button {
+            id: underline; objectName: "underline"
+            height: parent.h; width: parent.width
+            checkable: true; text: "U"
+        }
     }
 
     TextArea {
         id: textArea; objectName: "textArea"
         anchors {
-            top: rowTwo.bottom
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-            leftMargin: privy.portrait ? 0 : privy.margin
-            topMargin: privy.margin
+            top: buttons.bottom; left: style.right
+            right: privy.portrait ? parent.right : settings.left
         }
-        height: parent.height * (privy.portrait ? 2/3 : 8/9)
-        width: parent.width
+
+        height: privy.contentHeight * (privy.portrait ? 2/3 : 1)
         placeholderText: "Enter text here"
-        inputMethodHints: selectInputMethodHints.inputMethodHintsFlag
-        readOnly: readOnly.checked
-        enabled: !enable.checked
-        errorHighlight: errorHighlight.checked
+
+        enabled: enable.checked
+        errorHighlight: error.checked
+        horizontalAlignment: settings.horizontalAlignment
+        inputMethodHints: settings.inputMethodHints
+        readOnly: !editable.checked
+        verticalAlignment: settings.verticalAlignment
+        wrapMode: settings.wrapMode
+
+        font.bold: bold.checked
+        font.capitalization: settings.fontCapitalization
+        font.family: settings.fontFamily
+        font.italic: italic.checked
+        font.letterSpacing: settings.fontLetterSpacing
+        font.pixelSize: settings.fontPixelSize
+        font.strikeout: strikeout.checked
+        font.underline: underline.checked
+        font.weight: settings.fontWeight
+   }
+
+   TextSettings {
+        id: settings
+        anchors {
+            top: privy.portrait ? textArea.bottom : buttons.bottom
+            bottom: root.bottom
+            right: parent.right
+            topMargin: platformStyle.paddingSmall
+            bottomMargin: platformStyle.paddingSmall
+        }
+        width: privy.portrait ? parent.width : parent.width * 2/5
     }
+
+    Menu {
+        id: optionMenu
+        content: MenuLayout {
+            MenuItem {text: "Clear"; onClicked: textArea.text = ""}
+            MenuItem {text: "Long text"; onClicked: textArea.text = "This is a really long piece of text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tristique augue ac mauris cursus vel porta tortor aliquet. Sed porttitor tempus nunc a porta. Etiam sit amet sem eros, quis sollicitudin est. Nullam commodo, augue et pulvinar tristique, leo purus consequat mi, commodo tempor ligula orci id enim. Donec varius urna et lacus consequat in placerat orci vestibulum. Etiam semper, velit sed tincidunt hendrerit, augue tortor gravida velit, a aliquam elit nulla vitae risus. In vitae enim eget est molestie dignissim at at turpis. Nam id purus at orci convallis ultrices. Vivamus at nisl id lacus tempor varius et nec tellus. Mauris posuere lorem ut mauris rutrum porttitor. Nunc at metus turpis, non volutpat erat. Sed bibendum imperdiet tellus, sit amet imperdiet augue tincidunt id. Morbi ultrices dapibus augue, at placerat magna luctus in.This is a really long piece of text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tristique augue ac mauris cursus vel porta tortor aliquet. Sed porttitor tempus nunc a porta. Etiam sit amet sem eros, quis sollicitudin est. Nullam commodo, augue et pulvinar tristique, leo purus consequat mi, commodo tempor ligula orci id enim. Donec varius urna et lacus consequat in placerat orci vestibulum. Etiam semper, velit sed tincidunt hendrerit, augue tortor gravida velit, a aliquam elit nulla vitae risus. In vitae enim eget est molestie dignissim at at turpis. Nam id purus at orci convallis ultrices. Vivamus at nisl id lacus tempor varius et nec tellus. Mauris posuere lorem ut mauris rutrum porttitor. Nunc at metus turpis, non volutpat erat. Sed bibendum imperdiet tellus, sit amet imperdiet augue tincidunt id. Morbi ultrices dapibus augue, at placerat magna luctus in."}
+            MenuItem {text: "Rich text"; onClicked: textArea.text = "<p align=center><b>Lorem, Lorem</b></p><p><b>Lorem ipsum dolor sit amet, <i>consectetur adipisicing elit</i>, <u>sed do</u></b> eiusmod tempor <i><u style=color:'red'>incididunt</i><img src=\":/richtexteditor\"></img></u> ut labore et dolore <big style=color:'green'>magna</big> aliqua.<p>"}
+        }
+    }
+
+   Connections {
+       target: optionsButton
+       onClicked: optionMenu.open()
+   }
 }
