@@ -31,7 +31,6 @@
     <file alias="tb_back.svg">images/tb_back.svg</file>
     <file alias="tb_next.svg">images/tb_next.svg</file>
     <file alias="tb_plus.png">images/tb_plus.png</file>
-    <file alias="FontSelectionDialog.qml">components/FontSelectionDialog.qml</file>
     <file alias="MemoryDisplay.qml">../shared/MemoryDisplay.qml</file>
 </qresource>
 </RCC>

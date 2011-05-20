@@ -27,6 +27,7 @@
 import QtQuick 1.0
 import com.nokia.symbian 1.0
 import Qt.labs.components 1.0
+import "../components"
 
 Item {
     id: root
@@ -39,168 +40,197 @@ Item {
             return false;
     }
 
-    Column {
+    Grid {
         id: common
+
+        property real leftColumnWidth: disabledButton.width
+        property real rightColumnWidth: width - spacing - leftColumnWidth
+
         anchors {
             top: parent.top
             left: parent.left
             right: isLandscape() ? parent.horizontalCenter : parent.right
             margins: 10
         }
-        spacing: isLandscape() ? 1 : 5
+        columns: isLandscape() ? 4 : 2
+        spacing: 5
 
-        Row {
-            ChoiceList {
-                Component.onCompleted: {console.log("ChoiceList::onCompleted: " + currentValue + " " + currentIndex)}
+        Text {
+            id: imageLabel
+            width: common.leftColumnWidth
+            height: imageButton.height
+            verticalAlignment: Text.AlignVCenter
+            color: platformStyle.colorNormalLight
+            font.pixelSize: platformStyle.fontSizeSmall
+            text: "Image:"
+        }
 
-                id: iconChoicelist
-                width: 200
-                onCurrentValueChanged: {
-                    currentValue != "<none>" ? scalableButton.iconSource = "image://theme/:/" + currentValue :  scalableButton.iconSource = ""
-                    currentValue != "<none>" ? mixedButton.iconSource = "image://theme/:/" + currentValue :  mixedButton.iconSource = ""
+        Button {
+            id: imageButton
+            objectName: "imageButton"
+            text: imageDialog.model[imageDialog.selectedIndex]
+            iconSource: imageDialog.currentImage
+            onClicked: imageDialog.open()
+
+            SelectionDialog {
+                id: imageDialog
+                titleText: "Select image"
+                selectedIndex: 0
+                property string currentImage
+                currentImage: {
+                    if (selectedIndex <= 0)
+                        return ""
+                    return "qrc:/" + model[selectedIndex]
                 }
                 model: ["<none>", "list1.png", "list2.png", "list3.png", "list4.png", "list5.png",
                         "list6.png", "list7.png", "list8.png", "list9.png", "list10.png",
                         "list11.png", "list12.png", "list13.png", "list14.png", "list15.png"]
             }
-
-            Button {
-                text: "Unset"
-                onClicked: {
-                    scalableButton.iconSource = ""
-                    mixedButton.iconSource = ""
-                    iconChoicelist.currentIndex = 0
-                }
-            }
         }
 
-        Grid {
-            columns: 2
-            spacing: 5
+        Text {
+            id: textLabel
+            width: common.leftColumnWidth
+            height: buttonTextEditor.height
+            verticalAlignment: Text.AlignVCenter
+            color: platformStyle.colorNormalLight
+            font.pixelSize: platformStyle.fontSizeSmall
+            text: "Text:"
+        }
 
-            Text {
-                color: platformStyle.colorNormalLight
-                font.pixelSize: platformStyle.fontSizeSmall
-                text: "Button text:"
-            }
+        TextField {
+            id: buttonTextEditor
+            objectName: "buttonTextEditor"
+            width: common.rightColumnWidth
+            text: "Hello QML"
+        }
 
-            TextField {
-                id: buttonTextEditor
-                text: "Hello QML"
-            }
-
-            Text {
-                color: platformStyle.colorNormalLight
-                font.pixelSize: platformStyle.fontSizeSmall
-                text: "Label font:"
-            }
-
-            Button {
-                id: fontButton
-                text: scalableButton.font.family
-                property Item fontSelectionDialog: null
-                onClicked: {
-                    if (fontSelectionDialog == null) {
-                        var component = Qt.createComponent("qrc:/FontSelectionDialog.qml")
-                        if (component.status == Component.Ready) {
-                            fontSelectionDialog = component.createObject(fontButton);
-                        } else {
-                            console.log(component.errorString())
-                            return
-                        }
-                    }
-                    fontSelectionDialog.open()
-                }
-
-                Binding { target: fontButton; property: "text"; value: fontButton.fontSelectionDialog != null ? fontButton.fontSelectionDialog.fontFamily: ""; when: fontButton.fontSelectionDialog != null }
-                Binding { target: scalableButton; property: "font.family"; value: fontButton.text; when: fontButton.fontSelectionDialog != null }
-            }
-
-            Text {
-                color: platformStyle.colorNormalLight
-                font.pixelSize: platformStyle.fontSizeSmall
-                text: "Label font size:"
-            }
-
-            Slider {
-                id: "labelSizeSlider"
-                minimumValue: 1; maximumValue: 50; stepSize: 1;
-                valueIndicatorVisible: true
-                value: scalableButton.font.pixelSize
-                onValueChanged: if (pressed) scalableButton.font.pixelSize = value
-            }
+        Text {
+            id: fontLabel
+            width: common.leftColumnWidth
+            height: fontButton.height
+            verticalAlignment: Text.AlignVCenter
+            color: platformStyle.colorNormalLight
+            font.pixelSize: platformStyle.fontSizeSmall
+            text: "Font:"
         }
 
         Button {
-            id: checkableButton
-            text: "Auto repeat / Long press"
-            checkable: true
-            onCheckedChanged: {
-                if (checked) {
-                    mixedButton.text = "Auto repeat"
-                    mixedButton.platformLongPress = false;
-                    mixedButton.platformAutoRepeat = true;
-                } else {
-                    mixedButton.text = "Long press"
-                    mixedButton.platformLongPress = true;
-                    mixedButton.platformAutoRepeat = false;
-                }
+            id: fontButton
+            objectName: "fontButton"
+            width: common.rightColumnWidth
+            text: scalableButton.font.family
+
+            FontSelectionDialog {
+                id: fontSelector
+                onAccepted: scalableButton.font.family = fontSelector.fontFamily
             }
+
+            onClicked: fontSelector.open()
+        }
+
+        Text {
+            id: fontSizeLabel
+            width: common.leftColumnWidth
+            height: labelSizeSlider.height
+            verticalAlignment: Text.AlignVCenter
+            color: platformStyle.colorNormalLight
+            font.pixelSize: platformStyle.fontSizeSmall
+            text: "Font size:"
+        }
+
+        Slider {
+            id: labelSizeSlider
+            objectName: "labelSizeSlider"
+            width: common.rightColumnWidth
+            minimumValue: 1; maximumValue: 50; stepSize: 1;
+            valueIndicatorVisible: false
+            value: scalableButton.font.pixelSize
+            onValueChanged: if (pressed) scalableButton.font.pixelSize = value
+        }
+
+        Text {
+            id: longPressLabel
+            width: common.leftColumnWidth
+            height: longPressButton.height
+            verticalAlignment: Text.AlignVCenter
+            color: platformStyle.colorNormalLight
+            font.pixelSize: platformStyle.fontSizeSmall
+            text: "Long press:"
         }
 
         Button {
-            id: mixedButton
+            id: longPressButton
+            objectName: "longPressButton"
+            width: common.rightColumnWidth
             platformLongPress: true
-            text: "Long press"
-
-            onClicked: {
-                rect.x += 2;
-                if (rect.x + rect.width > parent.width)
-                    rect.x = mixedButton.x + mixedButton.width + 10;
-            }
-
+            text: "Press me"
             onPlatformPressAndHold: {
                 var menu = Qt.createQmlObject('import QtQuick 1.0; Rectangle { id: tempMenu; color: "lightsteelblue"; width: 200; height: 100; anchors.centerIn: parent; opacity: 0.8; Text { id: text1; text: "Click to close"; font.pointSize: 12; anchors.top: parent.top;}  MouseArea { anchors.fill: parent; onClicked: {tempMenu.destroy(); } } }', scalableButton.parent, "menu");
             }
+        }
 
-            Rectangle {
-                id: rect
-                x: mixedButton.x + mixedButton.width + 10
-                width: 50
-                height: mixedButton.height
-                color: "red"
-                radius: 10
-            }
+        Text {
+            id: repeatLabel
+            width: common.leftColumnWidth
+            height: repeatButton.height
+            verticalAlignment: Text.AlignVCenter
+            color: platformStyle.colorNormalLight
+            font.pixelSize: platformStyle.fontSizeSmall
+            text: "Auto repeat:"
         }
 
         Button {
-            id: disabledButton
-            enabled: false
-            text: "Disabled button"
-            checkable: true // not really checkable since disabled
-            onPressedChanged: text = "Error: onPressedChanged" // should never be seen
-            onCheckedChanged: text = "Error: onCheckedChanged" // should never be seen
+            id: repeatButton
+            objectName: "repeatButton"
+            width: common.rightColumnWidth
+            platformLongPress: false
+            platformAutoRepeat: true
+            text: "Press me"
+
+            onClicked: {
+                width -= 2
+                if (width < 10)
+                    width = common.rightColumnWidth
+            }
         }
     }
 
-    Button {
-        id: scalableButton
+    Row {
+        spacing: 5
 
         anchors {
-            top: isLandscape() ? parent.top : common.bottom;
-            left: isLandscape() ? parent.horizontalCenter : parent.left;
+            top: common.bottom
+            left: parent.left
             right: parent.right
             bottom: parent.bottom
             margins: 10
         }
-        text: buttonTextEditor.text
 
-        Rectangle {
-            width: parent.implicitWidth
-            height: parent.implicitHeight
-            anchors.centerIn: parent
-            color: "#00000000"
-            border.color: "blue"
+        Button {
+            id: disabledButton
+            objectName: "disabledButton"
+            text: "Disabled"
+            checked: false
+            checkable: true
+        }
+
+        Button {
+            id: scalableButton
+            objectName: "scalableButton"
+            height: parent.height
+            width: parent.width - parent.spacing - disabledButton.width
+            text: buttonTextEditor.text
+            iconSource: imageDialog.currentImage
+            enabled: !disabledButton.checked
+
+            Rectangle {
+                width: parent.implicitWidth
+                height: parent.implicitHeight
+                anchors.centerIn: parent
+                color: "transparent"
+                border.color: "blue"
+            }
         }
     }
 }
