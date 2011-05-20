@@ -146,7 +146,13 @@ FocusScopeItem {
         id: background
         anchors.fill: parent
         source: privateStyle.imagePath("qtg_fr_textfield_" + privy.bg_postfix())
-        border { left: 10; top: 10; right: 10; bottom: 10 }
+        border {
+            left: platformStyle.borderSizeMedium
+            top: platformStyle.borderSizeMedium
+            right: platformStyle.borderSizeMedium
+            bottom: platformStyle.borderSizeMedium
+        }
+        smooth: true
     }
 
     Item {
