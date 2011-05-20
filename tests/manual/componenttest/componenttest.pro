@@ -54,6 +54,8 @@ OTHER_FILES += \
     main.qml \
     ../shared/MemoryDisplay.qml \
     components/FontSelectionDialog.qml \
+    components/TextSettings.qml \
+    components/TextSettingsModel.qml \
     tests/BusyIndicator.qml \
     tests/Button.qml \
     tests/ButtonRow.qml \
