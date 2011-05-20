@@ -41,7 +41,6 @@
 #include "tabgroup/apicheck_tabgroup.h"
 #include "textarea/apicheck_textarea.h"
 #include "scrolldecorator/apicheck_scrolldecorator.h"
-#include "choicelist/apicheck_choicelist.h"
 #include "window/apicheck_window.h"
 #include "page/apicheck_page.h"
 #include "pagestack/apicheck_pagestack.h"
@@ -117,7 +116,6 @@ int main(int argc, char *argv[])
     ApiCheckTextArea textArea(engine, module);
     ApiCheckToolBar toolBar(engine, module);
     ApiCheckScrollDecorator scrollDecorator(engine, module);
-    ApiCheckChoiceList choiceList(engine, module);
     ApiCheckWindow window(engine, module);
     ApiCheckPage page(engine, module);
     ApiCheckPageStack pageStack(engine, module);
@@ -153,7 +151,6 @@ int main(int argc, char *argv[])
     if (QTest::qExec(&toolBar, argc)) failures.append("toolBar");
     if (QTest::qExec(&textArea, args)) failures.append("textArea");
     if (QTest::qExec(&scrollDecorator, args)) failures.append("scrollDecorator");
-    if (QTest::qExec(&choiceList, args)) failures.append("choiceList");
     if (QTest::qExec(&window, args)) failures.append("window");
     if (QTest::qExec(&page, argc)) failures.append("page");
     if (QTest::qExec(&pageStack, argc)) failures.append("pageStack");

@@ -92,7 +92,6 @@ QML_FILES = \
     ButtonRow.qml \
     BusyIndicator.qml \
     CheckBox.qml \
-    ChoiceList.qml \
     CommonDialog.qml \
     ContextMenu.qml \
     Dialog.qml \

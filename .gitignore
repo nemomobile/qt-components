@@ -58,7 +58,6 @@ release/
 /tests/auto/api_buttoncolumn/tst_quickcomponentsbuttoncolumn
 /tests/auto/api_buttonrow/tst_quickcomponentsbuttonrow
 /tests/auto/api_checkbox/tst_quickcomponentscheckbox
-/tests/auto/api_choicelist/tst_quickcomponentschoicelist
 /tests/auto/api_dialog/tst_quickcomponentsdialog
 /tests/auto/api_menu/tst_quickcomponentsmenu
 /tests/auto/api_pagestack/tst_quickcomponentspagestack

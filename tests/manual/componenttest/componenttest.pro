@@ -61,7 +61,6 @@ OTHER_FILES += \
     tests/ButtonRow.qml \
     tests/ButtonColumn.qml \
     tests/CheckBox.qml \
-    tests/ChoiceList.qml \
     tests/ContextMenu.qml \
     tests/DatePickerDialog.qml \
     tests/InfoBanner.qml \

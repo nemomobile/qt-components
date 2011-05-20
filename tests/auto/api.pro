@@ -10,7 +10,6 @@ meego {
         #api_pagestack \ #TODO fix PageStack
         api_progressbar \
         #api_scrolldecorator \ #TODO fix flickableItem
-        #api_choicelist \ #TODO missing component
         #api_buttoncolumn \ #TODO not yet finalized
         #api_buttonrow \ #TODO not yet finalized
         #api_textfield \ #TODO not yet finalized
@@ -25,7 +24,6 @@ symbian3 {
         api_buttoncolumn \
         api_buttonrow \
         api_checkbox \
-        api_choicelist \
         api_dialog \
         api_menu \
         api_pagestack \
