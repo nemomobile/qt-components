@@ -47,28 +47,42 @@ ImplicitSizeItem {
 
     QtObject {
         id: internal
-        property int textSpacing: 8  // spacing between image and text
+
+        // spacing between image and text
+        property int textSpacing: platformStyle.paddingMedium
+        property string textColor: platformStyle.colorNormalLight
 
         property string backgroundImageSource: "qtg_graf_rating_unrated.svg"
         property string indicatorImageSource: "qtg_graf_rating_rated.svg"
-
-        property string textColor: platformStyle.colorNormalLight
     }
 
-    Image {
+    Row {
         id: background
-        width: platformStyle.graphicSizeTiny * maximumValue
-        height: platformStyle.graphicSizeTiny
         anchors.verticalCenter: height < text.paintedHeight ? text.verticalCenter : undefined
-        fillMode: Image.Tile
-        source: privateStyle.imagePath(internal.backgroundImageSource)
+        spacing: platformStyle.paddingMedium
+        Repeater {
+            model: maximumValue
+            Image {
+                id: backgroundImage
+                source: privateStyle.imagePath(internal.backgroundImageSource)
+                sourceSize.width: platformStyle.graphicSizeTiny
+                sourceSize.height: platformStyle.graphicSizeTiny
+            }
+        }
+    }
 
-        Image {
-            id: indicator
-            width: platformStyle.graphicSizeTiny * ratingValue
-            height: platformStyle.graphicSizeTiny
-            fillMode: Image.Tile
-            source: privateStyle.imagePath(internal.indicatorImageSource)
+    Row {
+        id: indicator
+        anchors.verticalCenter: height < text.paintedHeight ? text.verticalCenter : undefined
+        spacing: platformStyle.paddingMedium
+        Repeater {
+            model: ratingValue
+            Image {
+                id: indicatorImage
+                source: privateStyle.imagePath(internal.indicatorImageSource)
+                sourceSize.width: platformStyle.graphicSizeTiny
+                sourceSize.height: platformStyle.graphicSizeTiny
+            }
         }
     }
 
