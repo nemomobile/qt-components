@@ -25,9 +25,10 @@
 ****************************************************************************/
 
 import QtQuick 1.0
+import Qt.labs.components.native 1.0
 
 Item {
-    property bool inPortrait
+    property bool inPortrait: screen.width < screen.height
 
     property alias largeFont: largeText.font
     property alias smallFont: smallText.font

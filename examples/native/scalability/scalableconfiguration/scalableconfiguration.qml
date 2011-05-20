@@ -69,19 +69,8 @@ Window {
 
         path: "configurations"
         fileName: "Configuration.qml"
-        windowWidth: window.width
-        windowHeight: window.height
-
         onLoaded: gameViewLoader.sourceComponent = gameViewComponent;
         onLoadError: errorText.text = "Error: unable to load configuration\nTap to quit.";
     }
-
-    Binding {
-        target: customLoader.item
-        property: "inPortrait"
-        value: window.inPortrait
-    }
-
-    Component.onCompleted: customLoader.load()
 }
 //![0]

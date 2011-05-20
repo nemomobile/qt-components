@@ -33,14 +33,13 @@ Loader {
     property bool debug: true
     property string path
     property string fileName
-    property int windowWidth
-    property int windowHeight
 
     //![Properties]
     property int attempt: 0
-    property int largerDimension: Math.max(windowWidth, windowHeight)
-    property int smallerDimension: Math.min(windowWidth, windowHeight)
+    property int largerDimension: Math.max(screen.displayWidth, screen.displayHeight)
+    property int smallerDimension: Math.min(screen.displayWidth, screen.displayHeight)
     property int roundedDpi: Math.round(screen.dpi / 10) * 10
+    property string mySource: path + "/" + largerDimension + "x" + smallerDimension + "/" + roundedDpi + "/" + fileName;
     //![Properties]
 
     signal loadError
@@ -76,8 +75,10 @@ Loader {
     //![Density Categories]
 
     //![Loading]
-    function load() {
-        customLoader.source = path + "/" + largerDimension + "x" + smallerDimension + "/" + roundedDpi + "/" + fileName;
+    onMySourceChanged: {
+        attempt = 0;
+        if (customLoader.smallerDimension > 0 && customLoader.largerDimension > 0)
+            source = mySource;
     }
 
     onStatusChanged: {
@@ -100,9 +101,9 @@ Loader {
                 customLoader.loadError();
                 source = "";
             }
+        } else {
+            if (debug) console.log("CustomLoader: successfully loaded file: " + source);
         }
     }
     //![Loading]
-
-    onSourceChanged: if (debug) console.log("CustomLoader.source: " + source);
 }
