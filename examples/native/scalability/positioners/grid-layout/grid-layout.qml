@@ -41,8 +41,10 @@ Window {
         anchors.fill: parent
         spacing: 15
 
+        //![1]
         columns: window.inPortrait ? 1 : 2
         rows: window.inPortrait ? 6 : 3
+        //![1]
 
         move: Transition {
             NumberAnimation { properties: "x,y"; easing.type: Easing.OutBounce; duration: 200 }
@@ -51,7 +53,7 @@ Window {
             NumberAnimation { properties: "x,y"; easing.type: Easing.OutBounce; duration: 500 }
         }
 
-        //![1]
+        //![2]
         Repeater {
             model: 6
 
@@ -60,6 +62,6 @@ Window {
                 text: index
             }
         }
-        //![1]
+        //![2]
     }
 }
