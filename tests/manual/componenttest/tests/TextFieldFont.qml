@@ -26,6 +26,8 @@
 
 import QtQuick 1.0
 import com.nokia.symbian 1.0
+import Qt.labs.components 1.0
+import "../components"
 
 Item {
     id: root
@@ -55,8 +57,8 @@ Item {
 
     Grid {
         id: style
-        property real h: (height - spacing * (rows - 1)) / rows
-        property real w: (width - spacing * (columns - 1)) / columns
+        property real itemHeight: (height - spacing * (rows - 1)) / rows
+        property real itemWidth: (width - spacing * (columns - 1)) / columns
         anchors {
             left: parent.left
             top: privy.portrait ? textField.bottom : parent.top
@@ -64,190 +66,206 @@ Item {
         }
         columns: privy.portrait ? 4 : 1
         rows: privy.portrait ? 1 : 4
-        height: parent.height * (privy.portrait ? 1/6 : 1)
-        width: parent.width * (privy.portrait ? 1 : 1/6)
+        height: parent.height * (privy.portrait ? 1/10 : 1)
+        width: parent.width * (privy.portrait ? 1 : 1/10)
         spacing: privy.margin
 
         Button {
             id: bold; objectName: "bold"
-            height: parent.h; width: parent.w
+            height: parent.itemHeight; width: parent.itemWidth
             checkable: true; text: "B"
 
         }
 
         Button {
             id: italic; objectName: "italic"
-            height: parent.h; width: parent.w
+            height: parent.itemHeight; width: parent.itemWidth
             checkable: true; text: "I"
         }
 
         Button {
             id: strikeout; objectName: "strikeout"
-            height: parent.h; width: parent.w
+            height: parent.itemHeight; width: parent.itemWidth
             checkable: true; text: "S"
         }
 
         Button {
             id: underline; objectName: "underline"
-            height: parent.h; width: parent.w
+            height: parent.itemHeight; width: parent.itemWidth
             checkable: true; text: "U"
         }
     }
 
-    ChoiceList {
-        id: family; objectName: "family"
+    Grid {
+        id: selectors
+        property real itemHeight: (height - spacing * (rows - 1)) / rows
+        property real itemWidth: (width - spacing * (columns - 1)) / columns
         anchors {
             left: privy.portrait ? parent.left : style.right
-            top: privy.portrait ? style.bottom : textField.bottom
             right: parent.right
+            top: privy.portrait ? style.bottom : textField.bottom
             margins: privy.margin
         }
-        height: parent.height * (privy.portrait ? 1/10 : 1/6)
-        currentIndex: 0
-        model: Qt.fontFamilies()
-        onCurrentIndexChanged: textField.font.family = model[currentIndex]
-        Component.onCompleted: {
-            var found = false
-            for (var i = 0; i < model.length && !found; ++i) {
-                if (model[i] == textField.font.family) {
-                    found = true
-                    currentIndex = i
+        columns: privy.portrait ? 1 : 3
+        spacing: privy.margin
+
+        SelectionListItem {
+            id: weight
+            objectName: "weight"
+            width: parent.itemWidth
+            title: "Weight"
+            subTitle: weightDialog.selectedIndex >= 0
+                      ? weightDialog.model[weightDialog.selectedIndex] : "default"
+            onClicked: weightDialog.open()
+
+            SelectionDialog {
+                id: weightDialog
+                titleText: "Select weight"
+                selectedIndex: -1
+                model: ["Light", "Normal", "DemiBold", "Bold", "Black"]
+                onAccepted: {
+                    if (selectedIndex == 0)
+                        textField.font.weight = Font.Light
+                    else if (selectedIndex == 1)
+                        textField.font.weight = Font.Normal
+                    else if (selectedIndex == 2)
+                        textField.font.weight = Font.DemiBold
+                    else if (selectedIndex == 3)
+                        textField.font.weight = Font.Bold
+                    else if (selectedIndex == 4)
+                        textField.font.weight = Font.Black
                 }
             }
         }
-    }
 
-    Row {
-        id: weightAndCapitalization
-        property real w: (width - spacing * (children.length - 1)) / children.length
-        anchors {
-            left: privy.portrait ? parent.left : style.right
-            right: parent.right
-            top: family.bottom
-            margins: privy.margin
-        }
-        height: parent.height * (privy.portrait ? 1/10 : 1/6)
-        spacing: privy.margin
+        SelectionListItem {
+            id: capitalization
+            objectName: "capitalization"
+            width: parent.itemWidth
+            title: "Capitalization"
+            subTitle: capitalizationDialog.selectedIndex >= 0
+                      ? capitalizationDialog.model[capitalizationDialog.selectedIndex] : "default"
+            onClicked: capitalizationDialog.open()
 
-        ChoiceList {
-            id: weight; objectName: "weight"
-            height: parent.h; width: parent.w
-            currentIndex: 1
-            model: ["Light", "Normal", "DemiBold", "Bold", "Black"]
-
-            onCurrentIndexChanged: {
-                if (currentIndex == 0)
-                    textField.font.weight = Font.Light
-                else if (currentIndex == 1)
-                    textField.font.weight = Font.Normal
-                else if (currentIndex == 2)
-                    textField.font.weight = Font.DemiBold
-                else if (currentIndex == 3)
-                    textField.font.weight = Font.Bold
-                else if (currentIndex == 4)
-                    textField.font.weight = Font.Black
+            SelectionDialog {
+                id: capitalizationDialog
+                titleText: "Select capitalization"
+                selectedIndex: -1
+                model: ["MixedCase", "AllUppercase", "AllLowercase", "SmallCaps", "Capitalize"]
+                onAccepted: {
+                    if (selectedIndex == 0)
+                        textField.font.capitalization = Font.MixedCase
+                    else if (selectedIndex == 1)
+                        textField.font.capitalization = Font.AllUppercase
+                    else if (selectedIndex == 2)
+                        textField.font.capitalization = Font.AllLowercase
+                    else if (selectedIndex == 3)
+                        textField.font.capitalization = Font.SmallCaps
+                    else if (selectedIndex == 4)
+                        textField.font.capitalization = Font.Capitalize
+                }
             }
         }
 
-        ChoiceList {
-            id: capitalization; objectName: "capitalization"
-            height: parent.h; width: parent.w
-            currentIndex: 0
-            model: ["MixedCase", "AllUppercase", "AllLowercase", "SmallCaps", "Capitalize"]
+        SelectionListItem {
+            id: family
+            objectName: "family"
+            width: parent.itemWidth
+            title: "Font"
+            subTitle: textField.font.family
+            onClicked: fontSelector.open()
 
-            onCurrentIndexChanged: {
-                if (currentIndex == 0)
-                    textField.font.capitalization = Font.MixedCase
-                else if (currentIndex == 1)
-                    textField.font.capitalization = Font.AllUppercase
-                else if (currentIndex == 2)
-                    textField.font.capitalization = Font.AllLowercase
-                else if (currentIndex == 3)
-                    textField.font.capitalization = Font.SmallCaps
-                else if (currentIndex == 4)
-                    textField.font.capitalization = Font.Capitalize
+            FontSelectionDialog {
+                id: fontSelector
+                onAccepted: textField.font.family = fontSelector.fontFamily
             }
         }
     }
 
     Grid {
         id: sliders
-        property real h: (height - spacing * (rows - 1)) / rows
-        property real w: (width - spacing * (columns - 1)) / columns
+        property real itemWidth: (width - spacing * (columns - 1)) / columns
+        property real sliderHeight: 30
         anchors {
             left: privy.portrait ? parent.left : style.right
             right: parent.right
-            top: weightAndCapitalization.bottom
-            bottom: parent.bottom
+            top: selectors.bottom
             margins: privy.margin
         }
-        columns: privy.portrait ? 1 : 2
-        rows: privy.portrait ? 4 : 2
-        height: parent.height * (privy.portrait ? 1/2 : 1/6)
+        columns: 2
         spacing: privy.margin
+        flow: Grid.TopToBottom
+
+        Text {
+            width: parent.itemWidth
+            horizontalAlignment: Text.AlignHCenter
+            text: "Letter spacing"
+            color: "white"
+            font { pixelSize: platformStyle.fontSizeSmall }
+        }
 
         Slider {
             id: letterSpacing; objectName: "letterSpacing"
-            height: parent.h; width: parent.w;
-            minimumValue: -10; maximumValue: 10; stepSize: 1;
+            width: parent.itemWidth
+            height: parent.sliderHeight
+            minimumValue: -10; maximumValue: 10; stepSize: 1
             valueIndicatorVisible: true; anchors.margins: privy.margin
             onValueChanged: if (pressed) textField.font.letterSpacing  = value
             Component.onCompleted: value = textField.font.letterSpacing
-
-            Text {
-                text: "Letter spacing"
-                color: "white"
-                font { pointSize: 5; bold: true }
-                anchors { horizontalCenter: parent.horizontalCenter; top: parent.top }
-            }
         }
 
-        Slider {
-            id: wordSpacing; objectName: "wordSpacing"
-            height: parent.h; width: parent.w;
-            minimumValue: -10; maximumValue: 10; stepSize: 1;
-            valueIndicatorVisible: true; anchors.margins: privy.margin
-            onValueChanged: if (pressed) textField.font.wordSpacing  = value
-            Component.onCompleted: value = textField.font.wordSpacing
-
-            Text {
-                text: "Word spacing"
-                color: "white"
-                font { pointSize: 5; bold: true }
-                anchors { horizontalCenter: parent.horizontalCenter; top: parent.top }
-            }
+        Text {
+            width: parent.itemWidth
+            horizontalAlignment: Text.AlignHCenter
+            text: "Point size"
+            color: "white"
+            font { pixelSize: platformStyle.fontSizeSmall }
         }
 
         Slider {
             id: pointSize; objectName: "pointSize"
-            height: parent.h; width: parent.w;
-            minimumValue: 0; maximumValue: 25; stepSize: 1;
+            width: parent.itemWidth
+            height: parent.sliderHeight
+            minimumValue: 0; maximumValue: 25; stepSize: 1
             valueIndicatorVisible: true; anchors.margins: privy.margin
             onValueChanged: if (pressed) textField.font.pointSize = value
             Component.onCompleted: value = textField.font.pointSize
+        }
 
-            Text {
-                text: "Point size"
-                color: "white"
-                font { pointSize: 5; bold: true }
-                anchors { horizontalCenter: parent.horizontalCenter; top: parent.top }
-            }
+        Text {
+            width: parent.itemWidth
+            horizontalAlignment: Text.AlignHCenter
+            text: "Word spacing"
+            color: "white"
+            font { pixelSize: platformStyle.fontSizeSmall }
+        }
+
+        Slider {
+            id: wordSpacing; objectName: "wordSpacing"
+            width: parent.itemWidth
+            height: parent.sliderHeight
+            minimumValue: -10; maximumValue: 10; stepSize: 1
+            valueIndicatorVisible: true; anchors.margins: privy.margin
+            onValueChanged: if (pressed) textField.font.wordSpacing  = value
+            Component.onCompleted: value = textField.font.wordSpacing
+        }
+
+        Text {
+            width: parent.itemWidth
+            horizontalAlignment: Text.AlignHCenter
+            text: "Pixel Size"
+            color: "white"
+            font { pixelSize: platformStyle.fontSizeSmall }
         }
 
         Slider {
             id: pixelSize; objectName: "pixelSize"
-            height: parent.h; width: parent.w;
-            minimumValue: 0; maximumValue: 25; stepSize: 1;
+            width: parent.itemWidth
+            height: parent.sliderHeight
+            minimumValue: 0; maximumValue: 25; stepSize: 1
             valueIndicatorVisible: true; anchors.margins: privy.margin
             onValueChanged: if (pressed) textField.font.pixelSize = value
             Component.onCompleted: value = textField.font.pixelSize
-
-            Text {
-                text: "Pixel Size"
-                color: "white"
-                font { pointSize: 5; bold: true }
-                anchors { horizontalCenter: parent.horizontalCenter; top: parent.top }
-            }
         }
     }
 }
