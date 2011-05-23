@@ -94,6 +94,7 @@ ImplicitSizeItem {
                         top: 0
                         bottom: 0
                     }
+                    smooth: true
                 }
 
                 AnchorChanges {
@@ -123,6 +124,7 @@ ImplicitSizeItem {
                         top: 20
                         bottom: 20
                     }
+                    smooth: true
                 }
 
                 AnchorChanges {
