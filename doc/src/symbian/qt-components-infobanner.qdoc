@@ -28,7 +28,7 @@
     \qmlclass InfoBanner
     \inherits ImplicitSizeItem
     \ingroup qt-components
-    \since 4.7
+    \since 1.0
 
     The InfoBanner component is used to display information to the user. The number of lines of text is limited to 3
 

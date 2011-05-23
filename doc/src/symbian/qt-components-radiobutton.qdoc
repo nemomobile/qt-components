@@ -29,7 +29,7 @@
 
     \qmlclass RadioButton
     \ingroup qt-components
-    \since 4.7
+    \since 1.0
     \inherits Item
     \brief
     A RadioButton is used in a list of items where only one item can be selected

@@ -27,7 +27,7 @@
 /*!
     \qmlclass Dialog
     \ingroup qt-components
-    \since 4.7
+    \since 1.0
     \inherits Item
     \brief
     A Dialog is a top-level window mostly used for short-term tasks and brief

@@ -28,7 +28,7 @@
     \qmlclass RatingIndicator
     \inherits ImplicitSizeItem
     \ingroup qt-components
-    \since 4.7
+    \since 1.0
 
     Component to indicate user specified ratings.
 

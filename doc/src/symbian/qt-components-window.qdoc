@@ -28,7 +28,7 @@
 
     \qmlclass Window
     \ingroup qt-components
-    \since 4.7
+    \since 1.0
     \inherits Item
     \brief
     Window is the root component for an application and handles the transitions

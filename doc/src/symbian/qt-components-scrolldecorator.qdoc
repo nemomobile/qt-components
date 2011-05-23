@@ -28,7 +28,7 @@
 
     \qmlclass ScrollDecorator
     \ingroup qt-components
-    \since 4.7f
+    \since 1.0f
     \inherits Item
     \brief
     A ScrollDecorator adds a visual indicator to a Flickable element to show the

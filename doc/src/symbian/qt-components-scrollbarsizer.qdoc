@@ -30,7 +30,7 @@
 
     \qmlclass ScrollBarSizer
     \ingroup qt-components
-    \since 4.7
+    \since 1.0
     \inherits QtObject
 
     \brief

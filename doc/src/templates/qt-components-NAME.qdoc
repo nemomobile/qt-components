@@ -32,7 +32,7 @@
 
     \qmlclass NAME
     \ingroup qt-components
-    \since 4.7
+    \since 1.0
     \inherits ###Item
 
     \brief
@@ -40,7 +40,7 @@
 */
 
 /*!
-    \qmlproperty  NAME::
+    \qmlproperty NAME::
 
 */
 

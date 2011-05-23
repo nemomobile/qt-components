@@ -28,7 +28,7 @@
 
     \qmlclass BusyIndicator
     \ingroup qt-components
-    \since 4.7
+    \since 1.0
     \brief
     The BusyIndicator shows the user that the application is not ready to be
     used at present.

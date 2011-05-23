@@ -29,7 +29,7 @@
     \qmlclass TabBar
     \ingroup qt-components
     \ingroup qt-components-symbian
-    \since 4.7
+    \since 1.0
     \inherits Item
     \brief
     Symbian: A TabBar provides a themeable background for a TabBarLayout.

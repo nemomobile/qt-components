@@ -28,7 +28,7 @@
     \qmlclass TimePickerDialog
     \inherits Item
     \ingroup qt-components
-    \since 4.7
+    \since 1.0
 
     Dialog that shows a time picker.
 

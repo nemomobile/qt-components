@@ -29,7 +29,7 @@
 
     \qmlclass TabGroup
     \ingroup qt-components
-    \since 4.7
+    \since 1.0
     \inherits Item
 
     \brief TabGroup is a set of pages for a tabbed interface.

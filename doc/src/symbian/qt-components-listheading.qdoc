@@ -29,7 +29,7 @@
     \qmlclass ListHeading
     \ingroup qt-components
     \ingroup qt-components-symbian
-    \since 4.7
+    \since 1.0
     \inherits Item
     \brief
     Symbian: The ListHeading element provides a heading for a list or a section in a list.

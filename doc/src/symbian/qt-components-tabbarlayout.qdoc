@@ -28,7 +28,7 @@
 
     \qmlclass TabBarLayout
     \ingroup qt-components
-    \since 4.7
+    \since 1.0
     \inherits Item
     \brief A TabBarLayout is a positioner for the tab buttons that make up a tab bar
 

@@ -28,7 +28,7 @@
 /*!
     \qmlclass ListItem
     \ingroup qt-components
-    \since 4.7
+    \since 1.0
     \inherits Item
     \brief
     The ListItem element provides common layout options for the row content in a ListView element.

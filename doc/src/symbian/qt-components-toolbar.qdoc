@@ -29,7 +29,7 @@
 
     \qmlclass ToolBar
     \ingroup qt-components
-    \since 4.7
+    \since 1.0
     \inherits Item
     \brief
     A ToolBar is a container for providing quick access to commonly used actions.

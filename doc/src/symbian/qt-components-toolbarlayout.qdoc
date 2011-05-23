@@ -29,7 +29,7 @@
 
     \qmlclass ToolBarLayout
     \ingroup qt-components
-    \since 4.7
+    \since 1.0
     \inherits Item
 
     \brief ToolBarLayout is a container for items on a toolbar that
