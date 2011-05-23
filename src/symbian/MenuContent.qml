@@ -62,7 +62,6 @@ Item {
 
         height: contentArea.height; width: root.width
         clip: true
-        boundsBehavior: Flickable.StopAtBounds
         contentHeight: contentArea.childrenRect.height
         contentWidth: width
 
