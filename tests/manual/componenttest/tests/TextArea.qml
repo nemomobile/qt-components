@@ -109,7 +109,7 @@ FocusScope {
 
         height: privy.contentHeight * (privy.portrait ? 2/3 : 1)
         placeholderText: "Enter text here"
-
+        platformMaxImplicitWidth: root.width - style.width - (privy.portrait ? 0 : settings.width)
         enabled: enable.checked
         errorHighlight: error.checked
         horizontalAlignment: settings.horizontalAlignment
