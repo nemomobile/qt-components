@@ -154,6 +154,9 @@
         <file alias="qtg_graf_unread_indicator.svg">resources/defaulttheme/graphics/qtg_graf_unread_indicator.svg</file>
         <file alias="qtg_graf_magnifier_mask.svg">resources/defaulttheme/graphics/qtg_graf_magnifier_mask.svg</file>
         <file alias="qtg_graf_magnifier.svg">resources/defaulttheme/graphics/qtg_graf_magnifier.svg</file>
+        <file alias="qtg_toolbar_paste.svg">resources/defaulttheme/graphics/qtg_toolbar_paste.svg</file>
+        <file alias="qtg_toolbar_copy.svg">resources/defaulttheme/graphics/qtg_toolbar_copy.svg</file>
+        <file alias="qtg_toolbar_cut.svg">resources/defaulttheme/graphics/qtg_toolbar_cut.svg</file>
     </qresource>
     <qresource prefix="/colors">
         <file alias="widgetcolorgroup.css">resources/defaulttheme/colors/widgetcolorgroup.css</file>
