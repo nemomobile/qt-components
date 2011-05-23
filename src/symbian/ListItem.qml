@@ -126,7 +126,7 @@ ImplicitSizeItem {
 
     Keys.onReleased: {
         if (root.enabled) {
-            if (event.key == Qt.Key_Select || event.key == Qt.Key_Return) {
+            if (event.key == Qt.Key_Select || event.key == Qt.Key_Return || event.key == Qt.Key_Enter) {
                 event.accepted = true
                 internal.state = "Focused"
             }
@@ -136,6 +136,7 @@ ImplicitSizeItem {
     Keys.onPressed: {
         switch (event.key) {
             case Qt.Key_Select:
+            case Qt.Key_Enter:
             case Qt.Key_Return: {
                 if (symbian.listInteractionMode != Symbian.KeyNavigation)
                     symbian.listInteractionMode = Symbian.KeyNavigation

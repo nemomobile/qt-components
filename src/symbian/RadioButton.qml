@@ -162,7 +162,7 @@ ImplicitSizeItem {
     }
 
     Keys.onPressed: {
-        if (event.key == Qt.Key_Select || event.key == Qt.Key_Return) {
+        if (event.key == Qt.Key_Select || event.key == Qt.Key_Return || event.key == Qt.Key_Enter) {
             checkable.toggle()
             clickedEffect.restart()
             root.clicked()
