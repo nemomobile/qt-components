@@ -91,6 +91,8 @@ Item {
                 internal.movementCount--
                 root.changed(template.index) // got index from delegate
             }
+            // a workaround for QTCOMPONENTS-724 that is fixed in Qt 4.7.4 (QTBUG-15356)
+            onPreferredHighlightEndChanged: { offset += 0.000001; offset -= 0.000001 }
 
             path: Path {
                 startX: pView.width / 2;
