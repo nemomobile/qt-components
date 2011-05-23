@@ -114,6 +114,7 @@ QML_FILES = \
     ProgressBar.qml \
     QueryDialog.qml \
     RadioButton.qml \
+    RectUtils.js \
     ScrollBar.qml \
     ScrollBarSizer.qml \
     ScrollDecorator.qml \
