@@ -116,10 +116,10 @@ void tst_quickcomponentstextfield::defaultPropertyValues()
     QCOMPARE(textField->property("text").toString(), QString("test"));
 
     QVERIFY(textField->property("platformLeftMargin").isValid());
-    QCOMPARE(textField->property("platformLeftMargin"), platformStyle->property("paddingMedium"));
+    QCOMPARE(textField->property("platformLeftMargin"), platformStyle->property("paddingSmall"));
 
     QVERIFY(textField->property("platformRightMargin").isValid());
-    QCOMPARE(textField->property("platformRightMargin"), platformStyle->property("paddingMedium"));
+    QCOMPARE(textField->property("platformRightMargin"), platformStyle->property("paddingSmall"));
     
     QVERIFY(textField->property("errorHighlight").isValid());
     QVERIFY(!textField->property("errorHighlight").toBool());

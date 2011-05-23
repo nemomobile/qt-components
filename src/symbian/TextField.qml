@@ -81,15 +81,15 @@ FocusScopeItem {
     }
 
     // API extensions
-    implicitWidth: 2 * platformStyle.paddingMedium +
+    implicitWidth: platformLeftMargin + platformRightMargin + flick.tiny * 2 +
                    Math.max(privateStyle.textWidth(text, textInput.font), priv.minWidth)
     implicitHeight: Math.max(privateStyle.textFieldHeight,
                              2 * platformStyle.paddingMedium + privateStyle.fontHeight(textInput.font))
 
     property bool enabled: true // overriding due to QTBUG-15797 and related bugs
 
-    property real platformLeftMargin: platformStyle.paddingMedium
-    property real platformRightMargin: platformStyle.paddingMedium
+    property real platformLeftMargin: platformStyle.paddingSmall
+    property real platformRightMargin: platformStyle.paddingSmall
 
     // Private data
     QtObject {
@@ -125,41 +125,122 @@ FocusScopeItem {
         smooth: true
     }
 
-    TextInput {
-        id: textInput; objectName: "textInput"
+    Item {
+        id: container
+
         anchors {
             left: root.left; leftMargin: root.platformLeftMargin
             right: root.right; rightMargin: root.platformRightMargin
             verticalCenter : root.verticalCenter
         }
-        enabled: root.enabled
         clip: true
-        color: platformStyle.colorNormalDark
-        focus: true
-        font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
-        // TODO: Use desktop text selection behaviour for now.
-        selectByMouse: true
-        selectedTextColor: platformStyle.colorNormalLight
-        selectionColor: platformStyle.colorTextSelection
-        onEnabledChanged: {
-            if (!enabled) {
-                select(0, 0)
-                // De-focusing requires setting focus elsewhere, in this case editor's parent
-                if (root.parent)
-                    root.parent.forceActiveFocus()
+        height: root.height
+
+        Flickable {
+            id: flick
+
+            property real tiny: Math.round(platformStyle.graphicSizeTiny / 2)
+
+            function ensureVisible(rect) {
+                if (Math.round(contentX) > Math.round(rect.x))
+                    contentX = rect.x
+                else if (Math.round(contentX + width) < Math.round(rect.x + rect.width))
+                  contentX = rect.x + rect.width - width
+            }
+
+            anchors {
+                left: parent.left; leftMargin: tiny
+                right: parent.right; rightMargin: tiny
+                verticalCenter : parent.verticalCenter
+            }
+
+            boundsBehavior: Flickable.StopAtBounds
+            contentWidth: textInput.paintedWidth
+            height: textInput.paintedHeight
+
+            TextInput {
+                id: textInput; objectName: "textInput"
+
+                property real paintedWidth: textInput.model.paintedWidth
+                property real paintedHeight: textInput.model.paintedHeight
+                property variant cursorRectangle: textInput.positionToRectangle(textInput.cursorPosition)
+
+                // TODO: See TODO: Refactor implicit size...
+                property variant model: Text {
+                    font: textInput.font
+                    text: textInput.text
+                    horizontalAlignment: textInput.horizontalAlignment
+                    visible: false
+                    opacity: 0
+                }
+
+                autoScroll: false
+                cursorVisible: activeFocus && !selectedText
+                enabled: root.enabled
+                color: platformStyle.colorNormalDark
+                focus: true
+                font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
+                selectedTextColor: platformStyle.colorNormalLight
+                selectionColor: platformStyle.colorTextSelection
+                width: Math.max(flick.width, paintedWidth)
+
+                onEnabledChanged: {
+                    if (!enabled) {
+                        select(0, 0)
+                        // De-focusing requires setting focus elsewhere, in this case editor's parent
+                        if (root.parent)
+                            root.parent.forceActiveFocus()
+                    }
+                }
+
+                onCursorPositionChanged: flick.ensureVisible(textInput.positionToRectangle(textInput.cursorPosition))
+                onActiveFocusChanged: {
+                    if (activeFocus)
+                        textInput.openSoftwareInputPanel()
+                    else
+                        textInput.closeSoftwareInputPanel()
+                }
+
+                TextTouchController {
+                    id: touchController
+
+                    anchors {
+                        left: parent.left;
+                        leftMargin: -flick.tiny
+                        verticalCenter : parent.verticalCenter
+                    }
+                    height: root.height
+                    width: Math.max(root.width, flick.contentWidth + flick.tiny * 2)
+                    editorScrolledX: flick.contentX
+                    editorScrolledY: flick.contentY
+                    copyEnabled: textInput.selectedText
+                    cutEnabled: !textInput.readOnly && textInput.selectedText
+                    // TODO: QtQuick 1.1 has textEdit.canPaste
+                    pasteEnabled: !textInput.readOnly
+                    Component.onCompleted: flick.movementEnded.connect(touchController.flickEnded)
+                    Connections { target: screen; onCurrentOrientationChanged: touchController.updateGeometry() }
+                    Connections {
+                        target: textInput
+                        onHeightChanged: touchController.updateGeometry()
+                        onWidthChanged: touchController.updateGeometry()
+                        onHorizontalAlignmentChanged: touchController.updateGeometry()
+                        onFontChanged: touchController.updateGeometry()
+                    }
+                }
             }
         }
-    }
 
-    Text {
-        id: placeholder; objectName: "placeholder"
-        anchors {
-            left: root.left; leftMargin: root.platformLeftMargin
-            right: root.right; rightMargin: root.platformRightMargin
-            verticalCenter : root.verticalCenter
+        Text {
+            id: placeholder; objectName: "placeholder"
+            anchors {
+                left: parent.left; leftMargin: flick.tiny
+                right: parent.right; rightMargin: flick.tiny
+                verticalCenter : parent.verticalCenter
+            }
+            color: platformStyle.colorNormalMid
+            font: textInput.font
+            visible: (!textInput.activeFocus || readOnly) && !textInput.text && text
         }
-        color: platformStyle.colorNormalMid
-        font: textInput.font
-        visible: (!textInput.activeFocus || readOnly) && !textInput.text && text
+
     }
 }

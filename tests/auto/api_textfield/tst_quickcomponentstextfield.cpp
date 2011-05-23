@@ -97,7 +97,7 @@ tst_quickcomponentstextfield::tst_quickcomponentstextfield()
 QObject *tst_quickcomponentstextfield::findTextInput(QObject *root)
 {
     QObject *returnValue = NULL;
-    if (root->metaObject()->className() == QString("QDeclarativeTextInput"))
+    if (QString(root->metaObject()->className()).contains("QDeclarativeTextInput"))
         return root;
 
     QObjectList children = root->children();
@@ -105,6 +105,7 @@ QObject *tst_quickcomponentstextfield::findTextInput(QObject *root)
         for (int i = 0; i < children.size() && !returnValue; ++i)
             returnValue = findTextInput(children.at(i));
     }
+
     return returnValue;
 }
 
