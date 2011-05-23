@@ -26,6 +26,7 @@ SOURCES += \
     sdeclarativestyle.cpp \
     sdeclarativestyleinternal.cpp \
     siconpool.cpp \
+    smousegrabdisabler.cpp \
     snetworkinfo.cpp \
     spopupmanager.cpp \
     sstyleengine.cpp \
@@ -61,6 +62,7 @@ HEADERS += \
     sdeclarativestyle.h \
     sdeclarativestyleinternal.h \
     siconpool.h \
+    smousegrabdisabler.h \
     snetworkinfo.h \
     spopupmanager.h \
     sstyleengine.h \
