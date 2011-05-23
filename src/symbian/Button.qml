@@ -74,10 +74,15 @@ ImplicitSizeItem {
         }
 
         function press() {
-            if (checkable && checked)
-                privateStyle.play(Symbian.SensitiveButton)
-            else
+            if (!belongsToButtonGroup()) {
+                if (checkable && checked)
+                    privateStyle.play(Symbian.SensitiveButton)
+                else
+                    privateStyle.play(Symbian.BasicButton)
+            } else if (checkable && !checked) {
                 privateStyle.play(Symbian.BasicButton)
+            }
+
             highlight.source = privateStyle.imagePath(internal.imageName() + "pressed")
             container.scale = 0.95
             highlight.opacity = 1
@@ -92,9 +97,9 @@ ImplicitSizeItem {
         }
 
         function click() {
-            internal.toggleChecked()
-            if (!checkable || (checkable && !checked))
+            if ((checkable && checked && !belongsToButtonGroup()) || !checkable)
                 privateStyle.play(Symbian.BasicButton)
+            internal.toggleChecked()
             clickedEffect.restart()
             button.clicked()
         }
@@ -121,6 +126,12 @@ ImplicitSizeItem {
             if (parent && parent.hasOwnProperty("checkedButton") && parent.hasOwnProperty("__direction") && parent.__direction == Qt.Horizontal && parent.children.length > 1)
                 return parent.__graphicsName(button, 0)
             return "qtg_fr_pushbutton_"
+        }
+
+        function belongsToButtonGroup() {
+            return button.parent
+                   && button.parent.hasOwnProperty("checkedButton")
+                   && button.parent.exclusive
         }
     }
 
