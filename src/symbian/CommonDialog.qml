@@ -60,13 +60,24 @@ Dialog {
 
         MouseArea {
             id: iconMouseArea
+
+            property bool pressCancelled
+
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.right: parent.right
-
             width: privateCloseIcon ? 2 * platformStyle.paddingLarge + platformStyle.graphicSizeSmall : 0
-            onPressed: privateStyle.play(Symbian.BasicButton)
-            onClicked: root.reject()
+            enabled: root.status == DialogStatus.Open
+
+            onPressed: {
+                pressCancelled = false
+                privateStyle.play(Symbian.BasicButton)
+            }
+            onClicked: {
+                if (!pressCancelled)
+                    root.reject()
+            }
+            onExited: pressCancelled = true
 
             Loader {
                 id: iconLoader
@@ -81,7 +92,7 @@ Dialog {
                     sourceSize.height: platformStyle.graphicSizeSmall
                     sourceSize.width: platformStyle.graphicSizeSmall
                     smooth: true
-                    source: privateStyle.imagePath(iconMouseArea.pressed && iconMouseArea.containsMouse
+                    source: privateStyle.imagePath(iconMouseArea.pressed && !iconMouseArea.pressCancelled
                         ? "qtg_graf_popup_close_pressed"
                         : "qtg_graf_popup_close_normal")
                 }
