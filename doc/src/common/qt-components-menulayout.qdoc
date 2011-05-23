@@ -24,21 +24,3 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
-/*!
-
-    \qmlclass MenuLayout
-    \ingroup qt-components
-    \since 4.7
-    \inherits Column
-
-    \brief
-
-*/
-
-/*!
-    \qmlsignal MenuLayout::clicked()
-
-
-*/
-

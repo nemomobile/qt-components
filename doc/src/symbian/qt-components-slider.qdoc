@@ -25,6 +25,86 @@
 **
 ****************************************************************************/
 
+/*!
+
+    \qmlclass Slider
+    \ingroup qt-components
+    \since 4.7
+    \inherits Item
+
+    \brief A slider lets the user select a value within a fixed range by
+    sliding the slider's handle.
+
+    You can set up a slider by specifying the minimum and maximum values and the
+    step size value between the minimum and maximum values. The user can set the
+    slider's value by sliding the slider's handle along the slider. The smallest
+    and biggest values the user can set are the slider's minimum and maximum
+    values respectively. Other possible values are those calculated by adding
+    the step size value once or more to the minimum value. For example, if the
+    minimum value is 0, the maximum value is 100, and the step size value is 40,
+    the values that the user can set are 0, 40, 80, and 100. All the numeric values
+    of the slider are floating point values.
+
+    When the user drags the slider's handle the current value is updated. The
+    value indicator is shown beside the handle when the user presses the
+    slider's handle if the valueIndicatorVisible value is \c true. The
+    value indicator shows the slider's current value if valueIndicatorText
+    contains an empty string; otherwise the text of valueIndicatorText is shown.
+    The valueChanged signal is emitted when the value of the slider changes.
+
+    \section1 Setting up a slider
+
+    In this example the user can select with the check boxes whether or not the
+    slider's
+    \list
+    \o value indicator is shown
+    \o orientation is inverted
+    \endlist
+
+    \note The inverted orientation is a Symbian-specific property.
+
+    \snippet src/snippets/symbian/snippet-slider.qml 2
+
+    In the code snippet below the slider's maximum, minimum, and current values
+    are set as well as the step size. Additionally the check boxes' checked
+    values are bound to slider's valueIndicatorVisible and inverted values. When
+    the slider value changes the application prints the "The 'valueChanged'
+    signal." message on the screen.
+
+    \snippet src/snippets/symbian/snippet-slider.qml 1
+
+    The title text shows that the slider is horizontal and it also shows
+    the slider's current value in brackets.
+
+
+    \snippet src/snippets/symbian/snippet-slider.qml 0
+
+    The screenshot below illustrates the case where the user has selected
+    the horizontal slider's value indicator to be visible. Then the user drags the
+    slider's handle. The slider's current value is shown on the value indicator and
+    also in the brackets after the 'Horizontal slider' text.
+
+    \image symbian/slider_horizontal.png
+
+
+    The application's vertical slider is configured the same as the horizontal
+    slider with one exception: the orientation value is Qt.Vertical.
+
+
+
+    The screenshot below illustrates the case where the user has selected the
+    vertical slider's value indicator to be visible and the slider to be
+    inverted, so the minimum value is at the bottom of the slider. The slider's
+    valueIndicatorText value is 'Volume'. When the user drags the slider's
+    handle, the value indicator shows the 'Volume' text and the current value is
+    shown in the brackets after the 'Vertical slider' text.
+
+    \image symbian/slider_vertical.png
+
+
+
+*/
+
 /*! \qmlproperty bool Slider::toolTipVisible
 
     \e {Symbian:}

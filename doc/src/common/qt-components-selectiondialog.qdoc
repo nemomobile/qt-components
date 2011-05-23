@@ -26,18 +26,6 @@
 ****************************************************************************/
 
 /*!
-
-    \qmlclass SelectionDialog
-    \ingroup qt-components
-    \since 4.7
-    \inherits CommonDialog
-
-    \brief
-
-*/
-
-
-/*!
     \qmlproperty Component SelectionDialog::delegate
 
 */

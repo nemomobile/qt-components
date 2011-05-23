@@ -26,7 +26,21 @@
 ****************************************************************************/
 
 /*!
+
+    \qmlclass MenuItem
+    \ingroup qt-components
+    \since 4.7
+    \inherits Item
+
+    \brief
+
+*/
+
+/*!
     \qmlproperty bool MenuItem::platformSubItemIndicator
 
 */
 
+/*!
+    \qmlproperty bool MenuItem::drillDownIndicator
+*/

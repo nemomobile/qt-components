@@ -26,23 +26,6 @@
 ****************************************************************************/
 
 /*!
-    \qmlclass ButtonRow
-    \ingroup qt-components
-    \since 4.7
-    \inherits Row
-
-    \brief
-    A buttonrow component arranges a set of buttons in a row.
-
-    A buttonrow component acts as container for buttons or items with checked
-    property. It arranges buttons in a horizontal row. Buttonrow adds
-    mutual exclusion for radiobuttons and checkable buttons.
-
-    Buttons and toolbuttons, when placed in a ButtonRow, will be stylized as
-    part of a seamless, segmented-like button.
-*/
-
-/*!
     \qmlproperty bool ButtonRow::exclusive
 
     If a buttonrow's \c exclusive property is \c true, the mutual exclusion

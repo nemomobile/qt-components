@@ -26,17 +26,6 @@
 ****************************************************************************/
 
 /*!
-
-    \qmlclass ToolButton
-    \ingroup qt-components
-    \since 4.7
-    \inherits Item
-
-    \brief
-
-*/
-
-/*!
     \qmlproperty bool ToolButton::checkable
 
 */

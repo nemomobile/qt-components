@@ -25,3 +25,75 @@
 **
 ****************************************************************************/
 
+/*!
+
+    \qmlclass ProgressBar
+    \ingroup qt-components
+    \since 4.7
+    \inherits Item
+    \brief
+    A ProgressBar shows the continuing progress of a long-running operation to
+    reassure the user that the operation is still progressing.
+
+    Some operations take a period of time to be performed and the user needs
+    confirmation that the operation is still ongoing. If the user doesn't get
+    some confirmation they might suspect that they did something wrong or that
+    the device has broken. A progress bar is one of the mechanisms available for
+    providing this reassurance to the user.
+
+    ProgressBar has two presentation modes:
+
+    \list
+
+        \o \e determinate for when the period of time for the operation can be
+        measured. In this case, the progress bar shows the proportion of
+        progress.
+
+        \o \e indeterminate for when the period of time for the operation is
+        unknown. The progress bar is animated but no proportion of progress is
+        indicated.
+
+    \endlist
+
+    The user interface guidelines for a platform specify the occasions when a
+    progress bar should be displayed and how to display it. However, a common
+    rule of thumb is, if an operation takes less than 3 seconds, it is not
+    necessary to provide a progress bar.
+
+    \section1 Using a determinate progress bar
+
+    A determinate progress bar has a minimum value, a maximum value and a
+    current value. When you set the current value, the progress bar is drawn to
+    indicate the proportion of that value between the minimum and maximum
+    values.
+
+    For example, if the minimum value is 0 and the maximum value is 100, setting
+    \c value to 25 will result in the progress bar being filled one quarter along
+    and will look something like the image below.
+
+    \image symbian/progressbar_onequarter.png
+
+    The following code snippet creates a progress bar and demonstrates how a
+    progress bar works. The timer is a repeating timer and, every time it is
+    triggered, it increments the progress bar \c value property. When the
+    maximum value of the progress bar is reached, the "progress" is reset to the
+    minimum value and it starts again.
+
+    \snippet src/snippets/symbian/snippet-progressbar.qml 0
+
+    \section1 Using an indeterminate progress bar
+
+    To show an indeterminate progress bar, simply set the \c indeterminate
+    property to \c true. Setting the different value properties of an
+    indeterminate progress bar has no effect. An indeterminate progress bar will
+    look something like the following image.
+
+    \image symbian/progressbar_indeterminate.png
+
+    The following code snippet bind the \c visible property of an indeterminate
+    progress bar to the \c running property of timer from the above example.
+
+    \snippet src/snippets/symbian/snippet-progressbar.qml 1
+
+
+*/

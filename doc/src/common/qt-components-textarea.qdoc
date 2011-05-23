@@ -24,13 +24,12 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
+
 /*!
-    \qmlclass TextArea
-    \ingroup qt-components
-    \since 4.7
-    \inherits Item
-    \brief
-    TextArea is a multiline editor that resizes vertically to fit all input characters.
+    \qmlproperty string TextArea::placeholderText
+
+    The text that is shown in the text area before the user enters any text.
+    When the user starts entering text, the placeholder text is hidden.
 
 */
 

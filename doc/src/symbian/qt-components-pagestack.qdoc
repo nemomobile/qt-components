@@ -1,0 +1,367 @@
+/****************************************************************************
+**
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project on Qt Labs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** No Commercial Usage
+** This file contains pre-release code and may not be distributed.
+** You may use this file in accordance with the terms and conditions
+** contained in the Technology Preview License Agreement accompanying
+** this package.
+**
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of this
+** file.
+**
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+
+    \qmlclass PageStack
+    \ingroup qt-components
+    \since 4.7
+    \inherits Item
+    \brief
+    The PageStack item defines a container for pages and a stack-based
+    navigation model.
+
+    The PageStack component provides a stack-based navigation model that you can
+    use in your application. A stack-based navigation model means that a page of
+    content for your application is \e pushed onto a stack when the user
+    navigates deeper into the application page hierarchy. The user can then go
+    back to the previous page (or several pages back) by \e popping a page (or
+    several pages) off the top of the stack.
+
+    See the \l{Creating pages and navigating to them} overview for a higher
+    level discussion about pages and page stacks.
+
+    \section1 Setting up a page stack
+
+    First, add a PageStack item as a child to the top-level QML element of your
+    application (usually this is Window). By default, the page stack fills its
+    parent item so, if that is not what you want, you need to resize and anchor
+    the page stack to suit your requirements. For example, you might want to
+    anchor it to a status bar, tool bar, tab bar, or some other similar UI
+    component.
+
+    Once you have a page stack, a common way to load the first page in the stack
+    is to call \c PageStack.push() from the application's \c
+    Component.onCompleted() handler.
+
+    ### snippet should come from real example
+    \code
+    Component.onCompleted() {
+        pageStack.push(firstPage)
+    }
+    \endcode
+
+
+    \section1 Creating pages and pushing them to the stack
+
+    \section2 Pushing a QML item page
+
+    If you define a page as a QML item you can push it to the page stack by
+    referencing its id. In this case, you are pushing a particular page "object"
+    to the stack. Note that the stack takes ownership of the page when you push
+    it and, when you pop the page off the stack, the stack re-parents the page
+    back to its original owner. The stack does not clone or destroy the page
+    object, it just takes ownership for a while. This way, your application
+    always has access to an instance of the class but the class always takes up
+    device memory.
+
+    You push an item-type page to the stack by referencing its id, as shown in
+    the following code snippet.
+
+    \snippet src/snippets/common/snippet-pagestack-page.qml 3
+
+
+    \section2 Pushing a QML component page defined in a component file
+
+    You can push a page to the stack by referencing the filename of the file
+    that defines the page. When referencing a page by filename, you need to use
+    the Qt.resolvedUrl() method so that the system can find the file.
+
+    \snippet src/snippets/common/snippet-pagestack-page.qml 4
+
+
+    \section2 Pushing a QML component page
+
+    If you define your page as a QML component, when you push a component page
+    to the page stack, the page stack creates an "instance" of the component
+    "class" and pushes that instance object onto the stack. When you pop the
+    page object off the stack, the stack destroys the page object and you no
+    longer have access to it. This means you only have access to the content of
+    the pages that are currently on the page stack. If you want to have
+    persistent data on pages that are popped off the stack, you need to store
+    that data in a model somewhere else. The component-type pages are beneficial
+    when an application has many pages because it makes it possible to manage
+    the memory more efficiently. Only those pages that are currently on the
+    stack need to have memory allocated and when pages are pushed off the stack
+    they are automatically destroyed and the memory held by them gets freed.
+
+    Components are more flexible than items in that you can have any number
+    of instances of pages created from a single component. They are also more
+    powerful if an application has many page types, since those page types don't
+    need to be instantiated when the application starts but rather, you can
+    instantiate them lazily just when the page is used.
+
+    You push a component page by its id, as shown in the following snippet.
+
+    \snippet src/snippets/common/snippet-pagestack-page.qml 5
+
+    \section2 Avoiding the "parent trap" when doing a replace
+
+    If you are using Qt.createComponent() to create and push pages to the page
+    stack, you need to be very careful about who is the parent of the page. When
+    you use Qt.createComponent(), the parent of the created component is the
+    item that called Qt.createComponent(). QML follows the standard Qt parent-child
+    destruction rules so, if the parent item is destroyed the child item
+    is also destroyed. So, if you construct your application in a particular
+    way, you can run into the situation where your page is destroyed
+    "mysteriously". The explanation is that you have fallen into the "parent
+    trap" - the parent was destroyed and so the child was destroyed as well in
+    the cleanup but you are still trying to do something with the child.
+
+    This situation can easily happen in the case of a replace() operation. For
+    example: If item A is already on the page stack and it creates item B with
+    pageStack.replace(Qt.createComponent("B.qml")), A is set as the parent of B.
+    If you then try to replace() A with the newly created B, the page stack
+    first pops A off the stack and destroys it before trying to push B onto the
+    stack. However, since B is a child of A, it is deleted along with A. The
+    page stack then tries to push the now non-existant page B to the stack
+    which, of course, causes problems.
+
+    The following pseudocode demonstrates the sequence of events in the
+    pageStack.replace(Qt.createComponent("B.qml")) operation:
+
+    \code
+    A.qml                               Qt              PageStack
+
+    B = Qt.createComponent("B.qml") --> new(B)
+                                        B.parent = A
+    <---------------------------------- return B
+    pageStack.replace(B) -----------------------------> pop(A)
+                                                        A.destroy() // destroys A and its children
+                                                            [ B.destroy() ]
+                                                        push(B)     // FAILS because B doesn't exist
+    \endcode
+
+
+    You can avoid the "parent trap" problem in a few ways:
+    \list
+
+        \o Use Qt.resolvedUrl("MyPage") instead of Qt.createComponent("MyPage").
+        With Qt.resolvedUrl() you are pushing a string to the stack rather than
+        a page object. The page stack itself calls Qt.createComponent() to
+        create the page which means the page stack is the parent of the page and
+        therefore you do not have any parent problems to worry about.
+
+        \o If you must use Qt.createComponent, reparent the created page with a
+        parent that you know won't be destroyed and then push the page onto the
+        stack. For example, you could set the page stack as the parent as
+        follows:
+
+        \code
+        var myPage = Qt.createComponent("MyPage.qml")
+        myPage.parent = pageStack.parent
+        pageStack.replace(myPage)
+        \endcode
+
+
+        \o You can also just make sure you create the pages with
+        Qt.createComponents() in a parent that is not going to be destroyed.
+
+   \endlist
+
+
+    \section2 Passing parameters to pages
+
+    Normal property bindings should be used whenever possible instead of
+    "passing parameters" from one page to another. However, bindings only work
+    for item type pages. It does not work with component pages because the page
+    instance doesn't exist until it is pushed so its properties are not
+    available to be bound to beforehand. To get around this, you supply a map of
+    properties for the page as the \a property argument in the push() or
+    replace() function.
+
+    The code below gives an example of pushing a page to the page stack and
+    setting a property for that page.
+
+    \snippet src/snippets/common/snippet-pagestack-page.qml 7
+
+    If you want to push multiple pages at once to the stack with parameters for
+    each page, you push an array of pages onto the stack and specify a property
+    map with each page in the array. The code snippet below gives an example of
+    this.
+
+    \snippet src/snippets/common/snippet-pagestack-page.qml 8
+
+
+    \section1 Page-to-page transition animations
+
+    PageStack automatically provides appropriate transition animations as the
+    user moves from one page to another. The type of animation that occurs is
+    fixed according to the user interface guidelines for the platform and cannot
+    be customised.
+
+    For example, to move deeper into the application, you \e push a new page
+    onto the stack and the platform-specific push animation is played. When
+    moving back to the previous page, you \e pop the current page off the stack
+    and the platform-specific pop animation is played.
+
+
+    \section1 Enabling the ToolBar
+
+    If an application page is based on the Page component you can define page-
+    specific tools (see Page::tools) to populate the tool bar. Then, so long as
+    you specify a PageStack::toolbar container, PageStack  automatically
+    populates the tool bar with the tools for the current page. If a page does
+    not have any tools, the tool bar is hidden when that page is visible.
+
+    PageStack also automatically handles the tool bar transition animations. The
+    animations for tool bars are not necessarily identical to the transition
+    animations for pages, but they are an appropriate match and are implemented
+    according to the platform's user interface guidelines.
+
+
+    \section1 Navigating with the page stack (basic)
+
+    The topmost item in the page stack is the page that is "active" and is
+    visible on the screen. To move to a different page, use the three primary
+    navigation methods in PageStack: push, pop and replace.
+
+    \list
+
+      \o \bold Forward/push() adds an item to the top of the stack. From the user perspective,
+      this is navigating forward or deeper into the application.
+
+      \o \bold Backward/pop() removes the top item from the stack. From a user perspective,
+      this is navigating back to the previous page.
+
+      \o \bold Replace/replace() is like a pop followed by a push in that it replaces the
+      topmost item on the stack with a new item. From a user perspective, this
+      is a sideways movement rather than forwards or backwards, the current page
+      is replaced with a page of similar information.
+
+    \endlist
+
+
+    \section2 Example of basic PageStack operations
+
+    Given a starting stack of pages [A, B, C], the following example shows the
+    state of the stack after particular operations.
+
+    \list 1
+      \o push(D) => [A, B, C, D] - "push" transition animation between C and D
+      \o pop() => [A, B] - "pop" transition animation between C and B
+      \o replace(D) => [A, B, D] - "replace" transition between C and D
+      \o pop(A) => [A] - "pop" transition between D and A
+    \endlist
+
+
+    \section1 Navigating with the PageStack (advanced)
+
+    PageStack also supports advanced variations of the push, replace and pop
+    operations for moving several steps forward or backward at a time, or for
+    starting your application with a pre-defined stack of pages.
+
+    \list
+
+      \o \bold {Move several steps backward/unwind}: Sometimes it is necessary to go
+      back more than a single step in the stack. For example, you might want to
+      return to the application's main page or some other significant
+      intermediate page. In this case you can provide pop() with a particular
+      page to pop to. This is called "unwinding" the stack. If the page you
+      specify in the pop() function is not found, the stack unwinds until there
+      is only a single page in the stack. However, if you want to explicitly
+      unwind to the bottom of the stack, it is best to just use pop(null).
+
+      \o \bold {Move several steps forward}: If you want to jump forward to a
+      particular place in the application hierarchy, you can push() an array of
+      pages to the stack. No matter how many pages you push, the transition
+      animation is performed only as the new current page is shown and not for
+      intermediate pages.
+
+      \o \bold {Sidestep and forward}: You can also replace() the current page
+      with an array of pages. For the user, this is like stepping sideways
+      in the application hierarchy and then taking a few steps deeper.
+
+      \o \bold {Startup application at a pre-navigated point}: Sometimes you
+      want to start your application in a particular state. For example, you
+      could launch a newspaper application and show a particular article,
+      bypassing the front page and navigation pages that you normally have go
+      through to get to the article. To achieve this, you push an array of pages
+      onto the stack at startup instead of a single page. The array contains the
+      set of pages that the user normally goes through to navigate to the
+      required page.
+
+      \o \bold {Change to a particular state}: If you want to change your
+      application to a quite different state, you can clear() the stack and then
+      push() an array of pages with the new application state.
+
+    \endlist
+
+
+    \section2 Example of advanced PageStack navigation
+
+    Given a starting stack of pages [A, B, C, D, E], the following example shows the
+    state of the stack after particular operations.
+
+    \list 1
+
+      \o pop(C) => [A, B, C] - "pop" animation between E and C
+
+      \o push([D, E, F]) => [A, B, C, D, E, F] - "push" transition animation
+      between C and F
+
+      \o replace([D, E, F] => [A, B, D, E, F] - "replace" transition animation
+      between C and F
+
+      \o clear(); push([D, E, F]) => [D, E, F] - no transition animation (since
+      the stack was empty)
+
+      \o clear(); replace([D, E, F]) => [D, E, F] - no transition animation
+
+    \endlist
+
+    \section1 Finding a page in the stack
+
+    Sometimes it is necessary to search for a page so that you can unwind the
+    stack to a particular page you do not have a reference to. PageStack's
+    find() function allows you to do this.
+
+    The code snippet below shows how to unwind the stack to a page where the \c
+    message property is "2". However, if a page with a message value of "2" is
+    not found, the stack is unwound to the bottom and the first page in the
+    stack will be the new current page. This happens because, when no matching
+    page is found in the stack, the find() function returns null. This means
+    null is passed to the pop() function which then has the effect of unwinding
+    the stack right to the bottom.
+
+    \snippet src/snippets/common/snippet-pagestack-page.qml 6
+
+    \section1 Improving performance
+
+    Sometimes the application needs to take the user to a point deep in the
+    hierarchy without having to navigate there step by step. This requires
+    pushing a lot of pages to the stack at once which can take a significant
+    amount of time and will show up as an interruption in the user interface.
+
+    To reduce the amount of time it takes to show the new page, you can use
+    PageStack in a particular way: instead of specifying the particular QML
+    objects to load, you specify the URL of each page to push or replace. This
+    way, PageStack loads the page components for the intermediate pages (not the
+    actual content) and only instantiate the page that becomes active.
+
+    \sa Page, {pagenavigation}{Pages and navigation}
+*/

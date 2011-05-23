@@ -26,23 +26,5 @@
 ****************************************************************************/
 /*!
 
-    \qmlclass TabBarLayout
-    \ingroup qt-components
-    \since 4.7
-    \inherits Item
-    \brief A TabBarLayout is a positioner for the tab buttons that make up a tab bar
-
-    A tabbed interface is made up of tab buttons plus content for each button.
-    The TabBarLayout component has, as its children, the TabButton items of the
-    interface. Each tab button item contains a reference to the page of content
-    for the tab. These pages of content that are referred to must be the
-    children of one TabGroup component. TabBarLayout also positions the tab
-    buttons appropriately for the underlying platform and manages the change of
-    focus between one tab and another, including the transition effects.
-
-    See the TabGroup documentation for information about how to create a tabbed
-    interface.
-
-    \sa TabButton, TabGroup
-
+    TODO: List the API common to both platforms.
 */

@@ -25,3 +25,18 @@
 **
 ****************************************************************************/
 
+/*!
+    \qmlclass TextField
+    \ingroup qt-components
+    \since 4.7
+    \inherits Item
+    \brief
+    A TextField accepts key inputs.
+
+    A TextField is resized to fit all input characters or can be fitted onto a
+    fixed size. The line edit can also mask the input characters as when the
+    user enters their password.
+
+    \section1 Using a TextField
+
+*/

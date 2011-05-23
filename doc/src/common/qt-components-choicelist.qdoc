@@ -27,43 +27,5 @@
 
 /*!
 
-    \qmlclass ChoiceList
-    \ingroup qt-components
-    \since 4.7
-    \inherits Item
-
-    \brief
-    Deprecated.
-
-    Use SelectionListItem and SelectionDialog instead.
-
-    A ChoiceList provides a list of options to the user.
-*/
-
-/*!
-    \qmlproperty variant ChoiceList::model
-
-    The model that defines the list of items in the list. This must have a 'text' and/or an 'imageSource' fields.
-
-*/
-
-/*!
-    \qmlproperty int ChoiceList::currentIndex
-
-    The index of the currently selected item in the list.
-*/
-
-/*!
-    \qmlproperty string ChoiceList::currentValue
-
-    The value of the currently selected item in the list.
-
-*/
-
-/*!
-    \qmlsignal ChoiceList::closed()
-
-    This signal is emitted when the pop-up choice list is closed once the user
-    chooses an item from the list.
-
+TODO: Remove if ChoiceList is not in the common API.
 */

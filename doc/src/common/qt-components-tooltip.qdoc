@@ -26,28 +26,6 @@
 ****************************************************************************/
 
 /*!
-
-    \qmlclass ToolTip
-    \ingroup qt-components
-    \since 4.7
-    \inherits Item
-
-    \brief
-
-*/
-
-/*!
-    \qmlproperty font ToolTip::font
-
-*/
-
-/*!
-    \qmlproperty string ToolTip::text
-
-*/
-
-/*!
-    \qmlproperty variant ToolTip::target
-
+    TODO: Decide whether this component is a common one.
 */
 

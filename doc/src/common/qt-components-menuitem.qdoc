@@ -26,18 +26,6 @@
 ****************************************************************************/
 
 /*!
-
-    \qmlclass MenuItem
-    \ingroup qt-components
-    \since 4.7
-    \inherits Item
-
-    \brief
-
-*/
-
-
-/*!
     \qmlproperty string MenuItem::text
 
 */
@@ -47,9 +35,3 @@
 
 
 */
-
-/*!
-    \qmlproperty bool MenuItem::drillDownIndicator
-
-*/
-

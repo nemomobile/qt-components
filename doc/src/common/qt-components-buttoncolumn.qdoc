@@ -24,21 +24,6 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
-/*!
-    \qmlclass ButtonColumn
-    \ingroup qt-components
-    \since 4.7
-    \inherits Column
-
-    \brief
-    A buttoncolumn component arranges a set of buttons in a column.
-
-    A buttoncolumn component acts as container for buttons or items with checked
-    property. It arranges buttons in a vertical column. Buttoncolumn adds
-    mutual exclusion for radiobuttons and checkable buttons.
-*/
-
 /*!
     \qmlproperty bool ButtonColumn::exclusive
 

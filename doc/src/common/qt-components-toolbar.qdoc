@@ -24,21 +24,6 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
-/*!
-
-    \qmlclass ToolBar
-    \ingroup qt-components
-    \since 4.7
-    \inherits Item
-    \brief
-    A ToolBar is a container for providing quick access to commonly used actions.
-
-    The ToolBar contains tools such as ToolItem and ToolButton components. The
-    actions attached to the tools are for the current application page.
-
-*/
-
 /*!
     \qmlproperty  Item ToolBar::tools
 

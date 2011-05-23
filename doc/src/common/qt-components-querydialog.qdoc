@@ -25,18 +25,6 @@
 **
 ****************************************************************************/
 
-
-/*!
-
-    \qmlclass QueryDialog
-    \ingroup qt-components
-    \since 4.7
-    \inherits Dialog
-
-    \brief
-
-*/
-
 /*!
     \qmlproperty string QueryDialog::acceptButtonText
 

@@ -26,17 +26,6 @@
 ****************************************************************************/
 
 /*!
-
-    \qmlclass SectionScrollerLabel
-    \ingroup qt-components
-    \since 4.7
-    \inherits Item
-
-    \brief
-
-*/
-
-/*!
     \qmlproperty  bool SectionScrollerLabel::highlighted
 
 */

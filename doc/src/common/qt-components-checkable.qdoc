@@ -26,25 +26,6 @@
 ****************************************************************************/
 
 /*!
-
-    \qmlclass Checkable
-    \ingroup qt-components
-    \since 4.7
-    \inherits QtObject
-
-    \brief
-    Checkable implements the logic behind a component that can be enabled or disabled.
-
-    As well as being used with a single component, a Checkable can also be a
-    part of a CheckableGroup where exactly one checkable item in the group can
-    be enabled at a time.
-
-    \sa CheckableGroup
-
-*/
-
-
-/*!
     \qmlproperty bool Checkable::checked
 
     \c True if this element is checked. Otherwise \c false.

@@ -25,30 +25,19 @@
 **
 ****************************************************************************/
 
-/*
-
-    \qmlclass ApplicationWindow
-    \ingroup qt-components
-    \since 4.7
-    \inherits Window
-    \brief
-    Experimental
-
-*/
-
-/*
+/*!
     \qmlproperty bool ApplicationWindow::fullScreen
 
 */
 
-/*
+/*!
     \qmlproperty list<QtObject> ApplicationWindow::content
 
     \default
 
 */
 
-/*
+/*!
     \qmlproperty  PageStack ApplicationWindow::pageStack
 
 */

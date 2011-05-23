@@ -26,20 +26,6 @@
 ****************************************************************************/
 
 /*!
-
-    \qmlclass Menu
-    \ingroup qt-components
-    \since 4.7
-    \inherits Item
-    \brief
-    A Menu provides of a list of options that the user can select from.
-
-    Menus are hidden by default and open in response to an action from the user.
-    When the user selects an option in the menu, it triggers a command.
-
-*/
-
-/*!
     \qmlproperty Item Menu::visualParent
 
 */

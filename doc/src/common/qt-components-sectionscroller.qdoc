@@ -26,18 +26,6 @@
 ****************************************************************************/
 
 /*!
-
-    \qmlclass SectionScroller
-    \ingroup qt-components
-    \since 4.7
-    \inherits Item
-
-    \brief
-
-*/
-
-
-/*!
     \qmlproperty  ListView SectionScroller::listView
 
     The ListView that this section scroller is attached to.

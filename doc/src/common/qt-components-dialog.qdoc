@@ -25,19 +25,6 @@
 **
 ****************************************************************************/
 /*!
-    \qmlclass Dialog
-    \ingroup qt-components
-    \since 4.7
-    \inherits Item
-    \brief
-    A Dialog is a top-level window mostly used for short-term tasks and brief
-    communications with the user.
-
-    Popup dialogs float above the top layer of the application view, usually overlapping the area reserved for the application content. An application can use a dialog to provide information, give warnings, and ask the user to answer a question or select an option.
-
-*/
-
-/*!
     \qmlproperty list<Item> Dialog::title
 
     An item for the title area of the dialog. Generally, you would use a Text

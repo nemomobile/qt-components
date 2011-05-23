@@ -24,36 +24,6 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-/*!
-
-    \qmlclass RadioButton
-    \ingroup qt-components
-    \since 4.7
-    \inherits Item
-    \brief
-    A RadioButton is used in a list of items where only one item can be selected
-    at a time.
-
-    A radio button element consists of a radio button and a line of text. Only
-    one item in a list may be selected at a time. Once an item is selected, it
-    can be deselected only by selecting another item. Initial item selection may
-    be set at the list creation. If not set, the list is shown without a
-    selection.
-
-    \section1 Using a radio button
-
-    The following code creates a RadioButton list with three items in it. The
-    platformExclusiveGroup property of all the radio buttons is 'group1' which
-    is a CheckableGroup. This enforces that only one of the radio buttons can be
-    selected at a time. Furthermore the item with the text '1' has the focus and
-    the item with the text '2' is checked.
-
-    \snippet src/snippets/symbian/snippet-radiobutton.qml 0
-
-    \image symbian/radiobutton_list.png
-
-
-*/
 
 /*!
     \qmlproperty bool RadioButton::checked
@@ -75,4 +45,10 @@
 
     This signal is emitted if the button is pressed and then released.
 
+*/
+
+/*!
+    \qmlproperty string RadioButton::text
+
+    The text that is shown beside the radio button.
 */

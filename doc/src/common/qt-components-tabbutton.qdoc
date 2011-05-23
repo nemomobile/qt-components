@@ -26,40 +26,6 @@
 ****************************************************************************/
 
 /*!
-
-    \qmlclass TabButton
-    \ingroup qt-components
-    \since 4.7
-    \inherits Item
-
-    \brief
-    A tab button has an image or a label and can be clicked by the user to
-    activate a tab.
-
-    A tabbed interface is made up of tab buttons plus content for each button. A
-    tab button is usually positioned using the TabBarLayout, but other QML
-    positioning mechanisms such as Row or Column can be used instead.
-
-    Symbian: On the Symbian platform, a tab button can be also be positioned
-    with the TabBar.
-
-    \section1 Using a tab button
-
-    When adding buttons to a layout, you need to associate a tab button with the
-    content for the tab. You also set the text and/or image for the button. This
-    code snippet shows a TabBarLayout set up with three tab buttons. Each button
-    has a text title and refers to the id of the tab content to be associated
-    with the button.
-
-    \snippet src/snippets/common/snippet-tabgroup.qml 1
-
-    See the TabGroup documentation for more information about creating a tabbed
-    interface.
-
-    \sa TabBarLayout, TabGroup, TabBar
-*/
-
-/*!
     \qmlproperty Item TabButton::tab
 
     This indicates the tab content (one of the children of a TabGroup) that is

@@ -24,17 +24,6 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-/*!
-
-    \qmlclass BusyIndicator
-    \ingroup qt-components
-    \since 4.7
-    \brief
-    The BusyIndicator shows the user that the application is not ready to be
-    used at present.
-
-
-*/
 
 /*!
     \qmlproperty bool BusyIndicator::running

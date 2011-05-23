@@ -26,24 +26,6 @@
 ****************************************************************************/
 
 /*!
-
-    \qmlclass CheckableGroup
-    \ingroup qt-components
-    \since 4.7
-    \inherits QtObject
-
-    \brief
-    A CheckableGroup groups together a number of related Checkable items.
-
-    The CheckableGroup is used in components like RadioButton where only one of
-    the Checkable items can be selected at a time. This is known as an exclusive
-    group.
-
-    \sa RadioButton, Checkable
-
-*/
-
-/*!
     \qmlproperty  variant CheckableGroup::selectedValue
 
     The currently selected item in the group.

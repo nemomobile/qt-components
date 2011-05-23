@@ -24,23 +24,6 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-/*!
-
-    \qmlclass Window
-    \ingroup qt-components
-    \since 4.7
-    \inherits Item
-    \brief
-    Window is the root component for an application and handles the transitions
-    when rotating the screen.
-
-    An application can be in portrait mode or landscape mode. A user can
-    physically rotate the device between these orientations and so you might
-    want to layout the application content differently depending on the screen
-    orientation. The Window component assists this kind of feature by sending
-    signals at different stages of the transition.
-
-*/
 
 /*!
     \qmlproperty bool Window::inPortrait

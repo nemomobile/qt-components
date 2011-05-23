@@ -25,22 +25,7 @@
 **
 ****************************************************************************/
 
-
-### Template: Search-replace CommonDialog with your component's CommonDialog.
-
 /*!
 
-    \qmlclass CommonDialog
-    \ingroup qt-components
-    \since 4.7
-    \inherits Dialog
-
-    \brief
-
+TODO: Remove if ChoiceList is not in the common API.
 */
-
-/*!
-    \qmlproperty  string CommonDialog::titleText
-
-*/
-
