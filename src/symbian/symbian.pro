@@ -134,6 +134,7 @@ QML_FILES = \
     TextArea.qml \
     TextField.qml \
     TextMagnifier.qml \
+    TextContextMenu.qml \
     TextSelectionHandle.qml \
     ToolBar.qml \
     ToolBarLayout.qml \
