@@ -87,13 +87,6 @@ FocusScopeItem {
                              2 * platformStyle.paddingMedium + privateStyle.fontHeight(textInput.font))
 
     property bool enabled: true // overriding due to QTBUG-15797 and related bugs
-    // deprecated on w18 ->
-    property int platformMaximumLength // deprecated
-    onPlatformMaximumLengthChanged: {
-        console.log("warning: platformMaximumLength is deprecated. Use maximumLength instead.")
-        maximumLength = platformMaximumLength
-    }
-    // <- deprecated on w18
 
     property real platformLeftMargin: platformStyle.paddingMedium
     property real platformRightMargin: platformStyle.paddingMedium
