@@ -136,6 +136,7 @@ QML_FILES = \
     TextMagnifier.qml \
     TextContextMenu.qml \
     TextSelectionHandle.qml \
+    TextTouchController.qml \
     ToolBar.qml \
     ToolBarLayout.qml \
     ToolButton.qml \
