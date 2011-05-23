@@ -21,6 +21,7 @@ SOURCES += \
     sdeclarativeicon.cpp \
     sdeclarativeimageprovider.cpp \
     sdeclarativeimplicitsizeitem.cpp \
+    sdeclarativemagnifier.cpp \
     sdeclarativemaskedimage.cpp \
     sdeclarativescreen.cpp \
     sdeclarativestyle.cpp \
@@ -55,6 +56,7 @@ HEADERS += \
     sdeclarativeicon.h \
     sdeclarativeimageprovider.h \
     sdeclarativeimplicitsizeitem.h \
+    sdeclarativemagnifier.h \
     sdeclarativemaskedimage.h \
     sdeclarativemaskedimage_p.h \
     sdeclarativescreen.h \
@@ -130,6 +132,7 @@ QML_FILES = \
     TabGroup.qml \
     TextArea.qml \
     TextField.qml \
+    TextMagnifier.qml \
     ToolBar.qml \
     ToolBarLayout.qml \
     ToolButton.qml \
