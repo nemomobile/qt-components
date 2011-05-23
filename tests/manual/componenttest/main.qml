@@ -59,6 +59,25 @@ ApplicationWindow {
 
         // Diretories from where qmlfiles can be loaded
         property variant qmlPaths: []
+
+        // Holds the text of the pressed button in the main view
+        property variant checkedButton: null
+
+        property bool dragEnabled: false
+        property bool flickEnabled: false
+        property bool fillEnabled: true
+
+        function resolveSource() {
+            if (checkedButton) {
+                // All tests are under tests folder
+                var file = checkedButton.text.replace(" ", "") + ".qml"
+                return testFilesPath + file
+            } else if (fullPath) {
+                return "file:///" + fullPath
+            } else {
+                return ""
+            }
+        }
     }
 
     Loader {
@@ -104,25 +123,10 @@ ApplicationWindow {
         id: component
 
         Page {
-            id: mainPage
             tools: commonTools
             orientationLock: PageOrientation.Manual
 
             anchors.fill: parent
-
-            function resolveSource() {
-                if (buttons.checkedButton
-                    && buttons.checkedButton.text == "Load chosen file"
-                    && internal.fullPath.length > 0)
-                    return "file:///" + internal.fullPath
-                else if (buttons.checkedButton
-                         && buttons.checkedButton.text != "Load chosen file") {
-                    // All tests are under tests folder
-                    var file = buttons.checkedButton.text.replace(" ", "") + ".qml"
-                    return internal.testFilesPath + file
-                } else
-                    return ""
-            }
 
             onStatusChanged: {
                 if (status == PageStatus.Activating)
@@ -142,9 +146,6 @@ ApplicationWindow {
                     id: buttons
 
                     width: parent.width
-
-                    // Holds the text of the pressed button in the main view
-                    property variant checkedButton: null
 
                     Row {
                         id: orientationButtons
@@ -200,12 +201,39 @@ ApplicationWindow {
                         }
                     }
                     Button {
+                        id: toggleFullscreenButton
+
+                        width: mainWindow.width
+                        text: "Toggle Fullscreen"
+                        onClicked: mainWindow.fullScreen = !mainWindow.fullScreen
+                    }
+
+                    CheckBox {
+                        id: flickableSetting
+                        text: "Flickable"
+                        checked: false
+                        onCheckedChanged: {
+                            internal.flickEnabled = checked
+                            if (checked) dragSetting.checked = false
+                        }
+                    }
+                    CheckBox {
+                        id: dragSetting
+                        text: "Drag-able"
+                        checked: false
+                        onCheckedChanged: {
+                            internal.dragEnabled = checked
+                            if (checked) flickableSetting.checked = false
+                        }
+                    }
+
+                    Button {
                         id: pickFromFileButton
 
                         width: mainWindow.width
                         text: {
                             // Append qmlpaths to the button label
-                            var buttonLabel = "Choose a file from "
+                            var buttonLabel = "Load a file from "
                             for (var i = 0; i < internal.qmlPaths.length; i++) {
                                 buttonLabel += internal.qmlPaths[i];
                                 if (!((i+1) == internal.qmlPaths.length))
@@ -214,50 +242,15 @@ ApplicationWindow {
                             return buttonLabel
                         }
 
-                        onClicked: mainWindow.pageStack.push(listPageComponent)
-                    }
-                    Text {
-                        id: currentFileLabel
-
-                        width: mainWindow.width
-                        color: "red"
-                        text: "Picked file: " + internal.fullPath
-                        font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeSmall }
+                        onClicked: { listPageComponent.show() }
                     }
 
-                    Button {
-                        id: toggleFullscreenButton
-
-                        width: mainWindow.width
-                        text: "Toggle Fullscreen"
-                        onClicked: mainWindow.fullScreen = mainWindow.fullScreen ? false : true
-                    }
-                    CheckBox {
-                        id: flickableSetting
-                        text: "Flickable"
-                        checked: false
-                    }
-                    CheckBox {
-                        id: dragSetting
-                        text: "Drag-able"
-                        checked: false
-                    }
-                    CheckBox {
-                        id: fillSetting
-                        text: "Fill area"
-                        checked: true
-                    }
                     Repeater {
                         id: componentsmodel
 
                         // Model is populated with the qml-files found from
                         // the tests folder
-                        model: {
-                            var entry = new Array("Load chosen file")
-                            var components = new Array()
-                            components = fileAccess.qmlFileNames(internal.testFilesPath)
-                            return entry.concat(components)
-                        }
+                        model: fileAccess.qmlFileNames(internal.testFilesPath)
 
                         Button {
                             id: testButton
@@ -266,8 +259,9 @@ ApplicationWindow {
                             width: mainWindow.width
 
                             onClicked: {
-                                buttons.checkedButton = testButton
-                                if (flickableSetting.checked == true)
+                                internal.checkedButton = testButton
+                                internal.fillEnabled = true
+                                if (internal.flickEnabled)
                                     mainWindow.pageStack.push(flickableTestComponent)
                                 else
                                     mainWindow.pageStack.push(testComponent)
@@ -280,8 +274,9 @@ ApplicationWindow {
                                 onComponentNameChanged: {
                                     if (componentName) {
                                         testButton.text = mainWindow.componentName
-                                        buttons.checkedButton  = testButton
-                                        if (flickableSetting.checked)
+                                        internal.checkedButton = testButton
+                                        internal.fillEnabled = true
+                                        if (internal.flickEnabled)
                                             mainWindow.pageStack.push(flickableTestComponent, null, true)
                                         else
                                             mainWindow.pageStack.push(testComponent, null, true)
@@ -290,81 +285,6 @@ ApplicationWindow {
                                 }
                             }
                             // <- for TDriver
-
-                            Component {
-                                id: flickableTestComponent
-
-                                Page {
-                                    id: testPage
-                                    orientationLock: PageOrientation.Automatic
-
-                                    Flickable {
-                                        id: testPageGroup
-
-                                        anchors.fill: parent
-                                        contentWidth: width
-                                        contentHeight: 1.2 * screen.height
-                                        flickableDirection:Flickable.AutoFlickDirection
-
-                                        Loader {
-                                            id: loader
-
-                                            width: testPageGroup.contentWidth
-                                            height: testPageGroup.contentHeight
-                                            visible: loader.status !== Loader.Error
-                                            source: mainPage.resolveSource()
-                                        }
-                                    }
-                                }
-                            }// flickableTestComponent
-                            Component {
-                                id: testComponent
-
-                                Page {
-                                    id: testPage
-                                    orientationLock: PageOrientation.Automatic
-
-                                    Rectangle {
-                                        anchors { left: parent.left; top: parent.top }
-                                        width: parent.width
-                                        height: parent.height
-                                        color: "#1000FF00"
-
-                                        property int dragStartX
-                                        property int dragStartY
-                                        property int dragStartWidth
-                                        property int dragStartHeight
-
-                                        MouseArea {
-                                            anchors.fill: parent
-
-                                            onPressed: {
-                                                parent.dragStartX = mouse.x
-                                                parent.dragStartY = mouse.y
-                                                parent.dragStartWidth = parent.width
-                                                parent.dragStartHeight = parent.height
-                                            }
-
-                                            onPositionChanged: {
-                                                parent.width = parent.dragStartWidth + mouse.x - parent.dragStartX
-                                                parent.height = parent.dragStartHeight + mouse.y - parent.dragStartY
-                                            }
-
-                                            visible: dragSetting.checked
-                                        }
-                                        Loader {
-                                            id: loader
-
-                                            anchors { left: parent.left; top: parent.top }
-                                            width: if (fillSetting.checked) parent.width
-                                            height: if (fillSetting.checked) parent.height
-                                            focus: true
-                                            visible: loader.status !== Loader.Error
-                                            source: mainPage.resolveSource()
-                                        }// Loader
-                                    }
-                                }
-                            } // testComponent
                         }
                     }
                 }
@@ -378,53 +298,132 @@ ApplicationWindow {
             }
         }
     } // main page component
-    Component {
+
+    SelectionDialog {
+        titleText: "Select file:"
         id: listPageComponent
-
-        Page {
-            id: listPage
-            ListModel {
-                id: testfileModel
+        model: ListModel { id: testfileModel }
+        buttons: Item {
+            height: fillSetting.height + 2 * platformStyle.paddingMedium
+            width: parent.width
+            CheckBox {
+                id: fillSetting
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                anchors.rightMargin: platformStyle.paddingLarge
+                text: "Fill area"
+                checked: true
+                enabled: !internal.flickEnabled
+                onClicked: internal.fillEnabled = checked
             }
+        }
 
-            // fill the model based on files in C or E-drives
-            Component.onCompleted: {
-                console.log("listpage completed")
+        property bool initialized: false
+
+        // fill the model based on files in C or E-drives
+        function show() {
+            if (!initialized) {
                 var fileNames = new Array()
                 var fileFullPaths = new Array()
                 for (var i = 0; i < internal.qmlPaths.length; i++) {
+                    console.log("path #" + i)
                     fileNames = fileAccess.qmlFileNames(internal.qmlPaths[i])
                     fileFullPaths = fileAccess.qmlFilePaths(internal.qmlPaths[i])
                     for (var j = 0; j < fileNames.length; j++) {
-                        console.log("adding file from disk: " + fileNames[j])
-                        testfileModel.append({"fileName": fileNames[j] + ".qml", "fileFullPath": fileFullPaths[j]})
+                        testfileModel.append({"modelData": fileNames[j] + ".qml", "fileFullPath": fileFullPaths[j]})
                     }
+                }
+                initialized = true
+            }
+            if (internal.flickEnabled) fillSetting.checked = true
+            open()
+        }
+
+        onAccepted: {
+            internal.fullPath = testfileModel.get(selectedIndex).fileFullPath
+            internal.checkedButton = 0
+            if (internal.flickEnabled)
+                mainWindow.pageStack.push(flickableTestComponent)
+            else
+                mainWindow.pageStack.push(testComponent)
+        }
+    }// listPageComponent
+
+    Component {
+        id: flickableTestComponent
+
+        Page {
+            id: testPage
+            orientationLock: PageOrientation.Automatic
+
+            Flickable {
+                id: testPageGroup
+
+                anchors.fill: parent
+                contentWidth: width
+                contentHeight: 1.2 * screen.height
+                flickableDirection:Flickable.AutoFlickDirection
+
+                Loader {
+                    id: loader
+
+                    width: testPageGroup.contentWidth
+                    height: testPageGroup.contentHeight
+                    visible: loader.status !== Loader.Error
+                    source: internal.resolveSource()
                 }
             }
+        }
+    }// flickableTestComponent
 
-            ListView {
-                id: listView
+    Component {
+        id: testComponent
 
-                model: testfileModel
-                pressDelay: 50
-                anchors.fill: parent
-                delegate:
-                ListItem {
-                    onClicked: {
-                        internal.fullPath = listTextId.fullPath
-                        mainWindow.pageStack.pop(listPageComponent)
+        Page {
+            id: testPage
+            orientationLock: PageOrientation.Automatic
+
+            Rectangle {
+                anchors { left: parent.left; top: parent.top }
+                width: if (internal.fillEnabled) parent.width
+                height: if (internal.fillEnabled) parent.height
+                color: "#1000FF00"
+
+                property int dragStartX
+                property int dragStartY
+                property int dragStartWidth
+                property int dragStartHeight
+
+                MouseArea {
+                    anchors.fill: parent
+
+                    onPressed: {
+                        parent.dragStartX = mouse.x
+                        parent.dragStartY = mouse.y
+                        parent.dragStartWidth = parent.width
+                        parent.dragStartHeight = parent.height
                     }
-                    ListItemText {
-                        id: listTextId
 
-                        property string fullPath: fileFullPath
-
-                        text: fileName
+                    onPositionChanged: {
+                        parent.width = parent.dragStartWidth + mouse.x - parent.dragStartX
+                        parent.height = parent.dragStartHeight + mouse.y - parent.dragStartY
                     }
+
+                    visible: internal.dragEnabled
                 }
-            }// listView
-        }// listPage
-    }// listPageComponent
+                Loader {
+                    id: loader
+
+                    anchors { left: parent.left; top: parent.top }
+                    width: parent.width
+                    height: parent.height
+                    focus: true
+                    visible: loader.status !== Loader.Error
+                    source: internal.resolveSource()
+                }// Loader
+            }
+        }
+    } // testComponent
 
     Component {
         id: memToolsMenuComponent
