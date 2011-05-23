@@ -96,14 +96,14 @@ FocusScopeItem {
 
     implicitWidth: {
         var preferredWidth = Math.max(flick.contentWidth, privy.minImplicitWidth)
-        preferredWidth += container.anchors.leftMargin + container.anchors.rightMargin
+        preferredWidth += container.verticalMargins
         return Math.min(preferredWidth, root.platformMaxImplicitWidth)
     }
 
     implicitHeight: {
         // first check content's height (text or placeholder) and reserve room for paddings
         var preferredHeight = Math.max(flick.contentHeight, placeholder.model.paintedHeight)
-        preferredHeight += container.anchors.topMargin + container.anchors.bottomMargin
+        preferredHeight += container.horizontalMargins
         // layout spec gives minimum height (textFieldHeight) which includes required padding
         preferredHeight = Math.max(privateStyle.textFieldHeight, preferredHeight)
         return Math.min(preferredHeight, root.platformMaxImplicitHeight)
@@ -157,11 +157,24 @@ FocusScopeItem {
 
     Item {
         id: container
+
+        property real verticalMargins:   container.anchors.leftMargin
+                                       + container.anchors.rightMargin
+                                       + flick.anchors.leftMargin
+                                       + flick.anchors.rightMargin
+
+        property real horizontalMargins:  container.anchors.topMargin
+                                        + container.anchors.bottomMargin
+                                        + flick.anchors.topMargin
+                                        + flick.anchors.bottomMargin
+
         anchors {
             fill: parent
-            leftMargin: platformStyle.paddingMedium; rightMargin: platformStyle.paddingMedium
+            leftMargin: platformStyle.paddingSmall; rightMargin: platformStyle.paddingSmall
             topMargin: platformStyle.paddingMedium; bottomMargin: platformStyle.paddingMedium
         }
+
+        clip: true
 
         // TODO: Should placeholder also be scrollable?
         Text {
@@ -176,8 +189,8 @@ FocusScopeItem {
                 wrapMode: textEdit.wrapMode
                 horizontalAlignment: textEdit.horizontalAlignment
                 verticalAlignment: textEdit.verticalAlignment
-                height: root.platformMaxImplicitHeight - container.anchors.topMargin - container.anchors.bottomMargin
-                width: root.platformMaxImplicitWidth - container.anchors.leftMargin - container.anchors.rightMargin
+                height: root.platformMaxImplicitHeight - container.horizontalMargins
+                width: root.platformMaxImplicitWidth - container.verticalMargins
                 opacity: 0
             }
 
@@ -190,12 +203,14 @@ FocusScopeItem {
                     return false
             }
             wrapMode: textEdit.wrapMode
-            height: parent.height
-            width: parent.width
+            x: flick.x; y: flick.y
+            height: flick.height; width: flick.width
         }
 
         Flickable {
             id: flick
+
+            property real tiny: Math.round(platformStyle.graphicSizeTiny / 2)
 
             function ensureVisible(rect) {
                 if (Math.round(contentX) > Math.round(rect.x))
@@ -209,9 +224,15 @@ FocusScopeItem {
                      contentY = rect.y + rect.height - height
             }
 
-            anchors.fill: parent
+            anchors {
+                fill: parent
+                leftMargin: tiny
+                rightMargin: tiny
+                topMargin: tiny / 2
+                bottomMargin: tiny / 2
+            }
+
             boundsBehavior: Flickable.StopAtBounds
-            clip: true
             contentHeight: textEdit.model.paintedHeight
             contentWidth: textEdit.model.paintedWidth +
                          (textEdit.wrapMode == TextEdit.NoWrap ? textEdit.cursorRectangle.width : 0)
@@ -230,21 +251,23 @@ FocusScopeItem {
                     wrapMode: textEdit.wrapMode
                     visible: false
                     opacity: 0
-                    height: root.platformMaxImplicitHeight - container.anchors.topMargin - container.anchors.bottomMargin
-                    width: root.platformMaxImplicitWidth - container.anchors.leftMargin - container.anchors.rightMargin
+                    height: root.platformMaxImplicitHeight - container.horizontalMargins
+                    width: root.platformMaxImplicitWidth - container.verticalMargins
+
                 }
                 enabled: root.enabled
                 focus: true
                 font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
                 color: platformStyle.colorNormalDark
+                cursorVisible: activeFocus && !selectedText
                 selectedTextColor: platformStyle.colorNormalLight
                 selectionColor: platformStyle.colorTextSelection
                 textFormat: TextEdit.AutoText
                 wrapMode: TextEdit.Wrap
                 // TODO: Use desktop text selection behaviour for now.
                 selectByMouse: true
-                height: container.height
-                width: container.width
+                height: flick.height
+                width: flick.width
                 // TODO: Make bug report?
                 // Called too early (before TextEdit size is adjusted) delay ensureVisible call a bit
                 onCursorRectangleChanged: delayedEnsureVisible.start()
@@ -252,6 +275,9 @@ FocusScopeItem {
                     if (activeFocus) {
                         horizontal.flash()
                         vertical.flash()
+                        textEdit.openSoftwareInputPanel()
+                    } else {
+                        textEdit.closeSoftwareInputPanel()
                     }
                 }
                 onEnabledChanged: {
@@ -262,6 +288,36 @@ FocusScopeItem {
                             root.parent.forceActiveFocus()
                     }
                 }
+
+                TextTouchController {
+                    id: touchController
+
+                    anchors {
+                        top: editor.top; topMargin: -container.horizontalMargins
+                        left: editor.left; leftMargin: -container.verticalMargins
+                    }
+                    height: Math.max(root.height, flick.contentHeight + container.horizontalMargins * 2)
+                    width: Math.max(root.width, flick.contentWidth + container.verticalMargins * 2)
+                    editorScrolledX: flick.contentX - container.verticalMargins
+                    editorScrolledY: flick.contentY - container.horizontalMargins
+                    copyEnabled: textEdit.selectedText
+                    cutEnabled: !textEdit.readOnly && textEdit.selectedText
+                    // TODO: QtQuick 1.1 has textEdit.canPaste
+                    pasteEnabled: !textEdit.readOnly
+                    Component.onCompleted: flick.movementEnded.connect(touchController.flickEnded)
+                    Connections { target: screen; onCurrentOrientationChanged: touchController.updateGeometry() }
+                    Connections {
+                        target: textEdit
+                        onHeightChanged: touchController.updateGeometry()
+                        onWidthChanged: touchController.updateGeometry()
+                        onHorizontalAlignmentChanged: touchController.updateGeometry()
+                        onVerticalAlignmentChanged: touchController.updateGeometry()
+                        onWrapModeChanged: touchController.updateGeometry()
+                        onFontChanged: touchController.updateGeometry()
+                    }
+                }
+
+
             }
 
             PropertyAnimation { id: fade; target: textEdit; property: "opacity"; from: 0; to: 1; duration: 250 }
@@ -270,18 +326,29 @@ FocusScopeItem {
 
         ScrollBar {
             id: vertical
-            anchors { top: flick.top; right: flick.right }
+            anchors {
+                top: flick.top;
+                topMargin: -flick.tiny / 2;
+                right: flick.right;
+            }
             flickableItem: flick
             interactive: false
             orientation: Qt.Vertical
+            height: container.height
         }
 
         ScrollBar {
             id: horizontal
-            anchors { left: flick.left; bottom: flick.bottom; rightMargin: vertical.opacity ? vertical.width : 0 }
+            anchors {
+                left: flick.left;
+                leftMargin: -flick.tiny;
+                bottom: flick.bottom;
+                rightMargin: vertical.opacity ? vertical.width : 0
+            }
             flickableItem: flick
             interactive: false
             orientation: Qt.Horizontal
+            width: container.width
         }
 
         Timer {
