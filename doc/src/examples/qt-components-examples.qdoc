@@ -29,7 +29,6 @@
     \page qt-components-examples.html
     \title Qt Quick components examples and demos
 
-
     \table
         \header
             \o {3,1} Cross-platform demos
@@ -51,7 +50,7 @@
             \o \image example-musicplayer-small.png
 
         \header
-            \o {3,1} Components gallery for Symbian
+            \o {3,1} Symbian Examples
         \row
             \o \bold {\l{Components Gallery for Symbian}{Gallery}}
 
@@ -59,6 +58,14 @@
             for the Symbian platform.
 
             \o \image symbian/example-gallery-small.png
+
+        \row
+            \o \bold {\l{ScaleFM example for Symbian}{ScaleFM}}
+
+            \o A demonstration of how to implement the \l {Scalability
+            Guideslines Contents}{Scalability Guidelines} for the Symbian Platform.
+
+            \o \image symbian/example-scalefm-small.png
 
     \endtable
 

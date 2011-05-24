@@ -1,0 +1,1122 @@
+/****************************************************************************
+**
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project on Qt Labs.
+**
+** No Commercial Usage
+** This file contains pre-release code and may not be distributed.
+** You may use this file in accordance with the terms and conditions contained
+** in the Technology Preview License Agreement accompanying this package.
+**
+** GNU Lesser General Public License Usage
+** Alternatively, this file may be used under the terms of the GNU Lesser
+** General Public License version 2.1 as published by the Free Software
+** Foundation and appearing in the file LICENSE.LGPL included in the
+** packaging of this file.  Please review the following information to
+** ensure the GNU Lesser General Public License version 2.1 requirements
+** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+**
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
+**
+****************************************************************************/
+
+/*!
+    \page qt-components-scalability-guidelines-contents.html
+    \title Scalability Guidelines Contents
+    \nextpage Scalability Guidelines Overview
+
+    Table of contents:
+
+    \list
+
+        \o \l { Scalability Guidelines Overview }
+
+        \o \l { Scalability Examples Summary }
+
+        \o \l { Use the Layout Features of QML }
+
+        \o \l { Top Level Form Factors }
+
+        \o \l { Orientation Specific Layouts }
+
+        \o \l { Application Style }
+
+        \o \l { Platform Style }
+
+        \o \l { Device Categories }
+
+        \o \l { Device Independent Scalable Measurements }
+
+        \o \l { Right to Left Layouts }
+
+    \endlist
+
+*/
+
+/*!
+    \page qt-components-scalability-guidelines-overview.html
+    \previouspage Scalability Guidelines Contents
+    \nextpage Scalability Examples Summary
+
+    \title Scalability Guidelines Overview
+
+    \section1 Overview
+
+    Creating an application using Qt Quick Components allows you to target a number
+    of different devices. In order to manage the variation between current and
+    future devices, the application layout design must be scalable, and there
+    are a number of related aspects that combine together to achieve
+    scalability.
+
+    These guidelines describe strategies and features that enable applications
+    to be deployed to devices with different screen device profiles, providing
+    a balance between flexibility, scalability, and precise control over the
+    visual design.
+
+    \section1 Terminology
+
+    \table
+
+        \row
+
+            \o Layout Direction
+
+            \o The user interface components can be configured to support
+            left-to-right or right-to-left direction according to the current
+            device UI language
+
+        \row
+
+            \o Layout Orientation
+
+            \o The orientation of the screen as the device is rotated
+            spatially, sometimes referred to as "portrait" and "landscape"
+
+        \row
+
+            \o Device Profile
+
+            \o Configuration of screen pixel resolution and DPI density;
+            independent of the Device Orientation
+
+        \row
+
+            \o Device Aspect Ratio
+
+            \o The ratio between the longest and shortest edge (measured in
+            pixels) of a Device Profile
+
+        \row
+
+            \o Device Category
+
+            \o A range containing a number of Device Profiles of comparable
+            resolution, density, and aspect ratio
+
+        \row
+
+            \o Application Style
+
+            \o The set of layout measurements that are used to define the
+            application layouts
+
+        \row
+
+            \o Platform Style
+
+            \o A small set of the most commonly used platform specific
+            parameters (e.g. margins, fonts, colors) that can be accessed.
+
+        \row
+
+            \o Pixel measurements
+
+            \o Layout measurements defined in pixels
+
+        \row
+
+            \o Scalable measurements
+
+            \o Layout measurements based linearly on Device Profile DPI, for
+            example using device-independent measurements or millimeter
+            calculations
+
+        \row
+
+            \o Semantic meaning of a measurement
+
+            \o Layout measurements are semantically dependent if they depend on
+            the size of the same notional element within the user interface.
+            For example, many elements will depend on a common definition for
+            the margin size
+
+    \endtable
+
+
+    \section1 Introduction to Scalability
+
+    Before developing an application using the Qt Quick Components, there are
+    some factors about the application design, and the application's layout
+    design, that should be considered:
+
+    \list
+
+        \o Is accurate and beautiful design a key to your application?
+
+        \o Will your application be deployed to more than one device handset?
+        More than one device form factor?
+
+        \o Will your application be deployed for a long period of time, so that
+        new device handsets might appear on the market after your initial
+        deployment?
+
+        \o Do you value maintainability and reuse of your application code and
+        layout definitions?
+
+    \endlist
+
+    The answers to these questions, and the relevant priority of the
+    considerations, will affect your choices of the degree of scalability
+    required by your application. There is a spectrum between:
+
+    \list
+
+        \o A flexible application, designed to look good in a specific
+        collection of known device profiles
+
+        \o A scalable application, designed to behave differently for each
+        device category
+
+        \o A non-scalable application, designed precisely for one screen device
+        profile
+
+    \endlist
+
+    Also, the more devices targeted with one application, the more important
+    scalability and maintainability of the layout definitions becomes. Consider
+    an application where the layout definitions and measurements are separately
+    specified for each known screen size. If the requirements change so that
+    the top level layout of the application must change, or look different in a
+    different regional locale for example, then all of the layout definitions
+    would have to be regenerated and updated. That effort is multiplied by all
+    combinations of the factors affecting the layout.
+
+    With additional thought and planning at the beginning of an application
+    design, one implementation of the layout definition can be re-used to
+    support an ever-widening collection of device profiles and device
+    categories over time, with minimal re-work required.
+
+    \section1 Guidelines Summary
+
+    The following guidelines summarize the recommendations for designing
+    scalable applications.
+
+    \list 1
+
+        \o Make your software and layout design highly modular. Aiming for
+        multiple screen configurations from the beginning will help you achieve
+        a flexible design.
+
+        \o Use separate top level layout QML definitions to support separate
+        layout configurations / form factors, and recombine your modular design
+        in different ways.
+
+        \o For a given form factor, Layouts should be defined in a proportional
+        way using the built-in \l {Use the Layout Features of QML}{layout
+        features of QML}, combined with simple JavaScript expressions where
+        needed.
+
+        \o To achieve scalable and maintainable layout definitions, it is
+        recommended that you should define measurements using \l {Device
+        Independent Scalable Measurements} for each separate \l {Device Categories}{Device
+        Category}.
+
+        \o Always define measurements separately from the layout definitions,
+        in a common place. Allocate clear responsibility and processes for
+        updating the layout definitions.
+
+        \o Always use measurements from the \l {Platform Style} if they match the
+        semantic meaning of the situation
+
+        \o Avoid implicit dependencies between measurements; don’t have two
+        measurements of the same value, defined in two places, if those two
+        values represent the same semantic meaning.
+
+        \o For a given layout design, animations should be defined in terms of
+        target component layouts where appropriate, to reduce the dependencies
+        between the animations and the layouts.
+
+        \o Know the extreme limits of your user interface design, and test that
+        it looks good as you approach those limits.
+
+        \o Always re-test every device profile after upgrading the import
+        version of the Qt Quick Components library, the import version of Qt Quick,
+        the Qt release version used, or your application's layout definitions.
+
+    \endlist
+
+*/
+
+/*!
+
+    \page qt-components-scalability-guidelines-examples-summary.html
+    \title Scalability Examples Summary
+    \contentspage Scalability Guidelines Contents
+    \previouspage Scalability Guidelines Overview
+    \nextpage Use the Layout Features of QML
+
+    \section1 ScaleFM
+
+    These guidelines are accompanied by the \l {ScaleFM example for
+    Symbian}{ScaleFM} example application, which has been designed specifically
+    to highlight the issues faced in designing a scalable application. Whilst
+    it's not a complete, functional application, it demonstrates how to tackle
+    the main scalability challenges, and illustrates how to put these
+    guidelines into practice.
+
+    In particular, it is recommended that you experiment with the \l {ScaleFM
+    example for Symbian}{ScaleFM} application in a desktop environment. This
+    enables you to dynamically resize the application window, which enables you
+    to get a feel for the way that the dynamic layout calculations are
+    resolving the final layout calculations. Also, you can use the nudge
+    buttons to change the DPI (a desktop only feature), and visualize how the
+    DPI and resolution interact with the layout positioners and the platform
+    style to create the final layouts.
+
+    \section1 Examples of Scalable Code
+
+    There are also a number of example applications that demonstrate each of
+    the following scalability issues. These examples make it easy to see the
+    solution boiled down to a short and straightforward implementation.
+
+    \list
+
+    \o \l {native/scalability/orientation}{Orientation Switches}
+
+    \o \l {mative/scalability/millimeters}{Millimeters as
+    Device-Independent Measurement Units}
+
+    \o Using positioners to create a scalable layout:
+    \l {native/scalability/positioners/column-layout}{Column},
+    \l {native/scalability/positioners/row-layout}{Row},
+    \l {native/scalability/positioners/grid-layout}{Grid}
+
+    \o \l {native/scalability/anchors}{Anchors in a Scalable Layout}
+
+    \o \l {native/scalability/separatelayouts}{Loading Separate Layouts
+    Based on Screen Configuration}
+
+    \o \l {native/scalability/layoutconfiguration}{Loading Separate Layout
+    Configurations Based on Screen Configuration}
+
+    \endlist
+
+*/
+
+/*!
+    \page qt-components-scalability-guidelines-layout-features.html
+    \title Use the Layout Features of QML
+    \contentspage Scalability Guidelines Contents
+    \previouspage Scalability Examples Summary
+    \nextpage Top Level Form Factors
+
+    \section1 Overview
+
+    For a given form factor, top level layout structure definitions, or
+    component layout structure definitions, should in general be defined in a
+    proportional way using a combination of
+
+    \list
+
+        \o anchors within an Item
+
+        \o \l Row, \l Column, or \l Grid
+
+        \o simple javascript expressions
+
+    \endlist
+
+    An example of a simple javascript expression would be: \c {width:
+    Math.round(parent.width / 3.0)}.
+
+    These basic building blocks, along with the powerful evaluation
+    capabilities of javascript expressions within every QML binding, are
+    designed to allow the majority of the layout structure definition to be
+    defined in a Device Profile independent way.
+
+    There are some limitations of the basic grid type layouts. They are
+    designed to accommodate a number of Items, but use the current sizes of
+    those items. There is a similar issue with the basic anchor type layout. In
+    particular, it can be difficult to spread a number of child items
+    proportionately across an area of their container.
+
+    By combining the features of the layout managers with simple javascript
+    expressions, a richer variety of designs can be expressed, without having
+    to rely upon additional layout measurements specifc to each Device Profile.
+
+    \section1 Examples
+
+    For example, in the \l {ScaleFM example for Symbian}{ScaleFM} application,
+    there is a layout that uses a helper item to define margins:
+
+    \snippet examples/symbian/scalefm/core/TabletView.qml helper
+
+    Then the helper is used to share the available space:
+
+    \snippet examples/symbian/scalefm/core/TabletView.qml info_area_a
+    \snippet examples/symbian/scalefm/core/TabletView.qml info_area_b
+    \dots 16
+    \snippet examples/symbian/scalefm/core/TabletView.qml info_area_c
+
+    Here are some things not to do with layouts:
+
+    \list
+        \o Don't define complex javascript functions that are regularly
+        evaluated. This will cause poor performance, particularly during
+        animated transitions.
+        \o Don't define all of your layouts using x, y, width and height.
+        Reserve this for items that cannot easily be defined using anchors
+        (anchors are evaluated in a more efficient way).
+        \o Don't make assumptions about the container size, or about the size
+        of child items. Try to make flexible layout definitions that can absorb
+        changes in the available space.
+    \endlist
+
+    See the following examples:
+
+    \list
+
+        \o \l{native/scalability/anchors}{Using anchors for layouting}
+
+        \o \l{native/scalability/positioners/column-layout}{Using Column
+        element for layouting}
+
+        \o \l{native/scalability/positioners/row-layout}{Using Row element
+        for layouting}
+
+        \o \l{native/scalability/positioners/grid-layout}{Using Grid
+        element for layouting}
+
+    \endlist
+
+    for more information on basic layout usage.
+
+    */
+
+
+
+/*!
+    \page qt-components-scalability-guidelines-top-level-form-factors.html
+    \title Top Level Form Factors
+    \contentspage Scalability Guidelines Contents
+    \previouspage Use the Layout Features of QML
+    \nextpage Orientation Specific Layouts
+
+    \section1 Overview
+
+    If an application is being designed to support separate layout
+    configurations, or form factors, it should use separate top level layout
+    QML definitions for each of those configurations. However, you should
+    always avoid duplication of code where possible.
+
+    Consider an application that has to be deployed to at least two devices,
+    which both have very different screen sizes and DPI values. The two form
+    factors of the application will share many common components and
+    attributes, and will most likely connect to the same data model.
+
+    Therefore, the top level definitions should be quite straightforward and
+    short, with the majority of the functionality refactored into contained
+    components. It is important to try to avoid unnecessary duplication between
+    these top level definitions, in order to improve maintainability.
+
+    \section1 Design Patterns
+
+    There are some patterns that you might consider when designing your top
+    level layouts:
+
+    \list
+
+        \o In some cases, the contents of an entire page in a smaller handset
+        could form a component element of a layout in a larger device.
+        Therefore, consider making that a separate component (i.e. defined in a
+        separate QML file), and in the smaller handset, the page will simply
+        contain an instance of that component. On the larger device, there may
+        be enough space to show two separate items. For example, in an email
+        viewer, if the screen is large enough, it may be possible to show the
+        email list view, and the email reader view side by side.
+
+        \o In some cases, the contents of a view might be quite similar on all
+        screen sizes, but with an expanded content area. In this case, it may
+        be possible to re-use the same layout definition, if defined
+        appropriately using anchors.
+
+    \endlist
+
+    The Loader component can be used to load separate QML files based on some
+    criteria, such as the current screen \l {Device Categories}{Device
+    Category}. When the application is running on a specific device, this
+    information will not change during the application's lifetime, therefore
+    there is no issue with memory usage or performance.
+
+    \section1 Examples
+
+    Consider the \l {ScaleFM example for Symbian}{ScaleFM} example. We define
+    the top level components:
+
+    \snippet examples/symbian/scalefm/scalefm.qml mainComponents
+
+    and then based on a property or function, we can select the appropriate
+    component to load within the \c viewContainer:
+
+    \snippet  examples/symbian/scalefm/scalefm.qml isTablet
+    \codeline
+    \snippet  examples/symbian/scalefm/core/ViewContainer.qml loader_a
+    \snippet  examples/symbian/scalefm/core/ViewContainer.qml loader_b
+
+    Notice in the example, that the \c stationList is used as the contents of a
+    separate page in the handset state, but the \l ParentChange element is used
+    to reparent the list view into the tablet layout.
+
+    \snippet  examples/symbian/scalefm/scalefm.qml parentChange
+
+    Finally, because the page is now dynamically created, we need to ensure
+    that it is also cleaned up correctly. So here we see the page being pushed
+    and popped from the stack at the correct stage:
+
+    \snippet  examples/symbian/scalefm/scalefm.qml push
+    \codeline
+    \snippet  examples/symbian/scalefm/scalefm.qml pop
+
+    \section1 Testing
+
+    When testing the layout definitions, it is important to ensure that the
+    layouts for all form factors are working correctly. For example, if any of
+    the contained component layouts are modified, the top level layouts need to
+    be re-tested. Therefore it's important to also be able to test the
+    different configurations in a single build, even if only as part of desktop
+    testing.
+
+    In the case of the example, reparenting the elements that are shared
+    between alternative pages is an efficient way of ensuring that the
+    application architecture has been implemented correctly, and also of
+    ensuring that dynamic creation and destruction of contained elements is
+    being handled correctly. Make sure to test application shutdown whilst
+    viewing each page of the application separately.
+
+    */
+
+/*!
+    \page qt-components-scalability-guidelines-orientation-specific-layouts.html
+    \title Orientation Specific Layouts
+    \contentspage Scalability Guidelines Contents
+    \previouspage Top Level Form Factors
+    \nextpage Application Style
+
+    \section1 Overview
+
+    Application top level page definitions, and reusable component definitions,
+    should use one QML layout definition for the layout structure. This single
+    definition should include the layout design for separate Device
+    Orientations and container Aspect Ratios. The reason for this is that
+    performance during an orientation switch is critical, and it is therefore a
+    good idea to ensure that all of the components needed by both orientations
+    are loaded when the containing \l Page is loaded.
+
+    On the contrary, you should perform thorough tests if you choose to use a
+    \l Loader to load additional QML that is needed in separate orientations, as
+    this will affect the performance of the orientation change.
+
+    \section1 Examples
+
+    In order to enable layout animations between the orientations, the anchor
+    definitions must reside within the same containing component. Therefore the
+    structure of an page or a component should consist of a common set of child
+    components, and a common set of anchor definitions (defined in a \l {
+    StateGroup }):
+
+    \snippet examples/symbian/scalefm/core/MobileView.qml stategroup_default_a
+    \snippet examples/symbian/scalefm/core/MobileView.qml stategroup_default_b
+
+    and a collection of states (defined in another \l StateGroup) representing
+    the different aspect ratios supported by the component.
+
+    \snippet examples/symbian/scalefm/core/MobileView.qml stategroup_a
+    \snippet examples/symbian/scalefm/core/MobileView.qml stategroup_c
+    \snippet examples/symbian/scalefm/core/MobileView.qml stategroup_d
+
+    One advantage of defining the layouts within states, rather than within the
+    component definitions, is that it helps with maintainability, particularly
+    when layout animations are also defined in the corresponding state
+    transitions. (However note that orientation change animations are not
+    possible on Symbian due to compatibility support for S60 applications).
+
+    \section1 Design Patterns
+
+    If a component, contained within a \l Page element, needs to be hosted in
+    numerous different form factor definitions, then the layout states of the
+    view should depend on the aspect ratio of the page (its immediate
+    container). Similarly, different instances of a component might be situated
+    within numerous different containers in a UI, and so its layout states
+    should be determined by the aspect ratio of its parent. The conclusion is
+    that layout states should in general follow the aspect ratio of the direct
+    container (not the current Device Orientation). The only exception to this
+    is of course the top level Window definition, which is handled by the
+    framework, or some parameters that happen to depend specifically on the
+    Device Orientation.
+
+    Within each layout \l State, you should define the relationships between
+    items using native QML layout definitions. See below for more information.
+    During transitions between the states (triggered by the top level
+    orientation change), in the case of anchor layouts, \l AnchorAnimation
+    elements can be used to control the transitions. In some cases, you can
+    also use a \l NumberAnimation on e.g. the width of an item. Remember to
+    avoid complex javascript calculations during each frame of animation. Using
+    simple anchor definitions and anchor animations can help with this in the
+    majority of cases.
+
+    There are a few additional cases to consider:
+
+    \list
+
+        \o \e {What if you have a single page that looks completely different
+        between landscape and portrait, i.e. all of the child items are
+        different? } For each \l Page, have two child components, with separate
+        layout definitions, and make one or other of the items have zero
+        opacity in each state. You can use a cross-fade animation by simply
+        applying a \l NumberAnimation transition to the opacity.
+
+        \o \e {What if you have a single page that shares 30% or more of the
+        same layout contents between portrait and landscape? } In that case,
+        consider having one component with landscape and portrait states, and a
+        collection of separate child items whose opacity (or position) depends
+        on the orientation state. This will enable you to use layout animations
+        for the items that are shared between the orientations, whilst the
+        other items are either faded in/out, or animated on/off screen.
+
+        \o \e {What if you have two pages on a handheld device that need to be
+        on screen at the same time, for example on a larger form factor device?
+        } In this case, notice that your view component will no longer be
+        occupying the full screen. Therefore it's important to remember in all
+        components (in particular, list delegate items) should depend on the
+        size of the containing component width, not on the screen width. It may
+        be necessary to set the width in a \c { Component.onCompleted() }
+        handler in this case, to ensure that the list item delegate has been
+        constructed before the value is set.
+
+        \o \e {What if the two orientations take up too much memory to have
+        them both in memory at once? } Use a Loader if necessary, if you
+        cannot keep both versions of the view in memory at once, but beware
+        performance on the cross-fade animation during layout switch. One
+        solution could be to have two "splash screen" items that are children
+        of the \l Page, then you cross fade between those during rotation. Then
+        you can use a \l Loader to load another child component that loads the
+        actual model data to another child Item, and cross-fade to that when
+        the \l Loader has completed.
+
+    \endlist
+
+
+ See \l{native/scalability/orientation}{Reacting to Orientation Change}
+ for more information.
+
+*/
+
+/*!
+    \page qt-components-scalability-guidelines-application-style.html
+    \title Application Style
+    \contentspage Scalability Guidelines Contents
+    \previouspage Orientation Specific Layouts
+    \nextpage Platform Style
+
+    \section1 Overview
+
+    When you are defining the measurements within an application or component
+    layout, there are a number aspects to consider:
+
+    \list
+
+        \o The layout structure, the high level relationship between items.
+        Which item is the parent? How are the items arranged relatively on the
+        screen? Are they in a grid or column, or is it easier to use anchors?
+
+        \o The layout measurements. How big is an item, or a margin inside the
+        edge of an item, or an anchor between items?
+
+        \o The constraints imposed by the container. This might be
+        ApplicationWindow contents in the case of a \l Page, or it may be a
+        different container in the case of a \l Button.
+
+        \o The implicit size of contained items. Some child items will require
+        a certain amount of space, such as a button containing a text. That may
+        also depend on the current platform and style. How do you ensure that
+        you leave enough space, and what happens if your children change size?
+
+    \endlist
+
+    These aspects combine together to resolve the final application layout,
+    referred to as the "Application Style", for a given Device Profile.
+    However, although there are dependencies between the different aspects, it
+    is important to manage and control them independently within the
+    application code base.
+
+    It is strongly recommended that Layout measurements should be stored in
+    Application Style files, separate from the component layout structure
+    definition files. The reason for this is that layout structure, for a given
+    form factor, can be re-used for different Device Profiles. However,
+    measurements will almost always vary between Device Profiles or Device
+    Categories.
+
+    \section1 Example
+
+    For example, in the \l {ScaleFM example for Symbian}{ScaleFM} example
+    application, there are a colection of Application Style files for the
+    application specific measurements, arranged in a folder tree structure:
+
+    \code
+    resources/layouts/480_320/180/AppStyle.qml
+    resources/layouts/640_360/185/AppStyle.qml
+    resources/layouts/640_360/210/AppStyle.qml
+    resources/layouts/640_480/325/AppStyle.qml
+    resources/layouts/864_480/245/AppStyle.qml
+    resources/layouts/1024_600/170/AppStyle.qml
+    resources/layouts/1024_768/130/AppStyle.qml
+    resources/layouts/Normal/High/AppStyle.qml
+    \endcode
+
+    Note that there are files for each Device profile, and the folder names are
+    generated using the following formats for Device Profiles and Device
+    Categories respectively:
+
+    \code
+    /<folder>/<longest-edge>_<shortest-edge>/<dpi-rounded-to-nearest-5>/<filename>.qml
+    /<folder>/<size>/<resolution>/<filename>.qml
+    \endcode
+
+    The contents of each file is exactly the same, except for the actual
+    values. For example:
+
+    \snippet examples/symbian/scalefm/resources/layouts/1024_600/170/AppStyle.qml measurements_a
+    \dots 4
+    \snippet examples/symbian/scalefm//resources/layouts/1024_600/170/AppStyle.qml measurements_b
+    \dots 4
+    \snippet examples/symbian/scalefm/resources/layouts/1024_600/170/AppStyle.qml measurements_c
+
+    The correct file can be loaded using a straightforward implementation. See
+    \l{native/scalability/layoutconfiguration}{Loading Separate Layout
+    Configurations Based on Screen Configuration} for more information.
+
+    If the opposite approach (complete duplication of entire QML files) was
+    taken, then all of the layout states and structure definitions would be
+    duplicated between the copied QML files, and only the measurement values
+    would change.
+
+    \section1 Conclusion
+
+    The main benefit of using separate Application Style are:
+
+    \list
+
+        \o To reduce the amount of duplication, and hence increase
+        maintainability.
+
+        \o It becomes much easier to change the layout structure, perhaps due
+        to subsequent specification changes. In that case, the layout structure
+        can be modified once, and many or all of the layout measurements would
+        remain unchanged.
+
+        \o It becomes much easier to add support for additional Device
+        Profiles, simply by adding another measurement definition file.
+
+    \endlist
+
+*/
+
+/*!
+    \page qt-components-scalability-guidelines-platform-style.html
+    \title Platform Style
+    \contentspage Scalability Guidelines Contents
+    \previouspage Orientation Specific Layouts
+    \nextpage Device Categories
+
+    \bold { WARNING: } \e { Symbian platform only }
+
+    \section1 Overview
+
+    It is possible to separately specify each and every layout measurement for
+    your application as an integer number of pixels in measurement definition
+    files. However, this would have a number of drawbacks:
+
+    \list
+
+        \o It would be impossible to ensure a consistent "feel" between an
+        application and other applications deployed on the platform.
+
+        \o It would be very difficult to ensure a consistent "feel" between
+        different parts of the application
+
+        \o It would be very difficult to modify the layout across the whole
+        application without completely regenerating all of the layout
+        measurements for each Device Profile or Device Category.
+
+        \o It would be very difficult to modify a specific element of the
+        layout without inadvertently affecting other parts of the layout.
+
+    \endlist
+
+    One approach to achieving consistent platform layouts is to use
+    platform-wide layout parameter definitions for common measurement values.
+    Qt Quick Components for Symbian provides a Platform Style API that provides
+    access to a very simple set of most commonly used parameters. Depending on
+    the Device Profile, the values can vary, and will be defined to be
+    appropriate values for each different product. See the documentation for
+    \l{Style} for more information.
+
+    \section1 Examples
+
+    For example, in the \l {ScaleFM example for Symbian}{ScaleFM} example
+    application, whilst some of the Application Style measurements are defined
+    in pixels, other measurements are semantically equivalent to the platform
+    style measurements for Symbian. In ScaleFM's default Application Style, the
+    measurements are bound to the Platform Style values such as \c {
+    platformStyle.paddingMedium } for margins, and inter-item spacing using \c
+    { platformStyle.paddingSmall }.
+
+    \snippet examples/symbian/scalefm/resources/layouts/AppStyle.qml measurements_a
+    \dots 4
+    \snippet examples/symbian/scalefm/resources/layouts/AppStyle.qml measurements_b
+    \dots 4
+    \snippet examples/symbian/scalefm/resources/layouts/AppStyle.qml measurements_c
+
+    Note that if your application is targeted at Symbian only, then you could
+    optionally use Platform Style values directly from the QML layout structure
+    definitions.
+
+    Other examples of Platform Style values include icon sizes, font pixel
+    sizes, font family, and color values. The values are stored efficiently,
+    and for a given device profile, the values will not change. Note however
+    that the values can change during desktop testing if the device is changed
+    between Device Profiles; this is a very good way to test the overall
+    scalability of your application.
+
+    \section1 Discussion
+
+    \section2 Consistency
+
+    Qt Quick Components for Symbian have been designed to use the Platform
+    Style internally, and so they will also be consistent with the style and
+    with each other. In this way, it is possible to make other components, or
+    page layouts, that are consistent with other applications on the platform.
+
+    You can also use the same approach to enforce consistency within your own
+    application layout measurements. Use Application Style for
+    application specific parameters, and re-use common layout measurements
+    where they correspond to the same logical parts of the design.
+
+    \section2 Semantic Dependencies
+
+    Also, avoid over-constrained dependencies on a small number of parameters;
+    don't re-use a parameter value just because it happens to have the same
+    measurement value, and avoid defining the entire layout based on a small
+    set of numbers. That will lead to the situation where it becomes impossible
+    to change any of the parameter values without inadvertently affecting
+    unintended parts of the design.
+
+    In some circumstances it would be valid to use multiples of Platform Style
+    values. However, be careful to ensure that it genuinely is a dependency.
+    For example a particular component might require very large margins. In
+    this case, three times the medium padding might be appropriate. However,
+    avoid reverse engineering an arbitrary application specific measurement,
+    that happens to be a multiple of a Platform Style value; in this case, use
+    an application specific measurement definition file.
+
+    \section2 Platform Style vs Device Profile Specific Measurements
+
+    In general, for most straightforward applications, it should be possible to
+    define most of the layouts by solely using measurements from the Platform
+    Style. In practice, the majority of variables within a design will revolve
+    around margins, spacings, text and icon sizes. In that case, it could be
+    that a single Application Style file could be used, with no need for Device
+    Profile specific measurement definitions.
+
+    For example, in the \l {ScaleFM example for Symbian}{ScaleFM} application,
+    if you press the "Fallback" button, it forces the layouts to use the
+    fallback Application Style, which is based on the Symbian Platform Style.
+    You can experiment with this mode, and see the effect of the different
+    approaches on the overall application appearance and scalability. Depending
+    on the needs of your application, consider which approach gives the best
+    balance between layout fidelity and code maintainability.
+
+*/
+
+/*!
+    \page qt-components-scalability-guidelines-device-configurations.html
+    \title Device Categories
+    \contentspage Scalability Guidelines Contents
+    \previouspage Platform Style
+    \nextpage Device Independent Scalable Measurements
+
+    \section1 Overview
+
+    Qt Quick Components supports three levels of device variation. This enables the
+    application to detect the type of device upon which it is running, and
+    provide alternative appearance and functionality in response.
+
+    Depending on the needs of the application, the exact device display size
+    and configuration could be critical to accurate layout definition;
+    alternatively, by the nature of the application, it could be possible to
+    define one layout definition to cover all devices in a category. There are
+    a spectrum of cases in-between these two extremes, and the three levels of
+    variation enable you to choose the appropriate granularity to suit your
+    needs.
+
+    There are three levels of device configuration granularity that are
+    supported:
+
+    \list 1
+
+        \o Device Profile: corresponds to a specific screen resolution and DPI value
+
+        \o Device Category: covers one combination of the category types (see below)
+
+        \o Generic: covers all possible devices and resolutions.
+
+    \endlist
+
+    \section1 Device Category Definitions
+
+    Device Categories are defined in such a way that they cover a limited range
+    of different specific Device Profiles. This means that it's possible to
+    define layout measurements to be used for that category which will look
+    good for all devices in the category. This also provides a way to
+    accommodate possible future devices.
+
+    This table shows the available categories and density values. For more
+    information, see \l{Screen}
+
+    \table
+
+        \row
+
+            \o {2, 2}
+            \o {4, 1} Display Category
+
+        \row
+
+            \o Small
+            \o Normal
+            \o Large
+            \o ExtraLarge
+
+        \row
+
+            \o {1, 5 } Display Density
+
+        \row
+
+            \o ExtraHigh  \o X \o \o \o
+
+        \row
+
+            \o High  \o \o X \o \o
+
+        \row
+
+            \o Medium  \o \o \o X \o
+
+        \row
+
+            \o Low \o \o \o \o X
+
+    \endtable
+
+
+    Each device will have one value for the Category, and one value for the
+    Density. This means that there are 4x4 possible combinations (although in
+    practice some combinations will not correspond to actual devices). The
+    "diagonal" entries are marked on the table. These correspond to typical
+    Device Categories.
+
+    \section1 Discussion
+
+    \section2 Factors Affecting Device Layout Configurations
+
+    In practice, DPI has a strong effect on text height at medium densities,
+    whilst aspect ratio will have a stronger impact than resolution on the
+    layout of a particular applicaion view in a particular device profile. This
+    leads to the recommendation to make layout definitions depend on the
+    container aspect ratio rather than the current Device Orientation.
+
+    Remember that \l { Orientation Specific Layouts } and \l { Right to Left
+    layouts } combine together with the available categories, to generate a
+    large number of possible layout configurations. By tackling these separate
+    aspects of scalability as independent dimensions, the combinatorial
+    complexity can be avoided.
+
+    If you choose to define your layout measurements based on Device
+    Categories, or using a Generic configuration, you should consider using
+    either \l { Device Independent Scalable Measurements } or use \l { Platform Style }
+    when specifying layout measurements in your \l { Application Style } files.
+
+    \section2 Layout Configuration Strategies
+
+    So, how do you decide which level of configuration to use for your
+    application?
+
+    \list 1
+
+        \o If precision and beauty are required, specify pixel measurements for
+        each (or some combination of) specific Device Profiles.
+
+        \o If scalability is important but the application should be deployed
+        to a wide range of future devices, separate measurements can be
+        provided for separate display categories. In this case either pixels or
+        dp can be used in the Application Style files.
+
+        \o If pixel control is not needed, then one file containing device
+        independent scalable measurements can be used for each Device
+        Configuration.
+
+        \o If the application's page content is scale independent (e.g. a
+        mapping application) or if QML layout managers can be used with no
+        measurements to define all required layout designs, then the
+        application may not need Applicaiton Style files or Platform Style
+        measurements at all.
+
+    \endlist
+
+    Another approach would be to use a combination of the above, corresponding
+    to the most widely available devices in the installed user base at the time
+    of application deployment: select specific known Device Profiles that
+    require additional layout and graphic quality precision; provide device
+    independent measurements for the majority of devices by supporting common
+    Device Categories; and provide fallback scalable measurements to cover
+    potential future form factors.
+
+    In practice, most applications will fall into one of the two types.
+    Applications targeting specific devices may benefit from optimizing for
+    specific Device Profiles, whilst other applications may achieve better
+    market coverage and improved maintainability, by supporting a wider range
+    of devices.
+
+    \section1 Examples
+
+    In order to achieve this layered approach consider using a device-specific
+    resource lookup approach, as detailed in the following examples:
+
+    \list
+
+    \o \l{native/scalability/separatelayouts}{Loading Separate Layouts
+    Based on Screen Configuration}
+
+    \o \l{native/scalability/layoutconfiguration}{Loading Separate Layout
+    Configurations Based on Screen Configuration}
+
+    \endlist
+
+*/
+
+
+/*!
+    \page qt-components-scalability-guidelines-device-independent-measurement-units.html
+    \title Device Independent Scalable Measurements
+    \contentspage Scalability Guidelines Contents
+    \previouspage Device Categories
+    \nextpage Right to Left Layouts
+
+    \section1 Overview
+
+    When using Qt-Components to create scalable applications, it may be
+    convenient to define layout measurements in a device independent way. This
+    might be a good technique for certain applications, if you are using
+    \l { Application Style } files corresponding to Device Categories or for Generic
+    layout definitions.
+
+    For example, you can define measurements in millimeters ("mm") or in device
+    independent pixels (sometimes referred to as "dp"). Dp are defined as 1dp =
+    1 pixel at 160 DPI, and scales linearly with DPI value.
+
+    One particular example of a use case for using device independent
+    measurements, is minimum touch area size. Typical guidance for such a value
+    would be 6-8mm, and in practice such requirements will probably be defined
+    in terms of physical measurements. So this is a good example where using
+    the screen DPI directly is a good solution.
+
+    \section1 Rounding
+
+    Hower, in order to correctly convert real number measurements to pixels, it
+    is necessary to first perform the conversion based on device DPI, and then
+    to apply rounding. Rounding is important in a number of cases:
+
+    \list
+
+    \o To ensure that layout definitions are applied consistently, especially
+    when contained inside Flickable components such as lists. In this case, any
+    rounding errors in item size calculations can cause the distance between
+    graphic items to be variable, causing a "crawling" visual effect.
+
+    \o When sharing space between a number of items using division. For example
+    if you need to divide the width of a container into three equal parts (in
+    practice, the parts might not be equal once the rounding to integer pixel
+    distances has occurred, due to rounding issues, but that is preferable to
+    the effects of using non-rounded floating point values).
+
+    \endlist
+
+    \section1 Examples
+
+    For example, consider the following javascript implementations for "mm" and
+    "dp", which are used in the the \l {ScaleFM example for Symbian}{ScaleFM}
+    application:
+
+    \snippet examples/symbian/scalefm/resources/layouts/Normal/High/AppStyle.qml conversion
+
+    See also the example that illustrates using
+    \l{native/scalability/millimeters}{Millimeters as Device-Independent
+    Measurement Units}
+
+*/
+
+/*!
+    \page qt-components-scalability-guidelines-right-to-left-layouts.html
+    \title Right to Left Layouts
+    \contentspage Scalability Guidelines Contents
+    \previouspage Device Independent Scalable Measurements
+    \nextpage qt-components-scalability-guidelines-contents.html
+
+    For a typical application developed in a western locale, the layout design
+    will initially assume that text reading direction, and other layout
+    elements, flows from left to right across the screen, following the
+    direction of text.
+
+    However, in order to prepare the application for localization, it is worth
+    planning the layouts and how they can be mirrored into a right-to-left
+    configuration from the outset.
+
+    Automatic configurable right-to-left layout mirroring is not currently
+    supported by the Qt Declarative module. However, it is possible to design
+    your applicaiton for left-to-right layout, and then when the mirroring
+    support is implemented, it will be compatible with your original design.
+
+    In that case, all of the layouts will be automatically mirrored. It will
+    then be possible to add additional informaiton to your application to
+    configure and control exactly each visual element to ensure that the
+    mirroring behavior is applied only where needed.
+
+    For most general applications, almost all of the UI elements should be
+    mirrored, and therefore the automatic feature can be relied on to provide
+    the correct behavior.
+
+    Note that this feature is will NOT be made available for Symbian based
+    devices that support Qt Quick, if they have software version PR2 firmware or earlier.
+    In that case, the automatic mirroring feature is not supported.
+
+    See also \l
+    { http://bugreports.qt.nokia.com/browse/QTBUG-11042 }{ QTBUG-11042 } (Add
+    right-to-left locale support to Qt Quick elements) for more information.
+
+*/
+
