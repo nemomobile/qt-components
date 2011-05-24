@@ -78,6 +78,11 @@ CommonDialog {
                 if (!moving)
                     scrollBar.flash(Symbian.FadeOut)
             }
+
+            Keys.onPressed: {
+                if (event.key == Qt.Key_Up || event.key == Qt.Key_Down)
+                    symbian.listInteractionMode = Symbian.KeyNavigation
+            }
         }
 
         ScrollBar {
@@ -97,10 +102,11 @@ CommonDialog {
 
     onStatusChanged: {
         if (status == DialogStatus.Opening) {
-            if (selectedIndex <= 0)
-                listView.positionViewAtIndex(0, ListView.Beginning)
-            else
-                listView.positionViewAtIndex(selectedIndex, ListView.Center)
+            if (listView.currentItem != null) {
+                listView.currentItem.focus = false
+            }
+            listView.currentIndex = -1
+            listView.positionViewAtIndex(0, ListView.Beginning)
         }
         else if (status == DialogStatus.Open) {
             listView.focus = true
