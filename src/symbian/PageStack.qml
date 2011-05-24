@@ -346,6 +346,9 @@ Item {
                             PropertyAnimation { properties: "x"; easing.type: Easing.InQuad; duration: transitionDuration }
                             PropertyAnimation { properties: "opacity"; easing.type: Easing.Linear; duration: transitionDuration }
                         }
+                        // Workaround for transition animation bug causing ghost view with page pop transition animation
+                        // TODO: Root cause still unknown
+                        PropertyAnimation {}
                         ScriptAction { script: transitionEnded() }
                     }
                 },
@@ -370,6 +373,9 @@ Item {
                             PropertyAnimation { properties: "x"; easing.type: Easing.InQuad; duration: transitionDuration }
                             PropertyAnimation { properties: "opacity"; easing.type: Easing.Linear; duration: transitionDuration }
                         }
+                        // Workaround for transition animation bug causing ghost view with page pop transition animation
+                        // TODO: Root cause still unknown
+                        PropertyAnimation {}
                         ScriptAction { script: transitionEnded() }
                     }
                 },
