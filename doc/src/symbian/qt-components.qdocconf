@@ -6,7 +6,8 @@ description     = "Qt Quick Components for Symbian Documentation"
 sourcedirs =    $Q_COMPONENTS_SOURCE_TREE/doc/src/common \
                 $Q_COMPONENTS_SOURCE_TREE/doc/src/symbian \
                 $Q_COMPONENTS_SOURCE_TREE/doc/src/howtos \
-                $Q_COMPONENTS_SOURCE_TREE/doc/src/examples
+                $Q_COMPONENTS_SOURCE_TREE/doc/src/examples \
+                $Q_COMPONENTS_SOURCE_TREE/doc/src/extras
                 #$QTSRC/src/declarative
 
 outputdir  =    $Q_COMPONENTS_SOURCE_TREE/doc/html
@@ -292,7 +293,7 @@ extraimages.HTML        = qt-logo.png \
 HTML.headerstyles = \
     "  <link rel=\"stylesheet\" type=\"text/css\" href=\"style/offline.css\" />\n"
 
-HTML.headerscripts = 
+HTML.headerscripts =
 
 HTML.endheader = \
     "</head>\n" \

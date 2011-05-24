@@ -27,22 +27,25 @@
 /*!
     \qmlclass RatingIndicator
     \inherits ImplicitSizeItem
-    \ingroup qt-components
+    \ingroup qt-components-extras
     \since 1.0
 
     Component to indicate user specified ratings.
 
-    A rating indicator is a component that shows the rating value within the maximum allowed range according
-    to the user's specification.  The user can also specify the display type to select the positive/negative
-    visual.  Optionally, the user can also specify a count value that will be displayed next to the images.
+    A rating indicator is a component that shows the rating value within the
+    maximum allowed range according to the user's specification. The user can
+    also specify the display type to select the positive or negative visuals.
+    Optionally, the user can also specify a count value that will be displayed
+    next to the images.
 
-    Note: When "count" is used, the height of the entire indicator is different than when it is not used.
-         This is due to the font size being larger than the image size.
+    Note: When \c count is used, the height of the entire indicator is different
+    than when it is not used. This is due to the font size being larger than the
+    image size.
 
     \qml
         // Rating indicator with vote count
         RatingIndicator {
-            value: 3
+            ratingValue: 3
             maximumValue: 5
             count: 3
         }
@@ -50,13 +53,13 @@
         // Rating indicator without vote count
         RatingIndicator {
             maximumValue: 5
-            value: 3
+            ratingValue: 3
         }
 
         // Rating indicator with inverted visual
         RatingIndicator {
             maximumValue: 5
-            value: 3
+            ratingValue: 3
             inverted: true
         }
     \endqml
@@ -65,34 +68,36 @@
 /*!
     \qmlproperty int RatingIndicator::count
 
-    Property default is -1
+    Property default is \c -1
 
-    A number to be displayed next to the rating images.  It is usually used to count the number of
-    votes cast. It is only displayed if a number larger or equal to 0 is specified.
+    A number to be displayed next to the rating images. It is usually used to
+    count the number of votes cast. It is only displayed if a number larger or
+    equal to \c 0 is specified.
 */
 
 /*!
     \qmlproperty string RatingIndicator::inverted
 
-    Property default is false
+    Property default is \c false
 
-    Specify whether the visual for the rating indicator uses the inverted color.  The value is
-    false for use with a light background and true for use with a dark background.
+    Specify whether the visual for the rating indicator uses the inverted color.
+    The value is \c false for use with a light background and \c true for use
+    with a dark background.
 */
 
 /*!
     \qmlproperty double RatingIndicator::maximumValue
 
-    Property default is 0
+    Property default is \c 0
 
-    The maximum rating.  The number should be larger or equal to 0.
+    The maximum rating.  The number should be larger or equal to \c 0.
 */
 
 /*!
     \qmlproperty double RatingIndicator::ratingValue
 
-    Property default is 0
+    Property default is \c 0
 
-    The rating value.  The number should be larger or equal to 0.
+    The rating value.  The number should be larger or equal to \c 0.
 */
 

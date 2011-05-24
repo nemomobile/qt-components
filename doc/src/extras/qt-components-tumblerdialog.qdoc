@@ -25,19 +25,17 @@
 **
 ****************************************************************************/
 /*!
-    \qmlclass Tumbler
-    \inherits Item
-    \ingroup qt-components
+    \qmlclass TumblerDialog
+    \inherits Dialog
+    \ingroup qt-components-extras
     \since 1.0
 
-    A tumbler is a component composed by one or more column.
-    In each column one of the value can be selected by sliding the finger.
-
-    A tumbler column is a component composed by multiple values of the same category.
+    A tumbler dialog is a dialog that shows a tumbler.
 
     \qml
         TumblerColumn {
             id: dayColumn
+            label: "DAY"
             selectedIndex: 9
             items: daysList
 
@@ -48,6 +46,7 @@
 
         TumblerColumn {
             id: monthColumn
+            label: "MONTH"
             selectedIndex: 4
             items: monthsList
         }
@@ -70,6 +69,7 @@
 
         TumblerColumn {
             id: yearColumn
+            label: "YEAR"
             selectedIndex: 88
             items: yearsList
 
@@ -78,50 +78,35 @@
             }
         }
 
-        Tumbler {
-             columns: [monthColumn, dayColumn, yearColumn]
+        TumblerDialog {
+            titleText: "Date of birth"
+            columns: [ dayColumn, monthColumn, yearColumn ]
+            onAccepted: callbackFunction()
         }
     \endqml
 
 */
 
 /*!
-    \qmlsignal Tumbler::changed(int index)
+    \qmlproperty string TumblerDialog::titleText
 
-    Is emitted when the value of the tumbler changes.
+     If not null, it will be used as the title text for the dialog.
 */
 
 /*!
-    \qmlproperty ListModel Tumbler::columns
+    \qmlproperty ListModel TumblerDialog::columns
 
     Array of ListModel for each column of the dialog.
 */
 
 /*!
-    \qmlproperty ListModel TumblerColumn::items
+    \qmlproperty string TumblerDialog::acceptButtonText
 
-    ListModel of a Tumbler column.
+    The button text for the accept button.
 */
 
 /*!
-    \qmlproperty string TumblerColumn::label
+    \qmlproperty string TumblerDialog::rejectButtonText
 
-    A string for the label of a Tumbler column.
-    TODO: Do not use label as it will be deprecated.
-*/
-
-/*!
-    \qmlproperty boolean TumblerColumn::enabled
-
-    Property default is true
-
-    A bool for the enabled status of a column.
-*/
-
-/*!
-    \qmlproperty int TumblerColumn::selectedIndex
-
-    Property default is 0
-
-    An integer for the selected item of a column.
+    The button text for the reject button.
 */

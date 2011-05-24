@@ -24,19 +24,45 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
 /*!
-
     \qmlclass SectionScroller
+    \inherits Item
     \ingroup qt-components
     \since 1.0
-    \inherits Item
 
-    \brief
+    \brief Helps user to scroll a long list one section at a time.
 
+    A section scroller is a component that allows the user to scroll through
+    a list one section at a time.  The sections are defined in the list.
+
+    \code
+    Item {
+        anchors.fill: parent
+
+        ListModel {
+            id: testModel
+            ListElement { name: "A Cat 1"; alphabet: "A" }
+            ListElement { name: "A Cat 2"; alphabet: "A" }
+            ...
+        }
+
+        ListView {
+            id: list
+            anchors.fill: parent
+            ...
+        }
+
+        SectionScroller {
+            list: list
+        }
+    }
+    \endcode
 */
 
 /*!
-    \qmlproperty  bool SectionScroller::platformSingleRow
+    \qmlproperty ListView SectionScroller::list
 
+    The ListView Item that should show the Section Scroller.
 */
+
+

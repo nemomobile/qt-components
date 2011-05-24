@@ -27,43 +27,42 @@
 /*!
     \qmlclass InfoBanner
     \inherits ImplicitSizeItem
-    \ingroup qt-components
+    \ingroup qt-components-extras
     \since 1.0
 
-    The InfoBanner component is used to display information to the user. The number of lines of text is limited to 3
+    The InfoBanner component is used to display information to the user. The
+    number of lines of text is limited to 3.
 
     \qml
         // Create an info banner with no icon
         InfoBanner {
-            id: banner
+            id: sb
             text: "This is an info banner with no icon"
         }
 
         // Create an info banner with icon
         InfoBanner {
             text: "This is an info banner with icon"
-            iconSource: "info_banner_thumbnail.png"
+            iconSource: "system_banner_thumbnail.png"
         }
 
         function showBanner1() {
             // set display time to 5000 ms, default is 3000 ms
-            banner.timeout = 5000;
+            sb.timerShowTime = 5000;
             // display info banner
-            banner.open();
+            sb.show();
         }
 
         function showBanner2() {
             // disable "self-dismissing" timer, banner has to be dismissed manually
-            banner.timeout = 0;
-            // interactive infobanner. click signal will be triggered when clicked.
-            banner.interactive =  true
+            sb.timeout = 0;
             // display info banner
-            banner.open();
+            sb.show();
         }
 
-        function closeBanner() {
-            // close info banner manually
-            banner.close();
+        function hideBanner() {
+            // hide info banner manually
+            sb.hide();
         }
 
     \endqml
@@ -86,13 +85,13 @@
 /*!
     \qmlmethod InfoBanner::open()
 
-    Displays Info Banner
+    Displays the InfoBanner component
 */
 
 /*!
     \qmlmethod InfoBanner::close()
 
-    Hides Info Banner
+    Hides the InfoBanner component
 */
 
 /*!
@@ -100,13 +99,6 @@
 
     Property default is \c 3000
 
-    For setting how long Info Banner stays visible to user before being dismissed
-*/
-
-/*!
-    \qmlproperty bool InfoBanner::interactive
-
-    Property default is false
-
-    true: the banner is interactive; false: informative banner
+    Enables or disables timer that dismisses Info Banner. InfoBanner stays
+    open if \c timeout value is \c 0.
 */

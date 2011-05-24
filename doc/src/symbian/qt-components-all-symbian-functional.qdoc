@@ -46,7 +46,6 @@
     \list
         \o \l{TextArea}
         \o \l{TextField}
-        \o \l{Tumbler}
     \endlist
 
     Interactive components may be placed along a column or row. Columns and rows
@@ -54,7 +53,6 @@
     \list
         \o \l{ButtonColumn}
         \o \l{ButtonRow}
-        \o \l{TumblerColumn}
     \endlist
 
     \section1 Image and Graphical Components
@@ -85,8 +83,6 @@
         \o \l{BusyIndicator}
         \o \l{ProgressBar}
         \o \l{ToolTip}
-        \o \l{InfoBanner}
-        \o \l{RatingIndicator}
     \endlist
 
     \section1 Page and Page Stack Navigation
@@ -118,13 +114,6 @@
         \o \l{SelectionDialog}
         \o \l{QueryDialog}
         \o
-    \endlist
-    These dialog components show the \l{Basic Interactive Components} within
-    dialogs.
-    \list
-        \o \l{TumblerDialog}
-        \o \l{TimePickerDialog}
-        \o \l{DatePickerDialog}
     \endlist
 
     \section1 Scrolling
@@ -167,6 +156,20 @@
     \section1 Models
     \list
         \o \l{RangeModel}
+    \endlist
+
+    \section1 Extras Components
+    These components are not loaded with the \c {com.nokia.symbian} plugin.
+    They may be imported using \c{com.nokia.extras} import statement.
+
+    \list
+        \o \l{InfoBanner}
+        \o \l{RatingIndicator}
+        \o \l{TimePickerDialog}
+        \o \l{DatePickerDialog}
+        \o \l{Tumbler}
+        \o \l{TumblerDialog}
+        \o \l{TumblerColumn}
     \endlist
 
 */

@@ -25,20 +25,47 @@
 **
 ****************************************************************************/
 /*!
-
     \qmlclass BusyIndicator
+    \inherits ImplicitSizeItem
     \ingroup qt-components
     \since 1.0
     \brief
-    The BusyIndicator shows the user that the application is not ready to be
-    used at present.
+    An indicator component that shows the progress of a task of an unknown
+    duration.
 
+    The size of the indicator can be defined by overwriting style property
+    \c size.
+    See examples below for more details.
 
+    \code
+    BusyIndicator {
+        id: indicator1
+        platformStyle: BusyIndicatorStyle { size: "small" }
+    }
+
+    BusyIndicator {
+        id: indicator2
+        running: indicator1.running
+    }
+
+    BusyIndicator {
+        id: indicator3
+        platformStyle: BusyIndicatorStyle { size: "large" }
+        running:  indicator1.running
+    }
+    \endcode
 */
 
 /*!
     \qmlproperty bool BusyIndicator::running
 
-    \c True if the application is shown, otherwise \c false.
+    Property default is \c false
 
+    Flag indicating whether the indicator is running.
 */
+
+/*!
+    \qmlproperty Style BusyIndicator::platformStyle
+    Platform specific style property.
+*/
+

@@ -24,14 +24,60 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
 /*!
-
     \qmlclass QueryDialog
+    \inherits Dialog
     \ingroup qt-components
     \since 1.0
-    \inherits Dialog
 
     \brief
+    Dialog to query sinmple questions.
 
+    This dialog is for proposing a question to the user. It is composed of a
+    title (which consists of a title text, an icon or both), a message, and
+    buttons for accepting and rejecting.
 */
+
+/*!
+    \qmlproperty string QueryDialog::acceptButtonText
+
+    Property default is \c ""
+
+    Text of the accept button. When no text is given, the button is not
+    displayed.
+*/
+
+/*!
+    \qmlproperty string QueryDialog::icon
+
+    Property default is \c ""
+
+    The URL pointing to an image. When this property is not empty, an icon is
+    displayed inside the title field.
+*/
+
+/*!
+    \qmlproperty string QueryDialog::message
+
+    Property default is \c ""
+
+    Message for the user.
+*/
+
+/*!
+    \qmlproperty string QueryDialog::rejectButtonText
+
+    Property default is \c ""
+
+    Text of the reject button. When no text is given, the button is not
+    displayed.
+*/
+
+/*!
+    \qmlproperty string QueryDialog::titleText
+
+    Property default is \c ""
+
+    The text message for the title field.
+*/
+
