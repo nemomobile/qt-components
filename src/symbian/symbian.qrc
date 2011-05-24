@@ -158,12 +158,6 @@
         <file alias="qtg_toolbar_copy.svg">resources/defaulttheme/graphics/qtg_toolbar_copy.svg</file>
         <file alias="qtg_toolbar_cut.svg">resources/defaulttheme/graphics/qtg_toolbar_cut.svg</file>
     </qresource>
-    <qresource prefix="/colors">
-        <file alias="widgetcolorgroup.css">resources/defaulttheme/colors/widgetcolorgroup.css</file>
-    </qresource>
-    <qresource prefix="/layouts">
-        <file alias="globalparameters.css">resources/defaulttheme/layouts/globalparameters.css</file>
-    </qresource>
     <qresource prefix="/params">
         <file alias="colors/default.params">resources/colors/default.params</file>
         <file alias="layouts/fallback.params">resources/layouts/fallback.params</file>

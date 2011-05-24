@@ -32,8 +32,6 @@ SOURCES += \
     spopupmanager.cpp \
     sstyleengine.cpp \
     sstylefactory.cpp \
-    sstylewrapper.cpp \
-    sstylewrapper_p.cpp \
     indicators/sdeclarativeindicatorcontainer.cpp \
     indicators/sdeclarativenetworkindicator.cpp
 
@@ -69,8 +67,6 @@ HEADERS += \
     spopupmanager.h \
     sstyleengine.h \
     sstylefactory.h \
-    sstylewrapper.h \
-    sstylewrapper_p.h \
     indicators/sdeclarativeindicatorcontainer.h \
     indicators/sdeclarativenetworkindicator.h \
     indicators/sdeclarativenetworkindicator_p.h

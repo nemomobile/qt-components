@@ -26,7 +26,6 @@
 
 #include "sdeclarative.h"
 #include "sstylefactory.h"
-#include "sstylewrapper.h"
 #include "sdeclarativeicon.h"
 #include "sdeclarativefocusscopeitem.h"
 #include "sdeclarativeimplicitsizeitem.h"
@@ -106,7 +105,6 @@ public:
     void registerTypes(const char *uri) {
         qmlRegisterType<SDeclarativeIcon>(uri, 1, 0, "Icon");
         qmlRegisterType<SDeclarativeMaskedImage>(uri, 1, 0, "MaskedImage");
-        qmlRegisterType<SStyleWrapper>(uri, 1, 0, "Style");
         qmlRegisterType<SDeclarativeImplicitSizeItem>(uri, 1, 0, "ImplicitSizeItem");
         qmlRegisterType<SDeclarativeFocusScopeItem>(uri, 1, 0, "FocusScopeItem");
         qmlRegisterType<SDeclarativeIndicatorContainer>(uri, 1, 0, "UniversalIndicators");
