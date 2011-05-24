@@ -77,6 +77,10 @@ Dialog {
                 if (!pressCancelled)
                     root.reject()
             }
+            onReleased: {
+                if (!pressCancelled)
+                    privateStyle.play(Symbian.PopupClose)
+            }
             onExited: pressCancelled = true
 
             Loader {
