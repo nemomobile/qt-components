@@ -196,6 +196,8 @@ FocusScopeItem {
 
             color: platformStyle.colorNormalMid
             font: textEdit.font
+            horizontalAlignment: textEdit.horizontalAlignment
+            verticalAlignment: textEdit.verticalAlignment
             visible: {
                 if (text && (textEdit.paintedWidth == 0 && textEdit.paintedHeight <= textEdit.cursorRectangle.height))
                     return (readOnly || !textEdit.activeFocus)

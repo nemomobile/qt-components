@@ -43,6 +43,7 @@ private slots:
     void placeholderTextAndPresetText();
     void placeholderTextAndReadOnly();
     void placeholderTextAndRichText();
+    void placeholderAligment();
     void implicitSize();
     void font();
     void focus();
@@ -399,6 +400,37 @@ void tst_quickcomponentstextarea::placeholderTextAndRichText()
     textArea->setProperty("textFormat", QVariant(Qt::AutoText));
     textArea->setProperty("text", QString(""));
     textArea->setProperty("readOnly", false);
+}
+
+void tst_quickcomponentstextarea::placeholderAligment()
+{
+    QGraphicsObject *textArea = m_view->rootObject()->findChild<QGraphicsObject*>("textArea");
+    QGraphicsObject *placeHolder = m_view->rootObject()->findChild<QGraphicsObject*>("placeholder");
+
+    QVERIFY(textArea);
+    QVERIFY(placeHolder);
+
+    textArea->setProperty("verticalAlignment", QVariant(Qt::AlignLeft));
+    QCOMPARE(textArea->property("verticalAlignment"), placeHolder->property("verticalAlignment"));
+
+    textArea->setProperty("verticalAlignment", QVariant(Qt::AlignRight));
+    QCOMPARE(textArea->property("verticalAlignment"), placeHolder->property("verticalAlignment"));
+
+    textArea->setProperty("verticalAlignment", QVariant(Qt::AlignHCenter));
+    QCOMPARE(textArea->property("verticalAlignment"), placeHolder->property("verticalAlignment"));
+
+    textArea->setProperty("horizontalAlignment", QVariant(Qt::AlignTop));
+    QCOMPARE(textArea->property("horizontalAlignment"), placeHolder->property("horizontalAlignment"));
+
+    textArea->setProperty("horizontalAlignment", QVariant(Qt::AlignBottom));
+    QCOMPARE(textArea->property("horizontalAlignment"), placeHolder->property("horizontalAlignment"));
+
+    textArea->setProperty("horizontalAlignment", QVariant(Qt::AlignVCenter));
+    QCOMPARE(textArea->property("horizontalAlignment"), placeHolder->property("horizontalAlignment"));
+
+    // Reset defaults
+    textArea->setProperty("verticalAlignment", QVariant(Qt::AlignLeft));
+    textArea->setProperty("horizontalAlignment", QVariant(Qt::AlignTop));
 }
 
 void tst_quickcomponentstextarea::implicitSize()
