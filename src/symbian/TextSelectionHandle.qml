@@ -135,7 +135,5 @@ Item {
             right: 0
             bottom: tiny
         }
-
-        sourceSize.width : tiny
     }
 }
