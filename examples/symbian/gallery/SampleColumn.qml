@@ -527,18 +527,12 @@ Column {
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
             }
-            buttons: Row {
+            buttons:
                 ToolButton {
                     text: "Close"
-                    height: parent.height
+                    height: platformStyle.graphicSizeMedium
                     onClicked: sectionScroll.close()
                 }
-                CheckBox {
-                    id: singleRow
-                    text: "Single Row"
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-            }
             content:
                 Rectangle {
                 width: parent.width
@@ -598,14 +592,10 @@ Column {
                         }
                     }
                 }
-                ScrollDecorator {
-                    flickableItem: list
-                }
 
                 SectionScroller {
                     id: sectionScroller
                     listView: list
-                    platformSingleRow: singleRow.checked
                 }
             }
         }
