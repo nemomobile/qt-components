@@ -25,6 +25,7 @@
 ****************************************************************************/
 
 import QtQuick 1.0
+import "SectionScroller.js" as Sections
 import "." 1.0
 
 ImplicitSizeItem {
@@ -34,6 +35,7 @@ ImplicitSizeItem {
     property int orientation: Qt.Vertical
     property bool interactive: true
     property int policy: Symbian.ScrollBarWhenScrolling
+    property bool privateSectionScroller: false
 
     //implicit values for qml designer when no Flickable is present
     implicitHeight: privateStyle.scrollBarThickness * (orientation == Qt.Vertical ? 3 : 1)
@@ -48,7 +50,10 @@ ImplicitSizeItem {
             return Math.floor(Math.round(flickableItem.width) - anchors.leftMargin - anchors.rightMargin)
         return undefined
     }
-    opacity: 0
+    opacity: internal.rootOpacity
+
+    onFlickableItemChanged: internal.initSectionScroller();
+    onPrivateSectionScrollerChanged: internal.initSectionScroller();
 
     //For showing explicitly a ScrollBar if policy is Symbian.ScrollBarWhenScrolling
     function flash(type) {
@@ -63,6 +68,11 @@ ImplicitSizeItem {
         onCurrentOrientationChanged: flash()
     }
 
+    Connections {
+        target: root.privateSectionScroller ? flickableItem : null
+        onModelChanged: internal.initSectionScroller()
+    }
+
     QtObject {
         id: internal
         property int hideTimeout: root.interactive ? 2000 : 500
@@ -73,6 +83,10 @@ ImplicitSizeItem {
         property int maximumY: flickableItem ? Math.floor(Math.min(flickableItem.contentHeight - root.height, flickableItem.contentY)) : NaN
         property int maximumX: flickableItem ? Math.floor(Math.min(flickableItem.contentWidth - root.width, flickableItem.contentX)) : NaN
         property bool scrollBarNeeded: hasScrollableContent()
+        //Sets currentSection to empty string when flickableItem.currentSection is null
+        property string currentSection: flickableItem ? flickableItem.currentSection || "" : ""
+        //To be able to pressed on trackMouseArea, opacity needs to be greater than 0
+        property real rootOpacity: root.privateSectionScroller ? 0.01 : 0
         /**
          * Special handler for idle state ""
          * - in case if no flicking (flickableItem.moving) has occured
@@ -93,10 +107,6 @@ ImplicitSizeItem {
          * based on Flickable visibleArea height and width ratios
          */
         function hasScrollableContent() {
-            //TODO: Remove this commented logging code snippet
-            //console.log("flickableItem = "+flickableItem)
-            //console.log("flickableItem.visibleArea.heightRatio = "+flickableItem.visibleArea.heightRatio)
-            //console.log("flickableItem.visibleArea.widthRatio = "+flickableItem.visibleArea.widthRatio)
             if (!flickableItem)
                 return false
             var _ratio = orientation == Qt.Vertical ? flickableItem.visibleArea.heightRatio : flickableItem.visibleArea.widthRatio
@@ -171,6 +181,21 @@ ImplicitSizeItem {
                 }
             }
         }
+
+        function adjustContentPosition(y) {
+            if (y < 0 || y > trackMouseArea.height)
+                return;
+
+            var sect = Sections.closestSection(y / trackMouseArea.height);
+            var idx = Sections.indexOf(sect);
+            currentSection = sect;
+            flickableItem.positionViewAtIndex(idx, ListView.Beginning);
+        }
+
+        function initSectionScroller() {
+            if (root.privateSectionScroller && flickableItem && flickableItem.model)
+                Sections.initSectionData(flickableItem);
+        }
     }
 
     BorderImage {
@@ -185,15 +210,107 @@ ImplicitSizeItem {
         border.bottom: orientation == Qt.Vertical ? 7 : 0
         onVisibleChanged: { idleEffect.complete(); flashEffect.complete() }
     }
+
+    Loader {
+        id: sectionScrollBackground
+        anchors.right: trackMouseArea.right
+        width: flickableItem ? flickableItem.width : 0
+        height: platformStyle.fontSizeMedium * 5
+        sourceComponent: root.privateSectionScroller ? sectionScrollComponent : null
+    }
+
+    Component {
+        id: sectionScrollComponent
+        BorderImage {
+            id: indexFeedbackBackground
+            objectName: "indexFeedbackBackground"
+            source: privateStyle.imagePath("qtg_fr_popup_transparent")
+            border { left: platformStyle.borderSizeMedium; top: platformStyle.borderSizeMedium; right: platformStyle.borderSizeMedium; bottom: platformStyle.borderSizeMedium }
+            visible: trackMouseArea.pressed
+            anchors.fill: parent
+            Text {
+                id: indexFeedbackText
+                objectName: "indexFeedbackText"
+                color: platformStyle.colorNormalLight
+                anchors {
+                    left: parent.left;
+                    leftMargin: platformStyle.paddingLarge;
+                    right: parent.right;
+                    rightMargin: platformStyle.paddingLarge;
+                    verticalCenter: parent.verticalCenter
+                }
+                font {
+                    family: platformStyle.fontFamilyRegular;
+                    pixelSize: indexFeedbackText.text.length == 1 ? platformStyle.fontSizeMedium * 4 : platformStyle.fontSizeMedium * 2;
+                    capitalization: indexFeedbackText.text.length == 1 ? Font.AllUppercase : Font.MixedCase
+                }
+                text: internal.currentSection
+            }
+            states: [
+                State {
+                    when: (handle.y + (handle.height / 2)) - (sectionScrollBackground.height / 2) < 0
+                    AnchorChanges {
+                        target: sectionScrollBackground
+                        anchors { verticalCenter: undefined; top: track.top; bottom: undefined }
+                    }
+                },
+                State {
+                    when: (handle.y + (handle.height / 2)) + (sectionScrollBackground.height / 2) >= track.height
+                    AnchorChanges {
+                        target: sectionScrollBackground
+                        anchors { verticalCenter: undefined; top: undefined; bottom: track.bottom }
+                    }
+                },
+                State {
+                    when: (handle.y + (handle.height / 2)) - (sectionScrollBackground.height / 2) >= 0
+                    AnchorChanges {
+                        target: sectionScrollBackground
+                        anchors { verticalCenter: handle.verticalCenter; top: undefined; bottom: undefined }
+                    }
+                }
+            ]
+        }
+    }
+
     // MouseArea for the move content "page by page" by tapping and scroll to press-and-hold position
     MouseArea {
         id: trackMouseArea
         objectName: "trackMouseArea"
         property bool longPressed: false
-        enabled: interactive
-        anchors.fill: flickableItem ? track : undefined
-        onPressAndHold: longPressed = true
+        enabled: root.privateSectionScroller || interactive
+        anchors {
+            top: root.privateSectionScroller ? parent.top : undefined;
+            bottom: root.privateSectionScroller ? parent.bottom : undefined;
+            right: root.privateSectionScroller ? parent.right : undefined;
+            fill: root.privateSectionScroller ? undefined : (flickableItem ? track : undefined)
+        }
+        width: root.privateSectionScroller ? privateStyle.scrollBarThickness * 3 : undefined
+        drag {
+            target: root.privateSectionScroller ? sectionScrollBackground : undefined
+            // axis is set XandY to prevent flickable from stealing the mouse event
+            // SectionScroller is anchored to the right side of the mouse area so the user
+            // won't be able to drag it along the X axis
+            axis: root.privateSectionScroller ? Drag.XandYAxis : 0
+            minimumY: root.privateSectionScroller ? (flickableItem ? flickableItem.y : 0) : 0
+            maximumY: root.privateSectionScroller ? (flickableItem ? (trackMouseArea.height - sectionScrollBackground.height) : 0) : 0
+        }
+
+        onPressAndHold: {
+            if (!root.privateSectionScroller)
+                longPressed = true
+        }
+
         onReleased: longPressed = false
+
+        onPositionChanged: {
+            if (root.privateSectionScroller)
+                internal.adjustContentPosition(trackMouseArea.mouseY);
+        }
+
+        onPressedChanged: {
+            if (root.privateSectionScroller && trackMouseArea.pressed)
+                internal.adjustContentPosition(trackMouseArea.mouseY);
+        }
     }
     Timer {
         id: pressAndHoldTimer
@@ -240,7 +357,7 @@ ImplicitSizeItem {
         objectName: "handleMouseArea"
         property real maxDragY: flickableItem ? flickableItem.height - handle.height - root.anchors.topMargin - root.anchors.bottomMargin : NaN
         property real maxDragX: flickableItem ? flickableItem.width - handle.width - root.anchors.leftMargin - root.anchors.rightMargin : NaN
-        enabled: interactive
+        enabled: interactive && !root.privateSectionScroller
         width: orientation == Qt.Vertical ? 3 * privateStyle.scrollBarThickness : handle.width
         height: orientation == Qt.Horizontal ? 3 * privateStyle.scrollBarThickness : handle.height
         anchors {
@@ -290,7 +407,7 @@ ImplicitSizeItem {
 
         target: root
         property: "opacity"
-        to: 0
+        to: internal.rootOpacity
     }
     SequentialAnimation {
         id: flashEffect
@@ -313,7 +430,7 @@ ImplicitSizeItem {
             id: fadeOut
             target: root
             property: "opacity"
-            to: 0
+            to: internal.rootOpacity
         }
     }
     StateGroup {
@@ -329,11 +446,12 @@ ImplicitSizeItem {
             },
             State {
                 name: "Step"
-                when: trackMouseArea.pressed && !trackMouseArea.longPressed
+                when: trackMouseArea.pressed && !trackMouseArea.longPressed && !root.privateSectionScroller
             },
             State {
                 name: "Indicate"
-                when: internal.scrollBarNeeded && flickableItem.moving
+                when: (internal.scrollBarNeeded && flickableItem.moving) ||
+                      (trackMouseArea.pressed && root.privateSectionScroller)
             },
             State {
                 name: ""
