@@ -85,6 +85,19 @@ Item {
         ListElement { name: "Parrot"; alphabet: "P" }
         ListElement { name: "Parrot"; alphabet: "P" }
         ListElement { name: "Parrot"; alphabet: "P" }
+        ListElement { name: "Parrot"; alphabet: "P" }
+        ListElement { name: "Parrot"; alphabet: "P" }
+        ListElement { name: "Parrot"; alphabet: "P" }
+        ListElement { name: "Parrot"; alphabet: "P" }
+        ListElement { name: "Multi-character"; alphabet: "2001, Apr 24" }
+        ListElement { name: "Multi-character"; alphabet: "2001, Apr 24" }
+        ListElement { name: "Multi-character"; alphabet: "2001, Apr 24" }
+        ListElement { name: "Multi-character"; alphabet: "2001, Apr 24" }
+        ListElement { name: "Multi-character"; alphabet: "2001, Apr 24" }
+        ListElement { name: "Multi-character"; alphabet: "2001, Apr 24" }
+        ListElement { name: "Multi-character"; alphabet: "2001, Apr 24" }
+        ListElement { name: "Multi-character"; alphabet: "2001, Apr 24" }
+
     }
 
     ListView {
@@ -123,24 +136,9 @@ Item {
         }
     }
 
-    ScrollDecorator {
-        flickableItem: listView
-    }
-
     SectionScroller {
         id: sectionScroller
         listView: listView
-    }
-
-    Menu {
-        id: optionMenu
-
-        content: MenuLayout {
-            MenuItem {
-                text: sectionScroller.platformSingleRow ? "Multi Row" : " Single Row"
-                onClicked: sectionScroller.platformSingleRow = !sectionScroller.platformSingleRow
-            }
-        }
     }
 
     Connections {
