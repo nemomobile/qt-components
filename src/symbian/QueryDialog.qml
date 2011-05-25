@@ -77,7 +77,9 @@ Dialog {
         Item {
             Flickable {
                 id: flickable
-                anchors.fill: parent
+                width: parent.width
+                height: parent.height
+                anchors { left: parent.left; top: parent.top }
                 contentHeight: label.height
                 flickableDirection: Flickable.VerticalFlick
                 clip: true
