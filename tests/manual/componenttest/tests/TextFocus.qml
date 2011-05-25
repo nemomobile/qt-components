@@ -46,6 +46,7 @@ FocusScope {
             width: focusItem ? focusItem.currentItem.width : 0
             y: focusItem ? focusItem.currentItem.y : 0; z: 5
             Behavior on y { SpringAnimation { spring: 2; damping: 0.1 } }
+            visible: ListView.view.activeFocus
         }
     }
 
@@ -89,7 +90,7 @@ FocusScope {
 
             clip: true; spacing: 5
             height: parent.h; width: parent.width
-            highlight: activeFocus ? highlight : null
+            highlight: highlight
             highlightFollowsCurrentItem: false
             focus: true
             KeyNavigation.down: textAreas
@@ -113,7 +114,7 @@ FocusScope {
 
             clip: true; spacing: 5
             height: parent.h; width: parent.width
-            highlight: activeFocus ? highlight : null
+            highlight: highlight
             highlightFollowsCurrentItem: false
             KeyNavigation.up: textFields; KeyNavigation.down: textInputs
         }
@@ -150,7 +151,7 @@ FocusScope {
 
             clip: true
             height: parent.h; width: parent.width; spacing: 5
-            highlight: activeFocus ? highlight : null
+            highlight: highlight
             highlightFollowsCurrentItem: false
             KeyNavigation.up: textAreas
         }
