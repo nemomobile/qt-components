@@ -32,7 +32,7 @@
     \since 1.0
     \inherits Item
 
-    \brief Symbian:
+    \brief A generic popup component used by other components like menu and dialog.
 
 */
 
@@ -47,28 +47,46 @@
 /*!
     \qmlproperty int Popup::animationDuration
 
+    The time taken for the animation when the popup is displayed on screen.
+
+    Value is in milliseconds.
+
 */
 
 /*!
     \qmlproperty int Popup::status
+
+    This indicates the stage of the popup in the dialog lifecycle. The value is
+    from the DialogStatus enumeration.
+
+    \list
+      \o DialogStatus.Opening - the popup is in the process of opening
+      \o DialogStatus.Open - the popup is open and visible to the user
+      \o DialogStatus.Closing - the popup is in the process of closing
+      \o DialogStatus.Closed - the popup is closed and no longer visible to the user
+    \endlist
 
 */
 
 /*!
     \qmlmethod Popup::close()
 
+    Close the popup so it is no longer visible.
 
 */
 
 /*!
     \qmlmethod Popup::open()
 
+    Show the popup on the screen so it is visible to the user.
 
 */
 
 /*!
     \qmlsignal Popup::faderClicked()
 
+    This signal is emitted if the user taps on the popup before it is fully
+    visible (when being opened) or fully invisible (when being closed).
 
 */
 

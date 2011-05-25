@@ -33,11 +33,32 @@
     \inherits Item
 
     \brief
+    An item in a menu to provide access to a particular function.
+
+    Menu items are the individual items in menu that provide access to
+    particular functions of your application. Menu items are usually added as
+    children to a MenuLayout that is associated with a menu.
+
+    See the Menu documentation for a more complete description of how to use
+    menus.
+
+    \section1 Using a menu item
+
+    This code snippet shows a menu item added as a child of a MenuLayout. The
+    onClicked() signal handler is used to perform an action when the user selects
+    this menu item.
+
+    \snippet src/snippets/common/snippet-menu.qml 2
 
 */
 
 /*!
     \qmlproperty bool MenuItem::platformSubItemIndicator
+
+    When this property is \c true, this menu item is drawn with an icon that
+    indicates to the user that further options can be shown by selecting this
+    item. Generally this is achieved by opening a ContextMenu that contains the
+    extra menu items.
 
 */
 

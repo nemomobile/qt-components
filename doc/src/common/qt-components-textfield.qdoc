@@ -28,16 +28,19 @@
 /*!
     \qmlproperty string TextField::placeholderText
 
-    The text that is shown in the text field before the user enters any text.
-    When the user starts entering text, the placeholder text is hidden.
+    The text that is shown in the text field as long as it has not the focus
+    if the value of the text property is an empty string. The placeholder text is
+    shown as grayed-out. When the field gets the focus, the placeholder
+    text disappears. The default value of placeholderText is an empty string.
 
 */
 
 /*!
     \qmlproperty int TextField::inputMethodHints
 
-    Settings that indicate what kind of input can be accepted by text field. The
-    value is from Qt::InputMethodHints
+    Settings that indicate what kind of input the text field accepts. See
+    Qt::InputMethodHints for details because it uses the input method hints the
+    same way.
 
     \sa TextInput::inputMethodHints
 
@@ -46,7 +49,8 @@
 /*!
     \qmlproperty font TextField::font
 
-    Font information for the text in the text field.
+    Font information for the text in the text field. Shares the same values
+    as \c {TextInput::font}.
 
     \sa TextInput::font
 
@@ -64,9 +68,9 @@
 /*!
     \qmlproperty bool TextField::readOnly
 
-    If this is \c true, the text field can only be viewed, it cannot be edited.
-
-    If this is \c false, the text field can be edited.
+    If \c readOnly is \c true, the user can see the text in the text field but cannot
+    edit it. If \c false, the user can also edit the text in the text
+    field.
 
     \sa TextInput::readOnly
 */
@@ -74,9 +78,10 @@
 /*!
     \qmlproperty int TextField::echoMode
 
-    Specifies how (or if) the text is displayed when the user enters text into
+    Specifies how the text is displayed when the user enters text into
     the text field.  For example, you can set the echo mode to \c Password so
-    that the entered text is shown as asterisks.
+    that the entered text is shown as asterisks. Shares the same values as
+    \c {TextInput::echoMode has}.
 
     \sa TextInput::echoMode
 
@@ -85,8 +90,15 @@
 /*!
     \qmlproperty bool TextField::acceptableInput
 
-    Indicates if the text being input is acceptable according to the validator
-    or input mask.
+    Indicates whether or not the current text the user enters is acceptable as
+    a final string. The value is \c true in the following cases:
+
+    \list
+    \o The validator or input mask is not set.
+    \o The text is acceptable to the set validator or input mask.
+    \endlist
+
+    Otherwise the value is \c false.
 
     \sa inputMask, validator, TextInput::acceptableInput
 
@@ -95,8 +107,9 @@
 /*!
     \qmlproperty string TextField::inputMask
 
-    Allows you to restrict what can be entered into the text field. See
-    QLineEdit::inputMask for details about how to define the input mask.
+    Allows you to restrict what the user can enter into the text field.
+    TextField, TextInput, and QLineEdit use the same input mask. See
+    \l{QLineEdit::inputMask} for details how to define the input mask.
 
     \sa acceptableInput, validator, TextInput::inputMask
 */
@@ -140,7 +153,8 @@
 /*!
     \qmlproperty string TextField::text
 
-    The text that has been entered into the text field.
+    The text that has been entered into the text field. The default value is an
+    empty string.
 
 */
 
@@ -167,13 +181,16 @@
 
     Moves the currently selected text to the system clipboard.
 
-    \sa TextInput::cut()
+    \sa copy, paste, TextInput::cut()
 */
 
 /*!
     \qmlmethod TextField::select(start, end)
 
-    Causes the text from \a start to \a end to be selected.
+    Causes the text from \a start to \a end to be selected. If either start or
+    end is out of range, the selection is not changed. After calling this,
+    selectionStart will become the lesser and selectionEnd will become the
+    greater (regardless of the order passed to this method).
 
     \sa selectionStart, selectionEnd, TextInput::select()
 */

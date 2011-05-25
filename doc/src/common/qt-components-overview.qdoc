@@ -28,22 +28,22 @@
 /*!
     \page index.html
 
-    \title Qt Quick components
+    \title Qt Quick Components
 
     \image common/component-splash.png
 
-    The Qt Quick components provide a set of widgets and other building blocks
+    The Qt Quick Components provide a set of widgets and other building blocks
     that you can use to create a native-look user interface for your
     application.
 
-    There are components for a many of the usual user interface features
+    There are components for many of the usual user interface features
     including various types of buttons, sliders, text input, menus, toolbars and
     dialogs. There are also some components that implement standard small-screen
     navigation paradigms such as navigating a hierarchy and content accessible
     with tabs. For more details, see: \l {Introduction to the Qt Quick
     components}
 
-    \section1 Getting started with the components
+    \section1 Getting Started with the Components
 
     The Qt Quick components are built with QML and you can use them in your QML
     application in the same way as any of the standard QML elements. You make

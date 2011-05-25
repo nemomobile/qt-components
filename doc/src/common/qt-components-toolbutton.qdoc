@@ -28,6 +28,11 @@
 /*!
     \qmlproperty bool ToolButton::checkable
 
+    If \c checkable  \c true, the tool button acts like a pushable switch and stays
+    "down" (or checked) if you press and release the button. If you press and
+    release the tool button again, the tool button stays "up" (or unchecked).
+
+    \sa checked
 */
 
 /*!
@@ -38,35 +43,30 @@
 /*!
     \qmlproperty bool ToolButton::enabled
 
-*/
-
-/*!
-    \qmlproperty bool ToolButton::flat
-
+    If \c false, the tool button is drawn to indicate it cannot be used. If the
+    user does press the button, no signal is sent.
 */
 
 /*!
     \qmlproperty bool ToolButton::pressed
 
-*/
-
-/*!
-    \qmlproperty url ToolButton::checkedIconSource
-
-*/
-
-/*!
-    \qmlproperty url ToolButton::pressedIconSource
+    \c true while the user is pressing the tool button. Otherwise \c false.
 
 */
 
 /*!
     \qmlproperty url ToolButton::iconSource
 
+    The location of the icon to show on the tool button.
+
 */
 
 /*!
     \qmlproperty string ToolButton::text
+
+    Text to show on the button. If both a text and an icon are specified, it is
+    up to the platform style whether both are shown or one is preferred. Often
+    this means the icon will be shown in preference to the text.
 
 */
 
@@ -74,5 +74,6 @@
 /*!
     \qmlsignal ToolButton::clicked()
 
+    This signal is emitted when the tool button is pressed and released.
 
 */

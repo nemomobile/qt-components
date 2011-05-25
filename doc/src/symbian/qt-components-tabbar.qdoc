@@ -42,7 +42,11 @@
 
     \section1 Using a tab bar
 
-    The following code snippet shows a tab bar with three buttons and corresponding tab content pages.
+    The following code snippet shows a tab bar with three buttons and
+    corresponding tab content pages. The resulting tab bar looks something like
+    the following:
+
+    \image symbian/tabbar.png
 
     \snippet src/snippets/symbian/snippet-tabbar.qml 0
 

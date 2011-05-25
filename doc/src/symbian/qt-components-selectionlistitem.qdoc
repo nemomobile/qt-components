@@ -49,6 +49,13 @@
 
     \image symbian/selectiondialog.png
     \e SelectionDialog integrated to SelectionListItem
+
+    \section1 Integrating SelectionDialog to a SelectionListItem
+
+    The example below shows how SelectionDialog can be integrated to SelectionListItem.
+
+    \snippet src/snippets/symbian/snippet-selectionlistitem.qml 0
+
 */
 
 /*!

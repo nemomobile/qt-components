@@ -28,27 +28,49 @@
 /*!
     \qmlproperty Item ContextMenu::visualParent
 
+    If this is set, the background fading effect is centered on the item
+    specified by \c visualParent. Otherwise the background fading effect is
+    centered on the whole window.
+
 */
 
 /*!
     \qmlproperty int ContextMenu::status
 
+    Indicates whether the menu is open of closed or somewhere in between. The
+    values are from the DialogStatus enumeration:
+
+    \list
+      \o DialogStatus.Opening - the menu is in the process of opening
+      \o DialogStatus.Open - the menu is open and visible to the user
+      \o DialogStatus.Closing - the menu is in the process of closing
+      \o DialogStatus.Closed - the menu is closed and no longer visible to the user
+    \endlist
+
 */
 
 /*!
     \qmlproperty list<Item> ContextMenu::content
+    \default
+
+    Items in the menu that provide options to the user. Generally these are
+    added as children of the context menu rather than using this property
+    directly.
 
 */
 
 /*!
     \qmlmethod ContextMenu::close()
 
+    Manually close the context menu rather than waiting for the user to select
+    an option or cancel the menu.
 
 */
 
 /*!
     \qmlmethod ContextMenu::open()
 
+    Show the context menu to the user.
 
 */
 

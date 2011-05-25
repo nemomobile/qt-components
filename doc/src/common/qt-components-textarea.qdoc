@@ -25,12 +25,6 @@
 **
 ****************************************************************************/
 
-/*!
-    \qmlproperty string TextArea::placeholderText
-
-    The text that is shown in the text area before the user enters any text.
-    When the user starts entering text, the placeholder text is hidden.
-
 */
 
 /*!
@@ -62,6 +56,15 @@
 
 */
 
+/*!
+    \qmlproperty int TextArea::inputMethodHints
+
+    Settings that indicate what kind of input can be accepted by the textarea. The
+    value is from Qt::InputMethodHints
+
+    \sa TextEdit::inputMethodHints
+
+*/
 
 /*!
     \qmlproperty bool TextArea::readOnly
@@ -205,4 +208,10 @@
 
 */
 
+/*!
+    \qmlproperty string TextArea::placeholderText
+
+    The text that is shown in the text area before the user enters any text.
+    When the user starts entering text, the placeholder text is hidden.
+*/
 

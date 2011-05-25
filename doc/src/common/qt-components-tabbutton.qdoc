@@ -28,8 +28,8 @@
 /*!
     \qmlproperty Item TabButton::tab
 
-    This indicates the tab content (one of the children of a TabGroup) that is
-    activated when this TabButton is clicked.
+    This is a reference to the tab content (one of the children of a TabGroup,
+    usually a Page) that is activated when this TabButton is clicked.
 
     Note: On some platforms there can be additional logic such as unwinding the
     page stack in a tab if the tab is already selected.
@@ -40,7 +40,7 @@
 /*!
     \qmlproperty bool TabButton::checked
 
-    \true if this button is the button for the currently activated tab. Otherwise false.
+    \c true if this button is the button for the currently activated tab. Otherwise false.
 
 */
 
@@ -48,7 +48,7 @@
 /*!
     \qmlproperty bool TabButton::pressed
 
-    \true if the user is currently pressing the tab button. Otherwise \c false.
+    \c true if the user is currently pressing the tab button. Otherwise \c false.
 
 */
 

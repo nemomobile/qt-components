@@ -33,7 +33,8 @@
 /*!
     \qmlproperty  string ToolBar::transition
 
-    The type of transition for a . One of the following:
+    The type of transition for a when the page changes. Can be one of the following:
+
     \list
       \o set - an instantaneous change (default)
       \o push - the toolbar animation follows the page stack push animation

@@ -25,7 +25,19 @@
 **
 ****************************************************************************/
 
+/*!
 
+    \qmlclass ToolButton
+    \ingroup qt-components
+    \since 1.0
+    \inherits Item
+
+    \brief
+    A button on a toolbar to provide quick access to a function.
+
+    See the ToolBar documentation for more information about tool button.
+
+*/
 /*!
     \qmlproperty QtObject ToolButton::ExclusiveGroup
 
@@ -67,5 +79,39 @@
     \qmlsignal ToolButton::platformReleased()
 
     Symbian:
+
+*/
+/*!
+    \qmlproperty url ToolButton::checkedIconSource
+
+    Optional. The location of the icon to show on the tool button when the tool
+    button is checked. If you do not specify a special icon for the checked
+    state, the standard styling is applied to the icon specified in iconSource.
+
+    \sa checked
+
+*/
+
+/*!
+    \qmlproperty url ToolButton::pressedIconSource
+
+    Optional. The location of the icon to show on the tool button when the tool
+    button is pressed. If you do not specify a special icon for the pressed
+    state, the standard styling is applied to the icon specified in iconSource.
+
+    \sa pressed
+
+*/
+
+/*!
+    \qmlproperty bool ToolButton::flat
+
+    If \c false, a border is drawn for the button. If \c true no border is drawn
+    and the button looks "flat".
+
+    Generally, if your button is an icon, you will set this to be \c true so
+    your icon merges with the toolbar. If your button contains just text, you
+    will set this to \c true so that your text stands out from the toolbar like
+    a normal button.
 
 */

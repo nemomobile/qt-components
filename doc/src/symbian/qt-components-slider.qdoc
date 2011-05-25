@@ -147,6 +147,5 @@
 /*!
     \qmlsignal Slider::valueChanged(value)
 
-    \e {Symbian:}
-    This signal is emitted when the value of the slider changes.
+    \e This signal is emitted when the value of the slider changes.
 */

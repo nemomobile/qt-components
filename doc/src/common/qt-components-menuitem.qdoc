@@ -28,10 +28,20 @@
 /*!
     \qmlproperty string MenuItem::text
 
+    The text that is shown on this menu item.
+
+*/
+
+/*!
+    \qmlproperty bool MenuItem::drillDownIndicator
+
+    Deprecated. Use platformSubItemIndicator instead.
+
 */
 
 /*!
     \qmlsignal MenuItem::clicked()
 
+    This signal is emitted when the user selects this menu item.
 
 */

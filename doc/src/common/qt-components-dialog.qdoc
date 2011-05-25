@@ -65,10 +65,10 @@
     from the DialogStatus enumeration.
 
     \list
-      \o Opening - the dialog is in the process of opening
-      \o Open - the dialog is open and visible to the user
-      \o Closing - the dialog is in the process of closing
-      \o Closed - the dialog is closed and no longer visible to the user
+      \o DialogStatus.Opening - the dialog is in the process of opening
+      \o DialogStatus.Open - the dialog is open and visible to the user
+      \o DialogStatus.Closing - the dialog is in the process of closing
+      \o DialogStatus.Closed - the dialog is closed and no longer visible to the user
     \endlist
 
 */

@@ -28,15 +28,30 @@
 /*!
     \qmlproperty Item Menu::visualParent
 
+    Indicates the other item that this menu will be 'on top of'.
+
 */
 
 /*!
     \qmlproperty list<Item> Menu::content
+    \default
+
+    Provides access to the items in the menu.
 
 */
 
 /*!
     \qmlproperty int Menu::status
+
+    Indicates whether the menu is open of closed or somewhere in between. The
+    values are from the DialogStatus enumeration:
+
+    \list
+      \o DialogStatus.Opening - the menu is in the process of opening
+      \o DialogStatus.Open - the menu is open and visible to the user
+      \o DialogStatus.Closing - the menu is in the process of closing
+      \o DialogStatus.Closed - the menu is closed and no longer visible to the user
+    \endlist
 
 */
 
@@ -44,14 +59,16 @@
 /*!
     \qmlmethod Menu::open()
 
-    Show the menu items so the user can select.
+    Show the menu so the user can select an item.
 
 */
 
 /*!
     \qmlmethod Menu::close()
 
-    Close the menu so it is no longer visible.
+    Close the menu so it is no longer visible. A menu will close automatically
+    when the user selects an item from the menu so this function allows you to
+    manually close the menu before the user selects an item.
 
 */
 

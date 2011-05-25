@@ -28,7 +28,7 @@
 /*!
     \page qt-components-build.html
 
-    \title Building the Qt Quick components
+    \title Building the Qt Quick Components
 
     The Qt Quick components source is available on Gitorious here: \l
     {http://qt.gitorious.org/qt-components}.
@@ -42,7 +42,7 @@
     the usability of your application.
 
     \list
-        \o \l {Building the Qt Quick components for Symbian}
+        \o \l {Building the Qt Quick Components for Symbian}
     \endlist
 
 */
