@@ -124,7 +124,7 @@ Item {
         section.delegate: Rectangle {
             width: listView.width
             height: childrenRect.height + (2 * platformStyle.paddingSmall)
-            color: privateStyle.listItemSeparatorColor
+            color: platformStyle.colorDisabledMid
             Text {
                 objectName: "Label" + section
                 x: platformStyle.paddingSmall
