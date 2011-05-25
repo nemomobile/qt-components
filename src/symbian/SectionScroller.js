@@ -44,48 +44,11 @@ function initSectionData(list) {
     }
 }
 
-function sectionPositionString(name) {
-    var val = _sections.indexOf(name);
-    return val === 0 ? "first" :
-           val === _sections.length - 1 ? "last" : false;
-}
-
-function sectionAt(pos) {
-    return _sections[pos] ? _sections[pos] : "";
-}
-
-function relativeSections(current) {
-    var val = _sections.indexOf(current);
-    var sect = [];
-    var sl = _sections.length;
-
-    val = val < 1 ? 1 : val >= sl - 1 ? sl - 2 : val;
-    sect = [sectionAt(val - 1), sectionAt(val), sectionAt(val + 1)];
-
-    return sect;
-}
-
-function closestSection(pos, down) {
+function closestSection(pos) {
     var tmp = (_sections.length) * pos;
     var val = Math.ceil(tmp) // TODO: better algorithm
     val = val < 2 ? 1 : val;
     return _sections[val-1];
-}
-
-function nextSection(current) {
-    var val = _sections.indexOf(current);
-    return (val > -1 ?
-                _sections[(val < _sections.length - 1 ? val + 1 : val)] :
-                _sections[0])
-            || "";
-}
-
-function previousSection(current) {
-    var val = _sections.indexOf(current);
-    return (val > -1 ?
-                _sections[(val > 0 ? val - 1 : val)] :
-                _sections[0])
-            || "";
 }
 
 function indexOf(sectionName) {
