@@ -88,8 +88,6 @@ FocusScopeItem {
     // http://bugreports.qt.nokia.com/browse/QTBUG-16665
     // http://bugreports.qt.nokia.com/browse/QTBUG-16710 (fixed in Qt 4.7.2)
     // http://bugreports.qt.nokia.com/browse/QTBUG-12305 (fixed in QtQuick1.1)
-    property real maxImplicitWidth: (parent ? parent.width : screen.width) - root.x // DEPRECATED
-    property real maxImplicitHeight: (parent ? parent.height : screen.height) - root.y // DEPRECATED
     property bool enabled: true // overriding due to QTBUG-15797 and related bugs
     property real platformMaxImplicitWidth: (parent ? parent.width : screen.width) - root.x
     property real platformMaxImplicitHeight: (parent ? parent.height : screen.height) - root.y
@@ -107,12 +105,6 @@ FocusScopeItem {
         // layout spec gives minimum height (textFieldHeight) which includes required padding
         preferredHeight = Math.max(privateStyle.textFieldHeight, preferredHeight)
         return Math.min(preferredHeight, root.platformMaxImplicitHeight)
-    }
-
-    // TODO: Remove when maxImplicitWidth and maxImplicitHeight are removed
-    Component.onCompleted: {
-        console.log("TextArea.maxImplicitWidth deprecated, use TextArea.platformMaxImplicitWidth instead!")
-        console.log("TextArea.maxImplicitHeight deprecated, use TextArea.platformMaxImplicitHeight instead!")
     }
 
     Connections {
