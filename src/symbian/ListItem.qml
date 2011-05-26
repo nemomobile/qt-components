@@ -282,6 +282,10 @@ ImplicitSizeItem {
             releasedEffect.restart()
         }
 
+        function releaseHold() {
+            releasedEffect.restart()
+        }
+
         function hold() {
             root.pressAndHold()
         }
@@ -317,6 +321,11 @@ ImplicitSizeItem {
                 from: "Pressed"
                 to: "PressAndHold"
                 ScriptAction { script: internal.hold() }
+            },
+            Transition {
+                from: "PressAndHold"
+                to: ""
+                ScriptAction { script: internal.releaseHold() }
             },
             Transition {
                 to: ""
