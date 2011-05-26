@@ -36,10 +36,6 @@ ImplicitSizeItem {
 
     signal clicked
 
-    // Symbian specific
-    property alias text: label.text // DEPRECATED
-    onTextChanged: { console.log("warning: Switch.text is deprecated") }
-
     QtObject {
         id: internal
         objectName: "internal"
@@ -88,8 +84,7 @@ ImplicitSizeItem {
         ]
     }
 
-    implicitWidth: label.text ? 2 * privateStyle.switchButtonHeight + platformStyle.paddingMedium + privateStyle.textWidth(label.text, label.font)
-                              : track.width
+    implicitWidth: track.width
     implicitHeight: privateStyle.switchButtonHeight
 
     Image {
@@ -168,21 +163,6 @@ ImplicitSizeItem {
                 SmoothedAnimation {properties: "x"; easing.type: Easing.InOutQuad; duration: 200 }
             }
         ]
-    }
-
-    Text {
-        id: label
-        anchors {
-            left: track.right
-            leftMargin: text ? platformStyle.paddingMedium : 0
-            rightMargin: text ? platformStyle.paddingLarge : 0
-            right: parent.right
-            verticalCenter: parent.verticalCenter
-        }
-
-        elide: Text.ElideRight
-        font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
-        color: platformStyle.colorNormalLight
     }
 
     MouseArea {

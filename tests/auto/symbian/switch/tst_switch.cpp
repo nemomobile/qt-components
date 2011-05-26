@@ -39,7 +39,6 @@ private slots:
     void testClickedSignal();
     void testCheckedProperty();
     void testPressedProperty();
-    void testTextProperty();
     void testImplicitSize();
 
 private:
@@ -83,51 +82,20 @@ void tst_switch::testPressedProperty()
     QCOMPARE(pressed.toBool(), true);
 }
 
-void tst_switch::testTextProperty()
-{
-    QVariant text = componentObject->property("text");
-    QVERIFY(text.isValid());
-    QVERIFY(text.canConvert(QVariant::String));
-    QVERIFY(text.toString().isEmpty());
-    componentObject->setProperty("text", "My Switch");
-    text = componentObject->property("text");
-    QCOMPARE(text.toString(), QString("My Switch"));
-}
-
 void tst_switch::testImplicitSize()
 {
     QDeclarativeItem *switchButton = qobject_cast<QDeclarativeItem*>(componentObject);
     QVERIFY(switchButton);
 
-    // no text
-    switchButton->setProperty("text", "");
-    const qreal noTextImplicitWidth = switchButton->implicitWidth();
-    const qreal noTextImplicitHeight = switchButton->implicitHeight();
-    QVERIFY(noTextImplicitWidth > 5); // needs to be something for the tool
-    QVERIFY(noTextImplicitHeight > 5); // needs to be something for the tool
+    const qreal implicitWidth = switchButton->implicitWidth();
+    const qreal implicitHeight = switchButton->implicitHeight();
 
-    // short text
-    switchButton->setProperty("text", "short");
-    const qreal shortTextImplicitWidth = switchButton->implicitWidth();
-    const qreal shortTextImplicitHeight = switchButton->implicitHeight();
-    QVERIFY(shortTextImplicitWidth > noTextImplicitWidth);
-    QVERIFY(shortTextImplicitHeight >= noTextImplicitHeight);
-
-    // long text
-    switchButton->setProperty("text", "longer text than just 'short'");
-    const qreal longTextImplicitWidth = switchButton->implicitWidth();
-    const qreal longTextImplicitHeight = switchButton->implicitHeight();
-    QVERIFY(longTextImplicitWidth > shortTextImplicitWidth);
-    QVERIFY(longTextImplicitHeight >= shortTextImplicitHeight);
-
-    // long text
-    switchButton->setProperty("text", "longer text than just 'short'");
     switchButton->setProperty("checked", false);
-    QCOMPARE(longTextImplicitWidth, switchButton->implicitWidth());
-    QCOMPARE(longTextImplicitHeight, switchButton->implicitHeight());
+    QCOMPARE(implicitWidth, switchButton->implicitWidth());
+    QCOMPARE(implicitHeight, switchButton->implicitHeight());
     switchButton->setProperty("checked", true);
-    QCOMPARE(longTextImplicitWidth, switchButton->implicitWidth());
-    QCOMPARE(longTextImplicitHeight, switchButton->implicitHeight());
+    QCOMPARE(implicitWidth, switchButton->implicitWidth());
+    QCOMPARE(implicitHeight, switchButton->implicitHeight());
 }
 
 QTEST_MAIN(tst_switch)
