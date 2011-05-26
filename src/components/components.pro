@@ -1,8 +1,8 @@
 include (../../qt-components.pri)
 
-TARGETPATH = Qt/labs/components
+TARGETPATH = Qt/labs/components.1.0
 TEMPLATE = lib
-TARGET = $$qtLibraryTarget(qtcomponentsplugin)
+TARGET = $$qtLibraryTarget(qtcomponentsplugin_1_0)
 INCLUDEPATH += $$PWD $$PWD/models
 
 win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release build_all
@@ -26,7 +26,7 @@ symbian {
 
     stubsis = \
         "START EXTENSION app-services.buildstubsis" \
-        "OPTION SISNAME qtcomponentsplugin_stub" \
+        "OPTION SISNAME qtcomponentsplugin_1_0_stub" \
         "OPTION SRCDIR ."\
         "END"
     BLD_INF_RULES.prj_extensions = stubsis
@@ -40,7 +40,7 @@ symbian {
             ":\"Nokia, Qt\"" \
             " "
 
-    header = "$${LITERAL_HASH}{\"qtcomponentsplugin\"},(0x200346E1),1,0,0,TYPE=SA,RU"
+    header = "$${LITERAL_HASH}{\"qtcomponentsplugin_1_0\"},(0x200346E1),1,0,0,TYPE=SA,RU"
     package.pkg_prerules += vendor_info header
     DEPLOYMENT += package
 }

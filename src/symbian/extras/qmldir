@@ -1,4 +1,4 @@
-plugin symbianextrasplugin
+plugin symbianextrasplugin_1_0
 DatePickerDialog 1.0 DatePickerDialog.qml
 InfoBanner 1.0 InfoBanner.qml
 RatingIndicator 1.0 RatingIndicator.qml

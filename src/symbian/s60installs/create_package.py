@@ -88,7 +88,7 @@ def collect_pro_files():
 def create_package_file():
     file = open(options.repository + "src/symbian/s60installs/qtcomponents.pkg", "w+")
     file.write("&EN\n")
-    file.write("#{\"Qt Quick components for Symbian\"},(0x200346DE),1,0,0,TYPE=SA,RU,NR\n")
+    file.write("#{\"Qt Quick components for Symbian\"},(0x200346DE),1,0,0,TYPE=SA,RU\n")
     file.write("%{\"Nokia\"}\n")
     file.write(":\"Nokia, Qt\"\n")
     return file

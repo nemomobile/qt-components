@@ -15,5 +15,6 @@ data=DATAZ_\private\2003A914\assets\info_banner_thumbnail.png      \private\2003
 data=DATAZ_\private\2003A914\RatingIndicator.qml                   \private\2003A914\RatingIndicator.qml
 data=DATAZ_\private\2003A914\TimePickerDialog.qml                  \private\2003A914\TimePickerDialog.qml
 data=DATAZ_\private\2003A914\Tumbler.qml                           \private\2003A914\Tumbler.qml
+data=DATAZ_\private\2003A914\TumblerDialog.qml                     \private\2003A914\TumblerDialog.qml
 
 #endif //QMLEXTRASGALLERY_IBY
