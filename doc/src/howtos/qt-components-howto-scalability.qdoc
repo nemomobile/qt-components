@@ -295,22 +295,22 @@
 
     \list
 
-    \o \l {native/scalability/orientation}{Orientation Switches}
+    \omit \o \l {examples/native/scalability/orientation}{Orientation Switches} \endomit
 
-    \o \l {mative/scalability/millimeters}{Millimeters as
+    \o \l {examples/native/scalability/millimeters}{Millimeters as
     Device-Independent Measurement Units}
 
     \o Using positioners to create a scalable layout:
-    \l {native/scalability/positioners/column-layout}{Column},
-    \l {native/scalability/positioners/row-layout}{Row},
-    \l {native/scalability/positioners/grid-layout}{Grid}
+    \l {examples/native/scalability/positioners/column-layout}{Column},
+    \l {examples/native/scalability/positioners/row-layout}{Row},
+    \l {examples/native/scalability/positioners/grid-layout}{Grid}
 
-    \o \l {native/scalability/anchors}{Anchors in a Scalable Layout}
+    \o \l {examples/native/scalability/separatelayouts}{Anchors in a Scalable Layout}
 
-    \o \l {native/scalability/separatelayouts}{Loading Separate Layouts
+    \o \l {examples/native/scalability/separatelayouts}{Loading Separate Layouts
     Based on Screen Configuration}
 
-    \o \l {native/scalability/layoutconfiguration}{Loading Separate Layout
+    \o \l {examples/native/scalability/scalableconfiguration}{Loading Separate Layout
     Configurations Based on Screen Configuration}
 
     \endlist
@@ -390,15 +390,15 @@
 
     \list
 
-        \o \l{native/scalability/anchors}{Using anchors for layouting}
+        \o \l{examples/native/scalability/anchors}{Using anchors for layouting}
 
-        \o \l{native/scalability/positioners/column-layout}{Using Column
+        \o \l{examples/native/scalability/positioners/column-layout}{Using Column
         element for layouting}
 
-        \o \l{native/scalability/positioners/row-layout}{Using Row element
+        \o \l{examples/native/scalability/positioners/row-layout}{Using Row element
         for layouting}
 
-        \o \l{native/scalability/positioners/grid-layout}{Using Grid
+        \o \l{examples/native/scalability/positioners/grid-layout}{Using Grid
         element for layouting}
 
     \endlist
@@ -620,8 +620,8 @@
     \endlist
 
 
- See \l{native/scalability/orientation}{Reacting to Orientation Change}
- for more information.
+ \omit See \l{native/scalability/orientation}{Reacting to Orientation Change}
+ for more information. \endomit
 
 */
 
@@ -706,7 +706,7 @@
     \snippet examples/symbian/scalefm/resources/layouts/1024_600/170/AppStyle.qml measurements_c
 
     The correct file can be loaded using a straightforward implementation. See
-    \l{native/scalability/layoutconfiguration}{Loading Separate Layout
+    \l{examples/native/scalability/scalableconfiguration}{Loading Separate Layout
     Configurations Based on Screen Configuration} for more information.
 
     If the opposite approach (complete duplication of entire QML files) was
@@ -1009,11 +1009,11 @@
 
     \list
 
-    \o \l{native/scalability/separatelayouts}{Loading Separate Layouts
+    \o \l{examples/native/scalability/scalableconfiguration}{Loading Separate Layouts
     Based on Screen Configuration}
 
-    \o \l{native/scalability/layoutconfiguration}{Loading Separate Layout
-    Configurations Based on Screen Configuration}
+    \omit \o \l{native/scalability/layoutconfiguration}{Loading Separate Layout
+    Configurations Based on Screen Configuration} \endomit
 
     \endlist
 
@@ -1075,7 +1075,7 @@
     \snippet examples/symbian/scalefm/resources/layouts/Normal/High/AppStyle.qml conversion
 
     See also the example that illustrates using
-    \l{native/scalability/millimeters}{Millimeters as Device-Independent
+    \l{examples/native/scalability/millimeters}{Millimeters as Device-Independent
     Measurement Units}
 
 */

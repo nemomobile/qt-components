@@ -36,18 +36,20 @@
     interface. Qt Mobility APIs are used for other parts of the functionality:
     Multimedia API for audio playback and Document Gallery API for retrieving
     the audio files on the device. A simple file picker is implemented for
-    platforms that don't have document gallery support.
-    Please download sources and follow build instructions included in a package:
-    http://qt.nokia.com/products/qt-addons/mobility. QML's built-in Local
-    Storage API is used to save settings when the application is closed and to
-    load them again on application startup.
+    platforms that don't have document gallery support. For more information
+    about Qt Mobility, please download sources and follow build instructions
+    included in the package: http://qt.nokia.com/products/qt-addons/mobility.
+    QML's built-in
+    \l{http://doc.qt.nokia.com/4.7/qdeclarativeglobalobject.html}{Local Storage
+    API} is used to save settings when the application is closed and to load
+    them again on application startup.
 
     The user interface supports different orientations and resolutions. It is
     built with the following Qt Quick components: Window, Page, PageStack,
     Button, CheckBox, Menu, ToolBar, ToolBarLayout, ToolButton, Slider,
     StatusBar and ScrollDecorator.
 
-    Known Issues: Some issues with playback on Windows, works fine on e,g, N8.
+    Known Issues: Some issues with playback on Windows.
 
     Source:  \l {Music Player example source code}{Browse here}
 
@@ -62,14 +64,17 @@
     "documentGallery" is set to the root context providing information on
     whether the document gallery is supported or not. This information is used
     in mainwindow.qml to dynamically create either the document gallery page or
-    the file picker page.
+    the file picker page. If FULLSCREEN is defined, then the demo will be
+    compiled to run in fullscreen mode. Both FULLSCREEN and DOCUMENT_GALLERY
+    are enabled for Symbian in musicplayer.pro.
 
     \snippet demos/musicplayer/main.cpp 0
 
     In addition to the main.cpp file, the application has one C++ class called
     MediaKeysObserver which is used to make media key events of a device
     accessible from QML. Media key events include the up/down volume keys on a
-    device and headset remote control.
+    device and headset remote control. Qt resource system is used to wrap the
+    QML and image files into a single binary.
 
     The functional parts of the application are implemented in the \c Player.qml
     and \c storage.js files. Player.qml encapsulates a component that provides
@@ -96,6 +101,9 @@
 
     \snippet demos/musicplayer/qml/mainwindow.qml 0
 
+    MediaKeysObserver is used in the mainwindow to map the media key events to
+    corresponding actions.
+
     \section1 Controls page
 
     ControlsPage is the main interface of the Music Player. It provides controls
@@ -108,16 +116,17 @@
     \image example-musicplayer-landscape.png
 
     ControlsPage and all the other pages have a Page component as their root
-    item.
+    item. The Page component has a property "tools" which is assigned an
+    instance of ToolBarLayout. This ToolBarLayout defines the toolbar for that
+    page and automatically positions it's contents.
 
     \snippet demos/musicplayer/qml/ControlsPage.qml 0
 
-    The Page component has a property "tools" which is assigned an instance of
-    ToolBarLayout. This ToolBarLayout defines the toolbar for that page. Inside
-    the ToolBarLayout is a set of ToolButtons with appropriate images or text
-    and actions assigned to them. The ToolButtons also have properties defining
-    whether they have a border image and if the buttons should be checkable, and
-    in case of checkable buttons, if the button is checked or not.
+    Inside the ToolBarLayout is a set of ToolButtons with appropriate images or
+    text and actions assigned to them. The ToolButtons also have properties
+    defining whether they have a border image and if the buttons should be
+    checkable, and in case of checkable buttons, if the button is checked or
+    not.
 
     \snippet demos/musicplayer/qml/ControlsPage.qml 2
 
@@ -206,9 +215,10 @@
     \snippet demos/musicplayer/qml/GalleryPage.qml 0
 
     As the model is not custom made for this demo, we can't just add a
-    "selected" property like was done in the playlist. Instead, we create an
-    additional ListModel is created that is used to hold the selection status
-    for each item in the document gallery model.
+    "selected" property like was done in the playlist. Instead, an additional
+    ListModel is used to hold the selection status for each item in the document
+    gallery model. We use the DocumentGalleryModel's onCountChanged signal to
+    keep the selection model's item count equal to the gallery model.
 
     \snippet demos/musicplayer/qml/GalleryPage.qml 1
 

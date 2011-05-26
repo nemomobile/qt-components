@@ -34,7 +34,7 @@
 
     \section1 Overview
 
-    Welcome to Radio \l {}{ScaleFM}!
+    Welcome to Radio ScaleFM!
 
     This is an application based on an imaginary "internet radio" application,
     where the radio stations have frequencies that happen to correspond to the
@@ -45,7 +45,7 @@
 
     \section1 Screen Shots
 
-    This shows the \l {}{ScaleFM} application running in the Device Profile for
+    This shows the ScaleFM application running in the Device Profile for
     640x360 resolution, at 210 DPI, using the screen specific
     \l{qt-components-scalability-guidelines-application-style.html}
     {Application Style} for that Device Profile:

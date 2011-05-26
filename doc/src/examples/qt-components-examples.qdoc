@@ -62,8 +62,8 @@
         \row
             \o \bold {\l{ScaleFM example for Symbian}{ScaleFM}}
 
-            \o A demonstration of how to implement the \l {Scalability
-            Guideslines Contents}{Scalability Guidelines} for the Symbian Platform.
+            \o A demonstration of how to implement the \l{Scalability Guidelines Contents}{Scalability Guidelines}
+               for the Symbian Platform.
 
             \o \image symbian/example-scalefm-small.png
 

@@ -44,25 +44,21 @@
 
     \image example-flickr-splash.png
 
-
     \section1 Application Structure
 
     The Flickr demo is almost completely written in QML. Qt Quick components are
     used to create the UI and a simple C++ wrapper collects the QML files and
     image files of the application into a single binary using the Qt resource
     system. The main.cpp sets the network proxy for the QApplication that runs
-    the demo. Note that if FULLSCREEN is defined, then the demo will be compiled
+    the demo. Note that if FLICKR_FULLSCREEN is defined, then the demo will be compiled
     to run in fullscreen mode. This is required when compiling the application
-    for Symbian devices.
+    for mobile devices.
 
     The code in main.cpp sets the main QML file of the application to be
-    Splash.qml which implements a splash screen. While the
-    splash screen is showing, the rest of the QML code is loaded
-    with a QML Loader. This loads the file flickr.qml, which contains
-    the QML root item of the demo, Window.
+    flickr.qml which starts loading the first page and shows a splash screen
+    for a short period while network requests to Flickr service are being made.
 
     \snippet demos/flickr/main.cpp 0
-
 
     \section1 flickr.qml
 
@@ -75,7 +71,7 @@
     application. There are three Page components in the application:
 
     \list
-    \o ThumbnailPage: shows a list of image thumnails in portrait orientation,
+    \o ThumbnailPage: shows a list of image thumbnails in portrait orientation,
        and a grid of thumbnails in landscape orientation.
     \o LargeImagePage: a large image view that shows a larger version of a thumbnail.
     \o DetailsPage: implements a details view
@@ -93,8 +89,17 @@
     When the application starts the Component.onCompleted() handler
     in Window pushes the ThumbnailPage to the PageStack.
 
-    \snippet demos/flickr/qml/flickr.qml 0
+    The StatusBar and ToolBar are hidden based on \c largeImagePage.chromeOpacity.
 
+    Note the use of the \c PageStack.replace() function, pressing on the rightmost
+    button of the LargeImagePage will not increase the stack depth in PageStack,
+    it will instead replace the LargeImagePage with a DetailsPage object with
+    the id \c detailsPage. The LargeImagePage object will not be
+    destroyed even if it is not in the PageStack as it is defined within the
+    Window element in flickr.qml. The \c PageStack.replace() function is used similarly in
+    the DetailsPage to replace itself with the id \c largeImagePage.
+
+    \snippet demos/flickr/qml/flickr.qml 0
 
     \section1 Thumbnail Page
 
@@ -104,27 +109,17 @@
 
     \snippet demos/flickr/qml/ThumbnailPage.qml 0
 
-    The property \c window.inPortrait is used to control whether a list of
-    thumbnails or a grid of thumbnails is shown. The GridView component's
-    visibility is defined as \c !window.inPortrait and the ListView's
-    visibility as \c window.inPortrait. The property is automatically set
-    to match the current orientation.
+    The property \c inPortrait is used to control whether a list of
+    thumbnails or a grid of thumbnails is loaded by a Loader element.
+    The GridView component is loaded in \c !inPortrait mode and
+    the ListView component in \c inPortrait mode. The \c inPortrait property
+    is bound to \c window.inPortrait in flickr.qml.
 
-    The GridView and ListView use a common model, the PhotoFeedModel,
-    which is a customized XmlListModel that fetches the thumbnail
-    information from an online feed provided by Flickr.
-    Sharing the PhotoFeedModel reduces code duplication and
+    The GridView and ListView use a common specialized XmlListModel (PhotoFeedModel)
+    that fetches the thumbnail information from an online feed provided by Flickr.
+    Sharing the model reduces code duplication and
     improves performance as the shared model fetches the thumbnail
     information only once for both views.
-
-    The \c tools property of the ThumbnailPage contains a ToolBarLayout with
-    three ToolButton components. The ToolBarLayout automatically positions
-    the ToolButtons from left to right with appropriate spacings in between,
-    automatically adjusting to different orientations.
-
-    The leftmost button quits the application, the center button
-    reloads the thumbnails and the button on the right brings out the
-    search bar, which is implemented in the component SearchBar.
 
     Image of the ThumbnailPage in portrait orientation:
 
@@ -140,10 +135,9 @@
 
     The Flickr demo will show the a larger version of an image when the user
     clicks or taps on the thumbnail. This action is handled in the delegates
-    of ListView and GridView, both calling the \c photoClicked()
-    function in Thumbnail, which pushes the LargeImagePage to the PageStack
-    with the function \c PageStack.push().
-
+    of ListView and GridView, both emitting the \c photoClicked()
+    signal that is handled in flickr.qml so that the LargeImagePage gets pushed
+    to the PageStack with the function \c PageStack.push().
 
     \section1 LargeImage Page
 
@@ -155,39 +149,23 @@
 
     \snippet demos/flickr/qml/LargeImagePage.qml 0
 
-    The Slider component is used to zoom the image. Dragging the Slider scales
-    the image creating a zoom feature.
+    The Slider component is used to zoom the image, dragging the Slider handle scales
+    the image creating a zoom effect.
 
     \snippet demos/flickr/qml/LargeImagePage.qml 1
 
-    Once the zoom level of the image is larger than the screen size, scroll
-    decorators are shown. ScrollDecorator indicates the part of the image that
+    If the zoom level is such that the image is larger than the screen size, scroll
+    decorators are visible. ScrollDecorator indicates the part of the image that
     is shown while flicking. The \c flickableItem property of ScrollDecorator is
     bound to the id \c flickable, which identifies the Flickable element that
     wraps the image.
 
     \snippet demos/flickr/qml/LargeImagePage.qml 2
 
-    The following image depicts the LargeImagePage component in action.
+    The following image depicts the LargeImagePage component in action, the scroll
+    decorators are visible as the user has zoomed in on the image.
 
     \image example-flickr-scrolldecorator.png
-
-    The status bar and toolbar are automatically hidden in the LargeImagePage,
-    tapping or clicking on the image will bring both back to the screen for 2
-    seconds. The rightmost toolbar button brings forth a view that shows detailed
-    information about the image, the button on the left shows the ThumbnailPage.
-    The code in LargeImagePage.qml assigns a ToolBarLayout with the two buttons
-    to the \c tools property of LargeImagePage
-
-    \snippet demos/flickr/qml/LargeImagePage.qml 3
-
-    Note the use of the \c PageStack.replace() function, pressing on the rightmost
-    button will not increase the stack depth in PageStack, it will instead replace
-    LargeImagePage with a DetailsPage object with the id \c detailsPage,
-    which is defined in flickr.qml. The LargeImagePage object will not be
-    destroyed even if it is not in the PageStack as it is defined within the
-    Window element in flickr.qml.
-
 
     \section1 Details Page
 
@@ -195,9 +173,5 @@
     information of the image.
 
     \image example-flickr-details.png
-
-    The button on the left makes the application to go back to the ThumbnailPage,
-    the button on the right will show the large version of the image by replacing
-    itself with the LargeImagePage on the PageStack with \c PageStack.replace().
 
 */
