@@ -19,11 +19,11 @@ meego:QDOCCONF = $${Q_COMPONENTS_SOURCE_TREE}/doc/src/meego/qt-components.qdocco
         html_docs.commands = (QT_INSTALL_DOCS=$$[QT_INSTALL_DOCS] Q_COMPONENTS_SOURCE_TREE=$${Q_COMPONENTS_SOURCE_TREE} $$QDOC $$QDOCCONF)
     } else {
         ARGUMENTS = set QT_INSTALL_DOCS=$$[QT_INSTALL_DOCS]&& set Q_COMPONENTS_SOURCE_TREE=$${Q_COMPONENTS_SOURCE_TREE}&& $$QDOC $$QDOCCONF
-        html_docs.commands = $$replace(ARGUMENTS, /, $$QMAKE_DIR_SEP)
+        html_docs.commands = ($$replace(ARGUMENTS, /, $$QMAKE_DIR_SEP))
     }
     qch_docs.depends = html_docs
     ARGUMENTS = cd $${Q_COMPONENTS_SOURCE_TREE} && $$QHELPGENERATOR doc/html/qtcomponentssymbian.qhp -o doc/qch/qtcomponentssymbian.qch
-    qch_docs.commands = $$replace(ARGUMENTS, /, $$QMAKE_DIR_SEP)
+    qch_docs.commands = ($$replace(ARGUMENTS, /, $$QMAKE_DIR_SEP))
     QMAKE_EXTRA_TARGETS += html_docs qch_docs
 }
 
