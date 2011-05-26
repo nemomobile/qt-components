@@ -142,14 +142,12 @@ Dialog {
     QtObject {
         id: internal
 
-        function defaultContentHeight() {
-            return root.height ? root.height - title.height - buttons.height
-                : label.height + 2 * platformStyle.paddingLarge
-        }
+        property int defaultContentHeight: root.height ? root.height - title.height - buttons.height
+            : label.height + 2 * platformStyle.paddingLarge
 
         function getContentAreaHeight() {
             // Constrain the default height within the bounds of the min and max heights
-            return Math.max(Math.min(defaultContentHeight(), platformContentMaximumHeight),
+            return Math.max(Math.min(defaultContentHeight, platformContentMaximumHeight),
                 privateStyle.dialogMinSize - title.height - buttons.height)
         }
     }
