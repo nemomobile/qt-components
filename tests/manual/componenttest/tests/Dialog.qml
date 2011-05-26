@@ -93,7 +93,7 @@ Item {
             tools: ToolButton {
                 id: acceptButton
                 anchors.centerIn: parent
-                width: (buttons.width - 3 * platformStyle.paddingMedium) / 2
+                width: Math.round((privateStyle.dialogMaxSize - 3 * platformStyle.paddingMedium) / 2)
                 text: "Ok"
                 onClicked: dialogWithProgressBar.accept()
             }
