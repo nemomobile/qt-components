@@ -42,37 +42,12 @@ ImplicitSizeItem {
         background.source = root.interactive ? privateStyle.imagePath("qtg_fr_popup_infobanner_normal")
                                              : privateStyle.imagePath("qtg_fr_popup_infobanner")
         stateGroup.state = "Visible"
-        if (root.timerEnabled && timer.interval) //for backward compability
+        if (timer.interval)
             timer.restart();
     }
     function close() {
         stateGroup.state = "Hidden"
     }
-
-    // Deprecated ->
-    property bool timerEnabled: true
-    onTimerEnabledChanged: {
-        console.log("InfoBanner.timerEnablerd is deprecated. Use timeout property instead. InfoBanner stays pop-up if timeout value is 0.");
-    }
-    property int timerShowTime
-    onTimerShowTimeChanged: {
-        console.log("InfoBanner.timerShowTime is deprecated. Use timeout property instead.");
-        root.timeout = root.timerShowTime
-    }
-    property int topMargin
-    onTopMarginChanged: console.log("InfoBanner.topMargin is deprecated. The margin is a fixed value")
-    property int leftMargin
-    onLeftMarginChanged: console.log("InfoBanner.leftMargin is deprecated. The margin is a fixed value")
-
-    function show() {
-        console.log("InfoBanner.show is deprecated. Use open instead");
-        open()
-    }
-    function hide() {
-        console.log("InfoBanner.hide is deprecated. Use close instead");
-        close()
-    }
-    // <- Deprecated
 
     x: 0
     implicitHeight: internal.bannerHeight()
@@ -136,7 +111,7 @@ ImplicitSizeItem {
                           stateGroup.state = "Cancelled";
                       } else if (stateGroup.state == "PressAndHold") {
                           stateGroup.state = "Cancelled";
-                          if (root.timerEnabled && timer.interval) timer.restart()
+                          if (timer.interval) timer.restart()
                       } else stateGroup.state = "Hidden"
                   }
     }
