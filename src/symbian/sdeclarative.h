@@ -39,7 +39,7 @@ class SDeclarative : public QObject
     Q_PROPERTY(QString currentTime READ currentTime NOTIFY currentTimeChanged)
     Q_PROPERTY(bool foreground READ isForeground NOTIFY foregroundChanged)
 
-    Q_ENUMS(InteractionMode ImageSize ScrollBarVisibility SourceSize EffectType Feedback)
+    Q_ENUMS(InteractionMode ScrollBarVisibility SourceSize EffectType Feedback)
 
 public:
     explicit SDeclarative(QObject *parent = 0);
@@ -48,15 +48,6 @@ public:
     enum InteractionMode {
         TouchInteraction,
         KeyNavigation
-    };
-
-    // deprecated - Use platformStyle.graphicSizeXxxx instead
-    enum ImageSize {
-        Undefined = 0,
-        Small,
-        Medium,
-        Large,
-        ImagePortrait
     };
 
     // No duplicate prefix naming because enum values are only visible via qml
