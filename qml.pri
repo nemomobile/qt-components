@@ -75,7 +75,7 @@ for(targetpath, $$list($$unique(TARGETPATH))) {
     eval($${qmlfiles}.path = $$installpath)
 
     qmlimages = qmlimages_$$replace(targetpath, /, _)
-    eval($${qmlimages}.files = $$QML_FILES)
+    eval($${qmlimages}.files = $$QML_IMAGES)
     eval($${qmlimages}.path = $$installpath/images)
 
     INSTALLS += $${qmlfiles} $${qmlimages}
