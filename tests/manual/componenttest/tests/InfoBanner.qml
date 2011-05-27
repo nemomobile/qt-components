@@ -50,7 +50,7 @@ Item {
         }
 
         Row {
-            spacing: platformStyle.paddingLarge
+            spacing: platformStyle.paddingMedium
 
             Button {
                 text: "Show"
@@ -61,6 +61,11 @@ Item {
             Button {
                 text: "Hide"
                 onClicked: banner.close();
+            }
+
+            Button {
+                text: bgButton.visible ? "Hide background" : "Show background"
+                onClicked: bgButton.visible = !bgButton.visible;
             }
         }
     }
@@ -73,5 +78,24 @@ Item {
         timeout: durationSlider.value*1000
         interactive: interactive.checked
         onClicked: clicked.text = "clicked"
+    }
+
+    Button {
+        id: bgButton
+        parent: internal.rootObject()
+        visible: false
+        z: 500
+        text: "Background button"
+    }
+
+    QtObject {
+        id: internal
+
+        function rootObject() {
+            var next = container.parent
+            while (next && next.parent)
+                next = next.parent
+            return next
+        }
     }
 }
