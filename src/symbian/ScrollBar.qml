@@ -245,6 +245,7 @@ ImplicitSizeItem {
                     capitalization: indexFeedbackText.text.length == 1 ? Font.AllUppercase : Font.MixedCase
                 }
                 text: internal.currentSection
+                elide: Text.ElideRight
             }
             states: [
                 State {
