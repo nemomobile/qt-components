@@ -32,7 +32,7 @@ ImplicitSizeItem {
     default property alias content: tabBarLayout.data
     property alias layout: tabBarLayout
 
-    implicitWidth: Math.max(50, screen.width) // TODO: use screen.displayWidth
+    implicitWidth: Math.max(50, screen.width)
     implicitHeight: screen.width < screen.height ? privateStyle.tabBarHeightPortrait : privateStyle.tabBarHeightLandscape
 
     BorderImage {
