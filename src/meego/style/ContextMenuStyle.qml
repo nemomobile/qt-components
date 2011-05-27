@@ -49,4 +49,14 @@ MenuStyle {
      property color titleTextColor: "white"
 
      property int titleBarHeight: 56
+
+     // fader properties
+     property double dim: 0.9
+     property int fadeInDuration: 250 // ms
+     property int fadeOutDuration: 350 // ms
+     property int fadeInDelay: 0 // ms
+     property int fadeOutDelay: 0 // ms
+     property int fadeInEasingType:  Easing.OutQuint
+     property int fadeOutEasingType: Easing.InOutQuint
+     property string faderBackground: "image://theme/meegotouch-menu-dimmer"
 }

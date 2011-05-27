@@ -70,6 +70,8 @@ Popup {
 
     property string __animationChief: "abstractMenu"
     property int __pressDelay: platformStyle.pressDelay
+    property alias __statesWrapper: statesWrapper
+    property alias __menuPane: menuPane
 
     // This item will find the object with the given objectName ... or will return
     function __findItem( objectName ) {
@@ -150,36 +152,36 @@ Popup {
 
     // Shadows:
     Image {
-        anchors.top : menuItem.top
-        anchors.right: menuItem.left
-        anchors.bottom : menuItem.bottom
+        anchors.top : menuPane.top
+        anchors.right: menuPane.left
+        anchors.bottom : menuPane.bottom
         source: "image://theme/meegotouch-menu-shadow-left"
         visible: root.status != DialogStatus.Closed
     }
     Image {
-        anchors.bottom : menuItem.top
-        anchors.left: menuItem.left
-        anchors.right : menuItem.right
+        anchors.bottom : menuPane.top
+        anchors.left: menuPane.left
+        anchors.right : menuPane.right
         source: "image://theme/meegotouch-menu-shadow-top"
         visible: root.status != DialogStatus.Closed
     }
     Image {
-        anchors.top : menuItem.top
-        anchors.left: menuItem.right
-        anchors.bottom : menuItem.bottom
+        anchors.top : menuPane.top
+        anchors.left: menuPane.right
+        anchors.bottom : menuPane.bottom
         source: "image://theme/meegotouch-menu-shadow-right"
         visible: root.status != DialogStatus.Closed
     }
     Image {
-        anchors.top : menuItem.bottom
-        anchors.left: menuItem.left
-        anchors.right : menuItem.right
+        anchors.top : menuPane.bottom
+        anchors.left: menuPane.left
+        anchors.right : menuPane.right
         source: "image://theme/meegotouch-menu-shadow-bottom"
         visible: root.status != DialogStatus.Closed
     }
 
     Item {
-        id: menuItem
+        id: menuPane
         //ToDo: add support for layoutDirection Qt::RightToLeft
         x: platformStyle.leftMargin
         width:  parent.width  - platformStyle.leftMargin - platformStyle.rightMargin  // ToDo: better width heuristic
@@ -188,7 +190,7 @@ Popup {
                 /* Landscape */ parent.height - platformStyle.topMargin - platformStyle.bottomMargin - __statusBarDelta
         anchors.bottom: parent.bottom
 
-        state: statesWrapper.state
+        state: __statesWrapper.state
 
         BorderImage {
            id: backgroundImage
@@ -294,7 +296,7 @@ Popup {
                 name: "visible"
                 when: root.__animationChief == "abstractMenu" && (root.status == DialogStatus.Opening || root.status == DialogStatus.Open)
                 PropertyChanges {
-                    target: menuItem
+                    target: __menuPane
                     opacity: 1.0
                 }
             },
@@ -302,57 +304,11 @@ Popup {
                 name: "hidden"
                 when: root.__animationChief == "abstractMenu" && (root.status == DialogStatus.Closing || root.status == DialogStatus.Closed)
                 PropertyChanges {
-                    target: menuItem
+                    target: __menuPane
                     opacity: 0.0
                 }
             }
         ]
 
-        transitions: [
-            Transition {
-                from: "visible"; to: "hidden"
-                SequentialAnimation {
-                    ScriptAction {script: {
-                            __fader().state = "hidden";
-                            root.status = DialogStatus.Closing;
-                        }
-                    }
-
-                    NumberAnimation {target: menuItem; property: "opacity";
-                                     from: 0.0; to: 1.0; duration: 0}
-
-                    NumberAnimation {target: menuItem; property: "anchors.bottomMargin";
-                                     easing.type: Easing.InOutQuint;
-                                     from: 0; to: -menuItem.height; duration: 350}
-
-                    NumberAnimation {target: menuItem; property: "opacity";
-                                     from: 1.0; to: 0.0; duration: 0}
-
-                    ScriptAction {script: {
-                            status = DialogStatus.Closed;
-                        }
-                    }
-                }
-            },
-            Transition {
-                from: "hidden"; to: "visible"
-                SequentialAnimation {
-                    ScriptAction {script: {
-                            __fader().state = "visible";
-                            root.status = DialogStatus.Opening;
-                        }
-                    }
-
-                    NumberAnimation {target: menuItem; property: "anchors.bottomMargin";
-                                     easing.type: Easing.InOutQuint;
-                                     from: -menuItem.height; to: 0; duration: 350}
-
-                    ScriptAction {script: {
-                            status = DialogStatus.Open;
-                        }
-                    }
-                }
-            }
-        ]
     }
 }

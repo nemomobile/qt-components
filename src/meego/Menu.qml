@@ -42,6 +42,7 @@ import QtQuick 1.1
 import "." 1.0
 
 AbstractMenu {
+  id: root
 /*
     platformTitle: BorderImage {
         id: topDivider
@@ -52,4 +53,51 @@ AbstractMenu {
         border { top: 2; bottom: 1; left: 1; right: 1 }
     }
 */
+
+    __statesWrapper.transitions: [
+        Transition {
+            from: "visible"; to: "hidden"
+            SequentialAnimation {
+                ScriptAction {script: {
+                        __fader().state = "hidden";
+                        root.status = DialogStatus.Closing;
+                    }
+                }
+
+                NumberAnimation {target: __menuPane; property: "opacity";
+                                 from: 0.0; to: 1.0; duration: 0}
+
+                NumberAnimation {target: __menuPane; property: "anchors.bottomMargin";
+                                 easing.type: Easing.InOutQuint;
+                                 from: 0; to: -__menuPane.height; duration: 350}
+
+                NumberAnimation {target: __menuPane; property: "opacity";
+                                 from: 1.0; to: 0.0; duration: 0}
+
+                ScriptAction {script: {
+                        status = DialogStatus.Closed;
+                    }
+                }
+            }
+        },
+        Transition {
+            from: "hidden"; to: "visible"
+            SequentialAnimation {
+                ScriptAction {script: {
+                        __fader().state = "visible";
+                        root.status = DialogStatus.Opening;
+                    }
+                }
+
+                NumberAnimation {target: __menuPane; property: "anchors.bottomMargin";
+                                 easing.type: Easing.InOutQuint;
+                                 from: -__menuPane.height; to: 0; duration: 350}
+
+                ScriptAction {script: {
+                        status = DialogStatus.Open;
+                    }
+                }
+            }
+        }
+    ]
 }
