@@ -55,6 +55,7 @@ ImplicitSizeItem {
             color: root.highlighted ? platformStyle.colorNormalLight : platformStyle.colorNormalMid
             font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
             verticalAlignment: Text.AlignVCenter
+            elide: Text.ElideRight
             onCurrentChanged: {
                 text = current;
             }
