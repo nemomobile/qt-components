@@ -116,6 +116,7 @@ ImplicitSizeItem {
         clip: true
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
+        elide: Text.ElideRight
         font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
         color: {
             if (!enabled)
