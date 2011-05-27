@@ -32,16 +32,12 @@ ImplicitSizeItem {
     id: root
 
     //API
-    property alias font: text.font
-    property alias text: text.text
+    property alias font: label.font
+    property alias text: label.text
     property variant target: null
 
-    implicitWidth: {
-        var preferredWidth = text.paintedWidth + privy.horizontalMargin * 2
-        return Math.min(preferredWidth, privy.maxWidth)
-    }
-
-    implicitHeight: text.paintedHeight + privy.verticalMargin * 2
+    implicitWidth: Math.min(privy.maxWidth, (privateStyle.textWidth(text, font) + privy.margin * 2))
+    implicitHeight: privateStyle.fontHeight(font) + privy.margin * 2
 
     onVisibleChanged: {
         if (visible) {
@@ -53,8 +49,7 @@ ImplicitSizeItem {
     QtObject {
         id: privy
 
-        property real verticalMargin: platformStyle.paddingMedium
-        property real horizontalMargin: platformStyle.paddingMedium
+        property real margin: platformStyle.paddingMedium
         property real spacing: platformStyle.paddingLarge
         property real maxWidth: screen.width - spacing * 2
 
@@ -66,24 +61,24 @@ ImplicitSizeItem {
             var targetPos = root.parent.mapFromItem(target, 0, 0)
 
             // Top
-            if (targetPos.y >= (root.height + privy.verticalMargin + privy.spacing)) {
+            if (targetPos.y >= (root.height + privy.margin + privy.spacing)) {
                 root.x = targetPos.x + (target.width / 2) - (root.width / 2)
-                root.y = targetPos.y - root.height - privy.verticalMargin
+                root.y = targetPos.y - root.height - privy.margin
 
             // Right
-            } else if (targetPos.x <= (screen.width - target.width - privy.horizontalMargin - root.width - privy.spacing)) {
-                root.x = targetPos.x + target.width + privy.horizontalMargin;
+            } else if (targetPos.x <= (screen.width - target.width - privy.margin - root.width - privy.spacing)) {
+                root.x = targetPos.x + target.width + privy.margin;
                 root.y = targetPos.y + (target.height / 2) - (root.height / 2)
 
             // Left
-            } else if (targetPos.x >= (root.width + privy.horizontalMargin + privy.spacing)) {
-                root.x = targetPos.x - root.width - privy.horizontalMargin
+            } else if (targetPos.x >= (root.width + privy.margin + privy.spacing)) {
+                root.x = targetPos.x - root.width - privy.margin
                 root.y = targetPos.y + (target.height / 2) - (root.height / 2)
 
             // Bottom
             } else {
                 root.x = targetPos.x + (target.width / 2) - (root.width / 2)
-                root.y = targetPos.y + target.height + privy.verticalMargin
+                root.y = targetPos.y + target.height + privy.margin
             }
 
             // Fine-tune the ToolTip position based on the screen borders
@@ -109,17 +104,14 @@ ImplicitSizeItem {
     }
 
     Text {
-       id: text
+       id: label
        clip: true
        color: platformStyle.colorNormalLight
-       // TODO: See http://bugreports.qt.nokia.com/browse/QTBUG-16093
-       // Enable when Qt Quick 1.1 hit Qt.
-       // elide: Text.ElideRight
+       elide: Text.ElideRight
        font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeSmall }
        verticalAlignment: Text.AlignVCenter
-
-       x: privy.horizontalMargin
-       y: privy.verticalMargin
-       width: privy.maxWidth
+       horizontalAlignment: Text.AlignHCenter
+       anchors.fill: parent
+       anchors.margins: privy.margin
     }
 }
