@@ -37,7 +37,7 @@ ImplicitSizeItem {
     property bool enabled: true // overridden from base class
     property alias text: label.text
     property alias iconSource: contentIcon.source
-    property bool flat: false
+    property bool flat: (!text && iconSource != "" && parent && !internal.isButtonRow(parent))
     property bool pressed: mouseArea.containsMouse && (stateGroup.state == "Pressed" || stateGroup.state == "PressAndHold")
 
     // Platform API
@@ -50,6 +50,10 @@ ImplicitSizeItem {
     signal platformReleased
     signal platformPressAndHold
 
+    onFlatChanged: {
+        background.visible = !flat
+    }
+
     implicitWidth: {
         if (!text)
             return internal.iconButtonWidth()
@@ -59,23 +63,35 @@ ImplicitSizeItem {
             return internal.iconButtonWidth() + internal.textButtonWidth()
     }
     implicitHeight: {
-        if (!text)
+        if ((iconSource != "") && !text)
+            // if there is just an icon, then it's full button height
             return internal.iconButtonWidth()
         else
-            //Text button's frame height is always tool bar's height in landscape, regardless of the current orientation
+            // Otherwise frame height is always tool bar's height in landscape, regardless of the current orientation
             return privateStyle.toolBarHeightLandscape
     }
 
     BorderImage {
         id: background
-        source: privateStyle.imagePath(internal.imageName() + internal.mode())
-        border { left: 20; top: 20; right: 20; bottom: 20 }
+        source: privateStyle.imagePath(internal.imageName() + internal.modeName())
+        border {
+            left: internal.isFrameGraphic ? platformStyle.borderSizeMedium : 0;
+            top: internal.isFrameGraphic ? platformStyle.borderSizeMedium : 0;
+            right: internal.isFrameGraphic ? platformStyle.borderSizeMedium : 0;
+            bottom: internal.isFrameGraphic ? platformStyle.borderSizeMedium : 0;
+        }
+        smooth: true
         anchors.fill: parent
         visible: !flat
-
         BorderImage {
             id: highlight
-            border { left: 20; top: 20; right: 20; bottom: 20 }
+            border {
+                left: internal.isFrameGraphic ? platformStyle.borderSizeMedium : 0;
+                top: internal.isFrameGraphic ? platformStyle.borderSizeMedium : 0;
+                right: internal.isFrameGraphic ? platformStyle.borderSizeMedium : 0;
+                bottom: internal.isFrameGraphic ? platformStyle.borderSizeMedium : 0;
+            }
+            smooth: true
             anchors.fill: background
             opacity: 0
         }
@@ -140,6 +156,8 @@ ImplicitSizeItem {
     QtObject {
         id: internal
 
+        property bool isFrameGraphic : imageName().search("_fr") > 0
+
         function belongsToExclusiveGroup() {
             return checkable.exclusiveGroup
                    || (root.parent
@@ -147,11 +165,11 @@ ImplicitSizeItem {
                    && root.parent.exclusive)
         }
 
-        function mode() {
-            if (!enabled)
+        function modeName() {
+            if (isButtonRow(parent))
+                return parent.__modeName(root, 1)
+            else if (!enabled)
                 return "disabled"
-            else if (checkable.checked)
-                return "latched"
             else
                 return "normal"
         }
@@ -208,13 +226,21 @@ ImplicitSizeItem {
             }
         }
 
+        function isButtonRow(item) {
+            return (item &&
+                    item.hasOwnProperty("checkedButton") &&
+                    item.hasOwnProperty("__direction") &&
+                    item.__direction == Qt.Horizontal)
+        }
+
         // The function imageName() handles fetching correct graphics for the ToolButton.
         // If the parent of a ToolButton is ButtonRow, segmented-style graphics are used to create a
         // seamless row of buttons. Otherwise normal ToolButton graphics are utilized.
         function imageName() {
-            if (parent && parent.hasOwnProperty("checkedButton") && parent.hasOwnProperty("__direction") && parent.__direction == Qt.Horizontal && parent.children.length > 1)
-                return parent.__graphicsName(root, 1);
-            return "qtg_fr_toolbutton_"
+            if (isButtonRow(parent))
+                return parent.__graphicsName(root, 1)
+            else
+                return (!flat || text || iconSource == "") ? "qtg_fr_toolbutton_" : "qtg_graf_toolbutton_"
         }
     }
 

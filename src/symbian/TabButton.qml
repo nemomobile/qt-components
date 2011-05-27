@@ -58,6 +58,39 @@ ImplicitSizeItem {
             if (internal.tabGroup)
                 internal.tabGroup.currentTab = tab
         }
+
+        function isButtonRow(item) {
+            return (item &&
+                    item.hasOwnProperty("checkedButton") &&
+                    item.hasOwnProperty("__direction") &&
+                    item.__direction == Qt.Horizontal)
+        }
+
+        function imageName() {
+            // If the parent of a TabButton is ButtonRow, segmented-style graphics
+            // are used to create a seamless row of buttons. Otherwise normal
+            // TabButton graphics are utilized.
+            if (isButtonRow(parent))
+                return parent.__graphicsName(root, 1)
+            else
+                return "qtg_fr_tab_"
+        }
+
+        function modeName() {
+            if (isButtonRow(parent)) {
+                return parent.__modeName(root, 1)
+            } else {
+                return root.checked ? "active" : "passive_normal"
+            }
+        }
+
+        function modeNamePressed() {
+            if (isButtonRow(parent)) {
+                return "pressed"
+            } else {
+                return "passive_pressed"
+            }
+        }
     }
 
     StateGroup {
@@ -93,14 +126,7 @@ ImplicitSizeItem {
     BorderImage {
         id: background
 
-        function postfix() {
-            if (root.checked)
-                return "active"
-            else
-                return "passive_normal"
-        }
-
-        source: privateStyle.imagePath("qtg_fr_tab_" + postfix())
+        source: privateStyle.imagePath(internal.imageName() + internal.modeName())
         anchors.fill: parent
         border {
             left: platformStyle.borderSizeMedium
@@ -113,7 +139,7 @@ ImplicitSizeItem {
     BorderImage {
         id: pressedGraphics
 
-        source: privateStyle.imagePath("qtg_fr_tab_passive_pressed")
+        source: privateStyle.imagePath(internal.imageName() + internal.modeNamePressed())
         anchors.fill: parent
         opacity: 0
 

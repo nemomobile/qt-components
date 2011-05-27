@@ -113,7 +113,6 @@
         <file alias="qtg_fr_pushbutton_segmented_r_pressed.svg">resources/defaulttheme/graphics/qtg_fr_pushbutton_segmented_r_pressed.svg</file>
         <file alias="qtg_fr_toolbutton_pressed.svg">resources/defaulttheme/graphics/qtg_fr_toolbutton_text_pressed.svg</file>
         <file alias="qtg_fr_toolbutton_disabled.svg">resources/defaulttheme/graphics/qtg_fr_toolbutton_text_disabled.svg</file>
-        <file alias="qtg_fr_toolbutton_latched.svg">resources/defaulttheme/graphics/qtg_fr_toolbutton_text_normal.svg</file>
         <file alias="qtg_fr_toolbutton_normal.svg">resources/defaulttheme/graphics/qtg_fr_toolbutton_text_normal.svg</file>
         <file alias="qtg_fr_toolbutton_segmented_c_disabled.svg">resources/defaulttheme/graphics/qtg_fr_toolbutton_segmented_c_disabled.svg</file>
         <file alias="qtg_fr_toolbutton_segmented_c_latched.svg">resources/defaulttheme/graphics/qtg_fr_toolbutton_segmented_c_latched.svg</file>
@@ -150,6 +149,7 @@
         <file alias="qtg_graf_textfield_divider.svg">resources/defaulttheme/graphics/qtg_graf_textfield_divider.svg</file>
         <file alias="qtg_graf_toolbutton_disabled.svg">resources/defaulttheme/graphics/qtg_graf_toolbutton_disabled.svg</file>
         <file alias="qtg_graf_toolbutton_normal.svg">resources/defaulttheme/graphics/qtg_graf_toolbutton_normal.svg</file>
+        <file alias="qtg_graf_toolbutton_latched.svg">resources/defaulttheme/graphics/qtg_graf_toolbutton_normal.svg</file>
         <file alias="qtg_graf_toolbutton_pressed.svg">resources/defaulttheme/graphics/qtg_graf_toolbutton_pressed.svg</file>
         <file alias="qtg_graf_unread_indicator.svg">resources/defaulttheme/graphics/qtg_graf_unread_indicator.svg</file>
         <file alias="qtg_graf_magnifier_mask.svg">resources/defaulttheme/graphics/qtg_graf_magnifier_mask.svg</file>

@@ -59,8 +59,10 @@ ImplicitSizeItem {
         property int horizontalPadding: label.text ? platformStyle.paddingLarge : verticalPadding
 
         // "pressed" is a transient state, see press() function
-        function bg_postfix() {
-            if (!button.enabled)
+        function modeName() {
+            if (belongsToButtonRow())
+                return parent.__modeName(button, 0)
+            else if (!button.enabled)
                 return "disabled"
             else if (button.checked)
                 return "latched"
@@ -123,7 +125,7 @@ ImplicitSizeItem {
         // If the parent of a Button is ButtonRow, segmented-style graphics are used to create a
         // seamless row of buttons. Otherwise normal Button graphics are utilized.
         function imageName() {
-            if (parent && parent.hasOwnProperty("checkedButton") && parent.hasOwnProperty("__direction") && parent.__direction == Qt.Horizontal && parent.children.length > 1)
+            if (belongsToButtonRow())
                 return parent.__graphicsName(button, 0)
             return "qtg_fr_pushbutton_"
         }
@@ -132,6 +134,14 @@ ImplicitSizeItem {
             return button.parent
                    && button.parent.hasOwnProperty("checkedButton")
                    && button.parent.exclusive
+        }
+
+        function belongsToButtonRow() {
+            return button.parent
+                    && button.parent.hasOwnProperty("checkedButton")
+                    && button.parent.hasOwnProperty("__direction")
+                    && button.parent.__direction == Qt.Horizontal
+                    && button.parent.children.length > 1
         }
     }
 
@@ -179,7 +189,7 @@ ImplicitSizeItem {
     }
 
     BorderImage {
-        source: privateStyle.imagePath(internal.imageName() + internal.bg_postfix())
+        source: privateStyle.imagePath(internal.imageName() + internal.modeName())
         border { left: 20; top: 20; right: 20; bottom: 20 }
         anchors.fill: parent
 

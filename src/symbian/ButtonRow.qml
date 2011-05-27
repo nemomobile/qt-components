@@ -64,6 +64,16 @@ Row {
         return imageName
     }
 
+    function __modeName(button, buttonType) {
+        var siblingButtons = Engine.visibleItems(root)
+        if (!button.enabled)
+            return "disabled"
+        else if (button.checked && siblingButtons.length > 1)
+            return "latched"
+        else
+            return "normal"
+    }
+
     Component.onCompleted: Engine.create(root)
 
     Component.onDestruction: Engine.destroy()
