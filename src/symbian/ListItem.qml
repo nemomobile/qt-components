@@ -272,8 +272,8 @@ ImplicitSizeItem {
             privateStyle.play(Symbian.BasicItem)
             highlight.source = privateStyle.imagePath("qtg_fr_list_pressed")
             highlight.opacity = 1
-            if (ListView.view)
-                ListView.view.currentIndex = index
+            if (root.ListView.view)
+                root.ListView.view.currentIndex = index
         }
 
         function release() {
