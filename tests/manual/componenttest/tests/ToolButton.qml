@@ -57,6 +57,7 @@ Item {
         ToolButton {
             id: toolButton3
             iconSource: imageDialog.currentImage
+            flat: false
         }
 
         ToolButton {
@@ -68,7 +69,6 @@ Item {
         ToolButton {
             id: toolButton5
             iconSource: imageDialog.currentImage
-            flat: true
         }
 
         ToolButton {
