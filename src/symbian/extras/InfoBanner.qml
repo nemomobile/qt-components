@@ -38,10 +38,11 @@ ImplicitSizeItem {
     signal clicked
 
     function open() {
-        root.parent = internal.rootObject()
+        root.parent = internal.rootObject();
+        internal.setZOrder();
         background.source = root.interactive ? privateStyle.imagePath("qtg_fr_popup_infobanner_normal")
-                                             : privateStyle.imagePath("qtg_fr_popup_infobanner")
-        stateGroup.state = "Visible"
+                                             : privateStyle.imagePath("qtg_fr_popup_infobanner");
+        stateGroup.state = "Visible";
         if (timer.interval)
             timer.restart();
     }
@@ -120,10 +121,20 @@ ImplicitSizeItem {
         id: internal
 
         function rootObject() {
-            var next = parent
+            var next = root.parent
             while (next && next.parent)
                 next = next.parent
             return next
+        }
+
+        function setZOrder() {
+            if (root.parent) {
+                var maxZ = 0;
+                var siblings = root.parent.children;
+                for (var i = 0; i < siblings.length; ++i)
+                    maxZ = Math.max(maxZ, siblings[i].z);
+                root.z = maxZ + 1;
+            }
         }
 
         function bannerHeight() {
