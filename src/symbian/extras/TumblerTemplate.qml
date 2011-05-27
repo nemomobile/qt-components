@@ -182,6 +182,11 @@ Item {
                             root.changed(template.index);
                         }
                     }
+                    onPressed: privateStyle.play(Symbian.BasicItem)
+                    onReleased: {
+                        if (template.view.currentIndex == index)
+                            privateStyle.play(Symbian.BasicItem);
+                    }
                 }
 
                 Component.onCompleted: {
@@ -223,6 +228,14 @@ Item {
         interval: 1
         onTriggered: {
             tumblerColumn.width = templateInternal.columnFitWidth + platformStyle.paddingLarge * 2;
+        }
+    }
+
+    Connections {
+        target: template.view
+        onCurrentIndexChanged: {
+            if (template.view.moving && !template.view.flicking)
+                privateStyle.play(Symbian.ItemScroll);
         }
     }
 }
