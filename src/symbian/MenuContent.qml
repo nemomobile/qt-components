@@ -36,10 +36,11 @@ Item {
     signal itemClicked()
 
     height: flickableArea.height
-    clip: true
 
     QtObject {
         id: internal
+        // Add padding in context menu case to align content area bottom with rounded background graphics.
+        property int clipMargin: containingPopup.objectName != "OptionsMenu" ? platformStyle.paddingSmall : 0
         property int preferredHeight: Math.floor(
             screen.height * ((screen.width < screen.height) ? 0.45 : 0.6) / privateStyle.menuItemHeight)
             * privateStyle.menuItemHeight
@@ -52,96 +53,101 @@ Item {
         anchors.fill: parent
     }
 
-    Flickable {
-        id: flickableArea
-
-        property int index: 0
-        property bool itemAvailable: (contentArea.children[0] != undefined) && (contentArea.children[0].children[0] != undefined)
-        property int itemHeight: itemAvailable ? Math.max(1, contentArea.children[0].children[0].height) : 1
-        property int interactionMode: symbian.listInteractionMode
-
-        height: contentArea.height; width: root.width
+    Item {
+        height: flickableArea.height - internal.clipMargin
+        width: root.width
         clip: true
-        contentHeight: contentArea.childrenRect.height
-        contentWidth: width
+        Flickable {
+            id: flickableArea
 
-        Item {
-            id: contentArea
+            property int index: 0
+            property bool itemAvailable: (contentArea.children[0] != undefined) && (contentArea.children[0].children[0] != undefined)
+            property int itemHeight: itemAvailable ? Math.max(1, contentArea.children[0].children[0].height) : 1
+            property int interactionMode: symbian.listInteractionMode
 
-            property int itemsHidden: Math.floor(flickableArea.contentY / flickableArea.itemHeight)
+            height: contentArea.height; width: root.width
+            clip: true
+            contentHeight: contentArea.childrenRect.height
+            contentWidth: width
 
-            width: flickableArea.width
-            height: childrenRect.height > internal.preferredHeight
-                ? internal.preferredHeight - (internal.preferredHeight % flickableArea.itemHeight)
-                : childrenRect.height
+            Item {
+                id: contentArea
 
-            onWidthChanged: {
-                for (var i = 0; i < children.length; ++i)
-                    children[i].width = width
-            }
+                property int itemsHidden: Math.floor(flickableArea.contentY / flickableArea.itemHeight)
 
-            onItemsHiddenChanged: {
-                // Check that popup is really open in order to prevent unnecessary feedback
-                if (containingPopup.status == DialogStatus.Open
-                    && symbian.listInteractionMode == Symbian.TouchInteraction)
-                    privateStyle.play(Symbian.ItemScroll)
-            }
+                width: flickableArea.width
+                height: childrenRect.height > internal.preferredHeight
+                    ? internal.preferredHeight - (internal.preferredHeight % flickableArea.itemHeight)
+                    : childrenRect.height
 
-            Component.onCompleted: {
-                for (var i = 0; i < children.length; ++i) {
-                    if (children[i].clicked != undefined)
-                        children[i].clicked.connect(root.itemClicked)
+                onWidthChanged: {
+                    for (var i = 0; i < children.length; ++i)
+                        children[i].width = width
+                }
+
+                onItemsHiddenChanged: {
+                    // Check that popup is really open in order to prevent unnecessary feedback
+                    if (containingPopup.status == DialogStatus.Open
+                        && symbian.listInteractionMode == Symbian.TouchInteraction)
+                        privateStyle.play(Symbian.ItemScroll)
+                }
+
+                Component.onCompleted: {
+                    for (var i = 0; i < children.length; ++i) {
+                        if (children[i].clicked != undefined)
+                            children[i].clicked.connect(root.itemClicked)
+                    }
                 }
             }
-        }
 
-        onVisibleChanged: {
-            enabled = visible
-            if (itemAvailable)
-                contentArea.children[0].children[0].focus = visible
-            contentY = 0
-            index = 0
-        }
-
-        onInteractionModeChanged: {
-            if (symbian.listInteractionMode == Symbian.KeyNavigation) {
-                contentY = 0
+            onVisibleChanged: {
+                enabled = visible
                 if (itemAvailable)
-                    contentArea.children[0].children[index].focus = true
-            } else if (symbian.listInteractionMode == Symbian.TouchInteraction) {
+                    contentArea.children[0].children[0].focus = visible
+                contentY = 0
                 index = 0
             }
-        }
 
-        Keys.onPressed: {
-            if (itemAvailable && (event.key == Qt.Key_Down || event.key == Qt.Key_Up)) {
-                if (event.key == Qt.Key_Down && index < contentArea.children[0].children.length - 1) {
-                    index++
-                    if (index * itemHeight > contentY + height - itemHeight) {
-                        contentY = index * itemHeight - height + itemHeight
-                        scrollBar.flash(Symbian.FadeOut)
-                    }
-                } else if (event.key == Qt.Key_Up && index > 0) {
-                    index--
-                    if (index * itemHeight < contentY) {
-                        contentY = index * itemHeight
-                        scrollBar.flash(Symbian.FadeOut)
-                    }
+            onInteractionModeChanged: {
+                if (symbian.listInteractionMode == Symbian.KeyNavigation) {
+                    contentY = 0
+                    if (itemAvailable)
+                        contentArea.children[0].children[index].focus = true
+                } else if (symbian.listInteractionMode == Symbian.TouchInteraction) {
+                    index = 0
                 }
-                contentArea.children[0].children[index].focus = true
-                event.accepted = true
+            }
+
+            Keys.onPressed: {
+                if (itemAvailable && (event.key == Qt.Key_Down || event.key == Qt.Key_Up)) {
+                    if (event.key == Qt.Key_Down && index < contentArea.children[0].children.length - 1) {
+                        index++
+                        if (index * itemHeight > contentY + height - itemHeight) {
+                            contentY = index * itemHeight - height + itemHeight
+                            scrollBar.flash(Symbian.FadeOut)
+                        }
+                    } else if (event.key == Qt.Key_Up && index > 0) {
+                        index--
+                        if (index * itemHeight < contentY) {
+                            contentY = index * itemHeight
+                            scrollBar.flash(Symbian.FadeOut)
+                        }
+                    }
+                    contentArea.children[0].children[index].focus = true
+                    event.accepted = true
+                }
             }
         }
-    }
 
-    ScrollBar {
-        id: scrollBar
-        flickableItem: flickableArea
-        interactive: false
-        visible: flickableArea.height < flickableArea.contentHeight
-        anchors {
-            top: flickableArea.top
-            right: flickableArea.right
+        ScrollBar {
+            id: scrollBar
+            flickableItem: flickableArea
+            interactive: false
+            visible: flickableArea.height < flickableArea.contentHeight
+            anchors {
+                top: flickableArea.top
+                right: flickableArea.right
+            }
         }
     }
 

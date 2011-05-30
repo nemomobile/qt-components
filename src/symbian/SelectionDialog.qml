@@ -64,34 +64,41 @@ CommonDialog {
         height: preferredHeight()
         width: root.platformContentMaximumWidth
 
-        ListView {
-            id: listView
-
-            currentIndex : -1
+        Item {
+            // Clipping item with bottom margin added to align content with rounded background graphics
             anchors.fill: parent
-            delegate: root.delegate
+            anchors.bottomMargin: platformStyle.paddingSmall
             clip: true
+            ListView {
+                id: listView
 
-            // Flash scrollbar when navigating to hidden
-            // listItem with hw keys
-            onContentYChanged: {
-                if (!moving)
-                    scrollBar.flash(Symbian.FadeOut)
+                currentIndex : -1
+                width: contentItem.width
+                height: contentItem.height
+                delegate: root.delegate
+                clip: true
+
+                // Flash scrollbar when navigating to hidden
+                // listItem with hw keys
+                onContentYChanged: {
+                    if (!moving)
+                        scrollBar.flash(Symbian.FadeOut)
+                }
+
+                Keys.onPressed: {
+                    if (event.key == Qt.Key_Up || event.key == Qt.Key_Down)
+                        symbian.listInteractionMode = Symbian.KeyNavigation
+                }
             }
 
-            Keys.onPressed: {
-                if (event.key == Qt.Key_Up || event.key == Qt.Key_Down)
-                    symbian.listInteractionMode = Symbian.KeyNavigation
+            ScrollBar {
+                id: scrollBar
+
+                flickableItem: listView
+                interactive: false
+                visible: listView.contentHeight > contentItem.height
+                anchors { top: listView.top; right: listView.right }
             }
-        }
-
-        ScrollBar {
-            id: scrollBar
-
-            flickableItem: listView
-            interactive: false
-            visible: listView.contentHeight > contentItem.height
-            anchors { top: listView.top; right: listView.right }
         }
     }
 
