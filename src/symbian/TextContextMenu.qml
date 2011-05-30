@@ -90,7 +90,6 @@ Item {
     ButtonRow {
         id: row
 
-        property real buttonWidth: privateStyle.buttonSize + (privateStyle.buttonSize - platformStyle.graphicSizeSmall) / 2
         property bool editorHasSelection: editor.selectionStart != editor.selectionEnd
 
         function visibleButtonCount() {
@@ -102,7 +101,7 @@ Item {
         }
 
         exclusive: false
-        width: buttonWidth * visibleButtonCount()
+        width: Math.round(privateStyle.buttonSize * 1.5) * visibleButtonCount()
 
         onWidthChanged: internal.calculatePosition()
         onHeightChanged: internal.calculatePosition()
