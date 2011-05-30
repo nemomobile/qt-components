@@ -87,12 +87,12 @@
 /*!
     \qmlproperty int DatePickerDialog::minimumYear
 
-    Property default is \c{current year - 1}
+    Property default is \c{current year}
 
     Optional, the minimum year shown on the tumbler. This property should
     only be set once during construction.  Modifying it afterwards will
     uninitialize everything. If the value is not specified, it is default
-    to \c{current year - 1}.
+    to \c{current year}.
 */
 
 /*!

@@ -102,3 +102,11 @@
     Enables or disables timer that dismisses Info Banner. InfoBanner stays
     open if \c timeout value is \c 0.
 */
+
+/*!
+    \qmlproperty bool InfoBanner::interactive
+
+    Property default is \c false
+
+    true: the banner is interactive; false: informative banner
+*/

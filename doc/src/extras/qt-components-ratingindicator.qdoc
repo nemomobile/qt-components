@@ -55,13 +55,6 @@
             maximumValue: 5
             ratingValue: 3
         }
-
-        // Rating indicator with inverted visual
-        RatingIndicator {
-            maximumValue: 5
-            ratingValue: 3
-            inverted: true
-        }
     \endqml
 */
 
@@ -73,16 +66,6 @@
     A number to be displayed next to the rating images. It is usually used to
     count the number of votes cast. It is only displayed if a number larger or
     equal to \c 0 is specified.
-*/
-
-/*!
-    \qmlproperty string RatingIndicator::inverted
-
-    Property default is \c false
-
-    Specify whether the visual for the rating indicator uses the inverted color.
-    The value is \c false for use with a light background and \c true for use
-    with a dark background.
 */
 
 /*!

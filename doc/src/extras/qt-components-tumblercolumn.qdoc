@@ -34,29 +34,49 @@
 
     \qml
         TumblerColumn {
-            id: listEnglish
-            items: ListModel {
-                ListElement { value: "one" }
-                ListElement { value: "two" }
-                ListElement { value: "three" }
+            id: dayColumn
+            selectedIndex: 9
+            items: daysList
+
+            for (var day = 1; day <= 31; day++) {
+                daysList.append({"value" : day});
             }
-            label: "ENGLISH"
-            selectedIndex: 2
         }
 
         TumblerColumn {
-            id: listJapanese
-            items: ListModel {
-                ListElement { value: "ichi" }
-                ListElement { value: "ni" }
-                ListElement { value: "san" }
+            id: monthColumn
+            selectedIndex: 4
+            items: monthsList
+        }
+
+        ListModel {
+            id: monthsList
+            ListElement { value: "Jan" }
+            ListElement { value: "Feb" }
+            ListElement { value: "Mar" }
+            ListElement { value: "Apr" }
+            ListElement { value: "May" }
+            ListElement { value: "Jun" }
+            ListElement { value: "Jul" }
+            ListElement { value: "Aug" }
+            ListElement { value: "Sep" }
+            ListElement { value: "Oct" }
+            ListElement { value: "Nov" }
+            ListElement { value: "Dec" }
+        }
+
+        TumblerColumn {
+            id: yearColumn
+            selectedIndex: 88
+            items: yearsList
+
+            for (var year = 1900; year <= 2011; year++) {
+                yearsList.append({"value" : year});
             }
-            label: "JAPANESE"
-            selectedIndex: 1
         }
 
         Tumbler {
-            columns: [ listEnglish, listJapanese ]
+             columns: [monthColumn, dayColumn, yearColumn]
         }
     \endqml
 */
@@ -75,6 +95,7 @@
     Property default is \c ""
 
     The label of the column.
+    TODO: Do not use label as it will be deprecated.
 */
 
 /*!

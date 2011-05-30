@@ -59,7 +59,9 @@
 */
 
 /*!
-    \qmlproperty string TimePickerDialog::acceptButtonText
+    \qmlproperty enum TimePickerDialog::fields
+
+    Property default is \c{DateTime.Hours | DateTime.Minutes}
 
     Optional, the button text for the accept button.
 */

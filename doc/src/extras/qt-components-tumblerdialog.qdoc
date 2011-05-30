@@ -26,7 +26,7 @@
 ****************************************************************************/
 /*!
     \qmlclass TumblerDialog
-    \inherits Dialog
+    \inherits CommonDialog
     \ingroup qt-components-extras
     \since 1.0
 
@@ -88,15 +88,9 @@
 */
 
 /*!
-    \qmlproperty string TumblerDialog::titleText
-
-     If not null, it will be used as the title text for the dialog.
-*/
-
-/*!
     \qmlproperty ListModel TumblerDialog::columns
 
-    Array of ListModel for each column of the dialog.
+    Array of \l{TumblerColumn}s for each column of the dialog.
 */
 
 /*!
