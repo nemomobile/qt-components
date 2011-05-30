@@ -59,7 +59,7 @@ ImplicitSizeItem {
     function flash(type) {
         if (policy == Symbian.ScrollBarWhenScrolling && internal.scrollBarNeeded) {
             flashEffect.type = (type == undefined) ? Symbian.FadeOut : type
-            flashEffect.play()
+            flashEffect.restart()
         }
     }
 
@@ -75,7 +75,7 @@ ImplicitSizeItem {
 
     QtObject {
         id: internal
-        property int hideTimeout: root.interactive ? 2000 : 500
+        property int hideTimeout: 500
         property int pageStepY: flickableItem ? Math.floor(flickableItem.visibleArea.heightRatio * flickableItem.contentHeight) : NaN
         property int pageStepX: flickableItem ? Math.floor(flickableItem.visibleArea.widthRatio * flickableItem.contentWidth) : NaN
         property int handleY: flickableItem ? Math.floor(handle.y / flickableItem.height * flickableItem.contentHeight) : NaN
@@ -390,48 +390,38 @@ ImplicitSizeItem {
         to: 1
         duration: 0
     }
-    PropertyAnimation {
+    SequentialAnimation {
         id: idleEffect
 
         function play() {
             indicateEffect.stop()
-            if (internal.scrollBarNeeded && root.policy == Symbian.ScrollBarWhenScrolling) {
-                // To always properly clean up the track graphic from the screen when switching
-                // between interactive=true/false while the animation is ongoing it's required that
-                // track.visible=false happens before the animation completes. Duration is assigned
-                // to make sure it doesn't change to a smaller value and complete the animation too
-                // soon. See QTCOMPONENTS-703.
-                duration = internal.hideTimeout
+            if (internal.scrollBarNeeded && root.policy == Symbian.ScrollBarWhenScrolling)
                 restart()
-            }
         }
 
-        target: root
-        property: "opacity"
-        to: internal.rootOpacity
+        PauseAnimation { duration: root.interactive ? 1500 : 0 }
+        PropertyAnimation {
+            target: root
+            property: "opacity"
+            to: internal.rootOpacity
+            duration: internal.hideTimeout
+        }
     }
     SequentialAnimation {
         id: flashEffect
         property int type: Symbian.FadeOut
 
-        function play() {
-            // See the comments in idleEffect.play()
-            fadeIn.duration = (flashEffect.type == Symbian.FadeInFadeOut) ? internal.hideTimeout : 0
-            fadeOut.duration = internal.hideTimeout
-            restart()
-        }
-
         PropertyAnimation {
-            id: fadeIn
             target: root
             property: "opacity"
             to: 1
+            duration: (flashEffect.type == Symbian.FadeInFadeOut) ? internal.hideTimeout : 0
         }
         PropertyAnimation {
-            id: fadeOut
             target: root
             property: "opacity"
             to: internal.rootOpacity
+            duration: internal.hideTimeout
         }
     }
     StateGroup {
