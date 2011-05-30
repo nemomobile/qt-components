@@ -90,8 +90,6 @@ Item {
     ButtonRow {
         id: row
 
-        property bool editorHasSelection: editor.selectionStart != editor.selectionEnd
-
         function visibleButtonCount() {
             var count = 0
             if (copyButton.visible) ++count
