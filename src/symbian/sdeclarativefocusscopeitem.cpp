@@ -35,3 +35,8 @@ SDeclarativeFocusScopeItem::SDeclarativeFocusScopeItem(QDeclarativeItem *parent)
 SDeclarativeFocusScopeItem::~SDeclarativeFocusScopeItem()
 {
 }
+
+bool SDeclarativeFocusScopeItem::widthExplicit() const
+{
+    return widthValid();
+}

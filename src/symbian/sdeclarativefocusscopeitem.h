@@ -36,6 +36,8 @@ class SDeclarativeFocusScopeItem : public SDeclarativeImplicitSizeItem
 public:
     explicit SDeclarativeFocusScopeItem(QDeclarativeItem *parent = 0);
     virtual ~SDeclarativeFocusScopeItem();
+
+    Q_INVOKABLE bool widthExplicit() const;
 };
 
 #endif //SDECLARATIVEFOCUSSCOPEITEM_H

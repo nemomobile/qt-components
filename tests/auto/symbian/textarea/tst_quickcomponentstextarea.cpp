@@ -448,8 +448,15 @@ void tst_quickcomponentstextarea::implicitSize()
 
     QVERIFY(implicitHeight >= metrics.height());
     QVERIFY(implicitWidth >= metrics.width("                    "));
-    QCOMPARE(maxImplicitHeight, parentHeight - textArea->property("y").toReal());
-    QCOMPARE(maxImplicitWidth, parentWidth - textArea->property("x").toReal());
+    QCOMPARE(maxImplicitHeight, -1.);
+    QCOMPARE(maxImplicitWidth, -1.);
+
+    textArea->setProperty("platformMaxImplicitHeight", parentHeight);
+    textArea->setProperty("platformMaxImplicitWidth", parentWidth);
+    maxImplicitHeight = textArea->property("platformMaxImplicitHeight").toReal();
+    maxImplicitWidth = textArea->property("platformMaxImplicitWidth").toReal();
+    QCOMPARE(maxImplicitHeight, parentHeight);
+    QCOMPARE(maxImplicitWidth, parentWidth);
 
     textArea->setProperty("text", QString("test"));
     implicitHeight = textArea->property("implicitHeight").toReal();
