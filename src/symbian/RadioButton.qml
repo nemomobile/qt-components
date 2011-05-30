@@ -112,7 +112,7 @@ ImplicitSizeItem {
         anchors.verticalCenter: parent.verticalCenter
         anchors.right: parent.right
 
-        font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
+        font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
         color: {
             if (!root.enabled)
                 platformStyle.colorDisabledLight
