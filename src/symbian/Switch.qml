@@ -208,9 +208,9 @@ ImplicitSizeItem {
             // dragging won't get activated.
             target: Item { visible: false }
 
-            axis: Drag.XAxis
-            minimumX: track.x
-            maximumX: mouseArea.drag.minimumX + track.width - handle.width
+            axis: Drag.XandYAxis
+            minimumY: 0; maximumY: 0 // keep dragging active eventhough only x axis switches
+            minimumX: track.x; maximumX: mouseArea.drag.minimumX + track.width - handle.width
             onActiveChanged: {
                 if (mouseArea.drag.active) {
                     updateHandlePos()
