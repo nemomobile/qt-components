@@ -139,8 +139,8 @@ ImplicitSizeItem {
         function belongsToButtonRow() {
             return button.parent
                     && button.parent.hasOwnProperty("checkedButton")
-                    && button.parent.hasOwnProperty("__direction")
-                    && button.parent.__direction == Qt.Horizontal
+                    && button.parent.hasOwnProperty("privateDirection")
+                    && button.parent.privateDirection == Qt.Horizontal
                     && button.parent.children.length > 1
         }
     }

@@ -62,8 +62,8 @@ ImplicitSizeItem {
         function isButtonRow(item) {
             return (item &&
                     item.hasOwnProperty("checkedButton") &&
-                    item.hasOwnProperty("__direction") &&
-                    item.__direction == Qt.Horizontal)
+                    item.hasOwnProperty("privateDirection") &&
+                    item.privateDirection == Qt.Horizontal)
         }
 
         function imageName() {
@@ -71,7 +71,7 @@ ImplicitSizeItem {
             // are used to create a seamless row of buttons. Otherwise normal
             // TabButton graphics are utilized.
             if (isButtonRow(parent))
-                return parent.__graphicsName(root, 1)
+                return parent.privateGraphicsName(root, 1)
             else
                 return "qtg_fr_tab_"
         }

@@ -34,7 +34,7 @@ Column {
     property bool exclusive: true
     property Item checkedButton
 
-    property int __direction: Qt.Vertical
+    property int privateDirection: Qt.Vertical
 
     Component.onCompleted: Engine.create(root)
 

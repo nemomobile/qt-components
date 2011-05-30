@@ -34,9 +34,9 @@ Row {
     property bool exclusive: true
     property Item checkedButton
 
-    property int __direction: Qt.Horizontal
+    property int privateDirection: Qt.Horizontal
 
-    function __graphicsName(button, buttonType) {
+    function privateGraphicsName(button, buttonType) {
         var siblingButtons = Engine.visibleItems(root)
         var imageName
 
@@ -64,7 +64,7 @@ Row {
         return imageName
     }
 
-    function __modeName(button, buttonType) {
+    function privateModeName(button, buttonType) {
         var siblingButtons = Engine.visibleItems(root)
         if (!button.enabled)
             return "disabled"

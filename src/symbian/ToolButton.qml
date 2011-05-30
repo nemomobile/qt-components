@@ -230,8 +230,8 @@ ImplicitSizeItem {
         function isButtonRow(item) {
             return (item &&
                     item.hasOwnProperty("checkedButton") &&
-                    item.hasOwnProperty("__direction") &&
-                    item.__direction == Qt.Horizontal)
+                    item.hasOwnProperty("privateDirection") &&
+                    item.privateDirection == Qt.Horizontal)
         }
 
         // The function imageName() handles fetching correct graphics for the ToolButton.
@@ -239,7 +239,7 @@ ImplicitSizeItem {
         // seamless row of buttons. Otherwise normal ToolButton graphics are utilized.
         function imageName() {
             if (isButtonRow(parent))
-                return parent.__graphicsName(root, 1)
+                return parent.privateGraphicsName(root, 1)
             else
                 return (!flat || text || iconSource == "") ? "qtg_fr_toolbutton_" : "qtg_graf_toolbutton_"
         }
