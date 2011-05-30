@@ -168,7 +168,7 @@ ImplicitSizeItem {
 
         function modeName() {
             if (isButtonRow(parent))
-                return parent.__modeName(root, 1)
+                return parent.privateModeName(root, 1)
             else if (!enabled)
                 return "disabled"
             else

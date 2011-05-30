@@ -61,7 +61,7 @@ ImplicitSizeItem {
         // "pressed" is a transient state, see press() function
         function modeName() {
             if (belongsToButtonRow())
-                return parent.__modeName(button, 0)
+                return parent.privateModeName(button, 0)
             else if (!button.enabled)
                 return "disabled"
             else if (button.checked)
@@ -126,7 +126,7 @@ ImplicitSizeItem {
         // seamless row of buttons. Otherwise normal Button graphics are utilized.
         function imageName() {
             if (belongsToButtonRow())
-                return parent.__graphicsName(button, 0)
+                return parent.privateGraphicsName(button, 0)
             return "qtg_fr_pushbutton_"
         }
 

@@ -78,7 +78,7 @@ ImplicitSizeItem {
 
         function modeName() {
             if (isButtonRow(parent)) {
-                return parent.__modeName(root, 1)
+                return parent.privateModeName(root, 1)
             } else {
                 return root.checked ? "active" : "passive_normal"
             }
