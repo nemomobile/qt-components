@@ -304,7 +304,11 @@ ImplicitSizeItem {
             }
             if (oldValue != model.value)
                 keyEvent.accepted = true
-            if (keyEvent.accepted)
+
+            if (keyEvent.accepted ||
+                keyEvent.key == Qt.Key_Select ||
+                keyEvent.key == Qt.Key_Return ||
+                keyEvent.key == Qt.Key_Enter)
                 track.activeKey = keyEvent.key
         }
 
