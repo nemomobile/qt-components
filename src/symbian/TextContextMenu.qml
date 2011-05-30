@@ -92,12 +92,17 @@ Item {
 
         property real buttonWidth: privateStyle.buttonSize + (privateStyle.buttonSize - platformStyle.graphicSizeSmall) / 2
         property bool editorHasSelection: editor.selectionStart != editor.selectionEnd
-        property int vsibleButton:   (copyButton.visible ? 1 : 0)
-                                   + (cutButton.visible ? 1 : 0)
-                                   + (pasteButton.visible ? 1 : 0)
+
+        function visibleButtonCount() {
+            var count = 0
+            if (copyButton.visible) ++count
+            if (cutButton.visible) ++count
+            if (pasteButton.visible) ++count
+            return count
+        }
 
         exclusive: false
-        width: buttonWidth * vsibleButton
+        width: buttonWidth * visibleButtonCount()
 
         onWidthChanged: internal.calculatePosition()
         onHeightChanged: internal.calculatePosition()
