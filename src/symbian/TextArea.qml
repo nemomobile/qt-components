@@ -94,14 +94,14 @@ FocusScopeItem {
 
     implicitWidth: {
         var preferredWidth = Math.max(flick.contentWidth, privy.minImplicitWidth)
-        preferredWidth += container.verticalMargins
+        preferredWidth += container.horizontalMargins
         return Math.min(preferredWidth, root.platformMaxImplicitWidth)
     }
 
     implicitHeight: {
         // first check content's height (text or placeholder) and reserve room for paddings
         var preferredHeight = Math.max(flick.contentHeight, placeholder.model.paintedHeight)
-        preferredHeight += container.horizontalMargins
+        preferredHeight += container.verticalMargins
         // layout spec gives minimum height (textFieldHeight) which includes required padding
         preferredHeight = Math.max(privateStyle.textFieldHeight, preferredHeight)
         return Math.min(preferredHeight, root.platformMaxImplicitHeight)
@@ -150,15 +150,15 @@ FocusScopeItem {
     Item {
         id: container
 
-        property real verticalMargins:   container.anchors.leftMargin
-                                       + container.anchors.rightMargin
-                                       + flick.anchors.leftMargin
-                                       + flick.anchors.rightMargin
+        property real horizontalMargins:   container.anchors.leftMargin
+                                         + container.anchors.rightMargin
+                                         + flick.anchors.leftMargin
+                                         + flick.anchors.rightMargin
 
-        property real horizontalMargins:  container.anchors.topMargin
-                                        + container.anchors.bottomMargin
-                                        + flick.anchors.topMargin
-                                        + flick.anchors.bottomMargin
+        property real verticalMargins:  container.anchors.topMargin
+                                      + container.anchors.bottomMargin
+                                      + flick.anchors.topMargin
+                                      + flick.anchors.bottomMargin
 
         anchors {
             fill: parent
@@ -181,8 +181,8 @@ FocusScopeItem {
                 wrapMode: textEdit.wrapMode
                 horizontalAlignment: textEdit.horizontalAlignment
                 verticalAlignment: textEdit.verticalAlignment
-                height: root.platformMaxImplicitHeight - container.horizontalMargins
-                width: root.platformMaxImplicitWidth - container.verticalMargins
+                height: root.platformMaxImplicitHeight - container.verticalMargins
+                width: root.platformMaxImplicitWidth - container.horizontalMargins
                 opacity: 0
             }
 
@@ -245,8 +245,8 @@ FocusScopeItem {
                     wrapMode: textEdit.wrapMode
                     visible: false
                     opacity: 0
-                    height: root.platformMaxImplicitHeight - container.horizontalMargins
-                    width: root.platformMaxImplicitWidth - container.verticalMargins
+                    height: root.platformMaxImplicitHeight - container.verticalMargins
+                    width: root.platformMaxImplicitWidth - container.horizontalMargins
 
                 }
                 enabled: root.enabled
@@ -287,13 +287,13 @@ FocusScopeItem {
                     id: touchController
 
                     anchors {
-                        top: editor.top; topMargin: -container.horizontalMargins
-                        left: editor.left; leftMargin: -container.verticalMargins
+                        top: editor.top; topMargin: -container.verticalMargins
+                        left: editor.left; leftMargin: -container.horizontalMargins
                     }
-                    height: Math.max(root.height, flick.contentHeight + container.horizontalMargins * 2)
-                    width: Math.max(root.width, flick.contentWidth + container.verticalMargins * 2)
-                    editorScrolledX: flick.contentX - container.verticalMargins
-                    editorScrolledY: flick.contentY - container.horizontalMargins
+                    height: Math.max(root.height, flick.contentHeight + container.verticalMargins * 2)
+                    width: Math.max(root.width, flick.contentWidth + container.horizontalMargins * 2)
+                    editorScrolledX: flick.contentX - container.horizontalMargins
+                    editorScrolledY: flick.contentY - container.verticalMargins
                     copyEnabled: textEdit.selectedText
                     cutEnabled: !textEdit.readOnly && textEdit.selectedText
                     // TODO: QtQuick 1.1 has textEdit.canPaste
