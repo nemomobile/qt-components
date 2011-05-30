@@ -148,8 +148,8 @@ Item {
 
             text: tumblerColumn ? tumblerColumn.label : ""
             elide: Text.ElideRight
-            horizontalAlignment: "AlignHCenter"
-            verticalAlignment: "AlignVCenter"
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
             color: platformStyle.colorNormalLight
             font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
             anchors.fill: parent
@@ -167,8 +167,8 @@ Item {
             Text {
                 text: !!value ? value : ""
                 elide: tumblerColumn.privateResizeToFit ? Text.ElideNone : Text.ElideRight
-                horizontalAlignment: tumblerColumn.textAlignment == undefined ? "AlignHCenter" : tumblerColumn.textAlignment
-                verticalAlignment: "AlignVCenter"
+                horizontalAlignment: tumblerColumn.privateTextAlignment
+                verticalAlignment: Text.AlignVCenter
                 color: (tumblerColumn.privateLoopAround ? delegateItem.PathView.isCurrentItem : delegateItem.ListView.isCurrentItem) ?
                         platformStyle.colorHighlighted : platformStyle.colorNormalLight
                 font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
