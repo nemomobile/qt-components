@@ -103,10 +103,10 @@ TBool CSDeclarativeIndicatorData::MultiColorMode() const
     return iMultiColorMode;
     }
 
-TPtrC CSDeclarativeIndicatorData::BitmapFile() const
+const TDesC& CSDeclarativeIndicatorData::BitmapFile() const
     {
     if ( iBitmapFile )
-        return iBitmapFile->Des();
+        return *iBitmapFile;
 
     return KNullDesC();
     }

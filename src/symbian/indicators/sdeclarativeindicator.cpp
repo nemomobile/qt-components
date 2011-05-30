@@ -91,7 +91,7 @@ void SDeclarativeIndicatorPrivate::ensureIndicatorBitmaps()
                 const TAknsItemID dummyColorGroup = {0, 0};
                 const TInt dummyColorIndex = 0;
 
-                const TPtrC fileName = data->BitmapFile().Length() ? data->BitmapFile() : KAvkonBitmapFile();
+                const TDesC &fileName = data->BitmapFile().Length() ? data->BitmapFile() : AknIconUtils::AvkonIconFileName();
                 const TRgb symbianColor(color.red(), color.green(), color.blue(), color.alpha());
 
                 QT_TRAP_THROWING({

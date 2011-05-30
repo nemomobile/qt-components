@@ -40,7 +40,7 @@ public:
     TInt Uid() const;
     TInt Priority() const;
     TInt FrameCount() const;
-    TPtrC BitmapFile() const;
+    const TDesC& BitmapFile() const;
     TBool MultiColorMode() const;
     TInt GetIndicatorBitmapIndexes( RArray<TInt>& aIndexes ) const;
 
