@@ -92,7 +92,7 @@ CommonDialog {
 
             TumblerColumn {
                 id: monthColumn
-                textAlignment: "AlignLeft"
+                privateTextAlignment: Text.AlignLeft
                 items: ListModel {
                     id: monthList
                 }
