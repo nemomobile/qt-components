@@ -296,9 +296,6 @@ FocusScopeItem {
                     if (activeFocus) {
                         horizontal.flash()
                         vertical.flash()
-                        textEdit.openSoftwareInputPanel()
-                    } else {
-                        textEdit.closeSoftwareInputPanel()
                     }
                 }
                 onEnabledChanged: {
@@ -337,8 +334,6 @@ FocusScopeItem {
                         onFontChanged: touchController.updateGeometry()
                     }
                 }
-
-
             }
 
             PropertyAnimation { id: fade; target: textEdit; property: "opacity"; from: 0; to: 1; duration: 250 }

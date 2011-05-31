@@ -194,12 +194,6 @@ FocusScopeItem {
                 }
 
                 onCursorPositionChanged: flick.ensureVisible(textInput.positionToRectangle(textInput.cursorPosition))
-                onActiveFocusChanged: {
-                    if (activeFocus)
-                        textInput.openSoftwareInputPanel()
-                    else
-                        textInput.closeSoftwareInputPanel()
-                }
 
                 TextTouchController {
                     id: touchController

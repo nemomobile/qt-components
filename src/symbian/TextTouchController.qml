@@ -311,4 +311,17 @@ MouseArea {
             internal.tapCounter = 0;
         }
     }
+
+    Connections {
+        target: root.editor
+        onActiveFocusChanged: {
+            // On focus loss dismiss menu, selection and VKB
+            if (!root.editor.activeFocus) {
+                contextMenu.hide()
+                root.editor.select(root.editor.cursorPosition, root.editor.cursorPosition)
+                root.editor.closeSoftwareInputPanel()
+            }
+        }
+    }
+
 }
