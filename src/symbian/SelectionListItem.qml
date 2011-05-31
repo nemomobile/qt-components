@@ -33,6 +33,15 @@ ListItem {
     property string subTitle: ""
     implicitHeight: background.height + 2 * platformStyle.paddingLarge
 
+    onModeChanged: {
+        if (root.mode == "pressed") {
+            pressed.source = privateStyle.imagePath("qtg_fr_choice_list_pressed")
+            pressed.opacity = 1
+        } else {
+            releasedEffect.restart()
+        }
+    }
+
     BorderImage {
         id: background
         height: privateStyle.menuItemHeight - platformStyle.paddingSmall // from layout spec.
@@ -43,8 +52,25 @@ ListItem {
             rightMargin: privateStyle.scrollBarThickness
             verticalCenter: parent.verticalCenter
         }
-        source: privateStyle.imagePath("qtg_fr_choice_list_normal")
-        border { left: 20; top: 20; right: 20; bottom: 20 }
+        border {
+            left: platformStyle.borderSizeMedium
+            top: platformStyle.borderSizeMedium
+            right: platformStyle.borderSizeMedium
+            bottom: platformStyle.borderSizeMedium
+        }
+        source: privateStyle.imagePath("qtg_fr_choice_list_") + internal.getBackground()
+
+        BorderImage {
+            id: pressed
+            border {
+                left: platformStyle.borderSizeMedium
+                top: platformStyle.borderSizeMedium
+                right: platformStyle.borderSizeMedium
+                bottom: platformStyle.borderSizeMedium
+            }
+            opacity: 0
+            anchors.fill: parent
+        }
 
         Column {
             anchors {
@@ -67,7 +93,8 @@ ListItem {
         }
         Image {
             id: indicator
-            source: privateStyle.imagePath("qtg_graf_choice_list_indicator")
+            source: root.mode == "disabled" ? privateStyle.imagePath("qtg_graf_choice_list_indicator_disabled") :
+                                              privateStyle.imagePath("qtg_graf_choice_list_indicator")
             sourceSize.width: platformStyle.graphicSizeSmall
             sourceSize.height: platformStyle.graphicSizeSmall
             anchors {
@@ -92,6 +119,29 @@ ListItem {
             mode: root.mode
             role: "SelectionSubTitle"
             text: root.subTitle
+        }
+    }
+
+    QtObject {
+        id: internal
+        function getBackground() {
+            if (root.mode == "highlighted")
+                return "highlighted"
+            else if (root.mode == "disabled")
+                return "disabled"
+            else
+                return "normal"
+        }
+    }
+
+    SequentialAnimation {
+        id: releasedEffect
+        PropertyAnimation {
+            target: pressed
+            property: "opacity"
+            to: 0
+            easing.type: Easing.Linear
+            duration: 150
         }
     }
 }

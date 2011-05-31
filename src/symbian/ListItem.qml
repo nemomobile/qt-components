@@ -63,7 +63,12 @@ ImplicitSizeItem {
 
         BorderImage {
             id: highlight
-            border { left: 20; top: 20; right: 20; bottom: 20 }
+            border {
+                left: platformStyle.borderSizeMedium
+                top: platformStyle.borderSizeMedium
+                right: platformStyle.borderSizeMedium
+                bottom: platformStyle.borderSizeMedium
+            }
             opacity: 0
             anchors.fill: background
         }
@@ -74,7 +79,12 @@ ImplicitSizeItem {
 
         BorderImage {
             source: privateStyle.imagePath("qtg_fr_list_" + mode)
-            border { left: 20; top: 20; right: 20; bottom: 20 }
+            border {
+                left: platformStyle.borderSizeMedium
+                top: platformStyle.borderSizeMedium
+                right: platformStyle.borderSizeMedium
+                bottom: platformStyle.borderSizeMedium
+            }
         }
     }
 
