@@ -112,7 +112,6 @@ QML_FILES = \
     RadioButton.qml \
     RectUtils.js \
     ScrollBar.qml \
-    ScrollBarSizer.qml \
     ScrollDecorator.qml \
     SectionScroller.js \
     SectionScroller.qml \

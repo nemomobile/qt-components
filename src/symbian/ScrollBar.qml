@@ -87,6 +87,46 @@ ImplicitSizeItem {
         property string currentSection: flickableItem ? flickableItem.currentSection || "" : ""
         //To be able to pressed on trackMouseArea, opacity needs to be greater than 0
         property real rootOpacity: root.privateSectionScroller ? 0.01 : 0
+
+        // The following properties are used for calculating handle position and size:
+        // Minimum allowed handle length
+        property real minHandleLength: 3 * Math.floor(privateStyle.scrollBarThickness)
+        // Scroll bar "container" length
+        property real totalLength: !flickableItem ? NaN : (orientation == Qt.Vertical ? root.height : root.width)
+        property real relativeHandlePosition: !flickableItem ? NaN : (orientation == Qt.Vertical
+                                                                      ? flickableItem.visibleArea.yPosition
+                                                                      : flickableItem.visibleArea.xPosition)
+        property real lengthRatio: !flickableItem ? NaN : (orientation == Qt.Vertical
+                                                           ? flickableItem.visibleArea.heightRatio
+                                                           : flickableItem.visibleArea.widthRatio)
+        // Scroll bar handle length under normal circumstances
+        property real staticHandleLength: Math.max(minHandleLength, lengthRatio * totalLength)
+        // Adjustment factor needed to calculate correct position, which is needed because
+        // relativeHandlePosition and lengthRatio are assuming default handle length. Dividend is
+        // the maximum handle position taking into account restricted minimum handle length, whereas
+        // divisor is the maximum handle position if default handle size would be used.
+        property real handlePositionAdjustment: (totalLength - staticHandleLength) / (totalLength * (1 - lengthRatio))
+        property real handlePosition
+        handlePosition: {
+            // handle's position, which is adjusted to take into account non-default handle
+            // length and restricted never to exceed flickable boundaries
+            var pos = totalLength * relativeHandlePosition * handlePositionAdjustment
+            return Math.min(Math.max(0, pos), totalLength - minHandleLength)
+        }
+        property real dynamicHandleLength
+        dynamicHandleLength: {
+            // dynamic handle length, which may differ from static due to bounds behavior, i.e.
+            // handle gets shorter when content exceeds flickable boundaries
+            var length = 0
+            if (relativeHandlePosition >= 1 - lengthRatio) // overflow
+                length = 1 - relativeHandlePosition
+            else if (relativeHandlePosition < 0) // underflow
+                length = lengthRatio + relativeHandlePosition
+            else
+                length = lengthRatio
+            return Math.max(minHandleLength, length * totalLength)
+        }
+
         /**
          * Special handler for idle state ""
          * - in case if no flicking (flickableItem.moving) has occured
@@ -109,8 +149,8 @@ ImplicitSizeItem {
         function hasScrollableContent() {
             if (!flickableItem)
                 return false
-            var _ratio = orientation == Qt.Vertical ? flickableItem.visibleArea.heightRatio : flickableItem.visibleArea.widthRatio
-            return _ratio < 1.0 && _ratio > 0
+            var ratio = orientation == Qt.Vertical ? flickableItem.visibleArea.heightRatio : flickableItem.visibleArea.widthRatio
+            return ratio < 1.0 && ratio > 0
         }
         /**
          * Does Page by Page movement of flickableItem
@@ -325,10 +365,10 @@ ImplicitSizeItem {
         id: handle
         objectName: "handle"
         source: privateStyle.imagePath(handleFileName())
-        x: orientation == Qt.Horizontal ? sizer.position : (!flickableItem ? NaN : flickableItem.x)
-        y: orientation == Qt.Vertical ? sizer.position : (!flickableItem ? NaN : flickableItem.y)
-        height: orientation == Qt.Vertical ? sizer.size : root.height
-        width: orientation == Qt.Horizontal ? sizer.size : root.width
+        x: orientation == Qt.Horizontal ? internal.handlePosition : (!flickableItem ? NaN : flickableItem.x)
+        y: orientation == Qt.Vertical ? internal.handlePosition : (!flickableItem ? NaN : flickableItem.y)
+        height: orientation == Qt.Vertical ? internal.dynamicHandleLength : root.height
+        width: orientation == Qt.Horizontal ? internal.dynamicHandleLength : root.width
         border.right: orientation == Qt.Horizontal ? 7 : 0
         border.left: orientation == Qt.Horizontal ? 7 : 0
         border.top: orientation == Qt.Vertical ? 7 : 0
@@ -346,13 +386,7 @@ ImplicitSizeItem {
             return fileName
         }
     }
-    ScrollBarSizer {
-        id: sizer
-        minSize: 3 * Math.floor(privateStyle.scrollBarThickness)
-        maxSize: !flickableItem ? NaN : (orientation == Qt.Vertical ? root.height : root.width)
-        positionRatio: !flickableItem ? NaN : (orientation == Qt.Vertical && flickableItem ? flickableItem.visibleArea.yPosition : flickableItem.visibleArea.xPosition)
-        sizeRatio: !flickableItem ? NaN : (orientation == Qt.Vertical ? flickableItem.visibleArea.heightRatio : flickableItem.visibleArea.widthRatio)
-    }
+
     MouseArea {
         id: handleMouseArea
         objectName: "handleMouseArea"

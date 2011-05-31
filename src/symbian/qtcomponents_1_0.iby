@@ -52,7 +52,6 @@ data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\QueryDialog.qml                    
 data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\RadioButton.qml                                RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\RadioButton.qml
 data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\RectUtils.js                                   RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\RectUtils.js
 data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\ScrollBar.qml                                  RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\ScrollBar.qml
-data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\ScrollBarSizer.qml                             RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\ScrollBarSizer.qml
 data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\ScrollDecorator.qml                            RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\ScrollDecorator.qml
 data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\SectionScroller.js                             RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\SectionScroller.js
 data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\SectionScroller.qml                            RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\SectionScroller.qml
