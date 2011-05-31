@@ -52,5 +52,6 @@ Item {
         TextFieldFont { id: font }
         TextFieldOther { id: other }
         TextFieldMaxLength { id: maxLength }
+        onCurrentTabChanged: parent.forceActiveFocus()
     }
 }
