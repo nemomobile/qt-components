@@ -24,135 +24,112 @@
 **
 ****************************************************************************/
 
-var self;
-var clickHandlers = [];
-var visibleButtons = [];
+var self
+var clickHandlers = []
+var visibleButtons = []
+var resizing = false
 
 function create(that) {
-    self = that;
-    self.childrenChanged.connect(childrenChanged);
-    self.widthChanged.connect(resizeButtons);
-    self.exclusiveChanged.connect(exclusiveChanged);
-    build();
+    destroy()
+    self = that
+    buildItems()
+    self.childrenChanged.connect(buildItems)
+    self.widthChanged.connect(resizeButtons)
+    self.exclusiveChanged.connect(checkOverallExclusivity)
 }
 
 function destroy() {
-    self.childrenChanged.disconnect(childrenChanged);
-    self.widthChanged.disconnect(resizeButtons);
-    self.exclusiveChanged.disconnect(exclusiveChanged);
-    cleanup();
-    self = undefined;
-}
-
-function exclusiveChanged() {
-    if (self.exclusive) {
-        for (var i = 0; i < self.children.length; i++)
-            self.children[i].checked = false;
+    if (self !== undefined) {
+        self.childrenChanged.disconnect(buildItems)
+        self.widthChanged.disconnect(resizeButtons)
+        self.exclusiveChanged.disconnect(checkOverallExclusivity)
+        releaseItemConnections()
+        self = undefined
     }
-    build();
 }
 
-function childrenChanged() {
-    visibleButtons = [];
-
+function buildItems() {
+    releaseItemConnections()
+    visibleButtons = []
     for (var i = 0; i < self.children.length; i++) {
-        var item = self.children[i];
+        var item = self.children[i]
 
+        // set up item connections
+        clickHandlers[i] = checkExclusive(item)
+        item.clicked.connect(clickHandlers[i])
+        item.visibleChanged.connect(buildItems)
+
+        // update visibleButtons array
         if (item.visible)
-            visibleButtons.push(item);
-
-        if (self.exclusive && item.hasOwnProperty("checkable"))
-            item.checkable = true;
+            visibleButtons.push(item)
     }
-
-    build();
+    checkOverallExclusivity()
+    resizeButtons()
 }
 
-function build() {
-    cleanup();
-    visibleButtons = [];
-
+function releaseItemConnections() {
     for (var i = 0; i < self.children.length; i++) {
-        var item = self.children[i];
-
-        if (!item.hasOwnProperty("checked"))
-            continue;
-
-        if (self.exclusive && item.hasOwnProperty("checkable"))
-            item.checkable = true;
-
-        item.visibleChanged.connect(build);
-        if (!item.visible) {
-            if (self.exclusive && item === self.checkedButton) {
-                item.checked = false;
-                self.checkedButton = null;
-            }
-            continue;
-        }
-        visibleButtons.push(item);
-
-        if (self.exclusive) {
-            clickHandlers[i] = checkExclusive(item);
-            item.clicked.connect(clickHandlers[i]);
-        }
+        self.children[i].clicked.disconnect(clickHandlers[i])
+        self.children[i].visibleChanged.disconnect(buildItems)
     }
+    clickHandlers = []
+}
 
+function checkOverallExclusivity() {
     if (self.exclusive) {
-        if (self.checkedButton !== null) {
-            self.checkedButton.checked = true;
-        }
-        else if (self.checkedButton === null && visibleButtons.length > 0) {
-            self.checkedButton = visibleButtons[0];
-            self.checkedButton.checked = true;
+        if (visibleButtons.length > 0) {
+            if ((self.checkedButton === null || !self.checkedButton.visible))
+                self.checkedButton = visibleButtons[0]
+            self.checkedButton.checked = true
         }
         else {
-            for (var i = 0; i < visibleButtons.length; i++) {
-                if (visibleButtons[i].checked) {
-                    self.checkedButton = visibleButtons[i];
-                    break;
-                }
-            }
+            self.checkedButton = null
+        }
+
+        for (var i = 0; i < self.children.length; i++) {
+            var item = self.children[i]
+            // e.g CheckBox can be added to ButtonGroup but doesn't have "checkable" property
+            if (self.exclusive && item.hasOwnProperty("checkable"))
+                item.checkable = true
+            if (item !== self.checkedButton)
+                item.checked = false
         }
     }
-    resizeButtons();
-}
-
-function cleanup() {
-
-    for (var i = 0; i < self.children.length; i++) {
-        var item = self.children[i];
-
-        if (clickHandlers[i])
-            item.clicked.disconnect(clickHandlers[i]);
-        item.visibleChanged.disconnect(build);
-    }
-
-    clickHandlers = [];
 }
 
 function checkExclusive(item) {
-    var button = item;
+    var button = item
     return function() {
-        for (var i = 0, ref; (ref = visibleButtons[i]); i++)
-            ref.checked = button === ref;
-        self.checkedButton = button;
+        if (self.exclusive) {
+            for (var i = 0, ref; (ref = visibleButtons[i]); i++)
+                ref.checked = button === ref
+        }
+        self.checkedButton = button
     }
 }
 
 function resizeButtons() {
-    if (self.privateDirection != Qt.Horizontal)
-        return;
-
-    var buttonWidth = self.width / visibleButtons.length;
-    for (var i = 0; i < visibleButtons.length; i++)
-        visibleButtons[i].width = buttonWidth;
+    if (!resizing && visibleButtons.length && self.privateDirection == Qt.Horizontal) {
+        // if ButtonRow has implicit size, a loop may occur where resizing individual
+        // Button affects ButtonRow size, which triggers again resizing...
+        // therefore we prevent re-entrant resizing attempts
+        resizing = true
+        var buttonWidth = self.width / visibleButtons.length
+        for (var i = 0; i < self.children.length; i++) {
+            self.children[i].width = self.children[i].visible ? buttonWidth : 0
+        }
+        resizing = false
+    }
 }
 
+// Binding would not work properly if visibleButtons would just be returned,
+// it would miss visibility changes. In the long run ButtonGroup.js could be
+// refactored.
 function visibleItems(item) {
-    visibleButtons = [];
+    var visibleChildren = []
     for (var i = 0; i < item.children.length; i++) {
         if (item.children[i].visible)
-            visibleButtons.push(item.children[i]);
+            visibleChildren.push(item.children[i])
     }
-    return visibleButtons;
+    return visibleChildren
 }

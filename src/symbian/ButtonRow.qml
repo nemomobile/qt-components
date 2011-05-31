@@ -38,8 +38,7 @@ Row {
 
     function privateGraphicsName(button, buttonType) {
         var siblingButtons = Engine.visibleItems(root)
-        var imageName
-
+        var imageName = ""
         if (siblingButtons.length > 1) {
             if (buttonType == 0)
                 imageName = "qtg_fr_pushbutton_segmented"
@@ -52,11 +51,8 @@ Row {
                 imageName += "_r_"
             else
                 imageName += "_c_"
-
-            return imageName
         }
-
-        if (buttonType == 0)
+        else if (buttonType == 0)
             imageName = "qtg_fr_pushbutton_"
         else if (buttonType == 1)
             imageName = "qtg_fr_toolbutton_"
@@ -75,6 +71,5 @@ Row {
     }
 
     Component.onCompleted: Engine.create(root)
-
     Component.onDestruction: Engine.destroy()
 }

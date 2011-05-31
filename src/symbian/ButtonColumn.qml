@@ -37,6 +37,5 @@ Column {
     property int privateDirection: Qt.Vertical
 
     Component.onCompleted: Engine.create(root)
-
     Component.onDestruction: Engine.destroy()
 }
