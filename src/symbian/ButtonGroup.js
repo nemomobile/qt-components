@@ -140,7 +140,7 @@ function checkExclusive(item) {
 }
 
 function resizeButtons() {
-    if (self.__direction != Qt.Horizontal)
+    if (self.privateDirection != Qt.Horizontal)
         return;
 
     var buttonWidth = self.width / visibleButtons.length;
