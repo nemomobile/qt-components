@@ -222,9 +222,7 @@ ImplicitSizeItem {
         }
 
         function hold() {
-            if (root.longPress) {
-                root.platformPressAndHold()
-            }
+            root.platformPressAndHold()
         }
 
         function isButtonRow(item) {
