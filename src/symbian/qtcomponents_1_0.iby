@@ -3,8 +3,8 @@
 
 #include <bldvariant.hrh>
 
-define COMPONENTS_PLUGIN_DIR Qt\labs\components.1.0
-define SYMBIAN_PLUGIN_DIR com\nokia\symbian.1.0
+define COMPONENTS_PLUGIN_DIR Qt\labs\components
+define SYMBIAN_PLUGIN_DIR com\nokia\symbian
 
 REM QT
 

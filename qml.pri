@@ -16,7 +16,7 @@ NATIVE_FILES -= qmldir
     }
 
     copy_native {
-        NATIVE_DESTDIR = $$Q_COMPONENTS_BUILD_TREE/imports/Qt/labs/components/native.1.0
+        NATIVE_DESTDIR = $$Q_COMPONENTS_BUILD_TREE/imports/Qt/labs/components/native
         NATIVE_DESTDIR = $$replace(NATIVE_DESTDIR, /, $$QMAKE_DIR_SEP)
 
         win32:!win32-g++* {
@@ -94,25 +94,25 @@ for(targetpath, $$list($$unique(TARGETPATH))) {
 install_native {
     symbian {
         native_pluginstub.sources = $$_PRO_FILE_PWD_/qmakepluginstubs/$$symbianRemoveSpecialCharacters($$basename(TARGET)).qtplugin
-        native_pluginstub.path = $$QT_IMPORTS_BASE_DIR/Qt/labs/components/native.1.0
+        native_pluginstub.path = $$QT_IMPORTS_BASE_DIR/Qt/labs/components/native
 
         native_qmlfiles.sources = $$NATIVE_FILES
-        native_qmlfiles.path = $$QT_IMPORTS_BASE_DIR/Qt/labs/components/native.1.0
+        native_qmlfiles.path = $$QT_IMPORTS_BASE_DIR/Qt/labs/components/native
 
         native_qmlimages.sources = $$QML_IMAGES
-        native_qmlimages.path = $$QT_IMPORTS_BASE_DIR/Qt/labs/components/native.1.0/images
+        native_qmlimages.path = $$QT_IMPORTS_BASE_DIR/Qt/labs/components/native/images
 
         DEPLOYMENT += native_pluginstub native_qmlfiles native_qmlimages
     } else {
         native_target.CONFIG += no_check_exist executable
         native_target.files = $$DESTDIR/$(TARGET)
-        native_target.path = $$[QT_INSTALL_IMPORTS]/Qt/labs/components/native.1.0
+        native_target.path = $$[QT_INSTALL_IMPORTS]/Qt/labs/components/native
 
         native_qmlfiles.files = $$NATIVE_FILES
-        native_qmlfiles.path = $$[QT_INSTALL_IMPORTS]/Qt/labs/components/native.1.0
+        native_qmlfiles.path = $$[QT_INSTALL_IMPORTS]/Qt/labs/components/native
 
         native_qmlimages.files = $$QML_IMAGES
-        native_qmlimages.path = $$[QT_INSTALL_IMPORTS]/Qt/labs/components/native.1.0/images
+        native_qmlimages.path = $$[QT_INSTALL_IMPORTS]/Qt/labs/components/native/images
 
         INSTALLS += native_target native_qmlfiles native_qmlimages
     }

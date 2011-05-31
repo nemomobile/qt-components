@@ -1,6 +1,6 @@
 include (../../qt-components.pri)
 
-TARGETPATH = Qt/labs/components.1.0
+TARGETPATH = Qt/labs/components
 TEMPLATE = lib
 TARGET = $$qtLibraryTarget(qtcomponentsplugin_1_0)
 INCLUDEPATH += $$PWD $$PWD/models

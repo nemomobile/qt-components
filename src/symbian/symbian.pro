@@ -1,6 +1,6 @@
 include (../../qt-components.pri)
 
-TARGETPATH = com/nokia/symbian.1.0
+TARGETPATH = com/nokia/symbian
 TEMPLATE = lib
 TARGET = $$qtLibraryTarget(symbianplugin_1_0)
 INCLUDEPATH += $$PWD $$PWD/indicators

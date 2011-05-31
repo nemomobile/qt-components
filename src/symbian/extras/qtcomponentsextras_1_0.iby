@@ -3,7 +3,7 @@
 
 #include <bldvariant.hrh>
 
-define SYMBIANEXTRAS_PLUGIN_DIR com\nokia\extras.1.0
+define SYMBIANEXTRAS_PLUGIN_DIR com\nokia\extras
 
 REM QT
 

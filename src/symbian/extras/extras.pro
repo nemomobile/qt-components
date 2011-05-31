@@ -1,6 +1,6 @@
 include (../../../qt-components.pri)
 
-TARGETPATH = com/nokia/extras.1.0
+TARGETPATH = com/nokia/extras
 TEMPLATE = lib
 TARGET = $$qtLibraryTarget(symbianextrasplugin_1_0)
 INCLUDEPATH += $$PWD
