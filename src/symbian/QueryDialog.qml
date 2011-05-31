@@ -37,6 +37,8 @@ Dialog {
     property alias rejectButtonText: rejectButton.text
     property alias icon: icon.source
 
+    onStatusChanged: if (status == DialogStatus.Open) vertical.flash()
+
     title: Item {
         id: title
         height: platformStyle.graphicSizeSmall + 2 * platformStyle.paddingLarge
@@ -96,9 +98,13 @@ Dialog {
                 }
             }
 
-            ScrollDecorator {
-                id: scrollDecorator
+            ScrollBar {
+                id: vertical
+                height: parent.height
+                anchors { top: flickable.top; right: flickable.right }
                 flickableItem: flickable
+                interactive: false
+                orientation: Qt.Vertical
             }
 
             anchors {
