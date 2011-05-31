@@ -163,7 +163,7 @@ Item {
             id: longPressButton
             objectName: "longPressButton"
             width: common.rightColumnWidth
-            platformLongPress: true
+            checkable: true
             text: "Press me"
             onPlatformPressAndHold: {
                 var menu = Qt.createQmlObject('import QtQuick 1.0; Rectangle { id: tempMenu; color: "lightsteelblue"; width: 200; height: 100; anchors.centerIn: parent; opacity: 0.8; Text { id: text1; text: "Click to close"; font.pointSize: 12; anchors.top: parent.top;}  MouseArea { anchors.fill: parent; onClicked: {tempMenu.destroy(); } } }', scalableButton.parent, "menu");
@@ -184,7 +184,6 @@ Item {
             id: repeatButton
             objectName: "repeatButton"
             width: common.rightColumnWidth
-            platformLongPress: false
             platformAutoRepeat: true
             text: "Press me"
 

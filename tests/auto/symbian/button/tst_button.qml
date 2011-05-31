@@ -15,7 +15,6 @@ Item {
         y: 130
         width: 70
         height: 40
-        platformLongPress: true
         objectName: "testButton"
     }
 

@@ -42,7 +42,6 @@ private slots:
     void testImplicitSize();
     void testFont();
     void platformReleased();
-    void platformPressAndHold();
 
 private:
     QObject *componentObject;
@@ -61,8 +60,6 @@ void tst_button::defaultPropertyValues()
     QVERIFY(testButton);
     QVERIFY(testButton->property("platformAutoRepeat").isValid());
     QCOMPARE(testButton->property("platformAutoRepeat").toBool(), false);
-    QVERIFY(testButton->property("platformLongPress").isValid());
-    QCOMPARE(testButton->property("platformLongPress").toBool(), false);
     QVERIFY(testButton->property("font").isValid());
 }
 
@@ -76,12 +73,6 @@ void tst_button::properties()
 
     testButton->setProperty("platformAutoRepeat", QVariant(false));
     QCOMPARE(testButton->property("platformAutoRepeat").toBool(), false);
-
-    testButton->setProperty("platformLongPress", QVariant(true));
-    QCOMPARE(testButton->property("platformLongPress").toBool(), true);
-
-    testButton->setProperty("platformLongPress", QVariant(false));
-    QCOMPARE(testButton->property("platformLongPress").toBool(), false);
 }
 
 void tst_button::testImplicitSize()
@@ -168,25 +159,6 @@ void tst_button::platformReleased()
 
     QVERIFY(QMetaObject::invokeMethod(internal, "release"));
     QCOMPARE(releasedSpy.count(), 1);
-}
-
-void tst_button::platformPressAndHold()
-{
-    QGraphicsObject *testButton = componentObject->findChild<QGraphicsObject*>("button3");
-    QVERIFY(testButton);
-
-    QSignalSpy pressAndHoldSpy(testButton, SIGNAL(platformPressAndHold()));
-    QVERIFY(pressAndHoldSpy.isValid());
-
-    testButton->setProperty("platformLongPress", QVariant(true));
-    QCOMPARE(testButton->property("platformLongPress").toBool(), true);
-
-    QObject *internal = testButton->findChild<QObject*>("internal");
-    QVERIFY(internal);
-
-    QVERIFY(QMetaObject::invokeMethod(internal, "press"));
-    QVERIFY(QMetaObject::invokeMethod(internal, "hold"));
-    QCOMPARE(pressAndHoldSpy.count(), 1);
 }
 
 QTEST_MAIN(tst_button)

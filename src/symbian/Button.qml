@@ -33,7 +33,7 @@ ImplicitSizeItem {
     // Common Public API
     property bool checked: false
     property bool checkable: false
-    property bool pressed: (stateGroup.state == "Pressed" || stateGroup.state == "PressAndHold") && mouseArea.containsMouse
+    property bool pressed: (stateGroup.state == "Pressed" || stateGroup.state == "AutoRepeating") && mouseArea.containsMouse
     property alias text: label.text
     property alias iconSource: icon.source
     property alias font: label.font
@@ -45,7 +45,6 @@ ImplicitSizeItem {
     signal platformPressAndHold
 
     property bool platformAutoRepeat: false
-    property bool platformLongPress: false
 
     implicitWidth: Math.max(container.contentWidth + 2 * internal.horizontalPadding, privateStyle.buttonSize)
     implicitHeight: Math.max(container.contentHeight + 2 * internal.verticalPadding, privateStyle.buttonSize)
@@ -106,15 +105,6 @@ ImplicitSizeItem {
             button.clicked()
         }
 
-        function hold() {
-            // If autorepeat is enabled, do not emit long press, but repeat the tap action.
-            if (button.platformAutoRepeat)
-                tapRepeatTimer.start()
-
-            if (button.platformLongPress)
-                button.platformPressAndHold()
-        }
-
         function repeat() {
             if (!checkable)
                 privateStyle.play(Symbian.SensitiveButton)
@@ -150,7 +140,7 @@ ImplicitSizeItem {
 
         states: [
             State { name: "Pressed" },
-            State { name: "PressAndHold" },
+            State { name: "AutoRepeating" },
             State { name: "Canceled" }
         ]
 
@@ -161,8 +151,8 @@ ImplicitSizeItem {
             },
             Transition {
                 from: "Pressed"
-                to: "PressAndHold"
-                ScriptAction { script: internal.hold() }
+                to: "AutoRepeating"
+                ScriptAction { script: tapRepeatTimer.start() }
             },
             Transition {
                 from: "Pressed"
@@ -171,18 +161,12 @@ ImplicitSizeItem {
                 ScriptAction { script: internal.click() }
             },
             Transition {
-                from: "PressAndHold"
-                to: ""
-                ScriptAction { script: internal.release() }
-            },
-            Transition {
                 from: "Pressed"
                 to: "Canceled"
                 ScriptAction { script: internal.release() }
             },
             Transition {
-                from: "PressAndHold"
-                to: "Canceled"
+                from: "AutoRepeating"
                 ScriptAction { script: internal.release() }
             }
         ]
@@ -266,8 +250,9 @@ ImplicitSizeItem {
         }
 
         onPressAndHold: {
-            if (stateGroup.state != "Canceled" && (platformLongPress || platformAutoRepeat))
-                stateGroup.state = "PressAndHold"
+            if (stateGroup.state != "Canceled" && platformAutoRepeat)
+                stateGroup.state = "AutoRepeating"
+            button.platformPressAndHold()
         }
 
         onExited: stateGroup.state = "Canceled"
