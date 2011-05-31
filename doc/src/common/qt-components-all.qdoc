@@ -1,25 +1,42 @@
 /*!
 
-  \group qt-components
-  \title All Qt Quick components
+\group qt-components
+\title All Qt Quick components
 
-  This is a list of all the Qt Quick components that are available.
+This is a list of all the Qt Quick components that are available.
 
-  For a list of Symbian-specific components see: \l{All Symbian-specific Qt Quick components}
+\generatelist related
 
-  \generatelist related
+\section1 Symbian Components
 
+The \l{Functional List of Symbian Components} page has a listing of the
+components for the Symbian platform.
+
+\section1 Extras Components
+
+The \l{Extras Components} page has a listing of the Extras
+components.
 */
 
 /*!
 
-  \group qt-components-extras
-  \title All Qt Quick components
+\group qt-components-extras
+\title Extras Components
 
-  This is a list of all the Qt Quick components that are available.
+The Extras Components introduce additional components in addition to the
+components for Symbian or MeeGo.
 
-  For a list of Symbian-specific components see: \l{All Symbian-specific Qt Quick components}
+The Extras set of components are built along with the platform. Therefore,
+building the \l{Building the Qt Quick Components for Symbian}{Symbian
+components} will also build the Extras components for Symbian.
 
-  \generatelist related
+\note Currently, the Extras are only feature complete on the Symbian platform.
+
+The components are imported by declaring the following:
+\code
+import com.nokia.extras
+\endcode
+
+\generatelist related
 
 */

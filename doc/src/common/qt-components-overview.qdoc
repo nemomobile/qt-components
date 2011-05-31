@@ -32,28 +32,40 @@
 
     \image common/component-splash.png
 
-    The Qt Quick Components provide a set of widgets and other building blocks
-    that you can use to create a native-look user interface for your
-    application.
+    The Qt Quick Components project provides a set of QML components for
+    building user interfaces. The components allow the interface to accept user
+    input and provide feedback indicators.
 
-    There are components for many of the usual user interface features
-    including various types of buttons, sliders, text input, menus, toolbars and
-    dialogs. There are also some components that implement standard small-screen
-    navigation paradigms such as navigating a hierarchy and content accessible
-    with tabs. For more details, see: \l {Introduction to the Qt Quick
-    components}
-
-    \section1 Getting Started with the Components
-
-    The Qt Quick components are built with QML and you can use them in your QML
-    application in the same way as any of the standard QML elements. You make
-    the components available to your application by importing them as follows:
+    There are three sets of components, one set for the Symbian platform, one
+    set for the MeeGo platform, and another \e{Extras} set that introduces new
+    components to both platforms. Each set has a different \c import statement.
 
     \code
     import com.nokia.symbian    // Symbian components
-      _or_
     import com.nokia.meego      // MeeGo components
+    import com.nokia.extras     // Extras
     \endcode
+
+    \table
+        \header
+            \o Symbian Components
+            \o MeeGo Components
+            \o Extras Components
+        \row
+            \o
+                \list
+                    \o \l{Building the Qt Quick Components for Symbian}{Build and Install Instructions}
+                    \o \l{Functional List of Symbian Components}{List of the Symbian Components}
+                \endlist
+            \o
+                \list
+                    \o \l{Qt Quick components examples and demos}{Examples and demos}
+                \endlist
+            \o
+                \list
+                    \o \l{Extras Components}{List of Extras Components}
+                \endlist
+    \endtable
 
     Do try out the example applications that are supplied with full source code.
     Each of example has a walkthrough describing how the application is
