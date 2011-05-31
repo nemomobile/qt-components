@@ -50,16 +50,22 @@ Item {
     Loader {
         id: viewContainer
         anchors.left: parent.left
-        width: tumblerColumn ? tumblerColumn.width + divider.width : 0
+        width: tumblerColumn ? tumblerColumn.width : 0
         height: root.height - container.height // decrease by text
     }
 
-    Image {
+    BorderImage {
         id: divider
         anchors.left: parent.left
         height: firstColumn ? 0 : viewContainer.height
         width: firstColumn ? 0 : Math.round(platformStyle.paddingSmall / 2)
         source: privateStyle.imagePath("qtg_fr_tumbler_divider")
+        border { 
+            left: platformStyle.borderSizeMedium
+            top: platformStyle.borderSizeMedium
+            right: platformStyle.borderSizeMedium
+            bottom: platformStyle.borderSizeMedium
+        }
     }
 
     Component {
@@ -201,13 +207,18 @@ Item {
     Component {
         id: defaultHighlight
 
-        Image {
+        BorderImage {
             id: highlight
             objectName: "highlight"
-            width: tumblerColumn ? tumblerColumn.width + divider.width : 0
+            width: tumblerColumn ? tumblerColumn.width : 0
             height: privateStyle.menuItemHeight
             source: privateStyle.imagePath("qtg_fr_tumbler_highlight")
-            fillMode: Image.TileHorizontally
+            border { 
+                left: platformStyle.borderSizeMedium
+                top: platformStyle.borderSizeMedium
+                right: platformStyle.borderSizeMedium
+                bottom: platformStyle.borderSizeMedium
+            }
         }
     }
 
