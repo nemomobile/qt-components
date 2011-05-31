@@ -64,8 +64,6 @@ private slots:
     void errorHighlight();
 
 private:
-    QObject *findTextEdit(QObject *root);
-
     // our internal objects
     QObject *componentObject;
     QGraphicsObject *root;
@@ -82,20 +80,6 @@ tst_quickcomponentstextarea::tst_quickcomponentstextarea()
     , root(NULL)
     , textEdit(NULL)
 {
-}
-
-QObject *tst_quickcomponentstextarea::findTextEdit(QObject *root)
-{
-    QObject *returnValue = NULL;
-    if (root->metaObject()->className() == QString("QDeclarativeTextEdit"))
-        return root;
-
-    QObjectList children = root->children();
-    if (!children.isEmpty()) {
-        for (int i = 0; i < children.size() && !returnValue; ++i)
-            returnValue = findTextEdit(children.at(i));
-    }
-    return returnValue;
 }
 
 void tst_quickcomponentstextarea::initTestCase()
@@ -118,7 +102,19 @@ void tst_quickcomponentstextarea::initTestCase()
     // this is a safe assumption for symbian and meego components as these tests
     // aims to test the features of those two platforms components.
     root = qobject_cast<QGraphicsObject*>(componentObject);
-    textEdit = qobject_cast<QGraphicsObject*>(findTextEdit(componentObject));
+#ifdef Q_COMPONENTS_SYMBIAN
+    // Symbian style has two TextEdit instances. Find with objectName.
+    textEdit = componentObject->findChild<QGraphicsObject*>("textEdit");
+#else
+    // Assuming TextEdit is a direct child of TextArea.
+    const QObjectList list = componentObject->children();
+    foreach (QObject *obj, list) {
+        if (obj->metaObject()->className() == QString("QDeclarativeTextEdit")) {
+            textEdit = qobject_cast<QGraphicsObject*>(obj);
+            break;
+        }
+    }
+#endif
 
     QVERIFY(root);
     QVERIFY(textEdit);
@@ -410,9 +406,6 @@ void tst_quickcomponentstextarea::positionAt()
     QVERIFY2(QMetaObject::invokeMethod(componentObject, "positionAt",
                                        Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, mappedWidth.x()),
                                        Q_ARG(QVariant, mappedWidth.y())), "Could not call positionAt");
-#ifdef Q_OS_SYMBIAN
-    QEXPECT_FAIL("", "Flickable inside Symbian TextArea breaks mapTo/From functions", Continue);
-#endif
     QCOMPARE(text.left(retVal.toInt()), text);
 }
 
@@ -447,9 +440,6 @@ void tst_quickcomponentstextarea::positionToRectangle()
     // the 'x' of the rectangle should be the same as the width of the text
     // until the position returned
     QFontMetrics fm(mfont);
-#ifdef Q_COMPONENTS_SYMBIAN
-    QEXPECT_FAIL("", "Flickable inside Symbian TextArea breaks mapTo/From functions", Continue);
-#endif
     QCOMPARE((int)root->mapRectToItem(textEdit, retVal.toRectF()).x(), fm.width(text.left(retValPos.toInt())));
 
     // the position shouldn't have changed
