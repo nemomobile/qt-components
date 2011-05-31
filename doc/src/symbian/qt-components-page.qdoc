@@ -40,11 +40,11 @@
     provide a navigation system for your application. Another navigation
     alternative is the Tab component that provides parallel sets of content.
 
-    See the \l{Creating pages and navigating to them} overview for a higher
+    See the \l{Page Stack Based Navigation} overview for a higher
     level discussion about pages and page stacks.
 
 
-    \section1 Defining the content of a page
+    \section1 Defining the Content of a Page
 
     Usually you base the pages (screens of content) of your application on the
     Page component but you can use other components or elements if you wish.
@@ -64,7 +64,7 @@
     The main thing you need to consider is how long you want the page to be
     staying around in memory.
 
-    \section2 Example of a QML page as an item
+    \section2 Example of a QML Page as an Item
 
     Here is an example page defined as an item. It is a page with a text
     that can be accessed externally.
@@ -81,7 +81,7 @@
 
     \snippet src/snippets/common/FilePage.qml 0
 
-    \section2 Example of a QML component page
+    \section2 Example of a QML Component Page
 
     The page described earlier is an example of a simple page declared
     as a QML item. Declaring this same page as a component would look like
@@ -90,11 +90,11 @@
     \snippet src/snippets/common/snippet-pagestack-page.qml 0
 
 
-    \section1 Adding a toolbar to a page
+    \section1 Adding a Toolbar to a Page
 
     ###TBD. See ToolBar, ToolButton and ToolBarLayout.
 
-    \section1 Using the lifecycle signals of a Page
+    \section1 Lifecycle Signals of a Page
 
     The page lifecycle goes from instantiation to activation to deactivation to
     destruction, moving any number of times between activation and deactivation.

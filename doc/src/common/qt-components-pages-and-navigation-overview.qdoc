@@ -29,7 +29,7 @@
     \page qt-components-pages-and-navigation-overview.html
     \target pagenavigation
     \ingroup qt-components-pattern
-    \title Creating pages and navigating to them
+    \title Page Stack Based Navigation
     \brief An application has multiple pages of content and the user needs to
     get from one page to next.
 
@@ -41,7 +41,7 @@
     this system the user sees a tab for all the pages that are available and can
     select
 
-    \section1 Creating pages for your application
+    \section1 Creating Pages for your Application
 
     Before you can do any kind of navigating, you need to have some pages that
     the user can navigate to and see content.
@@ -51,7 +51,7 @@
     QML component is like a class from which you instantiate objects. See the
     Page documentation for examples of these different ways of defining pages.
 
-    \section2 Choosing the page type: item or component
+    \section2 Choosing the Page Type: Item or Component
 
     If you have a simple application with just a few pages and a shallow
     navigation stack, using QML items so you can refer to the pages directly is
@@ -72,11 +72,11 @@
     often a significant consideration.
 
 
-    \section2 Adding a tool bar to a page
+    \section2 Adding a Tool Bar to a Page
 
     ###TBD. See ToolBar, ToolButton and ToolBarLayout.
 
-    \section1 Using PageStack for hierarchical navigation
+    \section1 Using PageStack for Hierarchical Navigation
 
     With the PageStack component, you can push a page to the stack so that it
     becomes visible to the user. You can also push a number of pages at once in
@@ -88,7 +88,7 @@
     the page stack performs appropriate transition animations to help the user
     understand a change is occurring.
 
-    \section2 Pushing pages to the stack
+    \section2 Pushing Pages to the Stack
 
     There are basically three ways you can push a page to the stack:
 
@@ -128,11 +128,11 @@
     defining a separate item for each variation.
 
 
-    \section2 Using the Toolbar for navigation
+    \section2 Using the ToolBar for Navigation
 
     ### back button, in particular
 
-    \section2 Blocking user actions during page transitions
+    \section2 Blocking User Actions During Page Transitions
 
     Your application probably needs to block user actions during page
     transitions. In order to facilitate this PageStack has a property called
@@ -160,18 +160,18 @@
     "pageStack" with the id of your own navigator component.
 
 
-    \section1 Using the Tab component for parallel navigation
+    \section1 Using the Tab Component for Parallel Navigation
 
     ### summarise TabGroup etc.
 
 
-    \section1 Using a custom navigation system
+    \section1 Using a Custom Navigation System
 
     If PageStack and Tab do not suit your application requirements, you can also
     implement your own navigation system. However, there are some things you
     need to consider in order to provide a good user experience.
 
-    \section2 Improving performance
+    \section2 Improving Performance
 
     Use Qt.createComponent() to load the pages, and then, only when you need a
     page, use Component.createObject() to parse the page and create an instance

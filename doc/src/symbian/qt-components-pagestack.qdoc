@@ -42,10 +42,10 @@
     back to the previous page (or several pages back) by \e popping a page (or
     several pages) off the top of the stack.
 
-    See the \l{Creating pages and navigating to them} overview for a higher
+    See the \l{Page Stack Based Navigation} overview for a higher
     level discussion about pages and page stacks.
 
-    \section1 Setting up a page stack
+    \section1 Setting Up a Page Stack
 
     First, add a PageStack item as a child to the top-level QML element of your
     application (usually this is Window). By default, the page stack fills its
@@ -66,9 +66,9 @@
     \endcode
 
 
-    \section1 Creating pages and pushing them to the stack
+    \section1 Creating Pages and Pushing them to the Stack
 
-    \section2 Pushing a QML item page
+    \section2 Pushing a QML Item Page
 
     If you define a page as a QML item you can push it to the page stack by
     referencing its id. In this case, you are pushing a particular page "object"
@@ -85,7 +85,7 @@
     \snippet src/snippets/common/snippet-pagestack-page.qml 3
 
 
-    \section2 Pushing a QML component page defined in a component file
+    \section2 Pushing a QML Component Page Defined in a Component File
 
     You can push a page to the stack by referencing the filename of the file
     that defines the page. When referencing a page by filename, you need to use
@@ -94,7 +94,7 @@
     \snippet src/snippets/common/snippet-pagestack-page.qml 4
 
 
-    \section2 Pushing a QML component page
+    \section2 Pushing a QML Component Page
 
     If you define your page as a QML component, when you push a component page
     to the page stack, the page stack creates an "instance" of the component
@@ -119,7 +119,7 @@
 
     \snippet src/snippets/common/snippet-pagestack-page.qml 5
 
-    \section2 Avoiding the "parent trap" when doing a replace
+    \section2 Avoiding the "Parent Trap" When Doing a Replace
 
     If you are using Qt.createComponent() to create and push pages to the page
     stack, you need to be very careful about who is the parent of the page. When
@@ -184,7 +184,7 @@
    \endlist
 
 
-    \section2 Passing parameters to pages
+    \section2 Passing Parameters to Pages
 
     Normal property bindings should be used whenever possible instead of
     "passing parameters" from one page to another. However, bindings only work
@@ -207,7 +207,7 @@
     \snippet src/snippets/common/snippet-pagestack-page.qml 8
 
 
-    \section1 Page-to-page transition animations
+    \section1 Page-to-Page Transition Animations
 
     PageStack automatically provides appropriate transition animations as the
     user moves from one page to another. The type of animation that occurs is
@@ -234,7 +234,7 @@
     according to the platform's user interface guidelines.
 
 
-    \section1 Navigating with the page stack (basic)
+    \section1 Navigating with the Page Stack (Easy Method)
 
     The topmost item in the page stack is the page that is "active" and is
     visible on the screen. To move to a different page, use the three primary
@@ -256,7 +256,7 @@
     \endlist
 
 
-    \section2 Example of basic PageStack operations
+    \section2 Example of Basic PageStack Operations
 
     Given a starting stack of pages [A, B, C], the following example shows the
     state of the stack after particular operations.
@@ -269,7 +269,7 @@
     \endlist
 
 
-    \section1 Navigating with the PageStack (advanced)
+    \section1 Navigating with the PageStack (Advanced Method)
 
     PageStack also supports advanced variations of the push, replace and pop
     operations for moving several steps forward or backward at a time, or for
@@ -312,7 +312,7 @@
     \endlist
 
 
-    \section2 Example of advanced PageStack navigation
+    \section2 Example of Advanced PageStack Navigation
 
     Given a starting stack of pages [A, B, C, D, E], the following example shows the
     state of the stack after particular operations.
@@ -334,7 +334,7 @@
 
     \endlist
 
-    \section1 Finding a page in the stack
+    \section1 Finding a Page in the Stack
 
     Sometimes it is necessary to search for a page so that you can unwind the
     stack to a particular page you do not have a reference to. PageStack's
@@ -350,7 +350,7 @@
 
     \snippet src/snippets/common/snippet-pagestack-page.qml 6
 
-    \section1 Improving performance
+    \section1 Improving Performance
 
     Sometimes the application needs to take the user to a point deep in the
     hierarchy without having to navigate there step by step. This requires
