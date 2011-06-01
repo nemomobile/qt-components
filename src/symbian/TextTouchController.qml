@@ -191,7 +191,8 @@ MouseArea {
                 editor.select(editor.cursorPosition, editor.cursorPosition);
                 editor.cursorPosition = editor.positionAt(internal.touchPoint.x, internal.touchPoint.y);
                 contextMenu.hide();
-                editor.openSoftwareInputPanel()
+                if (!editor.readOnly)
+                    editor.openSoftwareInputPanel()
             }
         }
 
