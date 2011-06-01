@@ -296,7 +296,7 @@ Item {
         listView.model = listModel
         var msg = { 'listModel': listModel,
             'imageSize': platformStyle.graphicSizeMedium,
-            'image': "image://theme/:/list1.png",
+            'image': "image://theme/:/list1.svg",
             'sectionInterval': sectionInterval,
             'itemCount': root.itemCount
             };

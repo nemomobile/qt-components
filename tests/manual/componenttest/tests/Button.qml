@@ -82,9 +82,9 @@ Item {
                         return ""
                     return "qrc:/" + model[selectedIndex]
                 }
-                model: ["<none>", "list1.png", "list2.png", "list3.png", "list4.png", "list5.png",
-                        "list6.png", "list7.png", "list8.png", "list9.png", "list10.png",
-                        "list11.png", "list12.png", "list13.png", "list14.png", "list15.png"]
+                model: ["<none>", "list1.svg", "list2.svg", "list3.svg", "list4.svg", "list5.svg",
+                        "list6.svg", "list7.svg", "list8.svg", "list9.svg", "list10.svg",
+                        "list11.svg", "list12.svg", "list13.svg", "list14.svg", "list15.svg"]
             }
         }
 

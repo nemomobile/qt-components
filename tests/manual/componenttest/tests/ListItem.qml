@@ -108,7 +108,7 @@ Item {
                     anchors { left: listItem3.left; top: listItem3.top }
                     sourceSize.width: platformStyle.graphicSizeLarge
                     sourceSize.height: platformStyle.graphicSizeLarge
-                    source: "image://theme/:/list1.png"
+                    source: "image://theme/:/list1.svg"
                 }
 
                 Column {
@@ -146,7 +146,7 @@ Item {
                     anchors { left: listItem4.left; top: listItem4.top }
                     sourceSize.width: platformStyle.graphicSizeLarge
                     sourceSize.height: platformStyle.graphicSizeLarge
-                    source: "image://theme/:/list1.png"
+                    source: "image://theme/:/list1.svg"
                 }
 
                 Column {
@@ -203,7 +203,7 @@ Item {
 
                     Image {
                         id: image5
-                        source: "image://theme/:/list1.png"
+                        source: "image://theme/:/list1.svg"
                         sourceSize.width: platformStyle.graphicSizeSmall
                         sourceSize.height: platformStyle.graphicSizeSmall
                     }
@@ -226,7 +226,7 @@ Item {
                 Image {
                     id: image6a
                     anchors { left: listItem6.left; top: listItem6.top }
-                    source: "image://theme/:/list1.png"
+                    source: "image://theme/:/list1.svg"
                     sourceSize.width: platformStyle.graphicSizeLarge
                     sourceSize.height: platformStyle.graphicSizeLarge
                 }
@@ -256,7 +256,7 @@ Item {
                 Image {
                     id: image6b
                     anchors { right: listItem6.paddingItem.right; top: listItem6.paddingItem.top }
-                    source: "image://theme/:/list1.png"
+                    source: "image://theme/:/list1.svg"
                     sourceSize.width: platformStyle.graphicSizeSmall
                     sourceSize.height: platformStyle.graphicSizeSmall
                 }
@@ -271,7 +271,7 @@ Item {
                 Image {
                     id: image7a
                     anchors { left: listItem7.left; top: listItem7.top }
-                    source: "image://theme/:/list1.png"
+                    source: "image://theme/:/list1.svg"
                     sourceSize.width: platformStyle.graphicSizeLarge
                     sourceSize.height: platformStyle.graphicSizeLarge
                 }
@@ -290,7 +290,7 @@ Item {
 
                 Image {
                     id: image7b
-                    source: "image://theme/:/list1.png"
+                    source: "image://theme/:/list1.svg"
                     sourceSize.width: platformStyle.graphicSizeSmall
                     sourceSize.height: platformStyle.graphicSizeSmall
                     anchors { verticalCenter: parent.verticalCenter; right: listItem7.paddingItem.right }
@@ -337,7 +337,7 @@ Item {
 
                 Image {
                     id: image8b
-                    source: "image://theme/:/list1.png"
+                    source: "image://theme/:/list1.svg"
                     sourceSize.width: platformStyle.graphicSizeSmall
                     sourceSize.height: platformStyle.graphicSizeSmall
                     anchors { verticalCenter: parent.verticalCenter; right: listItem8.paddingItem.right }

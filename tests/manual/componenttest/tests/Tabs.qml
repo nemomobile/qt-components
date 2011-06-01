@@ -257,8 +257,7 @@ Item {
                                 selectedIndex: 0
                                 model: ListModel {
                                     ListElement { name: "<none>" }
-                                    ListElement { name: "list1.png" }
-                                    ListElement { name: "list2.png" }
+                                    ListElement { name: "tb_plus.png" }
                                     ListElement { name: "qtg_graf_drill_down_indicator.svg" }
                                 }
                             }

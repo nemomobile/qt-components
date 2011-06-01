@@ -172,28 +172,28 @@ Item {
             Button {
                 id: b5
                 objectName: "b5"
-                iconSource: "image://theme/:/list1.png"
+                iconSource: "image://theme/:/list1.svg"
                 onClicked: text2.text = "Clicked " + objectName
             }
 
             Button {
                 id: b6
                 objectName: "b6"
-                iconSource: "image://theme/:/list2.png"
+                iconSource: "image://theme/:/list2.svg"
                 onClicked: text2.text = "Clicked " + objectName
             }
 
             Button {
                 id: b7
                 objectName: "b7"
-                iconSource: "image://theme/:/list3.png"
+                iconSource: "image://theme/:/list3.svg"
                 onClicked: text2.text = "Clicked " + objectName
             }
 
             Button {
                 id: b8
                 objectName: "b8"
-                iconSource: "image://theme/:/list4.png"
+                iconSource: "image://theme/:/list4.svg"
                 onClicked: text2.text = "Clicked " + objectName
             }
         }
@@ -429,21 +429,21 @@ Item {
             ToolButton {
                 id: tb4
                 objectName: "tb4"
-                iconSource: "image://theme/:/list1.png"
+                iconSource: "image://theme/:/list1.svg"
                 onClicked: text7.text = "Clicked " + objectName
             }
 
             ToolButton {
                 id: tb5
                 objectName: "tb5"
-                iconSource: "image://theme/:/list2.png"
+                iconSource: "image://theme/:/list2.svg"
                 onClicked: text7.text = "Clicked " + objectName
             }
 
             ToolButton {
                 id: tb6
                 objectName: "tb6"
-                iconSource: "image://theme/:/list3.png"
+                iconSource: "image://theme/:/list3.svg"
                 onClicked: text7.text = "Clicked " + objectName
             }
         }

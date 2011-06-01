@@ -276,7 +276,7 @@ Item {
                                   "subTitle": subTitleField.text,
                                   // Fetch actual size in pixels based on index
                                   "imageSize": root.getSize(imageSizeGroup.selectedValue),
-                                  "image": "image://theme/:/list1.png",
+                                  "image": "image://theme/:/list1.svg",
                                   "disabled": false,
                                   "selected": false,
                                   "indicator": false
@@ -294,7 +294,7 @@ Item {
                                       "title": "Title text - " + (5 * i + j),
                                       "subTitle": "SubTitle " + (5 * i + j),
                                       "imageSize": root.getSize(root.imageSizes[j]), // Fetch actual size in pixels based on index
-                                      "image": "image://theme/:/list" + (i + 1) + ".png",
+                                      "image": "image://theme/:/list" + (i + 1) + ".svg",
                                       "disabled": false,
                                       "selected": false,
                                       "indicator": false
