@@ -121,7 +121,8 @@ ImplicitSizeItem {
         anchors.verticalCenter: parent.verticalCenter
         elide: Text.ElideRight
         font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
-        color: platformStyle.colorNormalLight
+        color: root.enabled ? (root.pressed ? platformStyle.colorPressed : platformStyle.colorNormalLight)
+                            : platformStyle.colorDisabledLight
     }
 
     MouseArea {
