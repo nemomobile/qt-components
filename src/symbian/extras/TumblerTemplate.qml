@@ -50,7 +50,7 @@ Item {
     Loader {
         id: viewContainer
         anchors.left: parent.left
-        width: tumblerColumn ? tumblerColumn.width : 0
+        width: tumblerColumn ? tumblerColumn.width + divider.width : 0
         height: root.height - container.height // decrease by text
     }
 
@@ -210,7 +210,7 @@ Item {
         BorderImage {
             id: highlight
             objectName: "highlight"
-            width: tumblerColumn ? tumblerColumn.width : 0
+            width: tumblerColumn ? tumblerColumn.width + divider.width : 0
             height: privateStyle.menuItemHeight
             source: privateStyle.imagePath("qtg_fr_tumbler_highlight")
             border { 
