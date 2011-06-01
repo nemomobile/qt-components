@@ -101,10 +101,14 @@ ImplicitSizeItem {
 
         anchors.fill: parent
         onPressed: if (root.interactive) stateGroup.state = "Pressed"
-        onReleased: if (root.interactive) stateGroup.state = "Released"
-                    else stateGroup.state = "Hidden"
+        onReleased: if (root.interactive) {
+                        if (stateGroup.state != "Cancelled" && stateGroup.state != "Hidden")
+                            stateGroup.state = "Released";
+                    } else {
+                        stateGroup.state = "Hidden";
+                    }
         onPressAndHold: if (root.interactive) {
-                            if (timer.running) timer.stop()
+                            if (timer.running) timer.stop();
                             stateGroup.state = "PressAndHold";
                         }
         onExited: if (root.interactive) {
@@ -112,7 +116,7 @@ ImplicitSizeItem {
                           stateGroup.state = "Cancelled";
                       } else if (stateGroup.state == "PressAndHold") {
                           stateGroup.state = "Cancelled";
-                          if (timer.interval) timer.restart()
+                          if (timer.interval) timer.restart();
                       } else stateGroup.state = "Hidden"
                   }
     }
@@ -198,13 +202,13 @@ ImplicitSizeItem {
                 ScriptAction { script: internal.click(); }
             },
             Transition {
-                from: "Cancelled"; to: "Released"
-                ScriptAction { script: internal.release(); }
-            },
-            Transition {
                 from: "PressAndHold"; to: "Released"
                 ScriptAction { script: internal.release(); }
                 ScriptAction { script: internal.click(); }
+            },
+            Transition {
+                to: "Cancelled"
+                ScriptAction { script: internal.release(); }
             },
             Transition {
                 from: "Hidden"; to: "Visible"
