@@ -33,36 +33,40 @@
     The InfoBanner component is used to display information to the user. The
     number of lines of text is limited to 3.
 
+    \image extras/infobanner.png
+
     \qml
         // Create an info banner with no icon
         InfoBanner {
-            id: sb
+            id: banner
             text: "This is an info banner with no icon"
         }
 
         // Create an info banner with icon
         InfoBanner {
             text: "This is an info banner with icon"
-            iconSource: "system_banner_thumbnail.png"
+            iconSource: "info_banner_thumbnail.png"
         }
 
         function showBanner1() {
             // set display time to 5000 ms, default is 3000 ms
-            sb.timerShowTime = 5000;
+            banner.timeout = 5000;
             // display info banner
-            sb.show();
+            banner.open();
         }
 
         function showBanner2() {
             // disable "self-dismissing" timer, banner has to be dismissed manually
-            sb.timeout = 0;
+            banner.timeout = 0;
+            // interactive infobanner. click signal will be triggered when clicked.
+            banner.interactive =  true
             // display info banner
-            sb.show();
+            banner.open();
         }
 
-        function hideBanner() {
-            // hide info banner manually
-            sb.hide();
+        function closeBanner() {
+            // close info banner manually
+            banner.close();
         }
 
     \endqml
@@ -109,4 +113,10 @@
     Property default is \c false
 
     true: the banner is interactive; false: informative banner
+*/
+
+/*!
+    \qmlsignal InfoBanner::clicked()
+
+    This signal is emitted when the interactive info banner is pressed and then released.
 */

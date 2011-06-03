@@ -69,7 +69,7 @@
 /*!
     \qmlproperty enum TimePickerDialog::fields
 
-    Property default is \c DateTime.All
+    Property default is \c DateTime.Hours | DateTime.Minutes
 
     Binary flag to set if the time picker should show hours, minutes, and/or seconds.
     Valid values are DateTime.Hours, DateTime.Minutes, DateTime.Seconds, DateTime.All.

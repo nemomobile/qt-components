@@ -33,6 +33,7 @@
     A tumbler is a component composed by one or more column.
     In each column one of the value can be selected by sliding the finger.
 
+    \image extras/tumbler.png
     \qml
         TumblerColumn {
             id: dayColumn

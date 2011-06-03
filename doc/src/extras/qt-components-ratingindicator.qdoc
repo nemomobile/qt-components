@@ -33,11 +33,11 @@
     Component to indicate user specified ratings.
 
     A rating indicator is a component that shows the rating value within the
-    maximum allowed range according to the user's specification. The user can
-    also specify the display type to select the positive or negative visuals.
-    Optionally, the user can also specify a count value that will be displayed
-    next to the images.
+    maximum allowed range according to the user's specification. Optionally,
+    the user can also specify a count value that will be displayed next to
+    the images.
 
+    \image extras/ratings.png
     Note: When \c count is used, the height of the entire indicator is different
     than when it is not used. This is due to the font size being larger than the
     image size.
