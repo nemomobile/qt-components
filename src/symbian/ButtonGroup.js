@@ -28,14 +28,25 @@ var self
 var clickHandlers = []
 var visibleButtons = []
 var resizing = false
+var checkingOverallExclusivity = false
+var checkedBtn
 
 function create(that) {
     destroy()
     self = that
+
+    // If the item is not visible at this stage, we store the value of the property
+    // checkedButton to ensure a proper initialization. The value is restored in
+    // initCheckedButton().
+    if (!self.visible)
+        checkedBtn = self.checkedButton
+
     buildItems()
     self.childrenChanged.connect(buildItems)
     self.widthChanged.connect(resizeButtons)
     self.exclusiveChanged.connect(checkOverallExclusivity)
+    self.checkedButtonChanged.connect(checkOverallExclusivity)
+    self.visibleChanged.connect(initCheckedButton)
 }
 
 function destroy() {
@@ -43,8 +54,19 @@ function destroy() {
         self.childrenChanged.disconnect(buildItems)
         self.widthChanged.disconnect(resizeButtons)
         self.exclusiveChanged.disconnect(checkOverallExclusivity)
+        self.checkedButtonChanged.disconnect(checkOverallExclusivity)
+        self.visibleChanged.disconnect(initCheckedButton)
         releaseItemConnections()
         self = undefined
+    }
+}
+
+function initCheckedButton() {
+    // When the item becomes visible, restore the value of checkedButton property
+    // that was stored in the create function.
+    if (self.visible && checkedBtn !== null) {
+        self.checkedButton = checkedBtn
+        checkedBtn = null
     }
 }
 
@@ -76,7 +98,9 @@ function releaseItemConnections() {
 }
 
 function checkOverallExclusivity() {
-    if (self.exclusive) {
+    if (!checkingOverallExclusivity && self.exclusive) {
+        // prevent re-entrant calls
+        checkingOverallExclusivity = true
         if (visibleButtons.length > 0) {
             if ((self.checkedButton === null || !self.checkedButton.visible))
                 self.checkedButton = visibleButtons[0]
@@ -94,6 +118,7 @@ function checkOverallExclusivity() {
             if (item !== self.checkedButton)
                 item.checked = false
         }
+        checkingOverallExclusivity = false
     }
 }
 
