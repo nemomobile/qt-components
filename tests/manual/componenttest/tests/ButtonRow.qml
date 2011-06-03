@@ -38,8 +38,6 @@ Item {
         anchors.top:  parent.top
         anchors.margins: 20
         width: parent.width
-        exclusive: true
-        checkedButton: navButton1
 
         Button {
             id: navButton1
@@ -102,7 +100,6 @@ Item {
             objectName: "buttonRow1"
             width: parent.width
             exclusive: toggleExclusive.checked
-            checkedButton:  b2
 
             Button {
                 id: b1
@@ -133,24 +130,26 @@ Item {
             }
         }
 
-        CheckBox {
-            id: toggleExclusive
-            objectName: "toggleExclusive"
-            text: "exclusive"
-            checked: true
-        }
-
         Row {
-            visible: toggleExclusive.checked && buttonRow1.checkedButton !== null
+            spacing: 10
+            CheckBox {
+                id: toggleExclusive
+                objectName: "toggleExclusive"
+                text: "exclusive"
+                checked: true
+            }
 
             Text {
-                text: "Text of checkedButton:"
+                text: "CheckedBtn text:"
+                anchors.verticalCenter: parent.verticalCenter
                 color: "white"
             }
 
             TextField {
                 id: buttonTextField
+                objectName: "buttonTextField"
                 text: buttonRow1.checkedButton !== null ? buttonRow1.checkedButton.text : " "
+                anchors.verticalCenter: parent.verticalCenter
                 onTextChanged: {
                     if (buttonRow1.checkedButton !== null)
                         buttonRow1.checkedButton.text = buttonTextField.text
@@ -204,58 +203,131 @@ Item {
             color: "white"
         }
 
-        ButtonRow {
-            exclusive: false
-            width: parent.width
-
-            Button {
-                id: addButton
-                objectName: "addButton"
-                text: "Add"
-
-                onClicked: {
-                    var item = Qt.createQmlObject('import QtQuick 1.0; import com.nokia.symbian 1.0;  Button { text: \"Btn' +buttonRow3.children.length +'\" }', buttonRow3, "dynButton");
-                }
-            }
-
-            Button {
-                id: delButton
-                objectName: "delButton"
-                text: "Del"
-
-                onClicked: {
-                    for (var i = 0; i < buttonRow3.children.length; i++) {
-                        if (buttonRow3.children[i].checked)
-                            buttonRow3.children[i].destroy()
-                    }
-                }
-            }
-        }
-
         Row {
             width: parent.width
 
-            TextField {
-                id: indexTextField
-                objectName: "indexTextField"
-                placeholderText: "index: "
+            ButtonRow {
+                id: toolRow
+                exclusive: false
+                width: parent.width * 3/4
+
+                Button {
+                    id: addButton
+                    objectName: "addButton"
+                    text: "Add"
+
+                    onClicked: {
+                        var item = Qt.createQmlObject('import QtQuick 1.0; import com.nokia.symbian 1.0;  Button { text: \"Btn' +buttonRow3.children.length +'\"; objectName: \"' +"Btn"+buttonRow3.children.length+'\" }', buttonRow3, "dynButton");
+                    }
+                }
+
+                Button {
+                    id: delButton
+                    objectName: "delButton"
+                    text: "Del"
+
+                    onClicked: {
+                        for (var i = 0; i < buttonRow3.children.length; i++) {
+                            if (buttonRow3.children[i].checked)
+                                buttonRow3.children[i].destroy()
+                        }
+                    }
+                }
+
+                Button {
+                    id: variousButton
+                    objectName: "variousButton"
+                    width: parent.width * 1/4
+                    text: "Various"
+                    onClicked: btnDialog.open()
+                }
             }
 
-            Button {
-                id: toggleShowButton
-                objectName: "toggleShowButton"
-                text: "Hide/show"
-                onClicked: {
-                    if (buttonRow3.children[indexTextField.text])
-                        buttonRow3.children[indexTextField.text].visible = !buttonRow3.children[indexTextField.text].visible
+            ContextMenu {
+                id: btnContextMenu
+                objectName: "btnContextMenu"
+                height: parent.height
+                width: parent.width
+
+                content: MenuLayout {
+                    MenuItem {
+                        text: "Delete button"
+                        onClicked: {
+                            if (dynBtnListView.currentIndex >= 0) {
+                                buttonRow3.children[dynBtnListView.currentIndex].destroy()
+                                dynBtnListView.model.remove(dynBtnListView.currentIndex)
+                            }
+                        }
+                    }
+                    MenuItem {
+                        text: "Set as checkedButton"
+                        onClicked: buttonRow3.checkedButton = buttonRow3.children[dynBtnListView.currentIndex];
+                    }
+                }
+            }
+
+            Component {
+                id: dynBtnDelegate
+
+                ListItem {
+                    id: listItem
+                    width: dynBtnListView.width
+
+                    ListItemText {
+                        id: itemText
+                        mode: listItem.mode
+                        role: toggleVisible.checked ? "Title" : "SubTitle"
+                        text: model.title
+                    }
+
+                    CheckBox {
+                        id: toggleVisible
+                        anchors.top: itemText.top
+                        anchors.right: parent.right
+                        anchors.rightMargin: 20
+                        checked: model.visible
+
+                        onCheckedChanged:  buttonRow3.children[index].visible = toggleVisible.checked
+                    }
+
+                    onClicked: toggleVisible.checked = !toggleVisible.checked
+
+                    onPressAndHold: btnContextMenu.open()
+                }
+            }
+
+            Dialog {
+                id: btnDialog
+                objectName: "btnDialog"
+                height: root.height
+                width: root.width
+
+                title: ListItemText {
+                    text: "Check visible. Long tap for ctx menu"
+                }
+
+                buttons: Button {
+                    text: "close"
+                    width: parent.width
+                    onClicked: btnDialog.accept()
+                }
+
+                content: ListView {
+                    id: dynBtnListView
+                    objectName: "dynBtnListView"
+                    anchors.fill:  parent
+                    clip: true
+                    model: ListModel { id: model }
+                    delegate: dynBtnDelegate
                 }
             }
 
             CheckBox {
                 id: toggleExclusive2
                 objectName: "toggleExclusive2"
+                width: parent.width * 1/4
                 checked: true
-                text: "Exclusive"
+                text: "Excl."
             }
         }
 
@@ -264,6 +336,13 @@ Item {
             objectName: "buttonRow3"
             width: parent.width
             exclusive: toggleExclusive2.checked
+
+            onChildrenChanged: {
+                model.clear()
+                for (var i = 0; i < buttonRow3.children.length; i++)
+                    model.append( { "title": buttonRow3.children[i].objectName, "visible": buttonRow3.children[i].visible } )
+                dynBtnListView.positionViewAtIndex(0, ListView.Center)
+            }
         }
     }
 
@@ -285,7 +364,6 @@ Item {
             id: buttonRow4
             objectName: "buttonRow4"
             width: parent.width
-            checkedButton: checkBox3
             exclusive: toggleExclusive3.checked
 
             CheckBox {
@@ -318,7 +396,6 @@ Item {
         }
     }
 
-    // Example use of RadioButtons in a ButtonRow
     Column {
         id: radioButtonTests
         anchors.top: navButtonRow.bottom
@@ -369,7 +446,6 @@ Item {
         }
     }
 
-    // Example use of ToolButtons in a ButtonRow
     Column {
         id: toolButtonTests
         anchors.top: navButtonRow.bottom
@@ -389,7 +465,6 @@ Item {
             objectName: "buttonRow6"
             width: parent.width
             exclusive: true
-            checkedButton: tb1
 
             ToolButton {
                 id: tb1
@@ -424,7 +499,6 @@ Item {
             objectName: "buttonRow7"
             width: parent.width
             exclusive: toggleExclusive5.checked
-            checkedButton: tb4
 
             ToolButton {
                 id: tb4
@@ -461,55 +535,130 @@ Item {
             color: "white"
         }
 
-        ButtonRow {
-            width: parent.width
-            exclusive: false
-
-            Button {
-                id: addToolButton
-                objectName: "addToolButton"
-                text: "Add ToolBtn"
-
-                onClicked: {
-                    var item = Qt.createQmlObject('import QtQuick 1.0; import com.nokia.symbian 1.0;  ToolButton { text: \"Btn' +buttonRow8.children.length +'\" }', buttonRow8, "dynButton");
-                }
-            }
-
-            Button {
-                id: delToolButton
-                objectName: "delToolButton"
-                text: "Del checked"
-
-                onClicked: {
-                    if (buttonRow8.checkedButton !== null)
-                        buttonRow8.checkedButton.destroy()
-                }
-            }
-        }
-
         Row {
             width: parent.width
 
-            TextField {
-                id: indexTextField2
-                placeholderText: "index: "
+            ButtonRow {
+                id: toolRow2
+                width: parent.width * 3/4
+                exclusive: false
+
+                Button {
+                    id: addToolButton
+                    objectName: "addToolButton"
+                    text: "Add ToolBtn"
+
+                    onClicked: {
+                        var item = Qt.createQmlObject('import QtQuick 1.0; import com.nokia.symbian 1.0;  ToolButton { text: \"ToolBtn' +buttonRow8.children.length +'\"; objectName: \"' +"ToolBtn"+buttonRow8.children.length +'\" }', buttonRow8, "dynButton");
+                    }
+                }
+
+                Button {
+                    id: delToolButton
+                    objectName: "delToolButton"
+                    text: "Delete"
+
+                    onClicked: {
+                        for (var i = 0; i < buttonRow8.children.length; i++) {
+                            if (buttonRow8.children[i].checked)
+                                buttonRow8.children[i].destroy()
+                        }
+                    }
+                }
+
+                Button {
+                    id: toggleShowToolButton
+                    objectName: "toggleShowToolButton"
+                    text: "Show/Hide"
+
+                    onClicked: toolBtnDialog.open()
+                }
             }
 
-            Button {
-                id: toggleShowButton2
-                objectName: "toggleShowButton2"
-                text: "Hide/show"
-                onClicked: {
-                    if (buttonRow8.children[indexTextField2.text])
-                        buttonRow8.children[indexTextField2.text].visible = !buttonRow8.children[indexTextField2.text].visible
+            ContextMenu {
+                id: toolBtnContextMenu
+                objectName: "toolBtnContextMenu"
+                height: parent.height
+                width: parent.width
+
+                content: MenuLayout {
+                    MenuItem {
+                        text: "Delete ToolButton"
+                        onClicked: {
+                            if (toolButtonsListView.currentIndex >= 0) {
+                                buttonRow8.children[toolButtonsListView.currentIndex].destroy()
+                                toolButtonsListView.model.remove(toolButtonsListView.currentIndex)
+                            }
+                        }
+                    }
+                    MenuItem {
+                        text: "Set as checkedButton"
+                        onClicked: buttonRow8.checkedButton = buttonRow8.children[toolButtonsListView.currentIndex];
+                    }
+                }
+            }
+
+            Component {
+                id: toolBtnListDelegate
+
+                ListItem {
+                    id: listItem2
+                    width: toolButtonsListView.width
+
+                    ListItemText {
+                        id: itemText2
+                        mode: listItem2.mode
+                        role: toggleVisible2.checked ? "Title" : "SubTitle"
+                        text: model.title
+                    }
+
+                    CheckBox {
+                        id: toggleVisible2
+                        anchors.top: itemText2.top
+                        anchors.right: parent.right
+                        anchors.rightMargin: 20
+                        checked: model.visible
+                        onCheckedChanged: buttonRow8.children[index].visible = toggleVisible2.checked
+                    }
+
+                    onClicked: toggleVisible2.checked = !toggleVisible2.checked
+
+                    onPressAndHold: toolBtnContextMenu.open()
+                }
+            }
+
+            Dialog {
+                id: toolBtnDialog
+                objectName: "toolBtnDialog"
+                height: root.height
+                width: root.width
+
+                title: ListItemText {
+                    text: "Check visible buttons"
+                }
+
+                buttons: Button {
+                    text: "close"
+                    width: parent.width
+                    onClicked: toolBtnDialog.accept()
+                }
+
+                content: ListView {
+                    id: toolButtonsListView
+                    height: parent.height
+                    width: parent.width
+                    clip: true
+                    model: ListModel { id: model2 }
+                    delegate: toolBtnListDelegate
                 }
             }
 
             CheckBox {
                 id: toggleExclusive6
                 objectName: "toggleExclusive6"
+                width: parent.width * 1/4
                 checked: true
-                text: "Exclusive"
+                text: "Excl."
             }
         }
 
@@ -518,6 +667,13 @@ Item {
             objectName: "buttonRow8"
             width: parent.width
             exclusive: toggleExclusive6.checked
+
+            onChildrenChanged: {
+                model2.clear()
+                for (var i = 0; i < buttonRow8.children.length; i++)
+                    model2.append( { "title": buttonRow8.children[i].objectName, "visible": buttonRow8.children[i].visible } )
+                toolButtonsListView.positionViewAtIndex(0, ListView.Center)
+            }
         }
     }
 

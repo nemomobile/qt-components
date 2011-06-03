@@ -38,7 +38,6 @@ Item {
         anchors.margins: 20
         width: parent.width
         exclusive: true
-        checkedButton: navButton1
 
         Button {
             id: navButton1
@@ -99,7 +98,6 @@ Item {
             ButtonColumn {
                 id: buttonColumn1
                 exclusive: true
-                checkedButton: b1
 
                 Button {
                     id: b1
@@ -153,7 +151,6 @@ Item {
             ButtonColumn {
                 id: buttonColumn2
                 exclusive: true
-                checkedButton: b5
 
                 Button {
                     id: b5
@@ -227,7 +224,6 @@ Item {
         }
     }
 
-    // Example use of CheckBoxes in a ButtonColumn
     Item {
         id: checkBoxTests
         anchors.top: navButtonRow.bottom
@@ -247,7 +243,6 @@ Item {
             ButtonColumn {
                 id: buttonColumn4
                 spacing: platformStyle.paddingMedium
-                checkedButton: checkBox3
                 exclusive: toggleExclusive2.checked
 
                 CheckBox {
@@ -280,7 +275,6 @@ Item {
         }
     }
 
-    // Example use of RadioButtons in a ButtonColumn
     Item {
         id: radioButtonTests
         anchors.top: navButtonRow.bottom
@@ -333,7 +327,6 @@ Item {
         }
     }
 
-    // Example use of ToolButtons in a ButtonColumn
     Item {
         id: toolButtonTests
         anchors.top: navButtonRow.bottom
@@ -355,7 +348,6 @@ Item {
             ButtonColumn {
                 id: buttonColumn6
                 exclusive: toggleExclusive4.checked
-                checkedButton: tb1
 
                 ToolButton {
                     id: tb1
@@ -400,7 +392,6 @@ Item {
             ButtonColumn {
                 id: buttonColumn7
                 exclusive: true
-                checkedButton: tb4
 
                 ToolButton {
                     id: tb4
