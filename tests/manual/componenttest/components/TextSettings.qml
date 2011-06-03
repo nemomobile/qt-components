@@ -53,8 +53,7 @@ ListView {
             case 5: settings.fontLetterSpacing = value; break
             case 6: settings.fontPixelSize = value; break
             case 7: settings.fontWeight = value; break
-            case 8: settings.fontWeight = value; break
-            case 9: settings.inputMethodHints = value; break
+            case 8: settings.inputMethodHints = value; break
             default: break // do nothing
             }
         }
