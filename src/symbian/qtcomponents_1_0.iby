@@ -55,7 +55,6 @@ data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\ScrollBar.qml                      
 data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\ScrollDecorator.qml                            RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\ScrollDecorator.qml
 data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\SectionScroller.js                             RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\SectionScroller.js
 data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\SectionScroller.qml                            RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\SectionScroller.qml
-data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\SectionScrollerLabel.qml                       RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\SectionScrollerLabel.qml
 data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\SelectionDialog.qml                            RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\SelectionDialog.qml
 data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\SelectionListItem.qml                          RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\SelectionListItem.qml
 data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\Slider.qml                                     RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\Slider.qml
