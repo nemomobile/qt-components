@@ -36,16 +36,32 @@
 */
 
 /*!
-    \qmlproperty double TextArea::maxImplicitWidth
+    \qmlproperty double TextArea::platformMaxImplicitWidth
 
     \e {Symbian:}
+
+    By setting this property the maximum width that the TextArea will implicitly
+    grow to can be defined.
+
+    The default value for this property is -1 and the width is allowed to grow
+    infinitely.
+
+    If a width is explicitly set then this property has no effect.
 
 */
 
 /*!
-    \qmlproperty double TextArea::maxImplicitHeight
+    \qmlproperty double TextArea::platformMaxImplicitHeight
 
     \e {Symbian:}
+
+    By setting this property the maximum height that the TextArea will implicitly
+    grow to can be defined.
+
+    The default value for this property is -1 and the height is allowed to grow
+    infinitely.
+
+    If a height is explicitly set then this property has no effect.
 
 */
 
