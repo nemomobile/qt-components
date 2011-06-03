@@ -32,8 +32,8 @@ ImplicitSizeItem {
     id: root
 
     // Common API
-    property alias checkable: checkable.enabled
-    property alias checked: checkable.checked
+    property alias checkable: checkableItem.enabled
+    property alias checked: checkableItem.checked
     property bool enabled: true // overridden from base class
     property alias text: label.text
     property alias iconSource: contentIcon.source
@@ -41,7 +41,7 @@ ImplicitSizeItem {
     property bool pressed: mouseArea.containsMouse && (stateGroup.state == "Pressed" || stateGroup.state == "PressAndHold")
 
     // Platform API
-    property alias platformExclusiveGroup: checkable.exclusiveGroup
+    property alias platformExclusiveGroup: checkableItem.exclusiveGroup
 
     // Common API
     signal clicked
@@ -160,7 +160,7 @@ ImplicitSizeItem {
         property bool isFrameGraphic : imageName().search("_fr") > 0
 
         function belongsToExclusiveGroup() {
-            return checkable.exclusiveGroup
+            return checkableItem.exclusiveGroup
                    || (root.parent
                    && root.parent.hasOwnProperty("checkedButton")
                    && root.parent.exclusive)
@@ -185,11 +185,11 @@ ImplicitSizeItem {
 
         function press() {
             if (!belongsToExclusiveGroup()) {
-                if (checkable.enabled && checkable.checked)
+                if (checkableItem.enabled && checkableItem.checked)
                     privateStyle.play(Symbian.SensitiveButton)
                 else
                     privateStyle.play(Symbian.BasicButton)
-            } else if (checkable.enabled && !checkable.checked) {
+            } else if (checkableItem.enabled && !checkableItem.checked) {
                 privateStyle.play(Symbian.BasicButton)
             }
 
@@ -211,13 +211,13 @@ ImplicitSizeItem {
         }
 
         function click() {
-            if ((checkable.enabled && checkable.checked && !belongsToExclusiveGroup()) || !checkable.enabled)
+            if ((checkableItem.enabled && checkableItem.checked && !belongsToExclusiveGroup()) || !checkableItem.enabled)
                 privateStyle.play(Symbian.BasicButton)
             if (flat)
                 visibleEffect.restart()
             else
                 clickedEffect.restart()
-            checkable.toggle()
+            checkableItem.toggle()
             root.clicked()
         }
 
@@ -351,7 +351,7 @@ ImplicitSizeItem {
     }
 
     Checkable {
-        id: checkable
+        id: checkableItem
         value: root.text
     }
 }
