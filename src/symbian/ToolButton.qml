@@ -51,7 +51,7 @@ ImplicitSizeItem {
     signal platformPressAndHold
 
     onFlatChanged: {
-        background.visible = !flat
+        background.visible = !flat || (checkableItem.enabled && checkableItem.checked && !internal.isButtonRow(parent))
     }
 
     implicitWidth: {
@@ -171,6 +171,8 @@ ImplicitSizeItem {
                 return parent.privateModeName(root, 1)
             else if (!enabled)
                 return "disabled"
+            else if (flat && checkableItem.checked && !internal.isButtonRow(parent))
+                return "latched"
             else
                 return "normal"
         }
@@ -205,18 +207,21 @@ ImplicitSizeItem {
             label.scale = 1
             contentIcon.scale = 1
             highlight.opacity = 0
-            if (flat)
-                visibleEffect.restart()
+
+            if ((checkableItem.enabled && checkableItem.checked && !belongsToExclusiveGroup()) || !checkableItem.enabled)
+                privateStyle.play(Symbian.BasicButton)
+
+            if (flat && isButtonRow(parent))
+                visibleEffect.restart() //Background invisible
+            else if (flat && !checkableItem.enabled)
+                visibleEffect.restart() //Background invisible
+            else
+                clickedEffect.restart() //Background stays visible
+
             root.platformReleased()
         }
 
         function click() {
-            if ((checkableItem.enabled && checkableItem.checked && !belongsToExclusiveGroup()) || !checkableItem.enabled)
-                privateStyle.play(Symbian.BasicButton)
-            if (flat)
-                visibleEffect.restart()
-            else
-                clickedEffect.restart()
             checkableItem.toggle()
             root.clicked()
         }

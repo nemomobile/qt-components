@@ -66,9 +66,17 @@ Item {
             platformExclusiveGroup: checkGroup
         }
 
-        ToolButton {
-            id: toolButton5
-            iconSource: imageDialog.currentImage
+        Row {
+            ToolButton {
+                id: toolButton5
+                iconSource: imageDialog.currentImage
+            }
+            ToolButton {
+                id: toolButtonX
+                iconSource: imageDialog.currentImage
+                checkable: true
+                checked: true
+            }
         }
 
         ToolButton {
