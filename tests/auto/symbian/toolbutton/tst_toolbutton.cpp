@@ -38,6 +38,7 @@ private slots:
     void initTestCase();
 
     void existingProperties();
+    void initialProperties();
     void propertiesFunctionality();
     void implicitSize();
 
@@ -66,6 +67,20 @@ void tst_toolbutton::existingProperties()
     QVERIFY(toolButton->property("pressed").isValid());
 }
 
+void tst_toolbutton::initialProperties()
+{
+    QGraphicsObject* toolButton = componentObject->findChild<QGraphicsObject*>("toolButton");
+    QVERIFY(toolButton);
+
+    QCOMPARE(toolButton->property("checkable").toBool(), false);
+    QCOMPARE(toolButton->property("checked").toBool(), false);
+    QCOMPARE(toolButton->property("enabled").toBool(), true);
+    QVERIFY(toolButton->property("text").toString().isNull());
+    QVERIFY(toolButton->property("iconSource").toString().isNull());
+    QCOMPARE(toolButton->property("flat").toBool(), false);
+    QCOMPARE(toolButton->property("pressed").toBool(), false);
+}
+
 void tst_toolbutton::propertiesFunctionality()
 {
     QGraphicsObject* toolButton = componentObject->findChild<QGraphicsObject*>("toolButton");
@@ -79,14 +94,12 @@ void tst_toolbutton::propertiesFunctionality()
 
         if (property.name() == QString("checkable")) {
             propertyCount++;
-            QCOMPARE(property.read(toolButton).toBool(), false);
             property.write(toolButton,true);
             QCOMPARE(property.read(toolButton).toBool(), true);
         }
 
         if (property.name() == QString("checked")) {
             propertyCount++;
-            QCOMPARE(property.read(toolButton).toBool(), false);
             property.write(toolButton,true);
             QCOMPARE(property.read(toolButton).toBool(), true);
         }
@@ -94,36 +107,31 @@ void tst_toolbutton::propertiesFunctionality()
         // Enabled is found twice
         if (property.name() == QString("enabled")) {
             propertyCount++;
-            QCOMPARE(property.read(toolButton).toBool(), true);
             property.write(toolButton,false);
             QCOMPARE(property.read(toolButton).toBool(), false);
         }
 
         if (property.name() == QString("text")) {
             propertyCount++;
-            QVERIFY(property.read(toolButton).toString().isNull());
             property.write(toolButton,"toolbutton_text");
             QCOMPARE(property.read(toolButton).toString() , QString("toolbutton_text"));
         }
 
         if (property.name() == QString("iconSource")) {
             propertyCount++;
-            QUrl url = property.read(toolButton).toUrl();
-            QVERIFY(property.read(toolButton).toUrl() == QUrl(""));
             property.write(toolButton,"icon_name");
             QCOMPARE(property.read(toolButton).toUrl() , QUrl("icon_name"));
         }
 
         if (property.name() == QString("flat")) {
             propertyCount++;
-            QCOMPARE(property.read(toolButton).toBool(), false);
             property.write(toolButton,true);
             QCOMPARE(property.read(toolButton).toBool(), true);
         }
 
         if (property.name() == QString("pressed")) {
             propertyCount++;
-            QCOMPARE(property.read(toolButton).toBool(), false);
+            // read-only
         }
     }
 
