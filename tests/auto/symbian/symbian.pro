@@ -8,6 +8,7 @@ SUBDIRS += \
     declarativeimplicitsizeitem \
     declarativescreen \
     declarativestyle \
+    extras \
     iconpool \
     imageprovider \
     indicatorcontainer \
