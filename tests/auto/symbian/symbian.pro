@@ -19,6 +19,7 @@ SUBDIRS += \
     pagestack \
     popupmanager \
     progressbar \
+    querydialog \
     radiobutton \
     scrollbar \
     selectionlistitem \
