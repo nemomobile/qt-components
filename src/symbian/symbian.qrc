@@ -86,8 +86,8 @@
         <file alias="qtg_graf_switchbutton_handle_normal.svg">resources/defaulttheme/graphics/qtg_graf_switchbutton_handle_normal.svg</file>
         <file alias="qtg_graf_switchbutton_handle_pressed.svg">resources/defaulttheme/graphics/qtg_graf_switchbutton_handle_pressed.svg</file>
         <file alias="qtg_graf_switchbutton_track.svg">resources/defaulttheme/graphics/qtg_graf_switchbutton_track.svg</file>
-        <file alias="qtg_toolbar_back.svg">resources/defaulttheme/graphics/qtg_toolbar_back.svg</file>
-        <file alias="qtg_toolbar_options.svg">resources/defaulttheme/graphics/qtg_toolbar_options.svg</file>
+        <file alias="toolbar-back.svg">resources/defaulttheme/graphics/toolbar-back.svg</file>
+        <file alias="toolbar-menu.svg">resources/defaulttheme/graphics/toolbar-menu.svg</file>
         <file alias="qtg_fr_scrollbar_h_handle_indicative.svg">resources/defaulttheme/graphics/qtg_fr_scrollbar_h_handle_indicative.svg</file>
         <file alias="qtg_fr_scrollbar_h_handle_normal.svg">resources/defaulttheme/graphics/qtg_fr_scrollbar_h_handle_normal.svg</file>
         <file alias="qtg_fr_scrollbar_h_handle_pressed.svg">resources/defaulttheme/graphics/qtg_fr_scrollbar_h_handle_pressed.svg</file>
@@ -157,6 +157,22 @@
         <file alias="qtg_toolbar_paste.svg">resources/defaulttheme/graphics/qtg_toolbar_paste.svg</file>
         <file alias="qtg_toolbar_copy.svg">resources/defaulttheme/graphics/qtg_toolbar_copy.svg</file>
         <file alias="qtg_toolbar_cut.svg">resources/defaulttheme/graphics/qtg_toolbar_cut.svg</file>
+        <file alias="toolbar-add.svg">resources/defaulttheme/graphics/toolbar-add.svg</file>
+        <file alias="toolbar-delete.svg">resources/defaulttheme/graphics/toolbar-delete.svg</file>
+        <file alias="toolbar-dialer.svg">resources/defaulttheme/graphics/toolbar-dialer.svg</file>
+        <file alias="toolbar-home.svg">resources/defaulttheme/graphics/toolbar-home.svg</file>
+        <file alias="toolbar-list.svg">resources/defaulttheme/graphics/toolbar-list.svg</file>
+        <file alias="toolbar-mediacontrol-backwards.svg">resources/defaulttheme/graphics/toolbar-mediacontrol-backwards.svg</file>
+        <file alias="toolbar-mediacontrol-forward.svg">resources/defaulttheme/graphics/toolbar-mediacontrol-forward.svg</file>
+        <file alias="toolbar-mediacontrol-pause.svg">resources/defaulttheme/graphics/toolbar-mediacontrol-pause.svg</file>
+        <file alias="toolbar-mediacontrol-play.svg">resources/defaulttheme/graphics/toolbar-mediacontrol-play.svg</file>
+        <file alias="toolbar-mediacontrol-stop.svg">resources/defaulttheme/graphics/toolbar-mediacontrol-stop.svg</file>
+        <file alias="toolbar-next.svg">resources/defaulttheme/graphics/toolbar-next.svg</file>
+        <file alias="toolbar-previous.svg">resources/defaulttheme/graphics/toolbar-previous.svg</file>
+        <file alias="toolbar-refresh.svg">resources/defaulttheme/graphics/toolbar-refresh.svg</file>
+        <file alias="toolbar-search.svg">resources/defaulttheme/graphics/toolbar-search.svg</file>
+        <file alias="toolbar-settings.svg">resources/defaulttheme/graphics/toolbar-settings.svg</file>
+        <file alias="toolbar-share.svg">resources/defaulttheme/graphics/toolbar-share.svg</file>
     </qresource>
     <qresource prefix="/params">
         <file alias="colors/default.params">resources/colors/default.params</file>
