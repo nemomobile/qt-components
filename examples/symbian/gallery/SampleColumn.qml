@@ -25,8 +25,8 @@
 ****************************************************************************/
 
 import QtQuick 1.0
-import com.nokia.symbian 1.0
-import Qt.labs.components 1.0
+import com.nokia.symbian 1.1
+import Qt.labs.components 1.1
 
 Column {
     id: column

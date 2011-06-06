@@ -24,7 +24,7 @@
 **
 ****************************************************************************/
 import Qt 4.7
-import "." 1.0
+import "." 1.1
 import "AppManager.js" as AppManager
 
 Item {

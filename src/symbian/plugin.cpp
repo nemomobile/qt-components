@@ -103,21 +103,21 @@ public:
     }
 
     void registerTypes(const char *uri) {
-        qmlRegisterType<SDeclarativeIcon>(uri, 1, 0, "Icon");
-        qmlRegisterType<SDeclarativeMaskedImage>(uri, 1, 0, "MaskedImage");
-        qmlRegisterType<SDeclarativeImplicitSizeItem>(uri, 1, 0, "ImplicitSizeItem");
-        qmlRegisterType<SDeclarativeFocusScopeItem>(uri, 1, 0, "FocusScopeItem");
-        qmlRegisterType<SDeclarativeIndicatorContainer>(uri, 1, 0, "UniversalIndicators");
-        qmlRegisterType<SDeclarativeNetworkIndicator>(uri, 1, 0, "NetworkIndicator");
-        qmlRegisterType<SMouseGrabDisabler>(uri, 1, 0, "MouseGrabDisabler");
-        qmlRegisterType<SDeclarativeMagnifier>(uri, 1, 0, "Magnifier");
-        qmlRegisterUncreatableType<SDeclarative>(uri, 1, 0, "Symbian", "");
-        qmlRegisterUncreatableType<SDeclarativeScreen>(uri, 1, 0, "Screen", "");
-        qmlRegisterUncreatableType<SDialogStatus>(uri, 1, 0, "DialogStatus", "");
-        qmlRegisterUncreatableType<SPageOrientation>(uri, 1, 0, "PageOrientation", "");
-        qmlRegisterUncreatableType<SPageStatus>(uri, 1, 0, "PageStatus", "");
-        qmlRegisterUncreatableType<SBatteryInfo>(uri, 1, 0, "BatteryInfo", "");
-        qmlRegisterUncreatableType<SNetworkInfo>(uri, 1, 0, "NetworkInfo", "");
+        qmlRegisterType<SDeclarativeIcon>(uri, 1, 1, "Icon");
+        qmlRegisterType<SDeclarativeMaskedImage>(uri, 1, 1, "MaskedImage");
+        qmlRegisterType<SDeclarativeImplicitSizeItem>(uri, 1, 1, "ImplicitSizeItem");
+        qmlRegisterType<SDeclarativeFocusScopeItem>(uri, 1, 1, "FocusScopeItem");
+        qmlRegisterType<SDeclarativeIndicatorContainer>(uri, 1, 1, "UniversalIndicators");
+        qmlRegisterType<SDeclarativeNetworkIndicator>(uri, 1, 1, "NetworkIndicator");
+        qmlRegisterType<SMouseGrabDisabler>(uri, 1, 1, "MouseGrabDisabler");
+        qmlRegisterType<SDeclarativeMagnifier>(uri, 1, 1, "Magnifier");
+        qmlRegisterUncreatableType<SDeclarative>(uri, 1, 1, "Symbian", "");
+        qmlRegisterUncreatableType<SDeclarativeScreen>(uri, 1, 1, "Screen", "");
+        qmlRegisterUncreatableType<SDialogStatus>(uri, 1, 1, "DialogStatus", "");
+        qmlRegisterUncreatableType<SPageOrientation>(uri, 1, 1, "PageOrientation", "");
+        qmlRegisterUncreatableType<SPageStatus>(uri, 1, 1, "PageStatus", "");
+        qmlRegisterUncreatableType<SBatteryInfo>(uri, 1, 1, "BatteryInfo", "");
+        qmlRegisterUncreatableType<SNetworkInfo>(uri, 1, 1, "NetworkInfo", "");
     }
 
 public slots:

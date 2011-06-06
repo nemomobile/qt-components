@@ -25,7 +25,7 @@
 ****************************************************************************/
 
 import QtQuick 1.0
-import com.nokia.symbian 1.0
+import com.nokia.symbian 1.1
 
 Item {
     id: root
@@ -199,7 +199,7 @@ Item {
                     text: "Add Btn"
 
                     onClicked: {
-                        var item = Qt.createQmlObject('import QtQuick 1.0; import com.nokia.symbian 1.0;  Button { text: \"Btn' + buttonColumn3.children.length +'\" }', buttonColumn3, "dynButton");
+                        var item = Qt.createQmlObject('import QtQuick 1.0; import com.nokia.symbian 1.1;  Button { text: \"Btn' + buttonColumn3.children.length +'\" }', buttonColumn3, "dynButton");
                     }
                 }
 
@@ -433,7 +433,7 @@ Item {
                     text: "Add TB"
 
                     onClicked: {
-                        var item = Qt.createQmlObject('import QtQuick 1.0; import com.nokia.symbian 1.0;  ToolButton { text: \"ToolBtn' + buttonColumn8.children.length +'\" }', buttonColumn8, "dynButton");
+                        var item = Qt.createQmlObject('import QtQuick 1.0; import com.nokia.symbian 1.1;  ToolButton { text: \"ToolBtn' + buttonColumn8.children.length +'\" }', buttonColumn8, "dynButton");
                     }
                 }
 

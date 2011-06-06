@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
     }
 
     // extras module
-    QString extrasModule("com.nokia.extras 1.0");
+    QString extrasModule("com.nokia.extras 1.1");
     int extrasModuleIdx = args.indexOf("-extrasModule");
 
     if (extrasModuleIdx != -1) {

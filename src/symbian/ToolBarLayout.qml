@@ -28,7 +28,7 @@
 // implements an appropriate layout for its children.
 
 import QtQuick 1.0
-import "." 1.0
+import "." 1.1
 
 ImplicitSizeItem {
     id: root

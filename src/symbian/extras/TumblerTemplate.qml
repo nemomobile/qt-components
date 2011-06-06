@@ -25,8 +25,8 @@
 ****************************************************************************/
 
 import QtQuick 1.0
-import com.nokia.symbian 1.0
-import "." 1.0
+import com.nokia.symbian 1.1
+import "." 1.1
 import "Constants.js" as C
 
 Item {

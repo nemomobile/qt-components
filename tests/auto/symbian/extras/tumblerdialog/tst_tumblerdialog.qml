@@ -25,7 +25,7 @@
 ****************************************************************************/
 
 import QtQuick 1.0
-import com.nokia.extras 1.0
+import com.nokia.extras 1.1
 
 Item {
     ListModel {

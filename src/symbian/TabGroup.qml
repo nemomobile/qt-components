@@ -25,7 +25,7 @@
 ****************************************************************************/
 
 import QtQuick 1.0
-import "." 1.0
+import "." 1.1
 import "TabGroup.js" as Engine
 
 Item {

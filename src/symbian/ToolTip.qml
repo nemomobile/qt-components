@@ -23,9 +23,8 @@
 ** Nokia at qt-info@nokia.com.
 **
 ****************************************************************************/
-
 import QtQuick 1.0
-import "." 1.0
+import "." 1.1
 import "AppManager.js" as AppView
 
 ImplicitSizeItem {

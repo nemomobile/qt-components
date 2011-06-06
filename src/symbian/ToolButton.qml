@@ -25,8 +25,8 @@
 ****************************************************************************/
 
 import QtQuick 1.0
-import Qt.labs.components 1.0
-import "." 1.0
+import Qt.labs.components 1.1
+import "." 1.1
 
 ImplicitSizeItem {
     id: root

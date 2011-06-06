@@ -37,7 +37,7 @@ public:
     }
 
     void registerTypes(const char *uri) {
-        qmlRegisterUncreatableType<SDateTime>(uri, 1, 0, "DateTime", "");
+        qmlRegisterUncreatableType<SDateTime>(uri, 1, 1, "DateTime", "");
     }
 };
 

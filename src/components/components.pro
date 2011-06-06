@@ -1,8 +1,8 @@
 include (../../qt-components.pri)
 
-TARGETPATH = Qt/labs/components
+TARGETPATH = Qt/labs/components.1.1
 TEMPLATE = lib
-TARGET = $$qtLibraryTarget(qtcomponentsplugin_1_0)
+TARGET = $$qtLibraryTarget(qtcomponentsplugin_1_1)
 INCLUDEPATH += $$PWD $$PWD/models
 
 win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release build_all
@@ -20,13 +20,13 @@ QML_FILES += \
 symbian {
     TARGET.EPOCALLOWDLLDATA = 1
     TARGET.CAPABILITY = ALL -TCB
-    TARGET.UID3 = 0x200346E1
+    TARGET.UID3 = 0x2003DF67
     MMP_RULES += EXPORTUNFROZEN
     MMP_RULES += SMPSAFE
 
     stubsis = \
         "START EXTENSION app-services.buildstubsis" \
-        "OPTION SISNAME qtcomponentsplugin_1_0_stub" \
+        "OPTION SISNAME qtcomponentsplugin_1_1_stub" \
         "OPTION SRCDIR ."\
         "END"
     BLD_INF_RULES.prj_extensions = stubsis
@@ -40,7 +40,8 @@ symbian {
             ":\"Nokia, Qt\"" \
             " "
 
-    header = "$${LITERAL_HASH}{\"qtcomponentsplugin_1_0\"},(0x200346E1),1,0,0,TYPE=SA,RU"
+    # Reminder: SIS UID must remain the same between versions 1.x
+    header = "$${LITERAL_HASH}{\"qtcomponentsplugin_1_1\"},(0x200346E1),1,1,0,TYPE=SA,RU"
     package.pkg_prerules += vendor_info header
     DEPLOYMENT += package
 }

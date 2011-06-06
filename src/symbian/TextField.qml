@@ -23,8 +23,9 @@
 ** Nokia at qt-info@nokia.com.
 **
 ****************************************************************************/
+
 import QtQuick 1.0
-import "." 1.0
+import "." 1.1
 
 FocusScopeItem {
     id: root

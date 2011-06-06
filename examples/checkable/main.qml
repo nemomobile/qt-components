@@ -40,7 +40,7 @@
 ****************************************************************************/
 
 import QtQuick 1.0
-import Qt.labs.components 1.0
+import Qt.labs.components 1.1
 
 // See MyButton.qml for details on how use Checkable and CheckableGroup to
 // create a button that is checkable and can be part of a mutually exclusive
