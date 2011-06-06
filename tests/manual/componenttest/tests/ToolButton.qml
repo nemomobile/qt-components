@@ -137,12 +137,20 @@ Item {
                 currentImage: {
                     if (selectedIndex <= 0)
                         return ""
-                    return "qrc:/" + model[selectedIndex]
+                    return model[selectedIndex]
                 }
 
-                model: ["<none>", "list1.svg", "list2.svg", "list3.svg", "list4.svg", "list5.svg",
-                        "list6.svg", "list7.svg", "list8.svg", "list9.svg", "list10.svg",
-                        "list11.svg", "list12.svg", "list13.svg", "list14.svg", "list15.svg"]
+                model: ["<none>", "toolbar-back", "toolbar-home", "toolbar-next", "toolbar-previous",
+                        "toolbar-menu", "toolbar-settings", "toolbar-search", "toolbar-refresh",
+                        "toolbar-add", "toolbar-delete", "toolbar-list", "toolbar-share",
+                        "toolbar-dialer", "toolbar-mediacontrol-play", "toolbar-mediacontrol-stop",
+                        "toolbar-mediacontrol-pause", "toolbar-mediacontrol-forward",
+                        "toolbar-mediacontrol-backwards", "toolbar-invalid-id", "qrc:/list1.svg",
+                        "qrc:/list2.svg", "qrc:/list3.svg", "qrc:/list4.svg", "qrc:/list5.svg",
+                        "qrc:/list6.svg", "qrc:/list7.svg", "qrc:/list8.svg", "qrc:/list9.svg",
+                        "qrc:/list10.svg", "qrc:/list11.svg", "qrc:/list12.svg", "qrc:/list13.svg",
+                        "qrc:/list14.svg", "qrc:/list15.svg"
+                     ]
             }
         }
     }
