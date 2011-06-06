@@ -86,8 +86,6 @@
         <file alias="qtg_graf_switchbutton_handle_normal.svg">resources/defaulttheme/graphics/qtg_graf_switchbutton_handle_normal.svg</file>
         <file alias="qtg_graf_switchbutton_handle_pressed.svg">resources/defaulttheme/graphics/qtg_graf_switchbutton_handle_pressed.svg</file>
         <file alias="qtg_graf_switchbutton_track.svg">resources/defaulttheme/graphics/qtg_graf_switchbutton_track.svg</file>
-        <file alias="toolbar-back.svg">resources/defaulttheme/graphics/toolbar-back.svg</file>
-        <file alias="toolbar-menu.svg">resources/defaulttheme/graphics/toolbar-menu.svg</file>
         <file alias="qtg_fr_scrollbar_h_handle_indicative.svg">resources/defaulttheme/graphics/qtg_fr_scrollbar_h_handle_indicative.svg</file>
         <file alias="qtg_fr_scrollbar_h_handle_normal.svg">resources/defaulttheme/graphics/qtg_fr_scrollbar_h_handle_normal.svg</file>
         <file alias="qtg_fr_scrollbar_h_handle_pressed.svg">resources/defaulttheme/graphics/qtg_fr_scrollbar_h_handle_pressed.svg</file>
@@ -157,6 +155,9 @@
         <file alias="qtg_toolbar_paste.svg">resources/defaulttheme/graphics/qtg_toolbar_paste.svg</file>
         <file alias="qtg_toolbar_copy.svg">resources/defaulttheme/graphics/qtg_toolbar_copy.svg</file>
         <file alias="qtg_toolbar_cut.svg">resources/defaulttheme/graphics/qtg_toolbar_cut.svg</file>
+        <file alias="toolbar-back.svg">resources/defaulttheme/graphics/toolbar-back.svg</file>
+        <file alias="toolbar-menu.svg">resources/defaulttheme/graphics/toolbar-menu.svg</file>
+        <file alias="toolbar-view-menu.svg">resources/defaulttheme/graphics/toolbar-menu.svg</file>
         <file alias="toolbar-add.svg">resources/defaulttheme/graphics/toolbar-add.svg</file>
         <file alias="toolbar-delete.svg">resources/defaulttheme/graphics/toolbar-delete.svg</file>
         <file alias="toolbar-dialer.svg">resources/defaulttheme/graphics/toolbar-dialer.svg</file>
