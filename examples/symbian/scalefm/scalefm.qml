@@ -48,12 +48,12 @@ ApplicationWindow {
         id: commonTools
         ToolButton {
             flat: true
-            iconSource: "image://theme/qtg_toolbar_back"
+            iconSource: "toolbar-back"
             onClicked: window.pageStack.depth <= 1 ? Qt.quit() : pageStack.pop()
         }
         ToolButton {
             flat: true
-            iconSource: "image://theme/qtg_toolbar_options"
+            iconSource: "toolbar-menu"
             onClicked: if (desktop) displaySelection.open()
         }
     }
