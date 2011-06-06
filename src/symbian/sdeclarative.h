@@ -104,7 +104,8 @@ public:
     static inline QString resolveIconFileName(const QString &iconName)
     {
         QString fileName = iconName;
-        if (fileName.startsWith(QLatin1String("qtg")))
+        if (fileName.startsWith(QLatin1String("qtg")) ||
+                fileName.startsWith(QLatin1String("toolbar-")))
             fileName.prepend(QLatin1String(":/graphics/"));
 
         if (fileName.lastIndexOf(QLatin1Char('.')) == -1)

@@ -33,6 +33,7 @@
 #include "sstyleengine.h"
 
 #include <QObject>
+#include <QFileInfo>
 
 #ifdef HAVE_MOBILITY
 #include <QFeedbackEffect>
@@ -170,6 +171,21 @@ int SDeclarativeStyleInternal::fontHeight(const QFont &font) const
 {
     QFontMetrics metrics(font);
     return metrics.height();
+}
+
+QUrl SDeclarativeStyleInternal::toolBarIconPath(const QUrl &path) const
+{
+    if (!path.isEmpty()) {
+        const QString scheme = path.scheme();
+        const QFileInfo fileInfo = path.path();
+        const QString completeBaseName = fileInfo.completeBaseName();
+
+        if (scheme.isEmpty() || scheme == QLatin1String("file") &&
+            completeBaseName.startsWith(QLatin1String("toolbar-")) &&
+            completeBaseName.lastIndexOf(QLatin1Char('.')) == -1)
+                return QLatin1String("image://theme/") + completeBaseName;
+    }
+    return path;
 }
 
 QString SDeclarativeStyleInternal::imagePath(const QString &path) const

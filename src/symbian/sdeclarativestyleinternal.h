@@ -31,6 +31,7 @@
 #include <QtCore/qvariant.h>
 #include <QtCore/qscopedpointer.h>
 #include <QtGui/qcolor.h>
+#include <QUrl>
 
 class SDeclarativeStyleInternalPrivate;
 class SStyleEngine;
@@ -79,6 +80,7 @@ public:
     Q_INVOKABLE void play(int effect);
     Q_INVOKABLE int textWidth(const QString &text, const QFont &font) const;
     Q_INVOKABLE int fontHeight(const QFont &font) const;
+    Q_INVOKABLE QUrl toolBarIconPath(const QUrl &path) const;
     Q_INVOKABLE QString imagePath(const QString &path) const;
 
 Q_SIGNALS:

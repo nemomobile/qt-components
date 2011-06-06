@@ -36,7 +36,7 @@ ImplicitSizeItem {
     property alias checked: checkableItem.checked
     property bool enabled: true // overridden from base class
     property alias text: label.text
-    property alias iconSource: contentIcon.source
+    property url iconSource
     property bool flat: (!text && iconSource != "" && parent && !internal.isButtonRow(parent))
     property bool pressed: mouseArea.containsMouse && (stateGroup.state == "Pressed" || stateGroup.state == "PressAndHold")
 
@@ -99,6 +99,7 @@ ImplicitSizeItem {
 
     Image {
         id: contentIcon
+        source: privateStyle.toolBarIconPath(iconSource)
         visible: iconSource != ""
         sourceSize.width: platformStyle.graphicSizeSmall
         sourceSize.height: platformStyle.graphicSizeSmall
