@@ -40,7 +40,7 @@ Window {
     Flickable {
         id: flickable
         clip: true
-        anchors { 
+        anchors {
             left: root.left
             right: root.right
             top: statusBar.visible ? statusBar.bottom: root.top
@@ -69,11 +69,11 @@ Window {
             id: toolBarlayout
             ToolButton {
                 flat: true
-                iconSource: "image://theme/qtg_toolbar_back"
+                iconSource: "toolbar-back"
                 onClicked: Qt.quit()
             }
             ToolButton {
-                iconSource: "image://theme/qtg_toolbar_options"
+                iconSource: "toolbar-menu"
                 onClicked: {
                     if (!menu)
                         menu = menuComponent.createObject(root)
