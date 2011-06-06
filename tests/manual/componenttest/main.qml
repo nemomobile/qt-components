@@ -233,7 +233,7 @@ ApplicationWindow {
                         width: mainWindow.width
                         text: {
                             // Append qmlpaths to the button label
-                            var buttonLabel = "Load a file from "
+                            var buttonLabel = "Load from "
                             for (var i = 0; i < internal.qmlPaths.length; i++) {
                                 buttonLabel += internal.qmlPaths[i];
                                 if (!((i+1) == internal.qmlPaths.length))

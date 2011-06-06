@@ -47,7 +47,7 @@ QHash<int, QDeclarativeItem *> indicatorItems;
 #ifdef Q_OS_SYMBIAN
 static const QStringList QML_PATHS = QStringList() << "e:/qmlc" << "c:/data/qmlc";
 #else
-static const QStringList QML_PATHS = QStringList() << "qmlc/";
+static const QStringList QML_PATHS = QStringList() << "qmlc/" << "../../../doc/src/snippets/symbian";
 #endif
 
 FileAccess::FileAccess(QObject *parent) : QObject(parent)
