@@ -79,8 +79,7 @@ Item {
             currentIndex: tumblerColumn ? tumblerColumn.selectedIndex : 0
             // highlight locates in the middle (ratio 0.5) if items do not fully occupy the Tumbler
             preferredHighlightBegin: privateStyle.menuItemHeight * pView.count > height ?
-                ((privateStyle.menuItemHeight / 2) + (pView.height / 2)) /
-                    (privateStyle.menuItemHeight * pView.count) :
+                 0.5 + pView.height / (privateStyle.menuItemHeight * pView.count * 2) :
                 0.5
             preferredHighlightEnd: preferredHighlightBegin
             highlightRangeMode: PathView.StrictlyEnforceRange
@@ -103,12 +102,12 @@ Item {
             path: Path {
                 startX: pView.width / 2;
                 startY: privateStyle.menuItemHeight * pView.count > pView.height ?
-                        -(privateStyle.menuItemHeight / 2) :
+                        -(privateStyle.menuItemHeight * pView.count / 2) :
                         (pView.height - privateStyle.menuItemHeight * pView.count) / 2
                 PathLine {
                     x: pView.width / 2
                     y: privateStyle.menuItemHeight * pView.count > pView.height ?
-                        privateStyle.menuItemHeight * pView.count - (privateStyle.menuItemHeight / 2) :
+                        privateStyle.menuItemHeight * pView.count / 2 :
                         (pView.height + privateStyle.menuItemHeight * pView.count) / 2
                 }
             }
