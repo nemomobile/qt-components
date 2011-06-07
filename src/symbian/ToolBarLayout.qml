@@ -318,6 +318,7 @@ ImplicitSizeItem {
     }
 
     Component.onCompleted: internal.layoutChildren()
+    onParentChanged: internal.layoutChildren()
     onChildrenChanged: internal.layoutChildren()
     onBackButtonChanged: internal.layoutChildren()
     onImplicitWidthChanged: internal.layoutChildren()
