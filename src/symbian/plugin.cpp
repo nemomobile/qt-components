@@ -88,10 +88,10 @@ public:
         context->setContextProperty("platformPopupManager", popupManager);
 
         SBatteryInfo *batteryInfo = new SBatteryInfo(context);
-        context->setContextProperty("batteryInfo", batteryInfo);
+        context->setContextProperty("privateBatteryInfo", batteryInfo);
 
         SNetworkInfo *networkInfo = new SNetworkInfo(context);
-        context->setContextProperty("networkInfo", networkInfo);
+        context->setContextProperty("privateNetworkInfo", networkInfo);
 
         QObject::connect(engine, SIGNAL(quit()), QCoreApplication::instance(), SLOT(quit()));
         QObject::connect(screen, SIGNAL(displayChanged()), this, SLOT(resetScreen()));

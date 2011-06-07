@@ -116,7 +116,7 @@ ImplicitSizeItem {
                 anchors.left: parent.left
                 anchors.top: parent.top
                 height: parent.height
-                width: priv.signalWidthPercentage(networkInfo.networkSignalStrength) * parent.width
+                width: priv.signalWidthPercentage(privateNetworkInfo.networkSignalStrength) * parent.width
                 clip: true
                 Image {
                     sourceSize.width: signalBackground.sourceSize.width
@@ -145,8 +145,8 @@ ImplicitSizeItem {
                 anchors.left: parent.left
                 anchors.top: parent.top
                 width: Math.round(privateStyle.statusBarHeight
-                    * (priv.convertedBatteryLevel(batteryInfo.powerState == BatteryInfo.WallPowerChargingBattery
-                    ? animatedLevel : batteryInfo.batteryLevel) + 2) / 13)
+                    * (priv.convertedBatteryLevel(privateBatteryInfo.powerState == BatteryInfo.WallPowerChargingBattery
+                    ? animatedLevel : privateBatteryInfo.batteryLevel) + 2) / 13)
                 height: parent.height
                 clip: true
 
@@ -166,7 +166,7 @@ ImplicitSizeItem {
             NumberAnimation {
                 id: batteryChargingAnimation
                 loops: Animation.Infinite
-                running: batteryInfo.powerState == BatteryInfo.WallPowerChargingBattery
+                running: privateBatteryInfo.powerState == BatteryInfo.WallPowerChargingBattery
                 target: batteryLevel
                 property: "animatedLevel"
                 from: 1
