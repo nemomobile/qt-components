@@ -43,6 +43,7 @@
 
     \list
         \o \l {Building the Qt Quick Components for Symbian}
+        \o \l {Building the Qt Quick Components for MeeGo}
     \endlist
 
 */
