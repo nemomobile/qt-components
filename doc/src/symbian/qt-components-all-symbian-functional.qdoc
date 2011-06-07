@@ -71,8 +71,6 @@
         \o \l{Window}
         \o \l{Symbian}
         \o \l{Globals}
-        \o \l{NetworkInfo}
-        \o \l{BatteryInfo}
         \o \l{Screen}
         \o \l{FocusScopeItem}
     \endlist
