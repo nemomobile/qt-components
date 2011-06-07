@@ -181,14 +181,4 @@ functionalities.
         \o \l{ButtonColumn} documentation
         \endlist
 
-\keyword quick-component-choicelist
-\section1 ChoiceList
-    Provides a selectable group of components in a list.
-    \section2 Basic Properties
-        \list
-        \o model model
-        \o int currentIndex
-        \o \l {ChoiceList}{view more properties...}
-        \endlist
-
 */

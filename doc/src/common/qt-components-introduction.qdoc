@@ -196,14 +196,8 @@
         \row
             \o ScrollBar, ScrollBarSizer, ScrollDecorator, SectionScroller,
             SectionScrollerLabel
-            \o For providing information about the users location inside a large
+            \o For providing information about the user's position inside a large
             list or area.
-
-        \header
-            \o {2,1} Deprecated
-        \row
-            \o ChoiceList
-            \o Do not use these.
 
     \endtable
 

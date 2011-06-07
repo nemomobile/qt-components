@@ -124,13 +124,12 @@
         \o \l{ScrollBarSizer}
     \endlist
 
-    \section1 Lists and Choice List
+    \section1 Lists
     Lists provide flexible methods of displaying data.
     \list
         \o \l{ListHeading}
         \o \l{ListItem}
         \o \l{ListItemText}
-        \o \l{ChoiceList}
         \o \l{SelectionListItem}
     \endlist
 
