@@ -41,9 +41,7 @@ Item {
         id: internal
         // Add padding in context menu case to align content area bottom with rounded background graphics.
         property int clipMargin: containingPopup.objectName != "OptionsMenu" ? platformStyle.paddingSmall : 0
-        property int preferredHeight: Math.floor(
-            screen.height * ((screen.width < screen.height) ? 0.45 : 0.6) / privateStyle.menuItemHeight)
-            * privateStyle.menuItemHeight
+        property int preferredHeight: privateStyle.menuItemHeight * ((screen.width < screen.height) ? 5 : 3)
     }
 
     BorderImage {
