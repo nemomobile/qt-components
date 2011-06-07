@@ -26,8 +26,6 @@
 
 #include <QtTest/QtTest>
 #include <QtTest/QSignalSpy>
-#include <QtDeclarative/qdeclarativecontext.h>
-#include <QtDeclarative/private/qdeclarativelistmodel_p.h>
 #include <QDeclarativeView>
 #include <QDeclarativeItem>
 
