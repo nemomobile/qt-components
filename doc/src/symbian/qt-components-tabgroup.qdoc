@@ -32,13 +32,13 @@
     \since 1.0
     \inherits Item
 
-    \brief TabGroup is a set of pages for a tabbed interface.
+    \brief TabGroup is a set of pages for a tab based interface.
 
     A tabbed interface is made up of tab buttons plus content for each button. A
     TabGroup component has, as its children, each page of content in the
-    interface. These pages can be any QML item but are typically Page components
-    for a single page of content or PageStack components when a hierarchical
-    navigation system is required for the tab content.
+    interface. These pages can be any QML items but are typically \l Page
+    components for a single page of content or PageStack components when a
+    hierarchical navigation system is required for the tab content.
 
     As well as being the container for the tabbed interface content, TabGroup
     displays the content of the pages. It will layout the content to fill
@@ -46,25 +46,25 @@
     means you anchor it to the bottom of the TabLayout item that contains the
     buttons and then to the sides and bottom of the screen.
 
-    A TabGroup and a TabBarLayout go hand-in-hand. The layout contains the
-    buttons and each button refers to a content page in the group. This is
-    illustrated in the following diagram.
+    The \l TabGroup and the \l TabBarLayout componenents go hand-in-hand. The
+    layout contains the buttons and each button refers to a content page in the
+    group. This is illustrated in the following diagram.
 
     \image common/tabbed-interface-relations.png
 
-    If you use Page components for your tab content, the Page::status property
+    If you use \l Page components for your tab content, the \c status property
     of each page is updated appropriately when the current tab is changed: the
-    current page has status PageStatus.Active and other pages have the status
-    PageStatus.Inactive. During page transitions, PageStatus.Activating (for the
-    page that is becoming the current page) and PageStatus.Deactivating (for the
-    page that was the current page) statuses are also set.
+    current page has status \c PageStatus.Active and other pages have the status
+    \c PageStatus.Inactive. During page transitions, \c PageStatus.Activating
+    (for the page that is becoming the current page) and \c
+    PageStatus.Deactivating (for the page that was the current page) statuses
+    are also set.
 
-    ###Because of the platform specific transition requirements, these children might
+    Because of the platform specific transition requirements, these children might
     be reparented internally i.e. refer to the TabGroup from content with \c id instead
     of \c parent.
 
-
-    \section1 Creating a static tabbed interface
+    \section1 Creating a Static Tabbed Interface
 
     If the tabs in your tabbed interface are always the same, you can create
     your tabbed interface simply as a set of items.
@@ -73,34 +73,29 @@
 
     \snippet src/snippets/common/snippet-tabgroup.qml 0
 
-    \section1 Creating a dynamic tabbed interface
+    \section1 Creating a Dynamic Tabbed Interface
 
     In some cases you might want to be able to add or remove tabs in the
     interface. This makes things a little more complicated.
 
-    \section2 Creating a blank tabbed interface
+    \section2 Creating a Blank Tabbed Interface
 
-    The TabBarLayout and TabGroup go together
+    The \l TabBarLayout and \l TabGroup go together
 
     \snippet src/snippets/common/snippet-tab-interface-dynamic.qml 0
 
-    \section2 Adding pages to the interface
+    \section2 Adding Pages to The Interface
 
-    Generally you add the pages in the onCompleted() signal handler. The snippet
-    here creates three different pages. Each page has a button which is added to
-    the tab bar layout and content which is added to the tab group.
+    Generally you add the pages in the \c onCompleted() signal handler. The
+    snippet here creates three different pages. Each page has a button which is
+    added to the tab bar layout and content which is added to the tab group.
 
     \snippet src/snippets/common/snippet-tab-interface-dynamic.qml 7
 
-    To keep the code tidier, a simple addTab function implements the actual
-    adding of the button and content.
-
-    \snippet src/snippets/common/snippet-tab-interface-dynamic.qml 4
-
-    \section2 Removing pages from the interface
+    \section2 Removing Pages from The Interface
 
     As well as adding pages to a tabbed interface, you might need to remove
-    pages. You do this by calling the TabGroup's removeTab() function to delete
+    pages. You do this by calling the content's \c destroy() function to delete
     the page content and then you delete the button for the tab. Each tab
     buttons is a child of the TabBarLayout so, either you keep track of the
     buttons in a separate list, or you search the children of the TabBarLayout
@@ -108,20 +103,7 @@
 
     \snippet src/snippets/common/snippet-tab-interface-dynamic.qml 6
 
-    \section2 Managing the tabs
-
-    A good way to manage the tabs in your interface is to maintain a separate
-    list of the tab buttons. When you create a new tab, you can add the button
-    to the list. When you delete a tab, you can delete the button from the list
-    (after first using removeTab to delete the actual content).
-
-    Using a list of tab buttons makes it easy to reorder the tabs. You can
-    simply change the order in your main list and then apply this newly ordered
-    list to the layout.
-
-    ### Needs expanding and code snippets
-
-    \section2 Finding a particular tab in a tab bar layout
+    \section2 Finding a Particular Tab in a Tab Bar Layout
 
     If you don't have an array keeping track of the buttons, you can also search
     the child items of the tab bar layout item to find the tab you want.
@@ -133,17 +115,11 @@
 */
 
 /*!
-    \qmlmethod TabGroup::addTab(content)
+    \qmlproperty bool TabGroup::platformAnimated
 
-    \e {Symbian:}
-    Adds dynamically new tab content. Use this function instead of adding new
-    children into TabGroup directly.
+    The platformAnimated property is initialized to true and can be changed by
+    the user to disable animations while switching currentTab property.
+
 */
 
-/*!
-    \qmlmethod TabGroup::removeTab(content)
-
-    \e {Symbian:}
-    Removes the tab content from the group.
-*/
 

@@ -71,11 +71,11 @@ Window {
                     var i = findTabIndexByButtonText("2")
                     if (i == -1) {
                         // create a tab button and page and add them
-                        var page = pageComponent.createObject(null)
+                        var page = pageComponent.createObject(tabGroup)
                         page.message = "New"
-                        var button = tabButtonComponent.createObject(null)
+                        var button = tabButtonComponent.createObject(tabBarLayout)
                         button.text = "2"
-                        addTab(button,page)
+                        button.tab = page
                     }
                 }
             }
@@ -126,23 +126,13 @@ Window {
     }
     //! [3]
 
-    //! [4]
-    // add a new tab with the given tab button and tab content
-    function addTab(button, content)
-    {
-        tabGroup.addTab(content)        // add the content to the tab group
-        button.parent = tabBarLayout    // reparent the button so it is a child of the layout
-        button.tab = content            // associate the button with the content
-    }
-    //! [4]
-
-
     //! [5]
     // find the tab with the given text in the button and return the index
     function findTabIndexByButtonText(buttonText) {
         // find the button in the children of the tab bar layout item
         for (var i=0; i<tabBarLayout.data.length; i++) {
-            if (tabBarLayout.data[i].text == buttonText) {
+            if (tabBarLayout.data[i].hasOwnProperty("text")
+                    && tabBarLayout.data[i].text == buttonText) {
                 return i
             }
         }
@@ -155,8 +145,8 @@ Window {
     function removeTabByButtonText(buttonText) {
         var index = findTabIndexByButtonText(buttonText)
         if (index != -1) {
-            tabGroup.removeTab(tabBarLayout.data[index]) // remove the tab button
-            tabBarLayout.data[index].destroy()           // remove the tab content
+            tabBarLayout.data[index].tab.destroy()  // remove the tab content
+            tabBarLayout.data[index].destroy()      // remove the tab button
         }
         // TODO: If the removed page was the current page, choose a new current page
     }
@@ -165,22 +155,23 @@ Window {
     //! [7]
     // create some tabs for the tab bar
     Component.onCompleted: {
-        var page = pageComponent.createObject(null)
-        var button = tabButtonComponent.createObject(null);
+        var page = pageComponent.createObject(tabGroup)
+        var button = tabButtonComponent.createObject(tabBarLayout);
         button.text = "1"
-        addTab(button,page)
+        button.tab = page
 
         // add a component page to the tab bar
-        page = pageComponent.createObject(null)
+        page = pageComponent.createObject(tabGroup)
         page.message = "Original"
-        button = tabButtonComponent.createObject(null);
+        button = tabButtonComponent.createObject(tabBarLayout);
         button.text = "2"
-        addTab(button,page)
+        button.tab = page
 
         // add an item page to the tab bar
-        button = tabButtonComponent.createObject(null);
+        myPage.parent = tabGroup
+        button = tabButtonComponent.createObject(tabBarLayout);
         button.text = "3"
-        addTab(button,myPage)
+        button.tab = myPage
     }
     //! [7]
 }

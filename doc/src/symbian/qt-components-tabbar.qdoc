@@ -40,7 +40,7 @@
 
     \sa TabBarLayout, TabButton
 
-    \section1 Using a tab bar
+    \section1 Using a Tab Bar
 
     The following code snippet shows a tab bar with three buttons and
     corresponding tab content pages. The resulting tab bar looks something like
@@ -57,11 +57,13 @@
     \default
 
     This is a short-cut to set the children for the \c layout property.
+    Usually, the user does not need to access this property directly.
 */
 
 /*!
     \qmlproperty TabBarLayout TabBar::layout
 
-    Layout which is the parent of the TabButton instances.
+    Layout which is the parent of the TabButton instances. Use this as
+    the parent for dynamically created buttons.
 */
 

@@ -36,11 +36,3 @@
     currentTab at any time to activate a particular tab.
 
 */
-
-/*!
-    \qmlproperty list<Item> TabGroup::contents
-
-    A list of all the children of the tab group. You can traverse the list to
-    search for information about particular pages.
-
-*/
