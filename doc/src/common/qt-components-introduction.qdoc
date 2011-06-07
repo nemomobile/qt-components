@@ -146,7 +146,7 @@
             \o ToolBar, ToolButton, ToolBarLayout
             \o For creating a tool bar for common actions.
         \row
-            \o ContextMenu, Menu, MenuContent, MenuLayout
+            \o ContextMenu, Menu, MenuLayout
             \o For creating menus to provide access to less common actions.
 
         \header
@@ -159,13 +159,13 @@
         \header
             \o {2, 1} Popups and dialogs
         \row
-            \o ToolTip, Popup, Dialog, CommonDialog
+            \o ToolTip, Dialog, CommonDialog
             \o Assorted ways of providing information to the user and requesting information.
         \row
             \o SelectionDialog, SelectionListItem
             \o A specialised dialog for selecting from a list of items.
         \row
-            \o BusyIndicator, Fader
+            \o BusyIndicator
             \o Utility components for a better user experience.
 
         \header
