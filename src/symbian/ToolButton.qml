@@ -120,12 +120,12 @@ ImplicitSizeItem {
         elide: Text.ElideRight
         font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
         color: {
-            if (!enabled)
-                platformStyle.colorDisabledLight
+            if (!root.enabled)
+                return platformStyle.colorDisabledLight
             else if (stateGroup.state == "Pressed" || stateGroup.state == "PressAndHold")
-                platformStyle.colorPressed
+                return platformStyle.colorPressed
             else
-                platformStyle.colorNormalLight
+                return platformStyle.colorNormalLight
         }
         visible: text
         anchors {
