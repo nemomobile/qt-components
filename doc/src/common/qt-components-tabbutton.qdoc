@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
@@ -28,8 +28,9 @@
 /*!
     \qmlproperty Item TabButton::tab
 
-    This is a reference to the tab content (one of the children of a TabGroup,
-    usually a Page) that is activated when this TabButton is clicked.
+    This is a reference to the tab content (one of the children of a \l
+    TabGroup, usually a \l Page) that is activated when this TabButton is
+    clicked.
 
     Note: On some platforms there can be additional logic such as unwinding the
     page stack in a tab if the tab is already selected.
@@ -40,7 +41,11 @@
 /*!
     \qmlproperty bool TabButton::checked
 
-    \c true if this button is the button for the currently activated tab. Otherwise false.
+    The value is \c true if this button is the button for the currently
+    activated tab. Otherwise, it is \c false.
+
+    This is a read-only property and therefore should not be manipulated by the
+    user.
 
 */
 
@@ -48,14 +53,18 @@
 /*!
     \qmlproperty bool TabButton::pressed
 
-    \c true if the user is currently pressing the tab button. Otherwise \c false.
+    The value is \c true if the user is currently pressing the tab button.
+    Otherwise, it is \c false.
+
+    This is a read-only property and therefore should not be manipulated by the
+    user.
 
 */
 
 /*!
     \qmlproperty string TabButton::text
 
-    Text to be displayed on the button. Default value is "".
+    Text to be displayed on the button. The default value is an empty string.
 
 */
 
@@ -63,7 +72,8 @@
 /*!
     \qmlproperty url TabButton::iconSource
 
-    The URL for an image to show on the button. Defaults value is "".
+    The URL for an image to show on the button. The default value is an empty
+    string.
 */
 
 /*!
