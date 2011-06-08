@@ -73,6 +73,7 @@
         \o \l{Globals}
         \o \l{Screen}
         \o \l{FocusScopeItem}
+        \o \l{Style}
     \endlist
 
     \section1 Indicators and Status Bar

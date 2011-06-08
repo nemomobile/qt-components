@@ -1,0 +1,216 @@
+/****************************************************************************
+**
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project on Qt Labs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** No Commercial Usage
+** This file contains pre-release code and may not be distributed.
+** You may use this file in accordance with the terms and conditions
+** contained in the Technology Preview License Agreement accompanying
+** this package.
+**
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of this
+** file.
+**
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \qmlclass Style
+    \ingroup qt-components
+    \ingroup qt-components-symbian
+    \since 1.0
+    \inherits QtObject
+
+    \brief
+    Symbian: Platform-specific style parameters for fonts, colors, and layouts.
+
+    You should use these parameters when you want to make your UI consistent
+    with the Symbian platform style. Symbian-style is exposed as a context
+    property named \c {platformStyle}. It is not possible to instantiate a Style
+    object in QML, but the style must be accessed through the context property.
+    The following example illustrates how to use the style parameters.
+
+    \code
+    Item {
+        width: text.width + icon.width + platformStyle.paddingSmall + 2 * platformStyle.paddingMedium
+        height: Math.max(text.height, icon.height) + 2 * platformStyle.paddingMedium
+
+        Image {
+            id: icon
+            anchors.left: parent.left
+            anchors.leftMargin: platformStyle.paddingMedium
+            anchors.verticalCenter: parent.verticalCenter
+            width: platformStyle.graphicSizeSmall
+            height: platformStyle.graphicSizeSmall
+            ...
+        }
+
+        Text {
+            id: text
+            anchors.left: icon.right
+            anchors.leftMargin: platformStyle.paddingSmall
+            anchors.right: parent.right
+            anchors.rightMargin: platformStyle.paddingMedium
+            anchors.verticalCenter: parent.verticalCenter
+            font.family: platformStyle.fontFamilyRegular
+            font.pixelSize: platformStyle.fontSizeLarge
+            color: platformStyle.colorNormalLight
+            ...
+        }
+    }
+    \endcode
+
+    The actual return values of the properties may vary between device
+    configurations. For example, if the resolutions of two devices are different,
+    it is probable that the pixel values of the properties are different.
+*/
+
+/*!
+    \qmlproperty string Style::fontFamilyRegular
+
+    The default font family.
+*/
+
+/*!
+    \qmlproperty int Style::fontSizeLarge
+
+    The pixel size for a large font.
+*/
+
+/*!
+    \qmlproperty int Style::fontSizeMedium
+
+    The pixel size for a medium size font.
+*/
+
+/*!
+    \qmlproperty int Style::fontSizeSmall
+
+    The pixel size for a small font.
+*/
+
+/*!
+    \qmlproperty int Style::graphicSizeLarge
+
+    The size of a large graphical object, for example an \l Image, in pixels.
+*/
+
+/*!
+    \qmlproperty int Style::graphicSizeMedium
+
+    The size of a medium size graphical object, for example an \l Image, in pixels.
+*/
+
+/*!
+    \qmlproperty int Style::graphicSizeSmall
+
+    The size of a small graphical object, for example an \l Image, in pixels.
+*/
+
+/*!
+    \qmlproperty int Style::graphicSizeTiny
+
+    The size of a tiny graphical object, for example an \l Image, in pixels.
+*/
+
+/*!
+    \qmlproperty int Style::paddingLarge
+
+    The size of a large padding in pixels.
+*/
+
+/*!
+    \qmlproperty int Style::paddingMedium
+
+    The size of a medium size padding in pixels.
+*/
+
+/*!
+    \qmlproperty int Style::paddingSmall
+
+    The size of a small padding in pixels.
+*/
+
+/*!
+    \qmlproperty int Style::borderSizeMedium
+
+    The size for medium size border parts of a \l BorderImage in pixels.
+*/
+
+/*!
+    \qmlproperty color Style::colorNormalLight
+
+    The default light foreground color.
+*/
+
+/*!
+    \qmlproperty color Style::colorNormalMid
+
+    The default mid foreground color.
+*/
+
+/*!
+    \qmlproperty color Style::colorNormalDark
+
+    The default dark foreground color.
+*/
+
+/*!
+    \qmlproperty color Style::colorNormalLink
+
+    The default foreground color for a link, for example a URL.
+*/
+
+/*!
+    \qmlproperty color Style::colorPressed
+
+    The foreground color for the pressed state.
+*/
+
+/*!
+    \qmlproperty color Style::colorChecked
+
+    The foreground color for the checked state.
+*/
+
+/*!
+    \qmlproperty color Style::colorHighlighted
+
+    The foreground color for a highlighted item.
+*/
+
+/*!
+    \qmlproperty color Style::colorDisabledLight
+
+    The light foreground color for the disabled state.
+*/
+
+/*!
+    \qmlproperty color Style::colorDisabledMid
+
+    The mid foreground color for the disabled state.
+*/
+
+/*!
+    \qmlproperty color Style::colorDisabledDark
+
+    The dark foreground color for the disabled state.
+*/
+
+/*!
+    \qmlproperty color Style::colorTextSelection
+
+    The background color for a selected item.
+*/
+
