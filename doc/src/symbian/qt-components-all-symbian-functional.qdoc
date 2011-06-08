@@ -55,13 +55,6 @@
         \o \l{ButtonRow}
     \endlist
 
-    \section1 Image and Graphical Components
-    Graphical components add images and icons to applications.
-    \list
-        \o \l{Icon}
-        \o \l{MaskedImage}
-    \endlist
-
     \section1 Application and Windowing
     These components provide hardware and system information to the application.
     These also provide the high level application QML containers.
