@@ -26,8 +26,6 @@
 
 #include <QtTest/QtTest>
 #include <QtTest/QSignalSpy>
-#include <QtDeclarative/qdeclarativecontext.h>
-#include <QtDeclarative/private/qdeclarativelistmodel_p.h>
 #include <QDeclarativeView>
 #include <QDeclarativeItem>
 
@@ -42,7 +40,7 @@ private slots:
     void basic();
     void selected();
     void property_enabled();
-//    void property_items();
+    void property_items();
 
 private:
     QObject *componentObject;
@@ -127,39 +125,31 @@ void tst_tumblerdialog::property_enabled()
     }
 }
 
-// TODO: fix the following test case,
-// QDeclarativeListModel *listmodel = child->findChild<QDeclarativeListModel*>("items"); is failing?
-
-//void tst_tumblerdialog::property_items()
-//{
-//    QObject *child;
-//    int modelSize;
-//    const QObjectList children = componentObject->children();
-//    // verify there is 4 children
-//    QCOMPARE(children.size(), 4);
-//    for (int i = 0; i < children.size(); ++i) {
-//        child = children.at(i);
-//        if (child->objectName().contains("model")) {
-//            modelSize = child->property("count").toInt();
-//            // verify there is 5 elements
-//            QCOMPARE(modelSize, 5);
-//        }
-//        if (child->objectName().contains("aColumn")) {
-//            QVERIFY2(child->property("items").isValid(), "Error, TumblerColumn's child must have items property");
-//            // verify aColumn's items is set as 'model'
-//            QDeclarativeListModel *listmodel = child->findChild<QDeclarativeListModel*>("items");
-//            QCOMPARE(listmodel->count(),5);
-//        }
-
-//        if (child->objectName().contains("bColumn")) {
-//            // verify bColumn's items is set as 'model'
-//            QVERIFY2(child->property("items").isValid(), "Error, TumblerColumn's child must have items property");
-//            // verify aColumn's items is set as 'model'
-//            QDeclarativeListModel *listmodel = child->findChild<QDeclarativeListModel*>("items");
-//            QCOMPARE(listmodel->count(),5);
-//        }
-//    }
-//}
+void tst_tumblerdialog::property_items()
+{
+    QObject *child;
+    int modelSize;
+    const QObjectList children = componentObject->children();
+    // verify there is 4 children
+    QCOMPARE(children.size(), 4);
+    for (int i = 0; i < children.size(); ++i) {
+        child = children.at(i);
+        if (child->objectName().contains("model")) {
+            modelSize = child->property("count").toInt();
+            // verify there is 5 elements
+            QCOMPARE(modelSize, 5);
+        }
+        if (child->objectName().contains("Column")) {
+            QVariant var = child->property("items");
+            QVERIFY2(child->property("items").isValid(), "Error, TumblerColumn's child must have items property");
+            // TODO: The type of "items" is currently "ListModel" and conversion from QVariant
+            //       to QObject does not work for that properly.
+            //QObject *listmodel = var.value<QObject*>();
+            //QVERIFY(listmodel);
+            //QCOMPARE(listmodel->property("count").toInt(), 5);
+        }
+    }
+}
 
 QTEST_MAIN(tst_tumblerdialog)
 
