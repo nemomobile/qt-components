@@ -37,65 +37,63 @@
     A button component enables the user to perform a command. The button has a
     rectangular shape and typically there is a text describing its command and
     an icon shown on the button. When the user presses the button, it sends a
-    clicked signal.
+    clicked signal. When a button has the focus, the button can be pressed using
+    the \c Qt.Key_Select, \c Qt.Key_Return, and \c Qt.Key_Enter hardware keys
+    that will send the clicked signal.
 
-    You can set a button to be a toggle button by enabling the checkable
+    You can set a button to be a toggle button by enabling the \c checkable
     property. A toggle button is a button that can be set to two states, 'on'
-    and 'off'. A toggle button is 'on' when its checked property is \c true;
+    and 'off'. A toggle button is 'on' when its \c checked property is \c true;
     otherwise the button is 'off'. If the toggle button's state is 'on', its
     background is highlighted, otherwise it looks the same as a button that is
     not a toggle button. The user can click the toggle button to switch it 'on'
     or 'off', for example, to switch between bold and plain style in selected
     text.
 
-    You can also set a button to respond to a long-press. If the button's
-    platformAutoRepeat property is \c true, the button sends the clicked signal
-    repeatedly as long as the user presses the button. If the button's platformLongPress
-    property is \c true, the button sends platformPressAndHold signal once when the user
-    presses the button for a long period of time.
+    The button can also respond to a long-press. The button sends platformPressAndHold
+    signal once when the user presses the button for a long period of time. If the
+    button's platformAutoRepeat property is \c true, the button sends the clicked signal
+    repeatedly as long as the user presses the button.
 
     \target Responding to a long-press
     \section1 Responding to a long-press
 
-    \note This use case illustrates Symbian-specific platformAutoRepeat and platformLongPress
-    properties as well as platformPressAndHold and platformReleased signals.
+    \note This use case illustrates the Symbian-specific platformAutoRepeat property as well
+    as the platformPressAndHold and platformReleased signals.
 
     You can define how a button responds to a long-press by using the button's
-    \c platformAutoRepeat and \c platformLongPress properties. When the button is pressed, it
+    \c platformAutoRepeat property. When the button is pressed, it
     sends:
 
     \list
     \o a clicked signal as long as the button is pressed if its platformAutoRepeat
     property is \c true.
-    \o a platformPressAndHold signal if its platformLongPress property is \c true.
+    \o a platformPressAndHold signal if the button is pressed for a long period of time.
     \endlist
 
     In this example the user can enable and disable the 'Signals' button's (id:
-    btnSignals) platformAutoRepeat property with the \c platformAutoRepeat check box and
-    platformLongPress property with the \c platformLongPress check box.
+    btnSignals) platformAutoRepeat property with the \c platformAutoRepeat check box.
 
     \snippet src/snippets/symbian/snippet-button.qml 1
 
     The 'Signals' button's platformAutoRepeat property is bound to the \c platformAutoRepeat
     checkbox's checked property. When the user checks/unchecks the \c platformAutoRepeat
     checkbox, the 'Signals' button's platformAutoRepeat property is set/unset
-    respectively. The same pattern applies to the 'Signal' button's platformLongPress
-    property and the \c platformLongPress checkbox's checked property.
+    respectively.
 
-    The application shows what signals the 'Signals' button sends depending on
-    platformAutoRepeat and platformLongPress values and the duration of the pressing. The button
+    The application shows what signals the 'Signals' button sends depending on the
+    platformAutoRepeat value and the duration of the pressing. The button
     sends:
 
     \list
     \o a platformReleased signal every time the user releases the 'Signals' button.
     \o a clicked signal when the user presses and then releases the 'Signals'
-    button in a short period of time, regardless of platformAutoRepeat and platformLongPress
-    values.
+    button in a short period of time, regardless of the platformAutoRepeat
+    value.
     \o a clicked signal repeatedly as long as the user keeps the 'Signals'
     button pressed if the button's platformAutoRepeat property is \c true. The sending
     starts after a short delay.
-    \o a platformPressAndHold signal when the user keeps the 'Signals' button pressed
-    if the button's  \c platformLongPress property is \c true.
+    \o a platformPressAndHold signal when the user keeps the 'Signals' button pressed.
     \endlist
 
     \snippet src/snippets/symbian/snippet-button.qml 0
@@ -117,7 +115,7 @@
     In this example the user can enable and disable the button's \c checkable
     property with the checkable check box. The 'Signal' button's checkable
     property is bound to \c checkable checkbox's checked property in the same
-    way as its platformAutoRepeat and platformLongPress properties in the
+    way as its platformAutoRepeat property in the
     \l {Responding to a long-press} use case.
 
     The screenshot below illustrates the case where the 'Signals' button is used
@@ -130,6 +128,71 @@
     \image symbian/button_checkable.png
 
 */
+
+/*!
+
+    \qmlproperty bool Button::checkable
+
+    If a button's \c checkable property is \c true, it can be used as a toggle
+    button. The toggle button can be switched between two states, 'on' and
+    'off'. The \c checkable value is \c false by default.
+
+    \sa Button::checked
+
+*/
+
+/*!
+    \qmlproperty bool Button::checked
+
+     The toggle button is:
+
+    \list
+    \o 'on', if its checked value is \c true.
+    \o 'off', if its checked value is \c false. The default value if \c false.
+    \endlist
+
+    \sa Button::checkable
+*/
+
+/*!
+    \qmlproperty font Button::font
+
+     Holds the font of the button's label.
+
+*/
+
+/*!
+    \qmlsignal Button::clicked()
+
+    This signal is emitted after the button is pressed and then released.
+
+    The signal handler, onClicked(), can bind to state changes or other actions.
+
+*/
+
+/*!
+    \qmlproperty url Button::iconSource
+
+    URL for the icon that is displayed on the button. By default there is no
+    icon.
+
+*/
+
+
+/*!
+    \qmlproperty bool Button::pressed
+
+    Indicates if the button is currently pressed or not.
+*/
+
+
+/*!
+    \qmlproperty string Button::text
+
+    The text is displayed as the button's label. The default \c text is an
+    empty string.
+*/
+
 /*!
     \qmlsignal Button::platformReleased()
 
@@ -143,8 +206,7 @@
 
     \e {Symbian:}
 
-    This signal is emitted when the button's \c platformLongPress property is \c true
-    and the button is pressed for a long time.
+    This signal is emitted when the button is pressed for a long time.
 
 */
 
@@ -155,18 +217,5 @@
 
     If platformAutoRepeat is \c true, the clicked() signal is emitted repeatedly as long
     as the button is pressed. By default platformAutoRepeat is \c false.
-
-*/
-
-/*!
-    \qmlproperty bool Button::platformLongPress
-
-
-    \e {Symbian:}
-
-    If platformLongPress is \c true, the platformPressAndHold() signal is emitted when the
-    button is pressed for a long time. If platformLongPress is \c false, the
-    platformPressAndHold() signal is not emitted. By default platformLongPress is \c false.
-
 */
 
