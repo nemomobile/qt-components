@@ -97,13 +97,14 @@ ImplicitSizeItem {
             height: priv.contentHeight
             width: priv.contentHeight // same as height
             anchors.verticalCenter: parent.verticalCenter
-            anchors.right: signalBackground.left
+            anchors.right: offline ? batteryBackground.left : signalBackground.left
             anchors.rightMargin: priv.paddingSmallThreeQuarters
             color: platformStyle.colorNormalLight
         }
         // signal strength
         Image {
             id: signalBackground
+            visible: !networkMode.offline
             sourceSize.height: priv.contentHeight
             sourceSize.width: Math.round(privateStyle.statusBarHeight * 19 / 26)
             anchors.verticalCenter: parent.verticalCenter
