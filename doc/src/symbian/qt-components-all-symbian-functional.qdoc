@@ -60,7 +60,6 @@
     \list
         \o \l{Icon}
         \o \l{MaskedImage}
-        \o \l{SectionScrollerLabel} - for attaching a label to a \l{SectionScroller}
     \endlist
 
     \section1 Application and Windowing

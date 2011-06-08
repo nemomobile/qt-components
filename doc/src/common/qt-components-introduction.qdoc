@@ -194,8 +194,7 @@
         \header
             \o {2,1} Decorators
         \row
-            \o ScrollBar, ScrollBarSizer, ScrollDecorator, SectionScroller,
-            SectionScrollerLabel
+            \o ScrollBar, ScrollBarSizer, ScrollDecorator, SectionScroller
             \o For providing information about the user's position inside a large
             list or area.
 
