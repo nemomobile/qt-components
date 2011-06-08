@@ -31,22 +31,26 @@
     \since 1.0
     \inherits Item
     \brief
-    Window is the root component for an application and handles the transitions
-    when rotating the screen.
+    Window is normally the root component of an application and it handles the
+    transitions when the user rotates the screen.
 
-    An application can be in portrait mode or landscape mode. A user can
-    physically rotate the device between these orientations and so you might
-    want to layout the application content differently depending on the screen
-    orientation. The Window component assists this kind of feature by sending
-    signals at different stages of the transition.
+    An application can be in the portrait or the landscape orientation. A user
+    can physically rotate the device between these orientations, so you may want
+    to layout the application's content differently depending on the screen's
+    orientation. When the user rotates the screen, Window sends various signals
+    at different phases of the rotation. Window handles also the resizing of the
+    screen and possible transitions when the orientation changes. Normally all
+    applications utilizing QtQuick Components for Symbian use Window as the root
+    item.
+
 
 */
 
 /*!
     \qmlproperty bool Window::inPortrait
 
-    \c True if the window is in the portrait orientation, otherwise it is \c
-    false and indicates the window is in landscape orientation.
+    If the screen is in the portrait orientation, the value is \c true. If the screen
+    is in the landscape orientation, the value is \c false.
 
 */
 
@@ -54,28 +58,29 @@
 /*!
     \qmlsignal Window::orientationChangeAboutToStart()
 
-    Signal that indicates the window orientation is about to start changing from
-    one orientation to another so you can start preparing your application for
-    the new orientation. For example, you could stop any screen
-    animations while the orientation transition is taking place.
-
-    When the signal is emitted, the inPortrait property already indicates the
-    new orientation.
+    This signal is emitted when the screen orientation starts to change from one
+    orientation to another. After this signal is emitted
+    \list
+    \o you can start to prepare your application for the new screen orientation.
+    For example, you can stop all screen animations.
+    \o the \c inPortrait property indicates the new orientation.
+    \endlist
 
 */
 
 /*!
     \qmlsignal Window::orientationChangeStarted()
 
-    Signal that indicates the orientation change transition has begun.
+    This signal is emitted when the orientation change transition, for example
+    screen transition animation, starts.
 
 */
 
 /*!
     \qmlsignal Window::orientationChangeFinished()
 
-    Signal that indicates the orientation change transition has run to
-    completion.
+    This signal is emitted when the orientation change transition, for example
+    screen transition animation, ends.
 
 */
 
