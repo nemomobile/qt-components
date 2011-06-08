@@ -68,6 +68,7 @@
     \list
         \o \l{ApplicationWindow}
         \o \l{Window}
+        \o \l{StatusBar}
         \o \l{Symbian}
         \o \l{Globals}
         \o \l{Screen}
