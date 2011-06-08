@@ -46,7 +46,7 @@ public:
 };
 
 SDeclarativeNetworkIndicatorPrivate::SDeclarativeNetworkIndicatorPrivate(
-    SDeclarativeNetworkIndicator *qq) : q_ptr(qq)
+    SDeclarativeNetworkIndicator *qq) : offline(false), q_ptr(qq)
 {
     impl = new SDeclarativeNetworkIndicatorPrivateImpl();
     impl->pixmap = QPixmap(":/graphics/qtg_graf_signal_icon.svg");

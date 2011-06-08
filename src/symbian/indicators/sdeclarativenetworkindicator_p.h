@@ -43,6 +43,7 @@ public:
     QPixmap pixmap();
 
     QColor color;
+    bool offline;
 
     SDeclarativeNetworkIndicator *q_ptr;
     SDeclarativeNetworkIndicatorPrivateImpl *impl;

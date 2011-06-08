@@ -56,6 +56,12 @@ void SDeclarativeNetworkIndicator::setColor(const QColor &color)
     }
 }
 
+bool SDeclarativeNetworkIndicator::offline() const
+{
+    Q_D(const SDeclarativeNetworkIndicator);
+    return d->offline;
+}
+
 void SDeclarativeNetworkIndicator::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option);

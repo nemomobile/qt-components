@@ -48,7 +48,6 @@ public:
     CSDeclarativeStatusPaneSubscriber *subscriber;
 
     int currentState;
-    bool offline;
     QPixmap pixmap;
 };
 
@@ -59,9 +58,13 @@ SDeclarativeNetworkIndicatorPrivateImpl::~SDeclarativeNetworkIndicatorPrivateImp
 
 SDeclarativeNetworkIndicatorPrivateImpl::SDeclarativeNetworkIndicatorPrivateImpl(
     SDeclarativeNetworkIndicator *qq, SDeclarativeNetworkIndicatorPrivate *dd)
-    : q_ptr(qq), d_ptr(dd), subscriber(0), currentState(-1), offline(false)
+    : q_ptr(qq), d_ptr(dd), subscriber(0), currentState(-1)
 {
     QT_TRAP_THROWING(subscriber = CSDeclarativeStatusPaneSubscriber::NewL(*this));
+    // Initialize network state and offline status
+    const TAknSignalState &signalState = subscriber->SignalState();
+    currentState = signalState.iIconState;
+    dd->offline = (signalState.iSignalStrength == KAknSignalOffLineMode);
 }
 
 void SDeclarativeNetworkIndicatorPrivateImpl::StatusPaneStateChanged(TStatusPaneChangeFlags aChangeFlags)
@@ -69,10 +72,14 @@ void SDeclarativeNetworkIndicatorPrivateImpl::StatusPaneStateChanged(TStatusPane
     if (aChangeFlags & MSDeclarativeStatusPaneSubscriberObverver::EStatusPaneSignalState) {
         const TAknSignalState &signalState = subscriber->SignalState();
         bool newOffline(signalState.iSignalStrength == KAknSignalOffLineMode);
+        bool offlineChanged(d_ptr->offline != newOffline);
 
-        if (currentState != signalState.iIconState || offline != newOffline) {
+        if (offlineChanged) {
+            d_ptr->offline = newOffline;
+            emit q_ptr->offlineChanged();
+        }
+        if (currentState != signalState.iIconState || offlineChanged) {
             currentState = signalState.iIconState;
-            offline = newOffline;
             d_ptr->reset();
             q_ptr->update();
         }
@@ -80,7 +87,7 @@ void SDeclarativeNetworkIndicatorPrivateImpl::StatusPaneStateChanged(TStatusPane
 }
 
 SDeclarativeNetworkIndicatorPrivate::SDeclarativeNetworkIndicatorPrivate(
-    SDeclarativeNetworkIndicator *qq) : q_ptr(qq)
+    SDeclarativeNetworkIndicator *qq) : offline(false), q_ptr(qq)
 {
     impl = new SDeclarativeNetworkIndicatorPrivateImpl(qq, this);
 }
@@ -102,7 +109,7 @@ QPixmap SDeclarativeNetworkIndicatorPrivate::pixmap()
         TInt maskId = 0;
         CFbsBitmap *tempBitmap = 0;
         CFbsBitmap *tempMask = 0;
-        if (impl->offline) {
+        if (offline) {
             bitmapId = EMbmAvkonQgn_indi_signal_offline;
             maskId = EMbmAvkonQgn_indi_signal_offline_mask;
         } else {

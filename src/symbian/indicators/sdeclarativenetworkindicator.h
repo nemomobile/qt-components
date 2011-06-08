@@ -36,21 +36,25 @@ class SDeclarativeNetworkIndicator : public QDeclarativeItem
 {
     Q_OBJECT
     Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
+    Q_PROPERTY(bool offline READ offline NOTIFY offlineChanged)
 public:
     SDeclarativeNetworkIndicator(QDeclarativeItem *parent = 0);
     ~SDeclarativeNetworkIndicator();
 
     QColor color() const;
     void setColor(const QColor &color);
+    bool offline() const;
 
-signals:
+Q_SIGNALS:
     void colorChanged();
+    void offlineChanged();
 
 protected:
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
     QScopedPointer<SDeclarativeNetworkIndicatorPrivate> d_ptr;
 
 private:
+    friend class SDeclarativeNetworkIndicatorPrivateImpl;
     Q_DISABLE_COPY(SDeclarativeNetworkIndicator)
     Q_DECLARE_PRIVATE(SDeclarativeNetworkIndicator)
 };
