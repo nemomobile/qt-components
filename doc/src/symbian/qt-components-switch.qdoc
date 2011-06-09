@@ -33,22 +33,46 @@
     \inherits Item
 
     \brief
+    A Switch component provides an icon representing a physical switch that the 
+    user can turn on and off.
 
+    You can bound the Switch component to a feature that the application has to enable or 
+    disable based on user's input, for example. Switch has similar usage and API as 
+    \l CheckBox, except that Switch does not provide a built-in label.
+
+    \section1 Using a Switch
+
+    In this example the user can turn a switch on and off. In the code snippet 
+    below the switch is defined. The text label is bound to the \c checked 
+    property - this way the text label shows the switch's state to the user.
+
+    \snippet src/snippets/symbian/snippet-switch.qml 0
+
+    The screenshot below illustrates the case where the user has turned the
+    switch on.
+
+    \image symbian/switch_checked.png
+*/
+
+/*!
+    \qmlproperty bool Switch::checked
+
+    If a switch is turned on, \c checked is \c true; otherwise \c false.
+
+    \sa clicked
 */
 
 /*!
     \qmlproperty bool Switch::pressed
 
+    When the user presses or drags the switch, the value is \c true; otherwise \c false.
 */
-
-/*!
-    \qmlproperty string Switch::text
-
-*/
-
 
 /*!
     \qmlsignal Switch::clicked()
 
-*/
+    This signal is emitted when the switch state is toggled from 'on' to 'off' or vice versa.
 
+    \sa checked
+
+*/
