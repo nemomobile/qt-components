@@ -31,7 +31,7 @@ ImplicitSizeItem {
     id: root
 
     default property alias content: menu.content
-    property alias visualParent: popup.visualParent
+    property Item visualParent: null
     property alias status: popup.status
 
     function open() {
