@@ -144,6 +144,7 @@ HEADERS += \
     shadereffectitem/shadereffect.h \
     shadereffectitem/geometry.h \
     shadereffectitem/glfunctions.h \
+    i18n/mlocalewrapper.h \
     mpageorientation.h \
     mtoolbarvisibility.h
 

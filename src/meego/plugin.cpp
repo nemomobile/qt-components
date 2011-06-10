@@ -71,6 +71,8 @@
 #include "shadereffectitem/shadereffectsourcenull.h"
 #endif
 
+#include "i18n/mlocalewrapper.h"
+
 class MeeGoPlugin : public QDeclarativeExtensionPlugin
 {
     Q_OBJECT
@@ -106,6 +108,9 @@ public:
         } 
 
         engine->rootContext()->setContextProperty("UiConstants", uiConstants());
+        engine->rootContext()->setContextProperty("locale", new MLocaleWrapper);
+        qmlRegisterUncreatableType<MLocaleWrapper>(uri, 1, 0, "Locale", "");
+
     }
 
     void registerTypes(const char *uri) {
