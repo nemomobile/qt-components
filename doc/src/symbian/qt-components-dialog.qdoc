@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
@@ -29,10 +29,126 @@
     \ingroup qt-components
     \since 1.0
     \inherits Item
+
     \brief
     A Dialog is a top-level window mostly used for short-term tasks and brief
     communications with the user.
 
-    Popup dialogs float above the top layer of the application view, usually overlapping the area reserved for the application content. An application can use a dialog to provide information, give warnings, and ask the user to answer a question or select an option.
+    A dialog floats on the top layer of the application view, usually
+    overlapping the area reserved for the application content. Normally,
+    a dialog provides information and gives warnings to the user, or asks the
+    user to answer a question or select an option.
 
+*/
+
+/*!
+    \qmlproperty list<Item> Dialog::title
+
+    A list of items for the dialog's title area. You can use a \l Text component
+    but also any number of components that are based on \l Item. For example,
+    you can use \l Text and \l Image components.
+
+*/
+
+/*!
+    \qmlproperty list<Item> Dialog::content
+
+    A list of items for the dialog's content area. You can use any component that is based
+    on \l Item. For example, you can use \l ListView so that the user can
+    select from a list of names.
+
+*/
+
+/*!
+    \qmlproperty list<Item> Dialog::buttons
+
+    A list of items in the dialog's button area. For example, you can use a \l Row of \l Button
+    components but you can use any number of components that are based on Item component.
+
+*/
+
+/*!
+    \qmlproperty Item Dialog::visualParent
+
+    The item that is dimmed when the dialog opens. By default the root parent
+    object is visualParent.
+
+*/
+
+/*!
+    \qmlproperty int Dialog::status
+
+    Indicates the dialog's phase in its life cycle. The values are as follows:
+
+    \list
+      \o \c DialogStatus.Opening - the dialog is opening
+      \o \c DialogStatus.Open - the dialog is open and visible to the user
+      \o \c DialogStatus.Closing - the dialog is closing
+      \o \c DialogStatus.Closed - the dialog is closed and not visible to the user
+    \endlist
+
+    The dialog's initial status is \c DialogStatus.Closed.
+
+*/
+
+/*!
+    \qmlmethod Dialog::open()
+
+    Shows the dialog to the user.
+*/
+
+/*!
+    \qmlmethod Dialog::close()
+
+    Closes the dialog without any user interaction.
+
+*/
+
+
+/*!
+    \qmlmethod Dialog::accept()
+
+    Accepts the dialog's request without any user interaction. The method emits
+    the accepted() signal and closes the dialog.
+
+    \sa reject()
+*/
+
+/*!
+    \qmlmethod Dialog::reject()
+
+    Rejects the dialog's request without any user interaction. The method emits
+    the rejected() signal and closes the dialog.
+
+    \sa accept()
+*/
+
+/*!
+    \qmlsignal Dialog::accepted()
+
+    This signal is emitted when the user accepts the dialog's request or
+    the accept() method is called.
+
+    \sa rejected()
+
+*/
+
+/*!
+    \qmlsignal Dialog::rejected()
+
+    This signal is emitted when the user rejects the dialog's request or
+    the reject() method is called.
+
+    \sa accepted()
+*/
+
+/*!
+    \qmlsignal Dialog::clickedOutside()
+
+    This signal is emitted when the user taps in the area that is inside the
+    dialog's visual parent area but outside the dialog's area. Normally the
+    visual parent is the root object. In that case this signal is emitted if
+    the user taps anywhere outside the dialog's area.
+
+    \sa visualParent
 */
