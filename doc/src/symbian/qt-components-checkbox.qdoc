@@ -29,22 +29,28 @@
 
     \qmlclass CheckBox
     \ingroup qt-components
+    \inherits Item
     \since 1.0
 
     \brief A check box component has an image and a label and can be clicked by
     the user.
 
-    A check box is an component that can be switched on (checked) or off
+    A check box is a component that can be switched on (checked) or off
     (unchecked). Check boxes are typically used to represent features in an
     application that can be enabled or disabled without affecting others, but
     different types of behavior can be implemented. When a check box is checked
-    or unchecked it sends a clicked() signal for the application to handle.
+    or unchecked it sends a \c clicked signal for the application to handle.
 
-    \section1 Checking and unchecking a check box
+    When a check box has focus, it's state can be toggled using the
+    \c Qt.Key_Select, \c Qt.Key_Return and \c Qt.Key_Enter hardware keys, which
+    will send the \c clicked signal.
+
+
+    \section1 Checking and Unchecking a Check Box
 
     In this example the user can check and uncheck a check box. In the code
     snippet below the check box is defined. When the user clicks the check box,
-    the application shows the signal and the state ('checked' or 'unchecked') of
+    the text label changes according to the state ('checked' or 'unchecked') of
     the check box.
 
     \snippet src/snippets/symbian/snippet-checkbox.qml 0
@@ -54,4 +60,34 @@
 
     \image symbian/checkbox_checked.png
 
+*/
+
+/*!
+    \qmlproperty string CheckBox::text
+
+    The text is shown beside the check box. By default text is an
+    empty string.
+
+*/
+
+/*!
+    \qmlproperty bool CheckBox::checked
+
+    If the button is checked, its \c checked property is \c true; otherwise \c false. The property is
+    \c false by default.
+
+*/
+/*!
+    \qmlproperty bool CheckBox::pressed
+
+    If the button is pressed, its \c pressed property is \c true.
+
+    \sa clicked
+*/
+/*!
+    \qmlsignal CheckBox::clicked()
+
+    The signal is emitted when the button is pressed and then released.
+
+    The signal handler, \c onClicked, can bind to state changes or other actions.
 */
