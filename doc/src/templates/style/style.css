@@ -753,6 +753,7 @@
     }
     .wrap .breadcrumb ul li
     {
+        display: none;
         float: left;
         background: url(../images/breadcrumb.png) no-repeat 0 3px;
         padding-left: 15px;
@@ -1536,6 +1537,7 @@
 
 
     .creator .wrap .breadcrumb ul li {
+      display: none;
       font-weight: normal;
     }
 

@@ -7,25 +7,64 @@ win32:!win32-g++* {
 }
 
 QDOC = $$[QT_INSTALL_BINS]/qdoc3
-QDOC = $$replace(QDOC, /, $$QMAKE_DIR_SEP)
-QHELPGENERATOR = $$[QT_INSTALL_BINS]/qhelpgenerator
-QHELPGENERATOR = $$replace(QHELPGENERATOR, /, $$QMAKE_DIR_SEP)
 
-symbian3:QDOCCONF = $${Q_COMPONENTS_SOURCE_TREE}/doc/src/symbian/qt-components.qdocconf
-meego:QDOCCONF = $${Q_COMPONENTS_SOURCE_TREE}/doc/src/meego/qt-components.qdocconf
+SAMPLEQDOCCONF = $${Q_COMPONENTS_SOURCE_TREE}/doc/config/macros.qdocconf
+OUTPUT = $$system($$QDOC $$SAMPLEQDOCCONF 2>&1)
+contains(OUTPUT, "-creator") {
 
-!isEmpty(QDOCCONF) {
-    $$unixstyle {
-        html_docs.commands = (QT_INSTALL_DOCS=$$[QT_INSTALL_DOCS] Q_COMPONENTS_SOURCE_TREE=$${Q_COMPONENTS_SOURCE_TREE} $$QDOC $$QDOCCONF)
-    } else {
-        ARGUMENTS = set QT_INSTALL_DOCS=$$[QT_INSTALL_DOCS]&& set Q_COMPONENTS_SOURCE_TREE=$${Q_COMPONENTS_SOURCE_TREE}&& $$QDOC $$QDOCCONF
-        html_docs.commands = ($$replace(ARGUMENTS, /, $$QMAKE_DIR_SEP))
+   QDOC_ONLINE = -online
+    symbian3:{
+        QDOCCONF = $${Q_COMPONENTS_SOURCE_TREE}/doc/config/qt-components-symbian.qdocconf
+        QDOCCONF_QCH = $$QDOCCONF
     }
-    qch_docs.depends = html_docs
-    ARGUMENTS = cd $${Q_COMPONENTS_SOURCE_TREE} && $$QHELPGENERATOR doc/html/qtcomponentssymbian.qhp -o doc/qch/qtcomponentssymbian.qch
-    qch_docs.commands = ($$replace(ARGUMENTS, /, $$QMAKE_DIR_SEP))
-    QMAKE_EXTRA_TARGETS += html_docs qch_docs
+    meego:QDOCCONF = $${Q_COMPONENTS_SOURCE_TREE}/doc/src/meego/qt-components.qdocconf
+
+} else {
+    QDOC_ONLINE = " "
+
+    symbian3: {
+        QDOCCONF = $${Q_COMPONENTS_SOURCE_TREE}/doc/config/qt474/qt-components-symbian-online.qdocconf
+        QDOCCONF_QCH = $${Q_COMPONENTS_SOURCE_TREE}/doc/config/qt474/qt-components-symbian.qdocconf
+    }
+    meego:QDOCCONF = $${Q_COMPONENTS_SOURCE_TREE}/doc/src/meego/qt-components.qdocconf
 }
 
-docs.depends = html_docs qch_docs
+
+!isEmpty(QDOCCONF) {
+    QHELPGENERATOR = $$[QT_INSTALL_BINS]/qhelpgenerator
+    $$unixstyle {
+        SET_ENV = QT_INSTALL_DOCS=$$[QT_INSTALL_DOCS] Q_COMPONENTS_SOURCE_TREE=$${Q_COMPONENTS_SOURCE_TREE}
+
+        QDOC = $$replace(QDOC, "\\\\", "/")
+        QHELPGENERATOR = $$replace(QHELPGENERATOR, "\\\\", "/")
+
+        HTML_DOCUMENTATION =    $$SET_ENV $$QDOC $$QDOC_ONLINE $$QDOCCONF
+        QCH_DOCUMENTATION =     ($$SET_ENV $$QDOC $$QDOCCONF_QCH) && \
+                                (cd $${Q_COMPONENTS_SOURCE_TREE}) && \
+                                ($$QHELPGENERATOR doc/html/qtcomponentssymbian.qhp -o doc/qch/qtcomponentssymbian.qch)
+
+    } else {
+        SET_ENV = set QT_INSTALL_DOCS=$$[QT_INSTALL_DOCS]&& set Q_COMPONENTS_SOURCE_TREE=$${Q_COMPONENTS_SOURCE_TREE}
+
+
+        HTML_DOCUMENTATION =    ($$SET_ENV&& $$QDOC $$QDOC_ONLINE $$QDOCCONF)
+        HTML_DOCUMENTATION = $$replace(HTML_DOCUMENTATION, /, $$QMAKE_DIR_SEP)
+
+        QCH_DOCUMENTATION =     ($$SET_ENV&& $$QDOC $$QDOCCONF_QCH && \
+                        cd $${Q_COMPONENTS_SOURCE_TREE}&& \
+                        $$QHELPGENERATOR doc/html/qtcomponentssymbian.qhp -o doc/qch/qtcomponentssymbian.qch)
+        QCH_DOCUMENTATION = $$replace(QCH_DOCUMENTATION, /, $$QMAKE_DIR_SEP)
+
+    }
+
+}
+
+QMAKE_EXTRA_TARGETS += qch_docs html_docs
+
+docs.depends = qch_docs html_docs
+
+html_docs.commands = $$HTML_DOCUMENTATION
+qch_docs.commands = $$QCH_DOCUMENTATION
+
 QMAKE_EXTRA_TARGETS += docs
+

@@ -1,0 +1,11 @@
+include(qt.qdocconf)
+
+imagedirs               = $Q_COMPONENTS_SOURCE_TREE/doc/src/images \
+                          $Q_COMPONENTS_SOURCE_TREE/examples \
+			              $Q_COMPONENTS_SOURCE_TREE/doc/config/images
+
+outputdir               = $Q_COMPONENTS_SOURCE_TREE/doc/ditaxml
+outputformats           = DITAXML
+
+generateindex           = true
+url                     = .

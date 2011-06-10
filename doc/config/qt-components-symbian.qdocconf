@@ -1,0 +1,51 @@
+include(compat.qdocconf)
+include(macros.qdocconf)
+include(qt-cpp-ignore.qdocconf)
+include(qt-html-templates.qdocconf)
+include(qt-defines.qdocconf)
+
+project         = qt-components
+description     = "Qt Quick Components for Symbian Documentation"
+
+#headerdirs =    $Q_COMPONENTS_SOURCE_TREE/src \
+#                $Q_COMPONENTS_SOURCE_TREE/doc/src
+sourcedirs =    $Q_COMPONENTS_SOURCE_TREE/doc/src/common \
+                $Q_COMPONENTS_SOURCE_TREE/doc/src/symbian \
+                $Q_COMPONENTS_SOURCE_TREE/doc/src/howtos \
+                $Q_COMPONENTS_SOURCE_TREE/doc/src/examples \
+                $Q_COMPONENTS_SOURCE_TREE/doc/src/extras
+                #$QTSRC/src/declarative
+
+outputdir  =    $Q_COMPONENTS_SOURCE_TREE/doc/html
+outputformats = HTML
+sources.fileextensions = "*.cpp *.doc *.qdoc *.h *.qml"
+examples.fileextensions = "*.cpp *.h *.js *.qml"
+exampledirs =   $Q_COMPONENTS_SOURCE_TREE/doc $Q_COMPONENTS_SOURCE_TREE
+imagedirs =     $Q_COMPONENTS_SOURCE_TREE/doc/src/images $Q_COMPONENTS_SOURCE_TREE/doc/src/templates/images
+
+indexes = $QT_INSTALL_DOCS/html/qt.index
+
+qhp.projects            = QtComponentsSymbian
+qhp.QtComponentsSymbian.file             = qtcomponentssymbian.qhp
+qhp.QtComponentsSymbian.namespace        = com.nokia.qtcomponentssymbian.100
+qhp.QtComponentsSymbian.virtualFolder    = doc
+qhp.QtComponentsSymbian.indexTitle       = Qt Quick Components for Symbian
+qhp.QtComponentsSymbian.filterAttributes = QtComponents 1.0.0
+qhp.QtComponentsSymbian.customFilters.QtComponentsSymbian.name = Qt Quick Components for Symbian 1.0.0
+qhp.QtComponentsSymbian.customFilters.QtComponentsSymbian.filterAttributes = QtComponents 1.0.0
+qhp.QtComponentsSymbian.extraFiles          = style/narrow.css \
+                                              style/style.css \
+                                              style/style_ie6.css \
+                                              style/style_ie7.css \
+                                              style/style_ie8.css \
+                                              style/superfish.css
+qhp.QtComponentsSymbian.indexRoot        =
+
+qhp.QtComponentsSymbian.subprojects = manual
+qhp.QtComponentsSymbian.subprojects.manual.title = Qt Quick components documentation
+qhp.QtComponentsSymbian.subprojects.manual.indexTitle = Qt Quick components table of contents
+qhp.QtComponentsSymbian.subprojects.manual.type = manual
+
+#outputprefixes = QML
+#outputprefixes.QML = qt-components-symbian-
+

@@ -249,6 +249,7 @@
         background-color: #fafafa;
         height: 1.35em;
         border-bottom: 1px solid #d1d1d1;
+        display:none
     }
 
     .header .breadcrumb ul
