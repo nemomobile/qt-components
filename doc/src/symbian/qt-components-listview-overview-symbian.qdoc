@@ -34,32 +34,33 @@
     \title List Components for Symbian
     \brief Customizing list appearances
 
-    The base element for a list view is the standard ListView element. The Qt
-    Quick components for Symbian provide some extra elements for constructing
-    lists.
+    The base element for a list view is the standard \c ListView element. The Qt
+    Quick components for Symbian provide the following extra elements for constructing
+    lists:
 
     \list
 
-      \o The ListItem element can be used to define delegates that are templates
-      for displaying the model data on screen.
+      \o The \l ListItem element allows you to define delegates that are
+      templates for displaying the model data on the screen.
 
-      \o ListHeading elements can be used to add a header for a list or for
+      \o The \l ListHeading element allows to add a header for a list or for
       section headers within the list.
 
-      \o ListItemText elements allow you to put themed texts into a ListItem or
-      a ListHeading.
+      \o The \l ListItemText element allows you to put themed texts into a
+      \l ListItem or a \l ListHeading.
 
     \endlist
 
     \section1 Creating and Decorating a List
 
-    The following code shows how to create a list view with several items. The image below shows the result.
+    The following code shows how to create a list view with several items. The
+    image below shows the result.
 
     \snippet src/snippets/symbian/snippet-listview-basic.qml 0
 
     \image symbian/listview_basic.png
 
-    \section1 Code examples
+    \section1 Code Examples
 
     \list
       \o \l {Multi-Select Support for Symbian List Components}

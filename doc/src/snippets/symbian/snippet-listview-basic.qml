@@ -41,7 +41,7 @@
 import Qt 4.7
 import com.nokia.symbian 1.0
 
-Item {
+Window {
     id: root
 
     ListView {
@@ -60,7 +60,7 @@ Item {
             id: listItem
 
             Column {
-                anchors.fill: listItem.padding
+                anchors.fill: listItem.paddingItem
 
                 ListItemText {
                     mode: listItem.mode
