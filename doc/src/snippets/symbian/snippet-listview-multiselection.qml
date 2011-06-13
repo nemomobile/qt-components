@@ -40,7 +40,7 @@
 import Qt 4.7
 import com.nokia.symbian 1.0
 
-Item {
+Window {
     id: root
 //! [0]
     ListView {
@@ -63,9 +63,9 @@ Item {
             // The texts to display
             Column {
                 anchors {
-                    left:  listItem.padding.left
-                    top: listItem.padding.top
-                    bottom: listItem.padding.bottom
+                    left:  listItem.paddingItem.left
+                    top: listItem.paddingItem.top
+                    bottom: listItem.paddingItem.bottom
                     right: checkbox.left
                 }
 
@@ -88,14 +88,8 @@ Item {
             CheckBox {
                 id: checkbox
                 checked: selected  // Checked state is from the 'selected' property in the model item
-                anchors { right: listItem.padding.right; verticalCenter: listItem.verticalCenter }
+                anchors { right: listItem.paddingItem.right; verticalCenter: listItem.verticalCenter }
                 onClicked: listModel.set(index, { "selected": checkbox.checked })
-            }
-
-            // Handle a click (press and release) on the list item.
-            onClicked: {
-                checkbox.checked = !checkbox.checked                    // Toggle the checkbox value
-                listModel.set(index, { "selected": checkbox.checked })  // Update the value of the 'selected' property in the appropriate model item.
             }
         }
     }

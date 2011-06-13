@@ -34,52 +34,48 @@
 
     \brief A list with individually selectable items
 
-    You can use a ListView to set up a list with items that can be individually
-    selected. The code given below demonstrates how to create a list that looks
-    like this:
+    You can use a \c ListView to set up a list with items that can be
+    individually selected. The code snippets below demonstrate how to create the
+    following list:
 
     \image symbian/listview_multiselection.png
 
-    \section1 Creating the list view
+    \section1 Creating the List View
 
-    The following code snippet is a basic definition for a ListView. A ListView
-    has a model property which defines the data to be displayed, and a delegate
-    property which defines how the data should be displayed on screen.
+    The following code snippet is a basic definition for a \c ListView. A
+    \c ListView has a \c model property that defines the data to be displayed,
+    and a \c delegate property that defines how the data should be displayed on the
+    screen.
 
     \snippet src/snippets/symbian/snippet-listview-multiselection.qml 0
 
 
-    \section1 Creating the data model
+    \section1 Creating the Data Model
 
     The following code snippet defines a simple model for a multiselection list.
-    It is implemented using a ListModel element and the items of the list
-    are ListElements.
+    It is implemented using a \c ListModel element and the items of the list
+    are \c ListElements.
 
-    The important thing to note here is that each item in the list \bold must
-    include a data item to store the selection state of that item. In this
-    example it is called \c selected. The delegate then uses this value to
-    display the state visually to the user.
+    \note
+    Each item in the list \bold must include a data item to store the selection
+    state of that item. In this example it is called \c selected. The delegate
+    then uses the \c selected value to display the state visually to the user.
 
     \snippet src/snippets/symbian/snippet-listview-multiselection.qml 2
 
-    \section1 Creating the ListItem delegate
+    \section1 Creating the ListItem Delegate
 
     The final thing to do is to create the delegate. This defines how the data
     is displayed to the user and also passes information about data changes back
     to the model. Delegates are instantiated as needed by the system and can be
-    destroyed at any time (even while scrolling the list) so it is not safe to
+    destroyed at any time - even while scrolling the list - so it is not safe to
     store state information only in the delegate. You must make the delegate
-    update the model whenever the state of a item changes. Then your state
+    update the model when the state of a item changes. Then your state
     information does not disappear when the delegate item is destroyed.
 
-    The code snippet below defines a delegate with some texts and a checkbox.
-    The ListView uses this delegate as a template to display the data for each
-    item in the model onto the screen. Note that the onClicked() handler for
-    toggling the checkbox is the handler for the whole list item rather than
-    just the checkbox. The checkbox is a small target to touch, so a larger
-    target is easier for the user. Also, the checkbox overlaps with the list's
-    scroll area so it is hard to touch the checkbox without also touching the
-    scroll area.
+    The code snippet below defines a delegate with some texts and a check box.
+    The \c ListView uses this delegate as a template to display the data for
+    each item in the model onto the screen.
 
     \snippet src/snippets/symbian/snippet-listview-multiselection.qml 1
 
