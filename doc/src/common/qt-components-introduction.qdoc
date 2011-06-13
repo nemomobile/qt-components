@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
@@ -28,176 +28,67 @@
 /*!
     \page qt-components-introduction.html
 
-    \title Introduction to the Qt Quick components
+    \title Introduction to the Qt Quick Components
 
-    The Qt Quick components are built on top of Qt Quick and provide native-look
-    user interface elements for your QML-based application. They are bundled
-    together as a module that you can import into your QML file. Once you have
-    imported the components module, you can use the components just as you would
-    use standard QML elements such as Rectangle and Text. As with normal QML
-    applications, you can still use JavaScript and/or Qt C++ for the business
-    logic of your application.
+    Qt Quick Components are built on top of \l {Qt Quick} and provide
+    native-look user interface elements for your QML-based application. They are
+    bundled together as a module that you can import into your QML file. Once
+    you have imported the components module, you can use the components just as
+    you would use standard \l{QML Elements}{QML elements} such as \l Rectangle
+    and \l Text. You may then implement the business logic of your application
+    with JavaScript or Qt C++.
 
     \image common/components-stack.png
 
-    \section1 Developing cross-platform applications with the components
+    \section1 Developing Applications with Components
 
-    The components are implemented separately for both Symbian and MeeGo. This
-    has been done so that they can be easily made to match the native look and
-    feel of each platform. In order to keep the implementations compatible,
-    there is a common API definition that each implementation must comply with.
-    This means you can use components based on the common APIs for your
-    application interface and it will work on both platforms.
-
-    However, a platform often has ways of doing things that are particular to
-    that platform. During the development of the components, a design decision
-    was made to implement these platform-specific features as extensions to the
-    common APIs or as separate components where appropriate. This keeps the
-    common APIs small and streamlined rather than becoming bloated by all the
-    little bits and pieces special for every platform. So, when developing an
-    application, you can develop the core of your user interface in a cross-
-    platform manner. After you have that done, you can optimise your the
-    interface to take advantage of features specific to each particular
-    platform. In practice, this means you need to create separate variant files
-    for the parts of your application that use platform-specific features.
-    However, these differences are generally small and, due to the declarative
-    nature of the QML language, it is fast to create these variants.
-
-    So, in summary:
+    The components are implemented separately for both Symbian and MeeGo to
+    match the native look and feel of each platform. Components from both sets
+    have similar interfaces and many components share a common interface. The
+    compatible interfaces allows the developers to share some common code but
+    give the freedom to customize their applications to each platform.
 
     \list
-
-        \o \e {Common API components} - These APIs are common to each platform and
-        auto-tests ensure that each platform conforms to these standardised APIs.
-
-        \o \e {Common API components with platform-specific extensions} - These
-        are properties, methods and signals that extend a common API and are
-        only available on a particular platform. They are identified by
-        "platform" at the start of the name, for example:
-        \l {Button::platformPressAndHold}{Button::\e{platform}PressAndHold}.
-
-        \o \e {Platform-specific components} - These components are only
-        available for a particular platform.
-
+    \o \l{Functional List of Symbian Components}{Symbian Components} - A set of
+    components for application development using the latest Symbian user
+    interface design.
+    \o \l{Extras Components} - A set of components that add a few more
+    components to the Symbian set.
     \endlist
 
-    \bold Note: The common API extensions and platform-specific components are
-    always over and above the standard APIs and components; they are never a
-    replacement for them. In practice this means you can use the core set of
-    common APIs and be sure that your application will work on all the
-    platforms. However, you can also customise your application to take
-    advantage of platform-specific features.
+    \section1 Importing the Components
 
-    \section1 Using the components
-
-    You can use the Qt Quick components in your QML application with one of the
+    After \l {Building the Qt Quick Components}{building} the components, you
+    may import the components in your QML application with one of the
     following imports at the top of your QML document:
 
     \code
     import com.nokia.symbian    // Symbian components
-      _or_
     import com.nokia.meego      // MeeGo components
     \endcode
 
-    There is also a cross-platform import in development but you should consider
-    it as "experimental" for now. Don't be surprised if it doesn't work how you
-    might expect.
+    In addition, there are components that are \e extras. They supplement the
+    platform components. For example, building the sources for the Symbian
+    platform will also build the \l{Extras Components} for Symbian. The Extras,
+    however, are imported as a different component set.
 
     \code
-    import Qt.labs.components.native 1.0  // Qt Quick components
+    import com.nokia.extras
     \endcode
 
-    \bold Note: \e {Do not} use the cross-platform import and a platform-specific
-    import at the same time or you could end up with confusing error
-    messages.
+    \section1 Interface Designs
 
-    \section1 Types of components available
+    Interface designs using QML differs from the traditional Qt UI designs. With
+    the introduction of Qt Quick Components, there are several guidelines to
+    help with making smart development decisions.
 
-    This table groups the components together by function. Note that some
-    components are included in multiple sections. You can also find a list of
-    all the components here: \l{qt-components}{Components reference}
-
-
-    \table
-        \header
-            \o {2, 1} Buttons and selectors
-        \row
-            \o Button, CheckBox, RadioButton, Switch
-            \o Typical widgets for user input.
-        \row
-            \o Checkable, CheckableGroup
-            \o Utility components the provide logic for other components.
-
-        \header
-            \o {2,1} Bars and sliders
-        \row
-            \o Slider, ProgressBar, RatingIndicator
-            \o For displaying and inputting a value within a range of values.
-
-        \header
-            \o {2, 1} Text element.
-        \row
-            \o TextArea, TextField
-            \o For text input. See also: Text.
-
-        \header
-            \o {2, 1} Input
-        \row
-            \o ToolBar, ToolButton, ToolBarLayout
-            \o For creating a tool bar for common actions.
-        \row
-            \o ContextMenu, Menu, MenuLayout
-            \o For creating menus to provide access to less common actions.
-
-        \header
-            \o {2,1} Lists
-        \row
-            \o ListHeading, ListItem, ListItemText
-            \o For displaying information in a list and customising the
-            presentation of the content. See also List, Grid.
-
-        \header
-            \o {2, 1} Popups and dialogs
-        \row
-            \o ToolTip, Dialog, CommonDialog
-            \o Assorted ways of providing information to the user and requesting information.
-        \row
-            \o SelectionDialog, SelectionListItem
-            \o A specialised dialog for selecting from a list of items.
-        \row
-            \o BusyIndicator
-            \o Utility components for a better user experience.
-
-        \header
-            \o {2,1} Navigation
-        \row
-            \o Window
-            \o Contains your whole application user interface.
-        \row
-            \o TabBar/TabButton/TabGroup/TabBarLayout/Page
-            \o For creating an interface that has tabs and pages of content.
-        \row
-            \o PageStack/Page
-            \o For creating a hierarchical stack of pages to navigate in. See
-            also \l {symbianlistview}{Symbian list view}.
-
-        \header
-            \o {2, 1} Containers
-        \row
-            \o Window
-            \o For containing the whole interface of your appliation. See also:
-            Item, Rectangle.
-        \row
-            \o ToolBarLayout, TabBarLayout, MenuLayout
-            \o Components for laying out a set of items. See also: Row, Column, Repeater.
-
-        \header
-            \o {2,1} Decorators
-        \row
-            \o ScrollBar, ScrollBarSizer, ScrollDecorator, SectionScroller
-            \o For providing information about the user's position inside a large
-            list or area.
-
-    \endtable
-
+    \list
+        \o \l{Page Stack Based Navigation} - Both MeeGo and Symbian accommodate
+        navigation with \l {Page}{Pages}.
+        \o \l {List Components for Symbian} - Symbian additions to the \l ListView
+        elements
+        \o \l {Scalability Guidelines Contents}{Scalability Guide} - Mobile
+        applications have \e scalable user interfaces. This guide uses the Qt
+        Quick Components for creating a real-world scalable application.
+    \endlist
 */
