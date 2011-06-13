@@ -33,21 +33,43 @@
     \inherits Item
 
     \brief
+    Provides the user with a hint or contextual feedback, for example showing
+    the value of a determinate progress bar.
 
+    To display a tooltip, you need to set the text to display and a component to
+    which the tooltip is connected. The tooltip can be set to visible \c true or
+    \c false.
+
+    By default, the tooltip is positioned above the object bound to its \c
+    target. The tooltip will relocate itself automatically if is displayed out
+    of the screen's visible area. The display position is determined in the
+    following order: top, right, left, and bottom.
+
+    \section1 Displaying a ToolTip
+
+    This tooltip is visible when the rectangle is pressed and hides the tooltip
+    when released:
+    \snippet src/snippets/symbian/snippet-tooltip.qml 0
+
+    The screenshot below illustrates the case where the user is pressing on the rectangle.
+
+    \image symbian/tooltip_visible.png
 */
 
 /*!
     \qmlproperty font ToolTip::font
-
+    The font of the tooltip's label.
 */
 
 /*!
     \qmlproperty string ToolTip::text
-
+    The text is displayed as the tooltip's label. The default text is an empty
+    string. The property also accepts rich text.
 */
 
 /*!
     \qmlproperty variant ToolTip::target
-
+    The object to which the tooltip is connected. The position of the
+    tooltip is calculated in relation to the element given as the target.
 */
 
