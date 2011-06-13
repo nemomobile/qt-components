@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
@@ -31,25 +31,54 @@
     \ingroup qt-components
     \since 1.0
     \inherits Window
-    \brief
-    Experimental
 
+    \brief A view template that contains several UI elements.
+
+    Creates an easy-to-use view that has \l Window, \l StatusBar, \l ToolBar,
+    and \l PageStack components. This component provides convenience properties
+    that place child components into the correct layouts.
+
+    \note This component is experimental, so it may be changed or removed in
+    future releases.
+
+    \section1 Using ApplicationWindow
+
+    This example shows a basic usage of the ApplicationWindow component. The
+    window contains a root \l Page object which contains a \l CheckBox. The
+    CheckBox controls the ApplicationWindow's \c fullScreen property. Setting
+    the \l ToolBarLayout to the \l Page's \c tools property enables the back
+    button in the \l ToolBar.
+
+    \snippet src/snippets/symbian/snippet-applicationwindow.qml 0
 */
 
 /*!
     \qmlproperty bool ApplicationWindow::fullScreen
 
+    If this property is \c true, then the application content area fills the
+    whole screen.
+
+    If \c false, then \l StatusBar and \l ToolBar components are visible and
+    the application content area fills the area between the StatusBar and
+    ToolBar components.
+
+    The default value is \c false.
 */
 
 /*!
     \qmlproperty list<QtObject> ApplicationWindow::content
-
     \default
 
+    Enables the application content to be placed directly as a child of
+    ApplicationWindow. The items in ApplicationWindow are laid out between the
+    \l StatusBar and \l ToolBar components. Usually the user of
+    ApplicationWindow does not need to directly access this property. If
+    dynamically creating objects that fill the application content area this
+    property should be used as a parent to set the correct placement.
 */
 
-/*
-    \qmlproperty  PageStack ApplicationWindow::pageStack
-
+/*!
+    \qmlproperty PageStack ApplicationWindow::pageStack
+    A convenience property provided by ApplicationWindow. The application is not
+    required to use it.
 */
-
