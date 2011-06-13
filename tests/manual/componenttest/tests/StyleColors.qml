@@ -59,7 +59,7 @@ Item {
     Component {
         id: listDelegate
         Rectangle {
-            color: m_inverse ? "white" : "black"
+            color: m_inverse ? platformStyle.colorBackgroundInverted : platformStyle.colorBackground
             height: text1.height + 2 * platformStyle.paddingLarge
             width: listView.width
             Text {
@@ -109,14 +109,14 @@ Item {
             "m_inverse": false
         } )
         listView.model.append( {
-            "m_color": platformStyle.colorChecked,
-            "m_text": "colorChecked",
+            "m_color": platformStyle.colorLatched,
+            "m_text": "colorLatched",
             "m_inverse": false
         } )
         listView.model.append( {
             "m_color": platformStyle.colorHighlighted,
             "m_text": "colorHighlighted",
-            "m_inverse": true
+            "m_inverse": false
         } )
         listView.model.append( {
             "m_color": platformStyle.colorDisabledLight,
@@ -137,6 +137,61 @@ Item {
             "m_color": platformStyle.colorTextSelection,
             "m_text": "colorTextSelection",
             "m_inverse": false
+        } )
+        listView.model.append( {
+            "m_color": platformStyle.colorNormalLightInverted,
+            "m_text": "colorNormalLightInverted",
+            "m_inverse": true
+        } )
+        listView.model.append( {
+            "m_color": platformStyle.colorNormalMidInverted,
+            "m_text": "colorNormalMidInverted",
+            "m_inverse": true
+        } )
+        listView.model.append( {
+            "m_color": platformStyle.colorNormalDarkInverted,
+            "m_text": "colorNormalDarkInverted",
+            "m_inverse": false
+        } )
+        listView.model.append( {
+            "m_color": platformStyle.colorNormalLinkInverted,
+            "m_text": "colorNormalLinkInverted",
+            "m_inverse": true
+        } )
+        listView.model.append( {
+            "m_color": platformStyle.colorPressedInverted,
+            "m_text": "colorPressedInverted",
+            "m_inverse": true
+        } )
+        listView.model.append( {
+            "m_color": platformStyle.colorLatchedInverted,
+            "m_text": "colorLatchedInverted",
+            "m_inverse": true
+        } )
+        listView.model.append( {
+            "m_color": platformStyle.colorHighlightedInverted,
+            "m_text": "colorHighlightedInverted",
+            "m_inverse": true
+        } )
+        listView.model.append( {
+            "m_color": platformStyle.colorDisabledLightInverted,
+            "m_text": "colorDisabledLightInverted",
+            "m_inverse": true
+        } )
+        listView.model.append( {
+            "m_color": platformStyle.colorDisabledMidInverted,
+            "m_text": "colorDisabledMidInverted",
+            "m_inverse": true
+        } )
+        listView.model.append( {
+            "m_color": platformStyle.colorDisabledDarkInverted,
+            "m_text": "colorDisabledDarkInverted",
+            "m_inverse": true
+        } )
+        listView.model.append( {
+            "m_color": platformStyle.colorTextSelectionInverted,
+            "m_text": "colorTextSelectionInverted",
+            "m_inverse": true
         } )
     }
 }

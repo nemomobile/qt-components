@@ -104,17 +104,30 @@ void tst_SDeclarativeStyle::testPlatformStyle_data()
     QTest::newRow("borderSizeMedium") << "borderSizeMedium" << (int)QVariant::Int;
 
     // color params
+    QTest::newRow("colorBackground") << "colorBackground" << (int)QVariant::Color;
     QTest::newRow("colorNormalLight") << "colorNormalLight" << (int)QVariant::Color;
     QTest::newRow("colorNormalMid") << "colorNormalMid" << (int)QVariant::Color;
     QTest::newRow("colorNormalDark") << "colorNormalDark" << (int)QVariant::Color;
     QTest::newRow("colorNormalLink") << "colorNormalLink" << (int)QVariant::Color;
     QTest::newRow("colorPressed") << "colorPressed" << (int)QVariant::Color;
-    QTest::newRow("colorChecked") << "colorChecked" << (int)QVariant::Color;
+    QTest::newRow("colorLatched") << "colorLatched" << (int)QVariant::Color;
     QTest::newRow("colorHighlighted") << "colorHighlighted" << (int)QVariant::Color;
     QTest::newRow("colorDisabledLight") << "colorDisabledLight" << (int)QVariant::Color;
     QTest::newRow("colorDisabledMid") << "colorDisabledMid" << (int)QVariant::Color;
     QTest::newRow("colorDisabledDark") << "colorDisabledDark" << (int)QVariant::Color;
     QTest::newRow("colorTextSelection") << "colorTextSelection" << (int)QVariant::Color;
+    QTest::newRow("colorBackgroundInverted") << "colorBackgroundInverted" << (int)QVariant::Color;
+    QTest::newRow("colorNormalLightInverted") << "colorNormalLightInverted" << (int)QVariant::Color;
+    QTest::newRow("colorNormalMidInverted") << "colorNormalMidInverted" << (int)QVariant::Color;
+    QTest::newRow("colorNormalDarkInverted") << "colorNormalDarkInverted" << (int)QVariant::Color;
+    QTest::newRow("colorNormalLinkInverted") << "colorNormalLinkInverted" << (int)QVariant::Color;
+    QTest::newRow("colorPressedInverted") << "colorPressedInverted" << (int)QVariant::Color;
+    QTest::newRow("colorLatchedInverted") << "colorLatchedInverted" << (int)QVariant::Color;
+    QTest::newRow("colorHighlightedInverted") << "colorHighlightedInverted" << (int)QVariant::Color;
+    QTest::newRow("colorDisabledLightInverted") << "colorDisabledLightInverted" << (int)QVariant::Color;
+    QTest::newRow("colorDisabledMidInverted") << "colorDisabledMidInverted" << (int)QVariant::Color;
+    QTest::newRow("colorDisabledDarkInverted") << "colorDisabledDarkInverted" << (int)QVariant::Color;
+    QTest::newRow("colorTextSelectionInverted") << "colorTextSelectionInverted" << (int)QVariant::Color;
 
     // invalid param
     QTest::newRow("__invalid__") << "__invalid__" << (int)QVariant::Invalid;

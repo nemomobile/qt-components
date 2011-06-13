@@ -143,6 +143,12 @@ int SDeclarativeStyle::borderSizeMedium() const
     return d->engine->layoutParameter(QLatin1String("border-size-medium"));
 }
 
+QColor SDeclarativeStyle::colorBackground() const
+{
+    Q_D(const SDeclarativeStyle);
+    return d->engine->colorParameter(QLatin1String("color-background"));
+}
+
 QColor SDeclarativeStyle::colorNormalLight() const
 {
     Q_D(const SDeclarativeStyle);
@@ -175,8 +181,14 @@ QColor SDeclarativeStyle::colorPressed() const
 
 QColor SDeclarativeStyle::colorChecked() const
 {
+    qDebug() << "warning: SDeclarativeStyle::colorChecked() is deprecated, use colorLatched() instead";
+    return colorLatched();
+}
+
+QColor SDeclarativeStyle::colorLatched() const
+{
     Q_D(const SDeclarativeStyle);
-    return d->engine->colorParameter(QLatin1String("color-checked"));
+    return d->engine->colorParameter(QLatin1String("color-latched"));
 }
 
 QColor SDeclarativeStyle::colorHighlighted() const
@@ -207,4 +219,76 @@ QColor SDeclarativeStyle::colorTextSelection() const
 {
     Q_D(const SDeclarativeStyle);
     return d->engine->colorParameter(QLatin1String("color-text-selection"));
+}
+
+QColor SDeclarativeStyle::colorBackgroundInverted() const
+{
+    Q_D(const SDeclarativeStyle);
+    return d->engine->colorParameter(QLatin1String("color-background-inverse"));
+}
+
+QColor SDeclarativeStyle::colorNormalLightInverted() const
+{
+    Q_D(const SDeclarativeStyle);
+    return d->engine->colorParameter(QLatin1String("color-normal-light-inverse"));
+}
+
+QColor SDeclarativeStyle::colorNormalMidInverted() const
+{
+    Q_D(const SDeclarativeStyle);
+    return d->engine->colorParameter(QLatin1String("color-normal-mid-inverse"));
+}
+
+QColor SDeclarativeStyle::colorNormalDarkInverted() const
+{
+    Q_D(const SDeclarativeStyle);
+    return d->engine->colorParameter(QLatin1String("color-normal-dark-inverse"));
+}
+
+QColor SDeclarativeStyle::colorNormalLinkInverted() const
+{
+    Q_D(const SDeclarativeStyle);
+    return d->engine->colorParameter(QLatin1String("color-normal-link-inverse"));
+}
+
+QColor SDeclarativeStyle::colorPressedInverted() const
+{
+    Q_D(const SDeclarativeStyle);
+    return d->engine->colorParameter(QLatin1String("color-pressed-inverse"));
+}
+
+QColor SDeclarativeStyle::colorLatchedInverted() const
+{
+    Q_D(const SDeclarativeStyle);
+    return d->engine->colorParameter(QLatin1String("color-latched-inverse"));
+}
+
+QColor SDeclarativeStyle::colorHighlightedInverted() const
+{
+    Q_D(const SDeclarativeStyle);
+    return d->engine->colorParameter(QLatin1String("color-highlighted-inverse"));
+}
+
+QColor SDeclarativeStyle::colorDisabledLightInverted() const
+{
+    Q_D(const SDeclarativeStyle);
+    return d->engine->colorParameter(QLatin1String("color-disabled-light-inverse"));
+}
+
+QColor SDeclarativeStyle::colorDisabledMidInverted() const
+{
+    Q_D(const SDeclarativeStyle);
+    return d->engine->colorParameter(QLatin1String("color-disabled-mid-inverse"));
+}
+
+QColor SDeclarativeStyle::colorDisabledDarkInverted() const
+{
+    Q_D(const SDeclarativeStyle);
+    return d->engine->colorParameter(QLatin1String("color-disabled-dark-inverse"));
+}
+
+QColor SDeclarativeStyle::colorTextSelectionInverted() const
+{
+    Q_D(const SDeclarativeStyle);
+    return d->engine->colorParameter(QLatin1String("color-text-selection-inverse"));
 }

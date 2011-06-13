@@ -67,17 +67,31 @@ class SDeclarativeStyle : public QObject
     Q_PROPERTY(int paddingSmall READ paddingSmall CONSTANT FINAL)
     Q_PROPERTY(int borderSizeMedium READ borderSizeMedium CONSTANT FINAL)
 
+    Q_PROPERTY(QColor colorBackground READ colorBackground CONSTANT FINAL)
     Q_PROPERTY(QColor colorNormalLight READ colorNormalLight CONSTANT FINAL)
     Q_PROPERTY(QColor colorNormalMid READ colorNormalMid CONSTANT FINAL)
     Q_PROPERTY(QColor colorNormalDark READ colorNormalDark CONSTANT FINAL)
     Q_PROPERTY(QColor colorNormalLink READ colorNormalLink CONSTANT FINAL)
     Q_PROPERTY(QColor colorPressed READ colorPressed CONSTANT FINAL)
-    Q_PROPERTY(QColor colorChecked READ colorChecked CONSTANT FINAL)
+    Q_PROPERTY(QColor colorChecked READ colorChecked CONSTANT FINAL) // DEPRECATED - use colorChecked instead
+    Q_PROPERTY(QColor colorLatched READ colorLatched CONSTANT FINAL)
     Q_PROPERTY(QColor colorHighlighted READ colorHighlighted CONSTANT FINAL)
     Q_PROPERTY(QColor colorDisabledLight READ colorDisabledLight CONSTANT FINAL)
     Q_PROPERTY(QColor colorDisabledMid READ colorDisabledMid CONSTANT FINAL)
     Q_PROPERTY(QColor colorDisabledDark READ colorDisabledDark CONSTANT FINAL)
     Q_PROPERTY(QColor colorTextSelection READ colorTextSelection CONSTANT FINAL)
+    Q_PROPERTY(QColor colorBackgroundInverted READ colorBackgroundInverted CONSTANT FINAL)
+    Q_PROPERTY(QColor colorNormalLightInverted READ colorNormalLightInverted CONSTANT FINAL)
+    Q_PROPERTY(QColor colorNormalMidInverted READ colorNormalMidInverted CONSTANT FINAL)
+    Q_PROPERTY(QColor colorNormalDarkInverted READ colorNormalDarkInverted CONSTANT FINAL)
+    Q_PROPERTY(QColor colorNormalLinkInverted READ colorNormalLinkInverted CONSTANT FINAL)
+    Q_PROPERTY(QColor colorPressedInverted READ colorPressedInverted CONSTANT FINAL)
+    Q_PROPERTY(QColor colorLatchedInverted READ colorLatchedInverted CONSTANT FINAL)
+    Q_PROPERTY(QColor colorHighlightedInverted READ colorHighlightedInverted CONSTANT FINAL)
+    Q_PROPERTY(QColor colorDisabledLightInverted READ colorDisabledLightInverted CONSTANT FINAL)
+    Q_PROPERTY(QColor colorDisabledMidInverted READ colorDisabledMidInverted CONSTANT FINAL)
+    Q_PROPERTY(QColor colorDisabledDarkInverted READ colorDisabledDarkInverted CONSTANT FINAL)
+    Q_PROPERTY(QColor colorTextSelectionInverted READ colorTextSelectionInverted CONSTANT FINAL)
 
 public:
 
@@ -98,17 +112,31 @@ public:
     int paddingSmall() const;
     int borderSizeMedium() const;
 
+    QColor colorBackground() const;
     QColor colorNormalLight() const;
     QColor colorNormalMid() const;
     QColor colorNormalDark() const;
     QColor colorNormalLink() const;
     QColor colorPressed() const;
     QColor colorChecked() const;
+    QColor colorLatched() const;
     QColor colorHighlighted() const;
     QColor colorDisabledLight() const;
     QColor colorDisabledMid() const;
     QColor colorDisabledDark() const;
     QColor colorTextSelection() const;
+    QColor colorBackgroundInverted() const;
+    QColor colorNormalLightInverted() const;
+    QColor colorNormalMidInverted() const;
+    QColor colorNormalDarkInverted() const;
+    QColor colorNormalLinkInverted() const;
+    QColor colorPressedInverted() const;
+    QColor colorLatchedInverted() const;
+    QColor colorHighlightedInverted() const;
+    QColor colorDisabledLightInverted() const;
+    QColor colorDisabledMidInverted() const;
+    QColor colorDisabledDarkInverted() const;
+    QColor colorTextSelectionInverted() const;
 
 Q_SIGNALS:
     void fontParametersChanged();

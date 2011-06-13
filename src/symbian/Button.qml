@@ -240,7 +240,7 @@ Item {
                 else if (button.pressed)
                     return platformStyle.colorPressed
                 else if (button.checked)
-                    return platformStyle.colorChecked
+                    return platformStyle.colorLatched
                 else
                     return platformStyle.colorNormalLight
             }
