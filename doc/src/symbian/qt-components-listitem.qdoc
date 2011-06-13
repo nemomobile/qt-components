@@ -48,42 +48,28 @@
     the standard vertical spacing for a ListItem. The image below shows the
     result.
 
-    \code
-    ListItem {
-        id: textItem
-        Column {
-            anchors.fill: textItem.padding
-            ListItemText {
-                id: titleText
-                mode: textItem.mode
-                role: "Title"
-                text: "Title text"
-                width: parent.width
-            }
-            ListItemText {
-                id: subtitleText
-                mode: textItem.mode
-                role: "SubTitle"
-                text: "Subtitle text"
-                width: parent.width
-            }
-        }
-    \endcode
+    \snippet src/snippets/symbian/snippet-listitem.qml 0
 
     \image symbian/listitem_default.png
     \e ListItem with text and subtitle
 
-    \section1 ListItem states
+    \section1 ListItem States
 
-    A ListItem can have one of four internal states:
+    A ListItem can have one of the four internal states:
 
     \list
-      \o \bold "" This is the default state of a ListItem.
-      \o \bold "Pressed" The ListItem enters this state when the ListItem is pressed by the user.
-         \image symbian/listitem_pressed.png
-      \o \bold "Focused" This state indicates that the item is focused but not yet selected. This is only available on devices that have hardware selection keys which allow a user to navigate a list without touching the screen.
-         \image symbian/listitem_highlight.png
-      \o \bold "Disabled" In this state, the ListItem does not handle any touch or hardware inputs and the ListItem will not emit signals.
+      \o \bold "" The default state of a ListItem.
+      \o \bold "Pressed" The ListItem enters this state when the user presses
+      the ListItem.
+      \image symbian/listitem_pressed.png
+      \o \bold "Focused" This state indicates that the item has focus but is not
+      yet selected. This is only available on devices that have hardware
+      selection keys that allow a user to navigate a list without touching the
+      screen.
+      \image symbian/listitem_highlight.png
+      \o \bold "Disabled" In this state, the ListItem does not handle any touch
+      or hardware inputs and the ListItem does not emit signals.
+      \image symbian/listitem_disabled.png
     \endlist
 
     \sa ListHeading, ListItemText, ListView
@@ -91,109 +77,63 @@
 */
 
 /*!
-    \qmlproperty Item ListItem::padding
+    \qmlsignal ListItem::clicked()
 
-    The padding rectangle for the ListItem that items can be anchored to.
+    This signal is emitted when the user presses and then releases the list item.
 
 */
 
-
 /*!
-    \qmlsignal ListItem::clicked()
+    \qmlsignal ListItem::pressAndHold()
 
-    This signal is emitted when the list item is pressed and released by the
-    user.
+    This signal is emitted when the user presses on the list item for the "long
+    press" period of time. The length of time for a long press is the same as
+    for MouseArea::onPressAndHold() which is currently 800ms.
 
 */
 
 /*!
     \qmlproperty string ListItem::mode read-only
 
-    \e {Symbian:}
     The Mode of the ListItem
 
-    Mode property can be used to create association between ListItem and
-    ListItemText. This way ListItemText is aware of internal state
-    of the ListItem.
+    This property can be used to create an association between ListItem and
+    ListItemText. This way ListItemText is aware of the internal state
+    of ListItem.
 
-    \code
-    ListItem {
-        id: listItem
+    \snippet src/snippets/symbian/snippet-listitem.qml 1
 
-        ListItemText {
-            anchors.fill: listItem.padding
-            role: "Title"
-            mode: listItem.mode
-            text: "Hello world!"
-        }
-    }
-    \endcode
 */
 
 /*!
     \qmlproperty Item ListItem::paddingItem read-only
 
-    \e {Symbian:}
     The invisible padding rectangle for the ListItem that items can be anchored to.
 */
 
 /*!
     \qmlproperty bool ListItem::enabled
 
-    \e {Symbian:}
     If \c true, the user can interact with this list item. If \c false, the list
-    item is disabled and does nothing when the user selects it.
+    item is disabled and does nothing when the user selects it. The default
+    value of the property is \c true.
 
 */
 
 /*!
     \qmlproperty bool ListItem::subItemIndicator
 
-    \e {Symbian:}
-    If \c true, this list item will indicate that pressing the item will take user
-    to some other item. For example another ListView will be shown to the user when
-    the item is pressed. Note: It's up a developer to implement actual logic by
-    handling pressed signal.
+    If \c true, the list item shows a graphical indication that pressing it will show
+    the user another item to select. For example, when the user presses the item,
+    another ListView is shown to the user.
+
+    The default value of the property is \c false.
+
+    \note
+    It is the responsibility of a developer to implement what happens when a ListItem
+    with a subItemIndicator is pressed. This can be done by handling the pressed
+    signal of a ListItem.
 
     \image symbian/listitem_subitemindicator.png
-    \e ListItem with witn the subitem indicator
-*/
-
-/*!
-    \qmlmethod ListItem::preferredImageHeight(ListImageSize)
-
-*/
-
-/*!
-    \qmlmethod ListItem::preferredImageWidth(ListImageSize)
-
-*/
-
-/*!
-    \qmlproperty bool ListItem::drillDownIndicator
-
-*/
-
-/*!
-    \qmlproperty double ListItem::horizontalSpacing
-
-*/
-
-/*!
-    \qmlproperty double ListItem::verticalSpacing
-
-*/
-
-/*!
-    \qmlproperty style ListItem::style
-*/
-
-/*!
-    \qmlsignal ListItem::pressAndHold()
-
-    \e {Symbian:}
-    This signal is emitted when the user presses on the list item for the "long
-    press" period of time. The length of time for a long press is the same as
-    for MouseArea::onPressAndHold() which is currently 800ms.
-
+    \e ListItem with with a subitem indicator
 */
