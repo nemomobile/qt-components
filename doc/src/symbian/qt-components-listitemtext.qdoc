@@ -32,7 +32,7 @@
     \since 1.0
     \inherits Text
     \brief
-    Symbian: A ListItemText provides themeable fonts for ListItem and ListHeading elements.
+    ListItemText provides themeable fonts for ListItem and ListHeading elements.
 
     \sa ListItem, ListHeading
 
@@ -41,9 +41,15 @@
 /*!
     \qmlproperty string ListItemText::mode
 
-    The mode property can be used to bind the mode of the ListItemText object to the mode of the parent object (ListItem). The benefit of this is that the ListItemText will be updated with the same mode as the parent object when the parent's mode changes. For example, there could be a different font or font color when the parent ListItem is pressed or when it is disabled.
+    The mode property can be used to bind the mode of the ListItemText object to the mode
+    of the parent object (\l ListItem). The benefit of this is that the ListItemText will be
+    updated with the same mode as the parent object when the parent's mode changes.
+    For example, there could be a different font or font color when the parent ListItem
+    is pressed or when it is disabled. See the \l ListItem documentation for an example how
+    to do the binding.
 
-    Text that is displayed in the ListItemText object is rendered according to that mode.
+    The text that is displayed in the ListItemText object is rendered according to the mode
+    property. The available modes are:
 
     \list
         \o "normal" - list item text in its usual state, not pressed or disabled or highlighted
@@ -56,25 +62,16 @@
 /*!
     \qmlproperty string ListItemText::role
 
-    The role propery of a ListItemText object indicates how the text will be styled when the text is displayed. Actual font, color and size is based on the theme. The available roles are:
+    The role propery of a ListItemText object indicates how the text will be styled when the
+    text is displayed. Actual font, color and size is based on the theme. The available
+    roles are:
+
     \list
-      \o  "Title"
-      \o  "Subtitle"
-      \o  "Heading"
-      \o  "SelectionTitle"
-      \o  "SelectionSubTitle"
+      \o "Title"
+      \o "Subtitle"
+      \o "Heading"
+      \o "SelectionTitle"
+      \o "SelectionSubTitle"
     \endlist
-*/
-
-
-/*!
-    \qmlmethod ListItemText::getColor()
-
-*/
-
-
-/*!
-      \qmlproperty style ListItemText::style
-
 */
 
