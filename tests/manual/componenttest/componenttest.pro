@@ -52,6 +52,7 @@ symbian {
 
 OTHER_FILES += \
     main.qml \
+    TestUtils.js \
     ../shared/MemoryDisplay.qml \
     components/FontSelectionDialog.qml \
     components/TextSettings.qml \

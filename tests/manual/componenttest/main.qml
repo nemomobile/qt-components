@@ -43,6 +43,7 @@ import com.nokia.symbian 1.1
 import FileAccess 1.0
 import Settings 1.0
 import LayoutDirectionSetter 1.0
+import "TestUtils.js" as Utils
 
 ApplicationWindow {
     id: mainWindow
@@ -50,12 +51,12 @@ ApplicationWindow {
     objectName: "mainWindow"
 
     property Menu memoryToolsMenu
+    property Menu menu
+    property bool platformInverted: false
 
     // For TDriver tests - setting component name to this property will open the corresponding
     // component page "automatically"
     property string componentName
-
-    property Menu menu
 
     LayoutMirroring.enabled: Qt.application.layoutDirection == Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
@@ -257,6 +258,13 @@ ApplicationWindow {
                             if (checked) flickableSetting.checked = false
                         }
                     }
+                    CheckBox {
+                        id: invertedThemeSetting
+                        anchors.left: parent.left
+                        text: "Inverted theme"
+                        checked: false
+                        onCheckedChanged: Utils.setItemTreeInversion(mainWindow, checked)
+                    }
 
                     Button {
                         id: pickFromFileButton
@@ -402,6 +410,7 @@ ApplicationWindow {
                     height: testPageGroup.contentHeight
                     visible: loader.status !== Loader.Error
                     source: internal.resolveSource()
+                    onLoaded: Utils.setItemTreeInversion(loader, mainWindow.platformInverted)
                 }
             }
         }
@@ -418,7 +427,9 @@ ApplicationWindow {
                 anchors { left: parent.left; top: parent.top }
                 width: if (internal.fillEnabled) parent.width
                 height: if (internal.fillEnabled) parent.height
-                color: "#1000FF00"
+                color: "transparent"
+                border.color: "steelblue"
+                border.width: internal.dragEnabled ? 2 : 0
 
                 property int dragStartX
                 property int dragStartY
@@ -451,6 +462,7 @@ ApplicationWindow {
                     focus: true
                     visible: loader.status !== Loader.Error
                     source: internal.resolveSource()
+                    onLoaded: Utils.setItemTreeInversion(loader, mainWindow.platformInverted)
                 }// Loader
             }
         }
