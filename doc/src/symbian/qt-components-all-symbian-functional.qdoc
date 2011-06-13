@@ -115,7 +115,6 @@
         \o \l{ScrollDecorator}
         \o \l{SectionScroller}
         \o \l{ScrollBar}
-        \o \l{ScrollBarSizer}
     \endlist
 
     \section1 Lists
