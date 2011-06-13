@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Tiny//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-tiny.dtd">
+<svg baseProfile="tiny" height="18px" version="1.1" viewBox="0 0 19 18" width="19px" x="0px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px">
+<rect fill="none" height="18" width="19"/>
+<rect fill="#FFFFFF" height="4" width="3" y="13"/>
+<rect fill="#FFFFFF" height="7" width="3" x="4" y="10"/>
+<rect fill="#FFFFFF" height="10" width="3" x="8" y="7"/>
+<rect fill="#FFFFFF" height="13" width="3" x="12" y="4"/>
+<rect fill="#FFFFFF" height="16" width="3" x="16" y="1"/>
+</svg>

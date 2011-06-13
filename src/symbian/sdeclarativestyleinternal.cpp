@@ -187,7 +187,7 @@ int SDeclarativeStyleInternal::fontHeight(const QFont &font) const
     return metrics.height();
 }
 
-QUrl SDeclarativeStyleInternal::toolBarIconPath(const QUrl &path) const
+QUrl SDeclarativeStyleInternal::toolBarIconPath(const QUrl &path, bool inverted) const
 {
     if (!path.isEmpty()) {
         const QString scheme = path.scheme();
@@ -197,12 +197,13 @@ QUrl SDeclarativeStyleInternal::toolBarIconPath(const QUrl &path) const
         if (scheme.isEmpty() || scheme == QLatin1String("file") &&
             completeBaseName.startsWith(QLatin1String("toolbar-")) &&
             completeBaseName.lastIndexOf(QLatin1Char('.')) == -1)
-                return QLatin1String("image://theme/") + completeBaseName;
+                return imagePath(completeBaseName, inverted);
     }
     return path;
 }
 
-QString SDeclarativeStyleInternal::imagePath(const QString &path) const
+QString SDeclarativeStyleInternal::imagePath(const QString &path, bool inverted) const
 {
-    return QLatin1String("image://theme/") + path;
+    QLatin1String invertedSuffix(inverted ? "_inverse" : "");
+    return QLatin1String("image://theme/") + path + invertedSuffix;
 }
