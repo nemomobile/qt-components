@@ -9,6 +9,13 @@ meego {
 
 symbian3 {
     DEFINES += Q_COMPONENTS_SYMBIAN
+
+    symbian:!contains(CONFIG, qt-components_build):!isEmpty(default_deployment.pkg_prerules) {
+        qt-components_default_deployment.pkg_prerules += \
+            "; Default dependency to Qt Quick Components for Symbian library" \
+            "(0x200346DE), 1, 1, 0, {\"Qt Quick components for Symbian\"}"
+        DEPLOYMENT += qt-components_default_deployment
+    }
 }
 
 mobility {

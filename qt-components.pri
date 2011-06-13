@@ -3,7 +3,7 @@
     load(mobilityconfig, true):CONFIG += mobility
 }
 
-CONFIG += qt-components depend_includepath
+CONFIG += qt-components depend_includepath qt-components_build
 
 unix:!symbian {
     CONFIG(release, debug|release) {
