@@ -26,46 +26,26 @@
 ****************************************************************************/
 /*!
     \qmlclass BusyIndicator
-    \inherits ImplicitSizeItem
+    \inherits Item
     \ingroup qt-components
     \since 1.0
     \brief
     An indicator component that shows the progress of a task of an unknown
     duration.
 
-    The size of the indicator can be defined by overwriting style property
-    \c size.
-    See examples below for more details.
+    The size of the indicator can be defined by giving the \c width and \c height
+    values. If they are not given, BusyIndicator will use the default size.
+    For more details see the example below.
 
-    \code
-    BusyIndicator {
-        id: indicator1
-        platformStyle: BusyIndicatorStyle { size: "small" }
-    }
+    \snippet src/snippets/symbian/snippet-busyindicator.qml 0
 
-    BusyIndicator {
-        id: indicator2
-        running: indicator1.running
-    }
-
-    BusyIndicator {
-        id: indicator3
-        platformStyle: BusyIndicatorStyle { size: "large" }
-        running:  indicator1.running
-    }
-    \endcode
+    \image symbian/busyindicator.png
 */
 
 /*!
     \qmlproperty bool BusyIndicator::running
 
-    Property default is \c false
+    If the indicator is running, the value is \c true; otherwise \c false. The
+    default value is \c false.
 
-    Flag indicating whether the indicator is running.
 */
-
-/*!
-    \qmlproperty Style BusyIndicator::platformStyle
-    Platform specific style property.
-*/
-
