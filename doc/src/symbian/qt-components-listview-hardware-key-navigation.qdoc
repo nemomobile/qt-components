@@ -34,12 +34,13 @@
 
     \brief Using hardware keys to provide an alternative input method
 
-    The Symbian-specific ListItem component has inbuilt support for handling
-    'up' and 'down' hardware keys. When the ListView has focus, the 'up' key
+    The Symbian-specific \l ListItem component has inbuilt support for handling
+    'up' and 'down' hardware keys. When the \c ListView has focus, the 'up' key
     will decrement the current index. Similarly, the 'down' key will increment
     the current index.
 
-    Focus can be set to the ListView using Item::ForceActiveFocus() method. For example:
+    You can set the \c ListView component to have focus using \c
+    Item::ForceActiveFocus(), for example, as follows:
 
     \code
     ListView {
@@ -50,16 +51,35 @@
         }
     \endcode
 
-    If you want to use other hardware keys, the \c Keys property in the ListItem provides a mechanism for doing so. You can handle hardware key presses with the \c Keys.onPressed() and \c Keys.onReleased() handlers.
+    If you want to use other hardware keys, the \c Keys property of the \l ListItem
+    provides a mechanism for doing so. You can handle hardware key presses with
+    the \c Keys.onPressed() and \c Keys.onReleased() handlers.
 
-    Here is an example of a ListView delegate which deletes a list item when the
-    user presses the backspace key.
+    The code snippet below illustrates how the \c ListView delegate deletes a list
+    item when the user presses the backspace key.
 
-    \snippet src/snippets/symbian/snippet-listview-hw-navigation.qml 0
+    \code
+    Component {
+        id: listDelegate
 
-    \section1 Selecting a control inside a ListItem component
+        ListItem {
+            id: listItem
 
-    Sometimes it is necessary to select a control inside the ListItem. It is  possible to extend ListItem component to handle 'left' key and 'right' key to select a control.
+            Keys.onPressed: {
+                if (event.key == Qt.Key_Backspace) {
+                    if (listView.currentIndex >= 0)
+                        listView.model.remove(listView.currentIndex)
+                }
+            }
+        }
+    }
+    \endcode
+
+    \section1 Selecting a Control Inside a ListItem Component
+
+    Sometimes it is necessary to select a control inside the \l ListItem. The
+    following example illustrates how to extend the \l ListItem
+    component's functionality to handle 'left' and 'right' keys to select a control.
 
     \image symbian/listview_hw_key_navigation.png
 
