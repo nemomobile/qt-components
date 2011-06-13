@@ -32,41 +32,56 @@
     \since 1.0
     \inherits Item
     \brief
-    A RadioButton is used in a list of items where only one item can be selected
+    A RadioButton is an item in a list of items where only one item can be selected
     at a time.
-
-    A radio button element consists of a radio button and a line of text. Only
+    
+    A radio button component consists of a radio button and a line of text. Only
     one item in a list may be selected at a time. Once an item is selected, it
     can be deselected only by selecting another item. Initial item selection may
     be set at the list creation. If not set, the list is shown without a
     selection.
 
+    When a radio button has focus, the radio button can be selected using the
+    \c Qt.Key_Select, \c Qt.Key_Return and \c Qt.Key_Enter hardware keys.
+
     \section1 Using a radio button
 
-    The following code creates a RadioButton list with three items in it. The
-    platformExclusiveGroup property of all the radio buttons is 'group1' which
+    The following code creates a row with three radio buttons in it. The
+    platformExclusiveGroup property of all the radio buttons is 'group' which
     is a CheckableGroup. This enforces that only one of the radio buttons can be
-    selected at a time. Furthermore the item with the text '1' has the focus and
-    the item with the text '2' is checked.
+    selected at a time. The radio button with the text '3' is checked.
 
     \snippet src/snippets/symbian/snippet-radiobutton.qml 0
 
     \image symbian/radiobutton_list.png
-
-
 */
-
 /*!
-    \qmlproperty variant RadioButton::exclusiveGroup
+    \qmlproperty bool RadioButton::checked
 
-    \e Deprecated. Use platformExclusiveGroup instead.
+    If a button is checked, \c checked is \c true. Otherwise it is \c false.
+
+    \sa Checkable
+*/
+/*!
+    \qmlproperty bool RadioButton::pressed
+
+    Indicates that the user is pressing this radio button.
+
+    \sa clicked()
+*/
+/*!
+    \qmlsignal RadioButton::clicked()
+
+    This signal is emitted if the button is pressed and then released.
 
 */
+/*!
+    \qmlproperty string RadioButton::text
 
+    The text that is shown beside the radio button.
+*/
 /*!
     \qmlproperty QtObject RadioButton::platformExclusiveGroup
-
-    \e {Symbian:}
 
     The exclusive group that this radio button belongs to. In an exclusive
     group, only one of the radio buttons can be selected at a time.

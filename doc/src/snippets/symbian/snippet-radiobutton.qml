@@ -38,92 +38,33 @@
 **
 ****************************************************************************/
 
-import Qt 4.7
-import com.nokia.symbian 1.0
-import Qt.labs.components 1.0
-import com.nokia.symbian.themebridge 1.0
+import QtQuick 1.0
+import com.nokia.symbian 1.1
+import Qt.labs.components 1.1
 
 Item {
     id: root
-
-    CheckableGroup { id: group2 }
-    CheckableGroup { id: group3 }
-
 //! [0]
-    CheckableGroup { id: group1 }
-    Row {
-        RadioButton {
-            id: button1
-            text: "1"
-            platformExclusiveGroup: group1
-            focus: true
-        }
-        RadioButton {
-            id: button2
-            text: "2"
-            platformExclusiveGroup: group1
-            checked: true
-        }
-        RadioButton {
-            id: button3
-            text: "3"
-            platformExclusiveGroup: group1
-        }
+CheckableGroup { id: group }
+Row {
+    id: row
+    spacing: platformStyle.paddingMedium
+    RadioButton {
+        id: button1
+        text: "1"
+        platformExclusiveGroup: group
     }
+    RadioButton {
+        id: button2
+        text: "2"
+        platformExclusiveGroup: group
+    }
+    RadioButton {
+        id: button3
+        text: "3"
+        platformExclusiveGroup: group
+        checked: true
+    }
+}
 //! [0]
-    Column {
-        Row {
-            RadioButton {
-                id: button4
-                text: "4"
-                platformExclusiveGroup: group2
-            }
-            RadioButton {
-                id: button5
-                text: "5"
-                platformExclusiveGroup: group2
-                checked: true
-            }
-            RadioButton {
-                id: button6
-                text: "6"
-                platformExclusiveGroup: group2
-            }
-        }
-
-        Grid {
-            columns: 3
-
-            Text {
-                color: "red"
-                text: "Disabled"
-            }
-            Text {
-                color: "red"
-                text: "No group set"
-            }
-            Text {
-                color: "red"
-                text: "Single group member"
-            }
-
-            // Disabled
-            RadioButton {
-                id: button7
-                text: "7"
-                enabled: false
-            }
-            // No group set
-            RadioButton {
-                id: button8
-                text: "8"
-            }
-            // Single group member
-            RadioButton {
-                id: button9
-                text: "9"
-                platformExclusiveGroup: group3
-            }
-        }
-    }
 }
