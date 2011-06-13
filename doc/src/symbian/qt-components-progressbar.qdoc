@@ -36,31 +36,29 @@
     reassure the user that the operation is still progressing.
 
     Some operations take a period of time to be performed and the user needs
-    confirmation that the operation is still ongoing. If the user doesn't get
-    some confirmation they might suspect that they did something wrong or that
-    the device has broken. A progress bar is one of the mechanisms available for
+    a confirmation that the operation is still ongoing. If the user does not get
+    any confirmation, they might suspect that they did something wrong or that
+    the device has broken. A progress bar is one of available mechanisms for
     providing this reassurance to the user.
 
-    ProgressBar has two presentation modes:
+    ProgressBar has the following presentation modes:
 
     \list
 
-        \o \e determinate for when the period of time for the operation can be
-        measured. In this case, the progress bar shows the proportion of
-        progress.
+        \o \c determinate - the operation's duration is approximately known. The
+        progress bar shows the proportion of the progress so far.
 
-        \o \e indeterminate for when the period of time for the operation is
-        unknown. The progress bar is animated but no proportion of progress is
-        indicated.
+        \o \c indeterminate - the operation's duration is unknown. The progress
+        bar is animated but no proportion of the progress is indicated.
 
     \endlist
 
     The user interface guidelines for a platform specify the occasions when a
     progress bar should be displayed and how to display it. However, a common
-    rule of thumb is, if an operation takes less than 3 seconds, it is not
-    necessary to provide a progress bar.
+    rule of thumb is that if an operation takes less than 3 seconds, it is not
+    necessary to show the progress bar.
 
-    \section1 Using a determinate progress bar
+    \section1 Using a Determinate Progress Bar
 
     A determinate progress bar has a minimum value, a maximum value and a
     current value. When you set the current value, the progress bar is drawn to
@@ -69,31 +67,79 @@
 
     For example, if the minimum value is 0 and the maximum value is 100, setting
     \c value to 25 will result in the progress bar being filled one quarter along
-    and will look something like the image below.
+    and it will look like the image below.
 
     \image symbian/progressbar_onequarter.png
 
     The following code snippet creates a progress bar and demonstrates how a
     progress bar works. The timer is a repeating timer and, every time it is
-    triggered, it increments the progress bar \c value property. When the
+    triggered, it increments the progress bar's \c value property. When the
     maximum value of the progress bar is reached, the "progress" is reset to the
     minimum value and it starts again.
 
     \snippet src/snippets/symbian/snippet-progressbar.qml 0
 
-    \section1 Using an indeterminate progress bar
+    \section1 Using an Indeterminate Progress Bar
 
-    To show an indeterminate progress bar, simply set the \c indeterminate
+    To show an indeterminate progress bar, set the \c indeterminate
     property to \c true. Setting the different value properties of an
-    indeterminate progress bar has no effect. An indeterminate progress bar will
-    look something like the following image.
+    indeterminate progress bar has no effect. An indeterminate progress bar
+    looks like the image below.
 
     \image symbian/progressbar_indeterminate.png
 
-    The following code snippet bind the \c visible property of an indeterminate
+    The following code snippet binds the \c visible property of an indeterminate
     progress bar to the \c running property of timer from the above example.
 
     \snippet src/snippets/symbian/snippet-progressbar.qml 1
+*/
 
+/*!
+    \qmlproperty real ProgressBar::minimumValue
 
+    The start value of the long-running operation. The progress bar's width is
+    zero when the current value is set to \c minimumValue.
+
+    The default value is \c 0.0
+
+*/
+
+/*!
+    \qmlproperty real ProgressBar::maximumValue
+
+    The end value of the long-running operation. The progress bar shows its
+    full width when the current value is set to \c maximumValue.
+
+    The default value is \c 1.0
+
+*/
+
+/*!
+    \qmlproperty real ProgressBar::value
+
+    The progress bar's current value. The progress bar length is calculated as
+    the proportion of \c value between \c minimumValue and \c maximumValue. For
+    example, if the \c value is in the middle of \c minimumValue and \c
+    maximumValue, the progress bar will be filled half way along.
+
+    The default value is \c 0.0
+*/
+
+/*!
+    \qmlproperty bool ProgressBar::indeterminate
+
+    Indicates whether the operation's duration is known or not. The property can
+    have the following values:
+
+    \list
+
+    \o \c true - the operation's duration is unknown, so the progress bar is
+    animated. The  \c value, \c minimum, and \c maximum properties are ignored.
+
+    \o \c false - the operation's duration is known, so the progress bar is
+    drawn to indicate progress between the \c minimum and \c maximum values.
+
+    \endlist
+
+    The default value is \c false.
 */
