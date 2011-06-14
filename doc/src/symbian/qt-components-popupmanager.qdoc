@@ -31,6 +31,7 @@
     \qmlclass PopupManager
     \ingroup qt-components
     \since 1.0
+    \inherits QtObject
 
     \brief Symbian: Provides convenience functions to track the depth of the popup stack.
 

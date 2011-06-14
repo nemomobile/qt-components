@@ -26,7 +26,7 @@
 ****************************************************************************/
 /*!
     \qmlclass InfoBanner
-    \inherits ImplicitSizeItem
+    \inherits Item
     \ingroup qt-components-extras
     \since 1.0
 

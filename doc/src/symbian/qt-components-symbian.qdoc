@@ -31,6 +31,7 @@
     \qmlclass Symbian
     \ingroup qt-components
     \since 1.0
+    \inherits QtObject
 
     \brief
     Symbian class is only accessible via \c symbian context property.  The property
