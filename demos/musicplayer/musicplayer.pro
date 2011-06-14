@@ -1,7 +1,7 @@
 TEMPLATE = app
 TARGET = musicplayer
 QT += declarative
-
+CONFIG += mobility
 SOURCES += main.cpp
 HEADERS += mediakeysobserver.h
 
