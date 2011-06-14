@@ -26,12 +26,51 @@
 ****************************************************************************/
 
 /*!
-
     \qmlclass SelectionDialog
     \ingroup qt-components
     \since 1.0
     \inherits CommonDialog
-
     \brief
+    A SelectionDialog represents a list of choices to the user.
 
+    With SelectionDialog you can customize the visual representation of the
+    selectable items' list by overriding the ListView delegate. By default
+    SelectionDialog provides a scrollable list of textual menu items. The user
+    can choose one item from the list at a time.
+*/
+
+/*!
+    \qmlproperty variant SelectionDialog::model
+
+    The model that defines the selection dialog’s item list. The SelectionDialog
+    uses it as a ListView component’s model in the dialog. The default delegate assumes
+    that the model data is provided via the \e modelData role and interprets it as a text string.
+    If you use a custom delegate, the model can be anything supported by QML ListView component.
+
+    \note If the model contains only one named role, it is always provided via the \e modelData role.
+    This also applies to a simple string list model.
+    See QML Data Models documentation for more detailed information about the topic.
+
+    The example below illustrates how to use the data models with the SelectionDialog.
+    It has two dialogs that both allow the user to choose from three different items.
+    Both dialogs use the default \l delegate. The first dialog uses a simple
+    string list model and the second dialog uses a ListModel that contains one named role.
+
+    \snippet src/snippets/symbian/snippet-selectiondialog-model.qml 0
+
+    \sa delegate
+*/
+
+/*!
+    \qmlproperty int SelectionDialog::selectedIndex
+
+    Index of the currently selected item in the model.
+    The default value is -1, which means that no item is selected.
+*/
+
+/*!
+    \qmlproperty Component SelectionDialog::delegate
+
+    Overrides the delegate component that visualizes the ListView model.
+    The default delegate is \l MenuItem that shows a text string in the model data.
 */
