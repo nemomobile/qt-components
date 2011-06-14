@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
@@ -34,39 +34,79 @@
     \brief
     Symbian: The ListHeading element provides a heading for a list or a section in a list.
 
-    ListHeading can be used as the header at the top of a list or as a header
-    for sections within the list. A ListHeading has similar padding to ListItem
-    which can be used to anchor items inside the ListHeading.
+    ListHeading can be used as the header at the top of a list or as a header for
+    sections within a list. ListHeading only draws a background, so typically
+    ListItemText is used in conjunction. ListItemText displays text in a font suitable for
+    use with ListHeading.
 
+    The area to which \l{Item}s can be added within ListHeading is defined by the
+    \l{ListHeading::}{paddingItem} property. ListItemText can be anchorored to the
+    \l{ListHeader::}{paddingItem}s anchor lines.
+
+    The following two examples illustrate how to use ListHeading with ListItemText.
 
     \section1 Using a ListHeading as a list header
 
     \code
-    ListHeading {
+    Component {
         id: listHeader
 
-        ListItemText {
-            id: txtHeading
-            anchors.fill: listHeader.padding
-            role: "Heading"
-            text: "Test list"
+        ListHeading {
+            id: listHeading
+
+            ListItemText {
+                id: headingText
+                anchors.fill: listHeading.paddingItem
+                role: "Heading"
+                text: "Test list"
+            }
         }
+    }
+
+    ListView {
+        id: listView
+        anchors.fill: parent
+        header: listHeader
+        ...
     }
     \endcode
 
     \image symbian/listheading_header.png
 
     \section1 Using a ListHeading as a section header
+
     \code
-    ListHeading {
+    Component {
         id: sectionHeader
 
-        ListItemText {
-            id: txtHeading
-            anchors.fill: sectionHeader.padding
-            role: "Heading"
-            text: "Items with " + section + " in them:"
+        ListHeading {
+            id: sectionHeading
+
+            ListItemText {
+                id: headingText
+                anchors.fill: sectionHeading.paddingItem
+                role: "Heading"
+                text: "Items with " + section + " in them:"
+            }
         }
+    }
+
+    ListModel {
+        id: listModel
+        ListElement {
+            image: "list2.png"
+            ...
+        }
+        ...
+    }
+
+    ListView {
+        id: listView
+        anchors.fill: parent
+        model: listModel
+        section.property: "image"
+        section.delegate: sectionHeader
+        ...
     }
     \endcode
 
@@ -80,12 +120,4 @@
     \qmlproperty Item ListHeading::paddingItem read-only
 
     The invisible padding rectangle for the ListHeading that items can be anchored to.
-*/
-
-/*!
-    \qmlproperty Item ListHeading::padding
-*/
-
-/*!
-    \qmlproperty style ListHeading::style
 */
