@@ -64,12 +64,11 @@
         \o \l{StatusBar}
         \o \l{Symbian}
         \o \l{PopupManager}
-        \o \l{Globals}
         \o \l{Screen}
         \o \l{Style}
     \endlist
 
-    \section1 Indicators and Status Bar
+    \section1 Indicators
     Indicators provide visual cues and other information to the user.
     \list
         \o \l{BusyIndicator}
@@ -83,8 +82,6 @@
     \list
         \o \l{Page}
         \o \l{PageStack}
-        \o \l{PageOrientation}
-        \o \l{PageStatus}
     \endlist
 
     \section1 Menu and Menu Items
@@ -96,15 +93,14 @@
         \o \l{ContextMenu}
     \endlist
 
-    \section1 Dialog Framework
+    \section1 Dialogs
     Symbian applications utilize dialogs for navigation and for providing
     objects for user interaction.
     \list
         \o \l{Dialog}
-        \o \l{DialogStatus}
-        \o \l{CommonDialog}
         \o \l{SelectionDialog}
         \o \l{QueryDialog}
+        \o \l{CommonDialog}
         \o
     \endlist
 
@@ -126,7 +122,7 @@
         \o \l{SelectionListItem}
     \endlist
 
-    \section1 Tab Container
+    \section1 Tab Navigation
     Symbian applications may utilize tabs to navigate between items.
     \list
         \o \l{TabButton}
@@ -135,17 +131,12 @@
         \o \l{TabBar}
     \endlist
 
-    \section1 Tool Bar Container
+    \section1 ToolBar
     A tool bar provides a container for displaying items.
     \list
         \o \l{ToolBar}
         \o \l{ToolButton}
         \o \l{ToolBarLayout}
-    \endlist
-
-    \section1 Models
-    \list
-        \o \l{RangeModel}
     \endlist
 
     \section1 Extras Components
