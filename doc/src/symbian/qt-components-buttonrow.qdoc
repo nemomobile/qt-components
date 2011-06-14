@@ -32,12 +32,46 @@
     \inherits Row
 
     \brief
-    A buttonrow component arranges a set of buttons in a row.
+    A ButtonRow component arranges a set of buttons in a row.
 
-    A buttonrow component acts as container for buttons or items with checked
-    property. It arranges buttons in a horizontal row. Buttonrow adds
-    mutual exclusion for radiobuttons and checkable buttons.
+    A ButtonRow component acts as a container for buttons and items with the \c
+    checked property. It acts as sizer by making them of equal width and as positioner
+    by arranging them in a horizontal row. RadioButton and \c checkable button components
+    can be made mutually exclusive in a ButtonRow with the \c exclusive property.
 
-    Buttons and toolbuttons, when placed in a ButtonRow, will be stylized as
-    part of a seamless, segmented-like button.
+    When you place \l Button and \l ToolButton components in ButtonRow,
+    they form a row of seamless and segmented buttons.
+
+    The code snippet below illustrates how to create a ButtonRow component that
+    contains three buttons. The ButtonRow's \c exclusive property is not set, so it
+    is \c true by default, and thus its child buttons are \c checkable. In
+    addition, the 'b2' button is set to \c checked.
+
+    \snippet src/snippets/symbian/snippet-buttonrow.qml 0
+
+    The screenshot below shows an implementation of the code snippet:
+
+    \image symbian/buttonrow.png
+
+    \sa ButtonColumn
+*/
+
+/*!
+    \qmlproperty bool ButtonRow::exclusive
+
+
+    Indicates whether or not the ButtonRow's buttons are mutually exclusive,
+    that is, only one button can be \c checked at a time. If the \c exclusive value is \c
+    true, the buttons are \c checkable and mutually exclusive; otherwise not.
+
+    The \c exclusive property is \c true by default.
+
+*/
+
+/*!
+    \qmlproperty Item ButtonRow::checkedButton
+
+    The property \c checkedButton defines which button in ButtonRow is \c checked.
+
+
 */
