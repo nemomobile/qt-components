@@ -359,3 +359,137 @@
 
     \sa Page, {pagenavigation}{Pages and navigation}
 */
+
+/*!
+    \qmlproperty int PageStack::depth
+
+    The number of pages on the page stack.
+
+*/
+
+/*!
+    \qmlproperty Item PageStack::currentPage
+
+    The page in the stack that is currently visible.
+
+*/
+
+/*!
+    \qmlproperty ToolBar PageStack::toolbar
+
+    The toolbar container for the tools associated with each page. If a toolbar
+    is specified, the tools set for the current page is shown to the user.
+
+    If \a toolbar is null, then no tools are shown even if a page does have
+    tools.
+
+    \sa Page::tools
+
+*/
+
+/*!
+    \qmlproperty bool PageStack::busy
+
+    This is \c true if there is an ongoing transition between pages on the stack.
+    Otherwise \c false.
+
+*/
+
+/*!
+    \qmlmethod PageStack::push(page, properties, immediate)
+
+    Pushes the given \a page onto the page stack. You can use a component, item
+    or string for the page. If the page is based on the Item element, the page
+    is re-parented. If a string is used then it is interpreted as a URL that is
+    used to load a page component. The push operation results in the appropriate
+    transition animation being run. If you are pushing an array of pages, the
+    transition animation is only shown for the last page.
+
+    \bold Returns: The new top page on the stack.
+
+    The \a page argument can also be an array of pages. In this case, all the
+    pages in the array are pushed onto the stack. The items in the array can
+    be components, items or strings just like for pushing a single page.
+
+    The \a page argument can also be an object that specifies a page with
+    properties or even an array of pages with properties.
+
+    The \a properties argument is optional and allows you to specify values for
+    properties in the page being pushed.
+
+    The \a immediate argument defaults to \c false which means the normal
+    transition animation is performed when a page is pushed. If you do not want
+    the transition animation to be performed pass a value of \c true for \a
+    immediate.
+
+    Note: When the stack is empty, a push() or replace() does not perform a
+    transition animation because there is no page to transition from. The only
+    time this normally happens is when an application is starting up so it is
+    not appropriate to have a transition animation anyway.
+
+
+    \sa Page
+*/
+
+/*!
+    \qmlmethod PageStack::pop(page, immediate)
+
+    When you use \c pop() with no arguments, it pops the top page off the stack
+    and returns that page to the caller. The normal pop transition animation
+    is performed. If the page popped off the stack is based on the Item
+    element, the page is re-parented back to its original parent.
+
+    If you give a \a page argument, the stack is unwound to the given \a page.
+    Any Item-based pages popped off the stack are re-parented to their original
+    parent.
+
+    If the given \a page is not found in the stack, the stack is unwound
+    to the first page in the stack. However, if you specifically want to unwind
+    the page stack to the first page in the stack, it is best to be explicit
+    about what you are doing and use \c pop(null) rather than guessing a page
+    that is not on the stack.
+
+    The \a immediate argument defaults to \c false which means the normal
+    transition animation is performed when a page is popped. If you do not want
+    the transition animation to be performed pass a value of \c true for \a
+    immediate.
+
+    Note: A pop() on a stack with that contains 0 or 1 pages is a no-operation.
+
+    \bold Returns: The page that was top-most on the stack before the pop operation.
+
+*/
+
+/*!
+    \qmlmethod PageStack::replace(page, properties, immediate)
+
+    Replaces the top-most page on the stack with \a page. As in the push()
+    operation, you can use a component, item or string for the page, or even an
+    array of pages. If the page is based on the Item element, the page is re-
+    parented. As in the pop() operation, the replaced page on the stack is re-
+    parented back to its original parent.
+
+    \bold Returns: The new top page on the stack.
+
+    \sa push()
+
+*/
+
+/*!
+    \qmlmethod PageStack::clear()
+
+    Clears the page stack of all pages.
+
+*/
+
+/*!
+    \qmlmethod PageStack::find(function)
+
+    This iterates, top to bottom, through all the pages in the page stack and
+    passes each page to the given \a function. If the specified function returns
+    \c true, the iterating stops and this function returns the page that
+    produced the \c true result. If no matching page is found in the page stack,
+    null is returned.
+
+*/
+
