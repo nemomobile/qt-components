@@ -48,8 +48,7 @@
 
     The following example shows how the amount of open popups can be tracked using the
     popup manager. The example includes a \l Button which can be used
-    to open two \l QueryDialog components. Note how the \l Connections QML element is used
-    to get the popup manager's \c popupStackDepth to the dialog messages.
+    to open two \l QueryDialog components.
 
     \snippet src/snippets/symbian/snippet-popupmanager.qml 0
 */
