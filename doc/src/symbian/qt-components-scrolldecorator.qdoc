@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
@@ -31,25 +31,26 @@
     \since 1.0f
     \inherits Item
     \brief
-    A ScrollDecorator adds a visual indicator to a Flickable element to show the
-    size relationship between the visible contents and the complete contents.
+    A ScrollDecorator component is a visual indicator to a Flickable component
+    to show the size relationship between the visible contents and the complete
+    contents.
 
-    When the size of a Flickable element is larger than the size of its
+    When the size of a Flickable component is larger than the size of its
     container, it is often helpful to have some indication of where you are. For
     example, if you are navigating a long list, the scroll decorator will
     indicate how far down the list you have scrolled. The ScrollDecorator
     provides a simple way of adding this kind of indicator to a Flickable
-    element.
+    component.
 
     The scroll decorator is often a scroll bar, but the actual implementation,
     including the location and behaviour of the scroll decorator, is platform
     dependent. Also, the scroll decorator is generally only visible when the
     list is being scrolled. Otherwise it is hidden from view.
 
-    ScrollDecorators can be used with Flickable elements as well as Flickable-
-    derived elements, such as ListView and GridView.
+    ScrollDecorators can be used with Flickable components as well as Flickable-
+    derived components, such as ListView and GridView.
 
-    \section1 Using a scroll decorator
+    \section1 Using a Scroll Decorator
 
     A ScrollDecorator needs to be a sibling of the Flickable item that it is to
     be attached to. It will be implicitly anchored to that flickable so there is
@@ -68,6 +69,6 @@
 /*!
     \qmlproperty Flickable ScrollDecorator::flickableItem
 
-    The Flickable element that the scroll decorator is attached to.
+    The Flickable component that the scroll decorator is attached to.
 
 */

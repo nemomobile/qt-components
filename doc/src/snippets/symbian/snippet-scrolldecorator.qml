@@ -71,7 +71,7 @@ Window {
             width: listView.width
 
             Column {
-                anchors.fill: listItem.padding
+                anchors.fill: listItem.paddingItem
                 spacing: listItem.verticalSpacing
 
                 ListItemText {
@@ -127,6 +127,30 @@ Window {
         ListElement {
             name: "Item 9"
             description: "Basic item 9"
+        }
+        ListElement {
+            name: "Item 10"
+            description: "Basic item 10"
+        }
+        ListElement {
+            name: "Item 11"
+            description: "Basic item 11"
+        }
+        ListElement {
+            name: "Item 12"
+            description: "Basic item 12"
+        }
+        ListElement {
+            name: "Item 13"
+            description: "Basic item 13"
+        }
+        ListElement {
+            name: "Item 14"
+            description: "Basic item 14"
+        }
+        ListElement {
+            name: "Item 15"
+            description: "Basic item 15"
         }
     }
 }
