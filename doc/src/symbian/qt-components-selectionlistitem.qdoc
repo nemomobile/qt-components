@@ -33,48 +33,59 @@
     \inherits ListItem
 
     \brief
-    Symbian: SelectionListItem is a list item showing the current value for a setting
-    and optionally a label for the setting. SelectionListItem should be used with a
-    SelectionDialog or Tumbler that allows the user to change the value. New value
-    replaces the previousvalue in the list item.
+    Symbian: SelectionListItem is a list item that shows the current value and
+    optionally a label for a setting.
 
-    There are two possible layouts for the Selection ListItem
+    SelectionListItem is purely a visual component. It is not tied to any
+    particular selector but you can use it, for instance, with \l
+    SelectionDialog or \l Tumbler. You must bind the currently selected item to
+    SelectionListItem's textual properties in a way that is suitable for that
+    particular use case.
+
+    It is not recommended to use the \c subItemIndicator and \c paddingItem
+    properties inherited from \l ListItem with SelectionListItem since it is a
+    concrete, self-contained list item.
+
+    There are the following two possible layouts for SelectionListItem:
     \list
-    \o Showing only the value
-    \o Showing a label and the value
-    \endlist
+    \o The two-row layout showing a label and a value. This layout is applied when you specify both the \c title and \c subTitle properties.
+    \o The single-row layout showing a value. This layout is applied when you leave the \c subTitle property empty.
+    \endlist    
 
     \image symbian/selectionlistitem.png
-    \e SelectionListItem with a label and the value
+    \e {SelectionListItem with the "City" label and the "Helsinki" value}
+
+    \image symbian/selectionlistitem_onlyvalue.png
+    \e {SelectionListItem with the "Helsinki" value only}
+
+    \section1 Integrating SelectionDialog to SelectionListItem
+
+    The example below shows how to integrate \l SelectionDialog with
+    SelectionListItem.
+
+    In this example the SelectionListItem is used as a standalone component
+    outside any list. While this is technically possible, it is more typical
+    to place this component in a \c ListView or other vertical list element.
+
+    \snippet src/snippets/symbian/snippet-selectionlistitem.qml 0
+
+    The screenshot below illustrates this example.
 
     \image symbian/selectiondialog.png
-    \e SelectionDialog integrated to SelectionListItem
-
-    \section1 Integrating SelectionDialog to a SelectionListItem
-
-    The example below shows how SelectionDialog can be integrated to SelectionListItem.
-
-    \snippet src/snippets/symbian/snippet-selectionlistitem.qml 0
-
+    \e {\l SelectionDialog integrated to SelectionListItem}
 */
 
 /*!
-    \qmlproperty  string SelectionListItem::title
+    \qmlproperty string SelectionListItem::title
 
-    Title text. This should be used to show value when the label is not available.
-*/
+    The title text. You should use this property to show the selection
+    value when you do not use \c subTitle.
 
-/*!
-    \qmlproperty  string SelectionListItem::subTitle
-
-    The subtitle text is shown below the title. This is optional.
-*/
-
+    */
 
 /*!
-    \section1 Integrating SelectionDialog to a SelectionListItem
+    \qmlproperty string SelectionListItem::subTitle
 
-    The example below shows how SelectionDialog can be integrated to SelectionListItem.
-
-    \snippet src/snippets/symbian/snippet-selectionlistitem.qml 0
+    The subtitle text that is shown below the title. This is an optional
+    property.
 */
