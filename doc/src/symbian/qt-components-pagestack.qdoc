@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
@@ -48,7 +48,7 @@
     \section1 Setting Up a Page Stack
 
     First, add a PageStack item as a child to the top-level QML element of your
-    application (usually this is Window). By default, the page stack fills its
+    application (usually this is \l Window). By default, the page stack fills its
     parent item so, if that is not what you want, you need to resize and anchor
     the page stack to suit your requirements. For example, you might want to
     anchor it to a status bar, tool bar, tab bar, or some other similar UI
@@ -58,13 +58,7 @@
     is to call \c PageStack.push() from the application's \c
     Component.onCompleted() handler.
 
-    ### snippet should come from real example
-    \code
-    Component.onCompleted() {
-        pageStack.push(firstPage)
-    }
-    \endcode
-
+    \snippet src/snippets/common/snippet-pagestack-toolbar.qml 5
 
     \section1 Creating Pages and Pushing them to the Stack
 
@@ -89,7 +83,7 @@
 
     You can push a page to the stack by referencing the filename of the file
     that defines the page. When referencing a page by filename, you need to use
-    the Qt.resolvedUrl() method so that the system can find the file.
+    the \c Qt.resolvedUrl() method so that the system can find the file.
 
     \snippet src/snippets/common/snippet-pagestack-page.qml 4
 
@@ -121,10 +115,10 @@
 
     \section2 Avoiding the "Parent Trap" When Doing a Replace
 
-    If you are using Qt.createComponent() to create and push pages to the page
+    If you are using \c Qt.createComponent() to create and push pages to the page
     stack, you need to be very careful about who is the parent of the page. When
-    you use Qt.createComponent(), the parent of the created component is the
-    item that called Qt.createComponent(). QML follows the standard Qt parent-child
+    you use \c Qt.createComponent(), the parent of the created component is the
+    item that called \c Qt.createComponent(). QML follows the standard Qt parent-child
     destruction rules so, if the parent item is destroyed the child item
     is also destroyed. So, if you construct your application in a particular
     way, you can run into the situation where your page is destroyed
@@ -132,17 +126,17 @@
     trap" - the parent was destroyed and so the child was destroyed as well in
     the cleanup but you are still trying to do something with the child.
 
-    This situation can easily happen in the case of a replace() operation. For
+    This situation can easily happen in the case of a \c replace() operation. For
     example: If item A is already on the page stack and it creates item B with
-    pageStack.replace(Qt.createComponent("B.qml")), A is set as the parent of B.
-    If you then try to replace() A with the newly created B, the page stack
+    \c pageStack.replace(Qt.createComponent("B.qml")), A is set as the parent of B.
+    If you then try to \c replace() A with the newly created B, the page stack
     first pops A off the stack and destroys it before trying to push B onto the
     stack. However, since B is a child of A, it is deleted along with A. The
     page stack then tries to push the now non-existant page B to the stack
     which, of course, causes problems.
 
     The following pseudocode demonstrates the sequence of events in the
-    pageStack.replace(Qt.createComponent("B.qml")) operation:
+    \c pageStack.replace(Qt.createComponent("B.qml")) operation:
 
     \code
     A.qml                               Qt              PageStack
@@ -160,13 +154,13 @@
     You can avoid the "parent trap" problem in a few ways:
     \list
 
-        \o Use Qt.resolvedUrl("MyPage") instead of Qt.createComponent("MyPage").
-        With Qt.resolvedUrl() you are pushing a string to the stack rather than
-        a page object. The page stack itself calls Qt.createComponent() to
+        \o Use \c Qt.resolvedUrl("MyPage") instead of \c Qt.createComponent("MyPage").
+        With \c Qt.resolvedUrl() you are pushing a string to the stack rather than
+        a page object. The page stack itself calls \c Qt.createComponent() to
         create the page which means the page stack is the parent of the page and
         therefore you do not have any parent problems to worry about.
 
-        \o If you must use Qt.createComponent, reparent the created page with a
+        \o If you must use \c Qt.createComponent, reparent the created page with a
         parent that you know won't be destroyed and then push the page onto the
         stack. For example, you could set the page stack as the parent as
         follows:
@@ -179,7 +173,7 @@
 
 
         \o You can also just make sure you create the pages with
-        Qt.createComponents() in a parent that is not going to be destroyed.
+        \c Qt.createComponents() in a parent that is not going to be destroyed.
 
    \endlist
 
@@ -191,8 +185,8 @@
     for item type pages. It does not work with component pages because the page
     instance doesn't exist until it is pushed so its properties are not
     available to be bound to beforehand. To get around this, you supply a map of
-    properties for the page as the \a property argument in the push() or
-    replace() function.
+    properties for the page as the \a property argument in the \c push() or
+    \c replace() function.
 
     The code below gives an example of pushing a page to the page stack and
     setting a property for that page.
@@ -262,10 +256,10 @@
     state of the stack after particular operations.
 
     \list 1
-      \o push(D) => [A, B, C, D] - "push" transition animation between C and D
-      \o pop() => [A, B] - "pop" transition animation between C and B
-      \o replace(D) => [A, B, D] - "replace" transition between C and D
-      \o pop(A) => [A] - "pop" transition between D and A
+      \o \c {push(D) => [A, B, C, D]} - "push" transition animation between C and D
+      \o \c {pop() => [A, B]} - "pop" transition animation between C and B
+      \o \c {replace(D) => [A, B, D]} - "replace" transition between C and D
+      \o \c {pop(A) => [A]} - "pop" transition between D and A
     \endlist
 
 
@@ -280,19 +274,19 @@
       \o \bold {Move several steps backward/unwind}: Sometimes it is necessary to go
       back more than a single step in the stack. For example, you might want to
       return to the application's main page or some other significant
-      intermediate page. In this case you can provide pop() with a particular
+      intermediate page. In this case you can provide \c pop() with a particular
       page to pop to. This is called "unwinding" the stack. If the page you
-      specify in the pop() function is not found, the stack unwinds until there
+      specify in the \c pop() function is not found, the stack unwinds until there
       is only a single page in the stack. However, if you want to explicitly
-      unwind to the bottom of the stack, it is best to just use pop(null).
+      unwind to the bottom of the stack, it is best to just use \c pop(null).
 
       \o \bold {Move several steps forward}: If you want to jump forward to a
-      particular place in the application hierarchy, you can push() an array of
+      particular place in the application hierarchy, you can \c push() an array of
       pages to the stack. No matter how many pages you push, the transition
       animation is performed only as the new current page is shown and not for
       intermediate pages.
 
-      \o \bold {Sidestep and forward}: You can also replace() the current page
+      \o \bold {Sidestep and forward}: You can also \c replace() the current page
       with an array of pages. For the user, this is like stepping sideways
       in the application hierarchy and then taking a few steps deeper.
 
@@ -306,8 +300,8 @@
       required page.
 
       \o \bold {Change to a particular state}: If you want to change your
-      application to a quite different state, you can clear() the stack and then
-      push() an array of pages with the new application state.
+      application to a quite different state, you can \c clear() the stack and then
+      \c push() an array of pages with the new application state.
 
     \endlist
 
@@ -319,18 +313,18 @@
 
     \list 1
 
-      \o pop(C) => [A, B, C] - "pop" animation between E and C
+      \o \c {pop(C) => [A, B, C]} - "pop" animation between E and C
 
-      \o push([D, E, F]) => [A, B, C, D, E, F] - "push" transition animation
+      \o \c {push([D, E, F]) => [A, B, C, D, E, F]} - "push" transition animation
       between C and F
 
-      \o replace([D, E, F] => [A, B, D, E, F] - "replace" transition animation
+      \o \c {replace([D, E, F] => [A, B, D, E, F]} - "replace" transition animation
       between C and F
 
-      \o clear(); push([D, E, F]) => [D, E, F] - no transition animation (since
+      \o \c {clear(); push([D, E, F]) => [D, E, F]} - no transition animation (since
       the stack was empty)
 
-      \o clear(); replace([D, E, F]) => [D, E, F] - no transition animation
+      \o \c {clear(); replace([D, E, F]) => [D, E, F]} - no transition animation
 
     \endlist
 
@@ -338,14 +332,14 @@
 
     Sometimes it is necessary to search for a page so that you can unwind the
     stack to a particular page you do not have a reference to. PageStack's
-    find() function allows you to do this.
+    \c find() function allows you to do this.
 
     The code snippet below shows how to unwind the stack to a page where the \c
     message property is "2". However, if a page with a message value of "2" is
     not found, the stack is unwound to the bottom and the first page in the
     stack will be the new current page. This happens because, when no matching
-    page is found in the stack, the find() function returns null. This means
-    null is passed to the pop() function which then has the effect of unwinding
+    page is found in the stack, the \c find() function returns null. This means
+    null is passed to the \c pop() function which then has the effect of unwinding
     the stack right to the bottom.
 
     \snippet src/snippets/common/snippet-pagestack-page.qml 6
@@ -358,9 +352,9 @@
     amount of time and will show up as an interruption in the user interface.
 
     To reduce the amount of time it takes to show the new page, you can use
-    PageStack in a particular way: instead of specifying the particular QML
+    \l PageStack in a particular way: instead of specifying the particular QML
     objects to load, you specify the URL of each page to push or replace. This
-    way, PageStack loads the page components for the intermediate pages (not the
+    way, \l PageStack loads the page components for the intermediate pages (not the
     actual content) and only instantiate the page that becomes active.
 
     \sa Page, {pagenavigation}{Pages and navigation}
