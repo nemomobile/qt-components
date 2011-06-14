@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
@@ -162,7 +162,75 @@
 
     \section1 Using the Tab Component for Parallel Navigation
 
-    ### summarise TabGroup etc.
+    The parallel navigation is implemented using Tabs. The functionality is divided
+    into two parts: buttons and content.
+
+    The buttons are implemented with the TabButton element. You can layout these 
+    buttons as you like. In the ToolBar, the ButtonRow is used for laying. This 
+    also changes the buttons graphical presentation to match the ToolBar's look 
+    and feel.
+
+    \code
+    ToolBarLayout {
+        ToolButton {} // back button
+        ButtonRow {
+            TabButton {}
+            TabButton {}
+    }
+    \endcode
+
+    You can use \l TabBarLayout, and \l TabBar in Symbian, to layout buttons for 
+    a stand-alone tool bar. In this case, the you must position the 
+    TabBarLayout.
+
+    \code
+    TabBarLayout {
+        anchors.top: parent.top
+        width: parent.width
+        TabButton {}
+        TabButton {}
+    }
+    \endcode
+
+    The tab content is managed by the TabGroup element whose child items
+    are content items.
+
+    \code
+    TabGroup {
+        anchors {} // user needs to layout the tab group
+        Page { id: tab1Content }
+        Page { id: tab2Content }
+    }
+    \endcode
+
+    The button and the content items are linked together with the TabButton's \c 
+    tab property.
+
+    \code
+    TabButton { id: tab1Button; tab: tab1Content }
+    \endcode
+
+    Once the linking is established, the TabButton and TabGroup elements manage 
+    the tab content switching and also highlight the corresponding tab button.
+
+    \section2 Dynamic Tab Handling
+
+    In most cases, the tab count is static. Therefore, you can statically 
+    allocate child items of \l TabGroup and the layouting 
+    component as described above. In some cases, you have to add or 
+    remove tabs dynamically depending on the application state.
+
+    You can append a tab by creating a new TabButton as a child of the layout
+    and similarly creating a new content item as the TabGroup's child. In
+    addition, you need to set the TabButton's \c tab property to point to
+    the new content item.
+
+    If you need to re-arrange the tab buttons, you need clear the layout and
+    append the buttons again in the correct order. The item order in the TabGroup
+    does not affect the shown tab order.
+
+    You can remove a tab by deleting TabButton and the content item 
+    instances with \c destroy().
 
 
     \section1 Using a Custom Navigation System
