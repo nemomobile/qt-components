@@ -44,6 +44,11 @@ import Qt.labs.components 1.1
 
 Column {
     id: column
+
+    // for demonstration and testing purposes each component needs to
+    // set its inverted state explicitly
+    property bool childrenInverted: false
+
     spacing: 14
 
     Text {

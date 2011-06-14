@@ -47,6 +47,10 @@ Window {
 
     property Menu menu
 
+    // for demonstration and testing purposes each component needs to
+    // set its inverted state explicitly
+    property bool childrenInverted: false
+
     LayoutMirroring.enabled: Qt.application.layoutDirection == Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
 
@@ -77,6 +81,7 @@ Window {
                 right: parent.right
                 margins: column.spacing
             }
+            childrenInverted: root.childrenInverted
         }
     }
 
@@ -115,6 +120,10 @@ Window {
                 MenuItem {
                     text: column.enabled ? "Disable" : "Enable"
                     onClicked: column.enabled = !column.enabled
+                }
+                MenuItem {
+                    text: root.childrenInverted ? "Revert components" : "Invert components"
+                    onClicked: root.childrenInverted = !root.childrenInverted
                 }
                 MenuItem { text: "Quit"; onClicked: Qt.quit() }
                 MenuItem { text: "Set layout dir"; platformSubItemIndicator: true; onClicked: layoutDirectionSubMenu.open()}
