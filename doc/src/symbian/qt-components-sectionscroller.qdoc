@@ -53,16 +53,16 @@
         }
 
         SectionScroller {
-            list: list
+            listView: list
         }
     }
     \endcode
 */
 
 /*!
-    \qmlproperty ListView SectionScroller::list
+    \qmlproperty  ListView SectionScroller::listView
 
-    The ListView Item that should show the Section Scroller.
+    The ListView that this section scroller is attached to.
+
 */
-
 
