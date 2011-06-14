@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
@@ -32,120 +32,129 @@
     \since 1.0
     \inherits Item
 
-    \brief A slider lets the user select a value within a fixed range by
-    sliding the slider's handle.
+    \brief A slider lets the user select a \c value within a fixed range by sliding
+    the handle.
 
-    You can set up a slider by specifying the minimum and maximum values and the
-    step size value between the minimum and maximum values. The user can set the
-    slider's value by sliding the slider's handle along the slider. The smallest
-    and biggest values the user can set are the slider's minimum and maximum
-    values respectively. Other possible values are those calculated by adding
-    the step size value once or more to the minimum value. For example, if the
-    minimum value is 0, the maximum value is 100, and the step size value is 40,
-    the values that the user can set are 0, 40, 80, and 100. All the numeric values
-    of the slider are floating point values.
+    The range is set by the slider's \c minimumValue and \c maximumValue. The
+    value is incremented using the \c stepSize property. If the \c minimumValue
+    is \c 0, the \c maximumValue is \c 100, and the \c stepSize value is \c 40,
+    the possible Slider values are \c 0, \c 40, \c 80, and \c 100. All the
+    numeric values of the slider are floating point values.
 
-    When the user drags the slider's handle the current value is updated. The
-    value indicator is shown beside the handle when the user presses the
-    slider's handle if the valueIndicatorVisible value is \c true. The
-    value indicator shows the slider's current value if valueIndicatorText
-    contains an empty string; otherwise the text of valueIndicatorText is shown.
-    The valueChanged signal is emitted when the value of the slider changes.
+    When the user slides the handle, the \c value is updated and the \c
+    valueChanged signal is emitted . If the \c valueIndicatorVisible property is
+    \c true, the value indicator is shown beside the handle when the user
+    presses the handle . The value indicator shows the text of \c
+    valueIndicatorText, but if \c valueIndicatorText contains an empty string,
+    the indicator shows the current \c value instead.
 
-    \section1 Setting up a slider
-
-    In this example the user can select with the check boxes whether or not the
-    slider's
-    \list
-    \o value indicator is shown
-    \o orientation is inverted
-    \endlist
-
-    \note The inverted orientation is a Symbian-specific property.
-
-    \snippet src/snippets/symbian/snippet-slider.qml 2
+    \section1 Setting Up a Slider
 
     In the code snippet below the slider's maximum, minimum, and current values
-    are set as well as the step size. Additionally the check boxes' checked
-    values are bound to slider's valueIndicatorVisible and inverted values. When
-    the slider value changes the application prints the "The 'valueChanged'
-    signal." message on the screen.
-
-    \snippet src/snippets/symbian/snippet-slider.qml 1
-
-    The title text shows that the slider is horizontal and it also shows
-    the slider's current value in brackets.
-
+    are set as well as the step size. \c valueIndicatorVisible is set to true.
+    When the slider \c value changes the application prints the \c{The
+    'valueChanged' signal.} message on the screen.
 
     \snippet src/snippets/symbian/snippet-slider.qml 0
 
-    The screenshot below illustrates the case where the user has selected
-    the horizontal slider's value indicator to be visible. Then the user drags the
-    slider's handle. The slider's current value is shown on the value indicator and
-    also in the brackets after the 'Horizontal slider' text.
+    In the the screenshot below the slider's \c value is shown on the value indicator.
 
     \image symbian/slider_horizontal.png
 
+    A vertical slider is configured by setting the property \c orientation to
+    \c Qt.Vertical. This slider also has a visible value indicator and the
+    \c inverted property is set to true, so the minimum value is at the bottom of
+    the slider. The value of property \c valueIndicatorText is \c Volume.
+    
+    \snippet src/snippets/symbian/snippet-slider.qml 1
 
-    The application's vertical slider is configured the same as the horizontal
-    slider with one exception: the orientation value is Qt.Vertical.
-
-
-
-    The screenshot below illustrates the case where the user has selected the
-    vertical slider's value indicator to be visible and the slider to be
-    inverted, so the minimum value is at the bottom of the slider. The slider's
-    valueIndicatorText value is 'Volume'. When the user drags the slider's
-    handle, the value indicator shows the 'Volume' text and the current value is
-    shown in the brackets after the 'Vertical slider' text.
+    When the user drags the slider's handle, the value indicator shows the text
+    \c Volume.
 
     \image symbian/slider_vertical.png
+*/
 
+/*!
+    \qmlsignal Slider::valueChanged()
 
+    This signal is emitted when the value of the slider changes.
+*/
+
+/*!
+    \qmlproperty real Slider::stepSize
+
+    The size of the step between the minimum and maximum values. The default
+    value is \c 0.
+*/
+
+/*!
+    \qmlproperty real Slider::minimumValue
+
+    The minimum value of the slider's range. The default value is \c 0.
+*/
+
+/*!
+    \qmlproperty real Slider::maximumValue
+
+    The maximum value of the slider's range. The default value is \c 1.
+*/
+
+/*!
+    \qmlproperty real Slider::value
+
+    The current value of the slider. The position of the slider's handle
+    indicates graphically the current value. The default value is \c 0.
+*/
+
+/*!
+    \qmlproperty int Slider::orientation
+
+    The orientation of the slider. Use \c Qt.Horizontal for left-right
+    sliding and \c Qt.Vertical for up-down sliding. The default value is
+    \c Qt.Horizontal.
 
 */
 
-/*! \qmlproperty bool Slider::toolTipVisible
+/*!
+    \qmlproperty bool Slider::pressed
 
-    \e {Symbian:}
+    While the user presses and holds the slider handle, the pressed value is \c
+    true; otherwise it is \c false.
 
-    Deprecated.
+*/
 
-    \sa valueIndicatorVisible, valueIndicatorText
+/*!
+    \qmlproperty bool Slider::valueIndicatorVisible
+
+    Controls whether the value indicator is visible when the user presses the
+    slider handle. The value indicator is shown only when the \c
+    valueIndicatorVisible property is \c true and the user presses the slider
+    handle; otherwise the value indicator is not visible. The default value is
+    \c false.
+
+    \sa valueIndicatorText
+*/
+
+/*!
+    \qmlproperty string Slider::valueIndicatorText
+
+    If valueIndicatorText is an empty string, the slider's \c value will be
+    displayed when the user drags the slider handle. If valueIndicatorText
+    contains a non-empty string value, that value will be shown when the user
+    drags the slider handle. The value indicator is shown only if the
+    valueIndicatorVisible is \c true and the user presses the slider handle;
+    otherwise the value indicator is not shown. The default value is an empty
+    string.
+
+    \sa valueIndicatorVisible
+
 */
 
 /*! \qmlproperty bool Slider::inverted
 
-    \e {Symbian:} The \c inverted property controls whether the slider shows its
-    values as inverted.
+    Inverts the progression of the slider. When \c false, the positive
+    progression is from left to right or bottom to top. Setting the property to
+    \c true will switch the progression from right to left or top to bottom.
 
-    If the inverted value is \c false,
-
-    \list
-     \o the minimum value is at the left/top end of the horizontal/vertical slider
-     respectively.
-     \o the maximum value is at the right/bottom end of the horizontal/vertical
-     slider respectively.
-     \endlist
-
-    If the inverted value is \c true,
-
-    \list
-     \o the minimum value is at the right/bottom end of the horizontal/vertical
-     slider respectively.
-     \o the maximum value is at the left/top end of the horizontal/vertical slider
-     respectively.
-     \endlist
-
-
-       The inverted value is \c false by default.
-
-*/
-
-
-
-/*!
-    \qmlsignal Slider::valueChanged(value)
-
-    \e This signal is emitted when the value of the slider changes.
+    The default value is \c false.
 */

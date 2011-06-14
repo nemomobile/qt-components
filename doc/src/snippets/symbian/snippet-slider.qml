@@ -39,94 +39,36 @@
 ****************************************************************************/
 
 import Qt 4.7
-import com.nokia.symbian 1.0
+import com.nokia.symbian 1.1
 
-Rectangle {
-    width: 800
-    height: 400
-    color: "grey"
-
-    Grid {
+Item {
+    Row {
         id: sliderGrid
-        anchors.topMargin: 50
         anchors.fill: parent
-        anchors.margins: 10
-        spacing: 20
+        anchors.topMargin: 50
+        spacing: 100
 
         //! [0]
-        Text {
-            text: "Horizontal slider (" + slider1.value + ")"
-            color: "white"
-        }
-        //! [0]
-
-        //! [1]
         Slider {
-            id: slider1
             maximumValue: 150
             minimumValue: -150
             value: 150
             stepSize: 50
-            valueIndicatorVisible: valueIndToggle.checked
-            inverted: inversionToggle.checked
-            onValueChanged: {
-                txtLog.text = txtLog.text + "The 'valueChanged' signal. <br>"
-            }
+            valueIndicatorVisible: true
         }
+        //! [0]
+
         //! [1]
-
-        //! [2]
-        CheckBox {
-            id: valueIndToggle
-            text: "Value indicator"
-            checked: true
-        }
-
-        CheckBox {
-            id: inversionToggle
-            text: "Inverted"
-        }
-        //! [2]
-
-        Text {
-            text: "Vertical slider (" + slider2.value + ")"
-            width: 120
-            color: "white"
-        }
-
         Slider {
-            id: slider2
             orientation: Qt.Vertical
             maximumValue: 25
             stepSize: 1
             value: 25
-            valueIndicatorVisible: valueIndToggle2.checked
+            valueIndicatorVisible: true
             valueIndicatorText: "Volume"
-            inverted: inversionToggle2.checked
-            onValueChanged: {
-                txtLog.text = txtLog.text + "The 'valueChanged' signal. <br>"
-            }
-        }
-
-        CheckBox {
-            id: valueIndToggle2
-            text: "Value indicator"
-            checked: true
-        }
-
-        CheckBox {
-            id: inversionToggle2
-            text: "Inverted"
-        }
-        Button {
-            id: btnClearText
-            text: "Clear text"
-            onClicked: txtLog.text = ""
-        }
-
-        Text {
-            id: txtLog
-        }
+            inverted: true
+        }        
+        //! [1]
     }
 }
 
