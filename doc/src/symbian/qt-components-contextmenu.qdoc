@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
@@ -33,33 +33,69 @@
     \inherits Item
 
     \brief
+    A ContextMenu provides of a list of options that the user can select from.
 
+    There are two typical use cases for the ContextMenu component. You can use
+    it as a context sensitive menu that opens, for example, on an item's long
+    press signal, or you can use it to show a submenu.
+
+    The following code snippet shows how to create a ContextMenu.
+
+    \snippet src/snippets/symbian/snippet-menu.qml 3a
+    \dots 12
+    \snippet src/snippets/symbian/snippet-menu.qml 3b
+
+    See the \l Menu documentation for an example how to use a ContextMenu
+    as a submenu.
+
+    \image symbian/contextmenu.png
 */
 
 /*!
-    \qmlproperty Item ContextMenu::visualParent
+    \qmlproperty list<Item> ContextMenu::content
+    \default
+
+    Provides access to the items in the context menu. It is recommended to
+    use a single \l MenuLayout item as the context menu content. Usage of
+    other elements may result in unexpected behaviour.
 
 */
 
 /*!
     \qmlproperty int ContextMenu::status
 
+    Indicates the status of a context menu. The possible values are as follows:
+
+    \list
+      \o \c DialogStatus.Opening - the menu is opening
+      \o \c DialogStatus.Open - the menu is open and visible to the user
+      \o \c DialogStatus.Closing - the menu is closing
+      \o \c DialogStatus.Closed - the menu is closed and not visible to the user
+    \endlist
+
 */
 
 /*!
-    \qmlproperty list<Item> ContextMenu::content
+    \qmlproperty Item ContextMenu::visualParent
+
+    This property is not used in Symbian. The context menu always uses
+    the predefined position and fading policy.
 
 */
 
 /*!
     \qmlmethod ContextMenu::close()
 
+    Hides the context menu from the user.
+
+    Normally a context menu is closed when the user selects an item from the menu.
+    Context menu is also closed when the user clicks outside the menu.
 
 */
 
 /*!
     \qmlmethod ContextMenu::open()
 
+    Shows the context menu to the user.
 
 */
-

@@ -39,114 +39,79 @@
 ****************************************************************************/
 
 import QtQuick 1.0
-import com.nokia.symbian 1.0
+import com.nokia.symbian 1.1
 
 Window {
-    id: mainWindow
+    id: root
 
     Rectangle {
         id: rect
-        anchors {left:parent.left;right:parent.right;top:parent.top;bottom:toolbar.top}
+        anchors { left: parent.left; right:parent.right; top: parent.top; bottom: toolbar.top }
         Text {
             anchors.centerIn: parent
             text: "Choose a colour from the menu"
         }
     }
-    state: "rgb" // default to red-green-blue menu state
 
     //! [0]
     ToolBar {
         id: toolbar
         anchors.bottom: parent.bottom
         tools: ToolBarLayout {
-            id: tools
-            visible: true
-            // add the standard 'back' button to the toolbar
-            backButton: true
             ToolButton {
-                flat: true
-                iconSource: "image://theme/qtg_toolbar_back"
-                onClicked: Qt.quit()
+                iconSource: "toolbar-back"
             }
-    //! [0]
-    //! [5]
-            // a button to allow you to swap between different menus
-            ToolButton {
-                id: swapMenuButton
-                // button text bound to current state
-                text: mainWindow.state == "rgb" ? "B&W menu" : "RGB menu"
-                onClicked: {
-                    if (mainWindow.state == "rgb") {
-                        // set the new menu and change to the new state
-                        mainMenu.content = bwMenuContent
-                        mainWindow.state = "bw"
-                    }
-                    else {
-                        // set the new menu and change to the new state
-                        mainMenu.content = rgbMenuContent
-                        mainWindow.state = "rgb"
-                    }
-                }
-            }
-    //! [5]
-    //! [4]
             // add the standard menu button to the toolbar
             ToolButton {
-                flat: true
-                iconSource: "image://theme/qtg_toolbar_options"
+                iconSource: "toolbar-menu"
                 onClicked: mainMenu.open()
             }
         }
     }
-    //! [4]
+    //! [0]
 
-    //! [1]
+    //! [1a]
     // define the menu
     Menu {
         id: mainMenu
-        content: rgbMenuContent
-    }
-    //! [1]
-
-    //! [2]
-    // define the items in the menu and corresponding actions
-    MenuLayout {
-        id: rgbMenuContent
-        objectName: "rgbMenu"
-        MenuItem {
-            text: "Red"
-            onClicked: rect.color = "Red"
-        }
-        //! [2]
-        MenuItem {
-            text: "Green"
-            onClicked: rect.color = "Green"
-        }
-        MenuItem {
-            text: "Blue"
-            onClicked: rect.color = "Blue"
-        }
-        //! [3]
-        MenuItem {
-            text: "CMYK menu"
-            platformSubItemIndicator: true
-            onClicked: {
-                cmykMenu.open()
+        // define the items in the menu and corresponding actions
+        content: MenuLayout {
+            MenuItem {
+                text: "Red"
+                onClicked: rect.color = "Red"
             }
-        }
-        //! [3]
+    //! [1a]
+            MenuItem {
+                text: "Green"
+                onClicked: rect.color = "Green"
+            }
+            MenuItem {
+                text: "Blue"
+                onClicked: rect.color = "Blue"
+            }
+    // Exceptional indentation used to make the snippet look better in the documentation
+    //! [2]
+    MenuItem {
+        text: "CMYK menu"
+        platformSubItemIndicator: true
+        onClicked: cmykMenu.open()
     }
+    //! [2]
+    //! [1b]
+        }
+    }
+    //! [1b]
 
-    //! [6]
+
+    //! [3a]
     ContextMenu {
         id: cmykMenu
-        objectName: "cmykMenu"
         MenuLayout {
             MenuItem {
                 text: "Cyan"
                 onClicked: rect.color = "Cyan"
             }
-    //! [6]
+    //! [3a]
             MenuItem {
                 text: "Magenta"
                 onClicked: rect.color = "Magenta"
@@ -156,24 +121,11 @@ Window {
                 onClicked: rect.color = "Yellow"
             }
             MenuItem {
-                id: blackItem
                 text: "Black"
                 onClicked: rect.color = "Black"
             }
+    //! [3b]
         }
     }
-
-    MenuLayout {
-        id: bwMenuContent
-        objectName: "bwMenu"
-        MenuItem {
-            text: "Black"
-            onClicked: rect.color = "Black"
-        }
-        MenuItem {
-            text: "White"
-            onClicked: rect.color = "White"
-        }
-    }
-
+    //! [3b]
 }

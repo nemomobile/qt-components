@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
@@ -34,7 +34,90 @@
     \brief
     A Menu provides of a list of options that the user can select from.
 
-    Menus are hidden by default and open in response to an action from the user.
+    A Menu is hidden by default and opens in response to a user action.
     When the user selects an option in the menu, it triggers a command.
+
+    \section1 Creating a Menu
+
+    The code snippet below shows how to create a Menu.
+
+    \snippet src/snippets/symbian/snippet-menu.qml 1a
+    \dots 12
+    \snippet src/snippets/symbian/snippet-menu.qml 1b
+
+    \section1 Integrating Menu with a Toolbar
+
+    The code snippet below shows how the user can launch the menu by pressing
+    the \l{ToolBar}{ToolBar's} menu button.
+
+    \snippet src/snippets/symbian/snippet-menu.qml 0
+
+    \image symbian/menu.png
+    \e {A menu opened from a tool bar}
+
+    \section1 Using Submenus
+
+    A Menu can contain submenus that are normally implemented
+    with \l ContextMenu items. The code snippet below show how to define a ContextMenu.
+
+    \snippet src/snippets/symbian/snippet-menu.qml 3a
+    \dots 12
+    \snippet src/snippets/symbian/snippet-menu.qml 3b
+
+    You can integrate a submenu to a menu item by setting its
+    \c MenuItem.platformSubItemIndicator property to \c true. The following code snippet
+    shows how a submenu is integrated to the menu item.
+
+    \snippet src/snippets/symbian/snippet-menu.qml 2
+
+*/
+
+/*!
+    \qmlproperty list<Item> Menu::content
+    \default
+
+    Provides access to the items in the menu. It is recommended to
+    use a single \l MenuLayout item as the menu content. Usage of
+    other elements may result in unexpected behaviour.
+
+*/
+
+/*!
+    \qmlproperty int Menu::status
+
+    Indicates the status of a menu. The possible values are as follows:
+
+    \list
+      \o \c DialogStatus.Opening - the menu is opening
+      \o \c DialogStatus.Open - the menu is open and visible to the user
+      \o \c DialogStatus.Closing - the menu is closing
+      \o \c DialogStatus.Closed - the menu is closed and not visible to the user
+    \endlist
+
+*/
+
+/*!
+    \qmlproperty Item Menu::visualParent
+
+    This property is not used in Symbian. The menu always uses
+    predefined position and fading policy.
+
+*/
+
+/*!
+    \qmlmethod Menu::close()
+
+    Hides the menu from the user.
+
+    Normally a menu is closed when the user selects an item from the menu.
+    Menu is also closed when the user clicks outside the menu.
+
+*/
+
+/*!
+    \qmlmethod Menu::open()
+
+    Shows the menu to the user. See the code snippet above for an example how
+    to bind a signal to this method.
 
 */

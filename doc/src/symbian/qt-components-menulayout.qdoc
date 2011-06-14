@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
@@ -32,10 +32,19 @@
     \inherits Column
 
     \brief
+    A MenuLayout is a positioner for the menu items that make up a menu.
+
+    MenuLayout is a Column positioner that places its child items
+    vertically one on the other.
+
+    Even thought MenuLayout can contain any type of items, it is recommended to
+    build the menu with \l MenuItem items. Usage of other items as a child item
+    may result in unexpected behaviour.
 
 */
 
 /*!
     \qmlsignal MenuLayout::clicked()
 
+    This signal is emitted when a menu item inside a MenuLayout is clicked.
 */
