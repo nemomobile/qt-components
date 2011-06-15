@@ -66,14 +66,14 @@ Item {
     property int frequencyStripHeight: dp(45)
     property int frequencyButtonSize: frequencyStripHeight - 2
 
-    property real consoleRatio: 0.6
+    property real consoleRatio: (screen.currentOrientation == Screen.Landscape) ? 0.55 : 0.50
     property real stationListRatio: 0.8
 
     Text {
         id: textForHugeFont
         font.family: "Nokia Sans"
         font.weight: Font.DemiBold
-        font.pixelSize: dp((screen.currentOrientation == Screen.Landscape) ? 60 : 50)
+        font.pixelSize: dp((screen.currentOrientation == Screen.Landscape) ? 55 : 45)
     }
     Text {
         id: textForLargeFont

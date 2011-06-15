@@ -546,8 +546,10 @@
     the different aspect ratios supported by the component.
 
     \snippet examples/symbian/scalefm/core/MobileView.qml stategroup_a
+    \snippet examples/symbian/scalefm/core/MobileView.qml stategroup_b
     \snippet examples/symbian/scalefm/core/MobileView.qml stategroup_c
     \snippet examples/symbian/scalefm/core/MobileView.qml stategroup_d
+    \snippet examples/symbian/scalefm/core/MobileView.qml stategroup_e
 
     One advantage of defining the layouts within states, rather than within the
     component definitions, is that it helps with maintainability, particularly

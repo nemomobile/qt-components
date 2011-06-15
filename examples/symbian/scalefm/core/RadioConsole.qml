@@ -140,8 +140,9 @@ Item {
         id: categoryLabel
         font: appStyle.mediumFont
         color: "lightgray"
-        text: "Category:\n" + StyleLoader.displayCategory() + "/" + StyleLoader.displayDensity()
+        text: "Category: " + StyleLoader.displayCategory() + "/" + StyleLoader.displayDensity()
         horizontalAlignment: Text.AlignHCenter
+        wrapMode: Text.Wrap
         anchors {
             left: parent.left; right: parent.right; bottom: resolutionLabel.top
             leftMargin: appStyle.marginSize; rightMargin: appStyle.marginSize; bottomMargin: appStyle.marginSize

@@ -53,28 +53,28 @@ Item {
     property int starIconSize: 35
     property int toneIconSize: 35
     property int starTouchSize: 50
-    property int frequencyStripHeight: 54
-    property int frequencyButtonSize: 58
+    property int frequencyStripHeight: 50
+    property int frequencyButtonSize: 54
 
-    property real consoleRatio: 0.65
+    property real consoleRatio: (screen.currentOrientation == Screen.Landscape) ? 0.70 : 0.60
     property real stationListRatio: 0.8
 
     Text {
         id: textForHugeFont
         font.family: "Nokia Sans"
         font.weight: Font.DemiBold
-        font.pixelSize: (screen.currentOrientation == Screen.Landscape) ? 54 : 64
+        font.pixelSize: (screen.currentOrientation == Screen.Landscape) ? 50 : 64
     }
     Text {
         id: textForLargeFont
         font.family: "Nokia Sans"
         font.weight: Font.Normal
-        font.pixelSize: 20
+        font.pixelSize: 18
     }
     Text {
         id: textForMediumFont
         font.family: "Nokia Sans"
         font.weight: Font.Normal
-        font.pixelSize: (screen.currentOrientation == Screen.Landscape) ? 20 : 22
+        font.pixelSize: (screen.currentOrientation == Screen.Landscape) ? 18 : 22
     }
 }

@@ -59,7 +59,7 @@ Item {
     property int frequencyStripHeight: platformStyle.graphicSizeLarge
     property int frequencyButtonSize: frequencyStripHeight - 2
 
-    property real consoleRatio: 0.6
+    property real consoleRatio: (screen.currentOrientation == Screen.Landscape) ? 0.55 : 0.50
     property real stationListRatio: 0.8
 
     Text {

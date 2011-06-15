@@ -64,7 +64,6 @@ Item {
             State {
                 when: (true)
                 AnchorChanges { target: infoArea;  anchors.left: helper.left; anchors.top: helper.top }
-                AnchorChanges { target: frequencyArea; anchors.left: helper.left; anchors.right: helper.right }
                 AnchorChanges { target: controlArea; anchors.right: helper.right }
                 //![stategroup_default_a]
 
@@ -78,32 +77,54 @@ Item {
     StateGroup {
         states: [
             State {
-                when: (container.width / container.height) > 1.20
-                AnchorChanges { target: infoArea; anchors.right: undefined; anchors.bottom: frequencyArea.top }
-                AnchorChanges { target: frequencyArea; anchors.top: undefined; anchors.bottom: parent.bottom }
+                when: (container.width / container.height) > 3.00
+                AnchorChanges { target: infoArea; anchors.right: undefined; anchors.bottom: helper.bottom }
+                AnchorChanges { target: frequencyArea; anchors.left: infoArea.right; anchors.right: helper.right; anchors.top: undefined; anchors.bottom: parent.bottom }
                 AnchorChanges { target: controlArea; anchors.left: infoArea.right; anchors.top: helper.top; anchors.bottom: frequencyArea.top }
                 //![stategroup_a]
 
-                //![stategroup_b]
                 PropertyChanges { target: infoArea; width: Math.round(helper.width * appStyle.consoleRatio) }
-                PropertyChanges { target: frequencyArea; anchors.bottomMargin: appStyle.marginSize }
+                PropertyChanges { target: frequencyArea; anchors.leftMargin: appStyle.spacingSize; anchors.bottomMargin: appStyle.marginSize }
                 PropertyChanges { target: controlArea; anchors.leftMargin: appStyle.spacingSize; anchors.topMargin: 0; anchors.bottomMargin: appStyle.spacingSize }
                 //![stategroup_b]
+            },
+            State {
+                when: (container.width / container.height) > 1.50
+                AnchorChanges { target: infoArea; anchors.right: undefined; anchors.bottom: frequencyArea.top }
+                AnchorChanges { target: frequencyArea; anchors.left: helper.left; anchors.right: infoArea.right; anchors.top: undefined; anchors.bottom: parent.bottom }
+                AnchorChanges { target: controlArea; anchors.left: infoArea.right; anchors.top: helper.top; anchors.bottom: helper.bottom }
+                //![stategroup_b]
+
+                PropertyChanges { target: infoArea; width: Math.round(helper.width * appStyle.consoleRatio) }
+                PropertyChanges { target: frequencyArea; anchors.leftMargin: appStyle.spacingSize; anchors.bottomMargin: appStyle.marginSize }
+                PropertyChanges { target: controlArea; anchors.leftMargin: appStyle.spacingSize; anchors.topMargin: 0; anchors.bottomMargin: 0 }
                 //![stategroup_c]
+            },
+            State {
+                when: (container.width / container.height) > 1.00
+                AnchorChanges { target: infoArea; anchors.right: undefined; anchors.bottom: frequencyArea.top }
+                AnchorChanges { target: frequencyArea; anchors.left: helper.left; anchors.right: helper.right; anchors.top: undefined; anchors.bottom: parent.bottom }
+                AnchorChanges { target: controlArea; anchors.left: infoArea.right; anchors.top: helper.top; anchors.bottom: frequencyArea.top }
+                //![stategroup_c]
+
+                PropertyChanges { target: infoArea; width: Math.round(helper.width * appStyle.consoleRatio) }
+                PropertyChanges { target: frequencyArea; anchors.leftMargin: appStyle.spacingSize; anchors.bottomMargin: appStyle.marginSize }
+                PropertyChanges { target: controlArea; anchors.leftMargin: appStyle.spacingSize; anchors.topMargin: 0; anchors.bottomMargin: appStyle.spacingSize }
+                //![stategroup_d]
             },
             State {
                 when: (true)
                 AnchorChanges { target: infoArea;  anchors.right: helper.right; anchors.bottom: undefined }
-                AnchorChanges { target: frequencyArea; anchors.top: infoArea.bottom; anchors.bottom: undefined }
+                AnchorChanges { target: frequencyArea; anchors.left: helper.left; anchors.right: helper.right; anchors.top: infoArea.bottom; anchors.bottom: undefined }
                 AnchorChanges { target: controlArea; anchors.left: helper.left; anchors.top: frequencyArea.bottom; anchors.bottom: helper.bottom }
-                //![stategroup_c]
+                //![stategroup_d]
 
                 PropertyChanges { target: infoArea; height: Math.round(helper.height * appStyle.consoleRatio) }
-                PropertyChanges { target: frequencyArea; anchors.topMargin: appStyle.spacingSize; anchors.bottomMargin: 0 }
+                PropertyChanges { target: frequencyArea; anchors.leftMargin: appStyle.spacingSize; anchors.topMargin: appStyle.spacingSize; anchors.bottomMargin: 0 }
                 PropertyChanges { target: controlArea; anchors.leftMargin: 0; anchors.topMargin: appStyle.spacingSize; anchors.bottomMargin: 0 }
-                //![stategroup_d]
+                //![stategroup_e]
             }
         ]
     }
-    //![stategroup_d]
+    //![stategroup_e]
 }
