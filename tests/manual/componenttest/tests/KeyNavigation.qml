@@ -41,50 +41,159 @@
 import QtQuick 1.0
 import com.nokia.symbian 1.1
 import Qt.labs.components 1.1
+import com.nokia.extras 1.1
 
 FocusScope {
     id: root
-    anchors.fill: parent
+    anchors {
+        fill: parent
+        leftMargin: platformStyle.paddingMedium
+        rightMargin: platformStyle.paddingMedium
+    }
     focus: true
+
+    property int verticalPadding: Math.max((sectionHeight - itemCellHeight - headingHeight) / 2, 0)
+    property real sectionHeight: height / 3
+    property int itemCellHeight: privateStyle.buttonSize
+    property int headingHeight: platformStyle.fontSizeSmall
+
+    InfoBanner {
+        id: info
+        interactive: true
+        timeout: 1000
+    }
 
     Component {
         id: highlight
         Rectangle {
             visible: GridView.view.activeFocus
             border {color: "steelblue"; width: 5}
-            color: "#00000000"; radius: 5;
+            color: "#00000000"; radius: 5
             z: 5
         }
     }
 
     ListModel {
+        id: checkBoxesModel
+        ListElement {
+            objectName: "CB1"
+            title: "CheckBox1"
+        }
+        ListElement {
+            objectName: "CB2"
+            title: "CheckBox2"
+        }
+    }
+
+    Component {
+        id: checkBoxesDelegate
+        CheckBox {
+            objectName: objectName
+            width: checkBoxes.cellWidth; height: checkBoxes.cellHeight
+            text: title
+            onClicked: {
+                var statusText = checked ? "on" : "off"
+                info.text = title + " turned " + statusText
+                info.open()
+            }
+        }
+    }
+
+    Text {
+        id: checkBoxesHeading
+        anchors.top: root.top
+        height: root.headingHeight
+        font.pixelSize: platformStyle.fontSizeSmall
+        font.family: platformStyle.fontFamilyRegular
+        color: platformStyle.colorNormalMid
+        text: "CheckBoxes"
+    }
+
+    GridView {
+        id: checkBoxes
+        anchors {
+            top: checkBoxesHeading.bottom
+            bottom: radioButtonsHeading.top
+            topMargin: root.verticalPadding
+            bottomMargin: root.verticalPadding
+        }
+        height: root.itemCellHeight
+        width: root.width
+        cellWidth: width / 2; cellHeight: root.itemCellHeight
+        highlight: highlight
+        model: checkBoxesModel
+        delegate: checkBoxesDelegate
+        KeyNavigation.down: radioButtons
+    }
+
+    ListModel {
+        id: radioButtonsModel
+        ListElement {
+            objectName: "RB1"
+            title: "RadioButton1"
+        }
+        ListElement {
+            objectName: "RB2"
+            title: "RadioButton2"
+        }
+    }
+
+    Component {
+        id: radioButtonsDelegate
+        RadioButton {
+            objectName: objectName
+            width: radioButtons.cellWidth; height: radioButtons.cellHeight
+
+            platformExclusiveGroup: group
+            text: title
+            onClicked: {
+                info.text = title + " selected"
+                info.open()
+            }
+        }
+    }
+
+    CheckableGroup { id: group }
+
+    Text {
+        id: radioButtonsHeading
+        y: root.y + root.sectionHeight
+        height: root.headingHeight
+        font.pixelSize: platformStyle.fontSizeSmall
+        font.family: platformStyle.fontFamilyRegular
+        color: platformStyle.colorNormalMid
+        text: "RadioButtons"
+    }
+
+    GridView {
+        id: radioButtons
+        anchors {
+            top: radioButtonsHeading.bottom
+            bottom: buttons.top
+            topMargin: root.verticalPadding
+            bottomMargin: root.verticalPadding
+        }
+        width: root.width
+        cellWidth: width / 2; cellHeight: root.itemCellHeight
+        highlight: highlight
+        model: radioButtonsModel
+        delegate: radioButtonsDelegate
+        KeyNavigation.up: checkBoxes
+        KeyNavigation.down: buttons
+    }
+
+    ListModel {
         id: buttonsModel
         ListElement {
-            objectName: "addText"
-            title: "Add text"
-            action: "Add"
-            checkableButton: false
-            buttonChecked: false
-        }
-        ListElement {
-            objectName: "clearText"
-            title: "Clear text"
-            action: "Clear"
-            checkableButton: false
-            buttonChecked: false
-        }
-        ListElement {
-            objectName: "preText"
-            title: "Toggle start"
-            action: ""
+            objectName: "TOGGLEBTN"
+            title: "Toggle Button"
             checkableButton: true
             buttonChecked: false
         }
         ListElement {
-            objectName: "postText"
-            title: "Toggle end"
-            action: ""
-            checkableButton: true
+            objectName: "PUSHBTN"
+            title: "Push Button"
+            checkableButton: false
             buttonChecked: false
         }
     }
@@ -96,110 +205,43 @@ FocusScope {
             width: buttons.cellWidth; height: buttons.cellHeight
             text: title
             checkable: checkableButton
+            checked: buttonChecked
             onClicked: {
-                if (action == "Add")
-                    editor.text = (buttonsModel.get(2).buttonChecked ? "Toggled:" : "") + ("Lorem ipsum") + (buttonsModel.get(3).buttonChecked ? ":Toggled\n" : "\n") + (editor.text)
-                else if (action == "Clear")
-                    editor.text = ""
-                buttonsModel.set(index, {"buttonChecked": checked})
+                var statusText = title
+                if (title == "Toggle Button")
+                    statusText += checked ? " checked" : " unchecked"
+                else
+                    statusText += " pressed"
+                info.text = statusText
+                info.open()
             }
         }
     }
 
+    Text {
+        id: buttonsHeading
+        y: root.y + root.sectionHeight * 2
+        height: root.headingHeight
+        font.pixelSize: platformStyle.fontSizeSmall
+        font.family: platformStyle.fontFamilyRegular
+        color: platformStyle.colorNormalMid
+        text: "Buttons"
+    }
+
     GridView {
         id: buttons
-        anchors {top: parent.top; horizontalCenter: parent.horizontalCenter; margins: platformStyle.paddingSmall }
-        width: parent.width - anchors.margins * 2; height: parent.height * 2 / 6 - anchors.margins * 2
-        cellWidth: width / 2 - anchors.margins; cellHeight: height / 2 - anchors.margins
+        anchors {
+            top: buttonsHeading.bottom
+            bottom: root.bottom
+            topMargin: root.verticalPadding
+            bottomMargin: root.verticalPadding
+        }
+        width: root.width
+        cellWidth: width / 2; cellHeight: root.itemCellHeight
         highlight: highlight
         focus: true
         model: buttonsModel
         delegate: buttonsDelegate
-        KeyNavigation.down: radioButtons
-    }
-
-    TextArea {
-        id: editor
-        objectName: "editor"
-        anchors { top: buttons.bottom; horizontalCenter: parent.horizontalCenter; margins: platformStyle.paddingSmall }
-        width: parent.width - anchors.margins * 2; height: parent.height * 2 / 6 - anchors.margins * 2
-        readOnly: true
-        enabled: false
-    }
-
-    ListModel {
-        id: radioButtonsModel
-        ListElement {
-            objectName: "one"
-            title: "one"
-        }
-        ListElement {
-            objectName: "two"
-            title: "two"
-        }
-        ListElement {
-            objectName: "three"
-            title: "three"
-        }
-    }
-
-    Component {
-        id: radioButtonsDelegate
-        RadioButton {
-            objectName: objectName
-            width: radioButtons.cellWidth; height: radioButtons.cellHeight
-            platformExclusiveGroup: group
-            text: title
-        }
-    }
-
-    CheckableGroup { id: group }
-
-    GridView {
-        id: radioButtons
-        anchors { top: editor.bottom; horizontalCenter: parent.horizontalCenter; margins: platformStyle.paddingSmall; }
-        width: parent.width - anchors.margins * 2; height: parent.height  * 1 / 6 - anchors.margins * 2
-        cellWidth: width / 3 - anchors.margins; cellHeight: height - anchors.margins
-        highlight: highlight
-        model: radioButtonsModel
-        delegate: radioButtonsDelegate
-        KeyNavigation.up: buttons
-        KeyNavigation.down: checkBoxes
-    }
-
-    ListModel {
-        id: checkBoxesModel
-        ListElement {
-            objectName: "one"
-            title: "one"
-        }
-        ListElement {
-            objectName: "two"
-            title: "two"
-        }
-        ListElement {
-            objectName: "three"
-            title: "three"
-        }
-    }
-
-    Component {
-        id: checkBoxesDelegate
-        CheckBox {
-            objectName: objectName
-            width: checkBoxes.cellWidth; height: checkBoxes.cellHeight
-            text: title
-        }
-    }
-
-    GridView {
-        id: checkBoxes
-        anchors { top: radioButtons.bottom; horizontalCenter: parent.horizontalCenter; margins: platformStyle.paddingSmall; }
-        width: parent.width - anchors.margins * 2; height: parent.height  * 1 / 6 - anchors.margins * 2
-        cellWidth: width / 3 - anchors.margins; cellHeight: height - anchors.margins
-        highlight: highlight
-        model: checkBoxesModel
-        delegate: checkBoxesDelegate
         KeyNavigation.up: radioButtons
     }
 }
