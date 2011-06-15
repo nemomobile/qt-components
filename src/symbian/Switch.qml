@@ -218,7 +218,9 @@ ImplicitSizeItem {
     }
 
     Keys.onPressed: {
-        if (event.key == Qt.Key_Select || event.key == Qt.Key_Return || event.key == Qt.Key_Enter) {
+        if (!event.isAutoRepeat && (event.key == Qt.Key_Select
+                                    || event.key == Qt.Key_Return
+                                    || event.key == Qt.Key_Enter)) {
             stateGroup.state = "KeyPressed"
             event.accepted = true
         }
@@ -226,7 +228,9 @@ ImplicitSizeItem {
 
 
     Keys.onReleased: {
-        if (event.key == Qt.Key_Select || event.key == Qt.Key_Return || event.key == Qt.Key_Enter) {
+        if (!event.isAutoRepeat && (event.key == Qt.Key_Select
+                                    || event.key == Qt.Key_Return
+                                    || event.key == Qt.Key_Enter)) {
             stateGroup.state = ""
             event.accepted = true
         }

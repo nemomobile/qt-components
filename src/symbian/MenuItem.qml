@@ -144,10 +144,12 @@ Item {
             case Qt.Key_Select:
             case Qt.Key_Enter:
             case Qt.Key_Return: {
-                if (symbian.listInteractionMode != Symbian.KeyNavigation)
-                    symbian.listInteractionMode = Symbian.KeyNavigation
-                else
-                    root.clicked()
+                if (!event.isAutoRepeat) {
+                    if (symbian.listInteractionMode != Symbian.KeyNavigation)
+                        symbian.listInteractionMode = Symbian.KeyNavigation
+                    else
+                        root.clicked()
+                }
                 break
             }
 

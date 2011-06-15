@@ -149,7 +149,7 @@ ImplicitSizeItem {
     }
 
     Keys.onReleased: {
-        if (root.enabled) {
+        if (!event.isAutoRepeat && root.enabled) {
             if (event.key == Qt.Key_Select || event.key == Qt.Key_Return || event.key == Qt.Key_Enter) {
                 event.accepted = true
                 internal.state = "Focused"
@@ -158,47 +158,49 @@ ImplicitSizeItem {
     }
 
     Keys.onPressed: {
-        switch (event.key) {
-            case Qt.Key_Select:
-            case Qt.Key_Enter:
-            case Qt.Key_Return: {
-                if (symbian.listInteractionMode != Symbian.KeyNavigation)
-                    symbian.listInteractionMode = Symbian.KeyNavigation
-                else
-                    if (root.enabled) {
-                        highlight.source = privateStyle.imagePath("qtg_fr_list_pressed")
-                        highlight.opacity = 1
-                        releasedEffect.restart()
-                        root.clicked()
-                    }
-                event.accepted = true
-                break
-            }
+        if (!event.isAutoRepeat) {
+            switch (event.key) {
+                case Qt.Key_Select:
+                case Qt.Key_Enter:
+                case Qt.Key_Return: {
+                    if (symbian.listInteractionMode != Symbian.KeyNavigation)
+                        symbian.listInteractionMode = Symbian.KeyNavigation
+                    else
+                        if (root.enabled) {
+                            highlight.source = privateStyle.imagePath("qtg_fr_list_pressed")
+                            highlight.opacity = 1
+                            releasedEffect.restart()
+                            root.clicked()
+                        }
+                    event.accepted = true
+                    break
+                }
 
-            case Qt.Key_Up: {
-                if (symbian.listInteractionMode != Symbian.KeyNavigation) {
-                    symbian.listInteractionMode = Symbian.KeyNavigation
-                    internal.state = "Focused"
-                    ListView.view.positionViewAtIndex(index, ListView.Beginning)
-                } else
-                    ListView.view.decrementCurrentIndex()
-                event.accepted = true
-                break
-            }
+                case Qt.Key_Up: {
+                    if (symbian.listInteractionMode != Symbian.KeyNavigation) {
+                        symbian.listInteractionMode = Symbian.KeyNavigation
+                        internal.state = "Focused"
+                        ListView.view.positionViewAtIndex(index, ListView.Beginning)
+                    } else
+                        ListView.view.decrementCurrentIndex()
+                    event.accepted = true
+                    break
+                }
 
-            case Qt.Key_Down: {
-                if (symbian.listInteractionMode != Symbian.KeyNavigation) {
-                    symbian.listInteractionMode = Symbian.KeyNavigation
-                    ListView.view.positionViewAtIndex(index, ListView.Beginning)
-                    internal.state = "Focused"
-                } else
-                    ListView.view.incrementCurrentIndex()
-                event.accepted = true
-                break
-            }
-            default: {
-                event.accepted = false
-                break
+                case Qt.Key_Down: {
+                    if (symbian.listInteractionMode != Symbian.KeyNavigation) {
+                        symbian.listInteractionMode = Symbian.KeyNavigation
+                        ListView.view.positionViewAtIndex(index, ListView.Beginning)
+                        internal.state = "Focused"
+                    } else
+                        ListView.view.incrementCurrentIndex()
+                    event.accepted = true
+                    break
+                }
+                default: {
+                    event.accepted = false
+                    break
+                }
             }
         }
     }
