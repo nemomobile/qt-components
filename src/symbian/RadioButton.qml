@@ -47,7 +47,7 @@ ImplicitSizeItem {
 
     // Common Public API
     property alias checked: checkable.checked
-    property bool pressed: stateGroup.state == "Pressed"
+    property bool pressed: stateGroup.state == "Pressed" || stateGroup.state == "KeyPressed"
     signal clicked
     property alias text: label.text
 
@@ -58,12 +58,7 @@ ImplicitSizeItem {
         id: internal
         objectName: "internal"
 
-        function press() {
-            privateStyle.play(Symbian.BasicItem)
-        }
-
         function toggle() {
-            privateStyle.play(Symbian.CheckBox)
             clickedEffect.restart()
             checkable.toggle()
             root.clicked()
@@ -91,16 +86,23 @@ ImplicitSizeItem {
 
         states: [
             State { name: "Pressed" },
+            State { name: "KeyPressed" },
             State { name: "Canceled" }
         ]
 
         transitions: [
             Transition {
                 to: "Pressed"
-                ScriptAction { script: internal.press() }
+                ScriptAction { script:  privateStyle.play(Symbian.BasicItem) }
             },
             Transition {
                 from: "Pressed"
+                to: ""
+                ScriptAction { script: privateStyle.play(Symbian.CheckBox) }
+                ScriptAction { script: internal.toggle() }
+            },
+            Transition {
+                from: "KeyPressed"
                 to: ""
                 ScriptAction { script: internal.toggle() }
             }
@@ -177,9 +179,15 @@ ImplicitSizeItem {
 
     Keys.onPressed: {
         if (event.key == Qt.Key_Select || event.key == Qt.Key_Return || event.key == Qt.Key_Enter) {
-            checkable.toggle()
-            clickedEffect.restart()
-            root.clicked()
+            stateGroup.state = "KeyPressed"
+            event.accepted = true
+        }
+    }
+
+
+    Keys.onReleased: {
+        if (event.key == Qt.Key_Select || event.key == Qt.Key_Return || event.key == Qt.Key_Enter) {
+            stateGroup.state = ""
             event.accepted = true
         }
     }
