@@ -33,7 +33,7 @@
     \inherits QtObject
 
     \brief
-    Checkable implements the logic behind a component that can be enabled or disabled.
+    Implements the functionality for a component that can be enabled or disabled.
 
     As well as being used with a single component, a Checkable can also be a
     part of a CheckableGroup where exactly one checkable item in the group can

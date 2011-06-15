@@ -30,8 +30,8 @@
     \ingroup qt-components
     \since 1.0
     \inherits CommonDialog
-    \brief
-    A SelectionDialog represents a list of choices to the user.
+
+    \brief Represents a list of choices to the user.
 
     With SelectionDialog you can customize the visual representation of the
     selectable items' list by overriding the ListView delegate. By default
@@ -44,12 +44,12 @@
 
     The model that defines the selection dialog’s item list. The SelectionDialog
     uses it as a ListView component’s model in the dialog. The default delegate assumes
-    that the model data is provided via the \e modelData role and interprets it as a text string.
+    that the model data is provided via the \c modelData role and interprets it as a text string.
     If you use a custom delegate, the model can be anything supported by QML ListView component.
 
-    \note If the model contains only one named role, it is always provided via the \e modelData role.
-    This also applies to a simple string list model.
-    See QML Data Models documentation for more detailed information about the topic.
+    \note If the model contains only one named role, it is always provided via
+    the \c modelData role. This also applies to a simple string list model. See
+    QML Data Models documentation for more detailed information about the topic.
 
     The example below illustrates how to use the data models with the SelectionDialog.
     It has two dialogs that both allow the user to choose from three different items.

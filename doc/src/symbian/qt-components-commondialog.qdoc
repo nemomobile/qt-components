@@ -32,10 +32,10 @@
     \since 1.0
     \inherits Dialog
     \brief
-    CommonDialog provides a dialog with a platform style title area.
+    Provides a dialog with the platform-style title area.
 
-    CommonDialog is a convenience component that provides a dialog with a
-    platform-style title area. You have to only define \c titleText.
+    CommonDialog is a convenience component that provides a dialog with the
+    platform-style title area. You only have to define \c titleText.
     CommonDialog handles its layout automatically.
 
     \note This component is experimental, so it may be changed or removed in

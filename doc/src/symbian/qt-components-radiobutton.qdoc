@@ -31,20 +31,19 @@
     \ingroup qt-components
     \since 1.0
     \inherits Item
-    \brief
-    A RadioButton is an item in a list of items where only one item can be selected
-    at a time.
-    
+
+    \brief Provides a radio button with a line of text that the user can choose.
+
     A radio button component consists of a radio button and a line of text. Only
     one item in a list may be selected at a time. Once an item is selected, it
     can be deselected only by selecting another item. Initial item selection may
     be set at the list creation. If not set, the list is shown without a
     selection.
 
-    When a radio button has focus, the radio button can be selected using the
-    \c Qt.Key_Select, \c Qt.Key_Return and \c Qt.Key_Enter hardware keys.
+    When a radio button has the focus, the radio button can be selected using the
+    \c Qt.Key_Select, \c Qt.Key_Return, and \c Qt.Key_Enter hardware keys.
 
-    \section1 Using a radio button
+    \section1 Using a Radio Button
 
     The following code creates a row with three radio buttons in it. The
     platformExclusiveGroup property of all the radio buttons is 'group' which
@@ -52,6 +51,8 @@
     selected at a time. The radio button with the text '3' is checked.
 
     \snippet src/snippets/symbian/snippet-radiobutton.qml 0
+
+    The screenshot below shows the result of the code snippet.
 
     \image symbian/radiobutton_list.png
 */

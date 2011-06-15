@@ -31,9 +31,8 @@
     \ingroup qt-components
     \since 1.0
     \inherits Item
-    \brief
-    A ProgressBar shows the continuing progress of a long-running operation to
-    reassure the user that the operation is still progressing.
+
+    \brief Shows the progress or continuation of a long-running operation.
 
     Some operations take a period of time to be performed and the user needs
     a confirmation that the operation is still ongoing. If the user does not get
@@ -89,7 +88,7 @@
     \image symbian/progressbar_indeterminate.png
 
     The following code snippet binds the \c visible property of an indeterminate
-    progress bar to the \c running property of timer from the above example.
+    progress bar to the \c running property of the timer from the example above.
 
     \snippet src/snippets/symbian/snippet-progressbar.qml 1
 */
@@ -97,7 +96,7 @@
 /*!
     \qmlproperty real ProgressBar::minimumValue
 
-    The start value of the long-running operation. The progress bar's width is
+    The start value of a long-running operation. The progress bar's width is
     zero when the current value is set to \c minimumValue.
 
     The default value is \c 0.0
@@ -107,7 +106,7 @@
 /*!
     \qmlproperty real ProgressBar::maximumValue
 
-    The end value of the long-running operation. The progress bar shows its
+    The end value of a long-running operation. The progress bar shows its
     full width when the current value is set to \c maximumValue.
 
     The default value is \c 1.0
@@ -117,7 +116,7 @@
 /*!
     \qmlproperty real ProgressBar::value
 
-    The progress bar's current value. The progress bar length is calculated as
+    The progress bar's current value. The progress bar's length is calculated as
     the proportion of \c value between \c minimumValue and \c maximumValue. For
     example, if the \c value is in the middle of \c minimumValue and \c
     maximumValue, the progress bar will be filled half way along.

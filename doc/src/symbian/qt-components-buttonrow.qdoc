@@ -31,13 +31,12 @@
     \since 1.0
     \inherits Row
 
-    \brief
-    A ButtonRow component arranges a set of buttons in a row.
+    \brief Provides a component for arranging a set of buttons in a row.
 
-    A ButtonRow component acts as a container for buttons and items with the \c
-    checked property. It acts as sizer by making them of equal width and as positioner
-    by arranging them in a horizontal row. RadioButton and \c checkable button components
-    can be made mutually exclusive in a ButtonRow with the \c exclusive property.
+    The ButtonRow component is a container for buttons and items with the \c
+    checked property. It makes the child items equal-wide and arranges them in
+    a horizontal row. RadioButton and \c checkable button components can be made
+    mutually exclusive in a ButtonRow with the \c exclusive property.
 
     When you place \l Button and \l ToolButton components in ButtonRow,
     they form a row of seamless and segmented buttons.
@@ -49,7 +48,7 @@
 
     \snippet src/snippets/symbian/snippet-buttonrow.qml 0
 
-    The screenshot below shows an implementation of the code snippet:
+    The screenshot below illustrates the result of the code snippet.
 
     \image symbian/buttonrow.png
 
@@ -71,7 +70,7 @@
 /*!
     \qmlproperty Item ButtonRow::checkedButton
 
-    The property \c checkedButton defines which button in ButtonRow is \c checked.
+    Defines which button in the ButtonRow is \c checked.
 
 
 */

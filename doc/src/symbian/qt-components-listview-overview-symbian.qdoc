@@ -46,7 +46,7 @@
       \o The \l ListHeading element allows to add a header for a list or for
       section headers within the list.
 
-      \o The \l ListItemText element allows you to put themed texts into a
+      \o The \l ListItemText element allows you to put styled texts into a
       \l ListItem or a \l ListHeading.
 
     \endlist

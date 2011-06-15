@@ -31,8 +31,8 @@
     \inherits Item
 
     \brief
-    A Dialog is a top-level window mostly used for short-term tasks and brief
-    communications with the user.
+    Provides a top-level window for short-term tasks and brief
+    interaction with the user.
 
     A dialog floats on the top layer of the application view, usually
     overlapping the area reserved for the application content. Normally,
@@ -44,7 +44,7 @@
 /*!
     \qmlproperty list<Item> Dialog::title
 
-    A list of items for the dialog's title area. You can use a \l Text component
+    A list of items in the dialog's title area. You can use a \l Text component
     but also any number of components that are based on \l Item. For example,
     you can use \l Text and \l Image components.
 
@@ -53,17 +53,18 @@
 /*!
     \qmlproperty list<Item> Dialog::content
 
-    A list of items for the dialog's content area. You can use any component that is based
-    on \l Item. For example, you can use \l ListView so that the user can
-    select from a list of names.
+    A list of items in the dialog's content area. You can use any component
+    that is based on \l Item. For example, you can use \l ListView, so that the
+    user can select from a list of names.
 
 */
 
 /*!
     \qmlproperty list<Item> Dialog::buttons
 
-    A list of items in the dialog's button area. For example, you can use a \l Row of \l Button
-    components but you can use any number of components that are based on Item component.
+    A list of items in the dialog's button area. For example, you can use \l Row
+    or \l Button components but you can also use any number of components that
+    are based on Item component.
 
 */
 

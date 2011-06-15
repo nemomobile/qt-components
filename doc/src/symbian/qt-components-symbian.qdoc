@@ -33,9 +33,10 @@
     \since 1.0
     \inherits QtObject
 
-    \brief
-    Symbian class is only accessible via \c symbian context property.  The property
-    provides services that are accessible everywhere in the application.
+    \brief Provides various services that are accessible everywhere in an
+    application.
+
+    It is accessible only as a \c symbian context property.
 
 */
 

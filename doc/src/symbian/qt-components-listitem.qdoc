@@ -30,12 +30,12 @@
     \ingroup qt-components
     \since 1.0
     \inherits Item
-    \brief
-    The ListItem element provides common layout options for the row content in a ListView element.
+
+    \brief Symbian: Provides a template for creating a ListView delegate.
 
     A ListItem does not contain any visible content by default, it has only an
     invisible padding area to which you can anchor other items. This means all
-    the ListItems in a list can have common but themable margins.
+    the ListItems in a list can have common margins.
 
     \image symbian/listitem_padding.png
     \e {A ListItem with the padding rectangle drawn as white}
@@ -45,13 +45,10 @@
 
     The following code snippet implements a ListItem with a text item on the top
     and subtitle text below. The two items are aligned in a column and they have
-    the standard vertical spacing for a ListItem. The image below shows the
-    result.
+    the standard vertical spacing for a ListItem. The code snippet results a
+    default state list item shown in the list below.
 
     \snippet src/snippets/symbian/snippet-listitem.qml 0
-
-    \image symbian/listitem_default.png
-    \e ListItem with text and subtitle
 
     \section1 ListItem States
 
@@ -59,6 +56,7 @@
 
     \list
       \o \bold "" The default state of a ListItem.
+      \image symbian/listitem_default.png
       \o \bold "Pressed" The ListItem enters this state when the user presses
       the ListItem.
       \image symbian/listitem_pressed.png

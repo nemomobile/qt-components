@@ -32,8 +32,7 @@
     \inherits Item
     \since 1.0
 
-    \brief A check box component has an image and a label and can be clicked by
-    the user.
+    \brief Provides a component with an image and a label that the user can click.
 
     A check box is a component that can be switched on (checked) or off
     (unchecked). Check boxes are typically used to represent features in an
@@ -41,9 +40,9 @@
     different types of behavior can be implemented. When a check box is checked
     or unchecked it sends a \c clicked signal for the application to handle.
 
-    When a check box has focus, it's state can be toggled using the
-    \c Qt.Key_Select, \c Qt.Key_Return and \c Qt.Key_Enter hardware keys, which
-    will send the \c clicked signal.
+    When a check box has the focus, its state can be toggled using the \c
+    Qt.Key_Select, \c Qt.Key_Return, and \c Qt.Key_Enter hardware keys that send
+    the \c clicked signal.
 
 
     \section1 Checking and Unchecking a Check Box
@@ -89,5 +88,5 @@
 
     The signal is emitted when the button is pressed and then released.
 
-    The signal handler, \c onClicked, can bind to state changes or other actions.
+    You can bind the signal handler, \c onClicked, to state changes or other actions.
 */

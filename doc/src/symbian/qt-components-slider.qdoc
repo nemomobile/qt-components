@@ -32,8 +32,8 @@
     \since 1.0
     \inherits Item
 
-    \brief A slider lets the user select a \c value within a fixed range by sliding
-    the handle.
+    \brief Lets the user select a value within a fixed range by sliding the
+    handle.
 
     The range is set by the slider's \c minimumValue and \c maximumValue. The
     value is incremented using the \c stepSize property. If the \c minimumValue
@@ -51,9 +51,8 @@
     \section1 Setting Up a Slider
 
     In the code snippet below the slider's maximum, minimum, and current values
-    are set as well as the step size. \c valueIndicatorVisible is set to true.
-    When the slider \c value changes the application prints the \c{The
-    'valueChanged' signal.} message on the screen.
+    are set as well as the step size. The \c valueIndicatorVisible property is
+    set to true.
 
     \snippet src/snippets/symbian/snippet-slider.qml 0
 
@@ -64,8 +63,8 @@
     A vertical slider is configured by setting the property \c orientation to
     \c Qt.Vertical. This slider also has a visible value indicator and the
     \c inverted property is set to true, so the minimum value is at the bottom of
-    the slider. The value of property \c valueIndicatorText is \c Volume.
-    
+    the slider. The value of the \c valueIndicatorText property is \c Volume.
+
     \snippet src/snippets/symbian/snippet-slider.qml 1
 
     When the user drags the slider's handle, the value indicator shows the text
@@ -119,7 +118,7 @@
     \qmlproperty bool Slider::pressed
 
     While the user presses and holds the slider handle, the pressed value is \c
-    true; otherwise it is \c false.
+    true; otherwise \c false.
 
 */
 
@@ -140,8 +139,8 @@
 
     If valueIndicatorText is an empty string, the slider's \c value will be
     displayed when the user drags the slider handle. If valueIndicatorText
-    contains a non-empty string value, that value will be shown when the user
-    drags the slider handle. The value indicator is shown only if the
+    contains a non-empty string value, that value is shown when the user drags
+    the slider handle. The value indicator is shown only if the
     valueIndicatorVisible is \c true and the user presses the slider handle;
     otherwise the value indicator is not shown. The default value is an empty
     string.

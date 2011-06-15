@@ -29,9 +29,7 @@
     \inherits Item
     \ingroup qt-components
     \since 1.0
-    \brief
-    An indicator component that shows the progress of a task of an unknown
-    duration.
+    \brief Shows the progress of a task of an unknown duration.
 
     The size of the indicator can be defined by giving the \c width and \c height
     values. If they are not given, BusyIndicator will use the default size.

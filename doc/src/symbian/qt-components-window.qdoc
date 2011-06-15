@@ -30,9 +30,9 @@
     \ingroup qt-components
     \since 1.0
     \inherits Item
-    \brief
-    Window is normally the root component of an application and it handles the
-    transitions when the user rotates the screen.
+
+    \brief Provides a component that is normally the application's root
+    component and handles transitions when the user rotates the screen.
 
     An application can be in the portrait or the landscape orientation. A user
     can physically rotate the device between these orientations, so you may want

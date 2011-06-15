@@ -32,25 +32,24 @@
     \inherits Column
 
     \brief
-    A ButtonColumn component arranges a set of buttons in a column.
+    Provides a component for arranging a set of buttons in a column.
 
-    The ButtonColumn component acts as a container for buttons and items with the
-    \c checked property. It acts as sizer by making the child items of equal size
-    and as positioner by arranging them in a vertical column. ButtonColumn
-    adds mutual exclusion for RadioButton and \c checkable button components.
-    ButtonColumn provides the same functionality as \l ButtonRow with the
-    exception that no separate segmented-style graphics are available for
-    Button and ToolButton in ButtonColumn.
+    The ButtonColumn component is a container for buttons and items with the \c
+    checked property. It makes the child items equal-sized and arranges them in
+    a vertical column. By default ButtonColumn's \l RadioButton and \c checkable
+    button components are mutually exclusive. ButtonColumn provides the same
+    functionality as \l ButtonRow with the exception that no separate segmented-
+    style graphics are available for Button and ToolButton in ButtonColumn.
 
     The code snippet below illustrates how to create a ButtonColumn component
-    four buttons with icons. The ButtonColumn's \c exclusive property is not set, 
+    four buttons with icons. The ButtonColumn's \c exclusive property is not set,
     so it is \c true by default, and thus its child buttons are \c checkable. In
-    addition, the \c checkedButton property is not set, so the first button is 
+    addition, the \c checkedButton property is not set, so the first button is
     set to \c checked by default.
 
     \snippet src/snippets/symbian/snippet-buttoncolumn.qml 0
 
-    The following screenshot illustrates the implementation above:
+    The screenshot below illustrates the result of the code snippet.
 
     \image symbian/buttoncolumn.png
 
@@ -63,8 +62,9 @@
 
 
     Indicates whether or not the ButtonColumn's buttons are mutually exclusive,
-    that is, only one button can be \c checked at a time. If the \c exclusive value is \c
-    true, the buttons are \c checkable and mutually exclusive; otherwise not.
+    that is, only one button can be \c checked at a time. If the \c exclusive
+    value is \c true, the buttons are \c checkable and mutually exclusive;
+    otherwise not.
 
     The \c exclusive property is \c true by default.
 */
@@ -72,7 +72,7 @@
 /*!
     \qmlproperty Item ButtonColumn::checkedButton
 
-    The property \c checkedButton defines which button in the ButtonColumn is \c checked.
+    Defines which button in the ButtonColumn is \c checked.
 
 */
 

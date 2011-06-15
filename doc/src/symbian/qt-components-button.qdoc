@@ -32,7 +32,7 @@
     \inherits Item
 
     \brief
-    A button component has an icon and a text and can be clicked by the user.
+    Provides a button with an icon and a text that the user can click.
 
     A button component enables the user to perform a command. The button has a
     rectangular shape and typically there is a text describing its command and

@@ -32,7 +32,7 @@
     \since 1.0
     \inherits Item
 
-    \brief TabGroup is a set of pages for a tab based interface.
+    \brief Provides a set of pages for a tab-based interface.
 
     A tabbed interface is made up of tab buttons plus content for each button. A
     TabGroup component has, as its children, each page of content in the
@@ -60,9 +60,9 @@
     PageStatus.Deactivating (for the page that was the current page) statuses
     are also set.
 
-    Because of the platform specific transition requirements, these children might
-    be reparented internally i.e. refer to the TabGroup from content with \c id instead
-    of \c parent.
+    Because of the platform specific transition requirements, these children
+    might be reparented internally, that is, refer to the TabGroup from content
+    with \c id instead of \c parent.
 
     \section1 Creating a Static Tabbed Interface
 
@@ -128,7 +128,7 @@
 /*!
     \qmlproperty bool TabGroup::platformAnimated
 
-    The platformAnimated property is initialized to true and can be changed by
+    The platformAnimated property is initialized to \c true and can be changed by
     the user to disable animations while switching currentTab property.
 
 */

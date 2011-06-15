@@ -31,8 +31,9 @@
     \ingroup qt-components-symbian
     \since 1.0
     \inherits Item
+
     \brief Adds a visual indication of the position and interaction of the
-    contents in a \l Flickable object.
+    contents in a \l Flickable element.
 
     A ScrollBar can be used with \l Flickable items as well as items derived
     from it, such as \l ListView and \l GridView items. ScrollBar should be a

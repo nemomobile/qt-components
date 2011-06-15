@@ -31,14 +31,14 @@
     \ingroup qt-components
     \since 1.0
     \inherits Item
-    \brief
-    A ToolBar is a container for providing quick access to commonly used actions.
+
+    \brief Provides a container for accessing quickly to commonly used actions.
 
     The ToolBar contains a current ToolBarLayout, which in turn contains tools
     such as ToolButton components.
 
-    If there is a PageStack whose toolBar property is set to be this ToolBar,
-    then the ToolBarLayout set to be the tools of the current Page will be
+    If there is a PageStack whose \c toolBar property is set to be this ToolBar,
+    the ToolBarLayout set to be the tools of the current Page will be
     automatically set as the tools of the ToolBar, using the specified \a
     transition. This occurs each time the current Page changes.
 
@@ -53,12 +53,12 @@
 
     \snippet src/snippets/symbian/snippet-toolbar-basic.qml toolbar1
 
-    Notice that the \a tools are declared as a ToolBarLayout, in this case a
-    simple layout containing two ToolButtons is used.
+    \note The \a tools are declared as a ToolBarLayout, in this case a simple
+    layout containing two ToolButtons is used.
 
     \image symbian/toolbarlayout_basic.png
 
-    \section2 Dynamically setting the tools in a ToolBar
+    \section2 Dynamically Setting the Tools in a ToolBar
 
     In some cases, the tools required by an application Window will change
     depending on the application state. It is straightforward to set the

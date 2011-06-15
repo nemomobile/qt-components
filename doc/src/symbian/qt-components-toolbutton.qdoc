@@ -31,26 +31,23 @@
     \since 1.0
     \inherits Item
 
-    \brief A button designed to work within a ToolBar to provide quick access
-    to a function.
+    \brief Provides a tool button within a ToolBar enabling quick access to a
+    function.
 
     ToolButton provides a different style of appearance compared to a normal
     Button. It is designed to only be used inside a ToolBarLayout. Alternatively it
     can be used inside a ButtonRow that is itself inside a ToolBarLayout.
 
-    If you require a button inside a ToolBar, it is recommended that you use a
-    ToolButton. If you require a button outside of a ToolBar, it is recommended
-    that you use the normal Button instead.
-
-    \note Button is not guaranteed to display correctly if placed inside a
-    ToolBar, it may be too tall, for example.
+    It is recommended that you use ToolButton for a button inside a \l ToolBar and
+    \l Button for a button outside a \l ToolBar. Button may be shown incorrectly if it
+    is placed inside a ToolBar. It may be too tall, for example.
 
     \note The ToolBarLayout will override the height and width of
     contained ToolButton children. Therefore you should not attempt to define
     the size or implicit size of a ToolButton.
 
-    For more detailed documentation about how to use the ToolButton in a
-    ToolBar, including example usage, consult the ToolBar documentation.
+    For more information on how to use ToolButton within a ToolBar, see the \l
+    ToolBar documentation. It provides also various use cases.
 
     \sa ToolBar, ToolBarLayout, ButtonRow, TabButton
 
@@ -72,13 +69,13 @@
 
     If \c checked is \c false, the button appears as normal or "up". If \c
     checkable and \c checked are both \c true, and the button is not being
-    pressed, then the button appears "down" or "checked".
+    pressed, the button appears as "down" or "checked".
 
     \note if \c checkable is true, the value of \c checked will be updated
     dynamically as the button is pressed and released.
 
     \note If the button contains just an icon, and the flat property is \c
-    true, then the checked button will have a distinctive appearance (when not
+    true, the checked button will have a distinctive appearance (when not
     pressed), whilst still appearing to be flat.
 
     \image symbian/toolbarlayout_toolbutton_icon_checkable.png
@@ -90,28 +87,29 @@
 /*!
     \qmlproperty bool ToolButton::enabled
 
-    If \c false, the tool button is drawn to indicate it cannot be used. If the
-    user does press the button, no signal is sent, and no feedback is given.
-*/
+    Indicates whether the ToolButton can be used or not. If the value is \c
+    true, the ToolButton's appearance indicates to the user that they can use it;
+    otherwise not. If the user presses the button whose value is \c false,
+    neither signal is sent nor feedback is given.
+
+    */
 
 /*!
     \qmlproperty bool ToolButton::pressed
 
-    \c true while the user is pressing the tool button; otherwise, \c false.
+    While the user presses the ToolButton, the value is \c true; otherwise \c false.
 
 */
 
 /*!
     \qmlproperty url ToolButton::iconSource
 
-    The location or name of the icon to show on the tool button. If this value
-    is empty, no icon will be displayed, and no space will be reserved within
-    the layout for it.
+    The location or the name of the icon that is shown on the ToolButton. If
+    the value is empty, neither icon is shown nor space is
+    reserved within the layout for it.
 
-    \note There is a special feature for icons that are designed to be
-    used on the ToolBar. If the iconSource is set to one of the following
-    values, then the icon location in the resources will be automatically used.
-    In fact it works with any theme icon that is prefixed with "toolbar-":
+    \note If the iconSource is set to one of the values below, the icon location
+    in the resources will be automatically used.
 
     \image symbian/toolbutton_icons.png
 
@@ -122,39 +120,38 @@
 
     \endomit
 
-    In general, it is expected that toolbar-back and toolbar-menu would be used
-    for the back button (first position in a ToolBarLayout) and the menu
-    button (last position in a ToolBarLayout). The following example
+    Normally it is expected that toolbar-back and toolbar-menu icons are used
+    for the back button (in ToolBarLayout's first position) and the menu button
+    (in ToolBarLayout's last position) respectively. The following example
     illustrates how to use this feature:
 
     \snippet src/snippets/symbian/snippet-toolbar-basic.qml toolbar1
 
-    Additional content can be placed between the back button and the menu
-    button. The documentation for ToolBarLayout illustrates many of the
-    possible layout configurations.
+    You can place additional content between the back button and the menu
+    button. The \l ToolBarLayout documentation illustrates various possible
+    layout configurations.
 
-    \note You should not use any icon other than "toolbar-back" in the
-    first position at the left hand edge; this is to enforce consistency
-    between different applications.
+    \note You should use only the "toolbar-back" icon in the leftmost position.
+    This is to enforce consistency between different applications.
 
 */
 
 /*!
     \qmlproperty string ToolButton::text
 
-    Text to show on the button. If this value is empty, then no text will be
-    displayed, and no space will be reserved in the layout for it.
+    The text shown on the button. If the value is empty, no text is
+    shown on the button, and no space will be reserved in the layout for it.
 
-    If both a text and an icon are specified, it is up to the platform style
-    whether both are shown or one is preferred. Often this means the icon will
-    be shown in preference to the text.
+    If both a text and an icon are specified, the platform style determines
+    whether either of them or both are shown. Often the icon is shown in
+    preference to the text.
 
 */
 
 /*!
     \qmlsignal ToolButton::clicked()
 
-    This signal is emitted when the tool button is pressed and released within
+    This signal is emitted when the ToolButton is pressed and released within
     a short time.
 
 */
@@ -165,13 +162,7 @@
     \e {Symbian:}
 
     The exclusive group that this tool button belongs to. In an exclusive
-    group, only one of the tool buttons can be selected at a time.
-
-    In this example, separate ToolButton instances are used to represent each
-    of the media control buttons.
-
-    However, in practice it is recommended to use a ButtonRow in this case, as
-    the segmented appearance would be preferable.
+    group only one of the tool buttons can be selected at a time.
 
 */
 
@@ -196,26 +187,34 @@
 /*!
     \qmlproperty bool ToolButton::flat
 
-    If \c false, a border is drawn for the button. If \c true no border is
-    drawn and the button looks "flat" when not pressed, and if the button
-    contains just an icon, it has a distinctive highlight border when pressed.
+    Defines whether the ToolButton looks "flat" or not. If the value is \c true:
+    \list
+    \o The ToolButton does not have a border and it looks flat when it is not
+    pressed.
+    \o The ToolButton with only an icon has a distinctive highlighted border when it
+    is pressed.
+    \endlist
 
-    The value is automatically set to \c true if the contents of the button is
-    just an icon. Otherwise the value is automatically set to \c false. The
-    default appearance of an iconic ToolButton should be flat.
+    If the value is \c false, the ToolButton has a border.
 
-    Generally, if your button is an icon, you should leave this value to be \c
-    true so that your icon merges with the toolbar. Otherwise, If your button
-    contains text, you should leave this value set to \c false so that your
-    text stands out from the toolbar like a normal button.
+    The value is automatically set to \c true if the ToolButton has only an
+    icon; otherwise it is set to \c false. The default appearance of a
+    ToolButton with an icon should be flat.
+
+    Generally, if the ToolButton is an icon, you should leave this value to \c
+    true, so that the icon merges with the toolbar. If the ToolButton has text,
+    you should leave this value to \c false, so that the ToolButton's text
+    stands out from the toolbar same way as a normal button. The screenshot
+    below shows the non-flat and the flat ToolButton.
 
     \image symbian/toolbarlayout_toolbutton_text_flat.png
 
-    \note If the ToolButton is contained in a ButtonRow, then this value
-    applies to the segmented border appearance also.
-
-    \note If the button has no icon and no text, then the value of flat is
-    ignored, and a border is drawn. Otherwise, the button would seem to be not
-    visible (until pressed).
-
+    \note
+    \list
+    \o If the ToolButton is within a ButtonRow, the value also applies to the
+    segmented border appearance.
+    \o If the button has neither icon nor text, the \c flat value is ignored,
+    and only the border is shown. Otherwise the ToolButton would be invisible
+    until the user presses it.
+    \endlist
 */

@@ -30,10 +30,9 @@
     \ingroup qt-components
     \since 1.0f
     \inherits Item
-    \brief
-    A ScrollDecorator component is a visual indicator to a Flickable component
-    to show the size relationship between the visible contents and the complete
-    contents.
+
+    \brief Provides a visual indicator for a Flickable element to show the
+    size relationship between the visible and complete contents.
 
     When the size of a Flickable component is larger than the size of its
     container, it is often helpful to have some indication of where you are. For

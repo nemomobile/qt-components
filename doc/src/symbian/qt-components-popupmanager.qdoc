@@ -33,7 +33,7 @@
     \since 1.0
     \inherits QtObject
 
-    \brief Symbian: Provides convenience functions to track the depth of the popup stack.
+    \brief Symbian: Provides convenience functions to track the depth of a popup stack.
 
     PopupManager class is only accessible via a context property called \c platformPopupManager.
     The popup manager has a \c popupStackDepth property, which holds the number

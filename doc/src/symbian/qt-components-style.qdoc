@@ -32,8 +32,8 @@
     \since 1.0
     \inherits QtObject
 
-    \brief
-    Symbian: Platform-specific style parameters for fonts, colors, and layouts.
+    \brief Symbian: Provides platform-specific style parameters for fonts,
+    colors, and layouts.
 
     You should use these parameters when you want to make your UI consistent
     with the Symbian platform style. Symbian-style is exposed as a context

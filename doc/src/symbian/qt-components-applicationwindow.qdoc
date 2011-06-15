@@ -32,18 +32,18 @@
     \since 1.0
     \inherits Window
 
-    \brief A view template that contains several UI elements.
+    \brief Provides a view template that contains several UI elements.
 
     Creates an easy-to-use view that has \l Window, \l StatusBar, \l ToolBar,
     and \l PageStack components. This component provides convenience properties
-    that place child components into the correct layouts.
+    that place child components into correct layouts.
 
     \note This component is experimental, so it may be changed or removed in
     future releases.
 
     \section1 Using ApplicationWindow
 
-    This example shows a basic usage of the ApplicationWindow component. The
+    The example below illustrates the ApplicationWindow component's basic usage. The
     window contains a root \l Page object which contains a \l CheckBox. The
     CheckBox controls the ApplicationWindow's \c fullScreen property. Setting
     the \l ToolBarLayout to the \l Page's \c tools property enables the back
@@ -55,12 +55,11 @@
 /*!
     \qmlproperty bool ApplicationWindow::fullScreen
 
-    If this property is \c true, then the application content area fills the
-    whole screen.
-
-    If \c false, then \l StatusBar and \l ToolBar components are visible and
-    the application content area fills the area between the StatusBar and
-    ToolBar components.
+    Defines how the application content area fills the screen. If the property
+    is \c true, the application content area fills the whole screen. If the
+    property is \c false, the \l StatusBar and \l ToolBar components are
+    visible and the application content area fills the area between the
+    \l StatusBar and \l ToolBar components.
 
     The default value is \c false.
 */
@@ -71,14 +70,15 @@
 
     Enables the application content to be placed directly as a child of
     ApplicationWindow. The items in ApplicationWindow are laid out between the
-    \l StatusBar and \l ToolBar components. Usually the user of
-    ApplicationWindow does not need to directly access this property. If
-    dynamically creating objects that fill the application content area this
-    property should be used as a parent to set the correct placement.
+    \l StatusBar and \l ToolBar components. Usually you do not need to directly
+    access this property. However, if you create objects dynamically into the
+    application content area, you should use this property as the parent of
+    created objects.
+
 */
 
 /*!
     \qmlproperty PageStack ApplicationWindow::pageStack
-    A convenience property provided by ApplicationWindow. The application is not
-    required to use it.
+    A convenience property provided by ApplicationWindow. The application does not
+    have to use it.
 */

@@ -30,21 +30,23 @@
     \ingroup qt-components
     \since 1.0
     \inherits FocusScopeItem
-    \brief
-    Provides a one-line text editor.
 
-    The TextField component displays a single line of editable plain text. Input
-    constraints can be placed on a TextField component (for example, through a
-    \l validator or \l inputMask), and setting \l echoMode to an appropriate
-    value makes the TextField suitable as password input field. If the \l text
-    content is longer than TextField view port, the field can be scrolled
-    horizontally. TextField is a superset of \l TextInput and implements the
-    Symbian style look-and-feel. Clipboard support is provided by the \l cut(),
-    \l copy(), and \l paste() functions.
+    \brief Provides a component for editing and displaying a single line of
+    plain text.
 
-    \note Copy-Paste between qt-components application and native Symbian
-    application doesn't work. See \l
-    {http://bugreports.qt.nokia.com/browse/QTBUG-5701}{QTBUG-5701}
+    The TextField component displays a single line of editable plain text. You
+    can place input constraints for a TextField component, for example, through
+    a \l validator or \l inputMask. You can also set \l echoMode to an
+    appropriate value for making the TextField suitable for a password input
+    field. If the \c text content is longer than the TextField view port, the user
+    can scroll the field horizontally. TextField is a superset of \l TextInput
+    and it implements the Symbian-style look-and-feel. The clipboard support is
+    provided by the \l cut(), \l copy(), and \l paste() functions.
+
+    \note Copy-Paste between a qt-components application and native Symbian
+    application does not work. For more information, see \l
+    {http://bugreports.qt.nokia.com/browse/QTBUG-5701}{QTBUG-5701}.
+
     \section1 TextField Basic Examples
 
     \table

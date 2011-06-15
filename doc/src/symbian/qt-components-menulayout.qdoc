@@ -31,8 +31,8 @@
     \since 1.0
     \inherits Column
 
-    \brief
-    A MenuLayout is a positioner for the menu items that make up a menu.
+    \brief Provides a component for positioning menu items in a menu.
+
 
     MenuLayout is a Column positioner that places its child items
     vertically one on the other.

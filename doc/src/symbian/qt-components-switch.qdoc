@@ -32,18 +32,18 @@
     \since 1.0
     \inherits Item
 
-    \brief
-    A Switch component provides an icon representing a physical switch that the 
-    user can turn on and off.
+    \brief Provides an icon representing a physical switch that the user can
+    turn on and off.
 
-    You can bound the Switch component to a feature that the application has to enable or 
-    disable based on user's input, for example. Switch has similar usage and API as 
-    \l CheckBox, except that Switch does not provide a built-in label.
+    You can bind the Switch component to a feature that the application has to
+    enable or disable depending on the user's input, for example. Switch has
+    similar usage and API as \l CheckBox, except that Switch does not provide a
+    built-in label.
 
     \section1 Using a Switch
 
-    In this example the user can turn a switch on and off. In the code snippet 
-    below the switch is defined. The text label is bound to the \c checked 
+    In this example the user can turn a switch on and off. In the code snippet
+    below the switch is defined. The text label is bound to the \c checked
     property - this way the text label shows the switch's state to the user.
 
     \snippet src/snippets/symbian/snippet-switch.qml 0

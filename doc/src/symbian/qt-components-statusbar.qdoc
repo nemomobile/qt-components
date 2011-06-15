@@ -30,25 +30,26 @@
     \ingroup qt-components
     \since 1.0
     \inherits Item
-    \brief
-    A StatusBar decorates an application with system information.
+
+    \brief Decorates an application with system information.
 
     The StatusBar shows important information of the device state such as
     network type, signal strength, and battery level.
 
     Usually the StatusBar is anchored on top of the \l Window component. The
     height of the bar is pre-set and there is no need for the application to
-    override it. The height might also change based on the device orientation.
+    override it. The height might also change when on the device orientation
+    changes.
 
     \snippet src/snippets/common/snippet-statusbar.qml 0
 
-    Because the StatusBar information is important to the user, it is suggested
-    to add a StatusBar instance to every application. If the application needs
-    to expand the content area over the StatusBar, the bar can be hidden
-    temporarily and show it again when possible.
+    Because the StatusBar information is important to the user, it is
+    recommended to add a StatusBar instance to every application. If the
+    application needs to expand the contents area over the StatusBar, the bar can
+    be hidden temporarily and shown again when possible.
 
-    The StatusBar should not be instantiated inside the \l Page component,
-    because the page transition effect would then apply to the StatusBar as
-    well.
-*/
+    You should not instantiate the StatusBar inside the \l Page component
+    because the page transition effect would then also apply to the StatusBar.
+
+    */
 

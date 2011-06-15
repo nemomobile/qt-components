@@ -31,8 +31,8 @@
     \ingroup qt-components-symbian
     \since 1.0
     \inherits Text
-    \brief
-    ListItemText provides themeable fonts for ListItem and ListHeading elements.
+
+    \brief Symbian: Provides styled fonts for ListItem and ListHeading elements.
 
     \sa ListItem, ListHeading
 
@@ -63,7 +63,7 @@
     \qmlproperty string ListItemText::role
 
     The role propery of a ListItemText object indicates how the text will be styled when the
-    text is displayed. Actual font, color and size is based on the theme. The available
+    text is displayed. Actual font, color and size is based on the Symbian style. The available
     roles are:
 
     \list

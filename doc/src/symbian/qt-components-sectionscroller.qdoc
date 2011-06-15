@@ -30,10 +30,11 @@
     \ingroup qt-components
     \since 1.0
 
-    \brief Helps user to scroll a long list one section at a time.
+    \brief Provides a functionality for scrolling a long list by one section at
+    a time.
 
     A section scroller is a component that allows the user to scroll through
-    a list one section at a time.  The sections are defined in the list.
+    a list by one section at a time.  The sections are defined in the list.
 
     \code
     Item {

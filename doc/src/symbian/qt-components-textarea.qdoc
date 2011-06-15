@@ -34,14 +34,14 @@
     Provides a component for editing and displaying both plain and rich text.
 
     The TextArea component displays a block of editable and formatted text. It
-    can display both plain and rich text. TextArea implements horizontal and
-    vertical scrolling. Scroll bars appear when the content is flicked or on
+    can display both plain and rich text. TextArea implements the horizontal and
+    vertical scrolling. Scroll bars appear when the content is flicked, or on the
     focus gain if the content does not fit to view port. TextArea is a superset
-    of \l TextEdit to implement the Symbian style look-and-feel. Clipboard
+    of \l TextEdit to implement the Symbian-style look-and-feel. The clipboard
     support is provided by the \l cut(), \l copy(), and \l paste() functions.
 
     \note Copy and paste functionality between a Qt Quick Components application
-    and native Symbian application doesn't work. See \l
+    and native Symbian application does not work. For more information, see \l
     {http://bugreports.qt.nokia.com/browse/QTBUG-5701}{QTBUG-5701}.
 
     \section1 TextArea Basic Examples

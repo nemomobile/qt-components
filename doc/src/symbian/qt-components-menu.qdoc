@@ -31,8 +31,8 @@
     \ingroup qt-components
     \since 1.0
     \inherits Item
-    \brief
-    A Menu provides of a list of options that the user can select from.
+
+    \brief Provides of a list of options that the user can choose from.
 
     A Menu is hidden by default and opens in response to a user action.
     When the user selects an option in the menu, it triggers a command.

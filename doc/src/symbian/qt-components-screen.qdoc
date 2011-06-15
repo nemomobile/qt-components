@@ -32,8 +32,8 @@
     \since 1.0
     \inherits QtObject
 
-    \brief
-    Symbian: Provides access to the screen properties such as resolution, dot density (in dpi's), and orientation.
+    \brief Symbian: Provides access to the screen properties such as resolution,
+    dot density, and orientation.
 
     A screen is exposed as a context property named \c screen. It is not possible
     to instantiate a Screen object in QML, but the screen must be accessed

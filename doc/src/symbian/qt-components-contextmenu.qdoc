@@ -33,7 +33,7 @@
     \inherits Item
 
     \brief
-    A ContextMenu provides of a list of options that the user can select from.
+    Provides a component with list of options that the user can choose from.
 
     There are two typical use cases for the ContextMenu component. You can use
     it as a context sensitive menu that opens, for example, on an item's long

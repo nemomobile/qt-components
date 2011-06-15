@@ -31,25 +31,26 @@
     \since 1.0
     \inherits Item
 
-    \brief ToolBarLayout is a container for items on a ToolBar that
-    automatically implements an appropriate layout for its children.
+    \brief Provides a container for items on a ToolBar that automatically
+    implements an appropriate layout for its children.
 
-    For more detailed documentation about how to use ToolBarLayout inside
-    ToolBar, including different example use cases such as attaching a
-    ToolBarLayout to a Page, consult the ToolBar documentation.
+    For more information on how to use ToolBarLayout inside ToolBar, see the
+    ToolBar documentation. It provides also various use cases, for example,
+    attaching a ToolBarLayout to a Page.
 
     \sa ToolBar, ButtonRow, ToolButton, TabButton, Page
 
     \section1 Using the ToolBarLayout
 
-    You use a ToolBarLayout when you specify the tools that go into a ToolBar.
+    The ToolBarLayout is meant for specifying the tools within a ToolBar.
     The ToolBarLayout is a container that calculates the child positions based
     on platform specific rules.
 
     \section2 Basic Usage
 
-    In this example, there is a simple ToolBarLayout, which must be set to be
-    the tools of a ToolBar (or Page) at some point.
+    In this example, there is a simple ToolBarLayout that must be set to be the
+    tools of a ToolBar (or Page) at some point. The screenshot below each code
+    snippet shows the result of that code snippet.
 
     \snippet src/snippets/symbian/snippet-toolbar-menu.qml toolbarlayout1
 
@@ -60,13 +61,13 @@
 
     \section2 Using a ToolBarLayout with ToolButton
 
-    It's possible to add a number of ToolButton instances that contain icons.
+    It is possible to add a number of ToolButton instances that contain icons.
 
     \snippet src/snippets/symbian/snippet-toolbar-settools.qml toolbarlayout3a
 
     \image symbian/toolbarlayout_toolbutton_icon.png
 
-    It's also possible to add a number of ToolButton instances that contain text.
+    It is also possible to add a number of ToolButton instances that contain text.
 
     \snippet src/snippets/symbian/snippet-toolbar-in-page.qml toolbarlayout2
 
@@ -77,12 +78,12 @@
     counting the back button and menu button which should always contain
     icons).
 
-    \section2 Missing items
+    \section2 Missing Items
 
-    In most cases, it is recommended that the back button and menu button
-    should be shown in the ToolBar. However, in some cases it may be desirable
+    In most cases, it is recommended that the back button and the menu button
+    are shown in the ToolBar. However, in some cases it may be desirable
     or necessary to hide them. By setting either or both of the buttons to be
-    not visible, they will still reserve space in the layout.
+    hidden, they reserve space in the layout.
 
     \snippet src/snippets/symbian/snippet-toolbar-settools.qml toolbarlayout2
 

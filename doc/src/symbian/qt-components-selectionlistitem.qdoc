@@ -32,8 +32,7 @@
     \since 1.0
     \inherits ListItem
 
-    \brief
-    Symbian: SelectionListItem is a list item that shows the current value and
+    \brief Symbian: Provides a list item that shows the current value and
     optionally a label for a setting.
 
     SelectionListItem is purely a visual component. It is not tied to any
@@ -47,16 +46,24 @@
     concrete, self-contained list item.
 
     There are the following two possible layouts for SelectionListItem:
+
     \list
-    \o The two-row layout showing a label and a value. This layout is applied when you specify both the \c title and \c subTitle properties.
-    \o The single-row layout showing a value. This layout is applied when you leave the \c subTitle property empty.
-    \endlist    
+
+    \o The two-row layout showing a label and a value. This layout is applied
+    when you specify both the \c title and \c subTitle properties.
+
+    \o The single-row layout showing a value. This layout is applied when you
+    leave the \c subTitle property empty.
+
+    \endlist
+
+    The screenshots below illustrate two-row and one-row SelectionListItem components.
 
     \image symbian/selectionlistitem.png
-    \e {SelectionListItem with the "City" label and the "Helsinki" value}
+    A two-row SelectionListItem component with the "City" label and the "Helsinki" value.
 
     \image symbian/selectionlistitem_onlyvalue.png
-    \e {SelectionListItem with the "Helsinki" value only}
+    A one-row SelectionListItem component with the "Helsinki" value only.
 
     \section1 Integrating SelectionDialog to SelectionListItem
 
@@ -69,10 +76,11 @@
 
     \snippet src/snippets/symbian/snippet-selectionlistitem.qml 0
 
-    The screenshot below illustrates this example.
+    The screenshot below shows the result of the code snippet.
 
     \image symbian/selectiondialog.png
-    \e {\l SelectionDialog integrated to SelectionListItem}
+
+    \l SelectionDialog integrated to SelectionListItem.
 */
 
 /*!
