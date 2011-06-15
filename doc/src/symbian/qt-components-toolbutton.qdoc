@@ -26,92 +26,196 @@
 ****************************************************************************/
 
 /*!
-
     \qmlclass ToolButton
     \ingroup qt-components
     \since 1.0
     \inherits Item
 
-    \brief
-    A button on a toolbar to provide quick access to a function.
+    \brief A button designed to work within a ToolBar to provide quick access
+    to a function.
 
-    See the ToolBar documentation for more information about tool button.
+    ToolButton provides a different style of appearance compared to a normal
+    Button. It is designed to only be used inside a ToolBarLayout. Alternatively it
+    can be used inside a ButtonRow that is itself inside a ToolBarLayout.
+
+    If you require a button inside a ToolBar, it is recommended that you use a
+    ToolButton. If you require a button outside of a ToolBar, it is recommended
+    that you use the normal Button instead.
+
+    \note Button is not guaranteed to display correctly if placed inside a
+    ToolBar, it may be too tall, for example.
+
+    \note The ToolBarLayout will override the height and width of
+    contained ToolButton children. Therefore you should not attempt to define
+    the size or implicit size of a ToolButton.
+
+    For more detailed documentation about how to use the ToolButton in a
+    ToolBar, including example usage, consult the ToolBar documentation.
+
+    \sa ToolBar, ToolBarLayout, ButtonRow, TabButton
 
 */
-/*!
-    \qmlproperty QtObject ToolButton::ExclusiveGroup
 
-    \e Deprecated. Use platformExclusiveGroup instead.
+/*!
+    \qmlproperty bool ToolButton::checkable
+
+    If \c checkable is \c true, the tool button acts like a pushable switch and
+    stays "down" (or checked) if you press and release the button. If you press
+    and release the tool button again, the tool button returns to the "up" (or
+    unchecked) position.
+
+    \sa checked
+*/
+
+/*!
+    \qmlproperty bool ToolButton::checked
+
+    If \c checked is \c false, the button appears as normal or "up". If \c
+    checkable and \c checked are both \c true, and the button is not being
+    pressed, then the button appears "down" or "checked".
+
+    \note if \c checkable is true, the value of \c checked will be updated
+    dynamically as the button is pressed and released.
+
+    \note If the button contains just an icon, and the flat property is \c
+    true, then the checked button will have a distinctive appearance (when not
+    pressed), whilst still appearing to be flat.
+
+    \image symbian/toolbarlayout_toolbutton_icon_checkable.png
+
+    \sa checkable
+
+*/
+
+/*!
+    \qmlproperty bool ToolButton::enabled
+
+    If \c false, the tool button is drawn to indicate it cannot be used. If the
+    user does press the button, no signal is sent, and no feedback is given.
+*/
+
+/*!
+    \qmlproperty bool ToolButton::pressed
+
+    \c true while the user is pressing the tool button; otherwise, \c false.
+
+*/
+
+/*!
+    \qmlproperty url ToolButton::iconSource
+
+    The location or name of the icon to show on the tool button. If this value
+    is empty, no icon will be displayed, and no space will be reserved within
+    the layout for it.
+
+    \note There is a special feature for icons that are designed to be
+    used on the ToolBar. If the iconSource is set to one of the following
+    values, then the icon location in the resources will be automatically used.
+    In fact it works with any theme icon that is prefixed with "toolbar-":
+
+    \image symbian/toolbutton_icons.png
+
+   \omit
+
+   Maintenance note: the source snippet used to generate toolbutton_icons.png
+   is in src/snippets/symbian/snippet-toolbutton-icons.qml
+
+    \endomit
+
+    In general, it is expected that toolbar-back and toolbar-menu would be used
+    for the back button (first position in a ToolBarLayout) and the menu
+    button (last position in a ToolBarLayout). The following example
+    illustrates how to use this feature:
+
+    \snippet src/snippets/symbian/snippet-toolbar-basic.qml toolbar1
+
+    Additional content can be placed between the back button and the menu
+    button. The documentation for ToolBarLayout illustrates many of the
+    possible layout configurations.
+
+    \note You should not use any icon other than "toolbar-back" in the
+    first position at the left hand edge; this is to enforce consistency
+    between different applications.
+
+*/
+
+/*!
+    \qmlproperty string ToolButton::text
+
+    Text to show on the button. If this value is empty, then no text will be
+    displayed, and no space will be reserved in the layout for it.
+
+    If both a text and an icon are specified, it is up to the platform style
+    whether both are shown or one is preferred. Often this means the icon will
+    be shown in preference to the text.
+
+*/
+
+/*!
+    \qmlsignal ToolButton::clicked()
+
+    This signal is emitted when the tool button is pressed and released within
+    a short time.
 
 */
 
 /*!
     \qmlproperty QtObject ToolButton::platformExclusiveGroup
 
-    Symbian:
+    \e {Symbian:}
 
-*/
+    The exclusive group that this tool button belongs to. In an exclusive
+    group, only one of the tool buttons can be selected at a time.
 
-/*!
-    \qmlsignal ToolButton::pressAndHold()
+    In this example, separate ToolButton instances are used to represent each
+    of the media control buttons.
 
-    \e Deprecated. Use platformPressAndHold() instead.
-
+    However, in practice it is recommended to use a ButtonRow in this case, as
+    the segmented appearance would be preferable.
 
 */
 
 /*!
     \qmlsignal ToolButton::platformPressAndHold()
 
-    Symbian:
+    \e {Symbian:}
+
+    This signal is emitted if the button is pressed for a long time.
 
 */
-
-/*!
-    \qmlsignal ToolButton::released()
-
-    \e Deprecated. Use platformReleased() instead.
-
-*/
-
 
 /*!
     \qmlsignal ToolButton::platformReleased()
 
-    Symbian:
+    \e {Symbian:}
 
-*/
-/*!
-    \qmlproperty url ToolButton::checkedIconSource
-
-    Optional. The location of the icon to show on the tool button when the tool
-    button is checked. If you do not specify a special icon for the checked
-    state, the standard styling is applied to the icon specified in iconSource.
-
-    \sa checked
-
-*/
-
-/*!
-    \qmlproperty url ToolButton::pressedIconSource
-
-    Optional. The location of the icon to show on the tool button when the tool
-    button is pressed. If you do not specify a special icon for the pressed
-    state, the standard styling is applied to the icon specified in iconSource.
-
-    \sa pressed
+    This signal is emitted when the button is released.
 
 */
 
 /*!
     \qmlproperty bool ToolButton::flat
 
-    If \c false, a border is drawn for the button. If \c true no border is drawn
-    and the button looks "flat".
+    If \c false, a border is drawn for the button. If \c true no border is
+    drawn and the button looks "flat" when not pressed, and if the button
+    contains just an icon, it has a distinctive highlight border when pressed.
 
-    Generally, if your button is an icon, you will set this to be \c true so
-    your icon merges with the toolbar. If your button contains just text, you
-    will set this to \c true so that your text stands out from the toolbar like
-    a normal button.
+    The value is automatically set to \c true if the contents of the button is
+    just an icon. Otherwise the value is automatically set to \c false. The
+    default appearance of an iconic ToolButton should be flat.
+
+    Generally, if your button is an icon, you should leave this value to be \c
+    true so that your icon merges with the toolbar. Otherwise, If your button
+    contains text, you should leave this value set to \c false so that your
+    text stands out from the toolbar like a normal button.
+
+    \image symbian/toolbarlayout_toolbutton_text_flat.png
+
+    \note If the ToolButton is contained in a ButtonRow, then this value
+    applies to the segmented border appearance also.
+
+    \note If the button has no icon and no text, then the value of flat is
+    ignored, and a border is drawn. Otherwise, the button would seem to be not
+    visible (until pressed).
 
 */

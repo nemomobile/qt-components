@@ -89,10 +89,27 @@
 
     \section1 Defining Toolbar Contents of a Page
 
-    As long as the page stack has been set up with a toolbar instance, you can
-    define the page's toolbar contents by filling the \c tools property. The
-    default value of \c tools is \c null resulting in page's toolbar to be
-    invisible.
+    The default value of \c tools is \c null resulting in the toolbar belonging
+    to the PageStack to be invisible.
+
+    If each Page in your application requires a different ToolBarLayout, then
+    the PageStack can manage the ToolBar on your behalf. All that is required
+    are the following steps:
+
+     \list 1
+
+         \o Set the PageStack::toolBar property of the PageStack to be a
+         ToolBar instance
+
+         \o Set the Page::tools property of each Page to be the appropriate
+         ToolBarLayout instance that corresponds to that Page.
+
+     \endlist
+
+     When the current Page on the top of the PageStack changes, its tools will
+     be set to be the ToolBarLayout contained within the ToolBar
+
+     See the ToolBar documentation for more details and example code.
 
     \section1 Life Cycle Signals of a Page
 

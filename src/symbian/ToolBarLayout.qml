@@ -143,38 +143,6 @@ ImplicitSizeItem {
         }
 
         function layoutChildren() {
-            /*
-
-            Layouting rules for Symbian toolbar
-
-            1. BackButton occupies the leftmost space, separated with a margin in
-            landscape. If there is no backbutton the space is left deliberately
-            blank (unless there is a large button row and no right hand item).
-
-            2. The last icon button occupies rightmost space. If there is no
-            rightmost iconbutton the space can be use for something else (in which
-            case there are special margins).
-
-            3. If the remaining items are text buttons, they are distributed around
-            the center of empty space in the middle of toolbar. In landscape, the
-            size is always the size as if there are two buttons (even if there is
-            only one). In portrait, there is extra spacing on each side, and the
-            single item fills the remaining space.
-
-            4. If the remaining items are iconbuttons the they are distributed
-            evenly along the toolbar area. The spacings must be exactly the same
-            size in pixels as each other, and any rounding errors must be shared
-            between left and right hand margins.
-
-            5. If the remaining item is a ButtonRow with one item, it behaves like
-            a single text button (but in that case of course it would be more
-            efficient for the application to just use a tool button). If it has two
-            texts or two icons, it fills the space as if there is a right hand
-            icon. If it has three or more icons, it fills the available space (with
-            special margins).
-
-            */
-
             var numChildren = children.length
             if (parent == null || root.width == 0 || numChildren == 0)
                 return

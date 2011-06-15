@@ -34,9 +34,187 @@
     \brief
     A ToolBar is a container for providing quick access to commonly used actions.
 
-    The ToolBar contains tools such as ToolItem and ToolButton components. The
-    actions attached to the tools are for the current application page.
+    The ToolBar contains a current ToolBarLayout, which in turn contains tools
+    such as ToolButton components.
+
+    If there is a PageStack whose toolBar property is set to be this ToolBar,
+    then the ToolBarLayout set to be the tools of the current Page will be
+    automatically set as the tools of the ToolBar, using the specified \a
+    transition. This occurs each time the current Page changes.
+
+    \sa ToolBarLayout, PageStack, Page
+
+    \section1 Using the ToolBar
+
+    \section2 Basic Usage
+
+    The easiest way to use a ToolBar is to declare one to be anchored to the
+    bottom of your Window or Page.
+
+    \snippet src/snippets/symbian/snippet-toolbar-basic.qml toolbar1
+
+    Notice that the \a tools are declared as a ToolBarLayout, in this case a
+    simple layout containing two ToolButtons is used.
+
+    \image symbian/toolbarlayout_basic.png
+
+    \section2 Dynamically setting the tools in a ToolBar
+
+    In some cases, the tools required by an application Window will change
+    depending on the application state. It is straightforward to set the
+    current ToolBarLayout instance displayed on a ToolBar such as this example:
+
+    \snippet src/snippets/symbian/snippet-toolbar-settools.qml sharedtoolbar
+
+    In this case, a button is used to set the current tools for sharedToolBar:
+
+    \snippet src/snippets/symbian/snippet-toolbar-settools.qml button5a
+    \snippet src/snippets/symbian/snippet-toolbar-settools.qml button5b
+
+    Here is the corresponding ToolBarLayout declaration:
+
+    \snippet src/snippets/symbian/snippet-toolbar-settools.qml toolbarlayout5a
+    \dots 12
+    \snippet src/snippets/symbian/snippet-toolbar-settools.qml toolbarlayout5b
+
+    However, note that if your application is using a PageStack, then it is not
+    necessary to set the tools directly on the ToolBar in this way, as
+    described in the section on \l { Using a ToolBar with a PageStack }
+
+    \section2 Using a ToolBar with a PageStack
+
+    If your application is using a PageStack to manage a number of Pages, then
+    there is no need to manually set the tools belonging to the ToolBar, as the
+    PageStack provides the functionality.
+
+    Firstly, you only need to declare a single ToolBar which should be anchored
+    at the bottom of the Page:
+
+    \snippet src/snippets/symbian/snippet-toolbar-in-page.qml sharedtoolbar
+
+    Set the \a toolBar property of the PageStack to the ToolBar. Remember to
+    anchor the PageStack to the top of the ToolBar:
+
+    \snippet src/snippets/symbian/snippet-toolbar-in-page.qml pagestack
+
+    Next, set the tools property of each Page as follows:
+
+    \snippet src/snippets/symbian/snippet-toolbar-in-page.qml page1a
+    \dots 8
+    \snippet src/snippets/symbian/snippet-toolbar-in-page.qml page1b
+    \codeline
+    \dots 4
+
+    Finally you would declare a ToolBarLayout corresponding to each page.
+
+    \snippet src/snippets/symbian/snippet-toolbar-in-page.qml toolbarlayout1a
+    \dots 8
+    \snippet src/snippets/symbian/snippet-toolbar-in-page.qml toolbarlayout1b
+    \codeline
+    \dots 4
+
+    When the Page is pushed, \a setTools will be called, so that the
+    ToolBar transitions are applied.
+
+    \snippet src/snippets/symbian/snippet-toolbar-in-page.qml oncompleted
+
+    \note If you want to reuse ToolBarLayout instances between pages, you
+    will need to define each unique ToolBarLayout as a Component, and
+    dynamically create objects as needed. In practice, for a bounded number of
+    pages, it is more maintainable to create one ToolBarLayout corresponding to
+    each Page.
+
+    \section2 Using a ToolBar with a TabGroup
+
+    TabGroup and TabButton can be used to create a multi-section design for
+    your application. However, there may not be sufficient screen space to fit
+    the TabBar at the top of the page, especially if the application is already
+    displaying a ToolBar (for example, if there is a back button and a menu
+    button required).
+
+    Therefore, it can be a tidy solution to put the TabButton instances into
+    the ToolBar itself, using the space that would otherwise have been blank
+    (assuming that no other ToolButtons were needed in the middle of the
+    ToolBarLayout).
+
+    The first step is to define your ToolBar as normal:
+
+    \snippet src/snippets/symbian/snippet-toolbar-with-tabbuttons.qml sharedtoolbar
+
+    Then create the TabGroup as you would normally do for the case of a TabBar,
+    but in this case you will use the ToolBar instead of the TabBar:
+
+    \snippet src/snippets/symbian/snippet-toolbar-with-tabbuttons.qml tabgroupa
+    \snippet src/snippets/symbian/snippet-toolbar-with-tabbuttons.qml tabgroupb
+    \dots 8
+    \snippet src/snippets/symbian/snippet-toolbar-with-tabbuttons.qml tabgroupc
+
+    Within the TabGroup, create the Items corresponding to each tab as normal:
+
+    \snippet src/snippets/symbian/snippet-toolbar-with-tabbuttons.qml tab1a
+    \dots 12
+    \snippet src/snippets/symbian/snippet-toolbar-with-tabbuttons.qml tab1b
+    \codeline
+    \dots 8
+
+    Finally, define your ToolBarLayout, but replace ToolButton instances with
+    TabButton instances.
+
+    \snippet src/snippets/symbian/snippet-toolbar-with-tabbuttons.qml toolbarlayout1
+
+    Remember:
+
+    \list 1
+
+        \o Ensure that you set the \a tab property correctly for each
+        TabButton, as usual.
+
+        \o Ensure that you use a ButtonRow so that the TabButton instances
+        adopt the segmented appearance.
+
+   \endlist
+
+    \image symbian/toolbarlayout_buttonrow_tabbutton.png
+
+    \note See the documentation for ToolBarLayout for examples of how the
+    ButtonRow layout is applied within the ToolBar, and the number of
+    child items that can be supported.
+
+*/
+
+/*!
+    \qmlproperty  Item ToolBar::tools
+
+    The ToolBarLayout that contains the ToolButton components that are
+    contained in the ToolBar.
+*/
+
+/*!
+    \qmlproperty  string ToolBar::transition
+
+    The type of transition to be used for the ToolBar when the page changes on
+    the relevant PageStack. Can be one of the following:
+
+    \list
+
+      \o set - an instantaneous change (default)
+
+      \o push - the toolbar animation follows the page stack push animation
+
+      \o pop - the toolbar animation follows the page stack pop animation
+
+      \o replace - the toolbar animation follows the page stack replace
+      animation
+
+\endlist
 
 */
 
 
+/*!
+    \qmlmethod ToolBar::setTools(tools, transition)
+
+    This sets the \a tools for the ToolBar and the \a transition type that will
+    be used when the page changes on the relevant PageStack.
+
+*/

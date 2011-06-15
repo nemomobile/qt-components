@@ -26,79 +26,262 @@
 ****************************************************************************/
 
 /*!
-
     \qmlclass ToolBarLayout
     \ingroup qt-components
     \since 1.0
     \inherits Item
 
-    \brief ToolBarLayout is a container for items on a toolbar that
+    \brief ToolBarLayout is a container for items on a ToolBar that
     automatically implements an appropriate layout for its children.
+
+    For more detailed documentation about how to use ToolBarLayout inside
+    ToolBar, including different example use cases such as attaching a
+    ToolBarLayout to a Page, consult the ToolBar documentation.
+
+    \sa ToolBar, ButtonRow, ToolButton, TabButton, Page
 
     \section1 Using the ToolBarLayout
 
-    You use a ToolBarLayout when you specify the tools that go into a tool bar. The toolbar layout container lays out the tools appropriately for the platform.
+    You use a ToolBarLayout when you specify the tools that go into a ToolBar.
+    The ToolBarLayout is a container that calculates the child positions based
+    on platform specific rules.
 
-    The code snippet below gives an example of how to use a ToolBarLayout.
+    \section2 Basic Usage
 
-    ### needs to come from a real application
-    \code
-    // Create a tool bar
-    ToolBar {
-        id: bar3
-        anchors.bottom: parent.bottom
-        // Inside a toolbar layout, specify one toolbar tool and the back button
-        tools: ToolBarLayout {
-            backButton: true
-            ToolButton {
-                iconSource: "qrc:tb_plus.png"
-                onClicked: stack.pop()
-            }
-        }
-    }
-    \endcode
+    In this example, there is a simple ToolBarLayout, which must be set to be
+    the tools of a ToolBar (or Page) at some point.
+
+    \snippet src/snippets/symbian/snippet-toolbar-menu.qml toolbarlayout1
+
+    In most cases, the layout should contain a back ToolButton and a menu
+    ToolButton.
+
+    \image symbian/toolbarlayout_basic.png
+
+    \section2 Using a ToolBarLayout with ToolButton
+
+    It's possible to add a number of ToolButton instances that contain icons.
+
+    \snippet src/snippets/symbian/snippet-toolbar-settools.qml toolbarlayout3a
+
+    \image symbian/toolbarlayout_toolbutton_icon.png
+
+    It's also possible to add a number of ToolButton instances that contain text.
+
+    \snippet src/snippets/symbian/snippet-toolbar-in-page.qml toolbarlayout2
+
+    \image symbian/toolbarlayout_toolbutton_text.png
+
+    However, it is recommended that you use either text or icons for all the
+    remaining ToolButton instances, and avoid mixing up the two types (not
+    counting the back button and menu button which should always contain
+    icons).
+
+    \section2 Missing items
+
+    In most cases, it is recommended that the back button and menu button
+    should be shown in the ToolBar. However, in some cases it may be desirable
+    or necessary to hide them. By setting either or both of the buttons to be
+    not visible, they will still reserve space in the layout.
+
+    \snippet src/snippets/symbian/snippet-toolbar-settools.qml toolbarlayout2
+
+    \image symbian/toolbarlayout_toolbutton_icon_missing.png
+
+
+    \section2 Using a ToolBarLayout with ButtonRow
+
+    ToolBarLayout provides some special behavior when a ButtonRow is contained
+    as a child item. The correct combination of child items can be used to
+    achieve good quality layouts that still take advantage of the available
+    screen real estate.
+
+    Consider the following example of a media player application. The media
+    transport controls can be placed inside the ToolBar, but if they are first
+    contained by a ButtonRow, then the behavior provides the appearance of a
+    traditional "Cassette Recorder" controls. Here, the buttons are designed to
+    mechanically move into the pressed state in order to illustrate the current
+    playback state in a tactile way, whilst the segmented appearance is
+    reminiscent of classic hardware design for the keypad arrangement.
+
+    \snippet src/snippets/symbian/snippet-toolbar-settools.qml toolbarlayout3b
+
+    \image symbian/toolbarlayout_toolbutton_buttonrow_icon.png
+
+    Note that in this case the back and menu buttons are present, so that the
+    ButtonRow occupies only the central area.
+
+    However, if either of the first or last icon ToolButton instances are
+    missing, and if the ButtonRow contains a sufficient number of ToolButtons,
+    then the layout will automatically adjust to utilize the optimum amount of
+    screen space.
+
+    \snippet src/snippets/symbian/snippet-toolbar-settools.qml toolbarlayout4a
+
+    \image symbian/toolbarlayout_toolbutton_buttonrow_icon_long.png
+
+    Note also that in this case, the checkedButton belonging to the ButtonRow
+    has been set to the item that should be checked by default. In the case of
+    a media transport, the initial state is "stop" in this implementation.
+
+    \section1 Layout rules for ToolBarLayout
+
+    In the case of a Symbian toolbar, the layout rules are as follows:
+
+    \list 1
+
+        \o All children of the ToolBarLayout are considered part of the layout,
+        but special meaning is given to the first and last children (if they
+        are a ToolButton with an icon). These correspond to the back ToolButton
+        and the menu ToolButton.
+
+        \o If there is an icon ToolButton in the leftmost position, then
+        it must always use the "toolbar-back" icon, so that it is consistent
+        with all other applications. This is referred to as the "back button".
+
+        \o The back button occupies the leftmost space, separated with a margin
+        in landscape. If there is no back button, or if a non-visible button is
+        placed there, the space is left deliberately blank.
+
+        \o The last icon ToolButton occupies the rightmost space. If there is
+        no last icon ToolButton, or if a non-visible button is placed there,
+        the space is left deliberately blank.
+
+        \o If the remaining items are text ToolButton instances, they are
+        distributed around the center of empty space in the middle of toolbar.
+        In landscape, the size is always the size as if there are two buttons
+        (even if there is only one). In portrait, there is extra spacing on
+        each side, and the single item fills the remaining space.
+
+        \o If the remaining items are icon ToolButton instances, they are
+        distributed evenly along the remaining area. The spacings are equal
+        size in pixels, and any rounding is shared between left and right hand
+        margins.
+
+        \o If the remaining item is a ButtonRow with one item, it behaves like
+        a single ToolButton containing text (but in that case it is recommended
+        to just use a tool button). If it has two texts or two icons, it fills
+        the space as if there is a left and right hand icon present. If it has
+        three or more icons, it fills the available remaining space (with
+        special margins) depending on whether the left and right icon
+        ToolButtons are present.
+
+    \endlist
+
+    \section1 Restrictions on ToolBarLayout support for child items
+
+    Child items that are not ButtonRow or ToolButton are not guaranteed to fit.
+    However, if a component happens to fit into the vertical space of the
+    ToolBar (which may be different in landscape orientation), then it is
+    possible to place other components inside the ToolBarLayout. In this case,
+    the implicit size or size of the item will be used to space out the items
+    evenly, but behaviour is not guaranteed.
+
+    Avoid placing too many items in the ToolBar as they may not fit within the
+    portrait screen width. In the case of ToolButtons, the following
+    combinations are supported (although additional items may fit at a
+    particular screen size):
+
+    \table
+
+        \header
+            \o
+            \o {4, 1} Configuration
+
+        \row
+
+            \o Back item present?
+            \o 0
+            \o 0
+            \o 1
+            \o 1
+
+        \row
+
+            \o Menu item present?
+            \o 0
+            \o 1
+            \o 0
+            \o 1
+
+        \header
+            \o
+            \o {4, 1} Number of items supported
+
+        \row
+
+            \o ToolButton > Icon
+            \o 3
+            \o 3
+            \o 3
+            \o 3
+
+        \row
+
+            \o ToolButton > Text
+            \o 2
+            \o 2
+            \o 2
+            \o 2
+
+        \row
+
+            \o ButtonRow > ToolButton > Icon
+            \o 5
+            \o 4
+            \o 4
+            \o 3
+
+        \row
+
+            \o ButtonRow > ToolButton > Text
+            \o 3
+            \o 3
+            \o 3
+            \o 2
+
+    \endtable
+
+    So, for example, in the case of a back button plus a menu button, it is
+    possible to fit 3 ToolButtons containing icons in the remaining space. So
+    the rules are:
+
+    \list
+
+        \o If the back and menu buttons are present or not visible, then the
+        remaining space allows 2 text ToolButton instances, or 3 icon
+        ToolButton instances (whether within a ButtonRow or not).
+
+        \o If the back or menu buttons are missing, and there is a ButtonRow,
+        then the remaining space allows different combinations of items,
+        according to the values described in the table.
+
+    \endlist
+
+    In practice, for a given Screen Device Profile, you may be able to fit
+    additional children. However, it is not guaranteed that they will fit in
+    all supported Screen Device Profiles. It is recommended that you stay
+    within these limits in order to guarantee that the layout will always look
+    correct.
+
 */
 
 
 /*!
      \qmlproperty  bool ToolBarLayout::backButton
 
-     This determines whether or not the first child is a back button. The back
-     button always occupies the leftmost space in layout. If there is no
-     backbutton this space is always empty.
+    \e Deprecated.
 
-*/
+     Do not use this property. If you need to create a ToolBarLayout that does
+     not have a back button at the left hand position, but the first child is also
+     a ToolButton that contains an icon and no text, then the following approach
+     should be used:
 
-/*!
-    \qmlmethod ToolBarLayout::layoutChildren()
+    \snippet src/snippets/symbian/snippet-toolbar-settools.qml toolbarlayout1
 
-    Applies the layout rules to the buttons in the toolbar.
-
-    In the case of a Symbian toolbar, the layout rules are as follows:
-
-    \list 1
-
-        \o The BackButton occupies the leftmost space separate with margin in
-        landscape if there is no backbutton the space is left empty
-
-        \o last icon button occupies rightmost space. If there is no rightmost
-        iconbutton the space can be use for something else
-
-        \o If the remaining items are text buttons, they are distributed around
-        the center of empty space in the middle of toolbar
-
-        \o If the remaining items are iconbuttons the they are distributed
-        evenly along the toolbar area
-
-    \endlist
-
-
-*/
-
-/*!
-    \qmlmethod ToolBarLayout::buttonWidth(child)
-
-    Returns the width of the given \c child button in the toolbar layout.
+    In this example, the ToolButton in the first and last positions are set to be
+    not visible. However, the ToolBarLayout still reserves space for them in
+    the layout.
 
 */
 
