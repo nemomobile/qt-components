@@ -63,7 +63,7 @@
     following imports at the top of your QML document:
 
     \code
-    import com.nokia.symbian 1.0    // Symbian components
+    import com.nokia.symbian 1.1    // Symbian components
     import com.nokia.meego 1.0      // MeeGo components
     \endcode
 

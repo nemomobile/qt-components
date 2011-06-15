@@ -41,7 +41,7 @@
     components to both platforms. Each set has a different \c import statement.
 
     \code
-    import com.nokia.symbian 1.0    // Symbian components
+    import com.nokia.symbian 1.1    // Symbian components
     import com.nokia.meego 1.0      // MeeGo components
     import com.nokia.extras 1.0     // Extras
     \endcode
