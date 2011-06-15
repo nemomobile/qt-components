@@ -109,7 +109,7 @@ FocusScope {
     GridView {
         id: buttons
         anchors {top: parent.top; horizontalCenter: parent.horizontalCenter; margins: platformStyle.paddingSmall }
-        width: parent.width - anchors.margins * 2; height: parent.height * 3 / 6 - anchors.margins * 2
+        width: parent.width - anchors.margins * 2; height: parent.height * 2 / 6 - anchors.margins * 2
         cellWidth: width / 2 - anchors.margins; cellHeight: height / 2 - anchors.margins
         highlight: highlight
         focus: true
@@ -164,5 +164,42 @@ FocusScope {
         model: radioButtonsModel
         delegate: radioButtonsDelegate
         KeyNavigation.up: buttons
+        KeyNavigation.down: checkBoxes
+    }
+
+    ListModel {
+        id: checkBoxesModel
+        ListElement {
+            objectName: "one"
+            title: "one"
+        }
+        ListElement {
+            objectName: "two"
+            title: "two"
+        }
+        ListElement {
+            objectName: "three"
+            title: "three"
+        }
+    }
+
+    Component {
+        id: checkBoxesDelegate
+        CheckBox {
+            objectName: objectName
+            width: checkBoxes.cellWidth; height: checkBoxes.cellHeight
+            text: title
+        }
+    }
+
+    GridView {
+        id: checkBoxes
+        anchors { top: radioButtons.bottom; horizontalCenter: parent.horizontalCenter; margins: platformStyle.paddingSmall; }
+        width: parent.width - anchors.margins * 2; height: parent.height  * 1 / 6 - anchors.margins * 2
+        cellWidth: width / 3 - anchors.margins; cellHeight: height - anchors.margins
+        highlight: highlight
+        model: checkBoxesModel
+        delegate: checkBoxesDelegate
+        KeyNavigation.up: radioButtons
     }
 }

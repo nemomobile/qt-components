@@ -51,6 +51,7 @@ Item {
         CheckBox {
             id: checkBox1
             width: parent.width
+            focus: true
 
             Rectangle {
                 z: -1
