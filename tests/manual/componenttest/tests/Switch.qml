@@ -50,6 +50,7 @@ Column {
         id: switch1
         objectName: "switch1"
         width: parent.width
+        focus: true
 
         Rectangle {
             z: -1

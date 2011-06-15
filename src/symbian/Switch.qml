@@ -46,7 +46,8 @@ ImplicitSizeItem {
 
     // Common Public API
     property bool checked: false
-    property bool pressed: stateGroup.state == "Pressed" || stateGroup.state == "Dragging"
+    property bool pressed: stateGroup.state == "Pressed" || stateGroup.state == "KeyPressed"
+                           || stateGroup.state == "Dragging"
 
     signal clicked
 
@@ -54,21 +55,9 @@ ImplicitSizeItem {
         id: internal
         objectName: "internal"
 
-        property bool canceled
-
-        function press() {
-            internal.canceled = false
-            privateStyle.play(Symbian.BasicItem)
-        }
-
         function toggle() {
             root.checked = !root.checked
             root.clicked()
-            privateStyle.play(Symbian.CheckBox)
-        }
-
-        function cancel() {
-            internal.canceled = true
         }
     }
 
@@ -77,6 +66,8 @@ ImplicitSizeItem {
 
         states: [
             State { name: "Pressed" },
+            State { name: "Released" },
+            State { name: "KeyPressed" },
             State { name: "Dragging" },
             State { name: "Canceled" }
         ]
@@ -84,16 +75,18 @@ ImplicitSizeItem {
         transitions: [
             Transition {
                 to: "Pressed"
-                ScriptAction { script: internal.press() }
+                ScriptAction { script: privateStyle.play(Symbian.BasicItem) }
             },
             Transition {
-                from: "Pressed"
+                from: "Released, Dragging"
                 to: ""
+                ScriptAction { script: privateStyle.play(Symbian.CheckBox) }
                 ScriptAction { script: internal.toggle() }
             },
             Transition {
-                to: "Canceled"
-                ScriptAction { script: internal.cancel() }
+                from: "KeyPressed"
+                to: ""
+                ScriptAction { script: internal.toggle() }
             }
         ]
     }
@@ -195,22 +188,9 @@ ImplicitSizeItem {
 
         anchors.fill: parent
         onPressed: stateGroup.state = "Pressed"
-        onReleased: {
-            if (root.checked == isChecked())
-                stateGroup.state = "Canceled"
-            stateGroup.state = ""
-        }
-        onClicked: {
-            // Only toggle if released didn't
-            if (internal.canceled)
-                internal.toggle()
-        }
-        onCanceled: {
-            // Mark as canceled
-            stateGroup.state = "Canceled"
-            // Reset state. Can't expect a release since mouse was ungrabbed
-            stateGroup.state = ""
-        }
+        onReleased: stateGroup.state = "Released" // releasing doesn't toggle yet, it is intermediate state
+        onClicked: stateGroup.state = ""
+        onCanceled: stateGroup.state = "Canceled"
         onPositionChanged: {
             mouseArea.lastX = mouse.x
             if (mouseArea.drag.active)
@@ -229,10 +209,26 @@ ImplicitSizeItem {
                 if (mouseArea.drag.active) {
                     updateHandlePos()
                     stateGroup.state = "Dragging"
-                } else if (!internal.canceled && root.checked != isChecked()) {
-                    internal.toggle()
+                }
+                else {
+                    stateGroup.state = (root.checked != isChecked()) ? "" : "Canceled"
                 }
             }
+        }
+    }
+
+    Keys.onPressed: {
+        if (event.key == Qt.Key_Select || event.key == Qt.Key_Return || event.key == Qt.Key_Enter) {
+            stateGroup.state = "KeyPressed"
+            event.accepted = true
+        }
+    }
+
+
+    Keys.onReleased: {
+        if (event.key == Qt.Key_Select || event.key == Qt.Key_Return || event.key == Qt.Key_Enter) {
+            stateGroup.state = ""
+            event.accepted = true
         }
     }
 }

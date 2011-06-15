@@ -53,7 +53,7 @@ FocusScope {
     focus: true
 
     property int verticalPadding: Math.max((sectionHeight - itemCellHeight - headingHeight) / 2, 0)
-    property real sectionHeight: height / 3
+    property real sectionHeight: height / 4
     property int itemCellHeight: privateStyle.buttonSize
     property int headingHeight: platformStyle.fontSizeSmall
 
@@ -113,7 +113,7 @@ FocusScope {
         id: checkBoxes
         anchors {
             top: checkBoxesHeading.bottom
-            bottom: radioButtonsHeading.top
+            bottom: switchesHeading.top
             topMargin: root.verticalPadding
             bottomMargin: root.verticalPadding
         }
@@ -123,6 +123,76 @@ FocusScope {
         highlight: highlight
         model: checkBoxesModel
         delegate: checkBoxesDelegate
+        KeyNavigation.down: switches
+    }
+
+    ListModel {
+        id: switchesModel
+        ListElement {
+            objectName: "SW1"
+            title: "Switch1"
+        }
+        ListElement {
+            objectName: "SW2"
+            title: "Switch2"
+        }
+    }
+
+    Component {
+        id: switchesDelegate
+        FocusScope {
+            width: switches.cellWidth; height: switches.cellHeight
+            Row {
+                anchors.fill: parent
+                focus: true
+                Switch {
+                    id: switchItem
+                    objectName: objectName
+                    height: parent.height
+                    focus: true
+                    onClicked: {
+                        var statusText = checked ? "on" : "off"
+                        info.text = title + " turned " + statusText
+                        info.open()
+                    }
+                }
+                Text {
+                    width: parent.width - switchItem.width
+                    height: parent.height
+                    verticalAlignment: Text.AlignVCenter
+                    text: title
+                    color: platformStyle.colorNormalLight
+                    font.pixelSize: platformStyle.fontSizeMedium
+                    font.family: platformStyle.fontFamilyRegular
+                }
+            }
+        }
+    }
+
+    Text {
+        id: switchesHeading
+        y: root.y + root.sectionHeight
+        height: root.headingHeight
+        font.pixelSize: platformStyle.fontSizeSmall
+        font.family: platformStyle.fontFamilyRegular
+        color: platformStyle.colorNormalMid
+        text: "Switches"
+    }
+
+    GridView {
+        id: switches
+        anchors {
+            top: switchesHeading.bottom
+            bottom: radioButtonsHeading.top
+            topMargin: root.verticalPadding
+            bottomMargin: root.verticalPadding
+        }
+        width: root.width
+        cellWidth: width / 2; cellHeight: root.itemCellHeight
+        highlight: highlight
+        model: switchesModel
+        delegate: switchesDelegate
+        KeyNavigation.up: checkBoxes
         KeyNavigation.down: radioButtons
     }
 
@@ -157,7 +227,7 @@ FocusScope {
 
     Text {
         id: radioButtonsHeading
-        y: root.y + root.sectionHeight
+        y: root.y + root.sectionHeight * 2
         height: root.headingHeight
         font.pixelSize: platformStyle.fontSizeSmall
         font.family: platformStyle.fontFamilyRegular
@@ -178,7 +248,7 @@ FocusScope {
         highlight: highlight
         model: radioButtonsModel
         delegate: radioButtonsDelegate
-        KeyNavigation.up: checkBoxes
+        KeyNavigation.up: switches
         KeyNavigation.down: buttons
     }
 
@@ -220,7 +290,7 @@ FocusScope {
 
     Text {
         id: buttonsHeading
-        y: root.y + root.sectionHeight * 2
+        y: root.y + root.sectionHeight * 3
         height: root.headingHeight
         font.pixelSize: platformStyle.fontSizeSmall
         font.family: platformStyle.fontFamilyRegular
