@@ -53,6 +53,9 @@ Item {
     //      replace     follows page stack replace animation
     property string transition: "set"
 
+    // Symbian specific API
+    property bool platformInverted: false
+
     // Sets the tools with a transition.
     function setTools(tools, transition) {
         stateGroup.state = tools ? "" : "Hidden"
@@ -73,7 +76,7 @@ Item {
     BorderImage {
         id: background
         anchors.fill: parent
-        source: privateStyle.imagePath("qtg_fr_toolbar")
+        source: privateStyle.imagePath("qtg_fr_toolbar", root.platformInverted)
         border { left: 20; top: 20; right: 20; bottom: 20 }
     }
 

@@ -47,6 +47,7 @@ Item {
 
     ToolBar {
         id: toolbar
+        objectName: "toolbar"
     }
 
     ToolBarLayout {

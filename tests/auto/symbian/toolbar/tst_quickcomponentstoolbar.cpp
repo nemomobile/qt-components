@@ -53,6 +53,7 @@ class tst_quickcomponentstoolbar : public QObject
 
 private slots:
     void initTestCase();
+    void platformInverted();
     void setToolsA();
     void setToolsB();
     void setToolsToNull();
@@ -69,6 +70,16 @@ void tst_quickcomponentstoolbar::initTestCase()
 
     componentObject = tst_quickcomponentstest::createComponentFromFile("tst_quickcomponentstoolbar.qml", &errors);
     QVERIFY2(componentObject, qPrintable(errors));
+}
+
+void tst_quickcomponentstoolbar::platformInverted()
+{
+    QGraphicsObject* toolBar = componentObject->findChild<QGraphicsObject*>("toolbar");
+    QVERIFY(toolBar);
+    QVERIFY(toolBar->property("platformInverted").isValid());
+    QCOMPARE(toolBar->property("platformInverted").toBool(), false);
+    toolBar->setProperty("platformInverted", QVariant(true));
+    QCOMPARE(toolBar->property("platformInverted").toBool(), true);
 }
 
 void tst_quickcomponentstoolbar::setToolsA()

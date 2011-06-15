@@ -72,7 +72,7 @@ Row {
         else if (buttonType == 0)
             imageName = "qtg_fr_pushbutton_"
         else if (buttonType == 1)
-            imageName = "qtg_fr_toolbutton_"
+            imageName = "qtg_fr_toolbutton_text_"
 
         return imageName
     }

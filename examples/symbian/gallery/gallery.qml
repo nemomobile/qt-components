@@ -92,15 +92,18 @@ Window {
     ToolBar {
         id: toolBar
         anchors.bottom: root.bottom
+        platformInverted: root.childrenInverted
         tools: ToolBarLayout {
             id: toolBarlayout
             ToolButton {
                 flat: true
                 iconSource: "toolbar-back"
+                platformInverted: root.childrenInverted
                 onClicked: Qt.quit()
             }
             ToolButton {
                 iconSource: "toolbar-menu"
+                platformInverted: root.childrenInverted
                 onClicked: {
                     if (!menu)
                         menu = menuComponent.createObject(root)

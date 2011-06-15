@@ -41,6 +41,7 @@
 import QtQuick 1.1
 import com.nokia.symbian 1.1
 import Qt.labs.components 1.1
+import "../TestUtils.js" as Utils
 
 Item {
     id: root
@@ -49,6 +50,7 @@ Item {
     property bool flat: false
     property bool showBackButton: true
     property Item testToolBarLayout : null
+    property bool platformInverted: false
 
     visible: true
     Component.onCompleted: {
@@ -68,6 +70,8 @@ Item {
             if (root.testToolBarLayout)
                 root.testToolBarLayout.destroy()
             root.testToolBarLayout = layoutComponent.createObject(root, {})
+            // manually set inversion mode for dynamically created item tree
+            Utils.setItemTreeInversion(root.testToolBarLayout, root.platformInverted)
             bar1.setTools(root.testToolBarLayout, root.replaceMode)
         }
     }
@@ -465,6 +469,8 @@ Item {
             }
             onLoaded: {
                 allToolBarLayoutsPageBusy.running = false
+                // manually set inversion mode for dynamically loaded item tree
+                Utils.setItemTreeInversion(allToolBarLayoutsPageLoader, root.platformInverted)
             }
         }
     }

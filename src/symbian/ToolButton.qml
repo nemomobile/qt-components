@@ -56,6 +56,7 @@ Item {
 
     // Platform API
     property alias platformExclusiveGroup: checkableItem.exclusiveGroup
+    property bool platformInverted: false
 
     // Common API
     signal clicked
@@ -88,7 +89,7 @@ Item {
     BorderImage {
         id: background
 
-        source: privateStyle.imagePath(internal.imageName() + internal.modeName())
+        source: privateStyle.imagePath(internal.imageName() + internal.modeName(), root.platformInverted)
         border {
             left: internal.isFrameGraphic ? platformStyle.borderSizeMedium : 0;
             top: internal.isFrameGraphic ? platformStyle.borderSizeMedium : 0;
@@ -115,7 +116,7 @@ Item {
 
     Image {
         id: contentIcon
-        source: privateStyle.toolBarIconPath(iconSource)
+        source: privateStyle.toolBarIconPath(iconSource, root.platformInverted)
         visible: iconSource != ""
         sourceSize.width: platformStyle.graphicSizeSmall
         sourceSize.height: platformStyle.graphicSizeSmall
@@ -137,11 +138,14 @@ Item {
         font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
         color: {
             if (!root.enabled)
-                return platformStyle.colorDisabledLight
+                return root.platformInverted ? platformStyle.colorDisabledLightInverted
+                                             : platformStyle.colorDisabledLight
             else if (stateGroup.state == "Pressed" || stateGroup.state == "PressAndHold")
-                return platformStyle.colorPressed
+                return root.platformInverted ? platformStyle.colorPressedInverted
+                                             : platformStyle.colorPressed
             else
-                return platformStyle.colorNormalLight
+                return root.platformInverted ? platformStyle.colorNormalLightInverted
+                                             : platformStyle.colorNormalLight
         }
         visible: text
         anchors {
@@ -214,7 +218,7 @@ Item {
 
             if (flat)
                 background.visible = true
-            highlight.source = privateStyle.imagePath(internal.imageName() + "pressed")
+            highlight.source = privateStyle.imagePath(internal.imageName() + "pressed", root.platformInverted)
             label.scale = 0.95
             contentIcon.scale = 0.95
             highlight.opacity = 1
@@ -262,7 +266,7 @@ Item {
             if (isButtonRow(parent))
                 return parent.privateGraphicsName(root, 1)
             else
-                return (!flat || text || iconSource == "") ? "qtg_fr_toolbutton_" : "qtg_graf_toolbutton_"
+                return (!flat || text || iconSource == "") ? "qtg_fr_toolbutton_text_" : "qtg_graf_toolbutton_"
         }
     }
 

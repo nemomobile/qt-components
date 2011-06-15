@@ -213,6 +213,7 @@ Column {
                 id: buttons
                 width: parent.width
                 height: privateStyle.toolBarHeightLandscape + 2 * platformStyle.paddingSmall
+                platformInverted: column.childrenInverted
 
                 tools: Row {
                     anchors.centerIn: parent
@@ -221,12 +222,14 @@ Column {
                     ToolButton {
                         text: "Ok"
                         width: (buttons.width - 3 * platformStyle.paddingMedium) / 2
+                        platformInverted: column.childrenInverted
                         onClicked: dialog.accept()
                     }
 
                     ToolButton {
                         text: "Cancel"
                         width: (buttons.width - 3 * platformStyle.paddingMedium) / 2
+                        platformInverted: column.childrenInverted
                         onClicked: dialog.reject()
                     }
                 }
@@ -478,18 +481,21 @@ Column {
     ToolButton {
         id: toolButton
         text: "ToolButton"
+        platformInverted: column.childrenInverted
     }
 
     ToolButton {
         id: toolButton2
         flat: true
         iconSource: "qrc:ok.svg"
+        platformInverted: column.childrenInverted
     }
 
     ToolButton {
         id: toolButton3
         text: "ToolButton"
         iconSource: "qrc:close_stop.svg"
+        platformInverted: column.childrenInverted
     }
 
     Row {
@@ -553,6 +559,7 @@ Column {
                 ToolButton {
                     text: "Close"
                     height: platformStyle.graphicSizeMedium
+                    platformInverted: column.childrenInverted
                     onClicked: sectionScroll.close()
                 }
             content:
@@ -645,8 +652,8 @@ Column {
        width: parent.width - parent.spacing
        exclusive: true
 
-       ToolButton { text: "tb1" }
-       ToolButton { text: "tb2" }
+       ToolButton { text: "tb1"; platformInverted: column.childrenInverted }
+       ToolButton { text: "tb2"; platformInverted: column.childrenInverted }
    }
 
    ButtonColumn {

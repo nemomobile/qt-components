@@ -79,6 +79,7 @@ void tst_toolbutton::existingProperties()
     QVERIFY(toolButton->property("iconSource").isValid());
     QVERIFY(toolButton->property("flat").isValid());
     QVERIFY(toolButton->property("pressed").isValid());
+    QVERIFY(toolButton->property("platformInverted").isValid());
 }
 
 void tst_toolbutton::initialProperties()
@@ -93,6 +94,7 @@ void tst_toolbutton::initialProperties()
     QVERIFY(toolButton->property("iconSource").toString().isNull());
     QCOMPARE(toolButton->property("flat").toBool(), false);
     QCOMPARE(toolButton->property("pressed").toBool(), false);
+    QCOMPARE(toolButton->property("platformInverted").toBool(), false);
 }
 
 void tst_toolbutton::propertiesFunctionality()
@@ -147,9 +149,15 @@ void tst_toolbutton::propertiesFunctionality()
             propertyCount++;
             // read-only
         }
+
+        if (property.name() == QString("platformInverted")) {
+            propertyCount++;
+            property.write(toolButton,true);
+            QCOMPARE(property.read(toolButton).toBool(), true);
+        }
     }
 
-    QCOMPARE(propertyCount, 8);
+    QCOMPARE(propertyCount, 9);
 }
 
 void tst_toolbutton::implicitSize()
