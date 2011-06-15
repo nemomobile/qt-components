@@ -63,8 +63,8 @@
     following imports at the top of your QML document:
 
     \code
-    import com.nokia.symbian    // Symbian components
-    import com.nokia.meego      // MeeGo components
+    import com.nokia.symbian 1.0    // Symbian components
+    import com.nokia.meego 1.0      // MeeGo components
     \endcode
 
     In addition, there are components that are \e extras. They supplement the
@@ -73,7 +73,7 @@
     however, are imported as a different component set.
 
     \code
-    import com.nokia.extras
+    import com.nokia.extras 1.0
     \endcode
 
     \section1 Interface Designs
