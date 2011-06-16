@@ -29,14 +29,569 @@
     \qmlclass TextField
     \ingroup qt-components
     \since 1.0
-    \inherits Item
+    \inherits FocusScopeItem
     \brief
-    A TextField accepts key inputs.
+    Provides a one-line text editor.
 
-    A TextField is resized to fit all input characters or can be fitted onto a
-    fixed size. The line edit can also mask the input characters as when the
-    user enters their password.
+    The TextField component displays a single line of editable plain text. Input
+    constraints can be placed on a TextField component (for example, through a
+    \l validator or \l inputMask), and setting \l echoMode to an appropriate
+    value makes the TextField suitable as password input field. If the \l text
+    content is longer than TextField view port, the field can be scrolled
+    horizontally. TextField is a superset of \l TextInput and implements the
+    Symbian style look-and-feel. Clipboard support is provided by the \l cut(),
+    \l copy(), and \l paste() functions.
 
-    \section1 Using a TextField
+    \note Copy-Paste between qt-components application and native Symbian
+    application doesn't work. See \l
+    {http://bugreports.qt.nokia.com/browse/QTBUG-5701}{QTBUG-5701}
+    \section1 TextField Basic Examples
+
+    \table
+    \header
+        \o Code
+        \o Appearance
+    \row
+        \o \snippet src/snippets/symbian/snippet-textfield.qml 0
+        \o \image symbian/textfield_empty.png
+    \row
+        \o \snippet src/snippets/symbian/snippet-textfield.qml 1
+        \o \image symbian/textfield_placeholdertext.png
+    \row
+        \o \snippet src/snippets/symbian/snippet-textfield.qml 2
+        \o \image symbian/textfield_text.png
+    \row
+        \o \snippet src/snippets/symbian/snippet-textfield.qml 3
+        \o \image symbian/textfield_text_focus.png
+    \row
+        \o \snippet src/snippets/symbian/snippet-textfield.qml 4
+        \o \image symbian/textfield_flick.png
+           \caption Appearance while draging. See the \l {Touch Interaction} section.
+    \row
+        \o \snippet src/snippets/symbian/snippet-textfield.qml 5
+        \o \image symbian/textfield_readonly_disabled.png
+    \row
+        \o \snippet src/snippets/symbian/snippet-textfield.qml 6
+        \o \image symbian/textfield_readonly_disabled.png
+    \row
+        \o \snippet src/snippets/symbian/snippet-textfield.qml 7
+        \o \image symbian/textfield_error.png
+    \row
+        \o \snippet src/snippets/symbian/snippet-textfield.qml 8
+        \o \image symbian/textfield_error.png
+    \row
+        \o \snippet src/snippets/symbian/snippet-textfield.qml 9
+        \o \image symbian/textfield_password.png
+    \endtable
+
+    \section1 TextField Selection in Symbian
+    Different options become available when a selecting a piece of text.
+    \table
+    \row
+        \table
+            \header
+            \o Selected Text
+            \o Adjust Selection
+            \row
+                \o \image symbian/textfield_selected_text.png
+                \o \image symbian/textfield_adjust_selection.png
+        \endtable
+    \row
+        \table
+            \header
+            \o Place Cursor
+            \o Paste Menu
+            \row
+                \o \image symbian/textfield_place_cursor.png
+                \o \image symbian/textfield_paste.png
+        \endtable
+    \endtable
+
+
+    \section1 TextField Behaviors
+    Different user actions trigger different TextField responses during certain
+    scenarios. As well, touch actions trigger different responses than keyboard
+    actions. Further, responses depend on whether the TextField is marked as \l
+    readOnly.
+
+    \section2 Touch Interaction
+    This table summarizes the Symbian TextField behaviors for editable text for
+    touch interaction.
+    \table
+    \header
+        \o Action
+        \o On Text
+        \o On the Cursor / Cursor Handle
+        \o On Selected Text
+        \o On Selection Handle
+    \row
+        \o Tap
+        \o Places the cursor and opens virtual keyboard.
+        \o Opens virtual keyboard.
+        \o Deselects the current selection, places the cursor, and opens virtual
+        keyboard.
+        \o Deselects the current selection, places the cursor at the touched
+        position, and opens virtual keyboard.
+    \row
+        \o Double-tap
+        \o Selects the word, displays the selection handles on both sides, and
+        shows the context menu (Copy / Cut / Paste).
+        \o Selects the word, displays the selection handles on both sides, and
+        shows the context menu (Copy / Cut / Paste).
+        \o Selects the word, displays the selection handles on both sides, and
+        shows the context menu (Copy / Cut / Paste).
+        \o Selects the word, displays the selection handles on both sides, and
+        shows the context menu (Copy / Cut / Paste).
+    \row
+        \o Triple-tap
+        \o Selects all and shows the context menu (Copy / Cut / Paste).
+        \o Selects all and shows the context menu (Copy / Cut / Paste).
+        \o Selects all and shows the context menu (Copy / Cut / Paste).
+        \o Selects all and shows the context menu (Copy / Cut / Paste).
+    \row
+        \o Tap and Hold
+        \o Places the cursor and displays the magnifier.
+        \o Displays the magnifier.
+        \o Deselects the current selection, dismisses the context menu, places
+        the cursor to the touched point, and displays the magnifier.
+        \o Dismisses the context menu and displays the magnifier.
+    \row
+        \o Release After Tap and Hold
+        \o Shows the context menu (Paste).
+        \o Dismisses the magnifier and shows the context menu (Paste).
+        \o Shows the context menu (Paste).
+        \o Dismisses the magnifier and shows the context menu (Copy / Cut / Paste).
+    \row
+        \o Drag
+        \o Pans the text.
+        \o Moves the cursor, with the magnifier displayed above.
+        \o Pans the text.
+        \o Dismisses the context menu and changes the selection
+        character-by-character, with the magnifier displayed above.
+
+    \row
+        \o Release After Drag
+        \o -
+        \o Dismisses the magnifier and shows the context menu (Paste).
+        \o -
+        \o Dismisses the magnifier and shows the context menu (Copy / Cut /
+        Paste).
+
+    \endtable
+
+    \section2 Read-Only Touch Interaction
+    This table summarizes the Symbian TextField behaviors for non-editable text
+    for touch interaction.
+    \table
+    \header
+        \o Action
+        \o On Text
+        \o On Selected Text
+        \o On Selection Handle
+    \row
+        \o Tap
+        \o -
+        \o Deselects the current selection.
+        \o Deselects the current selection.
+    \row
+        \o Double-tap
+        \o Selects the word, displays the selection handles on both sides and
+        shows the context menu (Copy).
+        \o Selects the word, displays the selection handles on both sides and
+        shows the context menu (Copy).
+        \o Selects the word, displays the selection handles on both sides and
+        shows the context menu (Copy).
+    \row
+        \o Triple-tap
+        \o Selects all and shows the context menu (Copy).
+        \o Selects all and shows the context menu (Copy).
+        \o Selects all and shows the context menu (Copy).
+    \row
+        \o Tap and Hold
+        \o -
+        \o Deselects the current selection.
+        \o Dismisses the context menu and displays the magnifier.
+    \row
+        \o Release After Tap and Hold
+        \o -
+        \o -
+        \o Dismisses the magnifier and shows the context menu (Copy).
+    \row
+        \o Drag
+        \o Pans the text.
+        \o Pans the text and hides the context menu.
+        \o Dismisses the context menu and changes the selection character
+        -by-character, with the magnifier displayed above.
+    \row
+        \o Release After Drag
+        \o -
+        \o Shows the context menu (Copy).
+        \o Dismisses the magnifier and shows the context menu (Copy).
+    \endtable
+
+    \section2 Keyboard Interaction
+    This table summarizes the Symbian TextField behaviors for editable text for
+    keyboard interaction.
+    \table
+    \header
+        \o Keypresses
+        \o Action
+    \row
+        \o Backspace
+        \o Deletes the character to the left of the cursor.
+    \row
+        \o Left
+        \o Moves the cursor one character to the left.
+    \row
+        \o Right
+        \o Moves the cursor one character to the right.
+    \row
+        \o Up
+        \o Moves the cursor one line up.
+    \row
+        \o Down
+        \o Moves the cursor one line down.
+    \row
+        \o Shift+Left
+        \o Select the character to the left.
+    \row
+        \o Shift+Right
+        \o Select the character to the right.
+    \row
+        \o Shift+Ctrl+Left
+        \o Select the word to the left.
+    \row
+        \o Shift+Ctrl+Right
+        \o Select the word to the right.
+    \row
+        \o Shift+Up
+        \o Select the characters to the one line up.
+    \row
+        \o Shift+Down
+        \o Select the characters to the one line down.
+    \endtable
+
+    Currently copy-paste-cut shortcuts don't work on Symbian see \l
+    {http://bugreports.qt.nokia.com/browse/QTBUG-5730}{QTBUG-5730}
+
+    \section2 Read-Only Keyboard Interaction
+    This table summarizes the Symbian TextField behaviors for editable text for
+    keyboard interaction.
+    \table
+    \header
+        \o Keypresses
+        \o Action
+    \row
+        \o Left
+        \o Moves the cursor one character to the left.
+    \row
+        \o Right
+        \o Moves the cursor one character to the right.
+    \row
+        \o Up
+        \o Moves the cursor one line up.
+    \row
+        \o Down
+        \o Moves the cursor one line down.
+    \row
+        \o Shift+Left
+        \o Select the character to the left.
+    \row
+        \o Shift+Right
+        \o Select the character to the right.
+    \row
+        \o Shift+Ctrl+Left
+        \o Select the word to the left.
+    \row
+        \o Shift+Ctrl+Right
+        \o Select the word to the right.
+    \row
+        \o Shift+Up
+        \o Select the characters to the one line up.
+    \row
+        \o Shift+Down
+        \o Select the characters to the one line down.
+    \endtable
+
+    \section1 Custom buttons to TextField
+    The following section shows exmaples how to add custom button/operations
+    over TextField component using platformLeftMargin / platformRightMargin.
+
+    \section2 TextField with Clear Button
+    \image symbian/textfield_clear.png
+    \snippet src/snippets/symbian/snippet-textfield-custom.qml 0
+
+    \section2 TextField with Custom Operation
+    \image symbian/textfield_custom.png
+    \snippet src/snippets/symbian/snippet-textfield-custom.qml 1
+
+    \section2 TextField with Search
+    \image symbian/textfield_search.png
+    \snippet src/snippets/symbian/snippet-textfield-custom.qml 2
+*/
+
+/*!
+    \qmlproperty real TextField::platformLeftMargin
+
+    Used to set the position of TextField left marigin.
+    By setting the margin user can adjust space between
+    TextFields left side and text content start position.
+    \image symbian/textfield_leftmargin.png
+*/
+
+/*!
+    \qmlproperty real TextField::platformRightMargin
+
+    Used to set the position of TextField right marigin.
+    By setting the margin user can adjust space between
+    TextFields right side and text content end position.
+    \image symbian/textfield_rightmargin.png
+*/
+
+/*!
+    \qmlproperty bool TextField::enabled
+
+    Setting to \c false will prevent user interaction with the TextField.
+    The default value is \true.
+
+*/
+
+/*!
+    \qmlproperty bool TextField::errorHighlight
+
+    Set's TextField graphics to show that it contains invalid input.
+    By default, this property responds to a validator.
+
+    See the \l {TextField Basic Examples} section for an example.
+
+*/
+
+/*!
+    \qmlproperty string TextField::placeholderText
+
+    The text that is shown in the text field as long as it has not the focus
+    if the value of the text property is an empty string. The placeholder text is
+    shown as greyed-out. When the field gets the focus, the placeholder
+    text disappears. The default value of placeholderText is an empty string.
+
+      See the \l {TextField Basic Examples} section for an example.
+
+*/
+
+/*!
+    \qmlproperty int TextField::inputMethodHints
+
+    Settings that indicate what kind of input the text field accepts. The
+    possible values are the same as those defined for \l Qt::InputMethodHints.
+
+    \sa TextInput::inputMethodHints
+
+*/
+
+/*!
+    \qmlproperty int TextField::maximumLength
+
+   The maximum permitted length of the text in the TextField. If the text is too
+   long, it is truncated at the limit. By default, this property contains a
+   value of \c 32767. Shares the same values as those defined for \c
+   {TextInput::maximumLength}.
+
+    \sa TextInput::font
+
+*/
+
+/*!
+    \qmlproperty font TextField::font
+
+    Font information for the text in the text field. The possible values are the
+    same as those defined for \c {TextInput::font}.
+
+    \sa TextInput::font
+
+*/
+
+/*!
+    \qmlproperty int TextField::cursorPosition
+
+    The position of the cursor in the TextField.
+
+    \sa TextInput::cursorPosition
+
+*/
+
+/*!
+    \qmlproperty bool TextField::readOnly
+
+    If \c readOnly is \c true, the user can see the text in the text field but
+    cannot edit it. If \c false, the user can also edit the text in the text
+    field.
+
+      See the \l {TextField Basic Examples} section for an example.
+    \sa TextInput::readOnly
+*/
+
+/*!
+    \qmlproperty int TextField::echoMode
+
+    Specifies how the text is displayed when the user enters text into
+    the text field.  For example, you can set the echo mode to \c Password so
+    that the entered text is shown as asterisks. The possible values are the
+    same as those defined for \c {TextInput::echoMode}.
+
+    \sa TextInput::echoMode
+
+*/
+
+/*!
+    \qmlproperty bool TextField::acceptableInput
+
+    Indicates whether or not the current text the user enters is acceptable as
+    a final string. The value is \c true in the following cases:
+
+    \list
+    \o The validator or input mask is not set.
+    \o The text is acceptable to the set validator or input mask.
+    \endlist
+
+    Otherwise the value is \c false.
+
+    \sa inputMask, validator, TextInput::acceptableInput
+
+*/
+
+/*!
+    \qmlproperty string TextField::inputMask
+
+    Allows you to restrict what the user can enter into the text field.
+    TextField, TextInput, and QLineEdit use the same input mask. See
+    \l{QLineEdit::inputMask} for details how to define the input mask.
+
+    \sa acceptableInput, validator, TextInput::inputMask
+*/
+
+/*!
+    \qmlproperty validator TextField::validator
+
+    Allows you to set a validator (\l IntValidator, \l DoubleValidator or
+    RegExpValidator) for the text field. See \l TextInput::validator for
+    details.
+
+    \sa acceptableInput, inputMask,
+*/
+
+/*!
+    \qmlproperty string TextField::selectedText
+
+    This read-only property provides the text that is currently selected in the
+    text field.
+
+    \sa TextInput::selectedText
+*/
+
+/*!
+    \qmlproperty int TextField::selectionEnd
+
+    The cursor position after the last character in the current selection.
+
+    \sa selectionstart, selectedText, cursorPosition, TextInput::selectionEnd
+
+*/
+
+/*!
+    \qmlproperty int TextField::selectionStart
+
+    The cursor position before the first character in the current selection.
+
+    \sa selectionEnd, selectedText, cursorPosition, TextInput::selectionStart
+
+*/
+
+/*!
+    \qmlproperty string TextField::text
+
+    The string content of the text field. The default value is an
+    empty string.
+
+    \sa placeholderText
+
+*/
+
+/*!
+    \qmlmethod TextField::copy()
+
+    Copies the currently selected text to the system clipboard.
+
+    \sa paste, cut, TextInput::copy()
+
+*/
+
+/*!
+    \qmlmethod TextField::paste()
+
+    Replaces the currently selected text by the contents of the system
+    clipboard.
+
+    \sa copy, cut, TextInput::paste()
+*/
+
+/*!
+    \qmlmethod TextField::cut()
+
+    Moves the currently selected text to the system clipboard.
+
+    \sa copy, paste, TextInput::cut()
+*/
+
+/*!
+    \qmlmethod TextField::select(start, end)
+
+    Selects the text from the position \a start to \a end. The \c start or \c
+    end must be within the size of the \c text. Further \c start can be greater
+    than or lesser than \c end. \l selectionStart will be set to the lesser of
+    either \c start or \c end and similarly, \l selectionEnd will be set to the
+    greater of either values.
+
+    \sa selectionStart, selectionEnd, TextInput::select()
+*/
+
+/*!
+    \qmlmethod TextField::selectAll()
+
+    Selects all text in the text field.
+
+    \sa TextInput::selectAll()
+
+*/
+
+/*!
+    \qmlmethod TextField::selectWord()
+
+    Selects the word closest to the current cursor position.
+
+    \sa TextInput::selectWord()
+
+*/
+
+/*!
+    \qmlmethod TextField::positionAt(x)
+
+    Returns the character position at \c x pixels from the left edge of the text
+    field.
+
+    \sa TextInput::positionAt()
+
+*/
+
+
+/*!
+    \qmlmethod TextField::positionToRectangle(pos)
+
+    Returns the rectangle that the cursor would occupy if it were placed at \a
+    pos character position.
+
+    This is similar to setting the \c cursorPosition, and then querying the
+    cursor rectangle, but the \c cursorPosition will not change.
+
+    \sa cursorPosition, TextInput::positionToRectangle()
 
 */
