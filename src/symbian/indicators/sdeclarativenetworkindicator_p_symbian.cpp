@@ -244,6 +244,20 @@ QPixmap SDeclarativeNetworkIndicatorPrivate::pixmap()
                     maskId = EMbmAvkonQgn_indi_signal_uma_multipdp_mask;
                     break;
 
+                // WLAN indicators
+                case EAknSignalWlanIndicatorActiveLow:
+                    bitmapId = EMbmAvkonQgn_stat_wlan_active_low;
+                    maskId = EMbmAvkonQgn_stat_wlan_active_low_mask;
+                    break;
+                case EAknSignalWlanIndicatorActiveMedium:
+                    bitmapId = EMbmAvkonQgn_stat_wlan_active_medium;
+                    maskId = EMbmAvkonQgn_stat_wlan_active_medium_mask;
+                    break;
+                case EAknSignalWlanIndicatorActiveHigh:
+                    bitmapId = EMbmAvkonQgn_stat_wlan_active_high;
+                    maskId = EMbmAvkonQgn_stat_wlan_active_high_mask;
+                    break;
+
                 // Default indicator
                 case EAknSignalGprsIndicatorOff:
                 case EAknSignalCommonPacketDataIndicatorOff: // fallthrough
@@ -251,6 +265,7 @@ QPixmap SDeclarativeNetworkIndicatorPrivate::pixmap()
                 case EAknSignalWcdmaIndicatorOff: // fallthrough
                 case EAknSignalHsdpaIndicatorOff: // fallthrough
                 case EAknSignalUmaIndicatorOff: // fallthrough
+                case EAknSignalWlanIndicatorOff: // fallthrough
                 case EAknSignalGprsIndicatorAvailable: // fallthrough
                 case EAknSignalCommonPacketDataIndicatorAvailable: // fallthrough
                 default:
