@@ -29,39 +29,549 @@
     \qmlclass TextArea
     \ingroup qt-components
     \since 1.0
-    \inherits Item
+    \inherits FocusScopeItem
     \brief
-    TextArea is a multiline editor that resizes vertically to fit all input characters.
+    Provides a component for editing and displaying both plain and rich text.
 
+    The TextArea component displays a block of editable and formatted text. It
+    can display both plain and rich text. TextArea implements horizontal and
+    vertical scrolling. Scroll bars appear when the content is flicked or on
+    focus gain if the content does not fit to view port. TextArea is a superset
+    of \l TextEdit to implement the Symbian style look-and-feel. Clipboard
+    support is provided by the \l cut(), \l copy(), and \l paste() functions.
+
+    \note Copy and paste functionality between a Qt Quick Components application
+    and native Symbian application doesn't work. See \l
+    {http://bugreports.qt.nokia.com/browse/QTBUG-5701}{QTBUG-5701}.
+
+    \section1 TextArea Basic Examples
+
+    \table
+    \header
+        \o Code
+        \o Appearance
+    \row
+        \o \snippet src/snippets/symbian/snippet-textarea.qml 0
+        \o \image symbian/textarea_empty.png
+    \row
+        \o \snippet src/snippets/symbian/snippet-textarea.qml 1
+        \o \image symbian/textarea_placeholdertext.png
+    \row
+        \o \snippet src/snippets/symbian/snippet-textarea.qml 2
+        \o \image symbian/textarea_text.png
+    \row
+        \o \snippet src/snippets/symbian/snippet-textarea.qml 3
+        \o \image symbian/textarea_text_focus.png
+    \row
+        \o \snippet src/snippets/symbian/snippet-textarea.qml 4
+        \o \image symbian/textarea_flick.png
+           \caption Appearance while draging. See the \l {Touch Interaction} section.
+    \row
+        \o \snippet src/snippets/symbian/snippet-textarea.qml 5
+        \o \image symbian/textarea_readonly_disabled.png
+    \row
+        \o \snippet src/snippets/symbian/snippet-textarea.qml 6
+        \o \image symbian/textarea_readonly_disabled.png
+    \row
+        \o \snippet src/snippets/symbian/snippet-textarea.qml 7
+        \o \image symbian/textarea_error.png
+    \endtable
+
+    \section1 TextArea Selection in Symbian
+    \table
+    \header
+        \o Selected Text
+        \o Adjust Selection
+    \row
+        \o \image symbian/textarea_selected_text.png
+        \o \image symbian/textarea_adjust_selection.png
+    \endtable
+    \table
+    \header
+        \o Place Cursor
+        \o Paste Menu
+    \row
+        \o \image symbian/textarea_place_cursor.png
+        \o \image symbian/textarea_paste.png
+    \endtable
+
+    \section1 TextArea Behaviors
+    Different actions trigger different responses during certain conditions.
+    Touch actions trigger different responses than keyboard actions. Further,
+    responses depend on whether the TextArea is marked as \l readOnly.
+
+    \section2 Touch Interaction
+    This table summarizes the Symbian TextArea behaviors for editable text for
+    touch interaction.
+    \table
+    \header
+        \o Action
+        \o On Text
+        \o On the Cursor / Cursor Handle
+        \o On Selected Text
+        \o On Selection Handle
+    \row
+        \o Tap
+        \o Places the cursor, and opens virtual keyboard.
+        \o Opens virtual keyboard.
+        \o Deselects the current selection, places the cursor, and opens virtual
+        keyboard.
+        \o Deselects the current selection, places the cursor at the touched
+        position, and opens virtual keyboard.
+    \row
+        \o Double-tap
+        \o Selects the word, displays the selection handles on both sides, and
+        shows the context menu (Copy / Cut / Paste).
+        \o Selects the word, displays the selection handles on both sides, and
+        shows the context menu (Copy / Cut / Paste).
+        \o Selects the word, displays the selection handles on both sides, and
+        shows the context menu (Copy / Cut / Paste).
+        \o Selects the word, displays the selection handles on both sides, and
+        shows the context menu (Copy / Cut / Paste).
+    \row
+        \o Triple-tap
+        \o Selects all and shows the context menu (Copy / Cut / Paste).
+        \o Selects all and shows the context menu (Copy / Cut / Paste).
+        \o Selects all and shows the context menu (Copy / Cut / Paste).
+        \o Selects all and shows the context menu (Copy / Cut / Paste).
+    \row
+        \o Tap and Hold
+        \o Places the cursor and displays the magnifier.
+        \o Displays the magnifier.
+        \o Deselects the current selection, dismisses the context menu, places
+        the cursor to the touched point, and displays the magnifier.
+        \o Dismisses the context menu and displays the magnifier
+    \row
+        \o Release After Tap and Hold
+        \o Shows the context menu (Paste).
+        \o Dismisses the magnifier and shows the context menu (Paste).
+        \o Shows the context menu (Paste).
+        \o Dismisses the magnifier and shows the context menu (Copy / Cut /
+        Paste).
+    \row
+        \o Drag
+        \o Pans the text.
+        \o Moves the cursor, with the magnifier displayed above.
+        \o Pans the text.
+        \o Dismisses the context menu and changes the selection
+        character-by-character, with the magnifier displayed above.
+
+    \row
+        \o Release After Drag
+        \o -
+        \o Dismisses the magnifier and shows the context menu (Paste).
+        \o -
+        \o Dismisses the magnifier and shows the context menu (Copy / Cut /
+        Paste).
+
+    \endtable
+
+    \section2 Read-Only Touch Interaction
+    This table summarizes the Symbian TextArea behaviors for non-editable text
+    for touch interaction.
+
+    \table
+    \header
+        \o Action
+        \o On Text
+        \o On Selected Text
+        \o On Selection Handle
+    \row
+        \o Tap
+        \o -
+        \o Deselects the current selection.
+        \o Deselects the current selection.
+    \row
+        \o Double-tap
+        \o Selects the word, displays the selection handles on both sides and
+        shows the context menu (Copy).
+        \o Selects the word, displays the selection handles on both sides and
+        shows the context menu (Copy).
+        \o Selects the word, displays the selection handles on both sides and
+        shows the context menu (Copy).
+    \row
+        \o Triple-tap
+        \o Selects all and shows the context menu (Copy).
+        \o Selects all and shows the context menu (Copy).
+        \o Selects all and shows the context menu (Copy).
+    \row
+        \o Tap and Hold
+        \o -
+        \o Deselects the current selection.
+        \o Dismisses the context menu and displays the magnifier.
+    \row
+        \o Release After Tap and Hold
+        \o -
+        \o -
+        \o Dismisses the magnifier and shows the context menu (Copy).
+    \row
+        \o Drag
+        \o Pans the text.
+        \o Pans the text and hides the context menu.
+        \o Dismisses the context menu and changes the selection character
+        -by-character, with the magnifier displayed above.
+    \row
+        \o Release After Drag
+        \o -
+        \o Shows the context menu (Copy).
+        \o Dismisses the magnifier and shows the context menu (Copy).
+    \endtable
+
+    \section2 Keyboard Interaction
+    This table summarizes the Symbian TextArea behaviors for editable text for
+    keyboard interaction.
+
+    \table
+    \header
+        \o Keypresses
+        \o Action
+    \row
+        \o Backspace
+        \o Deletes the character to the left of the cursor.
+    \row
+        \o Left
+        \o Moves the cursor one character to the left.
+    \row
+        \o Right
+        \o Moves the cursor one character to the right.
+    \row
+        \o Up
+        \o Moves the cursor one line up.
+    \row
+        \o Down
+        \o Moves the cursor one line down.
+    \row
+        \o Shift+Left
+        \o Select the character to the left.
+    \row
+        \o Shift+Right
+        \o Select the character to the right.
+    \row
+        \o Shift+Ctrl+Left
+        \o Select the word to the left.
+    \row
+        \o Shift+Ctrl+Right
+        \o Select the word to the right.
+    \row
+        \o Shift+Up
+        \o Select the characters to the one line up.
+    \row
+        \o Shift+Down
+        \o Select the characters to the one line down.
+    \endtable
+
+    \note Currently, copy-paste-cut shortcuts don't work on Symbian see \l
+    {http://bugreports.qt.nokia.com/browse/QTBUG-5730}{QTBUG-5730}
+
+    \section2 Read-Only Keyboard Interaction
+    This table summarizes the Symbian TextArea behaviors for editable text for
+    keyboard interaction.
+    \table
+    \header
+        \o Keypresses
+        \o Action
+    \row
+        \o Left
+        \o Moves the cursor one character to the left.
+    \row
+        \o Right
+        \o Moves the cursor one character to the right.
+    \row
+        \o Up
+        \o Moves the cursor one line up.
+    \row
+        \o Down
+        \o Moves the cursor one line down.
+    \row
+        \o Shift+Left
+        \o Select the character to the left.
+    \row
+        \o Shift+Right
+        \o Select the character to the right.
+    \row
+        \o Shift+Ctrl+Left
+        \o Select the word to the left.
+    \row
+        \o Shift+Ctrl+Right
+        \o Select the word to the right.
+    \row
+        \o Shift+Up
+        \o Select the characters to the one line up.
+    \row
+        \o Shift+Down
+        \o Select the characters to the one line down.
+    \endtable
+
+    \section2 Implicit Size Behaviour
+    The text area resizes implicitly to accommodate more text. The maximum sizes
+    are set with the \l platformMaxImplicitHeight and \l
+    platformMaxImplicitWidth properties.
+    \table
+    \header
+        \o Description
+        \o Minimum Size
+    \row
+        \o Minimum implicit size for TextArea is \c{20 * " "} on current font.
+        \o \image symbian/textarea_min_imp_size.png
+    \row
+        \o If there is placeholderText defined it's length is the text's minimum
+        implicit size.
+        \o \image symbian/textarea_min_imp_size_placeholdertext.png
+    \endtable
+
+
+    \table
+    \header
+        \o Description
+        \o Growth pattern
+    \row
+        \o With default values TextArea
+           grows indefinitely to right.
+           \snippet src/snippets/symbian/snippet-textarea-implicit-size.qml 2
+        \o \image symbian/textarea_min_imp_size.png
+           \image symbian/textarea_imp_size_default.png
+    \row
+        \o Setting platformMaxImplicitWidth
+           defines a wrapping point. When that
+           width is reached TextArea grows
+           indefinitely to bottom.
+           \snippet src/snippets/symbian/snippet-textarea-implicit-size.qml 3
+        \o \image symbian/textarea_min_imp_size.png
+           \image symbian/textarea_imp_size_platformmaximplicitwidth.png
+    \row
+        \o Setting platformMaxImplicitHeight and platformMaxImplicitWidth
+           restricts TextArea to grow only to those values.
+           \snippet src/snippets/symbian/snippet-textarea-implicit-size.qml 4
+        \o \image symbian/textarea_min_imp_size.png
+           \image symbian/textarea_imp_size_platformmaximplicit.png
+    \endtable
+*/
+
+
+/*!
+    \qmlproperty font TextArea::font
+
+    Font information for the text in the text field.
+
+    \sa TextEdit::font
+
+*/
+
+/*!
+    \qmlproperty int TextArea::cursorPosition
+
+    The position of the cursor in the TextArea.
+
+    \sa TextEdit::cursorPosition
+
+*/
+
+/*!
+    \qmlproperty bool TextArea::errorHighlight
+
+    Set's TextArea graphics to show that it contains invalid input.
+
+*/
+
+/*!
+    \qmlproperty bool TextArea::enabled
+
+    Prevent's user interaction from TextArea.
+
+*/
+
+/*!
+    \qmlproperty int TextArea::horizontalAlignment
+    \qmlproperty int TextArea::verticalAlignment
+
+    Sets the horizontal and vertical alignment of the text within the TextArea
+    item's width and height. By default, the text is top-left aligned.
+
+    For details of the options, see: TextEdit::horizontalAlignment
+
+*/
+
+/*!
+    \qmlproperty int TextArea::inputMethodHints
+
+    Settings that indicate what kind of input can be accepted by the textarea.
+    The value is from Qt::InputMethodHints.
+
+    \sa TextEdit::inputMethodHints
+
+*/
+
+/*!
+    \qmlproperty bool TextArea::readOnly
+
+    If \c true, the text field can only be viewed and cannot be edited.
+
+    If this is \c false, the text field can be edited.
+
+    \sa TextEdit::readOnly
+*/
+
+
+
+/*!
+    \qmlproperty string TextArea::selectedText
+
+    This read-only property provides the text that is currently selected in the
+    text field.
+
+    \sa TextEdit::selectedText
+*/
+
+/*!
+    \qmlproperty int TextArea::selectionEnd
+
+    The cursor position after the last character in the current selection.
+
+    \sa selectionstart, selectedText, cursorPosition, TextEdit::selectionEnd
+
+*/
+
+/*!
+    \qmlproperty int TextArea::selectionStart
+
+    The cursor position before the first character in the current selection.
+
+    \sa selectionEnd, selectedText, cursorPosition, TextEdit::selectionStart
+
+*/
+
+/*!
+    \qmlproperty string TextArea::text
+
+    The text that has been entered into the text field.
+
+*/
+
+/*!
+    \qmlproperty int TextArea::textFormat
+
+    This determines if the text is displayed as rich text or plain text. By
+    default it will and determine if the text is rich text or plain text and
+    display it appropriately.
+
+    See TextEdit::textFormat for the enumeration details.
+
+*/
+
+/*!
+    \qmlproperty int TextArea::wrapMode
+
+    This determines if text in the TextArea is wrapped or not.
+
+    See TextEdit::wrapMode for details of the different modes.
+
+*/
+
+/*!
+    \qmlmethod TextArea::copy()
+
+    Copies the currently selected text to the system clipboard.
+
+    \sa paste, cut, TextEdit::copy()
+
+*/
+
+/*!
+    \qmlmethod TextArea::paste()
+
+    Replaces the currently selected text by the contents of the system
+    clipboard.
+
+    \sa copy, cut, TextEdit::paste()
+*/
+
+/*!
+    \qmlmethod TextArea::cut()
+
+    Moves the currently selected text to the system clipboard.
+
+    \sa TextEdit::cut()
+*/
+
+/*!
+    \qmlmethod TextArea::select(start, end)
+
+    Causes the text from \a start to \a end to be selected.
+
+    \sa selectionStart, selectionEnd, TextEdit::select()
+*/
+
+/*!
+    \qmlmethod TextArea::selectAll()
+
+    Causes all text in the text field to be selected.
+
+    \sa TextEdit::selectAll()
+
+*/
+
+/*!
+    \qmlmethod TextArea::selectWord()
+
+    Causes the word closest to the current cursor position to be selected.
+
+    \sa TextEdit::selectWord()
+
+*/
+
+/*!
+    \qmlmethod TextArea::positionAt(x, y)
+
+    Returns the character position at \c x pixels from the left edge of the text
+    field and \c y pixels from the top edge of the text field.
+
+    \sa TextEdit::positionAt()
+
+*/
+
+
+/*!
+    \qmlmethod TextArea::positionToRectangle(pos)
+
+    Returns the rectangle that the cursor would occupy if it was placed at \a
+    pos character position.
+
+    This is similar to setting the cursorPosition and then querying the cursor
+    rectangle, but the cursorPosition is not changed.
+
+    \sa cursorPosition, TextEdit::positionToRectangle()
+
+*/
+
+/*!
+    \qmlproperty string TextArea::placeholderText
+
+    The text that is shown in the text area before the user enters any text.
+    When the user starts entering text, the placeholder text is hidden.
 */
 
 /*!
     \qmlproperty double TextArea::platformMaxImplicitWidth
 
-    \e {Symbian:}
+    Defines the maximum width that the TextArea can grow.
 
-    By setting this property the maximum width that the TextArea will implicitly
-    grow to can be defined.
-
-    The default value for this property is -1 and the width is allowed to grow
+    The default value for this property is \c -1, which allows the widthto grow
     infinitely.
 
     If a width is explicitly set then this property has no effect.
 
+    \sa platformMaxImplicitHeight
 */
 
 /*!
     \qmlproperty double TextArea::platformMaxImplicitHeight
 
-    \e {Symbian:}
+    Defines the maximum height that the TextArea can grow.
 
-    By setting this property the maximum height that the TextArea will implicitly
-    grow to can be defined.
-
-    The default value for this property is -1 and the height is allowed to grow
-    infinitely.
+    The default value for this property is \c -1 and the height is allowed to
+    grow infinitely.
 
     If a height is explicitly set then this property has no effect.
 
+    \sa platformMaxImplicitWidth
 */
-
