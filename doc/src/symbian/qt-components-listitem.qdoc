@@ -55,17 +55,17 @@
     A ListItem can have one of the four internal states:
 
     \list
-      \o \bold "" The default state of a ListItem.
+      \o \c "" The default state of a ListItem.
       \image symbian/listitem_default.png
-      \o \bold "Pressed" The ListItem enters this state when the user presses
+      \o \c "Pressed" The ListItem enters this state when the user presses
       the ListItem.
       \image symbian/listitem_pressed.png
-      \o \bold "Focused" This state indicates that the item has focus but is not
+      \o \c "Focused" This state indicates that the list item has focus but is not
       yet selected. This is only available on devices that have hardware
       selection keys that allow a user to navigate a list without touching the
       screen.
       \image symbian/listitem_highlight.png
-      \o \bold "Disabled" In this state, the ListItem does not handle any touch
+      \o \c "Disabled" In this state, the ListItem does not handle any touch
       or hardware inputs and the ListItem does not emit signals.
       \image symbian/listitem_disabled.png
     \endlist
@@ -93,7 +93,7 @@
 /*!
     \qmlproperty string ListItem::mode read-only
 
-    The Mode of the ListItem
+    The Mode of the ListItem.
 
     This property can be used to create an association between ListItem and
     ListItemText. This way ListItemText is aware of the internal state
@@ -106,7 +106,7 @@
 /*!
     \qmlproperty Item ListItem::paddingItem read-only
 
-    The invisible padding rectangle for the ListItem that items can be anchored to.
+    The invisible padding rectangle for the ListItem that objects can be anchored to.
 */
 
 /*!

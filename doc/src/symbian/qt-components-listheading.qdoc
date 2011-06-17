@@ -34,14 +34,16 @@
 
     \brief Symbian: Provides a heading for a list or a section in a list.
 
-    ListHeading can be used as the header at the top of a list or as a header for
-    sections within a list. ListHeading only draws a background, so typically
-    ListItemText is used in conjunction. ListItemText displays text in a font suitable for
-    use with ListHeading.
+    ListHeading can be used as the header at the top of a list or as a
+    header for sections within a list. ListHeading only draws a
+    background, so \l ListItemText is typically used to display text on
+    top of ListHeading. \l ListItemText provides styled fonts for the
+    ListItem and ListHeading components.
 
-    The area to which \l{Item}s can be added within ListHeading is defined by the
-    \l{ListHeading::}{paddingItem} property. ListItemText can be anchorored to the
-    \l{ListHeader::}{paddingItem}s anchor lines.
+    The area to which \l{Item}s can be added within ListHeading is
+    defined by the \l{ListHeading::}{paddingItem} property.
+    ListItemText can be anchored to the
+    \l{ListHeading::}{paddingItem}s anchor lines.
 
     The following two examples illustrate how to use ListHeading with ListItemText.
 
@@ -119,5 +121,5 @@
 /*!
     \qmlproperty Item ListHeading::paddingItem read-only
 
-    The invisible padding rectangle for the ListHeading that items can be anchored to.
+    The invisible padding rectangle for the ListHeading that objects can be anchored to.
 */
