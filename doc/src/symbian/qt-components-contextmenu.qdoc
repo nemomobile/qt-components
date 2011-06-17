@@ -36,7 +36,7 @@
     Provides a component with list of options that the user can choose from.
 
     There are two typical use cases for the ContextMenu component. You can use
-    it as a context sensitive menu that opens, for example, on an item's long
+    it as a context sensitive menu that opens, for example, on an object's long
     press signal, or you can use it to show a submenu.
 
     The following code snippet shows how to create a ContextMenu.
@@ -45,7 +45,7 @@
     \dots 12
     \snippet src/snippets/symbian/snippet-menu.qml 3b
 
-    See the \l Menu documentation for an example how to use a ContextMenu
+    See the \l Menu documentation for an example on how to use a ContextMenu
     as a submenu.
 
     \image symbian/contextmenu.png
@@ -55,9 +55,9 @@
     \qmlproperty list<Item> ContextMenu::content
     \default
 
-    Provides access to the items in the context menu. It is recommended to
-    use a single \l MenuLayout item as the context menu content. Usage of
-    other elements may result in unexpected behaviour.
+    Provides access to the menu items in the context menu. It is recommended to
+    use a single \l MenuLayout instance as the context menu content. Usage of
+    other objects may result in unexpected behaviour.
 
 */
 

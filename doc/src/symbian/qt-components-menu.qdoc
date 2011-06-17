@@ -58,13 +58,13 @@
     \section1 Using Submenus
 
     A Menu can contain submenus that are normally implemented
-    with \l ContextMenu items. The code snippet below show how to define a ContextMenu.
+    with \l ContextMenu objects. The code snippet below shows how to define a ContextMenu.
 
     \snippet src/snippets/symbian/snippet-menu.qml 3a
     \dots 12
     \snippet src/snippets/symbian/snippet-menu.qml 3b
 
-    You can integrate a submenu to a menu item by setting its
+    You can integrate a submenu to a menu by setting its
     \c MenuItem.platformSubItemIndicator property to \c true. The following code snippet
     shows how a submenu is integrated to the menu item.
 
@@ -76,9 +76,9 @@
     \qmlproperty list<Item> Menu::content
     \default
 
-    Provides access to the items in the menu. It is recommended to
-    use a single \l MenuLayout item as the menu content. Usage of
-    other elements may result in unexpected behaviour.
+    Provides access to the menu items in the menu. It is recommended to
+    use a single \l MenuLayout object as the menu content. Usage of
+    other objects may result in unexpected behaviour.
 
 */
 
