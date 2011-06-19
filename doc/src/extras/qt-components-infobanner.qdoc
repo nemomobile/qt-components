@@ -30,10 +30,17 @@
     \ingroup qt-components-extras
     \since 1.0
 
+    \brief Shows the info banner.
+
     The InfoBanner component is used to display information to the user. The
-    number of lines of text is limited to 3.
+    number of lines of text is limited to three. The screenshot below shows an
+    example of info banner.
 
     \image extras/infobanner.png
+
+    \section1 Creating an InfoBanner
+
+    The code snippet below illustrates how to create an InfoBanner.
 
     \qml
         // Create an info banner with no icon
@@ -75,48 +82,48 @@
 /*!
     \qmlproperty url InfoBanner::iconSource
 
-    Property default is \c ""
+    The path of the icon image. The default value is \c "".
 
-    The path to the icon image
 */
 
 /*!
     \qmlproperty string InfoBanner::text
 
-    Text to be displayed in Info Banner
+    Text to be displayed in the InfoBanner.
 */
 
 /*!
     \qmlmethod InfoBanner::open()
 
-    Displays the InfoBanner component
+    Displays the InfoBanner component.
 */
 
 /*!
     \qmlmethod InfoBanner::close()
 
-    Hides the InfoBanner component
+    Hides the InfoBanner component.
 */
 
 /*!
     \qmlproperty int InfoBanner::timeout
 
-    Property default is \c 3000
+    Enables or disables timer that dismisses the InfoBanner. The InfoBanner stays
+    open if the \c timeout value is \c 0. The default value is \c 3000.
 
-    Enables or disables timer that dismisses Info Banner. InfoBanner stays
-    open if \c timeout value is \c 0.
 */
 
 /*!
     \qmlproperty bool InfoBanner::interactive
 
-    Property default is \c false
+    The InfoBanner is interactive if the value is \c true; otherwise the
+    InfoBanner is informative. The default value is \c false.
 
-    true: the banner is interactive; false: informative banner
 */
 
 /*!
     \qmlsignal InfoBanner::clicked()
 
-    This signal is emitted when the interactive info banner is pressed and then released.
+    This signal is emitted when the interactive InfoBanner is pressed and then
+    released.
+
 */

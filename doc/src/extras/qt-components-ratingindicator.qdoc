@@ -30,17 +30,22 @@
     \ingroup qt-components-extras
     \since 1.0
 
-    Component to indicate user specified ratings.
+    \brief Indicates users' rating value.
 
-    A rating indicator is a component that shows the rating value within the
-    maximum allowed range according to the user's specification. Optionally,
-    the user can also specify a count value that will be displayed next to
-    the images.
+    A RatingIndicator is a component that shows the user's rating value within
+    the maximum allowed range that you have specified. Optionally, you can also
+    specify the count value that will be displayed next to the images. The
+    screenshot below shows an example of a RatingIndicator.
 
     \image extras/ratings.png
-    Note: When \c count is used, the height of the entire indicator is different
-    than when it is not used. This is due to the font size being larger than the
-    image size.
+
+    \note When \c count is used, the height of the RatingIndicator is different
+    than when the \c count is not used. This is due to the font size being
+    larger than the image size.
+
+    \section1 Showing a RatingIndicator
+
+    The code snippet below illustrates how to create a RatingIndicator.
 
     \qml
         // Rating indicator with vote count
@@ -61,26 +66,24 @@
 /*!
     \qmlproperty int RatingIndicator::count
 
-    Property default is \c -1
+    A number shown next to rating images. It is normally used for indicating the
+    number of votes cast. It is displayed only if the number is greater or equal
+    to \c 0. The default value is \c -1.
 
-    A number to be displayed next to the rating images. It is usually used to
-    count the number of votes cast. It is only displayed if a number larger or
-    equal to \c 0 is specified.
 */
 
 /*!
     \qmlproperty double RatingIndicator::maximumValue
 
-    Property default is \c 0
+    The maximum rating.  The number should be greater or equal to \c 0. The
+    default value is \c 0.
 
-    The maximum rating.  The number should be larger or equal to \c 0.
 */
 
 /*!
     \qmlproperty double RatingIndicator::ratingValue
 
-    Property default is \c 0
-
-    The rating value.  The number should be larger or equal to \c 0.
+    The rating value.  The number should be greater or equal to \c 0. The
+    default value is \c 0.
 */
 

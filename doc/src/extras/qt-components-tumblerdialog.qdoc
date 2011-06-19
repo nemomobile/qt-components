@@ -29,8 +29,15 @@
     \inherits CommonDialog
     \ingroup qt-components-extras
     \since 1.0
+    \brief
+    Provides a dialog for showing a Tumbler.
 
     A tumbler dialog is a dialog that shows a tumbler.
+
+
+    \section1 Creating a TumblerDialog
+
+    The code snippet below illustrates how to create a TumblerDialog.
 
     \qml
         TumblerColumn {
@@ -90,7 +97,7 @@
 /*!
     \qmlproperty ListModel TumblerDialog::columns
 
-    Array of \l{TumblerColumn}s for each column of the dialog.
+    Array of \l{TumblerColumn}s for each column of the \l TumblerDialog.
 */
 
 /*!

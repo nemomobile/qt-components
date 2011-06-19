@@ -30,7 +30,11 @@
     \ingroup qt-components-extras
     \since 1.0
 
-    Dialog that shows a time picker.
+    \brief Shows the time picker dialog.
+
+    \section1 Showing a Time Picker Dialog
+
+    The code snippet below illustrates how to create a TimePickerDialog.
 
     \sa Dialog
 
@@ -61,62 +65,63 @@
 /*!
     \qmlproperty enum TimePickerDialog::acceptButtonText
 
-    Optional, the button text for the accept button.
+    The button text for the accept button. The value is optional.
+
 */
 
 /*!
     \qmlproperty enum TimePickerDialog::fields
 
-    Property default is \c DateTime.Hours | DateTime.Minutes
+    Binary flag for setting the time picker to show hours, minutes, and/or
+    seconds. The valid values are \c DateTime.Hours, \c DateTime.Minutes, \c
+    DateTime.Seconds, and \c DateTime.All. You can combine the values with
+    binary operator |, for example \c DateTime.Minutes | \c DateTime.Seconds.
 
-    Binary flag to set if the time picker should show hours, minutes, and/or seconds.
-    Valid values are DateTime.Hours, DateTime.Minutes, DateTime.Seconds, DateTime.All.
-    Can be combined with binary operator |, e.g. DateTime.Minutes | DateTime.Seconds
+    The default value is \c DateTime.Hours | \c DateTime.Minutes.
+
  */
 
 /*!
     \qmlproperty int TimePickerDialog::hour
 
-    Property default is \c 0
+    The displayed hour. The default value is \c 0.
 
-    The displayed hour.
 */
 
 /*!
     \qmlproperty int TimePickerDialog::minute
 
-    Property default is \c 0
-
-    The displayed minute.
+    The displayed minute. The default value is \c 0.
 */
 
 /*!
     \qmlproperty string TimePickerDialog::rejectButtonText
 
-    Optional, the button text for the reject button.
+    The button text for the reject button. The value is optional.
+
 */
 
 /*!
     \qmlproperty int TimePickerDialog::second
 
-    Property default is \c 0
+    The displayed second. The default value is \c 0.
 
-    The displayed second.
 */
 
 /*!
     \qmlproperty enum TimePickerDialog::hourMode
 
-    Property default is the system time mode
+    Sets the TimePicker to show time in either 24-hour or 12-hour clock
+    format. The valid values are \c DateTime.TwentyFourHours and \c
+    DateTime.TwelveHours. The default value is the system time format.
 
-    Sets if the time picker should show time in 24-hour clock or 12-hour clock format.
-    Valid values are DateTime.TwentyFourHours, DateTime.TwelveHours
- */
+*/
 
 /*!
     \qmlproperty string TimePickerDialog::titleText
 
-    If not null, it will be used as the title text for the dialog.
-    If further customization is needed, use property title instead.
+    The title text for the dialog if the value is not \c null. If further
+    customization is needed, use the \c title property instead.
+
 */
 

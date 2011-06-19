@@ -30,10 +30,18 @@
     \ingroup qt-components-extras
     \since 1.0
 
-    A tumbler is a component composed by one or more column.
-    In each column one of the value can be selected by sliding the finger.
+    \brief Shows the tumbler.
+
+    A tumbler component is composed of one or more columns. In each column the
+    user can select the value by sliding the finger. The screenshot below shows
+    an example of a tumbler.
 
     \image extras/tumbler.png
+
+    \section1 Creating a Tumbler
+
+    The code snippet below illustrates how to create a Tumbler.
+
     \qml
         TumblerColumn {
             id: dayColumn
@@ -87,13 +95,12 @@
 /*!
     \qmlsignal Tumbler::changed(int index)
 
-    Is emitted when the value of the tumbler changes.
+    This signal is emitted when the tumbler's value changes.
 */
 
 /*!
     \qmlproperty array Tumbler::columns
 
-    Property default is \c []
+    Array of \l TumblerColumn elments of the Tumbler. The default value is \c [].
 
-    Array of TumblerColumns for the tumbler.
 */

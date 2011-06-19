@@ -29,8 +29,12 @@
     \inherits Item
     \ingroup qt-components-extras
     \since 1.0
+    \brief Represents a column in a Tumbler.
 
-    TumblerColumn represents a column in a \l{Tumbler}.
+    \section1 Creating a TumblerColumn
+
+    The code snippet below illustrates how to create a \l Tumbler using
+    TumblerColumn.
 
     \qml
         TumblerColumn {
@@ -84,26 +88,24 @@
 /*!
     \qmlproperty bool TumblerColumn::enabled
 
-    Property default is \c true
+    The TumblerColumn is enabled if the value is \c true; otherwise it is
+    disabled. The default value is \c true.
 
-    The enabled state of the column.
 */
 
 /*!
     \qmlproperty string TumblerColumn::label
 
-    Property default is \c ""
+    The label of the TumblerColumn. The default value is \c "".
 
-    The label of the column.
-    TODO: Do not use label as it will be deprecated.
+    \note This property is deprecated and should not be used.
+
 */
 
 /*!
     \qmlproperty int TumblerColumn::selectedIndex
 
-    Property default is \c 0
-
-    The selected index of the column.
+    The selected index of the TumblerColumn. The default value is \c 0.
 */
 
 /*!

@@ -30,7 +30,11 @@
     \ingroup qt-components-extras
     \since 1.0
 
-    Dialog that shows a date picker.
+    \brief Shows the date picker dialog.
+
+    \section1 Showing a Date Picker Dialog
+
+    The code snippet below illustrates how to create a DatePickerDialog.
 
     \sa Dialog
 
@@ -62,65 +66,62 @@
 /*!
     \qmlproperty string DatePickerDialog::acceptButtonText
 
-    Optional, the button text for the accept button.
+    The button text for the accept button. The value is optional.
 */
 
 /*!
     \qmlproperty int DatePickerDialog::day
 
-    Property default is \c 1
+    The displayed day. The default value is \c 1.
 
-    The displayed day.
 */
 
 /*!
     \qmlproperty int DatePickerDialog::maximumYear
 
-    Property default is \c{current year + 20}
+    The maximum year shown on the tumbler. You should set this property only
+    once during the construction. If you modify it afterwards everything is
+    uninitialized. The default value is \c {current year + 20}. The value is
+    optional.
 
-    Optional; the maximum year shown on the tumbler. This property should
-    only be set once during construction.  Modifying it afterwards will
-    uninitialize everything. If the value is not specified, it is default
-    to \c{current year + 20}.
 */
 
 /*!
     \qmlproperty int DatePickerDialog::minimumYear
 
-    Property default is \c{current year}
+    The minimum year shown on the tumbler. You should set this property only
+    once during the construction. If you modify it afterwards everything is
+    uninitialized. The default value is \c {current year}. The value is
+    optional.
 
-    Optional, the minimum year shown on the tumbler. This property should
-    only be set once during construction.  Modifying it afterwards will
-    uninitialize everything. If the value is not specified, it is default
-    to \c{current year}.
 */
 
 /*!
     \qmlproperty int DatePickerDialog::month
 
-    Property default is \c 1
+    The displayed month. The default value is \c 1.
 
-    The displayed month.
 */
 
 /*!
     \qmlproperty string DatePickerDialog::rejectButtonText
 
-    Optional; the button text for the reject button.
+    The button text for the reject button. The value is optional.
+
 */
 
 /*!
     \qmlproperty string DatePickerDialog::titleText
 
-    If not null, it will be used as the title text for the dialog.
-    If further customization is needed, use property title instead
+    The title text for the dialog if the value is not \c null. If further
+    customization is needed, use the \c title property instead.
+
 */
 
 /*!
     \qmlproperty int DatePickerDialog::year
 
-    Property default is \c 0
+    The displayed year.     The default value is \c 0.
 
-    The displayed year.
 */
 
