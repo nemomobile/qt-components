@@ -228,7 +228,7 @@ echo Q_COMPONENTS_BUILD_TREE = %BUILD_TREE:\=/% >> %QMAKE_CACHE%
 
 echo.
 echo Running qmake...
-call %QMAKE% %QMAKE_DEBUG% -r \""CONFIG+=%QMAKE_CONFIG%"\" %SOURCE_TREE%\qt-components.pro
+call %QMAKE% %QMAKE_DEBUG% -r "CONFIG+=%QMAKE_CONFIG%" %SOURCE_TREE%\qt-components.pro
 if errorlevel 1 echo ERROR: qmake run failed.
 
 echo.
