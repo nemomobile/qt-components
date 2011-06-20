@@ -193,25 +193,26 @@ Item {
                 font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
                 anchors { fill: parent; margins: platformStyle.paddingLarge }
 
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        if (template.view.interactive) {
-                            tumblerColumn.selectedIndex = index;  // got index from delegate
-                            root.changed(template.index);
-                        }
-                    }
-                    onPressed: privateStyle.play(Symbian.BasicItem)
-                    onReleased: {
-                        if (template.view.currentIndex == index)
-                            privateStyle.play(Symbian.BasicItem);
-                    }
-                }
-
                 Component.onCompleted: {
                     if (tumblerColumn.privateResizeToFit && paintedWidth > templateInternal.columnFitWidth)
                         templateInternal.columnFitWidth = paintedWidth;
                     templateInternal.delegatesCount++;
+                }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+
+                onClicked: {
+                    if (template.view.interactive) {
+                        tumblerColumn.selectedIndex = index;  // got index from delegate
+                        root.changed(template.index);
+                    }
+                }
+                onPressed: privateStyle.play(Symbian.BasicItem)
+                onReleased: {
+                    if (template.view.currentIndex == index)
+                        privateStyle.play(Symbian.BasicItem);
                 }
             }
         }
