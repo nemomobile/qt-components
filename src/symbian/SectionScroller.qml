@@ -65,7 +65,10 @@ ImplicitSizeItem {
         parent: listView
         flickableItem: listView
         privateSectionScroller: true
-        anchors { top: parent.top; right: parent.right }
+        anchors {
+            top: parent ? parent.top : undefined
+            right: parent ? parent.right : undefined
+        }
     }
 
     QtObject {
