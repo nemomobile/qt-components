@@ -122,13 +122,15 @@ Item {
 
         // Sets the page status.
         function setPageStatus(page, status) {
-            if (page.status !== undefined) {
-                if (status == PageStatus.Active && page.status == PageStatus.Inactive)
-                    page.status = PageStatus.Activating;
-                else if (status == PageStatus.Inactive && page.status == PageStatus.Active)
-                    page.status = PageStatus.Deactivating;
+            if (page != null) {
+                if (page.status !== undefined) {
+                    if (status == PageStatus.Active && page.status == PageStatus.Inactive)
+                        page.status = PageStatus.Activating;
+                    else if (status == PageStatus.Inactive && page.status == PageStatus.Active)
+                        page.status = PageStatus.Deactivating;
 
-                page.status = status;
+                    page.status = status;
+                }
             }
         }
     }
@@ -409,12 +411,14 @@ Item {
 
             // Cleans up the container and then destroys it.
             function cleanup() {
-                if (page.status == PageStatus.Active)
-                    internal.setPageStatus(page, PageStatus.Inactive);
-                if (owner != container) {
-                    // container is not the owner of the page - re-parent back to original owner
-                    page.visible = false;
-                    page.parent = owner;
+                if (page != null) {
+                    if (page.status == PageStatus.Active)
+                        internal.setPageStatus(page, PageStatus.Inactive);
+                    if (owner != container) {
+                        // container is not the owner of the page - re-parent back to original owner
+                        page.visible = false;
+                        page.parent = owner;
+                    }
                 }
                 container.destroy();
             }
