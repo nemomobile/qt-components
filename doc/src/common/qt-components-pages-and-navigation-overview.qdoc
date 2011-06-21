@@ -29,50 +29,33 @@
     \page qt-components-pages-and-navigation-overview.html
     \target pagenavigation
     \ingroup qt-components-pattern
-    \title Page Stack Based Navigation
+    \title Page Based Application Navigation
     \brief An application has multiple pages of content and the user needs to
     get from one page to next.
 
-    The Qt Quick components provide two pre-defined ways for navigating around
-    your application. The \l PageStack system provides a way of navigating a
-    hierarchy of pages. It is a stack that you can push pages of content onto
-    and pop pages off. The page at the top of the stack is what the user sees.
-    The other system is the \l Tab component and its related components. With
-    this system the user sees a tab for all the pages that are available and can
-    select
+    Qt Quick Components provides two methods for application navigation. The \l
+    PageStack system provides a way of navigating a hierarchy of pages. It is a
+    stack that you can push pages of content onto and pop pages off the stack.
+    The page at the top of the stack is what the user sees. The other method is
+    to create pages in \l{Tab}{tabs}. With the tabs system, the pages are
+    arranged in a tab and the user can select the pages by clicking on the tabs.
 
-    \section1 Creating Pages for your Application
+    \section1 Page Component
 
-    Before you can do any kind of navigating, you need to have some pages that
-    the user can navigate to and see content.
+    A \l Page component serves as a container for other QML content. A page may
+    contain additional components such as a \l TextEdit or \l Button components.
 
-    There are two ways of defining a page. You can use \e {QML items} (a tree of
-    QML elements) or \e {QML components}. A QML item is like an object and a
-    QML component is like a class from which you instantiate objects. See the
-    \l Page documentation for examples of these different ways of defining pages.
+    A Page may be created by defining the page inline or by encapsulating it in
+    a \l Component element. Inline definitions of pages are ideal for small
+    pages, however, all of the pages will remain in memory during creation. To
+    exert control over the creation and destruction of a page, encapsulate them
+    in a \l Component element.
 
-    \section2 Choosing the Page Type: Item or Component
+    Alternatively, a page can be defined in its own .qml file. This makes it
+    easier to locate the source for each page and maintain the pages. It also
+    makes it easier to share page implementations between applications.
 
-    If you have a simple application with just a few pages and a shallow
-    navigation stack, using QML items so you can refer to the pages directly is
-    probably the best option. However, all of the pages will remain in memory
-    unless you deliberately delete them.
-
-    If your application is complex with lots of pages or has a deep navigation
-    structure, you are probably better off using QML components for your pages.
-    You can more easily create component pages when you need them and delete
-    them when you are finished with them. If you use a PageStack for navigating,
-    it does this memory management for you. Also, PageStack does not force you
-    to choose just one type or the other - you can push item pages and component
-    pages onto the same stack.
-
-    Usually you define each page in its own .qml file. This makes it easier to
-    locate the source for each page and maintain the pages. It also makes it
-    easier to share page implementations between applications but this is not
-    often a significant consideration.
-
-
-    \section2 Adding a Tool Bar to a Page
+    \section2 Attaching a Tool Bar to a Page
 
     You can integrate the PageStack with the \l ToolBar. This allows the pages
     to use the same instance of the ToolBar and run synchronized animations with
@@ -82,77 +65,65 @@
     \snippet src/snippets/common/snippet-pagestack-toolbar.qml 1
 
     The snippet above creates a PageStack and a ToolBar. The
-    \c toolBar property of the PageStack points to the crated tool bar.
-    This linkage allows the PageStack to update the application level
+    \c toolBar property of the PageStack binds to the created toolbar.
+    This property binding allows the PageStack to update the application level
     ToolBar instance automatically when it changes the active \l Page.
 
     Because the ToolBar instance is already created, the only thing left
-    to the Page is to define the content - this is done by populating
+    for the Page is to define the content - this is done by populating
     the \c tools property of the Page.
 
     In the snippet below, a \l ToolBarLayout is used to position the
-    ToolButtons.
+    \l {ToolButton} components.
 
     \snippet src/snippets/common/snippet-pagestack-toolbar.qml 2
 
     The \c tools content is re-parented to the ToolBar instance
     when the page is shown.
 
-    \section1 Using PageStack for Hierarchical Navigation
+    \section1 Hierarchical Navigation with a PageStack
 
-    With the PageStack component, you can push a page to the stack so that it
-    becomes visible to the user. You can also push a number of pages at once in
-    order to go quickly to a "deep" part of the hierarchy. When the user wants
-    to navigates back, you pop pages off the stack. You can also pop multiple
-    pages off the stack at a time to jump back up the hierarchy. The other
-    feature available with the stack is to replace the top page with a different
-    page (or pages) rather than popping and pushing pages. In all these cases,
-    the page stack performs appropriate transition animations to help the user
-    understand a change is occurring.
+    Pushing a page to the stack will make the page visible to the user. The
+    stack can store many pages and to navigate back, the stack can pop pages.
+    The stack can replace the top page with a different page (or pages) rather
+    than popping and pushing pages. In all these cases, the page stack performs
+    appropriate transition animations to help the user understand a change is
+    occurring.
 
     \section2 Pushing Pages to the Stack
 
-    There are basically three ways you can push a page to the stack:
+    There are basically three ways you can push a page onto the stack:
 
     \list 1
 
-        \o \bold File: Pass a file name (URL) for a page defined in a
-        QML file: For example: \c {pageStack.push(Qt.resolvedUrl("FilePage.qml"))}. The
+        \o \bold File: Pass a file name (URL) for a page defined in a QML file:
+        For example: \c {pageStack.push(Qt.resolvedUrl("FilePage.qml"))}. The
         stack then simply loads the page from the file.
 
-        \o \bold {Item reference}: Pass a reference to the item that
-        defines the page. For example: e.g. \c {pageStack.push(myPage)}. In this
-        case, the system must have already parsed the page you are referencing
-        so that it knows what you are referring to.
+        \o \bold {Item reference}: Pass a reference to the item that defines the
+        page. For example, \c {pageStack.push(myPage)}, where \c myPage is an
+        instantiated object.
 
         \o \bold {Component reference}: Pass a reference to a component that
-        defines a page. This looks similar to the item reference case but,
-        instead of referring to a particular already-existing item, you are
-        referring to a page defined as a Component element. The stack then
-        creates a new instance of that component. This is something like
-        creating new instance of a class in other programming languages. Note
-        that the component definition must be loaded already so that the page
-        stack knows what you are referring to.
+        defines a page, such as a declaration encapsulated in a \l Component
+        element. The stack then creates a new instance of that component.
 
     \endlist
 
-    At first glance, the component reference might seem "complicated and
-    unnecessary" but the seeming complexity has a number of benefits. First, it
-    allows you to declare pages in your code as classes (QML components)
-    rather than "instances" (QML items). This means you can defer their
-    creation and so memory does not need to be allocated until the page is
-    really needed. Second, when you push components to the page stack, the page
-    instance is instantiated by the stack; when the page is popped from the
-    stack, the stack deletes the instance. This means you don't have to worry
-    about memory management since it is all handled by the page stack. Third, it
-    allows multiple instances of a particular page type to be at the stack. This
-    means you can define one component with configurable variations rather than
-    defining a separate item for each variation.
+    Encapsulating page definitions in a \l Component element means you can defer
+    their creation and memory does not need to be allocated until the page is
+    needed. Further, the page stack instantiates the page and destroys the
+    instance when the page is popped from the stack. This means you don't have
+    to worry about memory management since it is all handled by the page stack.
+    As well, pages as components allow multiple instances of a particular page
+    type to be at the stack. This means you can define one component with
+    configurable variations rather than defining a separate item for each
+    variation.
 
 
-    \section2 Using the ToolBar for Navigation
+    \section2 Page Navigation with ToolBars
 
-    The (common) \l ToolBar instance can be used for page navigation.
+    The \l ToolBar instance can be used for page navigation.
 
     \snippet src/snippets/common/snippet-pagestack-toolbar.qml 2
 
@@ -164,112 +135,95 @@
 
     \section2 Blocking User Actions During Page Transitions
 
-    Your application probably needs to block user actions during page
-    transitions. In order to facilitate this PageStack has a property called
-    "busy", which will have a value of \c true whenever there is a page
-    transition ongoing. You can easily bind to this property in order to disable
-    user actions. One easy way to do this is to create a MouseArea that covers
-    the entire screen and is declared with a z-order that is sufficiently high
-    to be on top of everything else. Then you bind the \c enabled property of
-    the mouse area to the \c busy property of the page stack. The \c busy
-    property will be true during transitions and so the mouse areauser clicks
-    will be blocked during page transitions. The code would look as follows:
+    The PageStack's \c busy property evaluates to \c true when the stack is
+    changing pages. The \c busy property is useful for notifying the application
+    when the stack changes to prevent unintentional events or user input.
 
     \snippet src/snippets/common/snippet-pagestack-toolbar.qml 3
 
-    If you are not using a PageStack component for your navigation system, you
-    can still use the same kind of mechanism. Simply define a \c busy property
-    for your navigator component and bind the \c MouseArea::enabled property to
-    the \c busy property. If you copy the code above, you can just replace
-    "pageStack" with the id of your own navigator component.
+    Binding this property can disable mouse interaction within a \l MouseArea.
 
+    \section1 Page Navigation with Tabs
 
-    \section1 Using the Tab Component for Parallel Navigation
+    Alternatively, the \l Tab component can contain \l Page items. The \e
+    parallel arrangement of pages are managed by the tab and clicking on a tab
+    switches the visible pages.
 
-    The parallel navigation is implemented using Tabs. The functionality is divided
-    into two parts: buttons and content.
-
-    The buttons are implemented with the TabButton element. You can layout these 
-    buttons as you like. In the ToolBar, the ButtonRow is used for laying. This 
-    also changes the buttons graphical presentation to match the ToolBar's look 
-    and feel.
+    The buttons are implemented with the \l TabButton component. You can layout
+    these buttons as you like. In the ToolBar, the \l ButtonRow is used for
+    laying. This also changes the buttons graphical presentation to match the
+    ToolBar's look and feel.
 
     \code
     ToolBarLayout {
-        ToolButton {} // back button
+        ToolButton {...} // back button
         ButtonRow {
-            TabButton {}
-            TabButton {}
+            TabButton {...}
+            TabButton {...}
     }
     \endcode
 
-    You can use \l TabBarLayout, and \l TabBar in Symbian, to layout buttons for 
-    a stand-alone tool bar. In this case, the you must position the 
-    TabBarLayout.
+    You can use \l TabBarLayout, and \l TabBar in Symbian, to layout buttons for
+    a stand-alone tool bar. In this case, the you must position the
+    \l TabBarLayout.
 
     \code
     TabBarLayout {
         anchors.top: parent.top
         width: parent.width
-        TabButton {}
-        TabButton {}
+        TabButton {...}
+        TabButton {...}
     }
     \endcode
 
-    The tab content is managed by the TabGroup element whose child items
+    The tab content is managed by the \l TabGroup component whose child items
     are content items.
 
     \code
     TabGroup {
-        anchors {} // user needs to layout the tab group
+        anchors {...} // user needs to layout the tab group
         Page { id: tab1Content }
         Page { id: tab2Content }
     }
     \endcode
 
-    The button and the content items are linked together with the TabButton's \c 
+    The button and the content items are linked together with the TabButton's \c
     tab property.
 
     \code
     TabButton { id: tab1Button; tab: tab1Content }
     \endcode
 
-    Once the linking is established, the TabButton and TabGroup elements manage 
-    the tab content switching and also highlight the corresponding tab button.
+    Once the linking is established, the TabButton and TabGroup components
+    manage the tab content switching and also highlight the corresponding tab
+    button.
 
     \section2 Dynamic Tab Handling
 
-    In most cases, the tab count is static. Therefore, you can statically 
-    allocate child items of \l TabGroup and the layouting 
-    component as described above. In some cases, you have to add or 
-    remove tabs dynamically depending on the application state.
+    In most cases, the tab count is static. Therefore, you can statically
+    allocate child items of \l TabGroup and the layouting component as described
+    above. In some cases, you have to add or remove tabs dynamically depending
+    on the application state.
 
     You can append a tab by creating a new TabButton as a child of the layout
     and similarly creating a new content item as the TabGroup's child. In
     addition, you need to set the TabButton's \c tab property to point to
     the new content item.
 
-    If you need to re-arrange the tab buttons, you need clear the layout and
-    append the buttons again in the correct order. The item order in the TabGroup
-    does not affect the shown tab order.
+    If you need to re-arrange the tab buttons, you need to clear the layout and
+    append the buttons again in the correct order. The item order in the
+    TabGroup does not affect the shown tab order.
 
-    You can remove a tab by deleting TabButton and the content item 
+    You can remove a tab by deleting TabButton and the content item
     instances with \c destroy().
-
-
-    \section1 Using a Custom Navigation System
-
-    If PageStack and Tab do not suit your application requirements, you can also
-    implement your own navigation system. However, there are some things you
-    need to consider in order to provide a good user experience.
 
     \section2 Improving Performance
 
-    Use \c Qt.createComponent() to load the pages, and then, only when you need a
-    page, use \c Component.createObject() to parse the page and create an instance
-    of it. Note that normal property bindings cannot be used because you are
-    using a component, rather than a specific QML object. To get around this,
-    you need to specify a map of properties and values when the component is
+    Use \c Qt.createComponent() to load the pages only when you need a page, use
+    \c Component.createObject() to parse the page and create an instance of it.
+    Note that normal property bindings cannot be used because you are using a
+    component, rather than a specific QML object. To get around this, you need
+    to specify a map of properties and values when the component is
     instantiated. See \l {Dynamic Object Management in QML} for more details.
 
 */

@@ -83,7 +83,7 @@
     help with making smart development decisions.
 
     \list
-        \o \l{Page Stack Based Navigation} - Both MeeGo and Symbian accommodate
+        \o \l{Page Based Application Navigation} - Both MeeGo and Symbian accommodate
         navigation with \l {Page}{Pages}.
         \o \l {List Components for Symbian} - Symbian additions to the \l ListView
         elements

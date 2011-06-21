@@ -41,7 +41,7 @@
     back to the previous page (or several pages back) by \e popping a page (or
     several pages) off the top of the stack.
 
-    See the \l{Page Stack Based Navigation} overview for a higher
+    See the \l{Page Based Application Navigation} overview for a higher
     level discussion about pages and page stacks.
 
     \section1 Setting Up a Page Stack

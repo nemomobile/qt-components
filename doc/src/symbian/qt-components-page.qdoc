@@ -40,7 +40,7 @@
     provide a navigation system for your application. Another navigation
     alternative is the TabGroup component that provides parallel sets of content.
 
-    See the \l{Page Stack Based Navigation} overview for a higher
+    See the \l{Page Based Application Navigation} overview for a higher
     level discussion about pages and page stacks.
 
     \section1 Defining the Content of a Page
