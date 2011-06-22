@@ -175,6 +175,21 @@ function repositionFlickable(animation) {
     }
 }
 
+function injectWordToPreedit(newCursorPosition) {
+    var preeditStart = previousWordStart(newCursorPosition);
+    var preeditEnd = nextWordEnd(newCursorPosition);
+
+    // copy word to preedit text
+    var preeditText = root.text.substring(preeditStart,preeditEnd);
+
+    // inject preedit
+    cursorPosition = preeditStart;
+
+    var eventCursorPosition = newCursorPosition-preeditStart;
+
+    return inputContext.setPreeditText(preeditText, eventCursorPosition, 0, preeditText.length);
+}
+
 function previousWordStart(pos) {
     var ret = pos;
 

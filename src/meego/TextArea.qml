@@ -238,6 +238,19 @@ FocusScope {
         onClicked: {
             if (!textEdit.activeFocus) {
                 textEdit.forceActiveFocus();
+
+                // activate to preedit and/or move the cursor
+                var injectionSucceeded = false;
+                var mappedMousePos = mapToItem(textEdit, mouseX, mouseY);
+                var newCursorPosition = textEdit.positionAt(mappedMousePos.x, mappedMousePos.y, TextInput.CursorOnCharacter);
+                if (!TextAreaHelper.atSpace(newCursorPosition)
+                        && newCursorPosition != textEdit.text.length
+                        && !(newCursorPosition == 0 || TextAreaHelper.atSpace(newCursorPosition - 1))) {
+                    injectionSucceeded = TextAreaHelper.injectWordToPreedit(newCursorPosition);
+                }
+                if (!injectionSucceeded) {
+                    textEdit.cursorPosition=newCursorPosition;
+                }
             }
         }
     }
@@ -430,20 +443,9 @@ FocusScope {
                     var newCursorPosition = textEdit.positionAt(mouse.x,mouse.y,TextInput.CursorOnCharacter);
                     var injectionSucceeded = false;
 
-                    if (!TextAreaHelper.atSpace(newCursorPosition)
-                             && !(newCursorPosition == textEdit.text.length && TextAreaHelper.atSpace(newCursorPosition-1))
+                    if (!TextAreaHelper.atSpace(newCursorPosition)                             
                              && newCursorPosition != textEdit.text.length) {
-                        var preeditStart = TextAreaHelper.previousWordStart(newCursorPosition);
-                        var preeditEnd = TextAreaHelper.nextWordEnd(newCursorPosition);
-
-                        // copy word to preedit text
-                        var preeditText = textEdit.text.substring(preeditStart,preeditEnd);
-
-                        // inject preedit
-                        textEdit.cursorPosition = preeditStart;
-
-                        var eventCursorPosition = newCursorPosition-preeditStart;
-                        injectionSucceeded = inputContext.setPreeditText(preeditText, eventCursorPosition, 0, preeditText.length);
+                        injectionSucceeded = TextAreaHelper.injectWordToPreedit(newCursorPosition);
                     }
                     if (injectionSucceeded) {
                         mouse.filtered=true;

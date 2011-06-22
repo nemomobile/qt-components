@@ -266,6 +266,18 @@ FocusScope {
         onClicked: {
             if (!textInput.activeFocus) {
                 textInput.forceActiveFocus();
+
+                // activate to preedit and/or move the cursor
+                var injectionSucceeded = false;
+                var newCursorPosition = textInput.positionAt(mapToItem(textInput, mouseX, mouseY).x,TextInput.CursorOnCharacter);
+                if (!TextAreaHelper.atSpace(newCursorPosition)
+                        && newCursorPosition != textInput.text.length
+                        && !(newCursorPosition == 0 || TextAreaHelper.atSpace(newCursorPosition - 1))) {
+                    injectionSucceeded = TextAreaHelper.injectWordToPreedit(newCursorPosition);
+                }
+                if (!injectionSucceeded) {
+                    textInput.cursorPosition=newCursorPosition;
+                }
             }
         }
     }
@@ -436,6 +448,7 @@ FocusScope {
                     parent.cursorPosition = textInput.positionAt(mouse.x)                    
                 }
             }
+
             onReleased: {                
                 if (MagnifierPopup.isOpened()) {
                     MagnifierPopup.close();
@@ -449,21 +462,9 @@ FocusScope {
 
                     var injectionSucceeded = false;
 
-                    if (!TextAreaHelper.atSpace(newCursorPosition)
-                             && !(newCursorPosition == textInput.text.length && TextAreaHelper.atSpace(newCursorPosition-1))
+                    if (!TextAreaHelper.atSpace(newCursorPosition)                             
                              && newCursorPosition != textInput.text.length) {
-                        var preeditStart = TextAreaHelper.previousWordStart(newCursorPosition);
-                        var preeditEnd = TextAreaHelper.nextWordEnd(newCursorPosition);
-
-                        // copy word to preedit text
-                        var preeditText = textInput.text.substring(preeditStart,preeditEnd);
-
-                        // inject preedit
-                        textInput.cursorPosition = preeditStart;
-
-                        var eventCursorPosition = newCursorPosition-preeditStart;
-
-                        injectionSucceeded = inputContext.setPreeditText(preeditText, eventCursorPosition, 0, preeditText.length);
+                        injectionSucceeded = TextAreaHelper.injectWordToPreedit(newCursorPosition);
                     }
                     if (injectionSucceeded) {
                         mouse.filtered=true;
@@ -478,6 +479,7 @@ FocusScope {
 
                 parent.selectByMouse = false;
             }
+
             onFinished: {
                 if (root.activeFocus && platformEnableEditBubble)
                     Popup.open(textInput);
@@ -488,6 +490,7 @@ FocusScope {
                     parent.cursorPosition = textInput.positionAt(mouse.x)
                 }
             }
+
             onDoubleClicked: {
                 // possible pre-edit word have to be commited before selection
                 inputContext.reset()
