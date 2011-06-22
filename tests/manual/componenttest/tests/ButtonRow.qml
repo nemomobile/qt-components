@@ -234,7 +234,7 @@ Item {
                     text: "Add"
 
                     onClicked: {
-                        var item = Qt.createQmlObject('import QtQuick 1.1; import com.nokia.symbian 1.0;  Button { text: \"Btn' +buttonRow3.children.length +'\"; objectName: \"' +"Btn"+buttonRow3.children.length+'\" }', buttonRow3, "dynButton");
+                        var item = Qt.createQmlObject('import QtQuick 1.1; import com.nokia.symbian 1.1;  Button { text: \"Btn' +buttonRow3.children.length +'\"; objectName: \"' +"Btn"+buttonRow3.children.length+'\" }', buttonRow3, "dynButton");
                     }
                 }
 
