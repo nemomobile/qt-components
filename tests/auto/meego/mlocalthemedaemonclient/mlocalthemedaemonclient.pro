@@ -1,19 +1,17 @@
 include (../../../tests.pri)
 
-INCLUDEPATH += ../../../../src/meego/themebridge
+INCLUDEPATH += ../../../../src/meego
 
-CONFIG += testcase
-
-DEFINES += THEME_DIR=\\\"\"/usr/share/themes\"\\\"
+DEFINES += THEME_DIR=\\\"\"$$THEME_DIR\"\\\"
 
 TEMPLATE = app
 SOURCES += \
     tst_mlocalthemedaemonclient.cpp \
-    ../../../../src/meego/themebridge/themedaemon/mabstractthemedaemonclient.cpp \
-    ../../../../src/meego/themebridge/themedaemon/mlocalthemedaemonclient.cpp
+    ../../../../src/meego/themedaemon/mabstractthemedaemonclient.cpp \
+    ../../../../src/meego/themedaemon/mlocalthemedaemonclient.cpp
 
 HEADERS += \
-    ../../../../src/meego/themebridge/themedaemon/mabstractthemedaemonclient.h \
-    ../../../../src/meego/themebridge/themedaemon/mlocalthemedaemonclient.h
+    ../../../../src/meego/themedaemon/mabstractthemedaemonclient.h \
+    ../../../../src/meego/themedaemon/mlocalthemedaemonclient.h
 
 include (../../auto.pri)

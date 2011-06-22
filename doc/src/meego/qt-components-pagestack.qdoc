@@ -1,0 +1,495 @@
+/****************************************************************************
+**
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project.
+**
+** $QT_BEGIN_LICENSE:BSD$
+** You may use this file under the terms of the BSD license as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
+**     the names of its contributors may be used to endorse or promote
+**     products derived from this software without specific prior written
+**     permission.
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+/*!
+    \qmlclass PageStack
+    \inherits Window
+    \ingroup qt-components
+    \since 4.7
+    \brief
+    PageStack implements common stack-based navigation model
+
+    The PageStack item implements common navigational patterns in an application 
+    that uses a stack-based navigation model. A stack-based navigation model means 
+    that pages in an application are pushed onto a stack when the user navigates 
+    deeper into the application page hierarchy. The user can then go back to 
+    previous pages, which from a stack point of view means popping pages from the 
+    top of the stack and re-activating them (that is, making them be the current page).
+
+    A transition animation is performed as the application transfers from one 
+    page to another. When moving deeper into the application page hierarchy and pages are pushed 
+    onto the stack, a swipe gesture from the right is used. And when moving back, the previous 
+	page is shown with a swipe gesture from the left and they are popped off the stack.
+
+    The PageStack works together with a toolbar so that when pages are pushed 
+    and popped onto/off the page stack, the toolbar is kept synchronized with the 
+    pages. Whatever tools are defined for a page is automatically 
+    placed in the toolbar. The toolbar transition animation is also 
+    automatically correct for the navigation direction. For example if you move 
+    deeper into the application then the new tools cross-fade and slide 
+    in from the right, whereas popping cross-fades and slides them in from 
+    the left and so on. Note that the animations for toolbars and pages may not be 
+    identical even if they are matched in terms of the direction of the navigation.
+
+    Pages can - but do not have to - use the Page item as the root item. The 
+    Page defines a contract for how the page and page stack work together. 
+    The page can be notified about when it becomes active or inactive 
+    using two signals: activated and deactivated. Using these, the page can 
+    perform whatever operations are necessary as the page is coming into view 
+    or moving out of the view. Only the page that is currently on top of the 
+    stack is active. It should be noted that activated and deactivated 
+    correspond fairly closely to visibility, however the two are not identical. 
+    For example a page that is popped off the stack is deactivated but will 
+    still be visible while it is being animated out.
+
+    In addition to the activated and deactivated signals a page can also define tool items
+    for the page specific toolbar. These items are used if the property 'toolbar' has been 
+    set for the Page. If this toolbar property has been set for the PageStack 
+    then the PageStack automatically looks at the tools property of any Page 
+    that it is activating and sets those tools to the toolbar with the correct 
+    transition animations. If the page does not have any tools (tools property 
+    value is null) then the the toolbar is automatically hidden.
+
+    Note: pages are kept in PageStack, analogous to the history functionality of 
+    web browser. If the user does not go back in the history, then Pages 
+    are not popped from PageStack and memory usage grows. PageStack component 
+    itself does not limit the stack size. 
+    
+    \section1 The PageStack in the Application
+    Using the PageStack in the application is typically a simple matter of adding 
+    the PageStack item as a child of the top-level QML item. The stack is usually 
+    anchored to the edges of the screen, except at the top or bottom where it might 
+    be anchored to a status bar, toolbar, tab bar, or some other similar UI component. 
+    The stack can then be used by invoking its navigation methods. The first page 
+    to show in the PageStack is commonly loaded by calling PageStack.push() in 
+    the Component.onCompleted signal.
+    
+    \section1 Basic Navigation
+    There are three primary navigation methods in PageStack: push, pop and replace. 
+    These correspond to classic stack operations where push adds an item to the 
+    top of a stack, pop removes the top item from the stack, and replace is like a 
+    pop followed by a push in that it replaces the topmost item on the stack with 
+    a new item. The topmost item in the stack corresponds to the one that is 
+    "active", that is, the one that is on the screen. That means that push() is the 
+    logical equivalent of navigating forward or deeper into the application, pop() 
+    is the equivalent of navigation back and replace() is the equivalent of 
+    replacing the current page with a different page.
+
+    Sometimes it is necessary to go back more than a single step in the stack, for example 
+    to return to the main page in the application. 
+    For this use case pop() can be provided with a page to pop to. This is called 
+    an unwind operation as the stack gets unwound to the specified page. If the 
+    page is not found then the stack unwinds until there is only a single page in 
+    the stack, which becomes the current page. To explicitly unwind to the bottom 
+    of the stack it is recommended to use pop(null), though technically any 
+    non-existant page works.
+
+    Given the stack [A, B, C]:
+
+    \list
+    \o push(D) => [A, B, C, D] - "push" transition animation between C and D
+    \o pop() => [A, B] - "pop" transition animation between C and B
+    \o replace(D) => [A, B, D] - "replace" transition between C and D
+    \o pop(A) => [A] - "pop" transition between C and A
+    \endlist
+
+    Note that when the stack is empty, a push() or replace() do not perform a 
+    transition animation in part because there is nothing to transition from and in 
+    part because basically the only time this happens is when an application starts 
+    and shows the initial page. At startup no page transition should be shown and 
+    thus this is the correct behavior. A pop() on a stack with length 1 or 0 is a 
+    no-operation.
+
+    Calling push() or replace() returns the page that was pushed onto the stack. 
+    Calling pop() returns the page that was popped off the stack. When pop() is 
+    called in an unwind operation the top-most page (the first page that was popped) 
+    is returned.
+
+
+    \section1 Deep Linking
+    Deep linking means launching an application into a particular state. For example 
+    a Newspaper application can be launched into showing a particular article, 
+    bypassing the front page (and possible a section page) that would normally have 
+    to be navigated through to get to the desired article. In terms of page 
+    stacks deep linking means the ability to modify the state of the stack so that 
+    you for example push a set of pages to the top of the stack or that you completely reset 
+    the stack to a given state.
+
+    The API for deep linking in PageStack is the same as for basic navigation. If 
+    you push an array instead of a single page, all the pages in that array are
+	pushed onto the stack. The transition animation, however, will be conducted as 
+    if only the last page in the array was pushed onto the stack. The normal semantics 
+    of the push() and replace() functions apply for deep linking, meaning that push() 
+    adds whatever you push onto the stack and replace() replaces the current top-most 
+    item with whatever you specify.
+
+    In the case where the page stack is reset to a particular state the stack 
+    is emptied using the clear() method in PageStack prior to issuing a push() or 
+    replace() call.
+
+    This gives us the following result, given the stack [A, B, C]:
+
+    \list
+    \o push([D, E, F]) => [A, B, C, D, E, F] - "push" transition animation between C and F
+    \o replace([D, E, F] => [A, B, D, E, F] - "replace" transition animation between C and F
+    \o clear(); push([D, E, F]) => [D, E, F] - no transition animation (since the stack was empty)
+    \o clear(); replace([D, E, F]) => [D, E, F] - no transition animation
+    \endlist
+
+    \section1 Declaring Pages
+    Pages are declared as either QML items or components (the Component element). In simple 
+    use cases with shallow stacks using QML items is simpler and more desirable. Pages are 
+    declared anywhere (with any parent). If QML items are used for pages then the page gets 
+    re-parented to the page stack when the page is pushed to make it active. When the page is 
+    popped off the stack it gets re-parented back to its original owner. When a page is declared 
+    as a component the actual page must be created as an QML item from that component. This 
+    happens automatically when the page is pushed onto the stack and the page stack takes 
+    ownership of that item. When the page is popped off the stack the page QML item is also 
+    automatically destroyed. The component that declared the page, by contrast, remains in the 
+    ownership of the application and is not destroyed by the page stack.
+
+    One way to think of this is to think of the QML Component element like a class whereas QML 
+    items are like objects, created from a class. With this analogy pages can be defined as 
+    either objects or classes. If classes are used then the page stack creates objects from 
+    the class automatically and destroys these objects when they are popped off the stack. If 
+    objects are used then the page stack re-parents them into the page stack but does not clone 
+    them, destroy them, and so on.
+
+    Components are more flexible than items as you can have any number of instances of 
+    pages created from a single component. They are also more powerful if an application has 
+    many page types, since those page types do not need to be instantiated when the application 
+    starts but rather lazily when the page is used. Using components when an application has 
+    many pages is also desirable because it allows for more efficient memory management. Only 
+    those pages that are currently on the stack need to be allocated and when pages are pushed 
+    off the stack they automatically get destroyed and the memory is freed.
+
+    Given a page of type ExamplePage with a property "greeting", one might declare this page 
+    as an item as follows:
+
+    \code
+    ExamplePage {
+        id: examplePage
+        greeting: "Hello World!"
+    }
+    \endcode
+
+    Declaring this same page as a component would look like this:
+
+    \code
+    Component {
+        id: examplePage
+        ExamplePage {
+            greeting: "Hello World!"
+        }
+    }
+    \endcode
+
+    In both cases the page would be pushed onto the stack as follows:
+
+    \code
+    pageStack.push(examplePage); 
+    \endcode
+
+    In the case of the item the item itself (examplePage) is the return value 
+    for the push() call. In the case of the component the return value is the QML 
+    item (the instance) that is created from the component.
+
+    Normal property bindings is used whenever possible instead of passing parameters 
+    from one page to another. However push() and replace() support giving a map of parameters as 
+    a 2nd argument to those functions. These parameters are copied into the page at the 
+    time time push() or replace() function is invoked. This works for example as follows:
+
+    \code
+    pageStack.push(examplePage, { foo: bar, foz: baz });
+    \endcode
+
+    This pushes the examplePage onto the stack and set the foo property in the page to 
+    bar and the foz property to baz. This can be used both with component or item-based 
+    pages.
+
+    Note that if the page is declared in an QML item that is destroyed - even if a component 
+    was used from which a page instance was created - then that page also gets destroyed. 
+    This follows normal Qt parent-child destruction rules but sometimes comes as a suprise 
+    for developers. In practice this means that for example if you declare a page B as a child of 
+    page A and then do a replace() from page A to page B, then page B is destroyed when 
+    page A was destroyed (as it was popped off the stack) and the application is effectively 
+    switching to a page that has been destroyed.
+
+    \section1 Lifecycle
+    The page lifecycle goes from instantiation to activation to deactivation to destruction, 
+    moving any number of times between activation and deactivation. When a page is activated 
+    it means it is visible on the screen and can be considered to be the current page. A page 
+    in a page stack that is not visible is not activated even if the page is currently the 
+    top-most page in the stack. When the stack becomes visible the top-most page gets 
+    activated. Likewise if the page stack is hidden the top-most page is deactivated. 
+    Popping the page off the top of the stack at this point does not result in further 
+    deactivation since the page is not active.
+
+    There is a status property that tracks the lifecycle. The value of the status property is 
+    an enumeration with values PageStatus.Inactive, PageStatus.Activating, PageStatus.Active 
+    and PageStatus.Deactivating. Combined with the normal Component.onComplete and 
+    Component.onDestruction signals the entire lifecycle is thus:
+
+    \list
+    \o Created: Component.onCompleted()
+    \o Activating: onStatusChanged (status is PageStatus.Activating)
+    \o Activated: onStatusChanged (status is PageStatus.Active)
+    \o Deactivating: onStatusChanged (status is PageStatus.Deactivating)
+    \o Deactivated: onStatusChanged (status is PageStatus.Inactive)
+    \o Destruction: Component.onDestruction()
+    \endlist
+
+    \section1 Finding Pages
+    Sometimes it is necessary to search for a page, for example in order to unwind the stack to 
+    a page to which the application does not have a reference. This is facilitated using a 
+    function find() in the page stack. The find() function takes a callback function as its 
+    only argument. The callback gets invoked for each page in the stack (starting at the top). 
+    When the callback returns true, it signals that a match has been found and the find() 
+    function returns that page. If the callback fails to return true (that is, no match is found) 
+    then find() returns null.
+
+    The code below searches for a page named "foo" in the stack and then unwinds to 
+    that page. Note that since find() returns null if no page is found and since pop unwinds to 
+    the bottom of the stack if null is given as the target page, the code works well even in the 
+    case that no matching page was found.
+
+    \code
+    pageStack.pop(pageStack.find(function(page) {
+        return page.name == "foo";
+    }));
+    \endcode
+
+    \section1 Blocking User Actions During Page Transitions
+    Developers may want to block user actions during page transitions. In order to facilitate 
+    this the page stack has a property called "busy", which has a value of true whenever 
+    there is a page transition ongoing. Applications are easily bound to this in order to disable 
+    user actions in whatever way they desire. An easy way to do this in 
+    many applications is to place a MouseArea that covers the entire screen and is declared with 
+    a z-order that is sufficiently high to be on top of everything else. If the enabled property 
+    of the mouse area is bound to the busy property of the page stack then user clicks will be 
+    blocked during page transitions. The code looks as follows:
+
+    \code
+    MouseArea {
+        anchors.fill: parent
+        enabled: pageStack.busy
+    }
+    \endcode
+
+   \section1 Advanced Usage
+   You can also choose to not only defer instantiation but also parsing of pages 
+   until the pages are actually needed. You can do this in two ways, either by calling 
+   Qt.createComponent() to load and parse the component or by specifying the page to push or 
+   replace with a string (the URL of the page .qml file), in which case the page stack 
+   loads the page component. In both cases normal property bindings cannot be used since the 
+   page component is not declared in the using .qml file. Instead the 2nd argument of push() 
+   and replace() (the "property" argument) can be used to specify a map of properties for the 
+   page. This works as follows:
+
+   \code
+   pageStack.push(Qt.resolvedUrl("foo.qml"), { 
+       foo: bar, foz: baz 
+   });
+   \endcode
+
+   The code above loads a page foo.qml from the same directory as the invoking code and sets 
+   to foo property to bar and the foz property to baz in the page created from foo.qml.
+   
+   If deep linking is used an multiple pages are pushed in an array, properties are defined 
+   by having each item in the array specified as map, as follows:
+
+   \code
+   pageStack.push([
+       { page: pageOne, properties: { one: 1 } },
+       { page: Qt.resolvedUrl("two.qml"), properties: { two: 2 }},
+       pageThree
+   ]);
+   \endcode
+
+   The code above pushes three pages: pageOne (declared as an item or component) with a 
+   property "one" with value 1, a page loaded from the file "two.qml" with a property "two" 
+   with value 2, and finally pageThree (declared as an item or component).
+
+   Advanced page example for PageStack, which content is dynamically created and destroyed depending on visibility
+
+   \code
+    // FramePage.qml
+    import Qt 4.7
+    import com.nokia.meego 1.0
+
+    Page {
+        id: root
+        anchors.margins: 0
+
+        Item {
+            id: container
+        }
+
+        property Item containerObject;
+
+        onVisibleChanged: {
+            if (visible) {
+                // create component
+                console.log("Page content created.");
+                var object = componentDynamic.createObject(container);
+                containerObject = object;
+            } else {
+                // destroy component
+                console.log("Page content destroyed.");
+                containerObject.destroy();
+            }
+        }
+
+        // Page content inside component, this is created dynamically when page is visible
+        Component {
+            id: componentDynamic
+            Item {
+                id: content
+                Column {
+                    id: contentColumn
+                    anchors.fill: parent
+                    anchors.margins: 32
+                    spacing: 24
+
+                    Label {
+                        text: "Page content"
+                    }
+
+                    Button {
+                        id: buttonPush
+                        text: "Push page FramePage.qml"
+                        onClicked: { openFile("FramePage.qml"); }
+                    }
+
+                    Button {
+                        id: buttonPop
+                        text: "Pop page"
+                        onClicked: { pageStack.pop(); }
+                    }
+                }
+            }
+        }
+
+        function openFile(file) {
+            var component = Qt.createComponent(file)
+
+            if (component.status == Component.Ready)
+                pageStack.push(component);
+            else
+                console.log("Error loading component:", component.errorString());
+        }
+    }
+   \endcode
+*/
+
+/*!
+    \qmlproperty bool PageStack::busy
+
+    Indicates whether there is an ongoing page transition.
+*/
+
+/*!
+    \qmlmethod PageStack::clear()
+
+    Clears the page stack.
+*/
+
+/*!
+    \qmlproperty Item PageStack::currentPage
+
+    The currently active page.
+*/
+
+/*!
+    \qmlproperty int PageStack::depth
+
+    Page stack depth.
+*/
+
+/*!
+    \qmlmethod PageStack::find(func)
+
+    Iterates through all pages (top to bottom) and invokes the specified function \a func.
+    If the specified function returns true the search stops and the find function
+    returns the page that the iteration stopped at. If no matching page is found, null is returned.
+*/
+
+/*!
+    \qmlmethod PageStack::pop(page, immediate)
+
+    Pops a page off the stack.
+    If the \a page is specified then the stack is unwound to that page; null to unwind the to first page.
+    If the immediate \a argument is true then no transition animation is performed.
+    Returns the page instance that was popped off the stack.
+*/
+
+/*!
+    \qmlmethod PageStack::push(page, properties, immediate)
+    
+    Pushes a page on the stack.
+    The \a page can be defined as a component, item or string.
+    If an item is used then the page will get re-parented.
+    If a string is used then it is interpreted as a url that is used to load a page component.
+
+    The page can also be given as an array of pages. In this case all those pages will be pushed
+    onto the stack. The items in the stack can be components, items or strings just like for single
+    pages. Additionally an object can be used, which specifies a page and an optional \a properties
+    property. This can be used to push multiple pages while still giving each of them properties.
+    When an array is used the transition animation will only be to the last page.
+
+    The properties argument is optional and allows defining a map of properties to set on the page.
+    If the \a immediate argument is true then no transition animation is performed.
+    Returns the page instance.
+    
+*/
+
+/*!
+    \qmlmethod PageStack::replace(page, properties, immediate)
+
+    Replaces a page on the stack.
+    See push() for details.
+*/
+
+/*!
+    \qmlproperty ToolBar PageStack::toolBar
+
+    The application toolbar. Can be automatically animated to match the set of items in the
+    current active page in the page stack.
+*/
+

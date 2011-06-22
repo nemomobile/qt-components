@@ -47,9 +47,10 @@ release/
 /features/qt-components-config.prf
 /demos/flickr/flickr
 /demos/musicplayer/musicplayer
-/examples/meego/calculator/calculator
-/examples/meego/widgetgallery/widgetgallery
 /examples/native/focus/focus
+/examples/meego/QmlComponentGallery/QmlComponentGallery
+/examples/meego/QmlComponentExtrasGallery/QmlComponentExtrasGallery
+/examples/meego/TutorialApplication/TutorialApplication
 /examples/symbian/extrasgallery/qmlextrasgallery
 /examples/symbian/gallery/qmlgallery
 /examples/symbian/scalefm/scalefm

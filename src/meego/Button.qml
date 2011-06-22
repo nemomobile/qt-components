@@ -1,197 +1,146 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
-** This file is part of the Qt Components project on Qt Labs.
+** This file is part of the Qt Components project.
 **
-** No Commercial Usage
-** This file contains pre-release code and may not be distributed.
-** You may use this file in accordance with the terms and conditions contained
-** in the Technology Preview License Agreement accompanying this package.
+** $QT_BEGIN_LICENSE:BSD$
+** You may use this file under the terms of the BSD license as follows:
 **
-** GNU Lesser General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU Lesser
-** General Public License version 2.1 as published by the Free Software
-** Foundation and appearing in the file LICENSE.LGPL included in the
-** packaging of this file.  Please review the following information to
-** ensure the GNU Lesser General Public License version 2.1 requirements
-** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
+**     the names of its contributors may be used to endorse or promote
+**     products derived from this software without specific prior written
+**     permission.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+** $QT_END_LICENSE$
 **
 ****************************************************************************/
 
-import Qt 4.7
-import Qt.labs.components 1.0
-import com.meego.themebridge 1.0
+import QtQuick 1.1
+import Qt.labs.components 1.1
+import "." 1.0
 import "UIConstants.js" as UI
 
 ImplicitSizeItem {
     id: button
 
     // Common public API
-    property alias checked: checkable.checked
-    property alias checkable: checkable.enabled
+    property bool checked: false
+    property bool checkable: false
     property alias pressed: mouseArea.pressed
     property alias text: label.text
     property url iconSource
+    property alias platformMouseAnchors: mouseArea.anchors
 
     signal clicked
 
-    // Defines the button viewtype. Usually this is automatically set by
-    // specialized containers like the ButtonRow or the QueryDialog
-    property string buttonType
-    property string groupPosition
+    // Used in ButtonGroup.js to set the segmented look on the buttons.
+    property string __buttonType
 
-    implicitWidth: calculateWidth()
-    implicitHeight: 50
+    // Styling for the Button
+    property Style platformStyle: ButtonStyle {}
+
+    // Deprecated, TODO remove
+    property alias style: button.platformStyle
+
+    implicitWidth: platformStyle.buttonWidth
+    implicitHeight: platformStyle.buttonHeight
+    width: implicitWidth
 
     property alias font: label.font
 
-    // Internal property, to be used by ButtonRow and other button containers.
-    property alias __exclusiveGroup: checkable.exclusiveGroup
-
-    function calculateWidth() {
-        // XXX Check how does MeeGo Touch does that. Maybe use style paddings, etc
-        var prefWidth = 32;
-
-        if (label.visible && iconFromSource.visible) {
-            prefWidth += 1 + labelSizeHelper.width + iconFromSource.width + 10;
-        } else if (label.visible) {
-            prefWidth += 1 + labelSizeHelper.width;
-        } else if (iconFromSource.visible) {
-            prefWidth += iconFromSource.width;
-        }
-
-        return prefWidth;
-    }
+    //private property
+    property bool __dialogButton: false
 
     BorderImage {
         id: background
         anchors.fill: parent
-        border { left: UI.CORNER_MARGINS; top: UI.CORNER_MARGINS; right: UI.CORNER_MARGINS; bottom: UI.CORNER_MARGINS }
-        source: getImageName()
+        border { left: button.platformStyle.backgroundMarginLeft; top: button.platformStyle.backgroundMarginTop;
+                 right: button.platformStyle.backgroundMarginRight; bottom: button.platformStyle.backgroundMarginBottom }
 
-        function getImageName() {
-            var name = "image://theme/meegotouch-button";
-
-            if (button.buttonType == "affirmative")
-                name += "-positive";
-            else if (button.buttonType == "negative")
-                name += "-negative";
-
-            name += "-background";
-
-            if (!enabled)
-                name += "-disabled";
-            else if (mouseArea.containsMouse && mouseArea.pressed)
-                name += "-pressed";
-            else if (checkable.checked)
-                name += "-selected"
-
-            if (button.buttonType == "group" && button.groupPosition != "")
-                name += "-" + button.groupPosition;
-            return name;
-        }
+        source:  __dialogButton ? (pressed ? button.platformStyle.pressedDialog : button.platformStyle.dialog) :
+                  !enabled ?
+                  (checked ? button.platformStyle.checkedDisabledBackground : button.platformStyle.disabledBackground) :
+                  pressed ?
+                      button.platformStyle.pressedBackground :
+                  checked ?
+                      button.platformStyle.checkedBackground :
+                      button.platformStyle.background;
     }
 
     Image {
-        id: iconFromSource
-        anchors.left: parent.left
+        id: icon
+        anchors.left: label.visible ? parent.left : undefined
+        anchors.leftMargin: label.visible ? UI.MARGIN_XLARGE : 0
+        anchors.centerIn: label.visible ? undefined : parent
+
         anchors.verticalCenter: parent.verticalCenter
-        anchors.leftMargin: calculateContentMargin()
-        sourceSize.width: UI.SIZE_ICON_DEFAULT
-        sourceSize.height: UI.SIZE_ICON_DEFAULT
+        anchors.verticalCenterOffset: -1
 
         source: button.iconSource
 
-        // If button is wider than content, grow the margins to keep content centered
-        function calculateContentMargin() {
-            var margin = UI.MARGIN_XLARGE;
-            if (button.width > button.implicitWidth)
-                margin += (button.width - button.implicitWidth) / 2;
-            return margin;
-        }
-
-        // Visibility check for default state (icon is not explicitly hidden)
         visible: source != ""
     }
 
     Label {
         id: label
-        anchors.left: iconFromSource.left
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.left: icon.visible ? icon.right : parent.left
+        anchors.leftMargin: icon.visible ? UI.PADDING_XLARGE : UI.BUTTON_LABEL_MARGIN
         anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        anchors.leftMargin: marginRespectingIconWidth()
-        anchors.rightMargin: iconFromSource.anchors.leftMargin
+        anchors.rightMargin: UI.BUTTON_LABEL_MARGIN
 
-        // Label left margin should be large enough to leave space for the icon
-        // when we have one
-        function marginRespectingIconWidth() {
-            if (iconFromSource.visible)
-                return iconFromSource.width + 10;
-            return 0;
-        }
-
+        horizontalAlignment: icon.visible ? Text.AlignLeft : button.platformStyle.horizontalAlignment
         elide: Text.ElideRight
 
-        // XXX This does not make sense yet, since the label width is not being set
-        // horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-
-        font.family: UI.FONT_FAMILY
-        font.weight: Font.Normal
-        font.pixelSize: UI.FONT_DEFAULT_SIZE
-        color: getFontColor()
-
-        function getFontColor() {
-            if (!enabled)
-                return UI.COLOR_DISABLED_FOREGROUND
-            else if (buttonType == "affirmative" || buttonType == "negative")
-                return mouseArea.containsMouse && mouseArea.pressed ? UI.COLOR_INVERTED_SECONDARY_FOREGROUND : UI.COLOR_INVERTED_FOREGROUND
-            else
-                return (mouseArea.containsMouse && mouseArea.pressed) || (button.checkable && button.checked) ?
-                    UI.COLOR_INVERTED_FOREGROUND : UI.COLOR_FOREGROUND
-        }
+        font.family: button.platformStyle.fontFamily
+        font.weight: button.platformStyle.fontWeight
+        font.pixelSize: button.platformStyle.fontPixelSize
+        font.capitalization: button.platformStyle.fontCapitalization
+        color: !enabled ? button.platformStyle.disabledTextColor :
+               pressed ? button.platformStyle.pressedTextColor :
+               checked ? button.platformStyle.checkedTextColor :
+                         button.platformStyle.textColor;
         text: ""
-
         visible: text != ""
-    }
-
-    // This invisible label is used to provide the required width to fit the current label text
-    // XXX remove when Label provide this by itself
-    Text {
-        id: labelSizeHelper
-
-        font: label.font
-        text: label.text
-
-        visible: false
     }
 
     MouseArea {
         id: mouseArea
-        anchors.fill: parent
-
-        onPressed: {
-            //XXX Must have a new way to use the feedback from QML, due to the themebridge dependency removal
-            //meegostyle.feedback("pressFeedback");
+        anchors {
+            fill: parent
+            rightMargin: (platformStyle.position != "horizontal-center"
+                            && platformStyle.position != "horizontal-left") ? platformStyle.mouseMarginRight : 0
+            leftMargin: (platformStyle.position != "horizontal-center"
+                            && platformStyle.position != "horizontal-right") ? platformStyle.mouseMarginLeft : 0
+            topMargin: (platformStyle.position != "vertical-center"
+                            && platformStyle.position != "vertical-bottom") ? platformStyle.mouseMarginTop : 0
+            bottomMargin: (platformStyle.position != "vertical-center"
+                            && platformStyle.position != "vertical-top") ? platformStyle.mouseMarginBottom : 0
         }
-
-        onClicked: {
-            //XXX Must have a new way to use the feedback from QML, due to the themebridge dependency removal
-            //meegostyle.feedback("releaseFeedback");
-            checkable.toggle();
-            button.clicked();
-        }
+	onClicked: if (button.checkable) button.checked = !button.checked
     }
-
-    Checkable {
-        id: checkable
-        value: button
-    }
+    Component.onCompleted: mouseArea.clicked.connect(clicked)
 }

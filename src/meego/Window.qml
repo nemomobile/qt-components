@@ -1,156 +1,231 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
-** This file is part of the Qt Components project on Qt Labs.
+** This file is part of the Qt Components project.
 **
-** No Commercial Usage
-** This file contains pre-release code and may not be distributed.
-** You may use this file in accordance with the terms and conditions contained
-** in the Technology Preview License Agreement accompanying this package.
+** $QT_BEGIN_LICENSE:BSD$
+** You may use this file under the terms of the BSD license as follows:
 **
-** GNU Lesser General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU Lesser
-** General Public License version 2.1 as published by the Free Software
-** Foundation and appearing in the file LICENSE.LGPL included in the
-** packaging of this file.  Please review the following information to
-** ensure the GNU Lesser General Public License version 2.1 requirements
-** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
+**     the names of its contributors may be used to endorse or promote
+**     products derived from this software without specific prior written
+**     permission.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+** $QT_END_LICENSE$
 **
 ****************************************************************************/
 
-import Qt 4.7
-import Qt.labs.components.native 1.0
-import com.meego.themebridge 1.0
+import QtQuick 1.1
+import "." 1.0
 
 Item {
-    id: window
-    width: screen.width
-    height: screen.height
+    id: root
+    width: screen.displayWidth
+    height: screen.displayHeight
 
-    Snapshot {
-        id: snapshot
-        anchors.centerIn: parent
-        width: screen.width
-        height: screen.height
-        snapshotWidth: screen.width
-        snapshotHeight: screen.height
-        z: 100
-        opacity: 0
-    }
+    property alias color: background.color
 
-    // Read only property true if window is in landscape
-    property bool inLandscape: true
+    default property alias content: windowContent.data
+
     // Read only property true if window is in portrait
-    property bool inPortrait: false
+    property alias inPortrait: window.portrait
 
     signal orientationChangeAboutToStart
     signal orientationChangeStarted
     signal orientationChangeFinished
 
-    state: screen.orientationString
-
-    states:  [
-        State {
-            name: "Landscape"
-            PropertyChanges {
-                target: window
-                rotation: 0
-                width: screen.width
-                height: screen.height
-                x: 0
-                y: 0
-                inLandscape: true
-                inPortrait: false
-            }
-        },
-        State {
-            name: "LandscapeInverted"
-            PropertyChanges {
-                target: window
-                rotation: 180
-                width: screen.width
-                height: screen.height
-                x: 0
-                y: 0
-                inLandscape: true
-                inPortrait: false
-            }
-        },
-        State {
-            name: "Portrait"
-            PropertyChanges {
-                target: window
-                rotation: 270
-                width: screen.height
-                height: screen.width
-                x: (screen.width - screen.height) / 2
-                y: -(screen.width - screen.height) / 2
-                inLandscape: false
-                inPortrait: true
-            }
-        },
-        State {
-            name: "PortraitInverted"
-            PropertyChanges {
-                target: window
-                rotation: 90
-                width: screen.height
-                height: screen.width
-                x: (screen.width - screen.height) / 2
-                y: -(screen.width - screen.height) / 2
-                inLandscape: false
-                inPortrait: true
-            }
-        }
-    ]
-
-    property int duration: 800
-    transitions: Transition {
-        SequentialAnimation {
-            ScriptAction {
-                script: {
-                    window.orientationChangeAboutToStart()
-                    snapshot.take()
-                    snapshot.opacity = 1
-                    snapshot.rotation = -window.rotation
-                    window.opacity = 0
-
-                    window.orientationChangeStarted()
-                }
-            }
-            PropertyAction { target: window; properties: "x,y,width,height" }
-            ParallelAnimation {
-                NumberAnimation { target: window; property: "opacity"; to: 1; easing.type: Easing.InOutExpo; duration: window.duration }
-                NumberAnimation { target: snapshot; property: "opacity"; to: 0; easing.type: Easing.InOutExpo; duration: window.duration }
-                RotationAnimation { target: window; property: "rotation"; direction: RotationAnimation.Shortest; easing.type: Easing.InOutExpo; duration: window.duration }
-            }
-            ScriptAction {
-                script: {
-                    snapshot.free();
-                    window.orientationChangeFinished();
-                }
-            }
-        }
+    Rectangle {
+        id: background
+        anchors.fill: parent
+        color: "black"
     }
 
-    focus: true
-    Keys.onReleased: {
-        if(event.key == Qt.Key_E && event.modifiers == Qt.AltModifier &&
-                !screen.orientationLocked) {
-            if(screen.orientation == Screen.Landscape) {
-                screen.orientation = Screen.Portrait;
-            } else if(screen.orientation == Screen.Portrait) {
-                screen.orientation = Screen.LandscapeInverted;
-            } else if(screen.orientation == Screen.LandscapeInverted) {
-                screen.orientation = Screen.PortraitInverted;
-            } else if(screen.orientation == Screen.PortraitInverted) {
-                screen.orientation = Screen.Landscape;
+    Item {
+        id: window
+        property bool portrait
+
+        width: window.portrait ? screen.displayHeight : screen.displayWidth
+        height: window.portrait ? screen.displayWidth : screen.displayHeight
+
+        anchors.centerIn: parent
+
+        Item {
+            id: windowContent
+            width: parent.width
+            height: parent.height - heightDelta
+
+            // Used for resizing windowContent when virtual keyboard appears
+            property int heightDelta: 0
+
+            objectName: "windowContent"
+            clip: true
+
+            Connections {
+                id: inputContextConnection
+                target: inputContext
+                onSoftwareInputPanelVisibleChanged: inputContextConnection.updateWindowContentHeightDelta();
+
+                onSoftwareInputPanelRectChanged: inputContextConnection.updateWindowContentHeightDelta();
+
+                function updateWindowContentHeightDelta() {
+                    if(inputContext.customSoftwareInputPanelVisible)
+                        return
+
+                    if (root.inPortrait)
+                        windowContent.heightDelta = inputContext.softwareInputPanelRect.width
+                    else
+                        windowContent.heightDelta = inputContext.softwareInputPanelRect.height
+                }
+            }
+        }
+
+        SoftwareInputPanel {
+            id: softwareInputPanel
+            active: inputContext.customSoftwareInputPanelVisible
+            anchors.bottom: parent.bottom
+
+            onHeightChanged: {
+                windowContent.heightDelta = height
+            }
+
+            Loader {
+                id: softwareInputPanelLoader
+                width: parent.width
+                sourceComponent: inputContext.customSoftwareInputPanelComponent
+            }
+        }
+
+        Snapshot {
+            id: snapshot
+            anchors.centerIn: parent
+            width: screen.displayWidth
+            height: screen.displayHeight
+            snapshotWidth: screen.displayWidth
+            snapshotHeight: screen.displayHeight
+            opacity: 0
+        }
+
+        state: screen.orientationString
+
+        states: [
+            State {
+                name: "Landscape"
+                PropertyChanges { target: window; rotation: 0; portrait: false; }
+            },
+            State {
+                name: "Portrait"
+                PropertyChanges { target: window; rotation: 270; portrait: true; }
+            },
+            State {
+                name: "LandscapeInverted"
+                PropertyChanges { target: window; rotation: 180; portrait: false; }
+            },
+            State {
+                name: "PortraitInverted"
+                PropertyChanges { target: window; rotation: 90; portrait: true; }
+            }
+        ]
+
+        transitions: [
+        Transition {
+            // use this transition when sip is visible
+            from: (inputContext.softwareInputPanelVisible ?  "*" : "disabled")
+            to:   (inputContext.softwareInputPanelVisible ?  "*" : "disabled")
+            PropertyAction { target: window; properties: "rotation"; }
+            ScriptAction {
+                script: {
+                    root.orientationChangeAboutToStart();
+                    platformWindow.startSipOrientationChange(window.rotation);
+                    // note : we should really connect these signals to MInputMethodState
+                    // signals so that they are emitted at the appropriate time
+                    // but there aren't any
+                    root.orientationChangeStarted();
+                    root.orientationChangeFinished();
+                }
+            }
+        },
+        Transition {
+            // use this transition when sip is not visible
+            from: (screen.minimized ? "disabled" : (inputContext.softwareInputPanelVisible ? "disabled" : "*"))
+            to:   (screen.minimized ? "disabled" : (inputContext.softwareInputPanelVisible ? "disabled" : "*"))
+            SequentialAnimation {
+                alwaysRunToEnd: true
+
+                ScriptAction {
+                    script: {
+                        snapshot.take();
+                        snapshot.opacity = 1.0;
+                        snapshot.rotation = -window.rotation;
+                        snapshot.smooth = false; // Quick & coarse rotation consistent with MTF
+                        platformWindow.animating = true;
+                        root.orientationChangeAboutToStart();
+                    }
+                }
+                PropertyAction { target: window; properties: "portrait"; }
+                ScriptAction {
+                    script: {
+                        windowContent.opacity = 0.0;
+                        root.orientationChangeStarted();
+                    }
+                }
+                ParallelAnimation {
+                    NumberAnimation { target: windowContent; property: "opacity";
+                                      to: 1.0; easing.type: Easing.InOutExpo; duration: 800; }
+                    NumberAnimation { target: snapshot; property: "opacity";
+                                      to: 0.0; easing.type: Easing.InOutExpo; duration: 800; }
+                    RotationAnimation { target: window; property: "rotation";
+                                        direction: RotationAnimation.Shortest;
+                                        easing.type: Easing.InOutExpo; duration: 800; }
+                }
+                ScriptAction {
+                    script: {
+                        snapshot.free();
+                        root.orientationChangeFinished();
+                        platformWindow.animating = false;
+                    }
+                }
+            }
+        }
+        ]
+
+        focus: true
+        Keys.onReleased: {
+            if (event.key == Qt.Key_I && event.modifiers == Qt.AltModifier) {
+                theme.inverted = !theme.inverted;
+            }
+            if (event.key == Qt.Key_E && event.modifiers == Qt.AltModifier) {
+                if(screen.currentOrientation == Screen.Landscape) {
+                    screen.allowedOrientations = Screen.Portrait;
+                } else if(screen.currentOrientation == Screen.Portrait) {
+                    screen.allowedOrientations = Screen.LandscapeInverted;
+                } else if(screen.currentOrientation == Screen.LandscapeInverted) {
+                    screen.allowedOrientations = Screen.PortraitInverted;
+                } else if(screen.currentOrientation == Screen.PortraitInverted) {
+                    screen.allowedOrientations = Screen.Landscape;
+                }
             }
         }
     }

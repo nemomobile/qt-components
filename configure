@@ -42,6 +42,7 @@
 BUILD_TREE=`/bin/pwd`
 SOURCE_TREE=`dirname $0`
 SOURCE_TREE=`cd "$SOURCE_TREE"; /bin/pwd`
+INSTALL_PREFIX=/usr
 
 BUILD_MEEGO_STYLE=no
 BUILD_SYMBIAN_STYLE=no
@@ -51,8 +52,12 @@ BUILD_EXTRAS=yes
 BUILD_TESTS=yes
 HAVE_MEEGOTOUCH=no
 HAVE_XDAMAGE=no
+HAVE_XRANDR=no
 HAVE_CONTEXTSUBSCRIBER=no
 HAVE_MEEGOGRAPHICSSYSTEM=no
+HAVE_SHADER=no
+HAVE_THEMEDAEMON_PROTOCOL_V1=yes
+FORCE_LOCAL_THEME=no
 HAVE_MOBILITY=auto
 HAVE_SYMBIAN_INTERNAL=no
 QMAKE_CONFIG=
@@ -83,6 +88,7 @@ if [ $? -eq 0 ]; then
     pkg-config --exists meegotouch && HAVE_MEEGOTOUCH=yes
     pkg-config --atleast-version=0.5.25 contextsubscriber-1.0 && HAVE_CONTEXTSUBSCRIBER=yes
     pkg-config --exists xdamage && HAVE_XDAMAGE=yes
+    pkg-config --exists xrandr && HAVE_XRANDR=yes
 fi
 
 #-------------------------------------------------------------------------------
@@ -100,11 +106,15 @@ while [ "$#" -gt 0 ]; do
         VAL=no
         ;;
     #Qt style yes options
-    -meego|-symbian|-meegotouch|-contextsubscriber|-xdamage|-meegographicssystem|-mobility)
+    -meego|-symbian|-meegotouch|-contextsubscriber|-xdamage|-xrandr|-meegographicssystem|-shader|-force-local-theme|-mobility)
         VAR=`echo $1 | sed 's,^-\(.*\),\1,'`
         VAL=yes
         ;;
-
+    -prefix)
+        VAR=`echo $1 | sed 's,^-\(.*\),\1,'`
+        shift
+        VAL="$1"
+        ;;
     -*)
         VAR=`echo $1 | sed 's,^-\(.*\),\1,'`
         VAL=unknown
@@ -124,8 +134,14 @@ while [ "$#" -gt 0 ]; do
 
     UNKNOWN_OPT=no
     case "$VAR" in
+    prefix)
+        INSTALL_PREFIX=$VAL
+        ;;
     meego)
         BUILD_MEEGO_STYLE=yes
+        ;;
+    force-local-theme)
+        FORCE_LOCAL_THEME=yes
         ;;
     symbian)
         BUILD_SYMBIAN_STYLE=yes
@@ -214,6 +230,20 @@ while [ "$#" -gt 0 ]; do
             UNKNOWN_OPT=yes
         fi
         ;;
+    xrandr)
+        if [ "$VAL" = "yes" ] || [ "$VAL" = "no" ]; then
+            HAVE_XRANDR=$VAL
+        else
+            UNKNOWN_OPT=yes
+        fi
+        ;;
+    shader)
+        if [ "$VAL" = "yes" ] || [ "$VAL" = "no" ]; then
+            HAVE_SHADER=$VAL
+        else
+            UNKNOWN_OPT=yes
+        fi
+        ;;
     mobility)
         if [ "$VAL" = "yes" ] || [ "$VAL" = "no" ]; then
             HAVE_MOBILITY=$VAL
@@ -282,7 +312,11 @@ fi
 [ "$HAVE_MEEGOTOUCH" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG meegotouch"
 [ "$HAVE_CONTEXTSUBSCRIBER" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG contextsubscriber"
 [ "$HAVE_MEEGOGRAPHICSSYSTEM" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG meegographicssystem"
+[ "$HAVE_THEMEDAEMON_PROTOCOL_V1" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG themedaemonprotocolv1"
+[ "$HAVE_SHADER" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG shader"
 [ "$HAVE_XDAMAGE" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG xdamage"
+[ "$HAVE_XRANDR" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG xrandr"
+[ "$FORCE_LOCAL_THEME" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG force-local-theme"
 
 [ "$HAVE_MOBILITY" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG mobility"
 [ "$HAVE_MOBILITY" = "no" ] && QMAKE_CONFIG="$QMAKE_CONFIG no_mobility"
@@ -296,7 +330,7 @@ echo "Q_COMPONENTS_BUILD_TREE = $BUILD_TREE" >> $QMAKE_CACHE
 echo
 echo "Running qmake..."
 
-QMAKEFEATURES=$QMAKEFEATURES $QMAKE $QMAKE_DEBUG -r "CONFIG+=$QMAKE_CONFIG" $SOURCE_TREE/qt-components.pro
+QMAKEFEATURES=$QMAKEFEATURES $QMAKE $QMAKE_DEBUG -r "CONFIG+=$QMAKE_CONFIG" $SOURCE_TREE/qt-components.pro INSTALL_PREFIX="$INSTALL_PREFIX"
 if [ $? != 0 ]; then
     echo "ERROR: qmake run failed."
     exit 1
@@ -311,17 +345,24 @@ if [ "$BUILD_MEEGO_STYLE" = "yes" ]; then
     echo "  MeeGo Touch support  ........... $HAVE_MEEGOTOUCH"
     echo "  ContextSubscriber support  ..... $HAVE_CONTEXTSUBSCRIBER"
     echo "  XDamage support  ............... $HAVE_XDAMAGE"
+    echo "  XRandr support  ................ $HAVE_XRANDR"
     echo "  MeeGo Graphics System support .. $HAVE_MEEGOGRAPHICSSYSTEM"
+    echo "  Shader support ................. $HAVE_SHADER"
+    echo "  Force local theme .............. $FORCE_LOCAL_THEME"
 fi
 echo "Symbian Style .................... $BUILD_SYMBIAN_STYLE"
 if [ "$BUILD_SYMBIAN_STYLE" = "yes" ]; then
     echo "  Qt Mobility support ............ $HAVE_MOBILITY"
     echo "  Symbian internal SDK ........... $HAVE_SYMBIAN_INTERNAL"
 fi
-echo "  Extras ......................... $BUILD_EXTRAS"
+echo "Extras ........................... $BUILD_EXTRAS"
 echo "Demos ............................ $BUILD_DEMOS"
 echo "Examples ......................... $BUILD_EXAMPLES"
 echo "Tests ............................ $BUILD_TESTS"
 echo
+if [ "$BUILD_MEEGO_STYLE" = "yes" ]; then
+echo "Install prefix: $INSTALL_PREFIX"
+echo
+fi
 echo Qt Components is now configured for building. Just run \'make\'.
 echo

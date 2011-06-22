@@ -1,0 +1,508 @@
+/****************************************************************************
+**
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project.
+**
+** $QT_BEGIN_LICENSE:BSD$
+** You may use this file under the terms of the BSD license as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
+**     the names of its contributors may be used to endorse or promote
+**     products derived from this software without specific prior written
+**     permission.
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+/*!
+    \group qt-components
+    \page qt-components-meego-simpletutorial.html
+    \title Simple Tutorial
+
+    \section1 Simple Tutorial Application
+    This tutorial shows you how to create a small example application that
+    uses tabs, page navigation, dialogs and some basic controls.
+    
+    Tutorial code is found from the public git repository under the
+    examples/src/meego directory. Note also that the ComponentGallery in
+    the same repository is a good source of information.
+    
+    The tutorial application is built of four separate QML pages:
+    
+    \list
+        \o main.qml
+        \o MainPage.qml
+        \o DalogsPage.qml
+        \o SimpleExamplesPage.qml
+    \endlist
+    
+    \section2 Main.qml 
+    Application is constructred using the MeeGo specific PageStackWindow that
+    brings the page navigation, toolbar, statusbar and platform common 
+    look and feel for free. Main page also declares a common toolbar that is used
+    in pages which does not declare their own toolbars.
+    
+    \code
+    //main.qml
+    import QtQuick 1.1
+    import com.nokia.meego 1.0
+
+    PageStackWindow {
+        id: rootWindow
+        property int pageMargin: 16
+
+        // ListPage is shown when the application starts, it links to 
+        // the component specific pages
+        initialPage: MainPage { }
+
+        // These tools are shared by most sub-pages by assigning the 
+        // id to a tools property of a page
+        ToolBarLayout {
+            id: commonTools
+            visible: false
+            ToolIcon { 
+                iconId: "toolbar-back"; 
+                onClicked: { myMenu.close(); pageStack.pop(); } 
+            }
+            ToolIcon { 
+                iconId: "toolbar-view-menu"; 
+                onClicked: (myMenu.status == DialogStatus.Closed) ? myMenu.open() : myMenu.close() 
+            }
+        } 
+    }
+    \endcode
+    
+    Perhaps the most important part of the main.qml is the place where the navigation page content
+    is declared. The initialPage property for PageStackWindow defines the first Page components that
+    is shown when the PageStackWindow is shown to the user.
+    
+    \code
+    initialPage: MainPage { }   
+    \endcode
+    
+    The content of the common toolbar is declared in the main.qml file. This is used if the 
+    pages inside the PageStackWindow is not having their own toolbar. The common toolbar visibility
+    if false as default. Pages needs to explicitly tell when they are used.
+    
+    \code
+    ToolBarLayout {
+        id: commonTools
+        visible: false
+        ToolIcon { 
+            iconId: "toolbar-back"; 
+            onClicked: { myMenu.close(); pageStack.pop(); } 
+        }
+        ToolIcon { 
+            iconId: "toolbar-view-menu"; 
+            onClicked: (myMenu.status == DialogStatus.Closed) ? myMenu.open() : myMenu.close() 
+        }
+    }     
+    \endcode
+        
+    \section2 MainPage.qml
+    MainPage component presents a lists of the available sub pages. The page content is in 
+    Flickable so that if the amount of pages would be more than what fits into one page user
+    can pan it.
+    
+    Page links are put into a list. This way, adding new links is very easy. Only thing
+    that is needed is to add a new ListElement into the ListModel. The delegate for the 
+    list view is used to render the actual list entry. For more info how this is
+    customized see the QML documentation.
+    
+    Note that the page is only loaded when the user is going to navigate to it. This
+    lazy loading is good way to ensure faster start-up time for the demo application. It
+    also saves memory.
+    
+    Page also declares ScrollDecorator for the Flickable. This way small scrolling indicators
+    are shown when the page is panned.
+    
+    One interesting item is also the URL used to load the images. For example the list view
+    delegate defines the background image with following URL
+    
+    \code
+    BorderImage {
+        ...
+        source: "image://theme/meegotouch-list-background-pressed-center"
+    }
+    \endcode
+    
+    This means that the image is loaded from the theme daemon, that shares the most common
+    icons and graphics accross the all running applications. This way memory is not consumed
+    for each application, but the graphic is loaded to the device memory only once.
+    
+    \code
+    //MainPage.qml
+    import QtQuick 1.1
+    import com.nokia.meego 1.0
+
+    Page {
+        id: listPage
+        anchors.margins: rootWindow.pageMargin
+
+        function openFile(file) {
+            var component = Qt.createComponent(file)
+            if (component.status == Component.Ready)
+                pageStack.push(component);
+            else
+                console.log("Error loading component:", component.errorString());
+        }
+
+        ListModel {
+            id: pagesModel
+            ListElement {
+                page: "SimpleExamplesPage.qml"
+                title: "Simple examples"
+                subtitle: "Buttons, TextField, ToolBar and ViewMenu"
+            }
+            ListElement {
+                page: "DialogsPage.qml"
+                title: "Dialogs"
+                subtitle: "How to use different dialogs"
+            }
+        }
+
+        ListView {
+            id: listView
+            anchors.fill: parent
+            model: pagesModel
+
+            delegate:  Item {
+                id: listItem
+                height: 88
+                width: parent.width
+
+                BorderImage {
+                    id: background
+                    anchors.fill: parent
+                    // Fill page borders
+                    anchors.leftMargin: -listPage.anchors.leftMargin
+                    anchors.rightMargin: -listPage.anchors.rightMargin
+                    visible: mouseArea.pressed
+                    source: "image://theme/meegotouch-list-background-pressed-center"
+                }
+
+                Row {
+                    anchors.fill: parent
+
+                    Column {
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        Label {
+                            id: mainText
+                            text: model.title
+                            font.weight: Font.Bold
+                            font.pixelSize: 26
+                        }
+
+                        Label {
+                            id: subText
+                            text: model.subtitle
+                            font.weight: Font.Light
+                            font.pixelSize: 22
+                            color: "#cc6633"
+
+                            visible: text != ""
+                        }
+                    }
+                }
+
+                Image {
+                    source: "image://theme/icon-m-common-drilldown-arrow" + (theme.inverted ? "-inverse" : "")
+                    anchors.right: parent.right;
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                MouseArea {
+                    id: mouseArea
+                    anchors.fill: background
+                    onClicked: {
+                        listPage.openFile(page)
+                    }
+                }
+            }
+        }
+        ScrollDecorator {
+            flickableItem: listView
+        }
+    }
+    \endcode
+        
+    \section2 DialogsPage.qml
+    
+    DialogsPage contains example of two dialogs: single selection dialog and query dialog. 
+    Interesting part is also the page specific menu. 
+    
+    \code
+    //DialogsPage.qml
+    import QtQuick 1.1
+    import com.nokia.meego 1.0
+
+    Page {
+        id: root
+        tools: tabTools
+        anchors.margins: rootWindow.pageMargin
+
+        QueryDialog {
+            id: query
+
+            icon: "image://theme/icon-l-contacts"
+            titleText: "Query Dialog Example"
+            message: "Press accept or reject button"
+            acceptButtonText: "Accept"
+            rejectButtonText: "Reject"
+            onAccepted: labelQueryResult.text = "Result: Accepted";
+            onRejected: labelQueryResult.text = "Result: Rejected";
+        }
+
+        SelectionDialog {
+            id: singleSelectionDialog
+
+            titleText: "Single Selection Dialog Header"
+            selectedIndex: 1
+
+            model: ListModel {
+                ListElement { name: "ListElement #1" }
+                ListElement { name: "ListElement #2" }
+                ListElement { name: "ListElement #3" }
+                ListElement { name: "ListElement #4" }
+                ListElement { name: "ListElement #5" }
+                ListElement { name: "ListElement #6" }
+                ListElement { name: "ListElement #7" }
+                ListElement { name: "ListElement #8" }
+                ListElement { name: "ListElement #9" }
+                ListElement { name: "ListElement #10" }
+            }
+        }
+
+    // Create page and buttons
+    ScrollDecorator {
+        flickableItem: container
+    }
+
+    Flickable {
+        id: container
+
+        x: 0 // we need to set the width and height
+        y: 0
+        width: root.width
+        height: root.height
+        contentWidth: dialogs.width
+        contentHeight: dialogs.height
+
+        flickableDirection: Flickable.VerticalFlick
+        pressDelay: 100
+
+        Column {            
+            id: dialogs
+            spacing: 24
+
+            Row {
+                spacing: 32
+
+                Button {
+                    text: "Query"
+                    width: 200
+                    onClicked: {
+                        query.open();
+                    }
+                }
+
+                Label {
+                    id: labelQueryResult
+                    text: "Result: N/A"
+                }
+            }
+
+            Row {
+                spacing: 32
+
+                Button {
+                    text: "SingleSelection"
+                    width: 200
+                    onClicked: {
+                        singleSelectionDialog.open();
+                    }
+                }
+
+                Grid {
+                    rows: screen.orientation == Screen.Landscape || screen.orientation == Screen.LandscapeInverted ? 1 : 2
+
+                    Rectangle {
+                        width: 200
+                        height: 30
+                        color: "white"
+
+                        Text {
+                            y: 10
+                            anchors.centerIn: parent
+                            text: "Selected:"
+                            font.pixelSize: 15
+                            font.bold: true
+                        }
+                    }
+
+                    Rectangle {
+                        width: 200
+                        height: 30
+                        color: "lightgray"
+
+                        Text {
+                            anchors.centerIn: parent
+                            text: singleSelectionDialog.model.get(singleSelectionDialog.selectedIndex).name
+                            font.pixelSize: 15
+                            font.bold: true
+                        }
+                    }
+                }
+            }
+
+            Row {
+                spacing: 32
+
+                Button {
+                    text: "Color menu"
+                    width: 200
+                    onClicked: {
+                        colorMenu.open();
+                    }
+                }
+
+                Rectangle {
+                    id : colorRect
+                    width: 50; height: 50;
+                    color : "black"
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: { colorMenu.open(); }
+                    }
+                }
+            }
+        }
+    }    
+
+    ToolBarLayout {
+        id: tabTools
+
+        ToolIcon { iconId: "toolbar-back"; onClicked: { colorMenu.close(); pageStack.pop(); }  }
+        ToolIcon { iconId: "toolbar-view-menu" ; onClicked: colorMenu.open(); }
+    }
+
+    Menu {
+        id: colorMenu
+        visualParent: pageStack
+
+        MenuLayout {
+            MenuItem {text: "Red"; onClicked: { colorRect.color = "darkred" } }
+            MenuItem {text: "Green"; onClicked: { colorRect.color = "darkgreen" }}
+            MenuItem {text: "Blue"; onClicked: { colorRect.color = "darkblue" }}
+            MenuItem {text: "Yellow"; onClicked: { colorRect.color = "yellow" }}
+        }
+    }
+}    
+    \endcode
+    
+    \section2 SimpleExamplesPage.qml
+    
+    SimpleExamplesPage contains example of toolbar and menu. 
+    
+    \code
+    //SimpleExamplesPage.qml
+    import QtQuick 1.1
+    import Qt.labs.components 1.0
+    import com.nokia.meego 1.0
+
+    Page {
+        id: buttonsPage
+        tools: buttonTools
+        anchors.margins: rootWindow.pageMargin
+
+        ToolBarLayout {
+            id: buttonTools
+
+            ToolIcon { iconId: "toolbar-back"; onClicked: { myMenu.close(); pageStack.pop(); }  }
+            ToolButtonRow {
+                ToolButton { 
+                    text: "Copy"; 
+                    onClicked: { label.text = textField.text } 
+                }
+                ToolButton { 
+                    text: "Clear"; 
+                    onClicked: { textField.text = ""; label.text = "empty label" } 
+                }
+            }
+            ToolIcon { iconId: "toolbar-view-menu" ; onClicked: myMenu.open(); }
+        }
+
+    Flickable {
+        id: flickable
+        anchors.fill: parent
+        flickableDirection: Flickable.VerticalFlick
+
+        Button { 
+            id: button;
+            anchors.topMargin: 32
+            anchors.leftMargin: 32
+            width: 450
+            text: "Copy text from TextField to Label"
+            onClicked: { label.text = textField.text } 
+        }
+
+        TextField {
+            id: textField
+            placeholderText: "TextField"
+            anchors.top: button.bottom
+            anchors.left: button.left
+            anchors.topMargin: 16
+            width: 450
+        }
+
+        Label {
+            id: label
+            anchors.top: textField.bottom
+            anchors.left: textField.left
+            anchors.topMargin: 16
+            text: "empty label"
+        }
+
+    }
+
+    ScrollDecorator {
+        flickableItem: flickable
+    }
+
+    Menu {
+        id: myMenu
+        visualParent: pageStack
+
+        MenuLayout {
+            MenuItem { text: "Move text from TextField to Label"; onClicked: { label.text = textField.text } }
+            MenuItem { text: "Clear everything"; onClicked: { textField.text = ""; label.text = "empty label" } }
+        }
+    }
+}    
+    \endcode
+*/

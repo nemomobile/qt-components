@@ -1,26 +1,40 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
-** This file is part of the Qt Components project on Qt Labs.
+** This file is part of the Qt Components project.
 **
-** No Commercial Usage
-** This file contains pre-release code and may not be distributed.
-** You may use this file in accordance with the terms and conditions contained
-** in the Technology Preview License Agreement accompanying this package.
+** $QT_BEGIN_LICENSE:BSD$
+** You may use this file under the terms of the BSD license as follows:
 **
-** GNU Lesser General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU Lesser
-** General Public License version 2.1 as published by the Free Software
-** Foundation and appearing in the file LICENSE.LGPL included in the
-** packaging of this file.  Please review the following information to
-** ensure the GNU Lesser General Public License version 2.1 requirements
-** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
+**     the names of its contributors may be used to endorse or promote
+**     products derived from this software without specific prior written
+**     permission.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+** $QT_END_LICENSE$
 **
 ****************************************************************************/
 
@@ -29,52 +43,76 @@
 
 #include <qdeclarativeitem.h>
 #include <qglobal.h>
+#include <QDesktopWidget>
+#include <QPointer>
 
 class MDeclarativeScreenPrivate;
+class MWindowState;
 
 class MDeclarativeScreen : public QObject
 {
     Q_OBJECT
+public:
+    enum Orientation {
+        Default = 0,
+        Portrait = 1,
+        Landscape = 2,
+        PortraitInverted = 4,
+        LandscapeInverted = 8,
+        All = 15
+    };
 
-    Q_PROPERTY(Orientation orientation READ orientation WRITE setOrientation NOTIFY orientationChanged FINAL)
-    Q_PROPERTY(QString orientationString READ orientationString NOTIFY orientationChanged FINAL)
-    Q_PROPERTY(bool orientationLocked READ isOrientationLocked WRITE setOrientationLocked NOTIFY orientationLockedChanged FINAL)
+    enum DisplayCategory {
+        Small,
+        Normal,
+        Large,
+        ExtraLarge
+    };
+
+    enum Density {
+        Low,
+        Medium,
+        High,
+        ExtraHigh
+    };
+
+    Q_ENUMS(Orientation DisplayCategory Density)
+    Q_FLAGS(Orientations)
+    Q_DECLARE_FLAGS(Orientations, Orientation)
+
+    Q_PROPERTY(Orientation currentOrientation READ currentOrientation NOTIFY currentOrientationChanged FINAL)
+    Q_PROPERTY(Orientations allowedOrientations READ allowedOrientations WRITE setAllowedOrientations NOTIFY allowedOrientationsChanged FINAL)
+    Q_PROPERTY(QString orientationString READ orientationString NOTIFY currentOrientationChanged FINAL)
     Q_PROPERTY(bool covered READ isCovered NOTIFY coveredChanged FINAL)
     Q_PROPERTY(bool keyboardOpen READ isKeyboardOpen NOTIFY keyboardOpenChanged FINAL)
 
-    Q_PROPERTY(int width READ width CONSTANT FINAL)
-    Q_PROPERTY(int height READ height CONSTANT FINAL)
-    Q_PROPERTY(int rotation READ rotation NOTIFY orientationChanged FINAL)
+    Q_PROPERTY(int width READ width NOTIFY widthChanged FINAL)
+    Q_PROPERTY(int height READ height NOTIFY heightChanged FINAL)
+    Q_PROPERTY(int displayWidth READ displayWidth NOTIFY displayChanged)
+    Q_PROPERTY(int displayHeight READ displayHeight NOTIFY displayChanged)
 
+    Q_PROPERTY(int rotation READ rotation NOTIFY currentOrientationChanged FINAL)
     Q_PROPERTY(bool minimized READ isMinimized WRITE setMinimized NOTIFY minimizedChanged FINAL)
 
-    Q_PROPERTY(bool softwareInputPanelVisible READ softwareInputPanelVisible NOTIFY softwareInputPanelVisibleChanged FINAL)
-    Q_PROPERTY(QRect softwareInputPanelRect READ softwareInputPanelRect NOTIFY softwareInputPanelVisibleChanged FINAL)
+    Q_PROPERTY(MWindowState * windowState READ windowState CONSTANT FINAL)
 
-    Q_PROPERTY(QRectF microFocus READ microFocus NOTIFY microFocusChanged)
-
-    Q_ENUMS(Orientation)
+    Q_PROPERTY(qreal dpi READ dpi NOTIFY displayChanged FINAL)
+    Q_PROPERTY(DisplayCategory displayCategory READ displayCategory NOTIFY displayChanged FINAL) // Small, Normal, Large, ExtraLarge
+    Q_PROPERTY(Density density READ density NOTIFY displayChanged FINAL) // Low, Medium, High, ExtraHigh
 
 public:
-    MDeclarativeScreen(QDeclarativeItem *parent = 0);
+    static MDeclarativeScreen* instance();
     virtual ~MDeclarativeScreen();
 
-    enum Orientation {
-        Portrait,
-        Landscape,
-        PortraitInverted,
-        LandscapeInverted
-    };
+    Q_INVOKABLE void updatePlatformStatusBarRect(QDeclarativeItem * statusBar);
 
-    void setOrientation(Orientation o);
-    Orientation orientation() const;
+    Orientation currentOrientation() const;
+
+    Orientations allowedOrientations() const;
 
     QString orientationString() const;
 
     int rotation() const;
-
-    bool isOrientationLocked() const;
-    void setOrientationLocked(bool locked);
 
     bool isCovered() const;
     bool isKeyboardOpen() const;
@@ -82,33 +120,43 @@ public:
     int width() const;
     int height() const;
 
-    bool softwareInputPanelVisible() const;
-    QRect softwareInputPanelRect() const;
-
-    QRectF microFocus() const;
+    int displayWidth() const;
+    int displayHeight() const;
 
     bool isMinimized() const;
     void setMinimized(bool minimized);
 
-    // ### this is a workaround for QTBUG-15574
-    Q_INVOKABLE void sendClicked(int x, int y, int position) const;
+    int dpi() const;
+    DisplayCategory displayCategory() const;
+    Density density() const;
+
+    MWindowState * windowState() const;
+
+
+    virtual bool eventFilter(QObject *, QEvent *);
+public Q_SLOTS:
+    void setAllowedOrientations(Orientations orientation);
 
 Q_SIGNALS:
-    void orientationChanged();
-    void orientationLockedChanged();
+    void currentOrientationChanged();
+    void allowedOrientationsChanged();
     void coveredChanged();
-    void softwareInputPanelVisibleChanged();
     void minimizedChanged();
     void keyboardOpenChanged();
-    void microFocusChanged();
+    void displayChanged();
+    void widthChanged();
+    void heightChanged();
 
 private:
+    MDeclarativeScreen(QDeclarativeItem *parent = 0);
     Q_DISABLE_COPY(MDeclarativeScreen)
     Q_PRIVATE_SLOT(d, void _q_isCoveredChanged())
     Q_PRIVATE_SLOT(d, void _q_updateOrientationAngle())
-    Q_PRIVATE_SLOT(d, void _q_setOrientationHelper())
-    Q_PRIVATE_SLOT(d, void _q_checkMicroFocusHint())
-    Q_PRIVATE_SLOT(d, void _q_sipChanged(const QRect &))
+    Q_PRIVATE_SLOT(d, void _q_updateIsTvConnected())
+    Q_PRIVATE_SLOT(d, void _q_windowAnimationChanged())
+
+    void setOrientation(Orientation o);
+    Orientation physicalOrientation() const;
 
     friend class MDeclarativeScreenPrivate;
     MDeclarativeScreenPrivate *d;

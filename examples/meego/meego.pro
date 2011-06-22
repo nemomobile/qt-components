@@ -3,6 +3,7 @@
 ######################################################################
 
 TEMPLATE=subdirs
-SUBDIRS += calculator \
-           widgetgallery
+SUBDIRS += QmlComponentGallery \
+           QmlComponentExtrasGallery \
+	   TutorialApplication
 

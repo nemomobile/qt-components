@@ -1,33 +1,48 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
-** This file is part of the Qt Components project on Qt Labs.
+** This file is part of the Qt Components project.
 **
-** No Commercial Usage
-** This file contains pre-release code and may not be distributed.
-** You may use this file in accordance with the terms and conditions contained
-** in the Technology Preview License Agreement accompanying this package.
+** $QT_BEGIN_LICENSE:BSD$
+** You may use this file under the terms of the BSD license as follows:
 **
-** GNU Lesser General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU Lesser
-** General Public License version 2.1 as published by the Free Software
-** Foundation and appearing in the file LICENSE.LGPL included in the
-** packaging of this file.  Please review the following information to
-** ensure the GNU Lesser General Public License version 2.1 requirements
-** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
+**     the names of its contributors may be used to endorse or promote
+**     products derived from this software without specific prior written
+**     permission.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+** $QT_END_LICENSE$
 **
 ****************************************************************************/
 
 // The PageStack item defines a container for pages and a stack-based
 // navigation model. Pages can be defined as QML items or components.
 
-import Qt 4.7
+import QtQuick 1.1
+import "." 1.0
 import "PageStack.js" as Engine
 
 Item {
@@ -43,30 +58,44 @@ Item {
     property Item currentPage: null
 
     // The application tool bar.
-    property Item toolBar: null
+    property ToolBar toolBar
 
     // Indicates whether there is an ongoing page transition.
-    property bool busy: (currentPage != null && currentPage.parent != null && currentPage.parent.busy)
+    property bool busy: __ongoingTransitionCount > 0
+
+    // The number of ongoing transitions.
+    property int __ongoingTransitionCount: 0
 
     // Pushes a page on the stack.
-    // The page can be defined as a component or an item.
+    // The page can be defined as a component, item or string.
     // If an item is used then the page will get re-parented.
+    // If a string is used then it is interpreted as a url that is used to load a page component.
+    //
+    // The page can also be given as an array of pages. In this case all those pages will be pushed
+    // onto the stack. The items in the stack can be components, items or strings just like for single
+    // pages. Additionally an object can be used, which specifies a page and an optional properties
+    // property. This can be used to push multiple pages while still giving each of them properties.
+    // When an array is used the transition animation will only be to the last page.
+    //
+    // The properties argument is optional and allows defining a map of properties to set on the page.
+    // If the immediate argument is true then no transition animation is performed.
     // Returns the page instance.
-    function push(page) {
-        return Engine.push(page);
+    function push(page, properties, immediate) {
+        return Engine.push(page, properties, false, immediate);
     }
 
     // Pops a page off the stack.
-    // If page is specified then the stack is unwound to that page.
+    // If page is specified then the stack is unwound to that page; null to unwind the to first page.
+    // If the immediate argument is true then no transition animation is performed.
     // Returns the page instance that was popped off the stack.
-    function pop(page) {
-        return Engine.pop(page);
+    function pop(page, immediate) {
+        return Engine.pop(page, immediate);
     }
 
     // Replaces a page on the stack.
     // See push() for details.
-    function replace(page) {
-        return Engine.push(page, true);
+    function replace(page, properties, immediate) {
+        return Engine.push(page, properties, true, immediate);
     }
 
     // Clears the page stack.
@@ -74,51 +103,60 @@ Item {
         return Engine.clear();
     }
 
+    // Iterates through all pages (top to bottom) and invokes the specified function.
+    // If the specified function returns true the search stops and the find function
+    // returns the page that the iteration stopped at. If the search doesn't result
+    // in any page being found then null is returned.
+    function find(func) {
+        return Engine.find(func);
+    }
+    
     // Called when the page stack visibility changes.
     onVisibleChanged: {
         if (currentPage) {
-            if (root.visible) {
-                // page stack became visible
-                __emitPageLifecycleSignal(currentPage, "activating");
-                __emitPageLifecycleSignal(currentPage, "activated");
-            } else {
-                // page stack became invisible
-                __emitPageLifecycleSignal(currentPage, "deactivating");
-                __emitPageLifecycleSignal(currentPage, "deactivated");
+            __setPageStatus(currentPage, visible ? PageStatus.Active : PageStatus.Inactive);
+            if (visible) {
+                currentPage.visible = currentPage.parent.visible = true;
             }
         }
     }
-    
-    // Emits a lifecycle signal for a page.
-    function __emitPageLifecycleSignal(page, signal) {
-        if (page[signal]) {
-            page[signal]();
+
+    // Sets the page status.
+    function __setPageStatus(page, status) {
+        if (page.status !== undefined) {
+            if (status == PageStatus.Active && page.status == PageStatus.Inactive) {
+                page.status = PageStatus.Activating;
+            } else if (status == PageStatus.Inactive && page.status == PageStatus.Active) {
+                page.status = PageStatus.Deactivating;
+            }
+            page.status = status;
         }
     }
 
-    // Component for page slots.
+    // Component for page containers.
     Component {
-        id: slotComponent
+        id: containerComponent
 
         Item {
-            id: slot
+            id: container
 
             width: parent ? parent.width : 0
             height: parent ? parent.height : 0
 
-            // The states correspond to the different possible positions of the slot.
+            // The states correspond to the different possible positions of the container.
             state: "hidden"
 
-            // The page held by this slot.
+            // The page held by this container.
             property Item page: null
+            
             // The owner of the page.
             property Item owner: null
 
             // Duration of transition animation (in ms)
             property int transitionDuration: 500
 
-            // Tracks whether a transition is ongoing.
-            property bool busy: false
+            // Flag that indicates the container should be cleaned up after the transition has ended.
+            property bool cleanupAfterTransition: false
 
             // Performs a push enter transition.
             function pushEnter(replace, immediate) {
@@ -128,8 +166,7 @@ Item {
                 state = "";
                 page.visible = true;
                 if (root.visible && immediate) {
-                    __emitPageLifecycleSignal(page, "activating");
-                    __emitPageLifecycleSignal(page, "activated");
+                    __setPageStatus(page, PageStatus.Active);
                 }
             }
 
@@ -137,11 +174,14 @@ Item {
             function pushExit(replace, immediate) {
                 state = immediate ? "hidden" : (replace ? "back" : "left");
                 if (root.visible && immediate) {
-                    __emitPageLifecycleSignal(page, "deactivating");
-                    __emitPageLifecycleSignal(page, "deactivated");
+                    __setPageStatus(page, PageStatus.Inactive);
                 }
                 if (replace) {
-                    slot.destroy(immediate ? 0 : transitionDuration + 100);
+                    if (immediate) {
+                        cleanup();
+                    } else {
+                        cleanupAfterTransition = true;
+                    }
                 }
             }
 
@@ -153,8 +193,7 @@ Item {
                 state = "";
                 page.visible = true;
                 if (root.visible && immediate) {
-                    __emitPageLifecycleSignal(page, "activating");
-                    __emitPageLifecycleSignal(page, "activated");
+                    __setPageStatus(page, PageStatus.Active);
                 }
             }
 
@@ -162,56 +201,67 @@ Item {
             function popExit(immediate) {
                 state = immediate ? "hidden" : "right";
                 if (root.visible && immediate) {
-                    __emitPageLifecycleSignal(page, "deactivating");
-                    __emitPageLifecycleSignal(page, "deactivated");
+                    __setPageStatus(page, PageStatus.Inactive);
                 }
-                slot.destroy(immediate ? 0 : transitionDuration + 100);
+                if (immediate) {
+                    cleanup();
+                } else {
+                    cleanupAfterTransition = true;
+                }
             }
             
             // Called when a transition has started.
             function transitionStarted() {
-                busy = true;
+                __ongoingTransitionCount++;
                 if (root.visible) {
-                    __emitPageLifecycleSignal(page, state == "" ? "activating" : "deactivating");
+                    __setPageStatus(page, (state == "") ? PageStatus.Activating : PageStatus.Deactivating);
                 }
             }
             
             // Called when a transition has ended.
             function transitionEnded() {
-                busy = false;
-                if (root.visible) {
-                    __emitPageLifecycleSignal(page, state == "" ? "activated" : "deactivated");
-                }
-                if (state == "left" || state == "right" || state == "back") {
+                if (state != "") {
                     state = "hidden";
+                }
+                if (root.visible) {
+                    __setPageStatus(page, (state == "") ? PageStatus.Active : PageStatus.Inactive);
+                }
+                __ongoingTransitionCount--;
+                if (cleanupAfterTransition) {
+                    cleanup();
                 }
             }
 
             states: [
+                // Explicit properties for default state.
+                State {
+                    name: ""
+                    PropertyChanges { target: container; visible: true }
+                },
                 // Start state for pop entry, end state for push exit.
                 State {
                     name: "left"
-                    PropertyChanges { target: slot; x: -width }
+                    PropertyChanges { target: container; x: -width }
                 },
                 // Start state for push entry, end state for pop exit.
                 State {
                     name: "right"
-                    PropertyChanges { target: slot; x: width }
+                    PropertyChanges { target: container; x: width }
                 },
                 // Start state for replace entry.
                 State {
                     name: "front"
-                    PropertyChanges { target: slot; scale: 1.5; opacity: 0.0 }
+                    PropertyChanges { target: container; scale: 1.5; opacity: 0.0 }
                 },
                 // End state for replace exit.
                 State {
                     name: "back"
-                    PropertyChanges { target: slot; scale: 0.5; opacity: 0.0 }
+                    PropertyChanges { target: container; scale: 0.5; opacity: 0.0 }
                 },
                 // Inactive state.
                 State {
                     name: "hidden"
-                    PropertyChanges { target: slot; visible: false }
+                    PropertyChanges { target: container; visible: false }
                 }
             ]
 
@@ -254,28 +304,17 @@ Item {
                 }
             ]
             
-            // Cleans up the slot.
+            // Cleans up the container and then destroys it.
             function cleanup() {
-                if (page != null) {
-                    if (state == "") {
-                        // the page is active - deactivate it
-                        if (root.visible) {
-                            __emitPageLifecycleSignal(page, "deactivating");
-                            __emitPageLifecycleSignal(page, "deactivated");
-                        }
-                    }
-                    if (owner != slot) {
-                        // slot is not the owner of the page - re-parent back to original owner
-                        page.visible = false;
-                        page.parent = owner;
-                    }
-                    page = null;
+                if (page.status == PageStatus.Active) {
+                    __setPageStatus(page, PageStatus.Inactive);
                 }
-            }
-
-            // Called when the slot gets destroyed.
-            Component.onDestruction: {
-                cleanup();
+                if (owner != container) {
+                    // container is not the owner of the page - re-parent back to original owner
+                    page.visible = false;
+                    page.parent = owner;
+                }
+                container.destroy();
             }
 
         }

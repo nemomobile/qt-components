@@ -1,134 +1,183 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
-** This file is part of the Qt Components project on Qt Labs.
+** This file is part of the Qt Components project.
 **
-** No Commercial Usage
-** This file contains pre-release code and may not be distributed.
-** You may use this file in accordance with the terms and conditions contained
-** in the Technology Preview License Agreement accompanying this package.
+** $QT_BEGIN_LICENSE:BSD$
+** You may use this file under the terms of the BSD license as follows:
 **
-** GNU Lesser General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU Lesser
-** General Public License version 2.1 as published by the Free Software
-** Foundation and appearing in the file LICENSE.LGPL included in the
-** packaging of this file.  Please review the following information to
-** ensure the GNU Lesser General Public License version 2.1 requirements
-** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
+**     the names of its contributors may be used to endorse or promote
+**     products derived from this software without specific prior written
+**     permission.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+** $QT_END_LICENSE$
 **
 ****************************************************************************/
 
-import Qt 4.7
-import com.meego.themebridge 1.0
+import QtQuick 1.1
 
-ImplicitSizeItem {
+/*
+Class: Switch
+   The Switch component is similar to the CheckBox component but instead of
+   selecting items it should be used when setting options to On/Off.
+*/
+Item {
     id: root
 
-    property alias checked: thumb.checked
+    width: slider.width
+    height: slider.height
 
-    implicitWidth: meegostyle.preferredWidth
-    implicitHeight: meegostyle.preferredHeight
+    /*
+    * Property: checked
+     * [bool=false] The checked state of switch
+     */
+    property bool checked: false
 
-    Style {
-        id: meegostyle
-        styleClass: "MButtonSwitchStyle"
-        mode: state=="on" ? "selected" : "normal"
-    }
+    // Styling for the Switch
+    property Style platformStyle: SwitchStyle {}
 
-    Background {
-        anchors.fill: parent
-        style: meegostyle
-    }
+    //Deprecated, TODO Remove this on w13
+    property alias style: root.platformStyle
 
-    // XXX This is not exactly equal to how MButtonSwitchView composes the image
-    //     but gets close.
-    //     Proper implementation probably requires merging of both standard and
-    //     selected image
-    MaskedImage {
-        id: selectedImage
-        anchors.fill: root
-        style: meegostyle
-        maskProperty: "sliderMask"
-        imageProperty: "sliderImageSelected"
-        opacity: (thumb.x - mousearea.drag.minimumX) / mousearea.drag.maximumX
-    }
+    property alias platformMouseAnchors: mouseArea.anchors
 
-    MaskedImage {
-        anchors.fill: root
-        style: meegostyle
-        maskProperty: "sliderMask"
-        imageProperty: "sliderImage"
-        opacity: 1 - selectedImage.opacity
-    }
+    /*
+    * Property: enabled
+     * [bool=true] Enables/Disables the component. Notice that the disable state is not Toolkit compliant
+     * and not present inside the qt-components
+     */
 
-    ScalableImage {
-        id: thumb
-        anchors.verticalCenter: parent.verticalCenter
-        property bool checked: false
+    Item {
+        id: slider
 
-        height: root.height - 2 * meegostyle.current.get("thumbMargin")
-        width: height // XXX Assuming 1:1 aspect ratio. This is not safe
+        width: 66
+        height: 42
 
-        style: meegostyle
-        imageProperty: "thumbImage"
+        state: root.checked ? "checked" : "unchecked"
+
+        property real knobPos: (knob.x - platformStyle.minKnobX) / (platformStyle.maxKnobX - platformStyle.minKnobX)
+
+        Image {
+            source: platformStyle.switchOn
+            opacity: slider.knobPos
+        }
+        Image {
+            source: platformStyle.switchOff
+            opacity: 1.0 - slider.knobPos
+        }
 
         states: [
             State {
-                name: "off"
-                when: !mousearea.drag.active && !checked
-                PropertyChanges {
-                    restoreEntryValues: false
-                    target: thumb
-                    x: mousearea.drag.minimumX
-                }
+                name: "unchecked"
+                PropertyChanges { target: knob; x: platformStyle.minKnobX }
             },
             State {
-                name: "on"
-                when: !mousearea.drag.active && checked
-                PropertyChanges {
-                    restoreEntryValues: false
-                    target: thumb
-                    x: mousearea.drag.maximumX
-                }
-            },
-            State {
-                name: "dragging"
-                when: mousearea.drag.active
-            }]
+                name: "checked"
+                PropertyChanges { target: knob; x: platformStyle.maxKnobX }
+            }
+        ]
 
-        transitions:
+        transitions: [
             Transition {
                 SmoothedAnimation { properties: "x"; velocity: 500; maximumEasingTime: 0 }
             }
-    }
+        ]
 
-    MouseArea {
-        id: mousearea
-        anchors.fill: parent
-        anchors.leftMargin: -meegostyle.current.get("reactiveMarginLeft")
-        anchors.rightMargin: -meegostyle.current.get("reactiveMarginRight")
-        anchors.topMargin: -meegostyle.current.get("reactiveMarginTop")
-        anchors.bottomMargin: -meegostyle.current.get("reactiveMarginBottom")
+        // thumb (shadow)
+        Image {
+            id: knob
 
-        drag {
-            axis: Drag.XAxis
-            minimumX: meegostyle.get("thumbMargin")
-            maximumX: parent.width - thumb.width - meegostyle.get("thumbMargin")
-
-            target: thumb
-            onActiveChanged: {
-                if (!mousearea.drag.active) {
-                    thumb.checked = (thumb.x > mousearea.drag.maximumX / 2)
-                }
+            // thumb (inline)
+            Image {
+                width: 30
+                height: 30
+                x: 2
+                y: 2
+                source: (slider.enabled ? (mouseArea.pressed ? platformStyle.thumbPressed : platformStyle.thumb) : platformStyle.thumbDisabled)
             }
+
+            source: platformStyle.shadow
+
+            /* x: 4 */
+            y: 4
+
+            width: 34
+            height: 34
         }
 
-        onClicked: thumb.checked = !thumb.checked
+        MouseArea {
+            id: mouseArea
+            property int downMouseX
+            property int downKnobX
+            anchors {
+                fill: parent
+                rightMargin: platformStyle.mouseMarginRight
+                leftMargin: platformStyle.mouseMarginLeft
+                topMargin: platformStyle.mouseMarginTop
+                bottomMargin: platformStyle.mouseMarginBottom
+            }
+
+            function snap() {
+                if (knob.x < (platformStyle.maxKnobX + platformStyle.minKnobX) / 2) {
+                    if (root.checked) {
+                        root.checked = false;
+                    } else {
+                        knob.x = platformStyle.minKnobX;
+                    }
+                } else {
+                    if (!root.checked) {
+                        root.checked = true;
+                    } else {
+                        knob.x = platformStyle.maxKnobX;
+                    }
+                }
+            }
+
+            onPressed: {
+                downMouseX = mouseX;
+                downKnobX = knob.x;
+            }
+
+            onPositionChanged: {
+                var newKnobX = downKnobX - (downMouseX - mouseX);
+                knob.x = newKnobX < platformStyle.minKnobX ? platformStyle.minKnobX : newKnobX > platformStyle.maxKnobX ? platformStyle.maxKnobX : newKnobX;
+            }
+
+            onReleased: {
+                if (Math.abs(downMouseX - mouseX) < 5)
+                    root.checked = !root.checked;
+                else
+                    snap();
+            }
+
+            onCanceled: {
+                snap();
+            }
+
+        }
     }
 }

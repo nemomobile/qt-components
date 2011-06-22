@@ -1,0 +1,3 @@
+This folder contains use-case or app-specific QML elements with less of an API promise.
+Over time these can potentially be migrated into common components.
+These made available as a separate package; qt-components-extras.

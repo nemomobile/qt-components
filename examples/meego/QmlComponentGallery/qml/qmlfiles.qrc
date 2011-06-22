@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/">
+        <file>PageStackWindowPage.qml</file>
+        <file>ButtonPage.qml</file>
+        <file>ChangeToolbarPage.qml</file>
+        <file>DialogPage.qml</file>
+        <file>DynamicNavigationPage.qml</file>
+        <file>LabelPage.qml</file>
+        <file>ListPage.qml</file>
+        <file>main.qml</file>
+        <file>MiscPage.qml</file>
+        <file>OrientationModePage.qml</file>
+        <file>OrientationPage.qml</file>
+        <file>PlaybackPage.qml</file>
+        <file>SectionScrollerPage.qml</file>
+        <file>SheetPage.qml</file>
+        <file>SliderPage.qml</file>
+        <file>StaticNavigationPage.qml</file>
+        <file>TabBarPage.qml</file>
+        <file>TextInputPage.qml</file>
+        <file>VisibilityPage.qml</file>
+        <file>ToolBarPage.qml</file>
+        <file>OrientationModeScreen.qml</file>
+        <file>CustomVkbPage.qml</file>
+    </qresource>
+</RCC>

@@ -1,33 +1,47 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
-** This file is part of the Qt Components project on Qt Labs.
+** This file is part of the Qt Components project.
 **
-** No Commercial Usage
-** This file contains pre-release code and may not be distributed.
-** You may use this file in accordance with the terms and conditions contained
-** in the Technology Preview License Agreement accompanying this package.
+** $QT_BEGIN_LICENSE:BSD$
+** You may use this file under the terms of the BSD license as follows:
 **
-** GNU Lesser General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU Lesser
-** General Public License version 2.1 as published by the Free Software
-** Foundation and appearing in the file LICENSE.LGPL included in the
-** packaging of this file.  Please review the following information to
-** ensure the GNU Lesser General Public License version 2.1 requirements
-** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
+**     the names of its contributors may be used to endorse or promote
+**     products derived from this software without specific prior written
+**     permission.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+** $QT_END_LICENSE$
 **
 ****************************************************************************/
 
 // The ToolBar is a container for toolbar items such as ToolItem or ToolButton.
 
-import Qt 4.7
-import com.meego.themebridge 1.0
+import QtQuick 1.1
+import "." 1.0
 
 Item {
     id: root
@@ -35,8 +49,16 @@ Item {
     width: parent ? parent.width : 0
     height: bgImage.height
 
-    // Duration of transition animation (in ms)
-    property int transitionDuration: 500
+    // Dummy property to allow qt component deprecated API clients to fail more gracefully
+    property bool __hidden: false
+
+    property int privateVisibility: ToolBarVisibility.Visible
+
+    // Styling for the ToolBar
+    property Style platformStyle: ToolBarStyle {}
+
+    // Deprecated, TODO remove
+    property alias style: root.platformStyle
 
     // Toolbar background.
     BorderImage {
@@ -46,32 +68,39 @@ Item {
         border.right: 10
         border.top: 10
         border.bottom: 10
-        source: "image://theme/meegotouch-navigationbar-" +
-                (root.parent && (root.parent.width > root.parent.height) ? "landscape" : "portrait") +
-                "-background"
-    }
+        source: platformStyle.background
 
-    Item {
-        id: slotContainer
-        width: root.width
-        height: bgImage.height
+        // Mousearea that eats clicks so they don't go through the toolbar to content
+        // that may exist below it in z-order, such as unclipped listview items.
+        MouseArea { anchors.fill: parent }
     }
 
     states: [
         // Inactive state.
         State {
             name: "hidden"
-            PropertyChanges { target: root; height: 0; opacity: 0.0 }
+            when: privateVisibility == ToolBarVisibility.Hidden || tools == null
+            PropertyChanges { target: root; height: 0; }
+        },
+        State {
+            name: "HiddenImmediately"
+            when: privateVisibility == ToolBarVisibility.HiddenImmediately
+            PropertyChanges { target: root; height: 0; }
+        },
+        State {
+            name: ""
+            when: !(privateVisibility == ToolBarVisibility.Visible || tools == null)
+            PropertyChanges { target: root; height: bgImage.height }
         }
+
     ]
 
     transitions: [
         // Transition between active and inactive states.
         Transition {
             from: ""; to: "hidden"; reversible: true
-            SequentialAnimation {
-                PropertyAnimation { properties: "opacity"; easing.type: Easing.InOutExpo; duration: transitionDuration }
-                PropertyAnimation { properties: "height"; duration: 10 }
+            ParallelAnimation {
+                PropertyAnimation { properties: "height"; easing.type: Easing.InOutExpo; duration: platformStyle.visibilityTransitionDuration }
             }
         }
     ]
@@ -91,38 +120,38 @@ Item {
     //      replace     follows page stack replace animation
     property string transition: "set"
 
-    // The currently displayed slot; null if none.
-    property Item __currentSlot: null
+    // The currently displayed container; null if none.
+    property Item __currentContainer: null
 
-    // Alternating slots used for transitions.
-    property Item __slotA: null
-    property Item __slotB: null
+    // Alternating containers used for transitions.
+    property Item __containerA: null
+    property Item __containerB: null
 
     // The transition to perform next.
     property variant __transition
 
     // Sets the tools with a transition.
     function setTools(tools, transition) {
-        root.state = tools ? "" : "hidden";
         __transition = transition;
         root.tools = tools;
     }
 
     // Performs a transition between tools in the toolbar.
     function __performTransition(transition) {
-        // lazily create slots if they have not been created
-        if (!__currentSlot) {
-            __slotA = slotComponent.createObject(slotContainer);
-            __slotB = slotComponent.createObject(slotContainer);
-            __currentSlot = __slotB;
+        // lazily create containers if they have not been created
+        if (!__currentContainer) {
+            // Parent is bgImage because it doesn't change height when toolbar gets hidden
+            __containerA = containerComponent.createObject(bgImage);
+            __containerB = containerComponent.createObject(bgImage);
+            __currentContainer = __containerB;
         }
 
         // no transition if the tools are unchanged
-        if (__currentSlot.tools == tools) {
+        if (__currentContainer.tools == tools) {
             return;
         }
 
-        // select slot states based on the transition animation
+        // select container states based on the transition animation
         var transitions = {
             "set":      { "new": "",        "old": "hidden" },
             "push":     { "new": "right",   "old": "left" },
@@ -131,40 +160,40 @@ Item {
         };
         var animation = transitions[transition];
 
-        // initialize the free slot
-        var slot = __currentSlot == __slotA ? __slotB : __slotA;
-        slot.state = "hidden";
+        // initialize the free container
+        var container = __currentContainer == __containerA ? __containerB : __containerA;
+        container.state = "hidden";
         if (tools) {
-            slot.tools = tools;
-            slot.owner = tools.parent;
-            tools.parent = slot;
+            container.tools = tools;
+            container.owner = tools.parent;
+            tools.parent = container;
             tools.visible = true;
         }
 
         // perform transition
-        __currentSlot.state = animation["old"];
+        __currentContainer.state = animation["old"];
         if (tools) {
-            slot.state = animation["new"];
-            slot.state = "";
+            container.state = animation["new"];
+            container.state = "";
         }
 
-        __currentSlot = slot;
+        __currentContainer = container;
     }
 
-    // Component for toolbar slots.
+    // Component for toolbar containers.
     Component {
-        id: slotComponent
+        id: containerComponent
 
         Item {
-            id: slot
+            id: container
 
             width: parent ? parent.width : 0
             height: parent ? parent.height : 0
 
-            // The states correspond to the different possible positions of the slot.
+            // The states correspond to the different possible positions of the container.
             state: "hidden"
 
-            // The tools held by this slot.
+            // The tools held by this container.
             property Item tools: null
             // The owner of the tools.
             property Item owner: null
@@ -173,36 +202,36 @@ Item {
                 // Start state for pop entry, end state for push exit.
                 State {
                     name: "left"
-                    PropertyChanges { target: slot; x: -30; opacity: 0.0 }
+                    PropertyChanges { target: container; x: -30; opacity: 0.0 }
                 },
                 // Start state for push entry, end state for pop exit.
                 State {
                     name: "right"
-                    PropertyChanges { target: slot; x: 30; opacity: 0.0 }
+                    PropertyChanges { target: container; x: 30; opacity: 0.0 }
                 },
                 // Start state for replace entry.
                 State {
                     name: "front"
-                    PropertyChanges { target: slot; scale: 1.25; opacity: 0.0 }
+                    PropertyChanges { target: container; scale: 1.25; opacity: 0.0 }
                 },
                 // End state for replace exit.
                 State {
                     name: "back"
-                    PropertyChanges { target: slot; scale: 0.85; opacity: 0.0 }
+                    PropertyChanges { target: container; scale: 0.85; opacity: 0.0 }
                 },
                 // Inactive state.
                 State {
                     name: "hidden"
-                    PropertyChanges { target: slot; visible: false }
+                    PropertyChanges { target: container; visible: false }
                     StateChangeScript {
                         script: {
-                            if (slot.tools) {
+                            if (container.tools) {
                                 // re-parent back to original owner
                                 tools.visible = false;
                                 tools.parent = owner;
 
-                                // reset slot
-                                slot.tools = slot.owner = null;
+                                // reset container
+                                container.tools = container.owner = null;
                             }
                         }
                     }
@@ -214,8 +243,8 @@ Item {
                 Transition {
                     from: ""; to: "left"; reversible: true
                     SequentialAnimation {
-                        PropertyAnimation { properties: "x,opacity"; easing.type: Easing.InCubic; duration: transitionDuration / 2 }
-                        PauseAnimation { duration: transitionDuration / 2 }
+                        PropertyAnimation { properties: "x,opacity"; easing.type: Easing.InCubic; duration: platformStyle.contentTransitionDuration / 2 }
+                        PauseAnimation { duration: platformStyle.contentTransitionDuration / 2 }
                         ScriptAction { script: if (state == "left") state = "hidden"; }
                     }
                 },
@@ -223,8 +252,8 @@ Item {
                 Transition {
                     from: ""; to: "right"; reversible: true
                     SequentialAnimation {
-                        PropertyAnimation { properties: "x,opacity"; easing.type: Easing.InCubic; duration: transitionDuration / 2 }
-                        PauseAnimation { duration: transitionDuration / 2 }
+                        PropertyAnimation { properties: "x,opacity"; easing.type: Easing.InCubic; duration: platformStyle.contentTransitionDuration / 2 }
+                        PauseAnimation { duration: platformStyle.contentTransitionDuration / 2 }
                         ScriptAction { script: if (state == "right") state = "hidden"; }
                     }
                 },
@@ -232,14 +261,14 @@ Item {
                     // Replace entry transition.
                     from: "front"; to: "";
                     SequentialAnimation {
-                        PropertyAnimation { properties: "scale,opacity"; easing.type: Easing.InOutExpo; duration: transitionDuration }
+                        PropertyAnimation { properties: "scale,opacity"; easing.type: Easing.InOutExpo; duration: platformStyle.contentTransitionDuration }
                     }
                 },
                 Transition {
                     // Replace exit transition.
                     from: ""; to: "back";
                     SequentialAnimation {
-                        PropertyAnimation { properties: "scale,opacity"; easing.type: Easing.InOutExpo; duration: transitionDuration }
+                        PropertyAnimation { properties: "scale,opacity"; easing.type: Easing.InOutExpo; duration: platformStyle.contentTransitionDuration }
                         ScriptAction { script: if (state == "back") state = "hidden"; }
                     }
                 }

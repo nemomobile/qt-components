@@ -1,107 +1,202 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
-** This file is part of the Qt Components project on Qt Labs.
+** This file is part of the Qt Components project.
 **
-** No Commercial Usage
-** This file contains pre-release code and may not be distributed.
-** You may use this file in accordance with the terms and conditions contained
-** in the Technology Preview License Agreement accompanying this package.
+** $QT_BEGIN_LICENSE:BSD$
+** You may use this file under the terms of the BSD license as follows:
 **
-** GNU Lesser General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU Lesser
-** General Public License version 2.1 as published by the Free Software
-** Foundation and appearing in the file LICENSE.LGPL included in the
-** packaging of this file.  Please review the following information to
-** ensure the GNU Lesser General Public License version 2.1 requirements
-** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
+**     the names of its contributors may be used to endorse or promote
+**     products derived from this software without specific prior written
+**     permission.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+** $QT_END_LICENSE$
 **
 ****************************************************************************/
 
-import Qt 4.7
-import Qt.labs.components 1.0
-import com.meego.themebridge 1.0
+import QtQuick 1.1
 
 // Background dimming
 Rectangle {
-  id: background
+    id: faderBackground
 
-  Component.onCompleted: init()
+    property double dim: 0.9
+    property int fadeInDuration: 250
+    property int fadeOutDuration: 250
 
-  property bool modal: true
-  property double dimm: 0.8
+    property int fadeInDelay: 0
+    property int fadeOutDelay: 0
 
-  opacity: 0.0
-  color: "black"
-  state: 'hidden'
+    property int fadeInEasingType: Easing.InQuint
+    property int fadeOutEasingType: Easing.OutQuint
 
-  signal clicked
+    property url background: ""
 
-  //eat mouse events inside the background
-  MouseArea {
-    id: mouseEventEater 
+    property Item visualParent: null
+    property Item originalParent: parent
+
+    // widen the edges to avoid artefacts during rotation
+    anchors.topMargin:    -1
+    anchors.rightMargin:  -1
+    anchors.bottomMargin: -1
+    anchors.leftMargin:   -1
+
+    // opacity is passed to child elements - that is not, what we want
+    // so we need to use alpha value here
+    property double alpha: dim
+
+    signal privateClicked
+
+     //Deprecated, TODO Remove the following two lines on w13
+    signal clicked
+    onClicked: privateClicked()
+
+    // we need the possibility to fetch the red, green, blue components from a color
+    // see http://bugreports.qt.nokia.com/browse/QTBUG-14731
+    color: background == undefined ? "transparent" : Qt.rgba(0.0, 0.0, 0.0, alpha)
+    state: 'hidden'
+
     anchors.fill: parent
-    enabled: background.modal
 
-    onClicked: parent.clicked();
-  }
+    // eat mouse events
+    MouseArea {
+        id: mouseEventEater
+        anchors.fill: parent
+        enabled: faderBackground.alpha != 0.0
+        onClicked: { parent.privateClicked() }
+    }
 
-  function init() {
-      if (modal) {
-        var root = getRoot();
-        var globalXY;
-        if (root != null) { 
-           globalXY = mapFromItem(root, root.x, root.y);
-           width = root.width; height = root.height;
-        } else { 
-           globalXY = mapFromItem(null, 0, 0);
+    Component {
+        id: backgroundComponent
+        BorderImage {
+            id: backgroundImage
+            source: background
+
+            width: faderBackground.width
+            height: faderBackground.height
+
+            opacity: faderBackground.alpha
         }
-        x = globalXY.x; y = globalXY.y;
-      } else {
-        anchors.fill = parent;
-      }
-  }
+    }
+    Loader {id: backgroundLoader}
 
-  function getRoot() {
-      var next = parent;
-      if (next != null) {
-        while (next.parent) {
-          next = next.parent;
+    onAlphaChanged: {
+          if (background && faderBackground.alpha && backgroundLoader.sourceComponent == undefined) {
+            backgroundLoader.sourceComponent = backgroundComponent;
+          }
+          if (!faderBackground.alpha) {
+            backgroundLoader.sourceComponent = undefined;
+          }
+    }
+
+    function findRoot() {
+        var next = parent;
+
+        if (next != null) {
+            while (next.parent) {
+                if(next.objectName == "appWindowContent" || next.objectName == "windowContent"){
+                    break
+                }
+
+                next = next.parent;
+            }
         }
-      }
-      return next;
-  }
-  
+        return next;
+    }
+
+
     states: [
-      State {
-        name: "visible"
-        PropertyChanges {
-          target: background
-          opacity: background.dimm
+        State {
+            name: "visible"
+            PropertyChanges {
+                target: faderBackground
+                alpha: dim
+            }
+        },
+        State {
+            name: "hidden"
+            PropertyChanges {
+                target: faderBackground
+                alpha: 0.0
+            }
         }
-      },
-      State {
-        name: "hidden"
-        PropertyChanges {
-           target: background
-           opacity: 0.0
-        }
-      }
     ]
     
-   transitions: [
-     Transition {
-        NumberAnimation {properties: "opacity"; duration: 900}
-    }
-   ]
+    transitions: [
+        Transition {
+            from: "hidden"; to: "visible"
+            //reparent fader whenever it is going to be visible
+            SequentialAnimation {
+                ScriptAction {script: {
+                        //console.log("=============00=============");
+                        // the algorithm works in the following way:
+                        // First:  Check if visualParent property is set; if yes, center the fader in visualParent
+                        // Second: If not, center inside window content element
+                        // Third:  If no window was found, use root window
+                        originalParent = faderBackground.parent;
+                        if (visualParent != null) {
+                            faderBackground.parent = visualParent
+                        } else {
+                            var root = findRoot();
+                            if (root != null) {
+                                faderBackground.parent = root;
+                            } else {
+                               // console.log("Error: Cannot find root");
+                            }
+                        }
+                    }
+                }
+                PauseAnimation { duration: fadeInDelay }
 
+                NumberAnimation {
+                    properties: "alpha"
+                    duration: faderBackground.fadeInDuration
+                    easing.type: faderBackground.fadeInEasingType;
+                }
+            }
+        },
+        Transition {
+            from: "visible"; to: "hidden"
+            SequentialAnimation {
+                PauseAnimation { duration: fadeOutDelay }
+
+                NumberAnimation {
+                    properties: "alpha"
+                    duration: faderBackground.fadeOutDuration
+                    easing.type: faderBackground.fadeOutEasingType;
+                }
+                ScriptAction {script: {
+                        faderBackground.parent = originalParent;
+                    }
+                }
+            }
+        }
+    ]
 }
 
 
-    
+

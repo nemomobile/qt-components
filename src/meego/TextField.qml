@@ -1,42 +1,60 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
-** This file is part of the Qt Components project on Qt Labs.
+** This file is part of the Qt Components project.
 **
-** No Commercial Usage
-** This file contains pre-release code and may not be distributed.
-** You may use this file in accordance with the terms and conditions contained
-** in the Technology Preview License Agreement accompanying this package.
+** $QT_BEGIN_LICENSE:BSD$
+** You may use this file under the terms of the BSD license as follows:
 **
-** GNU Lesser General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU Lesser
-** General Public License version 2.1 as published by the Free Software
-** Foundation and appearing in the file LICENSE.LGPL included in the
-** packaging of this file.  Please review the following information to
-** ensure the GNU Lesser General Public License version 2.1 requirements
-** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
+**     the names of its contributors may be used to endorse or promote
+**     products derived from this software without specific prior written
+**     permission.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+** $QT_END_LICENSE$
 **
 ****************************************************************************/
 
-import Qt 4.7
-import Qt.labs.components 1.0
-import com.meego.themebridge 1.0
-
-ImplicitSizeItem {
+import QtQuick 1.1
+import "." 1.0
+import "UIConstants.js" as UI
+import "EditBubble.js" as Popup
+import "TextAreaHelper.js" as TextAreaHelper
+import "Magnifier.js" as MagnifierPopup
+FocusScope {
     id: root
 
     // Common public API
-    property string text
+    property alias text: textInput.text
     property alias placeholderText: prompt.text
 
     property alias inputMethodHints: textInput.inputMethodHints
+    property alias font: textInput.font
     property alias cursorPosition: textInput.cursorPosition
+    property alias maximumLength: textInput.maximumLength
     property alias readOnly: textInput.readOnly
     property alias acceptableInput: textInput.acceptableInput
     property alias inputMask: textInput.inputMask
@@ -46,8 +64,38 @@ ImplicitSizeItem {
     property alias selectionStart: textInput.selectionStart
     property alias selectionEnd: textInput.selectionEnd
 
-    property variant font: meegostyle.current.get("font")
     property alias echoMode: textInput.echoMode // ### TODO: declare own enum { Normal, Password }
+
+    property bool errorHighlight: !acceptableInput
+    // Property enableSoftwareInputPanel is DEPRECATED
+    property alias enableSoftwareInputPanel: textInput.activeFocusOnPress
+
+    property Item platformSipAttributes
+
+    property bool platformEnableEditBubble: true
+
+    property Item platformStyle: TextFieldStyle {}
+
+    property alias style: root.platformStyle
+
+    property Component customSoftwareInputPanel
+
+    property Component platformCustomSoftwareInputPanel
+
+    property alias platformPreedit: inputMethodObserver.preedit
+
+    onPlatformSipAttributesChanged: {
+        platformSipAttributes.registerInputElement(textInput)
+    }
+
+    onCustomSoftwareInputPanelChanged: {
+        console.log("TextField's property customSoftwareInputPanel is deprecated. Use property platformCustomSoftwareInputPanel instead.")
+        platformCustomSoftwareInputPanel = customSoftwareInputPanel
+    }
+
+    onPlatformCustomSoftwareInputPanelChanged: {
+        textInput.activeFocusOnPress = platformCustomSoftwareInputPanel == null
+    }
 
     function copy() {
         textInput.copy()
@@ -74,102 +122,393 @@ ImplicitSizeItem {
     }
 
     function positionAt(x) {
-        // ### TODO: remove the left margins from x
-        return textInput.positionAt(x)
+        var p = mapToItem(textInput, x, 0);
+        return textInput.positionAt(p.x)
     }
 
     function positionToRectangle(pos) {
-        // ### TODO: translate rect to TextField coord
-        return textInput.positionToRectangle(pos)
+        var rect = textInput.positionToRectangle(pos)
+        rect.x = mapFromItem(textInput, rect.x, 0).x
+        return rect;
     }
 
-    // API extensions
-    property real preferredWidth: textInput.textModel.width +
-            meegostyle.current.get("paddingLeft") +
-            meegostyle.current.get("paddingRight") +
-            2 * __documentMargin
+    // ensure propagation of forceActiveFocus
+    function forceActiveFocus() {
+        textInput.forceActiveFocus()
+    }
 
-    property real preferredHeight: textInput.textModel.height +
-            meegostyle.current.get("paddingTop") +
-            meegostyle.current.get("paddingBottom") +
-            2 * __documentMargin
+    function closeSoftwareInputPanel() {
+        console.log("TextField's function closeSoftwareInputPanel is deprecated. Use function platformCloseSoftwareInputPanel instead.")
+        platformCloseSoftwareInputPanel()
+    }
 
-    implicitWidth: Math.max(meegostyle.preferredWidth, preferredWidth)
-    implicitHeight: preferredHeight
+    function platformCloseSoftwareInputPanel() {
+        inputContext.simulateSipClose();
+        if (inputContext.customSoftwareInputPanelVisible) {
+            inputContext.customSoftwareInputPanelVisible = false
+            inputContext.customSoftwareInputPanelComponent = null
+            inputContext.customSoftwareInputPanelTextField = null
+        } else {
+            textInput.closeSoftwareInputPanel();
+        }
+    }
+
+    function openSoftwareInputPanel() {
+        console.log("TextField's function openSoftwareInputPanel is deprecated. Use function platformOpenSoftwareInputPanel instead.")
+        platformOpenSoftwareInputPanel()
+    }
+
+    function platformOpenSoftwareInputPanel() {
+        inputContext.simulateSipOpen();
+        if (platformCustomSoftwareInputPanel != null && !inputContext.customSoftwareInputPanelVisible) {
+            inputContext.customSoftwareInputPanelTextField = root
+            inputContext.customSoftwareInputPanelComponent = platformCustomSoftwareInputPanel
+            inputContext.customSoftwareInputPanelVisible = true
+        } else {
+            textInput.openSoftwareInputPanel();
+        }
+    }
 
     // private
-    property variant __passwordCharacter: meegostyle.current.get("maskString")
-    property int __documentMargin: 4
+    property bool __expanding: true // Layout hint used but ToolBarLayout
 
+    implicitWidth: platformStyle.defaultWidth
+    implicitHeight: UI.FIELD_DEFAULT_HEIGHT
 
-    Style {
-        id: meegostyle
-        styleClass: "MTextEditStyle"
-        mode: textInput.activeFocus ? "selected" : "default"
+    onActiveFocusChanged: {
+        if (!readOnly) {
+            if (activeFocus) {
+                if (platformCustomSoftwareInputPanel != null) {
+                    platformOpenSoftwareInputPanel();
+                } else {
+                    inputContext.simulateSipOpen();
+                }
+
+                repositionTimer.running = true;
+            } else {                
+                platformCloseSoftwareInputPanel();
+                Popup.close(textInput);
+            }
+        }
     }
 
-    Background {
+
+    BorderImage {
         id: background
+		source: errorHighlight?
+		    platformStyle.backgroundError:
+	        readOnly?
+		    platformStyle.backgroundDisabled:
+		textInput.activeFocus? 
+            platformStyle.backgroundSelected:
+		    platformStyle.background
+
         anchors.fill: parent
-        style: meegostyle
+        border.left: root.platformStyle.backgroundCornerMargin; border.top: root.platformStyle.backgroundCornerMargin
+        border.right: root.platformStyle.backgroundCornerMargin; border.bottom: root.platformStyle.backgroundCornerMargin
     }
-
-    // XXX Having an additional text element and duplicating all the text
-    //     rendering logic is ugly and not efficient. I would expect textInput
-    //     to expose the implicit sizes so I could use that as a parameter to
-    //     control the size of my own component.
-    //     Something like, preferredWidth = textInput.implicitWidth + margins
-
-
-    anchors.leftMargin: __documentMargin + meegostyle.current.get("paddingLeft")
-    anchors.rightMargin: __documentMargin + meegostyle.current.get("paddingRight")
-    anchors.topMargin: __documentMargin + meegostyle.current.get("paddingTop")
-    anchors.bottomMargin: __documentMargin + meegostyle.current.get("paddingBottom")
-
-    clip: true
 
     Text {
         id: prompt
 
-        anchors.fill: parent
-        anchors.leftMargin: __documentMargin + meegostyle.current.get("paddingLeft")
-        anchors.rightMargin: __documentMargin + meegostyle.current.get("paddingRight")
-        anchors.topMargin: __documentMargin + meegostyle.current.get("paddingTop")
-        anchors.bottomMargin: __documentMargin + meegostyle.current.get("paddingBottom")
+        anchors {verticalCenter: parent.verticalCenter; left: parent.left; right: parent.right}
+        anchors.leftMargin: root.platformStyle.paddingLeft
+        anchors.rightMargin: root.platformStyle.paddingRight
+        anchors.verticalCenterOffset: root.platformStyle.baselineOffset
 
-        visible: !textInput.activeFocus && !textInput.text && prompt.text
-        color: meegostyle.current.get("promptColor")
-        font: root.font
+        font: root.platformStyle.textFont
+        color: root.platformStyle.promptTextColor
+        elide: Text.ElideRight
+
+        // opacity for default state
+        opacity: 0.0
+
+        states: [
+            State {
+                name: "unfocused"
+                // memory allocation optimization: cursorPosition is checked to minimize displayText evaluations
+                when: !root.activeFocus && textInput.cursorPosition == 0 && !textInput.text && prompt.text && !textInput.inputMethodComposing
+                PropertyChanges { target: prompt; opacity: 1.0; }
+            },
+            State {
+                name: "focused"
+                // memory allocation optimization: cursorPosition is checked to minimize displayText evaluations
+                when: root.activeFocus && textInput.cursorPosition == 0 && !textInput.text && prompt.text && !textInput.inputMethodComposing
+                PropertyChanges { target: prompt; opacity: 0.6; }
+            }
+        ]
+
+        transitions: [
+            Transition {
+                from: "unfocused"; to: "focused";
+                reversible: true
+                SequentialAnimation {
+                    PauseAnimation { duration: 60 }
+                    NumberAnimation { target: prompt; properties: "opacity"; duration: 150  }
+                }
+            },
+            Transition {
+                from: "focused"; to: "";
+                reversible: true
+                SequentialAnimation {
+                    PauseAnimation { duration:  60 }
+                    NumberAnimation { target: prompt; properties: "opacity"; duration: 100 }
+                }
+            }
+        ]
+    }
+
+    MouseArea {
+        enabled: !textInput.activeFocus
+        z: enabled?1:0
+        anchors.fill: parent
+        anchors.margins: UI.TOUCH_EXPANSION_MARGIN
+        onClicked: {
+            if (!textInput.activeFocus) {
+                textInput.forceActiveFocus();
+            }
+        }
     }
 
     TextInput {
         id: textInput
 
-        anchors.fill: parent
-        anchors.leftMargin: __documentMargin + meegostyle.current.get("paddingLeft")
-        anchors.rightMargin: __documentMargin + meegostyle.current.get("paddingRight")
-        anchors.topMargin: __documentMargin + meegostyle.current.get("paddingTop")
-        anchors.bottomMargin: __documentMargin + meegostyle.current.get("paddingBottom")
+        property alias preedit: inputMethodObserver.preedit
+        property alias preeditCursorPosition: inputMethodObserver.preeditCursorPosition
 
-        text: root.text
-        onTextChanged: root.text = text
-        passwordCharacter: root.__passwordCharacter
-        font: root.font
-        color: meegostyle.current.get("textColor")
-        selectByMouse: true
-        selectedTextColor: meegostyle.current.get("selectionTextColor")
-        selectionColor: meegostyle.current.get("selectionBackgroundColor")
-        property variant textModel: Text {
-            font: root.font;
-            text: root.text;
-            visible: false
+        anchors {verticalCenter: parent.verticalCenter; left: parent.left; right: parent.right}
+        anchors.leftMargin: root.platformStyle.paddingLeft
+        anchors.rightMargin: root.platformStyle.paddingRight
+        anchors.verticalCenterOffset: root.platformStyle.baselineOffset
+
+        passwordCharacter: "\u2022"
+        font: root.platformStyle.textFont
+        color: root.platformStyle.textColor
+        selectByMouse: false
+        selectedTextColor: root.platformStyle.selectedTextColor
+        selectionColor: root.platformStyle.selectionColor
+        mouseSelectionMode: TextInput.SelectWords
+        focus: true
+
+        Component.onDestruction: {
+            Popup.close(textInput);
         }
-        MouseArea {
-            anchors.fill: parent
-            onReleased: {
-                parent.focus = true;
-                screen.sendClicked(mouseX,mouseY,parent.positionAt(mouseX));
+
+        Connections {
+            target: TextAreaHelper.findFlickable(root.parent)
+
+            onContentYChanged: if (root.activeFocus) TextAreaHelper.filteredInputContextUpdate();
+            onContentXChanged: if (root.activeFocus) TextAreaHelper.filteredInputContextUpdate();
+            onMovementEnded: inputContext.update();
+        }
+
+        Connections {
+            target: platformWindow
+
+            onAnimatingChanged: {
+                if (!platformWindow.animating && root.activeFocus) {
+                    TextAreaHelper.repositionFlickable(contentMovingAnimation);
+                }
             }
+        }
+
+        Connections {
+            target: inputContext
+
+            onSoftwareInputPanelRectChanged: {
+                if (activeFocus) {
+                    repositionTimer.running = true
+                }
+            }
+        }
+
+        onTextChanged: {            
+            if(root.activeFocus) {
+                TextAreaHelper.repositionFlickable(contentMovingAnimation)
+            }
+
+            if (Popup.isOpened(textInput) && !Popup.isChangingInput())
+                Popup.close(textInput);
+        }
+
+        onCursorPositionChanged: {
+            var magnifier = MagnifierPopup.popup;
+            if (magnifier) {
+                var mappedPos =  mapToItem(magnifier.parent,positionToRectangle(cursorPosition).x - magnifier.width / 2, 0);
+                magnifier.xCenter = positionToRectangle(cursorPosition).x / root.width;
+                magnifier.x = mappedPos.x;
+            }
+            if (Popup.isOpened(textInput) && !Popup.isChangingInput()) {
+                Popup.close(textInput);
+                Popup.open(textInput);
+            }
+
+        }
+
+        onSelectedTextChanged: {
+            if (Popup.isOpened(textInput) && !Popup.isChangingInput()) {
+                Popup.close(textInput);
+            }
+        }
+
+        InputMethodObserver {
+            id: inputMethodObserver
+
+            onPreeditChanged: {                
+                if(root.activeFocus) {
+                    TextAreaHelper.repositionFlickable(contentMovingAnimation)
+                }
+
+                if (Popup.isOpened(textInput) && !Popup.isChangingInput()) {
+                    Popup.close(textInput);
+                }
+            }
+        }
+
+        Timer {
+            id: repositionTimer
+            interval: 350
+            onTriggered: {
+                TextAreaHelper.repositionFlickable(contentMovingAnimation)
+            }
+        }
+
+        PropertyAnimation {
+            id: contentMovingAnimation
+            property: "contentY"
+            duration: 200
+            easing.type: Easing.InOutCubic
+        }
+
+        MouseFilter {
+            anchors.fill: parent
+            anchors.leftMargin:  UI.TOUCH_EXPANSION_MARGIN - root.platformStyle.paddingLeft
+            anchors.rightMargin:  UI.TOUCH_EXPANSION_MARGIN - root.platformStyle.paddingRight
+            anchors.topMargin: UI.TOUCH_EXPANSION_MARGIN - ((root.height - parent.height) / 2)
+            anchors.bottomMargin:  UI.TOUCH_EXPANSION_MARGIN - ((root.height - parent.height) / 2)
+
+            property bool attemptToActivate: false
+            property bool pressOnPreedit: false
+
+            onPressed: {
+                var mousePosition = textInput.positionAt(mouse.x,TextInput.CursorOnCharacter);
+                pressOnPreedit = textInput.cursorPosition==mousePosition
+                var preeditDisabled = (
+                        root.inputMethodHints&
+                        (
+                                Qt.ImhHiddenText|
+                                Qt.ImhNoPredictiveText|
+                                Qt.ImhDigitsOnly|
+                                Qt.ImhFormattedNumbersOnly|
+                                Qt.ImhDialableCharactersOnly|
+                                Qt.ImhEmailCharactersOnly|
+                                Qt.ImhUrlCharactersOnly
+                )
+                );
+
+                attemptToActivate = !pressOnPreedit && !root.readOnly && !preeditDisabled && root.activeFocus && !(mousePosition == 0 || TextAreaHelper.atSpace(mousePosition - 1));
+                mouse.filtered = true;
+            }
+
+            onHorizontalDrag: {
+                // possible pre-edit word have to be commited before selection
+                if (root.activeFocus || root.readOnly) {
+                    inputContext.reset()                    
+                    parent.selectByMouse = true
+                    attemptToActivate = false
+                }
+            }
+
+            onPressAndHold:{
+                // possible pre-edit word have to be commited before showing the magnifier
+                if ((root.text != "" || inputMethodObserver.preedit != "") && root.activeFocus) {
+                    inputContext.reset()
+                    attemptToActivate = false
+                    MagnifierPopup.open(root);
+                    var magnifier = MagnifierPopup.popup;
+                    magnifier.xCenter = positionToRectangle(cursorPosition).x / root.width
+                    var mappedPos =  mapToItem(magnifier.parent, positionToRectangle(cursorPosition).x - magnifier.width / 2,
+                                               textInput.y - 120 - UI.MARGIN_XLARGE - (height / 2));
+                    var yAdjustment = -mapFromItem(magnifier.__rootElement(), 0, 0).y < magnifier.height / 2.5 ? magnifier.height / 2.5 + mapFromItem(magnifier.__rootElement(), 0,0).y : 0
+                    magnifier.x = mappedPos.x;
+                    magnifier.y = mappedPos.y + yAdjustment;
+                    magnifier.yCenter = 0.25;
+                    parent.cursorPosition = textInput.positionAt(mouse.x)                    
+                }
+            }
+            onReleased: {                
+                if (MagnifierPopup.isOpened()) {
+                    MagnifierPopup.close();
+                }
+
+                if (attemptToActivate) {
+                    inputContext.reset();
+                    var beforeText = textInput.text;
+
+                    var newCursorPosition = textInput.positionAt(mouse.x,TextInput.CursorOnCharacter);
+
+                    var injectionSucceeded = false;
+
+                    if (!TextAreaHelper.atSpace(newCursorPosition)
+                             && !(newCursorPosition == textInput.text.length && TextAreaHelper.atSpace(newCursorPosition-1))
+                             && newCursorPosition != textInput.text.length) {
+                        var preeditStart = TextAreaHelper.previousWordStart(newCursorPosition);
+                        var preeditEnd = TextAreaHelper.nextWordEnd(newCursorPosition);
+
+                        // copy word to preedit text
+                        var preeditText = textInput.text.substring(preeditStart,preeditEnd);
+
+                        // inject preedit
+                        textInput.cursorPosition = preeditStart;
+
+                        var eventCursorPosition = newCursorPosition-preeditStart;
+
+                        injectionSucceeded = inputContext.setPreeditText(preeditText, eventCursorPosition, 0, preeditText.length);
+                    }
+                    if (injectionSucceeded) {
+                        mouse.filtered=true;
+                    } else {
+                        textInput.text=beforeText;
+                        textInput.cursorPosition=newCursorPosition;
+                    }
+                } else if (!parent.selectByMouse) {
+                    if (!pressOnPreedit) inputContext.reset();
+                    textInput.cursorPosition = textInput.positionAt(mouse.x,TextInput.CursorOnCharacter);
+                }
+
+                parent.selectByMouse = false;
+            }
+            onFinished: {
+                if (root.activeFocus && platformEnableEditBubble)
+                    Popup.open(textInput);
+            }
+
+            onMousePositionChanged: {
+                if (MagnifierPopup.isOpened() && !parent.selectByMouse) {
+                    parent.cursorPosition = textInput.positionAt(mouse.x)
+                }
+            }
+            onDoubleClicked: {
+                // possible pre-edit word have to be commited before selection
+                inputContext.reset()
+                parent.selectByMouse = true
+                attemptToActivate = false
+            }
+        }
+    }
+
+    InverseMouseArea {
+        anchors.fill: parent
+        anchors.margins: UI.TOUCH_EXPANSION_MARGIN
+        enabled: textInput.activeFocus
+        onClickedOutside: {
+            if (Popup.isOpened(textInput) && ((mouseX > Popup.geometry().left && mouseX < Popup.geometry().right) &&
+                                           (mouseY > Popup.geometry().top && mouseY < Popup.geometry().bottom))) {
+                return;
+            }
+
+            root.platformCloseSoftwareInputPanel();
+            root.parent.focus = true;
         }
     }
 }

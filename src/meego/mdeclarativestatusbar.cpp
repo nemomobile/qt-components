@@ -1,26 +1,40 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
-** This file is part of the Qt Components project on Qt Labs.
+** This file is part of the Qt Components project.
 **
-** No Commercial Usage
-** This file contains pre-release code and may not be distributed.
-** You may use this file in accordance with the terms and conditions contained
-** in the Technology Preview License Agreement accompanying this package.
+** $QT_BEGIN_LICENSE:BSD$
+** You may use this file under the terms of the BSD license as follows:
 **
-** GNU Lesser General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU Lesser
-** General Public License version 2.1 as published by the Free Software
-** Foundation and appearing in the file LICENSE.LGPL included in the
-** packaging of this file.  Please review the following information to
-** ensure the GNU Lesser General Public License version 2.1 requirements
-** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
+**     the names of its contributors may be used to endorse or promote
+**     products derived from this software without specific prior written
+**     permission.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+** $QT_END_LICENSE$
 **
 ****************************************************************************/
 
@@ -35,6 +49,7 @@
 #include <qx11info_x11.h>
 #include <qgraphicsscene.h>
 #include <qdebug.h>
+#include "mwindowstate.h"
 
 #ifdef HAVE_DBUS
    #include <QDBusInterface>
@@ -46,7 +61,7 @@
    #include <X11/extensions/Xdamage.h>
 #endif
 
-static const int STATUSBAR_HEIGHT = 30;
+static const int STATUSBAR_HEIGHT = 36;
 
 #ifdef HAVE_DBUS
 static const QLatin1String PIXMAP_PROVIDER_DBUS_SERVICE("com.meego.core.MStatusBar");
@@ -66,7 +81,7 @@ static int xDamageErrorBase = 0;
 #endif
 
 static bool filterRegistered = false;
-QCoreApplication::EventFilter oldFilter = 0;
+QCoreApplication::EventFilter oldEventFilter = 0;
 #ifdef HAVE_XDAMAGE
 static QHash<Damage, MDeclarativeStatusBar *> damageMap;
 #endif
@@ -78,18 +93,13 @@ static int handleXError(Display *, XErrorEvent *)
 }
 #endif
 
-static bool x11EventFilter(void *message, long *)
+static bool x11EventFilter(void *message, long *result)
 {
 #ifdef HAVE_XDAMAGE
     XEvent *event = (XEvent *)message;
 
     if (event->type == xDamageEventBase + XDamageNotify) {
         XDamageNotifyEvent *xevent = (XDamageNotifyEvent *) event;
-
-        // It is possible that the Damage has already been destroyed so register an error handler to suppress X errors
-        XErrorHandler errh = XSetErrorHandler(handleXError);
-        XDamageSubtract(QX11Info::display(), xevent->damage, None, None);
-        XSetErrorHandler(errh);
 
         // notify status bar
         MDeclarativeStatusBar *statusBar = damageMap.value(xevent->damage);
@@ -98,15 +108,21 @@ static bool x11EventFilter(void *message, long *)
             return true;
         }
     }
+#else
+    Q_UNUSED(message);
 #endif
-    return false;
+
+    if (oldEventFilter) {
+        return oldEventFilter(message, result);
+    } else
+        return false;
 }
-
-
 
 MDeclarativeStatusBar::MDeclarativeStatusBar(QDeclarativeItem *parent) :
     QDeclarativeItem(parent),
     updatesEnabled(true),
+    mousePressed(false),
+    swipeGesture(false),
     mOrientation(MDeclarativeScreen::Portrait)
 {
     setFlag(QGraphicsItem::ItemHasNoContents, false);
@@ -116,7 +132,7 @@ MDeclarativeStatusBar::MDeclarativeStatusBar(QDeclarativeItem *parent) :
     setImplicitHeight(STATUSBAR_HEIGHT);
 
     if (!filterRegistered) {
-        ::oldFilter = QCoreApplication::instance()->setEventFilter(x11EventFilter);
+        ::oldEventFilter = QCoreApplication::instance()->setEventFilter(x11EventFilter);
 #ifdef HAVE_XDAMAGE
         XDamageQueryExtension(QX11Info::display(), &xDamageEventBase, &xDamageErrorBase);
 #endif
@@ -142,10 +158,17 @@ MDeclarativeStatusBar::MDeclarativeStatusBar(QDeclarativeItem *parent) :
 
 #endif
     querySharedPixmapFromProvider();
+
+    // XDamage event should come only when application is in foreground
+    MWindowState * windowState = MWindowState::instance();
+    connect(windowState, SIGNAL(activeChanged()), this, SLOT(updateXdamageEventSubscription()));
 }
 
 MDeclarativeStatusBar::~MDeclarativeStatusBar()
 {
+    MWindowState * windowState = MWindowState::instance();
+    disconnect(windowState, SIGNAL(activeChanged()), this, SLOT(updateXdamageEventSubscription()));
+
     destroyXDamageForSharedPixmap();
 }
 
@@ -162,7 +185,7 @@ void MDeclarativeStatusBar::paint(QPainter *painter, const QStyleOptionGraphicsI
     }
 
     QRectF sourceRect;
-    if (mOrientation == MDeclarativeScreen::Landscape) {
+    if (mOrientation == MDeclarativeScreen::Landscape || mOrientation == MDeclarativeScreen::LandscapeInverted) {
         sourceRect.setX(0);
         sourceRect.setY(0);
         sourceRect.setWidth(width());
@@ -175,6 +198,26 @@ void MDeclarativeStatusBar::paint(QPainter *painter, const QStyleOptionGraphicsI
     }
 
     painter->drawPixmap(QPointF(0.0, 0.0), sharedPixmap, sourceRect);
+
+    if (mousePressed) {
+        painter->save();
+        painter->setOpacity(0.6);
+        painter->fillRect(QRectF(QPointF(0.0, 0.0), sourceRect.size()), Qt::black);
+        painter->restore();
+    }
+
+}
+
+void MDeclarativeStatusBar::updateXdamageEventSubscription()
+{
+    MWindowState * windowState = MWindowState::instance();
+    if(windowState->active()) {
+        // Subscribe to xdamage events only if there is a need
+        if(pixmapDamage == 0)
+            setupXDamageForSharedPixmap();
+    } else {
+        destroyXDamageForSharedPixmap();
+    }
 }
 
 void MDeclarativeStatusBar::updateSharedPixmap()
@@ -192,7 +235,7 @@ void MDeclarativeStatusBar::setupXDamageForSharedPixmap()
 {
 #ifdef HAVE_XDAMAGE
     Q_ASSERT(!sharedPixmap.isNull());
-    pixmapDamage = XDamageCreate(QX11Info::display(), sharedPixmap.handle(), XDamageReportNonEmpty);
+    pixmapDamage = XDamageCreate(QX11Info::display(), sharedPixmap.handle(), XDamageReportRawRectangles);
     damageMap.insert(pixmapDamage, this);
 #endif
 }
@@ -243,8 +286,12 @@ void MDeclarativeStatusBar::sharedPixmapHandleReceived(QDBusPendingCallWatcher *
         qWarning() << "MDeclarativeStatusBar" << reply.error().message();
         return;
     }
+
+#ifdef Q_WS_X11
     quint32 tmp = reply;
     sharedPixmap = QPixmap::fromX11Pixmap(tmp, QPixmap::ExplicitlyShared);
+#endif
+
     setImplicitWidth(sharedPixmap.size().width());
     updateSharedPixmap();
     call->deleteLater();
@@ -268,12 +315,34 @@ void MDeclarativeStatusBar::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     firstPos = event->pos();
     playHapticsFeedback();
+
+    if (!mousePressed) {
+        mousePressed = true;
+        update();
+    }
+
 }
 
 void MDeclarativeStatusBar::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if(firstPos.y() /* ### + style()->swipeThreshold()*/ + 25 < event->pos().y())
+    if(swipeGesture && firstPos.y() /* ### + style()->swipeThreshold()*/ + 25 < event->pos().y())
         showStatusIndicatorMenu();
+}
+
+void MDeclarativeStatusBar::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+
+    if (!mousePressed || swipeGesture)
+        return;
+
+    mousePressed = false;
+    update();
+
+    QRectF rect = boundingRect();
+    rect.adjust(-30, -30, 30, 30);
+    if(rect.contains(event->pos())) {
+        showStatusIndicatorMenu();
+    }
 }
 
 void MDeclarativeStatusBar::showStatusIndicatorMenu()

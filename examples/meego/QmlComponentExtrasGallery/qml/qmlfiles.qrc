@@ -1,0 +1,21 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+<qresource prefix="/">
+    <file>CountBubble.qml</file>
+    <file>DatePickerDialog.qml</file>
+    <file>ListPage.qml</file>
+    <file>ListDelegates.qml</file>
+    <file>main.qml</file>
+    <file>MoreIndicator.qml</file>
+    <file>NetPromoterScore.js</file>
+    <file>NetPromoterScore.qml</file>
+    <file>PageIndicator.qml</file>
+    <file>RatingIndicator.qml</file>
+    <file>StyledButtons.qml</file>
+    <file>TimePickerDialog.qml</file>
+    <file>Tumbler.qml</file>
+    <file>TumblerDialog.qml</file>
+    <file>assets/system_banner_thumbnail.png</file>
+    <file>InfoBanner.qml</file>
+</qresource>
+</RCC>

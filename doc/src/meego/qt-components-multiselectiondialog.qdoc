@@ -1,0 +1,158 @@
+/****************************************************************************
+**
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project.
+**
+** $QT_BEGIN_LICENSE:BSD$
+** You may use this file under the terms of the BSD license as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
+**     the names of its contributors may be used to endorse or promote
+**     products derived from this software without specific prior written
+**     permission.
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+/*!
+    \qmlclass MultiSelectionDialog
+    \inherits Item
+    \ingroup qt-components
+    \since 4.7
+
+    \brief
+    Selection dialog to pick multiple items at once.
+
+    The MultiSelectionDialog is a dialog that allows the user to pick multiple items from 
+    available options. 
+        
+    \qml
+        // Create a multi-selection dialog with a title and list elements to choose from.
+        MultiSelectionDialog {
+            id: multiSelectionDialog
+            titleText: "Dialog Header #1"
+            selectedIndexes: [1, 3, 5]
+            model: ListModel {
+                ListElement { name: "ListTitle #1" }
+                ListElement { name: "ListTitle #2" }
+                ListElement { name: "ListTitle #3" }
+                ListElement { name: "ListTitle #4" }
+                ListElement { name: "ListTitle #5" }
+            }
+            acceptButtonText: "OK"
+        }
+    \endqml
+
+    As with all dialogs the visual parent property is used to specify which area of the screen 
+    is grayed out while the menu is opened. If no visual parent is set then it is determined
+    automatically and falls back to the root item.
+
+    The dialog is opened via the open() call:
+    \qml
+        Button {
+            text: "MultiSelection"
+            onClicked: {
+                multiSelectionDialog.open();
+            }
+        }
+    \endqml
+
+    In order to accept and close the dialog the user needs to press the accept button.
+    The name of the selected ListElements from the model is queried via the selectedIndexes property:
+
+    \qml
+        Text {
+            anchors.centerIn: parent
+            text: multiSelectionDialog.model.get(multiSelectionDialog.selectedIndexes[index]).name
+        }
+    \endqml
+
+    In order to allow the user to select a single item from a list a SelectionDialog is used. 
+
+    \sa Dialog, SelectionDialog
+
+    \section1 Common API
+    \code
+        property ListModel model
+        property variant selectedIndexes
+        property alias acceptButtonText
+        property alias rejectButtonText
+
+        property Component delegate
+        // Style API
+        property Style platformStyle
+    \endcode
+*/
+
+/*!
+    \qmlproperty ListModel MultiSelectionDialog::model
+
+    The ListModel is used for the contents of the dialog. The default is an empty list model.
+    The names of the ListElements stored inside the model are displayed as items the user 
+    can choose from.
+*/
+
+/*!
+    \qmlproperty variant MultiSelectionDialog::selectedIndexes
+    
+    This returns a list of indexes of the ListElements selected by the user from the 
+    MultiSelectionDialog.
+    Property default is [] (no selection). If the property is set during the declaration 
+    of the dialog then the items are preselected in order to suggest the 
+    default choice.
+*/
+
+/*!
+    \qmlproperty string MultiSelectionDialog::acceptButtonText
+    
+    The text string displayed on the accept button.
+    Property default is \c "" (empty). The button becomes only visible if the string is not empty.
+*/
+
+/*!
+    \qmlproperty string MultiSelectionDialog::rejectButtonText
+    
+    The text string displayed on the reject button.
+    Property default is \c "" (empty). The button becomes only visible if the string is not empty.
+*/
+
+/*!
+    \qmlproperty Component MultiSelectionDialog::delegate
+
+    The delegate that is used in order to render the ListElements inside the ListView
+    of the MultiSelectionDialog. The MultiSelectionDialog provides a default delegate that 
+    renders the ListElements according to the UI guidelines. The default delegate 
+    can be exchanged by a custom one.
+*/
+
+/*!
+    \qmlproperty Style MultiSelectionDialog::platformStyle
+    
+    Property for styling the component.
+    Property default is \c MultiSelectionDialogStyle{}
+
+*/
+

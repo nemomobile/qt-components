@@ -1,13 +1,15 @@
 Source: qt-components
-Section: libs 
+Section: libs
 Priority: extra
 Maintainer: Antonio Aloisio <antonio.aloisio@nokia.com>
-Build-Depends: cdbs, debhelper (>= 5), quilt, libqt4-dev(>= 4.7.0~), libqt4-declarative, libmeegotouch-dev (>= 0.20.68)
+Build-Depends: cdbs, debhelper (>= 5), quilt, libqt4-dev(>= 4.7.0~), libqt4-declarative,
+ libmeegotouch-dev (>= 0.20.93), libqt4-meegographicssystemhelper-dev, libxrandr-dev
 Standards-Version: 3.7.2
 
 Package: qt-components
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
+Replaces: maps (<= 0.2.01+0m6)
 Description: Qt Quick components runtime libraries
  The qt-components project aims to deliver a set of reusable components for Qt Quick.
  Qt Quick provides simple QML Elements that allow you to create fluid uis from scratch without restricting 
@@ -29,9 +31,16 @@ Description: Qt Quick components development files
  Bugs: http://bugreports.qt.nokia.com/browse/QTCOMPONENTS
  Code: http://qt.gitorious.org/qt-components
 
+Package: qt-components-dbg
+Section: debug
+Priority: extra
+Architecture: any
+Depends: qt-components (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Description: Qt Quick components debug symbols
+
 Package: qt-components-examples
 Architecture: any
-Depends: qt-components, ${shlibs:Depends}, ${misc:Depends}
+Depends: qt-components, applauncherd-single-instance, ${shlibs:Depends}, ${misc:Depends}
 Description: Qt Quick components examples
  The qt-components project aims to deliver a set of reusable components for Qt Quick.
  Qt Quick provides simple QML Elements that allow you to create fluid uis from scratch without restricting 
@@ -44,8 +53,8 @@ Description: Qt Quick components examples
 Package: qt-components-tests
 Architecture: any
 Depends: qt-components, ci-testing, ${shlibs:Depends}, ${misc:Depends}
-XB-Maemo-CI-Packages: qt-components
-XB-Maemo-CI-Stage: fast
+XB-Maemo-CI-Packages: qt-components, libmeegotouchcore0
+XB-Maemo-CI-Stage: fast, staging, acceptance
 Description: Qt Quick components tests
  The qt-components project aims to deliver a set of reusable components for Qt Quick.
  Qt Quick provides simple QML Elements that allow you to create fluid uis from scratch without restricting 

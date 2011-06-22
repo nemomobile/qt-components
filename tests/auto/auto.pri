@@ -1,10 +1,10 @@
 CONFIG += qtestlib testcase
 
-harmattan {
+autotests {
     INSTALLS += target qmlfiles
     qmlfiles.files = $$OTHER_FILES
-    qmlfiles.path = /opt/qt-components-tests/auto/$$TARGET
-    target.path = /opt/qt-components-tests/auto/$$TARGET
+    qmlfiles.path = $$INSTALL_PREFIX/lib/qt-components-tests/auto/meego/$$TARGET
+    target.path = $$INSTALL_PREFIX/lib/qt-components-tests/auto/meego/$$TARGET
 }
 
 symbian {

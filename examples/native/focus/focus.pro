@@ -5,8 +5,6 @@ CONFIG -= app_bundle
 
 win32:DESTDIR = $$OUT_PWD
 
-meego:include(../meego.pri)
-
 symbian {
     TARGET.EPOCALLOWDLLDATA = 1
     TARGET.UID3 = 0xEB5F8C8C

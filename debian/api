@@ -1,0 +1,8 @@
+interface: qt-components
+type: qml
+scope: Nokia MeeGo
+state: experimental
+dev-pkg: qt-components-dev
+doc-type: qtdoc
+api-file-format: 1.0
+qml-project-file: qt-components.pro

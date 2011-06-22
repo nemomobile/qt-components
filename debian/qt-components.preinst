@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -e
+
+rm -rf /usr/lib/qt4/imports/com/nokia/meego
+rm -rf /usr/lib/qt4/imports/com/nokia/extras
+rm -rf /usr/lib/qt4/imports/com/meego
+rm -rf /usr/lib/qt4/imports/Qt/labs/components

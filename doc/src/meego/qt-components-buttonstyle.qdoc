@@ -1,0 +1,283 @@
+/****************************************************************************
+**
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project.
+**
+** $QT_BEGIN_LICENSE:BSD$
+** You may use this file under the terms of the BSD license as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
+**     the names of its contributors may be used to endorse or promote
+**     products derived from this software without specific prior written
+**     permission.
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+/*!
+    \qmlclass ButtonStyle
+    \inherits Style
+    \ingroup qt-components
+    \since 4.7
+
+    \brief
+    ButtonStyle properties and default values explained
+
+    Custom platformStyle example
+
+    \code
+    Button {
+        platformStyle: ButtonStyle {
+            fontFamily: "Arial"
+            fontPixelSize: 21
+            fontCapitalization: Font.SmallCaps
+            fontWeight: Font.Light
+            horizontalAlignment: Text.AlignLeft
+            textColor: "black"
+            pressedTextColor: "red"
+            disabledTextColor: "gray"
+            checkedTextColor: "blue"
+            buttonWidth: 200
+            buttonHeight: 30
+            position: "[horizontal-center]"
+        }
+    }
+    \endcode
+*/
+
+/*!
+    \qmlproperty string ButtonStyle::fontFamily
+
+    Property default value is \c UI.FONT_FAMILY.
+
+    Defines the font family for the button.
+*/
+
+/*!
+    \qmlproperty int ButtonStyle::fontPixelSize
+
+    Property default value is \c UI.FONT_DEFAULT_SIZE.
+
+    Defines the font pixel size.
+*/
+
+/*!
+    \qmlproperty int ButtonStyle::fontCapitalization
+
+    Property default value is \c Font.MixedCase.
+
+    Defines the font capitalization.
+*/
+
+/*!
+    \qmlproperty int ButtonStyle::fontWeight
+
+    Property default value is \c Font.Bold.
+
+    Defines the font weight.
+*/
+
+/*!
+    \qmlproperty int ButtonStyle::horizontalAlignment
+
+    Property default value is \c Text.AlignHCenter.
+
+    Defines the text horizontal alignment.
+*/
+
+/*!
+    \qmlproperty color ButtonStyle::textColor
+
+    Property default value is \c "inverted ? UI.COLOR_BUTTON_INVERTED_FOREGROUND : UI.COLOR_BUTTON_FOREGROUND".
+
+    Defines the colour of the text.
+*/
+
+/*!
+    \qmlproperty color ButtonStyle::pressedTextColor
+
+    Property default value is \c UI.COLOR_BUTTON_SECONDARY_FOREGROUND.
+
+    Defines the text colour, which is shown when the button is pressed.
+*/
+
+/*!
+    \qmlproperty color ButtonStyle::disabledTextColor
+
+    Property default value is \c UI.COLOR_BUTTON_DISABLED_FOREGROUND.
+
+    Defines the text colour, which is shown when the button is disabled.
+*/
+
+/*!
+    \qmlproperty color ButtonStyle::checkedTextColor
+
+    Property default value is \c UI.COLOR_BUTTON_INVERTED_FOREGROUND.
+
+    Defines the text colour, which is shown when the button is checked.
+*/
+
+/*!
+    \qmlproperty int ButtonStyle::buttonWidth
+
+    Property default value is \c UI.BUTTON_WIDTH.
+
+    Defines the button width.
+*/
+
+/*!
+    \qmlproperty int ButtonStyle::buttonHeight
+
+    Property default value is \c UI.BUTTON_HEIGHT.
+
+    Defines the button height.
+*/
+
+
+/*!
+    \qmlproperty real ButtonStyle::mouseMarginRight
+
+    Property default value is \c 0.0.
+
+    Defines the mouse area right margin.
+*/
+
+/*!
+    \qmlproperty real ButtonStyle::mouseMarginLeft
+
+    Property default value is \c 0.0.
+
+    Defines the mouse area left margin.
+*/
+
+/*!
+    \qmlproperty real ButtonStyle::mouseMarginTop
+
+    Property default value is \c 0.0.
+
+    Defines the mouse area top margin.
+*/
+
+/*!
+    \qmlproperty real ButtonStyle::mouseMarginBottom
+
+    Property default value is \c 0.0.
+
+    Defines mouse area bottom margin.
+*/
+
+
+/*!
+    \qmlproperty int ButtonStyle::backgroundMarginRight
+
+    Property default value is \c 22.
+
+    Defines the background image right margin.
+*/
+
+
+/*!
+    \qmlproperty int ButtonStyle::backgroundMarginLeft
+
+    Property default value is \c 22.
+
+    Defines the background image left margin.
+*/
+
+/*!
+    \qmlproperty int ButtonStyle::backgroundMarginTop
+
+    Property default value is \c 22.
+
+    Defines the background image top margin.
+*/
+
+/*!
+    \qmlproperty int ButtonStyle::backgroundMarginBottom
+
+    Property default value is \c 22.
+
+    Defines the background image bottom margin.
+*/
+
+/*!
+    \qmlproperty string ButtonStyle::position
+
+    Property default value is \c "".
+
+    Defines the button position.
+
+    Following values are used to define position:
+
+    \list
+    \o [horizontal-left]
+    \o [horizontal-center]
+    \o [horizontal-right]
+    \o [vertical-top]
+    \o [vertical-center]
+    \o [vertical-bottom]
+    \endlist
+*/
+
+/*!
+    \qmlproperty string ButtonStyle::background
+
+    Property default value is \c "image://theme/meegotouch-button"+__invertedString+"-background"+(position?"-"+position:"").
+
+    Defines the default background image.
+*/
+
+/*!
+    \qmlproperty string ButtonStyle::pressedBackground
+
+    Property default value is \c "image://theme/meegotouch-button"+__invertedString+"-background-pressed"+(position?"-"+position:"").
+
+    Defines the pressed state background image.
+*/
+
+/*!
+    \qmlproperty string ButtonStyle::disabledBackground
+
+    Property default value is \c "image://theme/meegotouch-button"+__invertedString+"-background-disabled"+(position?"-"+position:"").
+
+    Defines the disabled state background image.
+*/
+
+/*!
+    \qmlproperty string ButtonStyle::checkedBackground
+
+    Property default value is \c "image://theme/meegotouch-button"+__invertedString+"-background-selected"+(position?"-"+position:"").
+
+    Defines the checked state background image.
+*/
+
+/*!
+    \qmlproperty string ButtonStyle::checkedDisabledBackground
+
+    Property default value is \c "image://theme/meegotouch-button"+__invertedString+"-background-disabled-selected"+(position?"-"+position:"").
+
+    Defines the disabled checked state background image.
+*/

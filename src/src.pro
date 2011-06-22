@@ -2,7 +2,8 @@ TEMPLATE = subdirs
 SUBDIRS = components
 
 meego {
-    SUBDIRS += meego meego/themebridge
+    SUBDIRS += meego
+    extras:SUBDIRS += meego/extras
 }
 
 symbian3 {

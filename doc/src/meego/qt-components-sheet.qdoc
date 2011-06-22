@@ -1,0 +1,162 @@
+/****************************************************************************
+**
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project.
+**
+** $QT_BEGIN_LICENSE:BSD$
+** You may use this file under the terms of the BSD license as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
+**     the names of its contributors may be used to endorse or promote
+**     products derived from this software without specific prior written
+**     permission.
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+/*!
+    \qmlclass Sheet
+    \inherits Item
+    \ingroup qt-components
+    \since 4.7
+    
+    \brief
+    Dialog type of container
+
+    The sheet is (in most use-cases) a fullscreen dialog that slides up from the bottom
+    when activated. Buttons are rendered on top of the content field. Sheets are
+    used whenever the amount of information and configure options is too much for
+    standard dialogs. The api is similar to the one used in dialogs.
+
+    Example shows how to declare a sheet that has one button. Note that the button
+    is put into Flickable so that the content of the sheet can be panned. Sheet itself
+    is declared outside of the Flickable that contains the another button that 
+    launches the Sheet.
+
+    \code
+    ...
+    
+    Flickable {
+        ...
+
+        Button {
+            id: myButton
+            text: "Launch Sheet"
+            onClicked: sheet.open()
+        }
+    }    
+    
+    Sheet {
+        id: sheet
+        
+        acceptButtonText: "Save"
+        rejectButtonText: "Cancel"
+                
+        content: Flickable {
+            anchors.fill: parent
+            anchors.leftMargin: 10
+            anchors.topMargin: 10
+            contentWidth: col2.width
+            contentHeight: col2.height
+            flickableDirection: Flickable.VerticalFlick
+            Column {
+                id: col2
+                anchors.top: parent.top
+                spacing: 10
+                Button {
+                    text: "Click Me!"
+                }
+            }
+        }        
+        onAccepted: myButton.text = "Accepted!"
+        onRejected: myButton.text = "Rejected!"
+    }    
+    \endcode
+*/
+
+/*!
+    \qmlproperty string Sheet::acceptButtonText
+
+    Property default is \c "".
+
+    Text of the accept button. When no text is given, the button is not displayed.
+*/
+
+/*!
+    \qmlsignal Sheet::accepted()
+
+    This signal is fired when the function accept() is called. Normally this signal is associated with the "Ok" or "Save" button.
+*/
+
+/*!
+    \qmlproperty Item Sheet::buttons
+
+    The item to be placed inside the button area of the sheet. Normally the buttons are defined with the \l acceptButtonText and \l rejectButtonText properties.
+    The buttons property can be used whenever a more customized button area is needed. Consider using the SheetButton instead of the simple Button
+    element. This ensures that the buttons are correctly styled.
+*/
+
+/*!
+    \qmlproperty Item Sheet::content
+
+    The Item to be placed inside the content area of the sheet.
+*/
+
+/*!
+    \qmlproperty string Sheet::rejectButtonText
+
+    Property default is \c "".
+
+    Text of the reject button. When no text is given, the button is not displayed.
+*/
+
+
+/*!
+    \qmlsignal Sheet::rejected()
+
+    This signal is fired when the function reject() is called. Normally this signal is associated with the "Cancel" or "Delete" button.
+*/
+
+/*!
+    \qmlproperty enum Sheet::status
+
+    This property holds the current status.
+
+    \list
+    \o  DialogStatus.Opening - The animation for opening the sheet is running.
+    \o  DialogStatus.Opened - The sheet has been opened and is visible.
+    \o  DialogStatus.Closing - The animation for closing the sheet is running.
+    \o DialogStatus.Closed - The sheet is closed and invisible.
+    \endlist
+*/
+
+/*!
+    \qmlproperty Item Sheet::visualParent
+    The Item in which the sheet is displayed. With the visualParent developers are able to define the part
+    of the screen where the sheet should be anchored.
+*/
+
+

@@ -1,0 +1,168 @@
+/****************************************************************************
+**
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project.
+**
+** $QT_BEGIN_LICENSE:BSD$
+** You may use this file under the terms of the BSD license as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
+**     the names of its contributors may be used to endorse or promote
+**     products derived from this software without specific prior written
+**     permission.
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+/*!
+    \qmlclass ToolBar
+    \inherits Item
+    \ingroup qt-components
+    \since 4.7
+    \brief
+    Styled tool item container with page synchronized transitions
+
+    The ToolBar can be used either with or without the PageStack. Logically the 
+    toolbar is split into three levels:
+
+    \list
+    \o The actual ToolBar component, which forms the visual toolbar that is typically created once per application and placed in some static place on the edge of the screen.
+    \o  Tools, also known as items, that go in the toolbar. These are things like toolbar buttons but can also in principle be anything else such as text fields, icons, and so on.
+    \o  A container for the tools. This handles the layout of the tools inside the toolbar. Depending on the situation this could be the QML standard Row element or the Qt Components ToolBarLayout component, which implements a very particular algorithm that is suitable for many standard toolbar item layouts.
+    \endlist
+
+    Using the toolbar is a simple matter of specifying the tools - as a single QML 
+    item - with the tools property of the ToolBar item. This single QML item is 
+    typically the tool container (level #3 according to the definition above) and 
+    contains items (level #2 above) that are the actual tools.
+
+    When the tools property changes the ToolBar performs a transition animation 
+    between the old and new tools. The transition that is used is specified using 
+    the transition property. By default this is "set", which means an immediate 
+    change of tools without any animation. Other supported transitions are "push", 
+    "pop" and "replace", which correspond to the page stack navigation methods.
+
+    The tools can also be changed with a particular transition using the setTools() 
+    method. The first argument of this function is the new tools and the second is 
+    the transition to use. The tools property of the ToolBar will be updated as a 
+    result of calling this method but the transition property will remain unchanged. 
+    That is, the transition that is specified in setTools() applies only to this 
+    particular change of tools rather than all subsequent changes.
+
+    The tools that are in the toolbar for a particular page are defined 
+    using the tools property in a page. When the toolbar property of the PageStack 
+    references a particular toolbar then whenever a page is activated its tools 
+    properties are set to that toolbar using the same transition that was used 
+    to activate that page. For example a push() call in the PageStack results in the 
+    tools being changed in the toolbar using the "push" transition.
+
+    A typical tools definition in a page would look something like this:
+
+    \qml
+    Page { 
+        tools: ToolBarLayout { 
+            ToolItem { iconId: "icon-m-toolbar-back"; onClicked: pageStack.pop(); } 
+            ToolButton { text: "One" } 
+            ToolButton { text: "Two" } 
+            ToolItem { iconId: "icon-m-toolbar-view-menu" } 
+        } 
+    }
+    \endqml
+
+   When used without the PageStack the tools are defined exactly the same way 
+   but in the application instead of in the page. Instead of automatically being set 
+   to the toolbar, you have to manually set the tools property of the toolbar to 
+   refer to the property or id that defines the new tools, as follows:
+
+   \qml
+   Rectangle { 
+       someTools: ToolBarLayout { 
+            ToolItem { iconId: "icon-m-toolbar-back"; onClicked: pageStack.pop(); } 
+            ToolButton { text: "One" } 
+            ToolButton { text: "Two" } 
+            ToolItem { iconId: "icon-m-toolbar-view-menu" } 
+       } 
+       
+       ToolBar {
+           id: toolBar
+           transition: "replace"
+           tools: ToolBarLayout {
+               ToolButton { text: "Old One" } 
+               ToolButton { text: "Old Two" } 
+           }
+       }
+       
+       Button {
+           text: "Change Tools"
+           onclicked: toolBar.tools = someTools
+       }
+   }
+   \endqml
+
+   In the example above the tools are changed when the button is pressed. The tool
+   bar would perform a "replace" transition animation between the old tools (buttons "Old One" 
+   and "Old Two") and the new tools defined by someTools.
+
+*/
+
+/*!
+    \qmlproperty Item ToolBar::tools
+
+    Property default is \c null.
+    
+    Tools to show on the toolbar. Normally do use a Layout item.
+*/
+
+
+/*!
+    \qmlproperty string ToolBar::transition
+    
+    Property default is \c "set".
+    
+    The transition type is one of the following:
+    \list
+    \o \c "set" - an instantaneous change (default).
+    \o \c "push" - follows page stack push animation.
+    \o \c "pop" - follows page stack pop animation.
+    \o \c "replace" - follows page stack replace animation.
+    \endlist
+*/
+
+/*!
+    \qmlmethod ToolBar::setTools(tools, transition)
+    
+    Sets the tools with a transition.
+*/
+
+/*!
+    \qmlproperty Style ToolBar::platformStyle
+
+    
+    Platform specific property to define the style of the toolbar. Note this 
+    property is not cross-platform. 
+
+    \sa ToolBarStyle
+*/

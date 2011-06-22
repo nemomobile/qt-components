@@ -2,7 +2,7 @@ This source tree contains the Qt Components project.
 
 Building
 ========
-configure (for compiling specific component sets add '-meego' and/or '-symbian')
+configure (for compiling specific component sets add '-meego' or '-symbian')
 make
 make install
 
@@ -23,7 +23,7 @@ Build dependencies
 
 Optional dependencies
 =====================
-- MeeGo Touch (for the com.meego module)
+- MeeGo Touch (for some features of the the com.meego module)
   -- On desktop, download and install: libmeegotouch & meegotouch-theme from http://meego.gitorious.org/meegotouch
   -- NOTE: meegotouch is already available if you are compiling inside scratchbox with a maemo6 target setup
 
@@ -40,6 +40,8 @@ Coding Styles
 Running on Desktop
 ==================
 - Pass -graphicssystem native
+- On mac, running tests require prefixing the path to the libqtcomponentsplugin.dylib: 
+   "DYLD_LIBRARY_PATH=/Developer/depot/qt/imports/Qt/labs/components/ make check"
 
 Building the Documentation
 ==================
@@ -65,21 +67,11 @@ git@gitorious.org:qt-components/qt-components.git
 1: meegotouch-theme: qmake PREFIX=/usr/local/ && sudo make install
 
 2: libmeegotouch:
-   ./configure
+   ./configure --prefix=/usr
  Make sure that you configure with dbus. If it doesn't pick up qt's dbus:
    export PKG_CONFIG_PATH=$QTDIR/lib/pkgconfig
    make install
 
-# mmoc is required
-3: export PATH=/usr/local/bin/:$PATH
-
-4: qt-components: ./configure -config meego && make install
+3: qt-components: ./configure -meego && make install
      (installs into your current binary qt path)
      or use dpkg-buildpackage to make a .deb package
-
-On destop: -graphicssystem native needed:
-5: run example: cd qt-components/examples/meego/calculator && ./calculator -graphicssystem native
-
-6a: if mthemedaemon is running, you can switch theme with: gconftool-2 --type string --set /meegotouch/theme/name "THEMENAME"
-
-6b: if mthemedaemon is not running, you can set the M_THEME_DIR environment variable to point to your theme assets directory (e.g. /usr/share/themes/base).

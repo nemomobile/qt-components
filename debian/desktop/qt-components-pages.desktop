@@ -1,8 +1,0 @@
-[Desktop Entry]
-Version=1.0
-Name=Pages
-GenericName=Pages
-Comment=Pages
-Exec=/opt/qt-components/pages/pages
-Terminal=false
-Type=Application

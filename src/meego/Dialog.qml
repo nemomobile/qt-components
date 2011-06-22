@@ -1,179 +1,188 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
-** This file is part of the Qt Components project on Qt Labs.
+** This file is part of the Qt Components project.
 **
-** No Commercial Usage
-** This file contains pre-release code and may not be distributed.
-** You may use this file in accordance with the terms and conditions contained
-** in the Technology Preview License Agreement accompanying this package.
+** $QT_BEGIN_LICENSE:BSD$
+** You may use this file under the terms of the BSD license as follows:
 **
-** GNU Lesser General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU Lesser
-** General Public License version 2.1 as published by the Free Software
-** Foundation and appearing in the file LICENSE.LGPL included in the
-** packaging of this file.  Please review the following information to
-** ensure the GNU Lesser General Public License version 2.1 requirements
-** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
+**     the names of its contributors may be used to endorse or promote
+**     products derived from this software without specific prior written
+**     permission.
 **
-** If you have questions regarding the use of this file, please contact
-** Nokia at qt-info@nokia.com.
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+** $QT_END_LICENSE$
 **
 ****************************************************************************/
 
-import Qt 4.7
-import Qt.labs.components 1.0
-import com.meego.themebridge 1.0
+import QtQuick 1.1
+import "." 1.0
 
-Item {
+Popup {
     id: root
+    objectName: "baseDialog"
 
     // API
-    property alias title: titleBar.text
+    property alias title: titleBar.children
     property alias content: contentField.children
     property alias buttons: buttonRow.children
 
-    property alias modal: dialogFader.modal
-
-    property alias closeButtonVisible: titleBar.closeButtonVisible
-
-    signal activated
-    signal deactivated
     signal accepted
     signal rejected
 
-    //private api
+    property Style platformStyle: DialogStyle {}
+
+    //Deprecated, TODO Remove this on w13
+    property alias style: root.platformStyle
+
+    // private api
+    property string __animationChief: "baseDialog"
+    __dim: platformStyle.dim
+    __fadeInDuration:  platformStyle.fadeInDuration
+    __fadeOutDuration: platformStyle.fadeOutDuration
+    __fadeInDelay:     platformStyle.fadeInDelay
+    __fadeOutDelay:    platformStyle.fadeOutDelay
+
+    // true: center of the content field is center of the background rect
+    // false: the whole dialog is centered
+    property bool __centerContentField: false
+
+    width:  parent.width - platformStyle.leftMargin - platformStyle.rightMargin  // ToDo: better width heuristic
+    height: titleBar.height + contentField.height + buttonRow.height
+
+    anchors.centerIn: parent
+
+    function reject() {
+        close();
+        rejected();
+    }
+
+    function accept() {
+        close();
+        accepted();
+    }
+
+    // this item contains the whole dialog (title bar + content rectangle, button row)
     Item {
-        id: margin
-        //ToDo: use fix values for margins to avoid themebridge & lmt style
-        property int leftMargin: dialogStyle.current.get("dialogLeftMargin")
-        property int rightMargin: dialogStyle.current.get("dialogRightMargin")
-        property int topMargin: dialogStyle.current.get("dialogTopMargin")
-        property int bottomMargin: dialogStyle.current.get("dialogBottomMargin")
-        property bool centered: dialogStyle.current.get("dialogVerticalAlignment") == Qt.AlignCenter
-    }
+        id: backgroundRect
 
-    width:  parent.width - margin.leftMargin - margin.rightMargin
-    height: parent.height - margin.topMargin - margin.bottomMargin
-
-    state: "hidden"
-
-    Fader {
-        id: dialogFader
-        onClicked: rejected()
-    }
-
-    function isVisible() {
-        return state == "visible"
-    }
-
-    onAccepted: state = "hidden"
-    onRejected: state = "hidden"
-
-    Item {
-        id: dialogItem
-
-        //ToDo: add support for layoutDirection Qt::RightToLeft
-        x: margin.leftMargin
-        y: margin.topMargin
         height:  root.height
         width: root.width
 
-        state: root.state
-        opacity: state == "visible" ? 1.0 : 0.0
+        anchors.centerIn:  root
 
-        // this item contains the whole dialog (title bar + content rectangle, button row)
+        // center the whole dialog, not just the content field
+        transform: Translate {
+            id: contentTranslation
+            y: root.__centerContentField ? 0 : (titleBar.height - buttonRow.height) / 2
+        }
+
+
+        // title bar
         Item {
-            id: backgroundRect
-            anchors.fill: parent
+            id: titleBar
 
-            height: calculateContentHeight()
+            width: root.width
+            height: childrenRect.height
 
-            // Calculate height that can fit all label content, the button row and
-            // two spacings (between label and buttons, and below the buttons)
-            function calculateContentHeight() {
-                var height = 0;
-                height += titleBar.height;
-                height += 250; //bad: hard-coded value for content-field!!
-                if (buttonRow.children[0]) {
-                    height += buttonRow.children[0].height;
-                }
-                height += dialogStyle.current.get("verticalSpacing") * 2;
-                return height;
-            }
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: contentField.top
 
+            // animate over bottomMargin (i.e. the distance between the content field)
+            anchors.bottomMargin: 0
 
-            DialogTitleBar {
-                id: titleBar
-                opacity: dialogItem.opacity
-                onRequestClose: root.state = "hidden"
-            }
+        }
 
-            Item {
-                id: contentRect
+        //content area
+        Item {
+            id: contentField
 
-                anchors.top: titleBar.bottom
-                anchors.bottom: buttonRow.top
-                anchors.left: parent.left
-                anchors.right: parent.right
+            anchors.left: parent.left
+            //anchors.right: parent.right
 
-                Background {
-                    id: meegoStyleBackground
-                    anchors.fill: contentRect
-                    style: contentsStyle
-                }
+           anchors.horizontalCenter: backgroundRect.horizontalCenter
+           anchors.verticalCenter: backgroundRect.verticalCenter
 
-            }
+           height: childrenRect.height
 
-            Flickable {
-                id: contentFlicker
-                contentHeight: contentField.height
-                //contentWidth: contentField.width
-                anchors.fill: contentRect
-
-                clip: true
-                interactive: true
-
-                //responsible for loading the content
-                //via content property
-                Item {id: contentField}
-
-            }
-
-            Item {
-                id: buttonRow
-                opacity: dialogItem.opacity
-                anchors.bottom: backgroundRect.bottom
-                anchors.horizontalCenter: backgroundRect.horizontalCenter
-
-                height: childrenRect.height
-               // spacing: dialogStyle.current.get("buttonSpacing")
+           transform: Scale {
+                id: contentScale
+                xScale: 1.0; yScale: 1.0
+                origin.x:  mapFromItem(root, root.width / 2, root.height / 2).x
+                origin.y: mapFromItem(root, root.width / 2, root.height / 2).y
 
             }
 
         }
 
+        //button row
+        Item {
+            id: buttonRow
+
+            anchors.left: parent.left
+            anchors.right: parent.right
+
+            anchors.top: contentField.bottom
+
+            // animate over topMargin (i.e. the distance between the content field)
+            anchors.topMargin: 0
+
+            height: childrenRect.height
+        }
+
+    }
+
+    onPrivateClicked: reject()
+
+    StateGroup {
+        id: statesWrapper
+
+        state: "hidden"
+
+        // needed for button and title bar animation
+        // without resetting the button row's/title bar's coordinate system would be translated
+        property int __buttonSaver: buttonRow.y
+        property int __titleSaver: titleBar.y
+
+
         states: [
             State {
                 name: "visible"
+                when: root.__animationChief == "baseDialog" && (status == DialogStatus.Opening || status == DialogStatus.Open)
                 PropertyChanges {
-                    target: dialogItem
-                    y: margin.topMargin
-                    // width:  root.width
-                    // height: root.height
+                    target: backgroundRect
                     opacity: 1.0
                 }
             },
             State {
                 name: "hidden"
+                when: root.__animationChief == "baseDialog" && (status == DialogStatus.Closing || status == DialogStatus.Closed)
                 PropertyChanges {
-                    target: dialogItem
-                    y: 0 - height
-                    // width:  0
-                    // height: 0
+                    target: backgroundRect
                     opacity: 0.0
                 }
             }
@@ -182,42 +191,133 @@ Item {
         transitions: [
             Transition {
                 from: "visible"; to: "hidden"
-                NumberAnimation {properties: "x,y"; easing.type: Easing.InOutQuad; duration: 600}
-                NumberAnimation {properties: "opacity"; duration: 900}
-                ScriptAction {script: {
-                        deactivated();
-                        dialogFader.state = state;
+                SequentialAnimation {
+                    ScriptAction {script: {
+                            __fader().state = "hidden";
+
+                            backgroundRect.opacity = 1.0;
+                            root.opacity = 1.0
+
+                            statesWrapper.__buttonSaver = buttonRow.y
+                            statesWrapper.__titleSaver = titleBar.y
+                            root.status = DialogStatus.Closing;
+                        }
+                    }
+
+                    // With a 100ms delay the background fades to alpha 0% (500ms, quint ease out).
+                    // --> done in the fader
+
+                    PropertyAnimation { target: root; properties: "opacity"; from: 0.0; to: 1.0; duration: 0 }
+                    PropertyAnimation { target: backgroundRect; properties: "opacity"; from: 0.0; to: 1.0; duration: 0 }
+
+                    // The closing transition starts with the title and both lines dimming to
+                    // alpha 0% and moving 100 pixels in Y axis towards the center (125ms,
+                    // quint ease in). With no delay the list fades to alpha 0% and scales to
+                    // 80% (anchorpoint in the middle of the list, 100ms, quint ease in).
+                    ParallelAnimation {
+                        PropertyAnimation {target: contentField; properties: "opacity"; from: 1.0; to: 0.0; duration: 100}
+                        PropertyAnimation {target: titleBar; properties: "opacity"; from: 1.0; to: 0.0; duration: 125}
+                        PropertyAnimation {target: contentScale; properties: "xScale,yScale"; from: 1.0 ; to: 0.8; duration: 100; easing.type: Easing.InQuint }
+                        PropertyAnimation {target: buttonRow; properties: "opacity"; from: 1.0; to: 0.0; duration: 125}
+                        PropertyAnimation {target: buttonRow
+                            properties: "anchors.topMargin"
+                            from: 0
+                            to: -100
+                            duration: 125
+                            easing.type: Easing.InQuint
+                        }
+                        PropertyAnimation {target: titleBar
+                            properties: "anchors.topMargin"
+                            from: 0
+                            to: 100
+                            duration: 125
+                            easing.type: Easing.InQuint
+                        }
+                    }
+
+                    ScriptAction {script: {
+                            // reset button and title bar
+                            buttonRow.y = statesWrapper.__buttonSaver
+                            titleBar.y = statesWrapper.__titleSaver
+                            // make sure, root isn't visible:
+                            backgroundRect = 0.0;
+                            root.opacity = 0.0;
+                            status = DialogStatus.Closed;
+
+                        }
                     }
                 }
             },
             Transition {
                 from: "hidden"; to: "visible"
-                NumberAnimation {properties: "x,y"; easing.type: Easing.InOutQuad; duration: 600}
-                NumberAnimation {properties: "opacity"; duration: 900}
-                ScriptAction {script: {
-                        activated();
-                        dialogFader.state = state;
+                SequentialAnimation {
+                    ScriptAction {script: {
+                            __fader().state = "visible";
+
+                            statesWrapper.__buttonSaver = buttonRow.y
+                            statesWrapper.__titleSaver = titleBar.y
+
+                            root.status = DialogStatus.Opening;
+                            // UPPERCASE-UGLY, but necessary to avoid flicker
+                            root.opacity = 1.0;
+                            titleBar.opacity = 0.0;
+                            contentField.opacity = 0.0;
+                            buttonRow.opacity = 0.0;
+                        }
+                    }
+
+                    // The opening transition starts by dimming the background to 90% (250ms,
+                    // quint ease in). --> Done inside the fader
+
+                    ParallelAnimation {
+                        SequentialAnimation {
+                            // a 250ms delay from the beginning
+                            PauseAnimation { duration: 250 }
+                            // the list scales from 80% to 100% and alpha 0%
+                            // to 100% (anchorpoint in the middle of the list, 250ms, expo ease out)
+                            ParallelAnimation {
+                                PropertyAnimation {target: contentField; properties: "opacity"; from: 0.0; to: 1.0; duration: 250}
+                                PropertyAnimation {target: contentScale; properties: "xScale,yScale"; from: 0.8 ; to: 1.0; duration: 250; easing.type: Easing.OutExpo}
+                            }
+                        }
+                        SequentialAnimation {
+                            // a 200ms delay from the beginning
+                            PauseAnimation { duration: 200 }
+                            ParallelAnimation {
+                                //the title and both lines come from alpha 0%
+                                PropertyAnimation {target: buttonRow; properties: "opacity"; from: 0.0; to: 1.0; duration: 450; }
+                                PropertyAnimation {target: titleBar; properties: "opacity"; from: 0.0; to: 1.0; duration: 450; }
+                                // and move towards the edges (40 pixels in Y axis
+                                // away from their final destination, 450ms, custom ease).
+                                PropertyAnimation {target: buttonRow; properties: "anchors.topMargin"
+                                    from: -40
+                                    to: 0
+                                    duration: 450
+                                    easing.type: Easing.OutBack
+                                }
+                                PropertyAnimation {target: titleBar; properties: "anchors.bottomMargin"
+                                    from: 40
+                                    to: 0
+                                    duration: 450
+                                    easing.type: Easing.OutBack
+                                }
+
+                            }
+                        }
+                    }
+
+                    ScriptAction {script: {
+
+                            // reset button and title bar
+                            buttonRow.y = statesWrapper.__buttonSaver
+                            titleBar.y   = statesWrapper.__titleSaver
+
+                            root.status = DialogStatus.Open;
+                        }
                     }
                 }
             }
         ]
-
-    }
-
-
-    //ToDo: remove lmt dependency/avoid using themebridge
-    Style {
-        id: contentsStyle
-        styleClass: "MPannableWidgetStyle"
-        styleObjectName: "MDialogContentsViewport"
-    }
-
-    Style {
-        id: dialogStyle
-        styleClass: "MDialogStyle"
     }
 
 }
-
-
-

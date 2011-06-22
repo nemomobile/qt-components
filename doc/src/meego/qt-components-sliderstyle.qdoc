@@ -1,0 +1,205 @@
+/****************************************************************************
+**
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project.
+**
+** $QT_BEGIN_LICENSE:BSD$
+** You may use this file under the terms of the BSD license as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
+**     the names of its contributors may be used to endorse or promote
+**     products derived from this software without specific prior written
+**     permission.
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+/*!
+    \qmlclass SliderStyle
+    \inherits Style
+    \ingroup qt-components
+    \since 4.7
+
+    \brief
+    SliderStyle properties and default values explained.
+
+    Custom platformStyle example
+
+    \code
+    Slider {
+        platformStyle: SliderStyle {
+            fontFamily: "Arial"
+            fontPixelSize: 30
+            textColor: "red"
+            valueBackground: "valueBackground.png"
+            labelArrowDown: "labelArrowDown.png"
+            labelArrowUp: "labelArrowup.png"
+            labelArrowLeft: "labelArrowLeft.png"
+            labelArrowRight: "labelArrowRight.png"
+            handleBackground: "handleBackground.png"
+            handleBackgroundPressed: "handleBackgroundPressed.png"
+            grooveItemBackground: "grooveItemBackground.png"
+            grooveItemElapsedBackground: "grooveItemElapsedBackground.png"
+            mouseMarginTop: 5
+            mouseMarginLeft: 5
+            mouseMarginRight: 5
+            mouseMarginBottom: 5
+        }
+    }
+    \endcode
+*/
+
+/*!
+    \qmlproperty string SliderStyle::fontFamily
+
+    Property default value is \c UI.FONT_FAMILY.
+
+    Font family.
+*/
+
+/*!
+    \qmlproperty int SliderStyle::fontPixelSize
+
+    Property default value is \c UI.FONT_DEFAULT_SIZE.
+
+    Font pixel size.
+*/
+
+/*!
+    \qmlproperty color SliderStyle::textColor
+
+    Property default value is \c !inverted?UI.COLOR_INVERTED_FOREGROUND:UI.COLOR_FOREGROUND.
+
+    Text color.
+*/
+
+
+/*!
+    \qmlproperty string SliderStyle::valueBackground
+
+    Property default value is \c "image://theme/meegotouch-slider-handle-value"+__invertedString+"-background".
+
+    Value background image location.
+*/
+
+/*!
+    \qmlproperty string SliderStyle::labelArrowDown
+
+    Property default value is \c "image://theme/meegotouch-slider-handle-label-arrow-down"+__invertedString.
+
+    Label arrow down image location.
+*/
+
+
+/*!
+    \qmlproperty string SliderStyle::labelArrowUp
+
+    Property default value is \c "image://theme/meegotouch-slider-handle-label-arrow-up"+__invertedString.
+
+    Label arrow up image location.
+*/
+
+
+/*!
+    \qmlproperty string SliderStyle::labelArrowLeft
+
+    Property default value is \c "image://theme/meegotouch-slider-handle-label-arrow-left"+__invertedString.
+
+    Label arrow left image location.
+*/
+
+
+/*!
+    \qmlproperty string SliderStyle::labelArrowRight
+
+    Property default value is \c "image://theme/meegotouch-slider-handle-label-arrow-right"+__invertedString.
+
+    Label arrow right image location.
+*/
+
+/*!
+    \qmlproperty string SliderStyle::handleBackground
+
+    Property default value is \c "image://theme/meegotouch-slider-handle"+__invertedString+"-background-horizontal".
+
+    Handles background image location.
+*/
+
+/*!
+    \qmlproperty string SliderStyle::handleBackground
+
+    Property default value is \c "image://theme/meegotouch-slider-handle"+__invertedString+"-background-pressed-horizontal".
+
+    Handles pressed state background image location.
+*/
+
+/*!
+    \qmlproperty string SliderStyle::grooveItemBackground
+
+    Property default value is \c "image://theme/meegotouch-slider"+__invertedString+"-background-horizontal".
+
+    Grooves item background image location.
+*/
+
+/*!
+    \qmlproperty string SliderStyle::grooveItemElapsedBackground
+
+    Property default value is \c "image://theme/meegotouch-slider-elapsed"+__invertedString+"-background-horizontal".
+
+    Grooves item elapsed background image location.
+*/
+
+/*!
+    \qmlproperty real SliderStyle::mouseMarginTop
+
+    Property default value is \c 0.0.
+
+    Mouse margin top.
+*/
+
+/*!
+    \qmlproperty real SliderStyle::mouseMarginLeft
+
+    Property default value is \c 0.0.
+
+    Mouse margin left.
+*/
+
+/*!
+    \qmlproperty real SliderStyle::mouseMarginRight
+
+    Property default value is \c 0.0.
+
+    Mouse margin right.
+*/
+
+/*!
+    \qmlproperty real SliderStyle::mouseMarginBottom
+
+    Property default value is \c 0.0.
+
+    Mouse margin bottom.
+*/
