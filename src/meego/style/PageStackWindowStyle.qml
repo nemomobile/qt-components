@@ -50,5 +50,5 @@ Style {
     property url portraitBackground: background
     property url portraiteBackground: background
 
-    property int backgroundFillMode: Image.Stretch
+    property int backgroundFillMode: Image.Tile
 }
