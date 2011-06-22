@@ -41,9 +41,9 @@
 #ifndef SDECLARATIVEFOCUSSCOPEITEM_H
 #define SDECLARATIVEFOCUSSCOPEITEM_H
 
-#include "sdeclarativeimplicitsizeitem.h"
+#include <QDeclarativeItem>
 
-class SDeclarativeFocusScopeItem : public SDeclarativeImplicitSizeItem
+class SDeclarativeFocusScopeItem : public QDeclarativeItem
 {
     Q_OBJECT
 

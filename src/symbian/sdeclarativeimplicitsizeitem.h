@@ -43,6 +43,8 @@
 
 #include <QtDeclarative/qdeclarativeitem.h>
 
+// DEPRECATED on w25 - Use QDeclarativeItem instead
+
 class SDeclarativeImplicitSizeItem : public QDeclarativeItem
 {
     Q_OBJECT

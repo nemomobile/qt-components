@@ -41,7 +41,7 @@
 #include "sdeclarativefocusscopeitem.h"
 
 SDeclarativeFocusScopeItem::SDeclarativeFocusScopeItem(QDeclarativeItem *parent)
-    : SDeclarativeImplicitSizeItem(parent)
+    : QDeclarativeItem(parent)
 {
     setFlag(ItemIsFocusScope);
 }

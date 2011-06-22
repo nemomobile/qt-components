@@ -117,6 +117,10 @@ public:
     }
 
     void registerTypes(const char *uri) {
+
+        // enables the use of QtQuick 1.1 version (revision 1) of QDeclarativeItem
+        qmlRegisterRevision<QDeclarativeItem, 1>(uri, 1, 1);
+
         qmlRegisterType<SDeclarativeIcon>(uri, 1, 1, "Icon");
         qmlRegisterType<SDeclarativeMaskedImage>(uri, 1, 1, "MaskedImage");
         qmlRegisterType<SDeclarativeImplicitSizeItem>(uri, 1, 1, "ImplicitSizeItem");
