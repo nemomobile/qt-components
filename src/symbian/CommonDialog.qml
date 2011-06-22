@@ -44,82 +44,143 @@ import "." 1.1
 Dialog {
     id: root
 
-    property alias titleText: titleTextArea.text
+    property alias titleText: titleAreaText.text
+    property url titleIcon
+    property variant buttonTexts: []
     property bool privateCloseIcon: false
 
+    signal buttonClicked(int index)
+
+    onButtonTextsChanged: {
+        for (var i = buttonRow.children.length; i > 0; --i) {
+            buttonRow.children[i - 1].destroy()
+        }
+        for (var j = 0; j < buttonTexts.length; ++j) {
+            var button = buttonComponent.createObject(buttonRow)
+            button.text = buttonTexts[j]
+            button.index = j
+        }
+    }
+
+    Component {
+        id: buttonComponent
+        ToolButton {
+            property int index
+
+            width: internal.buttonWidth()
+            height: privateStyle.toolBarHeightLandscape
+            platformInverted: root.platformInverted
+
+            onClicked: { root.buttonClicked(index); root.close() }
+        }
+    }
+
+    QtObject {
+        id: internal
+
+        function buttonWidth() {
+            switch (buttonTexts.length) {
+                case 0: return 0
+                case 1: return Math.round((privateStyle.dialogMaxSize - 3 * platformStyle.paddingMedium) / 2)
+                default: return (buttonContainer.width - (buttonTexts.length + 1) *
+                    platformStyle.paddingMedium) / buttonTexts.length
+            }
+        }
+
+        function iconSource() {
+            if (privateCloseIcon) {
+                return privateStyle.imagePath((iconMouseArea.pressed && !iconMouseArea.pressCancelled
+                    ? "qtg_graf_popup_close_pressed"
+                    : "qtg_graf_popup_close_normal"),
+                    root.platformInverted)
+            } else {
+                return root.titleIcon
+            }
+        }
+    }
+
     title: Item {
-        anchors.fill: parent
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: platformStyle.graphicSizeSmall + 2 * platformStyle.paddingLarge
 
         LayoutMirroring.enabled: privateCloseIcon ? false : undefined
         LayoutMirroring.childrenInherit: true
 
-        Text {
-            id: titleTextArea
+        Item {
+            id: titleLayoutHelper // needed to make the text mirror correctly
 
-            anchors {
-                left: parent.left
-                leftMargin: platformStyle.paddingLarge
-                right: iconMouseArea.left
-                top: parent.top
-                bottom: parent.bottom
-            }
-
-            font {
-                family: platformStyle.fontFamilyRegular
-                pixelSize: platformStyle.fontSizeLarge
-            }
-            color: root.platformInverted ? platformStyle.colorNormalLinkInverted
-                                         : platformStyle.colorNormalLink
-            clip: true
-            elide: Text.ElideRight
-            horizontalAlignment: Text.AlignLeft
-            verticalAlignment: Text.AlignVCenter
-        }
-
-        MouseArea {
-            id: iconMouseArea
-
-            property bool pressCancelled
-
+            anchors.left: parent.left
+            anchors.right: titleAreaIcon.source == "" ? parent.right : titleAreaIcon.left
             anchors.top: parent.top
             anchors.bottom: parent.bottom
+            anchors.margins: platformStyle.paddingLarge
+
+            Text {
+                id: titleAreaText
+
+                LayoutMirroring.enabled: root.LayoutMirroring.enabled
+
+                anchors.fill: parent
+                font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
+                color: root.platformInverted ? platformStyle.colorNormalLinkInverted
+                                             : platformStyle.colorNormalLink
+                elide: Text.ElideRight
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+
+        Image {
+            id: titleAreaIcon
+
             anchors.right: parent.right
-            width: privateCloseIcon ? 2 * platformStyle.paddingLarge + platformStyle.graphicSizeSmall : 0
-            enabled: root.status == DialogStatus.Open
+            anchors.rightMargin: platformStyle.paddingLarge
+            anchors.verticalCenter: parent.verticalCenter
+            source: internal.iconSource()
+            sourceSize.height: platformStyle.graphicSizeSmall
+            sourceSize.width: platformStyle.graphicSizeSmall
 
-            onPressed: {
-                pressCancelled = false
-                privateStyle.play(Symbian.BasicButton)
-            }
-            onClicked: {
-                if (!pressCancelled)
-                    root.reject()
-            }
-            onReleased: {
-                if (!pressCancelled)
-                    privateStyle.play(Symbian.PopupClose)
-            }
-            onExited: pressCancelled = true
+            MouseArea {
+                id: iconMouseArea
 
-            Loader {
-                id: iconLoader
+                property bool pressCancelled
+
                 anchors.centerIn: parent
-                sourceComponent: privateCloseIcon ? closeIconComponent : undefined
-            }
+                width: parent.width + 2 * platformStyle.paddingLarge
+                height: parent.height + 2 * platformStyle.paddingLarge
+                enabled: privateCloseIcon && root.status == DialogStatus.Open
 
-            Component {
-                id: closeIconComponent
-
-                Image {
-                    sourceSize.height: platformStyle.graphicSizeSmall
-                    sourceSize.width: platformStyle.graphicSizeSmall
-                    smooth: true
-                    source: privateStyle.imagePath((iconMouseArea.pressed && !iconMouseArea.pressCancelled
-                                                    ? "qtg_graf_popup_close_pressed"
-                                                    : "qtg_graf_popup_close_normal"),
-                                                   root.platformInverted)
+                onPressed: {
+                    pressCancelled = false
+                    privateStyle.play(Symbian.BasicButton)
                 }
+                onClicked: {
+                    if (!pressCancelled)
+                        root.reject()
+                }
+                onReleased: {
+                    if (!pressCancelled)
+                        privateStyle.play(Symbian.PopupClose)
+                }
+                onExited: pressCancelled = true
             }
+        }
+    }
+
+    buttons: Item {
+        id: buttonContainer
+
+        LayoutMirroring.enabled: false
+        LayoutMirroring.childrenInherit: true
+
+        width: parent.width
+        height: buttonTexts.length ? privateStyle.toolBarHeightLandscape + 2 * platformStyle.paddingSmall : 0
+
+        Row {
+            id: buttonRow
+            anchors.centerIn: parent
+            spacing: platformStyle.paddingMedium
         }
     }
 }
