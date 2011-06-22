@@ -102,7 +102,10 @@ SDeclarative::SDeclarative(QObject *parent) :
 {
     d_ptr->timer.start(MINUTE_MS);
     connect(&d_ptr->timer, SIGNAL(timeout()), this, SIGNAL(currentTimeChanged()));
-    QCoreApplication::instance()->installEventFilter(this);
+
+    QCoreApplication *application = QCoreApplication::instance();
+    if (application)
+        application->installEventFilter(this);
 }
 
 SDeclarative::~SDeclarative()
