@@ -67,7 +67,7 @@ Item {
 
     Text {
         id: textProperties
-        font.family: UI.FONT_FAMILY
+        font.family: UI.FONT_FAMILY_LIGHT
         font.pixelSize: UI.FONT_DEFAULT
         visible: false
     }

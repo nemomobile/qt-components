@@ -41,6 +41,7 @@
 .pragma library
 
 var FONT_FAMILY = "Nokia Pure Text";
+var FONT_FAMILY_LIGHT = "Nokia Pure Text Light";
 var FONT_DEFAULT_SIZE = 24; // DEPRECATED
 
 var FONT_XLARGE  = 32;
