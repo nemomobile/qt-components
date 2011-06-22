@@ -38,10 +38,10 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.0
+import QtQuick 1.1
 import "." 1.1
 
-FocusScopeItem {
+FocusScope {
     id: root
 
     // Common Public API

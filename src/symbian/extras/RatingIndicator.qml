@@ -38,11 +38,11 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.0
+import QtQuick 1.1
 import com.nokia.symbian 1.1
 import Qt.labs.components 1.1 as QtComponents
 
-ImplicitSizeItem {
+Item {
     id: root
 
     property alias maximumValue: model.maximumValue

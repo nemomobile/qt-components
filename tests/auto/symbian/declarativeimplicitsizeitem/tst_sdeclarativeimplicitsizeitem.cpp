@@ -86,7 +86,7 @@ private:
 
 void tst_SDeclarativeImplicitSizeItem::testDirectQmlUsage()
 {
-    QString text("import QtQuick 1.0\n"
+    QString text("import QtQuick 1.1\n"
         "import com.nokia.symbian 1.1\n"
         "ImplicitSizeItem {\n"
         "}\n");
@@ -135,7 +135,7 @@ void tst_SDeclarativeImplicitSizeItem::testCodeQMLUsage()
 {
     qmlRegisterType<TestImplicitSizeItem>("myexport", 1, 0, "ImplicitSizeItem");
 
-    QString text("import QtQuick 1.0\n"
+    QString text("import QtQuick 1.1\n"
                  "import myexport 1.0\n"
                  "ImplicitSizeItem {\n"
                  "}\n");

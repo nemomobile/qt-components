@@ -38,10 +38,10 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.0
+import QtQuick 1.1
 import "." 1.1
 
-ImplicitSizeItem {
+Item {
     id: button
 
     // Common Public API

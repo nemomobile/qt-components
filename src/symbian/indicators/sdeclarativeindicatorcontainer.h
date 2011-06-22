@@ -41,11 +41,11 @@
 #ifndef SDECLARATIVEINDICATORCONTAINER_H
 #define SDECLARATIVEINDICATORCONTAINER_H
 
-#include "sdeclarativeimplicitsizeitem.h"
+#include <QDeclarativeItem>
 
 class SDeclarativeIndicatorContainerPrivate;
 
-class SDeclarativeIndicatorContainer : public SDeclarativeImplicitSizeItem
+class SDeclarativeIndicatorContainer : public QDeclarativeItem
 {
     Q_OBJECT
     Q_PROPERTY(QColor indicatorColor READ indicatorColor WRITE setIndicatorColor NOTIFY indicatorColorChanged)

@@ -38,10 +38,10 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.0
+import QtQuick 1.1
 import "." 1.1
 
-ImplicitSizeItem {
+Item {
     id: root
     default property alias content: tabBarLayout.data
     property alias layout: tabBarLayout

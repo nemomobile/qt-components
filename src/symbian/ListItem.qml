@@ -38,10 +38,10 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.0
+import QtQuick 1.1
 import "." 1.1
 
-ImplicitSizeItem {
+Item {
     id: root
     property string mode: "normal" // Read-only
     property alias paddingItem: paddingItem // Read-only

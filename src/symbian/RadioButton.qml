@@ -38,11 +38,11 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.0
+import QtQuick 1.1
 import Qt.labs.components 1.1
 import "." 1.1
 
-ImplicitSizeItem {
+Item {
     id: root
 
     // Common Public API

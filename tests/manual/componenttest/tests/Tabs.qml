@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.0
+import QtQuick 1.1
 import com.nokia.symbian 1.1
 
 Item {
@@ -374,7 +374,7 @@ Item {
     // content is created dynamically based on the tab amount requested.
 /*
 
-import QtQuick 1.0;
+import QtQuick 1.1;
 import com.nokia.symbian 1.1;
 
 Page {
@@ -397,7 +397,7 @@ Page {
 */
 
     function startNewPage() {
-        var filePrefix =       "import QtQuick 1.0; import com.nokia.symbian 1.1; Page { id: page; "
+        var filePrefix =       "import QtQuick 1.1; import com.nokia.symbian 1.1; Page { id: page; "
         var tabBarPrefix =         "TabBar { id: tabBar; "
         var tabBarContent =            ""
         var tabBarPostfix =        "} "

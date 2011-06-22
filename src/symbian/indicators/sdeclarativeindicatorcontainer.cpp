@@ -75,7 +75,7 @@ SDeclarativeIndicatorContainerPrivate::~SDeclarativeIndicatorContainerPrivate()
 
 
 SDeclarativeIndicatorContainer::SDeclarativeIndicatorContainer(QDeclarativeItem *parent)
-    : SDeclarativeImplicitSizeItem(parent), d_ptr(new SDeclarativeIndicatorContainerPrivate)
+    : QDeclarativeItem(parent), d_ptr(new SDeclarativeIndicatorContainerPrivate)
 {
 #if defined(Q_OS_SYMBIAN) && defined(HAVE_SYMBIAN_INTERNAL)
     QT_TRAP_THROWING(d_ptr->dataHandler = CSDeclarativeIndicatorDataHandler::NewL(this));
@@ -200,8 +200,8 @@ void SDeclarativeIndicatorContainer::doLayoutChildren()
         }
     }
 
-    setImplicitWidthNotify(xPosition);
-    setImplicitHeightNotify(itemSize.height());
+    setImplicitWidth(xPosition);
+    setImplicitHeight(itemSize.height());
     d->layoutRequestPending = false;
 }
 

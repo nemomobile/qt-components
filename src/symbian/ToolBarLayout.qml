@@ -41,10 +41,10 @@
 // ToolBarLayout is a container for items on a toolbar that automatically
 // implements an appropriate layout for its children.
 
-import QtQuick 1.0
+import QtQuick 1.1
 import "." 1.1
 
-ImplicitSizeItem {
+Item {
     id: root
 
     //Determines wether the first child (if it has iconSource) is used as backButton

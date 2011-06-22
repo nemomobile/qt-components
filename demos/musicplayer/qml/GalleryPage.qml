@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.0
+import QtQuick 1.1
 import Qt.labs.components.native 1.0
 import QtMobility.gallery 1.1
 

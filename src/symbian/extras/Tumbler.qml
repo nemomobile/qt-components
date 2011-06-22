@@ -38,12 +38,12 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.0
+import QtQuick 1.1
 import com.nokia.symbian 1.1
 import "Tumbler.js" as Engine
 import "Constants.js" as C
 
-ImplicitSizeItem {
+Item {
     id: root
     objectName: "root"
 

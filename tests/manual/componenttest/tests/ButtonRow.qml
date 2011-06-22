@@ -37,7 +37,7 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 1.0
+import QtQuick 1.1
 import com.nokia.symbian 1.1
 
 Item {
@@ -230,7 +230,7 @@ Item {
                     text: "Add"
 
                     onClicked: {
-                        var item = Qt.createQmlObject('import QtQuick 1.0; import com.nokia.symbian 1.0;  Button { text: \"Btn' +buttonRow3.children.length +'\"; objectName: \"' +"Btn"+buttonRow3.children.length+'\" }', buttonRow3, "dynButton");
+                        var item = Qt.createQmlObject('import QtQuick 1.1; import com.nokia.symbian 1.0;  Button { text: \"Btn' +buttonRow3.children.length +'\"; objectName: \"' +"Btn"+buttonRow3.children.length+'\" }', buttonRow3, "dynButton");
                     }
                 }
 
@@ -562,7 +562,7 @@ Item {
                     text: "Add ToolBtn"
 
                     onClicked: {
-                        var item = Qt.createQmlObject('import QtQuick 1.0; import com.nokia.symbian 1.1;  ToolButton { text: \"ToolBtn' +buttonRow8.children.length +'\"; objectName: \"' +"ToolBtn"+buttonRow8.children.length +'\" }', buttonRow8, "dynButton");
+                        var item = Qt.createQmlObject('import QtQuick 1.1; import com.nokia.symbian 1.1;  ToolButton { text: \"ToolBtn' +buttonRow8.children.length +'\"; objectName: \"' +"ToolBtn"+buttonRow8.children.length +'\" }', buttonRow8, "dynButton");
                     }
                 }
 

@@ -38,11 +38,11 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.0
+import QtQuick 1.1
 import com.nokia.symbian 1.1
 import "Constants.js" as CONSTANTS
 
-ImplicitSizeItem {
+Item {
     id: root
 
     property alias iconSource: image.source

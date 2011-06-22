@@ -41,7 +41,7 @@
 // The PageStack item defines a container for pages and a stack-based
 // navigation model. Pages can be defined as QML items or components.
 
-import QtQuick 1.0
+import QtQuick 1.1
 import "." 1.1
 
 import "PageStack.js" as Engine
