@@ -77,4 +77,15 @@ public:
     Q_INVOKABLE void setIndicatorState(int indicatorId, bool on) const;
 };
 
+class LayoutDirectionSetter : public QObject
+{
+    Q_OBJECT
+
+public:
+    explicit LayoutDirectionSetter(QObject *parent = 0);
+
+    Q_INVOKABLE void setLayoutDirection(int direction);
+};
+
+
 #endif // UTILS_H
