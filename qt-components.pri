@@ -18,8 +18,6 @@ unix:!symbian {
 }
 
 meego {
-    DEFINES += Q_COMPONENTS_MEEGO
-
     exists( $$[QMAKE_MKSPECS]/features/meegotouch_defines.prf ) {
         load(meegotouch_defines)
         THEME_DIR = $$M_THEME_DIR

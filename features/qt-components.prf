@@ -4,7 +4,6 @@
 
 meego {
     DEFINES += Q_COMPONENTS_MEEGO
-    CONFIG += meegotouch
 }
 
 symbian3 {
