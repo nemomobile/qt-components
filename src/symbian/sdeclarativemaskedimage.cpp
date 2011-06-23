@@ -288,10 +288,7 @@ void SDeclarativeMaskedImage::paint(QPainter *painter, const QStyleOptionGraphic
     imageFrame.fill(Qt::transparent);
     QPainter p(&imageFrame);
 
-    int offsetX = QApplication::layoutDirection() == Qt::RightToLeft ?
-        d->tileSize + d->offset.x() : -d->offset.x();
-
-    p.drawPixmap(QPointF(0, 0), d->pixmap, QRectF(QPointF(offsetX, -d->offset.y()), rectSize));
+    p.drawPixmap(QPointF(0, 0), d->pixmap, QRectF(QPointF(-d->offset.x(), -d->offset.y()), rectSize));
     p.end(); // Can't set mask when painter's active
 
     // Set the mask in the frame
