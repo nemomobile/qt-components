@@ -5,6 +5,7 @@ SUBDIRS += \
     busyindicator \
     button \
     checkbox \
+    commondialog \
     contextmenu \
     declarativeicon \
     declarativeimplicitsizeitem \
