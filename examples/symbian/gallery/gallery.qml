@@ -40,11 +40,19 @@
 
 import QtQuick 1.1
 import com.nokia.symbian 1.1
+import LayoutDirectionSetter 1.0
 
 Window {
     id: root
 
     property Menu menu
+
+    LayoutMirroring.enabled: Qt.application.layoutDirection == Qt.RightToLeft
+    LayoutMirroring.childrenInherit: true
+
+    LayoutDirectionSetter {
+        id: layoutDirectionSetter
+    }
 
     StatusBar {
         id: statusBar
@@ -99,14 +107,28 @@ Window {
 
     Component {
         id: menuComponent
+
         Menu {
+            id: theMenu
+
             content: MenuLayout {
                 MenuItem {
                     text: column.enabled ? "Disable" : "Enable"
                     onClicked: column.enabled = !column.enabled
                 }
                 MenuItem { text: "Quit"; onClicked: Qt.quit() }
+                MenuItem { text: "Set layout dir"; platformSubItemIndicator: true; onClicked: layoutDirectionSubMenu.open()}
             }
+        }
+    }
+
+    Menu {
+        id: layoutDirectionSubMenu
+
+        MenuLayout {
+            MenuItem { text: "LeftToRight"; onClicked: layoutDirectionSetter.setLayoutDirection(Qt.LeftToRight) }
+            MenuItem { text: "RightToLeft"; onClicked: layoutDirectionSetter.setLayoutDirection(Qt.RightToLeft) }
+            MenuItem { text: "Automatic"; onClicked: layoutDirectionSetter.setLayoutDirection(Qt.LayoutDirectionAuto) }
         }
     }
 }

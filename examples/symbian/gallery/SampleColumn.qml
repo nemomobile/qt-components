@@ -308,7 +308,8 @@ Column {
         id: queryDialogComponent
         QueryDialog {
             titleText: "Query Dialog"
-            message: "Lorem ipsum dolor sit amet, consectetur adipisici elit,"
+            // Arabic character in the beginning to test right-to-left UI alignment
+            message: (LayoutMirroring.enabled ? "\u062a" : "") + "Lorem ipsum dolor sit amet, consectetur adipisici elit,"
                      + "sed eiusmod tempor incidunt ut labore et dolore magna aliqua."
                      + "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris"
                      + "nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit"
@@ -375,7 +376,7 @@ Column {
     Component {
         id: listHeading
         ListHeading {
-            width: parent.width
+            width: column.width
             ListItemText {
                 anchors.fill: parent.paddingItem
                 role: "Heading"
@@ -391,11 +392,13 @@ Column {
             Column {
                 anchors.fill: listItem.paddingItem
                 ListItemText {
+                    width: parent.width
                     mode: listItem.mode
                     role: "Title"
                     text: titleText
                 }
                 ListItemText {
+                    width: parent.width
                     mode: listItem.mode
                     role: "SubTitle"
                     text: subTitleText
@@ -586,9 +589,12 @@ Column {
                         border { color: "#000"; width: 1 }
                         color: index % 2 == 0 ? "#ffffff" : "#eeeeee"
                         Text {
-                            x: platformStyle.paddingSmall
-                            y: platformStyle.paddingSmall
+                            anchors {
+                                top: parent.top; topMargin: platformStyle.paddingSmall
+                                left: parent.left; leftMargin: platformStyle.paddingSmall
+                            }
                             text: name + " (index " + index + ")"
+                            horizontalAlignment: Text.AlignLeft
                         }
                     }
                     model: testModel
@@ -599,9 +605,12 @@ Column {
                         height: childrenRect.height + (2 * platformStyle.paddingSmall)
                         color: "#888"
                         Text {
-                            x: platformStyle.paddingSmall
-                            y: platformStyle.paddingSmall
+                            anchors {
+                                top: parent.top; topMargin: platformStyle.paddingSmall
+                                left: parent.left; leftMargin: platformStyle.paddingSmall
+                            }
                             text: section
+                            horizontalAlignment: Text.AlignLeft
                             font { bold: true; pointSize: platformStyle.fontSizeMedium }
                         }
                     }
