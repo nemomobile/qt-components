@@ -95,7 +95,7 @@ private:
     bool active;
 
     // True, if VisibilityFullyObscured was the most recent
-    // visiblity event received from X11
+    // visibility event received from X11
     bool fullyObscured;
 
     // True, if _MEEGOTOUCH_VISIBLE_IN_SWITCHER is set

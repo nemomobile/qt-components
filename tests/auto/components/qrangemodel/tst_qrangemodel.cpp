@@ -1150,7 +1150,7 @@ void tst_QRangeModel::stepSize()
     m.setValue(23.0);
 
     m.setStepSize(5.0);
-    QCOMPARE(m.value(), 25.0); // When the step size is reset the setted value is also reseted
+    QCOMPARE(m.value(), 25.0); // When the step size is reset the set value is also reseted
     QCOMPARE(m.position(), 25.0);
     QCOMPARE(valueSpy.count(), 6);
     QCOMPARE(positionSpy.count(), 6);
