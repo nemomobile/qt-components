@@ -299,6 +299,7 @@ Item {
                     capitalization: indexFeedbackText.text.length == 1 ? Font.AllUppercase : Font.MixedCase
                 }
                 text: internal.currentSection
+                horizontalAlignment: Text.AlignLeft
                 elide: Text.ElideRight
             }
             states: [
@@ -379,8 +380,8 @@ Item {
         id: handle
         objectName: "handle"
         source: privateStyle.imagePath(handleFileName())
-        x: orientation == Qt.Horizontal ? internal.handlePosition : (!flickableItem ? NaN : flickableItem.x)
-        y: orientation == Qt.Vertical ? internal.handlePosition : (!flickableItem ? NaN : flickableItem.y)
+        x: orientation == Qt.Horizontal ? internal.handlePosition : NaN
+        y: orientation == Qt.Vertical ? internal.handlePosition : NaN
         height: orientation == Qt.Vertical ? internal.dynamicHandleLength : root.height
         width: orientation == Qt.Horizontal ? internal.dynamicHandleLength : root.width
         border.right: orientation == Qt.Horizontal ? 7 : 0

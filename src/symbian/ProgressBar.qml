@@ -118,6 +118,9 @@ Item {
         }
 
         Item {
+            LayoutMirroring.enabled: false
+            LayoutMirroring.childrenInherit: true
+
             clip: true
 
             anchors.left: parent.left

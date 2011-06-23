@@ -87,6 +87,7 @@ Item {
 
     BorderImage {
         id: background
+
         source: privateStyle.imagePath(internal.imageName() + internal.modeName())
         border {
             left: internal.isFrameGraphic ? platformStyle.borderSizeMedium : 0;
@@ -97,6 +98,7 @@ Item {
         smooth: true
         anchors.fill: parent
         visible: !flat
+
         BorderImage {
             id: highlight
             border {
@@ -256,6 +258,7 @@ Item {
         // If the parent of a ToolButton is ButtonRow, segmented-style graphics are used to create a
         // seamless row of buttons. Otherwise normal ToolButton graphics are utilized.
         function imageName() {
+            var mirror = root.LayoutMirroring.enabled // To create binding
             if (isButtonRow(parent))
                 return parent.privateGraphicsName(root, 1)
             else

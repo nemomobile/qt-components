@@ -62,6 +62,9 @@ Item {
         root.tools = tools
     }
 
+    LayoutMirroring.enabled: false
+    LayoutMirroring.childrenInherit: true
+
     implicitWidth: Math.max(50, screen.width)
     implicitHeight: (screen.width < screen.height)
         ? privateStyle.toolBarHeightPortrait

@@ -143,6 +143,7 @@ Item {
 
         Image {
             source: privateStyle.imagePath("qtg_graf_drill_down_indicator.svg")
+            mirror: LayoutMirroring.enabled
             sourceSize.width: platformStyle.graphicSizeSmall
             sourceSize.height: platformStyle.graphicSizeSmall
         }

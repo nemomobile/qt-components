@@ -97,7 +97,6 @@ Item {
             } else if (checkable && !checked) {
                 privateStyle.play(Symbian.BasicButton)
             }
-
             highlight.source = privateStyle.imagePath(internal.imageName() + "pressed")
             container.scale = 0.95
             highlight.opacity = 1
@@ -129,6 +128,7 @@ Item {
         // If the parent of a Button is ButtonRow, segmented-style graphics are used to create a
         // seamless row of buttons. Otherwise normal Button graphics are utilized.
         function imageName() {
+            var mirror = button.LayoutMirroring.enabled // To create binding
             if (belongsToButtonRow())
                 return parent.privateGraphicsName(button, 0)
             return "qtg_fr_pushbutton_"

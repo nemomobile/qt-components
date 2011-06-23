@@ -96,6 +96,7 @@ Item {
             width: image.visible ? (root.width - image.width - platformStyle.paddingLarge * 2 - platformStyle.paddingMedium)
                                  : (root.width - platformStyle.paddingLarge * 2);
             verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignLeft
             color: mouseArea.pressed ?  platformStyle.colorPressed : platformStyle.colorNormalLight
             wrapMode: Text.Wrap
             font {

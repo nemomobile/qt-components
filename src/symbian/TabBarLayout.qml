@@ -44,23 +44,25 @@ import "." 1.1
 Item {
     id: root
 
-    Component.onCompleted: priv.layoutChidren()
-    onChildrenChanged: priv.layoutChidren()
-    onWidthChanged: priv.layoutChidren()
-    onHeightChanged: priv.layoutChidren()
+    Component.onCompleted: priv.layoutChildren()
+    onChildrenChanged: priv.layoutChildren()
+    onWidthChanged: priv.layoutChildren()
+    onHeightChanged: priv.layoutChildren()
 
     Keys.onPressed: {
-        if (event.key == Qt.Key_Right) {
-            var oldIndex = priv.currentButtonIndex()
-            if (oldIndex != root.children.length - 1) {
-                priv.tabGroup.currentTab = root.children[oldIndex + 1].tab
-                event.accepted = true
-            }
-        } else if (event.key == Qt.Key_Left) {
-            var oldIndex = priv.currentButtonIndex()
-            if (oldIndex != 0) {
-                priv.tabGroup.currentTab = root.children[oldIndex - 1].tab
-                event.accepted = true
+        if (event.key == Qt.Key_Right || event.key == Qt.Key_Left) {
+            if (event.key == Qt.Key_Right || priv.mirrored) {
+                var oldIndex = priv.currentButtonIndex()
+                if (oldIndex != root.children.length - 1) {
+                    priv.tabGroup.currentTab = root.children[oldIndex + 1].tab
+                    event.accepted = true
+                }
+            } else if (event.key == Qt.Key_Left || priv.mirrored) {
+                var oldIndex = priv.currentButtonIndex()
+                if (oldIndex != 0) {
+                    priv.tabGroup.currentTab = root.children[oldIndex - 1].tab
+                    event.accepted = true
+                }
             }
         }
     }
@@ -72,6 +74,9 @@ Item {
         property Item firstButton: root.children.length > 0 ? root.children[0] : null
         property Item firstTab: firstButton ? (firstButton.tab != null ? firstButton.tab : null) : null
         property Item tabGroup: firstTab ? (firstTab.parent ? firstTab.parent.parent : null) : null
+        property bool mirrored: root.LayoutMirroring.enabled
+
+        onMirroredChanged: layoutChildren()
 
         function currentButtonIndex() {
             for (var i = 0; i < root.children.length; ++i) {
@@ -81,14 +86,17 @@ Item {
             return -1
         }
 
-        function layoutChidren() {
+        function layoutChildren() {
             var childCount = root.children.length
             var contentWidth = 0
             var contentHeight = 0
             if (childCount != 0) {
                 var itemWidth = root.width / childCount
-                for (var i = 0; i < childCount; ++i) {
-                    var child = root.children[i]
+                var itemIndex = mirrored ? childCount - 1 : 0
+                var increment = mirrored ? - 1 : 1
+
+                for (var i = 0; i < childCount; ++i, itemIndex += increment) {
+                    var child = root.children[itemIndex]
                     child.x = i * itemWidth
                     child.y = 0
                     child.width = itemWidth

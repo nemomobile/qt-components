@@ -127,6 +127,7 @@ Item {
         anchors.leftMargin: platformStyle.paddingMedium
         anchors.verticalCenter: parent.verticalCenter
         anchors.right: parent.right
+        horizontalAlignment: Text.AlignLeft
 
         font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
         color: {

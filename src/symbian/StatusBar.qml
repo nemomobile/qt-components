@@ -43,6 +43,7 @@ import "." 1.1
 
 Item {
     id: root
+
     implicitWidth: screen.width
     implicitHeight: privateStyle.statusBarHeight
 
@@ -133,6 +134,8 @@ Item {
                 height: parent.height
                 width: priv.signalWidthPercentage(privateNetworkInfo.networkSignalStrength) * parent.width
                 clip: true
+                LayoutMirroring.enabled: false
+
                 Image {
                     sourceSize.width: signalBackground.sourceSize.width
                     sourceSize.height: signalBackground.sourceSize.height
@@ -164,6 +167,7 @@ Item {
                     ? animatedLevel : privateBatteryInfo.batteryLevel) + 2) / 13)
                 height: parent.height
                 clip: true
+                LayoutMirroring.enabled: false
 
                 Image {
                     sourceSize.width: batteryBackground.sourceSize.width

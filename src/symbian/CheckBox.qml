@@ -137,6 +137,7 @@ Item {
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
         elide: Text.ElideRight
+        horizontalAlignment: Text.AlignLeft
         font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
         color: root.enabled ? (root.pressed ? platformStyle.colorPressed : platformStyle.colorNormalLight)
                             : platformStyle.colorDisabledLight

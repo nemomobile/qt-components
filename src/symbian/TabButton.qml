@@ -84,6 +84,7 @@ Item {
             // If the parent of a TabButton is ButtonRow, segmented-style graphics
             // are used to create a seamless row of buttons. Otherwise normal
             // TabButton graphics are utilized.
+            var mirror = root.LayoutMirroring.enabled // To create binding
             if (isButtonRow(parent))
                 return parent.privateGraphicsName(root, 1)
             else

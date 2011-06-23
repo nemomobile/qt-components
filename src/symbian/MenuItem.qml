@@ -111,6 +111,7 @@ Item {
             source: privateStyle.imagePath("qtg_graf_drill_down_indicator.svg")
             sourceSize.width: platformStyle.graphicSizeSmall
             sourceSize.height: platformStyle.graphicSizeSmall
+            mirror: LayoutMirroring.enabled
         }
     }
 

@@ -53,6 +53,9 @@ Row {
     function privateGraphicsName(button, buttonType) {
         var siblingButtons = Engine.visibleItems(root)
         var imageName = ""
+        var rightToLeft = root.LayoutMirroring.enabled
+            ? (root.layoutDirection == Qt.LeftToRight)
+            : (root.layoutDirection == Qt.RightToLeft)
         if (siblingButtons.length > 1) {
             if (buttonType == 0)
                 imageName = "qtg_fr_pushbutton_segmented"
@@ -60,9 +63,9 @@ Row {
                 imageName = "qtg_fr_toolbutton_segmented"
 
             if (button === siblingButtons[0])
-                imageName += "_l_"
+                imageName += rightToLeft ? "_r_" : "_l_"
             else if (button === siblingButtons[siblingButtons.length - 1])
-                imageName += "_r_"
+                imageName += rightToLeft ? "_l_" : "_r_"
             else
                 imageName += "_c_"
         }

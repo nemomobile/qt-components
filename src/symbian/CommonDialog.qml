@@ -50,6 +50,9 @@ Dialog {
     title: Item {
         anchors.fill: parent
 
+        LayoutMirroring.enabled: privateCloseIcon ? false : undefined
+        LayoutMirroring.childrenInherit: true
+
         Text {
             id: titleTextArea
 

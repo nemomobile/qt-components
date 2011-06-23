@@ -115,8 +115,11 @@ Item {
 
     Item {
         id: fill
+
+        LayoutMirroring.enabled: false
+        LayoutMirroring.childrenInherit: true
         clip: true
-        anchors.left: parent.left
+        anchors.left: track.left
         anchors.verticalCenter: parent.verticalCenter
         height: privateStyle.switchButtonHeight
         width: handle.x + handle.width / 2 - mouseArea.drag.minimumX
@@ -132,6 +135,9 @@ Item {
 
     Image {
         id: handle
+
+        LayoutMirroring.enabled: false
+        LayoutMirroring.childrenInherit: true
         source: privateStyle.imagePath("qtg_graf_switchbutton_"
                                        + (root.pressed ? "handle_pressed" : "handle_normal"))
         anchors.verticalCenter: root.verticalCenter

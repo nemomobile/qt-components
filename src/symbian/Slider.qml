@@ -56,6 +56,9 @@ Item {
     property string valueIndicatorText: ""
     property alias inverted: model.inverted
 
+    LayoutMirroring.enabled: false
+    LayoutMirroring.childrenInherit: true
+
     // Symbian specific
     signal valueChanged(real value)
     implicitWidth: orientation == Qt.Horizontal ? 150 : privateStyle.menuItemHeight

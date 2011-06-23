@@ -96,11 +96,13 @@ ListItem {
             }
 
             Loader {
+                anchors.left: parent.left
                 sourceComponent: title != "" ? titleText : undefined
                 width: parent.width // elide requires explicit width
             }
 
             Loader {
+                anchors.left: parent.left
                 sourceComponent: subTitle != "" ? subTitleText : undefined
                 width: parent.width // elide requires explicit width
             }

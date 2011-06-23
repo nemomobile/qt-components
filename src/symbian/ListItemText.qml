@@ -53,6 +53,7 @@ Text {
     }
     color: internal.normalColor
     elide: Text.ElideRight
+    horizontalAlignment: Text.AlignLeft
 
     // Performance optimization:
     // Use value assignment when property changes instead of binding to js function

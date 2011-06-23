@@ -108,6 +108,7 @@ Dialog {
                     color: platformStyle.colorNormalLight
                     wrapMode: Text.WordWrap
                     text: root.message
+                    horizontalAlignment: Text.AlignLeft
                     anchors { right: parent.right; rightMargin: privateStyle.scrollBarThickness }
                 }
             }

@@ -359,7 +359,7 @@ FocusScopeItem {
             anchors {
                 top: flick.top;
                 topMargin: -flick.tiny / 2;
-                right: flick.right;
+                left: flick.right;
             }
             flickableItem: flick
             interactive: false

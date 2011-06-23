@@ -53,6 +53,9 @@ Item {
     property bool privateDelayInit: false
     property list<Item> privateTemplates
 
+    LayoutMirroring.enabled: false
+    LayoutMirroring.childrenInherit: true
+
     implicitWidth: screen.width - 6 * platformStyle.paddingMedium
     implicitHeight: 4 * privateStyle.menuItemHeight
 

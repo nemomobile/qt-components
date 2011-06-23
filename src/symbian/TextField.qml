@@ -157,7 +157,7 @@ FocusScope {
             property real tiny: Math.round(platformStyle.graphicSizeTiny / 2)
 
             function ensureVisible(rect) {
-                if (Math.round(contentX) > Math.round(rect.x))
+                if (rect.x >= 0 && Math.round(contentX) > Math.round(rect.x))
                     contentX = rect.x
                 else if (Math.round(contentX + width) < Math.round(rect.x + rect.width))
                   contentX = rect.x + rect.width - width
