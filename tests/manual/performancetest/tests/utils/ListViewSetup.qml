@@ -172,12 +172,14 @@ Item {
                 anchors.fill: parent.paddingItem
 
                 ListItemText {
+                    width: parent.width
                     mode: listItem2.mode
                     role: "Title"
                     text: title // Title from model
                 }
 
                 ListItemText {
+                    width: parent.width
                     mode: listItem2.mode
                     role: "SubTitle"
                     text: subTitle // SubTitle from model
@@ -231,12 +233,14 @@ Item {
                 }
 
                 ListItemText {
+                    width: parent.width
                     mode: listItem3.mode
                     role: "Title"
                     text: title // Title from model
                 }
 
                 ListItemText {
+                    width: parent.width
                     mode: listItem3.mode
                     role: "SubTitle"
                     text: subTitle // SubTitle from model
@@ -266,12 +270,14 @@ Item {
                 Column {
 
                     ListItemText {
+                        anchors.left: parent.left
                         mode: listItem4.mode
                         role: "Title"
                         text: title // Title from model
                     }
 
                     ListItemText {
+                        anchors.left: parent.left
                         mode: listItem4.mode
                         role: "SubTitle"
                         text: subTitle // SubTitle from model

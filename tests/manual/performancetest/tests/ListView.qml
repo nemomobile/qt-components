@@ -108,12 +108,14 @@ Item {
                 anchors.fill: parent.paddingItem
 
                 ListItemText {
+                    width: parent.width
                     mode: listItem.mode
                     role: "Title"
                     text: name // Title from model
                 }
 
                 ListItemText {
+                    width: parent.width
                     mode: listItem.mode
                     role: "SubTitle"
                     text: description // SubTitle from model
