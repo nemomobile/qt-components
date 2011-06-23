@@ -38,13 +38,17 @@
 **
 ****************************************************************************/
 
+#include "../shared/utils.h"
 #include <QApplication>
 #include <QDeclarativeView>
+#include <QDeclarativeEngine>
+#include <QDeclarativeItem>
 #include <QDir>
 
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
+    qmlRegisterType<LayoutDirectionSetter>("LayoutDirectionSetter", 1, 0, "LayoutDirectionSetter");
     QDeclarativeView view;
 
 #ifndef Q_OS_SYMBIAN

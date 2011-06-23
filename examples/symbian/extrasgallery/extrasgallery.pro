@@ -4,6 +4,7 @@ QT += declarative
 CONFIG += qt-components
 CONFIG -= app_bundle
 win32:DESTDIR = $$OUT_PWD
+include (../shared/utils.pri)
 
 SOURCES += extrasgallery.cpp
 

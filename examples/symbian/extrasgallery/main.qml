@@ -41,9 +41,19 @@
 import QtQuick 1.1
 import com.nokia.symbian 1.1
 import com.nokia.extras 1.1
+import LayoutDirectionSetter 1.0
 
 ApplicationWindow {
     id: root
+
+    property Menu menu
+
+    LayoutMirroring.enabled: Qt.application.layoutDirection == Qt.RightToLeft
+    LayoutMirroring.childrenInherit: true
+
+    LayoutDirectionSetter {
+        id: layoutDirectionSetter
+    }
 
     ToolBarLayout {
         id: commonTools
@@ -55,6 +65,11 @@ ApplicationWindow {
         ToolButton {
             flat: true
             iconSource: "toolbar-menu"
+            onClicked: {
+                if (!menu)
+                    menu = menuComponent.createObject(root)
+                menu.open()
+            }
         }
     }
 
@@ -143,12 +158,14 @@ ApplicationWindow {
 
                                 ListItemText {
                                     id: mainText
+                                    width: listItemRow.width
                                     role: "Title"
                                     text: title
                                 }
 
                                 ListItemText {
                                     id: subText
+                                    width: listItemRow.width
                                     role: "SubTitle"
                                     text: subtitle
                                     visible: text != ""
@@ -166,4 +183,27 @@ ApplicationWindow {
             } // item
         } // page
     } // component
+
+    Component {
+        id: menuComponent
+
+        Menu {
+            id: theMenu
+
+            content: MenuLayout {
+                MenuItem { text: "Quit"; onClicked: Qt.quit() }
+                MenuItem { text: "Set layout dir"; platformSubItemIndicator: true; onClicked: layoutDirectionSubMenu.open()}
+            }
+        }
+    }
+
+    Menu {
+        id: layoutDirectionSubMenu
+
+        MenuLayout {
+            MenuItem { text: "LeftToRight"; onClicked: layoutDirectionSetter.setLayoutDirection(Qt.LeftToRight) }
+            MenuItem { text: "RightToLeft"; onClicked: layoutDirectionSetter.setLayoutDirection(Qt.RightToLeft) }
+            MenuItem { text: "Automatic"; onClicked: layoutDirectionSetter.setLayoutDirection(Qt.LayoutDirectionAuto) }
+        }
+    }
 }

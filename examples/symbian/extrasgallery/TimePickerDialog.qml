@@ -73,6 +73,7 @@ Page {
         }
 
         Row {
+            LayoutMirroring.enabled: false
             Text {
                 color: "white"
                 font { bold: true; pixelSize: 16}

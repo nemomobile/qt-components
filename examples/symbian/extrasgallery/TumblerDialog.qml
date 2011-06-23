@@ -44,6 +44,7 @@ import com.nokia.extras 1.1
 
 Item {
     id: container
+    anchors.fill: parent
 
     Button {
         id: button
