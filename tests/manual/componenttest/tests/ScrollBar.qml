@@ -131,7 +131,7 @@ Item {
     }
 
     Grid {
-        anchors { bottom: page.bottom; top: flickableAreaRectangle.bottom }
+        anchors { bottom: page.bottom; top: flickableAreaRectangle.bottom; left: page.left }
         columns: isLandscape() ? 4 : 2
         spacing: 1
 

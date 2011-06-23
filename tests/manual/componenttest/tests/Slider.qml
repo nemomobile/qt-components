@@ -77,8 +77,8 @@ Item {
         spacing: 10
 
         Text {
-            text: "Horizontal (" + slider1.value + ")"
-            width: 150
+            text: "Horizontal slider (" + slider1.value + ")"
+            width: 180
             color: "white"
         }
 
@@ -113,8 +113,8 @@ Item {
         }
 
         Text {
-            text: "Vertical (" + slider2.value + ")"
-            width: 150
+            text: "Vertical slider (" + slider2.value + ")"
+            width: 180
             color: "white"
         }
 

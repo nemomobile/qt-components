@@ -42,9 +42,6 @@ import QtQuick 1.1
 import com.nokia.symbian 1.1
 
 Item {
-
-    Component.onCompleted: console.log("item.y = " + y)
-
     Menu {
         id: menu
 

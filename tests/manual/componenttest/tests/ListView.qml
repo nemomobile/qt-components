@@ -77,11 +77,16 @@ Item {
             color: "darkgray"
             border.color: "gray"
 
+            // Do not mirror so that the menu button remains in the right side always
+            LayoutMirroring.enabled: false
+            LayoutMirroring.childrenInherit: true
+
             Text {
                 font { bold: true; pixelSize: 16 }
                 color: "white"
                 anchors { left: parent.left; leftMargin: 10; verticalCenter: parent.verticalCenter }
                 text: "Current item: " + listView.currentIndex
+                horizontalAlignment: Text.AlignLeft
             }
 
             Button {
@@ -221,6 +226,7 @@ Item {
                     font.pixelSize: platformStyle.fontSizeMedium
                     text: "Title:"
                     width: createItemGrid.cellWidth
+                    horizontalAlignment: Text.AlignLeft
                 }
 
                 TextField {
@@ -236,6 +242,7 @@ Item {
                     font.pixelSize: platformStyle.fontSizeMedium
                     text: "Subtitle:"
                     width: createItemGrid.cellWidth
+                    horizontalAlignment: Text.AlignLeft
                 }
 
                 TextField {
@@ -251,6 +258,7 @@ Item {
                     font.pixelSize: platformStyle.fontSizeMedium
                     text: "Image size:"
                     width: createItemGrid.cellWidth
+                    horizontalAlignment: Text.AlignLeft
                 }
 
                 Column {
@@ -346,12 +354,14 @@ Item {
                 }
 
                 ListItemText {
+                    width: parent.width
                     mode: listItem.mode
                     role: "Title"
                     text: title // Title from model
                 }
 
                 ListItemText {
+                    width: parent.width
                     mode: listItem.mode
                     role: "SubTitle"
                     text: subTitle // SubTitle from model

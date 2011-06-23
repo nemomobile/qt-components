@@ -185,6 +185,7 @@ Item {
 
             Text {
                 width: parent.width
+                horizontalAlignment: Text.AlignLeft
                 color: platformStyle.colorNormalLight
                 font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeSmall * 2 / 3 }
                 text: "Indicator size"
@@ -208,6 +209,7 @@ Item {
 
             Text {
                 width: parent.width
+                horizontalAlignment: Text.AlignLeft
                 color: platformStyle.colorNormalLight
                 font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeSmall * 2 / 3 }
                 text: "Indicator padding"
@@ -228,6 +230,7 @@ Item {
 
             Text {
                 width: parent.width
+                horizontalAlignment: Text.AlignLeft
                 color: platformStyle.colorNormalLight
                 font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeSmall * 2 / 3 }
                 text: "Max indicator count"

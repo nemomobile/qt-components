@@ -51,8 +51,10 @@
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
+
     qmlRegisterType<FileAccess>("FileAccess", 1, 0, "FileAccess");
     qmlRegisterType<Settings>("Settings", 1, 0, "Settings");
+    qmlRegisterType<LayoutDirectionSetter>("LayoutDirectionSetter", 1, 0, "LayoutDirectionSetter");
 
     QDeclarativeView view;
     view.engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");

@@ -64,6 +64,9 @@ Item {
         }
 
         buttons: Row {
+            LayoutMirroring.enabled: false
+            LayoutMirroring.childrenInherit: true
+
             height: 60
             width: parent.width
             Button {
@@ -80,6 +83,7 @@ Item {
             }
         }
         content: Column {
+            width: parent.width
             Text {
                 text: "Popup stack depth: "+platformPopupManager.popupStackDepth
                 font.bold: true
@@ -87,8 +91,10 @@ Item {
                 font.pixelSize: 18
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
+                width: parent.width
             }
             Button {
+                anchors.horizontalCenter: parent.horizontalCenter
                 text: "Open dialog"
                 onClicked: dialogWithProgressBar.open()
             }
@@ -113,8 +119,10 @@ Item {
             }
         }
         content: Column {
+            width: parent.width
             ProgressBar {
                 id: horizontalBarWithAnimation
+                anchors.left: parent.left
                 value: 1
                 indeterminate: true
                 height: 30
@@ -122,15 +130,19 @@ Item {
 
             ProgressBar {
                 id: horizontalBar
+                anchors.left: parent.left
                 value: 75 // Default minimum and maximum are 0 - 100
                 height: 30
             }
             Button {
+                anchors.left: parent.left
                 text: "Open dialog"
                 onClicked: dialogWithScrollBar.open()
             }
             Text {
+                anchors.left: parent.left
                 text: "Popup stack depth: "+platformPopupManager.popupStackDepth
+                horizontalAlignment: Text.AlignLeft
                 color: "white"
                 font.pointSize: 10
             }
@@ -205,6 +217,8 @@ Item {
                 text: "Popup stack depth: "+platformPopupManager.popupStackDepth
                 color: "white"
                 font.pointSize: 10
+                horizontalAlignment: Text.AlignLeft
+                width: page.width
             }
         }
     }

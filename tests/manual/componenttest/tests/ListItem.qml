@@ -97,6 +97,7 @@ Item {
 
                     ListItemText {
                         id: titleText2
+                        width: parent.width // Need to set parent width to support mirroring in right-to-left layout
                         mode: listItem2.mode
                         role: "Title"
                         text: "Title text"
@@ -104,6 +105,7 @@ Item {
 
                     ListItemText {
                         id: subTitleText2
+                        width: parent.width
                         mode: listItem2.mode
                         role: "SubTitle"
                         text: "SubTitle text"
@@ -135,6 +137,7 @@ Item {
 
                     ListItemText {
                         id: titleText3
+                        width: parent.width
                         mode: listItem3.mode
                         role: "Title"
                         text: "Title text"
@@ -142,6 +145,7 @@ Item {
 
                     ListItemText {
                         id: subTitleText3
+                        width: parent.width
                         mode: listItem3.mode
                         role: "SubTitle"
                         text: "SubTitle text"
@@ -173,6 +177,7 @@ Item {
 
                     ListItemText {
                         id: titleText4
+                        width: parent.width
                         mode: listItem4.mode
                         role: "Title"
                         text: "Title text"
@@ -250,10 +255,12 @@ Item {
                         top: listItem6.paddingItem.top
                         left: image6a.right
                         leftMargin: platformStyle.paddingMedium
+                        right: listItem6.paddingItem.right
                     }
 
                     ListItemText {
                         id: titleText6
+                        width: parent.width
                         mode: listItem6.mode
                         role: "Title"
                         text: "Title text"
@@ -261,6 +268,8 @@ Item {
 
                     ListItemText {
                         id: subTitleText6
+                        width: parent.width
+                        anchors.right: parent.right
                         mode: listItem6.mode
                         role: "SubTitle"
                         text: "SubTitle text"
@@ -417,6 +426,7 @@ Item {
 
                     ListItemText {
                         id: titleText10
+                        width: parent.width
                         mode: listItem10.mode
                         role: "Title"
                         text: "Title text"
@@ -424,6 +434,7 @@ Item {
 
                     ListItemText {
                         id: subTitleText10
+                        width: parent.width
                         mode: listItem10.mode
                         role: "SubTitle"
                         text: "SubTitle text"
@@ -443,6 +454,7 @@ Item {
 
                     ListItemText {
                         id: titleText11
+                        width: parent.width
                         mode: listItem11.mode
                         role: "Title"
                         text: "Title text"
@@ -450,6 +462,7 @@ Item {
 
                     ListItemText {
                         id: subTitleText11
+                        width: parent.width
                         mode: listItem11.mode
                         role: "SubTitle"
                         text: "SubTitle text"

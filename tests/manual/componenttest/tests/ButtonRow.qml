@@ -104,6 +104,7 @@ Item {
 
         Text {
             id: text1
+            anchors.left: parent.left
             text: "Buttons with text"
             color: "white"
         }
@@ -144,6 +145,7 @@ Item {
         }
 
         Row {
+            anchors.left: parent.left
             spacing: 10
             CheckBox {
                 id: toggleExclusive
@@ -172,6 +174,7 @@ Item {
 
         Text {
             id: text2
+            anchors.left: parent.left
             text: "Buttons with icons"
             color: "white"
         }
@@ -212,6 +215,7 @@ Item {
 
         Text {
             id: text3
+            anchors.left: parent.left
             text: "Dynamic buttons"
             color: "white"
         }

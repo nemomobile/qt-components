@@ -51,6 +51,8 @@ Item {
         color: platformStyle.colorNormalLight
         text: "Create Custom InfoBanner"
         font.bold: true
+        width: parent.width
+        horizontalAlignment: Text.AlignLeft
     }
 
     Column {
@@ -78,14 +80,15 @@ Item {
             Text {
                 id: clicked
                 color: "green"
+                horizontalAlignment: Text.AlignLeft
             }
         }
 
         Row {
+            LayoutMirroring.enabled: false
             spacing: platformStyle.paddingSmall
-            Text { text: "Time to dismiss:"; color: platformStyle.colorNormalLight }
-            Text { text: durationSlider.value; color: "green" }
-            Text { text: "sec"; color: "green" }
+            Text { text: "Time to dismiss:"; color: platformStyle.colorNormalLight; horizontalAlignment: Text.AlignLeft }
+            Text { text: durationSlider.value + " sec"; color: "green"; horizontalAlignment: Text.AlignLeft }
             Slider { id: durationSlider; maximumValue: 9; minimumValue: 0; stepSize:1; value: 3 }
         }
 

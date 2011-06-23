@@ -43,6 +43,8 @@ import com.nokia.symbian 1.1
 
 Item {
 
+    anchors.fill: parent
+
     function physicalWidth() {
         return (screen.width / screen.dpi) * 25.4
     }
@@ -107,7 +109,7 @@ Item {
               + "Orientation:\n"
               + "Category:\n"
               + "Density:"
-        anchors { fill: parent; margins: 20 }
+        anchors { left: parent.left; leftMargin: 20; top: parent.top; topMargin: 20}
         horizontalAlignment: Text.AlignLeft
     }
     Text {
@@ -125,7 +127,7 @@ Item {
               + orientation() + '\n'
               + category() + '\n'
               + density()
-        anchors { fill: parent; margins: 20 }
+        anchors { right: parent.right; rightMargin: 20; top: parent.top; topMargin: 20}
         horizontalAlignment: Text.AlignRight
     }
 }

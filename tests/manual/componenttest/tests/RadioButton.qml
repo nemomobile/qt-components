@@ -51,6 +51,10 @@ Item {
 
     Column {
         Row {
+            // Don't mirror ascending number order
+            LayoutMirroring.enabled: false
+            LayoutMirroring.childrenInherit: false
+
             RadioButton {
                 id: button1
                 text: "1"
@@ -71,6 +75,10 @@ Item {
         }
 
         Row {
+            // Don't mirror ascending number order
+            LayoutMirroring.enabled: false
+            LayoutMirroring.childrenInherit: false
+
             RadioButton {
                 id: button4
                 text: "4"
@@ -90,6 +98,10 @@ Item {
         }
 
         Grid {
+            // Don't mirror ascending number order
+            LayoutMirroring.enabled: false
+            LayoutMirroring.childrenInherit: false
+
             columns: 3
 
             Text {

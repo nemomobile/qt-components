@@ -74,6 +74,7 @@ Item {
             width: common.leftColumnWidth
             height: imageButton.height
             verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignLeft
             color: platformStyle.colorNormalLight
             font.pixelSize: platformStyle.fontSizeSmall
             text: "Image:"
@@ -107,6 +108,7 @@ Item {
             width: common.leftColumnWidth
             height: buttonTextEditor.height
             verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignLeft
             color: platformStyle.colorNormalLight
             font.pixelSize: platformStyle.fontSizeSmall
             text: "Text:"
@@ -124,6 +126,7 @@ Item {
             width: common.leftColumnWidth
             height: fontButton.height
             verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignLeft
             color: platformStyle.colorNormalLight
             font.pixelSize: platformStyle.fontSizeSmall
             text: "Font:"
@@ -148,6 +151,7 @@ Item {
             width: common.leftColumnWidth
             height: labelSizeSlider.height
             verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignLeft
             color: platformStyle.colorNormalLight
             font.pixelSize: platformStyle.fontSizeSmall
             text: "Font size:"
@@ -168,6 +172,7 @@ Item {
             width: common.leftColumnWidth
             height: longPressButton.height
             verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignLeft
             color: platformStyle.colorNormalLight
             font.pixelSize: platformStyle.fontSizeSmall
             text: "Long press:"
@@ -189,6 +194,7 @@ Item {
             width: common.leftColumnWidth
             height: repeatButton.height
             verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignLeft
             color: platformStyle.colorNormalLight
             font.pixelSize: platformStyle.fontSizeSmall
             text: "Auto repeat:"

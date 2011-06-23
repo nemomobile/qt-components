@@ -126,8 +126,11 @@ Item {
             border { color: platformStyle.colorNormalDark; width: 1 }
             color: index % 2 == 0 ? platformStyle.colorNormalLight : platformStyle.colorNormalMid
             Text {
-                x: platformStyle.paddingLarge
-                y: platformStyle.paddingLarge
+                anchors.left: parent.left
+                anchors.leftMargin: platformStyle.paddingLarge
+                anchors.top: parent.top
+                anchors.topMargin: platformStyle.paddingLarge
+                horizontalAlignment: Text.AlignLeft
                 text: name + " (index " + index + ")"
             }
         }
@@ -141,8 +144,11 @@ Item {
             color: platformStyle.colorDisabledMid
             Text {
                 objectName: "Label" + section
-                x: platformStyle.paddingSmall
-                y: platformStyle.paddingSmall
+                anchors.left: parent.left
+                anchors.leftMargin: platformStyle.paddingSmall
+                anchors.top: parent.top
+                anchors.topMargin: platformStyle.paddingSmall
+                horizontalAlignment: Text.AlignLeft
                 color: platformStyle.colorNormalLight
                 text: section
                 font { bold: true; pointSize: platformStyle.fontSizeLarge }

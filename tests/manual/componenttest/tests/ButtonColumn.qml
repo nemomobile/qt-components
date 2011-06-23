@@ -95,15 +95,17 @@ Item {
         id: buttonTests
         anchors.top: navButtonRow.bottom
         anchors.left: parent.left
+        anchors.right: parent.right
         anchors.margins: 10
-        width: parent.width
         opacity: 0
 
         Column {
             id: col1
+            anchors.left: parent.left
             spacing: 10
 
             Text {
+                anchors.left: parent.left
                 id: text1
                 text: "TextButtons"
                 color: "white"
@@ -111,6 +113,7 @@ Item {
 
             ButtonColumn {
                 id: buttonColumn1
+                anchors.left: parent.left
                 exclusive: true
 
                 Button {
@@ -157,6 +160,7 @@ Item {
             spacing: 10
 
             Text {
+                anchors.left: parent.left
                 id: text2
                 text: "IconButtons"
                 color: "white"
@@ -164,6 +168,7 @@ Item {
 
             ButtonColumn {
                 id: buttonColumn2
+                anchors.left: parent.left
                 exclusive: true
 
                 Button {
@@ -202,6 +207,7 @@ Item {
             spacing: 10
 
             Text {
+                anchors.left: parent.left
                 id: text3
                 text: "Dyn.Buttons"
                 color: "white"
@@ -232,8 +238,9 @@ Item {
 
             ButtonColumn {
                 id: buttonColumn3
+                anchors.left: parent.left
                 exclusive: true
-                width: parent.width / 2
+                width: parent.width
             }
         }
     }
@@ -241,26 +248,30 @@ Item {
     Item {
         id: checkBoxTests
         anchors.top: navButtonRow.bottom
-        anchors.margins: 20
-        width: parent.width
+        anchors.left: parent.left
+        anchors.right: parent.right
         opacity: 0
 
         Column {
+            anchors.left: parent.left
             spacing: 10
 
             Text {
                 id: text4
+                anchors.left: parent.left
                 text: "CheckBoxes"
                 color: "white"
             }
 
             ButtonColumn {
                 id: buttonColumn4
+                anchors.left: parent.left
                 spacing: platformStyle.paddingMedium
                 exclusive: toggleExclusive2.checked
 
                 CheckBox {
                     id: checkBox1
+                    anchors.left: parent.left
                     objectName: "checkBox1"
                     text: "checkBox1"
                     onClicked: text4.text = "Clicked " + objectName
@@ -268,6 +279,7 @@ Item {
 
                 CheckBox {
                     id: checkBox2
+                    anchors.left: parent.left
                     objectName: "checkBox2"
                     text: "checkBox2"
                     onClicked: text4.text = "Clicked " + objectName
@@ -275,6 +287,7 @@ Item {
 
                 CheckBox {
                     id: checkBox3
+                    anchors.left: parent.left
                     objectName: "checkBox3"
                     text: "checkBox3"
                     onClicked: text4.text = "Clicked " + objectName
@@ -283,6 +296,7 @@ Item {
 
             CheckBox {
                 id: toggleExclusive2
+                anchors.left: parent.left
                 text: "exclusive"
                 checked: true
             }
@@ -292,27 +306,31 @@ Item {
     Item {
         id: radioButtonTests
         anchors.top: navButtonRow.bottom
-        anchors.margins: 20
-        width: parent.width
+        anchors.left: parent.left
+        anchors.right: parent.right
         opacity: 0
 
         Column {
+            anchors.left: parent.left
             spacing: 10
 
             Text {
                 id: text5
+                anchors.left: parent.left
                 text: "RadioButtons"
                 color: "white"
             }
 
             ButtonColumn {
                 id: buttonColumn5
+                anchors.left: parent.left
                 spacing: platformStyle.paddingMedium
                 width: parent.width
                 exclusive: toggleExclusive3.checked
 
                 RadioButton {
                     id: rb1
+                    anchors.left: parent.left
                     objectName: "rb1"
                     text: "rb1"
                     onClicked: text5.text = "Clicked " + objectName
@@ -320,6 +338,7 @@ Item {
 
                 RadioButton {
                     id: rb2
+                    anchors.left: parent.left
                     objectName: "rb2"
                     text: "rb2"
                     onClicked: text5.text = "Clicked " + objectName
@@ -327,6 +346,7 @@ Item {
 
                 RadioButton {
                     id: rb3
+                    anchors.left: parent.left
                     objectName: "rb3"
                     text: "rb3"
                     onClicked: text5.text = "Clicked " + objectName
@@ -335,6 +355,7 @@ Item {
 
             CheckBox {
                 id: toggleExclusive3
+                anchors.left: parent.left
                 checked: true
                 text: "exclusive"
             }
@@ -344,8 +365,9 @@ Item {
     Item {
         id: toolButtonTests
         anchors.top: navButtonRow.bottom
-        anchors.margins: 20
-        width: parent.width
+        anchors.topMargin: 20
+        anchors.left: parent.left
+        anchors.right: parent.right
         opacity: 0
 
         Column {
@@ -355,16 +377,19 @@ Item {
 
             Text {
                 id: text6
+                anchors.left: parent.left
                 color:  "white"
                 text: "ToolB."
             }
 
             ButtonColumn {
                 id: buttonColumn6
+                anchors.left: parent.left
                 exclusive: toggleExclusive4.checked
 
                 ToolButton {
                     id: tb1
+                    anchors.left: parent.left
                     objectName: "tb1"
                     text: "tb1"
                     onClicked: text6.text = "Clicked " + objectName
@@ -372,6 +397,7 @@ Item {
 
                 ToolButton {
                     id: tb2
+                    anchors.left: parent.left
                     objectName: "tb2"
                     text: "tb2"
                     onClicked: text6.text = "Clicked " + objectName
@@ -379,6 +405,7 @@ Item {
 
                 ToolButton {
                     id: tb3
+                    anchors.left: parent.left
                     objectName: "tb3"
                     text: "tb3"
                     onClicked: text6.text = "Clicked " + objectName
@@ -387,6 +414,7 @@ Item {
 
             CheckBox {
                 id: toggleExclusive4
+                anchors.left: parent.left
                 checked: true
                 text: "Exclusive"
             }
@@ -399,6 +427,7 @@ Item {
 
             Text {
                 id: text7
+                anchors.left: parent.left
                 color:  "white"
                 text: "ToolB. with icons"
             }
@@ -409,6 +438,7 @@ Item {
 
                 ToolButton {
                     id: tb4
+                    anchors.left: parent.left
                     objectName:  "tb4"
                     iconSource: "image://theme/:/list5.svg"
                     onClicked: text7.text = "Clicked " + objectName
@@ -416,6 +446,7 @@ Item {
 
                 ToolButton {
                     id: tb5
+                    anchors.left: parent.left
                     objectName:  "tb5"
                     iconSource: "image://theme/:/list6.svg"
                     onClicked: text7.text = "Clicked " + objectName
@@ -423,6 +454,7 @@ Item {
 
                 ToolButton {
                     id: tb6
+                    anchors.left: parent.left
                     objectName:  "tb6"
                     iconSource: "image://theme/:/list7.svg"
                     onClicked: text7.text = "Clicked " + objectName
@@ -437,6 +469,7 @@ Item {
 
             Text {
                 id: text8
+                anchors.left: parent.left
                 text: "Dyn.TB"
                 color: "white"
             }
@@ -466,7 +499,8 @@ Item {
 
             ButtonColumn {
                 id: buttonColumn8
-                width: parent.width / 3
+                anchors.left: parent.left
+                width: parent.width
             }
         }
     }
