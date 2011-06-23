@@ -1,3 +1,10 @@
+qt-components (1.0~git20110621-1) maverick; urgency=low
+
+  * Fixes: NB#267339 It's not possible to move the cursor to the last positions of a line with the magnifier
+  * Fixes: NB#267240 LEGAL BUG Update qt-components sources with latest license
+
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Tue, 21 June 2011 14:40:00 +0300
+
 qt-components (1.0~git20110620-3) maverick; urgency=low
 
   * Fixes: NB#266959 - Tabs activate on tap down
