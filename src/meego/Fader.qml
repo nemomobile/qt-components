@@ -77,7 +77,7 @@ Rectangle {
 
     // we need the possibility to fetch the red, green, blue components from a color
     // see http://bugreports.qt.nokia.com/browse/QTBUG-14731
-    color: background == undefined ? "transparent" : Qt.rgba(0.0, 0.0, 0.0, alpha)
+    color: background != "" ? "transparent" : Qt.rgba(0.0, 0.0, 0.0, alpha)
     state: 'hidden'
 
     anchors.fill: parent
