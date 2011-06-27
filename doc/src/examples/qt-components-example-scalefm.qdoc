@@ -27,6 +27,7 @@
 
 /*!
     \page qt-components-example-scalefm.html
+    \ingroup qt-components-example
     \title ScaleFM example for Symbian
     \brief Example that demonstrates how to implement a scalable application
 
@@ -42,22 +43,6 @@
 
     This application illustrates how to implement the \l {Scalability
     Guidelines Contents}{Scalability Guidelines}.
-
-    \section1 Screen Shots
-
-    This shows the ScaleFM application running in the Device Profile for
-    640x360 resolution, at 210 DPI, using the screen specific
-    \l{qt-components-scalability-guidelines-application-style.html}
-    {Application Style} for that Device Profile:
-
-    \image symbian/example-scalefm_640_360_210.png
-
-    This shows an alternative Device Profile for a smaller device. The
-    screenshot looks larger because there are more pixels, but the higher DPI
-    means that the physical size of the screen is smaller. You can also see
-    that the aspect ratio is different.
-
-    \image symbian/example-scalefm_640_480_325.png
 
     \section1 Instructions
 
@@ -86,7 +71,9 @@
     features in action (such as dynamic button orientation). But this will mean
     that the per-resolution measurement files will not be found, and so the
     Application Style falls back to the "scalable" measurements, until you
-    select a specific device profile from the settings window.
+    select a specific device profile from the settings window. See also the
+    fallback layouts screenshots section below which illustrates the
+    flexibility of the layout definitions.
 
     \o You can press the right and left arrows to change the current DPI values
     (this is a desktop only feature).
@@ -109,5 +96,41 @@
     level layout definitions} could theoretically be implemented.
 
     \endlist
+
+    \section1 Screen Shots
+
+    \section2 Device Profiles
+
+    This shows the ScaleFM application running in the Device Profile for
+    640x360 resolution, at 210 DPI, using the screen specific
+    \l{qt-components-scalability-guidelines-application-style.html}
+    {Application Style} for that Device Profile:
+
+    \image example-scalefm_640_360_210_prt.png
+    \image example-scalefm_640_360_210_lsc.png
+
+    This shows an alternative Device Profile for a smaller device. The
+    screenshot looks larger because there are more pixels, but the higher DPI
+    means that the physical size of the screen is smaller. You can also see
+    that the aspect ratio is different.
+
+    \image example-scalefm_640_480_325_prt.png
+    \image example-scalefm_640_480_325_lsc.png
+
+    \section2 Fallback Layouts
+
+    The following images illustrate the effect of changing the containing
+    window size, using the fallback layouts, demonstrating the range of
+    different layout configurations at a particular DPI value.
+
+    Note that the Magnify feature has also been used here to show the
+    approximate equivalent size at a desktop monitor DPI.
+
+    \image example-scalefm_960_360_210_wid_mag.png
+    \image example-scalefm_640_360_210_lsc_mag.png
+    \image example-scalefm_640_640_210_sqr_mag.png
+    \image example-scalefm_640_360_210_prt_mag.png
+    \image example-scalefm_960_360_210_tal_mag.png
+
 
 */
