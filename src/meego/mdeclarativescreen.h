@@ -46,6 +46,8 @@
 #include <QDesktopWidget>
 #include <QPointer>
 
+#define MEEGOTOUCH_DOUBLETAP_INTERVAL 325
+
 class MDeclarativeScreenPrivate;
 class MWindowState;
 

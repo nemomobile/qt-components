@@ -98,10 +98,11 @@ public:
         engine->rootContext()->setContextProperty("textTranslator", new MTextTranslator);
         qmlRegisterUncreatableType<MTextTranslator>(uri, 1, 0, "TextTranslator", "");
 
-        // Disable cursor blinking.
+        // Disable cursor blinking + make double tapping work the way it is done in lmt.
         QApplication *app = qobject_cast<QApplication*>(QApplication::instance());
         if (app) {
             app->setCursorFlashTime(0);
+            app->setDoubleClickInterval(MEEGOTOUCH_DOUBLETAP_INTERVAL);
         } 
 
         engine->rootContext()->setContextProperty("UiConstants", uiConstants());
