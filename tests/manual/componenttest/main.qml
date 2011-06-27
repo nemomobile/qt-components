@@ -51,7 +51,6 @@ ApplicationWindow {
     objectName: "mainWindow"
 
     property Menu memoryToolsMenu
-    property Menu menu
     property bool platformInverted: false
 
     // For TDriver tests - setting component name to this property will open the corresponding
@@ -132,11 +131,6 @@ ApplicationWindow {
             id: optionsButton
             flat: true
             iconSource: "toolbar-menu"
-            onClicked: {
-                if (!menu)
-                    menu = menuComponent.createObject(mainWindow)
-                menu.open()
-            }
         }
     }
 
@@ -472,23 +466,11 @@ ApplicationWindow {
         id: memToolsMenuComponent
         Menu {
             content: MenuLayout {
+                MenuItem { text: "Set layout dir"; platformSubItemIndicator: true; onClicked: layoutDirectionSubMenu.open() }
                 MenuItem { text: "Clear icon caches"; onClicked: symbian.privateClearIconCaches() }
                 MenuItem { text: "Clear component cache"; onClicked: symbian.privateClearComponentCache() }
                 MenuItem { text: "Run garbage collector"; onClicked: gc() }
-                MenuItem { text: "Toggle memory display"; onClicked: { memoryDisplay.visible = !memoryDisplay.visible }}
-            }
-        }
-    }
-
-    Component {
-        id: menuComponent
-
-        Menu {
-            id: theMenu
-
-            content: MenuLayout {
-                MenuItem { text: "Quit"; onClicked: Qt.quit() }
-                MenuItem { text: "Set layout dir"; platformSubItemIndicator: true; onClicked: layoutDirectionSubMenu.open()}
+                MenuItem { text: "Toggle memory display"; onClicked: { memoryDisplay.visible = !memoryDisplay.visible } }
             }
         }
     }

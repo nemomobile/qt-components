@@ -55,8 +55,6 @@ ApplicationWindow {
     // component page "automatically"
     property string componentName
 
-    property Menu menu
-
     LayoutMirroring.enabled: Qt.application.layoutDirection == Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
 
@@ -112,11 +110,6 @@ ApplicationWindow {
             id: optionsButton
             flat: true
             iconSource: "toolbar-menu"
-            onClicked: {
-                if (!menu)
-                    menu = menuComponent.createObject(mainWindow)
-                menu.open()
-            }
         }
     }
 
@@ -281,23 +274,11 @@ ApplicationWindow {
         id: memToolsMenuComponent
         Menu {
             content: MenuLayout {
+                MenuItem { text: "Set layout dir"; platformSubItemIndicator: true; onClicked: layoutDirectionSubMenu.open() }
                 MenuItem { text: "Clear icon caches"; onClicked: symbian.privateClearIconCaches() }
                 MenuItem { text: "Clear component cache"; onClicked: symbian.privateClearComponentCache() }
                 MenuItem { text: "Run garbage collector"; onClicked: gc() }
-                MenuItem { text: "Toggle memory display"; onClicked: { memoryDisplay.visible = !memoryDisplay.visible }}
-            }
-        }
-    }
-
-    Component {
-        id: menuComponent
-
-        Menu {
-            id: theMenu
-
-            content: MenuLayout {
-                MenuItem { text: "Set layout dir"; platformSubItemIndicator: true; onClicked: layoutDirectionSubMenu.open() }
-                MenuItem { text: "Quit"; onClicked: Qt.quit() }
+                MenuItem { text: "Toggle memory display"; onClicked: { memoryDisplay.visible = !memoryDisplay.visible } }
             }
         }
     }
