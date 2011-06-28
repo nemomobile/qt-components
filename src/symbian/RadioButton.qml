@@ -53,10 +53,17 @@ Item {
 
     // Symbian specific API
     property alias platformExclusiveGroup: checkable.exclusiveGroup
+    property bool platformInverted: false
 
     QtObject {
         id: internal
         objectName: "internal"
+        property color disabledColor: root.platformInverted ? platformStyle.colorDisabledLightInverted
+                                                            : platformStyle.colorDisabledLight
+        property color pressedColor: root.platformInverted ? platformStyle.colorPressedInverted
+                                                           : platformStyle.colorPressed
+        property color normalColor: root.platformInverted ? platformStyle.colorNormalLightInverted
+                                                          : platformStyle.colorNormalLight
 
         function toggle() {
             clickedEffect.restart()
@@ -114,7 +121,8 @@ Item {
 
     Image {
         id: image
-        source: privateStyle.imagePath("qtg_graf_radiobutton_" + internal.icon_postfix())
+        source: privateStyle.imagePath("qtg_graf_radiobutton_" + internal.icon_postfix(),
+                                       root.platformInverted)
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
         sourceSize.width: privateStyle.buttonSize
@@ -130,14 +138,8 @@ Item {
         horizontalAlignment: Text.AlignLeft
 
         font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
-        color: {
-            if (!root.enabled)
-                platformStyle.colorDisabledLight
-            else if (pressed)
-                platformStyle.colorPressed
-            else
-                platformStyle.colorNormalLight
-        }
+        color: root.enabled ? (root.pressed ? internal.pressedColor : internal.normalColor)
+                            : internal.disabledColor
     }
 
     MouseArea {

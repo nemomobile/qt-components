@@ -92,6 +92,9 @@ void tst_radiobutton::defaultPropertyValues()
 
     QVERIFY(componentObject->property("platformExclusiveGroup").isValid());
     QVERIFY(componentObject->property("platformExclusiveGroup").toString().isNull());
+
+    QVERIFY(componentObject->property("platformInverted").isValid());
+    QCOMPARE(componentObject->property("platformInverted").toBool(), false);
 }
 
 
@@ -104,6 +107,9 @@ void tst_radiobutton::properties()
 
     QVERIFY(componentObject->setProperty("text", "radiobutton_text"));
     QCOMPARE(componentObject->property("text").toString(), QString("radiobutton_text"));
+
+    QVERIFY(componentObject->setProperty("platformInverted", true));
+    QCOMPARE(componentObject->property("platformInverted").toBool(), true);
 }
 
 void tst_radiobutton::testImplicitSize()

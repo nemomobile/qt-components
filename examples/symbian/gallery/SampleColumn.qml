@@ -156,10 +156,12 @@ Column {
 
         RadioButton {
             platformExclusiveGroup: group
+            platformInverted: column.childrenInverted
         }
 
         RadioButton {
             platformExclusiveGroup: group
+            platformInverted: column.childrenInverted
         }
     }
 
