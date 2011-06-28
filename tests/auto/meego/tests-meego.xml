@@ -82,10 +82,6 @@ Temporary until the commit: 0b61b3f2ac2dd14367b8750aaed2d266e3fcb1db is really u
         <step expected_result="0">cd /usr/lib/qt-components-tests/auto/meego/tst_quickcomponentsscreen; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_quickcomponentsscreen -xml</step>
       </case>
 
-      <case name="qrangemodel" type="Functional" description="Unit tests for qrangemodel" level="Component" timeout="20">
-          <step expected_result="0">cd /usr/lib/qt-components-tests/auto/qrangemodel; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./qrangemodel -xml</step>
-      </case>
-      
      <case name="dialog" type="Functional" description="Unit tests for dialog" level="Component" timeout="20">
           <step expected_result="0">cd /usr/lib/qt-components-tests/auto/meego/tst_quickcomponentsdialog; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_quickcomponentsdialog -xml</step>
       </case>
