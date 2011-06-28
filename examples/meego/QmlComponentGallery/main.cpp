@@ -54,14 +54,11 @@ int main(int argc, char **argv)
     FPSDeclarativeView window;
     window.setSource(QUrl("qrc:/main.qml"));
 
-#ifndef Q_WS_MACX
+#ifdef __arm__
     window.showFullScreen();
 #else
+    window.resize(window.initialSize().width(), window.initialSize().height());
     window.show();
-#endif
-
-#ifndef __arm__
-      window.resize(window.initialSize().width(), window.initialSize().height());
 #endif
 
     return app.exec();
