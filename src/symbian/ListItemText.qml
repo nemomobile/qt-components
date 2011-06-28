@@ -80,7 +80,7 @@ Text {
                 return root.platformInverted ? platformStyle.colorHighlightedInverted
                                              : platformStyle.colorHighlighted
             else if (root.mode == "disabled")
-                return root.platformInverted ? platformStyle.colorDisabledLight
+                return root.platformInverted ? platformStyle.colorDisabledLightInverted
                                              : platformStyle.colorDisabledLight
             else 
                 return normalColor
