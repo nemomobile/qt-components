@@ -61,6 +61,7 @@ Window {
     StatusBar {
         id: statusBar
         anchors.top: root.top
+        platformInverted: root.childrenInverted
     }
 
     Flickable {

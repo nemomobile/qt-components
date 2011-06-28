@@ -58,6 +58,7 @@ private slots:
     void batteryLevel();
     void position();
     void height();
+    void platformInverted();
 
 private:
     QGraphicsObject *statusBar;
@@ -137,6 +138,14 @@ void tst_quickcomponentsstatusbar::height()
 {
     QVERIFY(statusBar->property("implicitWidth").toInt() > 0);
     QVERIFY(statusBar->property("implicitHeight").toInt() > 0);
+}
+
+void tst_quickcomponentsstatusbar::platformInverted()
+{
+    QVERIFY(statusBar->property("platformInverted").isValid());
+    QCOMPARE(statusBar->property("platformInverted").toBool(), false);
+    statusBar->setProperty("platformInverted", QVariant(true));
+    QCOMPARE(statusBar->property("platformInverted").toBool(), true);
 }
 
 QTEST_MAIN(tst_quickcomponentsstatusbar)

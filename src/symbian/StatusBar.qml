@@ -46,6 +46,7 @@ Item {
 
     implicitWidth: screen.width
     implicitHeight: privateStyle.statusBarHeight
+    property bool platformInverted: false
 
     QtObject {
         id: priv
@@ -85,7 +86,7 @@ Item {
     }
 
     BorderImage {
-        source: privateStyle.imagePath("qtg_fr_statusbar")
+        source: privateStyle.imagePath("qtg_fr_statusbar", root.platformInverted)
         anchors.fill: parent
         width: parent.width
 
@@ -99,7 +100,8 @@ Item {
 
             width: priv.paddingSmallOneQuarter * 2 + 3 * indicatorWidth
 
-            indicatorColor: platformStyle.colorNormalLight
+            indicatorColor: root.platformInverted ? platformStyle.colorNormalDarkInverted
+                                                  : platformStyle.colorNormalLight
             indicatorWidth: priv.contentHeight // same as height
             indicatorHeight: priv.contentHeight
             indicatorPadding: priv.paddingSmallOneQuarter
@@ -114,7 +116,8 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: offline ? batteryBackground.left : signalBackground.left
             anchors.rightMargin: priv.paddingSmallThreeQuarters
-            color: platformStyle.colorNormalLight
+            color: root.platformInverted ? platformStyle.colorNormalDarkInverted
+                                         : platformStyle.colorNormalLight
         }
         // signal strength
         Image {
@@ -126,7 +129,7 @@ Item {
             anchors.right: batteryBackground.left
             anchors.rightMargin: priv.paddingSmallThreeQuarters
             fillMode: Image.PreserveAspectFit
-            source: privateStyle.imagePath("qtg_graf_signal_level_bg")
+            source: privateStyle.imagePath("qtg_graf_signal_level_bg", root.platformInverted)
             Item {
                 id: signalLevelItem
                 anchors.left: parent.left
@@ -140,7 +143,7 @@ Item {
                     sourceSize.width: signalBackground.sourceSize.width
                     sourceSize.height: signalBackground.sourceSize.height
                     fillMode: Image.PreserveAspectFit
-                    source: privateStyle.imagePath("qtg_graf_signal_level_full")
+                    source: privateStyle.imagePath("qtg_graf_signal_level_full", root.platformInverted)
                 }
             }
         }
@@ -153,7 +156,7 @@ Item {
             sourceSize.height: priv.contentHeight
             sourceSize.width: Math.round(privateStyle.statusBarHeight * 24 / 26)
             fillMode: Image.PreserveAspectFit
-            source: privateStyle.imagePath("qtg_graf_battery_level_bg")
+            source: privateStyle.imagePath("qtg_graf_battery_level_bg", root.platformInverted)
 
             Item {
                 id: batteryLevel
@@ -178,7 +181,7 @@ Item {
                     // Battery state mappings: Levels 0 and 1 are low, 2-4 are medium, 5-7 are full.
                     // Currently all levels use same graphics with white color.
 
-                    source: privateStyle.imagePath("qtg_graf_battery_level_full")
+                    source: privateStyle.imagePath("qtg_graf_battery_level_full", root.platformInverted)
                 }
             }
 
@@ -197,7 +200,8 @@ Item {
         Text {
             id: timeItem
             width: Math.round(privateStyle.statusBarHeight * 44 / 26)
-            color: platformStyle.colorNormalLight
+            color: root.platformInverted ? platformStyle.colorNormalDarkInverted
+                                         : platformStyle.colorNormalLight
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
             anchors.rightMargin: platformStyle.paddingSmall
