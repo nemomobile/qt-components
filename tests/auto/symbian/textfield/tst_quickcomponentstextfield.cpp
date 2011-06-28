@@ -63,6 +63,7 @@ private slots:
     void placeholderTextAndReadOnly();
     void enabled();
     void maximumLength();
+    void platformInverted();
 
 private:
     QObject* m_componentObject;
@@ -137,6 +138,9 @@ void tst_quickcomponentstextfield::defaultPropertyValues()
     
     QVERIFY(textField->property("errorHighlight").isValid());
     QVERIFY(!textField->property("errorHighlight").toBool());
+
+    QVERIFY(textField->property("platformInverted").isValid());
+    QVERIFY(!textField->property("platformInverted").toBool());
 }
 
 void tst_quickcomponentstextfield::acceptableInput()
@@ -484,6 +488,13 @@ void tst_quickcomponentstextfield::maximumLength()
     QCOMPARE(textField->property("text").toString(), testText);
 }
 
+void tst_quickcomponentstextfield::platformInverted()
+{
+    QGraphicsObject *textField = m_view->rootObject()->findChild<QGraphicsObject*>("textField");
+    QVERIFY(textField);
+    textField->setProperty("platformInverted", true);
+    QCOMPARE(textField->property("platformInverted").toBool(), true);
+}
 
 QTEST_MAIN(tst_quickcomponentstextfield)
 

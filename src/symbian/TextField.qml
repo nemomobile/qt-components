@@ -105,6 +105,7 @@ FocusScope {
 
     property real platformLeftMargin: platformStyle.paddingSmall
     property real platformRightMargin: platformStyle.paddingSmall
+    property bool platformInverted: false
 
     // Private data
     QtObject {
@@ -130,7 +131,7 @@ FocusScope {
     BorderImage {
         id: frame
         anchors.fill: parent
-        source: privateStyle.imagePath("qtg_fr_textfield_" + priv.bg_postfix())
+        source: privateStyle.imagePath("qtg_fr_textfield_" + priv.bg_postfix(), root.platformInverted)
         border {
             left: platformStyle.borderSizeMedium
             top: platformStyle.borderSizeMedium
@@ -192,11 +193,14 @@ FocusScope {
                 autoScroll: false
                 cursorVisible: activeFocus && !selectedText
                 enabled: root.enabled
-                color: platformStyle.colorNormalDark
+                color: root.platformInverted ? platformStyle.colorNormalLightInverted
+                                             : platformStyle.colorNormalDark
                 focus: true
                 font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
-                selectedTextColor: platformStyle.colorNormalLight
-                selectionColor: platformStyle.colorTextSelection
+                selectedTextColor: root.platformInverted ? platformStyle.colorNormalLightInverted
+                                                         : platformStyle.colorNormalLight
+                selectionColor: root.platformInverted ? platformStyle.colorTextSelectionInverted
+                                                      : platformStyle.colorTextSelection
                 width: Math.max(flick.width, paintedWidth)
 
                 onEnabledChanged: {
@@ -226,6 +230,7 @@ FocusScope {
                     cutEnabled: !textInput.readOnly && textInput.selectedText
                     // TODO: QtQuick 1.1 has textEdit.canPaste
                     pasteEnabled: !textInput.readOnly
+                    platformInverted: root.platformInverted
                     Component.onCompleted: flick.movementEnded.connect(touchController.flickEnded)
                     Connections { target: screen; onCurrentOrientationChanged: touchController.updateGeometry() }
                     Connections {
@@ -246,7 +251,8 @@ FocusScope {
                 right: parent.right; rightMargin: flick.tiny
                 verticalCenter : parent.verticalCenter
             }
-            color: platformStyle.colorNormalMid
+            color: root.platformInverted ? platformStyle.colorNormalMidInverted
+                                         : platformStyle.colorNormalMid
             font: textInput.font
             visible: (!textInput.activeFocus || readOnly) && !textInput.text && text
         }

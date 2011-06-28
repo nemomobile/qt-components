@@ -48,6 +48,7 @@ Magnifier {
     // Defines the center of the content to be magnified in X axis
     // Note: the center of the content to be magnified in Y axis is determined by the cursor position.
     property variant contentCenter: Qt.point(0, 0) //editor's coordinate system
+    property bool platformInverted: false
 
     function show() {
         parent = AppManager.rootObject();
@@ -63,8 +64,10 @@ Magnifier {
     sourceRect: Qt.rect(0, 0, 0, 0)
     visible: false
     scaleFactor: 1.5
-    maskFileName: ":/graphics/qtg_graf_magnifier_mask.svg"
-    overlayFileName: ":/graphics/qtg_graf_magnifier.svg"
+    maskFileName: root.platformInverted ? ":/graphics/qtg_graf_magnifier_mask_inverse.svg"
+                                        : ":/graphics/qtg_graf_magnifier_mask.svg"
+    overlayFileName: root.platformInverted ? ":/graphics/qtg_graf_magnifier_inverse.svg"
+                                           : ":/graphics/qtg_graf_magnifier.svg"
 
     onContentCenterChanged: internal.updateSourceRect()
 

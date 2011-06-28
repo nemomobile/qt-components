@@ -52,6 +52,7 @@ MouseArea {
     property alias copyEnabled: contextMenu.copyEnabled
     property alias pasteEnabled: contextMenu.pasteEnabled
     property alias cutEnabled: contextMenu.cutEnabled
+    property bool platformInverted: false
 
     function updateGeometry() {
         selectionBegin.updateGeometry();
@@ -282,7 +283,7 @@ MouseArea {
         id: selectionBegin
 
         objectName: "SelectionBegin"
-        imageSource: "qrc:/graphics/qtg_fr_textfield_handle_start.svg"
+        imageSource: privateStyle.imagePath("qtg_fr_textfield_handle_start", root.platformInverted)
         editorPos: editor.selectionStart
         visible: editor.selectionStart != editor.selectionEnd
         showTouchArea: internal.showHandleTouchArea
@@ -292,7 +293,7 @@ MouseArea {
         id: selectionEnd
 
         objectName: "SelectionEnd"
-        imageSource: "qrc:/graphics/qtg_fr_textfield_handle_end.svg"
+        imageSource: privateStyle.imagePath("qtg_fr_textfield_handle_end", root.platformInverted)
         editorPos: editor.selectionEnd
         visible: true
         showImage: internal.hasSelection //show image only in selection mode
@@ -304,6 +305,7 @@ MouseArea {
 
         editor: root.editor
         editorScrolledY: root.editorScrolledY
+        platformInverted: root.platformInverted
     }
 
     TextMagnifier {
@@ -311,6 +313,8 @@ MouseArea {
 
         editor: root.editor
         contentCenter:internal.hitTestPoint
+        platformInverted: root.platformInverted
+
     }
 
     MouseGrabDisabler {

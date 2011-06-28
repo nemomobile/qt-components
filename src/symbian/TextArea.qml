@@ -104,6 +104,7 @@ FocusScopeItem {
     // http://bugreports.qt.nokia.com/browse/QTBUG-12305 (fixed in QtQuick1.1)
     property real platformMaxImplicitWidth: -1
     property real platformMaxImplicitHeight: -1
+    property bool platformInverted: false
     property bool enabled: true // overriding due to QTBUG-15797 and related bugs
 
     implicitWidth: {
@@ -166,7 +167,7 @@ FocusScopeItem {
     BorderImage {
         id: background
         anchors.fill: parent
-        source: privateStyle.imagePath("qtg_fr_textfield_" + privy.bg_postfix())
+        source: privateStyle.imagePath("qtg_fr_textfield_" + privy.bg_postfix(), root.platformInverted)
         border {
             left: platformStyle.borderSizeMedium
             top: platformStyle.borderSizeMedium
@@ -220,7 +221,8 @@ FocusScopeItem {
                 }
             }
 
-            color: platformStyle.colorNormalMid
+            color: root.platformInverted ? platformStyle.colorNormalMidInverted
+                                         : platformStyle.colorNormalMid
             font: textEdit.font
             horizontalAlignment: textEdit.horizontalAlignment
             verticalAlignment: textEdit.verticalAlignment
@@ -293,10 +295,13 @@ FocusScopeItem {
                 enabled: root.enabled
                 focus: true
                 font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
-                color: platformStyle.colorNormalDark
+                color: root.platformInverted ? platformStyle.colorNormalLightInverted
+                                             : platformStyle.colorNormalDark
                 cursorVisible: activeFocus && !selectedText
-                selectedTextColor: platformStyle.colorNormalLight
-                selectionColor: platformStyle.colorTextSelection
+                selectedTextColor: root.platformInverted ? platformStyle.colorNormalLightInverted
+                                                         : platformStyle.colorNormalLight
+                selectionColor: root.platformInverted ? platformStyle.colorTextSelectionInverted
+                                                      : platformStyle.colorTextSelection
                 textFormat: TextEdit.AutoText
                 wrapMode: TextEdit.Wrap
                 // TODO: Use desktop text selection behaviour for now.
@@ -336,6 +341,7 @@ FocusScopeItem {
                     cutEnabled: !textEdit.readOnly && textEdit.selectedText
                     // TODO: QtQuick 1.1 has textEdit.canPaste
                     pasteEnabled: !textEdit.readOnly
+                    platformInverted: root.platformInverted
                     Component.onCompleted: flick.movementEnded.connect(touchController.flickEnded)
                     Connections { target: screen; onCurrentOrientationChanged: touchController.updateGeometry() }
                     Connections {
@@ -365,6 +371,7 @@ FocusScopeItem {
             interactive: false
             orientation: Qt.Vertical
             height: container.height
+            platformInverted: root.platformInverted
         }
 
         ScrollBar {
@@ -379,6 +386,7 @@ FocusScopeItem {
             interactive: false
             orientation: Qt.Horizontal
             width: container.width
+            platformInverted: root.platformInverted
         }
 
         Timer {

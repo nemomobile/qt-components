@@ -47,12 +47,14 @@ SelectionDialog {
     titleText: "Select font"
     model: Qt.fontFamilies()
     delegate: fontSelectionDelegate
+    property bool platformInverted: false
 
     Component {
         id: fontSelectionDelegate
 
         ListItem {
             height: privateStyle.menuItemHeight
+            platformInverted: root.platformInverted
 
             ListItemText {
                 anchors.verticalCenter: parent.verticalCenter
@@ -60,6 +62,7 @@ SelectionDialog {
                 anchors.leftMargin: platformStyle.paddingMedium
                 text: modelData
                 font.family: modelData
+                platformInverted: root.platformInverted
             }
 
             onClicked: {

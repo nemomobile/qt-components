@@ -49,6 +49,7 @@ Item {
     property bool copyEnabled: false
     property bool pasteEnabled: false
     property bool cutEnabled: false
+    property bool platformInverted: false
 
     function show() {
         parent = AppManager.rootObject();
@@ -120,14 +121,16 @@ Item {
 
         Button {
             id: copyButton
-            iconSource: privateStyle.imagePath("qtg_toolbar_copy")
+            iconSource: privateStyle.imagePath("qtg_toolbar_copy", root.platformInverted)
             visible: root.copyEnabled
+            platformInverted: root.platformInverted
             onClicked: editor.copy()
         }
         Button {
             id: cutButton
-            iconSource: privateStyle.imagePath("qtg_toolbar_cut")
+            iconSource: privateStyle.imagePath("qtg_toolbar_cut", root.platformInverted)
             visible: root.cutEnabled
+            platformInverted: root.platformInverted
             onClicked: {
                 editor.cut()
                 root.visible = false
@@ -135,8 +138,9 @@ Item {
         }
         Button {
             id: pasteButton
-            iconSource: privateStyle.imagePath("qtg_toolbar_paste")
+            iconSource: privateStyle.imagePath("qtg_toolbar_paste", root.platformInverted)
             visible: root.pasteEnabled
+            platformInverted: root.platformInverted
             onClicked: {
                 editor.paste()
                 root.visible = false

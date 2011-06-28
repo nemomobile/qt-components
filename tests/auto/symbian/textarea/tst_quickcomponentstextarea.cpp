@@ -63,6 +63,7 @@ private slots:
     void focus();
     void cursorRectangle();
     void enabled();
+    void platformInverted();
 
 private:
     QObject* m_componentObject;
@@ -112,6 +113,11 @@ void tst_quickcomponentstextarea::validateSymbianProperties()
     property = textArea->property("platformMaxImplicitWidth");
     QVERIFY(property.isValid());
     QVERIFY(property.canConvert(QVariant::Double));
+
+    // platformInverted
+    property = textArea->property("platformInverted");
+    QVERIFY(property.isValid());
+    QVERIFY(property.canConvert(QVariant::Bool));
 }
 
 void tst_quickcomponentstextarea::defaultPropertyValues()
@@ -183,6 +189,11 @@ void tst_quickcomponentstextarea::defaultPropertyValues()
     QVERIFY(promptText.isEmpty());
     property = placeHolder->property("font");
     QCOMPARE(property.toString(), textArea->property("font").toString()); // same as editor's font
+
+    // platformInverted
+    property = textArea->property("platformInverted");
+    bool platformInverted = property.toBool();
+    QCOMPARE(platformInverted, false);
 }
 
 void tst_quickcomponentstextarea::placeholderText()
@@ -621,6 +632,14 @@ void tst_quickcomponentstextarea::enabled()
     QVERIFY(!textEdit->property("cursorVisible").toBool());
     QCOMPARE(textArea->property("selectionEnd").toInt(),
              textArea->property("selectionStart").toInt()); // no selection
+}
+
+void tst_quickcomponentstextarea::platformInverted()
+{
+    QGraphicsObject *textArea = m_view->rootObject()->findChild<QGraphicsObject*>("textArea");
+    QVERIFY(textArea);
+    textArea->setProperty("platformInverted", true);
+    QCOMPARE(textArea->property("platformInverted").toBool(), true);
 }
 
 QTEST_MAIN(tst_quickcomponentstextarea)

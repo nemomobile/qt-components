@@ -69,6 +69,7 @@ Column {
         anchors.horizontalCenter: parent.horizontalCenter
         placeholderText: "TextField"
         width: parent.width - parent.spacing
+        platformInverted: column.childrenInverted
     }
 
     TextField {
@@ -78,13 +79,15 @@ Column {
         text: "Clearable TextField"
         platformRightMargin: clearText.width + platformStyle.paddingMedium * 2
         width: parent.width - parent.spacing
+        platformInverted: column.childrenInverted
 
         Image {
             id: clearText
             anchors { top: parent.top; right: parent.right; margins: platformStyle.paddingMedium }
             fillMode: Image.PreserveAspectFit
             smooth: true; visible: parent.text
-            source: clear.pressed ? "image://theme/qtg_graf_textfield_clear_pressed" : "image://theme/qtg_graf_textfield_clear_normal"
+            source: clear.pressed ? "image://theme/qtg_graf_textfield_clear_pressed"
+                                  : "image://theme/qtg_graf_textfield_clear_normal"
             height: parent.height - platformStyle.paddingMedium * 2
             width: parent.height - platformStyle.paddingMedium * 2
 
@@ -103,13 +106,15 @@ Column {
         placeholderText: "Custom operation"
         platformRightMargin: addText.width + platformStyle.paddingMedium
         width: parent.width - parent.spacing
+        platformInverted: column.childrenInverted
 
         Image {
             id: addText
             anchors { top: parent.top; right: parent.right }
             smooth: true
             fillMode: Image.PreserveAspectFit
-            source: add.pressed ? "image://theme/qtg_graf_textfield_add_pressed" : "image://theme/qtg_graf_textfield_add_normal"
+            source: add.pressed ? "image://theme/qtg_graf_textfield_add_pressed"
+                                : "image://theme/qtg_graf_textfield_add_normal"
             height: parent.height; width: parent.height
 
             MouseArea {
@@ -143,6 +148,7 @@ Column {
         anchors.horizontalCenter: parent.horizontalCenter
         placeholderText: "This is a\n multiline control."
         width: parent.width - parent.spacing; height: 280
+        platformInverted: column.childrenInverted
     }
 
     Slider {

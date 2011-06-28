@@ -42,10 +42,12 @@ import QtQuick 1.1
 import com.nokia.symbian 1.1
 
 FocusScope {
+    id: root
     anchors.fill: parent
     property variant focusItem: textFields.activeFocus ? textFields : textAreas.activeFocus
                                                        ? textAreas  : textInputs.activeFocus
                                                        ? textInputs : null
+    property bool platformInverted: false
     focus: true
     Rectangle {
         anchors.fill: parent
@@ -88,7 +90,10 @@ FocusScope {
             id: textFields
 
             delegate: TextField {
-                text: name; placeholderText: "Enter Name"; width: textFields.width
+                text: name
+                placeholderText: "Enter Name"
+                width: textFields.width
+                platformInverted: root.platformInverted
                 onActiveFocusChanged: if (activeFocus) textFields.currentIndex = index
             }
 
@@ -115,7 +120,10 @@ FocusScope {
             id: textAreas
 
             delegate: TextArea {
-                text: name; placeholderText: "Enter Text"; width: textAreas.width
+                text: name
+                placeholderText: "Enter Text"
+                width: textAreas.width
+                platformInverted: root.platformInverted
                 onActiveFocusChanged: if (activeFocus) textAreas.currentIndex = index
             }
 
@@ -149,7 +157,9 @@ FocusScope {
                 TextInput {
                     id: textInput
                     anchors { left: parent.left; right: parent.right; verticalCenter: parent.verticalCenter }
-                    color: "black"; focus: true; text: name; font.pixelSize: 18
+                    color: "black"; focus: true
+                    text: name
+                    font.pixelSize: 18
                     onActiveFocusChanged: if (activeFocus) textInputs.currentIndex = index
                 }
             }

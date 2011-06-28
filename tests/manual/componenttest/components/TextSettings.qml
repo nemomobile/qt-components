@@ -53,6 +53,7 @@ ListView {
     property int inputMethodHints: 0
     property int wrapMode: TextEdit.Wrap
     property int verticalAlignment: TextEdit.AlignTop
+    property bool platformInverted: false
 
     QtObject {
         id: privy
@@ -109,6 +110,7 @@ ListView {
 
             return ""
         }
+        platformInverted: settings.platformInverted
 
         onClicked: selectionDialog.open()
         onPressAndHold: selectionDialog.open()
@@ -124,6 +126,7 @@ ListView {
 
                 return dialogModel
             }
+            platformInverted: settings.platformInverted
 
             onAccepted: privy.changeSetting(settings.currentIndex,
                                             selectionDialog.model.get(selectionDialog.selectedIndex).value)
@@ -142,6 +145,7 @@ ListView {
 
                 MenuItem {
                     text: name
+                    platformInverted: settings.platformInverted
                     onClicked: {
                         selectedIndex = index
 
@@ -172,6 +176,7 @@ ListView {
                         id: checkBoxComponent
                         CheckBox {
                             checked: selected
+                            platformInverted: settings.platformInverted
                             onClicked: {
                                 settings.model.get(8).dialogModel.get(index).selected = checkbox.item.checked
                                 settings.model.get(8).values ^= settings.model.get(8).dialogModel.get(index).value
