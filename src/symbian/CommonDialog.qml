@@ -68,7 +68,8 @@ Dialog {
                 family: platformStyle.fontFamilyRegular
                 pixelSize: platformStyle.fontSizeLarge
             }
-            color: platformStyle.colorNormalLink
+            color: root.platformInverted ? platformStyle.colorNormalLinkInverted
+                                         : platformStyle.colorNormalLink
             clip: true
             elide: Text.ElideRight
             horizontalAlignment: Text.AlignLeft
@@ -113,9 +114,10 @@ Dialog {
                     sourceSize.height: platformStyle.graphicSizeSmall
                     sourceSize.width: platformStyle.graphicSizeSmall
                     smooth: true
-                    source: privateStyle.imagePath(iconMouseArea.pressed && !iconMouseArea.pressCancelled
-                        ? "qtg_graf_popup_close_pressed"
-                        : "qtg_graf_popup_close_normal")
+                    source: privateStyle.imagePath((iconMouseArea.pressed && !iconMouseArea.pressCancelled
+                                                    ? "qtg_graf_popup_close_pressed"
+                                                    : "qtg_graf_popup_close_normal"),
+                                                   root.platformInverted)
                 }
             }
         }

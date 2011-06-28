@@ -50,6 +50,8 @@ Item {
     property alias visualParent: dialog.visualParent
     property alias status: dialog.status
 
+    // Symbian specific API
+    property bool platformInverted: false
     // read-only
     property int platformContentMaximumWidth: dialog.width
     // read-only
@@ -122,9 +124,10 @@ Item {
         visible: true
         anchors.centerIn: parent
         animationDuration: 250
+        platformInverted: root.platformInverted
 
         BorderImage {
-            source: privateStyle.imagePath("qtg_fr_popup")
+            source: privateStyle.imagePath("qtg_fr_popup", root.platformInverted)
             border { left: 20; top: 20; right: 20; bottom: 20 }
             anchors.fill: parent
         }
@@ -140,7 +143,7 @@ Item {
             }
 
             BorderImage {
-                source: privateStyle.imagePath("qtg_fr_popup_heading")
+                source: privateStyle.imagePath("qtg_fr_popup_heading", root.platformInverted)
                 border { left: 40; top: 0; right: 40; bottom: 0 }
                 anchors.fill: parent
             }

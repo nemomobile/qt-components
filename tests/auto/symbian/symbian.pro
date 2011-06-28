@@ -10,6 +10,7 @@ SUBDIRS += \
     declarativeimplicitsizeitem \
     declarativescreen \
     declarativestyle \
+    dialog \
     extras \
     iconpool \
     imageprovider \

@@ -122,6 +122,7 @@ Column {
                 id: textSelection
                 titleText: "Preset Texts"
                 selectedIndex: -1
+                platformInverted: column.childrenInverted
                 model: ListModel {
                     ListElement { name: "Lorem ipsum." }
                     ListElement { name: "Lorem ipsum dolor sit amet." }
@@ -218,6 +219,7 @@ Column {
         CommonDialog {
             id: dialog
             titleText: "Dialog"
+            platformInverted: column.childrenInverted
 
             buttons: ToolBar {
                 id: buttons
@@ -272,6 +274,7 @@ Column {
         SelectionDialog {
             titleText: "Select background color"
             selectedIndex: 1
+            platformInverted: column.childrenInverted
 
             model: ListModel {
                 id: colorModel
@@ -341,6 +344,7 @@ Column {
             rejectButtonText: "Cancel"
 
             icon: "image://theme/qtg_anim_spinner_large_1"
+            platformInverted: column.childrenInverted
         }
     }
 
@@ -473,6 +477,7 @@ Column {
             SelectionDialog {
                 titleText: "Select"
                 selectedIndex: 2
+                platformInverted: column.childrenInverted
                 model: ListModel {
                     ListElement { name: "One" }
                     ListElement { name: "Two" }
@@ -588,6 +593,7 @@ Column {
         id: sectionScrollComponent
         Dialog {
             id: sectionScroll
+            platformInverted: column.childrenInverted
             title: Text {
                 text: "Section Scroller"
                 font { bold: true; pixelSize: 16 }

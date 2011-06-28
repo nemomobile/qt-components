@@ -71,7 +71,8 @@ Dialog {
 
         Text {
             font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
-            color: platformStyle.colorNormalLink
+            color: root.platformInverted ? platformStyle.colorNormalLinkInverted
+                                         : platformStyle.colorNormalLink
             text: root.titleText
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
@@ -105,7 +106,8 @@ Dialog {
                     id: label
                     width: flickable.width - privateStyle.scrollBarThickness
                     font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
-                    color: platformStyle.colorNormalLight
+                    color: root.platformInverted ? platformStyle.colorNormalLightInverted
+                                                 : platformStyle.colorNormalLight
                     wrapMode: Text.WordWrap
                     text: root.message
                     horizontalAlignment: Text.AlignLeft
@@ -120,6 +122,7 @@ Dialog {
                 flickableItem: flickable
                 interactive: false
                 orientation: Qt.Vertical
+                platformInverted: root.platformInverted
             }
 
             anchors {
@@ -135,6 +138,7 @@ Dialog {
         id: buttons
         width: parent.width
         height: privateStyle.toolBarHeightLandscape + 2 * platformStyle.paddingSmall
+        platformInverted: root.platformInverted
         tools: Row {
             id: buttonRow
             anchors.centerIn: parent
@@ -148,6 +152,7 @@ Dialog {
                     : (buttons.width - 3 * platformStyle.paddingMedium) / 2
                 onClicked: accept()
                 visible: text != ""
+                platformInverted: root.platformInverted
             }
             ToolButton {
                 id: rejectButton
@@ -156,6 +161,7 @@ Dialog {
                     : (buttons.width - 3 * platformStyle.paddingMedium) / 2
                 onClicked: reject()
                 visible: text != ""
+                platformInverted: root.platformInverted
             }
         }
     }

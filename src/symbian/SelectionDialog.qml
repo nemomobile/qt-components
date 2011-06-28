@@ -55,6 +55,7 @@ CommonDialog {
         id: defaultDelegate
 
         MenuItem {
+            platformInverted: root.platformInverted
             text: modelData
             onClicked: {
                 selectedIndex = index
@@ -107,10 +108,10 @@ CommonDialog {
 
             ScrollBar {
                 id: scrollBar
-
                 flickableItem: listView
                 interactive: false
                 visible: listView.contentHeight > contentItem.height
+                platformInverted: root.platformInverted
                 anchors { top: listView.top; right: listView.right }
             }
         }
