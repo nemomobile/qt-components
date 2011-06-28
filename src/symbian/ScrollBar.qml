@@ -50,6 +50,7 @@ Item {
     property bool interactive: true
     property int policy: Symbian.ScrollBarWhenScrolling
     property bool privateSectionScroller: false
+    property bool platformInverted: false
 
     //implicit values for qml designer when no Flickable is present
     implicitHeight: privateStyle.scrollBarThickness * (orientation == Qt.Vertical ? 3 : 1)
@@ -255,7 +256,10 @@ Item {
     BorderImage {
         id: track
         objectName: "track"
-        source: privateStyle.imagePath(orientation == Qt.Vertical ? "qtg_fr_scrollbar_v_track_normal" : "qtg_fr_scrollbar_h_track_normal")
+        source: privateStyle.imagePath((orientation == Qt.Vertical
+                                        ? "qtg_fr_scrollbar_v_track_normal"
+                                        : "qtg_fr_scrollbar_h_track_normal"),
+                                       root.platformInverted)
         visible: interactive
         anchors.fill: parent
         border.right: orientation == Qt.Horizontal ? 7 : 0
@@ -278,14 +282,15 @@ Item {
         BorderImage {
             id: indexFeedbackBackground
             objectName: "indexFeedbackBackground"
-            source: privateStyle.imagePath("qtg_fr_popup_transparent")
+            source: privateStyle.imagePath("qtg_fr_popup_transparent", root.platformInverted)
             border { left: platformStyle.borderSizeMedium; top: platformStyle.borderSizeMedium; right: platformStyle.borderSizeMedium; bottom: platformStyle.borderSizeMedium }
             visible: trackMouseArea.pressed
             anchors.fill: parent
             Text {
                 id: indexFeedbackText
                 objectName: "indexFeedbackText"
-                color: platformStyle.colorNormalLight
+                color: root.platformInverted ? platformStyle.colorNormalDarkInverted // intentionally dark inverted
+                                             : platformStyle.colorNormalLight
                 anchors {
                     left: parent.left;
                     leftMargin: platformStyle.paddingLarge;
@@ -379,7 +384,7 @@ Item {
     BorderImage {
         id: handle
         objectName: "handle"
-        source: privateStyle.imagePath(handleFileName())
+        source: privateStyle.imagePath(handleFileName(), root.platformInverted)
         x: orientation == Qt.Horizontal ? internal.handlePosition : NaN
         y: orientation == Qt.Vertical ? internal.handlePosition : NaN
         height: orientation == Qt.Vertical ? internal.dynamicHandleLength : root.height

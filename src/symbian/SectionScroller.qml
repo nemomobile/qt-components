@@ -46,6 +46,7 @@ Item {
     id: root
 
     property ListView listView
+    property bool platformInverted: false
 
     onListViewChanged: {
         if (listView && listView.model)
@@ -65,6 +66,7 @@ Item {
         parent: listView
         flickableItem: listView
         privateSectionScroller: true
+        platformInverted: root.platformInverted
         anchors {
             top: parent ? parent.top : undefined
             right: parent ? parent.right : undefined

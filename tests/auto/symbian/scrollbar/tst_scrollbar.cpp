@@ -270,6 +270,13 @@ void tst_scrollbar::testPropertiesScrollBar()
     QCOMPARE(obj->property("privateSectionScroller").toBool(), false);
     obj->setProperty("privateSectionScroller", true);
     QCOMPARE(obj->property("privateSectionScroller").toBool(), true);
+
+    QVERIFY(obj->property("platformInverted").isValid());
+    QCOMPARE(obj->property("platformInverted").toBool(), false);
+    obj->setProperty("platformInverted", true);
+    QCOMPARE(obj->property("platformInverted").toBool(), true);
+
+    delete obj;
 }
 
 void tst_scrollbar::testValidScrollDecorator_data()
@@ -421,6 +428,12 @@ void tst_scrollbar::testPropertiesScrollDecorator()
     QVERIFY2(obj, qPrintable(errors));
 
     QVERIFY(obj->property("flickableItem").isValid());
+
+    QVERIFY(obj->property("platformInverted").isValid());
+    QCOMPARE(obj->property("platformInverted").toBool(), false);
+    obj->setProperty("platformInverted", true);
+    QCOMPARE(obj->property("platformInverted").toBool(), true);
+
     delete obj;
 }
 

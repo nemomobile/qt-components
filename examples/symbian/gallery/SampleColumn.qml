@@ -643,6 +643,7 @@ Column {
                 SectionScroller {
                     id: sectionScroller
                     listView: list
+                    platformInverted: column.childrenInverted
                 }
             }
         }

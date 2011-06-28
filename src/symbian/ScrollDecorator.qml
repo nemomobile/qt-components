@@ -47,6 +47,9 @@ Item {
     //Common Public API
     property Flickable flickableItem: null
 
+    // Symbian specific API
+    property bool platformInverted: false
+
     Item {
         id: decorators
         property bool completed: false
@@ -64,6 +67,7 @@ Item {
                 flickableItem: root.flickableItem
                 orientation: Qt.Horizontal
                 interactive: false
+                platformInverted: root.platformInverted
                 anchors {
                     left: flickableItem.left
                     bottom: flickableItem.bottom
@@ -78,6 +82,7 @@ Item {
                 flickableItem: root.flickableItem
                 orientation: Qt.Vertical
                 interactive: false
+                platformInverted: root.platformInverted
                 anchors { top: flickableItem.top; right: flickableItem.right }
             }
         }

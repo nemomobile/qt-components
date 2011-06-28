@@ -87,6 +87,7 @@ Window {
 
     ScrollDecorator {
         flickableItem: flickable
+        platformInverted: root.childrenInverted
     }
 
     ToolBar {
