@@ -46,6 +46,7 @@
 #include <QDeclarativeContext>
 #include <QDeclarativeEngine>
 #include <QPixmapCache>
+#include <QSysInfo>
 
 #ifdef Q_OS_SYMBIAN
 #include <AknUtils.h>
@@ -162,6 +163,26 @@ void SDeclarative::privateClearComponentCache()
     QDeclarativeContext *context = qobject_cast<QDeclarativeContext*>(this->parent());
     if (context)
         context->engine()->clearComponentCache();
+}
+
+SDeclarative::S60Version SDeclarative::s60Version() const
+{
+#ifdef Q_OS_SYMBIAN
+    switch (QSysInfo::s60Version()) {
+    case QSysInfo::SV_S60_5_2:
+        return SV_S60_5_2;
+#if QT_VERSION > 0x040703
+    case QSysInfo::SV_S60_5_3:
+        return SV_S60_5_3;
+    case QSysInfo::SV_S60_5_4:
+        return SV_S60_5_4;
+#endif
+    default:
+        return SV_S60_UNKNOWN;
+    }
+#else
+    return SV_S60_UNKNOWN;
+#endif
 }
 
 bool SDeclarative::eventFilter(QObject *obj, QEvent *event)

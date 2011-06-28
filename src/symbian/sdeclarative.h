@@ -52,8 +52,9 @@ class SDeclarative : public QObject
     Q_PROPERTY(InteractionMode listInteractionMode READ listInteractionMode WRITE setListInteractionMode NOTIFY listInteractionModeChanged FINAL)
     Q_PROPERTY(QString currentTime READ currentTime NOTIFY currentTimeChanged)
     Q_PROPERTY(bool foreground READ isForeground NOTIFY foregroundChanged)
+    Q_PROPERTY(S60Version s60Version READ s60Version CONSTANT)
 
-    Q_ENUMS(InteractionMode ScrollBarVisibility SourceSize EffectType Feedback)
+    Q_ENUMS(InteractionMode S60Version ScrollBarVisibility SourceSize EffectType Feedback)
 
 public:
     explicit SDeclarative(QObject *parent = 0);
@@ -62,6 +63,13 @@ public:
     enum InteractionMode {
         TouchInteraction,
         KeyNavigation
+    };
+
+    enum S60Version {
+        SV_S60_5_2 = 0, // Symbian Anna
+        SV_S60_5_3,
+        SV_S60_5_4,
+        SV_S60_UNKNOWN
     };
 
     // No duplicate prefix naming because enum values are only visible via qml
@@ -133,6 +141,7 @@ public:
 
     static QString currentTime();
     bool isForeground();
+    S60Version s60Version() const;
 
     Q_INVOKABLE int privateAllocatedMemory() const;
     Q_INVOKABLE void privateClearIconCaches();

@@ -52,6 +52,7 @@ Item {
         id: priv
         objectName: "priv"
 
+        property bool clickedOpensStatusPanel: symbian.s60Version == Symbian.SV_S60_5_2 ? true : false
         property int contentHeight: Math.round(privateStyle.statusBarHeight * 18 / 26)
         property int paddingSmallOneQuarter: Math.round(platformStyle.paddingSmall / 4)
         property int paddingSmallThreeQuarters: Math.round(platformStyle.paddingSmall * 3 / 4)
@@ -79,9 +80,20 @@ Item {
 
     MouseArea {
         anchors.fill: parent
+
         onClicked: {
-            privateStyle.play(Symbian.PopUp)
-            platformPopupManager.privateShowIndicatorPopup()
+            if (priv.clickedOpensStatusPanel) {
+                privateStyle.play(Symbian.PopUp)
+                platformPopupManager.privateShowIndicatorPopup()
+            }
+        }
+        onPressed: {
+            if (!priv.clickedOpensStatusPanel) {
+                privateStyle.play(Symbian.PopUp)
+                platformPopupManager.privateShowIndicatorPopup()
+                // reset mouseArea state
+                mouse.accepted = false
+            }
         }
     }
 
