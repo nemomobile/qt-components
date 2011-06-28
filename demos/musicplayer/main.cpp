@@ -53,9 +53,9 @@ int main(int argc, char **argv)
     qmlRegisterType<MediaKeysObserver>("MediaKeysObserver", 1, 0, "MediaKeysObserver");
 
 #ifdef DOCUMENT_GALLERY
-    context->setContextProperty("documentGallery", true);
+    context->setContextProperty("documentGallery", QVariant::fromValue<bool>(true));
 #else
-    context->setContextProperty("documentGallery", false);
+    context->setContextProperty("documentGallery", QVariant::fromValue<bool>(false));
 #endif
 
     view.setSource(QUrl("qrc:///qml/mainwindow.qml"));
