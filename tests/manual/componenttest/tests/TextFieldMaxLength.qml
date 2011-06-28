@@ -40,6 +40,7 @@
 
 import QtQuick 1.1
 import com.nokia.symbian 1.1
+import "../components"
 
 Item {
     id: root
@@ -69,10 +70,9 @@ Item {
             KeyNavigation.down: charsToGenerate
         }
 
-        Text {
+        Label {
             id: lengthIndicator
             anchors.horizontalCenter: textField.horizontalCenter
-            color: "white"
             text: textField.text.length + "/" + textField.maximumLength
         }
 
@@ -109,10 +109,9 @@ Item {
         }
 
         Slider {
-            Text {
+            Label {
                 anchors { horizontalCenter: parent.horizontalCenter; top: parent.top }
                 text: "Max length"
-                color: "white"
             }
 
             id: adjustMaxLength

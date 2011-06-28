@@ -40,6 +40,7 @@
 
 import QtQuick 1.1
 import com.nokia.symbian 1.1
+import "../components"
 
 Item {
 
@@ -94,9 +95,7 @@ Item {
             return "LandscapeInverted"
     }
 
-    Text {
-        color: "white"
-        font.pixelSize: 20
+    Label {
         text: "Pixel width:\n"
               + "Pixel height:\n"
               + "Display width:\n"
@@ -110,11 +109,8 @@ Item {
               + "Category:\n"
               + "Density:"
         anchors { left: parent.left; leftMargin: 20; top: parent.top; topMargin: 20}
-        horizontalAlignment: Text.AlignLeft
     }
-    Text {
-        color: "white"
-        font.pixelSize: 20
+    Label {
         text: screen.width + '\n'
               + screen.height + '\n'
               + screen.displayWidth + '\n'

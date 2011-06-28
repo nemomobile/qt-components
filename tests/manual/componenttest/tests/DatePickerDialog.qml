@@ -41,6 +41,7 @@
 import QtQuick 1.1
 import com.nokia.symbian 1.1
 import com.nokia.extras 1.1
+import "../components"
 
 Item {
     id: root
@@ -111,33 +112,25 @@ Item {
         }
 
         Row {
-            Text {
+            Label {
                 id: signalName
-                font { bold: true; pixelSize: 16 }
-                color: "white"
                 text : "Signal / Func: "
             }
-            Text {
+            Label {
                 id: signalValue
                 objectName: "signalValue"
-                font.pixelSize: 16
-                color: "white"
                 text : "None"
             }
         }
 
         Row {
             LayoutMirroring.enabled: false
-            Text {
-                font { bold: true; pixelSize: 16 }
-                color: "white"
+            Label {
                 text: "Dialog Value (m/d/yyyy): "
             }
-            Text {
+            Label {
                 id: dialogValue
                 objectName: "dialogValue"
-                font.pixelSize: 16
-                color: "white"
                 text: ""
             }
         }

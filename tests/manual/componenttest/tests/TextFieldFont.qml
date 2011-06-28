@@ -210,11 +210,10 @@ Item {
         spacing: privy.margin
         flow: Grid.TopToBottom
 
-        Text {
+        Label {
             width: parent.itemWidth
             horizontalAlignment: Text.AlignHCenter
             text: "Letter spacing"
-            color: "white"
             font { pixelSize: platformStyle.fontSizeSmall }
         }
 
@@ -228,11 +227,10 @@ Item {
             Component.onCompleted: value = textField.font.letterSpacing
         }
 
-        Text {
+        Label {
             width: parent.itemWidth
             horizontalAlignment: Text.AlignHCenter
             text: "Point size"
-            color: "white"
             font { pixelSize: platformStyle.fontSizeSmall }
         }
 
@@ -246,11 +244,10 @@ Item {
             Component.onCompleted: value = textField.font.pointSize
         }
 
-        Text {
+        Label {
             width: parent.itemWidth
             horizontalAlignment: Text.AlignHCenter
             text: "Word spacing"
-            color: "white"
             font { pixelSize: platformStyle.fontSizeSmall }
         }
 
@@ -264,11 +261,10 @@ Item {
             Component.onCompleted: value = textField.font.wordSpacing
         }
 
-        Text {
+        Label {
             width: parent.itemWidth
             horizontalAlignment: Text.AlignHCenter
             text: "Pixel Size"
-            color: "white"
             font { pixelSize: platformStyle.fontSizeSmall }
         }
 

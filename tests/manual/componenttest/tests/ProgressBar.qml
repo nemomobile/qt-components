@@ -40,6 +40,7 @@
 
 import QtQuick 1.1
 import com.nokia.symbian 1.1
+import "../components"
 
 Item {
 
@@ -70,13 +71,12 @@ Item {
             }
         }
 
-        Text {
+        Label {
             id: horizontalBarValue
 
             text: "ProgressBar value: " + horizontalBar.value
             height: 20
             width: 50
-            color: "white"
         }
 
         ProgressBar {

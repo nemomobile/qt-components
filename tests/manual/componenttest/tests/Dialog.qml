@@ -40,6 +40,7 @@
 
 import QtQuick 1.1
 import com.nokia.symbian 1.1
+import "../components"
 
 Item {
 
@@ -84,13 +85,9 @@ Item {
         }
         content: Column {
             width: parent.width
-            Text {
+            Label {
                 text: "Popup stack depth: "+platformPopupManager.popupStackDepth
-                font.bold: true
-                color: "white"
-                font.pixelSize: 18
                 horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
                 width: parent.width
             }
             Button {
@@ -139,12 +136,9 @@ Item {
                 text: "Open dialog"
                 onClicked: dialogWithScrollBar.open()
             }
-            Text {
+            Label {
                 anchors.left: parent.left
                 text: "Popup stack depth: "+platformPopupManager.popupStackDepth
-                horizontalAlignment: Text.AlignLeft
-                color: "white"
-                font.pointSize: 10
             }
         }
     }
@@ -213,11 +207,8 @@ Item {
                     rightMargin: verticalScrollbar.width
                 }
             }
-            Text {
+            Label {
                 text: "Popup stack depth: "+platformPopupManager.popupStackDepth
-                color: "white"
-                font.pointSize: 10
-                horizontalAlignment: Text.AlignLeft
                 width: page.width
             }
         }

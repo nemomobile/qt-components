@@ -40,8 +40,12 @@
 
 import QtQuick 1.1
 import com.nokia.symbian 1.1
+import "../components"
 
 Item {
+    id: root
+    property bool platformInverted: false
+
     ListView {
         id: listView
         anchors.fill: parent
@@ -62,27 +66,26 @@ Item {
         Rectangle {
             border.color: "blue"
             border.width: 2
-            color: "black"
+            color: root.platformInverted ? platformStyle.colorBackgroundInverted
+                                         : platformStyle.colorBackground
             height: text1.height + m_size + 2 * platformStyle.paddingLarge + platformStyle.paddingMedium
             width: listView.width
-            Text {
+            Label {
                 id: text1
                 anchors.left: parent.left
                 anchors.leftMargin: platformStyle.paddingLarge
                 anchors.top: parent.top
                 anchors.topMargin: platformStyle.paddingLarge
                 text: m_text
-                color: platformStyle.colorNormalLight
-                font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
+                platformInverted: root.platformInverted
             }
-            Text {
+            Label {
                 anchors.right: parent.right
                 anchors.rightMargin: platformStyle.paddingLarge
                 anchors.top: parent.top
                 anchors.topMargin: platformStyle.paddingLarge
                 text: m_size
-                color: platformStyle.colorNormalLight
-                font: text1.font
+                platformInverted: root.platformInverted
             }
             Rectangle {
                 width: {

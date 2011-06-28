@@ -42,6 +42,11 @@ import QtQuick 1.1
 import com.nokia.symbian 1.1
 
 Item {
+    id: root
+    property bool platformInverted: false
+    property color labelColor: platformInverted ? platformStyle.colorNormalLightInverted
+                                                : platformStyle.colorNormalLight
+
     ListView {
         id: listView
         anchors.fill: parent
@@ -60,11 +65,12 @@ Item {
     Component {
         id: listDelegate
         Rectangle {
-            color: "black"
+            color: root.platformInverted ? platformStyle.colorBackgroundInverted
+                                         : platformStyle.colorBackground
             height: text1.height + 2 * platformStyle.paddingMedium
             width: listView.width
             Rectangle {
-                color: platformStyle.colorNormalLight
+                color: root.labelColor
                 opacity: 0.3
                 anchors.fill: text1
             }
@@ -74,7 +80,7 @@ Item {
                 anchors.leftMargin: platformStyle.paddingLarge
                 anchors.verticalCenter: parent.verticalCenter
                 text: m_text
-                color: platformStyle.colorNormalLight
+                color: root.labelColor
                 font { family: platformStyle.fontFamilyRegular; pixelSize: m_size; weight: m_weight }
             }
             Text {
@@ -82,7 +88,7 @@ Item {
                 anchors.rightMargin: platformStyle.paddingLarge
                 anchors.verticalCenter: parent.verticalCenter
                 text: m_size + " (" + height + ")"
-                color: platformStyle.colorNormalLight
+                color: root.labelColor
                 font: text1.font
             }
         }

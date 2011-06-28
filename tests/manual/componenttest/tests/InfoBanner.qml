@@ -41,19 +41,17 @@
 import QtQuick 1.1
 import com.nokia.symbian 1.1
 import com.nokia.extras 1.1
+import "../components"
 
 Item {
     id: container
 
     property bool platformInverted: false
-    Text {
+    Label {
         id: title
         anchors { top: parent.top; topMargin: platformStyle.paddingLarge }
-        color: platformStyle.colorNormalLight
         text: "Create Custom InfoBanner"
-        font.bold: true
         width: parent.width
-        horizontalAlignment: Text.AlignLeft
     }
 
     Column {
@@ -78,7 +76,7 @@ Item {
                 checked: false
                 text: "Interactive"
             }
-            Text {
+            Label {
                 id: clicked
                 color: "green"
                 horizontalAlignment: Text.AlignLeft
@@ -88,8 +86,8 @@ Item {
         Row {
             LayoutMirroring.enabled: false
             spacing: platformStyle.paddingSmall
-            Text { text: "Time to dismiss:"; color: platformStyle.colorNormalLight; horizontalAlignment: Text.AlignLeft }
-            Text { text: durationSlider.value + " sec"; color: "green"; horizontalAlignment: Text.AlignLeft }
+            Label { text: "Time to dismiss:" }
+            Label { text: durationSlider.value + " sec"; color: "green" }
             Slider { id: durationSlider; maximumValue: 9; minimumValue: 0; stepSize:1; value: 3 }
         }
 

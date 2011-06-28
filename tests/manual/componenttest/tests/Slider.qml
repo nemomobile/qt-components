@@ -40,6 +40,7 @@
 
 import QtQuick 1.1
 import com.nokia.symbian 1.1
+import "../components"
 
 Item {
     id: root
@@ -76,10 +77,9 @@ Item {
         columns: isPortrait() ? 2 : 4;
         spacing: 10
 
-        Text {
+        Label {
             text: "Horizontal slider (" + slider1.value + ")"
             width: 180
-            color: "white"
         }
 
         Slider {
@@ -112,10 +112,9 @@ Item {
             text: "Inverted"
         }
 
-        Text {
+        Label {
             text: "Vertical slider (" + slider2.value + ")"
             width: 180
-            color: "white"
         }
 
         Slider {

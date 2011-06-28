@@ -41,6 +41,7 @@
 import QtQuick 1.1
 import com.nokia.symbian 1.1
 import Qt.labs.components 1.1
+import "../../components"
 
 Dialog {
     id: selectInputMethodHints
@@ -48,12 +49,10 @@ Dialog {
     property variant inputMethodHintsFlag : 0
     property bool platformInverted: false
 
-    title: Text {
+    title: Label {
         text: "InputMethodHints"
         anchors.fill: parent
-        color: "white"
-        font { pointSize: 16; bold: true }
-        horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignHCenter
     }
 
     buttons: Button {

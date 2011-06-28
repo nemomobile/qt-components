@@ -45,6 +45,8 @@ Item {
     anchors.fill: parent
     state:  "buttonsInRow"
     property bool platformInverted: false
+    property color labelColor: platformInverted ? platformStyle.colorNormalLightInverted
+                                                : platformStyle.colorNormalLight
 
     ButtonRow {
         id: navButtonRow
@@ -107,7 +109,7 @@ Item {
             id: text1
             anchors.left: parent.left
             text: "Buttons with text"
-            color: "white"
+            color: root.labelColor
         }
 
         ButtonRow {
@@ -158,7 +160,7 @@ Item {
             Text {
                 text: "CheckedBtn text:"
                 anchors.verticalCenter: parent.verticalCenter
-                color: "white"
+                color: root.labelColor
             }
 
             TextField {
@@ -177,7 +179,7 @@ Item {
             id: text2
             anchors.left: parent.left
             text: "Buttons with icons"
-            color: "white"
+            color: root.labelColor
         }
 
         ButtonRow {
@@ -218,7 +220,7 @@ Item {
             id: text3
             anchors.left: parent.left
             text: "Dynamic buttons"
-            color: "white"
+            color: root.labelColor
         }
 
         Row {
@@ -390,7 +392,7 @@ Item {
         Text {
             id: text4
             text: "Checkable CheckBoxes in a ButtonRow"
-            color: "white"
+            color: root.labelColor
         }
 
         ButtonRow {
@@ -440,7 +442,7 @@ Item {
         Text {
             id: text5
             text: "RadioButtons"
-            color: "white"
+            color: root.labelColor
         }
 
         ButtonRow {
@@ -489,7 +491,7 @@ Item {
 
         Text {
             id: text6
-            color:  "white"
+            color:  root.labelColor
             text: "Toolbuttons with text"
         }
 
@@ -523,7 +525,7 @@ Item {
 
         Text {
             id: text7
-            color:  "white"
+            color:  root.labelColor
             text: "Toolbuttons with icons"
         }
 
@@ -565,7 +567,7 @@ Item {
         Text {
             id: text8
             text: "Dynamic ToolButtons"
-            color: "white"
+            color: root.labelColor
         }
 
         Row {
@@ -640,12 +642,14 @@ Item {
                 ListItem {
                     id: listItem2
                     width: toolButtonsListView.width
+                    platformInverted: root.platformInverted
 
                     ListItemText {
                         id: itemText2
                         mode: listItem2.mode
                         role: toggleVisible2.checked ? "Title" : "SubTitle"
                         text: model.title
+                        platformInverted: root.platformInverted
                         anchors {
                             left: listItem2.paddingItem.left
                             right: toggleVisible2.left
@@ -660,6 +664,7 @@ Item {
                             verticalCenter: parent.verticalCenter
                         }
                         checked: model.visible
+                        platformInverted: root.platformInverted
 
                         onCheckedChanged: {
                             toolButtonsListView.model.set(index, {"visible" : toggleVisible2.checked})

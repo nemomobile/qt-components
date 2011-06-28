@@ -49,10 +49,6 @@ FocusScope {
                                                        ? textInputs : null
     property bool platformInverted: false
     focus: true
-    Rectangle {
-        anchors.fill: parent
-        color: "black"
-    }
 
     Component {
         id: highlight

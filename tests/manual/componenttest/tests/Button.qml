@@ -69,13 +69,10 @@ Item {
         columns: isLandscape() ? 4 : 2
         spacing: 5
 
-        Text {
+        Label {
             id: imageLabel
             width: common.leftColumnWidth
             height: imageButton.height
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignLeft
-            color: platformStyle.colorNormalLight
             font.pixelSize: platformStyle.fontSizeSmall
             text: "Image:"
         }
@@ -103,13 +100,10 @@ Item {
             }
         }
 
-        Text {
+        Label {
             id: textLabel
             width: common.leftColumnWidth
             height: buttonTextEditor.height
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignLeft
-            color: platformStyle.colorNormalLight
             font.pixelSize: platformStyle.fontSizeSmall
             text: "Text:"
         }
@@ -121,13 +115,10 @@ Item {
             text: "Hello QML"
         }
 
-        Text {
+        Label {
             id: fontLabel
             width: common.leftColumnWidth
             height: fontButton.height
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignLeft
-            color: platformStyle.colorNormalLight
             font.pixelSize: platformStyle.fontSizeSmall
             text: "Font:"
         }
@@ -146,13 +137,10 @@ Item {
             onClicked: fontSelector.open()
         }
 
-        Text {
+        Label {
             id: fontSizeLabel
             width: common.leftColumnWidth
             height: labelSizeSlider.height
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignLeft
-            color: platformStyle.colorNormalLight
             font.pixelSize: platformStyle.fontSizeSmall
             text: "Font size:"
         }
@@ -167,13 +155,10 @@ Item {
             onValueChanged: if (pressed) scalableButton.font.pixelSize = value
         }
 
-        Text {
+        Label {
             id: longPressLabel
             width: common.leftColumnWidth
             height: longPressButton.height
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignLeft
-            color: platformStyle.colorNormalLight
             font.pixelSize: platformStyle.fontSizeSmall
             text: "Long press:"
         }
@@ -189,13 +174,10 @@ Item {
             }
         }
 
-        Text {
+        Label {
             id: repeatLabel
             width: common.leftColumnWidth
             height: repeatButton.height
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignLeft
-            color: platformStyle.colorNormalLight
             font.pixelSize: platformStyle.fontSizeSmall
             text: "Auto repeat:"
         }

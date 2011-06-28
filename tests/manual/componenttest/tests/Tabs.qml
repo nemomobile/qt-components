@@ -41,6 +41,7 @@
 import QtQuick 1.1
 import com.nokia.symbian 1.1
 import "../TestUtils.js" as Utils
+import "../components"
 
 Item {
     id: root
@@ -188,18 +189,19 @@ Item {
 
     Component {
         id: commonContent
+
         Column {
             id: column
             property Item page
 
             anchors.fill: parent
             anchors.topMargin: 20
-            Text {
+            Label {
                 text: (page ? "page: " : "item: ") + column.parent.titleString
                 width: parent.width
                 horizontalAlignment: Text.AlignHCenter
                 font.pixelSize: platformStyle.fontSizeLarge * 1.5
-                color: "white"
+                platformInverted: root.platformInverted
             }
 
             Row {
@@ -222,13 +224,13 @@ Item {
                 columns: inPortrait() ? 1 : 2
                 spacing: 2
 
-                Text {
+                Label {
                     id: editTabButtonLabel
                     width: inPortrait() ? parent.width : parent.width / 3
                     text: "Edit TabButton:"
                     horizontalAlignment: Text.AlignHCenter
                     font.pixelSize: platformStyle.fontSizeLarge
-                    color: "white"
+                    platformInverted: root.platformInverted
                 }
 
                 Row {
@@ -290,13 +292,13 @@ Item {
                 columns: inPortrait() ? 1 : 2
                 spacing: 2
 
-                Text {
+                Label {
                     id: newPageLabel
                     width: inPortrait() ? parent.width : parent.width / 3
                     text: "New page tabs:"
                     horizontalAlignment: Text.AlignHCenter
                     font.pixelSize: platformStyle.fontSizeLarge
-                    color: "white"
+                    platformInverted: root.platformInverted
                 }
 
                 Row {
@@ -395,9 +397,9 @@ Page {
     TabGroup {
         height: 100
         width: 100
-        Text { id: tab1content; text: "tab1"; color: "white" }
-        Text { id: tab2content; text: "tab2"; color: "white" }
-        Text { id: tab3content; text: "tab3"; color: "white" }
+        Text { id: tab1content; text: "tab1"; color: "grey" }
+        Text { id: tab2content; text: "tab2"; color: "grey" }
+        Text { id: tab3content; text: "tab3"; color: "grey" }
     }
 }
 */
@@ -422,12 +424,12 @@ Page {
             tabBarContent += "\" } "
 
             // create group content
-            // Text { id: tab1content; text: \"tab1\"; color: \"white\" } "
+            // Text { id: tab1content; text: \"tab1\"; color: \"grey\" } "
             tabGroupContent += "Text { id: tab"
             tabGroupContent += i.toString()
             tabGroupContent += "content; text: \"tab"
             tabGroupContent += i.toString()
-            tabGroupContent += "\"; color: \"white\" } "
+            tabGroupContent += "\"; color: \"grey\" } "
 
         }
 

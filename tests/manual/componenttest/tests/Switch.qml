@@ -40,6 +40,7 @@
 
 import QtQuick 1.1
 import com.nokia.symbian 1.1
+import "../components"
 
 Column {
     anchors.fill: parent
@@ -82,11 +83,9 @@ Column {
             border.color: "blue"
         }
 
-        Text {
+        Label {
             text: "switch2"
             anchors { left: implSizeRect.right; leftMargin: 10; verticalCenter: switch2.verticalCenter }
-            font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
-            color: platformStyle.colorNormalLight
         }
     }
 
@@ -97,11 +96,9 @@ Column {
             objectName: "switch3"
             enabled: switch2.checked
         }
-        Text {
+        Label {
             text: switch3.checked ? "On" : "Off"
             anchors.verticalCenter: switch3.verticalCenter
-            font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
-            color: platformStyle.colorNormalLight
         }
     }
 }

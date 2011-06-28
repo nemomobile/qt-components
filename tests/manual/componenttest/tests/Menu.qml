@@ -40,6 +40,7 @@
 
 import QtQuick 1.1
 import com.nokia.symbian 1.1
+import "../components"
 
 Item {
     Menu {
@@ -94,15 +95,11 @@ Item {
         anchors { top: menuButton.bottom; topMargin: 20 }
         x: 50
 
-        Text {
-            font { bold: true; pixelSize: 14 }
-            color: "white"
+        Label {
             text: "Signal: "
         }
-        Text {
+        Label {
             id: signalLabel
-            font { bold: true; pixelSize: 14 }
-            color: "white"
         }
     }
 

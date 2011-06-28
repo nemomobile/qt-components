@@ -41,6 +41,7 @@
 import QtQuick 1.1
 import com.nokia.symbian 1.1
 import Qt.labs.components 1.1
+import "../components"
 
 Item {
     id: toolButtonTest
@@ -127,14 +128,11 @@ Item {
             property int labelPadding: 10
             height: privateStyle.fontHeight(selectImageLabel.font) + 2 * labelPadding
             width: privateStyle.textWidth(selectImageLabel.text, selectImageLabel.font) + 2 * labelPadding
-            Text {
+            Label {
                 id: selectImageLabel
                 anchors.fill: parent
                 anchors.margins: parent.labelPadding
                 text: "Select image:"
-                color: platformStyle.colorNormalLight
-                font.family: platformStyle.fontFamilyRegular
-                font.pixelSize: platformStyle.fontSizeMedium
             }
         }
 

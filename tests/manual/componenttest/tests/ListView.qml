@@ -41,6 +41,7 @@
 import QtQuick 1.1
 import com.nokia.symbian 1.1
 import Qt.labs.components 1.1
+import "../components"
 
 Item {
     id: root
@@ -82,12 +83,9 @@ Item {
             LayoutMirroring.enabled: false
             LayoutMirroring.childrenInherit: true
 
-            Text {
-                font { bold: true; pixelSize: 16 }
-                color: "white"
+            Label {
                 anchors { left: parent.left; leftMargin: 10; verticalCenter: parent.verticalCenter }
                 text: "Current item: " + listView.currentIndex
-                horizontalAlignment: Text.AlignLeft
             }
 
             Button {
@@ -157,13 +155,9 @@ Item {
     Dialog {
         id: notificationDialog
         property string notificationText: ""
-        title: Text {
+        title: Label {
             text: "Item clicked"
-            font { bold: true; pixelSize: 16 }
-            color: "white"
             anchors.fill: parent
-            horizontalAlignment: Text.AlignLeft
-            verticalAlignment: Text.AlignVCenter
         }
         buttons: Button {
             text: "Ok"
@@ -182,13 +176,9 @@ Item {
 
     Dialog {
         id: createItemDialog
-        title: Text {
+        title: Label {
             text: "Create new list item"
-            font.pixelSize: platformStyle.fontSizeMedium
-            color: platformStyle.colorNormalLight
             anchors.fill: parent
-            horizontalAlignment: Text.AlignLeft
-            verticalAlignment: Text.AlignVCenter
         }
         buttons: Row {
             height: 60
@@ -220,14 +210,10 @@ Item {
                 spacing: platformStyle.paddingSmall
                 property int cellWidth: (createItemContainer.width / 2) - spacing
 
-                Text {
+                Label {
                     id: titleLabel
-                    color: platformStyle.colorNormalLight
-                    font.family: platformStyle.fontFamilyRegular
-                    font.pixelSize: platformStyle.fontSizeMedium
                     text: "Title:"
                     width: createItemGrid.cellWidth
-                    horizontalAlignment: Text.AlignLeft
                 }
 
                 TextField {
@@ -236,14 +222,10 @@ Item {
                     width: createItemGrid.cellWidth
                 }
 
-                Text {
+                Label {
                     id: subTitleLabel
-                    color: platformStyle.colorNormalLight
-                    font.family: platformStyle.fontFamilyRegular
-                    font.pixelSize: platformStyle.fontSizeMedium
                     text: "Subtitle:"
                     width: createItemGrid.cellWidth
-                    horizontalAlignment: Text.AlignLeft
                 }
 
                 TextField {
@@ -252,14 +234,10 @@ Item {
                     width: createItemGrid.cellWidth
                 }
 
-                Text {
+                Label {
                     id: imageSizeLabel
-                    color: platformStyle.colorNormalLight
-                    font.family: platformStyle.fontFamilyRegular
-                    font.pixelSize: platformStyle.fontSizeMedium
                     text: "Image size:"
                     width: createItemGrid.cellWidth
-                    horizontalAlignment: Text.AlignLeft
                 }
 
                 Column {

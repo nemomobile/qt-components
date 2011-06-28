@@ -41,6 +41,7 @@
 import QtQuick 1.1
 import com.nokia.symbian 1.1
 import "../TestUtils.js" as Utils
+import "../components"
 
 Item {
     id: root
@@ -117,8 +118,8 @@ Item {
             Component.onCompleted: Utils.setItemTreeInversion(contentColumn, root.platformInverted)
             Row {
                 spacing: parent.spacing / 2
-                Text { color: "white"; font.pixelSize: 15; text: "depth: [ " + rootPageStack.depth + " ]" }
-                Text { color: "white"; font.pixelSize: 15; text: "|  page: [ " + currentPageName + " ]" }
+                Label { text: "depth: [ " + rootPageStack.depth + " ]" }
+                Label { text: "|  page: [ " + currentPageName + " ]" }
             }
 
             Rectangle { color: "blue"; height: 40; width: parent.width; opacity: rootPageStack.busy ? 1 : 0.1 }

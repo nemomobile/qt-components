@@ -42,6 +42,7 @@ import QtQuick 1.1
 import com.nokia.symbian 1.1
 import Qt.labs.components 1.1
 import com.nokia.extras 1.1
+import "../components"
 
 FocusScope {
     id: root
@@ -53,6 +54,10 @@ FocusScope {
     focus: true
 
     property bool platformInverted: false
+    property color textColor: platformInverted ? platformStyle.colorNormalLightInverted
+                                               : platformStyle.colorNormalLight
+    property color headingColor: platformInverted ? platformStyle.colorNormalMidInverted
+                                                  : platformStyle.colorNormalMid
     property int verticalPadding: Math.max((sectionHeight - itemCellHeight - headingHeight) / 2, 0)
     property real sectionHeight: height / 4
     property int itemCellHeight: privateStyle.buttonSize
@@ -69,7 +74,7 @@ FocusScope {
         Rectangle {
             visible: GridView.view.activeFocus
             border {color: "steelblue"; width: 5}
-            color: "#00000000"; radius: 5
+            color: "transparent"; radius: 5
             z: 5
         }
     }
@@ -107,7 +112,7 @@ FocusScope {
         height: root.headingHeight
         font.pixelSize: platformStyle.fontSizeSmall
         font.family: platformStyle.fontFamilyRegular
-        color: platformStyle.colorNormalMid
+        color: root.headingColor
         text: "CheckBoxes"
     }
 
@@ -159,14 +164,11 @@ FocusScope {
                         info.open()
                     }
                 }
-                Text {
+                Label {
                     width: parent.width - switchItem.width
                     height: parent.height
-                    verticalAlignment: Text.AlignVCenter
+                    platformInverted: root.platformInverted
                     text: title
-                    color: platformStyle.colorNormalLight
-                    font.pixelSize: platformStyle.fontSizeMedium
-                    font.family: platformStyle.fontFamilyRegular
                 }
             }
         }
@@ -178,7 +180,7 @@ FocusScope {
         height: root.headingHeight
         font.pixelSize: platformStyle.fontSizeSmall
         font.family: platformStyle.fontFamilyRegular
-        color: platformStyle.colorNormalMid
+        color: root.headingColor
         text: "Switches"
     }
 
@@ -216,7 +218,6 @@ FocusScope {
         RadioButton {
             objectName: objectName
             width: radioButtons.cellWidth; height: radioButtons.cellHeight
-
             platformExclusiveGroup: group
             text: title
             platformInverted: root.platformInverted
@@ -235,7 +236,7 @@ FocusScope {
         height: root.headingHeight
         font.pixelSize: platformStyle.fontSizeSmall
         font.family: platformStyle.fontFamilyRegular
-        color: platformStyle.colorNormalMid
+        color: root.headingColor
         text: "RadioButtons"
     }
 
@@ -299,7 +300,7 @@ FocusScope {
         height: root.headingHeight
         font.pixelSize: platformStyle.fontSizeSmall
         font.family: platformStyle.fontFamilyRegular
-        color: platformStyle.colorNormalMid
+        color: root.headingColor
         text: "Buttons"
     }
 

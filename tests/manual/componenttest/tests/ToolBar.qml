@@ -42,6 +42,7 @@ import QtQuick 1.1
 import com.nokia.symbian 1.1
 import Qt.labs.components 1.1
 import "../TestUtils.js" as Utils
+import "../components"
 
 Item {
     id: root
@@ -165,11 +166,10 @@ Item {
                     }
                 }
                 ListHeading {
-                    Text {
+                    Label {
                         text: "General";
                         anchors { left: parent.left; leftMargin: platformStyle.paddingMedium; verticalCenter: parent.verticalCenter }
-                        color: platformStyle.colorNormalLight
-                        font { pixelSize: Math.round(platformStyle.fontSizeSmall * 3 / 4); family: platformStyle.fontFamilyRegular }
+                        font.pixelSize: Math.round(platformStyle.fontSizeSmall * 3 / 4)
                     }
                 }
                 Flow {
@@ -187,11 +187,10 @@ Item {
                     Button { text: "4Switch"; onClicked: internal.createToolBarLayout(toolBarLayout1c) }
                 }
                 ListHeading {
-                    Text {
+                    Label {
                         text: "ToolButton > Text"
                         anchors { left: parent.left; leftMargin: platformStyle.paddingMedium; verticalCenter: parent.verticalCenter }
-                        color: platformStyle.colorNormalLight
-                        font { pixelSize: Math.round(platformStyle.fontSizeSmall * 3 / 4); family: platformStyle.fontFamilyRegular }
+                        font.pixelSize: Math.round(platformStyle.fontSizeSmall * 3 / 4)
                     }
                 }
                 Flow {
@@ -206,11 +205,10 @@ Item {
                     Button { text: "2TB_T+M"; onClicked: internal.createToolBarLayout(toolBarLayout3c) }
                 }
                 ListHeading {
-                    Text {
+                    Label {
                         text: "ButtonRow > ToolButton > Text"
                         anchors { left: parent.left; leftMargin: platformStyle.paddingMedium; verticalCenter: parent.verticalCenter }
-                        color: platformStyle.colorNormalLight
-                        font { pixelSize: Math.round(platformStyle.fontSizeSmall * 3 / 4); family: platformStyle.fontFamilyRegular }
+                        font.pixelSize: Math.round(platformStyle.fontSizeSmall * 3 / 4)
                     }
                 }
                 Flow {
@@ -228,11 +226,10 @@ Item {
                     Button { text: "B+BR(3TB_T)+M"; onClicked: internal.createToolBarLayout(toolBarLayout15c) }
                 }
                 ListHeading {
-                    Text {
+                    Label {
                         text: "ToolButton  > Icon"
                         anchors { left: parent.left; leftMargin: platformStyle.paddingMedium; verticalCenter: parent.verticalCenter }
-                        color: platformStyle.colorNormalLight
-                        font { pixelSize: Math.round(platformStyle.fontSizeSmall * 3 / 4); family: platformStyle.fontFamilyRegular }
+                        font.pixelSize: Math.round(platformStyle.fontSizeSmall * 3 / 4)
                     }
                 }
                 Flow {
@@ -246,11 +243,10 @@ Item {
                     Button { text: "B+5TB_I+M"; onClicked: internal.createToolBarLayout(toolBarLayout10) }
                 }
                 ListHeading {
-                    Text {
+                    Label {
                         text: "ButtonRow > ToolButton > Icon"
                         anchors { left: parent.left; leftMargin: platformStyle.paddingMedium; verticalCenter: parent.verticalCenter }
-                        color: platformStyle.colorNormalLight
-                        font { pixelSize: Math.round(platformStyle.fontSizeSmall * 3 / 4); family: platformStyle.fontFamilyRegular }
+                        font.pixelSize: Math.round(platformStyle.fontSizeSmall * 3 / 4)
                     }
                 }
                 Flow {
@@ -278,9 +274,8 @@ Item {
         id: secondPage
         tools: bar2
         Column {
-            Text {
+            Label {
                 text: "Page2\n click next to go to \nthird page and back to return to first"
-                color: "white"
             }
         }
         ToolBar {
@@ -306,9 +301,8 @@ Item {
     Page {
         id: thirdPage
         Column {
-            Text {
+            Label {
                 text: "Page3\n no toolbar"
-                color: "white"
             }
             Button {
                 text: "back"
@@ -482,11 +476,6 @@ Item {
         id: allTextPageComponent
 
         Item {
-            Rectangle {
-                anchors.fill: parent
-                color: platformStyle.colorNormalMid
-            }
-
             Flickable {
                 anchors.fill: parent
                 contentWidth: parent.width; contentHeight: allTextColumn.height
@@ -529,10 +518,6 @@ Item {
         id: allIconPageComponent
 
         Item {
-            Rectangle {
-                anchors.fill: parent
-                color: platformStyle.colorNormalMid
-            }
             Flickable {
                 anchors.fill: parent
                 contentWidth: parent.width; contentHeight: allIconColumn.height

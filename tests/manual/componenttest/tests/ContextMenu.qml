@@ -40,6 +40,7 @@
 
 import QtQuick 1.1
 import com.nokia.symbian 1.1
+import "../components"
 
 Item {
     ContextMenu {
@@ -73,10 +74,10 @@ Item {
         width: 200
         height: 100
 
-        Text {
+        Label {
             text: "Press and hold here"
             anchors.centerIn: parent
-            font { bold: true; pixelSize: 14 }
+            color: "black"
         }
 
         MouseArea {
@@ -96,10 +97,10 @@ Item {
         width: 200
         height: 100
 
-        Text {
+        Label {
             text: "Press and hold here"
             anchors.centerIn: parent
-            font { bold: true; pixelSize: 14 }
+            color: "black"
         }
 
         MouseArea {
@@ -123,17 +124,13 @@ Item {
         anchors { top: triggerArea2.bottom; topMargin: 20 }
         x: 50
 
-        Text {
-            font { bold: true; pixelSize: 14 }
-            color: "white"
+        Label {
             text: "Signal: "
         }
 
-        Text {
+        Label {
             id: signalLabel
             objectName: "signalLabel"
-            font { bold: true; pixelSize: 14 }
-            color: "white"
         }
     }
 }

@@ -40,6 +40,7 @@
 
 import QtQuick 1.1
 import com.nokia.symbian 1.1
+import "../components"
 
 Item {
     id: root
@@ -83,11 +84,9 @@ Item {
         onClicked: queryDialog.open()
     }
 
-    Text {
+    Label {
         id: text
-        color: "white"
         anchors { top: button.bottom; topMargin: 20; horizontalCenter: parent.horizontalCenter }
-        font.pixelSize: 30
     }
 
     Slider {

@@ -41,6 +41,7 @@
 import QtQuick 1.1
 import com.nokia.symbian 1.1
 import Settings 1.0
+import "../components"
 
 Item {
     id: root
@@ -185,11 +186,9 @@ Item {
                 }
             }
 
-            Text {
+            Label {
                 width: parent.width
-                horizontalAlignment: Text.AlignLeft
-                color: platformStyle.colorNormalLight
-                font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeSmall * 2 / 3 }
+                font.pixelSize: platformStyle.fontSizeSmall * 2 / 3
                 text: "Indicator size"
             }
 
@@ -209,11 +208,9 @@ Item {
                 }
             }
 
-            Text {
+            Label {
                 width: parent.width
-                horizontalAlignment: Text.AlignLeft
-                color: platformStyle.colorNormalLight
-                font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeSmall * 2 / 3 }
+                font.pixelSize: platformStyle.fontSizeSmall * 2 / 3
                 text: "Indicator padding"
             }
 
@@ -230,11 +227,9 @@ Item {
                 onValueChanged: indicators.indicatorPadding = value
             }
 
-            Text {
+            Label {
                 width: parent.width
-                horizontalAlignment: Text.AlignLeft
-                color: platformStyle.colorNormalLight
-                font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeSmall * 2 / 3 }
+                font.pixelSize: platformStyle.fontSizeSmall * 2 / 3
                 text: "Max indicator count"
             }
 
@@ -261,7 +256,8 @@ Item {
                 Component.onCompleted: clicked()
 
                 onClicked: {
-                    indicators.indicatorColor = platformStyle.colorNormalLight
+                    indicators.indicatorColor = root.platformInverted ? platformStyle.colorNormalLightInverted
+                                                                      : platformStyle.colorNormalLight
                     indicatorSizeSetting.value = Math.round(privateStyle.statusBarHeight * 18 / 26)
                     indicatorPaddingSetting.value = Math.round(platformStyle.paddingSmall / 4)
                     indicatorMaxCountSetting.value = 3

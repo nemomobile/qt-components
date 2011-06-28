@@ -41,6 +41,7 @@
 import QtQuick 1.1
 import com.nokia.symbian 1.1
 import "../TestUtils.js" as Utils
+import "../components"
 
 Item {
     id: root
@@ -92,15 +93,12 @@ Item {
 
                 Row {
                     spacing: 5
-                    Text { color: "white"; font.pointSize: 10; text: "depth: [ " + rootPageStack.depth + " ]" }
-                    Text { color: "white"; font.pointSize: 10; text: "| page: [ " + testPage.title + " ]" }
+                    Label { text: "depth: [ " + rootPageStack.depth + " ]" }
+                    Label { text: "| page: [ " + testPage.title + " ]" }
                 }
 
-                Text {
-                    color: "white"
-                    font.pointSize: 12
+                Label {
                     text: "Orientation Settings"
-                    font.bold: true
                 }
 
                 Row {

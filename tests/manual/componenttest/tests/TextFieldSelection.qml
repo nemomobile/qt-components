@@ -40,6 +40,7 @@
 
 import QtQuick 1.1
 import com.nokia.symbian 1.1
+import "../components"
 
 Item {
     id: root
@@ -111,9 +112,8 @@ Item {
             stepSize: 1; valueIndicatorVisible: true; anchors.margins: privy.margin
             onValueChanged: if (pressed) textField.select(start.value, end.value)
 
-            Text {
+            Label {
                 text: "Selection start"
-                color: "white"
                 font { pointSize: 5; bold: true }
                 anchors { horizontalCenter: parent.horizontalCenter; top: parent.top }
             }
@@ -126,9 +126,8 @@ Item {
             stepSize: 1; valueIndicatorVisible: true; anchors.margins: privy.margin
             onValueChanged: if (pressed) textField.select(start.value, end.value)
 
-            Text {
+            Label {
                 text: "Selection end"
-                color: "white"
                 font { pointSize: 5; bold: true }
                 anchors { horizontalCenter: parent.horizontalCenter; top: parent.top }
             }
@@ -149,9 +148,8 @@ Item {
         value: textField.cursorPosition
         onValueChanged: if (pressed) textField.cursorPosition = value
 
-        Text {
+        Label {
             text: "Cursor position"
-            color: "white"
             font { pointSize: 5; bold: true }
             anchors { horizontalCenter: parent.horizontalCenter; top: parent.top }
         }

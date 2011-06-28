@@ -40,6 +40,7 @@
 
 import QtQuick 1.1
 import com.nokia.symbian 1.1
+import "../components"
 
 Item {
     id: root
@@ -105,11 +106,10 @@ Item {
             anchors.left: parent.left
             spacing: 10
 
-            Text {
+            Label {
                 anchors.left: parent.left
                 id: text1
                 text: "TextButtons"
-                color: "white"
             }
 
             ButtonColumn {
@@ -160,11 +160,10 @@ Item {
             anchors.left: col1.right
             spacing: 10
 
-            Text {
+            Label {
                 anchors.left: parent.left
                 id: text2
                 text: "IconButtons"
-                color: "white"
             }
 
             ButtonColumn {
@@ -207,11 +206,10 @@ Item {
             anchors.left: col2.right
             spacing: 10
 
-            Text {
+            Label {
                 anchors.left: parent.left
                 id: text3
                 text: "Dyn.Buttons"
-                color: "white"
             }
 
             Row {
@@ -260,11 +258,10 @@ Item {
             anchors.left: parent.left
             spacing: 10
 
-            Text {
+            Label {
                 id: text4
                 anchors.left: parent.left
                 text: "CheckBoxes"
-                color: "white"
             }
 
             ButtonColumn {
@@ -318,11 +315,10 @@ Item {
             anchors.left: parent.left
             spacing: 10
 
-            Text {
+            Label {
                 id: text5
                 anchors.left: parent.left
                 text: "RadioButtons"
-                color: "white"
             }
 
             ButtonColumn {
@@ -379,10 +375,9 @@ Item {
             spacing: 10
             anchors.left: parent.left
 
-            Text {
+            Label {
                 id: text6
                 anchors.left: parent.left
-                color:  "white"
                 text: "ToolB."
             }
 
@@ -429,10 +424,9 @@ Item {
             spacing: 10
             anchors.left: toolBtnCol1.right
 
-            Text {
+            Label {
                 id: text7
                 anchors.left: parent.left
-                color:  "white"
                 text: "ToolB. with icons"
             }
 
@@ -471,11 +465,10 @@ Item {
             anchors.left: toolBtnCol2.right
             spacing: 10
 
-            Text {
+            Label {
                 id: text8
                 anchors.left: parent.left
                 text: "Dyn.TB"
-                color: "white"
             }
 
             Row {
