@@ -55,6 +55,7 @@ OTHER_FILES += \
     TestUtils.js \
     ../shared/MemoryDisplay.qml \
     components/FontSelectionDialog.qml \
+    components/Label.qml \
     components/TextSettings.qml \
     components/TextSettingsModel.qml \
     tests/BusyIndicator.qml \
