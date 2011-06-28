@@ -192,11 +192,8 @@ CommonDialog {
         property variant initialised: false
 
         function initializeDataModels() {
-            if (root.hourMode == DateTime.TwelveHours) {
-                hourList.append({"value" : 12 + ""});
-                for (var i = 1; i < 12; ++i)
-                    hourList.append({"value" : i + ""});
-            }
+            // hourList is populated in onHourModeChanged which is always
+            // called on hourMode property declaration
             for (var i = 0; i < 60; ++i) {
                 minuteList.append({"value" : (i < 10 ? "0" : "") + i });
                 secondList.append({"value" : (i < 10 ? "0" : "") + i });
