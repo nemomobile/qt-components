@@ -45,6 +45,9 @@ Item {
     id: root
 
     property alias text: textArea.text
+
+    // Symbian specific API
+    property bool platformInverted: false
     property bool platformSubItemIndicator: false
 
     signal clicked
@@ -65,16 +68,19 @@ Item {
 
         function textColor() {
             if (activeFocus && symbian.listInteractionMode == Symbian.KeyNavigation)
-                return platformStyle.colorHighlighted
+                return root.platformInverted ? platformStyle.colorHighlightedInverted
+                                             : platformStyle.colorHighlighted
             else if (mouseArea.pressed && mouseArea.containsMouse)
-                return platformStyle.colorPressed
+                return root.platformInverted ? platformStyle.colorPressedInverted
+                                             : platformStyle.colorPressed
             else
-                return platformStyle.colorNormalLight
+                return root.platformInverted ? platformStyle.colorNormalLightInverted
+                                             : platformStyle.colorNormalLight
         }
     }
 
     BorderImage {
-        source: privateStyle.imagePath("qtg_fr_list_" + internal.bg_postfix())
+        source: privateStyle.imagePath("qtg_fr_list_" + internal.bg_postfix(), root.platformInverted)
         border { left: 20; top: 20; right: 20; bottom: 20 }
         anchors.fill: parent
     }
@@ -108,7 +114,7 @@ Item {
         id: subItemIcon
 
         Image {
-            source: privateStyle.imagePath("qtg_graf_drill_down_indicator.svg")
+            source: privateStyle.imagePath("qtg_graf_drill_down_indicator", root.platformInverted)
             sourceSize.width: platformStyle.graphicSizeSmall
             sourceSize.height: platformStyle.graphicSizeSmall
             mirror: LayoutMirroring.enabled

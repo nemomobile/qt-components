@@ -120,17 +120,30 @@ Window {
         Menu {
             id: theMenu
 
+            platformInverted: root.childrenInverted
+
             content: MenuLayout {
                 MenuItem {
                     text: column.enabled ? "Disable" : "Enable"
+                    platformInverted: root.childrenInverted
                     onClicked: column.enabled = !column.enabled
                 }
                 MenuItem {
                     text: root.childrenInverted ? "Revert components" : "Invert components"
+                    platformInverted: root.childrenInverted
                     onClicked: root.childrenInverted = !root.childrenInverted
                 }
-                MenuItem { text: "Quit"; onClicked: Qt.quit() }
-                MenuItem { text: "Set layout dir"; platformSubItemIndicator: true; onClicked: layoutDirectionSubMenu.open()}
+                MenuItem {
+                    text: "Set layout dir"
+                    platformSubItemIndicator: true
+                    platformInverted: root.childrenInverted
+                    onClicked: layoutDirectionSubMenu.open()
+                }
+                MenuItem {
+                    text: "Quit"
+                    platformInverted: root.childrenInverted
+                    onClicked: Qt.quit()
+                }
             }
         }
     }

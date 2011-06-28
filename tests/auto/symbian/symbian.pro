@@ -5,6 +5,7 @@ SUBDIRS += \
     busyindicator \
     button \
     checkbox \
+    contextmenu \
     declarativeicon \
     declarativeimplicitsizeitem \
     declarativescreen \
@@ -16,6 +17,8 @@ SUBDIRS += \
     listheading \
     listitem \
     listitemtext \
+    menu \
+    menuitem \
     networkindicator \
     page \
     pagestack \

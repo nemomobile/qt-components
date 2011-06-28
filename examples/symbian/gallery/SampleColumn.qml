@@ -366,11 +366,28 @@ Column {
     Component {
         id: contextMenuComponent
         ContextMenu {
+            platformInverted: column.childrenInverted
             content: MenuLayout {
-                MenuItem { text: "White"; onClicked: { contentMenuButton.parent.color = "White" } }
-                MenuItem { text: "Red"; onClicked: { contentMenuButton.parent.color = "Red" } }
-                MenuItem { text: "LightBlue"; onClicked: { contentMenuButton.parent.color = "LightBlue" } }
-                MenuItem { text: "LightGreen"; onClicked: { contentMenuButton.parent.color = "LightGreen" } }
+                MenuItem {
+                    text: "White"
+                    platformInverted: column.childrenInverted
+                    onClicked: contentMenuButton.parent.color = "White"
+                }
+                MenuItem {
+                    text: "Red"
+                    platformInverted: column.childrenInverted
+                    onClicked: contentMenuButton.parent.color = "Red"
+                }
+                MenuItem {
+                    text: "LightBlue"
+                    platformInverted: column.childrenInverted
+                    onClicked: contentMenuButton.parent.color = "LightBlue"
+                }
+                MenuItem {
+                    text: "LightGreen"
+                    platformInverted: column.childrenInverted
+                    onClicked: contentMenuButton.parent.color = "LightGreen"
+                }
             }
         }
     }

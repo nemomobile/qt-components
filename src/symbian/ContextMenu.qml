@@ -48,6 +48,9 @@ Item {
     property Item visualParent: null
     property alias status: popup.status
 
+    // Symbian specific API
+    property bool platformInverted: false
+
     function open() {
         popup.open()
     }
@@ -74,6 +77,7 @@ Item {
         enabled: status == DialogStatus.Open
         width: root.width
         height: menu.height
+        platformInverted: root.platformInverted
 
         onFaderClicked: {
             privateStyle.play(Symbian.PopupClose)
@@ -84,6 +88,7 @@ Item {
             id: menu
             containingPopup: popup
             width: parent.width
+            platformInverted: root.platformInverted
             onItemClicked: popup.close()
         }
 

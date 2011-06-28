@@ -46,6 +46,7 @@ Item {
 
     property alias content: contentArea.children
     property Popup containingPopup: null
+    property bool platformInverted: false
 
     signal itemClicked()
 
@@ -60,7 +61,8 @@ Item {
 
     BorderImage {
         source: containingPopup.objectName == "OptionsMenu"
-            ? privateStyle.imagePath("qtg_fr_popup_options") : privateStyle.imagePath("qtg_fr_popup") 
+                ? privateStyle.imagePath("qtg_fr_popup_options", root.platformInverted)
+                : privateStyle.imagePath("qtg_fr_popup", root.platformInverted)
         border { left: 20; top: 20; right: 20; bottom: 20 }
         anchors.fill: parent
     }
@@ -160,6 +162,7 @@ Item {
                 top: flickableArea.top
                 right: flickableArea.right
             }
+            platformInverted: root.platformInverted
         }
     }
 
