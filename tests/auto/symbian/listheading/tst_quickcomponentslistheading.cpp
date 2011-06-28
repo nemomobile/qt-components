@@ -49,7 +49,8 @@ class tst_quickcomponentslistheading : public QObject
 
 private slots:
     void initTestCase();
-    void validateProperties();
+    void defaultPropertyValues();
+    void properties();
 
 private:
     QObject *m_componentObject;
@@ -62,10 +63,19 @@ void tst_quickcomponentslistheading::initTestCase()
     QVERIFY2(m_componentObject, qPrintable(errors));
 }
 
-void tst_quickcomponentslistheading::validateProperties()
+void tst_quickcomponentslistheading::defaultPropertyValues()
 {
-    // paddingItem
     QVERIFY(m_componentObject->property("paddingItem").isValid());
+
+    QVERIFY(m_componentObject->property("platformInverted").isValid());
+    QCOMPARE(m_componentObject->property("platformInverted").toBool(), false);
+}
+
+
+void tst_quickcomponentslistheading::properties()
+{
+    QVERIFY(m_componentObject->setProperty("platformInverted", true));
+    QCOMPARE(m_componentObject->property("platformInverted").toBool(), true);
 }
 
 QTEST_MAIN(tst_quickcomponentslistheading)

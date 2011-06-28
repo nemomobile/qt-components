@@ -44,12 +44,13 @@ import "." 1.1
 Item {
     id: root
     property alias paddingItem: paddingItem // Read-only
+    property bool platformInverted: false
 
     implicitWidth: ListView.view ? ListView.view.width : screen.width
     implicitHeight: platformStyle.graphicSizeSmall
 
     BorderImage {
-        source: privateStyle.imagePath("qtg_fr_list_heading_normal")
+        source: privateStyle.imagePath("qtg_fr_list_heading_normal", root.platformInverted)
         border { left: 28; top: 0; right: 28; bottom: 0 }
         smooth: true
         anchors.fill: parent

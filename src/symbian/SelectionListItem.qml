@@ -45,11 +45,12 @@ ListItem {
     id: root
     property string title: ""
     property string subTitle: ""
+
     implicitHeight: background.height + 2 * platformStyle.paddingLarge
 
     onModeChanged: {
         if (root.mode == "pressed") {
-            pressed.source = privateStyle.imagePath("qtg_fr_choice_list_pressed")
+            pressed.source = privateStyle.imagePath("qtg_fr_choice_list_pressed", root.platformInverted)
             pressed.opacity = 1
         } else {
             releasedEffect.restart()
@@ -72,7 +73,8 @@ ListItem {
             right: platformStyle.borderSizeMedium
             bottom: platformStyle.borderSizeMedium
         }
-        source: privateStyle.imagePath("qtg_fr_choice_list_") + internal.getBackground()
+        source: privateStyle.imagePath("qtg_fr_choice_list_" + internal.getBackground(),
+                                       root.platformInverted)
 
         BorderImage {
             id: pressed
@@ -109,8 +111,10 @@ ListItem {
         }
         Image {
             id: indicator
-            source: root.mode == "disabled" ? privateStyle.imagePath("qtg_graf_choice_list_indicator_disabled") :
-                                              privateStyle.imagePath("qtg_graf_choice_list_indicator")
+            source: root.mode == "disabled" ? privateStyle.imagePath("qtg_graf_choice_list_indicator_disabled",
+                                                                     root.platformInverted)
+                                            : privateStyle.imagePath("qtg_graf_choice_list_indicator",
+                                                                     root.platformInverted)
             sourceSize.width: platformStyle.graphicSizeSmall
             sourceSize.height: platformStyle.graphicSizeSmall
             anchors {
@@ -127,6 +131,7 @@ ListItem {
             mode: root.mode
             role: "SelectionTitle"
             text: root.title
+            platformInverted: root.platformInverted
         }
     }
    Component {
@@ -135,6 +140,7 @@ ListItem {
             mode: root.mode
             role: "SelectionSubTitle"
             text: root.subTitle
+            platformInverted: root.platformInverted
         }
     }
 

@@ -397,10 +397,12 @@ Column {
         id: listHeading
         ListHeading {
             width: column.width
+            platformInverted: column.childrenInverted
             ListItemText {
                 anchors.fill: parent.paddingItem
                 role: "Heading"
                 text: "ListHeading"
+                platformInverted: column.childrenInverted
             }
         }
     }
@@ -416,12 +418,14 @@ Column {
                     mode: listItem.mode
                     role: "Title"
                     text: titleText
+                    platformInverted: column.childrenInverted
                 }
                 ListItemText {
                     width: parent.width
                     mode: listItem.mode
                     role: "SubTitle"
                     text: subTitleText
+                    platformInverted: column.childrenInverted
                 }
             }
         }
@@ -438,6 +442,7 @@ Column {
         }
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width - parent.spacing
+        platformInverted: column.childrenInverted
 
         onClicked: {
             if (!selectionDialog)

@@ -91,6 +91,15 @@ void tst_quickcomponentslistitem::validateProperties()
     m_componentObject->setProperty("subItemIndicator", true);
     indicator = m_componentObject->property("subItemIndicator");
     QCOMPARE(indicator.toBool(), true);
+
+    // platformInverted
+    QVariant inverted = m_componentObject->property("platformInverted");
+    QVERIFY(inverted.isValid());
+    QVERIFY(inverted.canConvert(QVariant::Bool));
+    QCOMPARE(inverted.toBool(), false);
+    m_componentObject->setProperty("platformInverted", true);
+    inverted = m_componentObject->property("platformInverted");
+    QCOMPARE(inverted.toBool(), true);
 }
 
 void tst_quickcomponentslistitem::testClickedSignal()

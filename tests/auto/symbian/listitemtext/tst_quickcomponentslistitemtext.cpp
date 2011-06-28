@@ -92,6 +92,15 @@ void tst_quickcomponentslistitemtext::validateProperties()
     m_componentObject->setProperty("text", "My text");
     text = m_componentObject->property("text");
     QCOMPARE(text.toString(), QString("My text"));
+
+    // platformInverted
+    QVariant inverted = m_componentObject->property("platformInverted");
+    QVERIFY(inverted.isValid());
+    QVERIFY(inverted.canConvert(QVariant::Bool));
+    QCOMPARE(inverted.toBool(), false);
+    m_componentObject->setProperty("platformInverted", true);
+    inverted = m_componentObject->property("platformInverted");
+    QCOMPARE(inverted.toBool(), true);
 }
 
 QTEST_MAIN(tst_quickcomponentslistitemtext)

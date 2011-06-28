@@ -44,6 +44,7 @@ Text {
     id: root
     property string mode: "normal"
     property string role: "Title"
+    property bool platformInverted: false
 
     // Also role "Heading" taken into account although not explicitely used in evaluations below
     font {
@@ -64,16 +65,23 @@ Text {
 
         // Performance optmization:
         // Use tertiary operations even though it doesn't look that good
+        property color colorMid: root.platformInverted ? platformStyle.colorNormalMidInverted
+                                                       : platformStyle.colorNormalMid
+        property color colorLight: root.platformInverted ? platformStyle.colorNormalLightInverted
+                                                         : platformStyle.colorNormalLight
         property color normalColor: (root.role == "SelectionSubTitle" || root.role == "SubTitle")
-                                        ? platformStyle.colorNormalMid : platformStyle.colorNormalLight
+                                    ? colorMid : colorLight
 
         function getColor() {
             if (root.mode == "pressed")
-                return platformStyle.colorPressed
+                return root.platformInverted ? platformStyle.colorPressedInverted
+                                             : platformStyle.colorPressed
             else if (root.mode == "highlighted")
-                 return platformStyle.colorHighlighted
+                return root.platformInverted ? platformStyle.colorHighlightedInverted
+                                             : platformStyle.colorHighlighted
             else if (root.mode == "disabled")
-                return platformStyle.colorDisabledLight
+                return root.platformInverted ? platformStyle.colorDisabledLight
+                                             : platformStyle.colorDisabledLight
             else 
                 return normalColor
         }

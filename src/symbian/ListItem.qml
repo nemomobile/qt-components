@@ -48,6 +48,7 @@ Item {
 
     property bool enabled: true
     property bool subItemIndicator: false
+    property bool platformInverted: false
 
     signal clicked
     signal pressAndHold
@@ -92,7 +93,7 @@ Item {
         id: fader
 
         BorderImage {
-            source: privateStyle.imagePath("qtg_fr_list_" + mode)
+            source: privateStyle.imagePath("qtg_fr_list_" + mode, root.platformInverted)
             border {
                 left: platformStyle.borderSizeMedium
                 top: platformStyle.borderSizeMedium
@@ -142,7 +143,7 @@ Item {
         id: subItemIcon
 
         Image {
-            source: privateStyle.imagePath("qtg_graf_drill_down_indicator.svg")
+            source: privateStyle.imagePath("qtg_graf_drill_down_indicator", root.platformInverted)
             mirror: LayoutMirroring.enabled
             sourceSize.width: platformStyle.graphicSizeSmall
             sourceSize.height: platformStyle.graphicSizeSmall
@@ -168,7 +169,8 @@ Item {
                         symbian.listInteractionMode = Symbian.KeyNavigation
                     else
                         if (root.enabled) {
-                            highlight.source = privateStyle.imagePath("qtg_fr_list_pressed")
+                            highlight.source = privateStyle.imagePath("qtg_fr_list_pressed",
+                                                                      root.platformInverted)
                             highlight.opacity = 1
                             releasedEffect.restart()
                             root.clicked()
@@ -297,7 +299,7 @@ Item {
 
         function press() {
             privateStyle.play(Symbian.BasicItem)
-            highlight.source = privateStyle.imagePath("qtg_fr_list_pressed")
+            highlight.source = privateStyle.imagePath("qtg_fr_list_pressed", root.platformInverted)
             highlight.opacity = 1
             if (root.ListView.view)
                 root.ListView.view.currentIndex = index

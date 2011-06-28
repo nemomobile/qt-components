@@ -100,6 +100,15 @@ void tst_quickcomponentsselectionlistitem::validateProperties()
     m_componentObject->setProperty("subTitle", "MySubTitle");
     subTitle = m_componentObject->property("subTitle");
     QCOMPARE(subTitle.toString(), QString("MySubTitle"));
+
+    // platformInverted
+    QVariant inverted = m_componentObject->property("platformInverted");
+    QVERIFY(inverted.isValid());
+    QVERIFY(inverted.canConvert(QVariant::Bool));
+    QCOMPARE(inverted.toBool(), false);
+    m_componentObject->setProperty("platformInverted", true);
+    inverted = m_componentObject->property("platformInverted");
+    QCOMPARE(inverted.toBool(), true);
 }
 
 void tst_quickcomponentsselectionlistitem::testClickedSignal()

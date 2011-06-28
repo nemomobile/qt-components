@@ -46,6 +46,7 @@ Item {
     id: root
     anchors.fill: parent
     property variant imageSizes: ["Undefined", "Tiny", "Small", "Medium", "Large"]
+    property bool platformInverted: false
     Connections {
         target: platformPopupManager
         onPopupStackDepthChanged: if (platformPopupManager.popupStackDepth == 0) listView.forceActiveFocus()
@@ -334,6 +335,7 @@ Item {
             width: listView.width
             enabled: !disabled // State from model
             subItemIndicator: indicator
+            platformInverted: root.platformInverted
 
             Image {
                 id: imageItem
@@ -358,6 +360,7 @@ Item {
                     mode: listItem.mode
                     role: "Title"
                     text: title // Title from model
+                    platformInverted: root.platformInverted
                 }
 
                 ListItemText {
@@ -365,6 +368,7 @@ Item {
                     mode: listItem.mode
                     role: "SubTitle"
                     text: subTitle // SubTitle from model
+                    platformInverted: root.platformInverted
                 }
             }
 
@@ -389,12 +393,14 @@ Item {
         ListHeading {
             id: listHeader
             width: listView.width
+            platformInverted: root.platformInverted
 
             ListItemText {
                 id: txtHeading
                 anchors.fill: listHeader.paddingItem
                 role: "Heading"
                 text: "Test list"
+                platformInverted: root.platformInverted
             }
         }
     }
@@ -405,12 +411,14 @@ Item {
         ListHeading {
             width: listView.width
             id: sectionHeader
+            platformInverted: root.platformInverted
 
             ListItemText {
                 id: txtHeading
                 anchors.fill: sectionHeader.paddingItem
                 role: "Heading"
                 text: "Section: " + section
+                platformInverted: root.platformInverted
             }
         }
     }
