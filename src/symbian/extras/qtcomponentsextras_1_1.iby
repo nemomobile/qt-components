@@ -18,6 +18,7 @@ data=ZRESOURCE\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\Constants.js                 
 data=ZRESOURCE\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\DatePickerDialog.qml                        RESOURCE_FILES_DIR\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\DatePickerDialog.qml
 data=ZRESOURCE\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\InfoBanner.qml                              RESOURCE_FILES_DIR\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\InfoBanner.qml
 data=ZRESOURCE\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\RatingIndicator.qml                         RESOURCE_FILES_DIR\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\RatingIndicator.qml
+data=ZRESOURCE\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\SearchBox.qml                               RESOURCE_FILES_DIR\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\SearchBox.qml
 data=ZRESOURCE\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\TimePickerDialog.qml                        RESOURCE_FILES_DIR\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\TimePickerDialog.qml
 data=ZRESOURCE\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\Tumbler.js                                  RESOURCE_FILES_DIR\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\Tumbler.js
 data=ZRESOURCE\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\Tumbler.qml                                 RESOURCE_FILES_DIR\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\Tumbler.qml

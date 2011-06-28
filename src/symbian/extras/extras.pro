@@ -22,6 +22,7 @@ QML_FILES = \
     DatePickerDialog.qml \
     InfoBanner.qml \
     RatingIndicator.qml \
+    SearchBox.qml \
     TimePickerDialog.qml \
     Tumbler.js \
     Tumbler.qml \
