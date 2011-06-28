@@ -49,6 +49,7 @@ Item {
     property int status: DialogStatus.Closed
     property int animationDuration: 500
     property Item fader
+    property bool platformInverted: false
 
     signal faderClicked
 
@@ -105,6 +106,7 @@ Item {
         id: faderComponent
 
         Fader {
+            platformInverted: root.platformInverted
             onClicked: root.faderClicked()
         }
     }
