@@ -354,6 +354,9 @@
         <file alias="toolbar-refresh_inverse.svg">resources/defaulttheme/graphics/toolbar-refresh_inverse.svg</file>
         <file alias="toolbar-search_inverse.svg">resources/defaulttheme/graphics/toolbar-search_inverse.svg</file>
         <file alias="toolbar-settings_inverse.svg">resources/defaulttheme/graphics/toolbar-settings_inverse.svg</file>
+        <file alias="qtg_toolbar_copy_inverse.svg">resources/defaulttheme/graphics/qtg_toolbar_copy_inverse.svg</file>
+        <file alias="qtg_toolbar_cut_inverse.svg">resources/defaulttheme/graphics/qtg_toolbar_cut_inverse.svg</file>
+        <file alias="qtg_toolbar_paste_inverse.svg">resources/defaulttheme/graphics/qtg_toolbar_paste_inverse.svg</file>
     </qresource>
     <qresource prefix="/params">
         <file alias="colors/default.params">resources/colors/default.params</file>
