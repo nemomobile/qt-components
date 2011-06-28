@@ -1,0 +1,51 @@
+include(compat.qdocconf)
+include(macros.qdocconf)
+include(qt-cpp-ignore.qdocconf)
+include(qt-html-templates.qdocconf)
+include(qt-defines.qdocconf)
+
+project         = qt-components
+description     = "Qt Quick Components for MeeGo Documentation"
+
+#headerdirs =    $Q_COMPONENTS_SOURCE_TREE/src \
+#                $Q_COMPONENTS_SOURCE_TREE/doc/src
+sourcedirs =    $Q_COMPONENTS_SOURCE_TREE/doc/src/common \
+                $Q_COMPONENTS_SOURCE_TREE/doc/src/meego \
+                $Q_COMPONENTS_SOURCE_TREE/doc/src/howtos \
+                $Q_COMPONENTS_SOURCE_TREE/doc/src/examples \
+                $Q_COMPONENTS_SOURCE_TREE/doc/src/extras
+                #$QTSRC/src/declarative
+
+outputdir  =    $Q_COMPONENTS_SOURCE_TREE/doc/html
+outputformats = HTML
+sources.fileextensions = "*.cpp *.doc *.qdoc *.h *.qml"
+examples.fileextensions = "*.cpp *.h *.js *.qml"
+exampledirs =   $Q_COMPONENTS_SOURCE_TREE/doc $Q_COMPONENTS_SOURCE_TREE
+imagedirs =     $Q_COMPONENTS_SOURCE_TREE/doc/src/images $Q_COMPONENTS_SOURCE_TREE/doc/src/templates/images
+
+indexes = $QT_INSTALL_DOCS/html/qt.index
+
+qhp.projects            = QtComponentsMeeGo
+qhp.QtComponentsMeeGo.file             = qtcomponentsmeego.qhp
+qhp.QtComponentsMeeGo.namespace        = com.nokia.qtcomponentsmeego.100
+qhp.QtComponentsMeeGo.virtualFolder    = doc
+qhp.QtComponentsMeeGo.indexTitle       = Qt Quick Components for MeeGo
+qhp.QtComponentsMeeGo.filterAttributes = QtComponents 1.0.0
+qhp.QtComponentsMeeGo.customFilters.QtComponentsMeeGo.name = Qt Quick Components for MeeGo 1.0.0
+qhp.QtComponentsMeeGo.customFilters.QtComponentsMeeGo.filterAttributes = QtComponents 1.0.0
+qhp.QtComponentsMeeGo.extraFiles          = style/narrow.css \
+                                              style/style.css \
+                                              style/style_ie6.css \
+                                              style/style_ie7.css \
+                                              style/style_ie8.css \
+                                              style/superfish.css
+qhp.QtComponentsMeeGo.indexRoot        =
+
+qhp.QtComponentsMeeGo.subprojects = manual
+qhp.QtComponentsMeeGo.subprojects.manual.title = Qt Quick components documentation
+qhp.QtComponentsMeeGo.subprojects.manual.indexTitle = Qt Quick components table of contents
+qhp.QtComponentsMeeGo.subprojects.manual.type = manual
+
+#outputprefixes = QML
+#outputprefixes.QML = qt-components-meego-
+

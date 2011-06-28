@@ -16,8 +16,15 @@ contains(OUTPUT, "-creator") {
     symbian3:{
         QDOCCONF = $${Q_COMPONENTS_SOURCE_TREE}/doc/config/qt-components-symbian.qdocconf
         QDOCCONF_QCH = $$QDOCCONF
+        QHELPFILE = doc/html/qtcomponentssymbian.qhp
+        QCHFILE = doc/qch/qtcomponentssymbian.qch
     }
-    meego:QDOCCONF = $${Q_COMPONENTS_SOURCE_TREE}/doc/src/meego/qt-components.qdocconf
+    meego:{
+        QDOCCONF = $${Q_COMPONENTS_SOURCE_TREE}/doc/config/qt-components-meego.qdocconf
+        QDOCCONF_QCH = $$QDOCCONF
+        QHELPFILE = doc/html/qtcomponentsmeego.qhp
+        QCHFILE = doc/qch/qtcomponentsmeego.qch
+    }
 
 } else {
     QDOC_ONLINE = " "
@@ -25,8 +32,15 @@ contains(OUTPUT, "-creator") {
     symbian3: {
         QDOCCONF = $${Q_COMPONENTS_SOURCE_TREE}/doc/config/qt474/qt-components-symbian-online.qdocconf
         QDOCCONF_QCH = $${Q_COMPONENTS_SOURCE_TREE}/doc/config/qt474/qt-components-symbian.qdocconf
+        QHELPFILE = doc/html/qtcomponentssymbian.qhp
+        QCHFILE = doc/qch/qtcomponentssymbian.qch
     }
-    meego:QDOCCONF = $${Q_COMPONENTS_SOURCE_TREE}/doc/src/meego/qt-components.qdocconf
+    meego: {
+        QDOCCONF = $${Q_COMPONENTS_SOURCE_TREE}/doc/config/qt474/qt-components-meego-online.qdocconf
+        QDOCCONF_QCH = $${Q_COMPONENTS_SOURCE_TREE}/doc/config/qt474/qt-components-meego.qdocconf
+        QHELPFILE = doc/html/qtcomponentsmeego.qhp
+        QCHFILE = doc/qch/qtcomponentsmeego.qch
+    }
 }
 
 
@@ -41,7 +55,7 @@ contains(OUTPUT, "-creator") {
         HTML_DOCUMENTATION =    $$SET_ENV $$QDOC $$QDOC_ONLINE $$QDOCCONF
         QCH_DOCUMENTATION =     ($$SET_ENV $$QDOC $$QDOCCONF_QCH) && \
                                 (cd $${Q_COMPONENTS_SOURCE_TREE}) && \
-                                ($$QHELPGENERATOR doc/html/qtcomponentssymbian.qhp -o doc/qch/qtcomponentssymbian.qch)
+                                ($$QHELPGENERATOR $$QHELPFILE -o doc/qch/qtcomponentssymbian.qch)
 
     } else {
         SET_ENV = set QT_INSTALL_DOCS=$$[QT_INSTALL_DOCS]&& set Q_COMPONENTS_SOURCE_TREE=$${Q_COMPONENTS_SOURCE_TREE}
@@ -52,7 +66,7 @@ contains(OUTPUT, "-creator") {
 
         QCH_DOCUMENTATION =     ($$SET_ENV&& $$QDOC $$QDOCCONF_QCH && \
                         cd $${Q_COMPONENTS_SOURCE_TREE}&& \
-                        $$QHELPGENERATOR doc/html/qtcomponentssymbian.qhp -o doc/qch/qtcomponentssymbian.qch)
+                        $$QHELPGENERATOR $$QHELPFILE -o doc/qch/qtcomponentssymbian.qch)
         QCH_DOCUMENTATION = $$replace(QCH_DOCUMENTATION, /, $$QMAKE_DIR_SEP)
 
     }
