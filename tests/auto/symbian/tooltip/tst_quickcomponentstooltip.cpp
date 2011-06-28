@@ -52,6 +52,7 @@ private slots:
     void font();
     void target();
     void implicitSize();
+    void platformInverted();
 
 private:
     QObject *m_componentObject;
@@ -104,6 +105,14 @@ void tst_quickcomponentstooltip::implicitSize()
 #endif
     //TODO: Add richtext test
     //TODO: Add fontsize test
+}
+
+void tst_quickcomponentstooltip::platformInverted()
+{
+    QVERIFY(m_componentObject->property("platformInverted").isValid());
+    QCOMPARE(m_componentObject->property("platformInverted").toBool(), false);
+    m_componentObject->setProperty("platformInverted", QVariant(true));
+    QCOMPARE(m_componentObject->property("platformInverted").toBool(), true);
 }
 
 QTEST_MAIN(tst_quickcomponentstooltip)

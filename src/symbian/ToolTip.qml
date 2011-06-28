@@ -44,10 +44,11 @@ import "AppManager.js" as AppView
 Item {
     id: root
 
-    //API
+    // Public API
     property alias font: label.font
     property alias text: label.text
     property variant target: null
+    property bool platformInverted: false
 
     implicitWidth: Math.min(privy.maxWidth, (privateStyle.textWidth(text, font) + privy.margin * 2))
     implicitHeight: privateStyle.fontHeight(font) + privy.margin * 2
@@ -112,14 +113,15 @@ Item {
     BorderImage {
         id: frame
         anchors.fill: parent
-        source: privateStyle.imagePath("qtg_fr_popup")
+        source: privateStyle.imagePath("qtg_fr_popup", root.platformInverted)
         border { left: 20; top: 20; right: 20; bottom: 20 }
     }
 
     Text {
        id: label
        clip: true
-       color: platformStyle.colorNormalLight
+       color: root.platformInverted ? platformStyle.colorNormalLightInverted
+                                    : platformStyle.colorNormalLight
        elide: Text.ElideRight
        font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeSmall }
        verticalAlignment: Text.AlignVCenter

@@ -147,6 +147,7 @@ Column {
     Slider {
         anchors.horizontalCenter: parent.horizontalCenter
         value: 50
+        platformInverted: column.childrenInverted
     }
 
     Row {

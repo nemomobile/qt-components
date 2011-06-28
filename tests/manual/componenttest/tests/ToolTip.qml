@@ -43,6 +43,7 @@ import com.nokia.symbian 1.1
 
 Item {
     id: root
+    property bool platformInverted: false
 
     Component {
         id: longText
@@ -50,6 +51,7 @@ Item {
             text: "ToolTip appears. Text is elided if it doesn't fit in the ToolTip."
             objectName: "longText"
             target: topLeft
+            platformInverted: root.platformInverted
         }
     }
 
@@ -59,6 +61,7 @@ Item {
             text: "<b style=color:'steelblue'><i>RichText ToolTip</b><i>"
             objectName: "richText"
             target: topRight
+            platformInverted: root.platformInverted
         }
     }
 

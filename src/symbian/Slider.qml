@@ -60,6 +60,7 @@ Item {
     LayoutMirroring.childrenInherit: true
 
     // Symbian specific
+    property bool platformInverted: false
     signal valueChanged(real value)
     implicitWidth: orientation == Qt.Horizontal ? 150 : privateStyle.menuItemHeight
     implicitHeight: orientation == Qt.Horizontal ? privateStyle.menuItemHeight : 150
@@ -104,7 +105,7 @@ Item {
                     target: track
                     height: privateStyle.sliderThickness
                     width: undefined
-                    source: privateStyle.imagePath("qtg_fr_slider_h_track_normal")
+                    source: privateStyle.imagePath("qtg_fr_slider_h_track_normal", root.platformInverted)
                     border {
                         left: 20
                         right: 20
@@ -134,7 +135,7 @@ Item {
                     target: track
                     height: undefined
                     width: privateStyle.sliderThickness
-                    source: privateStyle.imagePath("qtg_fr_slider_v_track_normal")
+                    source: privateStyle.imagePath("qtg_fr_slider_v_track_normal", root.platformInverted)
                     border {
                         left: 0
                         right: 0
@@ -208,7 +209,7 @@ Item {
                         + (orientation == Qt.Horizontal ? "h" : "v")
                         + "_handle_"
                         + (handleMouseArea.pressed ? "pressed" : "normal")
-                    privateStyle.imagePath(handleIcon)
+                    privateStyle.imagePath(handleIcon, root.platformInverted)
                 }
 
                 onXChanged: valueIndicator.position()
@@ -248,7 +249,10 @@ Item {
 
     Component {
         id: valueIndicatorComponent
-        ToolTip { text: root.valueIndicatorText == "" ? model.value : root.valueIndicatorText }
+        ToolTip {
+            text: root.valueIndicatorText == "" ? model.value : root.valueIndicatorText
+            platformInverted: root.platformInverted
+        }
     }
 
     Loader {

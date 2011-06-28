@@ -28,6 +28,7 @@ SUBDIRS += \
     radiobutton \
     scrollbar \
     selectionlistitem \
+    slider \
     statusbar \
     switch \
     tabbar \
