@@ -40,11 +40,13 @@
 
 import QtQuick 1.1
 import com.nokia.symbian 1.1
+import "../TestUtils.js" as Utils
 
 Item {
     id: root
 
     property Item rootPageStack: pageStack
+    property bool platformInverted: false
 
     function inPortrait() {
         return screen.height > screen.width
@@ -79,6 +81,8 @@ Item {
 
             Component.onCompleted: {
                 title = "Page " + (rootPageStack.depth + 1).toString()
+                // manually set inversion mode for dynamically created item tree
+                Utils.setItemTreeInversion(testPage, root.platformInverted)
             }
 
             Column {

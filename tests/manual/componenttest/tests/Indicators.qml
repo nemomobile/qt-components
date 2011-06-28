@@ -44,6 +44,7 @@ import Settings 1.0
 
 Item {
     id: root
+    property bool platformInverted: false
 
     QtObject {
         id: privy
@@ -163,6 +164,7 @@ Item {
                     SelectionDialog {
                         titleText: "Select color"
                         selectedIndex: 5
+                        platformInverted: root.platformInverted
 
                         model: ListModel {
                             id: colorModel

@@ -45,6 +45,7 @@ import com.nokia.extras 1.1
 Item {
     id: container
 
+    property bool platformInverted: false
     Text {
         id: title
         anchors { top: parent.top; topMargin: platformStyle.paddingLarge }
@@ -128,6 +129,7 @@ Item {
         parent: internal.rootObject()
         visible: false
         z: 500
+        platformInverted: container.platformInverted
         text: "Background button"
     }
 

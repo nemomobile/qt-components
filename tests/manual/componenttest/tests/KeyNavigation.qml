@@ -52,6 +52,7 @@ FocusScope {
     }
     focus: true
 
+    property bool platformInverted: false
     property int verticalPadding: Math.max((sectionHeight - itemCellHeight - headingHeight) / 2, 0)
     property real sectionHeight: height / 4
     property int itemCellHeight: privateStyle.buttonSize
@@ -91,6 +92,7 @@ FocusScope {
             objectName: objectName
             width: checkBoxes.cellWidth; height: checkBoxes.cellHeight
             text: title
+            platformInverted: root.platformInverted
             onClicked: {
                 var statusText = checked ? "on" : "off"
                 info.text = title + " turned " + statusText
@@ -150,6 +152,7 @@ FocusScope {
                     objectName: objectName
                     height: parent.height
                     focus: true
+                    platformInverted: root.platformInverted
                     onClicked: {
                         var statusText = checked ? "on" : "off"
                         info.text = title + " turned " + statusText
@@ -216,6 +219,7 @@ FocusScope {
 
             platformExclusiveGroup: group
             text: title
+            platformInverted: root.platformInverted
             onClicked: {
                 info.text = title + " selected"
                 info.open()
@@ -276,6 +280,7 @@ FocusScope {
             text: title
             checkable: checkableButton
             checked: buttonChecked
+            platformInverted: root.platformInverted
             onClicked: {
                 var statusText = title
                 if (title == "Toggle Button")

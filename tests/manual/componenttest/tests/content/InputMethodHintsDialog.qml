@@ -46,6 +46,7 @@ Dialog {
     id: selectInputMethodHints
     height: parent.height; width: parent.width
     property variant inputMethodHintsFlag : 0
+    property bool platformInverted: false
 
     title: Text {
         text: "InputMethodHints"
@@ -82,10 +83,12 @@ Dialog {
         ListItem {
             id: listItem
             height: listView.height / 7; width: listView.width
+            platformInverted: selectInputMethodHints.platformInverted
 
             ListItemText {
                 id: listText
                 role: "SubTitle"; text: title
+                platformInverted: selectInputMethodHints.platformInverted
                 anchors {
                     left: listItem.paddingItem.left; right:checkBox.left
                     verticalCenter: parent.verticalCenter
@@ -96,6 +99,7 @@ Dialog {
                 id: checkBox
                 checked: selected
                 anchors { right:listItem.paddingItem.right; verticalCenter: parent.verticalCenter }
+                platformInverted: selectInputMethodHints.platformInverted
                 onClicked: {
                     inputMethodHintsFlag ^= flag
                     listView.model.set(index, { "selected": checkBox.checked })
@@ -116,10 +120,12 @@ Dialog {
         ListHeading {
             width: listView.width
             id: sectionHeader
+            platformInverted: selectInputMethodHints.platformInverted
 
             ListItemText {
                 anchors.fill: sectionHeader.padding
                 role: "Heading"; text: section
+                platformInverted: selectInputMethodHints.platformInverted
             }
         }
     }

@@ -40,11 +40,13 @@
 
 import QtQuick 1.1
 import com.nokia.symbian 1.1
+import "../TestUtils.js" as Utils
 
 Item {
     id: root
     property variant contentPages: []
     property int currentIndex: 1
+    property bool platformInverted: false
 
     onContentPagesChanged: {
         if (priv.newItem != null)
@@ -174,7 +176,7 @@ Item {
 
     Component {
         id: tabButtonComponent
-        TabButton {}
+        TabButton {platformInverted: root.platformInverted}
     }
 
     QtObject {
@@ -269,6 +271,7 @@ Item {
                             SelectionDialog {
                                 titleText: "Select TabButton image"
                                 selectedIndex: 0
+                                platformInverted: root.platformInverted
                                 model: ListModel {
                                     ListElement { name: "<none>" }
                                     ListElement { name: "tb_plus.png" }
@@ -320,6 +323,7 @@ Item {
                             SelectionDialog {
                                 titleText: "Select number of tabs"
                                 selectedIndex: 2
+                                platformInverted: root.platformInverted
                                 model: ListModel {
                                     ListElement { name: "0" }
                                     ListElement { name: "1" }
@@ -367,6 +371,8 @@ Item {
                     }
                 }
             }
+
+        Component.onCompleted: Utils.setItemTreeInversion(column, root.platformInverted)
         }
     }
 

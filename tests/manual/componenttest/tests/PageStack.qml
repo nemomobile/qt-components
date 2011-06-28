@@ -40,6 +40,7 @@
 
 import QtQuick 1.1
 import com.nokia.symbian 1.1
+import "../TestUtils.js" as Utils
 
 Item {
     id: root
@@ -47,6 +48,7 @@ Item {
     property variant pages: [page2, page3, page4]
     property string currentPageName: pageStack.currentPage == undefined? "0" : pageStack.currentPage.objectName
     property Item rootPageStack: pageStack
+    property bool platformInverted: false
 
     function inPortrait() {
         return screen.height > screen.width
@@ -104,12 +106,15 @@ Item {
         id: pageContent
 
         Column {
+            id: contentColumn
             x: root.x
             y: root.y
             width: root.width
             height: root.height
             spacing: 10
 
+            // manually set inversion mode for dynamically created item tree
+            Component.onCompleted: Utils.setItemTreeInversion(contentColumn, root.platformInverted)
             Row {
                 spacing: parent.spacing / 2
                 Text { color: "white"; font.pixelSize: 15; text: "depth: [ " + rootPageStack.depth + " ]" }

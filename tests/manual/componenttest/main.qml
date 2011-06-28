@@ -122,8 +122,10 @@ ApplicationWindow {
             flat: true
             iconSource: "qrc:memory_card.svg"
             onClicked: {
-                if (!memoryToolsMenu)
+                if (!memoryToolsMenu) {
                     memoryToolsMenu = memToolsMenuComponent.createObject(mainWindow)
+                    Utils.setItemTreeInversion(memoryToolsMenu, mainWindow.platformInverted)
+                }
                 memoryToolsMenu.open()
             }
         }
