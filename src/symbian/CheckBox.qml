@@ -52,15 +52,25 @@ Item {
 
     property alias text: label.text
 
+    // Symbian specific API
+    property bool platformInverted: false
+
     // Performance optimization:
     // Use value assignment when property changes instead of binding to js function
     onCheckedChanged: { contentIcon.source = internal.iconSource() }
     onPressedChanged: { contentIcon.source = internal.iconSource() }
     onEnabledChanged: { contentIcon.source = internal.iconSource() }
+    onPlatformInvertedChanged: { contentIcon.source = internal.iconSource() }
 
     QtObject {
         id: internal
         objectName: "internal"
+        property color disabledColor: root.platformInverted ? platformStyle.colorDisabledLightInverted
+                                                            : platformStyle.colorDisabledLight
+        property color pressedColor: root.platformInverted ? platformStyle.colorPressedInverted
+                                                           : platformStyle.colorPressed
+        property color normalColor: root.platformInverted ? platformStyle.colorNormalLightInverted
+                                                          : platformStyle.colorNormalLight
 
         function iconSource() {
             var id
@@ -77,7 +87,7 @@ Item {
                 else
                     id = "normal_unselected"
             }
-            return privateStyle.imagePath("qtg_graf_checkbox_" + id)
+            return privateStyle.imagePath("qtg_graf_checkbox_" + id, root.platformInverted)
         }
 
         function toggle() {
@@ -122,7 +132,7 @@ Item {
 
     Image {
         id: contentIcon
-        source: privateStyle.imagePath("qtg_graf_checkbox_normal_unselected");
+        source: privateStyle.imagePath("qtg_graf_checkbox_normal_unselected", root.platformInverted);
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
         sourceSize.width: privateStyle.buttonSize
@@ -139,8 +149,8 @@ Item {
         elide: Text.ElideRight
         horizontalAlignment: Text.AlignLeft
         font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
-        color: root.enabled ? (root.pressed ? platformStyle.colorPressed : platformStyle.colorNormalLight)
-                            : platformStyle.colorDisabledLight
+        color: root.enabled ? (root.pressed ? internal.pressedColor : internal.normalColor)
+                            : internal.disabledColor
     }
 
     MouseArea {

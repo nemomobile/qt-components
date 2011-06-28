@@ -88,6 +88,7 @@ void tst_checkbox::testValid()
     QVERIFY(componentObject->property("checked").isValid());
     QVERIFY(componentObject->property("pressed").isValid());
     QVERIFY(componentObject->property("text").isValid());
+    QVERIFY(componentObject->property("platformInverted").isValid());
 }
 
 void tst_checkbox::testProperties()
@@ -120,9 +121,19 @@ void tst_checkbox::testProperties()
                 property.write(componentObject,"checkbox_text");
                 QCOMPARE(property.read(componentObject).toString() , QString("checkbox_text"));
             }
+
+            if (property.name() == QString("platformInverted")) {
+                //increase the property count
+                propertyCount++;
+                //check for default value
+                QCOMPARE(property.read(componentObject).toBool(), false);
+                //set the property and compare
+                property.write(componentObject,true);
+                QCOMPARE(property.read(componentObject).toBool(), true);
+            }
         }
     }
-    QCOMPARE(propertyCount, 2);
+    QCOMPARE(propertyCount, 3);
 }
 
 void tst_checkbox::testImplicitSize()

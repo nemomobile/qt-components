@@ -168,10 +168,12 @@ Column {
         spacing: parent.spacing
 
         CheckBox {
+            platformInverted: column.childrenInverted
         }
 
         CheckBox {
             checked: true
+            platformInverted: column.childrenInverted
         }
     }
 
@@ -475,7 +477,7 @@ Column {
         }
         Page {
             id: tab3content
-            CheckBox { anchors.fill: parent; text: "tab3" }
+            CheckBox { anchors.fill: parent; text: "tab3"; platformInverted: column.childrenInverted }
         }
     }
 
