@@ -50,6 +50,7 @@ class tst_tabbutton : public QObject
 private slots:
     void initTestCase();
     void defaultPropertyValues();
+    void testPlatformInverted();
     void testClicked();
     void testChecked();
     void testGraphicsVisibility();
@@ -84,6 +85,18 @@ void tst_tabbutton::defaultPropertyValues()
     QVERIFY(testButton->property("pressed").isValid());
     QVERIFY(testButton->property("text").isValid());
     QVERIFY(testButton->property("iconSource").isValid());
+
+    QVERIFY(testButton->property("platformInverted").isValid());
+    QCOMPARE(testButton->property("platformInverted").toBool(), false);
+}
+
+void tst_tabbutton::testPlatformInverted()
+{
+    QGraphicsObject *testButton = componentObject->findChild<QGraphicsObject*>("testButton");
+    QVERIFY(testButton);
+
+    testButton->setProperty("platformInverted", QVariant(true));
+    QCOMPARE(testButton->property("platformInverted").toBool(), true);
 }
 
 void tst_tabbutton::testClicked()

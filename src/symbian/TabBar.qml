@@ -45,13 +45,14 @@ Item {
     id: root
     default property alias content: tabBarLayout.data
     property alias layout: tabBarLayout
+    property bool platformInverted: false
 
     implicitWidth: Math.max(50, screen.width)
     implicitHeight: screen.width < screen.height ? privateStyle.tabBarHeightPortrait : privateStyle.tabBarHeightLandscape
 
     BorderImage {
         anchors.fill: parent
-        source: privateStyle.imagePath("qtg_fr_tab_bar")
+        source: privateStyle.imagePath("qtg_fr_tab_bar", root.platformInverted)
         border { left: 20; top: 20; right: 20; bottom: 20 }
     }
 

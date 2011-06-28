@@ -50,6 +50,7 @@ class tst_tabbar : public QObject
 private slots:
     void initTestCase();
     void defaultPropertyValues();
+    void properties();
 
 private:
     QScopedPointer<QObject> componentObject;
@@ -64,10 +65,20 @@ void tst_tabbar::initTestCase()
 
 void tst_tabbar::defaultPropertyValues()
 {
-    QGraphicsObject *testLayout = componentObject->findChild<QGraphicsObject*>("testTabBar");
-    QVERIFY(testLayout);
-    QVERIFY(testLayout->property("width").value<qreal>() > 0);
-    QVERIFY(testLayout->property("height").value<qreal>() > 0);
+    QGraphicsObject *testTabBar = componentObject->findChild<QGraphicsObject*>("testTabBar");
+    QVERIFY(testTabBar);
+    QVERIFY(testTabBar->property("width").value<qreal>() > 0);
+    QVERIFY(testTabBar->property("height").value<qreal>() > 0);
+    QCOMPARE(testTabBar->property("platformInverted").toBool(), false);
+}
+
+void tst_tabbar::properties()
+{
+    QGraphicsObject *testTabBar = componentObject->findChild<QGraphicsObject*>("testTabBar");
+    QVERIFY(testTabBar);
+
+    testTabBar->setProperty("platformInverted", QVariant(true));
+    QCOMPARE(testTabBar->property("platformInverted").toBool(), true);
 }
 
 QTEST_MAIN(tst_tabbar)

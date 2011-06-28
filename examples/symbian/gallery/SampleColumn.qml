@@ -456,9 +456,10 @@ Column {
 
     TabBar {
         width: parent.width - parent.spacing
-        TabButton { tab: tab1content; text: "1" }
-        TabButton { tab: tab2content; text: "2" }
-        TabButton { tab: tab3content; text: "3" }
+        platformInverted: column.childrenInverted
+        TabButton { tab: tab1content; text: "1"; platformInverted: column.childrenInverted }
+        TabButton { tab: tab2content; text: "2"; platformInverted: column.childrenInverted }
+        TabButton { tab: tab3content; text: "3"; platformInverted: column.childrenInverted }
     }
 
     TabGroup {

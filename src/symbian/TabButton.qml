@@ -54,6 +54,9 @@ Item {
 
     signal clicked
 
+    // Symbian specific API
+    property bool platformInverted: false
+
     implicitWidth: Math.max(2 * imageLoader.width, 2 * platformStyle.paddingMedium + privateStyle.textWidth(label.text, label.font))
     implicitHeight: internal.portrait ? privateStyle.tabBarHeightPortrait : privateStyle.tabBarHeightLandscape
 
@@ -141,7 +144,7 @@ Item {
     BorderImage {
         id: background
 
-        source: privateStyle.imagePath(internal.imageName() + internal.modeName())
+        source: privateStyle.imagePath(internal.imageName() + internal.modeName(), root.platformInverted)
         anchors.fill: parent
         border {
             left: platformStyle.borderSizeMedium
@@ -154,7 +157,7 @@ Item {
     BorderImage {
         id: pressedGraphics
 
-        source: privateStyle.imagePath(internal.imageName() + internal.modeNamePressed())
+        source: privateStyle.imagePath(internal.imageName() + internal.modeNamePressed(), root.platformInverted)
         anchors.fill: parent
         opacity: 0
 
@@ -191,11 +194,14 @@ Item {
         }
         color: {
             if (root.pressed)
-                platformStyle.colorPressed
+                root.platformInverted ? platformStyle.colorPressedInverted
+                                      : platformStyle.colorPressed
             else if (root.checked)
-                platformStyle.colorNormalLight
+                root.platformInverted ? platformStyle.colorNormalLightInverted
+                                      : platformStyle.colorNormalLight
             else
-                platformStyle.colorNormalMid
+                root.platformInverted ? platformStyle.colorNormalMidInverted
+                                      : platformStyle.colorNormalMid
         }
     }
 
