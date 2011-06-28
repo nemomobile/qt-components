@@ -195,6 +195,7 @@ Column {
 
     ProgressBar {
         anchors.horizontalCenter: parent.horizontalCenter
+        platformInverted: column.childrenInverted
 
         Timer {
             running: true
@@ -207,6 +208,7 @@ Column {
     ProgressBar {
         anchors.horizontalCenter: parent.horizontalCenter
         indeterminate: true
+        platformInverted: column.childrenInverted
     }
 
     Component {
@@ -513,12 +515,14 @@ Column {
             width: 20
             height: 20
             running: true
+            platformInverted: column.childrenInverted
         }
 
         BusyIndicator {
             // default width/height is 40
             id: busyInd2
             running: true
+            platformInverted: column.childrenInverted
         }
 
         BusyIndicator {
@@ -526,6 +530,7 @@ Column {
             width: 60
             height: 60
             running: true
+            platformInverted: column.childrenInverted
         }
 
         Button {

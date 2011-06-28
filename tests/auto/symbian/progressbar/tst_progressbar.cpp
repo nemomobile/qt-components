@@ -54,6 +54,7 @@ private slots:
     void cleanup();
 
     void testImplicitSize();
+    void platformInverted();
 
 private:
     QObject *componentObject;
@@ -85,6 +86,14 @@ void tst_progressbar::testImplicitSize()
 
     QVERIFY(progressbar->implicitWidth() > 5); // needs to be something for the tool
     QVERIFY(progressbar->implicitHeight() > 5); // needs to be something for the tool
+}
+
+void tst_progressbar::platformInverted()
+{
+    QVERIFY(componentObject->property("platformInverted").isValid());
+    QCOMPARE(componentObject->property("platformInverted").toBool(), false);
+    componentObject->setProperty("platformInverted", QVariant(true));
+    QCOMPARE(componentObject->property("platformInverted").toBool(), true);
 }
 
 QTEST_MAIN(tst_progressbar)

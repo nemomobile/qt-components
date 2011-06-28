@@ -38,57 +38,60 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.1
-import com.nokia.symbian 1.1
-import "." 1.1
+#include <QTest>
+#include <QDeclarativeItem>
+#include <QDeclarativeComponent>
+#include <QDebug>
+#include <QSignalSpy>
+#include "tst_quickcomponentstest.h"
 
-Item {
-    id: root
+class tst_busyindicator : public QObject
+{
+    Q_OBJECT
 
-    property bool running: false
+private slots:
+    void initTestCase();
+    void cleanupTestCase();
+    void init();
+    void cleanup();
+    void defaultPropertyValues();
+    void properties();
 
-    // Symbian specific API
-    property bool platformInverted: false
+private:
+    QObject *componentObject;
+};
 
-    implicitWidth: platformStyle.graphicSizeSmall
-    implicitHeight: platformStyle.graphicSizeSmall
-
-    Image {
-        id: spinner
-        property int index: 1
-
-        // cannot use anchors.fill here because the size will be 0 during
-        // construction and that gives out nasty debug warnings
-        width: parent.width
-        height: parent.height
-        sourceSize.width: width
-        sourceSize.height: height
-        source: privateStyle.imagePath("qtg_anim_spinner_large_" + index,
-                                       root.platformInverted)
-        smooth: true
-
-        NumberAnimation on index {
-            id: numAni
-            from: 1; to: 10
-            duration: 1000
-            running: root.visible
-            // QTBUG-19080 is preventing the following line from working
-            // We will have to use workaround for now
-            // http://bugreports.qt.nokia.com/browse/QTBUG-19080
-            // paused: !root.running || !symbian.foreground
-            loops: Animation.Infinite
-        }
-
-        // START workaround for QTBUG-19080
-        Component {
-            id: bindingCom
-            Binding {
-                target: numAni
-                property: "paused"
-                value: numAni.running ? (!root.running || !symbian.foreground) : false
-            }
-        }
-        Component.onCompleted: bindingCom.createObject(numAni)
-        // END workaround
-    }
+void tst_busyindicator::initTestCase()
+{
+    QString errors;
+    componentObject = tst_quickcomponentstest::createComponentFromFile("tst_busyindicator.qml", &errors);
+    QVERIFY2(componentObject, qPrintable(errors));
 }
+
+void tst_busyindicator::cleanupTestCase()
+{
+}
+
+void tst_busyindicator::init()
+{
+}
+
+void tst_busyindicator::cleanup()
+{
+}
+
+void tst_busyindicator::defaultPropertyValues()
+{
+    QVERIFY(componentObject->property("platformInverted").isValid());
+    QCOMPARE(componentObject->property("platformInverted").toBool(), false);
+}
+
+
+void tst_busyindicator::properties()
+{
+    QVERIFY(componentObject->setProperty("platformInverted", true));
+    QCOMPARE(componentObject->property("platformInverted").toBool(), true);
+}
+
+QTEST_MAIN(tst_busyindicator)
+#include "tst_busyindicator.moc"

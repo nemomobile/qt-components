@@ -2,6 +2,7 @@ TEMPLATE = subdirs
 
 SUBDIRS += \
     applicationwindow \
+    busyindicator \
     button \
     checkbox \
     declarativeicon \

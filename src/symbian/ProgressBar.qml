@@ -51,12 +51,15 @@ Item {
     property alias value: model.value
     property bool indeterminate: false
 
+    // Symbian specific API
+    property bool platformInverted: false
+
     implicitWidth: Math.max(50, screen.width / 2) // TODO: use screen.displayWidth
     implicitHeight: privateStyle.sliderThickness
 
     BorderImage {
         id: background
-        source: privateStyle.imagePath("qtg_fr_progressbar_track")
+        source: privateStyle.imagePath("qtg_fr_progressbar_track", root.platformInverted)
         border { left: 20; top: 0; right: 20; bottom: 0 }
 
         anchors.left: parent.left
@@ -131,7 +134,7 @@ Item {
 
             BorderImage {
                 id: frame
-                source: privateStyle.imagePath("qtg_fr_progressbar_fill")
+                source: privateStyle.imagePath("qtg_fr_progressbar_fill", root.platformInverted)
                 border { left: 20; top: 0; right: 20; bottom: 0 }
 
                 anchors.left: parent.left
@@ -152,8 +155,10 @@ Item {
             rightMargin: 20
 
             tiled: true
-            imageName: "qtg_graf_progressbar_wait"
-            maskName: "qtg_fr_progressbar_mask"
+            imageName: root.platformInverted ? "qtg_graf_progressbar_wait_inverse"
+                                             : "qtg_graf_progressbar_wait"
+            maskName: root.platformInverted ? "qtg_fr_progressbar_mask_inverse"
+                                            : "qtg_fr_progressbar_mask"
         }
 
         // Secondary tile to keep the bar full when the animation scrolls
@@ -167,8 +172,10 @@ Item {
             rightMargin: 20
 
             tiled: false
-            imageName: "qtg_graf_progressbar_wait"
-            maskName: "qtg_fr_progressbar_mask"
+            imageName: root.platformInverted ? "qtg_graf_progressbar_wait_inverse"
+                                             : "qtg_graf_progressbar_wait"
+            maskName: root.platformInverted ? "qtg_fr_progressbar_mask_inverse"
+                                            : "qtg_fr_progressbar_mask"
         }
     }
 
