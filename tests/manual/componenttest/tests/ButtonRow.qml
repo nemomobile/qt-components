@@ -301,17 +301,26 @@ Item {
                         role: toggleVisible.checked ? "Title" : "SubTitle"
                         text: model.title
                         platformInverted: root.platformInverted
+                        anchors {
+                            left: listItem.paddingItem.left
+                            right: toggleVisible.left
+                            verticalCenter: parent.verticalCenter
+                        }
                     }
 
                     CheckBox {
                         id: toggleVisible
-                        anchors.top: itemText.top
-                        anchors.right: parent.right
-                        anchors.rightMargin: 20
+                        anchors {
+                            right: listItem.paddingItem.right
+                            verticalCenter: parent.verticalCenter
+                        }
                         checked: model.visible
                         platformInverted: root.platformInverted
 
-                        onCheckedChanged:  buttonRow3.children[index].visible = toggleVisible.checked
+                        onCheckedChanged: {
+                            dynBtnListView.model.set(index, { "visible": toggleVisible.checked })
+                            buttonRow3.children[index].visible = toggleVisible.checked
+                        }
                     }
 
                     onClicked: toggleVisible.checked = !toggleVisible.checked
@@ -637,15 +646,25 @@ Item {
                         mode: listItem2.mode
                         role: toggleVisible2.checked ? "Title" : "SubTitle"
                         text: model.title
+                        anchors {
+                            left: listItem2.paddingItem.left
+                            right: toggleVisible2.left
+                            verticalCenter: parent.verticalCenter
+                        }
                     }
 
                     CheckBox {
                         id: toggleVisible2
-                        anchors.top: itemText2.top
-                        anchors.right: parent.right
-                        anchors.rightMargin: 20
+                        anchors {
+                            right: listItem2.paddingItem.right
+                            verticalCenter: parent.verticalCenter
+                        }
                         checked: model.visible
-                        onCheckedChanged: buttonRow8.children[index].visible = toggleVisible2.checked
+
+                        onCheckedChanged: {
+                            toolButtonsListView.model.set(index, {"visible" : toggleVisible2.checked})
+                            buttonRow8.children[index].visible = toggleVisible2.checked
+                        }
                     }
 
                     onClicked: toggleVisible2.checked = !toggleVisible2.checked
