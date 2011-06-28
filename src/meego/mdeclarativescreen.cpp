@@ -107,6 +107,7 @@ public:
     QSize displaySize;
     QSize screenSize;
 
+    bool allowSwipe;
     void setMinimized(bool);
     bool isMinimized() const;
     bool isRemoteScreenPresent() const;
@@ -697,5 +698,45 @@ void MDeclarativeScreen::updatePlatformStatusBarRect(QDeclarativeItem * statusBa
         XChangeProperty(dpy, w, a, XA_CARDINAL, 32, PropModeReplace, (unsigned char*)data, 4);
 #endif
 }
+
+bool MDeclarativeScreen::allowSwipe() const
+{
+    return d->allowSwipe;
+}
+
+void MDeclarativeScreen::setAllowSwipe(bool enabled)
+{
+    if (enabled != d->allowSwipe) {
+#ifdef Q_WS_X11
+        QWidget * activeWindow = QApplication::activeWindow();
+        if(!activeWindow) {
+            return;
+        }
+        Display       *dpy = QX11Info::display();
+        Window w = activeWindow->effectiveWinId();
+
+        unsigned long val = (enabled) ? 1 : 0;
+        Atom atom = XInternAtom(dpy, "_MEEGOTOUCH_CANNOT_MINIMIZE", false);
+        if (!atom) {
+            qWarning("Unable to obtain _MEEGOTOUCH_CANNOT_MINIMIZE. This example will only work "
+                     "with the MeeGo Compositor!");
+            return;
+        }
+
+        XChangeProperty (dpy,
+                w,
+                atom,
+                XA_CARDINAL,
+                32,
+                PropModeReplace,
+                reinterpret_cast<unsigned char *>(&val),
+                1);
+
+        d->allowSwipe = enabled;
+        emit allowSwipeChanged();
+#endif
+    }
+}
+
 
 #include "moc_mdeclarativescreen.cpp"

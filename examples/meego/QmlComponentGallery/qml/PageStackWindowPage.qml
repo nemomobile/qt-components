@@ -81,7 +81,9 @@ Page {
             Button { text: "Toggle Rounded corners"; checkable:true; checked: rootWindow.platformStyle.cornersVisible; onClicked: { rootWindow.platformStyle.cornersVisible = !rootWindow.platformStyle.cornersVisible; } }
 
             Button { text: "Toggle ToolBar"; checkable: true; checked: rootWindow.showToolBar; onClicked: { rootWindow.showToolBar = !rootWindow.showToolBar } }
-        }
+
+            Button { text: "Toggle Swipe"; checkable: true; checked: !screen.allowSwipe; onClicked: { screen.allowSwipe = !screen.allowSwipe } }
+          }
 
     }
     ScrollDecorator {

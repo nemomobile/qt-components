@@ -95,6 +95,7 @@ public:
 
     Q_PROPERTY(int rotation READ rotation NOTIFY currentOrientationChanged FINAL)
     Q_PROPERTY(bool minimized READ isMinimized WRITE setMinimized NOTIFY minimizedChanged FINAL)
+    Q_PROPERTY(bool allowSwipe READ allowSwipe WRITE setAllowSwipe NOTIFY allowSwipeChanged FINAL )
 
     Q_PROPERTY(MWindowState * windowState READ windowState CONSTANT FINAL)
 
@@ -127,13 +128,14 @@ public:
 
     bool isMinimized() const;
     void setMinimized(bool minimized);
+    bool allowSwipe() const;
+    void setAllowSwipe(bool enabled);
 
     int dpi() const;
     DisplayCategory displayCategory() const;
     Density density() const;
 
     MWindowState * windowState() const;
-
 
     virtual bool eventFilter(QObject *, QEvent *);
 public Q_SLOTS:
@@ -148,6 +150,7 @@ Q_SIGNALS:
     void displayChanged();
     void widthChanged();
     void heightChanged();
+    void allowSwipeChanged();
 
 private:
     MDeclarativeScreen(QDeclarativeItem *parent = 0);
