@@ -44,6 +44,7 @@ Item {
     id: root
     anchors.fill: parent
     state:  "buttonsInRow"
+    property bool platformInverted: false
 
     ButtonRow {
         id: navButtonRow
@@ -234,7 +235,10 @@ Item {
                     text: "Add"
 
                     onClicked: {
-                        var item = Qt.createQmlObject('import QtQuick 1.1; import com.nokia.symbian 1.1;  Button { text: \"Btn' +buttonRow3.children.length +'\"; objectName: \"' +"Btn"+buttonRow3.children.length+'\" }', buttonRow3, "dynButton");
+                        var invertedString = root.platformInverted ? "; platformInverted: true" : ""
+                        var item = Qt.createQmlObject('import QtQuick 1.1; import com.nokia.symbian 1.1;  Button { text: \"Btn'
+                                                      + buttonRow3.children.length + '\"; objectName: \"' + "Btn" + buttonRow3.children.length
+                                                      + '\"' + invertedString + ' }', buttonRow3, "dynButton");
                     }
                 }
 
@@ -289,12 +293,14 @@ Item {
                 ListItem {
                     id: listItem
                     width: dynBtnListView.width
+                    platformInverted: root.platformInverted
 
                     ListItemText {
                         id: itemText
                         mode: listItem.mode
                         role: toggleVisible.checked ? "Title" : "SubTitle"
                         text: model.title
+                        platformInverted: root.platformInverted
                     }
 
                     CheckBox {
@@ -303,6 +309,7 @@ Item {
                         anchors.right: parent.right
                         anchors.rightMargin: 20
                         checked: model.visible
+                        platformInverted: root.platformInverted
 
                         onCheckedChanged:  buttonRow3.children[index].visible = toggleVisible.checked
                     }
@@ -566,7 +573,10 @@ Item {
                     text: "Add ToolBtn"
 
                     onClicked: {
-                        var item = Qt.createQmlObject('import QtQuick 1.1; import com.nokia.symbian 1.1;  ToolButton { text: \"ToolBtn' +buttonRow8.children.length +'\"; objectName: \"' +"ToolBtn"+buttonRow8.children.length +'\" }', buttonRow8, "dynButton");
+                        var invertedString = root.platformInverted ? "; platformInverted: true" : ""
+                        var item = Qt.createQmlObject('import QtQuick 1.1; import com.nokia.symbian 1.1;  ToolButton { text: \"ToolBtn'
+                                                      + buttonRow8.children.length + '\"; objectName: \"' + "ToolBtn"
+                                                      + buttonRow8.children.length +'\"'+ invertedString + ' }', buttonRow8, "dynButton");
                     }
                 }
 

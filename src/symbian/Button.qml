@@ -58,6 +58,8 @@ Item {
     signal platformReleased
     signal platformPressAndHold
 
+    // Symbian specific API
+    property bool platformInverted: false
     property bool platformAutoRepeat: false
 
     implicitWidth: Math.max(container.contentWidth + 2 * internal.horizontalPadding, privateStyle.buttonSize)
@@ -97,7 +99,8 @@ Item {
             } else if (checkable && !checked) {
                 privateStyle.play(Symbian.BasicButton)
             }
-            highlight.source = privateStyle.imagePath(internal.imageName() + "pressed")
+            highlight.source = privateStyle.imagePath(internal.imageName() + "pressed",
+                                                      button.platformInverted)
             container.scale = 0.95
             highlight.opacity = 1
         }
@@ -187,7 +190,8 @@ Item {
     }
 
     BorderImage {
-        source: privateStyle.imagePath(internal.imageName() + internal.modeName())
+        source: privateStyle.imagePath(internal.imageName() + internal.modeName(),
+                                       button.platformInverted)
         border { left: 20; top: 20; right: 20; bottom: 20 }
         anchors.fill: parent
 
@@ -236,13 +240,17 @@ Item {
             font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
             color: {
                 if (!button.enabled)
-                    return platformStyle.colorDisabledLight
+                    return button.platformInverted ? platformStyle.colorDisabledLightInverted
+                                                   : platformStyle.colorDisabledLight
                 else if (button.pressed)
-                    return platformStyle.colorPressed
+                    return button.platformInverted ? platformStyle.colorPressedInverted
+                                                   : platformStyle.colorPressed
                 else if (button.checked)
-                    return platformStyle.colorLatched
+                    return button.platformInverted ? platformStyle.colorLatchedInverted
+                                                   : platformStyle.colorLatched
                 else
-                    return platformStyle.colorNormalLight
+                    return button.platformInverted ? platformStyle.colorNormalLightInverted
+                                                   : platformStyle.colorNormalLight
             }
         }
     }

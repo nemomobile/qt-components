@@ -45,6 +45,7 @@ Item {
     id: root
     anchors.fill: parent
     state:  "buttonsInCol"
+    property bool platformInverted: false
 
     ButtonRow {
         id: navButtonRow
@@ -219,7 +220,10 @@ Item {
                     text: "Add Btn"
 
                     onClicked: {
-                        var item = Qt.createQmlObject('import QtQuick 1.1; import com.nokia.symbian 1.1;  Button { text: \"Btn' + buttonColumn3.children.length +'\" }', buttonColumn3, "dynButton");
+                        var invertedString = root.platformInverted ? "; platformInverted: true" : ""
+                        var item = Qt.createQmlObject('import QtQuick 1.1; import com.nokia.symbian 1.1;  Button { text: \"Btn'
+                                                      + buttonColumn3.children.length + '\"' + invertedString + ' }',
+                                                      buttonColumn3, "dynButton");
                     }
                 }
 
@@ -480,7 +484,10 @@ Item {
                     text: "Add TB"
 
                     onClicked: {
-                        var item = Qt.createQmlObject('import QtQuick 1.1; import com.nokia.symbian 1.1;  ToolButton { text: \"ToolBtn' + buttonColumn8.children.length +'\" }', buttonColumn8, "dynButton");
+                        var invertedString = root.platformInverted ? "; platformInverted: true" : ""
+                        var item = Qt.createQmlObject('import QtQuick 1.1; import com.nokia.symbian 1.1;  ToolButton { text: \"ToolBtn'
+                                                      + buttonColumn8.children.length + '\"' + invertedString + ' }',
+                                                      buttonColumn8, "dynButton");
                     }
                 }
 

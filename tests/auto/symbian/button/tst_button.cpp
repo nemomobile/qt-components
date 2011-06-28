@@ -75,6 +75,8 @@ void tst_button::defaultPropertyValues()
     QVERIFY(testButton->property("platformAutoRepeat").isValid());
     QCOMPARE(testButton->property("platformAutoRepeat").toBool(), false);
     QVERIFY(testButton->property("font").isValid());
+    QVERIFY(testButton->property("platformInverted").isValid());
+    QCOMPARE(testButton->property("platformInverted").toBool(), false);
 }
 
 void tst_button::properties()
@@ -87,6 +89,12 @@ void tst_button::properties()
 
     testButton->setProperty("platformAutoRepeat", QVariant(false));
     QCOMPARE(testButton->property("platformAutoRepeat").toBool(), false);
+
+    testButton->setProperty("platformInverted", QVariant(true));
+    QCOMPARE(testButton->property("platformInverted").toBool(), true);
+
+    testButton->setProperty("platformInverted", QVariant(false));
+    QCOMPARE(testButton->property("platformInverted").toBool(), false);
 }
 
 void tst_button::testImplicitSize()

@@ -62,6 +62,7 @@ Column {
         anchors.horizontalCenter: parent.horizontalCenter
         text: "Push me"
         width: parent.width - parent.spacing
+        platformInverted: column.childrenInverted
     }
 
     TextField {
@@ -257,6 +258,7 @@ Column {
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width - parent.spacing
         text: "Dialog"
+        platformInverted: column.childrenInverted
         onClicked: {
             if (!dialog)
                 dialog = dialogComponent.createObject(column)
@@ -299,7 +301,7 @@ Column {
             property SelectionDialog singleSelectionDialog
             anchors.centerIn: parent
             text: "Selection Dialog"
-
+            platformInverted: column.childrenInverted
             onClicked: {
                 if (!singleSelectionDialog)
                     singleSelectionDialog = singleSelectionDialogComponent.createObject(column)
@@ -313,6 +315,7 @@ Column {
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width - parent.spacing
         text: "QueryDialog"
+        platformInverted: column.childrenInverted
         onClicked: {
             if (!queryDialog)
                 queryDialog = queryDialogComponent.createObject(column)
@@ -351,6 +354,7 @@ Column {
             property ContextMenu contextMenu
             anchors.horizontalCenter: parent.horizontalCenter
             text: "ContextMenu"
+            platformInverted: column.childrenInverted
             onClicked: {
                 if (!contextMenu)
                     contextMenu = contextMenuComponent.createObject(column)
@@ -473,7 +477,7 @@ Column {
     TabGroup {
         height: 100
         width: parent.width - parent.spacing
-        Button { id: tab1content; text: "tab1" }
+        Button { id: tab1content; text: "tab1"; platformInverted: column.childrenInverted }
         Text {
             id: tab2content
             text: "tab2"
@@ -535,6 +539,7 @@ Column {
 
         Button {
             text: "Toggle"
+            platformInverted: column.childrenInverted
             onClicked: {
                 busyInd1.running = !busyInd1.running
                 busyInd2.running = !busyInd2.running
@@ -548,6 +553,7 @@ Column {
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width - parent.spacing
         text: "SectionScroller"
+        platformInverted: column.childrenInverted
         onClicked: {
             if (!sectionScroll)
                 sectionScroll = sectionScrollComponent.createObject(column)
@@ -655,9 +661,9 @@ Column {
        exclusive: true
        checkedButton: b2
 
-       Button { text: "b1" }
-       Button { text: "b2" }
-       Button { text: "b3" }
+       Button { text: "b1"; platformInverted: column.childrenInverted }
+       Button { text: "b2"; platformInverted: column.childrenInverted }
+       Button { text: "b3"; platformInverted: column.childrenInverted }
    }
 
    ButtonRow {
@@ -674,9 +680,9 @@ Column {
        width: parent.width - parent.spacing
        exclusive: true
 
-       Button { text: "b4" }
-       Button { text: "b5" }
-       Button { text: "b6" }
-       Button { text: "b7" }
+       Button { text: "b4"; platformInverted: column.childrenInverted }
+       Button { text: "b5"; platformInverted: column.childrenInverted }
+       Button { text: "b6"; platformInverted: column.childrenInverted }
+       Button { text: "b7"; platformInverted: column.childrenInverted }
    }
 }
