@@ -81,6 +81,7 @@ OTHER_FILES += \
     tests/RatingIndicator.qml \
     tests/ScrollBar.qml \
     tests/ScrollDecorator.qml \
+    tests/SearchBox.qml \
     tests/SectionScroller.qml \
     tests/Slider.qml \
     tests/StyleColors.qml \
