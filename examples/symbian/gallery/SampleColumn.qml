@@ -184,10 +184,12 @@ Column {
         spacing: parent.spacing
 
         Switch {
+            platformInverted: column.childrenInverted
         }
 
         Switch {
             checked: true
+            platformInverted: column.childrenInverted
         }
     }
 

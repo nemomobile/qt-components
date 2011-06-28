@@ -53,6 +53,7 @@ private slots:
     void testClickedSignal();
     void testCheckedProperty();
     void testPressedProperty();
+    void testPlatformInvertedProperty();
     void testImplicitSize();
 
 private:
@@ -94,6 +95,17 @@ void tst_switch::testPressedProperty()
     componentObject->setProperty("pressed", true);
     pressed = componentObject->property("pressed");
     QCOMPARE(pressed.toBool(), true);
+}
+
+void tst_switch::testPlatformInvertedProperty()
+{
+    QVariant inverted = componentObject->property("platformInverted");
+    QVERIFY(inverted.isValid());
+    QVERIFY(inverted.canConvert(QVariant::Bool));
+    QCOMPARE(inverted.toBool(), false);
+    componentObject->setProperty("platformInverted", true);
+    inverted = componentObject->property("platformInverted");
+    QCOMPARE(inverted.toBool(), true);
 }
 
 void tst_switch::testImplicitSize()

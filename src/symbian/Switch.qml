@@ -49,6 +49,9 @@ Item {
     property bool pressed: stateGroup.state == "Pressed" || stateGroup.state == "KeyPressed"
                            || stateGroup.state == "Dragging"
 
+    // Symbian specific API
+    property bool platformInverted: false
+
     signal clicked
 
     QtObject {
@@ -106,7 +109,8 @@ Item {
                 return "track"
         }
 
-        source: privateStyle.imagePath("qtg_graf_switchbutton_" + track.trackPostfix())
+        source: privateStyle.imagePath("qtg_graf_switchbutton_" + track.trackPostfix(),
+                                       root.platformInverted)
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
         sourceSize.width: Symbian.UndefinedSourceDimension
@@ -126,7 +130,8 @@ Item {
         visible: root.enabled
 
         Image {
-            source: privateStyle.imagePath("qtg_graf_switchbutton_fill")
+            source: privateStyle.imagePath("qtg_graf_switchbutton_fill",
+                                           root.platformInverted)
             anchors.left: parent.left
             anchors.top: parent.top
             height: parent.height
@@ -139,7 +144,8 @@ Item {
         LayoutMirroring.enabled: false
         LayoutMirroring.childrenInherit: true
         source: privateStyle.imagePath("qtg_graf_switchbutton_"
-                                       + (root.pressed ? "handle_pressed" : "handle_normal"))
+                                       + (root.pressed ? "handle_pressed" : "handle_normal"),
+                                       root.platformInverted)
         anchors.verticalCenter: root.verticalCenter
         sourceSize.width: privateStyle.switchButtonHeight
         sourceSize.height: privateStyle.switchButtonHeight
