@@ -53,6 +53,7 @@ private slots:
 
     void initTestCase();
     void orientationChange();
+    void platformInverted();
 
 private:
     QScopedPointer<QDeclarativeView> view;
@@ -95,6 +96,14 @@ void tst_Window::orientationChange()
     QTRY_COMPARE(spy3.count(), 1);
 
     QVERIFY(!window->property("inPortrait").toBool());
+}
+
+void tst_Window::platformInverted()
+{
+    QVERIFY(window->property("platformInverted").isValid());
+    QCOMPARE(window->property("platformInverted").toBool(), false);
+    window->setProperty("platformInverted", QVariant(true));
+    QCOMPARE(window->property("platformInverted").toBool(), true);
 }
 
 QTEST_MAIN(tst_Window)

@@ -71,6 +71,7 @@ Window {
 
         width: parent.width
         state: root.fullScreen ? "Hidden" : "Visible"
+        platformInverted: root.platformInverted
 
         states: [
             State {
@@ -106,6 +107,7 @@ Window {
 
         width: parent.width
         state: root.fullScreen ? "Hidden" : "Visible"
+        platformInverted: root.platformInverted
 
         states: [
             State {

@@ -48,6 +48,7 @@ Column {
     // for demonstration and testing purposes each component needs to
     // set its inverted state explicitly
     property bool childrenInverted: false
+    property bool windowInverted: false
 
     spacing: 14
 
@@ -305,7 +306,8 @@ Column {
         height: selectionDialogButton.height
         width: parent.width - parent.spacing
         radius: 10
-        color: "black"
+        color: column.windowInverted ? platformStyle.colorBackgroundInverted
+                                     : platformStyle.colorBackground
         Button {
             id: selectionDialogButton
             property SelectionDialog singleSelectionDialog
@@ -359,7 +361,8 @@ Column {
         height: contentMenuButton.height
         width: parent.width - parent.spacing
         radius: 10
-        color: "black"
+        color: column.windowInverted ? platformStyle.colorBackgroundInverted
+                                     : platformStyle.colorBackground
         Button {
             id: contentMenuButton
             property ContextMenu contextMenu

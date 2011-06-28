@@ -83,6 +83,7 @@ Window {
                 margins: column.spacing
             }
             childrenInverted: root.childrenInverted
+            windowInverted: root.platformInverted
         }
     }
 
@@ -133,6 +134,11 @@ Window {
                     text: root.childrenInverted ? "Revert components" : "Invert components"
                     platformInverted: root.childrenInverted
                     onClicked: root.childrenInverted = !root.childrenInverted
+                }
+                MenuItem {
+                    text: root.platformInverted ? "Revert background" : "Invert background"
+                    platformInverted: root.childrenInverted
+                    onClicked: root.platformInverted = !root.platformInverted
                 }
                 MenuItem {
                     text: "Set layout dir"

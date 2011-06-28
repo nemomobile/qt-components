@@ -50,12 +50,16 @@ Item {
     signal orientationChangeStarted
     signal orientationChangeFinished
 
+    // Symbian specific API
+    property bool platformInverted: false
+
     width: screen.width > 0 ? screen.width : screen.displayWidth
     height: screen.height > 0 ? screen.height : screen.displayHeight
 
     Rectangle {
         anchors.fill: parent
-        color: "black"
+        color: platformInverted ? platformStyle.colorBackgroundInverted
+                                : platformStyle.colorBackground
     }
 
     Binding { target: root; property: "height"; value: screen.height; when: screen.height > 0 }
