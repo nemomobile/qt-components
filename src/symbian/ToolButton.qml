@@ -229,7 +229,8 @@ Item {
             contentIcon.scale = 1
             highlight.opacity = 0
 
-            if ((checkableItem.enabled && checkableItem.checked && !belongsToExclusiveGroup()) || !checkableItem.enabled)
+            if (((checkableItem.enabled && checkableItem.checked && !belongsToExclusiveGroup())
+                || !checkableItem.enabled) && stateGroup.state != "Canceled")
                 privateStyle.play(Symbian.BasicButton)
 
             if (flat && isButtonRow(parent))
