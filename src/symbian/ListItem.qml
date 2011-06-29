@@ -62,7 +62,8 @@ Item {
 
         Rectangle {
             height: 1
-            color: platformStyle.colorDisabledMid
+            color: root.platformInverted ? platformStyle.colorDisabledLightInverted
+                                         : platformStyle.colorDisabledMid
             anchors {
                 bottom: parent.bottom
                 left: parent.left
