@@ -137,12 +137,12 @@ Item {
             }
 
             function outgoingDone() {
-                state = "Hidden"
                 if (priv.outgoingPage) {
                     priv.outgoingPage.status = PageStatus.Inactive
                     priv.outgoingPage.visible = false
                     priv.outgoingPage = null
                 }
+                state = "Hidden"
             }
 
             width: parent ? parent.width : 0
