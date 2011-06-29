@@ -77,40 +77,38 @@ Item {
             property int index: 0
             property bool itemAvailable: (contentArea.children[0] != undefined) && (contentArea.children[0].children[0] != undefined)
             property int itemHeight: itemAvailable ? Math.max(1, contentArea.children[0].children[0].height) : 1
+            property int itemsHidden: Math.floor(contentY / itemHeight)
             property int interactionMode: symbian.listInteractionMode
 
             height: contentArea.height; width: root.width
             clip: true
-            contentHeight: contentArea.childrenRect.height
+            contentHeight: (contentArea.children[0] != undefined) ? contentArea.children[0].height : 0
             contentWidth: width
 
             Item {
                 id: contentArea
 
-                property int itemsHidden: Math.floor(flickableArea.contentY / flickableArea.itemHeight)
-
                 width: flickableArea.width
-                height: childrenRect.height > internal.preferredHeight
+                height: flickableArea.contentHeight > internal.preferredHeight
                     ? internal.preferredHeight - (internal.preferredHeight % flickableArea.itemHeight)
-                    : childrenRect.height
+                    : flickableArea.contentHeight
 
-                onWidthChanged: {
+                function setChildrenWidths() {
                     for (var i = 0; i < children.length; ++i)
                         children[i].width = width
                 }
 
-                onItemsHiddenChanged: {
-                    // Check that popup is really open in order to prevent unnecessary feedback
-                    if (containingPopup.status == DialogStatus.Open
-                        && symbian.listInteractionMode == Symbian.TouchInteraction)
-                        privateStyle.play(Symbian.ItemScroll)
-                }
-
-                Component.onCompleted: {
+                function connectChildren() {
                     for (var i = 0; i < children.length; ++i) {
                         if (children[i].clicked != undefined)
                             children[i].clicked.connect(root.itemClicked)
                     }
+                }
+
+                onWidthChanged: setChildrenWidths()
+                onChildrenChanged: {
+                    setChildrenWidths()
+                    connectChildren()
                 }
             }
 
@@ -120,6 +118,13 @@ Item {
                     contentArea.children[0].children[0].focus = visible
                 contentY = 0
                 index = 0
+            }
+
+            onItemsHiddenChanged: {
+                // Check that popup is really open in order to prevent unnecessary feedback
+                if (containingPopup.status == DialogStatus.Open
+                    && symbian.listInteractionMode == Symbian.TouchInteraction)
+                    privateStyle.play(Symbian.ItemScroll)
             }
 
             onInteractionModeChanged: {
