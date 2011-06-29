@@ -60,6 +60,7 @@ DialogStyle {
     buttonsColumnSpacing: 16
     leftMargin: 33
     rightMargin: 33
+    titleElideMode: Text.ElideNone
 
     property string messageFontFamily: UI.FONT_FAMILY
     property int messageFontPixelSize: UI.FONT_DEFAULT

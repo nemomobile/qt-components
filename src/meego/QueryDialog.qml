@@ -119,6 +119,7 @@ Dialog {
                     font.bold:  root.platformStyle.titleFontBold
                     font.capitalization: root.platformStyle.titleFontCapitalization
                     elide: root.platformStyle.titleElideMode
+                    wrapMode: elide == Text.ElideNone ? Text.Wrap : Text.NoWrap
                     color: root.platformStyle.titleTextColor
                     text: root.titleText
 
