@@ -49,6 +49,7 @@ Item {
     // Symbian specific API
     property bool platformInverted: false
     property bool platformSubItemIndicator: false
+    property real platformLeftMargin: platformStyle.paddingLarge
 
     signal clicked
 
@@ -90,7 +91,7 @@ Item {
         anchors {
             verticalCenter: parent.verticalCenter
             left: parent.left
-            leftMargin: platformStyle.paddingLarge
+            leftMargin: platformLeftMargin
             right: iconLoader.status == Loader.Ready ? iconLoader.left : parent.right
             rightMargin: iconLoader.status == Loader.Ready ? platformStyle.paddingMedium : privateStyle.scrollBarThickness
         }

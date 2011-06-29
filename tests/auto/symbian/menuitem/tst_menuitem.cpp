@@ -91,6 +91,10 @@ void tst_menuitem::properties()
 {
     QVERIFY(componentObject->setProperty("platformInverted", true));
     QCOMPARE(componentObject->property("platformInverted").toBool(), true);
+
+    QVERIFY(componentObject->property("platformLeftMargin").isValid());
+    QVERIFY(componentObject->setProperty("platformLeftMargin", 10));
+    QCOMPARE(componentObject->property("platformLeftMargin").toInt(), 10);
 }
 
 QTEST_MAIN(tst_menuitem)
