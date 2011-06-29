@@ -225,38 +225,16 @@ Column {
         id: dialogComponent
         CommonDialog {
             id: dialog
-            titleText: "Dialog"
+            titleText: "CommonDialog"
             platformInverted: column.childrenInverted
+            buttonTexts: ["Ok", "Cancel"]
 
-            buttons: ToolBar {
-                id: buttons
-                width: parent.width
-                height: privateStyle.toolBarHeightLandscape + 2 * platformStyle.paddingSmall
-                platformInverted: column.childrenInverted
-
-                tools: Row {
-                    anchors.centerIn: parent
-                    spacing: platformStyle.paddingMedium
-
-                    ToolButton {
-                        text: "Ok"
-                        width: (buttons.width - 3 * platformStyle.paddingMedium) / 2
-                        platformInverted: column.childrenInverted
-                        onClicked: dialog.accept()
-                    }
-
-                    ToolButton {
-                        text: "Cancel"
-                        width: (buttons.width - 3 * platformStyle.paddingMedium) / 2
-                        platformInverted: column.childrenInverted
-                        onClicked: dialog.reject()
-                    }
-                }
-            }
             content: Text {
                 text: "This is the content"
                 font { bold: true; pixelSize: 16 }
                 anchors.fill: parent
+                color: dialog.platformInverted ? platformStyle.colorNormalLightInverted
+                                               : platformStyle.colorNormalLight
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
             }
@@ -267,7 +245,7 @@ Column {
         property Dialog dialog
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width - parent.spacing
-        text: "Dialog"
+        text: "CommonDialog"
         platformInverted: column.childrenInverted
         onClicked: {
             if (!dialog)
