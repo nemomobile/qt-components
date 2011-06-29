@@ -9,6 +9,7 @@ data=DATAZ_\private\10003a3f\import\apps\qmlgallery_reg.rsc  \private\10003a3f\i
 data=ZSYSTEM\install\qmlgallery_stub.sis                     System\Install\qmlgallery_stub.sis
 
 data=DATAZ_\private\200346E5\gallery.qml                     \private\200346E5\gallery.qml
+data=DATAZ_\private\200346E5\galleryContent.qml              \private\200346E5\galleryContent.qml
 data=DATAZ_\private\200346E5\SampleColumn.qml                \private\200346E5\SampleColumn.qml
 
 #endif //QMLGALLERY_IBY

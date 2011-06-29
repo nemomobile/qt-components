@@ -42,4 +42,5 @@ symbian {
 
 OTHER_FILES += \
     gallery.qml \
+    galleryContent.qml \
     SampleColumn.qml

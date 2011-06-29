@@ -586,6 +586,7 @@ Column {
                 font { bold: true; pixelSize: 16 }
                 color: "white"
                 anchors.fill: parent
+                anchors.leftMargin: platformStyle.paddingMedium
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
             }

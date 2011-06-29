@@ -64,32 +64,55 @@ Window {
         platformInverted: root.childrenInverted
     }
 
-    Flickable {
-        id: flickable
-        clip: true
-        anchors {
-            left: root.left
-            right: root.right
-            top: statusBar.visible ? statusBar.bottom: root.top
-            bottom: toolBar.visible ? toolBar.top: root.bottom
-        }
-        contentHeight: column.height
+    Text {
+        id: waitText
 
-        SampleColumn {
-            id: column
-            anchors {
-                left: parent.left
-                right: parent.right
-                margins: column.spacing
-            }
-            childrenInverted: root.childrenInverted
-            windowInverted: root.platformInverted
+        anchors.centerIn: parent
+        visible: contentLoader.status != Loader.Ready
+        text: "Loading Gallery components ..."
+        color: platformStyle.colorNormalLight
+        font {
+            family: platformStyle.fontFamilyRegular
+            pixelSize: platformStyle.fontSizeMedium
         }
     }
 
-    ScrollDecorator {
-        flickableItem: flickable
-        platformInverted: root.childrenInverted
+    Loader {
+        id: contentLoader
+
+        property bool columnEnabled: true
+
+        scale: 0.3
+        opacity: 0
+        anchors {
+            left: parent.left
+            right: parent.right
+            top: statusBar.visible ? statusBar.bottom: parent.top
+            bottom: toolBar.visible ? toolBar.top: parent.bottom
+        }
+
+        onStatusChanged: {
+            if (status == Loader.Ready) {
+                scaleAnimation.running = true
+                opacityAnimation.running = true
+            } else if (status == Loader.Error) {
+                waitText.text = "Syntax error"
+            }
+        }
+
+        PropertyAnimation { id: scaleAnimation; target: contentLoader; properties: "scale"; to: 1; duration: 200 }
+        PropertyAnimation { id: opacityAnimation; target: contentLoader; properties: "opacity"; to: 1; duration: 200 }
+    }
+
+    Component.onCompleted: timer.start()
+
+    Timer {
+        id: timer
+
+        repeat: false
+        triggeredOnStart: true
+
+        onTriggered: contentLoader.source = Qt.resolvedUrl("galleryContent.qml")
     }
 
     ToolBar {
@@ -126,9 +149,9 @@ Window {
 
             content: MenuLayout {
                 MenuItem {
-                    text: column.enabled ? "Disable" : "Enable"
+                    text: contentLoader.columnEnabled ? "Disable" : "Enable"
                     platformInverted: root.childrenInverted
-                    onClicked: column.enabled = !column.enabled
+                    onClicked: contentLoader.columnEnabled = !contentLoader.columnEnabled
                 }
                 MenuItem {
                     text: root.childrenInverted ? "Revert components" : "Invert components"
