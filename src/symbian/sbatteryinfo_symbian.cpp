@@ -40,18 +40,65 @@
 
 #include "sbatteryinfo.h"
 
-// dummy private class
-class SBatteryInfoPrivate
+#include "indicators/sdeclarativestatuspanedatasubscriber.h"
+#include <avkon.hrh>
+#include <aknstatuspanedata.h>
+
+class SBatteryInfoPrivate : public MSDeclarativeStatusPaneSubscriberObverver
 {
     Q_DECLARE_PUBLIC(SBatteryInfo)
 
 public:
-    SBatteryInfoPrivate(SBatteryInfo *qq) : q_ptr(qq) {}
+    SBatteryInfoPrivate(SBatteryInfo *qq);
+    ~SBatteryInfoPrivate();
+
+    void StatusPaneStateChanged(TStatusPaneChangeFlags aChangeFlags);
+
+    CSDeclarativeStatusPaneSubscriber *subscriber;
+    bool powerSaveModeEnabled;
+    bool charging;
+    int batteryLevel;
 
 private:
     SBatteryInfo *q_ptr;
 };
 
+SBatteryInfoPrivate::SBatteryInfoPrivate(SBatteryInfo *qq)
+     : powerSaveModeEnabled(false), charging(false), batteryLevel(0), q_ptr(qq)
+{
+    QT_TRAP_THROWING(subscriber = CSDeclarativeStatusPaneSubscriber::NewL(*this));
+    // Initialize property values
+    const TAknBatteryState &batteryState = subscriber->BatteryState();
+    powerSaveModeEnabled = (batteryState.iIconState != EAknBatteryIndicatorNormal);
+    charging = batteryState.iRecharging;
+    batteryLevel = batteryState.iBatteryStrength;
+}
+
+SBatteryInfoPrivate::~SBatteryInfoPrivate()
+{
+    delete subscriber;
+}
+
+void SBatteryInfoPrivate::StatusPaneStateChanged(TStatusPaneChangeFlags aChangeFlags)
+{
+    if (aChangeFlags & MSDeclarativeStatusPaneSubscriberObverver::EStatusPaneBatteryState) {
+        const TAknBatteryState &batteryState = subscriber->BatteryState();
+        bool newPowerSaveModeEnabled(batteryState.iIconState != EAknBatteryIndicatorNormal);
+
+        if (powerSaveModeEnabled != newPowerSaveModeEnabled) {
+            powerSaveModeEnabled = newPowerSaveModeEnabled;
+            emit q_ptr->powerSaveModeEnabledChanged(powerSaveModeEnabled);
+        }
+        if (charging != batteryState.iRecharging) {
+            charging = batteryState.iRecharging;
+            emit q_ptr->chargingChanged(charging);
+        }
+        if (batteryLevel != batteryState.iBatteryStrength) {
+            batteryLevel = batteryState.iBatteryStrength;
+            emit q_ptr->chargingChanged(batteryLevel);
+        }
+    }
+}
 
 SBatteryInfo::SBatteryInfo(QObject *parent) :
     QObject(parent), d_ptr(new SBatteryInfoPrivate(this))
@@ -60,17 +107,17 @@ SBatteryInfo::SBatteryInfo(QObject *parent) :
 
 int SBatteryInfo::batteryLevel() const
 {
-    return 1;
+    return d_ptr->batteryLevel;
 }
 
 bool SBatteryInfo::charging() const
 {
-    return false;
+    return d_ptr->charging;
 }
 
 bool SBatteryInfo::powerSaveModeEnabled() const
 {
-    return false;
+    return d_ptr->powerSaveModeEnabled;
 }
 
 #include "moc_sbatteryinfo.cpp"

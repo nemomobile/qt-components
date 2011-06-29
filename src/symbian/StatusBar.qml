@@ -71,11 +71,6 @@ Item {
             else
                 return 1;
         }
-
-        function convertedBatteryLevel(level) {
-            // Convert scale 1-100 to 1-7
-            return Math.floor(1 + (level * 6.9999 / 100))
-        }
     }
 
     MouseArea {
@@ -168,7 +163,9 @@ Item {
             sourceSize.height: priv.contentHeight
             sourceSize.width: Math.round(privateStyle.statusBarHeight * 24 / 26)
             fillMode: Image.PreserveAspectFit
-            source: privateStyle.imagePath("qtg_graf_battery_level_bg", root.platformInverted)
+            source: privateStyle.imagePath((privateBatteryInfo.powerSaveModeEnabled ?
+                "qtg_graf_battery_level_psm_bg" :
+                "qtg_graf_battery_level_bg"), root.platformInverted)
 
             Item {
                 id: batteryLevel
@@ -178,8 +175,8 @@ Item {
                 anchors.left: parent.left
                 anchors.top: parent.top
                 width: Math.round(privateStyle.statusBarHeight
-                    * (priv.convertedBatteryLevel(privateBatteryInfo.powerState == BatteryInfo.WallPowerChargingBattery
-                    ? animatedLevel : privateBatteryInfo.batteryLevel) + 2) / 13)
+                    * ((privateBatteryInfo.charging ? Math.floor(animatedLevel / 100) :
+                        privateBatteryInfo.batteryLevel) + 2) / 13)
                 height: parent.height
                 clip: true
                 LayoutMirroring.enabled: false
@@ -193,18 +190,30 @@ Item {
                     // Battery state mappings: Levels 0 and 1 are low, 2-4 are medium, 5-7 are full.
                     // Currently all levels use same graphics with white color.
 
-                    source: privateStyle.imagePath("qtg_graf_battery_level_full", root.platformInverted)
+                    source: privateStyle.imagePath((privateBatteryInfo.powerSaveModeEnabled ?
+                        "qtg_graf_battery_level_psm_full" :
+                        "qtg_graf_battery_level_full"), root.platformInverted)
                 }
+            }
+
+            Image {
+                // power save mode indicator
+                anchors.fill: parent
+                sourceSize.width: parent.sourceSize.width
+                sourceSize.height: parent.sourceSize.height
+                source: privateStyle.imagePath("qtg_graf_battery_psm")
+                visible: privateBatteryInfo.powerSaveModeEnabled
             }
 
             NumberAnimation {
                 id: batteryChargingAnimation
                 loops: Animation.Infinite
-                running: privateBatteryInfo.powerState == BatteryInfo.WallPowerChargingBattery
+                running: privateBatteryInfo.charging
                 target: batteryLevel
                 property: "animatedLevel"
-                from: 1
-                to: 100
+                // Use bigger range (compared to 0-7) in order to make the animation smoother.
+                from: 0
+                to: 799
                 duration: 3500
             }
         }

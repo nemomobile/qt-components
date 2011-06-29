@@ -97,6 +97,7 @@ void CSDeclarativeStatusPaneSubscriber::EnsureData()
             {
             iIndicatorState = iStateData.iIndicatorState;
             iSignalState = iStateData.iSignalState;
+            iBatteryState = iStateData.iBatteryState;
             iInitialized = ETrue;
             }
 #ifdef Q_DEBUG_SUBSCRIBER
@@ -118,6 +119,12 @@ TAknSignalState CSDeclarativeStatusPaneSubscriber::SignalState() const
     {
     const_cast<CSDeclarativeStatusPaneSubscriber*>(this)->EnsureData();
     return iSignalState;
+    }
+
+TAknBatteryState CSDeclarativeStatusPaneSubscriber::BatteryState() const
+    {
+    const_cast<CSDeclarativeStatusPaneSubscriber*>(this)->EnsureData();
+    return iBatteryState;
     }
 
 void CSDeclarativeStatusPaneSubscriber::DoCancel()
@@ -159,6 +166,13 @@ TBool SignalStatesEqual( const TAknSignalState& state1, const TAknSignalState& s
     return state1.iIconState == state2.iIconState && state1.iSignalStrength == state2.iSignalStrength;
     }
 
+TBool BatteryStatesEqual( const TAknBatteryState& state1, const TAknBatteryState& state2 )
+    {
+    return state1.iBatteryStrength == state2.iBatteryStrength &&
+        state1.iRecharging == state2.iRecharging &&
+        state1.iIconState == state2.iIconState;
+    }
+
 void CSDeclarativeStatusPaneSubscriber::RunL()
     {
     if ( iStatus != KErrNone )
@@ -186,6 +200,12 @@ void CSDeclarativeStatusPaneSubscriber::RunL()
         {
         iSignalState = iStateData.iSignalState;
         changeFlags |= MSDeclarativeStatusPaneSubscriberObverver::EStatusPaneSignalState;
+        }
+
+    if ( !iInitialized || !BatteryStatesEqual( iStateData.iBatteryState, iBatteryState ) )
+        {
+        iBatteryState = iStateData.iBatteryState;
+        changeFlags |= MSDeclarativeStatusPaneSubscriberObverver::EStatusPaneBatteryState;
         }
 
     iInitialized = ETrue;

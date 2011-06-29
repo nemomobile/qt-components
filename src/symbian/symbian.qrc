@@ -76,6 +76,9 @@
         <file alias="qtg_fr_statusbar.svg">resources/defaulttheme/graphics/qtg_fr_statusbar.svg</file>
         <file alias="qtg_graf_battery_level_bg.svg">resources/defaulttheme/graphics/qtg_graf_battery_level_bg.svg</file>
         <file alias="qtg_graf_battery_level_full.svg">resources/defaulttheme/graphics/qtg_graf_battery_level_full.svg</file>
+        <file alias="qtg_graf_battery_level_psm_bg.svg">resources/defaulttheme/graphics/qtg_graf_battery_level_psm_bg.svg</file>
+        <file alias="qtg_graf_battery_level_psm_full.svg">resources/defaulttheme/graphics/qtg_graf_battery_level_psm_full.svg</file>
+        <file alias="qtg_graf_battery_psm.svg">resources/defaulttheme/graphics/qtg_graf_battery_psm.svg</file>
         <file alias="qtg_graf_signal_level_bg.svg">resources/defaulttheme/graphics/qtg_graf_signal_level_bg.svg</file>
         <file alias="qtg_graf_signal_level_full.svg">resources/defaulttheme/graphics/qtg_graf_signal_level_full.svg</file>
         <file alias="qtg_graf_rating_rated.svg">resources/defaulttheme/graphics/qtg_graf_rating_rated.svg</file>

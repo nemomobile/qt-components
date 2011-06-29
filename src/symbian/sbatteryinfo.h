@@ -51,51 +51,25 @@ class SBatteryInfo : public QObject
     Q_OBJECT
 
     Q_PROPERTY(int batteryLevel READ batteryLevel NOTIFY batteryLevelChanged)
-    Q_PROPERTY(BatteryStatus batteryStatus READ batteryStatus NOTIFY batteryStatusChanged)
-    Q_PROPERTY(PowerState powerState READ powerState NOTIFY powerStateChanged)
-
-    Q_ENUMS(BatteryStatus)
-    Q_ENUMS(PowerState)
+    Q_PROPERTY(bool charging READ charging NOTIFY chargingChanged)
+    Q_PROPERTY(bool powerSaveModeEnabled READ powerSaveModeEnabled NOTIFY powerSaveModeEnabledChanged)
 
 public:
     explicit SBatteryInfo(QObject *parent = 0);
 
-    // Direct match to QSystemDeviceInfo::BatteryStatus
-    enum BatteryStatus {
-        NoBatteryLevel = 0,
-        BatteryCritical,
-        BatteryVeryLow,
-        BatteryLow,
-        BatteryNormal
-    };
-
-    // Direct match to QSystemDeviceInfo::PowerState
-    enum PowerState {
-        UnknownPower = 0,
-        BatteryPower,
-        WallPower,
-        WallPowerChargingBattery
-    };
-
     int batteryLevel() const;
-    BatteryStatus batteryStatus() const;
-    PowerState powerState() const;
+    bool charging() const;
+    bool powerSaveModeEnabled() const;
 
 Q_SIGNALS:
     void batteryLevelChanged(int level);
-    void batteryStatusChanged(BatteryStatus status);
-    void powerStateChanged(PowerState state);
+    void chargingChanged(bool charging);
+    void powerSaveModeEnabledChanged(bool enabled);
 
 protected:
     QScopedPointer<SBatteryInfoPrivate> d_ptr;
 
 private:
-#ifdef HAVE_MOBILITY
-    Q_PRIVATE_SLOT(d_func(), void _q_batteryLevelChanged(int))
-    Q_PRIVATE_SLOT(d_func(), void _q_batteryStatusChanged(QSystemDeviceInfo::BatteryStatus))
-    Q_PRIVATE_SLOT(d_func(), void _q_powerStateChanged(QSystemDeviceInfo::PowerState))
-#endif
-
     Q_DISABLE_COPY(SBatteryInfo)
     Q_DECLARE_PRIVATE(SBatteryInfo)
 };

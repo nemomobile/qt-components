@@ -54,7 +54,8 @@ public:
     enum TStatusPaneChangeFlags {
         EStatusPaneUndefined        = 0x00,
         EStatusPaneIndicatorsState  = 0x01,
-        EStatusPaneSignalState      = 0x02
+        EStatusPaneSignalState      = 0x02,
+        EStatusPaneBatteryState     = 0x04
     };
     virtual void StatusPaneStateChanged( TStatusPaneChangeFlags aChangeFlags ) = 0;
 };
@@ -67,6 +68,7 @@ public:
 
     TAknIndicatorState IndicatorState() const;
     TAknSignalState SignalState() const;
+    TAknBatteryState BatteryState() const;
 
 private:
     CSDeclarativeStatusPaneSubscriber( MSDeclarativeStatusPaneSubscriberObverver& aObserver );
@@ -84,6 +86,7 @@ private:
     MSDeclarativeStatusPaneSubscriberObverver& iObserver;
     TAknIndicatorState iIndicatorState;
     TAknSignalState iSignalState;
+    TAknBatteryState iBatteryState;
     TBool iInitialized;
 };
 

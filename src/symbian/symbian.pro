@@ -15,7 +15,6 @@ mobility {
 
 SOURCES += \
     plugin.cpp \
-    sbatteryinfo.cpp \
     sdeclarative.cpp \
     sdeclarativefocusscopeitem.cpp \
     sdeclarativeicon.cpp \
@@ -37,6 +36,7 @@ SOURCES += \
 
 symbian:symbian_internal {
     SOURCES += \
+        sbatteryinfo_symbian.cpp \
         indicators/sdeclarativeindicator.cpp \
         indicators/sdeclarativeindicatordata.cpp \
         indicators/sdeclarativeindicatordatahandler.cpp \
@@ -44,6 +44,7 @@ symbian:symbian_internal {
         indicators/sdeclarativestatuspanedatasubscriber.cpp
 } else {
     SOURCES += \
+        sbatteryinfo.cpp \
         indicators/sdeclarativenetworkindicator_p.cpp
 }
 
