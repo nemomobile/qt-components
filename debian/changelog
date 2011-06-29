@@ -1,3 +1,9 @@
+qt-components (1.0~git20110628-1) maverick; urgency=low
+
+  * Fixes: NB#268223 Paste function fails work if the text box has been pasted once after copying text from Notes app 
+
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Tue, 28 June 2011 13:40:00 +0300
+
 qt-components (1.0~git20110621-1) maverick; urgency=low
 
   * Fixes: NB#267339 It's not possible to move the cursor to the last positions of a line with the magnifier
