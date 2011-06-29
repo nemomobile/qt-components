@@ -122,7 +122,7 @@ Item {
         height: sizerCheckBox.checked ? heightSlider.value : undefined
         width: sizerCheckBox.checked ? widthSlider.value : undefined
 
-        icon: iconCheckBox.checked ? "qrc:tb_plus.png" : ""
+        icon: iconCheckBox.checked ? "qrc:/list8.svg" : ""
         titleText: "Query Dialog"
         message: "This is a test. This is a Test. This is a Test. This is a Test. This is a Test."
                  + "This is a test. This is a Test. This is a Test. This is a Test. This is a Test."

@@ -41,54 +41,23 @@
 import QtQuick 1.1
 import "." 1.1
 
-Dialog {
+CommonDialog {
     id: root
     objectName: "root"
 
-    property string titleText
     property string message
-    property alias acceptButtonText: acceptButton.text
-    property alias rejectButtonText: rejectButton.text
-    property alias icon: icon.source
+    property string acceptButtonText: acceptButton.text
+    property string rejectButtonText: rejectButton.text
+    property alias icon: root.titleIcon // for backwards compatibility
+
+    onAcceptButtonTextChanged: internal.updateButtonTexts()
+    onRejectButtonTextChanged: internal.updateButtonTexts()
 
     onStatusChanged: if (status == DialogStatus.Open) vertical.flash()
 
-    title: Item {
-        id: title
-        height: platformStyle.graphicSizeSmall + 2 * platformStyle.paddingLarge
-        width: parent.width
-
-        Image {
-            id: icon
-            sourceSize.width: platformStyle.graphicSizeSmall
-            sourceSize.height: platformStyle.graphicSizeSmall
-
-            anchors {
-                right: parent.right; rightMargin: icon.source != "" ? platformStyle.paddingLarge : 0
-                verticalCenter: parent.verticalCenter
-            }
-        }
-
-        Text {
-            font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
-            color: root.platformInverted ? platformStyle.colorNormalLinkInverted
-                                         : platformStyle.colorNormalLink
-            text: root.titleText
-            horizontalAlignment: Text.AlignLeft
-            verticalAlignment: Text.AlignVCenter
-            elide: Text.ElideRight
-
-            anchors {
-                left: title.left; leftMargin: platformStyle.paddingLarge
-                top: title.top; bottom: title.bottom
-                right: icon.left; rightMargin: platformStyle.paddingLarge
-            }
-        }
-    }
-
     content: Item {
         id: content
-        height: internal.getContentAreaHeight()
+        height: Math.min(label.height, root.platformContentMaximumHeight)
         width: parent.width
 
         Item {
@@ -134,48 +103,16 @@ Dialog {
         }
     }
 
-    buttons: ToolBar {
-        id: buttons
-        width: parent.width
-        height: privateStyle.toolBarHeightLandscape + 2 * platformStyle.paddingSmall
-        platformInverted: root.platformInverted
-        tools: Row {
-            id: buttonRow
-            anchors.centerIn: parent
-            spacing: platformStyle.paddingMedium
-
-            ToolButton {
-                id: acceptButton
-                // Different widths for 1 and 2 button cases
-                width: rejectButton.text == ""
-                    ? Math.round((privateStyle.dialogMaxSize - 3 * platformStyle.paddingMedium) / 2)
-                    : (buttons.width - 3 * platformStyle.paddingMedium) / 2
-                onClicked: accept()
-                visible: text != ""
-                platformInverted: root.platformInverted
-            }
-            ToolButton {
-                id: rejectButton
-                width: acceptButton.text == ""
-                    ? Math.round((privateStyle.dialogMaxSize - 3 * platformStyle.paddingMedium) / 2)
-                    : (buttons.width - 3 * platformStyle.paddingMedium) / 2
-                onClicked: reject()
-                visible: text != ""
-                platformInverted: root.platformInverted
-            }
-        }
-    }
-
     QtObject {
         id: internal
 
-        property int defaultContentHeight: root.height ? root.height - title.height - buttons.height
-            : label.height + 2 * platformStyle.paddingLarge
-
-        function getContentAreaHeight() {
-            // Constrain the default height within the bounds of the min and max heights
-            return Math.max(Math.min(defaultContentHeight, platformContentMaximumHeight),
-                privateStyle.dialogMinSize - title.height - buttons.height)
+        function updateButtonTexts() {
+            var newButtonTexts = []
+            if (acceptButtonText)
+                newButtonTexts.push(acceptButtonText)
+            if (rejectButtonText)
+                newButtonTexts.push(rejectButtonText)
+            root.buttonTexts = newButtonTexts
         }
     }
 }
