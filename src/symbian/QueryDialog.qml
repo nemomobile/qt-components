@@ -46,14 +46,24 @@ CommonDialog {
     objectName: "root"
 
     property string message
-    property string acceptButtonText: acceptButton.text
-    property string rejectButtonText: rejectButton.text
+    property string acceptButtonText
+    property string rejectButtonText
     property alias icon: root.titleIcon // for backwards compatibility
 
     onAcceptButtonTextChanged: internal.updateButtonTexts()
     onRejectButtonTextChanged: internal.updateButtonTexts()
 
-    onStatusChanged: if (status == DialogStatus.Open) vertical.flash()
+    onStatusChanged: {
+        if (status == DialogStatus.Open)
+            scrollBar.flash()
+    }
+
+    onButtonClicked: {
+        if (acceptButtonText && index == 0)
+            accepted()
+        else
+            rejected()
+    }
 
     content: Item {
         id: content
@@ -85,7 +95,7 @@ CommonDialog {
             }
 
             ScrollBar {
-                id: vertical
+                id: scrollBar
                 height: parent.height
                 anchors { top: flickable.top; right: flickable.right }
                 flickableItem: flickable
