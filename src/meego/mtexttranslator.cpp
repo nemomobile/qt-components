@@ -44,17 +44,28 @@
 #include <QLocale>
 #include <QTranslator>
 
+#ifdef HAVE_SYSTEMINFO
+#include <QSystemInfo>
+#endif
+
 MTextTranslator::MTextTranslator()
 {
     QCoreApplication *app = QCoreApplication::instance();
     Q_ASSERT(app);
+
+#ifdef HAVE_SYSTEMINFO
+    QtMobility::QSystemInfo *sysInfo = new QtMobility::QSystemInfo(this);
+    QString locale = sysInfo->currentLanguage();
+#else
     QString locale = QLocale::system().name();
+#endif
+
     m_translator = new QTranslator(this);
     if (locale == "C") {
         m_translator->load(QString("/usr/share/l10n/meegotouch/libmeegotouch.qm"));
-	} else {
+        } else {
         m_translator->load(QString("/usr/share/l10n/meegotouch/common_")+locale);
-	}
+        }
     app->installTranslator(m_translator);
 }
 
