@@ -155,16 +155,18 @@ see \l{examples/native/scalability/scalableconfiguration}{Scalable Configuration
 \brief Using device independent measurement units.
 
 This example demonstrates how to use device independent measurement units. In this example
-we are using millimeters for as an device independet measurement unit.
+we are using millimeters for as an device independent measurement unit.
 
 \image example-scalability-millimeters-portrait.jpg
 
-For more details, see: \l {Device Independent Scalable Measurements}
+For more details, see: \l {Scalable Measurements and Rounding}
 
 \section1 Walkthrough
 
-Firstly, we define a helper function for calculating pixels per millimeters from dots
-per inch (dpi) of the screen.
+Firstly, we define a helper function for calculating pixels per millimeters
+from dots per inch (dpi) of the screen. We apply rounding to ensure that the
+calculated value is an integer number of pixels, see the \l {Rounding of
+Measurements} example for more information.
 
 \snippet examples/native/scalability/millimeters/ScalableUI.js 0
 
@@ -458,4 +460,152 @@ messages in a font defined by the configuration object.
 It is possible to combine the idea of  selecting different top-level
 layouts with the loading of different configuration files based on
 screen size, see \l{examples/native/scalability/separatelayouts}{Loading Separate Layouts Based on Screen Configuration}.
+*/
+
+/*!
+\example examples/native/scalability/rounding
+\ingroup qt-components-example
+\title Rounding of Measurements
+\brief Using Rounding to Ensure Integer Pixel Measurements.
+
+\section1 Introduction
+
+This example demonstrates how rounding in Javascript expressions can be used to
+ensure that all layout measurements are ultimately rendered using integer
+values. The example demonstrates the same layout scenarios with and without the
+application of rounding. This gives a direct comparison between the outcomes,
+in order to demonstrate the importance of using rounding correctly.
+
+In most cases, layouts are defined using the built in layout managers available
+in QML. These managers are responsible for ensuring that layouts look good, but
+this is based on the assumption that all measurements and component sizes will
+be defined in integer pixel measurements. Therefore, in order to get the best
+visual performance, it is important to enforce the rule that all measurements
+must eventually be calculated as an integer value.
+
+This includes:
+
+    \list
+
+        \o Declared Item height and width measurements
+        \o Declared margin and spacing sizes
+        \o Declared Image sizes
+        \o Item x and y coordinate positions relative to a container
+        \o Conversion of device independent measurement units into pixels
+        \o Sharing available space between a number of items
+        \o Distributing items within a parent, with equally sized gaps
+
+    \endlist
+
+Note that any non-integer item positions will result in automatic rounding of
+the final drawing of both Text and Image elements. However, when resizing or
+scrolling items, the effect of rounding can be different, and hence
+inconsistent. If there are any non-integer measurements or positions, in any
+container all the way down the containment hierarchy from the screen, this
+could effect the visual quality of any other items at that level or below in
+the hierarchy.
+
+Also note that clipping can occur in a way that means the edge of a non-integer
+sized item might not be visible, This could potentially create visual drawing
+artefacts.
+
+Therefore, it is highly recommended that every calculation that results in a
+measurement value should be rounded, either rounded up or down according to the
+exact needs of the layout. This means every occasion that division occurs; in
+particular when converting device independent measurements into pixels, and
+also when sharing some available space between a variable number of items.
+
+
+\section1 Walkthrough of Even Distribution Example
+
+This example page demonstrates how to distribute a number of items within a
+container. The items might be of equal size, or they might be of variable size.
+In this example, the items are all different sizes to demonstrate the point.
+
+The page definition includes two copies of the "rounder" component in a column.
+The first instance has rounding disabled, while the second instance has
+rounding enabled. The slider can be used to resize the column.
+
+Each rounder generates a number of children, where the width depends on the
+index in the repeater. This is just an example, but it could be that an
+arbitrary set of child items are declared with different widths, or the child
+items could all be identical with the same width; the gap rounding issue would
+apply in each case.
+
+\snippet examples/native/scalability/rounding/GapsPage.qml page_a
+\dots 4
+\snippet examples/native/scalability/rounding/GapsPage.qml column_a
+\dots 8
+\snippet examples/native/scalability/rounding/GapsPage.qml loaders
+\dots 4
+\snippet examples/native/scalability/rounding/GapsPage.qml column_b
+\snippet examples/native/scalability/rounding/GapsPage.qml page_b
+
+The rounder contains a number of Rectangle children. It performs the role of a
+layout manager, and therefore must update its layout when its parent or
+children configuration changes.
+
+\snippet examples/native/scalability/rounding/GapsPage.qml rounder_a
+\snippet examples/native/scalability/rounding/GapsPage.qml repeater
+\snippet examples/native/scalability/rounding/GapsPage.qml rounder_b
+
+Finally the layoutChildren method calculates the x positions of each child.
+Notice that the evenlyDistributed property is used to determine whether to
+apply the rounding.
+
+\snippet examples/native/scalability/rounding/GapsPage.qml layoutChildren
+
+In the image, you can see that the gaps on the first row are not consistent.
+However, note that if the gaps are larger, it becomes increasingly difficult to
+notice the visual artefacts.
+
+\image example-scalability-rounding-gaps.png
+
+\section1 Walkthrough of ListView Example
+
+This example shows the effect of using rounding when using a ListView. We
+declare two ListView instances; each ListView instance uses the same delegate,
+but the rounding property is set to false for the first list, and true for the
+second list.
+
+Note that the width of each list is calculated by dividing the container size. In
+the first case this is not rounded, and in the second case it is rounded.
+
+\snippet examples/native/scalability/rounding/ListsPage.qml page_a
+\dots 4
+\snippet examples/native/scalability/rounding/ListsPage.qml row_a
+\dots 8
+\snippet examples/native/scalability/rounding/ListsPage.qml row_b
+\dots 4
+\snippet examples/native/scalability/rounding/ListsPage.qml page_b
+
+This is the list delegate, which checks the rounding property of the list.
+In this case, the item height is a fixed pixel value.
+
+\snippet examples/native/scalability/rounding/ListsPage.qml listitem_a
+\snippet examples/native/scalability/rounding/ListsPage.qml listitem_b
+
+
+As the slider is moved, you can see that the width of the boundary of the list
+items is shown as a different width depending on the exact ratio of the
+container size. However, in the right hand example, the rounding means that the
+appearance is consistent whatever the container size.
+
+\image example-scalability-rounding-lists.png
+
+In practice, with more subtle list item separators, these artefacts would not
+be as visible to the user.
+
+\section1 Conclusion
+
+All measurements, sizes, gaps, margins, spacings, items, must all be either
+defined as, or eventually calcuated as integer pixel values. This applies to
+the entire layout containment hierarchy. All division operators should be
+followed by either rounding, floor, or ceiling operations.
+
+In practice, if the platform style uses subtle highlights and list item
+separators, then many of these symptoms will remain un-noticed. However, it is
+recommended that the rounding rules are still applied to provide future-proof
+layout definitions, and to ensure that the user interface is consistent throughout.
+
 */
