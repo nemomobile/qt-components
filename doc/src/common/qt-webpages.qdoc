@@ -80,3 +80,11 @@
     \externalpage http://doc.qt.nokia.com/qtcreator/creator-deployment-symbian.html
     \title external: Symbian Deployment in Creator
 */
+/*!
+    \externalpage http://doc.qt.nokia.com/4.7-snapshot/qml-righttoleft.html
+    \title external: Qt Quick Right to Left Support
+*/
+/*!
+    \externalpage http://doc.qt.nokia.com/4.7-snapshot/qml-item.html#implicitWidth-prop
+    \title external: Qt Quick Implicit Size Support
+*/

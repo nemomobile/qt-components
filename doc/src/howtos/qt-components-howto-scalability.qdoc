@@ -50,7 +50,7 @@
 
         \o \l { Device Categories }
 
-        \o \l { Device Independent Scalable Measurements }
+        \o \l { Scalable Measurements and Rounding }
 
         \o \l { Scalability Testing }
 
@@ -409,9 +409,29 @@
 
     for more information on basic layout usage.
 
-    */
+    \section1 Right to Left Layouts
 
+    Right to Left layout functionality is provided by Qt Quick, and is
+    supported by Qt Quick Components. See \l {external: Qt Quick Right to Left Support}
+    {Qt Quick Right to Left Support} for more information.
 
+    \note The ToolBarLayout component is designed to not support this feature,
+    as it is a requirement that the visual order of the tools is not mirrored
+    when mirroring is enabled.
+
+    This documentation was introduced in Qt Quick Components 1.1.
+
+    \section1 Implicit Size
+
+    Many of the Qt Quick Components define their implicit size. This means that
+    they will adopt a size that reflects their contents (and other factors such
+    as the \l {Platform Style}), unless otherwise overridden by declaration or
+    by a containing layout manager.
+
+    For more information, see the documentation for \l {external: Qt Quick Implicit Size Support}
+    {Qt Quick Implicit Size Support}.
+
+*/
 
 /*!
     \page qt-components-scalability-guidelines-top-level-form-factors.html
@@ -513,7 +533,7 @@
 
     For more information, see the section on \l { Scalability Testing }.
 
-    */
+*/
 
 /*!
     \page qt-components-scalability-guidelines-orientation-specific-layouts.html
@@ -1108,42 +1128,11 @@
 */
 
 /*!
-    \page qt-components-scalability-guidelines-right-to-left-layouts.html
-    \title Right to Left Layouts
-    \contentspage Scalability Guidelines Contents
-    \previouspage Device Independent Scalable Measurements
-    \nextpage qt-components-scalability-guidelines-contents.html
-
-    For a typical application developed in a western locale, the layout design
-    will initially assume that text reading direction, and other layout
-    elements, flows from left to right across the screen, following the
-    direction of text.
-
-    However, in order to prepare the application for localization, it is worth
-    planning the layouts and how they can be mirrored into a right-to-left
-    configuration from the outset.
-
-    Automatic configurable right-to-left layout mirroring is not currently
-    supported by the Qt Declarative module. However, it is possible to design
-    your applicaiton for left-to-right layout, and then when the mirroring
-    support is implemented, it will be compatible with your original design.
-
-    In that case, all of the layouts will be automatically mirrored. It will
-    then be possible to add additional informaiton to your application to
-    configure and control exactly each visual element to ensure that the
-    mirroring behavior is applied only where needed.
-
-    For most general applications, almost all of the UI elements should be
-    mirrored, and therefore the automatic feature can be relied on to provide
-    the correct behavior.
-
-    Note that this feature is will NOT be made available for Symbian based
-    devices that support Qt Quick, if they have software version PR2 firmware or earlier.
-    In that case, the automatic mirroring feature is not supported.
-
-    See also \l
-    { http://bugreports.qt.nokia.com/browse/QTBUG-11042 }{ QTBUG-11042 } (Add
-    right-to-left locale support to Qt Quick elements) for more information.
+    \page qt-components-scalability-guidelines-scalability-testing.html
+    \title Scalability Testing
+    \contentspage Creating Scalable Applications
+    \previouspage Scalable Measurements and Rounding
+    \nextpage Creating Scalable Applications
 
     \section1 Complete Scalability Testing
 
@@ -1195,10 +1184,6 @@
 
         \o Symbian emulator: good for debugging Symbian code, but relatively
         slow turnaround time for effective testing
-
-        \o Simulator: provides features for rotating the device, and a slider
-        enabling a zoom function for viewing the layout at an appopriate
-        physical size (although with scaling artefacts)
 
         \o Target: deploying directly to device for rapid hardware testing.
         This is the best way to ensure that the fonts are correct, and that you
