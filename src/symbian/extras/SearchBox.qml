@@ -75,6 +75,7 @@ Item {
     ToolButton {
         id: backToolButton; objectName: "backToolButton"
         flat: true
+        platformInverted: root.platformInverted
         iconSource: privateStyle.imagePath("toolbar-back", root.platformInverted)
         height: privateStyle.tabBarHeightPortrait
         width: privateStyle.tabBarHeightPortrait
@@ -129,7 +130,8 @@ Item {
             anchors.rightMargin: platformStyle.paddingSmall
             anchors.verticalCenter: textPanel.verticalCenter
             clip: true
-            color: platformStyle.colorNormalDark
+            color: root.platformInverted ? platformStyle.colorNormalLightInverted
+                                         : platformStyle.colorNormalDark
             selectByMouse: true
             selectedTextColor: platformStyle.colorNormalLight
             selectionColor: platformStyle.colorTextSelection
@@ -164,7 +166,8 @@ Item {
             anchors.right: clearButton.left
             anchors.rightMargin: platformStyle.paddingMedium
             anchors.verticalCenter: textPanel.verticalCenter
-            color: platformStyle.colorNormalMid
+            color: root.platformInverted ? platformStyle.colorNormalMidInverted
+                                         : platformStyle.colorNormalMid
             font: searchTextInput.font
             visible: (!searchTextInput.activeFocus) && (!searchTextInput.text) && text
         }
