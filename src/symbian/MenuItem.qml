@@ -190,7 +190,10 @@ Item {
             }
             case Qt.Key_Left:
             case Qt.Key_Right: {
-                // Consume event but do nothing
+                // If this MenuItem belongs to Menu invoke highlight
+                // in other cases consume event but do nothing
+                if (ListView.view == null && symbian.listInteractionMode != Symbian.KeyNavigation)
+                    symbian.listInteractionMode = Symbian.KeyNavigation
                 break
             }
             default: {
