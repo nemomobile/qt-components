@@ -52,7 +52,7 @@
 
         \o \l { Device Independent Scalable Measurements }
 
-        \o \l { Right to Left Layouts }
+        \o \l { Scalability Testing }
 
     \endlist
 
@@ -232,9 +232,9 @@
         needed.
 
         \o To achieve scalable and maintainable layout definitions, it is
-        recommended that you should define measurements using \l {Device
-        Independent Scalable Measurements} for each separate \l {Device Categories}{Device
-        Category}.
+        recommended that you should define measurements using \l {Scalable
+        Measurements and Rounding} for each separate \l {Device
+        Categories}{Device Category}.
 
         \o Always define measurements separately from the layout definitions,
         in a common place. Allocate clear responsibility and processes for
@@ -251,8 +251,9 @@
         target component layouts where appropriate, to reduce the dependencies
         between the animations and the layouts.
 
-        \o Know the extreme limits of your user interface design, and test that
-        it looks good as you approach those limits.
+        \o Know the extreme limits of your user interface design, and \l
+        {Scalability Testing}{test that it looks good} as you approach those
+        limits.
 
         \o Always re-test every device profile after upgrading the import
         version of the Qt Quick Components library, the import version of Qt Quick,
@@ -301,6 +302,8 @@
     \o \l {examples/native/scalability/millimeters}{Millimeters as
     Device-Independent Measurement Units}
 
+    \o \l {examples/native/scalability/rounding}{Rounding of Measurements}
+
     \o Using positioners to create a scalable layout:
     \l {examples/native/scalability/positioners/column-layout}{Column},
     \l {examples/native/scalability/positioners/row-layout}{Row},
@@ -325,7 +328,7 @@
     \previouspage Scalability Examples Summary
     \nextpage Top Level Form Factors
 
-    \section1 Overview
+    \section1 Layout Managers
 
     For a given form factor, top level layout structure definitions, or
     component layout structure definitions, should in general be defined in a
@@ -359,7 +362,7 @@
     expressions, a richer variety of designs can be expressed, without having
     to rely upon additional layout measurements specifc to each Device Profile.
 
-    \section1 Examples
+    \section2 Examples
 
     For example, in the \l {ScaleFM example for Symbian}{ScaleFM} application,
     there is a layout that uses a helper item to define margins:
@@ -862,7 +865,7 @@
     \title Device Categories
     \contentspage Creating Scalable Applications
     \previouspage Platform Style
-    \nextpage Device Independent Scalable Measurements
+    \nextpage Scalable Measurements and Rounding
 
     \section1 Overview
 
@@ -963,7 +966,7 @@
 
     If you choose to define your layout measurements based on Device
     Categories, or using a Generic configuration, you should consider using
-    either \l { Device Independent Scalable Measurements } or use \l { Platform Style }
+    either \l { Scalable Measurements and Rounding } or use \l { Platform Style }
     when specifying layout measurements in your \l { Application Style } files.
 
     \section2 Layout Configuration Strategies
@@ -1014,11 +1017,11 @@
 
     \list
 
-    \o \l{examples/native/scalability/scalableconfiguration}{Loading Separate Layouts
-    Based on Screen Configuration}
+        \o \l{examples/native/scalability/scalableconfiguration}{Loading
+        Separate Layouts Based on Screen Configuration}
 
-    \omit \o \l{native/scalability/layoutconfiguration}{Loading Separate Layout
-    Configurations Based on Screen Configuration} \endomit
+        \o \l {examples/native/scalability/scalableconfiguration}{Loading
+        Separate Layout Configurations Based on Screen Configuration}
 
     \endlist
 
@@ -1030,9 +1033,9 @@
     \title Scalable Measurements and Rounding
     \contentspage Creating Scalable Applications
     \previouspage Device Categories
-    \nextpage Right to Left Layouts
+    \nextpage Scalability Testing
 
-    \section1 Overview
+    \section1 Scalable Measurements
 
     When using Qt-Components to create scalable applications, it may be
     convenient to define layout measurements in a device independent way. This
@@ -1052,37 +1055,56 @@
 
     \section1 Rounding
 
-    Hower, in order to correctly convert real number measurements to pixels, it
-    is necessary to first perform the conversion based on device DPI, and then
-    to apply rounding. Rounding is important in a number of cases:
+    In order to correctly convert real number measurements to pixels, it is
+    necessary to first perform the calculations so that the result is in real
+    number measurement of pixels, and then to apply rounding. If there are any
+    measurements that are not rounded, images and text are automatically
+    aligned to the nearest pixel. However, Rounding is important in a number of
+    cases:
 
     \list
 
-    \o To ensure that layout definitions are applied consistently, especially
-    when contained inside Flickable components such as lists. In this case, any
-    rounding errors in item size calculations can cause the distance between
-    graphic items to be variable, causing a "crawling" visual effect.
+    \o When items are contained inside Flickable components such as lists. In
+    this case, any rounding errors in item size calculations would cause the
+    distance between graphic items to be variable whilst the content is
+    scrolling relative to the container, causing a "crawling" visual effect.
+    Therefore it's important that each item is a round number of pixels (in the
+    direction of scrolling).
 
     \o When sharing space between a number of items using division. For example
-    if you need to divide the width of a container into three equal parts (in
-    practice, the parts might not be equal once the rounding to integer pixel
-    distances has occurred, due to rounding issues, but that is preferable to
-    the effects of using non-rounded floating point values).
+    if you need to divide the width of a container into three equal parts, or
+    if you need to evenly distribute several items in a container using exactly
+    the same size of spacing between each item. In this case, you should also
+    ensure that the remainder of the rounding is also shared between the outer
+    margins.
+
+    \o Ensure that all layout measurements are defined as even numbers of
+    pixels. This guarantees that center aligned items have exactly the same
+    number of pixels on either side. The \l {Platform Style} measurements are
+    all defined following this guideline, and screen sizes are naturally
+    defined as a multiple of two (or a multiple of a power of two).
 
     \endlist
 
     \section1 Examples
 
     For example, consider the following javascript implementations for "mm" and
-    "dp", which are used in the the \l {ScaleFM example for Symbian}{ScaleFM}
+    "dp", which are used in the \l {ScaleFM example for Symbian}{ScaleFM}
     application:
 
     \snippet examples/symbian/scalefm/resources/layouts/Normal/High/AppStyle.qml conversion
 
-    See also the example that illustrates using
-    \l{examples/native/scalability/millimeters}{Millimeters as Device-Independent
-    Measurement Units}
+    See also the following examples:
 
+    \list
+
+    \o The use of
+    \l{examples/native/scalability/millimeters}{Millimeters as Device-Independent Measurement Units}
+
+    \o The advantages of \l
+    {examples/native/scalability/rounding}{rounding measurements}
+
+    \endlist
 */
 
 /*!
@@ -1123,5 +1145,153 @@
     { http://bugreports.qt.nokia.com/browse/QTBUG-11042 }{ QTBUG-11042 } (Add
     right-to-left locale support to Qt Quick elements) for more information.
 
-*/
+    \section1 Complete Scalability Testing
 
+    In general, it is necessary to perform testing of each application against
+    all known layout Device Profiles, including those corresponding to devices
+    that are available in the market.
+
+    However, it's also highly recommended that you perform complete scalability
+    testing, even if this means that you will be testing Device Profiles that
+    are not available in practice. By testing that your application is scalable
+    \e {in principle}, it is more likely that your application will function
+    in a reasonable way on unknown future devices, that may be released after
+    your application is published. However, it also means that your layouts
+    have been designed in a way that is easier to maintain.
+
+    Don't forget to test:
+
+    \list
+
+        \o Extremely tall and extremely wide screen sizes
+
+        \o Extremely large and small screen sizes
+
+        \o Extremely high and low DPI values
+
+    \endlist
+
+    One approach to layout testing is to create a cut-down version of your
+    application, which only includes the user interface, and any test code
+    needed to exercise all of the application layouts, even without data
+    sources such as web services. This makes it faster and easier to test the
+    visual appearance, and can simplify dependencies on other components or
+    external data sources.
+
+    For example, if there are elements in your interface that can only be
+    accessed by making a phone call, you could consider turning this into a
+    separate component that can be tested from within a test harness
+    application.
+
+    \section1 Using the SDK
+
+    It can be convenient and practical to use the different SDK environments to
+    perform different kinds of testing:
+
+    \list
+
+        \o Desktop (Symbian style): excellent for initial layout testing and
+        dynamic scalability testing.
+
+        \o Symbian emulator: good for debugging Symbian code, but relatively
+        slow turnaround time for effective testing
+
+        \o Simulator: provides features for rotating the device, and a slider
+        enabling a zoom function for viewing the layout at an appopriate
+        physical size (although with scaling artefacts)
+
+        \o Target: deploying directly to device for rapid hardware testing.
+        This is the best way to ensure that the fonts are correct, and that you
+        are assessing the layouts at the correct DPI and viewing distance.
+
+    \endlist
+
+    Target testing also ensures that any dynamic timing behaviour of state
+    changes, signal execution order etc, are correct, and all of these things
+    can affect the final layout.
+
+    \section1 Dynamic Scalability Testing
+
+    The best approach to testing complete scalabillty is using Qt in the
+    desktop environment. The Qt application is contained within a window on the
+    desktop, which means that you can resize the parent window using the mouse.
+    This means that you can dynamically resize the "window" (in the desktop
+    sense of the word), which gives a better visual impression of the
+    relationships between the components.
+
+    It's important to know the extreme limits of your user interface design,
+    and test that it looks good as you approach those limits. Here are some
+    testing tips:
+
+    \list
+
+        \o Move the mouse at a steady rate to give a useful impression of how
+        the layout is changing.
+
+        \o To begin, make small adjustments to the width and height of the
+        desktop window.
+
+        \o Gradually modify the DPI in order to more accurately simulate
+        different Device Profiles
+
+        \o Draw out an arc, as you change from a portrait orientation, to
+        square, and then to landscape. This helps to visualize the change as if
+        it was a continuous curve.
+
+    \endlist
+
+    In order to test the DPI, see the ScaleFM example application.
+    For example you could create a popup window for testing purposes that has
+    buttons to change the DPI, without making any changes to your application
+    layout. Alternatively, you could use the Setting Window as described below.
+
+    \note As soon as you resize the desktop window, your screen size will no
+    longer match one of the official Device Profiles. Therefore, if you have
+    defined any Device Profile specific layout definition files, they will be
+    invalid, and therefore the Category or generic layout defintions will be
+    used. So, it's important to resize the window, change the DPI, and also
+    test the specific Device Profiles. Only by completing all these
+    tasks can you paint a complete picture of your application's layout
+    behavior.
+
+    \section2 Settings Window
+
+    In order to more effectively test the supported Device Profiles in the
+    desktop environment, consider including the settings window feature in your
+    application. This allows you to select a specifc Device Profile for any
+    application, and also to edit the DPI value.
+
+    \list 1
+
+        \o Include \c { qt-components\tests\manual\shared\settingswindow.pri
+        } in your .pro file
+
+        \o Include \c { settingswindow_p.h } from your \c { main.cpp }
+
+        \o Instantiate the settings window within your \c { main() } function
+
+        \o Press SHIFT+CTRL+ALT+S to launch the display settings window
+
+    \endlist
+
+    To instantiate the settings window, add this code to your \c { main() }
+    function:
+
+    \code
+    SettingsWindow settingsWindow(view);
+    \endcode
+
+    \section1 Conclusion
+
+    You must remember to test the scalability for each separate Page or view
+    within your application, including when using popup windows.
+
+    The Qt Quick Components all provide excellent scalability, but you still
+    need to ensure that they are interacting with your application layouts
+    correctly.
+
+    Finally, always re-test every device profile after upgrading the import
+    version of the Qt-components library, the import version of Qt Quick, the
+    Qt Release used, or your application's layout definitions.
+
+*/
