@@ -87,7 +87,7 @@
         navigation with \l {Page}{Pages}.
         \o \l {List Components for Symbian} - Symbian additions to the \l ListView
         elements
-        \o \l {Scalability Guidelines Contents}{Scalability Guide} - Mobile
+        \o \l {Creating Scalable Applications}{Scalability Guide} - Mobile
         applications have \e scalable user interfaces. This guide uses the Qt
         Quick Components for creating a real-world scalable application.
     \endlist

@@ -82,7 +82,7 @@
                 \list
                     \o \l{Introduction to the Qt Quick components}{Components introduction}
                     \o \l{components-cookbook}{Common interface designs}
-                    \o \l{Scalability Guidelines Contents}{Scalability Guidelines}
+                    \o \l{Creating Scalable Applications}{Scalability Guidelines}
                 \endlist
             \o
                 \list

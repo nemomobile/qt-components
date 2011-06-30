@@ -27,7 +27,7 @@
 
 /*!
     \page qt-components-scalability-guidelines-contents.html
-    \title Scalability Guidelines Contents
+    \title Creating Scalable Applications
     \nextpage Scalability Guidelines Overview
 
     Table of contents:
@@ -60,7 +60,7 @@
 
 /*!
     \page qt-components-scalability-guidelines-overview.html
-    \previouspage Scalability Guidelines Contents
+    \previouspage Creating Scalable Applications
     \nextpage Scalability Examples Summary
 
     \title Scalability Guidelines Overview
@@ -266,7 +266,7 @@
 
     \page qt-components-scalability-guidelines-examples-summary.html
     \title Scalability Examples Summary
-    \contentspage Scalability Guidelines Contents
+    \contentspage Creating Scalable Applications
     \previouspage Scalability Guidelines Overview
     \nextpage Use the Layout Features of QML
 
@@ -321,7 +321,7 @@
 /*!
     \page qt-components-scalability-guidelines-layout-features.html
     \title Use the Layout Features of QML
-    \contentspage Scalability Guidelines Contents
+    \contentspage Creating Scalable Applications
     \previouspage Scalability Examples Summary
     \nextpage Top Level Form Factors
 
@@ -413,7 +413,7 @@
 /*!
     \page qt-components-scalability-guidelines-top-level-form-factors.html
     \title Top Level Form Factors
-    \contentspage Scalability Guidelines Contents
+    \contentspage Creating Scalable Applications
     \previouspage Use the Layout Features of QML
     \nextpage Orientation Specific Layouts
 
@@ -508,12 +508,14 @@
     being handled correctly. Make sure to test application shutdown whilst
     viewing each page of the application separately.
 
+    For more information, see the section on \l { Scalability Testing }.
+
     */
 
 /*!
     \page qt-components-scalability-guidelines-orientation-specific-layouts.html
     \title Orientation Specific Layouts
-    \contentspage Scalability Guidelines Contents
+    \contentspage Creating Scalable Applications
     \previouspage Top Level Form Factors
     \nextpage Application Style
 
@@ -631,7 +633,7 @@
 /*!
     \page qt-components-scalability-guidelines-application-style.html
     \title Application Style
-    \contentspage Scalability Guidelines Contents
+    \contentspage Creating Scalable Applications
     \previouspage Orientation Specific Layouts
     \nextpage Platform Style
 
@@ -741,7 +743,7 @@
 /*!
     \page qt-components-scalability-guidelines-platform-style.html
     \title Platform Style
-    \contentspage Scalability Guidelines Contents
+    \contentspage Creating Scalable Applications
     \previouspage Orientation Specific Layouts
     \nextpage Device Categories
 
@@ -858,7 +860,7 @@
 /*!
     \page qt-components-scalability-guidelines-device-configurations.html
     \title Device Categories
-    \contentspage Scalability Guidelines Contents
+    \contentspage Creating Scalable Applications
     \previouspage Platform Style
     \nextpage Device Independent Scalable Measurements
 
@@ -949,7 +951,7 @@
 
     In practice, DPI has a strong effect on text height at medium densities,
     whilst aspect ratio will have a stronger impact than resolution on the
-    layout of a particular applicaion view in a particular device profile. This
+    layout of a particular application view in a particular device profile. This
     leads to the recommendation to make layout definitions depend on the
     container aspect ratio rather than the current Device Orientation.
 
@@ -986,7 +988,7 @@
         \o If the application's page content is scale independent (e.g. a
         mapping application) or if QML layout managers can be used with no
         measurements to define all required layout designs, then the
-        application may not need Applicaiton Style files or Platform Style
+        application may not need Application Style files or Platform Style
         measurements at all.
 
     \endlist
@@ -1025,8 +1027,8 @@
 
 /*!
     \page qt-components-scalability-guidelines-device-independent-measurement-units.html
-    \title Device Independent Scalable Measurements
-    \contentspage Scalability Guidelines Contents
+    \title Scalable Measurements and Rounding
+    \contentspage Creating Scalable Applications
     \previouspage Device Categories
     \nextpage Right to Left Layouts
 

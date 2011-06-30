@@ -41,8 +41,7 @@
     where the radio stations have frequencies that happen to correspond to the
     current screen DPI.
 
-    This application illustrates how to implement the \l {Scalability
-    Guidelines Contents}{Scalability Guidelines}.
+    This application illustrates how to implement the \l {Creating Scalable Applications}{Scalability Guidelines}.
 
     \section1 Instructions
 
