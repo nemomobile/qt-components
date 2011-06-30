@@ -188,6 +188,11 @@ Item {
                 }
                 break
             }
+            case Qt.Key_Left:
+            case Qt.Key_Right: {
+                // Consume event but do nothing
+                break
+            }
             default: {
                 event.accepted = false
                 break
