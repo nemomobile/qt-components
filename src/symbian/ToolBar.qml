@@ -116,7 +116,7 @@ Item {
                 // Active state
                 State {
                     name: ""
-                    PropertyChanges { target: item; visible: true }
+                    PropertyChanges { target: item; visible: true; opacity: 1 }
                 },
 
                 // Start state for pop entry, end state for push exit.
