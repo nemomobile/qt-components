@@ -43,6 +43,7 @@
 #include "sdeclarativeicon.h"
 #include "sdeclarativefocusscopeitem.h"
 #include "sdeclarativeimplicitsizeitem.h"
+#include "sdeclarativeinputcontext.h"
 #include "sdeclarativeimageprovider.h"
 #include "sdeclarativemaskedimage.h"
 #include "sdeclarativescreen.h"
@@ -90,6 +91,9 @@ public:
 
         screen = new SDeclarativeScreen(engine, context); // context as parent
         context->setContextProperty("screen", screen);
+
+        inputContext = new SDeclarativeInputContext(screen, context); // context as parent
+        context->setContextProperty("inputContext", inputContext);
 
         style = new SStyleFactory(screen, context);
         context->setContextProperty("platformStyle", style->platformStyle());
@@ -141,6 +145,7 @@ public:
         qmlRegisterUncreatableType<SPageStatus>(uri, 1, 1, "PageStatus", "");
         qmlRegisterUncreatableType<SBatteryInfo>(uri, 1, 1, "BatteryInfo", "");
         qmlRegisterUncreatableType<SNetworkInfo>(uri, 1, 1, "NetworkInfo", "");
+        qmlRegisterUncreatableType<SDeclarativeInputContext>(uri, 1, 1, "InputContext", "");
     }
 
 public slots:
@@ -159,6 +164,7 @@ public slots:
 
 private:
     QDeclarativeContext *context;
+    SDeclarativeInputContext *inputContext;
     SDeclarativeScreen *screen;
     SStyleFactory *style;
 };

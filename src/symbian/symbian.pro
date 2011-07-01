@@ -20,6 +20,7 @@ SOURCES += \
     sdeclarativeicon.cpp \
     sdeclarativeimageprovider.cpp \
     sdeclarativeimplicitsizeitem.cpp \
+    sdeclarativeinputcontext.cpp \
     sdeclarativemagnifier.cpp \
     sdeclarativemaskedimage.cpp \
     sdeclarativescreen.cpp \
@@ -32,7 +33,16 @@ SOURCES += \
     sstyleengine.cpp \
     sstylefactory.cpp \
     indicators/sdeclarativeindicatorcontainer.cpp \
-    indicators/sdeclarativenetworkindicator.cpp
+    indicators/sdeclarativenetworkindicator.cpp \
+
+symbian {
+    SOURCES += \
+        sdeclarativeinputcontext_p_symbian.cpp \
+        sdeclarativetouchinput.cpp
+} else {
+    SOURCES += \
+        sdeclarativeinputcontext_p.cpp
+}
 
 symbian:symbian_internal {
     SOURCES += \
@@ -55,6 +65,7 @@ HEADERS += \
     sdeclarativeicon.h \
     sdeclarativeimageprovider.h \
     sdeclarativeimplicitsizeitem.h \
+    sdeclarativeinputcontext.h \
     sdeclarativemagnifier.h \
     sdeclarativemaskedimage.h \
     sdeclarativemaskedimage_p.h \
@@ -71,6 +82,16 @@ HEADERS += \
     indicators/sdeclarativeindicatorcontainer.h \
     indicators/sdeclarativenetworkindicator.h \
     indicators/sdeclarativenetworkindicator_p.h
+
+symbian: {
+    HEADERS += \
+        sdeclarativeinputcontext_p_symbian.h \
+        sdeclarativetouchinput.h
+
+} else {
+    HEADERS += \
+        sdeclarativeinputcontext_p.h
+}
 
 symbian:symbian_internal {
     HEADERS +=  \
@@ -158,6 +179,8 @@ symbian {
         LIBS += -laknskins // For AknsUtils
         LIBS += -lbafl // For TResourceReader
         LIBS += -lfbscli // For CFbsBitmap
+        LIBS += -lcdlengine
+        LIBS += -laknlayout2scalable
     }
 
     BLD_INF_RULES.prj_exports += "qtcomponents_1_1.iby $$CORE_MW_LAYER_IBY_EXPORT_PATH(qtcomponents_1_1.iby)"
