@@ -46,7 +46,7 @@ Item {
     property real dimm: 0.8
     property int animationDuration: 500
     property Item visualParent: null
-    property bool platformInverted: false // TODO: not effective at the moment
+    property bool platformInverted: false // supports inverted, but looks the same
 
     signal clicked
 
