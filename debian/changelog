@@ -1,3 +1,9 @@
+qt-components (1.0~git20110630-1) maverick; urgency=low
+
+  * Fixes: NB#268578 - Language change not reflected when QML app is launched from invoker
+
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Thu, 30 June 2011 15:10:00 +0300
+
 qt-components (1.0~git20110628-1) maverick; urgency=low
 
   * Fixes: NB#268223 Paste function fails work if the text box has been pasted once after copying text from Notes app 
