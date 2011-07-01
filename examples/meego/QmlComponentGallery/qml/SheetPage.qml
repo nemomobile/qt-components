@@ -82,6 +82,7 @@ Page {
         
         acceptButtonText: "Save"
         rejectButtonText: "Cancel"
+        rejectButton.enabled: !disableCancelButton.checked
 
         title: BusyIndicator {
             anchors.centerIn: parent; running: sheet.status == DialogStatus.Open;
@@ -100,12 +101,9 @@ Page {
                 anchors.top: parent.top
                 spacing: 10
                 Button {
+                    id: disableCancelButton
                     text: "Disable cancel button"
-                    onClicked: if (sheet.getButton("rejectButton")) sheet.getButton("rejectButton").enabled = false
-                }
-                Button {
-                    text: "Enable cancel button"
-                    onClicked: if (sheet.getButton("rejectButton")) sheet.getButton("rejectButton").enabled = true
+                    checkable: true
                 }
                 Button {
                     text: "Three"
