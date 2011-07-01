@@ -52,13 +52,6 @@ Column {
         objectName: "switch1"
         width: parent.width
         focus: true
-
-        Rectangle {
-            z: -1
-            anchors.fill: parent
-            color: "#00000000"
-            border.color: "red"
-        }
     }
 
     Switch {
@@ -66,13 +59,6 @@ Column {
         objectName: "switch2"
         width: switch1.width
         checked: true
-
-        Rectangle {
-            z: -1
-            anchors.fill: parent
-            color: "#00000000"
-            border.color: "red"
-        }
 
         Rectangle {
             id: implSizeRect

@@ -50,37 +50,13 @@ Item {
 
         CheckBox {
             id: checkBox1
-            width: parent.width
             focus: true
-
-            Rectangle {
-                z: -1
-                anchors.fill: parent
-                color: "#00000000"
-                border.color: "red"
-            }
-
-            Rectangle {
-                anchors { left: parent.left; verticalCenter: parent.verticalCenter }
-                width: parent.implicitWidth
-                height: parent.implicitHeight
-                color: "#00000000"
-                border.color: "blue"
-            }
         }
 
         CheckBox {
             id: checkBox2
-            width: checkBox1.width
             text: "checkBox2"
             checked: true
-
-             Rectangle {
-                z: -1
-                anchors.fill: parent
-                color: "#00000000"
-                border.color: "red"
-            }
 
             Rectangle {
                 anchors { left: parent.left; verticalCenter: parent.verticalCenter }
@@ -93,7 +69,6 @@ Item {
 
         CheckBox {
             id: checkBox3
-            width: checkBox2.width
             enabled: checkBox2.checked
             text: checkBox2.checked ? "enabled" : "disabled"
         }
