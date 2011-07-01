@@ -86,6 +86,7 @@ private slots:
     void selectWord();
     void positionAt();
     void positionToRectangle();
+    void softwareInputPanel();
 
 private:
     QObject *findTextInput(QObject *root);
@@ -562,6 +563,13 @@ void tst_quickcomponentstextfield::positionToRectangle()
 
     // the position shouldn't have changed
     QCOMPARE(oldPosition, componentObject->property("cursorPosition").toInt());
+}
+
+
+void tst_quickcomponentstextfield::softwareInputPanel()
+{
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "openSoftwareInputPanel"), "Could not openSoftwareInputPanel");
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "closeSoftwareInputPanel"), "Could not closeSoftwareInputPanel");
 }
 
 QTEST_MAIN(tst_quickcomponentstextfield)

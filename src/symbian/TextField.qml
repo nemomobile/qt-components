@@ -95,6 +95,14 @@ FocusScope {
         return rect;
     }
 
+    function openSoftwareInputPanel() {
+        textInput.openSoftwareInputPanel()
+    }
+
+    function closeSoftwareInputPanel() {
+        textInput.closeSoftwareInputPanel()
+    }
+
     // API extensions
     implicitWidth: platformLeftMargin + platformRightMargin + flick.tiny * 2 +
                    Math.max(privateStyle.textWidth(text, textInput.font), priv.minWidth)
@@ -190,6 +198,8 @@ FocusScope {
                     opacity: 0
                 }
 
+
+                activeFocusOnPress: false
                 autoScroll: false
                 cursorVisible: activeFocus && !selectedText
                 enabled: root.enabled

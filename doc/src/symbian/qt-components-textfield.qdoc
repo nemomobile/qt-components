@@ -597,3 +597,22 @@
     \sa cursorPosition, TextInput::positionToRectangle()
 
 */
+
+/*!
+    \qmlmethod TextField::openSoftwareInputPanel()
+
+    Opens the virtual keyboard for typing. On Symbian-based devices the user can open the virtual keyboard by tapping TextField.
+
+    \sa closeSoftwareInputPanel, TextEdit::openSoftwareInputPanel()
+*/
+
+/*!
+    \qmlmethod TextField::closeSoftwareInputPanel()
+
+    Closes the virtual keyboard shown on the screen. On Symbian-based devices the user can open the virtual keyboard by tapping TextField.
+
+    \note Currently closeSoftwareInputPanel does not work on Symbian. For more information, see \l
+    {http://bugreports.qt.nokia.com/browse/QTBUG-20033}{QTBUG-20033}.
+
+    \sa openSoftwareInputPanel, TextEdit::closeSoftwareInputPanel()
+*/
