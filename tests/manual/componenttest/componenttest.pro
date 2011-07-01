@@ -67,6 +67,7 @@ OTHER_FILES += \
     tests/ContextMenu.qml \
     tests/DatePickerDialog.qml \
     tests/InfoBanner.qml \
+    tests/InputContext.qml \
     tests/Dialog.qml \
     tests/Indicators.qml \
     tests/KeyNavigation.qml \
