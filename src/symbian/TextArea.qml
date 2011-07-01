@@ -95,6 +95,14 @@ FocusScopeItem {
         return rect;
     }
 
+    function openSoftwareInputPanel() {
+        textEdit.openSoftwareInputPanel()
+    }
+
+    function closeSoftwareInputPanel() {
+        textEdit.closeSoftwareInputPanel()
+    }
+
     // API extensions
     property alias placeholderText: placeholder.text
     // TODO: Refactor implicit size when following bugs are resolved
@@ -292,6 +300,7 @@ FocusScopeItem {
                         value: privy.wrapWidth
                     }
                 }
+                activeFocusOnPress: false
                 enabled: root.enabled
                 focus: true
                 font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
@@ -304,8 +313,6 @@ FocusScopeItem {
                                                       : platformStyle.colorTextSelection
                 textFormat: TextEdit.AutoText
                 wrapMode: TextEdit.Wrap
-                // TODO: Use desktop text selection behaviour for now.
-                selectByMouse: true
                 height: flick.height
                 width: flick.width
                 // TODO: Make bug report?

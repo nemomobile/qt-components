@@ -76,6 +76,7 @@ private slots:
     void wrapMode();
     void inputMethodHints();
     void errorHighlight();
+    void softwareInputPanel();
 
 private:
     // our internal objects
@@ -468,6 +469,12 @@ void tst_quickcomponentstextarea::inputMethodHints()
 
     QVERIFY( componentObject->setProperty("inputMethodHints", QVariant(Qt::ImhNoAutoUppercase | Qt::ImhUppercaseOnly | Qt::ImhNoPredictiveText)) );
     QCOMPARE( componentObject->property("inputMethodHints"), QVariant(Qt::ImhNoAutoUppercase | Qt::ImhUppercaseOnly | Qt::ImhNoPredictiveText) );
+}
+
+void tst_quickcomponentstextarea::softwareInputPanel()
+{
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "openSoftwareInputPanel"), "Could not openSoftwareInputPanel");
+    QVERIFY2(QMetaObject::invokeMethod(componentObject, "closeSoftwareInputPanel"), "Could not closeSoftwareInputPanel");
 }
 
 QTEST_MAIN(tst_quickcomponentstextarea)
