@@ -45,8 +45,7 @@ FocusScope {
     id: root
     anchors.fill: parent
     property variant focusItem: textFields.activeFocus ? textFields : textAreas.activeFocus
-                                                       ? textAreas  : textInputs.activeFocus
-                                                       ? textInputs : null
+                                                       ? textAreas  : null
     property bool platformInverted: false
     focus: true
 
@@ -66,115 +65,96 @@ FocusScope {
     Rectangle {
         border { color: "hotpink"; width: 4 }
         color: "#00000000"; radius: 5; opacity: 0.80
-        x: focusItem ? focusItem.x + container.anchors.margins / 2: 0
-        y: focusItem ? focusItem.y + container.anchors.margins / 2: 0
-        height: focusItem ? focusItem.height + container.anchors.margins : 0
-        width: focusItem ? focusItem.width + container.anchors.margins : 0
+        x: focusItem ? focusItem.x - focusItem.anchors.margins / 2 : 0
+        y: focusItem ? focusItem.y - focusItem.anchors.margins / 2: 0
+        height: focusItem ? focusItem.height + focusItem.anchors.margins : 0
+        width: focusItem ? focusItem.width + focusItem.anchors.margins : 0
         visible: focusItem ? focusItem.activeFocus : false
         Behavior on y { SpringAnimation { spring: 1; damping: 0.1 } }
     }
 
-    Column {
-        id: container
+    ListView {
+        id: textFields
 
-        property real h: (height - spacing * (children.length - 1)) / children.length
-
-        anchors { fill: parent; margins: 10 }
-        spacing: 10
-
-        ListView {
-            id: textFields
-
-            delegate: TextField {
-                text: name
-                placeholderText: "Enter Name"
-                width: textFields.width
-                platformInverted: root.platformInverted
-                onActiveFocusChanged: if (activeFocus) textFields.currentIndex = index
-            }
-
-            model: ListModel {
-                ListElement {name: "Bob"}
-                ListElement {name: "John"}
-                ListElement {name: "Michael"}
-                ListElement {name: ""}
-                ListElement {name: "Greg"}
-                ListElement {name: "Eric"}
-                ListElement {name: "Oliver"}
-                ListElement {name: "Jack"}
-            }
-
-            clip: true; spacing: 5
-            height: parent.h; width: parent.width
-            highlight: highlight
-            highlightFollowsCurrentItem: false
-            focus: true
-            KeyNavigation.down: textAreas
+        anchors {
+            top: parent.top
+            left: parent.left
+            right: parent.right
+            bottom: inputContext.visible ? vkb.top : undefined
+            margins: platformStyle.paddingLarge
         }
 
-        ListView {
-            id: textAreas
-
-            delegate: TextArea {
-                text: name
-                placeholderText: "Enter Text"
-                width: textAreas.width
-                platformInverted: root.platformInverted
-                onActiveFocusChanged: if (activeFocus) textAreas.currentIndex = index
-            }
-
-            model: ListModel {
-                ListElement {name: "This is a really long piece of text."}
-                ListElement {name: "This is a really long piece of text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. "}
-                ListElement {name: "This is a really long piece of text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tristique augue ac mauris cursus vel porta tortor aliquet."}
-                ListElement {name: ""}
-                ListElement {name: "This is a really long piece of text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tristique augue ac mauris cursus vel porta tortor aliquet. Nam tristique augue ac mauris cursus vel porta tortor aliquet."}
-            }
-
-            clip: true; spacing: 5
-            height: parent.h; width: parent.width
-            highlight: highlight
-            highlightFollowsCurrentItem: false
-            KeyNavigation.up: textFields; KeyNavigation.down: textInputs
+        delegate: TextField {
+            text: name
+            placeholderText: "Enter Name"
+            width: textFields.width
+            platformInverted: root.platformInverted
+            onActiveFocusChanged: if (activeFocus) textFields.currentIndex = index
         }
 
-        ListView {
-            id: textInputs
-
-            delegate: FocusScope {
-                anchors.margins: 5
-                width: textInputs.width; height: textInput.font.pixelSize + anchors.margins
-
-                Rectangle {
-                    anchors.fill: parent
-                    color: "khaki"; radius: 5
-                }
-
-                TextInput {
-                    id: textInput
-                    anchors { left: parent.left; right: parent.right; verticalCenter: parent.verticalCenter }
-                    color: "black"; focus: true
-                    text: name
-                    font.pixelSize: 18
-                    onActiveFocusChanged: if (activeFocus) textInputs.currentIndex = index
-                }
-            }
-
-            model: ListModel {
-                ListElement {name: "Bob"}
-                ListElement {name: "John"}
-                ListElement {name: "Michael"}
-                ListElement {name: ""}
-                ListElement {name: "Greg"}
-                ListElement {name: "Oliver"}
-                ListElement {name: "Jack"}
-            }
-
-            clip: true
-            height: parent.h; width: parent.width; spacing: 5
-            highlight: highlight
-            highlightFollowsCurrentItem: false
-            KeyNavigation.up: textAreas
+        model: ListModel {
+            ListElement {name: "Bob"}
+            ListElement {name: "John"}
+            ListElement {name: "Michael"}
+            ListElement {name: ""}
+            ListElement {name: "Greg"}
+            ListElement {name: "Eric"}
+            ListElement {name: "Oliver"}
+            ListElement {name: "Jack"}
         }
+
+        clip: true; spacing: platformStyle.paddingMedium
+        height: visible ? parent.height * 1/2 - platformStyle.paddingMedium * 2 : 0
+        highlight: highlight
+        highlightFollowsCurrentItem: false
+        focus: true
+        visible: activeFocus || !vkb.visible
+        KeyNavigation.up: textAreas; KeyNavigation.down: textAreas
+    }
+
+    ListView {
+        id: textAreas
+
+        anchors {
+            top: activeFocus && vkb.visible ? parent.top : textFields.bottom
+            left: parent.left
+            right: parent.right
+            bottom: inputContext.visible ? vkb.top : undefined
+            margins: platformStyle.paddingLarge
+        }
+
+        delegate: TextArea {
+            text: name
+            placeholderText: "Enter Text"
+            width: textAreas.width
+            platformInverted: root.platformInverted
+            onActiveFocusChanged: if (activeFocus) textAreas.currentIndex = index
+        }
+
+        model: ListModel {
+            ListElement {name: "This is a really long piece of text."}
+            ListElement {name: "This is a really long piece of text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. "}
+            ListElement {name: "This is a really long piece of text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tristique augue ac mauris cursus vel porta tortor aliquet."}
+            ListElement {name: ""}
+            ListElement {name: "This is a really long piece of text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tristique augue ac mauris cursus vel porta tortor aliquet. Nam tristique augue ac mauris cursus vel porta tortor aliquet."}
+        }
+
+        clip: true; spacing: platformStyle.paddingMedium
+        height: visible ? parent.height * 1/2 - platformStyle.paddingMedium * 2 : 0
+        highlight: highlight
+        highlightFollowsCurrentItem: false
+        visible: activeFocus || !vkb.visible
+        KeyNavigation.up: textFields; KeyNavigation.down: textFields
+    }
+
+    Item {
+        id: vkb
+        anchors {
+            bottom: parent.bottom
+            right: parent.right
+            left: parent.left
+        }
+        height: inputContext.visible ? inputContext.height : 0
+        visible: inputContext.visible
     }
 }

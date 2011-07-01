@@ -486,4 +486,9 @@ ApplicationWindow {
             MenuItem { text: "Automatic"; onClicked: layoutDirectionSetter.setLayoutDirection(Qt.LayoutDirectionAuto) }
         }
     }
+
+    Connections {
+        target: inputContext;
+        onVisibleChanged: mainWindow.fullScreen =  inputContext.visible
+    }
 }

@@ -50,7 +50,7 @@ FocusScope {
         property bool portrait:    screen.currentOrientation == Screen.Portrait
                                 || screen.currentOrientation == Screen.PortraitInverted
 
-        property real contentHeight: parent.height * (privy.portrait ? 7/8 : 5/6) - platformStyle.paddingSmall * 3
+        property real contentHeight: parent.height - buttons.height
     }
 
     ButtonRow {
@@ -85,9 +85,9 @@ FocusScope {
 
         property real h: (height - spacing * (children.length - 1)) / children.length
 
-        anchors { top: buttons.bottom; left: parent.left }
-        height: privy.contentHeight * (privy.portrait ? 2/3 : 1)
-        width: parent.height * (privy.portrait ? 1/8 : 1/6)
+        anchors { top: buttons.bottom; left: parent.left; bottom: privy.portrait ? settings.top : vbk.top }
+        width: visible ? h : 0
+        visible: !inputContext.visible
 
         Button {
             id: bold; objectName: "bold"
@@ -117,11 +117,12 @@ FocusScope {
     TextArea {
         id: textArea; objectName: "textArea"
         anchors {
-            top: buttons.bottom; left: style.right
+            top: buttons.bottom
+            left: style.right
             right: privy.portrait ? parent.right : settings.left
+            bottom: privy.portrait ? settings.top : vbk.top
         }
 
-        height: privy.contentHeight * (privy.portrait ? 2/3 : 1)
         placeholderText: "Enter text here"
         platformMaxImplicitWidth: root.width - style.width - (privy.portrait ? 0 : settings.width)
         enabled: enable.checked
@@ -146,13 +147,25 @@ FocusScope {
    TextSettings {
         id: settings
         anchors {
-            top: privy.portrait ? textArea.bottom : buttons.bottom
-            bottom: root.bottom
+            top: privy.portrait ? undefined : buttons.bottom
+            bottom: vbk.top
             right: parent.right
             topMargin: platformStyle.paddingSmall
             bottomMargin: platformStyle.paddingSmall
         }
+        height: visible ? privy.contentHeight * 1/3 : 0
         width: privy.portrait ? parent.width : parent.width * 2/5
+        visible: !privy.portrait || !inputContext.visible
+    }
+
+    Item {
+        id: vbk
+        anchors {
+            bottom: root.bottom
+            right: parent.right
+            left: parent.left
+        }
+        height: inputContext.visible ? inputContext.height : 0
     }
 
     Menu {
@@ -164,8 +177,8 @@ FocusScope {
         }
     }
 
-   Connections {
-       target: optionsButton
-       onClicked: optionMenu.open()
-   }
+    Connections {
+        target: optionsButton
+        onClicked: optionMenu.open()
+    }
 }

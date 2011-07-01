@@ -97,9 +97,4 @@ Item {
             textField.closeSoftwareInputPanel()
         }
     }
-
-    Connections {
-        target: inputContext;
-        onVisibleChanged: mainWindow.fullScreen =  inputContext.visible
-    }
 }
