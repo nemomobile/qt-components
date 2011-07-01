@@ -68,6 +68,7 @@ Item {
     }
 
     Item {
+        id: clipItem
         height: flickableArea.height - internal.clipMargin
         width: root.width
         clip: true
@@ -157,18 +158,18 @@ Item {
                 }
             }
         }
+    }
 
-        ScrollBar {
-            id: scrollBar
-            flickableItem: flickableArea
-            interactive: false
-            visible: flickableArea.height < flickableArea.contentHeight
-            anchors {
-                top: flickableArea.top
-                right: flickableArea.right
-            }
-            platformInverted: root.platformInverted
+    ScrollBar {
+        id: scrollBar
+        flickableItem: flickableArea
+        interactive: false
+        visible: flickableArea.height < flickableArea.contentHeight
+        anchors {
+            top: clipItem.top
+            right: clipItem.right
         }
+        platformInverted: root.platformInverted
     }
 
     Connections {

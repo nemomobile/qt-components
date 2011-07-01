@@ -81,6 +81,7 @@ CommonDialog {
 
         Item {
             // Clipping item with bottom margin added to align content with rounded background graphics
+            id: clipItem
             anchors.fill: parent
             anchors.bottomMargin: platformStyle.paddingSmall
             clip: true
@@ -111,15 +112,14 @@ CommonDialog {
                     }
                 }
             }
-
-            ScrollBar {
-                id: scrollBar
-                flickableItem: listView
-                interactive: false
-                visible: listView.contentHeight > contentItem.height
-                platformInverted: root.platformInverted
-                anchors { top: listView.top; right: listView.right }
-            }
+        }
+        ScrollBar {
+            id: scrollBar
+            flickableItem: listView
+            interactive: false
+            visible: listView.contentHeight > contentItem.height
+            platformInverted: root.platformInverted
+            anchors { top: clipItem.top; right: clipItem.right }
         }
     }
 
