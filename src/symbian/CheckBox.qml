@@ -138,6 +138,22 @@ Item {
         sourceSize.width: privateStyle.buttonSize
         sourceSize.height: privateStyle.buttonSize
         smooth: true
+
+        MouseArea {
+            id: mouseArea
+            anchors.fill: parent
+
+            onPressed: stateGroup.state = "Pressed"
+            onReleased: stateGroup.state = ""
+            onClicked: stateGroup.state = ""
+            onExited: stateGroup.state = "Canceled"
+            onCanceled: {
+                // Mark as canceled
+                stateGroup.state = "Canceled"
+                // Reset state. Can't expect a release since mouse was ungrabbed
+                stateGroup.state = ""
+            }
+        }
     }
 
     Text {
@@ -151,22 +167,6 @@ Item {
         font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
         color: root.enabled ? (root.pressed ? internal.pressedColor : internal.normalColor)
                             : internal.disabledColor
-    }
-
-    MouseArea {
-        id: mouseArea
-        anchors.fill: parent
-
-        onPressed: stateGroup.state = "Pressed"
-        onReleased: stateGroup.state = ""
-        onClicked: stateGroup.state = ""
-        onExited: stateGroup.state = "Canceled"
-        onCanceled: {
-            // Mark as canceled
-            stateGroup.state = "Canceled"
-            // Reset state. Can't expect a release since mouse was ungrabbed
-            stateGroup.state = ""
-        }
     }
 
     SequentialAnimation {
@@ -188,7 +188,7 @@ Item {
             duration: 170
         }
     }
-    
+
     Keys.onPressed: {
         if (!event.isAutoRepeat && (event.key == Qt.Key_Select
                                     || event.key == Qt.Key_Return
