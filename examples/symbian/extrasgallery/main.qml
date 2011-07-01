@@ -44,9 +44,13 @@ import com.nokia.extras 1.1
 import LayoutDirectionSetter 1.0
 
 ApplicationWindow {
-    id: root
+    id: mainWindow
 
     property Menu menu
+
+    // for demonstration and testing purposes each component needs to
+    // set its inverted state explicitly
+    property bool childrenInverted: false
 
     LayoutMirroring.enabled: Qt.application.layoutDirection == Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
@@ -60,24 +64,26 @@ ApplicationWindow {
         ToolButton {
             flat: true
             iconSource: "toolbar-back"
-            onClicked: root.pageStack.depth <= 1 ? Qt.quit() : root.pageStack.pop()
+            platformInverted: mainWindow.childrenInverted
+            onClicked: mainWindow.pageStack.depth <= 1 ? Qt.quit() : mainWindow.pageStack.pop()
         }
         ToolButton {
             flat: true
             iconSource: "toolbar-menu"
+            platformInverted: mainWindow.childrenInverted
             onClicked: {
                 if (!menu)
-                    menu = menuComponent.createObject(root)
+                    menu = menuComponent.createObject(mainWindow)
                 menu.open()
             }
         }
     }
 
     Component.onCompleted: {
-        root.pageStack.push(pageComponent)
+        mainWindow.pageStack.push(pageComponent)
         // clear the toolBar pointer, prevents subpages from
         // accidentally removing common application tools
-        root.pageStack.toolBar = null
+        mainWindow.pageStack.toolBar = null
     }
 
     Component {
@@ -95,7 +101,7 @@ ApplicationWindow {
                     var component = Qt.createComponent(file)
 
                     if (component.status == Component.Ready) {
-                        root.pageStack.push(component);
+                        mainWindow.pageStack.push(component);
                         console.log("Loading component okay");
                     }
                     else {
@@ -147,6 +153,7 @@ ApplicationWindow {
                     delegate: ListItem {
                         id: listItem
                         height: 68
+                        platformInverted: mainWindow.childrenInverted
 
                         Row {
                             id: listItemRow
@@ -161,6 +168,7 @@ ApplicationWindow {
                                     width: listItemRow.width
                                     role: "Title"
                                     text: title
+                                    platformInverted: mainWindow.childrenInverted
                                 }
 
                                 ListItemText {
@@ -169,6 +177,7 @@ ApplicationWindow {
                                     role: "SubTitle"
                                     text: subtitle
                                     visible: text != ""
+                                    platformInverted: mainWindow.childrenInverted
                                 }
                             }
                         }
@@ -179,6 +188,7 @@ ApplicationWindow {
 
                 ScrollDecorator {
                     flickableItem: list
+                    platformInverted: mainWindow.childrenInverted
                 }
             } // item
         } // page
@@ -189,21 +199,52 @@ ApplicationWindow {
 
         Menu {
             id: theMenu
-
+            platformInverted: mainWindow.childrenInverted
             content: MenuLayout {
-                MenuItem { text: "Quit"; onClicked: Qt.quit() }
-                MenuItem { text: "Set layout dir"; platformSubItemIndicator: true; onClicked: layoutDirectionSubMenu.open()}
+                MenuItem {
+                    text: mainWindow.childrenInverted ? "Revert components" : "Invert components"
+                    platformInverted: mainWindow.childrenInverted
+                    onClicked: mainWindow.childrenInverted = !mainWindow.childrenInverted
+                }
+                MenuItem {
+                    text: mainWindow.platformInverted ? "Revert background" : "Invert background"
+                    platformInverted: mainWindow.childrenInverted
+                    onClicked: mainWindow.platformInverted = !mainWindow.platformInverted
+                }
+                MenuItem {
+                    text: "Set layout dir"
+                    platformSubItemIndicator: true
+                    platformInverted: mainWindow.childrenInverted
+                    onClicked: layoutDirectionSubMenu.open()
+                }
+                MenuItem {
+                    text: "Quit"
+                    platformInverted: mainWindow.childrenInverted
+                    onClicked: Qt.quit()
+                }
             }
         }
     }
 
     Menu {
         id: layoutDirectionSubMenu
-
+        platformInverted: mainWindow.childrenInverted
         MenuLayout {
-            MenuItem { text: "LeftToRight"; onClicked: layoutDirectionSetter.setLayoutDirection(Qt.LeftToRight) }
-            MenuItem { text: "RightToLeft"; onClicked: layoutDirectionSetter.setLayoutDirection(Qt.RightToLeft) }
-            MenuItem { text: "Automatic"; onClicked: layoutDirectionSetter.setLayoutDirection(Qt.LayoutDirectionAuto) }
+            MenuItem {
+                text: "LeftToRight"
+                platformInverted: mainWindow.childrenInverted
+                onClicked: layoutDirectionSetter.setLayoutDirection(Qt.LeftToRight)
+            }
+            MenuItem {
+                text: "RightToLeft"
+                platformInverted: mainWindow.childrenInverted
+                onClicked: layoutDirectionSetter.setLayoutDirection(Qt.RightToLeft)
+            }
+            MenuItem {
+                text: "Automatic"
+                platformInverted: mainWindow.childrenInverted
+                onClicked: layoutDirectionSetter.setLayoutDirection(Qt.LayoutDirectionAuto)
+            }
         }
     }
 }

@@ -51,6 +51,7 @@ Item {
     property int index: -1
     property bool firstColumn: false
     property Item view: viewContainer.item
+    property bool platformInverted: parent ? parent.platformInverted : false
 
     opacity: enabled ? C.TUMBLER_OPACITY_FULL : C.TUMBLER_OPACITY
     width: childrenRect.width
@@ -73,7 +74,7 @@ Item {
         anchors.left: parent.left
         height: firstColumn ? 0 : viewContainer.height
         width: firstColumn ? 0 : Math.round(platformStyle.paddingSmall / 2)
-        source: privateStyle.imagePath("qtg_fr_tumbler_divider")
+        source: privateStyle.imagePath("qtg_fr_tumbler_divider", template.platformInverted)
         border { 
             left: platformStyle.borderSizeMedium
             top: platformStyle.borderSizeMedium
@@ -169,7 +170,7 @@ Item {
             elide: Text.ElideRight
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            color: platformStyle.colorNormalLight
+            color: templateInternal.normalColor
             font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
             anchors.fill: parent
         }
@@ -189,7 +190,7 @@ Item {
                 horizontalAlignment: tumblerColumn.privateTextAlignment
                 verticalAlignment: Text.AlignVCenter
                 color: (tumblerColumn.privateLoopAround ? delegateItem.PathView.isCurrentItem : delegateItem.ListView.isCurrentItem) ?
-                        platformStyle.colorHighlighted : platformStyle.colorNormalLight
+                        templateInternal.highlightColor : templateInternal.normalColor
                 font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
                 anchors { fill: parent; margins: platformStyle.paddingLarge }
 
@@ -226,7 +227,7 @@ Item {
             objectName: "highlight"
             width: tumblerColumn ? tumblerColumn.width + divider.width : 0
             height: privateStyle.menuItemHeight
-            source: privateStyle.imagePath("qtg_fr_tumbler_highlight")
+            source: privateStyle.imagePath("qtg_fr_tumbler_highlight", template.platformInverted)
             border { 
                 left: platformStyle.borderSizeMedium
                 top: platformStyle.borderSizeMedium
@@ -241,6 +242,10 @@ Item {
 
         property int columnFitWidth: -1
         property int delegatesCount: 0
+        property color normalColor: template.platformInverted ? platformStyle.colorNormalLightInverted
+                                                              : platformStyle.colorNormalLight
+        property color highlightColor: template.platformInverted ? platformStyle.colorHighlightedInverted
+                                                                 : platformStyle.colorHighlighted
 
         onDelegatesCountChanged: {
             if (tumblerColumn.privateResizeToFit && delegatesCount == tumblerColumn.items.count)

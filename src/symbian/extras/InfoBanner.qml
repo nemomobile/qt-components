@@ -49,14 +49,16 @@ Item {
     property alias text: text.text
     property alias timeout : timer.interval
     property bool interactive : false
+    property bool platformInverted: false
 
     signal clicked
 
     function open() {
         root.parent = internal.rootObject();
         internal.setZOrder();
-        background.source = root.interactive ? privateStyle.imagePath("qtg_fr_popup_infobanner_normal")
-                                             : privateStyle.imagePath("qtg_fr_popup_infobanner");
+        var suffix = root.interactive ? "_normal" : ""
+        background.source = privateStyle.imagePath("qtg_fr_popup_infobanner" + suffix,
+                                                   root.platformInverted)
         stateGroup.state = "Visible";
         if (timer.interval)
             timer.restart();
@@ -97,7 +99,14 @@ Item {
                                  : (root.width - platformStyle.paddingLarge * 2);
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignLeft
-            color: mouseArea.pressed ?  platformStyle.colorPressed : platformStyle.colorNormalLight
+            color: {
+                if (mouseArea.pressed)
+                    return root.platformInverted ? platformStyle.colorPressedInverted
+                                                 : platformStyle.colorPressed
+                else
+                    return root.platformInverted ? platformStyle.colorNormalDarkInverted
+                                                 : platformStyle.colorNormalLight
+            }
             wrapMode: Text.Wrap
             font {
                 pixelSize: platformStyle.fontSizeMedium
@@ -172,13 +181,15 @@ Item {
         function press() {
             if (root.interactive) {
                 privateStyle.play(Symbian.BasicButton);
-                background.source = privateStyle.imagePath("qtg_fr_popup_infobanner_pressed");
+                background.source = privateStyle.imagePath("qtg_fr_popup_infobanner_pressed",
+                                                           root.platformInverted);
             }
         }
 
         function release() {
             if (root.interactive)
-                background.source = privateStyle.imagePath("qtg_fr_popup_infobanner_normal");
+                background.source = privateStyle.imagePath("qtg_fr_popup_infobanner_normal",
+                                                           root.platformInverted);
         }
 
         function click() {

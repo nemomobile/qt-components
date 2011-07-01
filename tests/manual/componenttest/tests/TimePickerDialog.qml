@@ -49,6 +49,7 @@ Item {
 
     property int index: -1
     property TimePickerDialog timeDialog
+    property bool platformInverted: false
 
     Column {
         anchors { margins: 16; top: parent.top; left: parent.left; right: parent.right; bottom: parent.bottom }
@@ -164,6 +165,7 @@ Item {
             titleText: "Time"
             acceptButtonText: "Ok"
             rejectButtonText: "Cancel"
+            platformInverted: root.platformInverted
             onAccepted: {
                 signalValue.text = "Accept"
                 dialogValue.text = (dialog.fields & DateTime.Hours ? (dialog.hourMode & DateTime.TwentyFourHours ? dialog.hour : (dialog.hour > 12 ? dialog.hour - 12 : dialog.hour)) : "") +

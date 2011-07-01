@@ -45,6 +45,7 @@ import com.nokia.extras 1.1
 Item {
     id: container
     anchors.fill: parent
+    property bool childrenInverted: mainWindow.childrenInverted
 
     Button {
         id: button
@@ -54,6 +55,7 @@ Item {
         anchors.leftMargin: 16
         width: 206
         text: "Date"
+        platformInverted: container.childrenInverted
         onClicked: dialogBirth.open()
     }
     Button {
@@ -64,6 +66,7 @@ Item {
         anchors.leftMargin: 16
         width: 206
         text: "Restaurant"
+        platformInverted: container.childrenInverted
         onClicked: dialogRestaurant.open()
     }
 
@@ -80,6 +83,7 @@ Item {
         acceptButtonText: "Ok"
         rejectButtonText: "Cancel"
         columns: [ monthColumn, dayColumn, yearColumn ]
+        platformInverted: container.childrenInverted
         onAccepted: displayBirthday()
     }
 
@@ -89,6 +93,7 @@ Item {
         acceptButtonText: "Ok"
         rejectButtonText: "Cancel"
         columns: [ cuisineColumn, mealColumn, priceColumn ]
+        platformInverted: container.childrenInverted
     }
 
     function initializeDataModels() {

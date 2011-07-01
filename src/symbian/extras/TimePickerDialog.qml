@@ -70,6 +70,7 @@ CommonDialog {
             height: privateStyle.menuItemHeight * 4
             width: parent.width - platformStyle.paddingMedium * 4
             privateDelayInit: true
+            platformInverted: root.platformInverted
             states: State {
                 when: screen.currentOrientation == Screen.Landscape || screen.currentOrientation == Screen.LandscapeInverted
                 PropertyChanges {
@@ -119,6 +120,7 @@ CommonDialog {
         id: buttons
         width: parent.width
         height: privateStyle.toolBarHeightLandscape + 2 * platformStyle.paddingSmall
+        platformInverted: root.platformInverted
         Row {
             anchors.centerIn: parent
             spacing: platformStyle.paddingMedium
@@ -126,12 +128,14 @@ CommonDialog {
             ToolButton {
                 id: acceptButton
                 width: (buttons.width - 3 * platformStyle.paddingMedium) / 2
+                platformInverted: root.platformInverted
                 onClicked: accept()
                 visible: text != ""
             }
             ToolButton {
                 id: rejectButton
                 width: (buttons.width - 3 * platformStyle.paddingMedium) / 2
+                platformInverted: root.platformInverted
                 onClicked: reject()
                 visible: text != ""
             }

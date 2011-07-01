@@ -43,7 +43,9 @@ import com.nokia.symbian 1.1
 import com.nokia.extras 1.1
 
 Page {
+    id: root
     anchors.fill: parent
+    property bool childrenInverted: mainWindow.childrenInverted
 
     function inPortrait() {
         return screen.height > screen.width
@@ -62,6 +64,7 @@ Page {
             width: inPortrait() ? screen.width - 6 * platformStyle.paddingMedium
                      : screen.width - 18 * platformStyle.paddingLarge
             columns: [monthColumn, dayColumn, yearColumn]
+            platformInverted: root.childrenInverted
         }
     }
 
@@ -83,6 +86,7 @@ Page {
                 width: parent.buttonWidth
                 checkable: true
                 checked: true
+                platformInverted: root.childrenInverted
             }
 
             Button {
@@ -91,6 +95,7 @@ Page {
                 width: parent.buttonWidth
                 checkable: true
                 checked: true
+                platformInverted: root.childrenInverted
             }
 
             Button {
@@ -99,11 +104,13 @@ Page {
                 width: parent.buttonWidth
                 checkable: true
                 checked: true
+                platformInverted: root.childrenInverted
             }
 
             Button {
                 text: "Set Today"
                 width: parent.buttonWidth
+                platformInverted: root.childrenInverted
                 onClicked: {
                     var d = new Date();
                     dayColumn.selectedIndex = d.getDate() - 1;
@@ -118,6 +125,7 @@ Page {
                 text: "Enabled"
                 checked: true
                 width: parent.buttonWidth
+                platformInverted: root.childrenInverted
                 onCheckedChanged: {
                     dayColumn.enabled = !dayColumn.enabled;
                     monthColumn.enabled = !monthColumn.enabled;
@@ -132,6 +140,7 @@ Page {
                 text: "4 columns"
                 checked: false
                 width: parent.buttonWidth
+                platformInverted: root.childrenInverted
                 onClicked: {
                     if (checked) {
                         tumbler.columns = [monthColumn, dayColumn, yearColumn, extraColumn];
@@ -148,6 +157,7 @@ Page {
                 text: "2 columns"
                 checked: false
                 width: parent.buttonWidth
+                platformInverted: root.childrenInverted
                 onClicked: {
                     if (checked) {
                         tumbler.columns = [dayColumn, yearColumn];

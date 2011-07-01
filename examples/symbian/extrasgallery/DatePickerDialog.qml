@@ -47,6 +47,10 @@ Page {
     anchors.fill: parent
 
     property DatePickerDialog dateDialog
+    property bool childrenInverted: mainWindow.childrenInverted
+    property bool windowInverted: mainWindow.platformInverted
+    property color labelColor: windowInverted ? platformStyle.colorNormalLightInverted
+                                              : platformStyle.colorNormalLight
 
     Column {
         anchors { margins: 16; top: parent.top; left: parent.left; right: parent.right; bottom: parent.bottom }
@@ -55,6 +59,7 @@ Page {
             id: dialogButton
             objectName: "dialogButton"
             text: "Launch Date Picker"
+            platformInverted: root.childrenInverted
             onClicked: {
                 if (!dateDialog)
                     dateDialog = component.createObject(root)
@@ -66,14 +71,14 @@ Page {
             LayoutMirroring.enabled: false
             Text {
                 font { bold: true; pixelSize: 16 }
-                color: "white"
+                color: root.labelColor
                 text: "Dialog Value (m/d/yyyy): "
             }
             Text {
                 id: dialogValue
                 objectName: "dialogValue"
                 font.pixelSize: 16
-                color: "white"
+                color: root.labelColor
                 text: ""
             }
         }
@@ -86,6 +91,7 @@ Page {
             titleText: "Date"
             acceptButtonText: "Ok"
             rejectButtonText: "Cancel"
+            platformInverted: root.childrenInverted
             onAccepted: {
                 dialogValue.text = dialog.month + " " + dialog.day + " " + dialog.year
             }

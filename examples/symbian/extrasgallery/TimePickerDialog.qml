@@ -48,6 +48,10 @@ Page {
 
     property int index: -1
     property TimePickerDialog timeDialog
+    property bool childrenInverted: mainWindow.childrenInverted
+    property bool windowInverted: mainWindow.platformInverted
+    property color labelColor: windowInverted ? platformStyle.colorNormalLightInverted
+                                              : platformStyle.colorNormalLight
 
     Column {
         anchors { margins: 16; top: parent.top; left: parent.left; right: parent.right; bottom: parent.bottom }
@@ -56,6 +60,7 @@ Page {
             objectName: "12HourButton"
             text: "12-hour clock"
             width: parent.width
+            platformInverted: root.childrenInverted
             onClicked: {
                 var t = new Date()
                 launchDialog(t.getHours(), t.getMinutes(), t.getSeconds(), DateTime.TwelveHours)
@@ -66,6 +71,7 @@ Page {
             objectName: "24HourButton"
             text: "24-hour clock"
             width: parent.width
+            platformInverted: root.childrenInverted
             onClicked: {
                 var t = new Date()
                 launchDialog(t.getHours(), t.getMinutes(), t.getSeconds(), DateTime.TwentyFourHours)
@@ -75,14 +81,14 @@ Page {
         Row {
             LayoutMirroring.enabled: false
             Text {
-                color: "white"
+                color: root.labelColor
                 font { bold: true; pixelSize: 16}
                 text : "Dialog Value: "
             }
             Text {
                 id: dialogValue
                 objectName: "dialogValue"
-                color: "white"
+                color: root.labelColor
                 font.pixelSize: 16
                 text: ""
             }
@@ -110,6 +116,7 @@ Page {
             titleText: "Time"
             acceptButtonText: "Ok"
             rejectButtonText: "Cancel"
+            platformInverted: root.childrenInverted
             onAccepted: {
                 dialogValue.text = (dialog.fields & DateTime.Hours ? (dialog.hourMode & DateTime.TwentyFourHours ? dialog.hour : (dialog.hour > 12 ? dialog.hour - 12 : dialog.hour)) : "") +
                         (dialog.fields & DateTime.Minutes ? ":" + (dialog.minute < 10 ? "0" : "" ) + dialog.minute : "") +

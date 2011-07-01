@@ -45,6 +45,8 @@ import com.nokia.extras 1.1
 Page {
     id: container
 
+    property bool childrenInverted: mainWindow.childrenInverted
+
     Row {
         anchors.centerIn: parent
 
@@ -52,11 +54,13 @@ Page {
 
         Button {
             text: "Show"
+            platformInverted: container.childrenInverted
             onClicked: banner.open();
         }
 
         Button {
             text: "Hide"
+            platformInverted: container.childrenInverted
             onClicked: banner.close();
         }
     }
@@ -68,6 +72,7 @@ Page {
         iconSource: "assets/info_banner_thumbnail.png"
         timeout: 4000
         interactive: true
+        platformInverted: container.childrenInverted
     }
 
     Component.onCompleted: banner.open()

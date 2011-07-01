@@ -48,6 +48,7 @@ Item {
     anchors.fill: parent
 
     property DatePickerDialog dateDialog
+    property bool platformInverted: false
 
     Column {
         anchors { margins: 16; top: parent.top; left: parent.left; right: parent.right; bottom: parent.bottom }
@@ -149,6 +150,7 @@ Item {
             titleText: "Date"
             acceptButtonText: "Ok"
             rejectButtonText: "Cancel"
+            platformInverted: root.platformInverted
             onAccepted: {
                 signalValue.text = "Accept"
                 dialogValue.text = dialog.month + " " + dialog.day + " " + dialog.year

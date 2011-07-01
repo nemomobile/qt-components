@@ -44,6 +44,7 @@ import com.nokia.extras 1.1
 
 Page {
     id: root
+    property bool childrenInverted: mainWindow.childrenInverted
 
     Column {
         x: 25
@@ -67,11 +68,13 @@ Page {
         Button {
             id: addButton
             text: "Increase rating"
+            platformInverted: root.childrenInverted
             onClicked: { indicator.ratingValue++ }
         }
         Button {
             id: removeButton
             text: "Decrease rating"
+            platformInverted: root.childrenInverted
             onClicked: { indicator.ratingValue-- }
         }
     }

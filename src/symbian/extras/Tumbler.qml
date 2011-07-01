@@ -48,16 +48,11 @@ Item {
     objectName: "root"
 
     property list<Item> columns
-    signal changed(int index)
-
+    property bool platformInverted: false
     property bool privateDelayInit: false
     property list<Item> privateTemplates
 
-    LayoutMirroring.enabled: false
-    LayoutMirroring.childrenInherit: true
-
-    implicitWidth: screen.width - 6 * platformStyle.paddingMedium
-    implicitHeight: 4 * privateStyle.menuItemHeight
+    signal changed(int index)
 
     function privateInitialize() {
         if (!internal.initialized) {
@@ -70,7 +65,13 @@ Item {
         Engine.forceUpdate();
     }
 
+    LayoutMirroring.enabled: false
+    LayoutMirroring.childrenInherit: true
+
+    implicitWidth: screen.width - 6 * platformStyle.paddingMedium
+    implicitHeight: 4 * privateStyle.menuItemHeight
     clip: true
+
     Component.onCompleted: {
         if (!privateDelayInit && !internal.initialized) {
             initializeTimer.restart();
@@ -119,6 +120,7 @@ Item {
     Row {
         id: tumblerRow
         anchors { fill: parent }
+        property bool platformInverted: root.platformInverted
     }
 
     BorderImage {
@@ -126,7 +128,7 @@ Item {
         height: internal.hasLabel ?
                     parent.height - privateStyle.menuItemHeight : // decrease by bottom text height
                     parent.height
-        source: privateStyle.imagePath("qtg_fr_tumbler")
+        source: privateStyle.imagePath("qtg_fr_tumbler", root.platformInverted)
         anchors.top: parent.top
         border { left: platformStyle.borderSizeMedium; top: platformStyle.borderSizeMedium; right: platformStyle.borderSizeMedium; bottom: platformStyle.borderSizeMedium }
     }
