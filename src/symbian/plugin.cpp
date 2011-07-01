@@ -114,6 +114,11 @@ public:
         QObject::connect(style->platformStyle(), SIGNAL(colorParametersChanged()), this, SLOT(resetPlatformStyle()));
         QObject::connect(style->privateStyle(), SIGNAL(layoutParametersChanged()), this, SLOT(resetPrivateStyle()));
         QObject::connect(style->privateStyle(), SIGNAL(colorParametersChanged()), this, SLOT(resetPrivateStyle()));
+
+#if defined(Q_OS_SYMBIAN) && QT_VERSION >= 0x040704
+        Q_DECL_IMPORT void qt_s60_setPartialScreenInputMode(bool enable);
+        qt_s60_setPartialScreenInputMode(true);
+#endif
     }
 
     void registerTypes(const char *uri) {
