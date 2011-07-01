@@ -84,6 +84,11 @@ Item {
 
     function initializeModel() {
         listView.model.append( {
+            "m_color": platformStyle.colorBackground,
+            "m_text": "colorBackground",
+            "m_inverse": true
+        } )
+        listView.model.append( {
             "m_color": platformStyle.colorNormalLight,
             "m_text": "colorNormalLight",
             "m_inverse": false
@@ -136,6 +141,11 @@ Item {
         listView.model.append( {
             "m_color": platformStyle.colorTextSelection,
             "m_text": "colorTextSelection",
+            "m_inverse": false
+        } )
+        listView.model.append( {
+            "m_color": platformStyle.colorBackgroundInverted,
+            "m_text": "colorBackgroundInverted",
             "m_inverse": false
         } )
         listView.model.append( {
