@@ -137,3 +137,15 @@
     \image symbian/listitem_subitemindicator.png
     \e ListItem with with a subitem indicator
 */
+
+/*!
+    \qmlproperty bool ListItem::platformInverted
+    \since 1.1
+
+    \e {Symbian:}
+
+    If platformInverted is \c true, the component is visualized with the
+    inverted style. For more information, see
+    \l {Using Inverted Style with Symbian Components}. By default
+    platformInverted is \c false.
+*/

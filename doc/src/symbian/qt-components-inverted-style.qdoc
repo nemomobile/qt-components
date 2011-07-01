@@ -1,0 +1,128 @@
+/****************************************************************************
+**
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** No Commercial Usage
+** This file contains pre-release code and may not be distributed.
+** You may use this file in accordance with the terms and conditions
+** contained in the Technology Preview License Agreement accompanying
+** this package.
+**
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of this
+** file.
+**
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+
+    \page inverted-style.html
+    \ingroup qt-components-pattern-symbian
+    \ingroup qt-components-pattern
+    \title Using Inverted Style with Symbian Components
+
+    \brief Visualizing Symbian components with so-called 'inverted' style
+
+    Inverted style is not a direct inversion of the default style but rather an
+    alternative one. For many components the text and graphics colors used in
+    inverted style differ greatly from the default ones. However, for some
+    components the inverted visualization makes only a little or no difference
+    at all. You may decide to invert either some or all of the components in
+    your application.
+
+    Each component that supports the inverted style has the boolean \c
+    platformInverted property that by default is set to \c false. The following
+    code snippet illustrates specifying the inverted style for a \l Button and
+    its background \l Window:
+
+    \code
+    Window {
+        platformInverted: true
+
+        Button {
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.margins: platformStyle.paddingMedium
+            text: "Push me"
+            platformInverted: true
+        }
+    }
+    \endcode
+
+    The following picture illustrates different style combinations for a
+    \l Button and a \l Window. The last combination corresponds to the code
+    snippet above.
+
+    \image symbian/inverted_button_alternatives.png
+
+    In addition to the components having the \c platformInverted property, the
+    \l Style element provides an inverted counterpart for each specified color
+    parameter. These colors help you to create custom QML elements consistent
+    with the Symbian platform style. As an example, the \l Label component
+    internally determines its text color as follows:
+
+    \code
+    color: platformInverted ? platformStyle.colorNormalLightInverted
+                            : platformStyle.colorNormalLight
+    \endcode
+
+    \section1 Using Inverted Style in Applications
+
+    Component's \c platformInverted value is not automatically propagated to its
+    children that you create in your code. You need to set \c platformInverted
+    to \c true explicitly for each component that you want to appear with the
+    inverted style.
+
+    Bear in mind that some components do not have the \c platformInverted
+    property in their API. It is declared only in components that actually have
+    some visual content to be altered. For example, \l ButtonRow does not have
+    \c platformInverted property whereas the \l Button items in the \l ButtonRow
+    have. It is intended but not enforced that components forming a compound
+    unit such as \l ButtonRow have a uniform \c platformInverted value for
+    visual clarity.
+
+    The code snippet below illustrates the use of inverted style with a \l
+    ButtonRow:
+
+    \snippet src/snippets/symbian/snippet-inverted-style.qml 0
+
+    The screenshot below illustrates the result of the code snippet.
+
+    \image symbian/inverted_buttonrow.png
+
+    Some components, such as \l CheckBox or \l ToolButton, do not have a
+    own solid frame or background. Use a matching background color or
+    \c platformInverted value with those components to ensure a feasible
+    appearance.
+
+    The code snippet below illustrates a \l ToolButton that is placed on a \l
+    ToolBar. They both should use the same style since \l the ToolBar provides
+    a background for the \l ToolButton. Notice that \l ToolBarLayout does not
+    have the \c platformInverted property since it is only a container for
+    handling layout of its visual content, that is, one or more \l ToolButton
+    items.
+
+    \snippet src/snippets/symbian/snippet-inverted-style.qml 1
+
+    In the following images, the first two ToolBars show a case where the
+    ToolButton style obeys its parent's style like in the code snippet above.
+    The latter two ToolBars represent a case where the ToolButton style differs
+    from its parent causing an inadvisable appearance.
+
+    \image symbian/inverted_toolbar_correct.png
+    \image symbian/inverted_toolbar_incorrect.png
+
+*/
+
+

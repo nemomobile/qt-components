@@ -47,3 +47,15 @@
     default value is \c false.
 
 */
+
+/*!
+    \qmlproperty bool BusyIndicator::platformInverted
+    \since 1.1
+
+    \e {Symbian:}
+
+    If platformInverted is \c true, the component is visualized with the
+    inverted style. For more information, see
+    \l {Using Inverted Style with Symbian Components}. By default
+    platformInverted is \c false.
+*/

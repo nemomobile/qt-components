@@ -91,3 +91,15 @@
 
     You can bind the signal handler, \c onClicked, to state changes or other actions.
 */
+
+/*!
+    \qmlproperty bool CheckBox::platformInverted
+    \since 1.1
+
+    \e {Symbian:}
+
+    If platformInverted is \c true, the component is visualized with the
+    inverted style. For more information, see
+    \l {Using Inverted Style with Symbian Components}. By default
+    platformInverted is \c false.
+*/

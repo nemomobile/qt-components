@@ -218,3 +218,15 @@
     be used when the page changes on the relevant PageStack.
 
 */
+
+/*!
+    \qmlproperty bool ToolBar::platformInverted
+    \since 1.1
+
+    \e {Symbian:}
+
+    If platformInverted is \c true, the component is visualized with the
+    inverted style. For more information, see
+    \l {Using Inverted Style with Symbian Components}. By default
+    platformInverted is \c false.
+*/

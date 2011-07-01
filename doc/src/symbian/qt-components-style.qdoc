@@ -235,3 +235,98 @@
     The background color for a selected item.
 */
 
+/*!
+    \qmlproperty color Style::colorBackgroundInverted
+    \since 1.1
+
+    The inverted counterpart of the \c colorBackground. For more
+    information, see \l {Using Inverted Style with Symbian Components}.
+*/
+
+/*!
+    \qmlproperty color Style::colorNormalLightInverted
+    \since 1.1
+
+    The inverted counterpart of the \c colorNormalLight. For more
+    information, see \l {Using Inverted Style with Symbian Components}.
+*/
+
+/*!
+    \qmlproperty color Style::colorNormalMidInverted
+    \since 1.1
+
+    The inverted counterpart of the \c colorNormalMid. For more
+    information, see \l {Using Inverted Style with Symbian Components}.
+*/
+
+/*!
+    \qmlproperty color Style::colorNormalDarkInverted
+    \since 1.1
+
+    The inverted counterpart of the \c colorNormalDark. For more
+    information, see \l {Using Inverted Style with Symbian Components}.
+*/
+
+/*!
+    \qmlproperty color Style::colorNormalLinkInverted
+    \since 1.1
+
+    The inverted counterpart of the \c colorNormalLink. For more
+    information, see \l {Using Inverted Style with Symbian Components}.
+*/
+
+/*!
+    \qmlproperty color Style::colorPressedInverted
+    \since 1.1
+
+    The inverted counterpart of the \c colorPressed. For more
+    information, see \l {Using Inverted Style with Symbian Components}.
+*/
+
+/*!
+    \qmlproperty color Style::colorLatchedInverted
+    \since 1.1
+
+    The inverted counterpart of the \c colorLatched. For more
+    information, see \l {Using Inverted Style with Symbian Components}.
+*/
+
+/*!
+    \qmlproperty color Style::colorHighlightedInverted
+    \since 1.1
+
+    The inverted counterpart of the \c colorHighlighted. For more
+    information, see \l {Using Inverted Style with Symbian Components}.
+*/
+
+/*!
+    \qmlproperty color Style::colorDisabledLightInverted
+    \since 1.1
+
+    The inverted counterpart of the \c colorDisabled. For more
+    information, see \l {Using Inverted Style with Symbian Components}.
+*/
+
+/*!
+    \qmlproperty color Style::colorDisabledMidInverted
+    \since 1.1
+
+    The inverted counterpart of the \c colorDisabled. For more
+    information, see \l {Using Inverted Style with Symbian Components}.
+*/
+
+/*!
+    \qmlproperty color Style::colorDisabledDarkInverted
+    \since 1.1
+
+    The inverted counterpart of the \c colorDisabledDark. For more
+    information, see \l {Using Inverted Style with Symbian Components}.
+*/
+
+/*!
+    \qmlproperty color Style::colorTextSelectionInverted
+    \since 1.1
+
+    The inverted counterpart of the \c colorTextSelection. For more
+    information, see \l {Using Inverted Style with Symbian Components}.
+*/
