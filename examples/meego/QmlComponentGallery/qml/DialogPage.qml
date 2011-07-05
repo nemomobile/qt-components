@@ -345,12 +345,21 @@ Page {
                 id: contextMenu
 //                visualParent: root.pageStack
                 MenuLayout {
-                    MenuItem {text: "Red"; onClicked: { contextColorRect.color = "darkred" } }
-                    MenuItem {text: "Green"; onClicked: { contextColorRect.color = "darkgreen" }}
-                    MenuItem {text: "Blue"; onClicked: { contextColorRect.color = "darkblue" }}
-                    MenuItem {text: "Black is an extremely beautiful and stylish color"; onClicked: { contextColorRect.color = "black" }}
+                  id: menuLayout
+                  MenuItem {id: itemRed; enabled: false; text: "Red";
+                            onClicked: { contextColorRect.color = "darkred"; menuLayout.enableItems(); itemRed.enabled = false } }
+                  MenuItem {id: itemGreen; text: "Green";
+                            onClicked: { contextColorRect.color = "darkgreen"; menuLayout.enableItems(); itemGreen.enabled = false } }
+                  MenuItem {id: itemBlue; text: "Blue";
+                            onClicked: { contextColorRect.color = "darkblue"; menuLayout.enableItems(); itemBlue.enabled = false } }
+                  MenuItem {id: itemBlack;text: "Black is an extremely beautiful and stylish color";
+                            onClicked: { contextColorRect.color = "black"; menuLayout.enableItems(); itemBlack.enabled = false } }
+
+                  function enableItems() { itemRed.enabled = true; itemGreen.enabled = true;
+                                           itemBlue.enabled = true; itemBlack.enabled = true }
                 }
             }
+
 
             // Create page and buttons
 
