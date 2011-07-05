@@ -43,10 +43,6 @@
     and it implements the Symbian-style look-and-feel. The clipboard support is
     provided by the \l cut(), \l copy(), and \l paste() functions.
 
-    \note Copy-Paste between a qt-components application and native Symbian
-    application does not work. For more information, see \l
-    {http://bugreports.qt.nokia.com/browse/QTBUG-5701}{QTBUG-5701}.
-
     \section1 TextField Basic Examples
 
     \table
@@ -180,6 +176,8 @@
         Paste).
 
     \endtable
+
+    \note The paste button is not shown on the context menu if the clipboard is empty or does not contain data that can be pasted to TextFied.
 
     \section2 Read-Only Touch Interaction
     This table summarizes the Symbian TextField behaviors for non-editable text
