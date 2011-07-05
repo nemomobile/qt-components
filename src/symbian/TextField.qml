@@ -238,8 +238,6 @@ FocusScope {
                     editorScrolledY: flick.contentY
                     copyEnabled: textInput.selectedText
                     cutEnabled: !textInput.readOnly && textInput.selectedText
-                    // TODO: QtQuick 1.1 has textEdit.canPaste
-                    pasteEnabled: !textInput.readOnly
                     platformInverted: root.platformInverted
                     Component.onCompleted: flick.movementEnded.connect(touchController.flickEnded)
                     Connections { target: screen; onCurrentOrientationChanged: touchController.updateGeometry() }

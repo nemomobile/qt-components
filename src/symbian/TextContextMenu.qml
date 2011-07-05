@@ -47,14 +47,16 @@ Item {
     property Item editor: null
     property real editorScrolledY: 0
     property bool copyEnabled: false
-    property bool pasteEnabled: false
     property bool cutEnabled: false
     property bool platformInverted: false
 
     function show() {
-        parent = AppManager.rootObject();
-        internal.calculatePosition();
-        root.visible = true;
+        // Show menu only if some of the options is available
+        if(root.copyEnabled || root.cutEnabled || editor.canPaste) {
+            parent = AppManager.rootObject();
+            internal.calculatePosition();
+            root.visible = true;
+        }
     }
 
     function hide() {
@@ -139,7 +141,7 @@ Item {
         Button {
             id: pasteButton
             iconSource: privateStyle.imagePath("qtg_toolbar_paste", root.platformInverted)
-            visible: root.pasteEnabled
+            visible: editor.canPaste
             platformInverted: root.platformInverted
             onClicked: {
                 editor.paste()

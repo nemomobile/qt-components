@@ -50,7 +50,6 @@ MouseArea {
     property real editorScrolledX: 0
     property real editorScrolledY: 0
     property alias copyEnabled: contextMenu.copyEnabled
-    property alias pasteEnabled: contextMenu.pasteEnabled
     property alias cutEnabled: contextMenu.cutEnabled
     property bool platformInverted: false
 
