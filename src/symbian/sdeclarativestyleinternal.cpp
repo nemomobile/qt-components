@@ -194,9 +194,9 @@ QUrl SDeclarativeStyleInternal::toolBarIconPath(const QUrl &path, bool inverted)
         const QFileInfo fileInfo = path.path();
         const QString completeBaseName = fileInfo.completeBaseName();
 
-        if ((scheme.isEmpty() || scheme == QLatin1String("file")) &&
-            completeBaseName.startsWith(QLatin1String("toolbar-")) &&
-            completeBaseName.lastIndexOf(QLatin1Char('.')) == -1)
+        if ((scheme.isEmpty() || scheme == QLatin1String("file") || scheme == QLatin1String("qrc"))
+            && completeBaseName.startsWith(QLatin1String("toolbar-"))
+            && completeBaseName.lastIndexOf(QLatin1Char('.')) == -1)
                 return imagePath(completeBaseName, inverted);
     }
     return path;
