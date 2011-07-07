@@ -40,12 +40,14 @@
 
 function findFlickable(component) {
     var nextParent = component
+    var flickableItem = null
     while(nextParent) {
         if(nextParent.flicking !== undefined && nextParent.flickableDirection !== undefined)
-            return nextParent
+            flickableItem = nextParent
 
         nextParent = nextParent.parent
     }
+    if (flickableItem) return flickableItem
     return null
 }
 

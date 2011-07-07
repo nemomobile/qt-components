@@ -147,6 +147,36 @@ FocusScope {
         textEdit.openSoftwareInputPanel();
     }
 
+    Connections {
+        target: platformWindow
+
+        onActiveChanged: {
+            if(platformWindow.active) {
+                if (!readOnly) {
+                    if (activeFocus) {
+                        if (platformCustomSoftwareInputPanel != null) {
+                            platformOpenSoftwareInputPanel();
+                        } else {
+                            inputContext.simulateSipOpen();
+                        }
+                        repositionTimer.running = true;
+                    }
+                }
+            } else {
+                if (activeFocus) {
+                    platformCloseSoftwareInputPanel();
+                    Popup.close(textInput);
+                }
+            }
+        }
+
+        onAnimatingChanged: {
+            if (!platformWindow.animating && root.activeFocus) {
+                TextAreaHelper.repositionFlickable(contentMovingAnimation);
+            }
+        }
+    }
+
     implicitWidth: platformStyle.defaultWidth
     implicitHeight: Math.max (UI.FIELD_DEFAULT_HEIGHT,
                               textEdit.height + (UI.FIELD_DEFAULT_HEIGHT - font.pixelSize))
@@ -311,15 +341,6 @@ FocusScope {
             onContentYChanged: if (root.activeFocus) TextAreaHelper.filteredInputContextUpdate();
             onContentXChanged: if (root.activeFocus) TextAreaHelper.filteredInputContextUpdate();
             onMovementEnded: inputContext.update();
-        }
-
-        Connections {
-            target: platformWindow
-
-            onAnimatingChanged: {
-                if (!platformWindow.animating && root.activeFocus)
-                    TextAreaHelper.repositionFlickable(contentMovingAnimation);
-            }
         }
 
         Connections {

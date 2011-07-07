@@ -77,6 +77,8 @@ Page {
                         placeholderText: "Default text"
                         maximumLength: 80
 
+                        onAccepted: { console.log("accepted signal triggered") } 
+
                         Keys.onReturnPressed: {
                             text = "Return key pressed";
                             parent.focus = true;
@@ -197,7 +199,11 @@ Page {
                     }
                     TextField {
                         anchors {left: parent.left; right: parent.right;}
-                    }                   
+                    }   
+                    TextEdit {
+                        height: 400;
+                        width: 800;
+                    }                
                 }
             }
             ScrollDecorator {
