@@ -50,6 +50,7 @@
 
 #ifdef Q_OS_SYMBIAN
 #include <AknUtils.h>
+#include <e32std.h>
 #endif // Q_OS_SYMBIAN
 
 #ifdef Q_OS_WIN
@@ -71,14 +72,32 @@ _LIT(KTimeFormat, "%J%:1%T");
 class SDeclarativePrivate
 {
 public:
-    SDeclarativePrivate() :
-        mListInteractionMode(SDeclarative::TouchInteraction), foreground(true) {}
+    SDeclarativePrivate()
+        : mListInteractionMode(SDeclarative::TouchInteraction)
+        , foreground(true)
+        , rightToLeftDisplayLanguage(false) {
+#ifdef Q_OS_SYMBIAN
+        // Initialize based on the current UI language - it cannot be changed without a reboot.
+        switch (User::Language()) {
+            // These are the right-to-left UI languages supported in Symbian
+            case ELangArabic:
+            case ELangHebrew:
+            case ELangFarsi:
+            case ELangUrdu:
+                rightToLeftDisplayLanguage = true;
+                break;
+            default:
+                break;
+        }
+#endif // Q_OS_SYMBIAN
+    }
 
     int allocatedMemory() const;
 
     SDeclarative::InteractionMode mListInteractionMode;
     QTimer timer;
     bool foreground;
+    bool rightToLeftDisplayLanguage;
 };
 
 int SDeclarativePrivate::allocatedMemory() const
@@ -183,6 +202,11 @@ SDeclarative::S60Version SDeclarative::s60Version() const
 #else
     return SV_S60_UNKNOWN;
 #endif
+}
+
+bool SDeclarative::rightToLeftDisplayLanguage() const
+{
+    return d_ptr->rightToLeftDisplayLanguage;
 }
 
 bool SDeclarative::eventFilter(QObject *obj, QEvent *event)

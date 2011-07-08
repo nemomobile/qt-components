@@ -53,6 +53,7 @@ class SDeclarative : public QObject
     Q_PROPERTY(QString currentTime READ currentTime NOTIFY currentTimeChanged)
     Q_PROPERTY(bool foreground READ isForeground NOTIFY foregroundChanged)
     Q_PROPERTY(S60Version s60Version READ s60Version CONSTANT)
+    Q_PROPERTY(bool rightToLeftDisplayLanguage READ rightToLeftDisplayLanguage CONSTANT)
 
     Q_ENUMS(InteractionMode S60Version ScrollBarVisibility SourceSize EffectType Feedback)
 
@@ -142,6 +143,7 @@ public:
     static QString currentTime();
     bool isForeground();
     S60Version s60Version() const;
+    bool rightToLeftDisplayLanguage() const;
 
     Q_INVOKABLE int privateAllocatedMemory() const;
     Q_INVOKABLE void privateClearIconCaches();
