@@ -65,3 +65,13 @@
     QEvent::ApplicationDeactivate events.
 
 */
+
+/*!
+    \qmlproperty bool Symbian::rightToLeftDisplayLanguage
+
+    Indicates whether the current display language is right-to-left or not. This is a constant
+    property because the display language change requires a reboot. This property can be used
+    to initialize the application's \c LayoutMirroring.enabled property when implementing support
+    for a right-to-left user interface. See also \l{Right-to-left Support}{Right-to-left Support}.
+
+*/
