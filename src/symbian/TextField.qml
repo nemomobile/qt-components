@@ -182,12 +182,13 @@ FocusScope {
             contentWidth: textInput.paintedWidth
             height: textInput.paintedHeight
 
+            onWidthChanged: ensureVisible(textInput.cursorRectangle)
+
             TextInput {
                 id: textInput; objectName: "textInput"
 
                 property real paintedWidth: textInput.model.paintedWidth
                 property real paintedHeight: textInput.model.paintedHeight
-                property variant cursorRectangle: textInput.positionToRectangle(textInput.cursorPosition)
 
                 // TODO: See TODO: Refactor implicit size...
                 property variant model: Text {
@@ -198,9 +199,7 @@ FocusScope {
                     opacity: 0
                 }
 
-
                 activeFocusOnPress: false
-                autoScroll: false
                 cursorVisible: activeFocus && !selectedText
                 enabled: root.enabled
                 color: root.platformInverted ? platformStyle.colorNormalLightInverted
@@ -222,7 +221,7 @@ FocusScope {
                     }
                 }
 
-                onCursorPositionChanged: flick.ensureVisible(textInput.positionToRectangle(textInput.cursorPosition))
+                onCursorPositionChanged: flick.ensureVisible(textInput.cursorRectangle)
 
                 TextTouchController {
                     id: touchController
