@@ -174,36 +174,42 @@ MDeclarativeStatusBar::~MDeclarativeStatusBar()
 
 void MDeclarativeStatusBar::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    if (sharedPixmap.isNull()) {
-        MDeclarativeStatusBar *view = const_cast<MDeclarativeStatusBar *>(this);
-        view->querySharedPixmapFromProvider();
+    QT_TRY {
+
+        if (sharedPixmap.isNull()) {
+            MDeclarativeStatusBar *view = const_cast<MDeclarativeStatusBar *>(this);
+            view->querySharedPixmapFromProvider();
+        }
+
+        if (sharedPixmap.isNull()) {
+            painter->fillRect(boundingRect(), Qt::black);
+            return;
+        }
+
+        QRectF sourceRect;
+        if (mOrientation == MDeclarativeScreen::Landscape || mOrientation == MDeclarativeScreen::LandscapeInverted) {
+            sourceRect.setX(0);
+            sourceRect.setY(0);
+            sourceRect.setWidth(width());
+            sourceRect.setHeight(height());
+        } else {
+            sourceRect.setX(0);
+            sourceRect.setY(height());
+            sourceRect.setWidth(width());
+            sourceRect.setHeight(height());
+        }
+
+        painter->drawPixmap(QPointF(0.0, 0.0), sharedPixmap, sourceRect);
+
+        if (mousePressed) {
+            painter->save();
+            painter->setOpacity(0.6);
+            painter->fillRect(QRectF(QPointF(0.0, 0.0), sourceRect.size()), Qt::black);
+            painter->restore();
+        }
     }
-
-    if (sharedPixmap.isNull()) {
-        painter->fillRect(boundingRect(), Qt::black);
-        return;
-    }
-
-    QRectF sourceRect;
-    if (mOrientation == MDeclarativeScreen::Landscape || mOrientation == MDeclarativeScreen::LandscapeInverted) {
-        sourceRect.setX(0);
-        sourceRect.setY(0);
-        sourceRect.setWidth(width());
-        sourceRect.setHeight(height());
-    } else {
-        sourceRect.setX(0);
-        sourceRect.setY(height());
-        sourceRect.setWidth(width());
-        sourceRect.setHeight(height());
-    }
-
-    painter->drawPixmap(QPointF(0.0, 0.0), sharedPixmap, sourceRect);
-
-    if (mousePressed) {
-        painter->save();
-        painter->setOpacity(0.6);
-        painter->fillRect(QRectF(QPointF(0.0, 0.0), sourceRect.size()), Qt::black);
-        painter->restore();
+    QT_CATCH (...) {
+        qDebug() << "MDeclarativeStatusBar::paint: Cannot draw sharedPixmap.";
     }
 
 }
