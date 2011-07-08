@@ -72,6 +72,7 @@ public:
     explicit Settings(QObject *parent = 0);
     ~Settings();
 
+    Q_INVOKABLE void clearClipboard() const;
     Q_INVOKABLE void setOrientation(int orientation);
     Q_INVOKABLE int orientation() const;
     Q_INVOKABLE void setIndicatorState(int indicatorId, bool on) const;

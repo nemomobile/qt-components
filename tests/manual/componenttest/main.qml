@@ -469,6 +469,7 @@ ApplicationWindow {
         Menu {
             content: MenuLayout {
                 MenuItem { text: "Set layout dir"; platformSubItemIndicator: true; onClicked: layoutDirectionSubMenu.open() }
+                MenuItem { text: "Clear clipboard"; onClicked: { settings.clearClipboard() } }
                 MenuItem { text: "Clear icon caches"; onClicked: symbian.privateClearIconCaches() }
                 MenuItem { text: "Clear component cache"; onClicked: symbian.privateClearComponentCache() }
                 MenuItem { text: "Run garbage collector"; onClicked: gc() }

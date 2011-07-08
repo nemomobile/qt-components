@@ -48,6 +48,7 @@
 #include <QDeclarativeEngine>
 #include <QDeclarativeContext>
 #include <QDeclarativeItem>
+#include <QClipboard>
 
 
 #if defined(Q_OS_SYMBIAN) && defined(HAVE_SYMBIAN_INTERNAL)
@@ -109,6 +110,11 @@ Settings::~Settings()
 #if !defined(Q_OS_SYMBIAN) || !defined(HAVE_SYMBIAN_INTERNAL)
     indicatorItems.clear();
 #endif
+}
+
+void Settings::clearClipboard() const {
+    QClipboard *clipboard = QApplication::clipboard();
+    clipboard->clear();
 }
 
 void Settings::setOrientation(int orientation) {
