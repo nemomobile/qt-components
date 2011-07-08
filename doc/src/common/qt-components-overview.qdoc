@@ -83,6 +83,7 @@
                     \o \l{Introduction to the Qt Quick components}{Components introduction}
                     \o \l{components-cookbook}{Common interface designs}
                     \o \l{Creating Scalable Applications}{Scalability Guidelines}
+                    \o \l{Right-to-left Support}{Right-to-left Support}
                 \endlist
             \o
                 \list

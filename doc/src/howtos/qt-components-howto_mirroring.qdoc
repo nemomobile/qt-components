@@ -1,0 +1,163 @@
+/****************************************************************************
+**
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file.
+**
+** Other Usage
+** Alternatively, this file may be used in accordance with the terms
+** and conditions contained in a signed written agreement between you
+** and Nokia.
+**
+**
+**
+**
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \title Right-to-left Support
+
+    Table of contents:
+
+    \list
+
+        \o \l { Introduction }
+
+        \o \l { QML Right-to-left Support }
+
+        \o \l { Symbian QML Components Right-to-left Support }
+
+        \o \l { Component-specific Notes }
+
+        \o \l { Common Things Required for Enabling Application's UI Mirroring }
+
+    \endlist
+*/
+
+/*!
+    \page qt-components-right-to-left.html
+
+    \title Right-to-left Support
+
+    \section1 Introduction
+
+    Most right-to-left language speakers expect that the application content is 
+    aligned to the right. Therefore they read and scan text and content in the 
+    right-to-left order. This page summarizes the right-to-left support - that 
+    is, the "mirroring" - implemented in Symbian QML components. It also 
+    provides some hints for developing an application that supports right-to-left UI.
+
+    \section1 QML Right-to-left Support
+    
+    QML provides the right-to-left support in QtQuick 1.1. For more information,
+    see \l http://doc.qt.nokia.com/4.7-snapshot/qml-righttoleft.html
+
+    \section1 Symbian QML Components Right-to-left Support
+
+    The right-to-left (RTL) support in Symbian QML components is enabled by 
+    setting the \c LayoutMirroring.enabled property to \c true. The application 
+    needs to enable it to indicate that it supports the RTL user interface.
+    
+    The context property \c symbian.rightToLeftDisplayLanguage can be used to
+    enable RTL in the application when the current display language is
+    right-to-left. The following code snippet illustrates this. Because the
+    \c childrenInherited property is \c true, the alignment value is inherited
+    to all child elements - except those child elements whose alignment property
+    is explicitly set.
+    
+    Enabling right-to-left UI in the application's main QML file:
+
+    \snippet src/snippets/symbian/snippet-layout-mirroring.qml 0
+
+    Other possibility is to bind the LayoutMirroring.enabled property to the
+    value of Qt.application.layoutDirection property, which by default determines
+    the layout direction from the active language translation file. It requires, however,
+    that the dedicated translation string literal QT_LAYOUT_DIRECTION is translated to either
+    "LTR" or "RTL" in the QApplication scope. For more information, see \l
+    http://doc.qt.nokia.com/4.7-snapshot/qml-righttoleft.html
+
+    The Symbian QML components implement RTL as it is specified in the platform 
+    style. This means mainly the following:
+    
+    \list
+
+    \o The horizontal flow of the content, for example the horizontal 
+    position of text and icon inside the component, is mirrored.
+
+    \o Texts and icons are mirrored.
+    
+    \o In some cases the icon itself, for example an arrow-type icon, is 
+    mirrored.
+    
+    \endlist
+    
+    The following components are not mirrored due to their nature:
+
+    \list
+        \o ProgressBar
+        \o Slider
+        \o Switch; only the positions of text and graphics on the screen are 
+        mirrored but not the switch's graphics
+        \o ToolBar
+        \o Tumbler
+    \endlist
+
+    \section1 Component-specific Notes
+    
+    To enable the mirroring of the \l ListItemText component's text 
+    alignment, set its width to cover the whole area of the component.
+    
+    Similarly, to enable the mirroring of the QML's \l Text component's text 
+    alignment, set its width to cover the whole area of the component. When the 
+    layout direction is right-to-left, the alignment of the text is handled as 
+    follows (this also applies to QML's TextInput and TextEdit elements, see 
+    \l http://doc.qt.nokia.com/4.7-snapshot/qml-righttoleft.html):
+    
+    \list
+    
+    \o If the \c horizontalAlignment property is not set (to \c Text.AlignLeft 
+    or \c Text.AlignRight), the text's natural direction detemines its 
+    alignment: to the left edge if the text is left-to-right, and to the 
+    right edge if the text is right-to-left.
+    
+    \o If the \c horizontalAlignment property is set to \c Text.AlignLeft, the 
+    alignment is mirrored in right-to-left layout regardless of the text's 
+    natural direction. This applies to most \l Text elements that are used 
+    inside QML components.
+    
+    \endlist
+
+    \section1 Common Things Required for Enabling Application's UI Mirroring
+    
+    When you implement the RTL support for your application, you should take 
+    care of the following things:
+
+    \list
+
+        \o Instead of defining components' x-coordinates use anchors with 
+        margins.
+
+        \o Disable the layout mirroring of UI elements that should not be 
+        mirrored by setting their \c LayoutMirroring.enabled to \c false. For 
+        example, UI elements indicating progress or increment should always flow 
+        from left to right.
+
+        \o Check all \l Text and \l ListItemText elements (see \l{Component-specific Notes}).
+
+        \o Mirror icons whose content requires mirroring, for example an arrow 
+        icon. QML's \l Image element has the mirror property for mirroring. 
+
+    \endlist
+
+*/
