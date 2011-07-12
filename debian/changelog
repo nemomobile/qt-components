@@ -1,3 +1,9 @@
+qt-components (1.0~git20110712-1) maverick; urgency=low
+
+  * Fixes: NB#270426 - coreweb: /usr/bin/FacebookQML "Fails at Daemon::readFromBoosterSocket" 
+
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Tue, 12 July 2011 13:55:00 +0300
+
 qt-components (1.0~git20110630-1) maverick; urgency=low
 
   * Fixes: NB#268578 - Language change not reflected when QML app is launched from invoker
