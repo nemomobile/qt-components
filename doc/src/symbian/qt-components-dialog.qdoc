@@ -39,6 +39,10 @@
     a dialog provides information and gives warnings to the user, or asks the
     user to answer a question or select an option.
 
+    There's a derived convenience component called CommonDialog that can be
+    used for most typical dialog use cases with platform-style title and
+    button areas.
+
 */
 
 /*!

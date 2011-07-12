@@ -32,15 +32,36 @@
     \since 1.0
     \inherits Dialog
     \brief
-    Provides a dialog with the platform-style title area.
+    Provides a dialog with the platform-style title and button areas.
 
     CommonDialog is a convenience component that provides a dialog with the
-    platform-style title area. You only have to define \c titleText.
-    CommonDialog handles its layout automatically.
+    platform-style title and button areas. You only have to define the title
+    text, the title icon and the button texts. CommonDialog handles their
+    layout and styling automatically.
 
-    \note This component is experimental, so it may be changed or removed in
-    future releases.
+    Use \c Dialog::content property for defining the actual dialog content.
+    The content area does not have any default margins, so if you need
+    to apply margins it is recommended to use one of the padding properties
+    from \c platformStyle context property.
 
+    \section1 Using CommonDialog
+
+    The example below shows how to use CommonDialog.
+
+    \snippet src/snippets/symbian/snippet-commondialog.qml 1
+
+    The screenshot below illustrates the result of the code snippet.
+
+
+
+    \image symbian/commondialog.png
+
+    If you want to create a dialog with customized title or button areas use 
+    the \l Dialog component instead. The screnshot below illustrates a dialog 
+    with the customized title area.
+
+    \image symbian/commondialog-custom-title.png
+    
 */
 
 /*!
@@ -49,3 +70,25 @@
     The dialog's title text.
 */
 
+/*!
+    \qmlproperty url CommonDialog::titleIcon
+
+    The dialog's title icon.
+*/
+
+/*!
+    \qmlproperty variant CommonDialog::buttonTexts
+
+    The dialog's button texts defined in a string list. You can define any number of
+    button texts, but it is not recommended to use more than three of them.
+
+    If this property is left empty the button area will not be visible.
+*/
+
+/*!
+    \qmlsignal CommonDialog::buttonClicked(int index)
+
+    This signal is emitted when one of the buttons is clicked. The \c index parameter
+    holds the index of the clicked button. The index is the same as the index of the
+    button text in the \c buttonTexts property.
+*/

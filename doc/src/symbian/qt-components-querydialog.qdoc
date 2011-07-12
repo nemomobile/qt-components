@@ -27,7 +27,7 @@
 
 /*!
     \qmlclass QueryDialog
-    \inherits Dialog
+    \inherits CommonDialog
     \ingroup qt-components
     \since 1.0
 
@@ -41,38 +41,38 @@
 /*!
     \qmlproperty string QueryDialog::acceptButtonText
 
-    Text of the accept button. When no text is given, the button is not
-    displayed.The default value is \c "".
+    Text of the accept button. When no text is given, the accept button is not
+    displayed.
 
-    */
+*/
 
 /*!
     \qmlproperty url QueryDialog::icon
 
-    The URL pointing to an image. If the property value is not empty, an icon is
-    displayed inside the title field. The default value is \c "".
+    The dialog's title icon.
+
+    \note This property is an alias to \c CommonDialog::titleIcon
 
 */
 
 /*!
     \qmlproperty string QueryDialog::message
 
-    The message for the user. The default value is \c "".
+    The message for the user.
 
 */
 
 /*!
     \qmlproperty string QueryDialog::rejectButtonText
 
-    The reject button's text. If no text is given, the button is not displayed.
-    The default value is \c "".
+    The reject button's text. If no text is given, the reject button is not displayed.
 
 */
 
 /*!
     \qmlproperty string QueryDialog::titleText
 
-    The title's text. The default value is \c "".
+    The dialog's title text.
 
 */
 

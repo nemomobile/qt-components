@@ -98,10 +98,9 @@
     objects for user interaction.
     \list
         \o \l{Dialog}
-        \o \l{SelectionDialog}
-        \o \l{QueryDialog}
         \o \l{CommonDialog}
-        \o
+        \o \l{QueryDialog}
+        \o \l{SelectionDialog}
     \endlist
 
     \section1 Scrolling
