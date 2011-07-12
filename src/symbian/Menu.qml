@@ -63,20 +63,13 @@ Item {
         id: popup
         objectName: "OptionsMenu"
 
-        y: screen.height - popup.height - toolBarHeight()
-
-        function toolBarHeight() {
-            return (screen.width < screen.height)
-                ? privateStyle.toolBarHeightPortrait
-                : privateStyle.toolBarHeightLandscape
-        }
-
+        y: screen.height - popup.height
         animationDuration: 200
         state: "Hidden"
         visible: status != DialogStatus.Closed
         enabled: status == DialogStatus.Open
         width: screen.width
-        height: menu.height
+        height: menuContainer.height
         clip: true
         platformInverted: root.platformInverted
 
@@ -85,24 +78,46 @@ Item {
             close()
         }
 
-        MenuContent {
-            id: menu
-            containingPopup: popup
+        BorderImage {
+            id: menuContainer
+
+            property int borderSize: Math.round(platformStyle.borderSizeMedium * 1.5)
+
+            source: privateStyle.imagePath("qtg_fr_popup_options", root.platformInverted)
+            border { left: borderSize; top: borderSize; right: borderSize; bottom: borderSize }
+
             width: parent.width
-            platformInverted: root.platformInverted
-            onItemClicked: popup.close()
+            height: menu.height + 2 * platformStyle.paddingLarge
+
+            MenuContent {
+                id: menu
+                containingPopup: popup
+                anchors { top: parent.top; left: parent.left; right: parent.right
+                          topMargin: platformStyle.paddingLarge
+                          leftMargin: platformStyle.paddingLarge
+                          rightMargin: platformStyle.paddingLarge }
+                platformInverted: root.platformInverted
+                onItemClicked: popup.close()
+            }
+
+            BorderImage {
+                source: privateStyle.imagePath("qtg_fr_popup_options_overlay", root.platformInverted)
+                anchors.fill: parent
+                border { left: menuContainer.borderSize; top: menuContainer.borderSize
+                         right: menuContainer.borderSize; bottom: menuContainer.borderSize }
+            }
         }
 
         states: [
             State {
                 name: "Hidden"
                 when: status == DialogStatus.Closing || status == DialogStatus.Closed
-                PropertyChanges { target: menu; y: menu.height + 5; opacity: 0 }
+                PropertyChanges { target: menuContainer; y: menuContainer.height; opacity: 0 }
             },
             State {
                 name: "Visible"
                 when: status == DialogStatus.Opening || status == DialogStatus.Open
-                PropertyChanges { target: menu; y: 0; opacity: 1 }
+                PropertyChanges { target: menuContainer; y: 0; opacity: 1 }
             }
         ]
 
@@ -112,13 +127,13 @@ Item {
                 SequentialAnimation {
                     ParallelAnimation {
                         NumberAnimation {
-                            target: menu
+                            target: menuContainer
                             property: "y"
                             duration: popup.animationDuration
                             easing.type: Easing.Linear
                         }
                         NumberAnimation {
-                            target: menu
+                            target: menuContainer
                             property: "opacity"
                             duration: popup.animationDuration
                             easing.type: Easing.Linear
@@ -132,13 +147,13 @@ Item {
                 SequentialAnimation {
                     ParallelAnimation {
                         NumberAnimation {
-                            target: menu
+                            target: menuContainer
                             property: "y"
                             duration: popup.animationDuration
                             easing.type: Easing.OutQuad
                         }
                         NumberAnimation {
-                            target: menu
+                            target: menuContainer
                             property: "opacity"
                             duration: popup.animationDuration
                             easing.type: Easing.Linear

@@ -54,14 +54,15 @@ Item {
 
     QtObject {
         id: internal
-        // Add padding in context menu case to align content area bottom with rounded background graphics.
-        property int clipMargin: containingPopup.objectName != "OptionsMenu" ? platformStyle.paddingSmall : 0
+        // Add padding to align content area top and bottom with rounded background graphics.
+        // Optionsmenu uses mask, thus no padding needed
+        property int clipMargin: containingPopup.objectName == "OptionsMenu" ? 0 : platformStyle.paddingSmall
         property int preferredHeight: privateStyle.menuItemHeight * ((screen.width < screen.height) ? 5 : 3)
     }
 
     BorderImage {
         source: containingPopup.objectName == "OptionsMenu"
-                ? privateStyle.imagePath("qtg_fr_popup_options", root.platformInverted)
+                ? privateStyle.imagePath("qtg_fr_popup_options_item_area_bg", root.platformInverted)
                 : privateStyle.imagePath("qtg_fr_popup", root.platformInverted)
         border { left: 20; top: 20; right: 20; bottom: 20 }
         anchors.fill: parent
@@ -69,7 +70,8 @@ Item {
 
     Item {
         id: clipItem
-        height: flickableArea.height - internal.clipMargin
+        y: internal.clipMargin
+        height: flickableArea.height - 2 * internal.clipMargin
         width: root.width
         clip: true
         Flickable {
@@ -81,6 +83,7 @@ Item {
             property int itemsHidden: Math.floor(contentY / itemHeight)
             property int interactionMode: symbian.listInteractionMode
 
+            y: -internal.clipMargin
             height: contentArea.height; width: root.width
             clip: true
             contentHeight: (contentArea.children[0] != undefined) ? contentArea.children[0].height : 0
@@ -167,6 +170,7 @@ Item {
         visible: flickableArea.height < flickableArea.contentHeight
         anchors {
             top: clipItem.top
+            bottom: clipItem.bottom
             right: clipItem.right
         }
         platformInverted: root.platformInverted

@@ -68,6 +68,8 @@
         <file alias="qtg_fr_popup.svg">resources/defaulttheme/graphics/qtg_fr_popup.svg</file>
         <file alias="qtg_fr_popup_heading.svg">resources/defaulttheme/graphics/qtg_fr_popup_heading.svg</file>
         <file alias="qtg_fr_popup_options.svg">resources/defaulttheme/graphics/qtg_fr_popup_options.svg</file>
+        <file alias="qtg_fr_popup_options_item_area_bg.svg">resources/defaulttheme/graphics/qtg_fr_popup_options_item_area_bg.svg</file>
+        <file alias="qtg_fr_popup_options_overlay.svg">resources/defaulttheme/graphics/qtg_fr_popup_options_overlay.svg</file>
         <file alias="qtg_fr_popup_transparent.svg">resources/defaulttheme/graphics/qtg_fr_popup_transparent.svg</file>
         <file alias="qtg_fr_popup_divider.svg">resources/defaulttheme/graphics/qtg_fr_popup_divider.svg</file>
         <file alias="qtg_graf_signal_gprs_att_icon.svg">resources/defaulttheme/graphics/qtg_graf_signal_gprs_att_icon.svg</file>
@@ -216,6 +218,8 @@
         <file alias="qtg_fr_popup_infobanner_pressed_inverse.svg">resources/defaulttheme/graphics/qtg_fr_popup_infobanner_pressed_inverse.svg</file>
         <file alias="qtg_fr_popup_inverse.svg">resources/defaulttheme/graphics/qtg_fr_popup_inverse.svg</file>
         <file alias="qtg_fr_popup_options_inverse.svg">resources/defaulttheme/graphics/qtg_fr_popup_options_inverse.svg</file>
+        <file alias="qtg_fr_popup_options_item_area_bg_inverse.svg">resources/defaulttheme/graphics/qtg_fr_popup_options_item_area_bg_inverse.svg</file>
+        <file alias="qtg_fr_popup_options_overlay_inverse.svg">resources/defaulttheme/graphics/qtg_fr_popup_options_overlay_inverse.svg</file>
         <file alias="qtg_fr_popup_transparent_inverse.svg">resources/defaulttheme/graphics/qtg_fr_popup_transparent_inverse.svg</file>
         <file alias="qtg_fr_progressbar_fill_inverse.svg">resources/defaulttheme/graphics/qtg_fr_progressbar_fill_inverse.svg</file>
         <file alias="qtg_fr_progressbar_mask_inverse.svg">resources/defaulttheme/graphics/qtg_fr_progressbar_mask_inverse.svg</file>
