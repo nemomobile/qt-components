@@ -34,11 +34,28 @@
 
     \brief Provides a menu item for accessing to a particular function.
 
-    Menu items are normally added as child items to a MenuLayout that is associated
-    with a menu.
+    Menu items are normally added as child items to a MenuLayout that is 
+    associated with a menu.
 
     See the \l Menu documentation for a more information on how to use
     menus.
+
+    \section1 Custom Menu Items
+
+    You can utilize the \c platformLeftMargin property for creating custom menu 
+    items. The example below shows how to create a menu item with the check mark 
+    support.
+
+    \snippet src/snippets/symbian/MenuItemWithCheck.qml 1
+
+    You can now create the menu using custom menu item, in this case \c 
+    MenuItemWithCheck.qml.
+
+    \snippet src/snippets/symbian/snippet-custom-menuitem.qml 1
+
+    The image below shows how the custom menu looks like.
+
+    \image symbian/custom-menuitem.png
 
 */
 
@@ -58,6 +75,14 @@
     not have subitems. Normally  subitems are shown by opening a ContextMenu
     that contains the additional menu items.
 
+*/
+
+/*!
+    \qmlproperty real MenuItem::platformLeftMargin
+
+    Sets the menu item's left margin. The margin defines the space between the 
+    menu item's left edge and the text content's start position.
+    
 */
 
 /*!
