@@ -63,20 +63,6 @@ Item {
         }
         text: "Lorem ipsum dolor sit amet."
         onCursorPositionChanged: cursorPosition.value = textField.cursorPosition
-
-        Rectangle {
-            x: textField.positionToRectangle(textField.selectionStart).x
-            y: textField.positionToRectangle(textField.selectionStart).y
-            height: parent.height; width: 5; opacity:0.7; color: "lightblue"
-            visible: textField.selectionStart != textField.selectionEnd
-        }
-
-        Rectangle {
-            x: textField.positionToRectangle(textField.selectionEnd).x
-            y: textField.positionToRectangle(textField.selectionEnd).y
-            height: parent.height; width: 5; opacity:0.7; color: "lightpink"
-            visible: textField.selectionStart != textField.selectionEnd
-        }
     }
 
     TextField {
