@@ -43,9 +43,19 @@
 #include <QCoreApplication>
 #include <QLocale>
 #include <QTranslator>
+#include <QFileInfo>
 
+namespace {
+  const QString i10nDir("/usr/share/l10n/meegotouch/");
+}
+
+// We will later use the separated mlocale implementation to get rid of the lmt dependency
+#ifdef HAVE_MEEGOTOUCH
+#include <MLocale>
+#else
 #ifdef HAVE_SYSTEMINFO
 #include <QSystemInfo>
+#endif
 #endif
 
 MTextTranslator::MTextTranslator()
@@ -53,19 +63,47 @@ MTextTranslator::MTextTranslator()
     QCoreApplication *app = QCoreApplication::instance();
     Q_ASSERT(app);
 
+    QFileInfo qmInfo;
+
+#ifdef HAVE_MEEGOTOUCH
+    MLocale mloc;
+    QString locale = mloc.name();
+
+    //locale names have this syntax: xx_YY@..., but we do only need the first part
+    locale = locale.left(locale.indexOf('@'));
+    //now check if we need the last part (this is true, when the appropriate file exists)
+    qmInfo.setFile(QString("%1%2%3%4")
+                     .arg(i10nDir)
+                     .arg("common_")
+                     .arg(locale)
+                     .arg(".qm"));
+
+    if (locale.contains('_') && !qmInfo.exists()) {
+       locale = locale.left(locale.indexOf('_'));
+    }
+
+#else
 #ifdef HAVE_SYSTEMINFO
     QtMobility::QSystemInfo *sysInfo = new QtMobility::QSystemInfo(this);
     QString locale = sysInfo->currentLanguage();
 #else
     QString locale = QLocale::system().name();
 #endif
+#endif
 
     m_translator = new QTranslator(this);
-    if (locale == "C") {
-        m_translator->load(QString("/usr/share/l10n/meegotouch/libmeegotouch.qm"));
-        } else {
-        m_translator->load(QString("/usr/share/l10n/meegotouch/common_")+locale);
-        }
+
+    //fallback to default qm, when file not found
+    qmInfo.setFile(QString("%1%2%3%4")
+                   .arg(i10nDir)
+                   .arg("common_")
+                   .arg(locale)
+                   .arg(".qm"));
+    if (locale == "C" || !qmInfo.exists()) {
+        m_translator->load(i10nDir + QString("libmeegotouch.qm"));
+    } else {
+        m_translator->load(i10nDir + QString("common_")+locale);
+    }
     app->installTranslator(m_translator);
 }
 
@@ -82,6 +120,6 @@ QString MTextTranslator::translate(QString textId)
     const QChar TextVariantSeparator(0x9c, 0);
     text = text.left(text.indexOf(TextVariantSeparator));
     return text;
-}	
+}
 
 
