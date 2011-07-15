@@ -90,7 +90,9 @@ Item {
 
     function __findParent() {
         var next = parent;
-        while (next && next.parent && next.objectName != "appWindowContent") {
+        while (next && next.parent
+               && next.objectName != "appWindowContent"
+               && next.objectName != "windowContent") {
             next = next.parent;
         }
         return next;
@@ -111,9 +113,17 @@ Item {
     
     Item {
         id: sheet
+
+        //when the sheet is part of a page do nothing
+        //when the sheet is a direct child of a PageStackWindow, consider the status bar
+        property int statusBarOffset: (typeof __isPage != "undefined") ? 0
+                                     : (typeof __statusBarHeight == "undefined") ? 0
+                                     :  __statusBarHeight
         
         width: parent.width
-        height: parent.height
+        height: parent.height - statusBarOffset
+
+        y: statusBarOffset
 
         clip: true
         

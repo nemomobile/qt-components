@@ -53,6 +53,9 @@ Window {
     //Deprecated, TODO Remove this on w13
     property alias style: window.platformStyle
 
+    //private api
+    property int __statusBarHeight: showStatusBar ? statusBar.height : 0
+
     objectName: "pageStackWindow"
 
     StatusBar {
