@@ -39,16 +39,21 @@
     it as a context sensitive menu that opens, for example, on an object's long
     press signal, or you can use it to show a submenu.
 
+    \section1 Creating a ContextMenu
+    
     The following code snippet shows how to create a ContextMenu.
 
     \snippet src/snippets/symbian/snippet-menu.qml 3a
     \dots 12
     \snippet src/snippets/symbian/snippet-menu.qml 3b
+    
+    The screenshot below illustrates the result of the code snippet.
+
+    \image symbian/contextmenu.png
 
     See the \l Menu documentation for an example on how to use a ContextMenu
     as a submenu.
 
-    \image symbian/contextmenu.png
 */
 
 /*!
@@ -86,10 +91,9 @@
 /*!
     \qmlmethod ContextMenu::close()
 
-    Hides the context menu from the user.
-
-    Normally a context menu is closed when the user selects an item from the menu.
-    Context menu is also closed when the user clicks outside the menu.
+    Hides the context menu from the user. Normally a context menu is closed when 
+    the user selects an item from the menu. Context menu is also closed when the 
+    user clicks outside the menu.
 
 */
 
