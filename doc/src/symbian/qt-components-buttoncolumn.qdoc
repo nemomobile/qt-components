@@ -39,13 +39,15 @@
     a vertical column. By default ButtonColumn's \l RadioButton and \c checkable
     button components are mutually exclusive. ButtonColumn provides the same
     functionality as \l ButtonRow with the exception that no separate segmented-
-    style graphics are available for Button and ToolButton in ButtonColumn.
+    style graphics are available for \l Button and \l ToolButton in ButtonColumn.
 
-    The code snippet below illustrates how to create a ButtonColumn component
-    four buttons with icons. The ButtonColumn's \c exclusive property is not set,
-    so it is \c true by default, and thus its child buttons are \c checkable. In
-    addition, the \c checkedButton property is not set, so the first button is
-    set to \c checked by default.
+    \section1 Creating a ButtonColumn
+    
+    The code snippet below illustrates how to create a ButtonColumn component 
+    that contains four buttons with icons. The ButtonColumn's \c exclusive 
+    property is not set, so it is \c true by default, and thus its child buttons 
+    are \c checkable. In addition, the \c checkedButton property is not set, so 
+    the first button is set to \c checked by default.
 
     \snippet src/snippets/symbian/snippet-buttoncolumn.qml 0
 
