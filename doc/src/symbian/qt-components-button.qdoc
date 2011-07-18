@@ -50,7 +50,7 @@
     or 'off', for example, to switch between bold and plain style in selected
     text.
 
-    The button can also respond to a long-press. The button sends platformPressAndHold
+    In Symbian environment the button can also respond to a long-press. The button sends platformPressAndHold
     signal once when the user presses the button for a long period of time. If the
     button's platformAutoRepeat property is \c true, the button sends the clicked signal
     repeatedly as long as the user presses the button.
@@ -76,10 +76,10 @@
 
     \snippet src/snippets/symbian/snippet-button.qml 1
 
-    The 'Signals' button's platformAutoRepeat property is bound to the \c platformAutoRepeat
-    checkbox's checked property. When the user checks/unchecks the \c platformAutoRepeat
-    checkbox, the 'Signals' button's platformAutoRepeat property is set/unset
-    respectively.
+    The 'Signals' button's platformAutoRepeat property is bound to the \c 
+    platformAutoRepeat checkbox's \c checked property. When the user 
+    checks/unchecks the \c platformAutoRepeat checkbox, the 'Signals' button's 
+    platformAutoRepeat property is set/unset respectively.
 
     The application shows what signals the 'Signals' button sends depending on the
     platformAutoRepeat value and the duration of the pressing. The button
@@ -113,7 +113,7 @@
     it.
 
     In this example the user can enable and disable the button's \c checkable
-    property with the checkable check box. The 'Signal' button's checkable
+    property with the checkable check box. The 'Signal' button's \c checkable
     property is bound to \c checkable checkbox's checked property in the same
     way as its platformAutoRepeat property in the
     \l {Responding to a long-press} use case.
