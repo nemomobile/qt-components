@@ -68,7 +68,7 @@
 
     A list of items in the dialog's button area. For example, you can use \l Row
     or \l Button components but you can also use any number of components that
-    are based on Item component.
+    are based on \l Item component.
 
 */
 
