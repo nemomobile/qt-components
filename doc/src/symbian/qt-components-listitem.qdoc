@@ -33,15 +33,17 @@
 
     \brief Symbian: Provides a template for creating a ListView delegate.
 
-    A ListItem does not contain any visible content by default, it has only an
-    invisible padding area to which you can anchor other items. This means all
-    the ListItems in a list can have common margins.
+    A ListItem does not contain any visible content by default, it has only an 
+    invisible padding area to which you can anchor other items. This means that 
+    all the ListItem components in a list can have common margins.
 
     \image symbian/listitem_padding.png
     \e {A ListItem with the padding rectangle drawn as white}
 
     \image symbian/listitem_content.png
     \e {A ListItem with items anchored to the padding area}
+
+    \section1 Implementing a ListItem
 
     The following code snippet implements a ListItem with a text item on the top
     and subtitle text below. The two items are aligned in a column and they have
@@ -55,17 +57,17 @@
     A ListItem can have one of the four internal states:
 
     \list
-      \o \c "" The default state of a ListItem.
+      \o \c "" - The default state of a ListItem.
       \image symbian/listitem_default.png
-      \o \c "Pressed" The ListItem enters this state when the user presses
+      \o \c "Pressed" - The ListItem enters this state when the user presses
       the ListItem.
       \image symbian/listitem_pressed.png
-      \o \c "Focused" This state indicates that the list item has focus but is not
-      yet selected. This is only available on devices that have hardware
-      selection keys that allow a user to navigate a list without touching the
-      screen.
+      \o \c "Focused" - This state indicates that the list item has the focus 
+      but is not yet selected. This is only available on devices that have 
+      hardware selection keys that allow the user to navigate a list without 
+      touching the screen.
       \image symbian/listitem_highlight.png
-      \o \c "Disabled" In this state, the ListItem does not handle any touch
+      \o \c "Disabled" - In this state the ListItem does not handle any touch
       or hardware inputs and the ListItem does not emit signals.
       \image symbian/listitem_disabled.png
     \endlist
@@ -93,7 +95,7 @@
 /*!
     \qmlproperty string ListItem::mode read-only
 
-    The Mode of the ListItem.
+    The mode of the ListItem.
 
     This property can be used to create an association between ListItem and
     ListItemText. This way ListItemText is aware of the internal state
