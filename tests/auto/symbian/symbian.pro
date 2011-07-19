@@ -41,6 +41,7 @@ SUBDIRS += \
     textarea \
     textfield \
     toolbar \
+    toolbarlayout \
     toolbutton \
     tooltip \ #TODO not yet finalized
     window
