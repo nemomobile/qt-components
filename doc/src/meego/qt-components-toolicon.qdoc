@@ -56,6 +56,95 @@
     }
     \endcode
 
+    Icons naming convention
+    \list
+    \o icon-m-toolbar-settings-white (idle state on dark toolbars)
+    \o icon-m-toolbar-settings-white-selected (selected state on dark toolbar)
+    \o icon-m-toolbar-settings-dimmed-white (disabled state on dark toolbar)
+    \o icon-m-toolbar-settings (idle state on bright toolbar)
+    \o icon-m-toolbar-settings-selected (selected state on bright toolbar)
+    \o icon-m-toolbar-settings-dimmed (disabled state on bright toolbar)
+    \endlist
+
+    Default iconId's which are available for use (The list only contains the idle states for bright and dark toolbars)
+    \list
+    \o toolbar-add
+    \o toolbar-addressbook
+    \o toolbar-alarm
+    \o toolbar-all-content
+    \o toolbar-application
+    \o toolbar-attachment
+    \o toolbar-back-landscape
+    \o toolbar-back
+    \o toolbar-backspace
+    \o toolbar-bold
+    \o toolbar-callhistory
+    \o toolbar-cancle
+    \o toolbar-captured
+    \o toolbar-clock
+    \o toolbar-close
+    \o toolbar-column
+    \o toolbar-contact
+    \o toolbar-content-audio
+    \o toolbar-content-ovi-music
+    \o toolbar-cut-paste
+    \o toolbar-delete
+    \o toolbar-dialer
+    \o toolbar-directory-move-to
+    \o toolbar-directory
+    \o toolbar-done
+    \o toolbar-down
+    \o toolbar-edit
+    \o toolbar-favorite-mark
+    \o toolbar-favorite-unmark
+    \o toolbar-forward
+    \o toolbar-gallery
+    \o toolbar-grid
+    \o toolbar-home
+    \o toolbar-image-edit
+    \o toolbar-jump-to
+    \o toolbar-list
+    \o toolbar-main-view
+    \o toolbar-mediacontrol-backwards
+    \o toolbar-mediacontrol-forward
+    \o toolbar-mediacontrol-next
+    \o toolbar-mediacontrol-pause
+    \o toolbar-mediacontrol-play
+    \o toolbar-mediacontrol-previous
+    \o toolbar-mediacontrol-stop
+    \o toolbar-new-chat
+    \o toolbar-new-message
+    \o toolbar-next
+    \o toolbar-pages-all
+    \o toolbar-people
+    \o toolbar-previous
+    \o toolbar-redo
+    \o toolbar-refresh
+    \o toolbar-repeat
+    \o toolbar-reply-all
+    \o toolbar-reply
+    \o toolbar-rich-text-view-menu
+    \o toolbar-rich-text
+    \o toolbar-search
+    \o toolbar-select-text
+    \o toolbar-settings
+    \o toolbar-share
+    \o toolbar-shuffle
+    \o toolbar-stop
+    \o toolbar-tab-next
+    \o toolbar-tab-previous
+    \o toolbar-tag
+    \o toolbar-tools
+    \o toolbar-trim
+    \o toolbar-underline
+    \o toolbar-undo
+    \o toolbar-up
+    \o toolbar-update
+    \o toolbar-view-menu
+    \o toolbar-volume-off
+    \o toolbar-volume
+    \endlist
+
     \sa ToolBar, ToolBarLayout
 */
 
