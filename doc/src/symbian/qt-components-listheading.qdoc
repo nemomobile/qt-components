@@ -37,7 +37,7 @@
     ListHeading can be used as the header at the top of a list or as a
     header for sections within a list. ListHeading only draws a
     background, so \l ListItemText is typically used to display text on
-    top of ListHeading. \l ListItemText provides styled fonts for the
+    top of ListHeading. \l ListItemText provides styled fonts for the \l
     ListItem and ListHeading components.
 
     The area to which \l{Item}s can be added within ListHeading is
@@ -45,7 +45,8 @@
     ListItemText can be anchored to the
     \l{ListHeading::}{paddingItem}s anchor lines.
 
-    The following two examples illustrate how to use ListHeading with ListItemText.
+    The following two examples illustrate how to use ListHeading with \l
+    ListItemText.
 
     \section1 Using a ListHeading as a list header
 
@@ -72,6 +73,8 @@
         ...
     }
     \endcode
+
+    The screenshot below illustrates the result of the code snippet.
 
     \image symbian/listheading_header.png
 
@@ -111,6 +114,8 @@
         ...
     }
     \endcode
+
+    The screenshot below illustrates the result of the code snippet.
 
     \image symbian/listheading_section.png
 
