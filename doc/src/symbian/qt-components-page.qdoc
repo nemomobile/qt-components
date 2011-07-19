@@ -163,11 +163,11 @@
 
       \o PageStatus.Inactive (default) - the page is not visible.
 
-      \o PageStatus.Activating - the page is becoming to the active page.
+      \o PageStatus.Activating - the page is becoming the active page.
 
       \o PageStatus.Active - the page is the currently active page.
 
-      \o PageStatus.Deactivating - the page is becoming to inactive page.
+      \o PageStatus.Deactivating - the page is becoming an inactive page.
 
     \endlist
 */
