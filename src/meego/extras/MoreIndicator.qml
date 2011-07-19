@@ -50,5 +50,7 @@ import com.nokia.meego 1.0  // needed for the custom image loader
 */
 
 Image {
-    source:  "image://theme/icon-m-common-drilldown-arrow"
+    source: !theme.inverted ?
+                "image://theme/icon-m-common-drilldown-arrow" :
+                "image://theme/icon-m-common-drilldown-arrow-inverse"
 }
