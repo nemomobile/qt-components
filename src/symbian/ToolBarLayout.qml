@@ -71,7 +71,7 @@ Item {
         property bool portrait: screen.width < screen.height
 
         // These are the dynamic layout parameters used by the toolbar layout.
-        property real defaultHeightToolBar: (internal.portrait) ?
+        property real defaultHeightToolBar: portrait ?
             privateStyle.toolBarHeightPortrait : privateStyle.toolBarHeightLandscape
         property real defaultHeightToolButton: privateStyle.toolBarHeightLandscape
         property real outerMarginHorizontal: portrait ?
@@ -134,12 +134,14 @@ Item {
             return Math.round((root.width - (outerContents * 2) - centerSpacing) / 2.0)
         }
 
-        function widthButtonRowLong(leftButton, leftMargin, innerSpacing, rightMargin) {
-            // calculate the width of a long button row in the special case where
-            // there is not a right item. It can still vary depending on whether there
-            // is a left button
-            var leftContents = leftButton ? leftMargin + innerSpacing : rightMargin
-            return root.width - leftContents - rightMargin
+        function widthButtonRowLong(leftButton, rightButton, itemMargin, innerSpacing, outerMargin) {
+            // calculate the width of a long button row, which is used in the case that there are more
+            // than three icons. If either left or right button is present, allocate the itemMargin to
+            // ensure that there is sufficient space; otherwise we can use the special
+            // outerMargin value
+            var leftContents = leftButton ? itemMargin + innerSpacing : outerMargin
+            var rightContents = rightButton ? itemMargin + innerSpacing : outerMargin
+            return root.width - leftContents - rightContents
         }
 
         function layoutChildren() {
@@ -173,9 +175,9 @@ Item {
                     children[0] : undefined
             var rightItem = isIconButton(children[numChildren-1]) ?
                     children[numChildren-1] : undefined
-            var childrenRemaining = numChildren - (leftItem ? 1 : 0) - (rightItem ? 1 : 0)
-            var firstRemainingIndex = leftItem ? 1 : 0
-            var lastRemainingIndex = rightItem ? (numChildren - 2) : (numChildren - 1)
+            var childrenRemaining = numChildren - (leftItem != undefined ? 1 : 0) - (rightItem != undefined ? 1 : 0)
+            var firstRemainingIndex = leftItem != undefined ? 1 : 0
+            var lastRemainingIndex = rightItem != undefined ? (numChildren - 2) : (numChildren - 1)
 
             // precalculate the margins for the left and right items, we will work
             // out child sizes assuming they are present
@@ -204,20 +206,21 @@ Item {
                     overrideChildWidth = widthTextButtonDouble(
                                 leftMargin, innerSpacingTextButtonDouble, centerSpacingTextButtonDouble)
 
-                } else if (isButtonRow(child)
-                          && ((child.children.length == 2) || (child.children.length > 2 && rightItem))) {
+                } else if (isButtonRow(child) && ((child.children.length == 2)
+                              || (child.children.length > 2 && leftItem != undefined && rightItem != undefined))) {
                     // there are special margins if the button row has two children,
-                    // or if there are more than two children and there is a right item
+                    // or if it has more than two children and there is a left and
+                    // a right item
                     overrideChildWidth = widthTextButtonSingle(
                                 leftMargin, innerSpacingButtonRowTwoChildren)
 
-                } else if (isButtonRow(child) && child.children.length >= 3 && !rightItem) {
-                    // the long button row has special margins, because we know
-                    // that there isn't a right hand side icon button. But if there's no
-                    // back button, then this is still the only item so use the special
-                    // margin on the left as well
+                } else if (isButtonRow(child) && child.children.length > 2) {
+                    // the long button row has special margins, which are used on
+                    // either side if the side icon button is missing on that side. If the item is present,
+                    // the leftMargin can be used on either side to leave space for either icon button
                     overrideChildWidth = widthButtonRowLong(
-                                true,
+                                leftItem != undefined,
+                                rightItem != undefined,
                                 leftMargin,
                                 innerSpacingButtonRowLong,
                                 outerMarginButtonRowLong)
@@ -232,7 +235,7 @@ Item {
                 if (isButtonRow(loneChild)) {
                     loneChildWidth = overrideChildWidth
                 }
-                if (loneChild.hasOwnProperty("iconSource") && loneChild.iconSource != "")
+                if (isIconButton(loneChild))
                     loneChild.x = outerMarginHorizontal
                 else
                     loneChild.x = centerOffset(root.width, loneChildWidth)
@@ -263,9 +266,12 @@ Item {
                     // been updated yet)
                     loneChildWidth = overrideChildWidth
                 }
-                // lone child is always centered, unless it's a long button row
-                if (isButtonRow(loneChild) && loneChild.children.length >= 3 && !rightItem) {
-                    loneChild.x = root.width - outerMarginButtonRowLong - loneChildWidth
+                // lone child is always centered, unless it's a long button row on
+                // one side only
+                if (isButtonRow(loneChild) && loneChild.children.length >= 3
+                        && ((leftItem == undefined) != (rightItem == undefined))) {
+                    loneChild.x = (leftItem != undefined) ?
+                                (leftMargin + innerSpacingButtonRowLong) : outerMarginButtonRowLong
                 } else {
                     loneChild.x = centerOffset(root.width, loneChildWidth)
                 }
@@ -282,7 +288,8 @@ Item {
                 var remainingSpace = rightMargin - leftMargin
                 var spacingNotRounded = remainingSpace
                 for (var p = 0; p < childrenRemaining; p++) {
-                    spacingNotRounded -= buttonWidth(children[leftItem ? p + 1 : p])
+                    var nextChild = children[leftItem != undefined ? p + 1 : p]
+                    spacingNotRounded -= buttonWidth(nextChild)
                 }
                 spacingNotRounded /= (childrenRemaining + 1)
                 var spacing = Math.floor(spacingNotRounded)
@@ -290,8 +297,8 @@ Item {
                 var curPos = leftMargin + Math.floor(totalRoundingError / 2.0)
 
                 for (var p = 0; p < childrenRemaining; p++) {
+                    var nextChild = children[leftItem != undefined ? p + 1 : p]
                     curPos += spacing
-                    var nextChild = children[leftItem ? p + 1 : p]
                     nextChild.x = curPos
                     curPos += buttonWidth(nextChild)
                 }

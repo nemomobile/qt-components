@@ -49,7 +49,6 @@ Item {
     anchors.fill: parent
     property string replaceMode: "set"
     property bool flat: false
-    property bool showBackButton: true
     property Item testToolBarLayout : null
     property bool platformInverted: false
 
@@ -113,13 +112,6 @@ Item {
                 width: firstPage.width
                 Row {
                     width: firstPage.width
-                    CheckBox {
-                        id: showBackButton1
-                        text: "back"
-                        checked: root.showBackButton
-                        onClicked: root.showBackButton = !root.showBackButton
-                        Component.onCompleted: checked = root.showBackButton
-                    }
                     CheckBox {
                         id: flatter1
                         text: "flat"
@@ -221,9 +213,12 @@ Item {
                     Button { text: "B+BR(TB_T)"; onClicked: internal.createToolBarLayout(toolBarLayout14a) }
                     Button { text: "B+BR(2TB_T)"; onClicked: internal.createToolBarLayout(toolBarLayout14b) }
                     Button { text: "B+BR(3TB_T)"; onClicked: internal.createToolBarLayout(toolBarLayout14c) }
-                    Button { text: "B+BR(TB_T)+M"; onClicked: internal.createToolBarLayout(toolBarLayout15a) }
-                    Button { text: "B+BR(2TB_T)+M"; onClicked: internal.createToolBarLayout(toolBarLayout15b) }
-                    Button { text: "B+BR(3TB_T)+M"; onClicked: internal.createToolBarLayout(toolBarLayout15c) }
+                    Button { text: "BR(TB_T)+M"; onClicked: internal.createToolBarLayout(toolBarLayout15a) }
+                    Button { text: "BR(2TB_T)+M"; onClicked: internal.createToolBarLayout(toolBarLayout15b) }
+                    Button { text: "BR(3TB_T)+M"; onClicked: internal.createToolBarLayout(toolBarLayout15c) }
+                    Button { text: "B+BR(TB_T)+M"; onClicked: internal.createToolBarLayout(toolBarLayout19a) }
+                    Button { text: "B+BR(2TB_T)+M"; onClicked: internal.createToolBarLayout(toolBarLayout19b) }
+                    Button { text: "B+BR(3TB_T)+M"; onClicked: internal.createToolBarLayout(toolBarLayout19c) }
                 }
                 ListHeading {
                     Label {
@@ -236,11 +231,14 @@ Item {
                     width: firstPage.width
                     spacing: platformStyle.paddingSmall
 
+                    Button { text: "0+TB_I+0"; onClicked: internal.createToolBarLayout(toolBarLayout5) }
                     Button { text: "B+TB_I+M"; onClicked: internal.createToolBarLayout(toolBarLayout6) }
                     Button { text: "B+2TB_I+M"; onClicked: internal.createToolBarLayout(toolBarLayout7) }
                     Button { text: "B+3TB_I+M"; onClicked: internal.createToolBarLayout(toolBarLayout8) }
                     Button { text: "B+4TB_I+M"; onClicked: internal.createToolBarLayout(toolBarLayout9) }
                     Button { text: "B+5TB_I+M"; onClicked: internal.createToolBarLayout(toolBarLayout10) }
+                    Button { text: "B+5TB_I+0"; onClicked: internal.createToolBarLayout(toolBarLayout11a) }
+                    Button { text: "0+5TB_I+M"; onClicked: internal.createToolBarLayout(toolBarLayout11b) }
                 }
                 ListHeading {
                     Label {
@@ -259,12 +257,14 @@ Item {
                     Button { text: "BR(4TB_I)"; onClicked: internal.createToolBarLayout(toolBarLayout16d) }
                     Button { text: "B+BR(TB_I)"; onClicked: internal.createToolBarLayout(toolBarLayout17a) }
                     Button { text: "B+BR(2TB_I)"; onClicked: internal.createToolBarLayout(toolBarLayout17b) }
-                    Button { text: "B+BR(3TB_I)"; onClicked: internal.createToolBarLayout(toolBarLayout17c) }
-                    Button { text: "B+BR(4TB_I)"; onClicked: internal.createToolBarLayout(toolBarLayout17d) }
+                    Button { text: "B+BR(3TB_I)_0"; onClicked: internal.createToolBarLayout(toolBarLayout17c) }
+                    Button { text: "B+BR(3TB_I)"; onClicked: internal.createToolBarLayout(toolBarLayout17d) }
+                    Button { text: "B+BR(4TB_I)"; onClicked: internal.createToolBarLayout(toolBarLayout17e) }
                     Button { text: "B+BR(TB_I)+M"; onClicked: internal.createToolBarLayout(toolBarLayout18a) }
                     Button { text: "B+BR(2TB_I)+M"; onClicked: internal.createToolBarLayout(toolBarLayout18b) }
-                    Button { text: "B+BR(3TB_I)+M"; onClicked: internal.createToolBarLayout(toolBarLayout18c) }
-                    Button { text: "B+BR(4TB_I)+M"; onClicked: internal.createToolBarLayout(toolBarLayout18d) }
+                    Button { text: "B+BR(3TB_I)+0"; onClicked: internal.createToolBarLayout(toolBarLayout18c) }
+                    Button { text: "B+BR(3TB_I)+M"; onClicked: internal.createToolBarLayout(toolBarLayout18d) }
+                    Button { text: "B+BR(4TB_I)+M"; onClicked: internal.createToolBarLayout(toolBarLayout18e) }
                 }
             }
         }
@@ -283,7 +283,6 @@ Item {
             objectName: "toolBar2"
             anchors.bottom: parent.bottom
             tools: ToolBarLayout {
-                backButton: true
                 ToolButton {
                     flat: root.flat
                     iconSource: "toolbar-back"
@@ -368,7 +367,6 @@ Item {
             //make sure the content of the page does not hide the toolbar
             z: buttonRowTabButtonPage.z + 1
             tools: ToolBarLayout {
-                backButton: true
                 ToolButton {
                     id: backButton
                     iconSource: "toolbar-back"
@@ -410,13 +408,6 @@ Item {
             Button {
                 iconSource: "image://theme/toolbar-back"
                 onClicked: stack.pop();
-            }
-            CheckBox {
-                id: showBackButton2
-                text: "back"
-                checked: root.showBackButton
-                onClicked: root.showBackButton = !root.showBackButton
-                Component.onCompleted: checked = root.showBackButton
             }
             CheckBox {
                 id: flatter2
@@ -508,6 +499,9 @@ Item {
                     ToolBar { Component.onCompleted: setTools(toolBarLayout15a.createObject(root, {} ), "set"); Component.onDestruction: { tools.destroy() } }
                     ToolBar { Component.onCompleted: setTools(toolBarLayout15b.createObject(root, {} ), "set"); Component.onDestruction: { tools.destroy() } }
                     ToolBar { Component.onCompleted: setTools(toolBarLayout15c.createObject(root, {} ), "set"); Component.onDestruction: { tools.destroy() } }
+                    ToolBar { Component.onCompleted: setTools(toolBarLayout19a.createObject(root, {} ), "set"); Component.onDestruction: { tools.destroy() } }
+                    ToolBar { Component.onCompleted: setTools(toolBarLayout19b.createObject(root, {} ), "set"); Component.onDestruction: { tools.destroy() } }
+                    ToolBar { Component.onCompleted: setTools(toolBarLayout19c.createObject(root, {} ), "set"); Component.onDestruction: { tools.destroy() } }
                 }
             }
         }
@@ -528,11 +522,14 @@ Item {
                     spacing: platformStyle.paddingSmall
 
                     // tool buttons
+                    ToolBar { Component.onCompleted: setTools(toolBarLayout5.createObject(root, {} ), "set"); Component.onDestruction: { tools.destroy() } }
                     ToolBar { Component.onCompleted: setTools(toolBarLayout6.createObject(root, {} ), "set"); Component.onDestruction: { tools.destroy() } }
                     ToolBar { Component.onCompleted: setTools(toolBarLayout7.createObject(root, {} ), "set"); Component.onDestruction: { tools.destroy() } }
                     ToolBar { Component.onCompleted: setTools(toolBarLayout8.createObject(root, {} ), "set"); Component.onDestruction: { tools.destroy() } }
                     ToolBar { Component.onCompleted: setTools(toolBarLayout9.createObject(root, {} ), "set"); Component.onDestruction: { tools.destroy() } }
                     ToolBar { Component.onCompleted: setTools(toolBarLayout10.createObject(root, {} ), "set"); Component.onDestruction: { tools.destroy() } }
+                    ToolBar { Component.onCompleted: setTools(toolBarLayout11a.createObject(root, {} ), "set"); Component.onDestruction: { tools.destroy() } }
+                    ToolBar { Component.onCompleted: setTools(toolBarLayout11b.createObject(root, {} ), "set"); Component.onDestruction: { tools.destroy() } }
 
                     // button rows
                     ToolBar { Component.onCompleted: setTools(toolBarLayout16a.createObject(root, {} ), "set"); Component.onDestruction: { tools.destroy() } }
@@ -543,10 +540,12 @@ Item {
                     ToolBar { Component.onCompleted: setTools(toolBarLayout17b.createObject(root, {} ), "set"); Component.onDestruction: { tools.destroy() } }
                     ToolBar { Component.onCompleted: setTools(toolBarLayout17c.createObject(root, {} ), "set"); Component.onDestruction: { tools.destroy() } }
                     ToolBar { Component.onCompleted: setTools(toolBarLayout17d.createObject(root, {} ), "set"); Component.onDestruction: { tools.destroy() } }
+                    ToolBar { Component.onCompleted: setTools(toolBarLayout17e.createObject(root, {} ), "set"); Component.onDestruction: { tools.destroy() } }
                     ToolBar { Component.onCompleted: setTools(toolBarLayout18a.createObject(root, {} ), "set"); Component.onDestruction: { tools.destroy() } }
                     ToolBar { Component.onCompleted: setTools(toolBarLayout18b.createObject(root, {} ), "set"); Component.onDestruction: { tools.destroy() } }
                     ToolBar { Component.onCompleted: setTools(toolBarLayout18c.createObject(root, {} ), "set"); Component.onDestruction: { tools.destroy() } }
                     ToolBar { Component.onCompleted: setTools(toolBarLayout18d.createObject(root, {} ), "set"); Component.onDestruction: { tools.destroy() } }
+                    ToolBar { Component.onCompleted: setTools(toolBarLayout18e.createObject(root, {} ), "set"); Component.onDestruction: { tools.destroy() } }
                 }
             }
         }
@@ -555,7 +554,6 @@ Item {
     Component {
         id: toolBarLayout0a
         ToolBarLayout {
-            backButton: root.showBackButton
             ToolButton {
                 iconSource: "toolbar-back"
             }
@@ -565,7 +563,6 @@ Item {
     Component {
         id: toolBarLayout0b
         ToolBarLayout {
-            backButton: root.showBackButton
             ToolButton {
                 iconSource: "toolbar-back"
             }
@@ -579,7 +576,6 @@ Item {
     Component {
         id: toolBarLayout1a
         ToolBarLayout {
-            backButton: root.showBackButton
             ToolButton {
                 iconSource: "toolbar-back"
             }
@@ -598,7 +594,6 @@ Item {
     Component {
         id: toolBarLayout1b
         ToolBarLayout {
-            backButton: root.showBackButton
             ToolButton {
                 iconSource: "toolbar-back"
             }
@@ -620,7 +615,6 @@ Item {
     Component {
         id: toolBarLayout1c
         ToolBarLayout {
-            backButton: false
 
             Switch { }
             Switch { }
@@ -632,7 +626,6 @@ Item {
     Component {
         id: toolBarLayout2a
         ToolBarLayout {
-            backButton: root.showBackButton
             ToolButton {
                 iconSource: "toolbar-back"
             }
@@ -651,7 +644,6 @@ Item {
     Component {
         id: toolBarLayout2b
         ToolBarLayout {
-            backButton: root.showBackButton
             ToolButton {
                 objectName: "tbBack"
                 iconSource: "toolbar-back"
@@ -673,7 +665,6 @@ Item {
     Component {
         id: toolBarLayout2c
         ToolBarLayout {
-            backButton: root.showBackButton
             ToolButton {
                 objectName: "tbBack"
                 iconSource: "toolbar-back"
@@ -682,7 +673,7 @@ Item {
                 objectName: "tb1"
                 flat: root.flat
                 text: "ToolBtn"
-                iconSource: "toolbar-back"
+                iconSource: "toolbar-home"
             }
 
             ToolButton {
@@ -696,7 +687,6 @@ Item {
     Component {
         id: toolBarLayout3a
         ToolBarLayout {
-            backButton: true
             ToolButton {
                 objectName: "tbBack"
                 iconSource: "toolbar-back"
@@ -722,7 +712,6 @@ Item {
     Component {
         id: toolBarLayout3b
         ToolBarLayout {
-            backButton: true
             ToolButton {
                 objectName: "tbBack"
                 iconSource: "toolbar-back"
@@ -743,7 +732,6 @@ Item {
     Component {
         id: toolBarLayout3c
         ToolBarLayout {
-            backButton: false
             ToolButton {
                 objectName: "tb1"
                 flat: root.flat
@@ -763,16 +751,31 @@ Item {
     }
 
     Component {
+        id: toolBarLayout5
+        ToolBarLayout {
+            ToolButton {
+                visible: false
+            }
+            ToolButton {
+                objectName: "tbBack2"
+                iconSource: "toolbar-home"
+            }
+            ToolButton {
+                visible: false
+            }
+        }
+    }
+
+    Component {
         id: toolBarLayout6
         ToolBarLayout {
-            backButton: root.showBackButton
             ToolButton {
                 objectName: "tbBack1"
                 iconSource: "toolbar-back"
             }
             ToolButton {
                 objectName: "tbBack2"
-                iconSource: "toolbar-back"
+                iconSource: "toolbar-home"
             }
             ToolButton {
                 objectName: "tbOptions"
@@ -785,18 +788,17 @@ Item {
     Component {
         id: toolBarLayout7
         ToolBarLayout {
-            backButton: root.showBackButton
             ToolButton {
                 objectName: "tbBack1"
                 iconSource: "toolbar-back"
             }
             ToolButton {
                 objectName: "tbBack2"
-                iconSource: "toolbar-back"
+                iconSource: "toolbar-home"
             }
             ToolButton {
                 objectName: "tbBack3"
-                iconSource: "toolbar-back"
+                iconSource: "toolbar-home"
             }
             ToolButton {
                 objectName: "tbOptions"
@@ -809,22 +811,21 @@ Item {
     Component {
         id: toolBarLayout8
         ToolBarLayout {
-            backButton: root.showBackButton
             ToolButton {
                 objectName: "tbBack1"
                 iconSource: "toolbar-back"
             }
             ToolButton {
                 objectName: "tbBack2"
-                iconSource: "toolbar-back"
+                iconSource: "toolbar-home"
             }
             ToolButton {
                 objectName: "tbBack3"
-                iconSource: "toolbar-back"
+                iconSource: "toolbar-home"
             }
             ToolButton {
                 objectName: "tbBack4"
-                iconSource: "toolbar-back"
+                iconSource: "toolbar-home"
             }
             ToolButton {
                 objectName: "tbOptions"
@@ -837,27 +838,25 @@ Item {
     Component {
         id: toolBarLayout9
         ToolBarLayout {
-            backButton: root.showBackButton
-
             ToolButton {
                 objectName: "tbBack1"
                 iconSource: "toolbar-back"
             }
             ToolButton {
                 objectName: "tbBack2"
-                iconSource: "toolbar-back"
+                iconSource: "toolbar-home"
             }
             ToolButton {
                 objectName: "tbBack3"
-                iconSource: "toolbar-back"
+                iconSource: "toolbar-home"
             }
             ToolButton {
                 objectName: "tbBack4"
-                iconSource: "toolbar-back"
+                iconSource: "toolbar-home"
             }
             ToolButton {
                 objectName: "tbBack5"
-                iconSource: "toolbar-back"
+                iconSource: "toolbar-home"
             }
             ToolButton {
                 objectName: "tbOptions"
@@ -870,30 +869,96 @@ Item {
     Component {
         id: toolBarLayout10
         ToolBarLayout {
-            backButton: root.showBackButton
             ToolButton {
                 objectName: "tbBack1"
                 iconSource: "toolbar-back"
             }
             ToolButton {
                 objectName: "tbBack2"
-                iconSource: "toolbar-back"
+                iconSource: "toolbar-home"
             }
             ToolButton {
                 objectName: "tbBack3"
-                iconSource: "toolbar-back"
+                iconSource: "toolbar-home"
             }
             ToolButton {
                 objectName: "tbBack4"
-                iconSource: "toolbar-back"
+                iconSource: "toolbar-home"
             }
             ToolButton {
                 objectName: "tbBack5"
-                iconSource: "toolbar-back"
+                iconSource: "toolbar-home"
             }
             ToolButton {
                 objectName: "tbBack6"
+                iconSource: "toolbar-home"
+            }
+            ToolButton {
+                objectName: "tbOptions"
+                onClicked: stack.push(secondPage)
+                iconSource: "toolbar-menu"
+            }
+        }
+    }
+
+    Component {
+        id: toolBarLayout11a
+        ToolBarLayout {
+            ToolButton {
+                objectName: "tbBack1"
                 iconSource: "toolbar-back"
+            }
+            ToolButton {
+                objectName: "tbBack2"
+                iconSource: "toolbar-home"
+            }
+            ToolButton {
+                objectName: "tbBack3"
+                iconSource: "toolbar-home"
+            }
+            ToolButton {
+                objectName: "tbBack4"
+                iconSource: "toolbar-home"
+            }
+            ToolButton {
+                objectName: "tbBack5"
+                iconSource: "toolbar-home"
+            }
+            ToolButton {
+                objectName: "tbBack6"
+                iconSource: "toolbar-home"
+            }
+            ToolButton {
+                visible: false
+            }
+        }
+    }
+
+    Component {
+        id: toolBarLayout11b
+        ToolBarLayout {
+            ToolButton {
+                visible: false
+            }
+            ToolButton {
+                objectName: "tbBack2"
+                iconSource: "toolbar-home"
+            }
+            ToolButton {
+                objectName: "tbBack3"
+                iconSource: "toolbar-home"
+            }
+            ToolButton {
+                objectName: "tbBack4"
+                iconSource: "toolbar-home"
+            }
+            ToolButton {
+                objectName: "tbBack5"
+                iconSource: "toolbar-home"
+            }
+            ToolButton {
+                objectName: "tbBack6"
+                iconSource: "toolbar-home"
             }
             ToolButton {
                 objectName: "tbOptions"
@@ -906,8 +971,6 @@ Item {
     Component {
         id: toolBarLayout13a
         ToolBarLayout {
-            backButton: false
-
             ButtonRow {
                 id: buttonRow13a
                 objectName: "buttonRow13a"
@@ -925,8 +988,6 @@ Item {
     Component {
         id: toolBarLayout13b
         ToolBarLayout {
-            backButton: false
-
             ButtonRow {
                 id: buttonRow13b
                 objectName: "buttonRow13b"
@@ -953,8 +1014,6 @@ Item {
     Component {
         id: toolBarLayout13c
         ToolBarLayout {
-            backButton: false
-
             ButtonRow {
                 id: buttonRow13c
                 objectName: "buttonRow13c"
@@ -986,7 +1045,6 @@ Item {
     Component {
         id: toolBarLayout14a
         ToolBarLayout {
-            backButton: true
             ToolButton {
                 iconSource: "toolbar-back"
             }
@@ -1008,7 +1066,6 @@ Item {
     Component {
         id: toolBarLayout14b
         ToolBarLayout {
-            backButton: true
             ToolButton {
                 iconSource: "toolbar-back"
             }
@@ -1039,7 +1096,6 @@ Item {
     Component {
         id: toolBarLayout14c
         ToolBarLayout {
-            backButton: true
             ToolButton {
                 iconSource: "toolbar-back"
             }
@@ -1075,11 +1131,6 @@ Item {
     Component {
         id: toolBarLayout15a
         ToolBarLayout {
-            backButton: true
-            ToolButton {
-                iconSource: "toolbar-back"
-            }
-
             ButtonRow {
                 id: buttonRow15a
                 objectName: "buttonRow15a"
@@ -1102,11 +1153,6 @@ Item {
     Component {
         id: toolBarLayout15b
         ToolBarLayout {
-            backButton: true
-            ToolButton {
-                iconSource: "toolbar-back"
-            }
-
             ButtonRow {
                 id: buttonRow15b
                 objectName: "buttonRow15b"
@@ -1138,11 +1184,6 @@ Item {
     Component {
         id: toolBarLayout15c
         ToolBarLayout {
-            backButton: true
-            ToolButton {
-                iconSource: "toolbar-back"
-            }
-
             ButtonRow {
                 id: buttonRow15c
                 objectName: "buttonRow15c"
@@ -1177,10 +1218,109 @@ Item {
     }
 
     Component {
+        id: toolBarLayout19a
+        ToolBarLayout {
+            ToolButton {
+                iconSource: "toolbar-back"
+            }
+
+            ButtonRow {
+                id: buttonRow19a
+                objectName: "buttonRow19a"
+
+                ToolButton {
+                    id: tb1
+                    objectName: "tb1"
+                    flat: root.flat
+                    text: "BR ToolBtn"
+                }
+            }
+
+            ToolButton {
+                iconSource: "toolbar-menu"
+            }
+
+        }
+    }
+
+    Component {
+        id: toolBarLayout19b
+        ToolBarLayout {
+            ToolButton {
+                iconSource: "toolbar-back"
+            }
+
+            ButtonRow {
+                id: buttonRow19b
+                objectName: "buttonRow19b"
+                exclusive: true
+                checkedButton: tb1
+
+                ToolButton {
+                    id: tb1
+                    objectName: "tb1"
+                    flat: root.flat
+                    text: "BR ToolBtn"
+                }
+
+                ToolButton {
+                    id: tb2
+                    objectName: "tb2"
+                    flat: root.flat
+                    text: "BR ToolBtn"
+                }
+            }
+
+            ToolButton {
+                iconSource: "toolbar-menu"
+            }
+
+        }
+    }
+
+    Component {
+        id: toolBarLayout19c
+        ToolBarLayout {
+            ToolButton {
+                iconSource: "toolbar-back"
+            }
+
+            ButtonRow {
+                id: buttonRow19c
+                objectName: "buttonRow19c"
+                exclusive: true
+                checkedButton: tb1
+
+                ToolButton {
+                    id: tb1
+                    objectName: "tb1"
+                    flat: root.flat
+                    text: "BR ToolBtn"
+                }
+                ToolButton {
+                    id: tb2
+                    objectName: "tb2"
+                    flat: root.flat
+                    text: "BR ToolBtn"
+                }
+                ToolButton {
+                    id: tb3
+                    objectName: "tb3"
+                    flat: root.flat
+                    text: "BR ToolBtn"
+                }
+            }
+
+            ToolButton {
+                iconSource: "toolbar-menu"
+            }
+
+        }
+    }
+
+    Component {
         id: toolBarLayout16a
         ToolBarLayout {
-            backButton: false
-
             ButtonRow {
                 id: buttonRow16a
                 objectName: "buttonRow16a"
@@ -1189,7 +1329,7 @@ Item {
                     id: tb1
                     objectName: "tb1"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
             }
         }
@@ -1198,8 +1338,6 @@ Item {
     Component {
         id: toolBarLayout16b
         ToolBarLayout {
-            backButton: false
-
             ButtonRow {
                 id: buttonRow16b
                 objectName: "buttonRow16b"
@@ -1210,13 +1348,13 @@ Item {
                     id: tb1
                     objectName: "tb1"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
                 ToolButton {
                     id: tb2
                     objectName: "tb2"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
             }
         }
@@ -1225,8 +1363,6 @@ Item {
     Component {
         id: toolBarLayout16c
         ToolBarLayout {
-            backButton: false
-
             ButtonRow {
                 id: buttonRow16c
                 objectName: "buttonRow16c"
@@ -1237,19 +1373,19 @@ Item {
                     id: tb1
                     objectName: "tb1"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
                 ToolButton {
                     id: tb2
                     objectName: "tb2"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
                 ToolButton {
                     id: tb3
                     objectName: "tb3"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
             }
         }
@@ -1258,8 +1394,6 @@ Item {
     Component {
         id: toolBarLayout16d
         ToolBarLayout {
-            backButton: false
-
             ButtonRow {
                 id: buttonRow16d
                 objectName: "buttonRow16d"
@@ -1270,25 +1404,25 @@ Item {
                     id: tb1
                     objectName: "tb1"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
                 ToolButton {
                     id: tb2
                     objectName: "tb2"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
                 ToolButton {
                     id: tb3
                     objectName: "tb3"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
                 ToolButton {
                     id: tb4
                     objectName: "tb4"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
             }
         }
@@ -1297,7 +1431,6 @@ Item {
     Component {
         id: toolBarLayout17a
         ToolBarLayout {
-            backButton: true
             ToolButton {
                 iconSource: "toolbar-back"
             }
@@ -1310,7 +1443,7 @@ Item {
                     id: tb1
                     objectName: "tb1"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
             }
         }
@@ -1319,7 +1452,6 @@ Item {
     Component {
         id: toolBarLayout17b
         ToolBarLayout {
-            backButton: true
             ToolButton {
                 iconSource: "toolbar-back"
             }
@@ -1334,13 +1466,13 @@ Item {
                     id: tb1
                     objectName: "tb1"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
                 ToolButton {
                     id: tb2
                     objectName: "tb2"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
             }
         }
@@ -1349,7 +1481,6 @@ Item {
     Component {
         id: toolBarLayout17c
         ToolBarLayout {
-            backButton: true
             ToolButton {
                 iconSource: "toolbar-back"
             }
@@ -1364,20 +1495,24 @@ Item {
                     id: tb1
                     objectName: "tb1"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
                 ToolButton {
                     id: tb2
                     objectName: "tb2"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
                 ToolButton {
                     id: tb3
                     objectName: "tb3"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
+            }
+
+            ToolButton {
+                visible: false
             }
         }
     }
@@ -1385,7 +1520,6 @@ Item {
     Component {
         id: toolBarLayout17d
         ToolBarLayout {
-            backButton: true
             ToolButton {
                 iconSource: "toolbar-back"
             }
@@ -1400,25 +1534,60 @@ Item {
                     id: tb1
                     objectName: "tb1"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
                 ToolButton {
                     id: tb2
                     objectName: "tb2"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
                 ToolButton {
                     id: tb3
                     objectName: "tb3"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
+                }
+            }
+        }
+    }
+
+    Component {
+        id: toolBarLayout17e
+        ToolBarLayout {
+            ToolButton {
+                iconSource: "toolbar-back"
+            }
+
+            ButtonRow {
+                id: buttonRow17e
+                objectName: "buttonRow17e"
+                exclusive: true
+                checkedButton: tb1
+
+                ToolButton {
+                    id: tb1
+                    objectName: "tb1"
+                    flat: root.flat
+                    iconSource: "toolbar-home"
+                }
+                ToolButton {
+                    id: tb2
+                    objectName: "tb2"
+                    flat: root.flat
+                    iconSource: "toolbar-home"
+                }
+                ToolButton {
+                    id: tb3
+                    objectName: "tb3"
+                    flat: root.flat
+                    iconSource: "toolbar-home"
                 }
                 ToolButton {
                     id: tb4
                     objectName: "tb4"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
             }
         }
@@ -1427,7 +1596,6 @@ Item {
     Component {
         id: toolBarLayout18a
         ToolBarLayout {
-            backButton: true
             ToolButton {
                 iconSource: "toolbar-back"
             }
@@ -1440,7 +1608,7 @@ Item {
                     id: tb1
                     objectName: "tb1"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
             }
 
@@ -1453,7 +1621,6 @@ Item {
     Component {
         id: toolBarLayout18b
         ToolBarLayout {
-            backButton: true
             ToolButton {
                 iconSource: "toolbar-back"
             }
@@ -1468,13 +1635,13 @@ Item {
                     id: tb1
                     objectName: "tb1"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
                 ToolButton {
                     id: tb2
                     objectName: "tb2"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
             }
 
@@ -1487,7 +1654,6 @@ Item {
     Component {
         id: toolBarLayout18c
         ToolBarLayout {
-            backButton: true
             ToolButton {
                 iconSource: "toolbar-back"
             }
@@ -1502,24 +1668,24 @@ Item {
                     id: tb1
                     objectName: "tb1"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
                 ToolButton {
                     id: tb2
                     objectName: "tb2"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
                 ToolButton {
                     id: tb3
                     objectName: "tb3"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
             }
 
             ToolButton {
-                iconSource: "toolbar-menu"
+                visible: false
             }
         }
     }
@@ -1527,7 +1693,6 @@ Item {
     Component {
         id: toolBarLayout18d
         ToolBarLayout {
-            backButton: true
             ToolButton {
                 iconSource: "toolbar-back"
             }
@@ -1542,25 +1707,19 @@ Item {
                     id: tb1
                     objectName: "tb1"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
                 ToolButton {
                     id: tb2
                     objectName: "tb2"
                     flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
                 ToolButton {
                     id: tb3
                     objectName: "tb3"
                     flat: root.flat
-                    iconSource: "toolbar-back"
-                }
-                ToolButton {
-                    id: tb4
-                    objectName: "tb4"
-                    flat: root.flat
-                    iconSource: "toolbar-back"
+                    iconSource: "toolbar-home"
                 }
             }
 
@@ -1569,4 +1728,50 @@ Item {
             }
         }
     }
+
+    Component {
+        id: toolBarLayout18e
+        ToolBarLayout {
+            ToolButton {
+                iconSource: "toolbar-back"
+            }
+
+            ButtonRow {
+                id: buttonRow18e
+                objectName: "buttonRow18e"
+                exclusive: true
+                checkedButton: tb1
+
+                ToolButton {
+                    id: tb1
+                    objectName: "tb1"
+                    flat: root.flat
+                    iconSource: "toolbar-home"
+                }
+                ToolButton {
+                    id: tb2
+                    objectName: "tb2"
+                    flat: root.flat
+                    iconSource: "toolbar-home"
+                }
+                ToolButton {
+                    id: tb3
+                    objectName: "tb3"
+                    flat: root.flat
+                    iconSource: "toolbar-home"
+                }
+                ToolButton {
+                    id: tb4
+                    objectName: "tb4"
+                    flat: root.flat
+                    iconSource: "toolbar-home"
+                }
+            }
+
+            ToolButton {
+                iconSource: "toolbar-menu"
+            }
+        }
+    }
+
 }
