@@ -94,7 +94,7 @@ Item {
 
             Label {
                 id: subText
-                text: model.subtitle
+                text: model.subtitle ? model.subtitle : ""
                 font.weight: listItem.subtitleWeight
                 font.pixelSize: listItem.subtitleSize
                 color: listItem.subtitleColor
