@@ -47,6 +47,8 @@
 
     \section1 ScrollBar Usage
 
+    The code snippet below illustrates how to attach a ScrollBar to a ListView.
+
     \code
     Item {
         x: 10
@@ -67,7 +69,9 @@
     }
     \endcode
 
-    \section1 Anchoring a Horizontal ScrollBar to a GridView
+    The code snippet below illustrates how to anchor a horizontal ScrollBar to a 
+    \l GridView.
+
     \code
     Item {
         x: 10
@@ -82,7 +86,7 @@
         }
 
         ScrollBar {
-            id: vertical
+            id: horizontal
             flickableItem: grid
             orientation: Qt.Horizontal
             anchors { left: grid.left; bottom: grid.bottom }
@@ -130,7 +134,7 @@
 /*!
     \qmlproperty int ScrollBar::policy
 
-    The policy are the situations when the scroll bar is shown. A scroll bar can
+    Defines the situations when the scroll bar is shown. A scroll bar can
     have the following policies:
 
     \list
