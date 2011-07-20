@@ -31,14 +31,14 @@
     \since 1.0f
     \inherits Item
 
-    \brief Provides a visual indicator for a Flickable element to show the
+    \brief Provides a visual indicator for a Flickable component to show the
     size relationship between the visible and complete contents.
 
-    When the size of a Flickable component is larger than the size of its
+    When the size of a \l Flickable component is larger than the size of its
     container, it is often helpful to have some indication of where you are. For
     example, if you are navigating a long list, the scroll decorator will
     indicate how far down the list you have scrolled. The ScrollDecorator
-    provides a simple way of adding this kind of indicator to a Flickable
+    provides a simple way of adding this kind of indicator to a \l Flickable
     component.
 
     The scroll decorator is often a scroll bar, but the actual implementation,
@@ -46,14 +46,14 @@
     dependent. Also, the scroll decorator is generally only visible when the
     list is being scrolled. Otherwise it is hidden from view.
 
-    ScrollDecorators can be used with Flickable components as well as Flickable-
-    derived components, such as ListView and GridView.
+    ScrollDecorators can be used with \l Flickable components as well as
+    Flickable- derived components, such as \l ListView and \l GridView.
 
     \section1 Using a Scroll Decorator
 
-    A ScrollDecorator needs to be a sibling of the Flickable item that it is to
-    be attached to. It will be implicitly anchored to that flickable so there is
-    no need to do any further connecting yourself. The following code snippet
+    A ScrollDecorator needs to be a sibling of the \l Flickable item that it is
+    to be attached to. It will be implicitly anchored to that flickable so there
+    is no need to do any further connecting yourself. The following code snippet
     gives an example of a scroll decorator attached to a list. In the Symbian
     implementation, the scroll decorator is a scrollbar and is only shown when
     the list is scrolling. See the image below for an example (the scroll bar is
