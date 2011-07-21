@@ -41,15 +41,19 @@
     override it. The height might also change when on the device orientation
     changes.
 
-    \snippet src/snippets/common/snippet-statusbar.qml 0
-
     Because the StatusBar information is important to the user, it is
     recommended to add a StatusBar instance to every application. If the
-    application needs to expand the contents area over the StatusBar, the bar can
-    be hidden temporarily and shown again when possible.
+    application needs to expand the contents area over the StatusBar, the bar
+    can be hidden temporarily and shown again when possible. You should not
+    instantiate the StatusBar inside the \l Page component because the page
+    transition effect would also apply to the StatusBar.
 
-    You should not instantiate the StatusBar inside the \l Page component
-    because the page transition effect would then also apply to the StatusBar.
+    \section1 Anchoring the StatusBar
 
-    */
+    The code snippet below illustrates how to anchor the StatusBar on the top of
+    the \l Window component.
+
+    \snippet src/snippets/common/snippet-statusbar.qml 0
+
+*/
 
