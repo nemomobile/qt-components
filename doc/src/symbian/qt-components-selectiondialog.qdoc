@@ -37,6 +37,19 @@
     selectable items' list by overriding the ListView delegate. By default
     SelectionDialog provides a scrollable list of textual menu items. The user
     can choose one item from the list at a time.
+
+    \section1 Using Data Models with SelectionDialog
+
+    The example below illustrates how to use the data models with the
+    SelectionDialog. It has two dialogs that both allow the user to choose from
+    three different items. Both dialogs use the default \l delegate. The first
+    dialog uses a simple string list model and the second dialog uses a
+    ListModel that contains one named role.
+
+    \snippet src/snippets/symbian/snippet-selectiondialog-model.qml 0
+
+    \sa delegate
+
 */
 
 /*!
@@ -48,17 +61,9 @@
     If you use a custom delegate, the model can be anything supported by QML ListView component.
 
     \note If the model contains only one named role, it is always provided via
-    the \c modelData role. This also applies to a simple string list model. See
-    QML Data Models documentation for more detailed information about the topic.
+    the \c modelData role. This also applies to a simple string list model. For
+    more information, see QML Data Models documentation.
 
-    The example below illustrates how to use the data models with the SelectionDialog.
-    It has two dialogs that both allow the user to choose from three different items.
-    Both dialogs use the default \l delegate. The first dialog uses a simple
-    string list model and the second dialog uses a ListModel that contains one named role.
-
-    \snippet src/snippets/symbian/snippet-selectiondialog-model.qml 0
-
-    \sa delegate
 */
 
 /*!
