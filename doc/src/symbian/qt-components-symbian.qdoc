@@ -33,10 +33,10 @@
     \since 1.0
     \inherits QtObject
 
-    \brief Provides various services that are accessible everywhere in an
+    \brief Symbian: Provides various services that are accessible everywhere in an
     application.
 
-    It is accessible only as a \c symbian context property.
+    The Symbian component is accessible only as a \c symbian context property.
 
 */
 
@@ -69,9 +69,15 @@
 /*!
     \qmlproperty bool Symbian::rightToLeftDisplayLanguage
 
-    Indicates whether the current display language is right-to-left or not. This is a constant
-    property because the display language change requires a reboot. This property can be used
-    to initialize the application's \c LayoutMirroring.enabled property when implementing support
-    for a right-to-left user interface. See also \l{Right-to-left Support}{Right-to-left Support}.
+    Indicates whether the current display language is right-to-left or left-to-
+    right. This is a constant property because the display language change
+    requires a reboot. This property can be used to initialize the application's
+    \c LayoutMirroring.enabled property when implementing support for a right-
+    to-left user interface.
+
+    The default value is \c false, so the default display language is left-to-
+    right.
+
+    See also \l{Right-to-left Support}{Right-to-left Support}.
 
 */
