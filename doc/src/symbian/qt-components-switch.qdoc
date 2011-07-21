@@ -35,10 +35,9 @@
     \brief Provides an icon representing a physical switch that the user can
     turn on and off.
 
-    You can bind the Switch component to a feature that the application has to
-    enable or disable depending on the user's input, for example. Switch has
-    similar usage and API as \l CheckBox, except that Switch does not provide a
-    built-in label.
+    You can use the Switch component, for example, to enable and disable an
+    application feature based on the user's input. Switch has similar usage and
+    API as \l CheckBox, except that Switch does not provide a built-in label.
 
     \section1 Using a Switch
 
