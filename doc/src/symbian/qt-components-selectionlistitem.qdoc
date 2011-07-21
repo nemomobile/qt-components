@@ -72,7 +72,7 @@
 
     In this example the SelectionListItem is used as a standalone component
     outside any list. While this is technically possible, it is more typical
-    to place this component in a \c ListView or other vertical list element.
+    to place this component in a \l ListView or other vertical list element.
 
     \snippet src/snippets/symbian/snippet-selectionlistitem.qml 0
 
