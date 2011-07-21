@@ -44,7 +44,7 @@
     When the user slides the handle, the \c value is updated and the \c
     valueChanged signal is emitted . If the \c valueIndicatorVisible property is
     \c true, the value indicator is shown beside the handle when the user
-    presses the handle . The value indicator shows the text of \c
+    presses the handle. The value indicator shows the text of \c
     valueIndicatorText, but if \c valueIndicatorText contains an empty string,
     the indicator shows the current \c value instead.
 
