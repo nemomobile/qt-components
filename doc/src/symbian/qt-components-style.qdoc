@@ -39,6 +39,15 @@
     with the Symbian platform style. Symbian-style is exposed as a context
     property named \c {platformStyle}. It is not possible to instantiate a Style
     object in QML, but the style must be accessed through the context property.
+
+    The actual return values of the properties may vary between device
+    configurations. For example, if the resolutions of two devices are
+    different, it is probable that the pixel values of the properties are
+    different.
+
+
+    \section1 Using Style Parameters
+
     The following example illustrates how to use the style parameters.
 
     \code
@@ -71,9 +80,6 @@
     }
     \endcode
 
-    The actual return values of the properties may vary between device
-    configurations. For example, if the resolutions of two devices are different,
-    it is probable that the pixel values of the properties are different.
 */
 
 /*!
