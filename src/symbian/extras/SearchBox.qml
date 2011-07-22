@@ -48,6 +48,7 @@ Item {
     property alias placeHolderText: placeHolderText.text
     property alias searchText: searchTextInput.text
     property bool platformInverted: false
+    property alias maximumLength: searchTextInput.maximumLength
 
     signal clearClicked()
     signal backClicked()

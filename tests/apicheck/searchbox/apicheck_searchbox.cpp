@@ -60,6 +60,11 @@ void ApiCheckSearchBox::searchText()
     validateProperty("searchText", QVariant::String);
 }
 
+void ApiCheckSearchBox::maximumLength()
+{
+    validateProperty("maximumLength", QVariant::Int);
+}
+
 void ApiCheckSearchBox::clearClicked()
 {
     validateSignal("clearClicked()");

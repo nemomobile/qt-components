@@ -56,6 +56,7 @@ private slots:
     void backButton();
     void placeHolderText();
     void searchText();
+    void maximumLength();
     void clearClicked();
     void backClicked();
 };
