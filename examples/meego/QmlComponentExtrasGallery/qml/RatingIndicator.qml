@@ -74,27 +74,13 @@ Page {
         Button {
             id: negativeButton
             text: "Inverted visual"
-            onClicked: {
-                if(r1.color == "#f0f1f2") {
-                    indicator.inverted = true
-                    r1.color = "#000000"
-                    i2.inverted = true
-                    r2.color = "#000000"
-                }
-            }
+            onClicked: { theme.inverted = true }
         }
 
         Button {
             id: positiveButton
             text: "Normal visual"
-            onClicked: {
-                if(r1.color == "#000000") {
-                    indicator.inverted = false
-                    r1.color = "#f0f1f2"
-                    i2.inverted = false
-                    r2.color = "#f0f1f2"
-                }
-            }
+            onClicked: { theme.inverted = false }
         }
     }
 
@@ -110,11 +96,10 @@ Page {
             font.pointSize: 14
         }
 
-        Rectangle {
+        Item {
             id: r1
             width: 200
             height:  50
-            color: "#f0f1f2"
 
             RatingIndicator {
                 id: indicator
@@ -131,11 +116,10 @@ Page {
             font.pointSize: 14
         }
 
-        Rectangle {
+        Item {
             id: r2
             width: 200
             height: 50
-            color: "#f0f1f2"
 
             RatingIndicator {
                 id: i2

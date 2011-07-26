@@ -77,7 +77,7 @@ ImplicitSizeItem {
      * [string] Specify whether the visual for the rating indicator uses the inverted color.  The value is
      * false for use with a light background and true for use with a dark background.
      */
-    property bool inverted: false
+    property bool inverted: theme.inverted
 
     implicitHeight: Math.max(background.height, text.paintedHeight);
     implicitWidth: background.width + (count >= 0 ? internal.textSpacing + text.paintedWidth : 0);
