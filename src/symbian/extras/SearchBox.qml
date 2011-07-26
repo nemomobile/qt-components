@@ -87,7 +87,7 @@ Item {
         onClicked: root.backClicked()
     }
 
-    Item {
+    FocusScope {
         id: textPanel
         anchors.left: backButton ? backToolButton.right : parent.left
         anchors.leftMargin: backButton ? 0 : platformStyle.paddingLarge
@@ -138,25 +138,35 @@ Item {
             selectionColor: platformStyle.colorTextSelection
             font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
             activeFocusOnPress: false
-
-            MouseArea {
-                id: searchMouseArea
-                anchors.fill: parent
-                onClicked: {
-                    if (!searchTextInput.activeFocus) {
-                        searchTextInput.forceActiveFocus()
-                    }
-                    searchTextInput.openSoftwareInputPanel()
-                    privateStyle.play(Symbian.PopupOpen)
-                }
-            }
-
             onTextChanged: {
                 if (text) {
                     clearButton.state = "ClearVisible"
                 } else {
                     clearButton.state = "ClearHidden"
                 }
+            }
+            onActiveFocusChanged: {
+                if (!searchTextInput.activeFocus) {
+                    searchTextInput.closeSoftwareInputPanel()
+                }
+            }
+        }
+        MouseArea {
+            id: searchMouseArea
+            anchors {
+                left: textPanel.left;
+                right: clearButton.state=="ClearHidden" ? textPanel.right : clearButton.left
+                verticalCenter : textPanel.verticalCenter
+            }
+            height: textPanel.height
+            onPressed: {
+                if (!searchTextInput.activeFocus) {
+                    searchTextInput.forceActiveFocus()
+                }
+            }
+            onClicked: {
+                searchTextInput.openSoftwareInputPanel()
+                privateStyle.play(Symbian.PopupOpen)
             }
         }
 
