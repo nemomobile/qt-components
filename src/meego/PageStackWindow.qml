@@ -69,9 +69,19 @@ Window {
         statusBar.orientation = screen.currentOrientation
     }
 
+    Rectangle {
+        id: background
+        visible: platformStyle.background == ""
+        color: platformStyle.backgroundColor
+        width: window.inPortrait ? screen.displayHeight : screen.displayWidth
+        height: window.inPortrait ? screen.displayWidth : screen.displayHeight
+        anchors { top: statusBar.bottom; left: parent.left; }
+    }
+
     Image {
         id: backgroundImage
-        source: window.inPortrait ? platformStyle.portraiteBackground : platformStyle.landscapeBackground
+        visible: platformStyle.background != ""
+        source: window.inPortrait ? platformStyle.portraitBackground : platformStyle.landscapeBackground
         fillMode: platformStyle.backgroundFillMode
         width: window.inPortrait ? screen.displayHeight : screen.displayWidth
         height: window.inPortrait ? screen.displayWidth : screen.displayHeight

@@ -44,7 +44,10 @@ Style {
     property bool cornersVisible: true
 
     // Background
-    property url background: "image://theme/meegotouch-applicationpage-background"+__invertedString
+    property url background: ""
+
+    // Background color is used when no background is set.
+    property color backgroundColor: theme.inverted ? "#000000" : "#E0E1E2"
 
     property url landscapeBackground: background
     property url portraitBackground: background
