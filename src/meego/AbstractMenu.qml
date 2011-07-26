@@ -118,8 +118,8 @@ Popup {
                  && __findItem( "pageStackWindow") != null && __findItem( "pageStackWindow").platformStyle.cornersVisible
         anchors.left: parent.left
         anchors.right: parent.right
-        height: parent.height - __statusBarDelta - 2
         anchors.bottom: parent.bottom
+        height: parent.height - __statusBarDelta - 2
         z: 10001
 
         // compensate for the widening of the edges of the fader (which avoids artefacts during rotation)
@@ -189,6 +189,7 @@ Popup {
                 /* Portrait  */ titleBar.height + flickableContent.height + footerBar.height :
                 /* Landscape */ parent.height - platformStyle.topMargin - platformStyle.bottomMargin - __statusBarDelta
         anchors.bottom: parent.bottom
+        anchors.right: parent.right
 
         state: __statesWrapper.state
 
