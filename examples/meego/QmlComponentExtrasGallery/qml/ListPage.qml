@@ -139,7 +139,6 @@ Page {
                 anchors.verticalCenter: parent.verticalCenter
             }
 
-            subtitleColor: "#cc6633"
             onClicked: { openFile(model.page); }
         }
     }

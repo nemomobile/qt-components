@@ -40,6 +40,7 @@
 
 import QtQuick 1.1
 import com.nokia.meego 1.0
+import com.nokia.extras 1.1
 
 Page {
     id: orientationModePage
@@ -84,43 +85,16 @@ Page {
 
     ListView {
         anchors.fill: parent
-        pressDelay: 140
 
         model: pagesModel
-        delegate: Item {
-            id: listItem
-            height: 88
-            width: parent.width
-
-            BorderImage {
-                id: background
-                anchors.fill: parent
-                // Fill page porders
-                anchors.leftMargin: -listPage.anchors.leftMargin
-                anchors.rightMargin: -listPage.anchors.rightMargin
-                visible: mouseArea.pressed
-                source: "image://theme/meegotouch-list-background-pressed-center"
-            }
-
-            Text {
-                font.pixelSize: 24
-                text: title
-                font.bold: true
-                anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
-            }
-
+        delegate: ListDelegate {
             Image {
-                source: "image://theme/icon-m-common-drilldown-arrow"
+                source: "image://theme/icon-m-common-drilldown-arrow" + (theme.inverted ? "-inverse" : "")
                 anchors.right: parent.right;
                 anchors.verticalCenter: parent.verticalCenter
             }
 
-            MouseArea {
-                id: mouseArea;
-                anchors.fill: background
-                onClicked: handleClick(page, index)
-            }
+            onClicked: handleClick(page, index)
         }
     }
 

@@ -40,6 +40,7 @@
 
 import QtQuick 1.1
 import com.nokia.meego 1.0
+import com.nokia.extras 1.1
 
 Page {
     id: listPage
@@ -161,59 +162,15 @@ Page {
         id: listView
         anchors.fill: parent
         model: pagesModel
-        pressDelay: 140
 
-        delegate:  Item {
-            id: listItem
-            height: 88
-            width: parent.width
-
-            BorderImage {
-                id: background
-                anchors.fill: parent
-                // Fill page porders
-                anchors.leftMargin: -listPage.anchors.leftMargin
-                anchors.rightMargin: -listPage.anchors.rightMargin
-                visible: mouseArea.pressed
-                source: "image://theme/meegotouch-list-background-pressed-center"
-            }
-
-            Row {
-                anchors.fill: parent
-
-                Column {
-                    anchors.verticalCenter: parent.verticalCenter
-
-                    Label {
-                        id: mainText
-                        text: model.title
-                        font: UiConstants.TitleFont
-                    }
-
-                    Label {
-                        id: subText
-                        text: model.subtitle
-                        font: UiConstants.SubtitleFont
-                        color: "#cc6633"
-
-                        visible: text != ""
-                    }
-                }
-            }
-
+        delegate:  ListDelegate {
             Image {
                 source: "image://theme/icon-m-common-drilldown-arrow" + (theme.inverted ? "-inverse" : "")
                 anchors.right: parent.right;
                 anchors.verticalCenter: parent.verticalCenter
             }
 
-            MouseArea {
-                id: mouseArea
-                anchors.fill: background
-                onClicked: {
-                    listPage.openFile(page)
-                }
-            }
+            onClicked: { listPage.openFile(page) }
         }
     }
     ScrollDecorator {

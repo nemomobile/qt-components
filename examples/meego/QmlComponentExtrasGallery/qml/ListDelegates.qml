@@ -92,7 +92,6 @@ Page {
                 width:  buttonText == "x" ? 150 : implicitWidth
             }
 
-            subtitleColor: "#cc6633"
             onClicked: { openFile(model.page); }
         }
     }

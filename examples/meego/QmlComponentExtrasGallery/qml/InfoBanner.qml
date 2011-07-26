@@ -115,14 +115,14 @@ Page {
                     Label { text: "Top margin: " }
                     Label { text: sl2.value; color: "green" }
                     Label { text: " pixel" ; color: "green" }
-                    Slider { id: sl2; maximumValue: 50; minimumValue: 0; stepSize:1; value: 8 }
+                    Slider { id: sl2; maximumValue: 50; minimumValue: 0; stepSize:1; value: 0 }
                 }
 
                 Row {
                     Label { text: "Left margin: " }
                     Label { text: sl3.value; color: "green" }
                     Label { text: " pixel" ; color: "green" }
-                    Slider { id: sl3; maximumValue: 50; minimumValue: 0; stepSize:1; value: 8 }
+                    Slider { id: sl3; maximumValue: 50; minimumValue: 0; stepSize:1; value: 0 }
                 }
 
                 Row {
