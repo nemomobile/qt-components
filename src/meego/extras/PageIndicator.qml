@@ -68,7 +68,7 @@ ImplicitSizeItem {
      * [bool] Specify whether the visual for the rating indicator uses the inverted color.  The value is
      * false for use with a light background and true for use with a dark background.
      */
-    property bool inverted: false
+    property bool inverted: theme.inverted
 
     implicitWidth: currentImage.width * totalPages + (totalPages - 1) * internal.spacing
     implicitHeight: currentImage.height
