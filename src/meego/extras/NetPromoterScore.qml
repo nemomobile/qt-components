@@ -89,7 +89,7 @@ Rectangle {
     signal submit()
 
     height: childrenRect.height
-    color: "#f0f1f2"
+    color: "#E0E1E2"
 
     QtObject {
         id: internal
