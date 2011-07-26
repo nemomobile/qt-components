@@ -276,6 +276,11 @@ FocusScopeItem {
                          (textEdit.wrapMode == TextEdit.NoWrap ? textEdit.cursorRectangle.width : 0)
             interactive: root.enabled
 
+            onHeightChanged: {
+                if(textEdit.cursorVisible)
+                    ensureVisible(textEdit.cursorRectangle)
+            }
+
             TextEdit {
                 id: textEdit
                 objectName: "textEdit"
