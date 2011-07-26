@@ -161,33 +161,7 @@ ImplicitSizeItem {
         }
 
         function getBannerWidth() {
-            if ( screen.currentOrientation==Screen.Portrait || screen.currentOrientation==Screen.PortraitInverted ) {
-                // In portrait mode, the width of the banner is equal to the width of parent minus left
-                // and right margins in-between banner and parent.
-                return parent.width-root.x*2;
-            } else {
-                if (image.visible) {
-                    // If an icon image is specified...
-                    if ((image.width+text.paintedWidth+46) <= parent.width*0.54 && text.lineCount <= 1) {
-                        // 46 is the sum of all horizontal margins within the banner. The above condition basically
-                        // says that if there's only one line of text, and the sum of width of icon, text, and required
-                        // margins is less then 54% of the screen width, banner width should be 54% of the screen.
-                        return parent.width*0.54;
-                    } else {
-                        return parent.width-root.x*2;
-                    }
-                } else {
-                    // If no icon image specified...
-                    if ((text.paintedWidth+32) <= parent.width*0.54 && text.lineCount <= 1) {
-                        // 32 is the sum of all horizontal margins within the banner. The above condition basically
-                        // says that if there's only one line of text, and the sum of width of text and required
-                        // margins is less then 54% of the screen width, banner width should be 54% of the screen.
-                        return parent.width*0.54;
-                    } else {
-                        return parent.width-root.x*2;
-                    }
-                }
-            }
+            return parent.width - root.x*2;
         }
 
         function getTopMargin() {
