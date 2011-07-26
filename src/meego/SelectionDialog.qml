@@ -46,7 +46,7 @@ CommonDialog {
     id: root
 
     // Common API
-    property ListModel model: ListModel{}
+    property alias model: selectionListView.model
     property int selectedIndex: -1   // read & write
     //property string titleText: "Selection Dialog"
 
@@ -141,7 +141,6 @@ CommonDialog {
 
             currentIndex : -1
             anchors.fill: parent
-            model: root.model
             delegate: root.delegate
             focus: true
             clip: true

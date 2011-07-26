@@ -46,7 +46,7 @@ import "MultiSelectionDialog.js" as MultiSelectionDialog
 CommonDialog {
     id: root
 
-    property ListModel model: ListModel{}
+    property alias model: selectionListView.model
     // Common API: property list<int> selectedIndexes (currently not possible due to QTBUG-10822)
     property variant selectedIndexes: []   // read & write, variant is supposed to be list<int>
     property alias acceptButtonText: acceptButton.text      //Convenience wrapper on top of the buttons
@@ -155,7 +155,6 @@ CommonDialog {
 
             currentIndex : -1
             anchors.fill: parent
-            model: root.model
             delegate: root.delegate
             focus: true
             clip: true
