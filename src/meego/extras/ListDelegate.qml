@@ -50,11 +50,15 @@ Item {
 
     property int titleSize: UI.LIST_TILE_SIZE
     property int titleWeight: Font.Bold
+    property string titleFont: UI.FONT_FAMILY
     property color titleColor: theme.inverted ? UI.LIST_TITLE_COLOR_INVERTED : UI.LIST_TITLE_COLOR
+    property color titleColorPressed: theme.inverted ? UI.LIST_TITLE_COLOR_PRESSED_INVERTED : UI.LIST_TITLE_COLOR_PRESSED
 
     property int subtitleSize: UI.LIST_SUBTILE_SIZE
-    property int subtitleWeight: Font.Light
+    property int subtitleWeight: Font.Normal
+    property string subtitleFont: UI.FONT_FAMILY_LIGHT
     property color subtitleColor: theme.inverted ? UI.LIST_SUBTITLE_COLOR_INVERTED : UI.LIST_SUBTITLE_COLOR
+    property color subtitleColorPressed: theme.inverted ? UI.LIST_SUBTITLE_COLOR_PRESSED_INVERTED : UI.LIST_SUBTITLE_COLOR_PRESSED
 
     height: UI.LIST_ITEM_HEIGHT
     width: parent.width
@@ -66,7 +70,7 @@ Item {
         anchors.leftMargin: -UI.MARGIN_XLARGE
         anchors.rightMargin: -UI.MARGIN_XLARGE
         visible: mouseArea.pressed
-        source: "image://theme/meegotouch-list-background-pressed-center"
+        source: theme.inverted ? "image://theme/meegotouch-panel-inverted-background-pressed" : "image://theme/meegotouch-panel-background-pressed"
     }
 
     Row {
@@ -87,17 +91,19 @@ Item {
             Label {
                 id: mainText
                 text: model.title
+                font.family: listItem.titleFont
                 font.weight: listItem.titleWeight
                 font.pixelSize: listItem.titleSize
-                color: listItem.titleColor
+                color: mouseArea.pressed ? listItem.titleColorPressed : listItem.titleColor
             }
 
             Label {
                 id: subText
                 text: model.subtitle ? model.subtitle : ""
+                font.family: listItem.subtitleFont
                 font.weight: listItem.subtitleWeight
                 font.pixelSize: listItem.subtitleSize
-                color: listItem.subtitleColor
+                color: mouseArea.pressed ? listItem.subtitleColorPressed : listItem.subtitleColor
 
                 visible: text != ""
             }
