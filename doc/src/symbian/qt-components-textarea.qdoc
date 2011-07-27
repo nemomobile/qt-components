@@ -42,6 +42,8 @@
 
     \section1 TextArea Basic Examples
 
+    The code examples below illustrate various features of TextArea.
+
     \table
     \header
         \o Code
@@ -74,6 +76,9 @@
     \endtable
 
     \section1 TextArea Selection in Symbian
+
+    The examples below illustrate various TextArea selection features in Symbian.
+
     \table
     \header
         \o Selected Text
@@ -93,12 +98,12 @@
 
     \section1 TextArea Behaviors
     Different actions trigger different responses during certain conditions.
-    Touch actions trigger different responses than keyboard actions. Further,
-    responses depend on whether the TextArea is marked as \l readOnly.
+    Touch actions trigger different responses than keyboard actions. Furthermore,
+    responses depend on whether the TextArea is marked as \l readOnly or not.
 
     \section2 Touch Interaction
-    This table summarizes the Symbian TextArea behaviors for editable text for
-    touch interaction.
+    The following table summarizes the Symbian TextArea behaviors of editable
+    text for touch interaction.
     \table
     \header
         \o Action
@@ -108,12 +113,12 @@
         \o On Selection Handle
     \row
         \o Tap
-        \o Places the cursor, and opens virtual keyboard.
-        \o Opens virtual keyboard.
+        \o Places the cursor, and opens the virtual keyboard.
+        \o Opens the virtual keyboard.
         \o Deselects the current selection, places the cursor, and opens virtual
         keyboard.
         \o Deselects the current selection, places the cursor at the touched
-        position, and opens virtual keyboard.
+        position, and opens the virtual keyboard.
     \row
         \o Double-tap
         \o Selects the word, displays the selection handles on both sides, and
@@ -136,7 +141,7 @@
         \o Displays the magnifier.
         \o Deselects the current selection, dismisses the context menu, places
         the cursor to the touched point, and displays the magnifier.
-        \o Dismisses the context menu and displays the magnifier
+        \o Dismisses the context menu and displays the magnifier.
     \row
         \o Release After Tap and Hold
         \o Shows the context menu (Paste).
@@ -165,8 +170,8 @@
     \note The paste button is not shown on the context menu if the clipboard is empty or does not contain data that can be pasted to TextArea.
 
     \section2 Read-Only Touch Interaction
-    This table summarizes the Symbian TextArea behaviors for non-editable text
-    for touch interaction.
+    The following table summarizes the Symbian TextArea behaviors of non-
+    editable text for touch interaction.
 
     \table
     \header
@@ -216,8 +221,8 @@
     \endtable
 
     \section2 Keyboard Interaction
-    This table summarizes the Symbian TextArea behaviors for editable text for
-    keyboard interaction.
+    The following table summarizes the Symbian TextArea behaviors for editable
+    text for keyboard interaction.
 
     \table
     \header
@@ -240,22 +245,22 @@
         \o Moves the cursor one line down.
     \row
         \o Shift+Left
-        \o Select the character to the left.
+        \o Selects the character to the left.
     \row
         \o Shift+Right
-        \o Select the character to the right.
+        \o Selects the character to the right.
     \row
         \o Shift+Ctrl+Left
-        \o Select the word to the left.
+        \o Selects the word to the left.
     \row
         \o Shift+Ctrl+Right
-        \o Select the word to the right.
+        \o Selects the word to the right.
     \row
         \o Shift+Up
-        \o Select the characters to the one line up.
+        \o Selects the characters from the cursor until the cursor's horizontal position on one line up.
     \row
         \o Shift+Down
-        \o Select the characters to the one line down.
+        \o Selects the characters from the cursor until the cursor's horizontal position on one line down.
     \endtable
 
     \note Currently, copy-paste-cut shortcuts don't work on Symbian see \l
@@ -282,22 +287,22 @@
         \o Moves the cursor one line down.
     \row
         \o Shift+Left
-        \o Select the character to the left.
+        \o Selects the character to the left.
     \row
         \o Shift+Right
-        \o Select the character to the right.
+        \o Selects the character to the right.
     \row
         \o Shift+Ctrl+Left
-        \o Select the word to the left.
+        \o Selects the word to the left.
     \row
         \o Shift+Ctrl+Right
-        \o Select the word to the right.
+        \o Selects the word to the right.
     \row
         \o Shift+Up
-        \o Select the characters to the one line up.
+        \o Selects the characters from the cursor until the cursor's horizontal position on one line up.
     \row
         \o Shift+Down
-        \o Select the characters to the one line down.
+        \o Selects the characters from the cursor until the cursor's horizontal position on one line down.
     \endtable
 
     \section2 Implicit Size Behaviour
@@ -309,11 +314,12 @@
         \o Description
         \o Minimum Size
     \row
-        \o Minimum implicit size for TextArea is \c{20 * " "} on current font.
+        \o The minimum implicit size for a TextArea is \c{20 * " "} on the
+        current font.
         \o \image symbian/textarea_min_imp_size.png
     \row
-        \o If there is placeholderText defined it's length is the text's minimum
-        implicit size.
+        \o If there is a placeholderText defined, its length is the text's
+        minimum implicit size.
         \o \image symbian/textarea_min_imp_size_placeholdertext.png
     \endtable
 
@@ -323,22 +329,20 @@
         \o Description
         \o Growth pattern
     \row
-        \o With default values TextArea
-           grows indefinitely to right.
+        \o With the default values a TextArea grows indefinitely to the right.
            \snippet src/snippets/symbian/snippet-textarea-implicit-size.qml 2
         \o \image symbian/textarea_min_imp_size.png
            \image symbian/textarea_imp_size_default.png
     \row
-        \o Setting platformMaxImplicitWidth
-           defines a wrapping point. When that
-           width is reached TextArea grows
-           indefinitely to bottom.
+        \o The platformMaxImplicitWidth setting defines a TextArea's wrapping
+        point. When that width is reached the TextArea grows indefinitely
+        downwards.
            \snippet src/snippets/symbian/snippet-textarea-implicit-size.qml 3
         \o \image symbian/textarea_min_imp_size.png
            \image symbian/textarea_imp_size_platformmaximplicitwidth.png
     \row
-        \o Setting platformMaxImplicitHeight and platformMaxImplicitWidth
-           restricts TextArea to grow only to those values.
+        \o The platformMaxImplicitHeight and platformMaxImplicitWidth settings
+           restrict a TextArea to grow only to those values.
            \snippet src/snippets/symbian/snippet-textarea-implicit-size.qml 4
         \o \image symbian/textarea_min_imp_size.png
            \image symbian/textarea_imp_size_platformmaximplicit.png
@@ -349,7 +353,7 @@
 /*!
     \qmlproperty font TextArea::font
 
-    Font information for the text in the text field.
+    The text's font information in the TextArea.
 
     \sa TextEdit::font
 
@@ -358,7 +362,7 @@
 /*!
     \qmlproperty int TextArea::cursorPosition
 
-    The position of the cursor in the TextArea.
+    The position of the cursor in a TextArea.
 
     \sa TextEdit::cursorPosition
 
@@ -367,14 +371,20 @@
 /*!
     \qmlproperty bool TextArea::errorHighlight
 
-    Set's TextArea graphics to show that it contains invalid input.
+    If the value is \c true, the TextArea's graphics show that it contains
+    invalid input; otherwise not.
 
 */
 
 /*!
     \qmlproperty bool TextArea::enabled
 
-    Prevent's user interaction from TextArea.
+    If the value is \c true, the user can interact with the TextArea; otherwise
+    not.
+
+    The default value is \c true.
+
+    \sa readOnly
 
 */
 
@@ -392,7 +402,7 @@
 /*!
     \qmlproperty int TextArea::inputMethodHints
 
-    Settings that indicate what kind of input can be accepted by the textarea.
+    Settings that indicate what kind of input can be accepted by the TextArea.
     The value is from Qt::InputMethodHints.
 
     \sa TextEdit::inputMethodHints
@@ -402,11 +412,11 @@
 /*!
     \qmlproperty bool TextArea::readOnly
 
-    If \c true, the text field can only be viewed and cannot be edited.
+    If the value is \c true, the user can interact (select, copy, and scroll)
+    with but not edit the TextArea's text. If the value is \c false, the use can
+    also edit the text.
 
-    If this is \c false, the text field can be edited.
-
-    \sa TextEdit::readOnly
+    \sa TextEdit::readOnly, enabled
 */
 
 
@@ -414,8 +424,7 @@
 /*!
     \qmlproperty string TextArea::selectedText
 
-    This read-only property provides the text that is currently selected in the
-    text field.
+    The currently selected text in the text field.
 
     \sa TextEdit::selectedText
 */
@@ -425,7 +434,7 @@
 
     The cursor position after the last character in the current selection.
 
-    \sa selectionstart, selectedText, cursorPosition, TextEdit::selectionEnd
+    \sa selectionStart, selectedText, cursorPosition, TextEdit::selectionEnd
 
 */
 
@@ -448,9 +457,8 @@
 /*!
     \qmlproperty int TextArea::textFormat
 
-    This determines if the text is displayed as rich text or plain text. By
-    default it will and determine if the text is rich text or plain text and
-    display it appropriately.
+    Defines whether the text is displayed as rich text or plain text. By default
+    the format of the text is automatically determined.
 
     See TextEdit::textFormat for the enumeration details.
 
@@ -459,9 +467,9 @@
 /*!
     \qmlproperty int TextArea::wrapMode
 
-    This determines if text in the TextArea is wrapped or not.
+    Defines whether the text in the TextArea is wrapped or not.
 
-    See TextEdit::wrapMode for details of the different modes.
+    See TextEdit::wrapMode for details of the different wrapping modes.
 
 */
 
@@ -494,7 +502,7 @@
 /*!
     \qmlmethod TextArea::select(start, end)
 
-    Causes the text from \a start to \a end to be selected.
+    Selects the text from \a start to \a end.
 
     \sa selectionStart, selectionEnd, TextEdit::select()
 */
@@ -502,7 +510,7 @@
 /*!
     \qmlmethod TextArea::selectAll()
 
-    Causes all text in the text field to be selected.
+    Selects all the text in the text field.
 
     \sa TextEdit::selectAll()
 
@@ -511,7 +519,7 @@
 /*!
     \qmlmethod TextArea::selectWord()
 
-    Causes the word closest to the current cursor position to be selected.
+    Selects the word closest to the current cursor position.
 
     \sa TextEdit::selectWord()
 
@@ -544,7 +552,8 @@
 /*!
     \qmlmethod TextArea::openSoftwareInputPanel()
 
-    Opens the virtual keyboard for typing. On Symbian-based devices the user can open the virtual keyboard by tapping TextArea.
+    Opens the virtual keyboard for typing. On Symbian-based devices the user can
+    open the virtual keyboard by tapping the TextArea.
 
     \sa closeSoftwareInputPanel, TextEdit::openSoftwareInputPanel()
 */
@@ -552,7 +561,8 @@
 /*!
     \qmlmethod TextArea::closeSoftwareInputPanel()
 
-    Closes the virtual keyboard shown on the screen. On Symbian-based devices the user can open the virtual keyboard by tapping TextArea.
+    Closes the virtual keyboard shown on the screen. On Symbian-based devices
+    the user can open the virtual keyboard by tapping the TextArea.
 
     \note Currently closeSoftwareInputPanel does not work on Symbian. For more information, see \l
     {http://bugreports.qt.nokia.com/browse/QTBUG-20033}{QTBUG-20033}.
@@ -570,12 +580,13 @@
 /*!
     \qmlproperty double TextArea::platformMaxImplicitWidth
 
-    Defines the maximum width that the TextArea can grow.
+    Defines the maximum width that the TextArea can grow to. If the width is
+    explicitly set, this property has no effect.
 
-    The default value for this property is \c -1, which allows the widthto grow
-    infinitely.
+    The default value for this property is \c -1 meaning that the width is
+    allowed to grow infinitely.
 
-    If a width is explicitly set then this property has no effect.
+
 
     \sa platformMaxImplicitHeight
 */
@@ -583,12 +594,12 @@
 /*!
     \qmlproperty double TextArea::platformMaxImplicitHeight
 
-    Defines the maximum height that the TextArea can grow.
+    Defines the maximum height that the TextArea can grow to. If the height is
+    explicitly set, this property has no effect.
 
-    The default value for this property is \c -1 and the height is allowed to
-    grow infinitely.
+    The default value for this property is \c -1 meaning that the height is
+    allowed to grow infinitely.
 
-    If a height is explicitly set then this property has no effect.
 
     \sa platformMaxImplicitWidth
 */
