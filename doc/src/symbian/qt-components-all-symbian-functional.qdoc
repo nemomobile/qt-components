@@ -145,6 +145,7 @@
     \list
         \o \l{InfoBanner}
         \o \l{RatingIndicator}
+        \o \l{SearchBox}
         \o \l{TimePickerDialog}
         \o \l{DatePickerDialog}
         \o \l{Tumbler}
