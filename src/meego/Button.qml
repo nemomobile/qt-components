@@ -116,7 +116,7 @@ ImplicitSizeItem {
         elide: Text.ElideRight
 
         font.family: button.platformStyle.fontFamily
-        font.weight: button.platformStyle.fontWeight
+        font.weight: checked ? button.platformStyle.checkedFontWeight : button.platformStyle.fontWeight
         font.pixelSize: button.platformStyle.fontPixelSize
         font.capitalization: button.platformStyle.fontCapitalization
         color: !enabled ? button.platformStyle.disabledTextColor :

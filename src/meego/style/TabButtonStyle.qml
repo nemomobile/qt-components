@@ -49,14 +49,15 @@ ButtonStyle {
     property string screenOrientation: (screen.currentOrientation == Screen.Portrait || screen.currentOrientation == Screen.PortraitInverted) ? "portrait" : "landscape"
 
     fontCapitalization: Font.MixedCase 
-    fontPixelSize: 20
-    fontWeight: Font.Bold
+    fontPixelSize: 24
+    fontWeight: Font.Normal
+    checkedFontWeight: Font.Bold
 
     buttonHeight: screenOrientation == "portrait"? 72 : 56
 
-    textColor: inverted? UI.COLOR_INVERTED_SECONDARY_FOREGROUND : UI.COLOR_SECONDARY_FOREGROUND                                          
-    pressedTextColor: inverted? UI.COLOR_INVERTED_SECONDARY_FOREGROUND : UI.COLOR_SECONDARY_FOREGROUND
-    checkedTextColor: inverted? UI.COLOR_INVERTED_SECONDARY_FOREGROUND : UI.COLOR_FOREGROUND 
+    textColor: inverted ? "#CDCDCD" : "#505050"
+    pressedTextColor: inverted ? "#ffffff" : "#505050"
+    checkedTextColor: inverted ? "#ffffff" : "#000000"
 
     background: "image://theme/meegotouch-tab-" + screenOrientation + "-bottom" + __invertedString + "-background" + (position ? "-" + position : "") 
 
