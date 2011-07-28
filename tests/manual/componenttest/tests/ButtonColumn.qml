@@ -99,7 +99,7 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.margins: 10
-        opacity: 0
+        visible: false
 
         Column {
             id: col1
@@ -252,7 +252,7 @@ Item {
         anchors.top: navButtonRow.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        opacity: 0
+        visible: false
 
         Column {
             anchors.left: parent.left
@@ -309,7 +309,7 @@ Item {
         anchors.top: navButtonRow.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        opacity: 0
+        visible: false
 
         Column {
             anchors.left: parent.left
@@ -368,7 +368,7 @@ Item {
         anchors.topMargin: 20
         anchors.left: parent.left
         anchors.right: parent.right
-        opacity: 0
+        visible: false
 
         Column {
             id: toolBtnCol1
@@ -508,27 +508,23 @@ Item {
     states: [
         State {
             name: "buttonsInCol"
-            PropertyChanges { target: buttonTests; opacity: 1 }
+            PropertyChanges { target: buttonTests; visible: true }
             PropertyChanges { target: navButton1; opacity: 1 }
         },
         State {
             name: "checkBoxesInCol"
-            PropertyChanges { target: checkBoxTests; opacity: 1 }
+            PropertyChanges { target: checkBoxTests; visible: true }
             PropertyChanges { target: navButton2; opacity: 1 }
         },
         State {
             name:  "radioButtonsInCol"
-            PropertyChanges { target:  radioButtonTests; opacity: 1 }
+            PropertyChanges { target:  radioButtonTests; visible: true }
             PropertyChanges { target: navButton3; opacity: 1 }
         },
         State {
             name: "toolButtonsInCol"
-            PropertyChanges { target:  toolButtonTests; opacity: 1 }
+            PropertyChanges { target:  toolButtonTests; visible: true }
             PropertyChanges { target: navButton4; opacity: 1 }
         }
     ]
-
-    transitions: Transition {
-        NumberAnimation { property: "opacity"; duration: 500 }
-    }
 }

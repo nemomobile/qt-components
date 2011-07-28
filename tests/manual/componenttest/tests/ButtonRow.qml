@@ -103,7 +103,7 @@ Item {
         anchors.margins: 10
         width: parent.width
         spacing: 10
-        opacity: 0
+        visible: false
 
         Text {
             id: text1
@@ -387,7 +387,7 @@ Item {
         anchors.margins: 10
         width: parent.width
         spacing: 10
-        opacity: 0
+        visible: false
 
         Text {
             id: text4
@@ -437,7 +437,7 @@ Item {
         anchors.margins: 10
         width: parent.width
         spacing: 10
-        opacity: 0
+        visible: false
 
         Text {
             id: text5
@@ -487,7 +487,7 @@ Item {
         anchors.margins: 10
         width: parent.width
         spacing: 10
-        opacity: 0
+        visible: false
 
         Text {
             id: text6
@@ -731,27 +731,23 @@ Item {
     states: [
         State {
             name: "buttonsInRow"
-            PropertyChanges { target: buttonTests; opacity: 1 }
+            PropertyChanges { target: buttonTests; visible: true }
             PropertyChanges { target: navButton1; opacity: 1 }
         },
         State {
             name: "checkBoxesInRow"
-            PropertyChanges { target: checkBoxTests; opacity: 1 }
+            PropertyChanges { target: checkBoxTests; visible: true }
             PropertyChanges { target: navButton2; opacity: 1 }
         },
         State {
             name:  "radioButtonsInRow"
-            PropertyChanges { target:  radioButtonTests; opacity: 1 }
+            PropertyChanges { target:  radioButtonTests; visible: true }
             PropertyChanges { target: navButton3; opacity: 1 }
         },
         State {
             name: "toolButtonsInRow"
-            PropertyChanges { target:  toolButtonTests; opacity: 1 }
+            PropertyChanges { target:  toolButtonTests; visible: true }
             PropertyChanges { target: navButton4; opacity: 1 }
         }
     ]
-
-    transitions: Transition {
-        NumberAnimation { property: "opacity"; duration: 500 }
-    }
 }
