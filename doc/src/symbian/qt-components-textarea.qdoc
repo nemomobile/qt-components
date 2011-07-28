@@ -413,8 +413,8 @@
     \qmlproperty bool TextArea::readOnly
 
     If the value is \c true, the user can interact (select, copy, and scroll)
-    with but not edit the TextArea's text. If the value is \c false, the use can
-    also edit the text.
+    with but not edit the TextArea's text. If the value is \c false, the user
+    can also edit the text.
 
     \sa TextEdit::readOnly, enabled
 */
@@ -573,8 +573,11 @@
 /*!
     \qmlproperty string TextArea::placeholderText
 
-    The text that is shown in the text area before the user enters any text.
-    When the user starts entering text, the placeholder text is hidden.
+    The placeholder text that is shown in the TextArea to hint at the expected
+    input. The placeholder text is shown in the TextArea as long as it has no
+    focus and the user has not entered any text to the TextArea. The default
+    value of placeholderText is an empty string.
+
 */
 
 /*!
