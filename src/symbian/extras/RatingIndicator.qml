@@ -48,6 +48,7 @@ Item {
     property alias maximumValue: model.maximumValue
     property alias ratingValue: model.value
     property int count: -1
+    property bool platformInverted: false
 
     implicitHeight: Math.max(background.height, text.paintedHeight);
     implicitWidth: background.width + (count >= 0 ? internal.textSpacing + text.paintedWidth : 0);
@@ -64,10 +65,11 @@ Item {
 
         // spacing between image and text
         property int textSpacing: platformStyle.paddingMedium
-        property string textColor: platformStyle.colorNormalLight
+        property string textColor: root.platformInverted ? platformStyle.colorNormalLightInverted
+                                                         : platformStyle.colorNormalLight
 
-        property string backgroundImageSource: "qtg_graf_rating_unrated.svg"
-        property string indicatorImageSource: "qtg_graf_rating_rated.svg"
+        property string backgroundImageSource: "qtg_graf_rating_unrated"
+        property string indicatorImageSource: "qtg_graf_rating_rated"
     }
 
     Row {
@@ -78,7 +80,7 @@ Item {
             model: maximumValue
             Image {
                 id: backgroundImage
-                source: privateStyle.imagePath(internal.backgroundImageSource)
+                source: privateStyle.imagePath(internal.backgroundImageSource, root.platformInverted)
                 sourceSize.width: platformStyle.graphicSizeTiny
                 sourceSize.height: platformStyle.graphicSizeTiny
             }
@@ -93,7 +95,7 @@ Item {
             model: ratingValue
             Image {
                 id: indicatorImage
-                source: privateStyle.imagePath(internal.indicatorImageSource)
+                source: privateStyle.imagePath(internal.indicatorImageSource, root.platformInverted)
                 sourceSize.width: platformStyle.graphicSizeTiny
                 sourceSize.height: platformStyle.graphicSizeTiny
             }

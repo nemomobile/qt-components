@@ -50,11 +50,10 @@ Page {
         x: 25
         spacing: 20
 
-        Rectangle {
+        Item {
             id: rect
             width: 200
             height: 50
-            color: "#000000"
 
             RatingIndicator {
                 id: indicator
@@ -62,6 +61,7 @@ Page {
 
                 ratingValue: 3
                 maximumValue: 5
+                platformInverted: root.childrenInverted
             }
         }
 
