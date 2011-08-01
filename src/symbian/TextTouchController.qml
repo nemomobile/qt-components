@@ -342,4 +342,10 @@ MouseArea {
         }
     }
 
+    Keys.onPressed: {
+        if (internal.editorHasSelection && event.modifiers & Qt.ShiftModifier
+            && (event.key == Qt.Key_Left || event.key == Qt.Key_Right
+            || event.key == Qt.Key_Up || event.key == Qt.Key_Down))
+            contextMenu.show()
+    }
 }

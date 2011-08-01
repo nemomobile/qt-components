@@ -223,6 +223,8 @@ FocusScope {
 
                 onCursorPositionChanged: flick.ensureVisible(textInput.cursorRectangle)
 
+                Keys.forwardTo: touchController
+
                 TextTouchController {
                     id: touchController
 

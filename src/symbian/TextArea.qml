@@ -338,6 +338,8 @@ FocusScopeItem {
                     }
                 }
 
+                Keys.forwardTo: touchController
+
                 TextTouchController {
                     id: touchController
 
