@@ -56,6 +56,7 @@ MouseArea {
     function updateGeometry() {
         selectionBegin.updateGeometry();
         selectionEnd.updateGeometry();
+        contextMenu.calculatePosition(); // Update context menu position
     }
 
     function flickEnded() {

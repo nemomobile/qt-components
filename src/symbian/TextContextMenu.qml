@@ -54,8 +54,8 @@ Item {
         // Show menu only if some of the options is available
         if(root.copyEnabled || root.cutEnabled || editor.canPaste) {
             parent = AppManager.rootObject();
-            internal.calculatePosition();
             root.visible = true;
+            calculatePosition();
         }
     }
 
@@ -63,46 +63,41 @@ Item {
         root.visible = false;
     }
 
-    x: 0; y: 0
-    visible: false
+    function calculatePosition() {
+        if (editor && root.visible) {
+            var rectStart = editor.positionToRectangle(editor.selectionStart);
+            var rectEnd = editor.positionToRectangle(editor.selectionEnd);
 
-    // Private
-    QtObject {
-        id: internal
-        // Reposition the context menu so that it centers on top of the selection
-        function calculatePosition() {
-            if (editor) {
-                var rectStart = editor.positionToRectangle(editor.selectionStart);
-                var rectEnd = editor.positionToRectangle(editor.selectionEnd);
+            var posStart = editor.mapToItem(parent, rectStart.x, rectStart.y);
+            var posEnd = editor.mapToItem(parent, rectEnd.x, rectEnd.y);
 
-                var posStart = editor.mapToItem(parent, rectStart.x, rectStart.y);
-                var posEnd = editor.mapToItem(parent, rectEnd.x, rectEnd.y);
+            var selectionCenterX = (posEnd.x + posStart.x) / 2;
+            if (posStart.y != posEnd.y)
+                // we have multiline selection so center to the screen
+                selectionCenterX = parent.width / 2;
 
-                var selectionCenterX = (posEnd.x + posStart.x) / 2;
-                if (posStart.y != posEnd.y)
-                    // we have multiline selection so center to the screen
-                    selectionCenterX = parent.width / 2;
+            var editorScrolledParent = editor.mapToItem(parent, 0, editorScrolledY);
+            var contextMenuMargin = 10; // the space between the context menu and the line above/below
+            var contextMenuAdjustedRowHeight = row.height + contextMenuMargin;
 
-                var editorScrolledParent = editor.mapToItem(parent, 0, editorScrolledY);
-                var contextMenuMargin = 10; // the space between the context menu and the line above/below
-                var contextMenuAdjustedRowHeight = row.height + contextMenuMargin;
+            var tempY = Math.max(editorScrolledParent.y - contextMenuAdjustedRowHeight,
+                                 posStart.y - contextMenuAdjustedRowHeight);
+            if (tempY < 0)
+                // it doesn't fit to the top -> try bottom
+                tempY = Math.min(editorScrolledParent.y + editor.height + contextMenuMargin,
+                                 posEnd.y + rectEnd.height + contextMenuMargin);
 
-                var tempY = Math.max(editorScrolledParent.y - contextMenuAdjustedRowHeight,
-                                     posStart.y - contextMenuAdjustedRowHeight);
-                if (tempY < 0)
-                    // it doesn't fit to the top -> try bottom
-                    tempY = Math.min(editorScrolledParent.y + editor.height + contextMenuMargin,
-                                     posEnd.y + rectEnd.height + contextMenuMargin);
+            if (tempY + contextMenuAdjustedRowHeight > parent.height)
+                //it doesn't fit to the bottom -> center
+                tempY= (editorScrolledParent.y + editor.height) / 2 - row.height / 2;
 
-                if (tempY + contextMenuAdjustedRowHeight > parent.height)
-                    //it doesn't fit to the bottom -> center
-                    tempY= (editorScrolledParent.y + editor.height) / 2 - row.height / 2;
-
-                root.x = Math.max(0, Math.min(selectionCenterX - row.width / 2, parent.width - row.width));
-                root.y = tempY;
-            }
+            root.x = Math.max(0, Math.min(selectionCenterX - row.width / 2, parent.width - row.width));
+            root.y = tempY;
         }
     }
+
+    x: 0; y: 0
+    visible: false
 
     ButtonRow {
         id: row
@@ -118,8 +113,8 @@ Item {
         exclusive: false
         width: Math.round(privateStyle.buttonSize * 1.5) * visibleButtonCount()
 
-        onWidthChanged: internal.calculatePosition()
-        onHeightChanged: internal.calculatePosition()
+        onWidthChanged: calculatePosition()
+        onHeightChanged: calculatePosition()
 
         Button {
             id: copyButton
