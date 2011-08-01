@@ -167,7 +167,6 @@ ApplicationWindow {
                             width: parent.buttonWidth
 
                             onClicked: {
-                                startupOrientationButton.orientation = Screen.Portrait
                                 screen.allowedOrientations = Screen.Portrait
                             }
                         }
@@ -178,7 +177,6 @@ ApplicationWindow {
                             width: parent.buttonWidth
 
                             onClicked: {
-                                startupOrientationButton.orientation = Screen.Landscape
                                 screen.allowedOrientations = Screen.Landscape
                             }
                         }
@@ -189,7 +187,6 @@ ApplicationWindow {
                             width: parent.buttonWidth
 
                             onClicked: {
-                                startupOrientationButton.orientation = Screen.Default
                                 screen.allowedOrientations = Screen.Default
                             }
                         }
