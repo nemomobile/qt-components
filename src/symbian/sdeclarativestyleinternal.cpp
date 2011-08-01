@@ -178,7 +178,7 @@ void SDeclarativeStyleInternal::play(int effect)
 int SDeclarativeStyleInternal::textWidth(const QString &text, const QFont &font) const
 {
     QFontMetrics metrics(font);
-    return metrics.width(text);
+    return metrics.width(text) + 1; //Fix QTCOMPONENTS-810
 }
 
 int SDeclarativeStyleInternal::fontHeight(const QFont &font) const
