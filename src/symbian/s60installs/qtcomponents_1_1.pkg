@@ -1,7 +1,7 @@
 &EN
 #{"Qt Quick components for Symbian"},(0x200346DE),1,1,0,TYPE=SA,RU
 %{"Nokia"}
-:"Nokia, Qt"
+:"Nokia"
 [0x20022E6D], 0, 0, 0, {"S60ProductID"}
 
 ; DEPLOYMENT 1.1 symbianplugin, note that this includes the native import

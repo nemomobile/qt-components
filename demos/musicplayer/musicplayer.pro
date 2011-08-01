@@ -38,7 +38,7 @@ symbian {
             "%{\"Nokia\"}" \
             " " \
             "; Unique Vendor name" \
-            ":\"Nokia, Qt\"" \
+            ":\"Nokia\"" \
             " "
 
     header = "$${LITERAL_HASH}{\"musicplayer\"},(0x2003DE92),1,0,0,TYPE=SA,RU"

@@ -24,7 +24,7 @@ symbian {
             "%{\"Nokia\"}" \
             " " \
             "; Unique Vendor name" \
-            ":\"Nokia, Qt\"" \
+            ":\"Nokia\"" \
             " "
 
     header = "$${LITERAL_HASH}{\"flickr\"},(0x2003DE91),1,0,0,TYPE=SA,RU"

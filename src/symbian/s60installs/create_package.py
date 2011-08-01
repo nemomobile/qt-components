@@ -90,7 +90,7 @@ def create_package_file():
     file.write("&EN\n")
     file.write("#{\"Qt Quick components for Symbian\"},(0x200346DE),1,1,0,TYPE=SA,RU\n")
     file.write("%{\"Nokia\"}\n")
-    file.write(":\"Nokia, Qt\"\n")
+    file.write(":\"Nokia\"\n")
     file.write("[0x20022E6D], 0, 0, 0, {\"S60ProductID\"}\n")
     return file
 

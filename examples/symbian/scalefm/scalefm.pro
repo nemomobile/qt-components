@@ -31,7 +31,7 @@ symbian {
             "%{\"Nokia\"}" \
             " " \
             "; Unique Vendor name" \
-            ":\"Nokia, Qt\"" \
+            ":\"Nokia\"" \
             " "
 
     header = "$${LITERAL_HASH}{\"scalefm\"},(0x2003DE90),1,0,0,TYPE=SA,RU"
