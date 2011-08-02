@@ -47,6 +47,7 @@ SDeclarativeInputContextPrivate::SDeclarativeInputContextPrivate(SDeclarativeInp
     : q_ptr(qq)
     , m_screen(screen)
     , m_touchInput(NULL)
+    , m_autoMove(1)
 {
     Q_Q(SDeclarativeInputContext);
     QT_TRAP_THROWING(m_touchInput = CTouchInput::NewL(*this));
@@ -76,6 +77,25 @@ qreal SDeclarativeInputContextPrivate::height() const
 bool SDeclarativeInputContextPrivate::visible() const
 {
     return m_touchInput->Visible();
+}
+
+bool SDeclarativeInputContextPrivate::autoMove() const
+{
+    return m_autoMove;
+}
+
+void SDeclarativeInputContextPrivate::setAutoMove(bool enabled)
+{
+    Q_Q(SDeclarativeInputContext);
+    if (static_cast<bool>(m_autoMove) == enabled)
+        return;
+
+    m_autoMove = enabled;
+#if QT_VERSION >= 0x040704
+        Q_DECL_IMPORT void qt_s60_setPartialScreenAutomaticTranslation(bool enable);
+        qt_s60_setPartialScreenAutomaticTranslation(enabled);
+#endif
+    q->emit autoMoveChanged();
 }
 
 void SDeclarativeInputContextPrivate::VisibleChanged()

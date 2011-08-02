@@ -56,11 +56,14 @@ public:
 
     qreal height() const;
     bool visible() const;
+    bool autoMove() const;
+    void setAutoMove(bool enabled);
 
 public:
     SDeclarativeInputContext *q_ptr;
     SDeclarativeScreen *m_screen;
     CTouchInput *m_touchInput;
+    int m_autoMove : 1;
 
     static SDeclarativeInputContextPrivate *d_ptr(SDeclarativeInputContext *inputcontext) {
         Q_ASSERT(inputcontext);

@@ -47,7 +47,8 @@
 SDeclarativeInputContextPrivate::SDeclarativeInputContextPrivate(SDeclarativeInputContext *qq, SDeclarativeScreen *screen)
     : q_ptr(qq)
     , m_screen(screen)
-    , m_visible(false)
+    , m_visible(0)
+    , m_autoMove(1)
 {
     Q_Q(SDeclarativeInputContext);
     qApp->installEventFilter(this);
@@ -68,15 +69,30 @@ bool SDeclarativeInputContextPrivate::visible() const
     return m_visible;
 }
 
+bool SDeclarativeInputContextPrivate::autoMove() const
+{
+    return m_autoMove;
+}
+
+void SDeclarativeInputContextPrivate::setAutoMove(bool enabled)
+{
+    Q_Q(SDeclarativeInputContext);
+    if (static_cast<bool>(m_autoMove) == enabled)
+        return;
+
+    m_autoMove = enabled;
+    q->emit autoMoveChanged();
+}
+
 bool SDeclarativeInputContextPrivate::eventFilter(QObject *obj, QEvent *event)
 {
     Q_Q(SDeclarativeInputContext);
     Q_UNUSED(obj);
     if (event->type() == QEvent::CloseSoftwareInputPanel && m_visible) {
-        m_visible = false;
+        m_visible = 0;
         q->emit visibleChanged();
     } else if (event->type() == QEvent::RequestSoftwareInputPanel && !m_visible) {
-        m_visible = true;
+        m_visible = 1;
         q->emit visibleChanged();
     }
     return QObject::eventFilter(obj, event);

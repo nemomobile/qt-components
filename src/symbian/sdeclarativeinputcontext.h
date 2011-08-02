@@ -52,6 +52,7 @@ class SDeclarativeInputContext : public QObject
 
     Q_PROPERTY(qreal height READ height NOTIFY heightChanged FINAL)
     Q_PROPERTY(bool visible READ visible NOTIFY visibleChanged FINAL)
+    Q_PROPERTY(bool autoMove READ autoMove WRITE setAutoMove NOTIFY autoMoveChanged)
 
 public:
     explicit SDeclarativeInputContext(SDeclarativeScreen *screen, QObject *parent = 0);
@@ -59,10 +60,13 @@ public:
 
     qreal height() const;
     bool visible() const;
+    bool autoMove() const;
+    void setAutoMove(bool enabled);
 
 Q_SIGNALS:
     void heightChanged();
     void visibleChanged();
+    void autoMoveChanged();
 
 protected:
     QScopedPointer<SDeclarativeInputContextPrivate> d_ptr;

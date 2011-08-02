@@ -69,4 +69,16 @@ bool SDeclarativeInputContext::visible() const
     return d->visible();
 }
 
+bool SDeclarativeInputContext::autoMove() const
+{
+        Q_D(const SDeclarativeInputContext);
+        return d->autoMove();
+}
+
+void SDeclarativeInputContext::setAutoMove(bool enabled)
+{
+    Q_D(SDeclarativeInputContext);
+    d->setAutoMove(enabled);
+}
+
 #include "moc_sdeclarativeinputcontext.cpp"
