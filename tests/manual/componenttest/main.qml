@@ -60,6 +60,8 @@ ApplicationWindow {
     LayoutMirroring.enabled: Qt.application.layoutDirection == Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
 
+    initialPage: component
+
     FileAccess {
         id: fileAccess
     }
@@ -139,7 +141,6 @@ ApplicationWindow {
     Component.onCompleted: {
         internal.qmlPaths = fileAccess.qmlPaths()
         screen.allowedOrientations = settings.orientation()
-        mainWindow.pageStack.push(component)
         // clear the toolBar pointer, prevents subpages from
         // accidentally removing common application tools
         mainWindow.pageStack.toolBar = null

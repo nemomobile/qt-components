@@ -47,10 +47,31 @@ Window {
     property bool fullScreen: false
     default property alias content: contentItem.data
     property alias pageStack: stack
+    property variant initialPage
 
-    Component.onCompleted: console.log("warning: ApplicationWindow is an experimental component. Use Window instead.")
+    onInitialPageChanged: {
+        if (initialPage && contentArea.initialized) {
+            if (stack.depth == 0)
+                stack.push(initialPage, null, true)
+            else if (stack.depth == 1)
+                stack.replace(initialPage, null, true)
+            else
+                console.log("Cannot update ApplicationWindow.initialPage")
+        }
+    }
+
+    Component.onCompleted: {
+        console.log("warning: ApplicationWindow is an experimental component. Use Window instead.")
+        contentArea.initialized = true
+        if (initialPage && stack.depth == 0)
+            stack.push(initialPage, null, true)
+    }
 
     Item {
+        id: contentArea
+
+        property bool initialized: false
+
         anchors.top: sbar.bottom
         anchors.bottom: tbar.top
         anchors.left: parent.left

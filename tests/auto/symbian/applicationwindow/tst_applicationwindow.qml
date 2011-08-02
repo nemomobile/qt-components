@@ -43,10 +43,10 @@ import com.nokia.symbian 1.1
 
 ApplicationWindow {
     id: applicationWindow
-    Item {
+
+    initialPage: Item {
         objectName: "page"
         id: page
         anchors.fill: parent
     }
-    Component.onCompleted: applicationWindow.pageStack.push(page)
 }

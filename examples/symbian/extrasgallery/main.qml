@@ -47,6 +47,7 @@ ApplicationWindow {
     id: mainWindow
 
     property Menu menu
+    initialPage: pageComponent
 
     // for demonstration and testing purposes each component needs to
     // set its inverted state explicitly
@@ -80,7 +81,6 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
-        mainWindow.pageStack.push(pageComponent)
         // clear the toolBar pointer, prevents subpages from
         // accidentally removing common application tools
         mainWindow.pageStack.toolBar = null
