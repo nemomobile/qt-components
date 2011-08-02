@@ -58,7 +58,7 @@ Item {
 
     property Item tools: null
 
-    visible: false
+    visible: parent ? false : true
 
     width: visible && parent ? parent.width : internal.previousWidth
     height: visible && parent ? parent.height : internal.previousHeight
