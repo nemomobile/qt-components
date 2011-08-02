@@ -56,7 +56,7 @@ FocusScope {
     ButtonRow {
         id: buttons
 
-        property real h: parent.height * (privy.portrait ? 1/8 : 1/6)
+        property real h: privy.portrait ? platformStyle.graphicSizeLarge : platformStyle.graphicSizeMedium
 
         anchors { top: parent.top; left: parent.left; right: parent.right }
         exclusive: false
@@ -85,9 +85,7 @@ FocusScope {
 
         property real h: (height - spacing * (children.length - 1)) / children.length
 
-        anchors { top: buttons.bottom; left: parent.left; bottom: privy.portrait ? settings.top : vbk.top }
-        width: visible ? h : 0
-        visible: !inputContext.visible
+        anchors { top: buttons.bottom; left: parent.left }
 
         Button {
             id: bold; objectName: "bold"
@@ -112,6 +110,28 @@ FocusScope {
             height: parent.h; width: parent.width
             checkable: true; text: "U"
         }
+
+        states: [
+            State {
+                name: "Portrait"
+                when: privy.portrait && !inputContext.visible
+                AnchorChanges { target: style; anchors. bottom: settings.top }
+                PropertyChanges { target: style; visible: true; width: h }
+            },
+
+            State {
+                name: "Landscape"
+                when: !privy.portrait && !inputContext.visible
+                AnchorChanges { target: style; anchors. bottom: vkb.top }
+                PropertyChanges { target: style; visible: true; width: h }
+            },
+
+            State {
+                name: "Hidden"
+                when: inputContext.visible
+                PropertyChanges { target: style; visible: false; width: 0 }
+            }
+        ]
     }
 
     TextArea {
@@ -120,7 +140,7 @@ FocusScope {
             top: buttons.bottom
             left: style.right
             right: privy.portrait ? parent.right : settings.left
-            bottom: privy.portrait ? settings.top : vbk.top
+            bottom: privy.portrait ? settings.top : vkb.top
         }
 
         placeholderText: "Enter text here"
@@ -142,24 +162,58 @@ FocusScope {
         font.strikeout: strikeout.checked
         font.underline: underline.checked
         font.weight: settings.fontWeight
+
+        states: [
+            State {
+                name: "Portrait"
+                when: privy.portrait
+                AnchorChanges { target: textArea; anchors.right: parent.right; anchors.bottom: settings.top }
+            },
+
+            State {
+                name: "Landscape"
+                when: !privy.portrait
+                AnchorChanges { target: textArea; anchors.right: settings.left; anchors.bottom: vkb.top }
+            }
+        ]
+
    }
 
    TextSettings {
         id: settings
         anchors {
-            top: privy.portrait ? undefined : buttons.bottom
-            bottom: vbk.top
+            bottom: vkb.top
             right: parent.right
             topMargin: platformStyle.paddingSmall
             bottomMargin: platformStyle.paddingSmall
         }
-        height: visible ? privy.contentHeight * 1/3 : 0
-        width: privy.portrait ? parent.width : parent.width * 2/5
-        visible: !privy.portrait || !inputContext.visible
+
+        states: [
+            State {
+                name: "Portrait"
+                when: privy.portrait && !inputContext.visible
+                AnchorChanges { target: settings; anchors.top: undefined }
+                PropertyChanges { target: settings; visible: true; width: parent.width; height: privy.contentHeight * 1/3 }
+            },
+
+            State {
+                name: "Landscape"
+                when: !privy.portrait
+                AnchorChanges { target: settings; anchors.top: buttons.bottom }
+                // No need to set height here, top & bottom anchors are defined
+                PropertyChanges { target: settings; visible: true; width: parent.width * 2/5 }
+            },
+
+            State {
+                name: "Hidden"
+                when: !privy.portrait || !inputContext.visible
+                PropertyChanges { target: style; visible: false; width: 0; height: 0 }
+            }
+        ]
     }
 
     Item {
-        id: vbk
+        id: vkb
         anchors {
             bottom: root.bottom
             right: parent.right
