@@ -13,7 +13,8 @@ sources.fileextensions = "*.cpp *.doc *.qdoc *.h *.qml"
 exampledirs =   $QTCOMPONENTS \
                 $QTCOMPONENTS/doc
 imagedirs =     $QTCOMPONENTS/doc/src/examples/images \
-                $QTCOMPONENTS/doc/src/meego/images 
+                $QTCOMPONENTS/doc/src/meego/images \
+                $QTCOMPONENTS/doc/src/meego/template/images
 
 indexes += $QTDIR/doc/html/qt.index
 
