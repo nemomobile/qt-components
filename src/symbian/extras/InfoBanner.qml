@@ -101,7 +101,7 @@ Item {
             horizontalAlignment: Text.AlignLeft
             color: {
                 if (mouseArea.pressed)
-                    return root.platformInverted ? platformStyle.colorPressedInverted
+                    return root.platformInverted ? platformStyle.colorNormalDarkInverted
                                                  : platformStyle.colorPressed
                 else
                     return root.platformInverted ? platformStyle.colorNormalDarkInverted
