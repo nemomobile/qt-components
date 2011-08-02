@@ -206,7 +206,7 @@ FocusScope {
                                              : platformStyle.colorNormalDark
                 focus: true
                 font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
-                selectedTextColor: root.platformInverted ? platformStyle.colorNormalLightInverted
+                selectedTextColor: root.platformInverted ? platformStyle.colorNormalDarkInverted
                                                          : platformStyle.colorNormalLight
                 selectionColor: root.platformInverted ? platformStyle.colorTextSelectionInverted
                                                       : platformStyle.colorTextSelection

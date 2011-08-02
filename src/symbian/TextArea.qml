@@ -312,7 +312,7 @@ FocusScopeItem {
                 color: root.platformInverted ? platformStyle.colorNormalLightInverted
                                              : platformStyle.colorNormalDark
                 cursorVisible: activeFocus && !selectedText
-                selectedTextColor: root.platformInverted ? platformStyle.colorNormalLightInverted
+                selectedTextColor: root.platformInverted ? platformStyle.colorNormalDarkInverted
                                                          : platformStyle.colorNormalLight
                 selectionColor: root.platformInverted ? platformStyle.colorTextSelectionInverted
                                                       : platformStyle.colorTextSelection
