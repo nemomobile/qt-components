@@ -201,6 +201,27 @@ Item {
                     onClicked: rootPageStack.pop();
                 }
             }
+
+            Grid {
+                height: inPortrait() ? parent.height / 5 : parent.height / 6
+                width: parent.width
+                columns: inPortrait() ? 1 : 2
+                spacing: parent.spacing / 3
+
+                Row {
+                    width: inPortrait() ? parent.width : parent.width / 2
+                    spacing:  parent.spacing
+                    Button { text: "init: static"; width: parent.width / 2; onClicked: rootPageStack.initialPage = staticPage1; }
+                    Button { text: "init: component"; width: parent.width / 2; onClicked: rootPageStack.initialPage = page2; }
+                }
+
+                Button {
+                    text: "clean init";
+                    width: inPortrait() ? parent.width / 2 : parent.width / 4;
+                    onClicked: rootPageStack.initialPage = null;
+                }
+            }
+
         }
     }
 }

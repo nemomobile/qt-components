@@ -66,10 +66,8 @@ Item {
 
     PageStack {
         id: pageStack
-    }
 
-    Component.onCompleted: {
-        pageStack.push(pageComponent)
+        initialPage: pageComponent
     }
 
     Component {

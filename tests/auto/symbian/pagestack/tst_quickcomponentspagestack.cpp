@@ -60,6 +60,7 @@ private slots:
     void busyChanged();
     void unwind();
     void properties();
+    void initialPage();
 private:
     QScopedPointer<QObject> componentObject;
 };
@@ -197,6 +198,26 @@ void tst_quickcomponentspagestack::properties()
     QMetaObject::invokeMethod(componentObject.data(), "pushPageWithProperties", Qt::DirectConnection, Q_RETURN_ARG(QVariant, retPage));
     QMetaObject::invokeMethod(componentObject.data(), "checkForPageProperties", Qt::DirectConnection, Q_RETURN_ARG(QVariant, retPage));
     QVERIFY(retPage.toBool() == true);
+}
+
+void tst_quickcomponentspagestack::initialPage()
+{
+    QDeclarativeItem *defaultStack = componentObject->findChild<QDeclarativeItem *>("pageStack");
+    QVERIFY(defaultStack);
+    QVERIFY(!defaultStack->property("initialPage").isValid());
+    QCOMPARE(defaultStack->property("depth").toInt(), 0);
+
+    QDeclarativeItem *pageStackInitComponent = componentObject->findChild<QDeclarativeItem *>("pageStackInitComponent");
+    QVERIFY(pageStackInitComponent);
+    QVERIFY(pageStackInitComponent->property("initialPage").isValid());
+    QCOMPARE(pageStackInitComponent->property("depth").toInt(), 1);
+    QCOMPARE(pageStackInitComponent->property("currentPage").value<QDeclarativeItem *>()->objectName(), QLatin1String("dynamicpage"));
+
+    QDeclarativeItem *pageStackInitStatic = componentObject->findChild<QDeclarativeItem *>("pageStackInitStatic");
+    QVERIFY(pageStackInitStatic);
+    QVERIFY(pageStackInitStatic->property("initialPage").isValid());
+    QCOMPARE(pageStackInitStatic->property("depth").toInt(), 1);
+    QCOMPARE(pageStackInitStatic->property("currentPage").value<QDeclarativeItem *>()->objectName(), QLatin1String("page1"));
 }
 
 QTEST_MAIN(tst_quickcomponentspagestack)

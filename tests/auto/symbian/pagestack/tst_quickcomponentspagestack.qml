@@ -57,8 +57,21 @@ Item {
 
     PageStack {
         id: pageStack
+        objectName: "pageStack"
         onBusyChanged:
             testItem.busyChangedTriggered = true;
+    }
+
+    PageStack {
+        id: pageStackInitComponent
+        objectName: "pageStackInitComponent"
+        initialPage: pageComponent
+    }
+
+    PageStack {
+        id: pageStackInitStatic
+        objectName: "pageStackInitStatic"
+        initialPage: pageStatic
     }
 
     Component {
