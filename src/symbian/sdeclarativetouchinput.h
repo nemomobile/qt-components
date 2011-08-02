@@ -65,9 +65,11 @@ private:
     void RunL();
     void DoCancel();
     void Subscribe();
+    TInt ProposedHeight();
 
 private:
-    RProperty iProperty;
+    RProperty iTouchInputState;
+    RProperty iProposedHeight;
     MTouchInputStateObserver& iObserver;
     TBool iVisible;
     TReal iPortraitHeight;

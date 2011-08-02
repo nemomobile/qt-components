@@ -46,6 +46,7 @@
 #endif //HAVE_SYMBIAN_INTERNAL
 
 const TUint32 KAknFepTouchInputActive = 0x00000004;
+const TUint32 KAknFepSoftwareInputpanelHeight = 0x00000005;
 const TUid KPSUidAknFep = { 0x100056de };
 
 CTouchInput* CTouchInput::NewL( MTouchInputStateObserver& aObserver )
@@ -69,14 +70,16 @@ CTouchInput::CTouchInput( MTouchInputStateObserver& aObserver )
 void CTouchInput::ConstructL()
     {
     CActiveScheduler::Add( this );
-    User::LeaveIfError( iProperty.Attach( KPSUidAknFep, KAknFepTouchInputActive ) );
+    User::LeaveIfError( iTouchInputState.Attach( KPSUidAknFep, KAknFepTouchInputActive ) );
+    User::LeaveIfError( iProposedHeight.Attach( KPSUidAknFep, KAknFepSoftwareInputpanelHeight ) );
     Subscribe();
     }
 
 CTouchInput::~CTouchInput()
     {
     Cancel();
-    iProperty.Close();
+    iTouchInputState.Close();
+    iProposedHeight.Close();
     }
 
 TBool CTouchInput::Visible() const
@@ -86,6 +89,8 @@ TBool CTouchInput::Visible() const
 
 TReal CTouchInput::PortraitHeight()
     {
+    iPortraitHeight = ProposedHeight();
+
     if ( iPortraitHeight != KErrNotReady )
         {
         return iPortraitHeight;
@@ -107,6 +112,8 @@ TReal CTouchInput::PortraitHeight()
 
 TReal CTouchInput::LandscapeHeight()
     {
+    iLandscapeHeight = ProposedHeight();
+
     if ( iLandscapeHeight != KErrNotReady )
         {
         return iLandscapeHeight;
@@ -130,7 +137,7 @@ void CTouchInput::RunL()
     {
     Subscribe();
     TInt value = 0;
-    User::LeaveIfError( iProperty.Get( KPSUidAknFep, KAknFepTouchInputActive, value ) );
+    User::LeaveIfError( iTouchInputState.Get( value ) );
     TBool temp = static_cast<TBool>( value );
     if ( temp != iVisible )
         {
@@ -141,14 +148,21 @@ void CTouchInput::RunL()
 
 void CTouchInput::DoCancel()
     {
-    iProperty.Cancel();
+    iTouchInputState.Cancel();
     }
 
 void CTouchInput::Subscribe()
     {
     if (!IsActive())
         {
-        iProperty.Subscribe(iStatus);
+        iTouchInputState.Subscribe(iStatus);
         SetActive();
         }
+    }
+
+TInt CTouchInput::ProposedHeight()
+    {
+    TInt value = KErrNotReady;
+    iProposedHeight.Get( value );
+    return value == 0 ? KErrNotReady : value;
     }

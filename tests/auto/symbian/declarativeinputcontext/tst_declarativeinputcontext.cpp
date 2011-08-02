@@ -51,6 +51,12 @@
 #include <QSignalSpy>
 #include <QInputContext>
 
+#ifdef Q_OS_SYMBIAN
+#include <e32property.h>
+const TUint32 KAknFepSoftwareInputpanelHeight = 0x00000005;
+const TUid KPSUidAknFep = { 0x100056de };
+#endif // Q_OS_SYMBIAN
+
 class tst_SDeclarativeInputContext : public QObject
 {
     Q_OBJECT
@@ -113,6 +119,23 @@ void tst_SDeclarativeInputContext::height()
 
     QVERIFY(portraitHeight > landscapeHeight);
     QCOMPARE(heightChangedSpy.count(), 1);
+
+#ifdef Q_OS_SYMBIAN
+    //Switch to portrait
+    RProperty::Set( KPSUidAknFep, KAknFepSoftwareInputpanelHeight, 150 );
+    screen->setProperty("allowedOrientations", SDeclarativeScreen::Portrait);
+    QCOMPARE(m_inputContext->property("height").toInt(), 150);
+    QCOMPARE(heightChangedSpy.count(), 2);
+
+    //Switch to landscape
+    RProperty::Set( KPSUidAknFep, KAknFepSoftwareInputpanelHeight, 120 );
+    screen->setProperty("allowedOrientations", SDeclarativeScreen::Landscape);
+    QCOMPARE(m_inputContext->property("height").toInt(), 120);
+    QCOMPARE(heightChangedSpy.count(), 3);
+
+    //Reset
+    RProperty::Set( KPSUidAknFep, KAknFepSoftwareInputpanelHeight, 0 );
+#endif // Q_OS_SYMBIAN
 
     //Switch back to portrait
     screen->setProperty("allowedOrientations", SDeclarativeScreen::Portrait);
