@@ -1,3 +1,9 @@
+qt-components (1.1~git20110802-1) maverick; urgency=low
+
+  * Upgrading changelog version number from 1.0 to 1.1
+
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Tue, 02 Aug 2011 15:40:00 +0300
+
 qt-components (1.0~git20110712-1) maverick; urgency=low
 
   * Fixes: NB#270426 - coreweb: /usr/bin/FacebookQML "Fails at Daemon::readFromBoosterSocket" 
