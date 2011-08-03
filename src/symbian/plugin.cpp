@@ -77,7 +77,7 @@ public:
         if (versionMajor > VERSION_MAJOR ||
             (versionMajor == VERSION_MAJOR && versionMinor >= VERSION_MINOR)) {
             // Either newer or this version of plugin already initialized.
-            // The same plugin might initialized twice: once from 
+            // The same plugin might initialized twice: once from
             // "import com.nokia.symbian", and another time from
             // "import Qt.labs.components.native".
             return;
