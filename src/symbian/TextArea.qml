@@ -343,14 +343,12 @@ FocusScopeItem {
                 TextTouchController {
                     id: touchController
 
-                    anchors {
-                        top: editor.top; topMargin: -container.verticalMargins
-                        left: editor.left; leftMargin: -container.horizontalMargins
-                    }
-                    height: Math.max(root.height, flick.contentHeight + container.verticalMargins * 2)
-                    width: Math.max(root.width, flick.contentWidth + container.horizontalMargins * 2)
-                    editorScrolledX: flick.contentX - container.horizontalMargins
-                    editorScrolledY: flick.contentY - container.verticalMargins
+                    x: container.x
+                    y: container.y
+                    height: Math.max(container.height, flick.contentHeight + flick.tiny)
+                    width: Math.max(container.width, flick.contentWidth + flick.tiny * 2)
+                    editorScrolledX: flick.contentX
+                    editorScrolledY: flick.contentY
                     copyEnabled: textEdit.selectedText
                     cutEnabled: !textEdit.readOnly && textEdit.selectedText
                     platformInverted: root.platformInverted
