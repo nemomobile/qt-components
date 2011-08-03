@@ -1,3 +1,22 @@
+qt-components (1.1~git20110803-1) maverick; urgency=low
+
+  * Fixes: NB#268109 Default background image has artifacts
+  * Fixes: NB#267527 Sheet component doesn't block mouse events
+  * Fixes: NB#267389 Doubletap gesture max duration should be 325ms
+  * Fixes: NB#267030 Toolbar doesn't let specify semi transparent background
+  * Fixes: NB#262493 Flickable repositioning miscalculated when textfield on the bottom is focused
+  * Fixes: NB#261554 Qt components slider has side-effects when panning
+  * Fixes: NB#260211 Object/Context Menu transition parameters are slightly off
+  * Fixes: NB#260205 View/Action Menu transition parameters are slightly off
+  * Fixes: NB#260166 Toolbar appearance/disappearance transition is incorrect
+  * Fixes: NB#260070 Orientation lock to portrait does not work when HW keyboard is opened
+  * Fixes: NB#256232 Text entry prompt not having transitions
+  * Fixes: NB#270426 coreweb: /usr/bin/FacebookQML "Fails at Daemon::readFromBoosterSocket" - crashes in LPT
+  * Fixes: NB#267912 Wrong font int TextField and TextArea
+  * Fixes: NB#259160 Qt components text entries do not notify on failing paste
+
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Wed, 03 Aug 2011 12:25:00 +0300
+
 qt-components (1.1~git20110802-1) maverick; urgency=low
 
   * Upgrading changelog version number from 1.0 to 1.1
