@@ -151,7 +151,7 @@ MouseArea {
         internal.longTap = false;
     }
 
-    onMousePositionChanged: {
+    onPositionChanged: {
 
         internal.currentTouchPoint = root.mapToItem(editor, mouse.x, mouse.y);
 
