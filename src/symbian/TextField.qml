@@ -228,6 +228,7 @@ FocusScope {
                 TextTouchController {
                     id: touchController
 
+                    //  selection handles require touch area geometry to differ from TextInput's geometry
                     anchors {
                         left: parent.left;
                         leftMargin: -flick.tiny
@@ -235,8 +236,8 @@ FocusScope {
                     }
                     height: root.height
                     width: Math.max(root.width, flick.contentWidth + flick.tiny * 2)
-                    editorScrolledX: flick.contentX
-                    editorScrolledY: flick.contentY
+                    editorScrolledX: flick.contentX - container.anchors.leftMargin - flick.tiny
+                    editorScrolledY: 0
                     copyEnabled: textInput.selectedText
                     cutEnabled: !textInput.readOnly && textInput.selectedText
                     platformInverted: root.platformInverted

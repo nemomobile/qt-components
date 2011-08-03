@@ -343,12 +343,15 @@ FocusScopeItem {
                 TextTouchController {
                     id: touchController
 
-                    x: container.x
-                    y: container.y
-                    height: Math.max(container.height, flick.contentHeight + flick.tiny)
-                    width: Math.max(container.width, flick.contentWidth + flick.tiny * 2)
-                    editorScrolledX: flick.contentX
-                    editorScrolledY: flick.contentY
+                    //  selection handles require touch area geometry to differ from TextEdit's geometry
+                    anchors {
+                        top: editor.top; topMargin: -container.verticalMargins / 2
+                        left: editor.left; leftMargin: -container.horizontalMargins / 2
+                    }
+                    height: Math.max(root.height, flick.contentHeight + container.verticalMargins * 2)
+                    width: Math.max(root.width, flick.contentWidth + container.horizontalMargins * 2)
+                    editorScrolledX: flick.contentX - (container.horizontalMargins / 2)
+                    editorScrolledY: flick.contentY - (container.verticalMargins / 2)
                     copyEnabled: textEdit.selectedText
                     cutEnabled: !textEdit.readOnly && textEdit.selectedText
                     platformInverted: root.platformInverted
