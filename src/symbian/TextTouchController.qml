@@ -271,7 +271,7 @@ MouseArea {
             var startRect = editor.positionToRectangle(editor.selectionStart);
             var endRect = editor.positionToRectangle(editor.selectionEnd);
             var selectionRect = Qt.rect(startRect.x, startRect.y, endRect.x - startRect.x + endRect.width, endRect.y - startRect.y + endRect.height);
-            var viewPortRect = Qt.rect(editorScrolledX, editorScrolledY, root.width, root.height);
+            var viewPortRect = Qt.rect(editorScrolledX, editorScrolledY, editor.width, editor.height);
 
             return Utils.rectIntersectsRect(selectionRect, viewPortRect) ||
                    Utils.rectContainsRect(viewPortRect, selectionRect) ||
