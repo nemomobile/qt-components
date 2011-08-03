@@ -45,6 +45,11 @@
 #include <e32base.h>
 #include <AknsUtils.h> // AknsUtils
 #include <avkon.mbg>   // bitmap enumerations
+#include <ncp_feature_settings.hrh>
+
+#if (NCP_COMMON_S60_VERSION_SUPPORT > S60_VERSION_52)
+#define SHOW_WLAN_INDICATORS
+#endif
 
 class SDeclarativeNetworkIndicatorPrivateImpl: public MSDeclarativeStatusPaneSubscriberObverver
 {
@@ -244,6 +249,7 @@ QPixmap SDeclarativeNetworkIndicatorPrivate::pixmap()
                     maskId = EMbmAvkonQgn_indi_signal_uma_multipdp_mask;
                     break;
 
+#ifdef SHOW_WLAN_INDICATORS
                 // WLAN indicators
                 case EAknSignalWlanIndicatorActiveLow:
                     bitmapId = EMbmAvkonQgn_stat_wlan_active_low;
@@ -257,6 +263,7 @@ QPixmap SDeclarativeNetworkIndicatorPrivate::pixmap()
                     bitmapId = EMbmAvkonQgn_stat_wlan_active_high;
                     maskId = EMbmAvkonQgn_stat_wlan_active_high_mask;
                     break;
+#endif // SHOW_WLAN_INDICATORS
 
                 // Default indicator
                 case EAknSignalGprsIndicatorOff:
@@ -265,7 +272,9 @@ QPixmap SDeclarativeNetworkIndicatorPrivate::pixmap()
                 case EAknSignalWcdmaIndicatorOff: // fallthrough
                 case EAknSignalHsdpaIndicatorOff: // fallthrough
                 case EAknSignalUmaIndicatorOff: // fallthrough
+#ifdef SHOW_WLAN_INDICATORS
                 case EAknSignalWlanIndicatorOff: // fallthrough
+#endif // SHOW_WLAN_INDICATORS
                 case EAknSignalGprsIndicatorAvailable: // fallthrough
                 case EAknSignalCommonPacketDataIndicatorAvailable: // fallthrough
                 default:
