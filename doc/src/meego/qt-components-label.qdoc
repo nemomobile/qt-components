@@ -43,7 +43,6 @@
     \since 4.7
 
     The Label component is used to display textual information throughout the UI.
-    The Label is a private component and not intended for 3rd party developers.
 
     \qml
        Label {
