@@ -50,7 +50,7 @@ StatusBarInternal {
 
     states: State {
         name: "hide"; when: showStatusBar==false
-        PropertyChanges { target: statusBar; anchors.topMargin: -statusBar.height; }
+        PropertyChanges { target: statusBar; anchors.topMargin: -statusBar.height; visible: false}
     }
 
     Component.onCompleted: {
@@ -91,6 +91,7 @@ StatusBarInternal {
                 }
             }
             PropertyAnimation { target: statusBar; properties: "anchors.topMargin"; easing.type: Easing.InOutExpo; duration: 500 }
+            PropertyAnimation { target: statusBar; properties: "visible"; }
             ScriptAction {
                 script: {
                     updatePlatformStatusBarTimer.running = true

@@ -162,6 +162,7 @@ MDeclarativeStatusBar::MDeclarativeStatusBar(QDeclarativeItem *parent) :
     // XDamage event should come only when application is in foreground
     MWindowState * windowState = MWindowState::instance();
     connect(windowState, SIGNAL(activeChanged()), this, SLOT(updateXdamageEventSubscription()));
+    connect(this, SIGNAL(visibleChanged()), this, SLOT(updateXdamageEventSubscription()));
 }
 
 MDeclarativeStatusBar::~MDeclarativeStatusBar()
@@ -217,7 +218,7 @@ void MDeclarativeStatusBar::paint(QPainter *painter, const QStyleOptionGraphicsI
 void MDeclarativeStatusBar::updateXdamageEventSubscription()
 {
     MWindowState * windowState = MWindowState::instance();
-    if(windowState->active()) {
+    if(windowState->active() && isVisible()) {
         // Subscribe to xdamage events only if there is a need
         if(pixmapDamage == 0)
             setupXDamageForSharedPixmap();
