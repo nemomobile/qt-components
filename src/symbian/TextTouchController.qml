@@ -302,7 +302,6 @@ MouseArea {
         id: contextMenu
 
         editor: root.editor
-        editorScrolledY: root.editorScrolledY
         platformInverted: root.platformInverted
     }
 

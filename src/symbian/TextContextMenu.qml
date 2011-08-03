@@ -45,7 +45,6 @@ Item {
     id: root
 
     property Item editor: null
-    property real editorScrolledY: 0
     property bool copyEnabled: false
     property bool cutEnabled: false
     property bool platformInverted: false
@@ -76,20 +75,17 @@ Item {
                 // we have multiline selection so center to the screen
                 selectionCenterX = parent.width / 2;
 
-            var editorScrolledParent = editor.mapToItem(parent, 0, editorScrolledY);
             var contextMenuMargin = 10; // the space between the context menu and the line above/below
             var contextMenuAdjustedRowHeight = row.height + contextMenuMargin;
 
-            var tempY = Math.max(editorScrolledParent.y - contextMenuAdjustedRowHeight,
-                                 posStart.y - contextMenuAdjustedRowHeight);
+            var tempY = posStart.y - contextMenuAdjustedRowHeight;
             if (tempY < 0)
                 // it doesn't fit to the top -> try bottom
-                tempY = Math.min(editorScrolledParent.y + editor.height + contextMenuMargin,
-                                 posEnd.y + rectEnd.height + contextMenuMargin);
+                tempY = posEnd.y + rectEnd.height + contextMenuMargin;
 
-            if (tempY + contextMenuAdjustedRowHeight > parent.height)
+            if (tempY + row.height > parent.height)
                 //it doesn't fit to the bottom -> center
-                tempY= (editorScrolledParent.y + editor.height) / 2 - row.height / 2;
+                tempY = (parent.height / 2) - (row.height / 2);
 
             root.x = Math.max(0, Math.min(selectionCenterX - row.width / 2, parent.width - row.width));
             root.y = tempY;
