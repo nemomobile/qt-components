@@ -78,9 +78,7 @@ MouseArea {
         if (internal.tapCounter == 0)
             internal.touchPoint = currentTouchPoint;
 
-        if (!editor.readOnly)
-            editor.forceActiveFocus();
-
+        editor.forceActiveFocus();
         contextMenu.hide();
         internal.handleMoved = false;
 
