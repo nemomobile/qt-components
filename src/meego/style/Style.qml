@@ -43,7 +43,7 @@ import QtQuick 1.1
 QtObject {
     id: styleClass
     // Settings
-    property bool inverted: theme.inverted? true : false
+    property bool inverted: theme.inverted
     property string __invertedString: inverted? "-inverted" : ""
 
     // some style classes like SelectionDialogStyle are using nested elements (for example Text),
