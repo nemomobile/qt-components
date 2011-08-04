@@ -94,7 +94,7 @@ Item {
 
     Button {
         id: bottomLeft
-        text: "Show"
+        text: doubleWord.visible ? "Hide" : "Show"
         objectName: "bottomLeft"
         width: 125
 
@@ -108,10 +108,7 @@ Item {
             visible: false
         }
 
-        onClicked: {
-            doubleWord.visible = !doubleWord.visible
-            bottomLeft.text  = doubleWord.visible ? "Hide" : "Show"
-        }
+        onClicked: doubleWord.visible = !doubleWord.visible
     }
 
     Button {
@@ -133,7 +130,7 @@ Item {
 
     Button {
         id: bottomRight
-        text: "Show"
+        text: singleWord.visible ? "Hide" : "Show"
         objectName: "bottomRight"
         width: 125
 
@@ -147,9 +144,6 @@ Item {
             visible: false
         }
 
-        onClicked: {
-            singleWord.visible = !singleWord.visible
-            bottomRight.text  = singleWord.visible ? "Hide" : "Show"
-        }
+        onClicked: singleWord.visible ? singleWord.hide() : singleWord.show()
     }
 }
