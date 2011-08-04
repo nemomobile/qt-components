@@ -52,13 +52,48 @@ Item {
 
     implicitWidth: Math.min(privy.maxWidth, (privateStyle.textWidth(text, font) + privy.hMargin * 2))
     implicitHeight: privateStyle.fontHeight(font) + privy.vMargin * 2
+    opacity: 0
+
+    function show() {
+        opacity = 1
+        visible = true
+    }
+
+    function hide() {
+        opacity = 0
+    }
+
+    Behavior on opacity {
+        PropertyAnimation { duration: 100 }
+    }
+
+    Component.onCompleted: {
+        if (visible)
+            show()
+    }
+
+    onOpacityChanged: {
+        if (opacity == 0)
+            visible = false
+        else
+            visible = true
+    }
 
     onVisibleChanged: {
         if (visible) {
             root.parent = AppView.rootObject()
             privy.calculatePosition()
+            opacity = 1
+            privy.targetSceneXChanged.connect(privy.targetMoved)
+            privy.targetSceneYChanged.connect(privy.targetMoved)
+        } else {
+            privy.targetSceneXChanged.disconnect(privy.targetMoved)
+            privy.targetSceneYChanged.disconnect(privy.targetMoved)
         }
     }
+
+    Binding { target: privy; property: "targetSceneX"; value: AppView.sceneX(root.target); when: root.visible && (root.target != null) }
+    Binding { target: privy; property: "targetSceneY"; value: AppView.sceneY(root.target); when: root.visible && (root.target != null) }
 
     QtObject {
         id: privy
@@ -67,6 +102,13 @@ Item {
         property real vMargin: platformStyle.paddingMedium
         property real spacing: platformStyle.paddingLarge
         property real maxWidth: screen.width - spacing * 2
+        property real targetSceneX
+        property real targetSceneY
+
+        function targetMoved() {
+            if (root.opacity == 1)
+                hide()
+        }
 
         function calculatePosition() {
             if (!target)
