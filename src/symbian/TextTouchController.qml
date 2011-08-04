@@ -154,8 +154,7 @@ MouseArea {
         internal.currentTouchPoint = root.mapToItem(editor, mouse.x, mouse.y);
 
         if (internal.pressedHandle != null) {
-            internal.hitTestPoint = {x:internal.currentTouchPoint.x + internal.touchOffsetFromHitTestPoint.x,
-                                     y:internal.currentTouchPoint.y + internal.touchOffsetFromHitTestPoint.y};
+            internal.hitTestPoint = {x:internal.currentTouchPoint.x, y:internal.currentTouchPoint.y};
 
             var newPosition = editor.positionAt(internal.hitTestPoint.x, internal.hitTestPoint.y);
             if (newPosition >= 0 && newPosition != editor.cursorPosition) {
@@ -193,7 +192,6 @@ MouseArea {
         property int tapCounter: 0
         property variant pressedHandle: null
         property variant hitTestPoint: Qt.point(0, 0)
-        property variant touchOffsetFromHitTestPoint: Qt.point(0, 0)
         property variant touchPoint: Qt.point(0, 0)
         property variant currentTouchPoint: Qt.point(0, 0)
 
@@ -227,8 +225,7 @@ MouseArea {
 
         function handleGrabbed(currentTouchPoint) {
             mouseGrabDisabler.setKeepMouseGrab(root, true);
-            internal.hitTestPoint = root.mapToItem(editor, internal.pressedHandle.center.x, internal.pressedHandle.center.y);
-            internal.touchOffsetFromHitTestPoint = {x:internal.hitTestPoint.x - currentTouchPoint.x, y:internal.hitTestPoint.y - currentTouchPoint.y};
+            internal.hitTestPoint = {x:internal.currentTouchPoint.x, y:internal.currentTouchPoint.y};
 
             internal.forcedSelection = internal.editorHasSelection;
         }
