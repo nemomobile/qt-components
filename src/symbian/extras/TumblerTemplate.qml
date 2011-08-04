@@ -185,7 +185,7 @@ Item {
             height: privateStyle.menuItemHeight
 
             Text {
-                text: !!value ? value : ""
+                text: modelData
                 elide: tumblerColumn.privateResizeToFit ? Text.ElideNone : Text.ElideRight
                 horizontalAlignment: tumblerColumn.privateTextAlignment
                 verticalAlignment: Text.AlignVCenter
@@ -248,7 +248,8 @@ Item {
                                                                  : platformStyle.colorHighlighted
 
         onDelegatesCountChanged: {
-            if (tumblerColumn.privateResizeToFit && delegatesCount == tumblerColumn.items.count)
+            var itemCount = template.view ? template.view.count : 0
+            if (tumblerColumn.privateResizeToFit && delegatesCount == itemCount)
                 asyncTimer.running = true
         }
     }

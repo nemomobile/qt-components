@@ -53,7 +53,7 @@ void ApiCheckTumblerColumn::label()
 
 void ApiCheckTumblerColumn::items()
 {
-    validateProperty("items", "QDeclarativeListModel*");
+    validateProperty("items", "QVariant");
 }
 
 void ApiCheckTumblerColumn::selectedIndex()

@@ -55,6 +55,7 @@ Item {
     TumblerColumn {
         id: aColumn
         objectName: "aColumn"
+        property int itemCount: items ? items.count : 0
         items: model
         selectedIndex: 0
         enabled: true
@@ -63,7 +64,9 @@ Item {
     TumblerColumn {
         id: bColumn
         objectName: "bColumn"
-        items: model
+        // "length" needed when model is javascript string list or QStringList
+        property int itemCount: items ? items.length : 0
+        items: ["F", "G", "H", "I", "5"]
         selectedIndex: 0
         enabled: false
     }

@@ -42,6 +42,7 @@
 #include <QtTest/QSignalSpy>
 #include <QDeclarativeView>
 #include <QDeclarativeItem>
+#include <QStringList>
 
 #include "tst_quickcomponentstest.h"
 
@@ -136,19 +137,21 @@ void tst_tumbler::property_enabled()
 
 void tst_tumbler::property_items()
 {
-    QObject *child;
-    const QObjectList children = componentObject->children();
-    // verify there is 4 children
-    QCOMPARE(children.size(), 4);
-    for (int i = 0; i < children.size(); ++i) {
-        child = children.at(i);
-        // verify ListModel
-        if (child->objectName().contains("model")) {
-            // verify there is 5 elements
-            QCOMPARE(child->property("count").toInt(), 5);
-        }
-        // TODO: Add test cases for TumblerColumns
-    }
+    QDeclarativeItem *tumblerColumn = componentObject->findChild<QDeclarativeItem*>("aColumn");
+    QVERIFY(tumblerColumn);
+    QCOMPARE(tumblerColumn->property("itemCount").toInt(), 5);
+
+    tumblerColumn = componentObject->findChild<QDeclarativeItem*>("bColumn");
+    QVERIFY(tumblerColumn);
+    QCOMPARE(tumblerColumn->property("itemCount").toInt(), 5);
+
+    // try setting c++ model in "items"
+    QStringList dataList;
+    dataList.append("Item 1");
+    dataList.append("Item 2");
+    dataList.append("Item 3");
+    tumblerColumn->setProperty("items", QVariant::fromValue(dataList));
+    QCOMPARE(tumblerColumn->property("itemCount").toInt(), 3);
 }
 
 void tst_tumbler::signal_changed()
