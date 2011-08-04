@@ -53,3 +53,23 @@ function findParent(child, propertyName) {
         next = next.parent
     return next
 }
+
+function sceneX(item) {
+    var x = item.x
+    var p = item.parent
+    while (p) {
+        x += p.x
+        p = p.parent
+    }
+    return x
+}
+
+function sceneY(item) {
+    var y = item.y
+    var p = item.parent
+    while (p) {
+        y += p.y
+        p = p.parent
+    }
+    return y
+}
