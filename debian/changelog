@@ -1,3 +1,9 @@
+qt-components (1.1~git20110804-1) maverick; urgency=low
+
+  * Fixes: NB#275789 Black screen displayed when Facebook application is launched
+
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Thu, 04 Aug 2011 15:15:00 +0300
+
 qt-components (1.1~git20110803-1) maverick; urgency=low
 
   * Fixes: NB#268109 Default background image has artifacts
