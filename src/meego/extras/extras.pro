@@ -1,8 +1,8 @@
 include (../../../qt-components.pri)
 
-TARGETPATH = com/nokia/extras.1.1
+TARGETPATH = com/nokia/extras
 TEMPLATE = lib
-TARGET = $$qtLibraryTarget(meegoextrasplugin_1_1)
+TARGET = $$qtLibraryTarget(meegoextrasplugin)
 INCLUDEPATH += $$PWD
 
 win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release
