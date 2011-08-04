@@ -92,8 +92,32 @@ Item {
         }
     }
 
+    onVisibleChanged: {
+        if (visible) {
+            internal.editorSceneXChanged.connect(internal.editorMoved)
+            internal.editorSceneYChanged.connect(internal.editorMoved)
+        } else {
+            internal.editorSceneXChanged.disconnect(internal.editorMoved)
+            internal.editorSceneYChanged.disconnect(internal.editorMoved)
+        }
+    }
+
     x: 0; y: 0
     visible: false
+
+    Binding { target: internal; property: "editorSceneX"; value: AppManager.sceneX(root.editor); when: root.visible && (root.editor != null) }
+    Binding { target: internal; property: "editorSceneY"; value: AppManager.sceneY(root.editor); when: root.visible && (root.editor != null) }
+
+    QtObject {
+        id: internal
+
+        property real editorSceneX
+        property real editorSceneY
+
+        function editorMoved() {
+            root.calculatePosition()
+        }
+    }
 
     ButtonRow {
         id: row
