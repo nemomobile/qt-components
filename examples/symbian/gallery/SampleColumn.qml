@@ -117,6 +117,7 @@ Column {
             source: add.pressed ? "image://theme/qtg_graf_textfield_add_pressed"
                                 : "image://theme/qtg_graf_textfield_add_normal"
             height: parent.height; width: parent.height
+            scale: LayoutMirroring.enabled ? -1 : 1
 
             MouseArea {
                 id: add
