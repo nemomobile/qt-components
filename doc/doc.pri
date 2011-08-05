@@ -48,9 +48,8 @@ contains(OUTPUT, "-creator") {
     QHELPGENERATOR = $$[QT_INSTALL_BINS]/qhelpgenerator
     $$unixstyle {
         SET_ENV = QT_INSTALL_DOCS=$$[QT_INSTALL_DOCS] Q_COMPONENTS_SOURCE_TREE=$${Q_COMPONENTS_SOURCE_TREE}
-
-        QDOC = $$replace(QDOC, "\\\\", "/")
-        QHELPGENERATOR = $$replace(QHELPGENERATOR, "\\\\", "/")
+        QDOC = $$replace(QDOC, \\\\, $$QMAKE_DIR_SEP)
+        QHELPGENERATOR = $$replace(QHELPGENERATOR, \\\\, $$QMAKE_DIR_SEP)
 
         HTML_DOCUMENTATION =    $$SET_ENV $$QDOC $$QDOC_ONLINE $$QDOCCONF
         QCH_DOCUMENTATION =     ($$SET_ENV $$QDOC $$QDOCCONF_QCH) && \
