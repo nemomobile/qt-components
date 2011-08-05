@@ -1,0 +1,88 @@
+/****************************************************************************
+**
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file.
+**
+** Other Usage
+** Alternatively, this file may be used in accordance with the terms
+** and conditions contained in a signed written agreement between you
+** and Nokia.
+**
+**
+**
+**
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+
+    \page splitscreen.html
+    \ingroup qt-components-pattern-symbian
+    \ingroup qt-components-pattern
+    \title Split Screen Software Input Panel and Layout
+
+    \brief Software input panel as part of application layout.
+
+    The Qt Quick Components for Symbian 1.1 release replaces the full screen
+    software input panel with a split screen software input panel (\e{SIP}).
+    The split screen SIP covers roughly half of the screen and appears at the
+    bottom of the screen. When designing application layout using version 1.1,
+    the designer should take into account the screen orientation and SIP
+    visibility. Version 1.1 introduces the \l {InputContext} properties to
+    provide the application with additional hints and properties related to
+    SIP. Creating four states may be suitable to handle SIP property and
+    anchors changes. Adding relevant states to affected items give users a
+    flexible way to initiate needed changes. Use animations to make changes
+    look smooth. Also, when using \l TextArea or \l TextField component
+    near the top of the screen, consider leaving space for the \l Magnifier to
+    appear. The magnifier's size is \c{platformStyle.graphicSizeMedium * 2}.
+
+    Files:
+    \list
+        \o \l {Notepad Example}{Notepad Example File}
+    \endlist
+
+
+
+    Example application is a notepad.
+     \table 100%
+     \row
+       \o \image symbian/notepad.png
+       \o \image symbian/notepad_vkb_open.png
+     \row
+       \o \image symbian/notepad_pt.png
+       \o \image symbian/notepad_pt_vkb.png
+
+    \endtable
+
+    The notepad example's layout is not affected by the screen orientation. The
+    example's TextArea is anchored from top and bottom to make it flexible. The
+    bottom is anchored to the \l Item that represent software input panels
+    geometry. Since the layout is accommodating a SIP, the
+    \l{InputContext::autoMove}{inputContext.autoMove}
+    property is set to \c false.
+
+    \snippet src/snippets/symbian/snippet-notepad.qml 0
+
+    The \l StatusBar and \l ToolBar components are hidden when the SIP appears.
+
+    \snippet src/snippets/symbian/snippet-notepad.qml 1
+
+    \snippet src/snippets/symbian/snippet-notepad.qml 2
+
+    Presenting the software input panel as an item is just one way to go. If
+    you are using an x,y based layout or items such as when using a
+    \l Column or \l Row, use the \l{InputContext::height}{inputContext.height}
+    property directly as part of the layout calculation.
+*/

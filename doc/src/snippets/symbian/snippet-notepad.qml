@@ -43,19 +43,20 @@ import com.nokia.symbian 1.1
 Window {
     id: window
 
+//! [1]
     StatusBar {
         id: statusBar
 
-        anchors { left: parent.left; right: parent.right }
-        state: inputContext.visible ? "Hidden" : "Visible"
+        Behavior on opacity { PropertyAnimation { duration: 200 } }
 
         states: [
             State {
-                name: "Visible"
-                PropertyChanges { target: statusBar; y: 0; opacity: 1 }
+                name: "Visible"; when: !inputContext.visible
+                PropertyChanges { target: statusBar; y: 0; opacity: 1}
             },
+
             State {
-                name: "Hidden"
+                name: "Hidden"; when: inputContext.visible
                 PropertyChanges { target: statusBar; y: -height; opacity: 0 }
             }
         ]
@@ -63,135 +64,140 @@ Window {
         transitions: [
             Transition {
                 from: "Hidden"; to: "Visible"
-                ParallelAnimation {
-                    NumberAnimation { target: statusBar; properties: "y"; duration: 200; easing.type: Easing.OutQuad }
-                    NumberAnimation { target: statusBar; properties: "opacity"; duration: 200; easing.type: Easing.Linear }
-                }
+                NumberAnimation { target: statusBar; properties: "y"; duration: 200; easing.type: Easing.OutQuad }
             },
+
             Transition {
                 from: "Visible"; to: "Hidden"
-                ParallelAnimation {
-                    NumberAnimation { target: statusBar; properties: "y"; duration: 200; easing.type: Easing.Linear }
-                    NumberAnimation { target: statusBar; properties: "opacity"; duration: 200; easing.type: Easing.Linear }
-                }
+                NumberAnimation { target: statusBar; properties: "y"; duration: 200; easing.type: Easing.Linear }
             }
         ]
     }
 
+//! [1]
+
+    ToolBar {
+        id: topToolBar
+
+        anchors { left: parent.left; right: parent.right; top: statusBar.bottom }
+
+        tools: ToolBarLayout {
+            ToolButton { text: "Untitled"; enabled: false; flat: true }
+            ToolButton { iconSource: "toolbar-add" }
+        }
+    }
+
+    Item {
+        id: filler
+
+        anchors { left: parent.left; right: parent.right; top: topToolBar.bottom }
+        height: platformStyle.graphicSizeMedium * 2 - topToolBar.height
+
+        Text {
+            id: dateText
+
+            anchors {
+                left: parent.left; leftMargin: platformStyle.paddingSmall
+                verticalCenter: parent.verticalCenter
+            }
+
+            color: platformStyle.colorNormalLight
+            font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium; weight: Font.Bold }
+            text: Qt.formatDate(new Date(), " dddd d MMMM yyyy")
+        }
+
+        Text {
+            id: timeText
+
+            anchors {
+                right: parent.right; rightMargin: platformStyle.paddingSmall
+                verticalCenter: parent.verticalCenter
+            }
+
+            color: platformStyle.colorNormalLight
+            font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium; weight: Font.Bold }
+            text: symbian.currentTime
+
+            Behavior on opacity { PropertyAnimation { duration: 200 } }
+        }
+
+        states: [
+            State {
+                name: "Edit"; when: inputContext.visible
+                AnchorChanges { target: dateText; anchors.left: parent.left }
+                PropertyChanges { target: timeText; opacity: 1 }
+            },
+
+            State {
+                name: "View"; when: !inputContext.visible
+                AnchorChanges { target: dateText; anchors.left: undefined; anchors.horizontalCenter: parent.horizontalCenter }
+                PropertyChanges { target: timeText; opacity: 0 }
+            }
+        ]
+
+        transitions: [ Transition { AnchorAnimation { duration: 200 } } ]
+    }
+
+//! [0]
     TextArea {
         id: textArea
 
         anchors {
-            top: statusBar.bottom;
-            left: parent.left;
-            right: parent.right;
-            bottom: vkb.visible ? vkb.top : toolBar.top
+            top: filler.bottom; bottom: sip.top
+            left: parent.left; right: parent.right;
         }
 
-        placeholderText: "Notes come here"
-        state: inputContext.visible ? "Edit" : "View"
+        placeholderText: "Tap to write"
 
-        states: [
-            State {
-                name: "Edit"
-                AnchorChanges { target: textArea; anchors.bottom: vkb.top }
-            },
-            State {
-                name: "View"
-                AnchorChanges { target: textArea; anchors.bottom: toolBar.top }
-            }
-        ]
+        Behavior on height { PropertyAnimation { duration: 200 } }
     }
 
     Item {
-        id: vkb
+        id: sip
 
-        anchors {
-            bottom: parent.bottom
-            right: parent.right
-            left: parent.left
-        }
+        anchors { bottom: parent.bottom; left: parent.left; right: parent.right }
 
-        visible: inputContext.visible
-        state: visible ? "Visible" : "Hidden"
+        Behavior on height { PropertyAnimation { duration: 200 } }
+
+        Component.onCompleted: inputContext.autoMove = false
 
         states: [
             State {
-                name: "Visible"
-                PropertyChanges { target: vkb; height: inputContext.height; }
+                name: "Visible"; when: inputContext.visible
+                PropertyChanges { target: sip; height: inputContext.height }
             },
+
             State {
-                name: "Hidden"
-                PropertyChanges { target: vkb; height: 0;}
+                name: "Hidden"; when: !inputContext.visible
+                PropertyChanges { target: sip; height: toolBar.height }
             }
         ]
-
-        transitions: [
-            Transition {
-                from: "Hidden"; to: "Visible"
-                NumberAnimation { target: vkb; properties: "height"; duration: 200; easing.type: Easing.OutQuad }
-            },
-            Transition {
-                from: "Visible"; to: "Hidden"
-                NumberAnimation { target: vkb; properties: "height"; duration: 200; easing.type: Easing.Linear }
-            }
-        ]
-
     }
+//! [0]
 
+//! [2]
     ToolBar {
         id: toolBar
-        state: inputContext.visible ? "Hidden" : "Visible"
 
-        states: [
-            State {
-                name: "Visible"
-                PropertyChanges { target: toolBar; y: parent.height - height; opacity: 1 }
-            },
-            State {
-                name: "Hidden"
-                PropertyChanges { target: toolBar; y: parent.height; opacity: 0 }
-            }
-        ]
+        anchors { bottom: parent.bottom }
 
-        transitions: [
-            Transition {
-                from: "Hidden"; to: "Visible"
-                ParallelAnimation {
-                    NumberAnimation { target: toolBar; properties: "y"; duration: 200; easing.type: Easing.OutQuad }
-                    NumberAnimation { target: toolBar; properties: "opacity"; duration: 200; easing.type: Easing.Linear }
-                }
-            },
-            Transition {
-                from: "Visible"; to: "Hidden"
-                ParallelAnimation {
-                    NumberAnimation { target: toolBar; properties: "y"; duration: 200; easing.type: Easing.Linear }
-                    NumberAnimation { target: toolBar; properties: "opacity"; duration: 200; easing.type: Easing.Linear }
-                }
-            }
-        ]
+        opacity: !inputContext.visible
+
+        Behavior on opacity { PropertyAnimation { duration: 200 } }
 
         tools: ToolBarLayout {
-            ToolButton {
-                iconSource: "toolbar-back"
-                onClicked: Qt.quit()
-            }
 
-            ToolButton {
-                iconSource: "toolbar-menu"
-                onClicked: menu.open()
+            ToolButton { iconSource: "toolbar-back"; onClicked: Qt.quit() }
+
+            ButtonRow {
+                exclusive: false
+                ToolButton { iconSource: "toolbar-previous" }
+                ToolButton { iconSource: "toolbar-share" }
+                ToolButton { iconSource: "toolbar-delete" }
+                ToolButton { iconSource: "toolbar-next" }
             }
         }
     }
+//! [2]
 
-    Menu {
-        id: menu
-
-        MenuLayout {
-            MenuItem { text: "Open" }
-            MenuItem { text: "Close" }
-            MenuItem { text: "Save" }
-            MenuItem { text: "Save as" }
-        }
-    }
 }

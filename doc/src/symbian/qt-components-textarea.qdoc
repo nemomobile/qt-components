@@ -40,6 +40,8 @@
     of \l TextEdit to implement the Symbian-style look-and-feel. The clipboard
     support is provided by the \l cut(), \l copy(), and \l paste() functions.
 
+    \sa {Split Screen Software Input Panel and Layout}
+
     \section1 TextArea Basic Examples
 
     The code examples below illustrate various features of TextArea.

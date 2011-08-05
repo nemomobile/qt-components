@@ -90,5 +90,6 @@
         \o \l {Creating Scalable Applications}{Scalability Guide} - Mobile
         applications have \e scalable user interfaces. This guide uses the Qt
         Quick Components for creating a real-world scalable application.
+        \o \l {Split Screen Software Input Panel and Layout} {Split Screen Software Input Panel and Layout} - Software input panel as part of application layout.
     \endlist
 */
