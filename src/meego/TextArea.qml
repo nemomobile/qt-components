@@ -154,11 +154,7 @@ FocusScope {
             if(platformWindow.active) {
                 if (!readOnly) {
                     if (activeFocus) {
-                        if (platformCustomSoftwareInputPanel != null) {
-                            platformOpenSoftwareInputPanel();
-                        } else {
-                            inputContext.simulateSipOpen();
-                        }
+                        platformOpenSoftwareInputPanel();
                         repositionTimer.running = true;
                     }
                 }
