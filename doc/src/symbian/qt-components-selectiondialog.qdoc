@@ -62,7 +62,8 @@
 
     \note If the model contains only one named role, it is always provided via
     the \c modelData role. This also applies to a simple string list model. For
-    more information, see QML Data Models documentation.
+    more information, see \l {external: QML Data Models}
+    {QML Data Models} documentation.
 
 */
 

@@ -88,3 +88,7 @@
     \externalpage http://doc.qt.nokia.com/4.7-snapshot/qml-item.html#implicitWidth-prop
     \title external: Qt Quick Implicit Size Support
 */
+/*!
+    \externalpage http://doc.qt.nokia.com/4.7-snapshot/qdeclarativemodels.html
+    \title external: QML Data Models
+*/

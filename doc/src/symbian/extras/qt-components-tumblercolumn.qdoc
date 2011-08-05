@@ -109,8 +109,16 @@
 */
 
 /*!
-    \qmlproperty ListModel TumblerColumn::items
+    \qmlproperty variant TumblerColumn::items
 
-    The model containing the contents for the Tumbler to render.
+    The model containing the contents for the \l Tumbler to render. The
+    Tumbler's delegate assumes that the model data is provided via the
+    \c modelData role and interprets it as a text string.
+
+    \note If the model contains only one named role, it is always provided via
+    the \c modelData role. This also applies to a simple string list model. For
+    more information, see \l {external: QML Data Models}
+    {QML Data Models} documentation.
+
 */
 
