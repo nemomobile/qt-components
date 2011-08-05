@@ -75,7 +75,8 @@ public:
     SDeclarativePrivate()
         : mListInteractionMode(SDeclarative::TouchInteraction)
         , foreground(true)
-        , rightToLeftDisplayLanguage(false) {
+        , rightToLeftDisplayLanguage(false)
+        , graphicsSharing(false) {
 #ifdef Q_OS_SYMBIAN
         // Initialize based on the current UI language - it cannot be changed without a reboot.
         switch (User::Language()) {
@@ -98,6 +99,7 @@ public:
     QTimer timer;
     bool foreground;
     bool rightToLeftDisplayLanguage;
+    bool graphicsSharing;
 };
 
 int SDeclarativePrivate::allocatedMemory() const
@@ -207,6 +209,16 @@ SDeclarative::S60Version SDeclarative::s60Version() const
 bool SDeclarative::rightToLeftDisplayLanguage() const
 {
     return d_ptr->rightToLeftDisplayLanguage;
+}
+
+void SDeclarative::setGraphicsSharing(bool sharingEnabled)
+{
+    d_ptr->graphicsSharing = sharingEnabled;
+}
+
+bool SDeclarative::privateGraphicsSharing() const
+{
+    return d_ptr->graphicsSharing;
 }
 
 bool SDeclarative::eventFilter(QObject *obj, QEvent *event)

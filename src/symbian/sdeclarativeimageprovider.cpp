@@ -42,8 +42,34 @@
 #include "siconpool.h"
 #include "sdeclarative.h"
 
+#include <QLibrary>
+
+class SDeclarativeImageProviderPrivate
+{
+    Q_DECLARE_PUBLIC(SDeclarativeImageProvider);
+public:
+    SDeclarativeImageProviderPrivate(SDeclarativeImageProvider *qq);
+    SDeclarativeImageProvider *q_ptr;
+    QScopedPointer<QDeclarativeImageProvider> sharedImageProvider;
+};
+
+SDeclarativeImageProviderPrivate::SDeclarativeImageProviderPrivate(SDeclarativeImageProvider *qq)
+    : sharedImageProvider(0)
+    , q_ptr(qq)
+
+{
+    // try to load shared image provider
+    typedef QDeclarativeImageProvider* (*CreateImageProviderFuncPtr)();
+    CreateImageProviderFuncPtr createSharedImageProvider =
+            (CreateImageProviderFuncPtr) QLibrary::resolve("qtuisharedimageprovider", "1");
+
+    if (createSharedImageProvider)
+        sharedImageProvider.reset(createSharedImageProvider());
+}
+
 SDeclarativeImageProvider::SDeclarativeImageProvider() :
-    QDeclarativeImageProvider(QDeclarativeImageProvider::Pixmap)
+    QDeclarativeImageProvider(QDeclarativeImageProvider::Pixmap),
+    d_ptr(new SDeclarativeImageProviderPrivate(this))
 {
 }
 
@@ -53,9 +79,25 @@ SDeclarativeImageProvider::~SDeclarativeImageProvider()
 
 QPixmap SDeclarativeImageProvider::requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
 {
-    QPixmap pixmap = SIconPool::get(SDeclarative::resolveIconFileName(id), requestedSize, Qt::KeepAspectRatio);
+    QPixmap pixmap;
+    if (!id.isEmpty() && requestedSize.width() && requestedSize.height()) {
+        Q_D(SDeclarativeImageProvider);
 
-    if (!pixmap.isNull() && size)
-        *size = pixmap.size();
+        // first try from shared image provider and then from in-process image provider
+        if (d->sharedImageProvider)
+            pixmap = d->sharedImageProvider->requestPixmap(SDeclarative::resolveIconFileName(id), size, requestedSize);
+
+        if (pixmap.isNull())
+            pixmap = SIconPool::get(SDeclarative::resolveIconFileName(id), requestedSize, Qt::KeepAspectRatio);
+
+        if (!pixmap.isNull() && size)
+            *size = pixmap.size();
+    }
     return pixmap;
+}
+
+bool SDeclarativeImageProvider::graphicsSharing() const
+{
+    Q_D(const SDeclarativeImageProvider);
+    return d->sharedImageProvider;
 }

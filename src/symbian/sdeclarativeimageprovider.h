@@ -43,12 +43,20 @@
 
 #include <QtDeclarative/qdeclarativeimageprovider.h>
 
+class SDeclarativeImageProviderPrivate;
+
 class SDeclarativeImageProvider : public QDeclarativeImageProvider
 {
 public:
     SDeclarativeImageProvider();
     virtual ~SDeclarativeImageProvider();
     virtual QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize);
+    bool graphicsSharing() const;
+
+private:
+    Q_DISABLE_COPY(SDeclarativeImageProvider);
+    Q_DECLARE_PRIVATE(SDeclarativeImageProvider);
+    QScopedPointer<SDeclarativeImageProviderPrivate> d_ptr;
 };
 
 #endif // SDECLARATIVEIMAGEPROVIDER_H

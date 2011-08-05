@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/graphics">
+    <qresource prefix="/graphics_1_1">
         <file alias="qtg_fr_pushbutton_pressed.svg">resources/defaulttheme/graphics/qtg_fr_pushbutton_pressed.svg</file>
         <file alias="qtg_fr_pushbutton_normal.svg">resources/defaulttheme/graphics/qtg_fr_pushbutton_normal.svg</file>
         <file alias="qtg_fr_pushbutton_latched.svg">resources/defaulttheme/graphics/qtg_fr_pushbutton_latched.svg</file>

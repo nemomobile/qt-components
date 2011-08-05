@@ -43,6 +43,9 @@
 
 #include <QPainter>
 #include <QPixmap>
+#include <QDeclarativeEngine>
+#include <QDeclarativeContext>
+#include <QDeclarativeImageProvider>
 
 // This is the fallback (desktop) implementation of
 // SDeclarativeNetworkIndicatorPrivate that's always showing the default
@@ -63,7 +66,6 @@ SDeclarativeNetworkIndicatorPrivate::SDeclarativeNetworkIndicatorPrivate(
     SDeclarativeNetworkIndicator *qq) : offline(false), q_ptr(qq)
 {
     impl = new SDeclarativeNetworkIndicatorPrivateImpl();
-    impl->pixmap = QPixmap(":/graphics/qtg_graf_signal_icon.svg");
 }
 
 SDeclarativeNetworkIndicatorPrivate::~SDeclarativeNetworkIndicatorPrivate()
@@ -78,6 +80,18 @@ void SDeclarativeNetworkIndicatorPrivate::reset()
 
 QPixmap SDeclarativeNetworkIndicatorPrivate::pixmap()
 {
+    if (impl->pixmap.isNull()) {
+        QDeclarativeContext *context = QDeclarativeEngine::contextForObject(q_ptr);
+
+        if (context) {
+            QDeclarativeImageProvider * imageProvider = context->engine()->imageProvider("theme");
+
+            if (imageProvider)
+                impl->pixmap = imageProvider->requestPixmap("qtg_graf_signal_icon", 0,
+                                                            QSize(q_ptr->width(), q_ptr->height()));
+        }
+    }
+
     QSize newSize(q_ptr->width(), q_ptr->height());
     if (newSize != impl->currentSize) {
         impl->currentSize = newSize;
