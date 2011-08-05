@@ -49,6 +49,9 @@ FocusScope {
     property bool platformInverted: false
     focus: true
 
+    Component.onCompleted: mainWindow.softwareInputPanelEnabled = true
+    Component.onDestruction:  mainWindow.softwareInputPanelEnabled = false
+
     Component {
         id: highlight
         Rectangle {
@@ -80,7 +83,7 @@ FocusScope {
             top: parent.top
             left: parent.left
             right: parent.right
-            bottom: inputContext.visible ? vkb.top : undefined
+            bottom: inputContext.visible ? parent.bottom : undefined
             margins: platformStyle.paddingLarge
         }
 
@@ -108,7 +111,7 @@ FocusScope {
         highlight: highlight
         highlightFollowsCurrentItem: false
         focus: true
-        visible: activeFocus || !vkb.visible
+        visible: activeFocus || !inputContext.visible
         KeyNavigation.up: textAreas; KeyNavigation.down: textAreas
     }
 
@@ -116,10 +119,10 @@ FocusScope {
         id: textAreas
 
         anchors {
-            top: activeFocus && vkb.visible ? parent.top : textFields.bottom
+            top: activeFocus && inputContext.visible ? parent.top : textFields.bottom
             left: parent.left
             right: parent.right
-            bottom: inputContext.visible ? vkb.top : undefined
+            bottom: inputContext.visible ? parent.bottom : undefined
             margins: platformStyle.paddingLarge
         }
 
@@ -143,18 +146,7 @@ FocusScope {
         height: visible ? parent.height * 1/2 - platformStyle.paddingMedium * 2 : 0
         highlight: highlight
         highlightFollowsCurrentItem: false
-        visible: activeFocus || !vkb.visible
+        visible: activeFocus || !inputContext.visible
         KeyNavigation.up: textFields; KeyNavigation.down: textFields
-    }
-
-    Item {
-        id: vkb
-        anchors {
-            bottom: parent.bottom
-            right: parent.right
-            left: parent.left
-        }
-        height: inputContext.visible ? inputContext.height : 0
-        visible: inputContext.visible
     }
 }

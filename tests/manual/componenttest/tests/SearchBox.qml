@@ -46,6 +46,9 @@ Item {
     id: root
     objectName: "searchPage"
 
+    Component.onCompleted: mainWindow.softwareInputPanelEnabled = true
+    Component.onDestruction:  mainWindow.softwareInputPanelEnabled = false
+
     property string searchString
 
     function getDisplayString(displayString, searchString) {
@@ -94,35 +97,6 @@ Item {
         acceptButtonText: "Ok"
     }
 
-    ToolBar {
-        id: toolbar; objectName: "toolbar"
-        anchors.bottom: parent.bottom
-        z: root.z+1
-        tools: ToolBarLayout {
-            id: searchToolbarlayout
-            ToolButton {
-                id:back; objectName: "back"
-                flat: true
-                iconSource: "toolbar-back"
-            }
-
-            ToolButton {
-                id: defocusbutton; objectName: "defocusbutton"
-                flat: true
-                text: "Defocus"
-                onClicked: {
-                    forceActiveFocus()
-                }
-            }
-
-            ToolButton {
-                id: optionsButton; objectName: "optionsButton"
-                flat: true
-                iconSource: "toolbar-menu"
-                onClicked: menu.open()
-            }
-        }
-    }
     SearchBox {
         id: searchbox
         anchors.left: parent.left
@@ -137,6 +111,7 @@ Item {
             dialog.open()
         }
     }
+
     Item {
         id: searchlist
         anchors.left: parent.left
@@ -182,5 +157,9 @@ Item {
         }
     }
 
+    Connections {
+        target: optionsButton
+        onClicked: menu.open()
+    }
 }
 

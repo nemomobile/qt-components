@@ -42,41 +42,14 @@ import QtQuick 1.1
 import com.nokia.symbian 1.1
 Item {
 
-    QtObject {
-        id: privy
-        property bool portrait: screen.currentOrientation == Screen.Portrait
-                             || screen.currentOrientation == Screen.PortraitInverted
-        property real inputContextHeight: inputContext.visible ? inputContext.height : 0
-    }
-
-    TextField {
-        id: textField
-        objectName: "textField"
-        anchors {
-            top: parent.top
-            left: parent.left
-            right: parent.right
-        }
-        placeholderText: "TextField"
-    }
-
-    TextArea {
-        id: textArea
-        objectName: "textArea"
-        anchors {
-            top: textField.bottom
-            left: parent.left
-            right: parent.right
-        }
-        height: parent.height - privy.inputContextHeight - textField.height - defocus.height
-        placeholderText: "TextArea"
-    }
+    Component.onCompleted: mainWindow.softwareInputPanelEnabled = true
+    Component.onDestruction:  mainWindow.softwareInputPanelEnabled = false
 
     Button {
         id: defocus
         objectName: "defocus"
         anchors {
-            top: textArea.bottom
+            top: parent.top
             left: parent.left
         }
         text: "Defocus"
@@ -87,7 +60,7 @@ Item {
         id: closeIC
         objectName: "closeIC"
         anchors {
-            top: textArea.bottom
+            top: parent.top
             left: defocus.right
             right: parent.right
         }
@@ -96,5 +69,22 @@ Item {
             textArea.closeSoftwareInputPanel()
             textField.closeSoftwareInputPanel()
         }
+    }
+
+    TextField {
+        id: textField
+        objectName: "textField"
+        anchors { top: defocus.bottom; left: parent.left; right: parent.right }
+        placeholderText: "TextField"
+    }
+
+    TextArea {
+        id: textArea
+        objectName: "textArea"
+        anchors {
+            top: textField.bottom; bottom: parent.bottom
+            left: parent.left; right: parent.right
+        }
+        placeholderText: "TextArea"
     }
 }
