@@ -71,11 +71,10 @@ class MLocaleWrapper : public QObject {
 public:
     MLocaleWrapper(QObject *parent=0) : QObject(parent)
 #ifdef HAVE_MEEGOTOUCH
-      , ml(new MLocale) {
-#else
-    {
-        qWarning() << "Warning: Compiled without libmeegotouch; that means, localisation is not supported";
+      , ml(new MLocale)
 #endif
+    {
+
     }
 
     ~MLocaleWrapper()
