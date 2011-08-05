@@ -44,12 +44,13 @@ import com.nokia.symbian 1.1
 Rectangle {
     id: background
     width: screen.width
-    height: 20
+    height: platformStyle.graphicsSizeMedium
     color: "black"
 
     ProgressBar {
         id: memoryUsageBar
         anchors.fill: parent
+        height: platformStyle.graphicsSizeMedium
         minimumValue: 0
         maximumValue: 67108864 // 64 MB
         value: symbian.privateAllocatedMemory()
@@ -74,7 +75,8 @@ Rectangle {
 
             onTriggered: {
                 memoryUsageBar.value = symbian.privateAllocatedMemory()
-                memText.text = symbian.privateAllocatedMemory()+"/"+memoryUsageBar.maximumValue
+                var gfxSharingText = symbian.privateGraphicsSharing ? " (Gfx sharing on)" : " (Gfx sharing off)"
+                memText.text = symbian.privateAllocatedMemory() + "/" + memoryUsageBar.maximumValue + gfxSharingText
             }
         }
     }
