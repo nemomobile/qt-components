@@ -38,9 +38,28 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.0
+import QtQuick 1.1
 import com.nokia.symbian 1.1
 
-Menu {
+Window {
+    id: root
 
+    Menu {
+        id: menu
+        objectName: "menu"
+
+        property real itemHeight: height / (menuLayout.children.length - 1)
+
+        height: 200
+
+        MenuLayout {
+            id: menuLayout
+
+            MenuItem { height: menu.itemHeight; text: "first" }
+            MenuItem { height: menu.itemHeight; text: "second" }
+            MenuItem { height: menu.itemHeight; text: "third" }
+            MenuItem { height: menu.itemHeight; text: "fourth" }
+        }
+    }
 }
+

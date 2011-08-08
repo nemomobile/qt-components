@@ -56,16 +56,27 @@ private slots:
     void cleanup();
     void defaultPropertyValues();
     void properties();
+    void openAndClose();
+    void scrollBarVisibility();
 
 private:
+    QDeclarativeView *view;
     QObject *componentObject;
+    QDeclarativeItem *menu;
 };
 
 void tst_menu::initTestCase()
 {
     QString errors;
-    componentObject = tst_quickcomponentstest::createComponentFromFile("tst_menu.qml", &errors);
+    view = 0;
+    componentObject = tst_quickcomponentstest::createComponentFromFile("tst_menu.qml", &errors, &view);
     QVERIFY2(componentObject, qPrintable(errors));
+
+    menu = componentObject->findChild<QDeclarativeItem*>("menu");
+    QVERIFY(menu);
+
+    view->show();
+    QTest::qWaitForWindowShown(view);
 }
 
 void tst_menu::cleanupTestCase()
@@ -82,15 +93,45 @@ void tst_menu::cleanup()
 
 void tst_menu::defaultPropertyValues()
 {
-    QVERIFY(componentObject->property("platformInverted").isValid());
-    QCOMPARE(componentObject->property("platformInverted").toBool(), false);
+    QVERIFY(menu->property("platformInverted").isValid());
+    QCOMPARE(menu->property("platformInverted").toBool(), false);
 }
 
 
 void tst_menu::properties()
 {
-    QVERIFY(componentObject->setProperty("platformInverted", true));
-    QCOMPARE(componentObject->property("platformInverted").toBool(), true);
+    QVERIFY(menu->setProperty("platformInverted", true));
+    QCOMPARE(menu->property("platformInverted").toBool(), true);
+}
+
+void tst_menu::openAndClose()
+{
+    // open
+    QCOMPARE(menu->property("status").toInt(), 3); // DialogStatus.Closed
+    QMetaObject::invokeMethod(menu, "open");
+    QCOMPARE(menu->property("status").toInt(), 0); // DialogStatus.Opening
+    QTRY_COMPARE(menu->property("status").toInt(), 1); // DialogStatus.Open
+
+    // close
+    QMetaObject::invokeMethod(menu, "close");
+    QCOMPARE(menu->property("status").toInt(), 2); // DialogStatus.Closing
+    QTRY_COMPARE(menu->property("status").toInt(), 3); // DialogStatus.Closed
+}
+
+void tst_menu::scrollBarVisibility()
+{
+    QDeclarativeItem *scrollBar = componentObject->findChild<QDeclarativeItem*>("scrollBar");
+    QVERIFY(scrollBar);
+
+    // open - scrollbar should be visible for a while
+    QMetaObject::invokeMethod(menu, "open");
+    QTRY_COMPARE(menu->property("status").toInt(), 1); // DialogStatus.Open
+    QVERIFY(scrollBar->property("opacity").toReal() > qreal(0.9));
+    QTRY_VERIFY(scrollBar->property("opacity").toReal() < qreal(0.1));
+
+    // close (just to return to non-shown state)
+    QMetaObject::invokeMethod(menu, "close");
+    QTRY_COMPARE(menu->property("status").toInt(), 3); // DialogStatus.Closed
 }
 
 QTEST_MAIN(tst_menu)

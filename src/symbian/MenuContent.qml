@@ -165,6 +165,7 @@ Item {
 
     ScrollBar {
         id: scrollBar
+        objectName: "scrollBar"
         flickableItem: flickableArea
         interactive: false
         visible: flickableArea.height < flickableArea.contentHeight
