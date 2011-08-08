@@ -58,6 +58,9 @@ Item {
     property int platformContentMaximumHeight:
         dialog.maxHeight() - titleBar.height - buttonItem.height
 
+    property alias privateTitleHeight: titleBar.height
+    property alias privateButtonsHeight: buttonItem.height
+
     signal accepted
     signal rejected
     signal clickedOutside

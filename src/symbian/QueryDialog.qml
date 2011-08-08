@@ -66,23 +66,35 @@ CommonDialog {
     }
 
     content: Item {
-        id: content
-        height: Math.min(label.height, root.platformContentMaximumHeight)
+        height: {
+            if (root.height > 0)
+                return Math.min(Math.max(privateStyle.dialogMinSize, root.height) - privateTitleHeight - privateButtonsHeight, root.platformContentMaximumHeight)
+            else
+                return Math.min(label.paintedHeight, root.platformContentMaximumHeight)
+        }
         width: parent.width
 
         Item {
+            anchors {
+                top: parent.top; topMargin: platformStyle.paddingLarge
+                bottom: parent.bottom; bottomMargin: platformStyle.paddingLarge
+                left: parent.left; leftMargin: platformStyle.paddingLarge
+                right: parent.right
+            }
+
             Flickable {
                 id: flickable
                 width: parent.width
                 height: parent.height
                 anchors { left: parent.left; top: parent.top }
-                contentHeight: label.height
+                contentHeight: label.paintedHeight
                 flickableDirection: Flickable.VerticalFlick
                 clip: true
-                interactive: label.height > flickable.height
+                interactive: contentHeight > height
 
                 Text {
                     id: label
+                    anchors { right: parent.right; rightMargin: privateStyle.scrollBarThickness }
                     width: flickable.width - privateStyle.scrollBarThickness
                     font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
                     color: root.platformInverted ? platformStyle.colorNormalLightInverted
@@ -90,7 +102,6 @@ CommonDialog {
                     wrapMode: Text.WordWrap
                     text: root.message
                     horizontalAlignment: Text.AlignLeft
-                    anchors { right: parent.right; rightMargin: privateStyle.scrollBarThickness }
                 }
             }
 
@@ -102,13 +113,6 @@ CommonDialog {
                 interactive: false
                 orientation: Qt.Vertical
                 platformInverted: root.platformInverted
-            }
-
-            anchors {
-                top: parent.top; topMargin: platformStyle.paddingLarge
-                bottom: parent.bottom; bottomMargin: platformStyle.paddingLarge
-                left: parent.left; leftMargin: platformStyle.paddingLarge
-                right: parent.right
             }
         }
     }
