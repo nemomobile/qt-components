@@ -70,15 +70,16 @@ Item {
         function textColor() {
             if (!enabled)
                 return root.platformInverted ? platformStyle.colorDisabledLightInverted
-                                             : platformStyle.colorDisabledDark
+                                             : platformStyle.colorDisabledLight
             else if (activeFocus && symbian.listInteractionMode == Symbian.KeyNavigation)
-                return platformStyle.colorHighlightedInverted // intentionally always inverted
+                return root.platformInverted ? platformStyle.colorHighlightedInverted
+                                             : platformStyle.colorHighlighted
             else if (mouseArea.pressed && mouseArea.containsMouse)
                 return root.platformInverted ? platformStyle.colorPressedInverted
                                              : platformStyle.colorPressed
             else
                 return root.platformInverted ? platformStyle.colorNormalLightInverted
-                                             : platformStyle.colorNormalDark
+                                             : platformStyle.colorNormalLight
         }
     }
 
@@ -117,7 +118,7 @@ Item {
         id: subItemIcon
 
         Image {
-            source: privateStyle.imagePath("qtg_graf_drill_down_indicator", true) // always inverted indicator
+            source: privateStyle.imagePath("qtg_graf_drill_down_indicator", platformInverted)
             sourceSize.width: platformStyle.graphicSizeSmall
             sourceSize.height: platformStyle.graphicSizeSmall
             mirror: LayoutMirroring.enabled

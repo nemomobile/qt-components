@@ -62,7 +62,7 @@ Item {
 
     BorderImage {
         source: containingPopup.objectName == "OptionsMenu"
-                ? privateStyle.imagePath("qtg_fr_popup_options_item_area_bg", root.platformInverted)
+                ? privateStyle.imagePath("qtg_fr_popup_options", root.platformInverted)
                 : privateStyle.imagePath("qtg_fr_popup", root.platformInverted)
         border { left: 20; top: 20; right: 20; bottom: 20 }
         anchors.fill: parent

@@ -68,7 +68,6 @@
         <file alias="qtg_fr_popup.svg">resources/defaulttheme/graphics/qtg_fr_popup.svg</file>
         <file alias="qtg_fr_popup_heading.svg">resources/defaulttheme/graphics/qtg_fr_popup_heading.svg</file>
         <file alias="qtg_fr_popup_options.svg">resources/defaulttheme/graphics/qtg_fr_popup_options.svg</file>
-        <file alias="qtg_fr_popup_options_item_area_bg.svg">resources/defaulttheme/graphics/qtg_fr_popup_options_item_area_bg.svg</file>
         <file alias="qtg_fr_popup_options_overlay.svg">resources/defaulttheme/graphics/qtg_fr_popup_options_overlay.svg</file>
         <file alias="qtg_fr_popup_transparent.svg">resources/defaulttheme/graphics/qtg_fr_popup_transparent.svg</file>
         <file alias="qtg_fr_popup_divider.svg">resources/defaulttheme/graphics/qtg_fr_popup_divider.svg</file>
