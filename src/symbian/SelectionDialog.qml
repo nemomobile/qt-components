@@ -61,6 +61,11 @@ CommonDialog {
                 selectedIndex = index
                 root.accept()
             }
+
+            Keys.onPressed: {
+                if (event.key == Qt.Key_Up || event.key == Qt.Key_Down)
+                    scrollBar.flash()
+            }
         }
     }
 
@@ -93,13 +98,6 @@ CommonDialog {
                 height: contentItem.height
                 delegate: root.delegate
                 clip: true
-
-                // Flash scrollbar when navigating to hidden
-                // listItem with hw keys
-                onContentYChanged: {
-                    if (!moving)
-                        scrollBar.flash(Symbian.FadeOut)
-                }
 
                 Keys.onPressed: {
                     if (event.key == Qt.Key_Up || event.key == Qt.Key_Down
