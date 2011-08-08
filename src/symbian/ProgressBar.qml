@@ -59,123 +59,96 @@ Item {
 
     BorderImage {
         id: background
+
         source: privateStyle.imagePath("qtg_fr_progressbar_track", root.platformInverted)
-        border { left: 20; top: 0; right: 20; bottom: 0 }
+        border { left: platformStyle.borderSizeMedium; top: 0; right: platformStyle.borderSizeMedium; bottom: 0 }
+        anchors.fill: parent
 
-        anchors.left: parent.left
-        anchors.verticalCenter: parent.verticalCenter
+    }
 
-        width: parent.width
-        height: parent.height
+    Loader {
+        id: progressBarContent
 
-        states: [
-            State {
-                name: "determinate"
-                when: indeterminate == false
-                PropertyChanges {
-                    target: frame
-                    visible: true
-                }
-                PropertyChanges {
-                    target: indeterminateMaskedImage
-                    visible: false
-                }
-                PropertyChanges {
-                    target: indeterminateMaskedImageExtra
-                    visible: false
-                }
-                PropertyChanges {
-                    target: indeterminateAnimation
-                    running: false
-                }
-            },
-            State {
-                name: "indeterminate"
-                when: indeterminate == true
-                PropertyChanges {
-                    target: frame
-                    visible: false
-                }
-                PropertyChanges {
-                    target: indeterminateMaskedImage
-                    visible: true
-                }
-                PropertyChanges {
-                    target: indeterminateMaskedImageExtra
-                    visible: true
-                }
-                PropertyChanges {
-                    target: indeterminateAnimation
-                    running: true
-                }
-            }
-        ]
+        anchors.fill: parent
+        LayoutMirroring.enabled: false
+        LayoutMirroring.childrenInherit: true
+        sourceComponent: indeterminate ? indeterminateContent : determinateContent
+    }
 
-        ParallelAnimation {
-            id: indeterminateAnimation
-            loops: Animation.Infinite
-            running: true
 
-            PropertyAnimation { target: indeterminateMaskedImage; property: "offset.x"; from: height; to: 1; easing.type: Easing.Linear; duration: privateStyle.sliderThickness * 25 }
-            PropertyAnimation { target: indeterminateMaskedImageExtra; property: "offset.x"; from: 0; to: 1 - height; easing.type: Easing.Linear; duration: privateStyle.sliderThickness * 25 }
-        }
+    Component {
+        id: indeterminateContent
 
         Item {
-            LayoutMirroring.enabled: false
-            LayoutMirroring.childrenInherit: true
+            anchors.fill: parent
 
-            clip: true
+            Item {
+                id: indeterminateImageMask
 
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
+                // Mask margins prevent indeterminateImage to appear outside the rounded
+                // frame corners, hardcoded 3 has been instructed by UX
+                anchors { fill: parent; leftMargin: 3; rightMargin: 3 }
+                clip: true
 
-            width: model.position
+                Image {
+                    id: indeterminateImage
+
+                    x: parent.x
+                    height: parent.height
+                    width: parent.width + height // height is the amount of horizontal movement
+                    fillMode: Image.TileHorizontally
+                    source: privateStyle.imagePath(root.platformInverted ? "qtg_graf_progressbar_wait_inverse"
+                                                                         : "qtg_graf_progressbar_wait")
+
+                    NumberAnimation on x {
+                        loops: Animation.Infinite
+                        running: true
+                        from: 0
+                        to: -indeterminateImage.height // see indeterminateImage.width
+                        easing.type: Easing.Linear
+                        duration: privateStyle.sliderThickness * 30
+                    }
+                }
+            }
 
             BorderImage {
-                id: frame
-                source: privateStyle.imagePath("qtg_fr_progressbar_fill", root.platformInverted)
-                border { left: 20; top: 0; right: 20; bottom: 0 }
+                id: indeterminateOverlay
 
-                anchors.left: parent.left
-                anchors.top: parent.top
-
-                width: root.width
-                height: parent.height
+                anchors.fill: parent
+                source: privateStyle.imagePath("qtg_fr_progressbar_overlay", root.platformInverted)
+                border {
+                    left: platformStyle.borderSizeMedium
+                    right: platformStyle.borderSizeMedium
+                    top: 0
+                    bottom: 0
+                }
             }
         }
+    }
 
-        MaskedImage {
-            id: indeterminateMaskedImage
-            anchors.fill: parent
+    Component {
+        id: determinateContent
 
-            topMargin: 0
-            bottomMargin: 0
-            leftMargin: 20
-            rightMargin: 20
+        Item {
+            id: progressMask
 
-            tiled: true
-            imageName: root.platformInverted ? "qtg_graf_progressbar_wait_inverse"
-                                             : "qtg_graf_progressbar_wait"
-            maskName: root.platformInverted ? "qtg_fr_progressbar_mask_inverse"
-                                            : "qtg_fr_progressbar_mask"
-        }
+            height: parent.height
+            width: model.position
+            clip: true
 
-        // Secondary tile to keep the bar full when the animation scrolls
-        MaskedImage {
-            id: indeterminateMaskedImageExtra
-            anchors.fill: parent
+            BorderImage {
+                id: progress
 
-            topMargin: 0
-            bottomMargin: 0
-            leftMargin: 20
-            rightMargin: 20
-
-            tiled: false
-            imageName: root.platformInverted ? "qtg_graf_progressbar_wait_inverse"
-                                             : "qtg_graf_progressbar_wait"
-            maskName: root.platformInverted ? "qtg_fr_progressbar_mask_inverse"
-                                            : "qtg_fr_progressbar_mask"
+                source: privateStyle.imagePath("qtg_fr_progressbar_fill", root.platformInverted)
+                border {
+                    left: platformStyle.borderSizeMedium
+                    right: platformStyle.borderSizeMedium
+                    top: 0
+                    bottom: 0
+                }
+                height: parent.height
+                width: root.width
+            }
         }
     }
 
