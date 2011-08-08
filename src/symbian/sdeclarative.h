@@ -156,6 +156,7 @@ Q_SIGNALS:
     void listInteractionModeChanged();
     void currentTimeChanged();
     void foregroundChanged();
+    void privateListItemKeyNavigation(QVariant listView);
 
 protected:
     bool eventFilter(QObject *obj, QEvent *event);

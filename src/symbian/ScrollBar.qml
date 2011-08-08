@@ -88,6 +88,22 @@ Item {
         onModelChanged: internal.initSectionScroller()
     }
 
+    Loader {
+        id: listItemInteraction
+        sourceComponent: flickableItem && flickableItem.hasOwnProperty("currentIndex") && flickableItem.activeFocus ? listItemInteractionComponent : undefined
+    }
+
+    Component {
+        id: listItemInteractionComponent
+        Item {
+            Connections {
+                target: symbian
+                onListInteractionModeChanged: flash()
+                onPrivateListItemKeyNavigation: flash()
+            }
+        }
+    }
+
     QtObject {
         id: internal
         property int hideTimeout: 500

@@ -207,6 +207,9 @@ Item {
                 }
             }
         }
+
+        if (event.key == Qt.Key_Up || event.key == Qt.Key_Down)
+            symbian.privateListItemKeyNavigation(ListView.view)
     }
 
     ListView.onRemove: SequentialAnimation {
