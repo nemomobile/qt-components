@@ -579,25 +579,13 @@ Column {
 
     Component {
         id: sectionScrollComponent
-        Dialog {
+        CommonDialog {
             id: sectionScroll
             platformInverted: column.childrenInverted
-            title: Text {
-                text: "Section Scroller"
-                font { bold: true; pixelSize: 16 }
-                color: "white"
-                anchors.fill: parent
-                anchors.leftMargin: platformStyle.paddingMedium
-                horizontalAlignment: Text.AlignLeft
-                verticalAlignment: Text.AlignVCenter
-            }
-            buttons:
-                ToolButton {
-                    text: "Close"
-                    height: platformStyle.graphicSizeMedium
-                    platformInverted: column.childrenInverted
-                    onClicked: sectionScroll.close()
-                }
+            titleText: "Section Scroller"
+            buttonTexts: ["Close"]
+            onButtonClicked: close()
+
             content:
                 Rectangle {
                 width: parent.width
