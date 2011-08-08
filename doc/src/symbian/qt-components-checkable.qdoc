@@ -42,3 +42,54 @@
     \sa CheckableGroup
 
 */
+
+/*!
+    \qmlproperty bool Checkable::checked
+
+    \c True if this element is checked. Otherwise \c false.
+
+    Note: if the Checkable is a member of an exclusive group, you cannot do
+    'checked = false' because the logic code of the group does not allow you to
+    "uncheck" a checked item.
+
+*/
+
+/*
+    \qmlproperty variant Checkable::value
+
+    Not used at present so not documented.
+
+*/
+
+/*!
+    \qmlproperty QtObject Checkable::exclusiveGroup
+
+    The exclusive group of checkable items that this Checkable item belongs to.
+    In an exclusive group, only one of the Checkable items can be enabled at a
+    time.
+
+    \sa CheckableGroup, RadioButton
+
+*/
+
+/*!
+    \qmlproperty bool Checkable::enabled
+
+    If \c true, this Checkable is able to be activated in the user interface. If
+    \c false, then this element cannot be changed by the user.
+
+*/
+
+/*!
+    \qmlmethod Checkable::toggle()
+
+    If the Checkable is a standalone item, this toggles the \c checked
+    property between \c true and \c false.
+
+    If the Checkable is a member of an exclusive group, this function does not
+    toggle the \c checked property. Instead, it sets the \c checked property to
+    \c true and the \c checked property for the other members of the exclusive
+    group will be set to \c false.
+
+*/
+

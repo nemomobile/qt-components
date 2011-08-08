@@ -34,12 +34,12 @@
     \brief Provides a component for positioning menu items in a menu.
 
 
-    MenuLayout is a Column positioner that places its child objects
-    vertically in a column.
+    MenuLayout is similar to a \l Column positioner in that it places its child
+    objects vertically in a column.
 
-    Even thought MenuLayout can contain any type of objects, it is recommended to
-    build the menu with \l MenuItem objects. Usage of other objects
-    may result in unexpected behaviour.
+    Even though a MenuLayout can contain any type of objects, it is recommended
+    to build the menu with \l MenuItem objects. Usage of other objects may
+    result in unexpected behaviour.
 
 */
 

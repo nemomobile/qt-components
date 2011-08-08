@@ -31,20 +31,20 @@
     \since 1.0
     \inherits Item
 
-    \brief Provides a container for items on a ToolBar that automatically
+    \brief Provides a container for items on a \l{ToolBar} that automatically
     implements an appropriate layout for its children.
 
-    For more information on how to use ToolBarLayout inside ToolBar, see the
-    ToolBar documentation. It provides also various use cases, for example,
+    For more information, the \l{ToolBar} documentation has suggestions on how
+    to use a ToolBarLayout. It provides various use cases, for example,
     attaching a ToolBarLayout to a Page.
 
     \sa ToolBar, ButtonRow, ToolButton, TabButton, Page
 
     \section1 Using the ToolBarLayout
 
-    The ToolBarLayout is meant for specifying the tools within a ToolBar.
+    The ToolBarLayout is meant for specifying the tools within a \l{ToolBar}.
     The ToolBarLayout is a container that calculates the child positions based
-    on platform specific rules.
+    on platform-specific rules.
 
     \section2 Basic Usage
 

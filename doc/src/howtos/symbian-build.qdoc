@@ -30,6 +30,7 @@
 
 \title Building the Qt Quick Components for Symbian
 
+\target symbian-components-supported-platforms
 \section1 Supported Platforms
 \list
 \o \l {Supported Platforms}{Qt's Supported Development Platform}
@@ -44,6 +45,9 @@
     in the Qt SDK 1.1 and is the Qt version under which Qt Quick Components for
     Symbian is developed.
     \endlist
+
+    \note The Symbian Components 1.1 release requires Qt 4.7.4.
+
 \o Symbian^3 devices with PR1.2.
 \endlist
 
@@ -63,7 +67,7 @@ C:\QtSDK\Symbian\sis\Symbian^3\qt-components
 
 \section1 Building the Qt Quick Components for Symbian
 These instructions detail how to build the sources. The instructions work
-for the different \l{Prerequisites}{compilers}.
+for the different \l{symbian-components-supported-platforms}{platforms}.
 
 First, open up the command line, with the Qt tools in the system path. The \c
 QTDIR variable needs to point to the Qt binaries. The configure script will
@@ -184,15 +188,15 @@ The Qt SDK has precompiled \c sis files in the \c{Symbian\sis\Symbian^3\qt-compo
 The \l{Symbian Components} and \l{Extras Components} are imported using the
 following commands:
 \code
-import com.nokia.symbian 1.0     // Symbian components
-import com.nokia.extras  1.0     // Extras
+import com.nokia.symbian 1.1     // Symbian components
+import com.nokia.extras  1.1     // Extras
 \endcode
 
 Visit the guides that demonstrate the components usage and view the examples and demo applications.
 \list
 \o \l{Introduction to the Qt Quick components}{Components introduction}
 \o \l{components-cookbook}{Common interface designs}
-\o \l{Scalability Guidelines Contents}{Scalability Guidelines}
+\o \l{Creating Scalable Applications}{Scalability Guidelines}
 \o \l{Qt Quick components examples and demos}{Examples and demos}
 \o \l{What's New in the Qt Quick Components for Symbian Release}{What's new in the 1.1 release}
 \endlist

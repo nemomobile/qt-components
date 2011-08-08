@@ -73,7 +73,7 @@
     however, are imported as a different component set.
 
     \code
-    import com.nokia.extras 1.0
+    import com.nokia.extras 1.1  //Symbian Extras set
     \endcode
 
     \section1 Interface Designs

@@ -34,15 +34,17 @@
 
     \brief Provides a container for accessing quickly to commonly used actions.
 
-    The ToolBar contains a current ToolBarLayout, which in turn contains tools
-    such as ToolButton components.
+    The \l{ToolBar::}{tools} binds to items to fill the toolbar. Alternatively,
+    \l{ToolBarLayout} can bind to the \c tools property, manages the positioning
+    of the tool components such as a \l{ToolButton}.
 
-    If there is a PageStack whose \c toolBar property is set to be this ToolBar,
-    the ToolBarLayout set to be the tools of the current Page will be
-    automatically set as the tools of the ToolBar, using the specified \a
-    transition. This occurs each time the current \l Page changes.
+    Binding a PageStack's \l{PageStack::}{toolBar} property to a ToolBar will
+    cause the toolbar to receive the current Page's \l{Page::}{tools} property
+    content and bind it to its own \l{ToolBar::}{tools} property. The toolbar
+    animates during each page transition as specified by the
+    \l{ToolBar::}{transition} property.
 
-    \sa ToolBarLayout, PageStack, Page
+    \sa ToolBarLayout, PageStack, Page, ToolButton
 
     \section1 Using the ToolBar
 
