@@ -41,7 +41,7 @@
 import QtQuick 1.1
 
 Item {
-    property ListModel items
+    property variant items
     property string label
     property int selectedIndex: 0
     property bool enabled: true
