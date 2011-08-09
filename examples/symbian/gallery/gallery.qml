@@ -64,17 +64,12 @@ Window {
         platformInverted: root.childrenInverted
     }
 
-    Text {
+    Label {
         id: waitText
 
         anchors.centerIn: parent
         visible: contentLoader.status != Loader.Ready
         text: "Loading Gallery components ..."
-        color: platformStyle.colorNormalLight
-        font {
-            family: platformStyle.fontFamilyRegular
-            pixelSize: platformStyle.fontSizeMedium
-        }
     }
 
     Loader {

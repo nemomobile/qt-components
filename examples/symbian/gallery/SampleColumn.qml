@@ -52,11 +52,10 @@ Column {
 
     spacing: 14
 
-    Text {
+    Label {
+        platformInverted: column.childrenInverted
         anchors.horizontalCenter: parent.horizontalCenter
         text: "Qt Components " + (enabled ? "(enabled)" : "(disabled)")
-        font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
-        color: platformStyle.colorNormalLight
     }
 
     Button {
