@@ -81,36 +81,43 @@ public:
     void initializeEngine(QDeclarativeEngine *engine, const char *uri) {
         Q_ASSERT(uri == QLatin1String("com.meego") || uri == QLatin1String("com.nokia.meego") || uri == QLatin1String("Qt.labs.components.native"));
 
+        if(uri == QLatin1String("com.meego")) {
+            qWarning() << "'import com.meego' is DEPRECATED and may cause 'Error: Cannot assign QObject* to PageStack_QMLTYPE_42*', missing icons, widgets and other problems;"
+                          "use 'import com.nokia.meego' instead";
+        }
+
         QDeclarativeExtensionPlugin::initializeEngine(engine, uri);
 
-        engine->addImageProvider(QLatin1String("theme"), new MDeclarativeImageProvider);
+        // If plugin was initilized once, do not initialize it again
+        if(!engine->imageProvider(QLatin1String("theme"))) {
+            engine->addImageProvider(QLatin1String("theme"), new MDeclarativeImageProvider);
 
-        engine->rootContext()->setContextProperty("screen", MDeclarativeScreen::instance());
-        qmlRegisterUncreatableType<MDeclarativeScreen>(uri, 1, 0, "Screen", "");
+            engine->rootContext()->setContextProperty("screen", MDeclarativeScreen::instance());
+            qmlRegisterUncreatableType<MDeclarativeScreen>(uri, 1, 0, "Screen", "");
 
-        engine->rootContext()->setContextProperty("platformWindow", MWindowState::instance());
-        qmlRegisterUncreatableType<MWindowState>(uri, 1, 0, "WindowState", "");
+            engine->rootContext()->setContextProperty("platformWindow", MWindowState::instance());
+            qmlRegisterUncreatableType<MWindowState>(uri, 1, 0, "WindowState", "");
 
-        engine->rootContext()->setContextProperty("theme", new MThemePlugin);
-        qmlRegisterUncreatableType<MThemePlugin>(uri, 1, 0, "Theme", "");
+            engine->rootContext()->setContextProperty("theme", new MThemePlugin);
+            qmlRegisterUncreatableType<MThemePlugin>(uri, 1, 0, "Theme", "");
 
-        engine->rootContext()->setContextProperty("inputContext", new MDeclarativeInputContext);
-        qmlRegisterUncreatableType<MDeclarativeInputContext>(uri, 1, 0, "InputContext", "");
-        
-        engine->rootContext()->setContextProperty("textTranslator", new MTextTranslator);
-        qmlRegisterUncreatableType<MTextTranslator>(uri, 1, 0, "TextTranslator", "");
+            engine->rootContext()->setContextProperty("inputContext", new MDeclarativeInputContext);
+            qmlRegisterUncreatableType<MDeclarativeInputContext>(uri, 1, 0, "InputContext", "");
 
-        // Disable cursor blinking + make double tapping work the way it is done in lmt.
-        QApplication *app = qobject_cast<QApplication*>(QApplication::instance());
-        if (app) {
-            app->setCursorFlashTime(0);
-            app->setDoubleClickInterval(MEEGOTOUCH_DOUBLETAP_INTERVAL);
-        } 
+            engine->rootContext()->setContextProperty("textTranslator", new MTextTranslator);
+            qmlRegisterUncreatableType<MTextTranslator>(uri, 1, 0, "TextTranslator", "");
 
-        engine->rootContext()->setContextProperty("UiConstants", uiConstants());
-        engine->rootContext()->setContextProperty("locale", new MLocaleWrapper);
-        qmlRegisterUncreatableType<MLocaleWrapper>(uri, 1, 0, "Locale", "");
+            // Disable cursor blinking + make double tapping work the way it is done in lmt.
+            QApplication *app = qobject_cast<QApplication*>(QApplication::instance());
+            if (app) {
+                app->setCursorFlashTime(0);
+                app->setDoubleClickInterval(MEEGOTOUCH_DOUBLETAP_INTERVAL);
+            }
 
+            engine->rootContext()->setContextProperty("UiConstants", uiConstants());
+            engine->rootContext()->setContextProperty("locale", new MLocaleWrapper);
+            qmlRegisterUncreatableType<MLocaleWrapper>(uri, 1, 0, "Locale", "");
+        }
     }
 
     void registerTypes(const char *uri) {
