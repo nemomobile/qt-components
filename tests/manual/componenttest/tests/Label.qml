@@ -39,13 +39,32 @@
 ****************************************************************************/
 
 import QtQuick 1.1
+import com.nokia.symbian 1.1
 
-Text {
-    property bool platformInverted: false
-    color: platformInverted ? platformStyle.colorNormalLightInverted
-                            : platformStyle.colorNormalLight
-    font.family: platformStyle.fontFamilyRegular
-    font.pixelSize: platformStyle.fontSizeMedium
-    verticalAlignment: Text.AlignVCenter
-    horizontalAlignment: Text.AlignLeft
+Item {
+    id: root
+    anchors.fill: parent
+
+    Label {
+        id: label
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
+        anchors.topMargin: platformStyle.paddingLarge
+        text: "This is a Symbian Label"
+    }
+
+    Rectangle {
+        id: longLabelBackground
+        anchors.fill: longLabel
+        color: platformStyle.colorNormalMid
+    }
+
+    Label {
+        id: longLabel
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: label.bottom
+        anchors.topMargin: platformStyle.paddingLarge
+        text: "This is a longer Symbian Label\n with several\n lines of text.\n There is a\
+  Rectangle behind \n the Label."
+    }
 }

@@ -12,7 +12,6 @@ data=ZSYSTEM\install\componenttest_stub.sis                         System\Insta
 
 // resources
 data=DATAZ_\private\200346E0\components\FontSelectionDialog.qml \private\200346E0\components\FontSelectionDialog.qml
-data=DATAZ_\private\200346E0\components\Label.qml               \private\200346E0\components\Label.qml
 data=DATAZ_\private\200346E0\components\TextSettings.qml        \private\200346E0\components\TextSettings.qml
 data=DATAZ_\private\200346E0\components\TextSettingsModel.qml   \private\200346E0\components\TextSettingsModel.qml
 data=DATAZ_\private\200346E0\main.qml                           \private\200346E0\main.qml
@@ -30,6 +29,7 @@ data=DATAZ_\private\200346E0\tests\Indicators.qml               \private\200346E
 data=DATAZ_\private\200346E0\tests\InfoBanner.qml               \private\200346E0\tests\InfoBanner.qml
 data=DATAZ_\private\200346E0\tests\InputContext.qml             \private\200346E0\tests\InputContext.qml
 data=DATAZ_\private\200346E0\tests\KeyNavigation.qml            \private\200346E0\tests\KeyNavigation.qml
+data=DATAZ_\private\200346E0\tests\Label.qml                    \private\200346E0\tests\Label.qml
 data=DATAZ_\private\200346E0\tests\ListItem.qml                 \private\200346E0\tests\ListItem.qml
 data=DATAZ_\private\200346E0\tests\ListView.qml                 \private\200346E0\tests\ListView.qml
 data=DATAZ_\private\200346E0\tests\Menu.qml                     \private\200346E0\tests\Menu.qml
