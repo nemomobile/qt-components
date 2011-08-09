@@ -53,6 +53,8 @@ MouseArea {
     property alias cutEnabled: contextMenu.cutEnabled
     property bool platformInverted: false
 
+    enabled: !editor.inputMethodComposing
+
     function updateGeometry() {
         selectionBegin.updateGeometry();
         selectionEnd.updateGeometry();
