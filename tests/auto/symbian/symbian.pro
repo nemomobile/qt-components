@@ -17,6 +17,7 @@ SUBDIRS += \
     iconpool \
     imageprovider \
     indicatorcontainer \
+    label \
     listheading \
     listitem \
     listitemtext \
