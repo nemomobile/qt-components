@@ -75,7 +75,7 @@ Item {
         height: firstColumn ? 0 : viewContainer.height
         width: firstColumn ? 0 : Math.round(platformStyle.paddingSmall / 2)
         source: privateStyle.imagePath("qtg_fr_tumbler_divider", template.platformInverted)
-        border { 
+        border {
             left: platformStyle.borderSizeMedium
             top: platformStyle.borderSizeMedium
             right: platformStyle.borderSizeMedium
@@ -228,7 +228,7 @@ Item {
             width: tumblerColumn ? tumblerColumn.width + divider.width : 0
             height: privateStyle.menuItemHeight
             source: privateStyle.imagePath("qtg_fr_tumbler_highlight", template.platformInverted)
-            border { 
+            border {
                 left: platformStyle.borderSizeMedium
                 top: platformStyle.borderSizeMedium
                 right: platformStyle.borderSizeMedium
