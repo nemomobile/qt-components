@@ -99,7 +99,7 @@ function clear() {
 
 function forceUpdate() {
     for (var i = 0; i < columns.length; i++) {
-        columns[i].selectedIndex = __columns[i].view.currentIndex;
+        columns[i].selectedIndex = (__columns[i] != undefined) ? __columns[i].view.currentIndex : -1
     }
 }
 
