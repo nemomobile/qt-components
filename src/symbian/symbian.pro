@@ -118,6 +118,7 @@ QML_FILES = \
     ContextMenu.qml \
     Dialog.qml \
     Fader.qml \
+    Label.qml \
     ListHeading.qml \
     ListItem.qml \
     ListItemText.qml \

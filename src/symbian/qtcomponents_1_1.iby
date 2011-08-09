@@ -36,6 +36,7 @@ data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\CommonDialog.qml                   
 data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\ContextMenu.qml                                RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\ContextMenu.qml
 data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\Dialog.qml                                     RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\Dialog.qml
 data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\Fader.qml                                      RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\Fader.qml
+data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\Label.qml                                      RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\Label.qml
 data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\ListHeading.qml                                RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\ListHeading.qml
 data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\ListItem.qml                                   RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\ListItem.qml
 data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\ListItemText.qml                               RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\ListItemText.qml

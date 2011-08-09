@@ -41,6 +41,7 @@ CheckBox 1.1 CheckBox.qml
 ChoiceList 1.1 ChoiceList.qml
 ContextMenu 1.1 ContextMenu.qml
 Dialog 1.1 Dialog.qml
+Label 1.1 Label.qml
 Menu 1.1 Menu.qml
 MenuItem 1.1 MenuItem.qml
 MenuLayout 1.1 MenuLayout.qml
