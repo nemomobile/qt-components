@@ -1,3 +1,9 @@
+qt-components (1.1~git20110810-1) maverick; urgency=low
+
+  * Fixes: NB#267202 - qt-components.qdocconf has invalid image paths
+
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Wed, 10 Aug 2011 09:05:00 +0300
+
 qt-components (1.1~git20110804-1) maverick; urgency=low
 
   * Fixes: NB#275789 Black screen displayed when Facebook application is launched
