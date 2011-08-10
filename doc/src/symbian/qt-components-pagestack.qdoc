@@ -53,8 +53,13 @@
     anchor it to a status bar, tool bar, tab bar, or some other similar UI
     component.
 
-    Once you have a page stack, a common way to load the first page in the stack
-    is to call \c PageStack.push() from the application's \c
+    Once you have a page stack, you can set its \l initialPage property to point to
+    the first page:
+    \code
+    pageStack.initialPage: firstPage
+    \endcode
+
+    Optionally, you can call \l push() from the application's \c
     Component.onCompleted() handler.
 
     \snippet src/snippets/common/snippet-pagestack-toolbar.qml 5
@@ -391,6 +396,22 @@
 
     This is \c true if there is an ongoing transition between pages on the stack.
     Otherwise \c false.
+
+*/
+
+/*!
+    \qmlproperty variant PageStack::initialPage
+    \since 1.1
+
+    Sets the initial page of the \c PageStack. This can be a \l Page instance,
+    component, or an array. Once the construction is completed, the value
+    will be pushed onto the stack. 
+    
+    Modifying this property at runtime has no effect if the stack has more than one item.
+    On an empty stack, the new value will be pushed. On a one item stack, the existing item
+    will be replaced with the new \c initialPage value.
+    
+    \sa PageStack::push
 
 */
 
