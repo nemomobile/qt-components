@@ -104,50 +104,27 @@ void ShaderEffect::updateRenderTargets()
                 p.setCompositionMode(QPainter::CompositionMode_SourceOver);
 
                 QRectF sourceRect = m_renderTargets[i]->sourceRect();
-                QSize textureSize = m_renderTargets[i]->textureSize();
-
                 qreal yflip = m_renderTargets[i]->isMirrored() ? -1.0 : 1.0; // flip y to match scenegraph, it also flips texturecoordinates
-                qreal xscale = 1.0;
-                qreal yscale = 1.0 * yflip;
 
-                qreal leftMargin = 0.0;
-                qreal rightMargin = 0.0;
-                qreal topMargin = 0.0;
-                qreal bottomMargin = 0.0;
+                qreal textureWidth = m_renderTargets[i]->fbo()->size().width();
+                qreal textureHeight = m_renderTargets[i]->fbo()->size().height();
 
-                qreal width = m_renderTargets[i]->sourceItem()->width();
-                qreal height = m_renderTargets[i]->sourceItem()->height();
+                qreal sourceWidth = m_renderTargets[i]->sourceItem()->width();
+                qreal sourceHeight = m_renderTargets[i]->sourceItem()->height();
 
-                if (!sourceRect.isEmpty()) {
-                    leftMargin = -sourceRect.left();
-                    rightMargin = sourceRect.right() - width;
-                    topMargin = -sourceRect.top();
-                    bottomMargin = sourceRect.bottom() - height;
+                if (!sourceRect.isEmpty() > 0) {
+                    sourceWidth = sourceRect.width();
+                    sourceHeight = sourceRect.height();
                 }
 
-                if ((width + leftMargin + rightMargin) > 0 && (height + topMargin + bottomMargin) > 0) {
-                    if (!textureSize.isEmpty()) {
-                        qreal textureWidth = textureSize.width();
-                        qreal textureHeight = textureSize.height();
+                if (sourceWidth > 0 && sourceHeight > 0) {
+                    qreal xscale = textureWidth / sourceWidth;
+                    qreal yscale = textureHeight / sourceHeight;
+                    p.scale(xscale, yscale * yflip);
+                    p.translate(-sourceRect.left(), -sourceRect.top());
+                    drawSource(&p);
+                 }
 
-                        xscale = width / (width + leftMargin + rightMargin);
-                        yscale = height / (height + topMargin + bottomMargin);
-
-                        p.translate(textureWidth / 2, textureHeight / 2);
-                        p.scale(xscale, yscale * yflip);
-                        p.translate(-textureWidth / 2, -textureHeight / 2);
-                        p.scale(textureWidth / width, textureHeight / height);
-                    } else {
-                        xscale = width / (width + leftMargin + rightMargin);
-                        yscale = height / (height + topMargin + bottomMargin);
-
-                        p.translate(width / 2, height / 2);
-                        p.scale(xscale, yscale * yflip);
-                        p.translate(-width / 2, -height / 2);
-                    }
-                }
-
-                drawSource(&p);
                 p.end();
                 m_renderTargets[i]->markSceneGraphDirty();
             }

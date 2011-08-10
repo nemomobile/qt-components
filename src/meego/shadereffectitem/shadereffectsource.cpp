@@ -47,7 +47,7 @@
 
 /*!
     \qmlclass ShaderEffectSource ShaderEffectSource
-    \ingroup qml-shader-elements
+    \ingroup qmlshadersplugin
     \brief The ShaderEffectSource object encapsulates the source content for the ShaderEffectItem.
 
     ShaderEffectSource is available in the \bold{Qt.labs.shaders 1.0} module.
@@ -272,10 +272,10 @@ void ShaderEffectSource::setHideSource(bool hide)
     This property defines the wrap parameter for the source after it has been mapped as a texture.
 
     \list
-    \o ShaderEffectSource.ClampToEdge - Causes texturecoordinates to be clamped to the range [ 1/2*N , 1 - 1/2*N ], where N is the texture width.
-    \o ShaderEffectSource.RepeatHorizontally - Causes the integer part of the horizontal texturecoordinate to be ignored; the GL uses only the fractional part, thereby creating a horizontal repeating pattern.
-    \o ShaderEffectSource.RepeatVertically - Causes the integer part of the vertical texturecoordinate to be ignored; the GL uses only the fractional part, thereby creating a vertical repeating pattern.
-    \o ShaderEffectSource.Repeat - Causes the integer part of both the horizontal and vertical texturecoordinates to be ignored; the GL uses only the fractional part, thereby creating a repeating pattern.
+    \o WrapMode.ClampToEdge - Causes texturecoordinates to be clamped to the range [ 1/2*N , 1 - 1/2*N ], where N is the texture width.
+    \o WrapMode.RepeatHorizontally - Causes the integer part of the horizontal texturecoordinate to be ignored; the GL uses only the fractional part, thereby creating a horizontal repeating pattern.
+    \o WrapMode.RepeatVertically - Causes the integer part of the vertical texturecoordinate to be ignored; the GL uses only the fractional part, thereby creating a vertical repeating pattern.
+    \o WrapMode.Repeat - Causes the integer part of both the horizontal and vertical texturecoordinates to be ignored; the GL uses only the fractional part, thereby creating a repeating pattern.
     \endlist
 
     The default value is ClampToEdge.

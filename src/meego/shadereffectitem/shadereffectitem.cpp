@@ -71,7 +71,7 @@ static const char qt_emptyAttributeName[] = "";
 
 /*!
     \qmlclass ShaderEffectItem ShaderEffectItem
-    \ingroup qml-shader-elements
+    \ingroup qmlshadersplugin
     \brief The ShaderEffectItem object alters the output of given item with OpenGL shaders.
     \inherits Item
 
@@ -83,7 +83,7 @@ static const char qt_emptyAttributeName[] = "";
     and may be heavily changed or removed in later versions.
 
     Requirement for the use of shaders is that the application is either using
-    Qt OpenGL graphicssystem or is using OpenGL by setting QGLWidget as the viewport to QDeclarativeView (depending on which one is the recommened way in the targeted platform).
+    Qt OpenGL graphicssystem or is forced to use OpenGL by setting QGLWidget as the viewport to QDeclarativeView (recommened way).
 
     ShaderEffectItem internal behaviour is such that during the paint event it first renders its
     ShaderEffectSource items into a OpenGL framebuffer object which can be used as a texture. If the ShaderEffectSource is defined to be an image,
@@ -194,7 +194,7 @@ Rectangle {
     }
 }
     \endqml
-    \image shaderexample.png
+    \image Example1.png
 
 */
 
@@ -404,6 +404,10 @@ void ShaderEffectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         checkViewportUpdateMode();
         painter->save();
         painter->beginNativePainting();
+
+        if (context->format().samples() > 1)
+            painter->setRenderHint(QPainter::Antialiasing);
+
         QMatrix4x4 combinedMatrix = QMatrix4x4(painter->transform());
         renderEffect(painter, combinedMatrix);
         painter->endNativePainting();
