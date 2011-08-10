@@ -41,7 +41,7 @@
 #define SDECLARATIVEINPUTCONTEXT_P_SYMBIAN_H
 
 #include "sdeclarativeinputcontext.h"
-#include "sdeclarativeitouchinput.h"
+#include "sdeclarativetouchinput.h"
 
 class SDeclarativeScreen;
 class CTouchInput;

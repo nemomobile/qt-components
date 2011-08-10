@@ -40,7 +40,7 @@
 
 #include "sdeclarativeinputcontext.h"
 #include "sdeclarativeinputcontext_p_symbian.h"
-#include "sdeclarativeitouchinput.h"
+#include "sdeclarativetouchinput.h"
 #include "sdeclarativescreen.h"
 
 SDeclarativeInputContextPrivate::SDeclarativeInputContextPrivate(SDeclarativeInputContext *qq, SDeclarativeScreen *screen)

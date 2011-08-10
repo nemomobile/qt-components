@@ -37,7 +37,7 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-#include "sdeclarativeitouchinput.h"
+#include "sdeclarativetouchinput.h"
 #include <e32std.h>
 
 #if defined(HAVE_SYMBIAN_INTERNAL)

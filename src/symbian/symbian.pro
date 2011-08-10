@@ -87,7 +87,6 @@ symbian: {
     HEADERS += \
         sdeclarativeinputcontext_p_symbian.h \
         sdeclarativetouchinput.h
-
 } else {
     HEADERS += \
         sdeclarativeinputcontext_p.h
