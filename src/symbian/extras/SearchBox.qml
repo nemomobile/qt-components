@@ -138,6 +138,7 @@ Item {
             selectionColor: platformStyle.colorTextSelection
             font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
             activeFocusOnPress: false
+            inputMethodHints: Qt.ImhNoPredictiveText
             onTextChanged: {
                 if (text) {
                     clearButton.state = "ClearVisible"
