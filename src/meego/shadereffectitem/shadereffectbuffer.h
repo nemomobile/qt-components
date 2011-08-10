@@ -38,109 +38,24 @@
 **
 ****************************************************************************/
 
-#ifndef QGLAttributeDescription_H
-#define QGLAttributeDescription_H
+#ifndef SHADEREFFECTBUFFER_H
+#define SHADEREFFECTBUFFER_H
 
-#include <QtOpenGL/qgl.h>
-#include "qt3dglobal.h"
-#include "qglnamespace.h"
+#include <QtOpenGL>
 
 QT_BEGIN_HEADER
 
 QT_BEGIN_NAMESPACE
 
-class Q_QT3D_EXPORT QGLAttributeDescription
+class ShaderEffectBuffer : public QGLFramebufferObject
 {
 public:
-    QGLAttributeDescription();
-    QGLAttributeDescription(QGL::VertexAttribute attribute,
-                            int tupleSize, GLenum type, int stride);
-
-    bool isNull() const;
-
-    QGL::VertexAttribute attribute() const;
-    void setAttribute(QGL::VertexAttribute attribute);
-
-    GLenum type() const;
-    void setType(GLenum type);
-
-    int sizeOfType() const;
-
-    int tupleSize() const;
-    void setTupleSize(int tupleSize);
-
-    int stride() const;
-    void setStride(int stride);
-
-private:
-    QGL::VertexAttribute m_attribute;
-    GLenum m_type;
-    int m_tupleSize;
-    int m_stride;
+    ShaderEffectBuffer(const QSize &size, const QGLFramebufferObjectFormat &format);
+    ~ShaderEffectBuffer();
 };
-
-inline QGLAttributeDescription::QGLAttributeDescription()
-    : m_attribute(QGL::Position), m_type(GL_FLOAT),
-      m_tupleSize(0), m_stride(0)
-{
-}
-
-inline QGLAttributeDescription::QGLAttributeDescription
-        (QGL::VertexAttribute attribute, int tupleSize, GLenum type, int stride)
-    : m_attribute(attribute), m_type(type),
-      m_tupleSize(tupleSize), m_stride(stride)
-{
-    Q_ASSERT(tupleSize >= 1 && tupleSize <= 4);
-}
-
-inline bool QGLAttributeDescription::isNull() const
-{
-    return m_tupleSize == 0;
-}
-
-inline QGL::VertexAttribute QGLAttributeDescription::attribute() const
-{
-    return m_attribute;
-}
-
-inline void QGLAttributeDescription::setAttribute(QGL::VertexAttribute attribute)
-{
-    m_attribute = attribute;
-}
-
-inline GLenum QGLAttributeDescription::type() const
-{
-    return m_type;
-}
-
-inline void QGLAttributeDescription::setType(GLenum type)
-{
-    m_type = type;
-}
-
-inline int QGLAttributeDescription::tupleSize() const
-{
-    return m_tupleSize;
-}
-
-inline void QGLAttributeDescription::setTupleSize(int tupleSize)
-{
-    Q_ASSERT(tupleSize >= 1 && tupleSize <= 4);
-    m_tupleSize = tupleSize;
-}
-
-inline int QGLAttributeDescription::stride() const
-{
-    return m_stride;
-}
-
-inline void QGLAttributeDescription::setStride(int stride)
-{
-    m_stride = stride;
-}
-
-QT_END_NAMESPACE
 
 QT_END_HEADER
 
-#endif
+QT_END_NAMESPACE
+
+#endif // SHADEREFFECTBUFFER_H

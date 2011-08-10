@@ -38,39 +38,38 @@
 **
 ****************************************************************************/
 
-#ifndef QMATRIX4X4STACK_P_H
-#define QMATRIX4X4STACK_P_H
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QDeclarativeItem>
+#include <QDeclarativeView>
 
-//
-//  W A R N I N G
-//  -------------
-//
-// This file is not part of the Qt API.  It exists purely as an
-// implementation detail.  This header file may change from version to
-// version without notice, or even be removed.
-//
-// We mean it.
-//
+#include "mdeclarativeview.h"
 
-#include <QtGui/qmatrix4x4.h>
-#include <QtCore/qstack.h>
-
-QT_BEGIN_HEADER
-
-QT_BEGIN_NAMESPACE
-
-class QMatrix4x4StackPrivate
+MDeclarativeView::MDeclarativeView(QObject *parent)
+    : QObject(parent)
 {
-public:
-    QMatrix4x4StackPrivate() : isDirty(true) {}
 
-    QMatrix4x4 matrix;
-    QStack<QMatrix4x4> stack;
-    bool isDirty;
-};
+}
 
-QT_END_NAMESPACE
+MDeclarativeView::~MDeclarativeView()
+{
+}
 
-QT_END_HEADER
+void MDeclarativeView::setFullViewportMode(QDeclarativeItem *item)
+{
+    if (item != 0) {
+        QGraphicsScene *scene = item->scene();
+        if (scene != 0) {
+            QList<QGraphicsView*> views = scene->views();
+            for (int i = 0; i < views.count(); i++) {
+                QDeclarativeView *view = qobject_cast<QDeclarativeView *>(views[i]);
+                if (view != 0) {
+                    view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+                }
+            }
+        }
+    }        
+}
 
-#endif
+#include "moc_mdeclarativeview.cpp"
+

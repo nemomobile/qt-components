@@ -46,10 +46,10 @@ Item {
     property alias sourceItem: effectSource.sourceItem
     property alias xCenter: magnifier.xCenter
     property alias yCenter: magnifier.yCenter
-    property alias active: magnifier.active
+    property bool active: false
     property real yAdjustment: 0
 
-    visible: magnifier.active
+    visible: active
     width: 182
     height: 211
     z: Number.MAX_VALUE
@@ -64,33 +64,46 @@ Item {
 
     Component.onCompleted: {
         sourceItem = parent;
+        declarativeView.setFullViewportMode(root);
     }
 
     ShaderEffectSource {
         id: effectSource
         textureSize: Qt.size((sourceItem.width) * scaleFactor, (sourceItem.height) * scaleFactor);
-        hideOriginal: false
-        margins: Qt.size(1, 1);
+        hideSource: false
 
         property real scaleFactor: 1.25
-        filtering: ShaderEffectSource.Linear
+        smooth: true
+    }
+
+    Image {
+        id: magnifierFrameImage
+        source: "/usr/share/themes/blanco/meegotouch/images/theme/basement/meegotouch-virtual-keyboard/meegotouch-seattle-magnifier-frame.png"
     }
 
     ShaderEffectSource {
         id: magnifierFrame
-        sourceImage: "/usr/share/themes/blanco/meegotouch/images/theme/basement/meegotouch-virtual-keyboard/meegotouch-seattle-magnifier-frame.png"
-        filtering: ShaderEffectSource.Linear
+        sourceItem: magnifierFrameImage
+        hideSource: true
+        live: false
+    }
+
+    Image {
+        id: magnifierMaskImage
+        source: "/usr/share/themes/blanco/meegotouch/images/theme/basement/meegotouch-virtual-keyboard/meegotouch-seattle-magnifier-frame-mask.png"
     }
 
     ShaderEffectSource {
         id: magnifierMask
-        sourceImage: "/usr/share/themes/blanco/meegotouch/images/theme/basement/meegotouch-virtual-keyboard/meegotouch-seattle-magnifier-frame-mask.png"
+        sourceItem: magnifierMaskImage
+        hideSource: true
+        live: false
     }
 
     ShaderEffectItem {
         id: magnifier
         anchors.fill:parent
-        active: false
+        visible: root.visible
 
         vertexShader: "
             attribute highp vec4 qt_Vertex;

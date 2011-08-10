@@ -17,10 +17,6 @@ QT += declarative network opengl
     CONFIG += link_pkgconfig
 }
 
-shader {
-    DEFINES += HAVE_SHADER
-}
-
 meegotouch {
     DEFINES += HAVE_MEEGOTOUCH
 }
@@ -90,20 +86,12 @@ SOURCES += \
     mdeclarativemousefilter.cpp \
     mdeclarativeimattributeextension.cpp \
     mdeclarativeimobserver.cpp \
-    shadereffectitem/shadereffectitem.cpp \
-    shadereffectitem/shadereffectitemnull.cpp \
-    shadereffectitem/3d/qmatrix4x4stack.cpp \
-    shadereffectitem/3d/qglnamespace.cpp \
-    shadereffectitem/3d/qglattributevalue.cpp \
-    shadereffectitem/3d/qglattributedescription.cpp \
-    shadereffectitem/3d/qcustomdataarray.cpp \
-    shadereffectitem/3d/qcolor4ub.cpp \
-    shadereffectitem/3d/qarray.cpp \
-    shadereffectitem/utilities.cpp \
-    shadereffectitem/shadereffectsource.cpp \
-    shadereffectitem/shadereffectsourcenull.cpp \
+    mdeclarativeview.cpp \
     shadereffectitem/shadereffect.cpp \
-    shadereffectitem/geometry.cpp
+    shadereffectitem/shadereffectitem.cpp \
+    shadereffectitem/shadereffectsource.cpp \
+    shadereffectitem/shadereffectbuffer.cpp \
+    shadereffectitem/scenegraph/qsggeometry.cpp
 
 HEADERS += \
     mdeclarativestatusbar.h \
@@ -127,26 +115,18 @@ HEADERS += \
     mdeclarativemousefilter.h \
     mdeclarativeimattributeextension.h \
     mdeclarativeimobserver.h \
-    shadereffectitem/shadereffectitem.h \
-    shadereffectitem/shadereffectitemnull.h \
-    shadereffectitem/3d/qt3dglobal.h \
-    shadereffectitem/3d/qmatrix4x4stack_p.h \
-    shadereffectitem/3d/qmatrix4x4stack.h \
-    shadereffectitem/3d/qglnamespace.h \
-    shadereffectitem/3d/qglattributevalue.h \
-    shadereffectitem/3d/qglattributedescription.h \
-    shadereffectitem/3d/qcustomdataarray.h \
-    shadereffectitem/3d/qcolor4ub.h \
-    shadereffectitem/3d/qarray.h \
-    shadereffectitem/utilities.h \
-    shadereffectitem/shadereffectsource.h \
-    shadereffectitem/shadereffectsourcenull.h \
-    shadereffectitem/shadereffect.h \
-    shadereffectitem/geometry.h \
-    shadereffectitem/glfunctions.h \
+    mdeclarativeview.h \
     i18n/mlocalewrapper.h \
     mpageorientation.h \
-    mtoolbarvisibility.h
+    mtoolbarvisibility.h \
+    mdeclarativeview.h \
+    shadereffectitem/glfunctions.h \
+    shadereffectitem/shadereffect.h \
+    shadereffectitem/shadereffectitem.h \
+    shadereffectitem/shadereffectsource.h \
+    shadereffectitem/shadereffectbuffer.h \
+    shadereffectitem/scenegraph/qsggeometry.h
+                            
 
 QML_FILES = \
         qmldir \

@@ -38,65 +38,14 @@
 **
 ****************************************************************************/
 
-#ifndef QMATRIX4X4STACK_H
-#define QMATRIX4X4STACK_H
+#include "shadereffectbuffer.h"
 
-#include "qt3dglobal.h"
-#include <QtGui/qmatrix4x4.h>
-#include <QtCore/qscopedpointer.h>
-
-QT_BEGIN_HEADER
-
-QT_BEGIN_NAMESPACE
-
-class QMatrix4x4StackPrivate;
-
-class Q_QT3D_EXPORT QMatrix4x4Stack
+ShaderEffectBuffer::ShaderEffectBuffer(const QSize & size, const QGLFramebufferObjectFormat & format)
+    : QGLFramebufferObject(size, format)
 {
-public:
-    QMatrix4x4Stack();
-    ~QMatrix4x4Stack();
-
-    const QMatrix4x4 &top() const;
-
-    void push();
-    void pop();
-
-    void setToIdentity();
-
-    void translate(qreal x, qreal y, qreal z);
-    void translate(const QVector3D& vector);
-    void scale(qreal x, qreal y, qreal z);
-    void scale(qreal factor);
-    void scale(const QVector3D& vector);
-    void rotate(qreal angle, qreal x, qreal y, qreal z);
-    void rotate(qreal angle, const QVector3D& vector);
-    void rotate(const QQuaternion &quaternion);
-
-    QMatrix4x4Stack& operator=(const QMatrix4x4& matrix);
-    QMatrix4x4Stack& operator*=(const QMatrix4x4& matrix);
-
-    operator const QMatrix4x4 &() const;
-
-    bool isDirty() const;
-    void setDirty(bool dirty);
-
-private:
-    Q_DISABLE_COPY(QMatrix4x4Stack)
-    Q_DECLARE_PRIVATE(QMatrix4x4Stack)
-
-    QScopedPointer<QMatrix4x4StackPrivate> d_ptr;
-
-    friend class QGLPainter;
-};
-
-inline QMatrix4x4Stack::operator const QMatrix4x4 &() const
-{
-    return top();
 }
 
-QT_END_NAMESPACE
+ShaderEffectBuffer::~ShaderEffectBuffer()
+{
+}
 
-QT_END_HEADER
-
-#endif

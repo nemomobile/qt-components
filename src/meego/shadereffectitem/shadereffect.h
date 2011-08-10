@@ -42,34 +42,39 @@
 #define SHADEREFFECT_H
 
 #include <QGraphicsEffect>
-#include <QDeclarativeItem>
-#include <QtOpenGL>
-#include <QPointer>
-#include <QDebug>
 
-#include "shadereffectsource.h"
+QT_BEGIN_HEADER
+
+QT_BEGIN_NAMESPACE
+
+class ShaderEffectSource;
 
 class ShaderEffect : public QGraphicsEffect
 {
     Q_OBJECT
 
 public:
-    ShaderEffect(QObject* parent = 0);
+    ShaderEffect(QObject *parent = 0);
     ~ShaderEffect();
-    void addRenderTarget(ShaderEffectSource* target);
-    void removeRenderTarget(ShaderEffectSource* target);
+    void addRenderTarget(ShaderEffectSource *target);
+    void removeRenderTarget(ShaderEffectSource *target);
 
 protected:
-    virtual void draw (QPainter * painter);
+    virtual void draw (QPainter *painter);
     virtual void sourceChanged (ChangeFlags flags);
 
 private:
+    void prepareBufferedDraw(QPainter *painter);
     void updateRenderTargets();
     bool hideOriginal() const;
 
 public:
     QVector<ShaderEffectSource*> m_renderTargets;
-    bool m_changed;
+    bool m_changed : 1;
 };
+
+QT_END_HEADER
+
+QT_END_NAMESPACE
 
 #endif // SHADEREFFECT_H

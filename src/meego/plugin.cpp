@@ -59,17 +59,13 @@
 #include "mscrolldecoratorsizer.h"
 #include "mdeclarativeimattributeextension.h"
 #include "mdeclarativeimobserver.h"
+#include "mdeclarativeview.h"
 #include "mtoolbarvisibility.h"
 #include <QDeclarativePropertyMap>
 #include <QFont>
 
-#ifdef HAVE_SHADER
 #include "shadereffectitem/shadereffectitem.h"
 #include "shadereffectitem/shadereffectsource.h"
-#else
-#include "shadereffectitem/shadereffectitemnull.h"
-#include "shadereffectitem/shadereffectsourcenull.h"
-#endif
 
 #include "i18n/mlocalewrapper.h"
 
@@ -107,6 +103,10 @@ public:
             engine->rootContext()->setContextProperty("textTranslator", new MTextTranslator);
             qmlRegisterUncreatableType<MTextTranslator>(uri, 1, 0, "TextTranslator", "");
 
+            engine->rootContext()->setContextProperty("declarativeView", new MDeclarativeView());
+            qmlRegisterUncreatableType<MDeclarativeView>(uri, 1, 0, "DeclarativeView", "");
+
+
             // Disable cursor blinking + make double tapping work the way it is done in lmt.
             QApplication *app = qobject_cast<QApplication*>(QApplication::instance());
             if (app) {
@@ -143,14 +143,9 @@ public:
 
         qmlRegisterType<MScrollDecoratorSizer>(uri, 1, 0, "ScrollDecoratorSizerCPP");
 
-        // shader effect item (to be removed when supported in QML)
-#ifdef HAVE_SHADER
+        // shader effect item (to be removed when fully supported in QML)
         qmlRegisterType<ShaderEffectItem>(uri, 1, 0, "ShaderEffectItem");
         qmlRegisterType<ShaderEffectSource>(uri, 1, 0, "ShaderEffectSource");
-#else
-        qmlRegisterType<ShaderEffectItemNull>(uri, 1, 0, "ShaderEffectItem");
-        qmlRegisterType<ShaderEffectSourceNull>(uri, 1, 0, "ShaderEffectSource");
-#endif
 
         qmlRegisterType<MInverseMouseArea>(uri, 1, 0, "InverseMouseArea");
 

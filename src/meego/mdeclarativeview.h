@@ -38,11 +38,27 @@
 **
 ****************************************************************************/
 
-#ifndef QT3DGLOBAL_H
-#define QT3DGLOBAL_H
+#ifndef MDECLARATIVEVIEW_H
+#define MDECLARATIVEVIEW_H
 
-#include <QtCore/qglobal.h>
+#include <QObject>
 
-#define Q_QT3D_EXPORT
+class QDeclarativeItem;
 
-#endif
+class MDeclarativeView : public QObject
+{
+    Q_OBJECT
+
+public:
+    MDeclarativeView(QObject *parent = 0);
+    ~MDeclarativeView();
+
+    Q_INVOKABLE void setFullViewportMode(QDeclarativeItem *item);
+
+    Q_DISABLE_COPY(MDeclarativeView)
+};
+
+QML_DECLARE_TYPE(MDeclarativeView)
+
+#endif // MDECLARATIVEVIEW_H
+

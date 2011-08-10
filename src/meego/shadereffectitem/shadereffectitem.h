@@ -41,23 +41,22 @@
 #ifndef SHADEREFFECTITEM_H
 #define SHADEREFFECTITEM_H
 
-#include <QGraphicsEffect>
 #include <QDeclarativeItem>
 #include <QtOpenGL>
-#include <QPointer>
-#include <QDebug>
-
 #include "shadereffectsource.h"
-#include "geometry.h"
+#include "scenegraph/qsggeometry.h"
+
+QT_BEGIN_HEADER
+
+QT_BEGIN_NAMESPACE
 
 class ShaderEffectItem : public QDeclarativeItem
 {
     Q_OBJECT
     Q_INTERFACES(QDeclarativeParserStatus)
-    Q_PROPERTY(QString fragmentShader READ fragmentShader WRITE setFragmentShader NOTIFY fragmentShaderChanged);
-    Q_PROPERTY(QString vertexShader READ vertexShader WRITE setVertexShader NOTIFY vertexShaderChanged);
+    Q_PROPERTY(QString fragmentShader READ fragmentShader WRITE setFragmentShader NOTIFY fragmentShaderChanged)
+    Q_PROPERTY(QString vertexShader READ vertexShader WRITE setVertexShader NOTIFY vertexShaderChanged)
     Q_PROPERTY(bool blending READ blending WRITE setBlending NOTIFY blendingChanged)
-    Q_PROPERTY(bool active READ active WRITE setActive NOTIFY activeChanged)
     Q_PROPERTY(QSize meshResolution READ meshResolution WRITE setMeshResolution NOTIFY meshResolutionChanged)
 
 public:
@@ -65,7 +64,7 @@ public:
     ~ShaderEffectItem();
 
     virtual void componentComplete();
-    void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *widget = 0);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
     QString fragmentShader() const { return m_fragment_code; }
     void setFragmentShader(const QString &code);
@@ -76,10 +75,7 @@ public:
     bool blending() const { return m_blending; }
     void setBlending(bool enable);
 
-    bool active() const { return m_active; }
-    void setActive(bool enable);
-
-    QSize meshResolution() const { return m_mesh_resolution; }
+    QSize meshResolution() const { return m_meshResolution; }
     void setMeshResolution(const QSize &size);
 
     void preprocess();
@@ -89,60 +85,67 @@ Q_SIGNALS:
     void vertexShaderChanged();
     void blendingChanged();
     void activeChanged();
-    void marginsChanged();
     void meshResolutionChanged();
 
 protected:
-    virtual void geometryChanged(const QRectF &newGeometry,
-                                 const QRectF &oldGeometry);
+    virtual void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
 
 private Q_SLOTS:
     void changeSource(int index);
+    void handleVisibilityChange();
     void markDirty();
 
 private:
-    void renderEffect(QGLContext* context, const QMatrix4x4& matrix);
-    void updateEffectState(const QMatrix4x4& matrix);
+    void checkViewportUpdateMode();
+    void renderEffect(QPainter *painter, const QMatrix4x4 &matrix);
+    void updateEffectState(const QMatrix4x4 &matrix);
     void updateGeometry();
-    const QGL::VertexAttribute* requiredFields() const;
-
-    void setSource(QVariant var, int index);
+    void bindGeometry();
+    void setSource(const QVariant &var, int index);
     void disconnectPropertySignals();
     void connectPropertySignals();
     void reset();
     void updateProperties();
     void updateShaderProgram();
     void lookThroughShaderCode(const QString &code);
+    bool active() const { return m_active; }
+    void setActive(bool enable);
 
 private:
-    bool m_changed;
     QString m_fragment_code;
     QString m_vertex_code;
     QGLShaderProgram m_program;
-    QVector<QGL::VertexAttribute> m_attributes;
-    QVector<QByteArray> m_attributeNames;
+    QVector<const char *> m_attributeNames;
     QSet<QByteArray> m_uniformNames;
-    QSize m_mesh_resolution;
-
-    QVector3D m_staticVertexCoordinateArray[4];
-    QVector2D m_staticTextureCoordinateArray[4];
-    Geometry* m_geometry;
+    QSize m_meshResolution;
+    QSGGeometry m_geometry;
 
     struct SourceData
     {
         QSignalMapper *mapper;
         QPointer<ShaderEffectSource> source;
+        QPointer<QDeclarativeItem> item;
         QByteArray name;
-        bool ownedByEffect;
     };
 
     QVector<SourceData> m_sources;
 
-    bool m_blending;
-    bool m_program_dirty;
-    bool m_active;
-    bool m_respects_matrix;
-    bool m_respects_opacity;
+    bool m_changed : 1;
+    bool m_blending : 1;
+    bool m_program_dirty : 1;
+    bool m_active : 1;
+    bool m_respectsMatrix : 1;
+    bool m_respectsOpacity : 1;
+    bool m_checkedViewportUpdateMode : 1;
+    bool m_checkedOpenGL : 1;
+    bool m_checkedShaderPrograms : 1;
+    bool m_hasShaderPrograms : 1;
+    bool m_mirrored : 1;
+    bool m_defaultVertexShader : 1;
 };
+
+QT_END_HEADER
+
+QT_END_NAMESPACE
 
 #endif // SHADEREFFECTITEM_H

@@ -43,112 +43,82 @@
 
 #include <QDeclarativeItem>
 #include <QtOpenGL>
-#include <QPointer>
 
-class Renderer;
-class QSGContext;
+QT_BEGIN_HEADER
 
-class ShaderEffectSource : public QObject
+QT_BEGIN_NAMESPACE
+
+class ShaderEffectBuffer;
+
+class ShaderEffectSource : public QDeclarativeItem
 {
     Q_OBJECT
     Q_PROPERTY(QDeclarativeItem *sourceItem READ sourceItem WRITE setSourceItem NOTIFY sourceItemChanged)
-    Q_PROPERTY(QUrl sourceImage READ sourceImage WRITE setSourceImage NOTIFY sourceImageChanged)
-    Q_PROPERTY(FilterMode mipmap READ mipmap WRITE setMipmap NOTIFY mipmapChanged)
-    Q_PROPERTY(FilterMode filtering READ filtering WRITE setFiltering NOTIFY filteringChanged)
-    Q_PROPERTY(WrapMode horizontalWrap READ horizontalWrap WRITE setHorizontalWrap NOTIFY horizontalWrapChanged)
-    Q_PROPERTY(WrapMode verticalWrap READ verticalWrap WRITE setVerticalWrap NOTIFY verticalWrapChanged)
-    Q_PROPERTY(QSize margins READ margins WRITE setMargins NOTIFY marginsChanged)
+    Q_PROPERTY(QRectF sourceRect READ sourceRect WRITE setSourceRect NOTIFY sourceRectChanged)
     Q_PROPERTY(QSize textureSize READ textureSize WRITE setTextureSize NOTIFY textureSizeChanged)
-    Q_PROPERTY(int width READ width NOTIFY widthChanged)
-    Q_PROPERTY(int height READ height NOTIFY heightChanged)
     Q_PROPERTY(bool live READ isLive WRITE setLive NOTIFY liveChanged)
-    Q_PROPERTY(bool hideOriginal READ hideOriginal WRITE setHideOriginal NOTIFY hideOriginalChanged)
-    Q_PROPERTY(bool active READ isActive NOTIFY activeChanged)
-    Q_ENUMS(FilterMode)
+    Q_PROPERTY(bool hideSource READ hideSource WRITE setHideSource NOTIFY hideSourceChanged)
+    Q_PROPERTY(WrapMode wrapMode READ wrapMode WRITE setWrapMode NOTIFY wrapModeChanged)
     Q_ENUMS(WrapMode)
+    Q_ENUMS(Format)
 
 public:
-    enum FilterMode
-    {
-        None,
-        Nearest,
-        Linear
+    enum WrapMode {
+            ClampToEdge,
+            RepeatHorizontally,
+            RepeatVertically,
+            Repeat
+        };
+
+    enum Format {
+        Alpha = GL_ALPHA,
+        RGB = GL_RGB,
+        RGBA = GL_RGBA
     };
 
-    enum WrapMode
-    {
-        Repeat,
-        ClampToEdge
-    };
-
-    ShaderEffectSource(QObject *parent = 0);
+    ShaderEffectSource(QDeclarativeItem *parent = 0);
     virtual ~ShaderEffectSource();
-
-    QSGContext *sceneGraphContext() const { return m_context; }
-    void setSceneGraphContext(QSGContext *context) { m_context = context; }
 
     QDeclarativeItem *sourceItem() const { return m_sourceItem.data(); }
     void setSourceItem(QDeclarativeItem *item);
 
-    QUrl sourceImage() const { return m_sourceImage; }
-    void setSourceImage(const QUrl &url);
-
-    FilterMode mipmap() const { return m_mipmap; }
-    void setMipmap(FilterMode mode);
-
-    FilterMode filtering() const { return m_filtering; }
-    void setFiltering(FilterMode mode);
-
-    WrapMode horizontalWrap() const { return m_horizontalWrap; }
-    void setHorizontalWrap(WrapMode mode);
-
-    WrapMode verticalWrap() const { return m_verticalWrap; }
-    void setVerticalWrap(WrapMode mode);
-
-    QSize margins() const { return m_margins; }
-    void setMargins(const QSize &size);
+    QRectF sourceRect() const { return m_sourceRect; };
+    void setSourceRect(const QRectF &rect);
 
     QSize textureSize() const { return m_textureSize; }
     void setTextureSize(const QSize &size);
 
-    int width() const { return m_size.width(); }
-    int height() const { return m_size.height(); }
-
     bool isLive() const { return m_live; }
     void setLive(bool s);
 
-    bool hideOriginal() const { return m_hideOriginal; }
-    void setHideOriginal(bool hide);
+    bool hideSource() const { return m_hideSource; }
+    void setHideSource(bool hide);
+
+    WrapMode wrapMode() const { return m_wrapMode; };
+    void setWrapMode(WrapMode mode);
 
     bool isActive() const { return m_refs; }
-
     void bind() const;
-
     void refFromEffectItem();
     void derefFromEffectItem();
-    void update();
+    void updateBackbuffer();
 
-    QGLFramebufferObject* fbo() { return m_fbo; }
-    bool isDirtyTexture() { return m_dirtyTexture == true;}
+    ShaderEffectBuffer* fbo() { return m_fbo; }
+    bool isDirtyTexture() { return m_dirtyTexture; }
+    bool isMirrored() { return m_mirrored; }
 
     Q_INVOKABLE void grab();
 
 Q_SIGNALS:
     void sourceItemChanged();
-    void sourceImageChanged();
-    void mipmapChanged();
-    void filteringChanged();
-    void horizontalWrapChanged();
-    void verticalWrapChanged();
-    void marginsChanged();
+    void sourceRectChanged();
     void textureSizeChanged();
-    void widthChanged();
-    void heightChanged();
+    void formatChanged();
     void liveChanged();
-    void hideOriginalChanged();
+    void hideSourceChanged();
     void activeChanged();
-
     void repaintRequired();
+    void wrapModeChanged();
 
 public Q_SLOTS:
     void markSceneGraphDirty();
@@ -156,36 +126,32 @@ public Q_SLOTS:
 
 private:
     void updateSizeAndTexture();
-
     void attachSourceItem();
     void detachSourceItem();
 
-    static void swizzleBGRAToRGBA(QImage *image);
-    uint upload(const QImage &image, GLuint id = 0);
-
+private:
     QPointer<QDeclarativeItem> m_sourceItem;
-    QUrl m_sourceImage;
-    FilterMode m_mipmap;
-    FilterMode m_filtering;
-    WrapMode m_horizontalWrap;
-    WrapMode m_verticalWrap;
-    QSize m_margins;
+    WrapMode m_wrapMode;
+    QRectF m_sourceRect;
     QSize m_textureSize;
+    Format m_format;
     QSize m_size;
 
-    uint m_texture;
-    bool m_texture_mipmaps;
-
-    QGLFramebufferObject *m_fbo;
-    QGLFramebufferObject *m_multisampledFbo;
-    Renderer *m_renderer;
-    QSGContext *m_context;
+    ShaderEffectBuffer *m_fbo;
+    ShaderEffectBuffer *m_multisampledFbo;
     int m_refs;
-    uint m_dirtyTexture : 1; // Causes update no matter what.
-    uint m_dirtySceneGraph : 1; // Causes update if not static.
-    uint m_multisamplingSupported : 1;
-    uint m_checkedForMultisamplingSupport : 1;
-    uint m_live : 1;
-    uint m_hideOriginal : 1;
+    bool m_dirtyTexture : 1;
+    bool m_dirtySceneGraph : 1;
+    bool m_multisamplingSupported : 1;
+    bool m_checkedForMultisamplingSupport : 1;
+    bool m_live : 1;
+    bool m_hideSource : 1;
+    bool m_mirrored : 1;
 };
+
+QT_END_HEADER
+
+QT_END_NAMESPACE
+
+
 #endif // SHADEREFFECTSOURCE_H

@@ -39,34 +39,51 @@
 ****************************************************************************/
 
 #include "shadereffectsource.h"
+#include "shadereffectbuffer.h"
 #include "shadereffect.h"
 #include "glfunctions.h"
 
-#include <QDebug>
+#include <QtOpenGL>
 
-ShaderEffectSource::ShaderEffectSource(QObject *parent)
-    : QObject(parent)
+/*!
+    \qmlclass ShaderEffectSource ShaderEffectSource
+    \ingroup qml-shader-elements
+    \brief The ShaderEffectSource object encapsulates the source content for the ShaderEffectItem.
+
+    ShaderEffectSource is available in the \bold{Qt.labs.shaders 1.0} module.
+    \e {Elements in the Qt.labs module are not guaranteed to remain compatible
+    in future versions.}
+
+    This element provides preliminary support for OpenGL shaders in QML,
+    and may be heavily changed or removed in later versions.
+
+    Requirement for the ability to use of shaders is that the application is either using
+    opengl graphicssystem or has set QGLWidget as the viewport to QDeclarativeView (recommended way).
+
+    ShaderEffectSource object encapsulates the source content so that it can be utilized in ShaderEffectItem.
+    Source content can be a live QML object tree, or a snapshot of QML object tree.
+
+*/
+
+ShaderEffectSource::ShaderEffectSource(QDeclarativeItem *parent)
+    : QDeclarativeItem(parent)
     , m_sourceItem(0)
-    , m_mipmap(None)
-    , m_filtering(Nearest)
-    , m_horizontalWrap(ClampToEdge)
-    , m_verticalWrap(ClampToEdge)
-    , m_margins(0, 0)
+    , m_wrapMode(ClampToEdge)
+    , m_sourceRect(0, 0, 0, 0)
+    , m_textureSize(0, 0)
+    , m_format(RGBA)
     , m_size(0, 0)
-    , m_texture(0)
-    , m_texture_mipmaps(false)
     , m_fbo(0)
     , m_multisampledFbo(0)
-    , m_renderer(0)
     , m_refs(0)
     , m_dirtyTexture(true)
     , m_dirtySceneGraph(true)
     , m_multisamplingSupported(false)
     , m_checkedForMultisamplingSupport(false)
     , m_live(true)
-    , m_hideOriginal(true)
+    , m_hideSource(false)
+    , m_mirrored(false)
 {
-//    m_context = QSGContext::current;
 }
 
 ShaderEffectSource::~ShaderEffectSource()
@@ -74,14 +91,23 @@ ShaderEffectSource::~ShaderEffectSource()
     if (m_refs && m_sourceItem)
         detachSourceItem();
 
-//    if (m_refs && m_sourceItem)
-//        QxItemPrivate::get(m_sourceItem)->derefFromEffectItem();
-
     delete m_fbo;
     delete m_multisampledFbo;
-    glDeleteTextures(1, &m_texture);
-
 }
+
+/*!
+    \qmlproperty Item ShaderEffectSource::sourceItem
+    This property holds the Item which is used as the source for the shader effect.
+    If the item has children, those are included as well.
+
+    \note When source item content is passed to the ShaderEffectItem(s), it is always clipped to the boundingrect of the
+    sourceItem regardless of its clipping property.
+*/
+
+/*!
+    \property ShaderEffectSource::sourceItem
+    \brief the Item which is the source for the effect.
+*/
 
 void ShaderEffectSource::setSourceItem(QDeclarativeItem *item)
 {
@@ -94,32 +120,19 @@ void ShaderEffectSource::setSourceItem(QDeclarativeItem *item)
 
         if (m_refs)
             detachSourceItem();
-
-        if (m_refs && m_hideOriginal) {
-//            Q_ASSERT(m_renderer);
-//            QxItemPrivate *d = QxItemPrivate::get(m_sourceItem);
-//            d->derefFromEffectItem();
-//            m_renderer->setRootNode(0);
-        }
     }
 
     m_sourceItem = item;
 
-    if (m_sourceItem && !m_renderer) {
-//        m_renderer = m_context->createRenderer();
-//        connect(m_renderer, SIGNAL(sceneGraphChanged()), this, SLOT(markSceneGraphDirty()));
-    }
-
     if (m_sourceItem) {
+
+        // Must have some item as parent
+        if (m_sourceItem->parentItem() == 0)
+            m_sourceItem->setParentItem(this);
+
         if (m_refs)
             attachSourceItem();
 
-        if (m_refs && m_hideOriginal) {
-//            Q_ASSERT(m_renderer);
-//            QxItemPrivate *d = QxItemPrivate::get(m_sourceItem);
-//            d->refFromEffectItem();
-//            m_renderer->setRootNode(d->rootNode);
-        }
         connect(m_sourceItem, SIGNAL(widthChanged()), this, SLOT(markSourceSizeDirty()));
         connect(m_sourceItem, SIGNAL(heightChanged()), this, SLOT(markSourceSizeDirty()));
     }
@@ -129,81 +142,65 @@ void ShaderEffectSource::setSourceItem(QDeclarativeItem *item)
     emit repaintRequired();
 }
 
-void ShaderEffectSource::setSourceImage(const QUrl &url)
+/*!
+    \qmlproperty QRectF ShaderEffectSource::sourceRect
+    This property can be used to specify margins for the source content.
+
+    If other value than Qt.rect(0,0,0,0) is assigned to this property, it is interpreted as
+    specifying a relative source rectangle for the source content.
+
+    For example, setting Qt.rect(-10.0, -10.0, 120.0, 120.0) for a source that has width and height
+    of 100 pixels would produce 10 pixels margins to each side of the source.
+
+    Margins are useful when the original content is wanted to be spread outside the original source area,
+    like when creating a dropshadow with the shader or in other similar effects.
+
+    The default value is Qt.rect(0,0,0,0).
+*/
+
+/*!
+    \property ShaderEffectSource::sourceRect
+    \brief the relative sourceRect for the source.
+*/
+
+void ShaderEffectSource::setSourceRect(const QRectF &rect)
 {
-    if (url == m_sourceImage)
+    if (rect == m_sourceRect)
         return;
-    m_sourceImage = url;
+    m_sourceRect = rect;
     updateSizeAndTexture();
-    emit sourceImageChanged();
+    updateBackbuffer();
+    emit sourceRectChanged();
     emit repaintRequired();
-}
 
-void ShaderEffectSource::setMipmap(FilterMode mode)
-{
-    if (mode == m_mipmap)
-        return;
-    m_mipmap = mode;
-    if (m_mipmap != None) {
-        qWarning() << "ShaderEffectSource::setMipmap - mipmaps (for now) are NOT supported!";
-
-        // Mipmap enabled, need to reallocate the textures.
-//        if (m_fbo && !m_fbo->format().mipmap()) {
-//            Q_ASSERT(m_sourceItem);
-//            delete m_fbo;
-//            m_fbo = 0;
-//            m_dirtyTexture = true;
-//        } else if (m_texture) {
-//            Q_ASSERT(!m_sourceImage.isEmpty());
-//            if (!m_texture_mipmaps)
-//                updateSizeAndTexture();
-//        }
+    if (m_sourceItem) {
+        ShaderEffect* effect = qobject_cast<ShaderEffect*> (m_sourceItem->graphicsEffect());
+        if (effect)
+            effect->m_changed = true;
     }
-    emit mipmapChanged();
-    emit repaintRequired();
 }
 
-void ShaderEffectSource::setFiltering(FilterMode mode)
-{
-    if (mode == m_filtering)
-        return;
-    m_filtering = mode;
-    emit filteringChanged();
-    emit repaintRequired();
-}
+/*!
+    \qmlproperty QSize ShaderEffectSource::textureSize
+    This property holds the size for the texture containing the source content.
 
-void ShaderEffectSource::setHorizontalWrap(WrapMode mode)
-{
-    if (mode == m_horizontalWrap)
-        return;
-    m_horizontalWrap = mode;
-    emit horizontalWrapChanged();
-    emit repaintRequired();
-}
+    If value QSize(0,0) is assigned to this property, texture is resized
+    according to the source size. Otherwise source content is scaled to
+    the given size.
 
-void ShaderEffectSource::setVerticalWrap(WrapMode mode)
-{
-    if (mode == m_verticalWrap)
-        return;
-    m_verticalWrap = mode;
-    emit verticalWrapChanged();
-    emit repaintRequired();
-}
+    The default value is QSize(0,0).
+*/
 
-void ShaderEffectSource::setMargins(const QSize &size)
-{
-    if (size == m_margins)
-        return;
-    m_margins = size;
-    updateSizeAndTexture();
-    emit marginsChanged();
-    emit repaintRequired();
-}
+/*!
+    \property ShaderEffectSource::textureSize
+    \brief the texture size for the source.
+*/
 
 void ShaderEffectSource::setTextureSize(const QSize &size)
 {
     if (size == m_textureSize)
         return;
+
     m_textureSize = size;
     updateSizeAndTexture();
     emit textureSizeChanged();
@@ -216,96 +213,133 @@ void ShaderEffectSource::setTextureSize(const QSize &size)
     }
 }
 
+/*!
+    \qmlproperty bool ShaderEffectSource::live
+    This property holds the optimization flag to define whether the source item content is changing or
+    static.
+
+    If value true is assigned to this property, source item content is re-rendered into a
+    texture for every frame. Setting the value to false improves the performance as it skips
+    rendering the source item (and its chidleren) and instead immediately passes the previously
+    rendered and cached texture to the shaders.
+
+    The default value is true.
+*/
+
+/*!
+    \property ShaderEffectSource::live
+    \brief the flag tells whether source item content is changing between frames.
+*/
+
 void ShaderEffectSource::setLive(bool s)
 {
     if (s == m_live)
         return;
+
     m_live = s;
 
     emit liveChanged();
     emit repaintRequired();
 }
 
-void ShaderEffectSource::setHideOriginal(bool hide)
+/*!
+    \qmlproperty bool ShaderEffectSource::hideSource
+    This property holds the flag to define whether the original source item is
+    hidden when the effect item is drawn.
+
+    The default value is false.
+*/
+
+/*!
+    \property ShaderEffectSource::hideSource
+    \brief the flag tells whether original source item content should be hidden.
+*/
+
+void ShaderEffectSource::setHideSource(bool hide)
 {
-    if (hide == m_hideOriginal)
+    if (hide == m_hideSource)
         return;
 
-//    if (m_refs && m_sourceItem && m_hideOriginal) {
-//        Q_ASSERT(m_renderer);
-//        m_renderer->setRootNode(0);
-//        QxItemPrivate *d = QxItemPrivate::get(m_sourceItem);
-//        d->derefFromEffectItem();
-//    }
+    m_hideSource = hide;
 
-    m_hideOriginal = hide;
+    emit hideSourceChanged();
+    emit repaintRequired();
+}
 
-//    if (m_refs && m_sourceItem && m_hideOriginal) {
-//        Q_ASSERT(m_renderer);
-//        QxItemPrivate *d = QxItemPrivate::get(m_sourceItem);
-//        d->refFromEffectItem();
-//        m_renderer->setRootNode(d->rootNode);
-//    }
+/*!
+    \qmlproperty enumeration ShaderEffectSource::wrapMode
 
-    emit hideOriginalChanged();
+    This property defines the wrap parameter for the source after it has been mapped as a texture.
+
+    \list
+    \o ShaderEffectSource.ClampToEdge - Causes texturecoordinates to be clamped to the range [ 1/2*N , 1 - 1/2*N ], where N is the texture width.
+    \o ShaderEffectSource.RepeatHorizontally - Causes the integer part of the horizontal texturecoordinate to be ignored; the GL uses only the fractional part, thereby creating a horizontal repeating pattern.
+    \o ShaderEffectSource.RepeatVertically - Causes the integer part of the vertical texturecoordinate to be ignored; the GL uses only the fractional part, thereby creating a vertical repeating pattern.
+    \o ShaderEffectSource.Repeat - Causes the integer part of both the horizontal and vertical texturecoordinates to be ignored; the GL uses only the fractional part, thereby creating a repeating pattern.
+    \endlist
+
+    The default value is ClampToEdge.
+
+*/
+
+/*!
+    \property ShaderEffectSource::wrapMode
+    \brief the wrap parameter for the source after it has been mapped as a texture.
+*/
+
+void ShaderEffectSource::setWrapMode(WrapMode mode)
+{
+    if (mode == m_wrapMode)
+        return;
+
+    m_wrapMode = mode;
+    updateBackbuffer();
+    emit wrapModeChanged();
+}
+
+/*!
+    \qmlmethod ShaderEffectSource::grab()
+
+    Repaints the source item content into the texture.
+
+    This method is useful when ShaderEffectSource::live has been set to false and
+    the changes in the source item content is desired to be made visible for the shaders.
+
+*/
+
+void ShaderEffectSource::grab()
+{
+    m_dirtyTexture = true;
     emit repaintRequired();
 }
 
 void ShaderEffectSource::bind() const
 {
-//    qDebug() << "ShaderEffectSource::bind()";
-    bool linear = m_filtering == Linear;
-
-    GLint filtering = GL_NEAREST;
-    switch (m_mipmap) {
-    case Nearest:
-        filtering = linear ? GL_LINEAR_MIPMAP_NEAREST : GL_NEAREST_MIPMAP_NEAREST;
-        break;
-    case Linear:
-        filtering = linear ? GL_LINEAR_MIPMAP_LINEAR : GL_NEAREST_MIPMAP_LINEAR;
-        break;
-    default:
-        filtering = linear ? GL_LINEAR : GL_NEAREST;
-        break;
-    }
-
-    GLuint hwrap = m_horizontalWrap == Repeat ? GL_REPEAT : GL_CLAMP_TO_EDGE;
-    GLuint vwrap = m_verticalWrap == Repeat ? GL_REPEAT : GL_CLAMP_TO_EDGE;
+    GLint filtering = smooth() ? GL_LINEAR : GL_NEAREST;
+    GLuint hwrap = (m_wrapMode == Repeat || m_wrapMode == RepeatHorizontally) ? GL_REPEAT : GL_CLAMP_TO_EDGE;
+    GLuint vwrap = (m_wrapMode == Repeat || m_wrapMode == RepeatVertically) ? GL_REPEAT : GL_CLAMP_TO_EDGE;
 
 #if !defined(QT_OPENGL_ES_2)
     glEnable(GL_TEXTURE_2D);
 #endif
     if (m_fbo) {
         glBindTexture(GL_TEXTURE_2D, m_fbo->texture());
-    } else if (m_texture) {
-        glBindTexture(GL_TEXTURE_2D, m_texture);
     } else {
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filtering);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, linear ? GL_LINEAR : GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, smooth() ? GL_LINEAR : GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, hwrap);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, vwrap);
 }
 
 void ShaderEffectSource::refFromEffectItem()
 {
-      if (m_refs++ == 0) {
-          attachSourceItem();
-          emit activeChanged();
-      }
-
-
-//    if (m_refs++ == 0) {
-//        if (m_sourceItem && m_hideOriginal) {
-//            Q_ASSERT(m_renderer);
-//            QxItemPrivate *d = QxItemPrivate::get(m_sourceItem);
-//            d->refFromEffectItem();
-//            m_renderer->setRootNode(d->rootNode);
-//        }
-//        emit activeChanged();
-//    }
+    if (m_refs++ == 0) {
+        attachSourceItem();
+        emit activeChanged();
+    }
 }
 
 void ShaderEffectSource::derefFromEffectItem()
@@ -315,126 +349,36 @@ void ShaderEffectSource::derefFromEffectItem()
         emit activeChanged();
     }
     Q_ASSERT(m_refs >= 0);
-
-//    if (--m_refs == 0) {
-//        if (m_sourceItem && m_hideOriginal) {
-//            Q_ASSERT(m_renderer);
-//            m_renderer->setRootNode(0);
-//            QxItemPrivate *d = QxItemPrivate::get(m_sourceItem);
-//            d->derefFromEffectItem();
-//        }
-//        emit activeChanged();
-//    }
-//    Q_ASSERT(m_refs >= 0);
 }
 
-void ShaderEffectSource::update()
+void ShaderEffectSource::updateBackbuffer()
 {
-//    qDebug() << "ShaderEffectSource::update()";
-    QSize size = m_sourceItem->boundingRect().toRect().size();
+    if (!m_sourceItem)
+        return;
+
+    // Multisampling is not (for now) supported.
+    QSize size = QSize(m_sourceItem->width(), m_sourceItem->height());
     if (!m_textureSize.isEmpty())
         size = m_textureSize;
 
-    if (size.height() > 0 && size.width() > 0){
+    if (size.height() > 0 && size.width() > 0) {
         QGLFramebufferObjectFormat format;
-        format.setInternalTextureFormat(GLenum(GL_RGBA));
+        format.setAttachment(QGLFramebufferObject::CombinedDepthStencil);
+        format.setInternalTextureFormat(m_format);
 
         if (!m_fbo) {
-            m_fbo =  new QGLFramebufferObject(size, format);
+            m_fbo =  new ShaderEffectBuffer(size, format);
         } else {
-            if (m_fbo->size() != size) {
+            if (m_fbo->size() != size || m_fbo->format().internalTextureFormat() != GLenum(m_format)) {
                 delete m_fbo;
                 m_fbo = 0;
-                m_fbo =  new QGLFramebufferObject(size, format);
+                m_fbo =  new ShaderEffectBuffer(size, format);
             }
         }
     }
 
-//    Q_ASSERT(m_refs);
-//    QxItemPrivate *src = m_sourceItem ? QxItemPrivate::get(m_sourceItem) : 0;
-//    Node::DirtyFlags dirtyFlags = src ? src->transformNode.dirtyFlags() : Node::DirtyFlags(0);
-//    if (!m_dirtyTexture && (!(m_dirtySceneGraph || dirtyFlags) || !m_live))
-//        return;
-
-//    if (m_sourceItem) {
-//        Q_ASSERT(m_hideOriginal == (m_renderer->rootNode() != 0));
-//        if (!m_hideOriginal) {
-//            src->refFromEffectItem();
-//            m_renderer->setRootNode(src->rootNode);
-//        }
-//        Q_ASSERT(src->rootNode && src->rootNode == m_renderer->rootNode());
-//        Q_ASSERT(m_renderer);
-
-//        const QGLContext *ctx = m_context->glContext();
-
-//        if (!m_checkedForMultisamplingSupport) {
-//            QList<QByteArray> extensions = QByteArray((const char *)glGetString(GL_EXTENSIONS)).split(' ');
-//            m_multisamplingSupported = extensions.contains("GL_EXT_framebuffer_multisample")
-//                                       && extensions.contains("GL_EXT_framebuffer_blit");
-//            m_checkedForMultisamplingSupport = true;
-//        }
-
-//        if (!m_fbo) {
-//            if (ctx->format().sampleBuffers() && m_multisamplingSupported) {
-//                // If mipmapping was just enabled, m_fbo might be 0 while m_multisampledFbo != 0.
-//                if (!m_multisampledFbo) {
-//                    QGLFramebufferObjectFormat format;
-//                    format.setAttachment(QGLFramebufferObject::CombinedDepthStencil);
-//                    format.setSamples(ctx->format().samples());
-//                    m_multisampledFbo = new QGLFramebufferObject(m_size, format);
-//                }
-//                {
-//                    QGLFramebufferObjectFormat format;
-//                    format.setAttachment(QGLFramebufferObject::NoAttachment);
-//                    format.setMipmap(m_mipmap != None);
-//                    m_fbo = new QGLFramebufferObject(m_size, format);
-//                }
-//            } else {
-//                QGLFramebufferObjectFormat format;
-//                format.setAttachment(QGLFramebufferObject::CombinedDepthStencil);
-//                format.setMipmap(m_mipmap != None);
-//                m_fbo = new QGLFramebufferObject(m_size, format);
-//            }
-//        }
-
-//        Q_ASSERT(m_size == m_fbo->size());
-//        Q_ASSERT(m_multisampledFbo == 0 || m_size == m_multisampledFbo->size());
-
-//        QRectF r(0, 0, m_sourceItem->width(), m_sourceItem->height());
-//        r.adjust(-m_margins.width(), -m_margins.height(), m_margins.width(), m_margins.height());
-//        m_renderer->setDeviceRect(m_size);
-//        m_renderer->setProjectMatrixToRect(r);
-//        m_renderer->setClearColor(Qt::transparent);
-
-//        if (m_multisampledFbo) {
-//            m_renderer->renderScene(BindableFbo(const_cast<QGLContext *>(m_context->glContext()), m_multisampledFbo));
-//            QRect r(0, 0, m_size.width(), m_size.height());
-//            QGLFramebufferObject::blitFramebuffer(m_fbo, r, m_multisampledFbo, r);
-//        } else {
-//            m_renderer->renderScene(BindableFbo(const_cast<QGLContext *>(m_context->glContext()), m_fbo));
-//        }
-//        if (m_mipmap != None) {
-//            QGLFramebufferObject::bindDefault();
-//            glBindTexture(GL_TEXTURE_2D, m_fbo->texture());
-//            m_context->renderer()->glGenerateMipmap(GL_TEXTURE_2D);
-//        }
-
-//        if (!m_hideOriginal) {
-//            m_renderer->setRootNode(0);
-//            src->derefFromEffectItem();
-//            src->transformNode.markDirty(dirtyFlags);
-//        }
-
-//        m_dirtySceneGraph = false;
-//    }
+    // Note that real update for the source content happens in shadereffect.cpp
     m_dirtyTexture = false;
-//    emit repaintRequired();
-}
-
-void ShaderEffectSource::grab()
-{
-    m_dirtyTexture = true;
-    emit repaintRequired();
 }
 
 void ShaderEffectSource::markSceneGraphDirty()
@@ -457,13 +401,14 @@ void ShaderEffectSource::updateSizeAndTexture()
     if (m_sourceItem) {
         QSize size = m_textureSize;
         if (size.isEmpty())
-            size = m_sourceItem->boundingRect().size().toSize() + 2 * m_margins;
+            size = QSize(m_sourceItem->width(), m_sourceItem->height());
         if (size.width() < 1)
             size.setWidth(1);
         if (size.height() < 1)
             size.setHeight(1);
         if (m_fbo && m_fbo->size() != size) {
             delete m_fbo;
+            m_fbo = 0;
             delete m_multisampledFbo;
             m_fbo = m_multisampledFbo = 0;
         }
@@ -477,88 +422,15 @@ void ShaderEffectSource::updateSizeAndTexture()
         }
         m_dirtyTexture = true;
     } else {
-        if (m_fbo) {
-            delete m_fbo;
-            delete m_multisampledFbo;
-            m_fbo = m_multisampledFbo = 0;
+        if (m_size.width() != 0) {
+            m_size.setWidth(0);
+            emit widthChanged();
         }
-        if (!m_sourceImage.isEmpty()) {
-            // TODO: Implement async loading and loading over network.
-            QImageReader reader(m_sourceImage.toLocalFile());
-            if (!m_textureSize.isEmpty())
-                reader.setScaledSize(m_textureSize);
-            QImage image = reader.read();
-            if (image.isNull())
-                qWarning() << reader.errorString();
-            if (m_size.width() != image.width()) {
-                m_size.setWidth(image.width());
-                emit widthChanged();
-            }
-            if (m_size.height() != image.height()) {
-                m_size.setHeight(image.height());
-                emit heightChanged();
-            }
-
-            m_texture = upload(image.mirrored());
-
-            if (m_mipmap) {
-                glBindTexture(GL_TEXTURE_2D, m_texture);
-                glGenerateMipmap(GL_TEXTURE_2D);
-                glBindTexture(GL_TEXTURE_2D, 0);
-            }
-
-        } else {
-            if (m_size.width() != 0) {
-                m_size.setWidth(0);
-                emit widthChanged();
-            }
-            if (m_size.height() != 0) {
-                m_size.setHeight(0);
-                emit heightChanged();
-            }
+        if (m_size.height() != 0) {
+            m_size.setHeight(0);
+            emit heightChanged();
         }
     }
-}
-
-void ShaderEffectSource::swizzleBGRAToRGBA(QImage *image)
-{
-    const int width = image->width();
-    const int height = image->height();
-    for (int i = 0; i < height; ++i) {
-        uint *p = (uint *) image->scanLine(i);
-        for (int x = 0; x < width; ++x)
-            p[x] = ((p[x] << 16) & 0xff0000) | ((p[x] >> 16) & 0xff) | (p[x] & 0xff00ff00);
-    }
-}
-
-uint ShaderEffectSource::upload(const QImage &image, GLuint id)
-{
-    // image not already scheduled, upload normally...
-    while (glGetError() != GL_NO_ERROR) {}
-
-    if (id == 0)
-        glGenTextures(1, &id);
-
-    glBindTexture(GL_TEXTURE_2D, id);
-
-    QImage i = image.convertToFormat(QImage::Format_ARGB32_Premultiplied);
-
-#ifdef QT_OPENGL_ES
-    swizzleBGRAToRGBA(&i);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, i.width(), i.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, i.constBits());
-#else
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width(), image.height(), 0, GL_BGRA, GL_UNSIGNED_BYTE, image.constBits());
-#endif
-
-    // Gracefully fail in case of an error...
-    GLuint error = glGetError();
-    if (error != GL_NO_ERROR) {
-        glBindTexture(GL_TEXTURE_2D, 0);
-        glDeleteTextures(1, &id);
-        return 0;
-    }
-
-    return id;
 }
 
 void ShaderEffectSource::attachSourceItem()
@@ -566,9 +438,9 @@ void ShaderEffectSource::attachSourceItem()
     if (!m_sourceItem)
         return;
 
-    ShaderEffect* effect = qobject_cast<ShaderEffect*> (m_sourceItem->graphicsEffect());
+    ShaderEffect *effect = qobject_cast<ShaderEffect*> (m_sourceItem->graphicsEffect());
 
-    if (!effect){
+    if (!effect) {
         effect = new ShaderEffect();
         m_sourceItem->setGraphicsEffect(effect);
     }
@@ -591,8 +463,9 @@ void ShaderEffectSource::detachSourceItem()
 
     delete m_fbo;
     m_fbo = 0;
+
     delete m_multisampledFbo;
     m_multisampledFbo = 0;
+
     m_dirtyTexture = true;
 }
-
