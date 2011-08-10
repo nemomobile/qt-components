@@ -48,6 +48,7 @@ Window {
     default property alias content: contentItem.data
     property alias pageStack: stack
     property variant initialPage
+    property bool softwareInputPanelEnabled: false
 
     onInitialPageChanged: {
         if (initialPage && contentArea.initialized) {
@@ -73,7 +74,7 @@ Window {
         property bool initialized: false
 
         anchors.top: sbar.bottom
-        anchors.bottom: tbar.top
+        anchors.bottom: sip.top
         anchors.left: parent.left
         anchors.right: parent.right
         Item {
@@ -155,6 +156,33 @@ Window {
                     NumberAnimation { target: tbar; properties: "y"; duration: 200; easing.type: Easing.Linear }
                     NumberAnimation { target: tbar; properties: "opacity"; duration: 200; easing.type: Easing.Linear }
                 }
+            }
+        ]
+    }
+
+    Item {
+        id: sip
+
+        anchors { bottom: parent.bottom; left: parent.left; right: parent.right }
+
+        Behavior on height { PropertyAnimation { duration: 200 } }
+
+        Component.onCompleted: inputContext.autoMove = softwareInputPanelEnabled
+
+        states: [
+            State {
+                name: "Visible"; when: inputContext.visible && softwareInputPanelEnabled
+                PropertyChanges { target: sip; height: inputContext.height }
+            },
+
+            State {
+                name: "Hidden"; when: !inputContext.visible && !root.fullScreen
+                PropertyChanges { target: sip; height: tbar.height }
+            },
+
+            State {
+                name: "HiddenInFullScreen"; when: !inputContext.visible && root.fullScreen
+                PropertyChanges { target: sip; height: 0 }
             }
         ]
     }
