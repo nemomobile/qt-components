@@ -46,7 +46,7 @@ ApplicationWindow
     id: window
     fullScreen: checkBox.checked
 
-    Page {
+    initialPage: Page {
         id: rootPage
         tools: applicationTools
         CheckBox {
@@ -64,7 +64,5 @@ ApplicationWindow
             onClicked: window.pageStack.depth <= 1 ? Qt.quit() : window.pageStack.pop()
         }
     }
-
-    Component.onCompleted: window.pageStack.push(rootPage)
 }
 //! [0]

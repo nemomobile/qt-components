@@ -82,3 +82,17 @@
     A convenience property provided by ApplicationWindow. The application does not
     have to use it.
 */
+
+/*!
+    \qmlproperty variant ApplicationWindow::initialPage
+    \since 1.1
+
+    Sets the initial page of the \c PageStack. This can be a \l Page instance,
+    component or an array. Once the construction is completed, the value
+    will be pushed onto the stack. With this property, you can only set the
+    root page of the stack i.e. if there are pages on the stack, changing the \c
+    initialPage has no effect.
+
+    \sa PageStack::push
+
+*/
