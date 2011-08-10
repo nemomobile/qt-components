@@ -90,7 +90,7 @@ MouseArea {
         internal.pressedHandle = internal.handleForPoint({x: currentTouchPoint.x, y: currentTouchPoint.y});
 
         if (internal.pressedHandle != null) {
-            internal.handleGrabbed(currentTouchPoint);
+            internal.handleGrabbed();
             // Position cursor at the pressed selection handle
             // TODO: Add bug ID!!
             var tempStart = editor.selectionStart
@@ -129,7 +129,7 @@ MouseArea {
                 internal.pressedHandle = selectionEnd;
                 if (editor.readOnly)
                     magnifier.hide();
-                internal.handleGrabbed(internal.touchPoint);
+                internal.handleGrabbed();
             }
             contextMenu.hide();
         }
@@ -225,7 +225,7 @@ MouseArea {
                 contextMenu.hide();
         }
 
-        function handleGrabbed(currentTouchPoint) {
+        function handleGrabbed() {
             mouseGrabDisabler.setKeepMouseGrab(root, true);
             internal.hitTestPoint = {x:internal.currentTouchPoint.x, y:internal.currentTouchPoint.y};
 
