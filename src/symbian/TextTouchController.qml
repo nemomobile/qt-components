@@ -69,16 +69,16 @@ MouseArea {
     }
 
     onPressed: {
-        var currentTouchPoint = root.mapToItem(editor, mouse.x, mouse.y);
+        internal.currentTouchPoint = root.mapToItem(editor, mouse.x, mouse.y);
 
-        if (currentTouchPoint.x < 0)
-            currentTouchPoint.x = 0
+        if (internal.currentTouchPoint.x < 0)
+            internal.currentTouchPoint.x = 0
 
-        if (currentTouchPoint.y < 0)
-            currentTouchPoint.y = 0
+        if (internal.currentTouchPoint.y < 0)
+            internal.currentTouchPoint.y = 0
 
         if (internal.tapCounter == 0)
-            internal.touchPoint = currentTouchPoint;
+            internal.touchPoint = internal.currentTouchPoint;
 
         editor.forceActiveFocus();
         contextMenu.hide();
@@ -87,7 +87,7 @@ MouseArea {
         selectionBegin.viewPortRect = internal.mapViewPortRectToHandle(selectionBegin);
         selectionEnd.viewPortRect = internal.mapViewPortRectToHandle(selectionEnd);
 
-        internal.pressedHandle = internal.handleForPoint({x: currentTouchPoint.x, y: currentTouchPoint.y});
+        internal.pressedHandle = internal.handleForPoint({x: internal.currentTouchPoint.x, y: internal.currentTouchPoint.y});
 
         if (internal.pressedHandle != null) {
             internal.handleGrabbed();
