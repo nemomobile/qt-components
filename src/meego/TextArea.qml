@@ -315,20 +315,21 @@ FocusScope {
         focus: true
 
         function updateMagnifierPosition(posX, posY) {
+            var yAdjustment = 0
             var magnifier = MagnifierPopup.popup;
             var cursorHeight = textEdit.positionToRectangle(0,0).height;
             var mappedPos =  mapToItem(magnifier.parent, posX - magnifier.width / 2,
                                        posY - magnifier.height / 2 - cursorHeight - 70);
 
-            magnifier.xCenter = mapToItem(magnifier.sourceItem, posX, 0).x / magnifier.sourceItem.width;
+            magnifier.xCenter = mapToItem(magnifier.sourceItem, posX, 0).x;
             magnifier.x = mappedPos.x;
             if (-root.mapFromItem(magnifier.__rootElement(), 0,0).y - (posY - cursorHeight) < (magnifier.height / 1.5)) {
-                magnifier.yAdjustment = Math.max(0,(magnifier.height / 1.5) + root.mapFromItem(magnifier.__rootElement(), 0,0).y - (posY - cursorHeight));
+                yAdjustment = Math.max(0,(magnifier.height / 1.5) + root.mapFromItem(magnifier.__rootElement(), 0,0).y - (posY - cursorHeight));
             } else {
-                magnifier.yAdjustment = 0;
+                yAdjustment = 0;
             }
-            magnifier.yCenter = 1.0 - ((50 + posY - cursorHeight) / root.height);
-            magnifier.y = mappedPos.y + magnifier.yAdjustment;
+            magnifier.yCenter = mapToItem(magnifier.sourceItem, 0, posY - cursorHeight + 50).y
+            magnifier.y = mappedPos.y + yAdjustment;
         }
 
         Component.onDestruction: {

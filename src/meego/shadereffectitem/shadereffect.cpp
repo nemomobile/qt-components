@@ -99,6 +99,7 @@ void ShaderEffect::updateRenderTargets()
             ShaderEffectBuffer* target = m_renderTargets[i]->fbo();
             if (target && target->isValid() && target->width() > 0 && target->height() > 0) {
                 QPainter p(target);
+                p.setClipRect(0,0,target->size().width(),target->size().height());
                 p.setCompositionMode(QPainter::CompositionMode_Clear);
                 p.fillRect(QRect(QPoint(0, 0), target->size()), Qt::transparent);
                 p.setCompositionMode(QPainter::CompositionMode_SourceOver);
