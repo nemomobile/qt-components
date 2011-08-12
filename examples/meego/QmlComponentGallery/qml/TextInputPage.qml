@@ -195,7 +195,7 @@ Page {
                     Label {
                         font: UiConstants.FieldLabelFont
                         color: UiConstants.FieldLabelColor
-                        text: "Default text field as bottom:"
+                        text: "Bottom text field:"
                     }
                     TextField {
                         anchors {left: parent.left; right: parent.right;}
@@ -203,6 +203,11 @@ Page {
                     TextEdit {
                         height: 400;
                         width: 800;
+                    }
+                    Label {
+                        font: UiConstants.FieldLabelFont
+                        color: UiConstants.FieldLabelColor
+                        text: "Page ends here"
                     }                
                 }
             }
