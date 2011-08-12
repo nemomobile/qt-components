@@ -54,12 +54,22 @@ Item {
     signal faderClicked
 
     function open() {
-        fader = faderComponent.createObject(visualParent ? visualParent : Utils.rootObject())
+        if (status == DialogStatus.Open || status == DialogStatus.Opening)
+            return
+
+        var notify = false
+        if (!fader) {
+            fader = faderComponent.createObject(visualParent ? visualParent : Utils.rootObject())
+            notify = true
+        }
+	
         fader.animationDuration = root.animationDuration
         root.parent = fader
         status = DialogStatus.Opening
         fader.state = "Visible"
-        platformPopupManager.privateNotifyPopupOpen()
+
+        if (notify)
+            platformPopupManager.privateNotifyPopupOpen()
     }
 
     function close() {
@@ -76,6 +86,7 @@ Item {
             // otherwise transition animation jams
             root.parent = null
             fader.destroy()
+            fader = null // Prevent reuse in open()
             root.parent = parentCache.oldParent
             platformPopupManager.privateNotifyPopupClose()
         }
