@@ -52,8 +52,8 @@ CommonDialog {
     property int second: 0
     property int fields: DateTime.Hours | DateTime.Minutes // Seconds not shown by default
     property int hourMode: dateTime.hourMode()
-    property alias acceptButtonText: acceptButton.text
-    property alias rejectButtonText: rejectButton.text
+    property string acceptButtonText
+    property string rejectButtonText
 
     // TODO do not dismiss the dialog when empty area is clicked
 
@@ -116,31 +116,10 @@ CommonDialog {
             }
         }
     }
-    buttons: ToolBar {
-        id: buttons
-        width: parent.width
-        height: privateStyle.toolBarHeightLandscape + 2 * platformStyle.paddingSmall
-        platformInverted: root.platformInverted
-        Row {
-            anchors.centerIn: parent
-            spacing: platformStyle.paddingMedium
 
-            ToolButton {
-                id: acceptButton
-                width: (buttons.width - 3 * platformStyle.paddingMedium) / 2
-                platformInverted: root.platformInverted
-                onClicked: accept()
-                visible: text != ""
-            }
-            ToolButton {
-                id: rejectButton
-                width: (buttons.width - 3 * platformStyle.paddingMedium) / 2
-                platformInverted: root.platformInverted
-                onClicked: reject()
-                visible: text != ""
-            }
-        }
-    }
+    onAcceptButtonTextChanged: internal.updateButtonTexts()
+    onRejectButtonTextChanged: internal.updateButtonTexts()
+
     onStatusChanged: {
         if (status == DialogStatus.Opening) {
             TH.saveIndex(tumbler);
@@ -190,6 +169,8 @@ CommonDialog {
         secondColumn.selectedIndex = root.second
     }
 
+    onButtonClicked: (acceptButtonText && index == 0) ? accept() : reject()
+
     QtObject {
         id: internal
 
@@ -213,6 +194,15 @@ CommonDialog {
             root.hour = Math.max(0, Math.min(23, root.hour))
             root.minute = Math.max(0, Math.min(59, root.minute))
             root.second = Math.max(0, Math.min(59, root.second))
+        }
+
+        function updateButtonTexts() {
+            var newButtonTexts = []
+            if (acceptButtonText)
+                newButtonTexts.push(acceptButtonText)
+            if (rejectButtonText)
+                newButtonTexts.push(rejectButtonText)
+            root.buttonTexts = newButtonTexts
         }
     }
 }

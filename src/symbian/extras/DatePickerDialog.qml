@@ -51,8 +51,8 @@ CommonDialog {
     property int day: 1
     property int minimumYear: 0
     property int maximumYear: 0
-    property alias acceptButtonText: confirmButton.text
-    property alias rejectButtonText: rejectButton.text
+    property string acceptButtonText
+    property string rejectButtonText
 
     // TODO do not dismiss the dialog when empty area is clicked
 
@@ -124,32 +124,12 @@ CommonDialog {
             }
         }
     }
-    buttons: ToolBar {
-        id: buttons
-        width: parent.width
-        height: privateStyle.toolBarHeightLandscape + 2 * platformStyle.paddingSmall
-        platformInverted: root.platformInverted
-        Row {
-            id: buttonRow
-            anchors.centerIn: parent
-            spacing: platformStyle.paddingMedium
 
-            ToolButton {
-                id: confirmButton
-                width: (buttons.width - 3 * platformStyle.paddingMedium) / 2
-                platformInverted: root.platformInverted
-                onClicked: accept()
-                visible: text != ""
-            }
-            ToolButton {
-                id: rejectButton
-                width: (buttons.width - 3 * platformStyle.paddingMedium) / 2
-                platformInverted: root.platformInverted
-                onClicked: reject()
-                visible: text != ""
-            }
-        }
-    }
+    onAcceptButtonTextChanged: internal.updateButtonTexts()
+    onRejectButtonTextChanged: internal.updateButtonTexts()
+
+    onButtonClicked: (acceptButtonText && index == 0) ? accept() : reject()
+
     onMinimumYearChanged: {
         internal.updateYearList()
     }
@@ -223,6 +203,15 @@ CommonDialog {
                     yearList.append({"value" : i})
                 yearColumn.selectedIndex = tmp;
             }
+        }
+
+        function updateButtonTexts() {
+            var newButtonTexts = []
+            if (acceptButtonText)
+                newButtonTexts.push(acceptButtonText)
+            if (rejectButtonText)
+                newButtonTexts.push(rejectButtonText)
+            root.buttonTexts = newButtonTexts
         }
     }
 }

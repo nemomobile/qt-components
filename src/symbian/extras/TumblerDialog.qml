@@ -47,8 +47,8 @@ CommonDialog {
     id: root
 
     property alias columns: tumbler.columns
-    property alias acceptButtonText: acceptButton.text
-    property alias rejectButtonText: rejectButton.text
+    property string acceptButtonText
+    property string rejectButtonText
 
     content: Item {
         id: content
@@ -71,36 +71,18 @@ CommonDialog {
         }
     }
 
-    buttons: ToolBar {
-        id: buttons
-        width: parent.width
-        height: privateStyle.toolBarHeightLandscape + 2 * platformStyle.paddingSmall
-        platformInverted: root.platformInverted
-        Row {
-            id: buttonRow
-            anchors.centerIn: parent
-            spacing: platformStyle.paddingMedium
-
-            ToolButton {
-                id: acceptButton
-                width: (buttons.width - 3 * platformStyle.paddingMedium) / 2
-                platformInverted: root.platformInverted
-                onClicked: accept()
-                visible: text != ""
-            }
-            ToolButton {
-                id: rejectButton
-                width: (buttons.width - 3 * platformStyle.paddingMedium) / 2
-                platformInverted: root.platformInverted
-                onClicked: reject()
-                visible: text != ""
-            }
-        }
-    }
-
     QtObject {
         id: internal
         property bool init: true
+
+        function updateButtonTexts() {
+            var newButtonTexts = []
+            if (acceptButtonText)
+                newButtonTexts.push(acceptButtonText)
+            if (rejectButtonText)
+                newButtonTexts.push(rejectButtonText)
+            root.buttonTexts = newButtonTexts
+        }
     }
 
     onStatusChanged: {
@@ -122,8 +104,12 @@ CommonDialog {
         }
     }
 
+    onButtonClicked: (acceptButtonText && index == 0) ? accept() : reject()
+
     onAccepted: {
         tumbler.privateForceUpdate();
         IH.saveIndex(tumbler);
     }
+    onAcceptButtonTextChanged: internal.updateButtonTexts()
+    onRejectButtonTextChanged: internal.updateButtonTexts()
 }
