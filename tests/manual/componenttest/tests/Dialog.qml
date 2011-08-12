@@ -101,20 +101,7 @@ Item {
     CommonDialog {
         id: dialogWithProgressBar
         titleText: "Dialog with Progress"
-
-        buttons: ToolBar {
-            id: buttons
-            width: parent.width
-            height: privateStyle.toolBarHeightLandscape + 2 * platformStyle.paddingSmall
-
-            tools: ToolButton {
-                id: acceptButton
-                anchors.centerIn: parent
-                width: Math.round((privateStyle.dialogMaxSize - 3 * platformStyle.paddingMedium) / 2)
-                text: "Ok"
-                onClicked: dialogWithProgressBar.accept()
-            }
-        }
+        buttonTexts:["Ok"]
         content: Column {
             width: parent.width
             ProgressBar {
