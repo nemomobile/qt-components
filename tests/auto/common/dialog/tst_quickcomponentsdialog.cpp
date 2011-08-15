@@ -107,6 +107,9 @@ void tst_quickcomponentsdialog::status()
 
 void tst_quickcomponentsdialog::accepted()
 {
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "open"));
+    QTRY_COMPARE(componentObject->property("status").toInt(), 1);
+
     QSignalSpy acceptedSpy(componentObject, SIGNAL(accepted()));
     QVERIFY(acceptedSpy.isValid());
     QVERIFY(QMetaObject::invokeMethod(componentObject, "accept"));
@@ -115,6 +118,9 @@ void tst_quickcomponentsdialog::accepted()
 
 void tst_quickcomponentsdialog::rejected()
 {
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "open"));
+    QTRY_COMPARE(componentObject->property("status").toInt(), 1);
+
     QSignalSpy rejectedSpy(componentObject, SIGNAL(rejected()));
     QVERIFY(rejectedSpy.isValid());
     QVERIFY(QMetaObject::invokeMethod(componentObject, "reject"));

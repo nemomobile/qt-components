@@ -71,13 +71,17 @@ Item {
     }
 
     function accept() {
-        dialog.close()
-        accepted()
+        if (status == DialogStatus.Open) {
+            dialog.close()
+            accepted()
+        }
     }
 
     function reject() {
-        dialog.close()
-        rejected()
+        if (status == DialogStatus.Open) {
+            dialog.close()
+            rejected()
+        }
     }
 
     function close() {

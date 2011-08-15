@@ -52,6 +52,7 @@ private slots:
     void titleIcon();
     void buttonTexts();
     void buttonClicked();
+    void buttonSignal();
 
 private:
     QObject *componentObject;
@@ -87,6 +88,27 @@ void tst_commondialog::buttonTexts()
 void tst_commondialog::buttonClicked()
 {
     QVERIFY(componentObject->metaObject()->indexOfSignal("buttonClicked(int)") != -1);
+}
+
+void tst_commondialog::buttonSignal()
+{
+    //find the buttons to simulate a click
+    QDeclarativeItem *dialogButtons = componentObject->findChild<QDeclarativeItem *>("buttonRow");
+    QVERIFY(dialogButtons);
+    QObject *button = dialogButtons->children().at(0);
+
+    QSignalSpy buttonClickedSpy(componentObject, SIGNAL(buttonClicked(int)));
+    QVERIFY(buttonClickedSpy.isValid());
+    QVERIFY(componentObject->property("status").isValid());
+
+    QTRY_COMPARE(componentObject->property("status").toInt(), 3);
+    QVERIFY(QMetaObject::invokeMethod(button, "clicked", Qt::DirectConnection));
+    QCOMPARE(buttonClickedSpy.count(), 0);
+
+    QVERIFY(QMetaObject::invokeMethod(componentObject, "open"));
+    QTRY_COMPARE(componentObject->property("status").toInt(), 1);
+    QVERIFY(QMetaObject::invokeMethod(button, "clicked", Qt::DirectConnection));
+    QCOMPARE(buttonClickedSpy.count(), 1);
 }
 
 QTEST_MAIN(tst_commondialog)
