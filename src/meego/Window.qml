@@ -70,7 +70,12 @@ Item {
         width: window.portrait ? screen.displayHeight : screen.displayWidth
         height: window.portrait ? screen.displayWidth : screen.displayHeight
 
-        anchors.centerIn: parent
+        anchors.centerIn : parent
+        transform: Rotation { id: windowRotation;
+                                origin.x: 0;
+                                origin.y: 0;
+                                angle: 0
+                            }
 
         Item {
             id: windowContent
@@ -120,12 +125,16 @@ Item {
 
         Snapshot {
             id: snapshot
-            anchors.centerIn: parent
+            anchors.top: parent.top
+            anchors.left: parent.left
             width: screen.displayWidth
             height: screen.displayHeight
             snapshotWidth: screen.displayWidth
             snapshotHeight: screen.displayHeight
             opacity: 0
+            transform: Rotation { id: snapshotRotation;
+                                  origin.x: screen.displayHeight / 2; origin.y: screen.displayHeight / 2;
+                                  angle: 0 }
         }
 
         state: screen.orientationString
@@ -134,18 +143,34 @@ Item {
             State {
                 name: "Landscape"
                 PropertyChanges { target: window; rotation: 0; portrait: false; }
+                PropertyChanges { target: windowRotation;
+                                  origin.x: root.height / 2;
+                                  origin.y: root.height / 2; }
+                PropertyChanges { target: snapshot; anchors.leftMargin: 0; anchors.topMargin: 0 }
             },
             State {
                 name: "Portrait"
                 PropertyChanges { target: window; rotation: 270; portrait: true; }
+                PropertyChanges { target: windowRotation;
+                                  origin.x: root.height - root.width / 2;
+                                  origin.y: root.width / 2; }
+                PropertyChanges { target: snapshot; anchors.leftMargin: 0; anchors.topMargin: 0 }
             },
             State {
                 name: "LandscapeInverted"
                 PropertyChanges { target: window; rotation: 180; portrait: false; }
+                PropertyChanges { target: windowRotation;
+                                  origin.x: root.height / 2;
+                                  origin.y: root.height / 2; }
+                PropertyChanges { target: snapshot; anchors.leftMargin: 374; anchors.topMargin: 0 }
             },
             State {
                 name: "PortraitInverted"
                 PropertyChanges { target: window; rotation: 90; portrait: true; }
+                PropertyChanges { target: windowRotation;
+                                  origin.x: root.height - root.width / 2;
+                                  origin.y: root.width / 2; }
+                PropertyChanges { target: snapshot; anchors.leftMargin: 0; anchors.topMargin: 374 }
             }
         ]
 
@@ -154,11 +179,11 @@ Item {
             // use this transition when sip is visible
             from: (inputContext.softwareInputPanelVisible ?  "*" : "disabled")
             to:   (inputContext.softwareInputPanelVisible ?  "*" : "disabled")
-            PropertyAction { target: window; properties: "rotation"; }
+            PropertyAction { target: windowRotation; properties: "angle"; }
             ScriptAction {
                 script: {
                     root.orientationChangeAboutToStart();
-                    platformWindow.startSipOrientationChange(window.rotation);
+                    platformWindow.startSipOrientationChange(windowRotation.angle);
                     // note : we should really connect these signals to MInputMethodState
                     // signals so that they are emitted at the appropriate time
                     // but there aren't any
@@ -178,7 +203,7 @@ Item {
                     script: {
                         snapshot.take();
                         snapshot.opacity = 1.0;
-                        snapshot.rotation = -window.rotation;
+                        snapshotRotation.angle = -window.rotation;
                         snapshot.smooth = false; // Quick & coarse rotation consistent with MTF
                         platformWindow.animating = true;
                         root.orientationChangeAboutToStart();
@@ -193,15 +218,20 @@ Item {
                 }
                 ParallelAnimation {
                     NumberAnimation { target: windowContent; property: "opacity";
-                                      to: 1.0; easing.type: Easing.InOutExpo; duration: 800; }
+                                      to: 1.0; easing.type: Easing.InOutExpo; duration: 600; }
                     NumberAnimation { target: snapshot; property: "opacity";
-                                      to: 0.0; easing.type: Easing.InOutExpo; duration: 800; }
-                    RotationAnimation { target: window; property: "rotation";
+                                      to: 0.0; easing.type: Easing.InOutExpo; duration: 600; }
+                    PropertyAction { target: windowRotation; properties: "origin.x"; }
+                    PropertyAction { target: windowRotation; properties: "origin.y"; }
+                    RotationAnimation { target: windowRotation; property: "angle";
+                                        from: -screen.rotationDirection * 90;
+                                        to: 0;
                                         direction: RotationAnimation.Shortest;
-                                        easing.type: Easing.InOutExpo; duration: 800; }
+                                        easing.type: Easing.InOutExpo; duration: 600; }
                 }
                 ScriptAction {
                     script: {
+                        windowRotation.angle = 0
                         snapshot.free();
                         root.orientationChangeFinished();
                         platformWindow.animating = false;
@@ -225,6 +255,17 @@ Item {
                     screen.allowedOrientations = Screen.PortraitInverted;
                 } else if(screen.currentOrientation == Screen.PortraitInverted) {
                     screen.allowedOrientations = Screen.Landscape;
+                }
+            }
+            if (event.key == Qt.Key_E && event.modifiers == Qt.ControlModifier ) {
+                if(screen.currentOrientation == Screen.Portrait) {
+                    screen.allowedOrientations = Screen.Landscape;
+                } else if(screen.currentOrientation == Screen.LandscapeInverted) {
+                    screen.allowedOrientations = Screen.Portrait;
+                } else if(screen.currentOrientation == Screen.PortraitInverted) {
+                    screen.allowedOrientations = Screen.LandscapeInverted;
+                } else if(screen.currentOrientation == Screen.Landscape) {
+                    screen.allowedOrientations = Screen.PortraitInverted;
                 }
             }
         }

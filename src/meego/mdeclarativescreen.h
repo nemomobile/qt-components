@@ -64,6 +64,12 @@ public:
         All = 15
     };
 
+    enum Direction {
+        Clockwise = -1,
+        NoDirection = 0,
+        CounterClockwise = 1
+    };
+
     enum DisplayCategory {
         Small,
         Normal,
@@ -78,7 +84,7 @@ public:
         ExtraHigh
     };
 
-    Q_ENUMS(Orientation DisplayCategory Density)
+    Q_ENUMS(Orientation Direction DisplayCategory Density)
     Q_FLAGS(Orientations)
     Q_DECLARE_FLAGS(Orientations, Orientation)
 
@@ -94,6 +100,7 @@ public:
     Q_PROPERTY(int displayHeight READ displayHeight NOTIFY displayChanged)
 
     Q_PROPERTY(int rotation READ rotation NOTIFY currentOrientationChanged FINAL)
+    Q_PROPERTY(Direction rotationDirection READ rotationDirection NOTIFY rotationDirectionChanged FINAL)
     Q_PROPERTY(bool minimized READ isMinimized WRITE setMinimized NOTIFY minimizedChanged FINAL)
     Q_PROPERTY(bool allowSwipe READ allowSwipe WRITE setAllowSwipe NOTIFY allowSwipeChanged FINAL )
 
@@ -116,6 +123,7 @@ public:
     QString orientationString() const;
 
     int rotation() const;
+    Direction rotationDirection() const;
 
     bool isCovered() const;
     bool isKeyboardOpen() const;
@@ -144,6 +152,7 @@ public Q_SLOTS:
 Q_SIGNALS:
     void currentOrientationChanged();
     void allowedOrientationsChanged();
+    void rotationDirectionChanged();
     void coveredChanged();
     void minimizedChanged();
     void keyboardOpenChanged();

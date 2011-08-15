@@ -95,6 +95,7 @@ public:
     MDeclarativeScreen::Orientation finalOrientation;
     MDeclarativeScreen::Orientations allowedOrientations;
     MDeclarativeScreen::Orientations allowedOrientationsBackup;
+    MDeclarativeScreen::Direction rotationDirection;
 
     bool isCovered;
     bool keyboardOpen;
@@ -181,6 +182,7 @@ MDeclarativeScreenPrivate::MDeclarativeScreenPrivate(MDeclarativeScreen *qq)
     , orientation(MDeclarativeScreen::Landscape)
     , finalOrientation(MDeclarativeScreen::Landscape)
     , allowedOrientations(MDeclarativeScreen::Landscape | MDeclarativeScreen::Portrait)
+    , rotationDirection(MDeclarativeScreen::NoDirection)
     , isCovered(false)
     , keyboardOpen(false)
     , isTvConnected(false)
@@ -469,6 +471,17 @@ void MDeclarativeScreen::setOrientation(Orientation o)
     if (d->orientation == o || MWindowState::instance()->animating())
         return;
 
+    if ( (d->orientation == MDeclarativeScreen::LandscapeInverted && o == MDeclarativeScreen::Portrait) ||
+         (d->orientation == MDeclarativeScreen::PortraitInverted && o == MDeclarativeScreen::LandscapeInverted) ||
+         (d->orientation == MDeclarativeScreen::Landscape && o == MDeclarativeScreen::PortraitInverted) ||
+         (d->orientation == MDeclarativeScreen::Portrait && o == MDeclarativeScreen::Landscape) ) {
+         d->rotationDirection = MDeclarativeScreen::CounterClockwise;
+    }
+    else {
+         d->rotationDirection = MDeclarativeScreen::Clockwise;
+    }
+    emit rotationDirectionChanged();
+
     Orientation newOrientation = Default;
     //if keyboard is open always set landscape and ignore allowed orientations
 #ifdef HAVE_CONTEXTSUBSCRIBER
@@ -572,6 +585,11 @@ QString MDeclarativeScreen::orientationString() const
 int MDeclarativeScreen::rotation() const
 {
     return d->rotation();
+}
+
+MDeclarativeScreen::Direction MDeclarativeScreen::rotationDirection() const
+{
+    return d->rotationDirection;
 }
 
 bool MDeclarativeScreen::isCovered() const
