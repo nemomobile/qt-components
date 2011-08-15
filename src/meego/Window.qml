@@ -73,7 +73,9 @@ Item {
         anchors.left : parent.left
         anchors.top : parent.top
         transform: [ Translate { id: windowTranslate; x: 0; y: 0 },
-                     Rotation { id: windowRotation; origin.x: 240; origin.y: 240; angle: 0 } ]
+                     Rotation { id: windowRotation;
+                                origin.x: screen.displayHeight / 2; origin.y: screen.displayHeight / 2;
+                                angle: 0 } ]
 
         Item {
             id: windowContent
@@ -131,7 +133,9 @@ Item {
             snapshotHeight: screen.displayHeight
             opacity: 0
             transform: [ Translate { id: snapshotTranslate; x: 0; y: 0 },
-                         Rotation { id: snapshotRotation; origin.x: 240; origin.y: 240; angle: 0 } ]
+                         Rotation { id: snapshotRotation;
+                                    origin.x: screen.displayHeight / 2; origin.y: screen.displayHeight / 2;
+                                    angle: 0 } ]
         }
 
         state: screen.orientationString
@@ -140,7 +144,6 @@ Item {
             State {
                 name: "Landscape"
                 PropertyChanges { target: window; /* rotation: 0;*/ portrait: false; }
-                PropertyChanges { target: windowRotation; origin.x: 240; origin.y: 240 }
                 PropertyChanges { target: windowRotation; angle: 0 }
             },
             State {
