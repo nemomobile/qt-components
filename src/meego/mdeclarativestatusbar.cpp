@@ -302,7 +302,13 @@ void MDeclarativeStatusBar::sharedPixmapHandleReceived(QDBusPendingCallWatcher *
     setImplicitWidth(sharedPixmap.size().width());
     updateSharedPixmap();
     call->deleteLater();
-    scene()->update();
+    
+    // Fix for NB276546
+    if (scene()) {
+      scene()->update();
+    } else {
+      qWarning() << "MDeclarativeStatusBar::sharedPixmapHandleReceived: scene is NULL!";
+    }
 #endif
 }
 
