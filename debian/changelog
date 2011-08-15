@@ -1,3 +1,13 @@
+qt-components (1.1~git20110815-1) maverick; urgency=low
+
+  * Fixes: NB#269564 Custom VKB is displayed when application is in minimized state
+  * Fixes: NB#272778 Moving magnifier in Facebook application is unresponsive
+  * Fixes: NB#271755 Setting the overall theme to 'inverted' is not documented
+  * Fixes: NB#266690 OVI; §qtn_ovi_create_new_existing_account_error_title§ 'Email address already in use' is truncated in Malay
+  * Fixes: NB#276546 Cannot open OVI music application
+
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Mon, 15 Aug 2011 12:45:00 +0300
+
 qt-components (1.1~git20110810-1) maverick; urgency=low
 
   * Fixes: NB#267202 - qt-components.qdocconf has invalid image paths
