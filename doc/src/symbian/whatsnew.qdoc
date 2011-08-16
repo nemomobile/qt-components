@@ -1,0 +1,57 @@
+/****************************************************************************
+**
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file.
+**
+** Other Usage
+** Alternatively, this file may be used in accordance with the terms
+** and conditions contained in a signed written agreement between you
+** and Nokia.
+**
+**
+**
+**
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+/*!
+    \page symbian-whatsnew.html
+    \title What's New in the Qt Quick Components for Symbian Release
+
+    \section1 What's new in 1.1
+    The Symbian Components v1.1 uses QtQuick v1.1, which creates
+    a hard dependency to the Qt 4.7.4. The new QtQuick version brings some
+    improvements including QML revision control, performance optimizations
+    and some bug fixes. Also the new version includes
+    \l{Right-to-left Support}{Right-to-left Support} which is needed in
+    some language variants.
+
+    One of the most visible addition is the \e {Inverted Style}. All the visual
+    components introduce the \c platformInverted property, which controls
+    the visual appearance of the component. See
+    \l {Using Inverted Style with Symbian Components} for more information.
+    
+    The Qt Quick Components for Symbian 1.1 release replaces the full screen
+    software input panel with a split screen software input panel.
+
+    Also some new components are added:
+    \list
+        \o \l{Label} helps to show a plain text. It fetches the color and the
+           font from the style automatically for you.
+        \o \l{InputContext} is used to determine the area needed for the
+           Software Input Panel.
+        \o \l{SearchBox} can be used to filter items in a list view. The
+           component is in the extras module.
+    \endlist
+
+
