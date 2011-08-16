@@ -52,6 +52,7 @@ public:
     tst_tabgroup() : componentObject(0), view(0) {}
 
 private slots:
+    void cleanupTestCase();
     void init();
     void cleanup();
     void defaultPropertyValues();
@@ -63,6 +64,7 @@ private slots:
     void testAddRemoveTabs();
     void testPageSignaling();
     void testPageSignalingNoAnimation();
+    void testDisablingAnimationOnOrientationSwitch();
 
 private:
     QScopedPointer<QObject> componentObject;
@@ -72,8 +74,16 @@ private:
 void tst_tabgroup::init()
 {
     QString errors;
+    const bool showWindow = !view;
     componentObject.reset(tst_quickcomponentstest::createComponentFromFile("tst_tabgroup.qml", &errors, &view));
     QVERIFY2(componentObject, qPrintable(errors));
+
+    if (showWindow) {
+        view->activateWindow();
+        QApplication::setActiveWindow(view);
+        view->show();
+        QTest::qWaitForWindowShown(view);
+    }
 }
 
 void tst_tabgroup::cleanup()
@@ -81,6 +91,11 @@ void tst_tabgroup::cleanup()
     // some of the test cases modify the object tree, so we need to delete (and re-create) it
     // between every test case.
     componentObject.reset();
+}
+
+void tst_tabgroup::cleanupTestCase()
+{
+    delete view;
 }
 
 void tst_tabgroup::defaultPropertyValues()
@@ -295,6 +310,34 @@ void tst_tabgroup::testPageSignalingNoAnimation()
 
 }
 
+void tst_tabgroup::testDisablingAnimationOnOrientationSwitch()
+{
+    QDeclarativeItem *tabGroup4 = componentObject->findChild<QDeclarativeItem*>("tabGroup4");
+    QVERIFY(tabGroup4);
+
+    // tabs are Page instances
+    QDeclarativeItem *group4tab1 = qobject_cast<QDeclarativeItem*>(findQmlChild(tabGroup4,"group4tab1"));
+    QVERIFY(group4tab1);
+
+    QDeclarativeItem *group4tab2 = qobject_cast<QDeclarativeItem*>(findQmlChild(tabGroup4,"group4tab2"));
+    QVERIFY(group4tab2);
+
+
+    QCOMPARE(tabGroup4->property("currentTab").value<QDeclarativeItem*>(), group4tab1);
+    QTRY_COMPARE(group4tab1->property("status").toInt(), 2 /*PageStatus.Active*/);
+    QTRY_COMPARE(group4tab2->property("status").toInt(), 0 /*PageStatus.Inactive*/);
+
+    // switch to page with different orientation and check that the PageStatus changes
+    tabGroup4->setProperty("currentTab", qVariantFromValue(group4tab2));
+    QCOMPARE(group4tab1->property("status").toInt(), 0 /*PageStatus.Inactive*/);
+    QCOMPARE(group4tab2->property("status").toInt(), 2 /*PageStatus.Active*/);
+
+    // switch to page with different orientation and check that the PageStatus changes
+    tabGroup4->setProperty("currentTab", qVariantFromValue(group4tab1));
+    QCOMPARE(group4tab1->property("status").toInt(), 2 /*PageStatus.Active*/);
+    QCOMPARE(group4tab2->property("status").toInt(), 0 /*PageStatus.Inactive*/);
+
+}
 
 QTEST_MAIN(tst_tabgroup)
 #include "tst_tabgroup.moc"

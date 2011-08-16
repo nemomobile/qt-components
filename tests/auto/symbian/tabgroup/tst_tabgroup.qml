@@ -41,7 +41,7 @@
 import QtQuick 1.1
 import com.nokia.symbian 1.1
 
-Item {
+Window {
     id: testItem
 
     width: 200
@@ -84,6 +84,24 @@ Item {
         currentTab: group3tab2
         Item { id: group3tab1; objectName: "group3tab1" }
         Item { id: group3tab2; objectName: "group3tab2" }
+    }
+
+    TabGroup {
+        id: tabGroup4
+        objectName: "tabGroup4"
+        property int orientation: screen.currentOrientation
+
+        Component.onCompleted: {
+            var tab1 = tabPageComponent.createObject(tabGroup4)
+            tab1.objectName = "group4tab1"
+            tab1.orientationLock = PageOrientation.LockPortrait
+
+            var tab2 = tabPageComponent.createObject(tabGroup4)
+            tab2.objectName = "group4tab2"
+            tab2.orientationLock = PageOrientation.LockLandscape
+
+            currentTab = tab1
+        }
     }
 
     Component {

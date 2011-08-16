@@ -76,6 +76,7 @@ Item {
             tempArray = contentPages
         tempArray.push(newItem)
         contentPages = tempArray
+        return newItem
     }
 
     function containsPage(title) {
@@ -146,9 +147,12 @@ Item {
         width: parent.width
 
         Component.onCompleted: {
-            root.addTab(pageComponent)
-            root.addTab(pageComponent)
-            root.addTab(pageComponent)
+            var page1 = root.addTab(pageComponent)
+            page1.orientationLock = PageOrientation.Automatic
+            var page2 = root.addTab(pageComponent)
+            page2.orientationLock = PageOrientation.LockPortrait
+            var page3 = root.addTab(pageComponent)
+            page3.orientationLock = PageOrientation.LockLandscape
         }
     }
 
