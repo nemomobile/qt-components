@@ -228,7 +228,8 @@ QGraphicsSceneMouseEvent *MDeclarativeMouseFilter::copyMouseEvent (QGraphicsScen
 
 void MDeclarativeMouseFilter::clampMousePosition(QGraphicsSceneMouseEvent *me)
 {
-    QRectF targetRect = QRect(-x(), -y(), parentItem()->width() - x(), parentItem()->height() - y());
+    // Clamp position in MouseFilter coordinates.
+    QRectF targetRect = QRectF(0,0,width(),height());
     me->setPos(QPointF(qBound(targetRect.x(), me->pos().x(),targetRect.width()), qBound(targetRect.y(), me->pos().y(), targetRect.height())));
     me->setLastPos(QPointF(qBound(targetRect.x(), me->lastPos().x(),targetRect.width()), qBound(targetRect.y(), me->lastPos().y(),targetRect.height())));
     me->setButtonDownPos(Qt::LeftButton, QPointF(qBound(targetRect.x(), me->buttonDownPos(Qt::LeftButton).x(), targetRect.width()), qBound(targetRect.y(), me->buttonDownPos(Qt::LeftButton).y(), targetRect.height())));
