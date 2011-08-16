@@ -82,26 +82,15 @@ Item {
     }
 
     function updateGeometry() {
-        var geometry = internal.geometryFromEditorPos(root.editorPos);
-        root.x = geometry.x;
-        root.y = geometry.y;
-        root.width = geometry.width;
-        root.height = geometry.height;
+        var rect = root.editor.positionToRectangle(editorPos);
+        var pos = root.editor.mapToItem(root.parent, rect.x, rect.y);
+        root.x = pos.x;
+        root.y = pos.y;
+        root.width = rect.width;
+        root.height = rect.height;
     }
 
     onEditorPosChanged: root.updateGeometry()
-
-    // Private
-    QtObject {
-        id: internal
-
-        // Returns handle geometry from editor position
-        function geometryFromEditorPos(editorPos) {
-            var rect = root.editor.positionToRectangle(editorPos);
-            var pos = root.editor.mapToItem(root.parent,rect.x,rect.y);
-            return Qt.rect(pos.x,pos.y,rect.width,rect.height);
-        }
-    }
 
     // This could be an Item, but it’s a Rectangle for debugging purposes.
     Rectangle {

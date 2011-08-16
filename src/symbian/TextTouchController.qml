@@ -55,6 +55,9 @@ MouseArea {
 
     enabled: !editor.inputMethodComposing
 
+    LayoutMirroring.enabled: false
+    LayoutMirroring.childrenInherit: true
+
     function updateGeometry() {
         selectionBegin.updateGeometry();
         selectionEnd.updateGeometry();
