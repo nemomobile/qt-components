@@ -70,7 +70,12 @@ Item {
         width: window.portrait ? screen.displayHeight : screen.displayWidth
         height: window.portrait ? screen.displayWidth : screen.displayHeight
 
-        anchors.centerIn: parent
+        anchors.left : parent.left
+        anchors.top : parent.top
+        transform: [ Translate { id: windowTranslate; x: 0; y: 0 },
+                     Rotation { id: windowRotation;
+                                origin.x: screen.displayHeight / 2; origin.y: screen.displayHeight / 2;
+                                angle: 0 } ]
 
         Item {
             id: windowContent
@@ -120,12 +125,16 @@ Item {
 
         Snapshot {
             id: snapshot
-            anchors.centerIn: parent
+            anchors.top: parent.top
+            anchors.left: parent.left
             width: screen.displayWidth
             height: screen.displayHeight
             snapshotWidth: screen.displayWidth
             snapshotHeight: screen.displayHeight
             opacity: 0
+            transform: Rotation { id: snapshotRotation;
+                                  origin.x: screen.displayHeight / 2; origin.y: screen.displayHeight / 2;
+                                  angle: 0 }
         }
 
         state: screen.orientationString
@@ -133,19 +142,31 @@ Item {
         states: [
             State {
                 name: "Landscape"
-                PropertyChanges { target: window; rotation: 0; portrait: false; }
+                PropertyChanges { target: window; /* rotation: 0;*/ portrait: false; }
+                PropertyChanges { target: windowRotation; angle: 0 }
+                PropertyChanges { target: windowTranslate; x: 0; y: 0 }
+                PropertyChanges { target: snapshot; anchors.leftMargin: 0; anchors.topMargin: 0 }
             },
             State {
                 name: "Portrait"
-                PropertyChanges { target: window; rotation: 270; portrait: true; }
+                PropertyChanges { target: window; /* rotation: 270;*/ portrait: true; }
+                PropertyChanges { target: windowRotation; angle: 270 }
+                PropertyChanges { target: windowTranslate; x: 0; y: 0 }
+                PropertyChanges { target: snapshot; anchors.leftMargin: 0; anchors.topMargin: 0 }
             },
             State {
                 name: "LandscapeInverted"
-                PropertyChanges { target: window; rotation: 180; portrait: false; }
+                PropertyChanges { target: window; /* rotation: 180;*/ portrait: false; }
+                PropertyChanges { target: windowRotation; angle: 180 }
+                PropertyChanges { target: windowTranslate; x: -374; y: 0 }
+                PropertyChanges { target: snapshot; anchors.leftMargin: 374; anchors.topMargin: 0 }
             },
             State {
                 name: "PortraitInverted"
-                PropertyChanges { target: window; rotation: 90; portrait: true; }
+                PropertyChanges { target: window; /* rotation: 90;*/ portrait: true; }
+                PropertyChanges { target: windowRotation; angle: 90 }
+                PropertyChanges { target: windowTranslate; x: 0; y: -374 }
+                PropertyChanges { target: snapshot; anchors.leftMargin: 0; anchors.topMargin: 374 }
             }
         ]
 
@@ -154,11 +175,11 @@ Item {
             // use this transition when sip is visible
             from: (inputContext.softwareInputPanelVisible ?  "*" : "disabled")
             to:   (inputContext.softwareInputPanelVisible ?  "*" : "disabled")
-            PropertyAction { target: window; properties: "rotation"; }
+            PropertyAction { target: window; properties: "angle"; }
             ScriptAction {
                 script: {
                     root.orientationChangeAboutToStart();
-                    platformWindow.startSipOrientationChange(window.rotation);
+                    platformWindow.startSipOrientationChange(windowRotation.angle);
                     // note : we should really connect these signals to MInputMethodState
                     // signals so that they are emitted at the appropriate time
                     // but there aren't any
@@ -178,7 +199,7 @@ Item {
                     script: {
                         snapshot.take();
                         snapshot.opacity = 1.0;
-                        snapshot.rotation = -window.rotation;
+                        snapshotRotation.angle = -windowRotation.angle;
                         snapshot.smooth = false; // Quick & coarse rotation consistent with MTF
                         platformWindow.animating = true;
                         root.orientationChangeAboutToStart();
@@ -193,12 +214,12 @@ Item {
                 }
                 ParallelAnimation {
                     NumberAnimation { target: windowContent; property: "opacity";
-                                      to: 1.0; easing.type: Easing.InOutExpo; duration: 800; }
+                                      to: 1.0; easing.type: Easing.InOutExpo; duration: 600; }
                     NumberAnimation { target: snapshot; property: "opacity";
-                                      to: 0.0; easing.type: Easing.InOutExpo; duration: 800; }
-                    RotationAnimation { target: window; property: "rotation";
+                                      to: 0.0; easing.type: Easing.InOutExpo; duration: 600; }
+                    RotationAnimation { target: windowRotation; property: "angle";
                                         direction: RotationAnimation.Shortest;
-                                        easing.type: Easing.InOutExpo; duration: 800; }
+                                        easing.type: Easing.InOutExpo; duration: 600; }
                 }
                 ScriptAction {
                     script: {
