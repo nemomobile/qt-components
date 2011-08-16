@@ -50,16 +50,15 @@ Column {
     Switch {
         id: switch1
         objectName: "switch1"
-        width: parent.width
         focus: true
+        anchors.left: parent.left
     }
 
     Switch {
         id: switch2
         objectName: "switch2"
-        width: switch1.width
         checked: true
-
+        anchors.left: parent.left
         Rectangle {
             id: implSizeRect
             anchors { left: parent.left; verticalCenter: parent.verticalCenter }

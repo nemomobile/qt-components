@@ -115,6 +115,7 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
         sourceSize.width: Symbian.UndefinedSourceDimension
         sourceSize.height: privateStyle.switchButtonHeight
+        scale: root.LayoutMirroring.enabled ? -1 : 1
 
         MouseArea {
             id: mouseArea
@@ -122,7 +123,10 @@ Item {
             property real lastX
 
             function isChecked() {
-                return (handle.x + handle.width / 2 > track.x + (track.width / 2))
+                if (root.LayoutMirroring.enabled)
+                    return (handle.x + handle.width / 2 < track.x + (track.width / 2))
+                else
+                    return (handle.x + handle.width / 2 > track.x + (track.width / 2))
             }
             function updateHandlePos() {
                 // The middle of the handle follows mouse, the handle is bound to the track
@@ -165,13 +169,11 @@ Item {
     Item {
         id: fill
 
-        LayoutMirroring.enabled: false
-        LayoutMirroring.childrenInherit: true
         clip: true
         anchors.left: track.left
+        anchors.right: handle.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
         height: privateStyle.switchButtonHeight
-        width: handle.x + handle.width / 2 - mouseArea.drag.minimumX
         visible: root.enabled
 
         Image {
@@ -186,8 +188,6 @@ Item {
     Image {
         id: handle
 
-        LayoutMirroring.enabled: false
-        LayoutMirroring.childrenInherit: true
         source: privateStyle.imagePath("qtg_graf_switchbutton_"
                                        + (root.pressed ? "handle_pressed" : "handle_normal"),
                                        root.platformInverted)
@@ -203,7 +203,7 @@ Item {
                 PropertyChanges {
                     target: handle
                     restoreEntryValues: false
-                    x: mouseArea.drag.minimumX
+                    x: root.LayoutMirroring.enabled ? mouseArea.drag.maximumX : mouseArea.drag.minimumX
                 }
             },
             State {
@@ -212,7 +212,7 @@ Item {
                 PropertyChanges {
                     target: handle
                     restoreEntryValues: false
-                    x: mouseArea.drag.maximumX
+                    x: root.LayoutMirroring.enabled ? mouseArea.drag.minimumX : mouseArea.drag.maximumX
                 }
             }
         ]
