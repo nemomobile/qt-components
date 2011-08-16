@@ -132,10 +132,9 @@ Item {
             snapshotWidth: screen.displayWidth
             snapshotHeight: screen.displayHeight
             opacity: 0
-            transform: [ Translate { id: snapshotTranslate; x: 0; y: 0 },
-                         Rotation { id: snapshotRotation;
-                                    origin.x: screen.displayHeight / 2; origin.y: screen.displayHeight / 2;
-                                    angle: 0 } ]
+            transform: Rotation { id: snapshotRotation;
+                                  origin.x: screen.displayHeight / 2; origin.y: screen.displayHeight / 2;
+                                  angle: 0 }
         }
 
         state: screen.orientationString
@@ -145,25 +144,29 @@ Item {
                 name: "Landscape"
                 PropertyChanges { target: window; /* rotation: 0;*/ portrait: false; }
                 PropertyChanges { target: windowRotation; angle: 0 }
+                PropertyChanges { target: windowTranslate; x: 0; y: 0 }
+                PropertyChanges { target: snapshot; anchors.leftMargin: 0; anchors.topMargin: 0 }
             },
             State {
                 name: "Portrait"
                 PropertyChanges { target: window; /* rotation: 270;*/ portrait: true; }
                 PropertyChanges { target: windowRotation; angle: 270 }
+                PropertyChanges { target: windowTranslate; x: 0; y: 0 }
+                PropertyChanges { target: snapshot; anchors.leftMargin: 0; anchors.topMargin: 0 }
             },
             State {
                 name: "LandscapeInverted"
                 PropertyChanges { target: window; /* rotation: 180;*/ portrait: false; }
                 PropertyChanges { target: windowRotation; angle: 180 }
-                PropertyChanges { target: windowTranslate; x: -374 }
-                PropertyChanges { target: snapshotTranslate; y: -374 }
+                PropertyChanges { target: windowTranslate; x: -374; y: 0 }
+                PropertyChanges { target: snapshot; anchors.leftMargin: 374; anchors.topMargin: 0 }
             },
             State {
                 name: "PortraitInverted"
                 PropertyChanges { target: window; /* rotation: 90;*/ portrait: true; }
                 PropertyChanges { target: windowRotation; angle: 90 }
-                PropertyChanges { target: windowTranslate; y: -374 }
-                PropertyChanges { target: snapshotTranslate; y: -374 }
+                PropertyChanges { target: windowTranslate; x: 0; y: -374 }
+                PropertyChanges { target: snapshot; anchors.leftMargin: 0; anchors.topMargin: 374 }
             }
         ]
 
