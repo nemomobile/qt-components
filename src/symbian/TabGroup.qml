@@ -182,8 +182,19 @@ Item {
         property Item currentTabContainer: root.currentTab ? root.currentTab.parent : null
         property Item incomingPage
         property Item outgoingPage
+        property bool animate
+
+        function disableAnimations() {
+            animate = false
+
+            // outgoingPage might have been found before the incomingPage changes the orientation
+            if (outgoingPage)
+                outgoingPage.parent.outgoingDone()
+        }
 
         onCurrentTabContainerChanged: {
+            animate = platformAnimated // updated on orientation change
+            screen.currentOrientationChanged.connect(priv.disableAnimations)
             for (var i = 0; i < containerHost.children.length; i++) {
                 var tabContainer = containerHost.children[i]
                 var isNewTab = (tabContainer == currentTabContainer)
@@ -191,12 +202,12 @@ Item {
                     if (tabContainer.state != "") {
                         if (tabContainer.children[0].status != undefined) {
                             incomingPage = tabContainer.children[0]
-                            incomingPage.status = PageStatus.Activating
+                            incomingPage.status = PageStatus.Activating // triggers the orientation change
                             incomingPage.visible = true
                             if (incomingPage == outgoingPage)
                                 outgoingPage = null
                         }
-                        if (platformAnimated)
+                        if (animate)
                             tabContainer.state = "Incoming"
                         else
                             tabContainer.incomingDone()
@@ -209,13 +220,14 @@ Item {
                             if (incomingPage == outgoingPage)
                                 incomingPage = null
                         }
-                        if (platformAnimated)
+                        if (animate)
                             tabContainer.state = "Outgoing"
                         else
                             tabContainer.outgoingDone()
                     }
                 }
             }
+            screen.currentOrientationChanged.disconnect(priv.disableAnimations)
         }
     }
 }
