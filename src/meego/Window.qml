@@ -175,7 +175,7 @@ Item {
             // use this transition when sip is visible
             from: (inputContext.softwareInputPanelVisible ?  "*" : "disabled")
             to:   (inputContext.softwareInputPanelVisible ?  "*" : "disabled")
-            PropertyAction { target: window; properties: "angle"; }
+            PropertyAction { target: windowRotation; properties: "angle"; }
             ScriptAction {
                 script: {
                     root.orientationChangeAboutToStart();
