@@ -190,7 +190,10 @@ Item {
 
         onClickedOutside: {
             clickedText.text = "Clicked outside"
-            close()
+
+            // in case there's no buttons, dialog can be closed by clicking the fader
+            if(numberOfButtonsDialog.selectedIndex == 0)
+                close()
         }
     }
 
