@@ -204,7 +204,7 @@ MouseArea {
             if (!internal.handleMoved) {
                 // need to deselect, because if the cursor position doesn't change the selection remains
                 // even after setting to cursorPosition
-                editor.select(editor.cursorPosition, editor.cursorPosition);
+                editor.deselect();
                 editor.cursorPosition = editor.positionAt(internal.touchPoint.x, internal.touchPoint.y);
                 contextMenu.hide();
                 if (!editor.readOnly)

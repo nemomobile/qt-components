@@ -214,7 +214,7 @@ FocusScope {
 
                 onEnabledChanged: {
                     if (!enabled) {
-                        select(0, 0)
+                        deselect()
                         // De-focusing requires setting focus elsewhere, in this case editor's parent
                         if (root.parent)
                             root.parent.forceActiveFocus()
