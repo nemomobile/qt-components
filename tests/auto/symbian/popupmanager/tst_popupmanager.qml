@@ -46,17 +46,29 @@ Window {
     property int dialogAmount: 3
     property int popupStackDepth: platformPopupManager.popupStackDepth
     property bool openDialogs: false
+    property bool duplicateOpen: false
 
     onDialogAmountChanged: {
-        if (dialogAmount == 2)
+        if (dialogAmount == 2) {
+            if (duplicateOpen)
+                dialog3.open()
             dialog3.close()
-        else if (dialogAmount == 1)
+        } else if (dialogAmount == 1)
             dialog2.close()
         else if (dialogAmount == 0)
             dialog1.close()
     }
 
     onOpenDialogsChanged: {
+        if (!openDialogs)
+            return
+        openDialogs = false
+
+        if (duplicateOpen) {
+            dialog1.open()
+            dialog1.close()
+            dialog1.open()
+        }
         dialog1.open()
         dialog2.open()
         dialog3.open()

@@ -53,6 +53,7 @@ class tst_popupmanager : public QObject
 private slots:
     void initTestCase();
     void popupStackDepth();
+    void duplicateOpen();
 
 private:
     QScopedPointer<QDeclarativeView> view;
@@ -68,11 +69,24 @@ void tst_popupmanager::initTestCase()
     QTRY_COMPARE(QApplication::activeWindow(), static_cast<QWidget *>(view.data()));
     window = view->rootObject();
     QVERIFY(window);
-    window->setProperty("openDialogs", true);
 }
 
 void tst_popupmanager::popupStackDepth()
 {
+    window->setProperty("openDialogs", true);
+    QTRY_COMPARE(window->property("popupStackDepth").toInt(), 3);
+    window->setProperty("dialogAmount", 2);
+    QTRY_COMPARE(window->property("popupStackDepth").toInt(), 2);
+    window->setProperty("dialogAmount", 1);
+    QTRY_COMPARE(window->property("popupStackDepth").toInt(), 1);
+    window->setProperty("dialogAmount", 0);
+    QTRY_COMPARE(window->property("popupStackDepth").toInt(), 0);
+}
+
+void tst_popupmanager::duplicateOpen()
+{
+    window->setProperty("duplicateOpen", true);
+    window->setProperty("openDialogs", true);
     QTRY_COMPARE(window->property("popupStackDepth").toInt(), 3);
     window->setProperty("dialogAmount", 2);
     QTRY_COMPARE(window->property("popupStackDepth").toInt(), 2);
