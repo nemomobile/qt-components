@@ -58,7 +58,7 @@ Item {
 
     property Item tools: null
 
-    visible: parent ? false : true
+    visible: false
 
     width: visible && parent ? parent.width : internal.previousWidth
     height: visible && parent ? parent.height : internal.previousHeight
@@ -75,6 +75,13 @@ Item {
         if (status == PageStatus.Activating || status == PageStatus.Active)
             internal.orientationLockCheck();
     }
+
+    // This is needed to make a parentless Page component visible in the Designer of QtCreator.
+    // It's done here instead of binding the visible property because binding it to a script
+    // block returning false would cause an element on the Page not to end up focused despite
+    // specifying focus=true inside the active focus scope. The focus would be gained and lost
+    // in createObject.
+    Component.onCompleted: if (!parent) visible = true
 
     QtObject {
         id: internal
