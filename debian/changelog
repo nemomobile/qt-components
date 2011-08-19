@@ -1,3 +1,9 @@
+qt-components (1.1~git20110819-1) maverick; urgency=low
+
+  * Fixes: NB#260181 Orientation switch transition is incorrect
+
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Fri, 19 Aug 2011 10:35:00 +0300
+
 qt-components (1.1~git20110815-2) maverick; urgency=low
 
   * Fixes: NB#248174 There is a possibility to use VKB when it switches to custom VKB
