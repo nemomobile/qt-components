@@ -176,12 +176,12 @@ Window {
             },
 
             State {
-                name: "Hidden"; when: !inputContext.visible && !root.fullScreen
+                name: "Hidden"; when: !root.fullScreen
                 PropertyChanges { target: sip; height: tbar.height }
             },
 
             State {
-                name: "HiddenInFullScreen"; when: !inputContext.visible && root.fullScreen
+                name: "HiddenInFullScreen"; when: root.fullScreen
                 PropertyChanges { target: sip; height: 0 }
             }
         ]
