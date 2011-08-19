@@ -277,7 +277,7 @@ FocusScopeItem {
             interactive: root.enabled
 
             onHeightChanged: {
-                if(textEdit.cursorVisible)
+                if(textEdit.cursorVisible || textEdit.cursorPosition == textEdit.selectionEnd)
                     ensureVisible(textEdit.cursorRectangle)
             }
 
