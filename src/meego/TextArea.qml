@@ -161,7 +161,7 @@ FocusScope {
             } else {
                 if (activeFocus) {
                     platformCloseSoftwareInputPanel();
-                    Popup.close(textInput);
+                    Popup.close(textEdit);
                 }
             }
         }
