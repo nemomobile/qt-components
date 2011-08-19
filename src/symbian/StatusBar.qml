@@ -74,6 +74,7 @@ Item {
     }
 
     MouseArea {
+        id: mouseArea
         anchors.fill: parent
 
         onClicked: {
@@ -86,8 +87,8 @@ Item {
             if (!priv.clickedOpensStatusPanel) {
                 privateStyle.play(Symbian.PopUp)
                 platformPopupManager.privateShowIndicatorPopup()
-                // reset mouseArea state
-                mouse.accepted = false
+                // reset MouseArea state since status panel window eats the release event
+                symbian.privateSendMouseRelease(mouseArea)
             }
         }
     }

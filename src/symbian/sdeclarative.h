@@ -45,6 +45,7 @@
 #include <QtDeclarative/qdeclarative.h>
 
 class SDeclarativePrivate;
+QT_FORWARD_DECLARE_CLASS(QDeclarativeItem)
 
 class SDeclarative : public QObject
 {
@@ -151,6 +152,7 @@ public:
     Q_INVOKABLE void privateClearIconCaches();
     Q_INVOKABLE void privateClearComponentCache();
     Q_INVOKABLE bool privateGraphicsSharing() const;
+    Q_INVOKABLE void privateSendMouseRelease(QDeclarativeItem *item) const;
 
 Q_SIGNALS:
     void listInteractionModeChanged();

@@ -47,6 +47,9 @@
 #include <QDeclarativeEngine>
 #include <QPixmapCache>
 #include <QSysInfo>
+#include <QDeclarativeItem>
+#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsScene>
 
 #ifdef Q_OS_SYMBIAN
 #include <AknUtils.h>
@@ -219,6 +222,17 @@ void SDeclarative::setGraphicsSharing(bool sharingEnabled)
 bool SDeclarative::privateGraphicsSharing() const
 {
     return d_ptr->graphicsSharing;
+}
+
+void SDeclarative::privateSendMouseRelease(QDeclarativeItem *item) const
+{
+    // this is for situations where a press event opens another window (QWidget)
+    // that eats the mouse released event. This method can be used for generating
+    // the released event and 'correcting' the state of MouseArea/Flickable
+    if (item) {
+        QGraphicsSceneMouseEvent releaseEvent(QEvent::GraphicsSceneMouseRelease);
+        item->scene()->sendEvent(item, &releaseEvent);
+    }
 }
 
 bool SDeclarative::eventFilter(QObject *obj, QEvent *event)
