@@ -133,6 +133,10 @@ Item {
         animationDuration: 250
         platformInverted: root.platformInverted
 
+        // Consume all key events that are not processed by children
+        Keys.onPressed: event.accepted = true
+        Keys.onReleased: event.accepted = true
+
         BorderImage {
             source: privateStyle.imagePath("qtg_fr_popup", root.platformInverted)
             border { left: 20; top: 20; right: 20; bottom: 20 }
