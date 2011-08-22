@@ -84,7 +84,7 @@ FocusScope {
     Column {
         id: style
 
-        property real h: (height - spacing * (children.length - 1)) / children.length
+        property real h: Math.round((height - spacing * (children.length - 1)) / children.length)
 
         anchors { top: buttons.bottom; left: parent.left }
 
@@ -145,7 +145,6 @@ FocusScope {
 
         anchors { top: buttons.bottom; left: style.right }
         placeholderText: "Enter text here"
-        platformMaxImplicitWidth: root.width - style.width - (privy.portrait ? 0 : settings.width)
         enabled: enable.checked
         errorHighlight: error.checked
         horizontalAlignment: settings.horizontalAlignment
