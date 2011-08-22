@@ -8,7 +8,7 @@ font-size-small:2.75un
 padding-large:1.8un
 padding-medium:1.2un
 padding-small:0.6un
-border-size-medium:3un
+border-size-medium:20
 
 status-bar-height:4un
 tab-bar-height-portrait:9un
