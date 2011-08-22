@@ -281,6 +281,11 @@ FocusScopeItem {
                     ensureVisible(textEdit.cursorRectangle)
             }
 
+            onWidthChanged: {
+                if(textEdit.cursorVisible || textEdit.cursorPosition == textEdit.selectionEnd)
+                    ensureVisible(textEdit.cursorRectangle)
+            }
+
             TextEdit {
                 id: textEdit
                 objectName: "textEdit"
