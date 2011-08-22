@@ -120,7 +120,7 @@ Item {
     BorderImage {
         id: image
 
-        property real tiny: Math.round(platformStyle.graphicSizeTiny / 2)
+        property real tiny: Math.round(platformStyle.borderSizeMedium / 2)
 
         anchors {
             left: root.objectName == "SelectionEnd" ? root.right : undefined

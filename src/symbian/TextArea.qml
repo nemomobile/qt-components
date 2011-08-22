@@ -248,7 +248,7 @@ FocusScopeItem {
         Flickable {
             id: flick
 
-            property real tiny: Math.round(platformStyle.graphicSizeTiny / 2)
+            property real tiny: Math.round(platformStyle.borderSizeMedium / 2)
 
             function ensureVisible(rect) {
                 if (Math.round(contentX) > Math.round(rect.x))
