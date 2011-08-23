@@ -91,7 +91,7 @@ Page {
                         anchors.verticalCenter: titleField.verticalCenter
                         anchors.right: titleField.right
 
-                        source: "image://theme/icon-m-framework-close"
+                        source: "image://theme/icon-m-common-dialog-close"
 
                         MouseArea {
                             id: closeButtonArea
