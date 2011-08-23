@@ -101,23 +101,17 @@ ImplicitSizeItem {
 
         Image {
             id: texture
-            width: foreground.width + sourceSize.width
+            width: foreground.width + sourceSize.width + 25
             height: foreground.height
             fillMode: Image.Tile
 
             property real xTemp;                 
-            property int modTemp;
            
             source: indeterminate ? platformStyle.unknownTexture : platformStyle.knownTexture
  
-            // move image only if natural number has changed                                                 
             onXTempChanged: {   
-                var mod = Math.abs(Math.round(texture.xTemp % 1));
-                if (texture.modTemp != mod)                               
-                {                                                    
-                    texture.x = Math.round(texture.xTemp);
-                    texture.modTemp = mod;                           
-                }                                                  
+                // Control the animation speed with this multiplier and the NumberAnimation duration divider
+                texture.x = Math.round(texture.xTemp) * 4;
             }
 
             NumberAnimation on xTemp {
@@ -125,8 +119,8 @@ ImplicitSizeItem {
                 loops: Animation.Infinite
                 from: -texture.sourceSize.width
                 to: 0
-                // time = distance / speed, where speed = 40 from the platformStyle
-                duration: (1000 * texture.sourceSize.width / 40)
+                // time = distance / speed, where speed = 10 from the platformStyle
+                duration: (1000 * texture.sourceSize.width / 10)
             }
         }
     }
