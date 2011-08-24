@@ -130,8 +130,9 @@ bool MDeclarativeMouseFilter::sceneEvent(QEvent *event)
             pressAndHoldTimerId = -1;
             if (abs(dist.x()) < abs(dist.y())) {
                 setKeepMouseGrab(false);
-                if (scene() && parentItem()) {
+                if (scene() && parentItem() && delayedPressEvent) {
                     scene()->sendEvent(parentItem(), delayedPressEvent);
+                    emit delayedPressSent();
                     return true;
                 }
             } else {

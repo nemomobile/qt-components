@@ -89,6 +89,7 @@ signals:
     void mousePositionChanged(MDeclarativeMouseEvent *mouse);
 
     void pressed(MDeclarativeMouseEvent *mouse);
+    void delayedPressSent();
     void pressAndHold(MDeclarativeMouseEvent *mouse);
     void released(MDeclarativeMouseEvent *mouse);
     void finished(); // sent after release has been handled in the target item

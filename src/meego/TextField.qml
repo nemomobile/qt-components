@@ -422,10 +422,12 @@ FocusScope {
 
             property bool attemptToActivate: false
             property bool pressOnPreedit: false
+            property int oldCursorPosition: 0
 
             onPressed: {
                 var mousePosition = textInput.positionAt(mouse.x,TextInput.CursorOnCharacter);
                 pressOnPreedit = textInput.cursorPosition==mousePosition
+                oldCursorPosition = textInput.cursorPosition;
                 var preeditDisabled = (
                         root.inputMethodHints&
                         (
@@ -441,6 +443,12 @@ FocusScope {
 
                 attemptToActivate = !pressOnPreedit && !root.readOnly && !preeditDisabled && root.activeFocus && !(mousePosition == 0 || TextAreaHelper.atSpace(mousePosition - 1));
                 mouse.filtered = true;
+            }
+
+            onDelayedPressSent: {
+                if (textInput.preedit) {
+                    textInput.cursorPosition = oldCursorPosition;
+                }
             }
 
             onHorizontalDrag: {
