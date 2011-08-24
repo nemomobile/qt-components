@@ -131,8 +131,6 @@ Window {
 
         Behavior on height { PropertyAnimation { duration: 200 } }
 
-        Component.onCompleted: inputContext.autoMove = softwareInputPanelEnabled
-
         states: [
             State {
                 name: "Visible"; when: inputContext.visible && softwareInputPanelEnabled

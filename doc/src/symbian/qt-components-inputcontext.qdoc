@@ -64,13 +64,3 @@
     The software input panel's visibility. The value changes when the software
     input panel appears and disappears.
 */
-
-/*!
-    \qmlproperty bool InputContext::autoMove
-
-    Qt Symbian has automatic translation to ensure cursor visibility when the
-    software input panel is visible. This property enables developer to disable
-    automatic translation when desired. Automatic translation work well with
-    simple layouts. With complex layouts, include software input panel geometry
-    as part of layout and disable auto translation.
-*/

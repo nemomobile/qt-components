@@ -69,9 +69,7 @@
     The notepad example's layout is not affected by the screen orientation. The
     example's TextArea is anchored from top and bottom to make it flexible. The
     bottom is anchored to the \l Item that represent software input panels
-    geometry. Since the layout is accommodating a SIP, the
-    \l{InputContext::autoMove}{inputContext.autoMove}
-    property is set to \c false.
+    geometry.
 
     \snippet src/snippets/symbian/snippet-notepad.qml 0
 

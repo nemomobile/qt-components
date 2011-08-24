@@ -65,7 +65,6 @@ private slots:
     void defaultPropertyValues();
     void height();
     void visible();
-    void autoMove();
 
 private:
     QScopedPointer<QDeclarativeView> m_view;
@@ -205,19 +204,6 @@ void tst_SDeclarativeInputContext::visible()
     QEXPECT_FAIL("", "Missing implementation from qcoefepinputcontext_s60, http://bugreports.qt.nokia.com/browse/QTBUG-20153", Continue);
 #endif // Q_OS_SYMBIAN
     QCOMPARE(m_inputContext->property("visible").toBool(), false);
-}
-
-void tst_SDeclarativeInputContext::autoMove()
-{
-    QSignalSpy platformTranslationChangedSpy(m_inputContext, SIGNAL(autoMoveChanged()));
-
-    m_inputContext->setProperty("autoMove", false);
-    QTRY_COMPARE(platformTranslationChangedSpy.count(), 1);
-    QCOMPARE(m_inputContext->property("autoMove").toBool(), false);
-
-    m_inputContext->setProperty("autoMove", true);
-    QTRY_COMPARE(platformTranslationChangedSpy.count(), 2);
-    QCOMPARE(m_inputContext->property("autoMove").toBool(), true);
 }
 
 QTEST_MAIN(tst_SDeclarativeInputContext)
