@@ -75,6 +75,7 @@ Item {
                 contentWidth: colorfulSquare.width
                 contentHeight: colorfulSquare.height
                 clip: true
+                interactive: flickableSettingCheckBox.checked
                 visible: true
 
                 Rectangle {
@@ -152,11 +153,11 @@ Item {
         }
 
         CheckBox {
+            id: flickableSettingCheckBox
             width: 150
             height: 50
             text: "Flickable"
-            checked: false
-            onClicked: flickableArea.interactive = checked
+            checked: true
         }
 
         CheckBox {
