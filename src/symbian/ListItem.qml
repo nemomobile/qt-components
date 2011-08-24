@@ -144,7 +144,10 @@ Item {
         id: subItemIcon
 
         Image {
-            source: privateStyle.imagePath("qtg_graf_drill_down_indicator", root.platformInverted)
+            source: privateStyle.imagePath(
+                root.enabled ? "qtg_graf_drill_down_indicator"
+                             : "qtg_graf_drill_down_indicator_disabled",
+                root.platformInverted)
             mirror: LayoutMirroring.enabled
             sourceSize.width: platformStyle.graphicSizeSmall
             sourceSize.height: platformStyle.graphicSizeSmall
