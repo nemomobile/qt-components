@@ -45,55 +45,54 @@ import "../components"
 
 Item {
     id: root
-    anchors.fill: parent
+
     property variant imageSizes: ["Undefined", "Tiny", "Small", "Medium", "Large"]
     property bool platformInverted: false
+
+    anchors.fill: parent
+
     Connections {
         target: platformPopupManager
         onPopupStackDepthChanged: if (platformPopupManager.popupStackDepth == 0) listView.forceActiveFocus()
     }
 
-    Column {
-        anchors.fill: parent
+    Connections {
+        target: optionsButton
+        onClicked: menu.open()
+    }
 
-        ListView {
-            id: listView
-            height: parent.height - statusBar.height
-            width: parent.width
-            focus: true
-            clip: true
-            model: ListModel { id: model }
-            delegate: defaultDelegate
-            Component.onCompleted: {
-                 initializeDefault() // Initial fill of the model
-             }
-            ScrollBar {
-                flickableItem: listView
-                anchors { top: listView.top; right: listView.right }
-            }
+    ListView {
+        id: listView
+
+        anchors {
+            left: parent.left; right: parent.right
+            top: parent.top; bottom: statusBar.top
         }
-        Rectangle {
-            id: statusBar
-            height: 40
-            width: parent.width
-            color: "darkgray"
-            border.color: "gray"
 
-            // Do not mirror so that the menu button remains in the right side always
-            LayoutMirroring.enabled: false
-            LayoutMirroring.childrenInherit: true
+        clip: true
+        focus: true
+        model: ListModel { id: model }
+        delegate: defaultDelegate
 
-            Label {
-                anchors { left: parent.left; leftMargin: 10; verticalCenter: parent.verticalCenter }
-                text: "Current item: " + listView.currentIndex
-            }
+        Component.onCompleted: initializeDefault()
 
-            Button {
-                text: "Menu"
-                width: 100
-                anchors { right: parent.right; rightMargin: 10; verticalCenter: parent.verticalCenter }
-                onClicked: menu.open()
-            }
+        ScrollBar {
+            flickableItem: listView
+            anchors { top: listView.top; right: listView.right }
+        }
+    }
+
+    Rectangle {
+        id: statusBar
+
+        anchors { left: parent.left; right: parent.right; bottom: parent.bottom }
+        border.color: platformInverted ? platformStyle.colorDisabledMidInverted : platformStyle.colorDisabledMid
+        color: platformInverted ? platformStyle.colorBackgroundInverted : platformStyle.colorBackground
+        height: platformStyle.graphicSizeSmall
+
+        Label {
+            anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
+            text: "Current item: " + listView.currentIndex
         }
     }
 
@@ -133,11 +132,11 @@ Item {
 
         content: MenuLayout {
             MenuItem {
-                text: "Show/Hide List header"
+                text: (listView.header ? "Hide" : "Show") + " List header"
                 onClicked: listView.header = listView.header ? null : listHeader
             }
             MenuItem {
-                text: "Show/Hide Sections"
+                text: (listView.section.delegate ? "Hide" : "Show") + " Sections"
                 onClicked: {
                     // Models field to group by
                     listView.section.property = "image"
@@ -145,59 +144,30 @@ Item {
                     listView.section.delegate = listView.section.delegate ? null : sectionDelegate
                 }
             }
-            MenuItem {
-                text: "Back"
-                onClicked: pageStack.pop()
-            }
         }
     }
 
-    Dialog {
+    CommonDialog {
         id: notificationDialog
+
         property string notificationText: ""
-        title: Label {
-            text: "Item clicked"
-            anchors.fill: parent
-        }
-        buttons: Button {
-            text: "Ok"
-            width: parent.width
-            height: 50
-            onClicked: notificationDialog.accept()
-        }
-        content: Text {
+
+        titleText: "Item clicked"
+        content: Label {
+            anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
             text: notificationDialog.notificationText
-            font { bold: true; pixelSize: 16 }
-            anchors.fill: parent
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
         }
+
+        onClickedOutside: close()
     }
 
-    Dialog {
+    CommonDialog {
         id: createItemDialog
-        title: Label {
-            text: "Create new list item"
-            anchors.fill: parent
-        }
-        buttons: Row {
-            height: 60
-            width: parent.width
 
-            Button {
-                text: "Ok"
-                width: parent.width / 2
-                height: parent.height
-                onClicked: createItemDialog.accept()
-            }
+        titleText: "Create new list item"
 
-            Button {
-                text: "Cancel"
-                width: parent.width / 2
-                height: parent.height
-                onClicked: createItemDialog.reject()
-            }
-        }
+        buttonTexts: ["Done"]
+
         content: Item {
             id: createItemContainer
             height: createItemGrid.height
@@ -271,7 +241,8 @@ Item {
                 }
             }
         }
-        onAccepted: {
+
+        onButtonClicked: {
             listView.model.insert(listView.currentIndex + 1, {
                                   "title": titleField.text,
                                   "subTitle": subTitleField.text,
@@ -283,6 +254,8 @@ Item {
                                   "indicator": false
         } )
         }
+
+        onClickedOutside: close()
     }
 
     function initializeDefault() {
@@ -377,8 +350,9 @@ Item {
                 id: txtHeading
                 anchors.fill: listHeader.paddingItem
                 role: "Heading"
-                text: "Test list"
+                text: "Test list (custom alignment)"
                 platformInverted: root.platformInverted
+                horizontalAlignment: Text.AlignLeft
             }
         }
     }
