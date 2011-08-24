@@ -54,7 +54,7 @@ Text {
     }
     color: internal.normalColor
     elide: Text.ElideRight
-    horizontalAlignment: Text.AlignLeft
+    horizontalAlignment: root.role != "Heading" ? Text.AlignLeft : Text.AlignRight
 
     // Performance optimization:
     // Use value assignment when property changes instead of binding to js function
