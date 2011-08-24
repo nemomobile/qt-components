@@ -173,7 +173,8 @@ MouseArea {
                 } else {
                     editor.cursorPosition = newPosition;
                 }
-                magnifier.show();
+                if (!editor.readOnly || internal.editorHasSelection)
+                    magnifier.show();
                 internal.handleMoved = true;
             }
         }
