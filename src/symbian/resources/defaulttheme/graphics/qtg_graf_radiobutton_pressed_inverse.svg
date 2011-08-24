@@ -1,33 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Tiny//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-tiny.dtd">
 <svg baseProfile="tiny" height="42px" version="1.1" viewBox="0 0 42 42" width="42px" x="0px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px">
-<path d="M21,1L21,1C6.186,1,1,6.184,1,21c0,14.818,5.186,20,20,20l0,0c14.814,0,20-5.182,20-20  C41,6.184,35.814,1,21,1z" fill="#1080DD"/>
-<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_1_" x1="20.9995" x2="20.9995" y1="1.3335" y2="41.7164">
+<path d="M21,3.857L21,3.857C8.301,3.857,3.857,8.3,3.857,21c0,12.701,4.443,17.143,17.143,17.143l0,0  c12.697,0,17.143-4.441,17.143-17.143C38.143,8.3,33.697,3.857,21,3.857z" fill="#1080DD"/>
+<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_1_" x1="20.9995" x2="20.9995" y1="4.1431" y2="38.7565">
 <stop offset="0" style="stop-color:#FFFFFF"/>
 <stop offset="0.1404" style="stop-color:#FFFFFF;stop-opacity:0.8596"/>
 <stop offset="1" style="stop-color:#FFFFFF;stop-opacity:0"/>
 </linearGradient>
-<path d="M21,1L21,1C6.186,1,1,6.184,1,21c0,14.818,5.186,20,20,20l0,0c14.814,0,20-5.182,20-20  C41,6.184,35.814,1,21,1z" fill="url(#SVGID_1_)" fill-opacity="0.3" stroke-opacity="0.3"/>
-<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_2_" x1="21.0005" x2="21.0005" y1="42" y2="4.882813e-004">
+<path d="M21,3.857L21,3.857C8.301,3.857,3.857,8.3,3.857,21  c0,12.701,4.443,17.143,17.143,17.143l0,0c12.697,0,17.143-4.441,17.143-17.143C38.143,8.3,33.697,3.857,21,3.857z" fill="url(#SVGID_1_)" fill-opacity="0.3" stroke-opacity="0.3"/>
+<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_2_" x1="21.0005" x2="21.0005" y1="39" y2="3.0005">
 <stop offset="0" style="stop-color:#FFFFFF"/>
 <stop offset="1" style="stop-color:#FFFFFF;stop-opacity:0.5"/>
 </linearGradient>
-<path d="M21,1c14.814,0,20,5.184,20,20c0,14.818-5.186,20-20,20l0,0C6.186,41,1,35.818,1,21  C1,6.184,6.186,1,21,1L21,1 M21,0L21,0C5.691,0,0,5.691,0,21c0,15.31,5.691,21,21,21l0,0c15.309,0,21-5.69,21-21  C42,5.691,36.309,0,21,0L21,0z" fill="url(#SVGID_2_)" fill-opacity="0.35" stroke-opacity="0.35"/>
-<path d="M21,1C6.186,1,1,6.184,1,21c0,14.818,5.186,20,20,20s20-5.182,20-20  C41,6.184,35.814,1,21,1z M21,38C7.973,38,4,34.028,4,21S7.973,4,21,4c13.029,0,17,3.972,17,17S34.029,38,21,38z" fill="url(#SVGID_3_)" fill-opacity="0.05" stroke-opacity="0.05"/>
-<path d="M21,1C6.186,1,1,6.184,1,21c0,14.818,5.186,20,20,20s20-5.182,20-20  C41,6.184,35.814,1,21,1z M21,39C7.375,39,3,34.626,3,21S7.375,3,21,3c13.627,0,18,4.374,18,18S34.627,39,21,39z" fill="url(#SVGID_3_)" fill-opacity="0.1" stroke-opacity="0.1"/>
-<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_5_" x1="20.9995" x2="20.9995" y1="1.75" y2="40.0005">
+<path d="M21,3.857C33.697,3.857,38.143,8.3,38.143,21c0,12.701-4.445,17.143-17.143,17.143  l0,0C8.301,38.143,3.857,33.701,3.857,21C3.857,8.3,8.301,3.857,21,3.857L21,3.857 M21,3L21,3C7.879,3,3,7.878,3,21s4.879,18,18,18  l0,0c13.121,0,18-4.878,18-18S34.121,3,21,3L21,3z" fill="url(#SVGID_2_)" fill-opacity="0.35" stroke-opacity="0.35"/>
+<path d="M21,3.857C8.301,3.857,3.857,8.3,3.857,21c0,12.701,4.443,17.143,17.143,17.143  c12.697,0,17.143-4.441,17.143-17.143C38.143,8.3,33.697,3.857,21,3.857z M21,35.571C9.834,35.571,6.428,32.167,6.428,21  S9.834,6.429,21,6.429c11.168,0,14.57,3.404,14.57,14.571S32.168,35.571,21,35.571z" fill="url(#SVGID_3_)" fill-opacity="0.05" stroke-opacity="0.05"/>
+<path d="M21,3.857C8.301,3.857,3.857,8.3,3.857,21c0,12.701,4.443,17.143,17.143,17.143  c12.697,0,17.143-4.441,17.143-17.143C38.143,8.3,33.697,3.857,21,3.857z M21,36.429C9.32,36.429,5.57,32.68,5.57,21  S9.32,5.571,21,5.571S36.428,9.32,36.428,21S32.68,36.429,21,36.429z" fill="url(#SVGID_3_)" fill-opacity="0.1" stroke-opacity="0.1"/>
+<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_5_" x1="20.9995" x2="20.9995" y1="4.5005" y2="37.2861">
 <stop offset="0" style="stop-color:#000000"/>
 <stop offset="1" style="stop-color:#000000;stop-opacity:0"/>
 </linearGradient>
-<path d="M21,1C6.186,1,1,6.184,1,21c0,14.818,5.186,20,20,20s20-5.182,20-20  C41,6.184,35.814,1,21,1z M21,40C6.795,40,2,35.206,2,21C2,6.795,6.795,2,21,2c14.207,0,19,4.795,19,19C40,35.206,35.207,40,21,40z" fill="url(#SVGID_5_)" fill-opacity="0.15" stroke-opacity="0.15"/>
-<path d="M21,14.431c-6.382,0-7.771,2.768-7.771,7.861c0,5.104,1.43,7.873,7.771,7.873c6.381,0,7.77-2.762,7.77-7.854  C28.77,17.208,27.344,14.431,21,14.431z" fill-opacity="0.5" stroke-opacity="0.5"/>
-<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_6_" x1="20.999" x2="20.999" y1="13.0361" y2="29.7569">
+<path d="M21,3.857C8.301,3.857,3.857,8.3,3.857,21c0,12.701,4.443,17.143,17.143,17.143  c12.697,0,17.143-4.441,17.143-17.143C38.143,8.3,33.697,3.857,21,3.857z M21,37.285C8.824,37.285,4.715,33.177,4.715,21  C4.715,8.824,8.824,4.714,21,4.714c12.178,0,16.285,4.11,16.285,16.286C37.285,33.177,33.178,37.285,21,37.285z" fill="url(#SVGID_5_)" fill-opacity="0.15" stroke-opacity="0.15"/>
+<path d="M21,15.369c-5.471,0-6.662,2.372-6.662,6.738c0,4.374,1.227,6.748,6.662,6.748c5.469,0,6.66-2.367,6.66-6.731  C27.66,17.75,26.438,15.369,21,15.369z" fill-opacity="0.5" stroke-opacity="0.5"/>
+<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_6_" x1="20.9985" x2="20.9985" y1="14.1733" y2="28.5054">
 <stop offset="0" style="stop-color:#1477CB"/>
 <stop offset="1" style="stop-color:#126CD7"/>
 </linearGradient>
-<path d="M21,12.835c-6.382,0-7.771,2.77-7.771,7.861c0,5.104,1.43,7.875,7.771,7.875  c6.381,0,7.77-2.764,7.77-7.854C28.77,15.612,27.344,12.835,21,12.835z" fill="url(#SVGID_6_)"/>
+<path d="M21,14.001c-5.471,0-6.662,2.374-6.662,6.738c0,4.375,1.227,6.75,6.662,6.75  c5.469,0,6.66-2.368,6.66-6.731C27.66,16.382,26.438,14.001,21,14.001z" fill="url(#SVGID_6_)"/>
+<rect fill="none" height="42" width="42"/>
 <defs>
-<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_3_" x1="20.9995" x2="20.9995" y1="1.75" y2="40.0005">
+<linearGradient gradientUnits="userSpaceOnUse" id="SVGID_3_" x1="20.9995" x2="20.9995" y1="4.5005" y2="37.2861">
 <stop offset="0" style="stop-color:#000000"/>
 <stop offset="1" style="stop-color:#000000;stop-opacity:0"/>
 </linearGradient>
