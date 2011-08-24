@@ -96,3 +96,14 @@
     \sa PageStack::push
 
 */
+
+/*!
+    \qmlproperty bool ApplicationWindow::softwareInputPanelEnabled
+    \since 1.1
+	
+	ApplicationWindows content area size can be adjusted to accomodate
+	software input panel. When proberty is set \c true size is adjusted.
+	With \c false content size is not adjusted.
+	
+	The default value is \c false.
+*/
