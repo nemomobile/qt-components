@@ -1,12 +1,18 @@
-qt-components (1.1~git20110824-1) maverick; urgency=low
+qt-components (1.1~git20110824-2) maverick; urgency=low
 
   * Fixes: NB#278574 "import com.meego.extras 1.0" fails in PR1.1
+
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Wed, 24 Aug 2011 15:35:00 +0300
+
+qt-components (1.1~git20110824-1) maverick; urgency=low
+
+  * Fx: 278574 "import com.meego.extras 1.0" fails in PR1.1 (moved to next release)
 
  -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Wed, 24 Aug 2011 15:00:00 +0300
 
 qt-components (1.1~git20110819-1) maverick; urgency=low
 
-  * Fixes: NB#260181 Orientation switch transition is incorrect
+  * 260181 Orientation switch transition is incorrect (REOPENED)
 
  -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Fri, 19 Aug 2011 10:35:00 +0300
 
