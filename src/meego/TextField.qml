@@ -536,8 +536,6 @@ FocusScope {
                                            (mouseY > Popup.geometry().top && mouseY < Popup.geometry().bottom))) {
                 return;
             }
-
-            root.platformCloseSoftwareInputPanel();
             root.parent.focus = true;
         }
     }
