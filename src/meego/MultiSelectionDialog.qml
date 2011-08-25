@@ -136,7 +136,7 @@ CommonDialog {
     content: Item {
 
         id: selectionContent
-        property int listViewHeight : root.model.count * root.platformStyle.itemHeight
+        property int listViewHeight : root.model ? root.model.count * root.platformStyle.itemHeight : 0
         property int maxListViewHeight : visualParent
                                          ? visualParent.height * 0.87
                                                  - buttonRow.childrenRect.height - root.platformStyle.contentSpacing - root.platformStyle.buttonsTopMargin
@@ -152,6 +152,7 @@ CommonDialog {
 
         ListView {
             id: selectionListView
+            model: ListModel {}
 
             currentIndex : -1
             anchors.fill: parent
