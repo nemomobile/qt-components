@@ -397,7 +397,8 @@ FocusScopeItem {
             anchors {
                 left: flick.left;
                 leftMargin: -flick.tiny;
-                bottom: flick.bottom;
+                bottom: container.bottom;
+                bottomMargin: -flick.tiny / 2
                 rightMargin: vertical.opacity ? vertical.width : 0
             }
             flickableItem: flick
