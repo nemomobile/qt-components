@@ -241,3 +241,7 @@
 
     Closes a software input panel like a virtual keyboard shown on the screen, useful for customizing when you want the input keyboard to be shown and hidden in your application.
 */
+
+/*!
+    Note that inside Flickable item set Flickable's pressDelay property (e.g. to 100) to avoid undesirable effects.
+*/
