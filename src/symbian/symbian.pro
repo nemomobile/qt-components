@@ -165,6 +165,7 @@ symbian {
     TARGET.UID3 = 0x2003DE93
     MMP_RULES += EXPORTUNFROZEN
     MMP_RULES += SMPSAFE
+    VERSION = 10.0.1
 
     LIBS += -lws32 // For CWsScreenDevice
     LIBS += -lcone // For EikonEnv / CoeEnv
