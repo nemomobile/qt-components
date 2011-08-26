@@ -211,7 +211,8 @@ Item {
             id: highlight
             objectName: "highlight"
             width: tumblerColumn ? tumblerColumn.width : 0
-            source: "image://theme/meegotouch-button-objectmenu-background-background-selected-horizontal-right"
+            height: C.TUMBLER_ROW_HEIGHT
+            source: "image://theme/" + theme.colorString + "meegotouch-list-fullwidth-background-selected-horizontal-center"
             fillMode: Image.TileHorizontally
         }
     }

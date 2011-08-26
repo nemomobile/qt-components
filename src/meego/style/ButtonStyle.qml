@@ -83,10 +83,10 @@ Style {
     property string position: ""
 
     property url background: "image://theme/meegotouch-button" + __invertedString + "-background" + (position ? "-" + position : "")
-    property url pressedBackground: "image://theme/meegotouch-button" + __invertedString + "-background-pressed" + (position ? "-" + position : "")
+    property url pressedBackground: "image://theme/" + __colorString + "meegotouch-button" + __invertedString + "-background-pressed" + (position ? "-" + position : "")
     property url disabledBackground: "image://theme/meegotouch-button" + __invertedString + "-background-disabled" + (position ? "-" + position : "")
-    property url checkedBackground: "image://theme/meegotouch-button" + __invertedString + "-background-selected" + (position ? "-" + position : "")
-    property url checkedDisabledBackground: "image://theme/meegotouch-button" + __invertedString + "-background-disabled-selected" + (position ? "-" + position : "")
+    property url checkedBackground: "image://theme/" + __colorString + "meegotouch-button" + __invertedString + "-background-selected" + (position ? "-" + position : "")
+    property url checkedDisabledBackground: "image://theme/" + __colorString + "meegotouch-button" + __invertedString + "-background-disabled-selected" + (position ? "-" + position : "")
     property url dialog: "image://theme/meegotouch-dialog-button-negative"
     property url pressedDialog:  "image://theme/meegotouch-dialog-button-negative-pressed"
 

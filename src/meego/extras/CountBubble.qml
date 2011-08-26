@@ -67,7 +67,7 @@ ImplicitSizeItem {
     implicitHeight: largeSized ? 32:24
 
     BorderImage {
-        source: "image://theme/meegotouch-countbubble-background"+(largeSized ? "-large":"")
+        source: "image://theme/" + theme.colorString + "meegotouch-countbubble-background"+(largeSized ? "-large":"")
         anchors.fill: parent
         border { left: 10; top: 10; right: 10; bottom: 10 }
     }

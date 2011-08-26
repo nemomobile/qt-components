@@ -82,8 +82,8 @@ DialogStyle {
     property url itemBackground: ""
     property color itemBackgroundColor: "transparent"
     property color itemSelectedBackgroundColor: "#3D3D3D"
-    property url itemSelectedBackground: "" // "image://theme/meegotouch-list-fullwidth-background-selected"
-    property url itemPressedBackground: "image://theme/meegotouch-panel-inverted-background-pressed"
+    property url itemSelectedBackground: "" // "image://theme/" + __colorString + "meegotouch-list-fullwidth-background-selected"
+    property url itemPressedBackground: "image://theme/" + __colorString + "meegotouch-panel-inverted-background-pressed"
 
     property int buttonsTopMargin: 30 // ToDo: evaluate correct value
 

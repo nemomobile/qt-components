@@ -58,7 +58,7 @@ Style {
     property url handleBackground: "image://theme/meegotouch-slider-handle"+__invertedString+"-background-horizontal"
     property url handleBackgroundPressed: "image://theme/meegotouch-slider-handle"+__invertedString+"-background-pressed-horizontal"
     property url grooveItemBackground: "image://theme/meegotouch-slider"+__invertedString+"-background-horizontal"
-    property url grooveItemElapsedBackground: "image://theme/meegotouch-slider-elapsed"+__invertedString+"-background-horizontal"
+    property url grooveItemElapsedBackground: "image://theme/" + __colorString + "meegotouch-slider-elapsed"+__invertedString+"-background-horizontal"
 
     // Mouse
     property real mouseMarginRight: 0.0

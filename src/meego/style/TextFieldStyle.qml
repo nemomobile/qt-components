@@ -45,12 +45,12 @@ Item {
     property alias textFont: textProperties.font
     property color textColor: UI.COLOR_FOREGROUND
     property color selectedTextColor: UI.COLOR_INVERTED_FOREGROUND
-    property color selectionColor: UI.COLOR_SELECT
+    property color selectionColor: theme.selectionColor
 
     property color promptTextColor: UI.COLOR_SECONDARY_FOREGROUND
 
     property url background: "image://theme/meegotouch-textedit-background"
-    property url backgroundSelected: "image://theme/meegotouch-textedit-background-selected"
+    property url backgroundSelected: "image://theme/" + theme.colorString + "meegotouch-textedit-background-selected"
     property url backgroundDisabled: "image://theme/meegotouch-textedit-background-disabled"
     property url backgroundError: "image://theme/meegotouch-textedit-background-error"
     property real backgroundCornerMargin: UI.CORNER_MARGINS

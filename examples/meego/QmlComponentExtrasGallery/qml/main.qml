@@ -66,8 +66,25 @@ PageStackWindow {
         MenuLayout {
             MenuItem {id: b1; text: "Landscape"; onClicked: screen.allowedOrientations = Screen.Landscape}
             MenuItem {id: b2; text: "Portrait"; onClicked: screen.allowedOrientations = Screen.Portrait}
-            MenuItem {id: b3; text: "Item 3"; onClicked: myMenu.accept()}
-            MenuItem {id: b4; text: "Item 4"; onClicked: myMenu.accept()}
+            MenuItem {id: b3; text: "Color theme 1"; onClicked: theme.colorScheme = 1 }
+            MenuItem {id: b4; text: "Color theme 2"; onClicked: theme.colorScheme = 2 }
+            MenuItem {id: b5; text: "Color theme 3"; onClicked: theme.colorScheme = 3 }
+            MenuItem {id: b6; text: "Color theme 4"; onClicked: theme.colorScheme = 4 }
+            MenuItem {id: b7; text: "Color theme 5"; onClicked: theme.colorScheme = 5 }
+            MenuItem {id: b8; text: "Color theme 6"; onClicked: theme.colorScheme = 6 }
+            MenuItem {id: b9; text: "Color theme 7"; onClicked: theme.colorScheme = 7 }
+            MenuItem {id: b10; text: "Color theme 8"; onClicked: theme.colorScheme = 8 }
+            MenuItem {id: b11; text: "Color theme 9"; onClicked: theme.colorScheme = 9 }
+            MenuItem {id: b12; text: "Color theme 10"; onClicked: theme.colorScheme = 10 }
+            MenuItem {id: b13; text: "Color theme 11"; onClicked: theme.colorScheme = 11 }
+            MenuItem {id: b14; text: "Color theme 12"; onClicked: theme.colorScheme = 12 }
+            MenuItem {id: b15; text: "Color theme 13"; onClicked: theme.colorScheme = 13 }
+            MenuItem {id: b16; text: "Color theme 14"; onClicked: theme.colorScheme = 14 }
+            MenuItem {id: b17; text: "Color theme 15"; onClicked: theme.colorScheme = 15 }
+            MenuItem {id: b18; text: "Color theme 16"; onClicked: theme.colorScheme = 16 }
+            MenuItem {id: b19; text: "Color theme 17"; onClicked: theme.colorScheme = 17 }
+            MenuItem {id: b20; text: "Color theme 18"; onClicked: theme.colorScheme = 18 }
+            MenuItem {id: b21; text: "Color theme 19"; onClicked: theme.colorScheme = 19 }
         }
     }
 }

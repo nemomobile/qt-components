@@ -46,7 +46,7 @@ Style {
     property int maxKnobX: 28
 
     // Slider
-    property url switchOn: "image://theme/meegotouch-switch-on"+__invertedString
+    property url switchOn: "image://theme/" + __colorString + "meegotouch-switch-on"+__invertedString
     property url switchOff: "image://theme/meegotouch-switch-off"+__invertedString
 
     // Knob

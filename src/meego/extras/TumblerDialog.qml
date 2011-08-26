@@ -86,7 +86,7 @@ Dialog {
         id: title
         objectName: "titleText"
         visible: text.length > 0
-        color: "#1080DD"
+        color: theme.selectionColor
         font { pixelSize: 32; family: C.FONT_FAMILY_BOLD }
         elide: Text.ElideRight
     }

@@ -45,6 +45,7 @@ QtObject {
     // Settings
     property bool inverted: theme.inverted
     property string __invertedString: inverted? "-inverted" : ""
+    property string __colorString: theme.colorString
 
     // some style classes like SelectionDialogStyle are using nested elements (for example Text),
     // which isn't allowed by QtObject; this fix makes this possible

@@ -68,24 +68,25 @@ PageStackWindow {
         id: myMenu
 //        visualParent: pageStack
         MenuLayout {
-            MenuItem { text: "List title #1" }
-            MenuItem { text: "List title #2" }
-            MenuItem { text: "List title #3" }
-            MenuItem { text: "List title #4" }
-            MenuItem { text: "List title #5" }
-            MenuItem { text: "List title #6" }
-            MenuItem { text: "List title #7" }
-            MenuItem { text: "List title #8" }
-            MenuItem { text: "List title #9" }
-            MenuItem { text: "List title #10" }
-            MenuItem { text: "List title #11" }
-            MenuItem { text: "List title #12" }
-            MenuItem { text: "List title #14" }
-            MenuItem { text: "List title #15" }
-            MenuItem { text: "List title #16" }
-            MenuItem { text: "List title #17" }
-            MenuItem { text: "List title #18" }
-            MenuItem { text: "List title #19" }
+            MenuItem { text: "Theme color 1"; onClicked: theme.colorScheme = 1 }
+            MenuItem { text: "Theme color 2"; onClicked: theme.colorScheme = 2 }
+            MenuItem { text: "Theme color 3"; onClicked: theme.colorScheme = 3 }
+            MenuItem { text: "Theme color 4"; onClicked: theme.colorScheme = 4 }
+            MenuItem { text: "Theme color 5"; onClicked: theme.colorScheme = 5 }
+            MenuItem { text: "Theme color 6"; onClicked: theme.colorScheme = 6 }
+            MenuItem { text: "Theme color 7"; onClicked: theme.colorScheme = 7 }
+            MenuItem { text: "Theme color 8"; onClicked: theme.colorScheme = 8 }
+            MenuItem { text: "Theme color 9"; onClicked: theme.colorScheme = 9 }
+            MenuItem { text: "Theme color 10"; onClicked: theme.colorScheme = 10 }
+            MenuItem { text: "Theme color 11"; onClicked: theme.colorScheme = 11 }
+            MenuItem { text: "Theme color 12"; onClicked: theme.colorScheme = 12 }
+            MenuItem { text: "Theme color 13"; onClicked: theme.colorScheme = 13 }
+            MenuItem { text: "Theme color 14"; onClicked: theme.colorScheme = 14 }
+            MenuItem { text: "Theme color 15"; onClicked: theme.colorScheme = 15 }
+            MenuItem { text: "Theme color 16"; onClicked: theme.colorScheme = 16 }
+            MenuItem { text: "Theme color 17"; onClicked: theme.colorScheme = 17 }
+            MenuItem { text: "Theme color 18"; onClicked: theme.colorScheme = 18 }
+            MenuItem { text: "Theme color 19"; onClicked: theme.colorScheme = 19 }
             MenuItem { text: "Very long and extremely verbose ListTitle #20" }
         }
     }
