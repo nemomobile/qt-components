@@ -126,7 +126,7 @@ void tst_menu::scrollBarVisibility()
     // open - scrollbar should be visible for a while
     QMetaObject::invokeMethod(menu, "open");
     QTRY_COMPARE(menu->property("status").toInt(), 1); // DialogStatus.Open
-    QVERIFY(scrollBar->property("opacity").toReal() > qreal(0.9));
+    QVERIFY(scrollBar->property("opacity").toReal() > qreal(0.5));
     QTRY_VERIFY(scrollBar->property("opacity").toReal() < qreal(0.1));
 
     // close (just to return to non-shown state)

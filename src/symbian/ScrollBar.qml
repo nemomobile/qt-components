@@ -113,7 +113,7 @@ Item {
         property int handleX: flickableItem ? Math.floor(handle.x / flickableItem.width * flickableItem.contentWidth) : NaN
         property int maximumY: flickableItem ? Math.floor(Math.min(flickableItem.contentHeight - root.height, flickableItem.contentY)) : NaN
         property int maximumX: flickableItem ? Math.floor(Math.min(flickableItem.contentWidth - root.width, flickableItem.contentX)) : NaN
-        property bool scrollBarNeeded: hasScrollableContent()
+        property bool scrollBarNeeded: root.visible && hasScrollableContent()
         //Sets currentSection to empty string when flickableItem.currentSection is null
         property string currentSection: flickableItem ? flickableItem.currentSection || "" : ""
         //To be able to pressed on trackMouseArea, opacity needs to be greater than 0
@@ -158,21 +158,17 @@ Item {
             return Math.max(minHandleLength, length * totalLength)
         }
 
-        /**
-         * Special handler for idle state ""
-         * - in case if no flicking (flickableItem.moving) has occured
-         * - but there is a need (contents of Flickable have changed) indicate scrollable content
-         *
-         * See also other transition/action pairs in StateGroup below
-         */
+        // Show flash effect in case if no flicking (flickableItem.moving) has occured
+        // but there is a need to indicate scrollable content.
         onScrollBarNeededChanged: {
-            if (stateGroup.state != "")
-                return
-            if (scrollBarNeeded)
-                stateGroup.state = "Indicate"
-            else
-                idleEffect.restart()
+            if (stateGroup.state == "") {
+                if (scrollBarNeeded)
+                    flash()
+                else
+                    idleEffect.restart()
+            }
         }
+
         /**
          * Checks whether ScrollBar is needed or not
          * based on Flickable visibleArea height and width ratios
