@@ -74,9 +74,11 @@ _LIT(KTimeFormat, "%J%:1%T");
 
 class SDeclarativePrivate
 {
+    Q_DECLARE_PUBLIC(SDeclarative)
 public:
-    SDeclarativePrivate()
-        : mListInteractionMode(SDeclarative::TouchInteraction)
+    SDeclarativePrivate(SDeclarative *qq)
+        : q_ptr(qq)
+        , mListInteractionMode(SDeclarative::TouchInteraction)
         , foreground(true)
         , rightToLeftDisplayLanguage(false)
         , graphicsSharing(false) {
@@ -98,6 +100,7 @@ public:
 
     int allocatedMemory() const;
 
+    SDeclarative *q_ptr;
     SDeclarative::InteractionMode mListInteractionMode;
     QTimer timer;
     bool foreground;
@@ -122,9 +125,9 @@ int SDeclarativePrivate::allocatedMemory() const
 }
 
 SDeclarative::SDeclarative(QObject *parent) :
-    QObject(parent),
-    d_ptr(new SDeclarativePrivate)
+    QObject(parent)
 {
+    d_ptr.reset(new SDeclarativePrivate(this));
     d_ptr->timer.start(MINUTE_MS);
     connect(&d_ptr->timer, SIGNAL(timeout()), this, SIGNAL(currentTimeChanged()));
 
@@ -135,18 +138,21 @@ SDeclarative::SDeclarative(QObject *parent) :
 
 SDeclarative::~SDeclarative()
 {
-    d_ptr->timer.stop();
+    Q_D(SDeclarative);
+    d->timer.stop();
 }
 
 SDeclarative::InteractionMode SDeclarative::listInteractionMode() const
 {
-    return d_ptr->mListInteractionMode;
+    Q_D(const SDeclarative);
+    return d->mListInteractionMode;
 }
 
 void SDeclarative::setListInteractionMode(SDeclarative::InteractionMode mode)
 {
-    if (d_ptr->mListInteractionMode != mode) {
-        d_ptr->mListInteractionMode = mode;
+    Q_D(SDeclarative);
+    if (d->mListInteractionMode != mode) {
+        d->mListInteractionMode = mode;
         emit listInteractionModeChanged();
     }
 }
@@ -168,12 +174,14 @@ QString SDeclarative::currentTime()
 
 bool SDeclarative::isForeground()
 {
-    return d_ptr->foreground;
+    Q_D(SDeclarative);
+    return d->foreground;
 }
 
 int SDeclarative::privateAllocatedMemory() const
 {
-    return d_ptr->allocatedMemory();
+    Q_D(const SDeclarative);
+    return d->allocatedMemory();
 }
 
 void SDeclarative::privateClearIconCaches()
@@ -211,17 +219,20 @@ SDeclarative::S60Version SDeclarative::s60Version() const
 
 bool SDeclarative::rightToLeftDisplayLanguage() const
 {
-    return d_ptr->rightToLeftDisplayLanguage;
+    Q_D(const SDeclarative);
+    return d->rightToLeftDisplayLanguage;
 }
 
 void SDeclarative::setGraphicsSharing(bool sharingEnabled)
 {
-    d_ptr->graphicsSharing = sharingEnabled;
+    Q_D(SDeclarative);
+    d->graphicsSharing = sharingEnabled;
 }
 
 bool SDeclarative::privateGraphicsSharing() const
 {
-    return d_ptr->graphicsSharing;
+    Q_D(const SDeclarative);
+    return d->graphicsSharing;
 }
 
 void SDeclarative::privateSendMouseRelease(QDeclarativeItem *item) const
@@ -237,15 +248,16 @@ void SDeclarative::privateSendMouseRelease(QDeclarativeItem *item) const
 
 bool SDeclarative::eventFilter(QObject *obj, QEvent *event)
 {
+    Q_D(SDeclarative);
     if (obj == QCoreApplication::instance()) {
         if (event->type() == QEvent::ApplicationActivate) {
             emit currentTimeChanged();
-            d_ptr->timer.start(MINUTE_MS);
-            d_ptr->foreground = true;
+            d->timer.start(MINUTE_MS);
+            d->foreground = true;
             emit foregroundChanged();
         } else if (event->type() == QEvent::ApplicationDeactivate) {
-            d_ptr->timer.stop();
-            d_ptr->foreground = false;
+            d->timer.stop();
+            d->foreground = false;
             emit foregroundChanged();
         }
     }

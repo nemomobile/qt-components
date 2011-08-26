@@ -162,10 +162,11 @@ Q_SIGNALS:
 
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
-
+    QScopedPointer<SDeclarativePrivate> d_ptr;
 private:
     Q_DISABLE_COPY(SDeclarative)
-    QScopedPointer<SDeclarativePrivate> d_ptr;
+    Q_DECLARE_PRIVATE(SDeclarative)
+
 };
 
 class SDialogStatus : public QObject
