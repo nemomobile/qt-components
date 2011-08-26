@@ -46,7 +46,7 @@ Item {
 
     property alias imageSource: image.source
     property int editorPos: 0 //character position of the handle in the editor document
-    property Item editor: parent.editor
+    property Item editor
     // the default size of the touch area should come from some style constant
     property variant touchAreaSize: Qt.size(platformStyle.graphicSizeMedium, platformStyle.graphicSizeMedium)
     property alias showImage: image.visible

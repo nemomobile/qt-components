@@ -47,10 +47,11 @@ MouseArea {
     id: root
 
     property Item editor: parent
+    property alias touchTools: touchToolsLoader.item
     property real editorScrolledX: 0
     property real editorScrolledY: 0
-    property alias copyEnabled: contextMenu.copyEnabled
-    property alias cutEnabled: contextMenu.cutEnabled
+    property bool copyEnabled: false
+    property bool cutEnabled: false
     property bool platformInverted: false
 
     enabled: !editor.inputMethodComposing
@@ -59,19 +60,24 @@ MouseArea {
     LayoutMirroring.childrenInherit: true
 
     function updateGeometry() {
-        selectionBegin.updateGeometry();
-        selectionEnd.updateGeometry();
-        contextMenu.calculatePosition(); // Update context menu position
+        if (touchTools) {
+            touchTools.handleBegin.updateGeometry();
+            touchTools.handleEnd.updateGeometry();
+            touchTools.contextMenu.calculatePosition(); // Update context menu position
+        }
     }
 
     function flickEnded() {
         if (internal.editorHasSelection && internal.selectionVisible())
-            contextMenu.show();
+            touchTools.contextMenu.show();
         else
-            contextMenu.hide();
+            touchTools.contextMenu.hide();
     }
 
     onPressed: {
+        if (!touchTools)
+            touchToolsLoader.sourceComponent = touchToolsComponent
+
         internal.currentTouchPoint = root.mapToItem(editor, mouse.x, mouse.y);
 
         if (internal.currentTouchPoint.x < 0)
@@ -84,11 +90,11 @@ MouseArea {
             internal.touchPoint = internal.currentTouchPoint;
 
         editor.forceActiveFocus();
-        contextMenu.hide();
+        touchTools.contextMenu.hide();
         internal.handleMoved = false;
 
-        selectionBegin.viewPortRect = internal.mapViewPortRectToHandle(selectionBegin);
-        selectionEnd.viewPortRect = internal.mapViewPortRectToHandle(selectionEnd);
+        touchTools.handleBegin.viewPortRect = internal.mapViewPortRectToHandle(touchTools.handleBegin);
+        touchTools.handleEnd.viewPortRect = internal.mapViewPortRectToHandle(touchTools.handleEnd);
 
         internal.pressedHandle = internal.handleForPoint({x: internal.currentTouchPoint.x, y: internal.currentTouchPoint.y});
 
@@ -98,7 +104,7 @@ MouseArea {
             // TODO: Add bug ID!!
             var tempStart = editor.selectionStart
             var tempEnd = editor.selectionEnd
-            if (internal.pressedHandle == selectionBegin) {
+            if (internal.pressedHandle == touchTools.handleBegin) {
                 editor.cursorPosition = editor.selectionStart
                 editor.select(tempEnd, tempStart);
             } else {
@@ -129,20 +135,20 @@ MouseArea {
                 // position the cursor under the long tap and make the cursor handle grabbed
                 editor.select(editor.cursorPosition, editor.cursorPosition);
                 editor.cursorPosition = editor.positionAt(internal.touchPoint.x,internal.touchPoint.y);
-                internal.pressedHandle = selectionEnd;
+                internal.pressedHandle = touchTools.handleEnd;
                 if (editor.readOnly)
-                    magnifier.hide();
+                    touchTools.magnifier.hide();
                 internal.handleGrabbed();
             }
-            contextMenu.hide();
+            touchTools.contextMenu.hide();
         }
 
         if (!editor.readOnly || internal.editorHasSelection)
-            magnifier.show();
+            touchTools.magnifier.show();
     }
 
     onReleased: {
-        magnifier.hide();
+        touchTools.magnifier.hide();
 
         mouseGrabDisabler.setKeepMouseGrab(root, false);
         internal.forcedSelection = false;
@@ -150,7 +156,7 @@ MouseArea {
         if ((internal.pressedHandle != null && internal.handleMoved) ||
            (internal.longTap && !editor.readOnly) ||
            (internal.pressedHandle != null && internal.longTap))
-            contextMenu.show();
+            touchTools.contextMenu.show();
         internal.longTap = false;
     }
 
@@ -164,7 +170,8 @@ MouseArea {
             var newPosition = editor.positionAt(internal.hitTestPoint.x, internal.hitTestPoint.y);
             if (newPosition >= 0 && newPosition != editor.cursorPosition) {
                 if (internal.hasSelection) {
-                    var anchorPos = internal.pressedHandle == selectionBegin ? editor.selectionEnd : editor.selectionStart
+                    var anchorPos = internal.pressedHandle == touchTools.handleBegin ? editor.selectionEnd
+                                                                                     : editor.selectionStart
                     if (editor.selectionStart == editor.cursorPosition)
                         anchorPos = editor.selectionEnd;
                     else if (editor.selectionEnd == editor.cursorPosition)
@@ -174,7 +181,7 @@ MouseArea {
                     editor.cursorPosition = newPosition;
                 }
                 if (!editor.readOnly || internal.editorHasSelection)
-                    magnifier.show();
+                    touchTools.magnifier.show();
                 internal.handleMoved = true;
             }
         }
@@ -207,7 +214,7 @@ MouseArea {
                 // even after setting to cursorPosition
                 editor.deselect();
                 editor.cursorPosition = editor.positionAt(internal.touchPoint.x, internal.touchPoint.y);
-                contextMenu.hide();
+                touchTools.contextMenu.hide();
                 if (!editor.readOnly)
                     editor.openSoftwareInputPanel()
             }
@@ -216,17 +223,17 @@ MouseArea {
         function onDoubleTap() {
             // assume that the 1st click positions the cursor
             editor.selectWord();
-            contextMenu.show();
+            touchTools.contextMenu.show();
         }
 
         function onTripleTap() {
             editor.selectAll();
-            contextMenu.show();
+            touchTools.contextMenu.show();
         }
 
         function onEditorTextChanged() {
-            if (!internal.editorHasSelection)
-                contextMenu.hide();
+            if (touchTools && !internal.editorHasSelection)
+                touchTools.contextMenu.hide();
         }
 
         function handleGrabbed() {
@@ -248,21 +255,21 @@ MouseArea {
 
             if (!editor.readOnly || editorHasSelection) { // to avoid moving the cursor handle in read only editor
                 // Find out which handle is being moved
-                if (selectionBegin.visible &&
-                    selectionBegin.containsPoint(editor.mapToItem(selectionBegin, point.x, point.y))) {
-                    pressed = selectionBegin;
+                if (touchTools.handleBegin.visible &&
+                    touchTools.handleBegin.containsPoint(editor.mapToItem(touchTools.handleBegin, point.x, point.y))) {
+                    pressed = touchTools.handleBegin;
                 }
-                if (selectionEnd.containsPoint(editor.mapToItem(selectionEnd, point.x, point.y))) {
+                if (touchTools.handleEnd.containsPoint(editor.mapToItem(touchTools.handleEnd, point.x, point.y))) {
                     var useArea = true;
                     if (pressed != null) {
-                        var distance1 = selectionBegin.pointDistanceFromCenter(point);
-                        var distance2 = selectionEnd.pointDistanceFromCenter(point);
+                        var distance1 = touchTools.handleBegin.pointDistanceFromCenter(point);
+                        var distance2 = touchTools.handleEnd.pointDistanceFromCenter(point);
 
                         if (distance1 < distance2)
                             useArea = false;
                     }
                     if (useArea)
-                        pressed = selectionEnd;
+                        pressed = touchTools.handleEnd;
                 }
             }
             return pressed;
@@ -280,40 +287,61 @@ MouseArea {
         }
     }
 
-    TextSelectionHandle {
-        id: selectionBegin
-
-        objectName: "SelectionBegin"
-        imageSource: privateStyle.imagePath("qtg_fr_textfield_handle_start", root.platformInverted)
-        editorPos: editor.selectionStart
-        visible: editor.selectionStart != editor.selectionEnd
-        showTouchArea: internal.showHandleTouchArea
+    Loader {
+        id: touchToolsLoader
     }
 
-    TextSelectionHandle { // also acts as the cursor handle when no selection
-        id: selectionEnd
+    Component {
+        id: touchToolsComponent
 
-        objectName: "SelectionEnd"
-        imageSource: privateStyle.imagePath("qtg_fr_textfield_handle_end", root.platformInverted)
-        editorPos: editor.selectionEnd
-        visible: true
-        showImage: internal.hasSelection //show image only in selection mode
-        showTouchArea: internal.showHandleTouchArea
-    }
+        Item {
+            id: touchTools
+            property alias handleBegin: selBegin
+            property alias handleEnd: selEnd
+            property alias contextMenu: cxtMenu
+            property alias magnifier: magnif
 
-    TextContextMenu {
-        id: contextMenu
+            TextSelectionHandle {
+                id: selBegin
 
-        editor: root.editor
-        platformInverted: root.platformInverted
-    }
+                objectName: "SelectionBegin"
+                editor: root.editor
+                imageSource: privateStyle.imagePath("qtg_fr_textfield_handle_start", root.platformInverted)
+                editorPos: editor.selectionStart
+                visible: editor.selectionStart != editor.selectionEnd
+                showTouchArea: internal.showHandleTouchArea
+            }
 
-    TextMagnifier {
-        id: magnifier
+            TextSelectionHandle { // also acts as the cursor handle when no selection
+                id: selEnd
 
-        editor: root.editor
-        contentCenter:internal.hitTestPoint
-        platformInverted: root.platformInverted
+                objectName: "SelectionEnd"
+                editor: root.editor
+                imageSource: privateStyle.imagePath("qtg_fr_textfield_handle_end", root.platformInverted)
+                editorPos: editor.selectionEnd
+                visible: true
+                showImage: internal.hasSelection //show image only in selection mode
+                showTouchArea: internal.showHandleTouchArea
+            }
+
+            TextContextMenu {
+                id: cxtMenu
+
+                editor: root.editor
+                platformInverted: root.platformInverted
+                copyEnabled: root.copyEnabled
+                cutEnabled: root.cutEnabled
+            }
+
+            TextMagnifier {
+                id: magnif
+
+                editor: root.editor
+                contentCenter:internal.hitTestPoint
+                platformInverted: root.platformInverted
+
+            }
+        }
 
     }
 
@@ -336,7 +364,8 @@ MouseArea {
         onActiveFocusChanged: {
             // On focus loss dismiss menu, selection and VKB
             if (!root.editor.activeFocus) {
-                contextMenu.hide()
+                if (touchTools)
+                    touchTools.contextMenu.hide()
                 root.editor.select(root.editor.cursorPosition, root.editor.cursorPosition)
                 root.editor.closeSoftwareInputPanel()
             }
@@ -344,9 +373,12 @@ MouseArea {
     }
 
     Keys.onPressed: {
+        if (!touchTools)
+            touchToolsLoader.sourceComponent = touchToolsComponent
+
         if (internal.editorHasSelection && event.modifiers & Qt.ShiftModifier
             && (event.key == Qt.Key_Left || event.key == Qt.Key_Right
             || event.key == Qt.Key_Up || event.key == Qt.Key_Down))
-            contextMenu.show()
+            touchTools.contextMenu.show()
     }
 }
