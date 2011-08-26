@@ -42,6 +42,11 @@ import QtQuick 1.1
 import com.nokia.symbian 1.1
 
 PageStackWindow {
-    id: window
-    objectName: "window"
+    id: pageStackWindow
+
+    initialPage: Item {
+        objectName: "page"
+        id: page
+        anchors.fill: parent
+    }
 }

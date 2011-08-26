@@ -72,7 +72,10 @@ Item {
         anchors.centerIn: parent
         width: 200
 
-        onClicked: mainWindow.fullScreen = !mainWindow.fullScreen;
+        onClicked: {
+            mainWindow.showStatusBar = !mainWindow.showStatusBar
+            mainWindow.showToolBar = !mainWindow.showToolBar
+        }
     }
 
     Button {

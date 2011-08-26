@@ -41,7 +41,7 @@
 import QtQuick 1.1
 import com.nokia.symbian 1.1
 
-ApplicationWindow {
+PageStackWindow {
     id: window
     objectName: "window"
 

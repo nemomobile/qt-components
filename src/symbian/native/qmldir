@@ -47,6 +47,7 @@ MenuItem 1.1 MenuItem.qml
 MenuLayout 1.1 MenuLayout.qml
 Page 1.1 Page.qml
 PageStack 1.1 PageStack.qml
+PageStackWindow 1.1 PageStackWindow.qml
 ProgressBar 1.1 ProgressBar.qml
 QueryDialog 1.1 QueryDialog.qml
 RadioButton 1.1 RadioButton.qml

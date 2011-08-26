@@ -45,6 +45,7 @@ import Settings 1.0
 import LayoutDirectionSetter 1.0
 import "TestUtils.js" as Utils
 
+// This uses ApplicationWindow instead of PageStackWindow so that it remains to be tested by our apps.
 ApplicationWindow {
     id: mainWindow
 
@@ -232,7 +233,10 @@ ApplicationWindow {
 
                         width: mainWindow.width
                         text: "Toggle Fullscreen"
-                        onClicked: mainWindow.fullScreen = !mainWindow.fullScreen
+                        onClicked: {
+                            mainWindow.showStatusBar = !mainWindow.showStatusBar
+                            mainWindow.showToolBar = !mainWindow.showToolBar
+                        }
                     }
 
                     CheckBox {

@@ -43,7 +43,7 @@ import com.nokia.symbian 1.1
 import "core"
 import "core/StyleLoader.js" as StyleLoader
 
-ApplicationWindow {
+PageStackWindow {
     id: window
 
     property Item appStyle: StyleLoader.loadStyle("qrc:/layouts/AppStyle.qml", window, forceFallbackStyle)

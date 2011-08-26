@@ -26,6 +26,7 @@ SUBDIRS += \
     networkindicator \
     page \
     pagestack \
+    pagestackwindow \
     popupmanager \
     progressbar \
     querydialog \

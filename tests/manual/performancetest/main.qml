@@ -44,7 +44,7 @@ import FileAccess 1.0
 import Settings 1.0
 import LayoutDirectionSetter 1.0
 
-ApplicationWindow {
+PageStackWindow {
     id: mainWindow
 
     objectName: "mainWindow"
@@ -196,7 +196,10 @@ ApplicationWindow {
 
                         width: mainWindow.width
                         text: "Toggle Fullscreen"
-                        onClicked: mainWindow.fullScreen = mainWindow.fullScreen ? false : true
+                        onClicked: {
+                            mainWindow.showStatusBar = !mainWindow.showStatusBar
+                            mainWindow.showToolBar = !mainWindow.showToolBar
+                        }
                     }
 
                     Repeater {

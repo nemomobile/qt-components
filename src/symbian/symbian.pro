@@ -132,6 +132,7 @@ QML_FILES = \
     Page.qml \
     PageStack.js \
     PageStack.qml \
+    PageStackWindow.qml \
     Popup.qml \
     ProgressBar.qml \
     QueryDialog.qml \
