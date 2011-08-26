@@ -199,7 +199,6 @@ MouseArea {
         property bool forcedSelection: false
         property bool hasSelection: editorHasSelection || forcedSelection
         property bool editorHasSelection: editor.selectionStart != editor.selectionEnd
-        property bool showHandleTouchArea: false // for debugging purposes
         property bool handleMoved: false
         property bool longTap: false
         property int tapCounter: 0
@@ -309,7 +308,6 @@ MouseArea {
                 imageSource: privateStyle.imagePath("qtg_fr_textfield_handle_start", root.platformInverted)
                 editorPos: editor.selectionStart
                 visible: editor.selectionStart != editor.selectionEnd
-                showTouchArea: internal.showHandleTouchArea
             }
 
             TextSelectionHandle { // also acts as the cursor handle when no selection
@@ -321,7 +319,6 @@ MouseArea {
                 editorPos: editor.selectionEnd
                 visible: true
                 showImage: internal.hasSelection //show image only in selection mode
-                showTouchArea: internal.showHandleTouchArea
             }
 
             TextContextMenu {
@@ -337,7 +334,7 @@ MouseArea {
                 id: magnif
 
                 editor: root.editor
-                contentCenter:internal.hitTestPoint
+                contentCenter: internal.hitTestPoint
                 platformInverted: root.platformInverted
 
             }
