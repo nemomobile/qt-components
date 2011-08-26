@@ -40,14 +40,66 @@
 
 import QtQuick 1.1
 import com.nokia.symbian 1.1
+import com.nokia.extras 1.1
+import Settings 1.0
 
 Rectangle {
+    id: root
+
+    property bool platformInverted
+
     color: "gray"
     anchors.fill: parent
 
     StatusBar {
         id: statusBar
         anchors.top: parent.top
+    }
+
+    Column {
+        anchors.centerIn: parent
+        Timer {
+            interval: 100; running: true; repeat: true
+            onTriggered: {
+                symbianTime.text = symbian.currentTime
+                qtTime.text = Date().toString()
+            }
+        }
+
+        Label {
+            id: symbianTime
+        }
+
+        Label {
+            id: qtTime
+            width: Math.min(screen.width - 20, 270)
+            wrapMode: Text.WrapAnywhere
+        }
+
+        Button {
+            property Item timePickerDialog: null
+
+            text: "Set time"
+
+            onClicked: {
+                if (!timePickerDialog)
+                    timePickerDialog = timePickerDialogComponent.createObject(root)
+
+                timePickerDialog.open()
+            }
+
+            Component {
+                id: timePickerDialogComponent
+                TimePickerDialog {
+                    titleText: "Time"
+                    acceptButtonText: "Ok"
+                    rejectButtonText: "Cancel"
+                    platformInverted: root.platformInverted
+                    onAccepted: settings.setTime(hour, minute)
+                }
+
+            }
+        }
     }
 
     StatusBar {

@@ -174,6 +174,21 @@ void Settings::setIndicatorState(int indicatorId, bool on) const
 #endif // Q_OS_SYMBIAN & HAVE_SYMBIAN_INTERNAL
 }
 
+void Settings::setTime(int hours, int minutes)
+{
+#ifdef Q_OS_SYMBIAN
+    TTime currentTime;
+    currentTime.HomeTime();
+    TDateTime dateTime = currentTime.DateTime();
+    dateTime.SetHour((TInt)hours);
+    dateTime.SetMinute((TInt)minutes);
+    TTime newTime(dateTime);
+    User::SetHomeTime(newTime);
+#else
+    qDebug() << "Setting time " << hours << ":" << minutes << " (does not work in desktop)";
+#endif
+}
+
 LayoutDirectionSetter::LayoutDirectionSetter(QObject *parent) : QObject(parent)
 {
 }
