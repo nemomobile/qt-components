@@ -38,7 +38,8 @@ SOURCES += \
 symbian {
     SOURCES += \
         sdeclarativeinputcontext_p_symbian.cpp \
-        sdeclarativetouchinput.cpp
+        sdeclarativetouchinput.cpp \
+        stimeobserver.cpp
 } else {
     SOURCES += \
         sdeclarativeinputcontext_p.cpp
@@ -86,7 +87,8 @@ HEADERS += \
 symbian: {
     HEADERS += \
         sdeclarativeinputcontext_p_symbian.h \
-        sdeclarativetouchinput.h
+        sdeclarativetouchinput.h \
+        stimeobserver.h
 } else {
     HEADERS += \
         sdeclarativeinputcontext_p.h

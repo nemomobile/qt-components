@@ -54,6 +54,7 @@
 #ifdef Q_OS_SYMBIAN
 #include <AknUtils.h>
 #include <e32std.h>
+#include "stimeobserver.h"
 #endif // Q_OS_SYMBIAN
 
 #ifdef Q_OS_WIN
@@ -73,6 +74,9 @@ _LIT(KTimeFormat, "%J%:1%T");
 #endif
 
 class SDeclarativePrivate
+#ifdef Q_OS_SYMBIAN
+    : public MTimeChangeObserver
+#endif
 {
     Q_DECLARE_PUBLIC(SDeclarative)
 public:
@@ -95,10 +99,13 @@ public:
             default:
                 break;
         }
+
+        QT_TRAP_THROWING(timeChangeNotifier.reset(CTimeChangeObserver::NewL(this)));
 #endif // Q_OS_SYMBIAN
     }
 
     int allocatedMemory() const;
+    void TimeChanged(); // overridden Symbian function
 
     SDeclarative *q_ptr;
     SDeclarative::InteractionMode mListInteractionMode;
@@ -106,6 +113,9 @@ public:
     bool foreground;
     bool rightToLeftDisplayLanguage;
     bool graphicsSharing;
+#ifdef Q_OS_SYMBIAN
+    QScopedPointer<CTimeChangeObserver> timeChangeNotifier;
+#endif
 };
 
 int SDeclarativePrivate::allocatedMemory() const
@@ -122,6 +132,12 @@ int SDeclarativePrivate::allocatedMemory() const
 #else
     return -1;
 #endif
+}
+
+void SDeclarativePrivate::TimeChanged()
+{
+    Q_Q(SDeclarative);
+    emit q->currentTimeChanged();
 }
 
 SDeclarative::SDeclarative(QObject *parent) :
@@ -252,10 +268,16 @@ bool SDeclarative::eventFilter(QObject *obj, QEvent *event)
     if (obj == QCoreApplication::instance()) {
         if (event->type() == QEvent::ApplicationActivate) {
             emit currentTimeChanged();
+#ifdef Q_OS_SYMBIAN
+            d->timeChangeNotifier->StartObserving();
+#endif
             d->timer.start(MINUTE_MS);
             d->foreground = true;
             emit foregroundChanged();
         } else if (event->type() == QEvent::ApplicationDeactivate) {
+#ifdef Q_OS_SYMBIAN
+            d->timeChangeNotifier->Cancel();
+#endif
             d->timer.stop();
             d->foreground = false;
             emit foregroundChanged();
