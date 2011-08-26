@@ -1,0 +1,45 @@
+/****************************************************************************
+**
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file.
+**
+** Other Usage
+** Alternatively, this file may be used in accordance with the terms
+** and conditions contained in a signed written agreement between you
+** and Nokia.
+**
+**
+**
+**
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+\page qt-components-symbian-notes.html
+
+\title General Notes for the Symbian Components
+
+\section1 Rich Text Support with the Components
+
+The API of some components provides a property that lets you set the shown
+component text. For example, the \l ToolTip component declares the \c text
+property. In many cases such property may contain rich text styling markup.
+However, components have been primarily designed with built-in styling in mind.
+Component sizing and text eliding are not guaranteed to work properly with rich
+text, excluding the \l TextArea and \l Label components that support rich text
+by definition. With other components it is recommended that you use plain text
+only.
+
+*/
+
