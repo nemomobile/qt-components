@@ -77,15 +77,14 @@ Item {
 
             var contextMenuMargin = 10; // the space between the context menu and the line above/below
             var contextMenuAdjustedRowHeight = row.height + contextMenuMargin;
-
             var tempY = posStart.y - contextMenuAdjustedRowHeight;
+            var minVerticalPos = internal.textArea ? internal.textArea.mapToItem(parent, 0, 0).y - row.height : 0
+			
+            if (tempY < minVerticalPos)
+                tempY = minVerticalPos
+				
             if (tempY < 0)
-                // it doesn't fit to the top -> try bottom
-                tempY = posEnd.y + rectEnd.height + contextMenuMargin;
-
-            if (tempY + row.height > parent.height)
-                //it doesn't fit to the bottom -> center
-                tempY = (parent.height / 2) - (row.height / 2);
+                tempY = 0
 
             root.x = Math.max(0, Math.min(selectionCenterX - row.width / 2, parent.width - row.width));
             root.y = tempY;
@@ -113,10 +112,13 @@ Item {
 
         property real editorSceneX
         property real editorSceneY
+        property Item textArea: null
 
         function editorMoved() {
             root.calculatePosition()
         }
+		
+        Component.onCompleted: textArea = AppManager.findParent(editor, "errorHighlight")
     }
 
     ButtonRow {
