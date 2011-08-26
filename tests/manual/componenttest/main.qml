@@ -234,8 +234,7 @@ ApplicationWindow {
                         width: mainWindow.width
                         text: "Toggle Fullscreen"
                         onClicked: {
-                            mainWindow.showStatusBar = !mainWindow.showStatusBar
-                            mainWindow.showToolBar = !mainWindow.showToolBar
+                            mainWindow.fullScreen = !mainWindow.fullScreen
                         }
                     }
 

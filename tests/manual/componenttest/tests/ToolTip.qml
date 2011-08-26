@@ -73,8 +73,7 @@ Item {
         width: 200
 
         onClicked: {
-            mainWindow.showStatusBar = !mainWindow.showStatusBar
-            mainWindow.showToolBar = !mainWindow.showToolBar
+            mainWindow.fullScreen = !mainWindow.fullScreen
         }
     }
 
