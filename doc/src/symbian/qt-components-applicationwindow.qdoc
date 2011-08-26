@@ -39,7 +39,7 @@
     that place child components into correct layouts.
 
     \note This component is experimental, so it may be changed or removed in
-    future releases.
+    future releases. It is recommended to use the \l PageStackWindow component instead.
 
     \section1 Using ApplicationWindow
 

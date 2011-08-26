@@ -51,7 +51,10 @@
         \o \l{InputContext} is used to determine the area needed for the
            Software Input Panel.
         \o \l{SearchBox} can be used to filter items in a list view. The
-           component is in the extras module.
+           component is in the Extras module.
+        \o \l{PageStackWindow} provides a main window with the page stack support
+           for an application. It is recommended to use this component instead of
+           the experimental ApplicationWindow component.
     \endlist
 
 

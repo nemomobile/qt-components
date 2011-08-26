@@ -59,6 +59,7 @@
     These components provide hardware and system information to the application.
     These also provide the high level application QML containers.
     \list
+        \o \l{PageStackWindow}
         \o \l{ApplicationWindow}
         \o \l{Window}
         \o \l{StatusBar}

@@ -1,0 +1,103 @@
+/****************************************************************************
+**
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file.
+**
+** Other Usage
+** Alternatively, this file may be used in accordance with the terms
+** and conditions contained in a signed written agreement between you
+** and Nokia.
+**
+**
+**
+**
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+/*!
+    \qmlclass PageStackWindow
+    \inherits Window
+    \ingroup qt-components
+    \since 1.1
+    \brief
+    Provides a main window for the application.
+
+    Applications can be constructed using the PageStackWindow that
+    brings the page navigation, statusbar, toolbar, and platform's common
+    look and feel.
+
+    \section1 Using PageStackWindow
+
+    The example below shows how to construct an application with the PageStackWindow.
+    It disables the system's status bar leaving more screen area for the application's content and
+    initializes the application's main page on the application's startup.
+
+    \snippet src/snippets/symbian/snippet-pagestackwindow.qml 0
+
+    See also the Gallery demo application that shows a concrete example how
+    PageStackWindow is used.
+
+*/
+
+/*!
+    \qmlproperty bool PageStackWindow::showStatusBar
+
+    Defines whether the system status bar is shown or not. The default value is \c true.
+*/
+
+/*!
+    \qmlproperty bool PageStackWindow::showToolBar
+
+    Defines whether the tool bar is shown or not. The default value is \c true.
+*/
+
+/*!
+    \qmlproperty list<Object> PageStackWindow::content
+
+    With this property you can set the child objects of the visual content area
+    of the PageStackWindow. The content area fills the area between the \l
+    StatusBar and \l ToolBar components. Note that this content is not visible
+    when any page is active.
+
+*/
+
+/*!
+    \qmlproperty PageStack PageStackWindow::pageStack
+
+    \l PageStack managed by the PageStackWindow.
+*/
+
+/*!
+    \qmlproperty variant PageStackWindow::initialPage
+
+    Sets the initial page of the \c PageStack. This can be a \l Page instance, a
+    component, or an array. Once the construction is completed, the value will
+    be pushed onto the stack.
+
+    With this property you can only set the root page of the stack. In other
+    words, if there are pages on the stack, changing the \c initialPage has no
+    effect.
+
+    \sa PageStack::push
+*/
+
+/*!
+    \qmlproperty bool PageStackWindow::platformSoftwareInputPanelEnabled
+
+	Defines whether the PageStackWindow's content area size is adjusted to
+	accommodate the software input panel or not. The size is adjusted when the
+	value is \c true; otherwise not.
+
+	The default value is \c false.
+
+*/
