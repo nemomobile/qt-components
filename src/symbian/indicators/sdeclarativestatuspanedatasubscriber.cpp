@@ -158,6 +158,12 @@ TBool IndicatorStatesEqual( const TAknIndicatorState& state1, const TAknIndicato
                 }
             }
         }
+
+    if (state1.iIncallBubbleFlags != state2.iIncallBubbleFlags)
+        {
+        same = EFalse;
+        }
+
     return same;
     }
 

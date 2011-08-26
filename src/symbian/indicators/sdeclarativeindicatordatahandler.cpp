@@ -43,6 +43,7 @@
 #include "sdeclarativeindicatordata.h"
 #include "sdeclarativeindicator.h"
 #include "sdeclarativeindicatorcontainer.h"
+#include "sdeclarativeincallindicator.h"
 
 #include <avkon.hrh> // EAknIndicatorStateOff
 #include <avkon.rsg> // R_AVKON_STATUS_PANE_INDICATOR_DEFAULT
@@ -64,6 +65,8 @@ void CSDeclarativeIndicatorDataHandler::ConstructL()
     // subsciber reads the status pane data
     iSubscriber = CSDeclarativeStatusPaneSubscriber::NewL( *this );
 
+    iIncallIndicator = CSDeclarativeIncallIndicator::NewL();
+
     TCallBack callback( InitializeCallBack, this );
     iInitializer = new (ELeave) CAsyncCallBack( callback, CActive::EPriorityLow );
     iInitializer->CallBack(); // shoot
@@ -80,6 +83,7 @@ CSDeclarativeIndicatorDataHandler::~CSDeclarativeIndicatorDataHandler()
     while (iIndicatorsData.count())
         delete iIndicatorsData.take( iIndicatorsData.keys().at(0) );
 
+    delete iIncallIndicator;
     }
 
 CSDeclarativeIndicatorDataHandler::CSDeclarativeIndicatorDataHandler(
@@ -112,6 +116,9 @@ TInt CSDeclarativeIndicatorDataHandler::InitializeCallBack( TAny* aAny )
             {
             thisPtr->UpdateIndicators();
             }
+
+        // update incall indicator
+        thisPtr->iIncallIndicator->SetFlags( indicatorState.iIncallBubbleFlags );
         }
 
     delete thisPtr->iInitializer;
@@ -124,6 +131,10 @@ void CSDeclarativeIndicatorDataHandler::StatusPaneStateChanged( TStatusPaneChang
     if ( aChangeFlags&MSDeclarativeStatusPaneSubscriberObverver::EStatusPaneIndicatorsState )
         {
         UpdateIndicators();
+
+        // update incall indicator
+        const TAknIndicatorState& indicatorState = iSubscriber->IndicatorState();
+        iIncallIndicator->SetFlags( indicatorState.iIncallBubbleFlags );
         }
     }
 

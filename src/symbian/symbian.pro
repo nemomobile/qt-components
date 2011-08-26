@@ -48,6 +48,7 @@ symbian {
 symbian:symbian_internal {
     SOURCES += \
         sbatteryinfo_symbian.cpp \
+        indicators/sdeclarativeincallindicator.cpp \
         indicators/sdeclarativeindicator.cpp \
         indicators/sdeclarativeindicatordata.cpp \
         indicators/sdeclarativeindicatordatahandler.cpp \
@@ -96,6 +97,7 @@ symbian: {
 
 symbian:symbian_internal {
     HEADERS +=  \
+        indicators/sdeclarativeincallindicator.h \
         indicators/sdeclarativeindicator.h \
         indicators/sdeclarativeindicatordata.h \
         indicators/sdeclarativeindicatordatahandler.h \
@@ -178,6 +180,7 @@ symbian {
 
     symbian_internal {
         LIBS += -laknicon // For AknIconUtils
+        LIBS += -laknlayout2
         LIBS += -laknnotify // For CAknSmallIndicator
         LIBS += -laknskins // For AknsUtils
         LIBS += -lbafl // For TResourceReader

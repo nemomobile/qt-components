@@ -38,47 +38,38 @@
 **
 ****************************************************************************/
 
-#ifndef SDECLARATIVEINDICATORDATAHANDLER_H
-#define SDECLARATIVEINDICATORDATAHANDLER_H
+#ifndef CSDECLARATIVEINCALLINDICATOR_H
+#define CSDECLARATIVEINCALLINDICATOR_H
 
-#include <sdeclarativestatuspanedatasubscriber.h>
 #include <e32base.h>
-#include <QList>
-#include <QHash>
+#include <coemain.h>
 
-class CSDeclarativeStatusPaneSubscriber;
-class CSDeclarativeIndicatorData;
-class SDeclarativeIndicator;
-class SDeclarativeIndicatorContainer;
-class CSDeclarativeIncallIndicator;
+class CAknIndicatorContainer;
+class CCoeControl;
 
-class CSDeclarativeIndicatorDataHandler: public CBase, public MSDeclarativeStatusPaneSubscriberObverver
+class CSDeclarativeIncallIndicator : public CBase, public MCoeMessageMonitorObserver
 {
 public:
-    static CSDeclarativeIndicatorDataHandler* NewL( SDeclarativeIndicatorContainer* aContainer );
-    ~CSDeclarativeIndicatorDataHandler();
+    static CSDeclarativeIncallIndicator* NewL();
+    ~CSDeclarativeIncallIndicator();
+
+    void SetFlags( TInt aFlags );
+
+protected:
+    void MonitorWsMessage( const TWsEvent& aEvent );
 
 private:
-    CSDeclarativeIndicatorDataHandler( SDeclarativeIndicatorContainer* aContainer );
+    CSDeclarativeIncallIndicator();
     void ConstructL();
-    void LoadIndicatorDataL() ;
-    void UpdateIndicators();
-    CSDeclarativeIndicatorData* Data( TInt aUid ) const;
-    SDeclarativeIndicator* Indicator( TInt aUid ) const;
-    void PrioritizeIndicators();
-    TRect Rect() const;
-    static TInt InitializeCallBack( TAny* aAny );
-
-private: // from MSDeclarativeStatusPaneSubscriberObverver
-    void StatusPaneStateChanged( TStatusPaneChangeFlags aChangeFlags );
+    void CreateIncallControlL();
+    void IncallBubbleSizeChanged();
+    void UpdateIncallBubbleVisibility();
 
 private:
-    CSDeclarativeStatusPaneSubscriber* iSubscriber;
-    SDeclarativeIndicatorContainer* iContainer;
-    QHash<TInt, CSDeclarativeIndicatorData*> iIndicatorsData;
-    QList<SDeclarativeIndicator*> iIndicatorItems;
-    CAsyncCallBack* iInitializer;
-    CSDeclarativeIncallIndicator* iIncallIndicator;
+    CAknIndicatorContainer* iControl;
+    CCoeControl* iIncallBubble;
+    TInt iFlags;
+    TBool iIsForeground;
 };
 
-#endif // SDECLARATIVEINDICATORDATAHANDLER_H
+#endif //CSDECLARATIVEINCALLINDICATOR_H
