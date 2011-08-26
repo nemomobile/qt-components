@@ -1,3 +1,9 @@
+qt-components (1.1~git20110826-1) maverick; urgency=low
+
+  * Fixes: NB#275360 Legal bug - license header change in qt-components
+
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Fri, 26 Aug 2011 14:15:00 +0300
+
 qt-components (1.1~git20110824-2) maverick; urgency=low
 
   * Fixes: NB#278574 "import com.meego.extras 1.0" fails in PR1.1
