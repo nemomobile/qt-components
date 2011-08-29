@@ -63,16 +63,32 @@ Item {
         source: privateStyle.imagePath("qtg_fr_progressbar_track", root.platformInverted)
         border { left: platformStyle.borderSizeMedium; top: 0; right: platformStyle.borderSizeMedium; bottom: 0 }
         anchors.fill: parent
-
     }
 
     Loader {
         id: progressBarContent
 
-        anchors.fill: parent
         LayoutMirroring.enabled: false
         LayoutMirroring.childrenInherit: true
-        sourceComponent: indeterminate ? indeterminateContent : determinateContent
+
+        states: [
+            State {
+                name: "indeterminate"
+                when: root.indeterminate
+                PropertyChanges { target: progressBarContent; sourceComponent: indeterminateContent; anchors.fill: parent }
+            },
+            State {
+                name: "determinate"
+                when: !root.indeterminate
+                PropertyChanges { target: progressBarContent; sourceComponent: determinateContent }
+                AnchorChanges {
+                    target: progressBarContent
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.left: parent.left
+                }
+            }
+        ]
     }
 
 
@@ -132,7 +148,6 @@ Item {
         Item {
             id: progressMask
 
-            height: parent.height
             width: model.position
             clip: true
 
