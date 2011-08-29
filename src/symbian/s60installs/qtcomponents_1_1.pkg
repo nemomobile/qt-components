@@ -172,7 +172,6 @@
 "/epoc32/data/z/resource/qt/imports/com/nokia/symbian/Page.qml" - "!:\resource\qt\imports\com\nokia\symbian\Page.qml"
 "/epoc32/data/z/resource/qt/imports/com/nokia/symbian/PageStack.js" - "!:\resource\qt\imports\com\nokia\symbian\PageStack.js"
 "/epoc32/data/z/resource/qt/imports/com/nokia/symbian/PageStack.qml" - "!:\resource\qt\imports\com\nokia\symbian\PageStack.qml"
-"/epoc32/data/z/resource/qt/imports/com/nokia/symbian/PageStackWindow.qml" - "!:\resource\qt\imports\com\nokia\symbian\PageStackWindow.qml"
 "/epoc32/data/z/resource/qt/imports/com/nokia/symbian/Popup.qml" - "!:\resource\qt\imports\com\nokia\symbian\Popup.qml"
 "/epoc32/data/z/resource/qt/imports/com/nokia/symbian/ProgressBar.qml" - "!:\resource\qt\imports\com\nokia\symbian\ProgressBar.qml"
 "/epoc32/data/z/resource/qt/imports/com/nokia/symbian/QueryDialog.qml" - "!:\resource\qt\imports\com\nokia\symbian\QueryDialog.qml"
