@@ -47,6 +47,10 @@
 #include <aknappui.h>
 #include <layoutmetadata.cdl.h>
 #include <aknlayoutscalable_apps.cdl.h>
+#include <QDeclarativeView>
+#include <QDeclarativeContext>
+#include <QApplication>
+#include "sdeclarativescreen.h"
 
 // #define Q_DEBUG_INCALL
 
@@ -54,6 +58,50 @@
 #include <QDebug>
 #endif // Q_DEBUG_INCALL
 
+class TSDeclarativeIncallIndicatorPrivate : public QObject
+{
+Q_OBJECT
+public:
+    TSDeclarativeIncallIndicatorPrivate(CSDeclarativeIncallIndicator* aIncallIndicator);
+    ~TSDeclarativeIncallIndicatorPrivate() {}
+
+public slots:
+    void orientationChanged();
+public:
+    CSDeclarativeIncallIndicator* iIncallIndicator;
+    CAknIndicatorContainer* iControl;
+    CCoeControl* iIncallBubble;
+    TInt iFlags;
+    TBool iIsForeground;
+    SDeclarativeScreen* iScreen;
+};
+
+TSDeclarativeIncallIndicatorPrivate::TSDeclarativeIncallIndicatorPrivate(CSDeclarativeIncallIndicator *aIncallIndicator)
+: QObject(0), iIncallIndicator(aIncallIndicator), iControl(0), iIncallBubble(0), iFlags(0), iIsForeground(ETrue), iScreen(0)
+{
+    // Find screen context property
+    QDeclarativeView *view = 0;
+    const QWidgetList &widgets = QApplication::topLevelWidgets();
+    for (int i = 0; i < widgets.count() && !view; i++) {
+        QDeclarativeView *declarativeView = qobject_cast<QDeclarativeView *>(widgets.at(i));
+        if (declarativeView && declarativeView->rootContext()->contextProperty("screen").isValid())
+            view = declarativeView;
+    }
+
+    if (view) {
+        QObject *screen = view->rootContext()->contextProperty("screen").value<QObject*>();
+        iScreen = qobject_cast<SDeclarativeScreen*>(screen);
+        QObject::connect(iScreen, SIGNAL(currentOrientationChanged()), this, SLOT(orientationChanged()));
+    }
+}
+
+void TSDeclarativeIncallIndicatorPrivate::orientationChanged()
+{
+    if ( iIncallIndicator )
+        iIncallIndicator->OrientationChanged();
+}
+
+// CSDeclarativeIncallIndicator
 CSDeclarativeIncallIndicator* CSDeclarativeIncallIndicator::NewL()
     {
     CSDeclarativeIncallIndicator* self = new ( ELeave ) CSDeclarativeIncallIndicator();
@@ -69,6 +117,8 @@ CSDeclarativeIncallIndicator::CSDeclarativeIncallIndicator()
 
 void CSDeclarativeIncallIndicator::ConstructL()
     {
+    iData.reset( new ( ELeave ) TSDeclarativeIncallIndicatorPrivate( this ) );
+    User::LeaveIfNull( iData->iScreen );
     }
 
 CSDeclarativeIncallIndicator::~CSDeclarativeIncallIndicator()
@@ -82,7 +132,7 @@ CSDeclarativeIncallIndicator::~CSDeclarativeIncallIndicator()
 
 void CSDeclarativeIncallIndicator::CreateIncallControlL()
     {
-    if (!iControl)
+    if (!iData->iControl)
         {
         // Creates CAknIndicatorContainer which internally creates the CIncallStatusBubble
         CAknIndicatorContainer* control = new ( ELeave ) CAknIndicatorContainer();
@@ -90,17 +140,17 @@ void CSDeclarativeIncallIndicator::CreateIncallControlL()
         control->ConstructL();
         control->ActivateL();
         CleanupStack::Pop( control );
-        iControl = control;
+        iData->iControl = control;
         }
 
 #ifdef Q_DEBUG_INCALL
-    if (!iControl)
+    if (!iData->iControl)
         {
         qDebug() << "CSDeclarativeIncallIndicator::CreateIncallControlL() Cannot create CAknIndicatorContainer!";
         }
 #endif
 
-    if (!iIncallBubble)
+    if (!iData->iIncallBubble)
         {
         // When setting the visible flag on for the first time, the CIncallStatusBubble
         // instance in created. Internally it creates new window group and window.
@@ -113,7 +163,7 @@ void CSDeclarativeIncallIndicator::CreateIncallControlL()
         CleanupStack::PushL( newWindowGroups );
 
         User::LeaveIfError( wsSession.WindowGroupList( oldWindowGroups ) );
-        iControl->SetIncallBubbleFlags( EAknStatusBubbleVisible );
+        iData->iControl->SetIncallBubbleFlags( EAknStatusBubbleVisible );
         User::LeaveIfError( wsSession.WindowGroupList( newWindowGroups ) );
 
 #ifdef Q_DEBUG_INCALL
@@ -147,7 +197,7 @@ void CSDeclarativeIncallIndicator::CreateIncallControlL()
                 if ( wg && wg->Child() )
                     {
                     TUint32 child = wg->Child();
-                    iIncallBubble = reinterpret_cast<CCoeControl*>( child ) ;
+                    iData->iIncallBubble = reinterpret_cast<CCoeControl*>( child ) ;
 #ifdef Q_DEBUG_INCALL
                     qDebug() << "CSDeclarativeIncallIndicator::CreateIncallControlL() found iIncallBubble " << (int)iIncallBubble;
 #endif
@@ -157,7 +207,7 @@ void CSDeclarativeIncallIndicator::CreateIncallControlL()
             }
         CleanupStack::PopAndDestroy( 2 ); // newWindowGroups, oldWindowGroups
 
-        iIsForeground = static_cast<CAknAppUi*>( coeEnv->AppUi() )->IsForeground();
+        iData->iIsForeground = static_cast<CAknAppUi*>( coeEnv->AppUi() )->IsForeground();
 #ifdef Q_DEBUG_INCALL
         qDebug() << "CSDeclarativeIncallIndicator::CreateIncallControlL() iIsForeground " << (int)iIsForeground;
 #endif
@@ -177,18 +227,21 @@ void CSDeclarativeIncallIndicator::MonitorWsMessage( const TWsEvent& aEvent )
     switch ( aEvent.Type() )
         {
         case KAknFullOrPartialForegroundGained:
-            iIsForeground = ETrue;
+            iData->iIsForeground = ETrue;
             UpdateIncallBubbleVisibility();
             break;
 
         case KAknFullOrPartialForegroundLost:
-            iIsForeground = EFalse;
+            iData->iIsForeground = EFalse;
             UpdateIncallBubbleVisibility();
             break;
 
         case EEventScreenDeviceChanged: // flow through
         case KEikDynamicLayoutVariantSwitch: // flow through
         case EEventWindowVisibilityChanged:
+#ifdef Q_DEBUG_INCALL
+            qDebug() << "CSDeclarativeIncallIndicator::MonitorWsMessage() Avkon switch...";
+#endif
             IncallBubbleSizeChanged();
             break;
 
@@ -197,29 +250,37 @@ void CSDeclarativeIncallIndicator::MonitorWsMessage( const TWsEvent& aEvent )
         }
     }
 
+void CSDeclarativeIncallIndicator::OrientationChanged()
+    {
+#ifdef Q_DEBUG_INCALL
+    qDebug() << "CSDeclarativeIncallIndicator::OrientationChanged() QML switch...";
+#endif
+    IncallBubbleSizeChanged();
+    }
+
 void CSDeclarativeIncallIndicator::SetFlags( TInt aFlags )
     {
 #ifdef Q_DEBUG_INCALL
     qDebug() << "CSDeclarativeIncallIndicator::SetFlags() flags " << (int)aFlags;
 #endif
-    if ( aFlags != iFlags )
+    if ( aFlags != iData->iFlags )
         {
-        iFlags = aFlags;
+        iData->iFlags = aFlags;
 
-        if ( !iIncallBubble && (aFlags&EAknStatusBubbleVisible) )
+        if ( !iData->iIncallBubble && (aFlags&EAknStatusBubbleVisible) )
             {
             TRAP_IGNORE( CreateIncallControlL() );
             }
 
-        if ( iIncallBubble )
+        if ( iData->iIncallBubble )
             {
-            iControl->SetIncallBubbleFlags( aFlags );
+            iData->iControl->SetIncallBubbleFlags( aFlags );
             if ( !(aFlags&EAknStatusBubbleVisible) )
                 {
 #ifdef Q_DEBUG_INCALL
                 qDebug() << "CSDeclarativeIncallIndicator::SetFlags() nulling iIncallBubble";
 #endif
-                iIncallBubble = NULL;
+                iData->iIncallBubble = NULL;
                 CCoeEnv* coeEnv = CCoeEnv::Static();
                 if ( coeEnv )
                     {
@@ -236,35 +297,34 @@ void CSDeclarativeIncallIndicator::SetFlags( TInt aFlags )
 
 void CSDeclarativeIncallIndicator::UpdateIncallBubbleVisibility()
     {
-    if ( iIncallBubble )
+    if ( iData->iIncallBubble )
         {
-        if ( (iFlags&EAknStatusBubbleVisible) && iIsForeground)
+        if ( (iData->iFlags&EAknStatusBubbleVisible) && iData->iIsForeground)
             {
 #ifdef Q_DEBUG_INCALL
              qDebug() << "CSDeclarativeIncallIndicator::UpdateIncallBubbleVisibility() visible with new size";
 #endif
             IncallBubbleSizeChanged();
-            iIncallBubble->MakeVisible( ETrue );
+            iData->iIncallBubble->MakeVisible( ETrue );
             }
         else
             {
 #ifdef Q_DEBUG_INCALL
              qDebug() << "CSDeclarativeIncallIndicator::UpdateIncallBubbleVisibility() invisible";
 #endif
-            iIncallBubble->MakeVisible( EFalse );
+             iData->iIncallBubble->MakeVisible( EFalse );
             }
         }
     }
 
 void CSDeclarativeIncallIndicator::IncallBubbleSizeChanged()
     {
-    if ( iIncallBubble )
+    if ( iData->iIncallBubble )
         {
         TAknLayoutRect layoutRect;
         TAknWindowLineLayout layout;
-        TRect screenRect( iAvkonAppUi->ApplicationRect() );
-
-        if ( Layout_Meta_Data::IsLandscapeOrientation() )
+        TRect screenRect( TPoint(), TSize( (TInt)iData->iScreen->width(), (TInt)iData->iScreen->height() ) );
+        if ( iData->iScreen->currentOrientation() & (SDeclarativeScreen::Landscape | SDeclarativeScreen::LandscapeInverted) )
             {
             layout =
                 AknLayoutScalable_Apps::popup_call_status_window( 6 ).LayoutLine();
@@ -292,11 +352,13 @@ void CSDeclarativeIncallIndicator::IncallBubbleSizeChanged()
         // SizeChanged of incall indicator is heavyweight, so set size only if
         // necessary.
         TRect rect( layoutRect.Rect() );
-        if ( rect != TRect( iIncallBubble->Position(), iIncallBubble->Size() ) )
+        if ( rect != TRect( iData->iIncallBubble->Position(), iData->iIncallBubble->Size() ) )
             {
-            iIncallBubble->SetRect( rect );
+            iData->iIncallBubble->SetRect( rect );
             }
         }
     }
+
+#include "sdeclarativeincallindicator.moc"
 
 
