@@ -43,9 +43,12 @@
 
 #include <e32base.h>
 #include <coemain.h>
+#include <QScopedPointer>
 
 class CAknIndicatorContainer;
 class CCoeControl;
+
+class TSDeclarativeIncallIndicatorPrivate;
 
 class CSDeclarativeIncallIndicator : public CBase, public MCoeMessageMonitorObserver
 {
@@ -54,6 +57,7 @@ public:
     ~CSDeclarativeIncallIndicator();
 
     void SetFlags( TInt aFlags );
+    void OrientationChanged();
 
 protected:
     void MonitorWsMessage( const TWsEvent& aEvent );
@@ -66,10 +70,7 @@ private:
     void UpdateIncallBubbleVisibility();
 
 private:
-    CAknIndicatorContainer* iControl;
-    CCoeControl* iIncallBubble;
-    TInt iFlags;
-    TBool iIsForeground;
+    QScopedPointer<TSDeclarativeIncallIndicatorPrivate> iData;
 };
 
 #endif //CSDECLARATIVEINCALLINDICATOR_H

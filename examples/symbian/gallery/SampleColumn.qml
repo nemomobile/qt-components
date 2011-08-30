@@ -189,18 +189,9 @@ Column {
         }
     }
 
-    Row {
+    Switch {
         anchors.horizontalCenter: parent.horizontalCenter
-        spacing: parent.spacing
-
-        Switch {
-            platformInverted: column.childrenInverted
-        }
-
-        Switch {
-            checked: true
-            platformInverted: column.childrenInverted
-        }
+        platformInverted: column.childrenInverted
     }
 
     ProgressBar {

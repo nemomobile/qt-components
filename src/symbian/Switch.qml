@@ -116,51 +116,51 @@ Item {
         sourceSize.width: Symbian.UndefinedSourceDimension
         sourceSize.height: privateStyle.switchButtonHeight
         scale: root.LayoutMirroring.enabled ? -1 : 1
+    }
 
-        MouseArea {
-            id: mouseArea
+    MouseArea {
+        id: mouseArea
 
-            property real lastX
+        property real lastX
 
-            function isChecked() {
-                if (root.LayoutMirroring.enabled)
-                    return (handle.x + handle.width / 2 < track.x + (track.width / 2))
-                else
-                    return (handle.x + handle.width / 2 > track.x + (track.width / 2))
-            }
-            function updateHandlePos() {
-                // The middle of the handle follows mouse, the handle is bound to the track
-                handle.x = Math.max(track.x, Math.min(mouseArea.lastX - handle.width / 2,
-                                                      track.x + track.width - handle.width))
-            }
+        function isChecked() {
+            if (root.LayoutMirroring.enabled)
+                return (handle.x + handle.width / 2 < track.x + (track.width / 2))
+            else
+                return (handle.x + handle.width / 2 > track.x + (track.width / 2))
+        }
+        function updateHandlePos() {
+            // The middle of the handle follows mouse, the handle is bound to the track
+            handle.x = Math.max(track.x, Math.min(mouseArea.lastX - handle.width / 2,
+                                                  track.x + track.width - handle.width))
+        }
 
-            anchors.fill: parent
-            onPressed: stateGroup.state = "Pressed"
-            onReleased: stateGroup.state = "Released" // releasing doesn't toggle yet, it is intermediate state
-            onClicked: stateGroup.state = ""
-            onCanceled: stateGroup.state = "Canceled"
-            onPositionChanged: {
-                mouseArea.lastX = mouse.x
-                if (mouseArea.drag.active)
+        anchors.fill: track
+        onPressed: stateGroup.state = "Pressed"
+        onReleased: stateGroup.state = "Released" // releasing doesn't toggle yet, it is intermediate state
+        onClicked: stateGroup.state = ""
+        onCanceled: stateGroup.state = "Canceled"
+        onPositionChanged: {
+            mouseArea.lastX = mouse.x
+            if (mouseArea.drag.active)
+                updateHandlePos()
+        }
+        drag {
+            // The handle is moved manually but MouseArea can be used to decide when dragging
+            // should start (QApplication::startDragDistance). A dummy target needs to be bound or
+            // dragging won't get activated.
+            target: Item { visible: false }
+
+            axis: Drag.XandYAxis
+            minimumY: 0; maximumY: 0 // keep dragging active eventhough only x axis switches
+            minimumX: track.x; maximumX: mouseArea.drag.minimumX + track.width - handle.width
+            onActiveChanged: {
+                if (mouseArea.drag.active) {
                     updateHandlePos()
-            }
-            drag {
-                // The handle is moved manually but MouseArea can be used to decide when dragging
-                // should start (QApplication::startDragDistance). A dummy target needs to be bound or
-                // dragging won't get activated.
-                target: Item { visible: false }
-
-                axis: Drag.XandYAxis
-                minimumY: 0; maximumY: 0 // keep dragging active eventhough only x axis switches
-                minimumX: track.x; maximumX: mouseArea.drag.minimumX + track.width - handle.width
-                onActiveChanged: {
-                    if (mouseArea.drag.active) {
-                        updateHandlePos()
-                        stateGroup.state = "Dragging"
-                    }
-                    else {
-                        stateGroup.state = (root.checked != isChecked()) ? "" : "Canceled"
-                    }
+                    stateGroup.state = "Dragging"
+                }
+                else {
+                    stateGroup.state = (root.checked != isChecked()) ? "" : "Canceled"
                 }
             }
         }
