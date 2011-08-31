@@ -195,7 +195,8 @@ Popup {
 
         BorderImage {
            id: backgroundImage
-           source: "image://theme/meegotouch-menu-background"
+           source: // !enabled ? root.platformStyle.disabledBackground :
+                   root.platformStyle.background
            anchors.fill : parent
            border { left: 22; top: 22;
                     right: 22; bottom: 22 }
