@@ -337,7 +337,7 @@ Page {
                     MenuItem {text: "Red"; onClicked: { colorRect.color = "darkred" } }
                     MenuItem {text: "Green"; onClicked: { colorRect.color = "darkgreen" }}
                     MenuItem {text: "Blue"; onClicked: { colorRect.color = "darkblue" }}
-                    MenuItem {text: "Black is an extremely beautiful and stylish color"; onClicked: { colorRect.color = "black" }}
+                    MenuItem {text: "Black is an extremely beautiful and stylish color"; platformStyle.inverted: true; onClicked: { colorRect.color = "black" }}
                 }
             }
 

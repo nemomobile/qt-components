@@ -53,7 +53,12 @@ Item {
     property alias pressed: mouseArea.pressed
 
     // platformStyle API
-    property Style platformStyle: MenuItemStyle{}
+    property Style platformStyle: MenuItemStyle{
+        position: root.parent.children.length == 1 ? ""
+      : root.parent.children[0] == root ? "vertical-top"
+      : root.parent.children[root.parent.children.length-1] == root ? "vertical-bottom"
+      : "vertical-center"
+    }
     property alias style: root.platformStyle // Deprecated
 
     width: parent ? parent.width: 0
@@ -71,11 +76,9 @@ Item {
 */
     BorderImage {
        id: backgroundImage
-       // ToDo: remove hardcoded values
-       source:  root.parent.children.length == 1 ? (pressed ? "image://theme/meegotouch-list-background-pressed" : "image://theme/meegotouch-list-background")
-              : root.parent.children[0] == root ? (pressed ? "image://theme/meegotouch-list-background-pressed-vertical-top" : "image://theme/meegotouch-list-background-vertical-top")
-              : root.parent.children[root.parent.children.length-1] == root ? (pressed ? "image://theme/meegotouch-list-background-pressed-vertical-bottom" : "image://theme/meegotouch-list-background-vertical-bottom")
-              : (pressed ? "image://theme/meegotouch-list-background-pressed-vertical-center" : "image://theme/meegotouch-list-background-vertical-center")
+       source:   // !enabled ? root.platformStyle.disabledBackground :
+                  pressed ? root.platformStyle.pressedBackground
+                : root.platformStyle.background
        anchors.fill : root
        border { left: 22; top: 22;
                 right: 22; bottom: 22 }
