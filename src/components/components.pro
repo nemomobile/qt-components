@@ -23,7 +23,7 @@ symbian {
     TARGET.UID3 = 0x2003DF67
     MMP_RULES += EXPORTUNFROZEN
     MMP_RULES += SMPSAFE
-    VERSION = 10.0.1
+    VERSION = 10.1.0
 
     stubsis = \
         "START EXTENSION app-services.buildstubsis" \
