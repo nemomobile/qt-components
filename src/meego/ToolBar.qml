@@ -60,6 +60,13 @@ Item {
     // Deprecated, TODO remove
     property alias style: root.platformStyle
 
+    // Shadows:
+    Image {
+        anchors.left : bgImage.left
+        anchors.right: bgImage.right
+        anchors.bottom : bgImage.top
+        source: "image://theme/meegotouch-menu-shadow-top"
+    }
     // Toolbar background.
     BorderImage {
         id: bgImage
