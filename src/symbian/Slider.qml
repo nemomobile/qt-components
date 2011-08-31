@@ -286,12 +286,12 @@ Item {
                 else if (valueIndicatorRightEdge.x > rightStop)
                     point.x = root.mapFromItem(null, rightStop - valueIndicator.item.width, 0).x
 
-                valueIndicator.item.x = point.x
-                valueIndicator.item.y = point.y - valueIndicator.spacing - valueIndicator.item.height
+                valueIndicator.item.x = Math.round(point.x)
+                valueIndicator.item.y = Math.round(point.y - valueIndicator.spacing - valueIndicator.item.height)
             } else {
                 point = root.mapFromItem(track, 0, handle.y + handle.height / 2 - valueIndicator.item.height / 2)
-                valueIndicator.item.x = point.x - valueIndicator.spacing - valueIndicator.item.width
-                valueIndicator.item.y = point.y
+                valueIndicator.item.x = Math.round(point.x - valueIndicator.spacing - valueIndicator.item.width)
+                valueIndicator.item.y = Math.round(point.y)
             }
         }
 
