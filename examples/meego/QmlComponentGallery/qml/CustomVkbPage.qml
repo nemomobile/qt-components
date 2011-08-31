@@ -137,6 +137,15 @@ Page {
             }
 
             Label {
+                text: "Default VKB with numbers only:"
+            }
+
+            TextField {
+                anchors {left: parent.left; right: parent.right;}
+                inputMethodHints: Qt.ImhDigitsOnly | Qt.ImhNoPredictiveText
+            }            
+            
+            Label {
                 text: "Custom VKB:"
             }
 
@@ -181,7 +190,7 @@ Page {
                     text: "activate"
                     onClicked: blueTextField.forceActiveFocus()
                 }
-            }
+            }            
         }
     }
 }
