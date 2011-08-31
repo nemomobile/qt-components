@@ -47,6 +47,7 @@ StatusBarInternal {
     width: parent.width
 
     property bool showStatusBar: true
+    property bool __completed: false
 
     states: State {
         name: "hide"; when: showStatusBar==false
@@ -56,6 +57,7 @@ StatusBarInternal {
     Component.onCompleted: {
         statusBar.orientation = screen.currentOrientation
         screen.updatePlatformStatusBarRect(statusBar)
+        __completed = true;
     }
 
     onWidthChanged: {
@@ -81,8 +83,8 @@ StatusBarInternal {
     }
 
     transitions: Transition {
-        from: ""
-        to: "hide"
+        from: __completed ? "" : "invalid"
+        to: __completed ? "hide" : "invalid"
         reversible: true
         SequentialAnimation {
             ScriptAction {
@@ -94,7 +96,7 @@ StatusBarInternal {
             PropertyAnimation { target: statusBar; properties: "visible"; }
             ScriptAction {
                 script: {
-                    updatePlatformStatusBarTimer.running = true
+                    updatePlatformStatusBarTimer.running = true;
                 }
             }
         }
