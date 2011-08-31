@@ -62,12 +62,6 @@ CSDeclarativeStatusPaneSubscriber::CSDeclarativeStatusPaneSubscriber(
         {
         iIndicatorState.visibleIndicators[i] = KIndicatorEmptySpot;
         }
-    iIndicatorState.iIncallBubbleFlags = 0;
-    iSignalState.iIconState = 0;
-    iSignalState.iSignalStrength = 0;
-    iBatteryState.iIconState = 0;
-    iBatteryState.iBatteryStrength = 0;
-    iBatteryState.iRecharging = EFalse;
     }
 
 CSDeclarativeStatusPaneSubscriber* CSDeclarativeStatusPaneSubscriber::NewL(
