@@ -1,3 +1,9 @@
+qt-components (1.1~git20110831-1) maverick; urgency=low
+
+  * Fixes: NB#279897 Layouts broken with default VKB in landscape orientations
+
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Wed, 31 Aug 2011 16:20:00 +0300
+
 qt-components (1.1~git20110826-1) maverick; urgency=low
 
   * Fixes: NB#275360 Legal bug - license header change in qt-components
