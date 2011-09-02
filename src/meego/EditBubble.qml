@@ -185,25 +185,14 @@ Item {
         State {
             name: "opened"
             ParentChange { target: rect; parent: Utils.findRootItem(textInput); }
-            PropertyChanges { target: rect; visible: true; opacity: 1.0; }
+            PropertyChanges { target: rect; visible: true; }
         },
         State {
             name: "closed"
             ParentChange { target: rect; parent: bubble; }
-            PropertyChanges { target: rect; visible: false; opacity: 0.0; }
+            PropertyChanges { target: rect; visible: false; }
         }
     ]
-
-    transitions: Transition {
-        from: "closed"; to: "opened";
-        SequentialAnimation {
-            PauseAnimation { duration: 100; }
-            ParentAnimation { target: rect; }
-            ScriptAction { script: Private.adjustPosition(bubble); }
-            NumberAnimation { target: rect; properties: "opacity,scale";
-                duration: 280; easing.type: Easing.OutQuad; }
-        }
-    }
 
     Connections {
         target: Utils.findFlickable(textInput)
