@@ -174,7 +174,7 @@ Item {
             property int screenWidth: Math.max(screen.width, screen.height)
 
             // Duration of transition animation (in ms)
-            property int transitionDuration: 200
+            property int transitionDuration: 250
 
             // Flag that indicates the container should be cleaned up after the transition has ended.
             property bool cleanupAfterTransition: false

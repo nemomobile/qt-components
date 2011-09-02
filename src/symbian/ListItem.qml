@@ -224,7 +224,7 @@ Item {
                     target: root
                     property: "height"
                     to: 0
-                    duration: 200
+                    duration: 150
                     easing.type: Easing.OutQuad
                 }
             }
@@ -233,7 +233,7 @@ Item {
                 property: "opacity"
                 from: 1
                 to: 0
-                duration: 200
+                duration: 100
                 easing.type: Easing.Linear
             }
         }
@@ -247,7 +247,7 @@ Item {
                 target: root
                 property: "height"
                 to: root.height
-                duration: 250
+                duration: 150
                 easing.type: Easing.OutQuad
             }
             NumberAnimation {
@@ -255,7 +255,7 @@ Item {
                 property: "opacity"
                 from: 0
                 to: 1
-                duration: 250
+                duration: 150
                 easing.type: Easing.Linear
             }
         }
