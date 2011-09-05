@@ -1,3 +1,10 @@
+qt-components (1.1~git20110901-1) maverick; urgency=low
+
+  * Fixes: NB#278372 Nokia Account page is broken
+  * Fixes: NB#278107 Menu does not support theme.inverted 
+
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Fri, 02 Sep 2011 15:10:00 +0300
+
 qt-components (1.1~git20110831-1) maverick; urgency=low
 
   * Fixes: NB#279897 Layouts broken with default VKB in landscape orientations
