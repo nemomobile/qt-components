@@ -115,18 +115,17 @@ Item {
             Image {
                 width: 30
                 height: 30
-                x: 2
-                y: 2
+                x: 0
+                y: -2
                 source: (slider.enabled ? (mouseArea.pressed ? platformStyle.thumbPressed : platformStyle.thumb) : platformStyle.thumbDisabled)
             }
 
             source: platformStyle.shadow
 
-            /* x: 4 */
-            y: 4
+            y: 8
 
-            width: 34
-            height: 34
+            width: 30
+            height: 30
         }
 
         MouseArea {
