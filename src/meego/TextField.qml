@@ -206,6 +206,13 @@ FocusScope {
 
     // private
     property bool __expanding: true // Layout hint used but ToolBarLayout
+    property int __preeditDisabledMask: Qt.ImhHiddenText|
+                                        Qt.ImhNoPredictiveText|
+                                        Qt.ImhDigitsOnly|
+                                        Qt.ImhFormattedNumbersOnly|
+                                        Qt.ImhDialableCharactersOnly|
+                                        Qt.ImhEmailCharactersOnly|
+                                        Qt.ImhUrlCharactersOnly 
 
     implicitWidth: platformStyle.defaultWidth
     implicitHeight: UI.FIELD_DEFAULT_HEIGHT
@@ -303,9 +310,12 @@ FocusScope {
                 textInput.forceActiveFocus();
 
                 // activate to preedit and/or move the cursor
+                var preeditDisabled = root.inputMethodHints &
+                                      root.__preeditDisabledMask                         
                 var injectionSucceeded = false;
                 var newCursorPosition = textInput.positionAt(mapToItem(textInput, mouseX, mouseY).x,TextInput.CursorOnCharacter);
-                if (!TextAreaHelper.atSpace(newCursorPosition)
+                if (!preeditDisabled
+                        && !TextAreaHelper.atSpace(newCursorPosition)
                         && newCursorPosition != textInput.text.length
                         && !(newCursorPosition == 0 || TextAreaHelper.atSpace(newCursorPosition - 1))) {
                     injectionSucceeded = TextAreaHelper.injectWordToPreedit(newCursorPosition);
@@ -426,19 +436,8 @@ FocusScope {
             onPressed: {
                 var mousePosition = textInput.positionAt(mouse.x,TextInput.CursorOnCharacter);
                 pressOnPreedit = textInput.cursorPosition==mousePosition
-                var preeditDisabled = (
-                        root.inputMethodHints&
-                        (
-                                Qt.ImhHiddenText|
-                                Qt.ImhNoPredictiveText|
-                                Qt.ImhDigitsOnly|
-                                Qt.ImhFormattedNumbersOnly|
-                                Qt.ImhDialableCharactersOnly|
-                                Qt.ImhEmailCharactersOnly|
-                                Qt.ImhUrlCharactersOnly
-                )
-                );
-
+                var preeditDisabled = root.inputMethodHints &
+                                      root.__preeditDisabledMask
                 attemptToActivate = !pressOnPreedit && !root.readOnly && !preeditDisabled && root.activeFocus && !(mousePosition == 0 || TextAreaHelper.atSpace(mousePosition - 1));
                 mouse.filtered = true;
             }
