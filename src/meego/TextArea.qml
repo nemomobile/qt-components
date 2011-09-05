@@ -173,6 +173,15 @@ FocusScope {
         }
     }
 
+    // private
+    property int __preeditDisabledMask: Qt.ImhHiddenText|                       
+                                        Qt.ImhNoPredictiveText|                
+                                        Qt.ImhDigitsOnly|                      
+                                        Qt.ImhFormattedNumbersOnly|             
+                                        Qt.ImhDialableCharactersOnly|           
+                                        Qt.ImhEmailCharactersOnly|              
+                                        Qt.ImhUrlCharactersOnly 
+
     implicitWidth: platformStyle.defaultWidth
     implicitHeight: Math.max (UI.FIELD_DEFAULT_HEIGHT,
                               textEdit.height + (UI.FIELD_DEFAULT_HEIGHT - font.pixelSize))
@@ -266,10 +275,13 @@ FocusScope {
                 textEdit.forceActiveFocus();
 
                 // activate to preedit and/or move the cursor
+                var preeditDisabled = root.inputMethodHints &                   
+                                      root.__preeditDisabledMask
                 var injectionSucceeded = false;
                 var mappedMousePos = mapToItem(textEdit, mouseX, mouseY);
                 var newCursorPosition = textEdit.positionAt(mappedMousePos.x, mappedMousePos.y, TextInput.CursorOnCharacter);
-                if (!TextAreaHelper.atSpace(newCursorPosition)
+                if (!preeditDisabled
+                        && !TextAreaHelper.atSpace(newCursorPosition)
                         && newCursorPosition != textEdit.text.length
                         && !(newCursorPosition == 0 || TextAreaHelper.atSpace(newCursorPosition - 1))) {
                     injectionSucceeded = TextAreaHelper.injectWordToPreedit(newCursorPosition);
@@ -407,18 +419,9 @@ FocusScope {
             onPressed: {
                 var mousePosition = textEdit.positionAt(mouse.x,mouse.y,TextEdit.CursorOnCharacter);
                 pressOnPreedit = textEdit.cursorPosition==mousePosition
-                var preeditDisabled = (
-                        root.inputMethodHints&
-                        (
-                                Qt.ImhHiddenText|
-                                Qt.ImhNoPredictiveText|
-                                Qt.ImhDigitsOnly|
-                                Qt.ImhFormattedNumbersOnly|
-                                Qt.ImhDialableCharactersOnly|
-                                Qt.ImhEmailCharactersOnly|
-                                Qt.ImhUrlCharactersOnly
-                )
-                );
+                var preeditDisabled = root.inputMethodHints &                  
+                                      root.__preeditDisabledMask
+
                 attemptToActivate = !pressOnPreedit && !root.readOnly && !preeditDisabled && root.activeFocus && !(mousePosition == 0 || TextAreaHelper.atSpace(mousePosition - 1));
                 mouse.filtered = true;
             }
