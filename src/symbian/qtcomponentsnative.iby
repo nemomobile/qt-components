@@ -33,6 +33,7 @@ data=ZRESOURCE\qt\imports\NATIVE_PLUGIN_DIR\Page.qml                            
 data=ZRESOURCE\qt\imports\NATIVE_PLUGIN_DIR\PageStack.js                           RESOURCE_FILES_DIR\qt\imports\NATIVE_PLUGIN_DIR\PageStack.js
 data=ZRESOURCE\qt\imports\NATIVE_PLUGIN_DIR\PageStack.qml                          RESOURCE_FILES_DIR\qt\imports\NATIVE_PLUGIN_DIR\PageStack.qml
 data=ZRESOURCE\qt\imports\NATIVE_PLUGIN_DIR\PageStackWindow.qml                    RESOURCE_FILES_DIR\qt\imports\NATIVE_PLUGIN_DIR\PageStackWindow.qml
+data=ZRESOURCE\qt\imports\NATIVE_PLUGIN_DIR\Popup.qml                              RESOURCE_FILES_DIR\qt\imports\NATIVE_PLUGIN_DIR\Popup.qml
 data=ZRESOURCE\qt\imports\NATIVE_PLUGIN_DIR\ProgressBar.qml                        RESOURCE_FILES_DIR\qt\imports\NATIVE_PLUGIN_DIR\ProgressBar.qml
 data=ZRESOURCE\qt\imports\NATIVE_PLUGIN_DIR\QueryDialog.qml                        RESOURCE_FILES_DIR\qt\imports\NATIVE_PLUGIN_DIR\QueryDialog.qml
 data=ZRESOURCE\qt\imports\NATIVE_PLUGIN_DIR\RadioButton.qml                        RESOURCE_FILES_DIR\qt\imports\NATIVE_PLUGIN_DIR\RadioButton.qml
