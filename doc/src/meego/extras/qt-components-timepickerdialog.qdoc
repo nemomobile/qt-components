@@ -42,6 +42,7 @@
     \inherits Dialog
     \ingroup qt-components-extras
     \since 4.7
+    \brief TimePickerDialog is a Dialog to select time
 
     Dialog that shows a time picker.
 

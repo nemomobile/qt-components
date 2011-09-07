@@ -42,6 +42,7 @@
     \inherits Image
     \ingroup qt-components-extras
     \since 4.7
+    \brief MoreIndicator indicates that more content is available for the user
 
     Component to indicate that more content is available for the user.
 

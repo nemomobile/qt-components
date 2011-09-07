@@ -42,6 +42,7 @@
     \inherits ImplicitSizeItem
     \ingroup qt-components-extras
     \since 4.7
+    \brief InfoBanner component is used to display information to the user
 
     The InfoBanner component is used to display information to the user. The number of lines of text is limited to 3
 
