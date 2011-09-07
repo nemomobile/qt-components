@@ -42,7 +42,8 @@
     \inherits ImplicitSizeItem
     \ingroup qt-components-extras
     \since 4.7
-
+    \brief PageIndicator indicates the page user is currently viewing 
+    
     Component to indicate the page user is currently viewing.
 
     A page indicator is a component that shows the number of availabe pages as well as the page the user is

@@ -42,6 +42,7 @@
     \inherits Item
     \ingroup qt-components-extras
     \since 4.7
+    \brief ListDelegate is used as the delegate in a list view
 
     Component to be used as the delegate in a list view.
 

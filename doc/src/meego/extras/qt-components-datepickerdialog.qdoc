@@ -42,6 +42,7 @@
     \inherits Dialog
     \ingroup qt-components-extras
     \since 4.7
+    \brief DatePickerDialog is a Dialog for selecting a date
 
     Dialog that shows a date picker.
 

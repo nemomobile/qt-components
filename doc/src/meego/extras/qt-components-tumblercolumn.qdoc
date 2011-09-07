@@ -42,7 +42,8 @@
     \inherits Item
     \ingroup qt-components-extras
     \since 4.7
-
+    \brief TumblerColumn is a Column used with Tumbler
+  
     TumblerColumn represents a column in Tumbler. It is used with a Tumbler.
 
     \qml

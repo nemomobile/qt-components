@@ -42,6 +42,7 @@
     \inherits Dialog
     \ingroup qt-components-extras
     \since 4.7
+    \brief TumblerDialog is a tumbler style Dialog used with Tumbler
 
     A tumbler dialog is a dialog that shows a tumbler.
 

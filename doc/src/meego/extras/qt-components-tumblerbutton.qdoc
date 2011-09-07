@@ -42,6 +42,7 @@
     \inherits Item
     \ingroup qt-components-extras
     \since 4.7
+    \brief TumblerButton is a Button used with Tumbler
 
     The TumblerButton has a fixed width. Longer text will be elided.
     To avoid that for longer texts please set the implicitWidth explicitly.
