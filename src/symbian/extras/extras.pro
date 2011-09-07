@@ -57,9 +57,7 @@ symbian {
             ":\"Nokia\"" \
             " "
 
-    # Reminder: SIS UID must remain the same between versions 1.x
-    header = "$${LITERAL_HASH}{\"symbianextrasplugin_1_1\"},(0x2003A913),1,1,0,TYPE=SA,RU"
-    package.pkg_prerules += vendor_info header
+    package.pkg_prerules += vendor_info
     DEPLOYMENT += package
 }
 
