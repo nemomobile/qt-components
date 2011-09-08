@@ -467,6 +467,7 @@ bool MDeclarativeScreen::eventFilter(QObject *o, QEvent *e) {
 void MDeclarativeScreen::setOrientation(Orientation o)
 {
     d->finalOrientation = o;
+    MDeclarativeScreen::Direction oldDirection = d->rotationDirection;
 
     if (d->orientation == o || MWindowState::instance()->animating())
         return;
@@ -480,7 +481,8 @@ void MDeclarativeScreen::setOrientation(Orientation o)
     else {
          d->rotationDirection = MDeclarativeScreen::Clockwise;
     }
-    emit rotationDirectionChanged();
+    if (oldDirection != d->rotationDirection)
+        emit rotationDirectionChanged();
 
     Orientation newOrientation = Default;
     //if keyboard is open always set landscape and ignore allowed orientations
