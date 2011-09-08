@@ -68,6 +68,20 @@ Rectangle {
 
     property variant uiString: QtObject {}
 
+    // Input. Array of horizontal alignments for strings. Accept same
+    // values as Text { horizontalAlignment: ... } e.g. Text.AlignLeft, Text.AlignRight and so on.
+    // By default all text strings aligned to the left.
+    //    header
+    //    question
+    //    selectScore
+    //    commentsInputLabel
+    //    contactAgreement
+    //    emailInputLabel
+    //    invalidEmail
+    //    legalText
+
+    property variant uiHorizontalAlignment: QtObject {}
+
     // Promoter score, between 0 ~ 10
     property alias score: scoreSlider.value
 
@@ -148,6 +162,7 @@ Rectangle {
             wrapMode: Text.Wrap
             font.pixelSize: 40
             color: "#282828"
+            horizontalAlignment: uiHorizontalAlignment.header || Text.AlignLeft
             text: uiString.header ||
                   "!!Tell us what you think"
         }
@@ -163,6 +178,7 @@ Rectangle {
             wrapMode: Text.Wrap
             font.pixelSize: 24
             color: "#282828"
+            horizontalAlignment: uiHorizontalAlignment.question || Text.AlignLeft
             text: uiString.question ||
                   "!!How likely are you to recommend this app to a friend or a colleague?"
         }
@@ -253,6 +269,7 @@ Rectangle {
             width: parent.width
             font.pixelSize: 18
             color: "#FF3200"
+            horizontalAlignment: uiHorizontalAlignment.selectScore || Text.AlignLeft
             text:  uiString.selectScore ||
                    "!!You must select a rating"
         }
@@ -278,6 +295,7 @@ Rectangle {
             width: parent.width
             font.pixelSize: 22
             color: "#505050"
+            horizontalAlignment: uiHorizontalAlignment.commentsInputLabel || Text.AlignLeft
             text:  uiString.commentsInputLabel ||
                    "!!Please tell us why you gave this score (optional)"
         }
@@ -323,6 +341,7 @@ Rectangle {
                 font.pixelSize: 22
                 wrapMode: Text.Wrap
                 color: "#505050"
+                horizontalAlignment: uiHorizontalAlignment.contactAgreement || Text.AlignLeft
                 text: uiString.contactAgreement ||
                       "!!You can contact me for details using my Nokia Account e-mail."
             }
@@ -352,6 +371,7 @@ Rectangle {
                 width: parent.width
                 font.pixelSize: 22
                 color: "#505050"
+                horizontalAlignment: uiHorizontalAlignment.emailInputLabel || Text.AlignLeft
                 text: uiString.emailInputLabel ||
                       "!!You can contact me for details (Optional)"
             }
@@ -401,6 +421,7 @@ Rectangle {
                 width: parent.width
                 font.pixelSize: 18
                 color: "#FF3200"
+                horizontalAlignment: uiHorizontalAlignment.invalidEmail || Text.AlignLeft
                 text: uiString.invalidEmail ||
                       "!!Invalid email address"
             }
@@ -416,6 +437,7 @@ Rectangle {
             font.pixelSize: 22
             color: "#505050"
             wrapMode: Text.Wrap
+            horizontalAlignment: uiHorizontalAlignment.legalText || Text.AlignLeft
             text: uiString.legalText ||
                       "!!Your information will be treated according to Nokia privacy policy."
         }
