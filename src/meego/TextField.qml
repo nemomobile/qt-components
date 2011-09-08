@@ -381,11 +381,17 @@ FocusScope {
         }
 
         onCursorPositionChanged: {
-            if (Popup.isOpened(textInput) && !Popup.isChangingInput()) {
+            if (MagnifierPopup.isOpened() &&
+                Popup.isOpened()) {
                 Popup.close(textInput);
-                Popup.open(textInput);
+            } else if ((!mouseFilter.attemptToActivate ||
+                textInput.cursorPosition == textInput.text.length) &&
+                Popup.isOpened(textInput) &&
+                !Popup.isChangingInput()) {
+                    Popup.close(textInput);
+                    Popup.open(textInput,
+                        textInput.positionToRectangle(textInput.cursorPosition));
             }
-
         }
 
         onSelectedTextChanged: {
@@ -424,6 +430,7 @@ FocusScope {
         }
 
         MouseFilter {
+            id: mouseFilter
             anchors.fill: parent
             anchors.leftMargin:  UI.TOUCH_EXPANSION_MARGIN - root.platformStyle.paddingLeft
             anchors.rightMargin:  UI.TOUCH_EXPANSION_MARGIN - root.platformStyle.paddingRight
@@ -434,6 +441,8 @@ FocusScope {
             property bool pressOnPreedit: false
             property int oldCursorPosition: 0
 
+            property variant editBubblePosition: Qt.point(0,0)
+
             onPressed: {
                 var mousePosition = textInput.positionAt(mouse.x,TextInput.CursorOnCharacter);
                 pressOnPreedit = textInput.cursorPosition==mousePosition
@@ -441,7 +450,8 @@ FocusScope {
                 var preeditDisabled = root.inputMethodHints &
                                       root.__preeditDisabledMask
 
-                attemptToActivate = !pressOnPreedit && !root.readOnly && !preeditDisabled && root.activeFocus && !(mousePosition == 0 || TextAreaHelper.atSpace(mousePosition - 1));
+                attemptToActivate = !pressOnPreedit && !root.readOnly && !preeditDisabled && root.activeFocus &&
+                                    !(mousePosition == 0 || TextAreaHelper.atSpace(mousePosition - 1) || TextAreaHelper.atSpace(mousePosition));
                 mouse.filtered = true;
             }
 
@@ -479,17 +489,21 @@ FocusScope {
                 }
             }
 
-            onReleased: {                
+            onReleased: {
                 if (MagnifierPopup.isOpened()) {
                     MagnifierPopup.close();
                 }
 
-                if (attemptToActivate) {
+                if (attemptToActivate)
                     inputContext.reset();
+
+                var newCursorPosition = textInput.positionAt(mouse.x,TextInput.CursorOnCharacter); 
+                editBubblePosition = textInput.positionToRectangle(newCursorPosition);
+
+                if (attemptToActivate) {
                     var beforeText = textInput.text;
 
-                    var newCursorPosition = textInput.positionAt(mouse.x,TextInput.CursorOnCharacter);
-
+                    textInput.cursorPosition = newCursorPosition;
                     var injectionSucceeded = false;
 
                     if (!TextAreaHelper.atSpace(newCursorPosition)                             
@@ -498,6 +512,8 @@ FocusScope {
                     }
                     if (injectionSucceeded) {
                         mouse.filtered=true;
+                        if (textInput.preedit.length >=1 && textInput.preedit.length <= 4)
+                            editBubblePosition = textInput.positionToRectangle(textInput.cursorPosition+1)
                     } else {
                         textInput.text=beforeText;
                         textInput.cursorPosition=newCursorPosition;
@@ -506,13 +522,17 @@ FocusScope {
                     if (!pressOnPreedit) inputContext.reset();
                     textInput.cursorPosition = textInput.positionAt(mouse.x,TextInput.CursorOnCharacter);
                 }
-
                 parent.selectByMouse = false;
             }
 
             onFinished: {
-                if (root.activeFocus && platformEnableEditBubble)
-                    Popup.open(textInput);
+                if (root.activeFocus && platformEnableEditBubble) {
+                    if (textInput.preedit.length == 0) 
+                        editBubblePosition = textInput.positionToRectangle(textInput.cursorPosition);
+                    Popup.open(textInput,editBubblePosition);
+
+                }
+                attemptToActivate = false
             }
 
             onMousePositionChanged: {

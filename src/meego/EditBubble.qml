@@ -53,6 +53,8 @@ Item {
 
     property Style platformStyle: EditBubbleStyle {}
 
+    property variant position: Qt.point(0,0)
+
     anchors.fill: parent
 
     Item {

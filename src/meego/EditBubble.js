@@ -68,13 +68,16 @@ function init(item)
   All operations and changes will be binded to the
   given item.
 */
-function open(input)
+function open(input,position)
 {
     if (!input)
         return false;
 
     if (!init(input))
         return false;
+
+    // Position when text not selected.
+    popup.position = position;
 
     // need to set before checking capabilities
     popup.textInput = input;
@@ -150,10 +153,16 @@ function adjustPosition(bubble)
     if (viewport == null || input == null)
         return;
 
-    var mid = rect.width / 2;
-
     var irect = input.positionToRectangle(input.selectionStart);
     var frect = input.positionToRectangle(input.selectionEnd);
+    var mid = rect.width / 2;
+
+    if (input.selectionStart == input.selectionEnd) {
+        irect.x = popup.position.x;
+        irect.y = popup.position.y;
+        frect.x = popup.position.x;
+        frect.y = popup.position.y;
+   }
 
     var ipoint = viewport.mapFromItem(input, irect.x, irect.y);
     var fpoint = viewport.mapFromItem(input, frect.x, frect.y);

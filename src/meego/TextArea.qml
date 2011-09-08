@@ -371,9 +371,15 @@ FocusScope {
                 TextAreaHelper.repositionFlickable(contentMovingAnimation)
             }
 
-            if (Popup.isOpened(textEdit)) {
+           if (MagnifierPopup.isOpened() &&
+               Popup.isOpened(textEdit)) {
+               Popup.close(textEdit);
+           } else if ((!mouseFilter.attemptToActivate ||
+                textEdit.cursorPosition == textEdit.text.length) &&
+                Popup.isOpened(textEdit)) {
                 Popup.close(textEdit);
-                Popup.open(textEdit);
+                Popup.open(textEdit,
+                           textEdit.positionToRectangle(textEdit.cursorPosition));
             }
         }
 
@@ -408,13 +414,17 @@ FocusScope {
         }
 
         MouseFilter {
+            id: mouseFilter
             anchors.fill: parent
             anchors.leftMargin:  UI.TOUCH_EXPANSION_MARGIN - UI.PADDING_XLARGE
             anchors.rightMargin:  UI.TOUCH_EXPANSION_MARGIN - UI.PADDING_MEDIUM
             anchors.topMargin: UI.TOUCH_EXPANSION_MARGIN - (UI.FIELD_DEFAULT_HEIGHT - font.pixelSize) / 2
             anchors.bottomMargin:  UI.TOUCH_EXPANSION_MARGIN - (UI.FIELD_DEFAULT_HEIGHT - font.pixelSize) / 2
+
             property bool attemptToActivate: false
             property bool pressOnPreedit
+
+           property variant editBubblePosition: Qt.point(0,0) 
 
             onPressed: {
                 var mousePosition = textEdit.positionAt(mouse.x,mouse.y,TextEdit.CursorOnCharacter);
@@ -422,7 +432,8 @@ FocusScope {
                 var preeditDisabled = root.inputMethodHints &                  
                                       root.__preeditDisabledMask
 
-                attemptToActivate = !pressOnPreedit && !root.readOnly && !preeditDisabled && root.activeFocus && !(mousePosition == 0 || TextAreaHelper.atSpace(mousePosition - 1));
+                attemptToActivate = !pressOnPreedit && !root.readOnly && !preeditDisabled && root.activeFocus &&
+                                    !(mousePosition == 0 || TextAreaHelper.atSpace(mousePosition - 1) || TextAreaHelper.atSpace(mousePosition));
                 mouse.filtered = true;
             }
 
@@ -455,11 +466,16 @@ FocusScope {
                     TextAreaHelper.repositionFlickable(contentMovingAnimation);
                 }
 
-                if (attemptToActivate) {
+                if (attemptToActivate)
                     inputContext.reset();
+
+                var newCursorPosition = textEdit.positionAt(mouse.x,mouse.y,TextEdit.CursorOnCharacter);
+                editBubblePosition = textEdit.positionToRectangle(newCursorPosition);
+
+                if (attemptToActivate) {
                     var beforeText = textEdit.text;
 
-                    var newCursorPosition = textEdit.positionAt(mouse.x,mouse.y,TextInput.CursorOnCharacter);
+                    textEdit.cursorPosition = newCursorPosition;
                     var injectionSucceeded = false;
 
                     if (!TextAreaHelper.atSpace(newCursorPosition)                             
@@ -468,6 +484,8 @@ FocusScope {
                     }
                     if (injectionSucceeded) {
                         mouse.filtered=true;
+                        if (textEdit.preedit.length >=1 && textEdit.preedit.length <= 4)
+                            editBubblePosition = textEdit.positionToRectangle(textEdit.cursorPosition);
                     } else {
                         textEdit.text=beforeText;
                         textEdit.cursorPosition=newCursorPosition;
@@ -475,13 +493,16 @@ FocusScope {
                     attemptToActivate = false;
                 } else if (!parent.selectByMouse) {
                     if (!pressOnPreedit) inputContext.reset();
-                    textEdit.cursorPosition = textEdit.positionAt(mouse.x,mouse.y,TextInput.CursorOnCharacter);
+                    textEdit.cursorPosition = textEdit.positionAt(mouse.x,mouse.y,TextEdit.CursorOnCharacter);
                 }
                 parent.selectByMouse = false;
             }
             onFinished: {
-                if (root.activeFocus && platformEnableEditBubble)
-                    Popup.open(textEdit);
+                if (root.activeFocus && platformEnableEditBubble) {
+                    if (textEdit.preedit.length == 0)
+                        editBubblePosition = textEdit.positionToRectangle(textEdit.cursorPosition);
+                    Popup.open(textEdit,editBubblePosition);
+                }
             }
             onMousePositionChanged: {
                if (MagnifierPopup.isOpened() && !parent.selectByMouse) {
