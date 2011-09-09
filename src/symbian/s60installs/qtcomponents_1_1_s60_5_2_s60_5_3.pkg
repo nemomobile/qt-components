@@ -1,0 +1,22 @@
+; This package file can be used to manually create a wrapper SIS package
+; for SmartInstaller, containing qtcomponents 1.1 SIS packages for different
+; platform versions. Note that the wrapped SIS files are expected to be found
+; in the current directory with specific name.
+
+&EN
+#{"Qt Quick components for Symbian"},(0x2003DF69),1,1,0,TYPE=SA,RU,NR
+%{"Nokia"}
+:"Nokia"
+[0x20022E6D], 0, 0, 0, {"S60ProductID"}
+
+; Default dependency to Qt libraries
+(0x2001E61C), 4, 7, 4, {"Qt"}
+; Default dependency to QtMobility libraries
+(0x2002AC89), 1, 2, 0, {"QtMobility"}
+
+
+IF exists("z:\system\install\Series60v5.3.sis")
+@"qtcomponents_1_1_s60_5_3.sis", (0x200346DE)
+ELSEIF exists("z:\system\install\Series60v5.2.sis")
+@"qtcomponents_1_1_s60_5_2.sis", (0x200346DE)
+ENDIF
