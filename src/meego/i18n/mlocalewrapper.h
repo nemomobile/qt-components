@@ -343,8 +343,8 @@ public:
                                         CalendarType calendarType) const      {Q_ASSERT(ml); return ml->parseDateTime(dateTime,
                                                                                                                       (MLocale::CalendarType) calendarType);}
 
-    Q_INVOKABLE void installTrCatalog(const QString &name)                    {Q_ASSERT(ml); ml->installTrCatalog(name);}
-    Q_INVOKABLE void removeTrCatalog(const QString &name)                     {Q_ASSERT(ml); ml->removeTrCatalog(name);}
+    Q_INVOKABLE void installTrCatalog(const QString &name)                    {Q_ASSERT(ml); ml->installTrCatalog(name); MLocale::setDefault(*ml);}
+    Q_INVOKABLE void removeTrCatalog(const QString &name)                     {Q_ASSERT(ml); ml->removeTrCatalog(name);  MLocale::setDefault(*ml);}
     Q_INVOKABLE bool isInstalledTrCatalog(const QString &name) const          {Q_ASSERT(ml); return ml->isInstalledTrCatalog(name);}
 
     Q_INVOKABLE void addTranslationPath(const QString &path)                  {MLocale::addTranslationPath(path); emit translationPathsChanged();}
