@@ -18,6 +18,7 @@ symbian {
     gallery_qmls.sources = *.qml
     DEPLOYMENT += gallery_qmls
     BLD_INF_RULES.prj_exports += "gallery.iby $$CORE_APP_LAYER_IBY_EXPORT_PATH(qmlgallery.iby)"
+    VERSION = 10.1.0
 
     stubsis = \
         "START EXTENSION app-services.buildstubsis" \
@@ -35,7 +36,7 @@ symbian {
             ":\"Nokia\"" \
             " "
 
-    header = "$${LITERAL_HASH}{\"qmlgallery\"},(0x200346E5),1,0,0,TYPE=SA,RU"
+    header = "$${LITERAL_HASH}{\"qmlgallery\"},(0x200346E5),1,1,0,TYPE=SA,RU"
     package.pkg_prerules += vendor_info header
     DEPLOYMENT += package
 }

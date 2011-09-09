@@ -25,6 +25,7 @@ symbian {
     performancetest_js.path = tests/utils
     DEPLOYMENT += performancetest_qmls1 performancetest_qmls2 performancetest_qmls3 performancetest_js
     BLD_INF_RULES.prj_exports += "performancetest.iby $$CORE_APP_LAYER_IBY_EXPORT_PATH(performancetest.iby)"
+    VERSION = 10.1.0
 
     stubsis = \
         "START EXTENSION app-services.buildstubsis" \
@@ -42,7 +43,7 @@ symbian {
             ":\"Nokia\"" \
             " "
 
-    header = "$${LITERAL_HASH}{\"performancetest\"},(0x200346E6),1,0,0,TYPE=SA,RU"
+    header = "$${LITERAL_HASH}{\"performancetest\"},(0x200346E6),1,1,0,TYPE=SA,RU"
     package.pkg_prerules += vendor_info header
     DEPLOYMENT += package
 }

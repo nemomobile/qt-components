@@ -28,6 +28,7 @@ symbian {
     componenttest_js.sources = *.js
     DEPLOYMENT += componenttest_qmls1 componenttest_qmls2 componenttest_qmls3 componenttest_qmls4 componenttest_qmls5 componenttest_js
     BLD_INF_RULES.prj_exports += "componenttest.iby $$CORE_APP_LAYER_IBY_EXPORT_PATH(componenttest.iby)"
+    VERSION = 10.1.0
 
     stubsis = \
         "START EXTENSION app-services.buildstubsis" \
@@ -45,7 +46,7 @@ symbian {
             ":\"Nokia\"" \
             " "
 
-    header = "$${LITERAL_HASH}{\"componenttest\"},(0x200346E0),1,0,0,TYPE=SA,RU"
+    header = "$${LITERAL_HASH}{\"componenttest\"},(0x200346E0),1,1,0,TYPE=SA,RU"
     package.pkg_prerules += vendor_info header
     DEPLOYMENT += package
 }
