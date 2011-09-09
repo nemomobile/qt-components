@@ -1,3 +1,10 @@
+qt-components (1.1~git20110908-1) maverick; urgency=low
+
+  * Fixes: NB#278107 Menu does not support theme.inverted 
+  * Fixes: NB#280314 EditBubble is first showed as disabled before EditBubble becomes visible
+  
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Thu, 08 Sep 2011 15:42:00 +0300
+
 qt-components (1.1~git20110905-1) maverick; urgency=low
 
   * Fixes: NB#265575 [TASK] QML API to disable/enable swipe
