@@ -94,7 +94,7 @@ CommonDialog {
                     anchors.right: parent.right
                     anchors.leftMargin: root.platformStyle.itemLeftMargin
                     anchors.rightMargin: root.platformStyle.itemRightMargin
-                    text: name;
+                    text: modelData
                     font: root.platformStyle.itemFont
                 }
             }
@@ -124,7 +124,7 @@ CommonDialog {
     content: Item {
 
         id: selectionContent
-        property int listViewHeight : root.model ? root.model.count * root.platformStyle.itemHeight : 0
+        property int listViewHeight
         property int maxListViewHeight : visualParent
         ? visualParent.height * 0.87
                 - root.platformStyle.titleBarHeight - root.platformStyle.contentSpacing - 50
@@ -152,6 +152,7 @@ CommonDialog {
                 flickableItem: selectionListView
                 platformStyle.inverted: true
             }
+            onModelChanged: selectionContent.listViewHeight = model.count * platformStyle.itemHeight
         }
 
     }
