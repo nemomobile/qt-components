@@ -107,7 +107,9 @@
     \qmlproperty url TabButton::iconSource
 
     The URL for an image to be shown on the button. The default value is an empty
-    string.
+    string. Icons are automatically coloured with theme colours. TabButton treats
+    svg images as icons. Other image formats and images with http scheme are not
+    colored.
 */
 
 /*!

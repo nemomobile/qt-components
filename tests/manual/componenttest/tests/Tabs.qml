@@ -256,14 +256,14 @@ Item {
                     SelectionListItem {
                         id: tabButtonIconSelectionListItem
                         objectName: "tabButtonIconSelectionListItem"
-                        title: tabButtonIconSelectionDialog ? tabButtonIconSelectionDialog.model.get(tabButtonIconSelectionDialog.selectedIndex).name : "<none>"
+                        title: tabButtonIconSelectionDialog ? tabButtonIconSelectionDialog.model.get(tabButtonIconSelectionDialog.selectedIndex).name : "None"
                         width: parent.width / 2
                         property SelectionDialog tabButtonIconSelectionDialog
 
                         onTitleChanged: {
                             var tabButton = findButtonByContent(column.parent)
                             if (tabButton)
-                                tabButton.iconSource = title != "<none>" ? "image://theme/:/" + title : ""
+                                tabButton.iconSource = title != "None" ? title : ""
                         }
 
                         onClicked: {
@@ -279,9 +279,15 @@ Item {
                                 selectedIndex: 0
                                 platformInverted: root.platformInverted
                                 model: ListModel {
-                                    ListElement { name: "<none>" }
-                                    ListElement { name: "tb_plus.png" }
+                                    ListElement { name: "None"; }
+                                    ListElement { name: "../images/tb_plus.png" }
+                                    ListElement { name: "qrc:/tb_plus.png" }
+                                    ListElement { name: "qrc:/qtg_graf_drill_down_indicator.svg" }
                                     ListElement { name: "qtg_graf_drill_down_indicator.svg" }
+                                    ListElement { name: "qtg_graf_drill_down_indicator" }
+                                    ListElement { name: "qrc:/list1.svg" }
+                                    ListElement { name: "../images/list1.svg" }
+                                    ListElement { name: "http://www.nokia.com/NOKIA_COM_1/Microsites/wayfinder/images/logo_new.gif" }
                                 }
                             }
                         }

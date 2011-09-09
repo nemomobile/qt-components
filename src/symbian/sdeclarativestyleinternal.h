@@ -96,6 +96,7 @@ public:
     Q_INVOKABLE int fontHeight(const QFont &font) const;
     Q_INVOKABLE QUrl toolBarIconPath(const QUrl &path, bool inverted = false) const;
     Q_INVOKABLE QString imagePath(const QString &path, bool inverted = false) const;
+    Q_INVOKABLE bool isTabBarIcon(const QUrl &url) const;
 
 Q_SIGNALS:
     void layoutParametersChanged();

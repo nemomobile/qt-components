@@ -48,6 +48,7 @@
 #include <QSvgRenderer>
 #include <QPixmap>
 #include <QSizeF>
+#include <QFileInfo>
 
 //#define Q_DEBUG_ICON
 #ifdef Q_DEBUG_ICON
@@ -110,7 +111,20 @@ void SDeclarativeIcon::setIconName(const QString &name)
             d->releaseFromIconPool();
         }
 
-        d->fileName = SDeclarative::resolveIconFileName(name);
+        QUrl url(name);
+        QFileInfo fileInfo(name);
+        QString tmpFileName = SDeclarative::resolveIconFileName(fileInfo.fileName());
+
+        // SDeclarative::resolveIconFileName did nothing, icon not part of qt-components icon set
+        if (tmpFileName == fileInfo.fileName())
+            // remove "/" what comes from QUrl::path()
+            tmpFileName = url.path().remove(0,1);
+
+        // If icon is in resource file use :/ to search it from both applications & qt-components resource file
+        if (url.scheme() == "qrc" && !tmpFileName.startsWith(QLatin1String(":/")))
+            tmpFileName.prepend(QLatin1String(":/"));
+
+        d->fileName = tmpFileName;
         d->iconName = name;
         update();
         emit iconNameChanged(name);

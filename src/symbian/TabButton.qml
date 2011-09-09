@@ -212,29 +212,7 @@ Item {
         id: imageLoader
 
         property url source
-        property string iconId
-
-        // function tries to figure out if the source is image or icon
-        function inspectSource() {
-            var fileName = imageLoader.source.toString()
-            if (fileName.length) {
-                fileName = fileName.substr(fileName.lastIndexOf("/") + 1)
-                var fileBaseName = fileName
-                if (fileName.indexOf(".") >= 0)
-                    fileBaseName = fileName.substr(0, fileName.indexOf("."))
-
-                // empty file extension and .svg are treated as icons
-                if (fileName == fileBaseName || fileName.substr(fileName.length - 4).toLowerCase() == ".svg")
-                    imageLoader.iconId = fileBaseName
-                else
-                    imageLoader.iconId = ""
-            } else {
-                imageLoader.iconId = ""
-            }
-        }
-
-        Component.onCompleted: inspectSource()
-        onSourceChanged: inspectSource()
+        property string iconId: privateStyle.isTabBarIcon(source) ? source.toString() : ""
 
         width : platformStyle.graphicSizeSmall
         height : platformStyle.graphicSizeSmall

@@ -207,3 +207,14 @@ QString SDeclarativeStyleInternal::imagePath(const QString &path, bool inverted)
     QLatin1String invertedSuffix(inverted ? "_inverse" : "");
     return QLatin1String("image://theme/") + path + invertedSuffix;
 }
+
+bool SDeclarativeStyleInternal::isTabBarIcon(const QUrl &url) const
+{
+    if (url.isEmpty() || url.scheme() == QLatin1String("http"))
+        return false;
+
+    QFileInfo fileInfo = url.path();
+    QString suffix = fileInfo.suffix();
+
+    return suffix.toLower() == QLatin1String("svg") || suffix.isEmpty();
+}
