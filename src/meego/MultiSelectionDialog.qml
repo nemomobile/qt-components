@@ -94,8 +94,24 @@ CommonDialog {
                     anchors.right: parent.right
                     anchors.leftMargin: root.platformStyle.itemLeftMargin
                     anchors.rightMargin: root.platformStyle.itemRightMargin
-                    text: modelData
                     font: root.platformStyle.itemFont
+                }
+                Component.onCompleted: {
+                    try {
+                        // Legacy. "name" used to be the role which was used by delegate
+                        itemText.text = name
+                    } catch(err) {
+                        try {
+                            // "modelData" available for JS array and for models with one role
+                            itemText.text = modelData
+                        } catch (err) {
+                            try {
+                                 // C++ models have "display" role available always
+                                itemText.text = display
+                            } catch(err) {
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -214,5 +230,4 @@ CommonDialog {
         }
     }
 }
-
 
