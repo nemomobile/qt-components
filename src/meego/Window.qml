@@ -179,11 +179,11 @@ Item {
             // use this transition when sip is visible
             from: (inputContext.softwareInputPanelVisible ?  "*" : "disabled")
             to:   (inputContext.softwareInputPanelVisible ?  "*" : "disabled")
-            PropertyAction { target: windowRotation; properties: "angle"; }
+            PropertyAction { target: window; properties: "rotation"; }
             ScriptAction {
                 script: {
                     root.orientationChangeAboutToStart();
-                    platformWindow.startSipOrientationChange(windowRotation.angle);
+                    platformWindow.startSipOrientationChange(window.rotation);
                     // note : we should really connect these signals to MInputMethodState
                     // signals so that they are emitted at the appropriate time
                     // but there aren't any
