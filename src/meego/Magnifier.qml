@@ -69,7 +69,6 @@ Item {
 
     ShaderEffectSource {
         id: effectSource
-        textureSize: Qt.size((sourceItem.width) * scaleFactor, (sourceItem.height) * scaleFactor);
         hideSource: false
 
         property real scaleFactor: 1.25
