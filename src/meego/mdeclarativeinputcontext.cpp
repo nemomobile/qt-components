@@ -289,6 +289,11 @@ bool MDeclarativeInputContext::setPreeditText(const QString &newPreedit, int eve
         event.setReplacement(replacementStart, replacementLength);
         return ic->filterEvent(&event);
     }
+#else
+    Q_UNUSED(newPreedit)
+    Q_UNUSED(eventCursorPosition)
+    Q_UNUSED(replacementStart)
+    Q_UNUSED(replacementLength)
 #endif
     return false;
 }
