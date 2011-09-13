@@ -44,7 +44,8 @@ import com.nokia.extras 1.1
 
 Page {
     id: listPage
-    anchors.margins: UiConstants.DefaultMargin
+    anchors.leftMargin: UiConstants.DefaultMargin
+    anchors.rightMargin: UiConstants.DefaultMargin
 
     tools:
         ToolBarLayout {
