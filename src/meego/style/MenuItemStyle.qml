@@ -52,8 +52,8 @@ Style {
 
     // Text Color
     property color textColor: inverted ? UI.COLOR_BUTTON_INVERTED_FOREGROUND : UI.COLOR_BUTTON_FOREGROUND
-    property color pressedTextColor: UI.COLOR_INVERTED_FOREGROUND
-    property color disabledTextColor: UI.COLOR_DISABLED_FOREGROUND
+    property color pressedTextColor: inverted ? UI.COLOR_BUTTON_INVERTED_FOREGROUND : UI.COLOR_BUTTON_FOREGROUND
+    property color disabledTextColor: "#797979"
     property color checkedTextColor: UI.COLOR_INVERTED_FOREGROUND
 
     property real leftMargin: 24

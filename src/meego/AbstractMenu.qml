@@ -198,8 +198,8 @@ Popup {
            source: // !enabled ? root.platformStyle.disabledBackground :
                    root.platformStyle.background
            anchors.fill : parent
-           border { left: 22; top: 22;
-                    right: 22; bottom: 22 }
+           border { left: 22; top: theme.inverted ? 124 : 22;
+                    right: 22; bottom: theme.inverted ? 2 : 22 }
         }
 
         // this item contains the whole menu (content rectangle)

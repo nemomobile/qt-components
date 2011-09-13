@@ -76,15 +76,14 @@ AbstractMenu {
                     }
                 }
 
-                NumberAnimation {target: __menuPane; property: "opacity";
-                                 from: 0.0; to: 1.0; duration: 0}
+                NumberAnimation {target: __menuPane;
+                              property: screen.currentOrientation == Screen.Portrait ? "anchors.bottomMargin" : "anchors.rightMargin";
+                              easing.type: Easing.InOutQuint;
+                              to: screen.currentOrientation == Screen.Portrait ? -__menuPane.height : -__menuPane.width;
+                              from: 0; duration: 350}
 
-                NumberAnimation {target: __menuPane; property: "anchors.bottomMargin";
-                                 easing.type: Easing.InOutQuint;
-                                 from: 0; to: -__menuPane.height; duration: 350}
-
                 NumberAnimation {target: __menuPane; property: "opacity";
-                                 from: 1.0; to: 0.0; duration: 0}
+                              from: 1.0; to: 0.0; duration: 0}
 
                 ScriptAction {script: {
                         status = DialogStatus.Closed;
@@ -98,12 +97,16 @@ AbstractMenu {
                 ScriptAction {script: {
                         __fader().state = "visible";
                         root.status = DialogStatus.Opening;
+                        __menuPane.anchors.rightMargin = 0;
+                        __menuPane.anchors.bottomMargin = 0;
                     }
                 }
 
-                NumberAnimation {target: __menuPane; property: "anchors.bottomMargin";
-                                 easing.type: Easing.OutQuint;
-                                 from: -__menuPane.height; to: 0; duration: 250}
+                NumberAnimation {target: __menuPane;
+                                 property: screen.currentOrientation == Screen.Portrait ? "anchors.bottomMargin" : "anchors.rightMargin";
+                                 easing.type: Easing.InOutQuint;
+                                 from: screen.currentOrientation == Screen.Portrait ? -__menuPane.height : -__menuPane.width;
+                                 to: 0; duration: 350}
 
                 ScriptAction {script: {
                         status = DialogStatus.Open;
