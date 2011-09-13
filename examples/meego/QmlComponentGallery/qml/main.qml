@@ -68,25 +68,25 @@ PageStackWindow {
         id: myMenu
 //        visualParent: pageStack
         MenuLayout {
-            MenuItem { text: "Theme color 1"; onClicked: theme.colorScheme = 1 }
-            MenuItem { text: "Theme color 2"; onClicked: theme.colorScheme = 2 }
-            MenuItem { text: "Theme color 3"; onClicked: theme.colorScheme = 3 }
-            MenuItem { text: "Theme color 4"; onClicked: theme.colorScheme = 4 }
-            MenuItem { text: "Theme color 5"; onClicked: theme.colorScheme = 5 }
-            MenuItem { text: "Theme color 6"; onClicked: theme.colorScheme = 6 }
-            MenuItem { text: "Theme color 7"; onClicked: theme.colorScheme = 7 }
-            MenuItem { text: "Theme color 8"; onClicked: theme.colorScheme = 8 }
-            MenuItem { text: "Theme color 9"; onClicked: theme.colorScheme = 9 }
-            MenuItem { text: "Theme color 10"; onClicked: theme.colorScheme = 10 }
-            MenuItem { text: "Theme color 11"; onClicked: theme.colorScheme = 11 }
-            MenuItem { text: "Theme color 12"; onClicked: theme.colorScheme = 12 }
-            MenuItem { text: "Theme color 13"; onClicked: theme.colorScheme = 13 }
-            MenuItem { text: "Theme color 14"; onClicked: theme.colorScheme = 14 }
-            MenuItem { text: "Theme color 15"; onClicked: theme.colorScheme = 15 }
-            MenuItem { text: "Theme color 16"; onClicked: theme.colorScheme = 16 }
-            MenuItem { text: "Theme color 17"; onClicked: theme.colorScheme = 17 }
-            MenuItem { text: "Theme color 18"; onClicked: theme.colorScheme = 18 }
-            MenuItem { text: "Theme color 19"; onClicked: theme.colorScheme = 19 }
+            MenuItem { text: "Theme color default"; onClicked: theme.colorScheme = 1 }
+            MenuItem { text: "Theme color lightGreen"; onClicked: theme.colorScheme = 2 }
+            MenuItem { text: "Theme color green"; onClicked: theme.colorScheme = 3 }
+            MenuItem { text: "Theme color darkGreen"; onClicked: theme.colorScheme = 4 }
+            MenuItem { text: "Theme color darkestGreen"; onClicked: theme.colorScheme = 5 }
+            MenuItem { text: "Theme color lightBlue"; onClicked: theme.colorScheme = 6 }
+            MenuItem { text: "Theme color blue"; onClicked: theme.colorScheme = 7 }
+            MenuItem { text: "Theme color darkBlue"; onClicked: theme.colorScheme = 8 }
+            MenuItem { text: "Theme color darkestBlue"; onClicked: theme.colorScheme = 9 }
+            MenuItem { text: "Theme color darkPurple"; onClicked: theme.colorScheme = 10 }
+            MenuItem { text: "Theme color purple"; onClicked: theme.colorScheme = 11 }
+            MenuItem { text: "Theme color pink"; onClicked: theme.colorScheme = 12 }
+            MenuItem { text: "Theme color lightPink"; onClicked: theme.colorScheme = 13 }
+            MenuItem { text: "Theme color lightOrange"; onClicked: theme.colorScheme = 14 }
+            MenuItem { text: "Theme color orange"; onClicked: theme.colorScheme = 15 }
+            MenuItem { text: "Theme color darkOrange"; onClicked: theme.colorScheme = 16 }
+            MenuItem { text: "Theme color darkYellow"; onClicked: theme.colorScheme = 17 }
+            MenuItem { text: "Theme color yellow"; onClicked: theme.colorScheme = 18 }
+            MenuItem { text: "Theme color lightYellow"; onClicked: theme.colorScheme = 19 }
             MenuItem { text: "Very long and extremely verbose ListTitle #20" }
         }
     }
