@@ -281,4 +281,25 @@
 
 */
 
+/*!
+    \qmlproperty bool Screen::allowSwipe (meego)
+
+    Meego specific property
+
+    Allows to switch off the swipe gesture. Caution: This feature should not be used
+    unless there are very good reasons: The swipe gesture is an essential
+    gesture that the user can rely on. Therefore switching it off is usually
+    a bad idea.
+
+    In case of use (e.g. for games) please regard the following guidelines:
+    \list
+        \o if the application shows a menu it should have the swipe enabled
+        \o only if the game is in "active" playing state the swipe gesture can be
+           disabled or modified.
+        \o furthermore, applications that change the swipe behavior need to have a
+           pause button: in pause mode the (swipe) gestures must be enabled.
+
+    \endlist
+
+*/
 
