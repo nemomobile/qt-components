@@ -286,10 +286,12 @@
 
     Meego specific property
 
-    Allows to switch off the swipe gesture. Caution: This feature should not be used
-    unless there are very good reasons: The swipe gesture is an essential
-    gesture that the user can rely on. Therefore switching it off is usually
-    a bad idea.
+    Allows to switch off the swipe gesture. As a result the user won’t be able
+    to close the application and he won't be able to push it to the background.
+
+    Caution: This feature should not be used unless there are very good reasons:
+    The swipe gesture is an essential gesture that the user can rely on.
+    Therefore switching it off is usually a bad idea.
 
     In case of use (e.g. for games) please regard the following guidelines:
     \list
