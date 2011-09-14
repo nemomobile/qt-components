@@ -200,7 +200,7 @@ FocusScope {
                 }
 
                 activeFocusOnPress: false
-                cursorVisible: activeFocus && !selectedText
+                cursorVisible: activeFocus && selectionStart == selectionEnd
                 enabled: root.enabled
                 color: root.platformInverted ? platformStyle.colorNormalLightInverted
                                              : platformStyle.colorNormalDark
@@ -238,8 +238,8 @@ FocusScope {
                     width: Math.max(root.width, flick.contentWidth + flick.tiny * 2)
                     editorScrolledX: flick.contentX - container.anchors.leftMargin - flick.tiny
                     editorScrolledY: 0
-                    copyEnabled: textInput.selectedText
-                    cutEnabled: !textInput.readOnly && textInput.selectedText
+                    copyEnabled: textInput.selectionStart != textInput.selectionEnd
+                    cutEnabled: !textInput.readOnly && textInput.selectionStart != textInput.selectionEnd
                     platformInverted: root.platformInverted
                     Component.onCompleted: flick.movementEnded.connect(touchController.flickEnded)
                     Connections { target: screen; onCurrentOrientationChanged: touchController.updateGeometry() }

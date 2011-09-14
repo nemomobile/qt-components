@@ -307,7 +307,7 @@ MouseArea {
                 editor: root.editor
                 imageSource: privateStyle.imagePath("qtg_fr_textfield_handle_start", root.platformInverted)
                 editorPos: editor.selectionStart
-                visible: editor.selectionStart != editor.selectionEnd
+                visible: internal.editorHasSelection
             }
 
             TextSelectionHandle { // also acts as the cursor handle when no selection
