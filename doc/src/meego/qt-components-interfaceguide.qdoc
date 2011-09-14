@@ -77,8 +77,7 @@
     \endcode
     
     \section3 Headers
-    If you create an own header and do not use Qt Components, the used
-    margins and spacings are:
+    When you create a header use margins and spacings:
     
     Header height:
     \list
