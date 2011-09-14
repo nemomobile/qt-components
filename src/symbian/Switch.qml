@@ -113,8 +113,10 @@ Item {
                                        root.platformInverted)
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
-        sourceSize.width: Symbian.UndefinedSourceDimension
-        sourceSize.height: privateStyle.switchButtonHeight
+        sourceSize {
+            width: Math.round(privateStyle.switchButtonHeight * 3/2)
+            height: privateStyle.switchButtonHeight
+        }
         scale: root.LayoutMirroring.enabled ? -1 : 1
     }
 
@@ -133,6 +135,11 @@ Item {
             // The middle of the handle follows mouse, the handle is bound to the track
             handle.x = Math.max(track.x, Math.min(mouseArea.lastX - handle.width / 2,
                                                   track.x + track.width - handle.width))
+            //factoring the handle position on the track to a sensible opacity value
+            if (root.LayoutMirroring.enabled)
+                fill.opacity = 1 - (3 * handle.x/track.width)
+            else
+                fill.opacity = 3 * handle.x/track.width
         }
 
         anchors.fill: track
@@ -166,23 +173,33 @@ Item {
         }
     }
 
-    Item {
+    Image {
         id: fill
 
-        clip: true
-        anchors.left: track.left
-        anchors.right: handle.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
-        height: privateStyle.switchButtonHeight
-        visible: root.enabled
-
-        Image {
-            source: privateStyle.imagePath("qtg_graf_switchbutton_fill",
-                                           root.platformInverted)
-            anchors.left: parent.left
-            anchors.top: parent.top
-            height: parent.height
+        anchors.centerIn: parent
+        source: privateStyle.imagePath("qtg_graf_switchbutton_fill",
+                                       root.platformInverted)
+        sourceSize {
+            width: Math.round(privateStyle.switchButtonHeight * 3/2)
+            height: privateStyle.switchButtonHeight
         }
+        visible: root.enabled
+        opacity: 0
+
+        states: [
+            State {
+                name: "Off"
+                when: !mouseArea.drag.active && !checked
+                PropertyChanges { target: fill; opacity: 0 }
+            },
+            State {
+                name: "on"
+                when: !mouseArea.drag.active && checked
+                PropertyChanges { target: fill; opacity: 1 }
+            }
+        ]
+
+        Behavior on opacity { PropertyAnimation { duration: 200 } }
     }
 
     Image {
@@ -192,8 +209,10 @@ Item {
                                        + (root.pressed ? "handle_pressed" : "handle_normal"),
                                        root.platformInverted)
         anchors.verticalCenter: root.verticalCenter
-        sourceSize.width: privateStyle.switchButtonHeight
-        sourceSize.height: privateStyle.switchButtonHeight
+        sourceSize {
+            width: privateStyle.switchButtonHeight
+            height: privateStyle.switchButtonHeight
+        }
         visible: root.enabled
 
         states: [
@@ -220,11 +239,11 @@ Item {
         transitions: [
             Transition {
                 to: "Off"
-                SmoothedAnimation {properties: "x"; easing.type: Easing.InOutQuad; duration: 200 }
+                SmoothedAnimation { properties: "x"; easing.type: Easing.InOutQuad; duration: 200 }
             },
             Transition {
                 to: "On"
-                SmoothedAnimation {properties: "x"; easing.type: Easing.InOutQuad; duration: 200 }
+                SmoothedAnimation { properties: "x"; easing.type: Easing.InOutQuad; duration: 200 }
             }
         ]
     }
@@ -237,8 +256,6 @@ Item {
             event.accepted = true
         }
     }
-
-
     Keys.onReleased: {
         if (!event.isAutoRepeat && (event.key == Qt.Key_Select
                                     || event.key == Qt.Key_Return
