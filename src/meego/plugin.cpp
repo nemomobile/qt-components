@@ -164,6 +164,9 @@ public:
         uiConstantsData->insert("ListItemHeightSmall", QVariant(64));
         uiConstantsData->insert("ListItemHeightDefault", QVariant(80));
 
+        uiConstantsData->insert("IndentDefault", QVariant(16)); // For left and right
+        uiConstantsData->insert("GroupHeaderHeight", QVariant(40));
+
         QFont bodyTextFont;
         bodyTextFont.setFamily("Nokia Pure Text Light");
         bodyTextFont.setPixelSize(24);
@@ -202,6 +205,11 @@ public:
         subTitleFont.setFamily("Nokia Pure Text Light");
         subTitleFont.setPixelSize(22);
         uiConstantsData->insert("SubtitleFont", QVariant(subTitleFont));
+
+        QFont itemInfoFont;
+        itemInfoFont.setFamily("Nokia Pure Text Light");
+        itemInfoFont.setPixelSize(18);
+        uiConstantsData->insert("InfoFont", QVariant(itemInfoFont));
 
         return uiConstantsData;
     }
