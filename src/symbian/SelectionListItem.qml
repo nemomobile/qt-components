@@ -46,82 +46,44 @@ ListItem {
     property string title: ""
     property string subTitle: ""
 
-    implicitHeight: background.height + 2 * platformStyle.paddingLarge
+    Column {
+        anchors {
+            verticalCenter: parent.verticalCenter
+            right: indicator.left
+            rightMargin: platformStyle.paddingMedium
+            left: parent.left
+            leftMargin: platformStyle.paddingLarge
+        }
 
-    onModeChanged: {
-        if (root.mode == "pressed") {
-            pressed.source = privateStyle.imagePath("qtg_fr_choice_list_pressed", root.platformInverted)
-            pressed.opacity = 1
-        } else {
-            releasedEffect.restart()
+        Loader {
+            anchors.left: parent.left
+            sourceComponent: title && subTitle ? titleText : undefined
+            width: parent.width // elide requires explicit width
+            opacity: status == Loader.Null ? 0 : 1
+        }
+
+        Loader {
+            anchors.left: parent.left
+            sourceComponent: title || subTitle ? subTitleText : undefined
+            width: parent.width // elide requires explicit width
+            opacity: status == Loader.Null ? 0 : 1
         }
     }
 
-    BorderImage {
-        id: background
-        height: privateStyle.menuItemHeight - platformStyle.paddingSmall // from layout spec.
+    Image {
+        id: indicator
         anchors {
-            left: parent.left
-            leftMargin: platformStyle.paddingLarge
             right: parent.right
-            rightMargin: privateStyle.scrollBarThickness
+            rightMargin: platformStyle.paddingSmall
             verticalCenter: parent.verticalCenter
         }
-        border {
-            left: platformStyle.borderSizeMedium
-            top: platformStyle.borderSizeMedium
-            right: platformStyle.borderSizeMedium
-            bottom: platformStyle.borderSizeMedium
-        }
-        source: privateStyle.imagePath("qtg_fr_choice_list_" + internal.getBackground(),
-                                       root.platformInverted)
-
-        BorderImage {
-            id: pressed
-            border {
-                left: platformStyle.borderSizeMedium
-                top: platformStyle.borderSizeMedium
-                right: platformStyle.borderSizeMedium
-                bottom: platformStyle.borderSizeMedium
-            }
-            opacity: 0
-            anchors.fill: parent
-        }
-
-        Column {
-            anchors {
-                verticalCenter: background.verticalCenter
-                right: indicator.left
-                rightMargin: platformStyle.paddingMedium
-                left: background.left
-                leftMargin: platformStyle.paddingLarge
-            }
-
-            Loader {
-                anchors.left: parent.left
-                sourceComponent: title != "" ? titleText : undefined
-                width: parent.width // elide requires explicit width
-            }
-
-            Loader {
-                anchors.left: parent.left
-                sourceComponent: subTitle != "" ? subTitleText : undefined
-                width: parent.width // elide requires explicit width
-            }
-        }
-        Image {
-            id: indicator
-            source: root.mode == "disabled" ? privateStyle.imagePath("qtg_graf_choice_list_indicator_disabled",
-                                                                     root.platformInverted)
-                                            : privateStyle.imagePath("qtg_graf_choice_list_indicator",
-                                                                     root.platformInverted)
-            sourceSize.width: platformStyle.graphicSizeSmall
-            sourceSize.height: platformStyle.graphicSizeSmall
-            anchors {
-                right: background.right
-                rightMargin: platformStyle.paddingSmall
-                verticalCenter: parent.verticalCenter
-            }
+        source: root.mode == "disabled" ? privateStyle.imagePath("qtg_graf_choice_list_indicator_disabled",
+                                                                 root.platformInverted)
+                                        : privateStyle.imagePath("qtg_graf_choice_list_indicator",
+                                                                 root.platformInverted)
+        sourceSize {
+            width: platformStyle.graphicSizeSmall
+            height: platformStyle.graphicSizeSmall
         }
     }
 
@@ -130,40 +92,18 @@ ListItem {
         ListItemText {
             mode: root.mode
             role: "SelectionTitle"
-            text: root.title
+            text: root.subTitle ? root.title : ""
             platformInverted: root.platformInverted
         }
     }
-   Component {
+
+    Component {
         id: subTitleText
         ListItemText {
             mode: root.mode
             role: "SelectionSubTitle"
-            text: root.subTitle
+            text: root.subTitle ? root.subTitle : root.title
             platformInverted: root.platformInverted
-        }
-    }
-
-    QtObject {
-        id: internal
-        function getBackground() {
-            if (root.mode == "highlighted")
-                return "highlighted"
-            else if (root.mode == "disabled")
-                return "disabled"
-            else
-                return "normal"
-        }
-    }
-
-    SequentialAnimation {
-        id: releasedEffect
-        PropertyAnimation {
-            target: pressed
-            property: "opacity"
-            to: 0
-            easing.type: Easing.Linear
-            duration: 150
         }
     }
 }
