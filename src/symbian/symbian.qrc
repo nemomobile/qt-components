@@ -38,10 +38,6 @@
         <file alias="qtg_fr_textfield_handle_end.svg">resources/defaulttheme/graphics/qtg_fr_textfield_handle_end.svg</file>
         <file alias="qtg_fr_textfield_handle_start.svg">resources/defaulttheme/graphics/qtg_fr_textfield_handle_start.svg</file>
         <file alias="qtg_fr_textfield_instructions.svg">resources/defaulttheme/graphics/qtg_fr_textfield_instructions.svg</file>
-        <file alias="qtg_fr_choice_list_normal.svg">resources/defaulttheme/graphics/qtg_fr_choice_list_normal.svg</file>
-        <file alias="qtg_fr_choice_list_disabled.svg">resources/defaulttheme/graphics/qtg_fr_choice_list_disabled.svg</file>
-        <file alias="qtg_fr_choice_list_highlighted.svg">resources/defaulttheme/graphics/qtg_fr_choice_list_highlighted.svg</file>
-        <file alias="qtg_fr_choice_list_pressed.svg">resources/defaulttheme/graphics/qtg_fr_choice_list_pressed.svg</file>
         <file alias="qtg_graf_choice_list_indicator.svg">resources/defaulttheme/graphics/qtg_graf_choice_list_indicator.svg</file>
         <file alias="qtg_graf_choice_list_indicator_disabled.svg">resources/defaulttheme/graphics/qtg_graf_choice_list_indicator_disabled.svg</file>
         <file alias="qtg_graf_drill_down_indicator.svg">resources/defaulttheme/graphics/qtg_graf_drill_down_indicator.svg</file>
@@ -199,10 +195,6 @@
         <file alias="qtg_anim_spinner_small_8_inverse.svg">resources/defaulttheme/graphics/qtg_anim_spinner_small_8_inverse.svg</file>
         <file alias="qtg_anim_spinner_small_9_inverse.svg">resources/defaulttheme/graphics/qtg_anim_spinner_small_9_inverse.svg</file>
         <file alias="qtg_anim_spinner_small_10_inverse.svg">resources/defaulttheme/graphics/qtg_anim_spinner_small_10_inverse.svg</file>
-        <file alias="qtg_fr_choice_list_disabled_inverse.svg">resources/defaulttheme/graphics/qtg_fr_choice_list_disabled_inverse.svg</file>
-        <file alias="qtg_fr_choice_list_highlighted_inverse.svg">resources/defaulttheme/graphics/qtg_fr_choice_list_highlighted_inverse.svg</file>
-        <file alias="qtg_fr_choice_list_normal_inverse.svg">resources/defaulttheme/graphics/qtg_fr_choice_list_normal_inverse.svg</file>
-        <file alias="qtg_fr_choice_list_pressed_inverse.svg">resources/defaulttheme/graphics/qtg_fr_choice_list_pressed_inverse.svg</file>
         <file alias="qtg_fr_list_disabled_inverse.svg">resources/defaulttheme/graphics/qtg_fr_list_disabled_inverse.svg</file>
         <file alias="qtg_fr_list_heading_normal_inverse.svg">resources/defaulttheme/graphics/qtg_fr_list_heading_normal_inverse.svg</file>
         <file alias="qtg_fr_list_highlighted_inverse.svg">resources/defaulttheme/graphics/qtg_fr_list_highlighted_inverse.svg</file>
