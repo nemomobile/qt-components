@@ -46,13 +46,11 @@ Page {
     tools: pageStackWindowTools
     anchors.margins: UiConstants.DefaultMargin
 
-    property bool enableSwipe: true
-
     ToolBarLayout {
         id: pageStackWindowTools
         visible: false
         ToolIcon { iconId: "toolbar-back"; onClicked: { enableSwipe = true; screen.allowSwipe = enableSwipe; myMenu.close(); pageStack.pop(); } }
-        ToolIcon { iconId: "toolbar-view-menu"; onClicked: { if (myMenu.status == DialogStatus.Closed) { myMenu.open(); screen.allowSwipe = true } else  { screen.allowSwipe = enableSwipe; myMenu.close(); } } }
+        ToolIcon { iconId: "toolbar-view-menu"; onClicked: { if (myMenu.status == DialogStatus.Closed) { myMenu.open(); enableSwipe = screen.allowSwipe; screen.allowSwipe = true; } else { myMenu.close(); } } }
     }
 
     Flickable {

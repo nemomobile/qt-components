@@ -46,6 +46,8 @@ PageStackWindow {
 
     platformStyle: defaultStyle;
 
+    property bool enableSwipe: true
+
     PageStackWindowStyle { id: defaultStyle }
     PageStackWindowStyle {
         id: customStyle;
@@ -67,6 +69,11 @@ PageStackWindow {
     Menu {
         id: myMenu
 //        visualParent: pageStack
+        onStatusChanged: {
+            if (status === DialogStatus.Closing) {
+                screen.allowSwipe = enableSwipe;
+            }
+        }
         MenuLayout {
             MenuItem { text: "Theme color default"; onClicked: theme.colorScheme = 1 }
             MenuItem { text: "Theme color lightGreen"; onClicked: theme.colorScheme = 2 }
