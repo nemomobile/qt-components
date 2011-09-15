@@ -39,7 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 1.1
-import com.nokia.meego 1.0
+import com.nokia.meego 1.1
 import com.nokia.extras 1.1
 
 Page {
@@ -66,7 +66,7 @@ Page {
 
             MoreIndicator {
                 id: indicator
-		objectName: "indicatorObject"
+                objectName: "indicatorObject"
                 anchors.centerIn: parent
             }
         }

@@ -39,7 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 1.1
-import com.nokia.meego 1.0
+import com.nokia.meego 1.1
 
 Page {
     id: root
@@ -80,24 +80,24 @@ Page {
 
     Column {
         spacing: 30
-        Text { 
-            text: "This is a " + pageText 
+        Text {
+            text: "This is a " + pageText
             font.pixelSize: 30
             font.bold: true
         }
-        Button { 
-            text: "Go to a sub page"; 
+        Button {
+            text: "Go to a sub page";
             onClicked: {
                 pageStack.push(Qt.createComponent("DynamicNavigationPage.qml"), { pageText: "sub-" + root.pageText, level: root.level + 1 });
             }
         }
         Column {
             Text { text: "Go directly to n'th subpage:"; font.pixelSize: 30 }
-            
+
             Row {
                 TextField { id: tf; width: 100; text: "1" }
-                Button { 
-                    text: "Go!" 
+                Button {
+                    text: "Go!"
                     onClicked: {
                         var n = parseInt(tf.text)
                         var prefix = "sub-";

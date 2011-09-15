@@ -39,7 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 1.1
-import com.nokia.meego 1.0
+import com.nokia.meego 1.1
 
 Page {
     id: staticpage1
@@ -56,7 +56,7 @@ Page {
                        ToolIcon { iconId: "toolbar-mediacontrol-forward" }
                        ToolIcon { iconId: "toolbar-view-menu" }
             }
-    
+
             Column {
                 spacing: 30
                 Text { text: "This is static page two."; font.pixelSize: 30 }
@@ -77,7 +77,7 @@ Page {
                        ToolIcon { iconId: "toolbar-alphabetic-order" }
                        ToolIcon { iconId: "toolbar-view-menu" }
             }
-    
+
             Column {
                 spacing: 30
                 Text { text: "This is static page three."; font.pixelSize: 30 }

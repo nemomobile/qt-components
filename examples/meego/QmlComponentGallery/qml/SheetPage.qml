@@ -40,7 +40,7 @@
 
 import QtQuick 1.1
 import Qt.labs.components 1.1
-import com.nokia.meego 1.0
+import com.nokia.meego 1.1
 
 Page {
     id: sheetPage
@@ -70,7 +70,7 @@ Page {
                 text: "Launch empty Sheet"
                 onClicked: emptySheet.open()
             }
-            
+
             Label {
                 id: label
             }
@@ -79,7 +79,7 @@ Page {
 
     Sheet {
         id: sheet
-        
+
         acceptButtonText: "Save"
         rejectButtonText: "Cancel"
         rejectButton.enabled: !disableCancelButton.checked
@@ -87,7 +87,7 @@ Page {
         title: BusyIndicator {
             anchors.centerIn: parent; running: sheet.status == DialogStatus.Open;
         }
-        
+
         content: Flickable {
             anchors.fill: parent
             anchors.leftMargin: 10
@@ -131,10 +131,10 @@ Page {
                 }
 
             }
-        }        
+        }
         onAccepted: label.text = "Accepted!"
         onRejected: label.text = "Rejected!"
-    }    
+    }
 
     Sheet {
         id: emptySheet

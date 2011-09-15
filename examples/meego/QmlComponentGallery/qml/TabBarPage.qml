@@ -40,7 +40,7 @@
 
 import QtQuick 1.1
 import Qt.labs.components 1.1
-import com.nokia.meego 1.0
+import com.nokia.meego 1.1
 
 Page {
     id: tabbarPage
@@ -66,7 +66,7 @@ Page {
             }
         }
     }
-    
+
     TabGroup {
         id: tabGroup
 

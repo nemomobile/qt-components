@@ -39,7 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 1.1
-import com.nokia.meego 1.0
+import com.nokia.meego 1.1
 import com.nokia.extras 1.1
 
 Page {
@@ -70,7 +70,7 @@ Page {
             index: 4
         }
     }
-    
+
     function handleClick(page, index) {
         if(index == 1) {
             pageStack.push(Qt.createComponent(page), {orientationLock: PageOrientation.LockLandscape})

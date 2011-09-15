@@ -39,7 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 1.1
-import com.nokia.meego 1.0
+import com.nokia.meego 1.1
 
 Page {
     id: root
@@ -59,7 +59,7 @@ Page {
         Column {
             id: col
             spacing: 30
-            Row { 
+            Row {
                 Label { text: sl1.value.toFixed(2) ; color: "green"; width: 80 }
                 Label { visible: screen.currentOrientation == Screen.Landscape; width: root.textColumnWidth; wrapMode: Text.Wrap; text: "Default Slider" }
                 Slider { id: sl1 ; width:sliderWidth}
@@ -70,15 +70,15 @@ Page {
                 Slider { id:sl2; stepSize:1 ; valueIndicatorVisible: true; minimumValue:0 ; maximumValue:100 ; width:sliderWidth}
             }
 
-            Row { 
+            Row {
                 Label { text: sl3.value.toFixed(2) ; color: "green"; width: 80 }
                 Label { visible: screen.currentOrientation == Screen.Landscape; width: root.textColumnWidth; wrapMode: Text.Wrap; text: "Slider from -100 to 100, indicator visible" }
                 Slider { id: sl3; minimumValue: -100; maximumValue: 100; valueIndicatorVisible: true ; width:sliderWidth}
             }
-            Row { 
+            Row {
                 Label { text: sl4.value.toFixed(2) ; color: "green"; width: 80 }
                 Label { visible: screen.currentOrientation == Screen.Landscape; width: root.textColumnWidth; wrapMode: Text.Wrap; text: "Slider from -100 to 100, inverted, indicator visible" }
-                Slider { 
+                Slider {
                     id: sl4;
                     minimumValue: -100; maximumValue: 100;
                     valueIndicatorVisible: true
@@ -86,7 +86,7 @@ Page {
                     width: sliderWidth
                 }
             }
-            Row { 
+            Row {
                 Label { text: sl5.value ; color: "green"; width: 80 }
                 Label { visible: screen.currentOrientation == Screen.Landscape; width: root.textColumnWidth; wrapMode: Text.Wrap; text: "Slider from -100 to 100, step size 10, indicator visible" }
                 Slider {
