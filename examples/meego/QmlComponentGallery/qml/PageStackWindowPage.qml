@@ -84,11 +84,12 @@ Page {
 
             Button { text: "Toggle ToolBar"; checkable: true; checked: rootWindow.showToolBar; onClicked: { rootWindow.showToolBar = !rootWindow.showToolBar } }
 
-            Button { text: "Toggle Swipe"; checkable: true; checked: !enableSwipe; onClicked: { enableSwipe = !enableSwipe; screen.allowSwipe = enableSwipe } }
+            Button { text: "Toggle Swipe"; checkable: true; checked: enableSwipe; onClicked: { enableSwipe = !enableSwipe; screen.allowSwipe = enableSwipe } }
           }
 
     }
     ScrollDecorator {
         flickableItem: flickable
     }
+
 }
