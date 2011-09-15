@@ -64,7 +64,7 @@
 
     \code
     import com.nokia.symbian 1.1    // Symbian components
-    import com.nokia.meego 1.0      // MeeGo components
+    import com.nokia.meego 1.1      // MeeGo components
     \endcode
 
     In addition, there are components that are \e extras. They supplement the

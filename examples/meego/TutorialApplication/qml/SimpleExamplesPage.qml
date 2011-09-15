@@ -39,8 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 1.1
-import Qt.labs.components 1.1
-import com.nokia.meego 1.0
+import com.nokia.meego 1.1
 
 
 Page {
@@ -64,13 +63,13 @@ Page {
         anchors.fill: parent
         flickableDirection: Flickable.VerticalFlick
 
-        Button { 
+        Button {
             id: button;
             anchors.topMargin: 32
             anchors.leftMargin: 32
             width: 450
             text: "Copy text from TextField to Label"
-            onClicked: { label.text = textField.text } 
+            onClicked: { label.text = textField.text }
         }
 
         TextField {

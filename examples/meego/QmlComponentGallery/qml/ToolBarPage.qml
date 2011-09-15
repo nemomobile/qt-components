@@ -39,7 +39,6 @@
 ****************************************************************************/
 
 import Qt 4.7
-import Qt.labs.components 1.1
 import com.nokia.meego 1.1
 
 Page {

@@ -39,7 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 1.1
-import com.nokia.meego 1.0
+import com.nokia.meego 1.1
 
 Page {
     id: root
@@ -105,7 +105,7 @@ Page {
         flickableDirection: Flickable.VerticalFlick
         pressDelay: 100
 
-        Column {            
+        Column {
             id: dialogs
             spacing: 24
 
@@ -193,7 +193,7 @@ Page {
                 }
             }
         }
-    }    
+    }
 
     ToolBarLayout {
         id: tabTools

@@ -42,8 +42,8 @@
 
     \code
     import com.nokia.symbian 1.1    // Symbian components
-    import com.nokia.meego 1.0      // MeeGo components
-    import com.nokia.extras 1.0     // Extras
+    import com.nokia.meego 1.1      // MeeGo components
+    import com.nokia.extras 1.1     // Extras
     \endcode
 
     \table
