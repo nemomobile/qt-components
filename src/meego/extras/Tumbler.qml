@@ -67,7 +67,7 @@ ImplicitSizeItem {
     property list<Item> privateTemplates
 
     implicitWidth: C.TUMBLER_WIDTH
-    implicitHeight: screen.width > screen.height ?
+    implicitHeight: screen.displayWidth > screen.displayHeight ?
                         C.TUMBLER_HEIGHT_LANDSCAPE :
                         C.TUMBLER_HEIGHT_PORTRAIT
 
@@ -141,7 +141,7 @@ ImplicitSizeItem {
         anchors.top: parent.top
         border { left: C.TUMBLER_BORDER_MARGIN; top: C.TUMBLER_BORDER_MARGIN; right: C.TUMBLER_BORDER_MARGIN; bottom: C.TUMBLER_BORDER_MARGIN }
     }
-    
+
     Rectangle {
         width: parent.width
         height: internal.hasLabel ?
