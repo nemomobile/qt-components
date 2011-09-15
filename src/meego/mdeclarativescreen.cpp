@@ -186,6 +186,7 @@ MDeclarativeScreenPrivate::MDeclarativeScreenPrivate(MDeclarativeScreen *qq)
     , isTvConnected(false)
     , topLevelWidget(0)
     , oldEventFilter(0)
+    , allowSwipe(true)
 #ifdef Q_WS_X11
     , windowId(0)
 #endif
@@ -708,6 +709,7 @@ void MDeclarativeScreen::setAllowSwipe(bool enabled)
 {
     if (enabled != d->allowSwipe) {
 #ifdef Q_WS_X11
+
         QWidget * activeWindow = QApplication::activeWindow();
         if(!activeWindow) {
             return;
@@ -715,7 +717,8 @@ void MDeclarativeScreen::setAllowSwipe(bool enabled)
         Display       *dpy = QX11Info::display();
         Window w = activeWindow->effectiveWinId();
 
-        unsigned long val = (enabled) ? 1 : 0;
+        unsigned long val = (enabled) ? 0 : 1;
+
         Atom atom = XInternAtom(dpy, "_MEEGOTOUCH_CANNOT_MINIMIZE", false);
         if (!atom) {
             qWarning("Unable to obtain _MEEGOTOUCH_CANNOT_MINIMIZE. This example will only work "
