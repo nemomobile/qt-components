@@ -425,7 +425,7 @@ FocusScope {
             property bool attemptToActivate: false
             property bool pressOnPreedit
 
-           property variant editBubblePosition: Qt.point(0,0) 
+           property variant editBubblePosition: null
 
             onPressed: {
                 var mousePosition = textEdit.positionAt(mouse.x,mouse.y,TextEdit.CursorOnCharacter);
@@ -471,7 +471,8 @@ FocusScope {
                     inputContext.reset();
 
                 var newCursorPosition = textEdit.positionAt(mouse.x,mouse.y,TextEdit.CursorOnCharacter);
-                editBubblePosition = textEdit.positionToRectangle(newCursorPosition);
+                if (textEdit.preedit.length == 0)                   
+                    editBubblePosition = textEdit.positionToRectangle(newCursorPosition);
 
                 if (attemptToActivate) {
                     var beforeText = textEdit.text;
@@ -502,7 +503,10 @@ FocusScope {
                 if (root.activeFocus && platformEnableEditBubble) {
                     if (textEdit.preedit.length == 0)
                         editBubblePosition = textEdit.positionToRectangle(textEdit.cursorPosition);
-                    Popup.open(textEdit,editBubblePosition);
+                    if (editBubblePosition != null) {
+                        Popup.open(textEdit,editBubblePosition);
+                        editBubblePosition = null;
+                    }
                 }
             }
             onMousePositionChanged: {
