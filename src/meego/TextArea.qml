@@ -425,7 +425,7 @@ FocusScope {
             property bool attemptToActivate: false
             property bool pressOnPreedit
 
-           property variant editBubblePosition: null
+            property variant editBubblePosition: null
 
             onPressed: {
                 var mousePosition = textEdit.positionAt(mouse.x,mouse.y,TextEdit.CursorOnCharacter);
@@ -512,12 +512,7 @@ FocusScope {
             onMousePositionChanged: {
                if (MagnifierPopup.isOpened() && !parent.selectByMouse) {
                     var pos = textEdit.positionAt (mouse.x,mouse.y)
-                    var posNextLine = textEdit.positionAt (mouse.x, mouse.y + 1)
-                    var posPrevLine = textEdit.positionAt (mouse.x, mouse.y - 1)
-                    if (!(Math.abs(posNextLine - pos) > 1 ||
-                        Math.abs(posPrevLine - pos) > 1)) {
-                        parent.cursorPosition = pos
-                    }
+                    parent.cursorPosition = pos
                     parent.updateMagnifierPosition(mouse.x,mouse.y);
                 }
             }
