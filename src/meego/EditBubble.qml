@@ -89,6 +89,17 @@ Item {
                 Private.adjustPosition(bubble);
         }
 
+        onVisibleChanged: {                                                         
+            if (visible == true &&                                                  
+                buttonPaste.visible == true &&                                      
+                buttonCut.visible == false &&                                       
+                buttonCopy.visible == false) {                                      
+                autoHideoutTimer.running = true                                     
+            } else if (autoHideoutTimer.running == true) {                                                                
+                autoHideoutTimer.running = false                                    
+            }                                                                       
+        }            
+
         BasicRow {
             id: row
             Component.onCompleted: Private.updateButtons(row);
@@ -181,13 +192,27 @@ Item {
         }
     }
 
+    Timer {                                                                 
+        id: autoHideoutTimer                                                
+        interval: 5000                                                      
+        onTriggered: {                                                      
+            running = false                                                 
+            state = "hidden"                                                
+        }                                                                   
+    }       
+
     state: "closed"
 
     states: [
         State {
             name: "opened"
             ParentChange { target: rect; parent: Utils.findRootItem(textInput); }
-            PropertyChanges { target: rect; visible: true; }
+            PropertyChanges { target: rect; visible: true; opacity: 1.0 }
+        },
+        State {
+            name: "hidden"
+            ParentChange { target: rect; parent: Utils.findRootItem(textInput); }
+            PropertyChanges { target: rect; visible: true; opacity: 0.0; }
         },
         State {
             name: "closed"
@@ -195,6 +220,25 @@ Item {
             PropertyChanges { target: rect; visible: false; }
         }
     ]
+
+    transitions: [                                                          
+        Transition {                                                        
+            from: "opened"; to: "hidden";                                         
+            reversible: false                                               
+            SequentialAnimation {                                           
+                NumberAnimation {                                           
+                    target: rect                                            
+                    properties: "opacity"                                   
+                    duration: 1000                                          
+                }                                                           
+                ScriptAction {                                              
+                    script: {                                               
+                        Private.closePopup(bubble);                         
+                    }                                                       
+                }                                                           
+            }                                                               
+        }                                                                   
+    ]  
 
     Connections {
         target: Utils.findFlickable(textInput)
