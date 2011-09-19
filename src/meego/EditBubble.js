@@ -73,6 +73,15 @@ function open(input,position)
     if (!input)
         return false;
 
+    // don't create an EditBubble when no EditBubble is needed
+    var canPaste = !input.readOnly && input.canPaste;
+    var textSelected = input.selectedText !== "";
+    var canCopy = textSelected && (input.echoMode === undefined || input.echoMode === 0 /* = TextInput.Normal */);
+    var canCut = !input.readOnly && canCopy;
+
+    if (!(canPaste || canCopy || canCut))
+        return false;
+
     if (!init(input))
         return false;
 
