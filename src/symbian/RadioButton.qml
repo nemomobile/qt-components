@@ -66,7 +66,6 @@ Item {
                                                           : platformStyle.colorNormalLight
 
         function toggle() {
-            clickedEffect.restart()
             checkable.toggle()
             root.clicked()
         }
@@ -157,28 +156,6 @@ Item {
         font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
         color: root.enabled ? (root.pressed ? internal.pressedColor : internal.normalColor)
                             : internal.disabledColor
-    }
-
-    ParallelAnimation {
-        id: clickedEffect
-        SequentialAnimation {
-            PropertyAnimation {
-                target: image
-                property: "scale"
-                from: 1.0
-                to: 0.8
-                easing.type: Easing.Linear
-                duration: 50
-            }
-            PropertyAnimation {
-                target: image
-                property: "scale"
-                from: 0.8
-                to: 1.0
-                easing.type: Easing.OutQuad
-                duration: 170
-            }
-        }
     }
 
     Keys.onPressed: {

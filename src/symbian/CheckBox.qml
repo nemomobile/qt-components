@@ -91,7 +91,6 @@ Item {
         }
 
         function toggle() {
-            clickedEffect.restart()
             root.checked = !root.checked
             root.clicked()
         }
@@ -167,26 +166,6 @@ Item {
         font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
         color: root.enabled ? (root.pressed ? internal.pressedColor : internal.normalColor)
                             : internal.disabledColor
-    }
-
-    SequentialAnimation {
-        id: clickedEffect
-        PropertyAnimation {
-            target: contentIcon
-            property: "scale"
-            from: 1.0
-            to: 0.8
-            easing.type: Easing.Linear
-            duration: 50
-        }
-        PropertyAnimation {
-            target: contentIcon
-            property: "scale"
-            from: 0.8
-            to: 1.0
-            easing.type: Easing.OutQuad
-            duration: 170
-        }
     }
 
     Keys.onPressed: {
