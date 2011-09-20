@@ -39,11 +39,18 @@
 ****************************************************************************/
 
 import QtQuick 1.1
+import "EditBubble.js" as Popup
 import "UIConstants.js" as UI
 
 Text {
     id: root
 
+    // Common public API
+    property bool platformSelectable: false
+    property bool canPaste: false
+    property bool readOnly: true
+    property int selectionStart: 0
+    property int selectionEnd: 1
     // Styling for the Button
     property Style platformStyle: LabelStyle{}
 
@@ -55,4 +62,32 @@ Text {
     color: platformStyle.textColor
 
     wrapMode: Text.Wrap
+
+    function positionToRectangle(pos) {
+        var rect = {"left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0};
+//        var point = mapFromItem(textEdit, rect.x, rect.y)
+//        rect.x = point.x; rect.y = point.y
+        return rect;
+    }
+
+    function copy() {
+//        textEdit.copy()
+    }
+    MouseArea {
+        id: mouseFilter
+        anchors.fill: parent
+        anchors.leftMargin:  UI.TOUCH_EXPANSION_MARGIN - UI.PADDING_XLARGE
+        anchors.rightMargin:  UI.TOUCH_EXPANSION_MARGIN - UI.PADDING_MEDIUM
+        anchors.topMargin: UI.TOUCH_EXPANSION_MARGIN - (UI.FIELD_DEFAULT_HEIGHT - font.pixelSize) / 2
+        anchors.bottomMargin:  UI.TOUCH_EXPANSION_MARGIN - (UI.FIELD_DEFAULT_HEIGHT - font.pixelSize) / 2
+
+        property variant editBubblePosition: Qt.point(0,0)
+
+        onPressAndHold:{
+            Popup.open(root,editBubblePosition);
+        }
+    }
 }
