@@ -56,6 +56,9 @@ Item {
     implicitWidth: Math.max(80, screen.width)
     implicitHeight: privateStyle.tabBarHeightPortrait
 
+    LayoutMirroring.enabled: false
+    LayoutMirroring.childrenInherit: true
+
     QtObject {
         id: internal
         property int animationtime: 250
