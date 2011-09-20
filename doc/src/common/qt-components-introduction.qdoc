@@ -76,6 +76,13 @@
     import com.nokia.extras 1.1  //Symbian Extras set
     \endcode
 
+    \note The latest version of the Symbian Components and Extras Components is 1.1 as
+    specified in the import statements above. While version 1.0 is provided along with
+    the newer version, it is advisable to import the latest version when developing
+    applications. See
+    \l{What's New in the Qt Quick Components for Symbian Release}{What's new in the 1.1 release}
+    for further information.
+
     \section1 Interface Designs
 
     Interface designs using QML differs from the traditional Qt UI designs. With

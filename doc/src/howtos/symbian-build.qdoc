@@ -182,24 +182,21 @@ using the Qt SDK.
 
 \section1 Where to Go from Here
 
-The Qt SDK has precompiled \c sis files in the \c{Symbian\sis\Symbian^3\qt-components}
- directory such as examples and demos.
+    \list
+    \o First read the \l{Introduction to the Qt Quick components}{Components introduction} to get
+       started with using the components in your application.
 
-The \l{Symbian Components} and \l{Extras Components} are imported using the
-following commands:
-\code
-import com.nokia.symbian 1.1     // Symbian components
-import com.nokia.extras  1.1     // Extras
-\endcode
+    \o The Qt SDK has precompiled \c sis files in the \c{Symbian\sis\Symbian^3\qt-components}
+       directory such as examples and demos.
 
-Visit the guides that demonstrate the components usage and view the examples and demo applications.
-\list
-\o \l{Introduction to the Qt Quick components}{Components introduction}
-\o \l{components-cookbook}{Common interface designs}
-\o \l{Creating Scalable Applications}{Scalability Guidelines}
-\o \l{Qt Quick components examples and demos}{Examples and demos}
-\o \l{What's New in the Qt Quick Components for Symbian Release}{What's new in the 1.1 release}
-\endlist
+    \o Visit the guides that demonstrate the components usage and view the examples and demo applications.
+       \list
+       \o \l{components-cookbook}{Common interface designs}
+       \o \l{Creating Scalable Applications}{Scalability Guidelines}
+       \o \l{Qt Quick components examples and demos}{Examples and demos}
+       \o \l{What's New in the Qt Quick Components for Symbian Release}{What's new in the 1.1 release}
+       \endlist
+    \endlist
 
 */
 

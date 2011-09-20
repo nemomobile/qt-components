@@ -32,11 +32,6 @@ components} will also build the Extras components for Symbian.
 
 \note Currently, the Extras are only feature complete on the Symbian platform.
 
-The components are imported by declaring the following:
-\code
-import com.nokia.extras
-\endcode
-
 \generatelist related
 
 */
