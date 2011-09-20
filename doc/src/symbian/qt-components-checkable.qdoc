@@ -35,6 +35,13 @@
     \brief
     Implements the functionality for a component that can be enabled or disabled.
 
+    Checkable is located in a separate plugin that can be imported with the
+    following statement:
+
+    \code
+    import Qt.labs.components 1.1
+    \endcode
+
     As well as being used with a single component, a Checkable can also be a
     part of a CheckableGroup where exactly one checkable item in the group can
     be enabled at a time.

@@ -183,13 +183,13 @@ using the Qt SDK.
 \section1 Where to Go from Here
 
     \list
-    \o First read the \l{Introduction to the Qt Quick components}{Components introduction} to get
+    \o Read first \l{Introduction to the Qt Quick components}{Components introduction} to get
        started with using the components in your application.
 
-    \o The Qt SDK has precompiled \c sis files in the \c{Symbian\sis\Symbian^3\qt-components}
-       directory such as examples and demos.
+    \o The Qt SDK has precompiled \c sis files such as examples and demos in the
+    \c{Symbian\sis\Symbian^3\qt-components} directory .
 
-    \o Visit the guides that demonstrate the components usage and view the examples and demo applications.
+    \o Visit the guides that demonstrate the components usage and view the example and demo applications.
        \list
        \o \l{components-cookbook}{Common interface designs}
        \o \l{Creating Scalable Applications}{Scalability Guidelines}

@@ -35,6 +35,13 @@
     \brief
     Provides a component for grouping together related Checkable elements.
 
+    CheckableGroup is located in a separate plugin that can be imported with the
+    following statement:
+
+    \code
+    import Qt.labs.components 1.1
+    \endcode
+
     The CheckableGroup is used in components like RadioButton where only one of
     the Checkable items can be selected at a time. This is known as an exclusive
     group.

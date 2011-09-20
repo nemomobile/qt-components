@@ -77,11 +77,19 @@
     \endcode
 
     \note The latest version of the Symbian Components and Extras Components is 1.1 as
-    specified in the import statements above. While version 1.0 is provided along with
+    specified in the \c import statements above. While version 1.0 is provided along with
     the newer version, it is advisable to import the latest version when developing
     applications. See
     \l{What's New in the Qt Quick Components for Symbian Release}{What's new in the 1.1 release}
     for further information.
+
+    The cross-platform components \l Checkable and \l CheckableGroup are located
+    in a separate plugin. Use the following \c import statement when you need to
+    utilize them:
+
+    \code
+    import Qt.labs.components 1.1
+    \endcode
 
     \section1 Interface Designs
 

@@ -37,14 +37,15 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
 import QtQuick 1.1
+//! [0]
 import com.nokia.symbian 1.1
 import Qt.labs.components 1.1
+//! [0]
 
 Item {
     id: root
-//! [0]
+//! [1]
 CheckableGroup { id: group }
 Row {
     id: row
@@ -66,5 +67,5 @@ Row {
         checked: true
     }
 }
-//! [0]
+//! [1]
 }

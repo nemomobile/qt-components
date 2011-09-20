@@ -46,11 +46,18 @@
     \section1 Using a Radio Button
 
     The following code creates a row with three radio buttons in it. The
-    platformExclusiveGroup property of all the radio buttons is 'group' which
-    is a CheckableGroup. This enforces that only one of the radio buttons can be
+    platformExclusiveGroup property of all the radio buttons is 'group' that
+    is a \l CheckableGroup. This enforces that only one of the radio buttons can be
     selected at a time. The radio button with the text '3' is checked.
 
+    First, notice the need to import also \c Qt.labs.components plugin due to the
+    \l CheckableGroup:
+
     \snippet src/snippets/symbian/snippet-radiobutton.qml 0
+
+    Then, implement the radio buttons:
+
+    \snippet src/snippets/symbian/snippet-radiobutton.qml 1
 
     The screenshot below shows the result of the code snippet.
 
