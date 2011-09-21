@@ -67,8 +67,10 @@ Item {
         id: window
         property bool portrait
 
-        width: window.portrait ? screen.displayHeight : screen.displayWidth
-        height: window.portrait ? screen.displayWidth : screen.displayHeight
+        Component.onCompleted: {
+            width = screen.platformWidth;
+            height = screen.platformHeight;
+        }
 
         anchors.centerIn : parent
         transform: Rotation { id: windowRotation;
@@ -142,7 +144,8 @@ Item {
         states: [
             State {
                 name: "Landscape"
-                PropertyChanges { target: window; rotation: 0; portrait: false; }
+                PropertyChanges { target: window; rotation: screen.rotation; portrait: screen.isPortrait; explicit: true; }
+                PropertyChanges { target: window; height: screen.platformHeight; width: screen.platformWidth; explicit: true; }
                 PropertyChanges { target: windowRotation;
                                   origin.x: root.height / 2;
                                   origin.y: root.height / 2; }
@@ -150,7 +153,8 @@ Item {
             },
             State {
                 name: "Portrait"
-                PropertyChanges { target: window; rotation: 270; portrait: true; }
+                PropertyChanges { target: window; rotation: screen.rotation; portrait: screen.isPortrait; explicit: true; }
+                PropertyChanges { target: window; height: screen.platformHeight; width: screen.platformWidth; explicit: true; }
                 PropertyChanges { target: windowRotation;
                                   origin.x: root.height - root.width / 2;
                                   origin.y: root.width / 2; }
@@ -158,7 +162,8 @@ Item {
             },
             State {
                 name: "LandscapeInverted"
-                PropertyChanges { target: window; rotation: 180; portrait: false; }
+                PropertyChanges { target: window; rotation: screen.rotation; portrait: screen.isPortrait; explicit: true; }
+                PropertyChanges { target: window; height: screen.platformHeight; width: screen.platformWidth; explicit: true; }
                 PropertyChanges { target: windowRotation;
                                   origin.x: root.height / 2;
                                   origin.y: root.height / 2; }
@@ -166,7 +171,8 @@ Item {
             },
             State {
                 name: "PortraitInverted"
-                PropertyChanges { target: window; rotation: 90; portrait: true; }
+                PropertyChanges { target: window; rotation: screen.rotation; portrait: screen.isPortrait; explicit: true; }
+                PropertyChanges { target: window; height: screen.platformHeight; width: screen.platformWidth; explicit: true; }
                 PropertyChanges { target: windowRotation;
                                   origin.x: root.height - root.width / 2;
                                   origin.y: root.width / 2; }
@@ -182,6 +188,7 @@ Item {
             PropertyAction { target: window; properties: "rotation"; }
             ScriptAction {
                 script: {
+                    console.log("---- Animation Start -----");
                     root.orientationChangeAboutToStart();
                     platformWindow.startSipOrientationChange(window.rotation);
                     // note : we should really connect these signals to MInputMethodState
@@ -194,8 +201,8 @@ Item {
         },
         Transition {
             // use this transition when sip is not visible
-            from: (screen.minimized ? "disabled" : (inputContext.softwareInputPanelVisible ? "disabled" : "*"))
-            to:   (screen.minimized ? "disabled" : (inputContext.softwareInputPanelVisible ? "disabled" : "*"))
+            from: (screen.minimized || !screen.isDisplayLandscape ? "disabled" : (inputContext.softwareInputPanelVisible ? "disabled" : "*"))
+            to:   (screen.minimized || !screen.isDisplayLandscape ? "disabled" : (inputContext.softwareInputPanelVisible ? "disabled" : "*"))
             SequentialAnimation {
                 alwaysRunToEnd: true
 
@@ -210,6 +217,8 @@ Item {
                     }
                 }
                 PropertyAction { target: window; properties: "portrait"; }
+                PropertyAction { target: window; properties: "width"; }
+                PropertyAction { target: window; properties: "height"; }
                 ScriptAction {
                     script: {
                         windowContent.opacity = 0.0;

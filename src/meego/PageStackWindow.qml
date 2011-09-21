@@ -74,9 +74,7 @@ Window {
         id: background
         visible: platformStyle.background == ""
         color: platformStyle.backgroundColor
-        width: window.inPortrait ? screen.displayHeight : screen.displayWidth
-        height: window.inPortrait ? screen.displayWidth : screen.displayHeight
-        anchors { top: statusBar.bottom; left: parent.left; }
+        anchors { top: statusBar.bottom; left: parent.left; bottom: parent.bottom; right: parent.right; }
     }
 
     Image {
@@ -84,9 +82,7 @@ Window {
         visible: platformStyle.background != ""
         source: window.inPortrait ? platformStyle.portraitBackground : platformStyle.landscapeBackground
         fillMode: platformStyle.backgroundFillMode
-        width: window.inPortrait ? screen.displayHeight : screen.displayWidth
-        height: window.inPortrait ? screen.displayWidth : screen.displayHeight
-        anchors { top: statusBar.bottom; left: parent.left; }
+        anchors { top: statusBar.bottom; left: parent.left; bottom: parent.bottom; right: parent.right; }
     }
 
     Item {
