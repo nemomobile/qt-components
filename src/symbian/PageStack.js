@@ -38,8 +38,11 @@
 **
 ****************************************************************************/
 
-// Page stack - items are page containers.
+// Page stack. Items are page containers.
 var pageStack = [];
+
+// Page component cache map. Key is page url, value is page component.
+var componentCache = {};
 
 // Returns the page stack depth.
 function getDepth() {
@@ -105,7 +108,7 @@ function push(page, properties, replace, immediate) {
         oldContainer.pushExit(replace, immediate, orientationChange);
     }
 
-     // sync tool bar
+    // sync tool bar
     var tools = container.page.tools || null;
     if (toolBar) {
         toolBar.setTools(tools, immediate ? "set" : replace ? "replace" : "push");
@@ -125,14 +128,24 @@ function initPage(page, properties) {
         pageComp = page;
     } else if (typeof page == "string") {
         // page defined as string (a url)
-        pageComp = Qt.createComponent(page);
+        pageComp = componentCache[page];
+        if (!pageComp) {
+            pageComp = componentCache[page] = Qt.createComponent(page);
+        }
     }
     if (pageComp) {
         if (pageComp.status == Component.Error) {
             throw new Error("Error while loading page: " + pageComp.errorString());
         } else {
             // instantiate page from component
-            page = pageComp.createObject(container);
+            page = pageComp.createObject(container, properties || {});
+        }
+    } else {
+        // copy properties to the page
+        for (var prop in properties) {
+            if (properties.hasOwnProperty(prop)) {
+                page[prop] = properties[prop];
+            }
         }
     }
 
@@ -146,11 +159,6 @@ function initPage(page, properties) {
 
     if (page.pageStack !== undefined) {
         page.pageStack = root;
-    }
-
-    // copy properties to the page
-    for (var prop in properties) {
-        page[prop] = properties[prop];
     }
 
     return container;

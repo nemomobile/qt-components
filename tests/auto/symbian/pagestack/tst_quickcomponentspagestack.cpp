@@ -195,8 +195,13 @@ void tst_quickcomponentspagestack::unwind()
 void tst_quickcomponentspagestack::properties()
 {
     QVariant retPage;
+    
     QMetaObject::invokeMethod(componentObject.data(), "pushPageWithProperties", Qt::DirectConnection, Q_RETURN_ARG(QVariant, retPage));
     QMetaObject::invokeMethod(componentObject.data(), "checkForPageProperties", Qt::DirectConnection, Q_RETURN_ARG(QVariant, retPage));
+    QVERIFY(retPage.toBool() == true);
+
+    QMetaObject::invokeMethod(componentObject.data(), "pushPageStaticWithProperties", Qt::DirectConnection, Q_RETURN_ARG(QVariant, retPage));
+    QMetaObject::invokeMethod(componentObject.data(), "checkForPageStaticProperties", Qt::DirectConnection, Q_RETURN_ARG(QVariant, retPage));
     QVERIFY(retPage.toBool() == true);
 }
 
