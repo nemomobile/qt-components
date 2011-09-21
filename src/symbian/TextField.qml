@@ -193,7 +193,7 @@ FocusScope {
                 // TODO: See TODO: Refactor implicit size...
                 property variant model: Text {
                     font: textInput.font
-                    text: textInput.text
+                    text: textInput.displayText
                     horizontalAlignment: textInput.horizontalAlignment
                     visible: false
                     opacity: 0
