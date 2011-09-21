@@ -38,43 +38,50 @@
 **
 ****************************************************************************/
 /*!
-    \section1 The com.meego plugin
-    \ingroup qt-components
-
-    The \c com.meego plugin provides some MeeGo specific functionalities. The context property
-    \c platformWindow provides information about the visibility status of the application
+    \qmlclass PlatformWindow MeeGoPlugin  
+    \ingroup qt-components    
+    \brief Global properties about application status
+    
+    The \c com.nokia.meego plugin provides a context property \c platformWindow that 
+    provides information about the visibility status of the application
     and whether it is active.
+    
+    Usage example: 
+    \code 
+    if (platformWindow.active) {
+    ...
+    \endcode
 
 */
 
 /*!
-    \qmlproperty bool platformWindow::visible
+    \qmlproperty bool PlatformWindow::visible
 
     True when the window is visible to the user, either as a full sized
     application or as a thumbnail in switcher.
 */
 
 /*!
-    \qmlproperty bool platformWindow::active
+    \qmlproperty bool PlatformWindow::active
 
     True when the window is active. A window may be visible but not active,
     for example when there is a transparent window on top of it.
 */
 
 /*!
-    \qmlproperty bool platformWindow::animating
+    \qmlproperty bool PlatformWindow::animating
     
     True when the window is undergoing orientation change animation.
 */
 
 /*!
-    \qmlproperty MWindowState::ViewMode platformWindow::viewMode
+    \qmlproperty WindowState PlatformWindow::viewMode
 
-    Tells whether the applications is \c Fullsize or \c Thumbnail.
+    Tells whether the application is \c WindowState.Fullsize or \c WindowState.Thumbnail.
 */
 
 /*!
-    \qmlproperty QString platformWindow::viewModeString
+    \qmlproperty QString PlatformWindow::viewModeString
 
     View mode as a string, either \c "Fullsize" or \c "Thumbnail".
 */
