@@ -7,6 +7,8 @@ sourcedirs =    $QTCOMPONENTS/src \
                 $QTCOMPONENTS/doc/src/meego \
                 $QTCOMPONENTS/doc/src/examples
 
+excludedirs = $QTCOMPONENTS/doc/src/meego/extras
+                
 outputdir  =    $QTCOMPONENTS/doc/html
 outputformats = HTML
 sources.fileextensions = "*.cpp *.doc *.qdoc *.h *.qml"

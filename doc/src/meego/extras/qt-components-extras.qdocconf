@@ -4,9 +4,7 @@ description     = "Qt-Components Extras Documentation"
 headerdirs =    $QTCOMPONENTS/src \
                 $QTCOMPONENTS/doc/src
 sourcedirs =    $QTCOMPONENTS/src \
-                $QTCOMPONENTS/doc/src/meego \
-                $QTCOMPONENTS/doc/src/meego/extras \
-                $QTCOMPONENTS/doc/src/examples
+                $QTCOMPONENTS/doc/src/meego/extras
 
 outputdir  =    $QTCOMPONENTS/doc/html
 outputformats = HTML
