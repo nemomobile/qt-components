@@ -29,8 +29,6 @@
 
     \title Building the Qt Quick Components for MeeGo
 
-    The Qt Quick Components for MeeGo are in the experimental stages.
-
     The instructions to build the Qt Quick Components for MeeGo, please read
     the \c README file in the root directory.
 */
