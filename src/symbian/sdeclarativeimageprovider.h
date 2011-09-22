@@ -54,8 +54,8 @@ public:
     bool graphicsSharing() const;
 
 private:
-    Q_DISABLE_COPY(SDeclarativeImageProvider);
-    Q_DECLARE_PRIVATE(SDeclarativeImageProvider);
+    Q_DISABLE_COPY(SDeclarativeImageProvider)
+    Q_DECLARE_PRIVATE(SDeclarativeImageProvider)
     QScopedPointer<SDeclarativeImageProviderPrivate> d_ptr;
 };
 

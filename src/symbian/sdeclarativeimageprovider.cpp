@@ -46,7 +46,7 @@
 
 class SDeclarativeImageProviderPrivate
 {
-    Q_DECLARE_PUBLIC(SDeclarativeImageProvider);
+    Q_DECLARE_PUBLIC(SDeclarativeImageProvider)
 public:
     SDeclarativeImageProviderPrivate(SDeclarativeImageProvider *qq);
     SDeclarativeImageProvider *q_ptr;
@@ -54,8 +54,8 @@ public:
 };
 
 SDeclarativeImageProviderPrivate::SDeclarativeImageProviderPrivate(SDeclarativeImageProvider *qq)
-    : sharedImageProvider(0)
-    , q_ptr(qq)
+    : q_ptr(qq),
+      sharedImageProvider(0)
 
 {
     // try to load shared image provider
