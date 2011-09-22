@@ -124,6 +124,8 @@ FocusScope {
                 if (activeFocus) {
                     platformCloseSoftwareInputPanel();
                     Popup.close(textInput);
+                    if (textInput.selectionStart != textInput.selectionEnd)     
+                        textInput.deselect();
                 }
             }
         }
