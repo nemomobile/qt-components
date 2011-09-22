@@ -106,6 +106,7 @@ Item {
 
             EditBubbleButton {
                 id: buttonCut
+                objectName: "cutButton";
                 text: textTranslator.translate("qtn_comm_cut");
                 visible: rect.canCut
                 onClicked: {
@@ -119,6 +120,7 @@ Item {
 
             EditBubbleButton {
                 id: buttonCopy
+                objectName: "copyButton";
                 text: textTranslator.translate("qtn_comm_copy");
                 visible: rect.canCopy
                 onClicked: {
@@ -130,6 +132,7 @@ Item {
 
             EditBubbleButton {
                 id: buttonPaste
+                objectName: "pasteButton";
                 text: textTranslator.translate("qtn_comm_paste");
                 visible: rect.canPaste
                 onClicked: {
