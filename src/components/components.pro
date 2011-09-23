@@ -44,10 +44,10 @@ symbian {
     DEPLOYMENT += package
 
     defBlock = \
-        "$${LITERAL_HASH}if defined(EABI)" \
-        "DEFFILE  eabi/plugin_commonu.def" \
-        "$${LITERAL_HASH}else" \
+        "$${LITERAL_HASH}ifdef WINSCW" \
         "DEFFILE  bwins/plugin_commonu.def" \
+        "$${LITERAL_HASH}elif defined EABI" \
+        "DEFFILE  eabi/plugin_commonu.def" \
         "$${LITERAL_HASH}endif"
     MMP_RULES += defBlock
 }

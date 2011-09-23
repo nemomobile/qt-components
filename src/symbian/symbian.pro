@@ -210,14 +210,6 @@ symbian {
 
     package.pkg_prerules += vendor_info
     DEPLOYMENT += package
-
-    defBlock = \
-        "$${LITERAL_HASH}if defined(EABI)" \
-        "DEFFILE  eabi/plugin_commonu.def" \
-        "$${LITERAL_HASH}else" \
-        "DEFFILE  bwins/plugin_commonu.def" \
-        "$${LITERAL_HASH}endif"
-    MMP_RULES += defBlock
 }
 
 win32: LIBS += -lpsapi # for allocated memory info

@@ -58,14 +58,6 @@ symbian {
 
     package.pkg_prerules += vendor_info
     DEPLOYMENT += package
-
-    defBlock = \
-        "$${LITERAL_HASH}if defined(EABI)" \
-        "DEFFILE eabi/" \
-        "$${LITERAL_HASH}else" \
-        "DEFFILE bwins/" \
-        "$${LITERAL_HASH}endif"
-    MMP_RULES += defBlock
 }
 
 include(../../../qml.pri)
