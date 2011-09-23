@@ -75,19 +75,10 @@ Item {
                 // we have multiline selection so center to the screen
                 selectionCenterX = parent.width / 2;
 
-            var contextMenuMargin = 10; // the space between the context menu and the line above/below
-            var contextMenuAdjustedRowHeight = row.height + contextMenuMargin;
-            var tempY = posStart.y - contextMenuAdjustedRowHeight;
-            var minVerticalPos = internal.textArea ? internal.textArea.mapToItem(parent, 0, 0).y - row.height : 0
-			
-            if (tempY < minVerticalPos)
-                tempY = minVerticalPos
-				
-            if (tempY < 0)
-                tempY = 0
+            var minVerticalPos = internal.textArea ? internal.textArea.mapToItem(parent, 0, 0).y + platformStyle.paddingLarge : 0
 
             root.x = Math.max(0, Math.min(selectionCenterX - row.width / 2, parent.width - row.width));
-            root.y = tempY;
+            root.y = Math.max(0, Math.max(minVerticalPos, posStart.y) - row.height - platformStyle.paddingLarge * 2);
         }
     }
 
@@ -133,7 +124,7 @@ Item {
         }
 
         exclusive: false
-        width: Math.round(privateStyle.buttonSize * 1.5) * visibleButtonCount()
+        width: Math.round(privateStyle.buttonSize * 2) * visibleButtonCount()
 
         onWidthChanged: calculatePosition()
         onHeightChanged: calculatePosition()
