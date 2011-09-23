@@ -110,6 +110,14 @@ FocusScope {
 
         onActiveChanged: {
             if(platformWindow.active) {
+                if (__hadFocusBeforeMinimization) {                                                                                                         
+                    __hadFocusBeforeMinimization = false                                                                                                      
+                    if (root.parent)                                                                                                                          
+                        root.focus = true                                                                                                                     
+                    else                                                                                                                                      
+                        textInput.focus = true                                                                                                                
+                }
+                
                 if (!readOnly) {
                     if (activeFocus) {
                         if (platformCustomSoftwareInputPanel != null) {
@@ -126,6 +134,12 @@ FocusScope {
                     Popup.close(textInput);
                     if (textInput.selectionStart != textInput.selectionEnd)     
                         textInput.deselect();
+                      
+                    __hadFocusBeforeMinimization = true                                                                                                                                                                                           
+                    if (root.parent)                                                                                     
+                        root.parent.focus = true                                           
+                    else                                                                       
+                        textInput.focus = false
                 }
             }
         }
@@ -216,6 +230,8 @@ FocusScope {
                                         Qt.ImhEmailCharactersOnly|
                                         Qt.ImhUrlCharactersOnly 
 
+    property bool __hadFocusBeforeMinimization: false
+    
     implicitWidth: platformStyle.defaultWidth
     implicitHeight: UI.FIELD_DEFAULT_HEIGHT
 

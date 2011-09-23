@@ -152,6 +152,13 @@ FocusScope {
 
         onActiveChanged: {
             if(platformWindow.active) {
+                if (__hadFocusBeforeMinimization) {                                                                                                         
+                    __hadFocusBeforeMinimization = false                                                                                                      
+                    if (root.parent)                                                                                                                          
+                        root.focus = true                                                                                                                     
+                    else                                                                                                                                      
+                        textInput.focus = true                                                                                                                
+                }
                 if (!readOnly) {
                     if (activeFocus) {
                         platformOpenSoftwareInputPanel();
@@ -162,6 +169,11 @@ FocusScope {
                 if (activeFocus) {
                     platformCloseSoftwareInputPanel();
                     Popup.close(textEdit);
+                    __hadFocusBeforeMinimization = true                                                                                                                                                                                           
+                    if (root.parent)                                                                                     
+                        root.parent.focus = true                                           
+                    else                                                                       
+                        textInput.focus = false
                 }
             }
         }
@@ -181,7 +193,9 @@ FocusScope {
                                         Qt.ImhDialableCharactersOnly|           
                                         Qt.ImhEmailCharactersOnly|              
                                         Qt.ImhUrlCharactersOnly 
-
+    
+    property bool __hadFocusBeforeMinimization: false
+    
     implicitWidth: platformStyle.defaultWidth
     implicitHeight: Math.max (UI.FIELD_DEFAULT_HEIGHT,
                               textEdit.height + (UI.FIELD_DEFAULT_HEIGHT - font.pixelSize))
