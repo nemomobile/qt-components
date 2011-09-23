@@ -189,7 +189,7 @@ MouseArea {
 
     Connections {
         target: editor
-        onTextChanged: internal.onEditorTextChanged
+        onTextChanged: internal.onEditorTextChanged()
     }
 
     // Private
@@ -231,7 +231,7 @@ MouseArea {
         }
 
         function onEditorTextChanged() {
-            if (touchTools && !internal.editorHasSelection)
+            if (touchTools)
                 touchTools.contextMenu.hide();
         }
 
