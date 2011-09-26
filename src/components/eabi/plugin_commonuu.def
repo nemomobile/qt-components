@@ -49,11 +49,7 @@ EXPORTS
 	_ZNK11QRangeModel8stepSizeEv @ 48 NONAME
 	_ZNK8QGlobals10metaObjectEv @ 49 NONAME
 	_ZTI11QRangeModel @ 50 NONAME
-	_ZTI18QRangeModelPrivate @ 51 NONAME
-	_ZTI18QtComponentsPlugin @ 52 NONAME
-	_ZTI8QGlobals @ 53 NONAME
-	_ZTV11QRangeModel @ 54 NONAME
-	_ZTV18QRangeModelPrivate @ 55 NONAME
-	_ZTV18QtComponentsPlugin @ 56 NONAME
-	_ZTV8QGlobals @ 57 NONAME
+	_ZTI8QGlobals @ 51 NONAME
+	_ZTV11QRangeModel @ 52 NONAME
+	_ZTV8QGlobals @ 53 NONAME
 
