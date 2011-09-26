@@ -64,62 +64,73 @@ Text {
         id: mouseFilter
         anchors.fill: parent
 
-        property variant editBubblePosition: Qt.point(0,0)
+        Component {
+            id: textSelectionComponent
 
-        onPressAndHold:{
-            __textColor = root.color;
-            root.color = Qt.rgba(0, 0, 0, 0);
-            selectionTextEdit.selectAll();
-            selectionTextEdit.visible = true;
-            editBubblePosition = selectionTextEdit.positionToRectangle(selectionTextEdit.cursorPosition);
-            Popup.open(selectionTextEdit,editBubblePosition);
-        }
+            TextEdit {
+                id: selectionTextEdit
+//                width: root.width
+//                height: root.height
 
-        TextEdit {
-            id: selectionTextEdit
-            anchors.fill: parent
-            property bool canPaste: false
-            property bool readOnly: true
+                property bool canPaste: false
+                readOnly: true
 
-            visible: false
-            clip : root.clip
-            color : root.color
-            font.bold : root.font.bold
-            font.capitalization : root.font.capitalization
-            font.family : root.font.family
-            font.italic : root.font.italic
-            font.letterSpacing : root.font.letterSpacing
-            font.pixelSize : root.font.pixelSize
-            font.pointSize : root.font.pointSize
-            font.strikeout : root.font.strikeout
-            font.underline : root.font.underline
-            font.weight : root.font.weight
-            font.wordSpacing : root.font.wordSpacing
-            horizontalAlignment : root.horizontalAlignment
-            smooth : root.smooth
-            text : root.text
-            textFormat : root.textFormat
-            verticalAlignment : root.verticalAlignment
-            wrapMode : root.wrapMode
+                clip : root.clip
+                color : root.color
+                font.bold : root.font.bold
+                font.capitalization : root.font.capitalization
+                font.family : root.font.family
+                font.italic : root.font.italic
+                font.letterSpacing : root.font.letterSpacing
+                font.pixelSize : root.font.pixelSize
+                font.pointSize : root.font.pointSize
+                font.strikeout : root.font.strikeout
+                font.underline : root.font.underline
+                font.weight : root.font.weight
+                font.wordSpacing : root.font.wordSpacing
+                horizontalAlignment : root.horizontalAlignment
+                smooth : root.smooth
+                text : root.text
+                textFormat : root.textFormat
+                verticalAlignment : root.verticalAlignment
+                wrapMode : root.wrapMode
 
-            onActiveFocusChanged: {
-                selectionTextEdit.visible = false;
-                root.color = __textColor;
-                Popup.close(selectionTextEdit);
-            }
-        }
-        InverseMouseArea {
-            anchors.fill: parent
-            enabled: selectionTextEdit.visible
-
-            onClickedOutside: {
-                if (Popup.isOpened(selectionTextEdit) && ((mouseX > Popup.geometry().left && mouseX < Popup.geometry().right) &&
-                                               (mouseY > Popup.geometry().top && mouseY < Popup.geometry().bottom))) {
-                    selectionTextEdit.visible = false;
+                Component.onCompleted: {
+                    if ( root.elide == Text.ElideNone ) {
+                        width = root.width;
+                        height = root.height;
+                    }
+                    __textColor = root.color;
+                    root.color = Qt.rgba(0, 0, 0, 0);
+                    selectAll();
+                    Popup.open(selectionTextEdit,selectionTextEdit.positionToRectangle(selectionTextEdit.cursorPosition));
+                }
+                Component.onDestruction: {
                     root.color = __textColor;
                     Popup.close(selectionTextEdit);
-                    return;
                 }
+            }
+        }
+        Loader {
+          id: textSelectionLoader
+        }
+
+        onPressAndHold:{
+            if (root.platformSelectable == false) return;
+
+            textSelectionLoader.sourceComponent = textSelectionComponent;
+        }
+
+        onClicked: {
+            textSelectionLoader.sourceComponent = undefined;
+        }
+
+        InverseMouseArea {
+            anchors.fill: parent
+            enabled: textSelectionLoader.sourceComponent != undefined
+
+            onClickedOutside: {
+                textSelectionLoader.sourceComponent = undefined;
             }
         }
     }

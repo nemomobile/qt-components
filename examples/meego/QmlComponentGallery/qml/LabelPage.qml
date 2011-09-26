@@ -53,12 +53,14 @@ Page {
 
         anchors.fill: parent
         Column {
-            Label { text: "Plain label" }
-            Label { text: "Bold label"; font.bold: true }
-            Label { text: "Italic label"; font.italic: true }
-            Label { text: "Large label"; font.pixelSize: 100 }
-            Label { text: "Red label"; color: "red" }
-            Label { text: "Wrapping label with a lot of text"; wrapMode: Text.Wrap; width: 200 }
+            Label { text: "Plain label"; platformSelectable: true; }
+            Label { text: "Bold label"; font.bold: true; platformSelectable: true; }
+            Label { text: "Italic label"; font.italic: true; platformSelectable: true; }
+            Label { text: "Large label"; font.pixelSize: 100; platformSelectable: true; }
+            Label { text: "Red label"; color: "red"; platformSelectable: true; }
+            Label { text: "Wrapping label with a lot of text"; wrapMode: Text.Wrap; width: 200; platformSelectable: true; }
+            Label { text: "Elided labels are too long"; font.italic: true; width: 200; elide: Text.ElideRight; platformSelectable: true; }
+            Label { text: "Unselectable plain label" }
         }
     }
 }
