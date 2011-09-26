@@ -50,12 +50,9 @@ Item {
     property bool platformInverted: false
 
     function show() {
-        // Show menu only if some of the options is available
-        if(root.copyEnabled || root.cutEnabled || editor.canPaste) {
-            parent = AppManager.rootObject();
-            root.visible = true;
-            calculatePosition();
-        }
+        parent = AppManager.rootObject();
+        root.visible = true;
+        calculatePosition();
     }
 
     function hide() {
@@ -117,6 +114,8 @@ Item {
 
         function visibleButtonCount() {
             var count = 0
+            if (selectButton.visible) ++count
+            if (selectAllButton.visible) ++count
             if (copyButton.visible) ++count
             if (cutButton.visible) ++count
             if (pasteButton.visible) ++count
@@ -129,6 +128,20 @@ Item {
         onWidthChanged: calculatePosition()
         onHeightChanged: calculatePosition()
 
+        Button {
+            id: selectButton
+            iconSource: privateStyle.imagePath("qtg_toolbar_select_word", root.platformInverted)
+            visible: !root.copyEnabled
+            platformInverted: root.platformInverted
+            onClicked: editor.selectWord()
+        }
+        Button {
+            id: selectAllButton
+            iconSource: privateStyle.imagePath("qtg_toolbar_select_all_text", root.platformInverted)
+            visible: !root.copyEnabled
+            platformInverted: root.platformInverted
+            onClicked: editor.selectAll()
+        }
         Button {
             id: copyButton
             iconSource: privateStyle.imagePath("qtg_toolbar_copy", root.platformInverted)
