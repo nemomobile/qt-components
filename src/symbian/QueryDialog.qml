@@ -70,7 +70,7 @@ CommonDialog {
             if (root.height > 0)
                 return Math.min(Math.max(privateStyle.dialogMinSize, root.height) - privateTitleHeight - privateButtonsHeight, root.platformContentMaximumHeight)
             else
-                return Math.min(label.paintedHeight, root.platformContentMaximumHeight)
+                return Math.min(label.paintedHeight + 2 * platformStyle.paddingLarge, root.platformContentMaximumHeight)
         }
         width: parent.width
 
