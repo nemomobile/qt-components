@@ -166,7 +166,7 @@ Dialog {
                 }
                 onReleased: {
                     if (!pressCancelled)
-                        privateStyle.play(Symbian.PopupClose)
+                        privateStyle.play(Symbian.PopUp)
                 }
                 onExited: pressCancelled = true
             }

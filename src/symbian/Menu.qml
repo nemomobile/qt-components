@@ -74,7 +74,7 @@ Item {
         platformInverted: root.platformInverted
 
         onFaderClicked: {
-            privateStyle.play(Symbian.PopupClose)
+            privateStyle.play(Symbian.PopUp)
             close()
         }
 

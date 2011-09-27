@@ -122,7 +122,7 @@ CommonDialog {
     }
 
     onClickedOutside: {
-        privateStyle.play(Symbian.PopupClose)
+        privateStyle.play(Symbian.PopUp)
         reject()
     }
 

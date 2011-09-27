@@ -170,7 +170,7 @@ Item {
             }
             onClicked: {
                 searchTextInput.openSoftwareInputPanel()
-                privateStyle.play(Symbian.PopupOpen)
+                privateStyle.play(Symbian.PopUp)
             }
         }
 

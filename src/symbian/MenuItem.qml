@@ -144,7 +144,7 @@ Item {
         }
         onReleased: {
             if (!canceled)
-                privateStyle.play(Symbian.PopupClose)
+                privateStyle.play(Symbian.BasicItem)
         }
         onExited: canceled = true
     }
