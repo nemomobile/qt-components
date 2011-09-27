@@ -51,14 +51,14 @@ Magnifier {
     property bool platformInverted: false
 
     function show() {
+        internal.show = true;
         parent = AppManager.rootObject();
         sourceRect = internal.calculateSourceGeometry();
         internal.calculatePosition();
-        root.visible = true;
     }
 
     function hide() {
-        root.visible = false;
+        internal.show = false;
     }
 
     sourceRect: Qt.rect(0, 0, 0, 0)
@@ -71,7 +71,7 @@ Magnifier {
 
     onContentCenterChanged: internal.updateSourceRect()
 
-    onSourceRectChanged: if (visible) internal.calculatePosition()
+    onSourceRectChanged: if (internal.show) internal.calculatePosition()
 
     Connections {
         target: editor
@@ -83,7 +83,7 @@ Magnifier {
         id: internal
 
         function updateSourceRect () {
-            if (visible)
+            if (internal.show)
                 sourceRect = internal.calculateSourceGeometry();
         }
 
@@ -111,5 +111,48 @@ Magnifier {
                                sourceSize.width, sourceSize.height);
             return rect;
         }
+
+        property bool show: false
+        property int animationDuration: 250
     }
+
+    transformOrigin: Item.Center
+
+    states: [
+        State {
+            name: "hidden"
+            when: !internal.show
+            PropertyChanges { target: root; visible: false; opacity: 0.0 }
+            PropertyChanges { target: magnifier; scale: 0.6 }
+        },
+        State {
+            name: "visible"
+            when: internal.show
+            PropertyChanges { target: root; visible: true; opacity: 1.0 }
+            PropertyChanges { target: magnifier; scale: 1.0 }
+        }
+    ]
+
+    transitions: [
+        Transition {
+            from: "hidden"; to: "visible"
+            SequentialAnimation {
+                PropertyAction { target: root; property: "visible"; value: "true" }
+                ParallelAnimation {
+                    PropertyAnimation { target: root; properties: "opacity"; duration: internal.animationDuration }
+                    PropertyAnimation { target: magnifier; properties: "scale"; duration: internal.animationDuration; easing.type: Easing.OutQuad }
+                }
+            }
+        },
+        Transition {
+            from: "visible"; to: "hidden"
+            SequentialAnimation {
+                PropertyAction { target: root; property: "visible"; value: "true" }
+                ParallelAnimation {
+                    PropertyAnimation { target: root; properties: "opacity"; duration: internal.animationDuration }
+                    PropertyAnimation { target: magnifier; properties: "scale"; duration: internal.animationDuration; easing.type: Easing.InQuad }
+                }
+            }
+        }
+    ]
 }

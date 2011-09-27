@@ -51,16 +51,23 @@ Item {
 
     function show() {
         parent = AppManager.rootObject();
-        root.visible = true;
+        internal.show = true;
+        // Button visibility is changed only when the menu is show():n
+        // to avoid appearing/disappearing buttons during animations
+        selectButton.visible = !root.copyEnabled
+        selectAllButton.visible = !root.copyEnabled
+        copyButton.visible = root.copyEnabled
+        cutButton.visible = root.cutEnabled
+        pasteButton.visible = editor.canPaste
         calculatePosition();
     }
 
     function hide() {
-        root.visible = false;
+        internal.show = false;
     }
 
     function calculatePosition() {
-        if (editor && root.visible) {
+        if (editor && internal.show) {
             var rectStart = editor.positionToRectangle(editor.selectionStart);
             var rectEnd = editor.positionToRectangle(editor.selectionEnd);
 
@@ -101,7 +108,8 @@ Item {
         property real editorSceneX
         property real editorSceneY
         property Item textArea: null
-
+        property bool show: false
+        property int animationDuration: 250
         function editorMoved() {
             root.calculatePosition()
         }
@@ -131,43 +139,98 @@ Item {
         Button {
             id: selectButton
             iconSource: privateStyle.imagePath("qtg_toolbar_select_word", root.platformInverted)
-            visible: !root.copyEnabled
+            visible: false
             platformInverted: root.platformInverted
-            onClicked: editor.selectWord()
+            onClicked: {
+                editor.selectWord()
+                root.show()
+            }
         }
         Button {
             id: selectAllButton
             iconSource: privateStyle.imagePath("qtg_toolbar_select_all_text", root.platformInverted)
-            visible: !root.copyEnabled
+            visible: false
             platformInverted: root.platformInverted
-            onClicked: editor.selectAll()
+            onClicked: {
+                editor.selectAll()
+                root.show()
+            }
         }
         Button {
             id: copyButton
             iconSource: privateStyle.imagePath("qtg_toolbar_copy", root.platformInverted)
-            visible: root.copyEnabled
+            visible: false
             platformInverted: root.platformInverted
-            onClicked: editor.copy()
+            onClicked: {
+                if (root.copyEnabled) {
+                    editor.copy()
+                    root.hide()
+                }
+            }
         }
         Button {
             id: cutButton
             iconSource: privateStyle.imagePath("qtg_toolbar_cut", root.platformInverted)
-            visible: root.cutEnabled
+            visible: false
             platformInverted: root.platformInverted
             onClicked: {
-                editor.cut()
-                root.visible = false
+                if (root.cutEnabled) {
+                    editor.cut()
+                    root.hide()
+                }
             }
         }
         Button {
             id: pasteButton
             iconSource: privateStyle.imagePath("qtg_toolbar_paste", root.platformInverted)
-            visible: editor.canPaste
+            visible: false
             platformInverted: root.platformInverted
             onClicked: {
-                editor.paste()
-                root.visible = false
+                if (editor.canPaste) {
+                    editor.paste()
+                    root.hide()
+                }
             }
         }
     }
+
+    transformOrigin: Item.Center
+
+    states: [
+        State {
+            name: "hidden"
+            when: !internal.show
+            PropertyChanges { target: root; visible: false; opacity: 0.0 }
+            PropertyChanges { target: row; scale: 0.6 }
+        },
+        State {
+            name: "visible"
+            when: internal.show
+            PropertyChanges { target: root; visible: true; opacity: 1.0 }
+            PropertyChanges { target: row; scale: 1.0 }
+        }
+    ]
+
+    transitions: [
+        Transition {
+            from: "hidden"; to: "visible"
+            SequentialAnimation {
+                PropertyAction { target: root; property: "visible"; value: "true" }
+                ParallelAnimation {
+                    PropertyAnimation { target: root; properties: "opacity"; duration: internal.animationDuration }
+                    PropertyAnimation { target: row; properties: "scale"; duration: internal.animationDuration; easing.type: Easing.OutQuad }
+                }
+            }
+        },
+        Transition {
+            from: "visible"; to: "hidden"
+            SequentialAnimation {
+                PropertyAction { target: root; property: "visible"; value: "true" }
+                ParallelAnimation {
+                    PropertyAnimation { target: root; properties: "opacity"; duration: internal.animationDuration }
+                    PropertyAnimation { target: row; properties: "scale"; duration: internal.animationDuration; easing.type: Easing.InQuad }
+                }
+            }
+        }
+    ]
 }
