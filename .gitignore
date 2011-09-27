@@ -45,7 +45,7 @@ release/
 /lib/
 /doc/html
 /imports/
-/features/qt-components-config.prf
+/features/*config.prf
 /demos/flickr/flickr
 /demos/musicplayer/musicplayer
 /examples/native/focus/focus

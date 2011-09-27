@@ -66,7 +66,7 @@ if exist "%QMAKE_CACHE%" del /Q %QMAKE_CACHE%
 set QMAKEFEATURES=%SOURCE_TREE%\features
 if not exist "%BUILD_TREE%\features" mkdir "%BUILD_TREE%\features"
 
-set CONFIG_PRF=%BUILD_TREE%\features\qt-components-config.prf
+set CONFIG_PRF=%BUILD_TREE%\features\qtcomponents_1_1_config.prf
 if exist "%CONFIG_PRF%" del /Q %CONFIG_PRF%
 
 shift

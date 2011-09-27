@@ -50,7 +50,7 @@ if options.verbose:
 
 # Reads configure parameters from prf file and maps those to modules
 def read_config():
-    file = open(options.repository + "features/qt-components-config.prf", "r")
+    file = open(options.repository + "features/qtcomponents_1_1_config.prf", "r")
     modules = re.findall("\S\w*\S", file.read().rsplit("+=")[1])
     if options.verbose:
         print "Configured parameters:"
