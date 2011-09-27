@@ -76,7 +76,7 @@ MouseArea {
 
     onPressed: {
         if (!touchTools)
-            touchToolsLoader.sourceComponent = touchToolsComponent
+            touchToolsLoader.source = "TextTouchTools.qml"
 
         internal.currentTouchPoint = root.mapToItem(editor, mouse.x, mouse.y);
 
@@ -290,58 +290,6 @@ MouseArea {
         id: touchToolsLoader
     }
 
-    Component {
-        id: touchToolsComponent
-
-        Item {
-            id: touchTools
-            property alias handleBegin: selBegin
-            property alias handleEnd: selEnd
-            property alias contextMenu: cxtMenu
-            property alias magnifier: magnif
-
-            TextSelectionHandle {
-                id: selBegin
-
-                objectName: "SelectionBegin"
-                editor: root.editor
-                imageSource: privateStyle.imagePath("qtg_fr_textfield_handle_start", root.platformInverted)
-                editorPos: editor.selectionStart
-                visible: internal.editorHasSelection
-            }
-
-            TextSelectionHandle { // also acts as the cursor handle when no selection
-                id: selEnd
-
-                objectName: "SelectionEnd"
-                editor: root.editor
-                imageSource: privateStyle.imagePath("qtg_fr_textfield_handle_end", root.platformInverted)
-                editorPos: editor.selectionEnd
-                visible: true
-                showImage: internal.hasSelection //show image only in selection mode
-            }
-
-            TextContextMenu {
-                id: cxtMenu
-
-                editor: root.editor
-                platformInverted: root.platformInverted
-                copyEnabled: root.copyEnabled
-                cutEnabled: root.cutEnabled
-            }
-
-            TextMagnifier {
-                id: magnif
-
-                editor: root.editor
-                contentCenter: internal.hitTestPoint
-                platformInverted: root.platformInverted
-
-            }
-        }
-
-    }
-
     MouseGrabDisabler {
         id: mouseGrabDisabler
     }
@@ -371,7 +319,7 @@ MouseArea {
 
     Keys.onPressed: {
         if (!touchTools)
-            touchToolsLoader.sourceComponent = touchToolsComponent
+            touchToolsLoader.source = "TextTouchTools.qml"
 
         if (internal.editorHasSelection && event.modifiers & Qt.ShiftModifier
             && (event.key == Qt.Key_Left || event.key == Qt.Key_Right

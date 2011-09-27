@@ -158,6 +158,7 @@ QML_FILES = \
     TextContextMenu.qml \
     TextSelectionHandle.qml \
     TextTouchController.qml \
+    TextTouchTools.qml \
     ToolBar.qml \
     ToolBarLayout.qml \
     ToolButton.qml \
@@ -215,3 +216,4 @@ symbian {
 win32: LIBS += -lpsapi # for allocated memory info
 
 include(../../qml.pri)
+

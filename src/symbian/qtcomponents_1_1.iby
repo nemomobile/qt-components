@@ -73,6 +73,7 @@ data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\TextMagnifier.qml                  
 data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\TextContextMenu.qml                            RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\TextContextMenu.qml
 data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\TextSelectionHandle.qml                        RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\TextSelectionHandle.qml
 data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\TextTouchController.qml                        RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\TextTouchController.qml
+data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\TextTouchTools.qml                             RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\TextTouchTools.qml
 data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\ToolBar.qml                                    RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\ToolBar.qml
 data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\ToolBarLayout.qml                              RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\ToolBarLayout.qml
 data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\ToolButton.qml                                 RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\ToolButton.qml
