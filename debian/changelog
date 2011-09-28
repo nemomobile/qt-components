@@ -1,3 +1,9 @@
+qt-components (1.2~git20110928-1) maverick; urgency=low
+
+  * Fixes: NB#237126 (SLVD-952) Long strings are improperly truncated inside input fields (TextField class)
+  
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Wed, 28 Sep 2011 13:18:00 +0300
+
 qt-components (1.1~git20110919-2) maverick; urgency=low
 
   * Fixes: NB#276446 [TASK] TumblerColumn doesn't support array of strings
