@@ -63,7 +63,7 @@ Magnifier {
 
     sourceRect: Qt.rect(0, 0, 0, 0)
     visible: false
-    scaleFactor: 1.5
+    scaleFactor: 1.2
     maskFileName: root.platformInverted ? ":/graphics_1_1/qtg_graf_magnifier_mask_inverse.svg"
                                         : ":/graphics_1_1/qtg_graf_magnifier_mask.svg"
     overlayFileName: root.platformInverted ? ":/graphics_1_1/qtg_graf_magnifier_inverse.svg"
@@ -91,10 +91,9 @@ Magnifier {
             width = sourceRect.width * scaleFactor;
             height = sourceRect.height * scaleFactor;
 
-            var magnifierMargin = -platformStyle.paddingLarge; // the offset between the magnifier and top of the line
             var pos = parent.mapFromItem(editor,
                                          contentCenter.x - width/2,
-                                         contentCenter.y - sourceRect.height/2 - height - magnifierMargin);
+                                         contentCenter.y - height - platformStyle.paddingLarge*2);
 
             root.x = pos.x;
             root.y = pos.y;
