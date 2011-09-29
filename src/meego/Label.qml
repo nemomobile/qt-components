@@ -54,6 +54,8 @@ Text {
     property alias style: root.platformStyle
     property color __textColor;
 
+    property bool platformEnableEditBubble: true
+
     font.family: platformStyle.fontFamily
     font.pixelSize: platformStyle.fontPixelSize
     color: platformStyle.textColor
@@ -69,14 +71,13 @@ Text {
 
             TextEdit {
                 id: selectionTextEdit
-//                width: root.width
-//                height: root.height
 
                 property bool canPaste: false
                 readOnly: true
+                selectByMouse: true
 
                 clip : root.clip
-                color : root.color
+                color : __textColor
                 font.bold : root.font.bold
                 font.capitalization : root.font.capitalization
                 font.family : root.font.family
@@ -103,11 +104,33 @@ Text {
                     __textColor = root.color;
                     root.color = Qt.rgba(0, 0, 0, 0);
                     selectAll();
-                    Popup.open(selectionTextEdit,selectionTextEdit.positionToRectangle(selectionTextEdit.cursorPosition));
+                    if (platformEnableEditBubble) {
+                         Popup.open(selectionTextEdit,selectionTextEdit.positionToRectangle(selectionTextEdit.cursorPosition));
+                    }
                 }
                 Component.onDestruction: {
                     root.color = __textColor;
-                    Popup.close(selectionTextEdit);
+
+                    if (Popup.isOpened(selectionTextEdit)) {
+                        Popup.close(selectionTextEdit);
+                    }
+                }
+
+                onSelectedTextChanged: {
+                    if (Popup.isOpened(selectionTextEdit)) {
+                        Popup.close(selectionTextEdit);
+                    }
+                }
+
+                MouseFilter {
+                    id: mouseSelectionFilter
+                    anchors.fill: parent
+
+                    onFinished: {
+                        if (platformEnableEditBubble) {
+                            Popup.open(selectionTextEdit,selectionTextEdit.positionToRectangle(selectionTextEdit.cursorPosition));
+                        }
+                    }
                 }
             }
         }
@@ -129,7 +152,7 @@ Text {
             anchors.fill: parent
             enabled: textSelectionLoader.sourceComponent != undefined
 
-            onClickedOutside: {
+            onPressedOutside: { // Pressed instead of Clicked to prevent selection overlap
                 textSelectionLoader.sourceComponent = undefined;
             }
         }
