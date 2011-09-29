@@ -25,13 +25,6 @@ symbian {
     MMP_RULES += SMPSAFE
     VERSION = 10.1.0
 
-    stubsis = \
-        "START EXTENSION app-services.buildstubsis" \
-        "OPTION SISNAME qtcomponentsplugin_1_1_stub" \
-        "OPTION SRCDIR ."\
-        "END"
-    BLD_INF_RULES.prj_extensions = stubsis
-
     vendor_info = \
             " " \
             "; Localised Vendor name" \

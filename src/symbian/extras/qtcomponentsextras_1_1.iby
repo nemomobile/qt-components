@@ -11,7 +11,6 @@ REM QT
 file=ABI_DIR\BUILD_DIR\symbianextrasplugin_1_1.dll                                             SHARED_LIB_DIR\symbianextrasplugin_1_1.dll PAGED
 data=ZRESOURCE\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\symbianextrasplugin_1_1.qtplugin            RESOURCE_FILES_DIR\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\symbianextrasplugin_1_1.qtplugin
 data=ZRESOURCE\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\qmldir                                      RESOURCE_FILES_DIR\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\qmldir
-data=ZSYSTEM\install\symbianextrasplugin_1_1_stub.sis                                          System\Install\symbianextrasplugin_1_1_stub.sis
 
 // Symbian extras QML components
 data=ZRESOURCE\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\Constants.js                                RESOURCE_FILES_DIR\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\Constants.js

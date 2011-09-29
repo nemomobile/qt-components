@@ -40,13 +40,6 @@ symbian {
 
     BLD_INF_RULES.prj_exports += "qtcomponentsextras_1_1.iby $$CORE_MW_LAYER_IBY_EXPORT_PATH(qtcomponentsextras_1_1.iby)"
 
-    stubsis = \
-        "START EXTENSION app-services.buildstubsis" \
-        "OPTION SISNAME symbianextrasplugin_1_1_stub" \
-        "OPTION SRCDIR ."\
-        "END"
-    BLD_INF_RULES.prj_extensions = stubsis
-
     vendor_info = \
             " " \
             "; Localised Vendor name" \
