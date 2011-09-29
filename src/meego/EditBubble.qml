@@ -77,6 +77,8 @@ Item {
         property bool canPaste: validInput && (textInput.canPaste && !textInput.readOnly)
         property bool textSelected: validInput && (textInput.selectedText != "")
 
+        property Item bannerInstance: null
+
         z: 1020
 
         onWidthChanged: {
@@ -147,12 +149,13 @@ Item {
                     textInput.paste();
                     // PastingText is set to false and clipboard is cleared if we catch onTextChanged
                     if (rect.pastingText && text == textInput.text) {
-                        var root = Utils.findRootItemNotificationBanner(textInput);
-
-                        // create notification banner
-                        var bannerInstance = notificationBanner.createObject(root);
-                        bannerInstance.show();
-                        bannerInstance.timerEnabled = true;
+                        if (rect.bannerInstance === null) {
+                            // create new notification banner
+                            var root = Utils.findRootItemNotificationBanner(textInput);
+                            rect.bannerInstance = notificationBanner.createObject(root);
+                        }
+                        rect.bannerInstance.show();
+                        rect.bannerInstance.timerEnabled = true;
                         rect.pastingText = false;
                     }
                     rect.changingText = false;
