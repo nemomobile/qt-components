@@ -49,6 +49,7 @@ Window {
     property variant initialPage
     property alias pageStack: stack
     property Style platformStyle: PageStackWindowStyle{}
+    property alias platformToolBarHeight: toolBar.height // read-only
 
     //Deprecated, TODO Remove this on w13
     property alias style: window.platformStyle

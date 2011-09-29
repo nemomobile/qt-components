@@ -220,6 +220,11 @@ Page {
         Item {
             id: specialFieldsTab
             anchors.fill: parent
+            property int toolBarHeight: rootWindow.platformToolBarHeight
+            onToolBarHeightChanged: {
+                anchors.bottomMargin = toolBarHeight
+                ? toolBarHeight: anchors.bottomMargin
+            }
             Flickable {
                 id: specialFieldsContainer
                 anchors.fill: parent

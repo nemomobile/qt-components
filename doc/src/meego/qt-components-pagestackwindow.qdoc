@@ -106,3 +106,12 @@
     \sa PageStackWindowStyle
 */
 
+/*!
+    \qmlproperty real PageStackWindow::platformToolBarHeight
+
+    \l This read-only property provides height of \l ToolBar. Can be used e.g.
+    to set page's bottom margin, when toolbar is not shown, to prevent toolbar
+    from hiding content (e.g. when unfocusing \l TextField in bottom of page).
+*/
+
+
