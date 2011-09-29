@@ -194,7 +194,8 @@ CommonDialog {
         y: root.platformStyle.buttonsTopMargin
 
         onWidthChanged: {
-            if (acceptButton.width + rejectButton.width > width) {
+            if ( (acceptButton.width + rejectButton.width > width) ||
+                 (acceptButton.implicitWidth + rejectButton.implicitWidth > width) ) {
                 acceptButton.width = width / 2
                 rejectButton.width = width / 2
             } else {
