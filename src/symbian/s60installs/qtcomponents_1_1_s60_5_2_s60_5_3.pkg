@@ -4,7 +4,7 @@
 ; in the current directory with specific name.
 
 &EN
-#{"Qt Quick components for Symbian"},(0x2003DF69),1,1,0,TYPE=SA,RU,NR
+#{"Qt Quick components for Symbian"},(0x2003DF69),10,1,1,TYPE=SA,RU,NR
 %{"Nokia"}
 :"Nokia"
 [0x20022E6D], 0, 0, 0, {"S60ProductID"}

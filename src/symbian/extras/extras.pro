@@ -36,7 +36,7 @@ symbian {
     TARGET.CAPABILITY = ALL -TCB
     TARGET.UID3 = 0x2003DF68
     MMP_RULES += SMPSAFE
-    VERSION = 10.1.0
+    VERSION = 10.1.1
 
     BLD_INF_RULES.prj_exports += "qtcomponentsextras_1_1.iby $$CORE_MW_LAYER_IBY_EXPORT_PATH(qtcomponentsextras_1_1.iby)"
 

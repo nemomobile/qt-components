@@ -23,7 +23,7 @@ symbian {
     TARGET.UID3 = 0x2003DF67
     MMP_RULES += EXPORTUNFROZEN
     MMP_RULES += SMPSAFE
-    VERSION = 10.1.0
+    VERSION = 10.1.1
 
     vendor_info = \
             " " \
