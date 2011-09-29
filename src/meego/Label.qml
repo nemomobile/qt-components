@@ -132,6 +132,25 @@ Text {
                         }
                     }
                 }
+                InverseMouseArea {
+                    anchors.fill: parent
+                    enabled: textSelectionLoader.sourceComponent != undefined
+
+                    onPressedOutside: { // Pressed instead of Clicked to prevent selection overlap
+                        if (Popup.isOpened(selectionTextEdit) && ((mouseX > Popup.geometry().left && mouseX < Popup.geometry().right) &&
+                                                       (mouseY > Popup.geometry().top && mouseY < Popup.geometry().bottom))) {
+                            return;
+                        }
+                        textSelectionLoader.sourceComponent = undefined;
+                    }
+                    onClickedOutside: { // Handles Copy click
+                        if (Popup.isOpened(selectionTextEdit) && ((mouseX > Popup.geometry().left && mouseX < Popup.geometry().right) &&
+                                                       (mouseY > Popup.geometry().top && mouseY < Popup.geometry().bottom))) {
+                            textSelectionLoader.sourceComponent = undefined;
+                            return;
+                        }
+                    }
+                }
             }
         }
         Loader {
@@ -142,19 +161,6 @@ Text {
             if (root.platformSelectable == false) return;
 
             textSelectionLoader.sourceComponent = textSelectionComponent;
-        }
-
-        onClicked: {
-            textSelectionLoader.sourceComponent = undefined;
-        }
-
-        InverseMouseArea {
-            anchors.fill: parent
-            enabled: textSelectionLoader.sourceComponent != undefined
-
-            onPressedOutside: { // Pressed instead of Clicked to prevent selection overlap
-                textSelectionLoader.sourceComponent = undefined;
-            }
         }
     }
 }
