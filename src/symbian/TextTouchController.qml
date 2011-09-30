@@ -90,6 +90,7 @@ MouseArea {
             internal.touchPoint = internal.currentTouchPoint;
 
         editor.forceActiveFocus();
+        internal.contextMenuWasVisible = touchTools.contextMenu.visible;
         touchTools.contextMenu.hide();
         internal.handleMoved = false;
 
@@ -157,6 +158,7 @@ MouseArea {
            (internal.longTap && !editor.readOnly) ||
            (internal.pressedHandle != null && internal.longTap))
             touchTools.contextMenu.show();
+
         internal.longTap = false;
     }
 
@@ -201,6 +203,7 @@ MouseArea {
         property bool editorHasSelection: editor.selectionStart != editor.selectionEnd
         property bool handleMoved: false
         property bool longTap: false
+        property bool contextMenuWasVisible: false
         property int tapCounter: 0
         property variant pressedHandle: null
         property variant hitTestPoint: Qt.point(0, 0)
@@ -213,7 +216,11 @@ MouseArea {
                 // even after setting to cursorPosition
                 editor.deselect();
                 editor.cursorPosition = editor.positionAt(internal.touchPoint.x, internal.touchPoint.y);
-                touchTools.contextMenu.hide();
+                if (pressedHandle != null && !contextMenuWasVisible)
+                    touchTools.contextMenu.show();
+                else
+                    touchTools.contextMenu.hide();
+
                 if (!editor.readOnly)
                     editor.openSoftwareInputPanel()
             }
