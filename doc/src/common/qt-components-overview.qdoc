@@ -54,7 +54,7 @@
         \row
             \o
                 \list
-                    \o \l{Building the Qt Quick Components for Symbian}{Build and Install Instructions}
+                    \o \l{Getting started with Qt Quick Components for Symbian}{Getting Started}
                     \o \l{Functional List of Symbian Components}{List of the Symbian Components}
                     \o \l{What's New in the Qt Quick Components for Symbian Release}{What's new in the 1.1 release}
                     \o \l{General Notes for the Symbian Components}{General Notes}

@@ -1,0 +1,153 @@
+/****************************************************************************
+**
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file.
+**
+** Other Usage
+** Alternatively, this file may be used in accordance with the terms
+** and conditions contained in a signed written agreement between you
+** and Nokia.
+**
+**
+**
+**
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+\page qt-components-symbian-getting-started.html
+
+\title Getting started with Qt Quick components for Symbian
+
+    This page provides you basic information for developing applications that utilize
+    Qt Quick components for Symbian. It decribes the development environment and instructs how to
+    create an application and run it on a device. It also provides you useful links for
+    deepening the knowledge about application development.
+    
+\target symbian-components-supported-platforms
+\section1 Development Environment
+
+    Qt Quick components for Symbian have been tested using the following compilers:
+    \list
+    \o Windows 32/64 bits: VC 2008, MinGW32, GCCE (included in the Qt SDK)
+    \o Linux/Mac OS: GCC, \l {external: Building with Remote Compiler}{Remote Compiler}
+    \endlist
+
+    The latest \l {Downloads}{Qt SDK} contains the development tools and Qt 
+    libraries in a single package. However, if you want to install
+    \l {http://qt.nokia.com/downloads/downloads#qt-lib}{Qt libraries}
+    separately, notice that various Qt Quick components for Symbian releases require the 
+    following Qt versions:
+    
+    \list
+    \o Qt Quick components for Symbian 1.1 release requires Qt 4.7.4 or newer
+    \o Qt Quick components for Symbian 1.0 release requires Qt 4.7.3 or newer
+    \endlist
+
+    \note The Symbian toolchain is only available for Windows. Developers using 
+    Linux or Mac OS must use the \l {external: Building with Remote Compiler}{Remote 
+    Compiler} to build Symbian binaries.
+
+    Qt Quick components for Symbian is targeted for Symbian Anna and later Symbian platforms.
+
+\section1 Qt Quick components for Symbian SIS Packages
+
+On the standard Qt SDK installation, the compiled and signed \c SIS files are 
+found in \c {<QtSDK installation directory>\Symbian\sis\Symbian^3\qt-components} 
+directory. These \c SIS files are for development and demonstration purposes. 
+Utilize
+\l {http://www.developer.nokia.com/Community/Wiki/Nokia_Smart_Installer_for_Symbian}
+{Nokia Smart Installer for Symbian} when releasing your application to a wider audience.
+
+\section1 Creating and running a Qt Quick components for Symbian application
+
+The following instructions guide you how to first create an application that 
+utilizes Qt Quick components for Symbian and then run it on a phone. The 
+instructions apply to the Windows environment. Before you start to perform the steps 
+below, make sure that you have the latest \l {Downloads}{Qt SDK} installed on 
+your PC.
+
+\list 1
+\o Create a new \c {Qt Quick Application} project that utilizes \c {Qt Quick components for Symbian}:
+    \list
+    \o Start \c {Qt Creator}.
+    \o Create a new project in \c {Qt Creator}: Select \gui File > \gui {New File or Project...}
+    \o Choose a template: Select \gui {Qt Quick Project} > \gui {Qt Quick 
+    Application} and press \gui {Choose...}
+    \o Enter \c {Introduction and Project Location} data, for example \gui Name: 
+    \c Test and \gui {Create in}: \c C:\ and press \gui {Next}.
+    \o Select \c {Ot Quick Application Type}: Select \gui {Qt Quick components 
+    for Symbian} and press \gui {Next}.
+    \o In \c {Target Setup} dialog, make sure that \gui {Symbian Device} and 
+    \gui {Qt Simulator} are selected and press \gui {Next}.
+    \o In \c {Symbian Specific} dialog press \gui {Next}.
+    \o In \c Summary dialog press \gui {Finish}.
+    \endlist
+\o Connect the target phone to PC with a USB cable. For more information, see
+\l{external: Connecting Symbian Devices}{Connecting Symbian Devices}.
+\o Select \gui Projects > \gui {Symbian Device} > \gui Run > \gui {Create SIS package} and tick 
+\gui {Create Smart Installer package}.
+        \image ../images/symbian/symbian-device-run-settings.png "Symbian device's run settings"
+\o Start the application by pressing the \gui Run button.
+\image {../images/symbian/run-button.png}.
+        If necessary, Smart Installer package downloads and installs the required \c Qt, \c 
+        {Qt Mobility}, and \c {Qt Quick components for Symbian} packages to your 
+        phone.
+\o Accept all installation messages on the phone.
+        
+        The Test application looks like this:
+        \image ../images/symbian/hello-world-app.png "Hello World application"
+\o Close the application and disconnect the USB cable from the phone.
+\endlist
+
+
+
+\section1 Where to Go from Here
+
+Visit the following guides that demonstrate the components usage and view the examples and demo applications.
+\list
+\o \l{Introduction to the Qt Quick components}{Components introduction}
+\o \l{components-cookbook}{Common interface designs}
+\o \l{Creating Scalable Applications}{Scalability Guidelines}
+\o \l{Qt Quick components examples and demos}{Examples and demos}:
+Qt SDK has pre-compiled \c SIS files in the
+\c{<Qt installation directory>\Symbian\sis\Symbian^3\qt-components} directory.
+\o \l{What's New in the Qt Quick components for Symbian Release}{What's new in the 1.1 release}
+\endlist
+
+
+
+\note
+
+In a normal application development the latest \l {Downloads}{Qt SDK} contains pre-compiled binaries and all 
+required development tools for creating applications that 
+utilize Qt Quick components for Symbian. However, the README file in the
+\l {https://qt.gitorious.org/qt-components/qt-components}{Qt component repository}'s
+root directory contains instructions for advanced developers on how to build Qt 
+Quick components for Symbian from source files.
+
+
+\section1 Additional information
+\list
+\o \l {http://doc.qt.nokia.com/sdk-1.1/index.html}{Qt SDK}
+\o \l {http://www.developer.nokia.com/Community/Wiki/Nokia_Smart_Installer_for_Symbian}{Nokia Smart Installer for Symbian}
+\o \l{external: Connecting Symbian Devices}{Connecting Symbian Devices}
+\o \l{external: Building Applications for Multiple Targets}{Building Applications for Multiple Targets}
+\o \l{external: Qt Creator Manual}{Qt Creator manual} 
+\o \l{external: Symbian Deployment in Creator}{Symbian Deployment in Creator}
+\o \l{external: Publishing Applications to Ovi Store}{Publishing Applications to Ovi Store}
+\endlist
+
+*/
+
