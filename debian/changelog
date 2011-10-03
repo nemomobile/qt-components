@@ -1,3 +1,32 @@
+qt-components (1.2~git20111003-1) maverick; urgency=low
+
+  * Fixes: NB#280628 [TASK] Highlighting in Contact menu doesn't give the 
+  * Fixes: NB#260181 Orientation switch transition is incorrect
+  * Fixes: NB#264153 Using magnifier on text area having lots of text breaks the magnifier and causes crash
+  * Fixes: NB#264621 [TASK] Finish splash screen opening for full screen applications
+  * Fixes: NB#266690 OVI; §qtn_ovi_create_new_existing_account_error_title§ 'Email address already in use' is truncated in Malay
+  * Fixes: NB#269564 Custom VKB is displayed when application is in minimized state
+  * Fixes: NB#270526 MenuItem cannot be disabled
+  * Fixes: NB#271148 No "accepted" event in QML TextField
+  * Fixes: NB#271755 Setting the overall theme to 'inverted' is not documented
+  * Fixes: NB#272778 Moving magnifier in Facebook application is unresponsive
+  * Fixes: NB#275481 Label documentation says that the element is private and not to be used by 3rd party
+  * Fixes: NB#275853 Predictive input combined with scrolling can result in spurious extra spaces
+  * Fixes: NB#276866 qt-components extras lacks a .qdocconf file
+  * Fixes: NB#276882 Text quality in cursor bubble is very poor
+  * Fixes: NB#277349 qt-components: indeterminate progress bar has poor performance (~50% CPU @ 300Mhz)
+  * Fixes: NB#278146 SelectionDialog does not show first item if populated using JavaScript
+  * Fixes: NB#281826 TextField/TextArea paste bubble positioning broken
+  * Fixes: NB#282096 Header Bar missing from Page
+  * Fixes: NB#282268 missing meegotouch-menu-inverted-background for Menu
+  * Fixes: NB#282749 Paste bubble in QMLComponentGallery not disappeared when user not taping on it for sometime
+  * Fixes: NB#282758 Meego documentation build instructions incorrect
+  * Fixes: NB#282813 Paste bubble is not in sync with cursor when per-edit word is tapped for second time
+  * Fixes: NB#283176 Cursor not moved when magnifier moved above or below TextArea
+  * Fixes: NB#283390 platformWindow documentation missing
+  
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Mon, 03 Oct 2011 15:25:00 +0300
+
 qt-components (1.2~git20110928-1) maverick; urgency=low
 
   * Fixes: NB#237126 (SLVD-952) Long strings are improperly truncated inside input fields (TextField class)
