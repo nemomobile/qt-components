@@ -39,6 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 1.1
+import "Utils.js" as Utils
 
 Item {
     id: root
@@ -49,8 +50,10 @@ Item {
     
     // Source rect is not as small as it can be as there is drawing problems
     // with small source rect/texture size.
-    property real _realScaleFactor: 1.25
-    property real _sourceRectMultiplier: 2
+    property real __realScaleFactor: 1.25
+    property real __sourceRectMultiplier: 2
+
+    property variant __rootElement
 
     property bool active: false
 
@@ -58,14 +61,6 @@ Item {
     width: 182
     height: 211
     z: Number.MAX_VALUE
-
-    function __rootElement() {
-        var ret = parent
-        while (ret.parent) {
-            ret = ret.parent
-        }
-        return ret
-    }
 
     Component.onCompleted: {
         sourceItem = parent;
@@ -78,13 +73,13 @@ Item {
                             root.yCenter - textureSize.height / 2,
                             textureSize.width,
                             textureSize.height);
-        textureSize: Qt.size(root._sourceRectMultiplier * root.width,
-                             root._sourceRectMultiplier * root.height);
+        textureSize: Qt.size(root.__sourceRectMultiplier * root.width,
+                             root.__sourceRectMultiplier * root.height);
 
         hideSource: false
         smooth: true
 
-        property real scaleFactor: root._sourceRectMultiplier * root._realScaleFactor
+        property real scaleFactor: root.__sourceRectMultiplier * root.__realScaleFactor
     }
 
     Image {

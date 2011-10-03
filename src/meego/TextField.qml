@@ -500,7 +500,7 @@ FocusScope {
                     magnifier.xCenter = mapToItem(magnifier.sourceItem,mappedPosMf.x,0).x;
                     var mappedPos =  mapToItem(magnifier.parent, mappedPosMf.x - magnifier.width / 2,
                                                textInput.y - 120 - UI.MARGIN_XLARGE - (height / 2));
-                    var yAdjustment = -mapFromItem(magnifier.__rootElement(), 0, 0).y < magnifier.height / 2.5 ? magnifier.height / 2.5 + mapFromItem(magnifier.__rootElement(), 0,0).y : 0
+                    var yAdjustment = -mapFromItem(magnifier.__rootElement, 0, 0).y < magnifier.height / 2.5 ? magnifier.height / 2.5 + mapFromItem(magnifier.__rootElement, 0,0).y : 0
                     magnifier.x = mappedPos.x;
                     magnifier.y = mappedPos.y + yAdjustment;
                     magnifier.yCenter = mapToItem(magnifier.sourceItem,0,mappedPosMf.y).y;

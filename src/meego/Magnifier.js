@@ -58,6 +58,9 @@ function init(item)
     if (component)
         popup = component.createObject(root);
 
+    if (popup)
+        popup.__rootElement = root;
+
     return popup != null;
 }
 

@@ -337,8 +337,8 @@ FocusScope {
 
             magnifier.xCenter = mapToItem(magnifier.sourceItem, posX, 0).x;
             magnifier.x = mappedPos.x;
-            if (-root.mapFromItem(magnifier.__rootElement(), 0,0).y - (posY - cursorHeight) < (magnifier.height / 1.5)) {
-                yAdjustment = Math.max(0,(magnifier.height / 1.5) + root.mapFromItem(magnifier.__rootElement(), 0,0).y - (posY - cursorHeight));
+            if (-root.mapFromItem(magnifier.__rootElement, 0,0).y - posY < (magnifier.height / 1.5)) {
+                yAdjustment = Math.max(0,(magnifier.height / 1.5) + root.mapFromItem(magnifier.__rootElement, 0,0).y - posY);
             } else {
                 yAdjustment = 0;
             }
