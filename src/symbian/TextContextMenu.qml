@@ -117,6 +117,20 @@ Item {
         Component.onCompleted: textArea = AppManager.findParent(editor, "errorHighlight")
     }
 
+    BorderImage {
+        id: dropShadow
+
+        property int borderSize: Math.round(sourceSize.width / 2 - 1)
+        property int paddingSize: sourceSize.width - privateStyle.buttonSize
+
+        anchors { top: row.top; horizontalCenter: row.horizontalCenter }
+        width: row.width + paddingSize
+        height: row.height + paddingSize
+        border { left: borderSize; top: borderSize; right: borderSize; bottom: borderSize }
+        source: privateStyle.imagePath("qtg_fr_pushbutton_segmented_shadow", false)
+        scale: row.scale
+    }
+
     ButtonRow {
         id: row
 

@@ -363,6 +363,7 @@
         <file alias="qtg_toolbar_select_all_text_inverse.svg">resources/defaulttheme/graphics/qtg_toolbar_select_all_text_inverse.svg</file>
         <file alias="qtg_toolbar_select_word.svg">resources/defaulttheme/graphics/qtg_toolbar_select_word.svg</file>
         <file alias="qtg_toolbar_select_word_inverse.svg">resources/defaulttheme/graphics/qtg_toolbar_select_word_inverse.svg</file>
+        <file alias="qtg_fr_pushbutton_segmented_shadow.svg">resources/defaulttheme/graphics/qtg_fr_pushbutton_segmented_shadow.svg</file>
     </qresource>
     <qresource prefix="/params">
         <file alias="colors/default.params">resources/colors/default.params</file>
