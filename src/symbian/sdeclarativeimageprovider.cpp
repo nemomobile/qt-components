@@ -58,13 +58,14 @@ SDeclarativeImageProviderPrivate::SDeclarativeImageProviderPrivate(SDeclarativeI
       sharedImageProvider(0)
 
 {
-    // try to load shared image provider
-    typedef QDeclarativeImageProvider* (*CreateImageProviderFuncPtr)();
-    CreateImageProviderFuncPtr createSharedImageProvider =
-            (CreateImageProviderFuncPtr) QLibrary::resolve("qtuisharedimageprovider", "1");
-
-    if (createSharedImageProvider)
-        sharedImageProvider.reset(createSharedImageProvider());
+//    // Currently this is not working as desired
+//    // try to load shared image provider
+//    typedef QDeclarativeImageProvider* (*CreateImageProviderFuncPtr)();
+//    CreateImageProviderFuncPtr createSharedImageProvider =
+//            (CreateImageProviderFuncPtr) QLibrary::resolve("qtuisharedimageprovider", "1");
+//
+//    if (createSharedImageProvider)
+//        sharedImageProvider.reset(createSharedImageProvider());
 }
 
 SDeclarativeImageProvider::SDeclarativeImageProvider() :
