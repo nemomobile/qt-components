@@ -192,6 +192,7 @@ MouseArea {
     Connections {
         target: editor
         onTextChanged: internal.onEditorTextChanged()
+        onCursorPositionChanged: touchTools.contextMenu.calculatePosition()
     }
 
     // Private
@@ -328,9 +329,13 @@ MouseArea {
         if (!touchTools)
             touchToolsLoader.source = "TextTouchTools.qml"
 
-        if (internal.editorHasSelection && event.modifiers & Qt.ShiftModifier
-            && (event.key == Qt.Key_Left || event.key == Qt.Key_Right
-            || event.key == Qt.Key_Up || event.key == Qt.Key_Down))
-            touchTools.contextMenu.show()
+        if (event.key == Qt.Key_Left || event.key == Qt.Key_Right
+            || event.key == Qt.Key_Up || event.key == Qt.Key_Down) {
+            if (event.modifiers & Qt.ShiftModifier)
+                touchTools.contextMenu.show()
+            else if (internal.editorHasSelection)
+                touchTools.contextMenu.hide()
+        }
+
     }
 }

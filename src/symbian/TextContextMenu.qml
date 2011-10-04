@@ -52,13 +52,6 @@ Item {
     function show() {
         parent = AppManager.rootObject();
         internal.show = true;
-        // Button visibility is changed only when the menu is show():n
-        // to avoid appearing/disappearing buttons during animations
-        selectButton.visible = !root.copyEnabled
-        selectAllButton.visible = !root.copyEnabled
-        copyButton.visible = root.copyEnabled
-        cutButton.visible = root.cutEnabled
-        pasteButton.visible = editor.canPaste
         calculatePosition();
     }
 
@@ -153,7 +146,7 @@ Item {
         Button {
             id: selectButton
             iconSource: privateStyle.imagePath("qtg_toolbar_select_word", root.platformInverted)
-            visible: false
+            visible: !root.copyEnabled
             platformInverted: root.platformInverted
             onClicked: {
                 editor.selectWord()
@@ -163,7 +156,7 @@ Item {
         Button {
             id: selectAllButton
             iconSource: privateStyle.imagePath("qtg_toolbar_select_all_text", root.platformInverted)
-            visible: false
+            visible: !root.copyEnabled
             platformInverted: root.platformInverted
             onClicked: {
                 editor.selectAll()
@@ -173,37 +166,31 @@ Item {
         Button {
             id: copyButton
             iconSource: privateStyle.imagePath("qtg_toolbar_copy", root.platformInverted)
-            visible: false
+            visible: root.copyEnabled
             platformInverted: root.platformInverted
             onClicked: {
-                if (root.copyEnabled) {
-                    editor.copy()
-                    root.hide()
-                }
+                editor.copy()
+                root.hide()
             }
         }
         Button {
             id: cutButton
             iconSource: privateStyle.imagePath("qtg_toolbar_cut", root.platformInverted)
-            visible: false
+            visible: root.cutEnabled
             platformInverted: root.platformInverted
             onClicked: {
-                if (root.cutEnabled) {
-                    editor.cut()
-                    root.hide()
-                }
+                editor.cut()
+                root.hide()
             }
         }
         Button {
             id: pasteButton
             iconSource: privateStyle.imagePath("qtg_toolbar_paste", root.platformInverted)
-            visible: false
+            visible: editor.canPaste
             platformInverted: root.platformInverted
             onClicked: {
-                if (editor.canPaste) {
-                    editor.paste()
-                    root.hide()
-                }
+                editor.paste()
+                root.hide()
             }
         }
     }
