@@ -63,7 +63,7 @@ public:
     QPixmap mMask;
     QPixmap mOverlay;
 
-    static QPixmap mSource;
+    static QPixmap *mSource;
     static QString mOverlayFileName;
     static QString mMaskFileName;
     static const QString mMaskKey;
@@ -72,7 +72,7 @@ public:
     SDeclarativeMagnifier *q_ptr;
 };
 
-QPixmap SDeclarativeMagnifierPrivate::mSource = QPixmap();
+QPixmap *SDeclarativeMagnifierPrivate::mSource = 0;
 QString SDeclarativeMagnifierPrivate::mOverlayFileName = QString();
 QString SDeclarativeMagnifierPrivate::mMaskFileName = QString();
 const QString SDeclarativeMagnifierPrivate::mMaskKey = "sdmagnifierprivate_mmask";
@@ -112,11 +112,11 @@ void SDeclarativeMagnifierPrivate::preparePixmaps()
         QPixmapCache::insert(mMaskKey, mMask);
     }
 
-    if (mSource.size() != sourceSize)
+    if (!mSource || mSource->size() != sourceSize)
     {
-        mSource = QPixmap(sourceSize);
-        mSource.fill(Qt::transparent);
-        qDebug() << "Resized Source.";
+        delete mSource;
+        mSource = new QPixmap(sourceSize);
+        mSource->fill(Qt::transparent);
     }
 }
 
@@ -131,7 +131,8 @@ SDeclarativeMagnifier::SDeclarativeMagnifier(QDeclarativeItem *parent) :
 SDeclarativeMagnifier::~SDeclarativeMagnifier()
 {
     Q_D(SDeclarativeMagnifier);
-    d->mSource = QPixmap();
+    delete d->mSource;
+    d->mSource = 0;
 }
 
 void SDeclarativeMagnifier::setSourceRect(const QRectF &rect)
@@ -222,7 +223,7 @@ void SDeclarativeMagnifier::paint(QPainter *painter, const QStyleOptionGraphicsI
         inPaint = true;
         d->preparePixmaps();
 
-        QPainter sourcePainter(&d->mSource);
+        QPainter sourcePainter(d->mSource);
         QRectF targetRect = QRectF(QPointF(0, 0), d->mSourceRect.size());
 
         scene()->render(&sourcePainter, targetRect, d->mSourceRect);
@@ -233,7 +234,7 @@ void SDeclarativeMagnifier::paint(QPainter *painter, const QStyleOptionGraphicsI
         sourcePainter.end();
 
         painter->setRenderHint(QPainter::SmoothPixmapTransform);
-        painter->drawPixmap(0, 0, boundingRect().width(), boundingRect().height(), d->mSource);
+        painter->drawPixmap(0, 0, boundingRect().width(), boundingRect().height(), *d->mSource);
         inPaint = false;
     }
 }
