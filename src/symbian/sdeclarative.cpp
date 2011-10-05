@@ -55,6 +55,12 @@
 #include <AknUtils.h>
 #include <e32std.h>
 #include "stimeobserver.h"
+
+#ifdef HAVE_SYMBIAN_INTERNAL
+#include "ssharedstatusbarsubscriber.h"
+#include <e32property.h>
+#endif // HAVE_SYMBIAN_INTERNAL
+
 #endif // Q_OS_SYMBIAN
 
 #ifdef Q_OS_WIN
@@ -85,7 +91,8 @@ public:
         , mListInteractionMode(SDeclarative::TouchInteraction)
         , foreground(true)
         , rightToLeftDisplayLanguage(false)
-        , graphicsSharing(false) {
+        , graphicsSharing(false)
+        , sharedStatusBar(false){
 #ifdef Q_OS_SYMBIAN
         // Initialize based on the current UI language - it cannot be changed without a reboot.
         switch (User::Language()) {
@@ -99,20 +106,30 @@ public:
             default:
                 break;
         }
+		
+#ifdef HAVE_SYMBIAN_INTERNAL
+        TInt handleIgnore(0);
+        sharedStatusBar = RProperty::Get(KOffScreenSPaneUid, KOffScreenHandle, handleIgnore) == KErrNone;
+#endif // HAVE_SYMBIAN_INTERNAL
 
+        checkSharedStatusBarSupport();
         QT_TRAP_THROWING(timeChangeNotifier.reset(CTimeChangeObserver::NewL(this)));
 #endif // Q_OS_SYMBIAN
     }
 
+    ~SDeclarativePrivate()
+    {
+    }
+
     int allocatedMemory() const;
     void TimeChanged(); // overridden Symbian function
-
     SDeclarative *q_ptr;
     SDeclarative::InteractionMode mListInteractionMode;
     QTimer timer;
     bool foreground;
     bool rightToLeftDisplayLanguage;
     bool graphicsSharing;
+    bool sharedStatusBar;
 #ifdef Q_OS_SYMBIAN
     QScopedPointer<CTimeChangeObserver> timeChangeNotifier;
 #endif
@@ -260,6 +277,12 @@ void SDeclarative::privateSendMouseRelease(QDeclarativeItem *item) const
         QGraphicsSceneMouseEvent releaseEvent(QEvent::GraphicsSceneMouseRelease);
         item->scene()->sendEvent(item, &releaseEvent);
     }
+}
+
+bool SDeclarative::privateSharedStatusBar() const
+{
+    Q_D(const SDeclarative);
+    return d->sharedStatusBar;
 }
 
 bool SDeclarative::eventFilter(QObject *obj, QEvent *event)

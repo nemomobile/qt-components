@@ -24,6 +24,7 @@ SOURCES += \
     sdeclarativemagnifier.cpp \
     sdeclarativemaskedimage.cpp \
     sdeclarativescreen.cpp \
+    sdeclarativesharedstatusbar.cpp \
     sdeclarativestyle.cpp \
     sdeclarativestyleinternal.cpp \
     siconpool.cpp \
@@ -33,21 +34,24 @@ SOURCES += \
     sstyleengine.cpp \
     sstylefactory.cpp \
     indicators/sdeclarativeindicatorcontainer.cpp \
-    indicators/sdeclarativenetworkindicator.cpp \
+    indicators/sdeclarativenetworkindicator.cpp
 
 symbian {
     SOURCES += \
         sdeclarativeinputcontext_p_symbian.cpp \
         sdeclarativetouchinput.cpp \
-        stimeobserver.cpp
+        stimeobserver.cpp \
+        sdeclarativesharedstatusbar_p_symbian.cpp
 } else {
     SOURCES += \
-        sdeclarativeinputcontext_p.cpp
+        sdeclarativeinputcontext_p.cpp \
+        sdeclarativesharedstatusbar_p.cpp
 }
 
 symbian:symbian_internal {
     SOURCES += \
         sbatteryinfo_symbian.cpp \
+        ssharedstatusbarsubscriber.cpp \
         indicators/sdeclarativeincallindicator.cpp \
         indicators/sdeclarativeindicator.cpp \
         indicators/sdeclarativeindicatordata.cpp \
@@ -73,6 +77,7 @@ HEADERS += \
     sdeclarativemaskedimage_p.h \
     sdeclarativescreen.h \
     sdeclarativescreen_p.h \
+    sdeclarativesharedstatusbar.h \
     sdeclarativestyle.h \
     sdeclarativestyleinternal.h \
     siconpool.h \
@@ -89,14 +94,17 @@ symbian: {
     HEADERS += \
         sdeclarativeinputcontext_p_symbian.h \
         sdeclarativetouchinput.h \
-        stimeobserver.h
+        stimeobserver.h \
+        sdeclarativesharedstatusbar_p_symbian.h
 } else {
     HEADERS += \
-        sdeclarativeinputcontext_p.h
+        sdeclarativeinputcontext_p.h \
+        sdeclarativesharedstatusbar_p.h
 }
 
 symbian:symbian_internal {
     HEADERS +=  \
+        ssharedstatusbarsubscriber.h \
         indicators/sdeclarativeincallindicator.h \
         indicators/sdeclarativeindicator.h \
         indicators/sdeclarativeindicatordata.h \
@@ -146,6 +154,8 @@ QML_FILES = \
     SelectionListItem.qml \
     Slider.qml \
     StatusBar.qml \
+    StatusBarDefault.qml \
+    StatusBarShared.qml \
     Switch.qml \
     TabBar.qml \
     TabBarLayout.qml \
@@ -188,6 +198,7 @@ symbian {
         LIBS += -lfbscli // For CFbsBitmap
         LIBS += -lcdlengine
         LIBS += -laknlayout2scalable
+        LIBS += -lbitgdi
     }
 
     BLD_INF_RULES.prj_exports += "qtcomponents_1_1.iby $$CORE_MW_LAYER_IBY_EXPORT_PATH(qtcomponents_1_1.iby)"
@@ -209,4 +220,3 @@ symbian {
 win32: LIBS += -lpsapi # for allocated memory info
 
 include(../../qml.pri)
-

@@ -56,6 +56,7 @@ class SDeclarative : public QObject
     Q_PROPERTY(S60Version s60Version READ s60Version CONSTANT)
     Q_PROPERTY(bool rightToLeftDisplayLanguage READ rightToLeftDisplayLanguage CONSTANT)
     Q_PROPERTY(bool privateGraphicsSharing READ privateGraphicsSharing CONSTANT)
+    Q_PROPERTY(bool privateSharedStatusBar READ privateSharedStatusBar CONSTANT)
 
     Q_ENUMS(InteractionMode S60Version ScrollBarVisibility SourceSize EffectType Feedback)
 
@@ -153,6 +154,7 @@ public:
     Q_INVOKABLE void privateClearComponentCache();
     Q_INVOKABLE bool privateGraphicsSharing() const;
     Q_INVOKABLE void privateSendMouseRelease(QDeclarativeItem *item) const;
+    Q_INVOKABLE bool privateSharedStatusBar() const;
 
 Q_SIGNALS:
     void listInteractionModeChanged();

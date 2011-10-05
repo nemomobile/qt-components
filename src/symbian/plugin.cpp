@@ -54,6 +54,7 @@
 #include "spopupmanager.h"
 #include "smousegrabdisabler.h"
 #include "sdeclarativemagnifier.h"
+#include "sdeclarativesharedstatusbar.h"
 
 #include <QCoreApplication>
 #include <QtDeclarative>
@@ -146,6 +147,7 @@ public:
         qmlRegisterType<SDeclarativeNetworkIndicator>(uri, 1, 1, "NetworkIndicator");
         qmlRegisterType<SMouseGrabDisabler>(uri, 1, 1, "MouseGrabDisabler");
         qmlRegisterType<SDeclarativeMagnifier>(uri, 1, 1, "Magnifier");
+        qmlRegisterType<SDeclarativeSharedStatusBar>(uri, 1, 1, "SharedStatusBar");
         qmlRegisterUncreatableType<SDeclarative>(uri, 1, 1, "Symbian", "");
         qmlRegisterUncreatableType<SDeclarativeScreen>(uri, 1, 1, "Screen", "");
         qmlRegisterUncreatableType<SDialogStatus>(uri, 1, 1, "DialogStatus", "");

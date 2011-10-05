@@ -38,21 +38,47 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.1
-import "." 1.1
+#ifndef CSHAREDSTATUSBARSUBSCRIBER_H
+#define CSHAREDSTATUSBARSUBSCRIBER_H
 
-Item {
-    id: root
+#include <e32base.h>
+#include <e32property.h>
 
-    implicitWidth: screen.width
-    implicitHeight: privateStyle.statusBarHeight
-    property bool platformInverted: false
+class CFbsBitmap;
 
-    Loader {
-        id: loader
-        property bool clickedOpensStatusPanel: symbian.s60Version == Symbian.SV_S60_5_2 ? true : false
-        anchors.fill: parent
-        source: symbian.privateSharedStatusBar ? "StatusBarShared.qml" : "StatusBarDefault.qml"
-    }
-}
+const TUid KOffScreenSPaneUid = { 0x2003DFF5 };
+const TUint32 KOffScreenHandle = 0x00000000;
+const TUint32 KOffScreenUpdater = 0x00000001;
+const TUint32 KOffScreenLayoutSwitch = 0x00000002;
+const TUint32 KOffScreenLayoutInfo = 0x00000003;
 
+enum {
+    ELayoutInfoLandscapeFlag    = 0x01,
+    ELayoutInfoMirroredFlag     = 0x02
+};
+
+class MSharedBitmapSubcriberObserver
+{
+public:
+    virtual void SharedBitmapChanged() = 0;
+};
+
+class CSharedBitmapSubcriber : public CActive
+{
+public:
+    static CSharedBitmapSubcriber* NewL( MSharedBitmapSubcriberObserver& aObserver );
+    ~CSharedBitmapSubcriber();
+    CFbsBitmap* CreateSharedBitmapL( TBool *aIsMirrored = 0 );
+
+private:
+    CSharedBitmapSubcriber( MSharedBitmapSubcriberObserver& aObserver );
+    void ConstructL();
+    void RunL();
+    void DoCancel();
+    void Subscribe();
+private:
+    MSharedBitmapSubcriberObserver& iObserver;
+    RProperty iProperty;
+};
+
+#endif // CSHAREDSTATUSBARSUBSCRIBER_H

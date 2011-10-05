@@ -37,22 +37,46 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
 import QtQuick 1.1
 import "." 1.1
 
-Item {
-    id: root
+SharedStatusBar {
+    id: sharedStatusBar
 
-    implicitWidth: screen.width
-    implicitHeight: privateStyle.statusBarHeight
-    property bool platformInverted: false
+    property bool foregroundOverride: false
+    anchors.fill: parent
 
-    Loader {
-        id: loader
-        property bool clickedOpensStatusPanel: symbian.s60Version == Symbian.SV_S60_5_2 ? true : false
+    Connections {
+        target: screen
+        onCurrentOrientationChanged: sharedStatusBar.setOrientation(screen.currentOrientation)
+    }
+
+    Connections {
+        target: symbian
+        onForegroundChanged: {
+            sharedStatusBar.setForeground(foregroundOverride ? true : symbian.foreground)
+            foregroundOverride = false
+        }
+    }
+
+    MouseArea {
+        id: mouseArea
         anchors.fill: parent
-        source: symbian.privateSharedStatusBar ? "StatusBarShared.qml" : "StatusBarDefault.qml"
+
+        onClicked: {
+            if (loader.clickedOpensStatusPanel) {
+                privateStyle.play(Symbian.PopUp)
+                platformPopupManager.privateShowIndicatorPopup()
+            }
+        }
+        onPressed: {
+            if (!loader.clickedOpensStatusPanel) {
+                privateStyle.play(Symbian.PopUp)
+                foregroundOverride = true
+                platformPopupManager.privateShowIndicatorPopup()
+                // reset MouseArea state since status panel window eats the release event
+                symbian.privateSendMouseRelease(mouseArea)
+            }
+        }
     }
 }
-

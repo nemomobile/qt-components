@@ -38,21 +38,37 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.1
-import "." 1.1
+#ifndef SDECLARATIVESHAREDSTATUSBAR_H
+#define SDECLARATIVESHAREDSTATUSBAR_H
 
-Item {
-    id: root
+#include <QDeclarativeItem>
+#include <QScopedPointer>
 
-    implicitWidth: screen.width
-    implicitHeight: privateStyle.statusBarHeight
-    property bool platformInverted: false
+class SDeclarativeSharedStatusBarPrivate;
 
-    Loader {
-        id: loader
-        property bool clickedOpensStatusPanel: symbian.s60Version == Symbian.SV_S60_5_2 ? true : false
-        anchors.fill: parent
-        source: symbian.privateSharedStatusBar ? "StatusBarShared.qml" : "StatusBarDefault.qml"
-    }
-}
+class SDeclarativeSharedStatusBar : public QDeclarativeItem
+{
+    Q_OBJECT
 
+public:
+    SDeclarativeSharedStatusBar(QDeclarativeItem *parent = 0);
+    ~SDeclarativeSharedStatusBar();
+
+    Q_INVOKABLE void setOrientation(int orientation);
+    Q_INVOKABLE void setForeground(bool foreground);
+
+private:
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+    void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
+
+protected:
+    QScopedPointer<SDeclarativeSharedStatusBarPrivate> d_ptr;
+
+private:
+    Q_DISABLE_COPY(SDeclarativeSharedStatusBar)
+    Q_DECLARE_PRIVATE(SDeclarativeSharedStatusBar)
+};
+
+QML_DECLARE_TYPE(SDeclarativeSharedStatusBar)
+
+#endif // SDECLARATIVESHAREDSTATUSBAR_H

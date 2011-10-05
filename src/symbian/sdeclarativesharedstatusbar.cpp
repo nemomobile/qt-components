@@ -38,21 +38,48 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.1
-import "." 1.1
+#include "sdeclarativesharedstatusbar.h"
 
-Item {
-    id: root
+#if defined(Q_OS_SYMBIAN)
+#include "sdeclarativesharedstatusbar_p_symbian.h"
+#else // defined(Q_OS_SYMBIAN)
+#include "sdeclarativesharedstatusbar_p.h"
+#endif // defined(Q_OS_SYMBIAN)
 
-    implicitWidth: screen.width
-    implicitHeight: privateStyle.statusBarHeight
-    property bool platformInverted: false
-
-    Loader {
-        id: loader
-        property bool clickedOpensStatusPanel: symbian.s60Version == Symbian.SV_S60_5_2 ? true : false
-        anchors.fill: parent
-        source: symbian.privateSharedStatusBar ? "StatusBarShared.qml" : "StatusBarDefault.qml"
-    }
+SDeclarativeSharedStatusBar::SDeclarativeSharedStatusBar(QDeclarativeItem *parent)
+: QDeclarativeItem(parent)
+,d_ptr(new SDeclarativeSharedStatusBarPrivate(this))
+{
+    setFlag(QGraphicsItem::ItemHasNoContents, false);
 }
 
+SDeclarativeSharedStatusBar::~SDeclarativeSharedStatusBar()
+{
+}
+
+void SDeclarativeSharedStatusBar::setOrientation(int orientation)
+{
+    Q_D(SDeclarativeSharedStatusBar);
+    d->setOrientation(orientation);
+}
+
+void SDeclarativeSharedStatusBar::setForeground(bool foreground)
+{
+    Q_D(SDeclarativeSharedStatusBar);
+    d->setForeground(foreground);
+}
+
+void SDeclarativeSharedStatusBar::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
+{
+    Q_D(SDeclarativeSharedStatusBar);
+    d->geometryChanged(newGeometry, oldGeometry);
+}
+
+void SDeclarativeSharedStatusBar::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget )
+{
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+
+    Q_D(SDeclarativeSharedStatusBar);
+    d->paint(painter);
+}

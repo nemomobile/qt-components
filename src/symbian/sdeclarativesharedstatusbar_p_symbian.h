@@ -37,22 +37,38 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
+#ifndef SDECLARATIVESHAREDSTATUSBAR_P_SYMBIAN_H
+#define SDECLARATIVESHAREDSTATUSBAR_P_SYMBIAN_H
 
-import QtQuick 1.1
-import "." 1.1
+#include "sdeclarativesharedstatusbar.h"
+#include "ssharedstatusbarsubscriber.h"
 
-Item {
-    id: root
+class SDeclarativeSharedStatusBarPrivate : public MSharedBitmapSubcriberObserver
+{
+    Q_DECLARE_PUBLIC(SDeclarativeSharedStatusBar)
 
-    implicitWidth: screen.width
-    implicitHeight: privateStyle.statusBarHeight
-    property bool platformInverted: false
+public:
+    SDeclarativeSharedStatusBarPrivate(SDeclarativeSharedStatusBar *qq);
+    ~SDeclarativeSharedStatusBarPrivate();
+    SDeclarativeSharedStatusBar *q_ptr;
 
-    Loader {
-        id: loader
-        property bool clickedOpensStatusPanel: symbian.s60Version == Symbian.SV_S60_5_2 ? true : false
-        anchors.fill: parent
-        source: symbian.privateSharedStatusBar ? "StatusBarShared.qml" : "StatusBarDefault.qml"
-    }
-}
+    void setOrientation(int orientation);
+    void setForeground(bool foreground);
+    void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
+    void paint(QPainter *painter);
 
+    void reset();
+    QPixmap &symbianForegroundPixmapL();
+    QPixmap &symbianBackgroundPixmapL();
+    void SharedBitmapChanged(); // from Symbian observer
+
+    // useExtendedApi: getters for masked bitmap & layout info. setters for layout change & redraw reqest
+    bool useExtendedApi;
+
+    QPixmap foregroundPixmap;
+    QPixmap backgroundPixmap;
+    bool mirroredBitmap;
+    CSharedBitmapSubcriber *subscriber;
+};
+
+#endif // SDECLARATIVESHAREDSTATUSBAR_P_SYMBIAN_H

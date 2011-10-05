@@ -37,22 +37,24 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
+#ifndef SDECLARATIVESHAREDSTATUSBAR_P_H
+#define SDECLARATIVESHAREDSTATUSBAR_P_H
 
-import QtQuick 1.1
-import "." 1.1
+#include "sdeclarativesharedstatusbar.h"
 
-Item {
-    id: root
+class SDeclarativeSharedStatusBarPrivate
+{
+    Q_DECLARE_PUBLIC(SDeclarativeSharedStatusBar)
 
-    implicitWidth: screen.width
-    implicitHeight: privateStyle.statusBarHeight
-    property bool platformInverted: false
+public:
+    SDeclarativeSharedStatusBarPrivate(SDeclarativeSharedStatusBar *qq);
+    ~SDeclarativeSharedStatusBarPrivate();
+    SDeclarativeSharedStatusBar *q_ptr;
 
-    Loader {
-        id: loader
-        property bool clickedOpensStatusPanel: symbian.s60Version == Symbian.SV_S60_5_2 ? true : false
-        anchors.fill: parent
-        source: symbian.privateSharedStatusBar ? "StatusBarShared.qml" : "StatusBarDefault.qml"
-    }
-}
+    void setOrientation(int orientation);
+    void setForeground(bool foreground);
+    void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
+    void paint(QPainter *painter);
+};
 
+#endif // SDECLARATIVESHAREDSTATUSBAR_P_H
