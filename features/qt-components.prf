@@ -1,4 +1,4 @@
-!load(qtcomponents_1_1_config.prf) {
+!load(qt-components-config.prf) {
     error(Please run configure.)
 }
 

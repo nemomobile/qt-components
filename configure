@@ -79,7 +79,7 @@ QMAKE_CACHE=$BUILD_TREE/.qmake.cache
 QMAKEFEATURES=$SOURCE_TREE/features
 [ ! -d "$BUILD_TREE/features" ] && mkdir "$BUILD_TREE/features"
 
-CONFIG_PRF="$BUILD_TREE/features/qtcomponents_1_1_config.prf"
+CONFIG_PRF="$BUILD_TREE/features/qt-components-config.prf"
 [ -f $CONFIG_PRF ] && rm -f $CONFIG_PRF
 
 # Test for pkg-config enabled dependencies
