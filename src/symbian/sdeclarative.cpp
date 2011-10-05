@@ -106,13 +106,10 @@ public:
             default:
                 break;
         }
-		
 #ifdef HAVE_SYMBIAN_INTERNAL
         TInt handleIgnore(0);
         sharedStatusBar = RProperty::Get(KOffScreenSPaneUid, KOffScreenHandle, handleIgnore) == KErrNone;
 #endif // HAVE_SYMBIAN_INTERNAL
-
-        checkSharedStatusBarSupport();
         QT_TRAP_THROWING(timeChangeNotifier.reset(CTimeChangeObserver::NewL(this)));
 #endif // Q_OS_SYMBIAN
     }
