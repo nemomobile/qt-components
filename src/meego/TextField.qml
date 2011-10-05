@@ -332,11 +332,14 @@ FocusScope {
                                       root.__preeditDisabledMask                         
                 var injectionSucceeded = false;
                 var newCursorPosition = textInput.positionAt(mapToItem(textInput, mouseX, mouseY).x,TextInput.CursorOnCharacter);
-                if (!preeditDisabled
-                        && !TextAreaHelper.atSpace(newCursorPosition)
-                        && newCursorPosition != textInput.text.length
-                        && !(newCursorPosition == 0 || TextAreaHelper.atSpace(newCursorPosition - 1))) {
-                    injectionSucceeded = TextAreaHelper.injectWordToPreedit(newCursorPosition);
+                if (!preeditDisabled) {
+                    var beforeText = textInput.text
+                    if (!TextAreaHelper.atSpace(newCursorPosition, beforeText)
+                        && newCursorPosition != beforeText.length
+                        && !(newCursorPosition == 0 || TextAreaHelper.atSpace(newCursorPosition - 1, beforeText))) {
+
+                        injectionSucceeded = TextAreaHelper.injectWordToPreedit(newCursorPosition, beforeText);
+                    }
                 }
                 if (!injectionSucceeded) {
                     textInput.cursorPosition=newCursorPosition;
@@ -526,9 +529,9 @@ FocusScope {
                     textInput.cursorPosition = newCursorPosition;
                     var injectionSucceeded = false;
 
-                    if (!TextAreaHelper.atSpace(newCursorPosition)                             
-                             && newCursorPosition != textInput.text.length) {
-                        injectionSucceeded = TextAreaHelper.injectWordToPreedit(newCursorPosition);
+                    if (!TextAreaHelper.atSpace(newCursorPosition, beforeText)
+                             && newCursorPosition != beforeText.length) {
+                        injectionSucceeded = TextAreaHelper.injectWordToPreedit(newCursorPosition, beforeText);
                     }
                     if (injectionSucceeded) {
                         mouse.filtered=true;

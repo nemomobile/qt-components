@@ -294,11 +294,14 @@ FocusScope {
                 var injectionSucceeded = false;
                 var mappedMousePos = mapToItem(textEdit, mouseX, mouseY);
                 var newCursorPosition = textEdit.positionAt(mappedMousePos.x, mappedMousePos.y, TextInput.CursorOnCharacter);
-                if (!preeditDisabled
-                        && !TextAreaHelper.atSpace(newCursorPosition)
-                        && newCursorPosition != textEdit.text.length
-                        && !(newCursorPosition == 0 || TextAreaHelper.atSpace(newCursorPosition - 1))) {
-                    injectionSucceeded = TextAreaHelper.injectWordToPreedit(newCursorPosition);
+                if (!preeditDisabled) {
+                    var beforeText = textEdit.text;
+                    if (!TextAreaHelper.atSpace(newCursorPosition, beforeText)
+                        && newCursorPosition != beforeText.length
+                        && !(newCursorPosition == 0 || TextAreaHelper.atSpace(newCursorPosition - 1, beforeText))) {
+
+                        injectionSucceeded = TextAreaHelper.injectWordToPreedit(newCursorPosition, beforeText);
+                    }
                 }
                 if (!injectionSucceeded) {
                     textEdit.cursorPosition=newCursorPosition;
@@ -494,9 +497,9 @@ FocusScope {
                     textEdit.cursorPosition = newCursorPosition;
                     var injectionSucceeded = false;
 
-                    if (!TextAreaHelper.atSpace(newCursorPosition)                             
-                             && newCursorPosition != textEdit.text.length) {
-                        injectionSucceeded = TextAreaHelper.injectWordToPreedit(newCursorPosition);
+                    if (!TextAreaHelper.atSpace(newCursorPosition, beforeText)
+                             && newCursorPosition != beforeText.length) {
+                        injectionSucceeded = TextAreaHelper.injectWordToPreedit(newCursorPosition, beforeText);
                     }
                     if (injectionSucceeded) {
                         mouse.filtered=true;

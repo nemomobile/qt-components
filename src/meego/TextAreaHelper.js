@@ -177,12 +177,12 @@ function repositionFlickable(animation) {
     }
 }
 
-function injectWordToPreedit(newCursorPosition) {
-    var preeditStart = previousWordStart(newCursorPosition);
-    var preeditEnd = nextWordEnd(newCursorPosition);
+function injectWordToPreedit(newCursorPosition, text) {
+    var preeditStart = previousWordStart(newCursorPosition, text);
+    var preeditEnd = nextWordEnd(newCursorPosition, text);
 
     // copy word to preedit text
-    var preeditText = root.text.substring(preeditStart,preeditEnd);
+    var preeditText = text.substring(preeditStart,preeditEnd);
 
     // inject preedit
     cursorPosition = preeditStart;
@@ -192,47 +192,47 @@ function injectWordToPreedit(newCursorPosition) {
     return inputContext.setPreeditText(preeditText, eventCursorPosition, 0, preeditText.length);
 }
 
-function previousWordStart(pos) {
+function previousWordStart(pos, text) {
     var ret = pos;
 
-    if (ret && atWordSeparator(ret - 1)) {
+    if (ret && atWordSeparator(ret - 1, text)) {
         ret--;
-        while (ret && atWordSeparator(ret - 1))
+        while (ret && atWordSeparator(ret - 1, text))
             ret--;
     } else {
-        while (ret && !atSpace(ret - 1) && !atWordSeparator(ret - 1))
+        while (ret && !atSpace(ret - 1, text) && !atWordSeparator(ret - 1, text))
             ret--;
     }
 
     return ret;
 }
 
-function nextWordEnd(pos) {
+function nextWordEnd(pos, text) {
     var ret = pos;
-    var len = root.text.length;
+    var len = text.length;
 
-    if (ret < len && atWordSeparator(ret)) {
+    if (ret < len && atWordSeparator(ret, text)) {
         ret++;
-        while (ret < len && atWordSeparator(ret))
+        while (ret < len && atWordSeparator(ret, text))
             ret++;
     } else {
-        while (ret < len && !atSpace(ret) && !atWordSeparator(ret))
+        while (ret < len && !atSpace(ret, text) && !atWordSeparator(ret, text))
             ret++;
     }
 
     return ret;
 }
 
-function atSpace(pos) {
-    var c = root.text.charAt(pos);
+function atSpace(pos, text) {
+    var c = (text !== undefined) ? text.charAt(pos) : root.text.charAt(pos);
     return c == ' '
            || c == '\t'
            || c == '\n'
            ;
 }
 
-function atWordSeparator(pos) {
-    switch (root.text.charAt(pos)) {
+function atWordSeparator(pos, text) {
+    switch (text.charAt(pos)) {
     case '.':
     case ',':
     case '?':
