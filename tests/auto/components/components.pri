@@ -1,7 +1,7 @@
 ## this is a hack to make qtLibraryTarget return the correct value
 TEMPLATE += fakelib
 INCLUDEPATH += $$Q_COMPONENTS_SOURCE_TREE/src/components
-LIBS += -L$$Q_COMPONENTS_BUILD_TREE/imports/Qt/labs/components.1.1 -l$$qtLibraryTarget(qtcomponentsplugin_1_1)
+LIBS += -L$$Q_COMPONENTS_BUILD_TREE/imports/Qt/labs/components.1.1 -l$$qtLibraryTarget(qtcomponentsplugin_1_1_2)
 TEMPLATE -= fakelib
 
 # ### Don't know how to replicate this feature on non-Unix systems, the

@@ -12,16 +12,16 @@ REM QT
 data=ZSYSTEM\install\qtcomponents_1_1_stub.sis                                            System\Install\qtcomponents_1_1_stub.sis
 
 // Qt components plugin
-file=ABI_DIR\BUILD_DIR\qtcomponentsplugin_1_1.dll                                         SHARED_LIB_DIR\qtcomponentsplugin_1_1.dll
-data=ZRESOURCE\qt\imports\COMPONENTS_PLUGIN_DIR\qtcomponentsplugin_1_1.qtplugin           RESOURCE_FILES_DIR\qt\imports\COMPONENTS_PLUGIN_DIR\qtcomponentsplugin_1_1.qtplugin
+file=ABI_DIR\BUILD_DIR\qtcomponentsplugin_1_1_2.dll                                       SHARED_LIB_DIR\qtcomponentsplugin_1_1_2.dll
+data=ZRESOURCE\qt\imports\COMPONENTS_PLUGIN_DIR\qtcomponentsplugin_1_1_2.qtplugin         RESOURCE_FILES_DIR\qt\imports\COMPONENTS_PLUGIN_DIR\qtcomponentsplugin_1_1_2.qtplugin
 data=ZRESOURCE\qt\imports\COMPONENTS_PLUGIN_DIR\qmldir                                    RESOURCE_FILES_DIR\qt\imports\COMPONENTS_PLUGIN_DIR\qmldir
 data=ZRESOURCE\qt\imports\COMPONENTS_PLUGIN_DIR\Checkable.qml                             RESOURCE_FILES_DIR\qt\imports\COMPONENTS_PLUGIN_DIR\Checkable.qml
 data=ZRESOURCE\qt\imports\COMPONENTS_PLUGIN_DIR\CheckableGroup.qml                        RESOURCE_FILES_DIR\qt\imports\COMPONENTS_PLUGIN_DIR\CheckableGroup.qml
 data=ZRESOURCE\qt\imports\COMPONENTS_PLUGIN_DIR\CheckableGroup.js                         RESOURCE_FILES_DIR\qt\imports\COMPONENTS_PLUGIN_DIR\CheckableGroup.js
 
 // Symbian plugin
-file=ABI_DIR\BUILD_DIR\symbianplugin_1_1.dll                                              SHARED_LIB_DIR\symbianplugin_1_1.dll PAGED
-data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\symbianplugin_1_1.qtplugin                   RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\symbianplugin_1_1.qtplugin
+file=ABI_DIR\BUILD_DIR\symbianplugin_1_1_2.dll                                            SHARED_LIB_DIR\symbianplugin_1_1_2.dll PAGED
+data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\symbianplugin_1_1_2.qtplugin                 RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\symbianplugin_1_1_2.qtplugin
 data=ZRESOURCE\qt\imports\SYMBIAN_PLUGIN_DIR\qmldir                                       RESOURCE_FILES_DIR\qt\imports\SYMBIAN_PLUGIN_DIR\qmldir
 
 // Symbian QML components

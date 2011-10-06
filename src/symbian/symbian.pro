@@ -2,7 +2,7 @@ include (../../qt-components.pri)
 
 TARGETPATH = com/nokia/symbian.1.1
 TEMPLATE = lib
-TARGET = $$qtLibraryTarget(symbianplugin_1_1)
+TARGET = $$qtLibraryTarget(symbianplugin_1_1_2)
 INCLUDEPATH += $$PWD $$PWD/indicators
 
 win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release build_all

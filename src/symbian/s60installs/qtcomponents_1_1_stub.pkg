@@ -4,8 +4,8 @@
 :"Nokia"
 
 ; DEPLOYMENT 1.1 symbianplugin, note that this includes the native import
-"" - "z:\sys\bin\symbianplugin_1_1.dll"
-"" - "z:\resource\qt\imports\com\nokia\symbian.1.1\symbianplugin_1_1.qtplugin"
+"" - "z:\sys\bin\symbianplugin_1_1_2.dll"
+"" - "z:\resource\qt\imports\com\nokia\symbian.1.1\symbianplugin_1_1_2.qtplugin"
 "" - "z:\resource\qt\imports\com\nokia\symbian.1.1\qmldir"
 "" - "z:\resource\qt\imports\com\nokia\symbian.1.1\ApplicationWindow.qml"
 "" - "z:\resource\qt\imports\com\nokia\symbian.1.1\AppManager.js"
@@ -64,7 +64,7 @@
 "" - "z:\resource\qt\imports\com\nokia\symbian.1.1\Window.qml"
 
 ; NATIVE
-"" - "z:\resource\qt\imports\Qt\labs\components\native\symbianplugin_1_1.qtplugin"
+"" - "z:\resource\qt\imports\Qt\labs\components\native\symbianplugin_1_1_2.qtplugin"
 "" - "z:\resource\qt\imports\Qt\labs\components\native\ApplicationWindow.qml"
 "" - "z:\resource\qt\imports\Qt\labs\components\native\AppManager.js"
 "" - "z:\resource\qt\imports\Qt\labs\components\native\Button.qml"
@@ -123,16 +123,16 @@
 "" - "z:\resource\qt\imports\Qt\labs\components\native\qmldir"
 
 ; DEPLOYMENT 1.1 qtcomponentsplugin
-"" - "z:\sys\bin\qtcomponentsplugin_1_1.dll"
-"" - "z:\resource\qt\imports\Qt\labs\components.1.1\qtcomponentsplugin_1_1.qtplugin"
+"" - "z:\sys\bin\qtcomponentsplugin_1_1_2.dll"
+"" - "z:\resource\qt\imports\Qt\labs\components.1.1\qtcomponentsplugin_1_1_2.qtplugin"
 "" - "z:\resource\qt\imports\Qt\labs\components.1.1\qmldir"
 "" - "z:\resource\qt\imports\Qt\labs\components.1.1\Checkable.qml"
 "" - "z:\resource\qt\imports\Qt\labs\components.1.1\CheckableGroup.qml"
 "" - "z:\resource\qt\imports\Qt\labs\components.1.1\CheckableGroup.js"
 
 ; DEPLOYMENT 1.1 symbianextrasplugin
-"" - "z:\sys\bin\symbianextrasplugin_1_1.dll"
-"" - "z:\resource\qt\imports\com\nokia\extras.1.1\symbianextrasplugin_1_1.qtplugin"
+"" - "z:\sys\bin\symbianextrasplugin_1_1_2.dll"
+"" - "z:\resource\qt\imports\com\nokia\extras.1.1\symbianextrasplugin_1_1_2.qtplugin"
 "" - "z:\resource\qt\imports\com\nokia\extras.1.1\qmldir"
 "" - "z:\resource\qt\imports\com\nokia\extras.1.1\Constants.js"
 "" - "z:\resource\qt\imports\com\nokia\extras.1.1\DatePickerDialog.qml"

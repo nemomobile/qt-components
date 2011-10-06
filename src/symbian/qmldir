@@ -1,4 +1,4 @@
-plugin symbianplugin_1_1
+plugin symbianplugin_1_1_2
 ApplicationWindow 1.1 ApplicationWindow.qml
 BusyIndicator 1.1 BusyIndicator.qml
 Button 1.1 Button.qml
