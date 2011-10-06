@@ -86,8 +86,6 @@ void SDeclarativeMagnifierPrivate::init()
 
 void SDeclarativeMagnifierPrivate::preparePixmaps()
 {
-    Q_Q(SDeclarativeMagnifier);
-
     QSize sourceSize = mSourceRect.size().toSize();
 
     if (mOverlay.size() != sourceSize
