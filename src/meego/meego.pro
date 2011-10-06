@@ -188,6 +188,9 @@ QML_FILES = \
         style/SectionScrollerStyle.qml \
         SectionScroller.js \
         SectionScrollerLabel.qml \
+        SelectionHandles.qml \
+        SelectionHandles.js \
+        style/SelectionHandlesStyle.qml \
         StatusBar.qml \
         TextArea.qml \
         style/TextAreaStyle.qml \
@@ -228,3 +231,5 @@ QML_FILES = \
         Magnifier.js
 
 include(../../qml.pri)
+
+OTHER_FILES +=

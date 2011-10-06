@@ -112,6 +112,8 @@ ScrollDecorator 1.1 ScrollDecorator.qml
 ScrollDecoratorStyle 1.1 ScrollDecoratorStyle.qml
 SectionScroller 1.1 SectionScroller.qml
 SectionScrollerStyle 1.1 SectionScrollerStyle.qml
+SelectionHandles 1.1 SelectionHandles.qml
+SelectionHandlesStyle 1.1 SelectionHandlesStyle.qml
 Sheet 1.1 Sheet.qml
 SheetStyle 1.1 SheetStyle.qml
 SheetButton 1.1 SheetButton.qml

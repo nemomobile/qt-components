@@ -47,6 +47,7 @@ Page {
     tools: commonTools
 
     Flickable {
+        id: labelFlick
         contentWidth: childrenRect.width
         contentHeight: col.height
         flickableDirection: Flickable.VerticalFlick
@@ -86,6 +87,7 @@ Page {
 
 
             Label { text: "Unselectable plain label" }
+            Label { text: "The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. "; font.pixelSize: 30; wrapMode: Text.Wrap; width: 850; platformSelectable: true; }
         }
     }
 }
