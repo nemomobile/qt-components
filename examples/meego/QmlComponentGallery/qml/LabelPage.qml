@@ -48,7 +48,7 @@ Page {
 
     Flickable {
         id: labelFlick
-        contentWidth: childrenRect.width
+        contentWidth: col.width
         contentHeight: col.height
         flickableDirection: Flickable.VerticalFlick
 
@@ -82,12 +82,18 @@ Page {
             }
 
             Label { text: "Red label"; color: "red"; platformSelectable: true; }
-            Label { text: "Wrapping label with a lot of text"; wrapMode: Text.Wrap; width: 200; platformSelectable: true; }
             Label { text: "Elided labels are too long"; font.italic: true; width: 200; elide: Text.ElideRight; platformSelectable: true; }
+            Label { text: "Unselectable plain label <br>" }
+            Label {
+                text: "<b>Wrapping label with a lot of text:</b> The quick brown fox jumps over the lazy dog. \
+                The quick brown fox jumps over the lazy dog. <br>The quick brown fox jumps over the lazy dog. \
+                The quick brown fox jumps over the lazy dog."
+                font.pixelSize: 30
+                wrapMode: Text.Wrap
+                width: labelsPage.width
+                platformSelectable: true            
+            }
 
-
-            Label { text: "Unselectable plain label" }
-            Label { text: "The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. "; font.pixelSize: 30; wrapMode: Text.Wrap; width: 850; platformSelectable: true; }
         }
     }
 }

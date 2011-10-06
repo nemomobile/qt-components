@@ -32,7 +32,7 @@ Item {
     onSelectionEndRectChanged: {
           if (!textInput) return;
           selectionEndPoint = textInput.mapToItem( Utils.findRootItem(textInput), selectionEndRect.x, selectionEndRect.y )
-          rightSelectionImage.state = (selectionEndPoint.x > screen.displayWidth - rightSelectionImage.width) ? "mirrored" : "normal";
+          rightSelectionImage.state = (selectionEndPoint.x > screen.platformWidth - rightSelectionImage.width) ? "mirrored" : "normal";
     }
 
     Item {
@@ -46,6 +46,7 @@ Item {
         Image { id: leftSelectionImage
               property variant dragStart: Qt.point(0,0); // required for selection across multiple lines
               property int offset: 0;
+              property int animationDuration: leftSelectionMouseArea.pressed ? 350 : 0
               x: selectionStartPoint.x + offset;
               y: selectionStartPoint.y + contents.selectionStartRect.height - 4 - rect.fontBaseLine; // vertical offset: 4 pixels
               source: ( textInput && leftSelectionMouseArea.pressed ) ? platformStyle.pressedLeftSelectionHandle : platformStyle.leftSelectionHandle;
@@ -59,7 +60,7 @@ Item {
                       if (Popup.isOpened(textInput)) {
                           Popup.close(textInput);
                       }
-                      leftSelectionImage.dragStart = mapToItem( textInput, mouse.x, mouse.y );
+                      leftSelectionImage.dragStart = Qt.point( mouse.x, mouse.y );
                   }
                   onPositionChanged: {
                       var pixelpos = mapToItem( textInput, mouse.x, mouse.y );
@@ -105,7 +106,7 @@ Item {
                       }
                       SequentialAnimation {
                           NumberAnimation {target: leftHandleRotation; property: "angle";
-                                        from: 180.0; to: 0.0; duration: 350}
+                                        from: 180.0; to: 0.0; duration: leftSelectionImage.animationDuration}
                       }
                   },
                   Transition {
@@ -117,7 +118,7 @@ Item {
                               }
                           }
                           NumberAnimation {target: leftHandleRotation; property: "angle";
-                                        from: 180.0; to: 0.0; duration: 350}
+                                        from: 180.0; to: 0.0; duration: leftSelectionImage.animationDuration}
                       }
                   }
               ]
@@ -126,6 +127,7 @@ Item {
         Image { id: rightSelectionImage
               property variant dragStart: Qt.point(0,0); // required for selection across multiple lines
               property int offset: 0;
+              property int animationDuration: rightSelectionMouseArea.pressed ? 350 : 0
               x: selectionEndPoint.x + offset;
               y: selectionEndPoint.y + contents.selectionEndRect.height - 4 - rect.fontBaseLine; // vertical offset: 4 pixels
               source: ( textInput && rightSelectionMouseArea.pressed ) ? platformStyle.pressedRightSelectionHandle : platformStyle.rightSelectionHandle;
@@ -139,7 +141,7 @@ Item {
                       if (Popup.isOpened(textInput)) {
                           Popup.close(textInput);
                       }
-                      rightSelectionImage.dragStart = mapToItem( textInput, mouse.x, mouse.y );
+                      rightSelectionImage.dragStart = Qt.point( mouse.x, mouse.y );
                   }
                   onPositionChanged: {
                       var pixelpos = mapToItem( textInput, mouse.x, mouse.y );
@@ -185,7 +187,7 @@ Item {
                      }
                      SequentialAnimation {
                          NumberAnimation {target: rightHandleRotation; property: "angle";
-                                       from: 180.0; to: 0.0; duration: 350}
+                                       from: 180.0; to: 0.0; duration: rightSelectionImage.animationDuration}
                      }
                  },
                  Transition {
@@ -197,7 +199,7 @@ Item {
                              }
                          }
                          NumberAnimation {target: rightHandleRotation; property: "angle";
-                                       from: 180.0; to: 0.0; duration: 350}
+                                       from: 180.0; to: 0.0; duration: rightSelectionImage.animationDuration}
                      }
                  }
              ]
@@ -211,6 +213,8 @@ Item {
             name: "opened"
             ParentChange { target: rect; parent: Utils.findRootItem(textInput); }
             PropertyChanges { target: rect; visible: true; }
+//            PropertyChanges { target: leftSelectionImage; state: "undefined"; }
+//            PropertyChanges { target: rightSelectionImage; state: "undefined"; }
         },
         State {
             name: "closed"

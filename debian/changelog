@@ -7,6 +7,7 @@ qt-components (1.2~git20111010-1) maverick; urgency=low
 
 qt-components (1.2~git20111003-1) maverick; urgency=low
 
+  * Added selection and copy capability for Label element, includes handles
   * Fixes: NB#280628 [TASK] Highlighting in Contact menu doesn't give the 
   * Fixes: NB#260181 Orientation switch transition is incorrect
   * Fixes: NB#264153 Using magnifier on text area having lots of text breaks the magnifier and causes crash
