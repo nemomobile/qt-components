@@ -180,7 +180,7 @@ symbian {
     TARGET.CAPABILITY = ALL -TCB
     TARGET.UID3 = 0x2003DE93
     MMP_RULES += SMPSAFE
-    VERSION = 10.1.1
+    VERSION = 10.1.2
 
     LIBS += -lws32 // For CWsScreenDevice
     LIBS += -lcone // For EikonEnv / CoeEnv

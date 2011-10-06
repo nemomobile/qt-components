@@ -17,7 +17,7 @@ symbian {
     scalefm_core.path = core
     DEPLOYMENT += scalefm_qmls scalefm_core
     BLD_INF_RULES.prj_exports += "scalefm.iby $$CORE_APP_LAYER_IBY_EXPORT_PATH(scalefm.iby)"
-    VERSION = 10.1.1
+    VERSION = 10.1.2
 
     stubsis = \
         "START EXTENSION app-services.buildstubsis" \
@@ -35,7 +35,8 @@ symbian {
             ":\"Nokia\"" \
             " "
 
-    package.pkg_prerules += vendor_info
+    header = "$${LITERAL_HASH}{\"scalefm\"},(0x2003DE90),1,1,2,TYPE=SA,RU"
+    package.pkg_prerules += vendor_info header
     DEPLOYMENT += package
 }
 
