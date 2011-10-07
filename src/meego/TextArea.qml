@@ -450,8 +450,7 @@ FocusScope {
                 var preeditDisabled = root.inputMethodHints &                  
                                       root.__preeditDisabledMask
 
-                attemptToActivate = !inputContext.softwareInputPanelVisible &&
-                                    !pressOnPreedit && !root.readOnly && !preeditDisabled && root.activeFocus &&
+                attemptToActivate = !pressOnPreedit && !root.readOnly && !preeditDisabled && root.activeFocus &&
                                     !(mousePosition == 0 || TextAreaHelper.atSpace(mousePosition - 1) || TextAreaHelper.atSpace(mousePosition));
                 mouse.filtered = true;
             }
