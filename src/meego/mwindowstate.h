@@ -72,6 +72,18 @@ public:
             M::OrientationAngle newOrientationAngle = (M::OrientationAngle)newOrientation;
 
             ims->startActiveWindowOrientationAngleChange(newOrientationAngle);
+        }
+#else
+        Q_UNUSED(newOrientation)
+#endif
+    }
+    
+    Q_INVOKABLE void finishSipOrientationChange(int newOrientation) {
+#ifdef HAVE_MEEGOTOUCH
+        MInputMethodState *ims = MInputMethodState::instance();
+        if (ims) {
+            M::OrientationAngle newOrientationAngle = (M::OrientationAngle)newOrientation;
+
             ims->setActiveWindowOrientationAngle(newOrientationAngle);
         }
 #else

@@ -141,6 +141,16 @@ Item {
 
         state: screen.orientationString
 
+        onStateChanged: {
+            if (inputContext.softwareInputPanelVisible) {
+                root.orientationChangeAboutToStart();
+                platformWindow.startSipOrientationChange(screen.rotation);
+                root.orientationChangeStarted();
+                relayoutingWaiter.animating = true
+            }
+        }
+
+
         states: [
             State {
                 name: "Landscape"
@@ -186,18 +196,6 @@ Item {
             from: (inputContext.softwareInputPanelVisible ?  "*" : "disabled")
             to:   (inputContext.softwareInputPanelVisible ?  "*" : "disabled")
             PropertyAction { target: window; properties: "rotation"; }
-            ScriptAction {
-                script: {
-                    console.log("---- Animation Start -----");
-                    root.orientationChangeAboutToStart();
-                    platformWindow.startSipOrientationChange(window.rotation);
-                    // note : we should really connect these signals to MInputMethodState
-                    // signals so that they are emitted at the appropriate time
-                    // but there aren't any
-                    root.orientationChangeStarted();
-                    root.orientationChangeFinished();
-                }
-            }
         },
         Transition {
             // use this transition when sip is not visible
@@ -275,6 +273,34 @@ Item {
                     screen.allowedOrientations = Screen.LandscapeInverted;
                 } else if(screen.currentOrientation == Screen.Landscape) {
                     screen.allowedOrientations = Screen.PortraitInverted;
+                }
+            }
+        }
+
+        Item {
+            // Item for requesting finish of orientation change animation, when
+            // VKB is open.
+            id: relayoutingWaiter
+
+            property bool animating: false
+            property variant softwareInputPanelRect : inputContext.softwareInputPanelRect
+
+            onSoftwareInputPanelRectChanged: {
+                if (animating) {
+                    animating = false
+                    relayoutingTimer.running = true
+                }
+            }
+
+            Timer {
+                // Timer is triggered after window's contents have been
+                // relayouted.
+                id: relayoutingTimer;
+                interval: 10
+                onTriggered: {
+                    inputContext.update();
+                    platformWindow.finishSipOrientationChange(window.rotation);
+                    root.orientationChangeFinished();
                 }
             }
         }
