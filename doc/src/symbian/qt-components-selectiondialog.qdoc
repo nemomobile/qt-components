@@ -78,5 +78,4 @@
     \qmlproperty Component SelectionDialog::delegate
 
     Overrides the delegate component that visualizes the ListView model.
-    The default delegate is \l MenuItem that shows a text string in the model data.
 */
