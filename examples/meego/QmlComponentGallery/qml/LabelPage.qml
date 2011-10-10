@@ -48,20 +48,43 @@ Page {
 
     Flickable {
         contentWidth: childrenRect.width
-        contentHeight: childrenRect.height
+        contentHeight: col.height
         flickableDirection: Flickable.VerticalFlick
 
         anchors.fill: parent
         Column {
+            id: col
             Label { text: "Plain label"; platformSelectable: true; }
             Label { text: "<a href=\"http://www.nokia.com\">Invert</a> label via link"; platformSelectable: false;
                     onLinkActivated: platformStyle.inverted = !platformStyle.inverted; }
             Label { text: "Bold label"; font.bold: true; platformSelectable: true; }
             Label { text: "Italic label"; font.italic: true; platformSelectable: true; }
-            Label { text: "Large label"; font.pixelSize: 100; platformSelectable: true; }
+            Label { text: "Large label"; font.pixelSize: 100;  platformSelectable: true; }
+
+            Label {
+                id: coloredLabel
+                text: "Large label with MouseArea"
+                width: parent.width
+                font.pixelSize: 48
+                platformSelectable: true
+                color: Qt.rgba(1.0, 0.5, 0.5, 1.0)
+                wrapMode: Text.WordWrap
+
+                MouseArea {
+                    id: ma
+                    anchors.fill:  parent
+                    onClicked: coloredLabel.color ==  Qt.rgba(1.0, 0.5, 0.5, 1.0) ?
+                                   coloredLabel.color =  Qt.rgba(0.5, 1.0, 0.5, 1.0)
+                                 : coloredLabel.color =  Qt.rgba(1.0, 0.5, 0.5, 1.0)
+                }
+
+            }
+
             Label { text: "Red label"; color: "red"; platformSelectable: true; }
             Label { text: "Wrapping label with a lot of text"; wrapMode: Text.Wrap; width: 200; platformSelectable: true; }
             Label { text: "Elided labels are too long"; font.italic: true; width: 200; elide: Text.ElideRight; platformSelectable: true; }
+
+
             Label { text: "Unselectable plain label" }
         }
     }
