@@ -1,3 +1,10 @@
+qt-components (1.2~git20111010-1) maverick; urgency=low
+
+  * Fixes: NB#285532 Twitter: not able to open the twitter messages in a single click
+  * Fixes: NB#285727 Search button is disabled in virtual keyboard when inputting some character then re-click the character in search box
+  
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Mon, 10 Oct 2011 14:15:00 +0300
+
 qt-components (1.2~git20111003-1) maverick; urgency=low
 
   * Fixes: NB#280628 [TASK] Highlighting in Contact menu doesn't give the 
