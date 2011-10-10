@@ -66,6 +66,8 @@ Text {
         id: mouseFilter
         anchors.fill: parent
 
+        enabled: platformSelectable ? true : false
+
         Component {
             id: textSelectionComponent
 
