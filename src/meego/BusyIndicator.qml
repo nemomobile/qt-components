@@ -68,6 +68,7 @@ ImplicitSizeItem {
     Image {
         id: spinner
         property int index: 1
+        // This is re-evaluated for each frame. Could be optimized by calculating the sources separately is js
         source: root.platformStyle.spinnerFrames + "_" + root.implicitWidth + "_" + index
         smooth: true
 
