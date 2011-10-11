@@ -57,11 +57,10 @@ public:
     Q_INVOKABLE void setOrientation(int orientation);
     Q_INVOKABLE void setForeground(bool foreground);
 
-private:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-    void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
 
 protected:
+    void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
     QScopedPointer<SDeclarativeSharedStatusBarPrivate> d_ptr;
 
 private:

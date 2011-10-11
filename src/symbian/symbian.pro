@@ -40,17 +40,16 @@ symbian {
     SOURCES += \
         sdeclarativeinputcontext_p_symbian.cpp \
         sdeclarativetouchinput.cpp \
-        stimeobserver.cpp \
-        sdeclarativesharedstatusbar_p_symbian.cpp
+        stimeobserver.cpp
 } else {
     SOURCES += \
-        sdeclarativeinputcontext_p.cpp \
-        sdeclarativesharedstatusbar_p.cpp
+        sdeclarativeinputcontext_p.cpp
 }
 
 symbian:symbian_internal {
     SOURCES += \
-        sbatteryinfo_symbian.cpp \
+        sbatteryinfo_symbian.cpp  \
+        sdeclarativesharedstatusbar_p_symbian.cpp \
         ssharedstatusbarsubscriber.cpp \
         indicators/sdeclarativeincallindicator.cpp \
         indicators/sdeclarativeindicator.cpp \
@@ -61,6 +60,7 @@ symbian:symbian_internal {
 } else {
     SOURCES += \
         sbatteryinfo.cpp \
+        sdeclarativesharedstatusbar_p.cpp \
         indicators/sdeclarativenetworkindicator_p.cpp
 }
 
@@ -94,22 +94,24 @@ symbian: {
     HEADERS += \
         sdeclarativeinputcontext_p_symbian.h \
         sdeclarativetouchinput.h \
-        stimeobserver.h \
-        sdeclarativesharedstatusbar_p_symbian.h
+        stimeobserver.h
 } else {
     HEADERS += \
-        sdeclarativeinputcontext_p.h \
-        sdeclarativesharedstatusbar_p.h
+        sdeclarativeinputcontext_p.h
 }
 
 symbian:symbian_internal {
     HEADERS +=  \
+        sdeclarativesharedstatusbar_p_symbian.h \
         ssharedstatusbarsubscriber.h \
         indicators/sdeclarativeincallindicator.h \
         indicators/sdeclarativeindicator.h \
         indicators/sdeclarativeindicatordata.h \
         indicators/sdeclarativeindicatordatahandler.h \
         indicators/sdeclarativestatuspanedatasubscriber.h
+} else {
+    HEADERS += \
+        sdeclarativesharedstatusbar_p.h \
 }
 
 RESOURCES += \
