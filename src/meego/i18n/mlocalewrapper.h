@@ -299,6 +299,8 @@ public:
     Q_INVOKABLE QString formatCurrency(double amount,
                                        const QString &currency) const         {Q_ASSERT(ml); return ml->formatCurrency(amount, currency);}
 
+    Q_INVOKABLE QString toLocalizedNumbers(const QString &text) const         {Q_ASSERT(ml); return ml->toLocalizedNumbers(text);}
+
     Q_INVOKABLE QString formatDateTime(const QDateTime &dateTime,
                                        DateType dateType = DateLong,
                                        TimeType timeType = TimeLong,
@@ -346,6 +348,13 @@ public:
     Q_INVOKABLE void installTrCatalog(const QString &name)                    {Q_ASSERT(ml); ml->installTrCatalog(name);}
     Q_INVOKABLE void removeTrCatalog(const QString &name)                     {Q_ASSERT(ml); ml->removeTrCatalog(name);}
     Q_INVOKABLE bool isInstalledTrCatalog(const QString &name) const          {Q_ASSERT(ml); return ml->isInstalledTrCatalog(name);}
+
+
+    //functions that are static in MLocale
+    Q_INVOKABLE QString toLocalizedNumbers(const QString &text,
+                                           const QString &targetDigits)       {return MLocale::toLocalizedNumbers(text, targetDigits);}
+
+    Q_INVOKABLE QString toLatinNumbers(const QString &text)                   {return MLocale::toLatinNumbers(text);}
 
     Q_INVOKABLE void addTranslationPath(const QString &path)                  {MLocale::addTranslationPath(path); emit translationPathsChanged();}
     Q_INVOKABLE void removeTranslationPath(const QString &path)               {MLocale::removeTranslationPath(path); emit translationPathsChanged();}

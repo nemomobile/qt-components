@@ -82,6 +82,7 @@ Item {
         console.log("MLocaleTest:: locale.formatDouble(): - maxMinPrecision " + locale.formatDouble(123.456, 9, 9));
         console.log("MLocaleTest:: locale.toDouble(): " + locale.toDouble("987.654"));
         console.log("MLocaleTest:: locale.formatPercent(): " + locale.formatPercent(123.456));
+
         console.log("MLocaleTest:: locale.directionForText(\"latin\"): " + (locale.directionForText("latin") == Qt.LeftToRight ? "Qt.LeftToRight" : "Qt.RightToLeft"));
         console.log("MLocaleTest:: locale.directionForText(\"اختبار عربية\"): " + (locale.directionForText("اختبار عربية") == Qt.LeftToRight ? "Qt.LeftToRight" : "Qt.RightToLeft"));
 
@@ -102,6 +103,13 @@ Item {
 
         console.log("MLocaleTest:: locale.setDataPaths()");
         console.log("MLocaleTest:: locale.dataPaths: " + locale.dataPaths + "\n");
+
+        console.log("\nFinally switching to arabic locale:");
+        locale.setLocale("ar_AE");
+        console.log("MLocaleTest:: locale.toLocalizedNumbers(): " + locale.toLocalizedNumbers("0123456789"));
+        console.log("MLocaleTest:: locale.toLocalizedNumbers(): - static: " + locale.toLocalizedNumbers("0123456789", "٠١٢٣٤٥٦٧٨٩"));
+        console.log("MLocaleTest:: locale.toLatinNumbers(): " + locale.toLatinNumbers("٠١٢٣٤٥٦٧٨٩"));
+        console.log();
  
         Qt.quit();
         
