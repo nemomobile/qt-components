@@ -250,6 +250,9 @@ FocusScope {
                 Popup.close(textInput);
             }
         }
+
+        if (!activeFocus)
+            MagnifierPopup.close();
     }
 
 

@@ -209,7 +209,8 @@ FocusScope {
             if (!readOnly)
                 platformCloseSoftwareInputPanel();
 
-            Popup.close(textEdit);            
+            Popup.close(textEdit);
+            MagnifierPopup.close(); 
         }
     }
 
