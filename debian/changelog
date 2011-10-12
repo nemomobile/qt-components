@@ -1,3 +1,9 @@
+qt-components (1.1.1~git20111012-1) maverick; urgency=low
+
+  * Fixes: NB#284646 Accounts: '+' sign improperly displayed in select country code
+  
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Wed, 12 Oct 2011 15:00:00 +0300
+
 qt-components (1.1.1~git20110930-1) maverick; urgency=low
 
   * Fixes: NB#280468 Search button is disabled in virtual keyboard when inputting some character then re-click the character in search box
