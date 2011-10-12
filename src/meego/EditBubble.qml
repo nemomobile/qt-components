@@ -57,8 +57,10 @@ Item {
 
     anchors.fill: parent
 
-    Item {
+    Flickable {
         id: rect
+        flickableDirection: Flickable.HorizontalAndVerticalFlick
+        boundsBehavior: Flickable.StopAtBounds
         visible: false
         width: row.width
         height: row.height
