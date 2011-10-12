@@ -502,7 +502,7 @@ FocusScope {
                     MagnifierPopup.open(root);
                     var magnifier = MagnifierPopup.popup;
                     var cursorPos = textInput.positionToRectangle(0);
-                    var mappedPosMf = mapFromItem(parent,mouse.x,cursorPos.y+cursorPos.height);
+                    var mappedPosMf = mapFromItem(parent,mouse.x,cursorPos.y+cursorPos.height/2+4);
                     magnifier.xCenter = mapToItem(magnifier.sourceItem,mappedPosMf.x,0).x;
                     var mappedPos =  mapToItem(magnifier.parent, mappedPosMf.x - magnifier.width / 2,
                                                textInput.y - 120 - UI.MARGIN_XLARGE - (height / 2));
