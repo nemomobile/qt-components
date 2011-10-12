@@ -74,7 +74,7 @@
     then \c checked is true. The \c checkable and \l Button::checked properties are set
     to \c false by default.
 
-    \snippet src/snippets/MeeGo/snippet-button.qml 3
+    \snippet src/snippets/meego/snippet-button.qml 3
 */
 
 /*!
