@@ -25,19 +25,14 @@ Item {
     property alias rightSelectionHandle: rightSelectionImage
 
     onSelectionStartRectChanged: {
-          if (!textInput) return;
-          selectionStartPoint = textInput.mapToItem( Utils.findRootItem(textInput), selectionStartRect.x, selectionStartRect.y );
-          leftSelectionImage.state = (selectionStartPoint.x < leftSelectionImage.width) ? "mirrored" : "normal";
+        Private.adjustPosition(contents);
     }
     onSelectionEndRectChanged: {
-          if (!textInput) return;
-          selectionEndPoint = textInput.mapToItem( Utils.findRootItem(textInput), selectionEndRect.x, selectionEndRect.y )
-          rightSelectionImage.state = (selectionEndPoint.x > screen.platformWidth - rightSelectionImage.width) ? "mirrored" : "normal";
+        Private.adjustPosition(contents);
     }
 
     Item {
         id: rect
-
         // fake baseline since the baseline of a font is not accessible in QML (except for anchors which doesn't work well here):
         property int fontBaseLine: textInput ? textInput.font.pixelSize * 0.16 : 0
 
@@ -206,6 +201,18 @@ Item {
         }
     }
 
+    Connections {
+        target: Utils.findFlickable(textInput)
+        onContentYChanged: Private.adjustPosition(contents)
+        onMovementEnded: Popup.open(textInput,textInput.positionToRectangle(textInput.cursorPosition));
+
+    }
+
+    Connections {
+        target: screen
+        onCurrentOrientationChanged: Private.adjustPosition(contents)
+    }
+
     state: "closed"
 
     states: [
@@ -213,8 +220,6 @@ Item {
             name: "opened"
             ParentChange { target: rect; parent: Utils.findRootItem(textInput); }
             PropertyChanges { target: rect; visible: true; }
-//            PropertyChanges { target: leftSelectionImage; state: "undefined"; }
-//            PropertyChanges { target: rightSelectionImage; state: "undefined"; }
         },
         State {
             name: "closed"
