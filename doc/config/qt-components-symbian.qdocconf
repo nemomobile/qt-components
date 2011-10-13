@@ -27,12 +27,12 @@ indexes = $QT_INSTALL_DOCS/html/qt.index
 
 qhp.projects            = QtComponentsSymbian
 qhp.QtComponentsSymbian.file             = qtcomponentssymbian.qhp
-qhp.QtComponentsSymbian.namespace        = com.nokia.qtcomponentssymbian.100
+qhp.QtComponentsSymbian.namespace        = com.nokia.qtcomponentssymbian.110
 qhp.QtComponentsSymbian.virtualFolder    = doc
 qhp.QtComponentsSymbian.indexTitle       = Qt Quick Components for Symbian
-qhp.QtComponentsSymbian.filterAttributes = QtComponents 1.0.0
-qhp.QtComponentsSymbian.customFilters.QtComponentsSymbian.name = Qt Quick Components for Symbian 1.0.0
-qhp.QtComponentsSymbian.customFilters.QtComponentsSymbian.filterAttributes = QtComponents 1.0.0
+qhp.QtComponentsSymbian.filterAttributes = QtComponents 1.1.0
+qhp.QtComponentsSymbian.customFilters.QtComponentsSymbian.name = Qt Quick Components for Symbian 1.1.0
+qhp.QtComponentsSymbian.customFilters.QtComponentsSymbian.filterAttributes = QtComponents 1.1.0
 qhp.QtComponentsSymbian.extraFiles          = style/narrow.css \
                                               style/style.css \
                                               style/style_ie6.css \
