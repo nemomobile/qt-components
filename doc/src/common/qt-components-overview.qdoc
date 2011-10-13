@@ -32,13 +32,29 @@
 
     \image common/component-splash.png
 
-    The Qt Quick Components project provides a set of QML components for
-    building user interfaces. The components allow the interface to accept user
-    input and provide feedback indicators.
+    Qt Quick Components provides a set of QML components for building user 
+    interfaces. The components allow the interface to accept user input and 
+    provide feedback indicators.
+    
+    This documentation covers Qt Quick Components for Symbian.
+    The \l {http://harmattan-dev.nokia.com/docs/library/html/qt-components/qt-components.html?tab=0#getting-started-with-the-components}
+    {Qt Quick Components for MeeGo}
+    documentation covers MeeGo-specific Qt Quick Components.
+    
+    Regarding Qt Quick and Qt Quick Components, note the following:
+    \list
+        \o  \l {http://doc.qt.nokia.com/4.7-snapshot/qml-intro.html}
+        {Qt Quick} is part of Qt from Qt 4.7 onwards, whereas Qt Quick 
+        Components is an add-on module to Qt Quick
+        \o In QML, Qt Quick has its own \c import statement, for example \c 
+        {import QtQuick 1.0}, whereas Qt Quick Components has three \c import 
+        statements listed in the code snippet below.
+    \endlist
 
-    There are three sets of components, one set for the Symbian platform, one
-    set for the MeeGo platform, and another \e{Extras} set that introduces new
-    components to both platforms. Each set has a different \c import statement.
+    Qt Quick Components consists of three component sets: one for the Symbian 
+    platform, one for the MeeGo platform, and the \e{Extras} set that is common for 
+    Symbian and MeeGo platforms. Each set has a different \c import statement as 
+    follows:
 
     \code
     import com.nokia.symbian 1.1    // Symbian components
@@ -61,7 +77,7 @@
                 \endlist
             \o
                 \list
-                    \o \l{Building the Qt Quick Components for MeeGo}{Build and Install Instructions}
+                    \o \l{http://harmattan-dev.nokia.com/docs/library/html/qt-components/qt-components.html?tab=0#getting-started-with-the-components}{Getting Started}
                 \endlist
             \o
                 \list

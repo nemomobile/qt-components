@@ -109,25 +109,25 @@
 /*!
     \qmlproperty int Style::graphicSizeLarge
 
-    The size of a large graphical object, for example an \l Image, in pixels.
+    The size of a large graphical object, for example an \l {http://doc.qt.nokia.com/4.8/qml-image.html}{Image}, in pixels.
 */
 
 /*!
     \qmlproperty int Style::graphicSizeMedium
 
-    The size of a medium size graphical object, for example an \l Image, in pixels.
+    The size of a medium size graphical object, for example an \l {http://doc.qt.nokia.com/4.8/qml-image.html}{Image}, in pixels.
 */
 
 /*!
     \qmlproperty int Style::graphicSizeSmall
 
-    The size of a small graphical object, for example an \l Image, in pixels.
+    The size of a small graphical object, for example an \l {http://doc.qt.nokia.com/4.8/qml-image.html}{Image}, in pixels.
 */
 
 /*!
     \qmlproperty int Style::graphicSizeTiny
 
-    The size of a tiny graphical object, for example an \l Image, in pixels.
+    The size of a tiny graphical object, for example an \l {http://doc.qt.nokia.com/4.8/qml-image.html}{Image}, in pixels.
 */
 
 /*!
