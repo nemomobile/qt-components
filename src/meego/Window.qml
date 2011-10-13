@@ -53,6 +53,8 @@ Item {
     // Read only property true if window is in portrait
     property alias inPortrait: window.portrait
 
+    objectName: "windowRoot"
+
     signal orientationChangeAboutToStart
     signal orientationChangeStarted
     signal orientationChangeFinished

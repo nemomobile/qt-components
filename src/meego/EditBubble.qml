@@ -258,6 +258,21 @@ Item {
         onCurrentOrientationChanged: Private.adjustPosition(bubble)
     }
 
+    function findWindowRoot() {
+        var item = Utils.findRootItem(bubble, "windowRoot");
+        if (item.objectName != "windowRoot")
+            item = Utils.findRootItem(bubble, "pageStackWindow");
+        return item;
+    }
+
+    Connections {
+       target: findWindowRoot();
+       ignoreUnknownSignals: true
+       onOrientationChangeFinished: {
+           Private.adjustPosition(bubble)
+       }
+    }
+
     Connections {
         target: textInput
         onTextChanged: {
