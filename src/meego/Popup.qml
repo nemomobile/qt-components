@@ -61,6 +61,8 @@ Item {
     property int __fadeOutEasingType
     property string __faderBackground
 
+    property bool __platformModal: false
+
     function open() {
         if (status == DialogStatus.Closed)
             status = DialogStatus.Opening;

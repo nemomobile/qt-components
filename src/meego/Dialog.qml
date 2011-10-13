@@ -156,7 +156,7 @@ Popup {
 
     }
 
-    onPrivateClicked: reject()
+    onPrivateClicked:  if (!__platformModal) reject();
 
     StateGroup {
         id: statesWrapper

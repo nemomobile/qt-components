@@ -68,6 +68,9 @@ Dialog {
 
     __animationChief: "queryDialog"
 
+    // the default is a modal QueryDialog, but don't make it modal when no buttons are shown
+    __platformModal: !(acceptButtonText === "" && rejectButtonText === "")
+
     //Deprecated, TODO Remove this on w13
     property alias style: root.platformStyle
 
