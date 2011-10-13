@@ -182,6 +182,7 @@ CommonDialog {
                 flickableItem: selectionListView
                 platformStyle.inverted: true
             }
+            onCountChanged: selectionContent.listViewHeight = model.count * platformStyle.itemHeight
             onModelChanged: selectionContent.listViewHeight = model.count * platformStyle.itemHeight
         }
 
