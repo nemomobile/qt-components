@@ -83,7 +83,7 @@ CommonDialog {
                 items: ListModel {
                     id: hourList
                 }
-                selectedIndex: root.hour - ((root.hourMode == DateTime.TwelveHours && root.hour > 11) ? 12 : 0)
+                selectedIndex: 0
                 visible: fields & DateTime.Hours
             }
 
@@ -92,7 +92,7 @@ CommonDialog {
                 items: ListModel {
                     id: minuteList
                 }
-                selectedIndex: root.minute
+                selectedIndex: 0
                 visible: fields & DateTime.Minutes
             }
 
@@ -101,7 +101,7 @@ CommonDialog {
                 items: ListModel {
                     id: secondList
                 }
-                selectedIndex: root.second
+                selectedIndex: 0
                 visible: fields & DateTime.Seconds
             }
 
@@ -110,7 +110,7 @@ CommonDialog {
                 items: ListModel {
                     id: meridiemList
                 }
-                selectedIndex: root.hour > 11 ? 1: 0
+                selectedIndex: 0
                 visible: root.hourMode == DateTime.TwelveHours
                 privateLoopAround: false
             }
@@ -122,9 +122,13 @@ CommonDialog {
 
     onStatusChanged: {
         if (status == DialogStatus.Opening) {
-            TH.saveIndex(tumbler);
             if (!internal.initialised)
                 internal.initializeDataModels();
+            internal.resetHour()
+            internal.resetMinute()
+            internal.resetSecond()
+            TH.saveIndex(tumbler);
+            TH.restoreIndex(tumbler);
         }
     }
     onAccepted: {
@@ -137,6 +141,10 @@ CommonDialog {
         root.second = secondColumn.selectedIndex;
     }
     onRejected: {
+        internal.resetHour()
+        internal.resetMinute()
+        internal.resetSecond()
+        TH.saveIndex(tumbler);
         TH.restoreIndex(tumbler);
     }
     onHourModeChanged: {
@@ -156,17 +164,13 @@ CommonDialog {
         hourColumn.selectedIndex = tmp;
     }
     onHourChanged: {
-        internal.validateTime()
-        hourColumn.selectedIndex = root.hour - ((root.hourMode == DateTime.TwelveHours && root.hour > 11) ? 12 : 0)
-        meridiemColumn.selectedIndex = root.hour > 11 ? 1: 0
+        internal.resetHour()
     }
     onMinuteChanged: {
-        internal.validateTime()
-        minuteColumn.selectedIndex = root.minute
+        internal.resetMinute()
     }
     onSecondChanged: {
-        internal.validateTime()
-        secondColumn.selectedIndex = root.second
+        internal.resetSecond()
     }
 
     onButtonClicked: (acceptButtonText && index == 0) ? accept() : reject()
@@ -203,6 +207,22 @@ CommonDialog {
             if (rejectButtonText)
                 newButtonTexts.push(rejectButtonText)
             root.buttonTexts = newButtonTexts
+        }
+
+        function resetHour() {
+            internal.validateTime()
+            hourColumn.selectedIndex = root.hour - ((root.hourMode == DateTime.TwelveHours && root.hour > 11) ? 12 : 0)
+            meridiemColumn.selectedIndex = root.hour > 11 ? 1: 0
+        }
+
+        function resetMinute() {
+            internal.validateTime()
+            minuteColumn.selectedIndex = root.minute
+        }
+
+        function resetSecond() {
+            internal.validateTime()
+            secondColumn.selectedIndex = root.second
         }
     }
 }

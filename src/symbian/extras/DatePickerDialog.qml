@@ -102,7 +102,7 @@ CommonDialog {
                 items: ListModel {
                     id: dayList
                 }
-                selectedIndex: root.day - (root.day > 0 ?  1 : 0)
+                selectedIndex: 0
             }
 
             TumblerColumn {
@@ -111,7 +111,7 @@ CommonDialog {
                 items: ListModel {
                     id: monthList
                 }
-                selectedIndex: root.month - (root.month > 0 ?  1 : 0)
+                selectedIndex: 0
             }
 
             TumblerColumn {
@@ -119,7 +119,7 @@ CommonDialog {
                 items: ListModel {
                     id: yearList
                 }
-                selectedIndex: yearList.length > 0 ? root.year - yearList.get(0).value : 0
+                selectedIndex: 0
                 privateResizeToFit: true
             }
         }
@@ -140,23 +140,21 @@ CommonDialog {
         if (status == DialogStatus.Opening) {
             if (!internal.initialised)
                 internal.initializeDataModels();
-            if (year > 0)
-                yearColumn.selectedIndex = root.year - yearList.get(0).value;
-            tumbler._handleTumblerChanges(2);
-            TH.saveIndex(tumbler);
-            dayColumn.selectedIndex = root.day - 1;
+            internal.resetYear()
+            internal.resetMonth()
+            internal.resetDay()
+            TH.saveIndex(tumbler)
+            TH.restoreIndex(tumbler)
         }
     }
     onDayChanged: {
-        if (dayColumn.items.length > root.day - 1)
-            dayColumn.selectedIndex = root.day - 1
+        internal.resetDay()
     }
     onMonthChanged: {
-        monthColumn.selectedIndex = root.month - 1
+        internal.resetMonth()
     }
     onYearChanged: {
-        if (internal.initialised)
-            yearColumn.selectedIndex = root.year - yearList.get(0).value
+        internal.resetYear()
     }
     onAccepted: {
         tumbler.privateForceUpdate();
@@ -165,7 +163,11 @@ CommonDialog {
         root.day = dayColumn.selectedIndex + 1;
     }
     onRejected: {
-        TH.restoreIndex(tumbler);
+        internal.resetYear()
+        internal.resetMonth()
+        internal.resetDay()
+        TH.saveIndex(tumbler)
+        TH.restoreIndex(tumbler)
     }
 
     QtObject {
@@ -192,6 +194,10 @@ CommonDialog {
                 monthList.append({"value" : dateTime.longMonthName(m)});
 
             tumbler.privateInitialize()
+
+            if (year < minimumYear) year = minimumYear;
+            if (year > maximumYear) year = maximumYear;
+
             internal.initialised = true;
         }
 
@@ -212,6 +218,24 @@ CommonDialog {
             if (rejectButtonText)
                 newButtonTexts.push(rejectButtonText)
             root.buttonTexts = newButtonTexts
+        }
+
+        function resetDay() {
+            if (internal.initialised)
+                dayColumn.selectedIndex = root.day - (root.day > 0 ?  1 : 0);
+            tumbler._handleTumblerChanges(1);
+        }
+
+        function resetMonth() {
+            if (internal.initialised)
+                monthColumn.selectedIndex = root.month - (root.month > 0 ?  1 : 0)
+            tumbler._handleTumblerChanges(0);
+        }
+
+        function resetYear() {
+            if (internal.initialised)
+                yearColumn.selectedIndex = root.year - yearList.get(0).value
+            tumbler._handleTumblerChanges(2);
         }
     }
 }
