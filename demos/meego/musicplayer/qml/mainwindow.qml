@@ -41,7 +41,6 @@
 //![0]
 import QtQuick 1.1
 import Qt.labs.components.native 1.0
-import MediaKeysObserver 1.0
 import "Storage.js" as Storage
 
 Window {
@@ -88,70 +87,6 @@ Window {
             Storage.setSetting("shuffle", shuffle)
             Storage.setSetting("index", index)
             Storage.setPlaylist(playlist)
-        }
-
-        MediaKeysObserver {
-            id: mediakeysobserver
-
-            property int key
-
-            onMediaKeyClicked: {
-                switch (key) {
-                case MediaKeysObserver.EVolIncKey:
-                    audio.volume += 0.1
-                    break
-
-                case MediaKeysObserver.EVolDecKey:
-                    audio.volume -= 0.1
-                    break
-
-                case MediaKeysObserver.EStopKey:
-                    stop()
-                    break
-
-                case MediaKeysObserver.EBackwardKey:
-                    previous()
-                    break
-
-                case MediaKeysObserver.EForwardKey:
-                    next()
-                    break
-
-                case MediaKeysObserver.EPlayPauseKey:
-                    if (playing)
-                        pause()
-                    else
-                        play()
-
-                    break
-                }
-            }
-
-            onMediaKeyPressed: {
-                mediakeysobserver.key = key
-                timer.start()
-            }
-
-            onMediaKeyReleased: {
-                timer.stop()
-            }
-        }
-
-        Timer {
-            id: timer
-            interval: 300
-            repeat: true
-            onTriggered: {
-                switch (mediakeysobserver.key) {
-                case MediaKeysObserver.EVolIncKey:
-                    player.volume += 0.1
-                    break
-
-                case MediaKeysObserver.EVolDecKey:
-                    player.volume -= 0.1
-                    break
-                }
-            }
         }
     }
 

@@ -1,2 +1,7 @@
 TEMPLATE = subdirs
-SUBDIRS += flickr musicplayer
+meego {
+   SUBDIRS += meego
+}
+symbian3 {
+   SUBDIRS += symbian
+}
