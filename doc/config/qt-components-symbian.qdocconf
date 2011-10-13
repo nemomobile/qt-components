@@ -47,5 +47,5 @@ qhp.QtComponentsSymbian.subprojects.manual.indexTitle = Qt Quick components tabl
 qhp.QtComponentsSymbian.subprojects.manual.type = manual
 
 #outputprefixes = QML
-#outputprefixes.QML = qt-components-symbian-
+#outputprefixes.QML = qt-quick-components-symbian-
 
