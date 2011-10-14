@@ -11,4 +11,6 @@ HEADERS += \
 
 INCLUDEPATH += ../../../../src/meego/
 
+LIBS += -lX11
+
 include (../../auto.pri)

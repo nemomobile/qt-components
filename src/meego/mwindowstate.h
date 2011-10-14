@@ -43,8 +43,8 @@
 
 #include <qdeclarativeitem.h>
 
-#ifdef HAVE_MEEGOTOUCH
-#include <MInputMethodState>
+#ifdef HAVE_MALIIT
+#include <maliit/inputmethod.h>
 #endif
 
 class MWindowStatePrivate;
@@ -66,26 +66,18 @@ class MWindowState : public QObject
 public:
 
     Q_INVOKABLE void startSipOrientationChange(int newOrientation) {
-#ifdef HAVE_MEEGOTOUCH
-        MInputMethodState *ims = MInputMethodState::instance();
-        if (ims) {
-            M::OrientationAngle newOrientationAngle = (M::OrientationAngle)newOrientation;
-
-            ims->startActiveWindowOrientationAngleChange(newOrientationAngle);
-        }
+#ifdef HAVE_MALIIT
+        Maliit::OrientationAngle newOrientationAngle = static_cast<Maliit::OrientationAngle>(newOrientation);
+        Maliit::InputMethod::instance()->startOrientationAngleChange(newOrientationAngle);
 #else
         Q_UNUSED(newOrientation)
 #endif
     }
     
     Q_INVOKABLE void finishSipOrientationChange(int newOrientation) {
-#ifdef HAVE_MEEGOTOUCH
-        MInputMethodState *ims = MInputMethodState::instance();
-        if (ims) {
-            M::OrientationAngle newOrientationAngle = (M::OrientationAngle)newOrientation;
-
-            ims->setActiveWindowOrientationAngle(newOrientationAngle);
-        }
+#ifdef HAVE_MALIIT
+        Maliit::OrientationAngle newOrientationAngle = static_cast<Maliit::OrientationAngle>(newOrientation);
+        Maliit::InputMethod::instance()->setOrientationAngle(newOrientationAngle);
 #else
         Q_UNUSED(newOrientation)
 #endif

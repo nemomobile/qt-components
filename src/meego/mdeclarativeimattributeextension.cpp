@@ -42,8 +42,8 @@
 
 MDeclarativeIMAttributeExtension::MDeclarativeIMAttributeExtension(QDeclarativeItem *parent) :
     QDeclarativeItem(parent)
-#ifdef HAVE_MEEGOTOUCH
-    ,m_id(MInputMethodState::instance()->registerAttributeExtension())
+#ifdef HAVE_MALIIT
+    ,extension()
 #endif
 {
 }

@@ -42,8 +42,8 @@
 #define MDECLARATIVEIMATTRIBUTEEXTENSION_H
 
 #include <QDeclarativeItem>
-#ifdef HAVE_MEEGOTOUCH
-#include <MInputMethodState>
+#ifdef HAVE_MALIIT
+#include <maliit/attributeextension.h>
 #endif
 
 class MDeclarativeIMAttributeExtension : public QDeclarativeItem
@@ -58,19 +58,16 @@ public:
     Q_PROPERTY(QString actionKeyIcon READ actionKeyIcon WRITE setActionKeyIcon NOTIFY actionKeyIconChanged);
 
     bool isActionKeyHighlighted() const {
-#ifdef HAVE_MEEGOTOUCH
-        return MInputMethodState::instance()->extendedAttributes(m_id).value("/keys").value("actionKey").value("highlighted").toBool();
+#ifdef HAVE_MALIIT
+        return extension.attributes().value("/keys/actionKey/highlighted").toBool();
 #else
         return false;
 #endif
     }
 
     void setActionKeyHighlighted( bool isHighlighted ) {
-#ifdef HAVE_MEEGOTOUCH
-        MInputMethodState::instance()->
-                 setExtendedAttribute(m_id,
-                                      "/keys", "actionKey",
-                                      "highlighted", QVariant(isHighlighted) );
+#ifdef HAVE_MALIIT
+        extension.setAttribute("/keys/actionKey/highlighted", QVariant(isHighlighted));
         emit actionKeyHighlightedChanged();
 #else
         Q_UNUSED(isHighlighted);
@@ -78,19 +75,16 @@ public:
     }
 
     bool isActionKeyEnabled() const {
-#ifdef HAVE_MEEGOTOUCH
-        return MInputMethodState::instance()->extendedAttributes(m_id).value("/keys").value("actionKey").value("enabled").toBool();
+#ifdef HAVE_MALIIT
+        return extension.attributes().value("/keys/actionKey/enabled").toBool();
 #else
         return false;
 #endif
     }
 
     void setActionKeyEnabled( bool isEnabled ) {
-#ifdef HAVE_MEEGOTOUCH
-        MInputMethodState::instance()->
-                 setExtendedAttribute(m_id,
-                                      "/keys", "actionKey",
-                                      "enabled", QVariant(isEnabled) );
+#ifdef HAVE_MALIIT
+        extension.setAttribute("/keys/actionKey/enabled", QVariant(isEnabled));
         emit actionKeyEnabledChanged();
 #else
         Q_UNUSED(isEnabled);
@@ -98,19 +92,16 @@ public:
     }
 
     QString actionKeyLabel() const {
-#ifdef HAVE_MEEGOTOUCH
-        return MInputMethodState::instance()->extendedAttributes(m_id).value("/keys").value("actionKey").value("label").toString();
+#ifdef HAVE_MALIIT
+        return extension.attributes().value("/keys/actionKey/label").toString();
 #else
         return QString();
 #endif
     }
 
     void setActionKeyLabel( QString newLabel ) {
-#ifdef HAVE_MEEGOTOUCH
-        MInputMethodState::instance()->
-                 setExtendedAttribute(m_id,
-                                      "/keys", "actionKey",
-                                      "label", QVariant(newLabel) );
+#ifdef HAVE_MALIIT
+        extension.setAttribute("/keys/actionKey/label", QVariant(newLabel));
         emit actionKeyLabelChanged();
 #else
         Q_UNUSED(newLabel);
@@ -118,19 +109,16 @@ public:
     }
 
     QString actionKeyIcon() const {
-#ifdef HAVE_MEEGOTOUCH
-        return MInputMethodState::instance()->extendedAttributes(m_id).value("/keys").value("actionKey").value("icon").toString();
+#ifdef HAVE_MALIIT
+        return extension.attributes().value("/keys/actionKey/icons").toString();
 #else
         return QString();
 #endif
     }
 
     void setActionKeyIcon( QString newIcon ) {
-#ifdef HAVE_MEEGOTOUCH
-        MInputMethodState::instance()->
-                 setExtendedAttribute(m_id,
-                                      "/keys", "actionKey",
-                                      "icon", QVariant(newIcon) );
+#ifdef HAVE_MALIIT
+        extension.setAttribute("/keys/actionKey/icon", QVariant(newIcon));
         emit actionKeyIconChanged();
 #else
         Q_UNUSED(newIcon);
@@ -138,9 +126,9 @@ public:
     }
 
     Q_INVOKABLE void registerInputElement(QDeclarativeItem *element) const {
-#ifdef HAVE_MEEGOTOUCH
+#ifdef HAVE_MALIIT
         if (element)
-            element->setProperty("meego-inputmethod-attribute-extension-id",m_id);
+            element->setProperty("meego-inputmethod-attribute-extension-id", extension.id());
 #else
         Q_UNUSED(element);
 #endif
@@ -155,8 +143,8 @@ signals:
 public slots:
 
 private:
-#ifdef HAVE_MEEGOTOUCH
-    int m_id;
+#ifdef HAVE_MALIIT
+    Maliit::AttributeExtension extension;
 #endif
 };
 

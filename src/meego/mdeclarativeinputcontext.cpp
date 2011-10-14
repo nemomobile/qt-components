@@ -47,9 +47,9 @@
 #include <QClipboard>
 #include <QDebug>
 
-#ifdef HAVE_MEEGOTOUCH
-#include <MInputMethodState>
-#include "mpreeditinjectionevent.h"
+#ifdef HAVE_MALIIT
+#include <maliit/inputmethod.h>
+#include <maliit/preeditinjectionevent.h>
 #endif
 
 #include "mdeclarativeinputcontext.h"
@@ -91,9 +91,9 @@ MDeclarativeInputContextPrivate::MDeclarativeInputContextPrivate(MDeclarativeInp
     , sipVkbComponent(NULL)
     , sipVkbTextField(NULL)
 {
-#ifdef HAVE_MEEGOTOUCH
+#ifdef HAVE_MALIIT
     simulateSip = false;
-    QObject::connect(MInputMethodState::instance(), SIGNAL(inputMethodAreaChanged(const QRect &)),
+    QObject::connect(Maliit::InputMethod::instance(), SIGNAL(areaChanged(const QRect &)),
                      q, SLOT(_q_sipChanged(const QRect &)));
 #endif
 }
@@ -149,25 +149,25 @@ MDeclarativeInputContext::~MDeclarativeInputContext()
 
 void MDeclarativeInputContext::setKeyboardOrientation(MDeclarativeScreen::Orientation orientation)
 {
-#ifdef HAVE_MEEGOTOUCH
-    if (MInputMethodState::instance()->inputMethodArea().isEmpty()) {
-        M::OrientationAngle angle = M::Angle0;
+#ifdef HAVE_MALIIT
+    if (Maliit::InputMethod::instance()->area().isEmpty()) {
+        Maliit::OrientationAngle angle = Maliit::Angle0;
         switch(orientation) {
         case MDeclarativeScreen::Landscape:
-            angle = M::Angle0;
+            angle = Maliit::Angle0;
             break;
         case MDeclarativeScreen::PortraitInverted:
-            angle = M::Angle90;
+            angle = Maliit::Angle90;
             break;
         case MDeclarativeScreen::LandscapeInverted:
-            angle = M::Angle180;
+            angle = Maliit::Angle180;
             break;
         case MDeclarativeScreen::Portrait:
-            angle = M::Angle270;
+            angle = Maliit::Angle270;
             break;
         }
 
-        MInputMethodState::instance()->setActiveWindowOrientationAngle(angle);
+        Maliit::InputMethod::instance()->setOrientationAngle(angle);
     }
 #else
     Q_UNUSED(orientation);
@@ -186,7 +186,7 @@ bool MDeclarativeInputContext::softwareInputPanelVisible() const
 
 QRect MDeclarativeInputContext::softwareInputPanelRect() const
 {
-#ifdef HAVE_MEEGOTOUCH
+#ifdef HAVE_MALIIT
     return d->sipRect;
 #else
     return QRect(d->sipSimulationRect);
@@ -282,10 +282,10 @@ void MDeclarativeInputContext::simulateSipClose()
 
 bool MDeclarativeInputContext::setPreeditText(const QString &newPreedit, int eventCursorPosition, int replacementStart, int replacementLength)
 {
-#ifdef HAVE_MEEGOTOUCH
+#ifdef HAVE_MALIIT
     QInputContext *ic = qApp->inputContext();
     if (ic) {
-        MPreeditInjectionEvent event(newPreedit, eventCursorPosition);
+        Maliit::PreeditInjectionEvent event(newPreedit, eventCursorPosition);
         event.setReplacement(replacementStart, replacementLength);
         return ic->filterEvent(&event);
     }

@@ -21,6 +21,11 @@ meegotouch {
     DEFINES += HAVE_MEEGOTOUCH
 }
 
+maliit {
+    DEFINES += HAVE_MALIIT
+    PKGCONFIG += maliit-1.0
+}
+                                
 contains(DEFINES, HAVE_MEEGOGRAPHICSSYSTEM) {
     QT += meegographicssystemhelper
 }
