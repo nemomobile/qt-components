@@ -24,6 +24,8 @@ Item {
     property alias leftSelectionHandle: leftSelectionImage
     property alias rightSelectionHandle: rightSelectionImage
 
+    property bool ignoreClose: false
+
     onSelectionStartRectChanged: {
         Private.adjustPosition(contents);
     }
@@ -69,11 +71,13 @@ Item {
                       textInput.select(pos,h); // Select by character
                   }
                   onReleased: {
-                        // trim to word selection
-                        var selectionEnd = textInput.selectionEnd;
-                        textInput.cursorPosition = textInput.selectionStart;
-                        textInput.moveCursorSelection ( selectionEnd, TextEdit.SelectWords );
-                        Popup.open(textInput,textInput.positionToRectangle(textInput.cursorPosition));
+                      // trim to word selection
+                      ignoreClose = true;
+                      var selectionEnd = textInput.selectionEnd;
+                      textInput.cursorPosition = textInput.selectionStart;
+                      textInput.moveCursorSelection ( selectionEnd, TextEdit.SelectWords );
+                      Popup.open(textInput,textInput.positionToRectangle(textInput.cursorPosition));
+                      ignoreClose = false;
                   }
               }
               states: [
@@ -150,11 +154,14 @@ Item {
                       textInput.select(h,pos); // Select by character
                  }
                  onReleased: {
-                    // trim to word selection
-                    var selectionEnd = textInput.selectionEnd;
-                    textInput.cursorPosition = textInput.selectionStart;
-                    textInput.moveCursorSelection ( selectionEnd, TextEdit.SelectWords );
-                    Popup.open(textInput,textInput.positionToRectangle(textInput.cursorPosition));
+                      // trim to word selection
+                      ignoreClose = true;
+                      var selectionEnd = textInput.selectionEnd;
+                      textInput.cursorPosition = textInput.selectionStart;
+                      if (textInput == null) return;
+                      textInput.moveCursorSelection ( selectionEnd, TextEdit.SelectWords );
+                      Popup.open(textInput,textInput.positionToRectangle(textInput.cursorPosition));
+                      ignoreClose = false;
                  }
              }
              states: [
@@ -203,6 +210,7 @@ Item {
 
     Connections {
         target: Utils.findFlickable(textInput)
+        onContentXChanged: Private.adjustPosition(contents)
         onContentYChanged: Private.adjustPosition(contents)
         onMovementEnded: Popup.open(textInput,textInput.positionToRectangle(textInput.cursorPosition));
 

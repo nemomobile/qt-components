@@ -92,6 +92,9 @@ function close(input)
     if (!popup || !input || popup.textInput != input)
         return false;
 
+    if ( popup.ignoreClose )
+        return false;
+
     return closePopup(popup);
 }
 
@@ -160,7 +163,7 @@ function adjustPosition(handles)
     if (handles == null)
         return;
 
-    if (!handles.textInput) return;
+    if (handles.textInput == null) return;
 
     var input = handles.textInput;
 

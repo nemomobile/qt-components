@@ -44,6 +44,8 @@ import "UIConstants.js" as UI
 import "EditBubble.js" as Popup
 import "TextAreaHelper.js" as TextAreaHelper
 import "Magnifier.js" as MagnifierPopup
+import "SelectionHandles.js" as SelectionHandles
+
 FocusScope {
     id: root
 
@@ -132,7 +134,8 @@ FocusScope {
                 if (activeFocus) {
                     platformCloseSoftwareInputPanel();
                     Popup.close(textInput);
-                    if (textInput.selectionStart != textInput.selectionEnd)     
+                    SelectionHandles.close(textInput);
+                    if (textInput.selectionStart != textInput.selectionEnd)
                         textInput.deselect();
                       
                     __hadFocusBeforeMinimization = true                                                                                                                                                                                           
@@ -248,6 +251,7 @@ FocusScope {
             } else {                
                 platformCloseSoftwareInputPanel();
                 Popup.close(textInput);
+                SelectionHandles.close(textInput);
             }
         }
 
@@ -374,6 +378,7 @@ FocusScope {
         onAccepted: { root.accepted() } 
 
         Component.onDestruction: {
+            SelectionHandles.close(textInput);
             Popup.close(textInput);
         }
 
@@ -402,25 +407,36 @@ FocusScope {
 
             if (Popup.isOpened(textInput) && !Popup.isChangingInput())
                 Popup.close(textInput);
+            SelectionHandles.close(textInput);
         }
 
         onCursorPositionChanged: {
             if (MagnifierPopup.isOpened() &&
                 Popup.isOpened()) {
                 Popup.close(textInput);
-            } else if ((!mouseFilter.attemptToActivate ||
-                textInput.cursorPosition == textInput.text.length) &&
-                Popup.isOpened(textInput) &&
+            } else if (!mouseFilter.attemptToActivate ||
+                textInput.cursorPosition == textInput.text.length) {
+                if ( Popup.isOpened(textInput) &&
                 !Popup.isChangingInput()) {
                     Popup.close(textInput);
                     Popup.open(textInput,
                         textInput.positionToRectangle(textInput.cursorPosition));
+                }
+                if ( SelectionHandles.isOpened(textInput) && textInput.selectedText == "") {
+                    SelectionHandles.close( textInput );
+                }
+                if ( !SelectionHandles.isOpened(textInput) && textInput.selectedText != "") {
+                    SelectionHandles.open( textInput );
+                }
             }
         }
 
         onSelectedTextChanged: {
             if (Popup.isOpened(textInput) && !Popup.isChangingInput()) {
                 Popup.close(textInput);
+            }
+            if ( SelectionHandles.isOpened(textInput) && textInput.selectedText == "") {
+                SelectionHandles.close( textInput )
             }
         }
 
@@ -559,6 +575,8 @@ FocusScope {
                         Popup.open(textInput,editBubblePosition);
                         editBubblePosition = null
                     }
+                    if (textInput.selectedText != "")
+                        SelectionHandles.open( textInput );
                 }
                 attemptToActivate = false
             }
