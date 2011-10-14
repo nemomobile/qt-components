@@ -1,3 +1,15 @@
+qt-components (1.2~git20111014-1) maverick; urgency=low
+
+  * Fixes: NB#278097 The text in the password is field is shown in Nokia Account
+  * Fixes: NB#277693 Rotating TextField or TextArea when VKB open produces black screen
+  * Fixes: NB#284254 [TASK] Increase visibility time of the scroll indicator
+  * Fixes: NB#280479 Attempt to tap a space between words in TextArea opens EditBubble at the end of text
+  * Fixes: NB#276483 Cursor does not move to the beginning of the TextField, when start of text is not visible
+  * Fixes: NB#269305 Auto tests fail
+  * Fixes: NB#277291 Ovi Music shows error in console about root.model not being an object
+  
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Fri, 14 Oct 2011 13:25:00 +0300
+
 qt-components (1.2~git20111010-1) maverick; urgency=low
 
   * Fixes: NB#285532 Twitter: not able to open the twitter messages in a single click
