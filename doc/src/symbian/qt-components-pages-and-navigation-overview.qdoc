@@ -1,0 +1,229 @@
+/****************************************************************************
+**
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the Qt Components project.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file.
+**
+** Other Usage
+** Alternatively, this file may be used in accordance with the terms
+** and conditions contained in a signed written agreement between you
+** and Nokia.
+**
+**
+**
+**
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \page qt-components-pages-and-navigation-overview.html
+    \target pagenavigation
+    \ingroup qt-components-pattern
+    \title Page Based Application Navigation on Symbian
+    \brief An application has multiple pages of content and the user needs to
+    get from one page to next.
+
+    Qt Quick Components provides two methods for application navigation. The \l
+    PageStack system provides a way of navigating a hierarchy of pages. It is a
+    stack that you can push pages of content onto and pop pages off the stack.
+    The page at the top of the stack is what the user sees. The other method is
+    to create pages in \l{Tab}{tabs}. With the tabs system, the pages are
+    arranged in a tab and the user can select the pages by clicking on the tabs.
+
+    \section1 Page Component
+
+    A \l Page component serves as a container for other QML content. A page may
+    contain additional components such as a \l TextEdit or \l Button components.
+
+    A Page may be created by defining the page inline or by encapsulating it in
+    a \l Component element. Inline definitions of pages are ideal for small
+    pages, however, all of the pages will remain in memory during creation. To
+    exert control over the creation and destruction of a page, encapsulate them
+    in a \l Component element.
+
+    Alternatively, a page can be defined in its own .qml file. This makes it
+    easier to locate the source for each page and maintain the pages. It also
+    makes it easier to share page implementations between applications.
+
+    \section2 Attaching a Tool Bar to a Page
+
+    You can integrate the PageStack with the \l ToolBar. This allows the pages
+    to use the same instance of the ToolBar and run synchronized animations with
+    the \c push and \c pop operations. This integration happens at the root
+    level of your application, usually in the \l Window.
+
+    \snippet src/snippets/symbian/snippet-pagestack-toolbar.qml 1
+
+    The snippet above creates a PageStack and a ToolBar. The
+    \c toolBar property of the PageStack binds to the created toolbar.
+    This property binding allows the PageStack to update the application level
+    ToolBar instance automatically when it changes the active \l Page.
+
+    Because the ToolBar instance is already created, the only thing left
+    for the Page is to define the content - this is done by populating
+    the \c tools property of the Page.
+
+    In the snippet below, a \l ToolBarLayout is used to position the
+    \l {ToolButton} components.
+
+    \snippet src/snippets/symbian/snippet-pagestack-toolbar.qml 2
+
+    The \c tools content is re-parented to the ToolBar instance
+    when the page is shown.
+
+    \section1 Hierarchical Navigation with a PageStack
+
+    Pushing a page to the stack will make the page visible to the user. The
+    stack can store many pages and to navigate back, the stack can pop pages.
+    The stack can replace the top page with a different page (or pages) rather
+    than popping and pushing pages. In all these cases, the page stack performs
+    appropriate transition animations to help the user understand a change is
+    occurring.
+
+    \section2 Pushing Pages to the Stack
+
+    There are basically three ways you can push a page onto the stack:
+
+    \list 1
+
+        \o \bold File: Pass a file name (URL) for a page defined in a QML file:
+        For example: \c {pageStack.push(Qt.resolvedUrl("FilePage.qml"))}. The
+        stack then simply loads the page from the file.
+
+        \o \bold {Item reference}: Pass a reference to the item that defines the
+        page. For example, \c {pageStack.push(myPage)}, where \c myPage is an
+        instantiated object.
+
+        \o \bold {Component reference}: Pass a reference to a component that
+        defines a page, such as a declaration encapsulated in a \l Component
+        element. The stack then creates a new instance of that component.
+
+    \endlist
+
+    Encapsulating page definitions in a \l Component element means you can defer
+    their creation and memory does not need to be allocated until the page is
+    needed. Further, the page stack instantiates the page and destroys the
+    instance when the page is popped from the stack. This means you don't have
+    to worry about memory management since it is all handled by the page stack.
+    As well, pages as components allow multiple instances of a particular page
+    type to be at the stack. This means you can define one component with
+    configurable variations rather than defining a separate item for each
+    variation.
+
+
+    \section2 Page Navigation with ToolBars
+
+    The \l ToolBar instance can be used for page navigation.
+
+    \snippet src/snippets/symbian/snippet-pagestack-toolbar.qml 2
+
+    \snippet src/snippets/symbian/snippet-pagestack-toolbar.qml 4
+
+    The ToolButton can be bound to the \l PageStack commands such as \c push
+    and \c pop. This way the page navigation can be made more intuitive for
+    the end user.
+
+    \section2 Blocking User Actions During Page Transitions
+
+    The PageStack's \c busy property evaluates to \c true when the stack is
+    changing pages. The \c busy property is useful for notifying the application
+    when the stack changes to prevent unintentional events or user input.
+
+    \snippet src/snippets/symbian/snippet-pagestack-toolbar.qml 3
+
+    Binding this property can disable mouse interaction within a \l MouseArea.
+
+    \section1 Page Navigation with Tabs
+
+    Alternatively, the \l Tab component can contain \l Page items. The \e
+    parallel arrangement of pages are managed by the tab and clicking on a tab
+    switches the visible pages.
+
+    The buttons are implemented with the \l TabButton component. You can layout
+    these buttons as you like. In the ToolBar, the \l ButtonRow is used for
+    laying. This also changes the buttons graphical presentation to match the
+    ToolBar's look and feel.
+
+    \code
+    ToolBarLayout {
+        ToolButton {...} // back button
+        ButtonRow {
+            TabButton {...}
+            TabButton {...}
+    }
+    \endcode
+
+    You can use \l TabBarLayout, and \l TabBar in Symbian, to layout buttons for
+    a stand-alone tool bar. In this case, the you must position the
+    \l TabBarLayout.
+
+    \code
+    TabBarLayout {
+        anchors.top: parent.top
+        width: parent.width
+        TabButton {...}
+        TabButton {...}
+    }
+    \endcode
+
+    The tab content is managed by the \l TabGroup component whose child items
+    are content items.
+
+    \code
+    TabGroup {
+        anchors {...} // user needs to layout the tab group
+        Page { id: tab1Content }
+        Page { id: tab2Content }
+    }
+    \endcode
+
+    The button and the content items are linked together with the TabButton's \c
+    tab property.
+
+    \code
+    TabButton { id: tab1Button; tab: tab1Content }
+    \endcode
+
+    Once the linking is established, the TabButton and TabGroup components
+    manage the tab content switching and also highlight the corresponding tab
+    button.
+
+    \section2 Dynamic Tab Handling
+
+    In most cases, the tab count is static. Therefore, you can statically
+    allocate child items of \l TabGroup and the layouting component as described
+    above. In some cases, you have to add or remove tabs dynamically depending
+    on the application state.
+
+    You can append a tab by creating a new TabButton as a child of the layout
+    and similarly creating a new content item as the TabGroup's child. In
+    addition, you need to set the TabButton's \c tab property to point to
+    the new content item.
+
+    If you need to re-arrange the tab buttons, you need to clear the layout and
+    append the buttons again in the correct order. The item order in the
+    TabGroup does not affect the shown tab order.
+
+    You can remove a tab by deleting TabButton and the content item
+    instances with \c destroy().
+
+    \section2 Improving Performance
+
+    Use \c Qt.createComponent() to load the pages only when you need a page, use
+    \c Component.createObject() to parse the page and create an instance of it.
+    Note that normal property bindings cannot be used because you are using a
+    component, rather than a specific QML object. To get around this, you need
+    to specify a map of properties and values when the component is
+    instantiated. See \l {Dynamic Object Management in QML} for more details.
+
+*/

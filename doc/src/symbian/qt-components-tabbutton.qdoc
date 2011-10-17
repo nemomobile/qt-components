@@ -51,7 +51,7 @@
     button has a text title and refers to the id of the tab content associated
     with the button.
 
-    \snippet src/snippets/common/snippet-tabgroup.qml 1
+    \snippet src/snippets/symbian/snippet-tabgroup.qml 1
 
     See the \l TabGroup documentation for more information about creating a
     tabbed interface.

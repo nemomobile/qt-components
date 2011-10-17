@@ -37,20 +37,59 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
+import QtQuick 1.1
+import com.nokia.symbian 1.1
 
 //! [0]
-import QtQuick 1.1
-import Qt.labs.components.native 1.0
+Window {
+    height: 350
+    width: 350
 
-Page {
-    id: filePage
-    property alias message: pageText.text
-    Text {
-        id: pageText
-        anchors.centerIn: parent
-        text: "page from file"
-        font.pointSize: 25
-        color: "white"
+    //! [1]
+    PageStack {
+        id: pageStack
+        toolBar: commonToolBar
+        anchors { left: parent.left; right: parent.right; top: parent.top; bottom: toolBar.top }
     }
+
+    ToolBar {
+        id: commonToolBar
+        anchors.bottom: parent.bottom
+    }
+    //! [1]
+
+    //! [2]
+    Page {
+        id: firstPage
+        tools: ToolBarLayout {
+            id: pageSpecificTools
+            ToolButton { iconSource: "toolbar-back"; onClicked: Qt.quit() }
+            ToolButton { text: "next page"; onClicked: pageStack.push(secondPage) }
+        }
+    }
+    //! [2]
+
+    //! [4]
+    Page {
+        id: secondPage
+        tools: ToolBarLayout {
+            ToolButton { iconSource: "toolbar-back"; onClicked: pageStack.pop() }
+        }
+    }
+    //! [4]
+
+    //! [3]
+    MouseArea {
+        anchors.fill: parent
+        enabled: pageStack.busy
+    }
+    //! [3]
+
+    //! [5]
+    Component.onCompleted: {
+        pageStack.push(firstPage)
+    }
+    //! [5]
+
 }
 //! [0]

@@ -71,7 +71,7 @@
 
     The following code creates a TabGroup with three items in it.
 
-    \snippet src/snippets/common/snippet-tabgroup.qml 0
+    \snippet src/snippets/symbian/snippet-tabgroup.qml 0
 
     \section1 Creating a Dynamic Tabbed Interface
 
@@ -82,7 +82,7 @@
 
     The \l TabBarLayout and \l TabGroup go together
 
-    \snippet src/snippets/common/snippet-tab-interface-dynamic.qml 0
+    \snippet src/snippets/symbian/snippet-tab-interface-dynamic.qml 0
 
     \section2 Adding Pages to The Interface
 
@@ -90,7 +90,7 @@
     snippet here creates three different pages. Each page has a button which is
     added to the tab bar layout and content which is added to the tab group.
 
-    \snippet src/snippets/common/snippet-tab-interface-dynamic.qml 7
+    \snippet src/snippets/symbian/snippet-tab-interface-dynamic.qml 7
 
     \section2 Removing Pages from The Interface
 
@@ -101,14 +101,14 @@
     buttons in a separate list, or you search the children of the TabBarLayout
     to find the button. The code snippet here uses the searching option.
 
-    \snippet src/snippets/common/snippet-tab-interface-dynamic.qml 6
+    \snippet src/snippets/symbian/snippet-tab-interface-dynamic.qml 6
 
     \section2 Finding a Particular Tab in a Tab Bar Layout
 
     If you don't have an array keeping track of the buttons, you can also search
     the child items of the tab bar layout item to find the tab you want.
 
-    \snippet src/snippets/common/snippet-tab-interface-dynamic.qml 5
+    \snippet src/snippets/symbian/snippet-tab-interface-dynamic.qml 5
 
 
 

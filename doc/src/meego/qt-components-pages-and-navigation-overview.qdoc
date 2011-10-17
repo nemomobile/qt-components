@@ -29,7 +29,7 @@
     \page qt-components-pages-and-navigation-overview.html
     \target pagenavigation
     \ingroup qt-components-pattern
-    \title Page Based Application Navigation
+    \title Page Based Application Navigation on MeeGo
     \brief An application has multiple pages of content and the user needs to
     get from one page to next.
 
@@ -62,7 +62,7 @@
     the \c push and \c pop operations. This integration happens at the root
     level of your application, usually in the \l Window.
 
-    \snippet src/snippets/common/snippet-pagestack-toolbar.qml 1
+    \snippet src/snippets/meego/snippet-pagestack-toolbar.qml 1
 
     The snippet above creates a PageStack and a ToolBar. The
     \c toolBar property of the PageStack binds to the created toolbar.
@@ -76,7 +76,7 @@
     In the snippet below, a \l ToolBarLayout is used to position the
     \l {ToolButton} components.
 
-    \snippet src/snippets/common/snippet-pagestack-toolbar.qml 2
+    \snippet src/snippets/meego/snippet-pagestack-toolbar.qml 2
 
     The \c tools content is re-parented to the ToolBar instance
     when the page is shown.
@@ -125,9 +125,9 @@
 
     The \l ToolBar instance can be used for page navigation.
 
-    \snippet src/snippets/common/snippet-pagestack-toolbar.qml 2
+    \snippet src/snippets/meego/snippet-pagestack-toolbar.qml 2
 
-    \snippet src/snippets/common/snippet-pagestack-toolbar.qml 4
+    \snippet src/snippets/meego/snippet-pagestack-toolbar.qml 4
 
     The ToolButton can be bound to the \l PageStack commands such as \c push
     and \c pop. This way the page navigation can be made more intuitive for
@@ -139,7 +139,7 @@
     changing pages. The \c busy property is useful for notifying the application
     when the stack changes to prevent unintentional events or user input.
 
-    \snippet src/snippets/common/snippet-pagestack-toolbar.qml 3
+    \snippet src/snippets/meego/snippet-pagestack-toolbar.qml 3
 
     Binding this property can disable mouse interaction within a \l MouseArea.
 

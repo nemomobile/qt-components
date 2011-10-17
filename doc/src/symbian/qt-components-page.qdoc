@@ -67,7 +67,7 @@
     The code snippet below defines a page as an item. It is a page with a text
     that can be accessed externally.
 
-    \snippet src/snippets/common/snippet-pagestack-page.qml 1
+    \snippet src/snippets/symbian/snippet-pagestack-page.qml 1
 
 
     \section2 Example of a QML page in a component file
@@ -77,14 +77,14 @@
     the page in its own file making its maintenance easy. The following
     code snippet is from \c FilePage.qml file.
 
-    \snippet src/snippets/common/FilePage.qml 0
+    \snippet src/snippets/symbian/FilePage.qml 0
 
     \section2 Example of a QML Component Page
 
     The page described earlier is an example of a simple page declared as a QML
     item. Declaring this same page as a component looks like this:
 
-    \snippet src/snippets/common/snippet-pagestack-page.qml 0
+    \snippet src/snippets/symbian/snippet-pagestack-page.qml 0
 
 
     \section1 Defining Toolbar Contents of a Page

@@ -94,17 +94,6 @@
     \section1 Interface Designs
 
     Interface designs using QML differs from the traditional Qt UI designs. With
-    the introduction of Qt Quick Components, there are several guidelines to
-    help with making smart development decisions.
-
-    \list
-        \o \l{Page Based Application Navigation} - Both MeeGo and Symbian accommodate
-        navigation with \l {Page}{Pages}.
-        \o \l {List Components for Symbian} - Symbian additions to the \l ListView
-        elements
-        \o \l {Creating Scalable Applications}{Scalability Guide} - Mobile
-        applications have \e scalable user interfaces. This guide uses the Qt
-        Quick Components for creating a real-world scalable application.
-        \o \l {Split Screen Software Input Panel and Layout} {Split Screen Software Input Panel and Layout} - Software input panel as part of application layout.
-    \endlist
+    the introduction of Qt Quick Components, there are several
+    \l{Common Interface Designs}{guidelines} to help with making smart development decisions.
 */

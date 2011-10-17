@@ -38,18 +38,61 @@
 **
 ****************************************************************************/
 import QtQuick 1.1
-import Qt.labs.components.native 1.0
+import com.nokia.symbian 1.1
 
 //! [0]
 Window {
-    StatusBar {
-        id: statusbar
-        anchors.top: parent.top
-    }
+    height: 350
+    width: 350
 
-    Item {
-        id: content
-        anchors { top: statusbar.bottom; left: parent.left; right: parent.right; bottom: parent.bottom }
+    //! [1]
+    // define a tab bar layout with three buttons and link them to the content
+    TabBarLayout {
+        id: tabBarLayout
+        anchors { left: parent.left; right: parent.right; top: parent.top }
+        TabButton { tab: tab1content; text: "Tab 1" }
+        TabButton { tab: tab2content; text: "Tab 2" }
+        TabButton { tab: tab3content; text: "Tab 3" }
+    }
+    //! [1]
+
+    // define a blank tab group so we can add the pages of content later
+    TabGroup {
+        id: tabGroup
+        anchors { left: parent.left; right: parent.right; top: tabBarLayout.bottom; bottom: parent.bottom }
+
+        // define the content for tab 1
+        Page {
+            id: tab1content
+            Text {
+                anchors.centerIn: parent
+                text: "Tab 1 content"
+                font.pointSize: 25
+                color: "white"
+            }
+        }
+
+        // define the content for tab 2
+        Page {
+            id: tab2content
+            Text {
+                anchors.centerIn: parent
+                text: "Tab 2 content"
+                font.pointSize: 25
+                color: "pink"
+            }
+        }
+
+        // define content for tab 3
+        Page {
+            id: tab3content
+            Text {
+                anchors.centerIn: parent
+                text: "Tab 3 content"
+                font.pointSize: 25
+                color: "cyan"
+            }
+        }
     }
 }
 //! [0]
