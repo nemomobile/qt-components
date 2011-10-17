@@ -34,7 +34,7 @@
 
     \brief Software input panel as part of application layout.
 
-    The Qt Quick Components for Symbian 1.1 release replaces the full screen
+    Qt Quick Components 1.1 for Symbian replaces the full screen
     software input panel with a split screen software input panel (\e{SIP}).
     The split screen SIP covers roughly half of the screen and appears at the
     bottom of the screen. When designing application layout using version 1.1,

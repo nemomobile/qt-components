@@ -51,8 +51,8 @@
     following Qt versions:
     
     \list
-    \o Qt Quick Components for Symbian 1.1 release requires Qt 4.7.4 or newer
-    \o Qt Quick Components for Symbian 1.0 release requires Qt 4.7.3 or newer
+    \o Qt Quick Components 1.1 for Symbian requires Qt 4.7.4 or newer
+    \o Qt Quick Components 1.0 for Symbian requires Qt 4.7.3 or newer
     \endlist
 
     \note The Symbian toolchain is only available for Windows. Developers using 

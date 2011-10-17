@@ -29,7 +29,7 @@
     \title What's New in the Qt Quick Components for Symbian Release
 
     \section1 What's new in 1.1
-    The Symbian Components v1.1 uses QtQuick v1.1, which creates
+    Qt Quick Components 1.1 for Symbian uses QtQuick v1.1, which creates
     a hard dependency to the Qt 4.7.4. The new QtQuick version brings some
     improvements including QML revision control, performance optimizations
     and some bug fixes. Also the new version includes
@@ -41,7 +41,7 @@
     the visual appearance of the component. See
     \l {Using Inverted Style with Symbian Components} for more information.
     
-    The Qt Quick Components for Symbian 1.1 release replaces the full screen
+    Qt Quick Components 1.1 for Symbian replaces the full screen
     software input panel with a split screen software input panel.
 
     Also some new components are added:
