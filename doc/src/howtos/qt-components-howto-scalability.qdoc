@@ -319,6 +319,25 @@
 
     \endlist
 
+    \note Some examples import the experimental "Qt.labs.components.native 1.0" module.
+    It is not an officially-supported QML module and therefore not covered in Qt Quick
+    Components documentation. The import of the "Qt.labs.components.native 1.0" module can
+    be used to ease the starting phase of a new application project if the application
+    is targeted for both Symbian and MeeGo 1.2 Harmattan devices. By using the
+    \c "import Qt.labs.components.native 1.0" statement it is not necessary to break code
+    into branches with different platform-specific imports. Because the platform-specific
+    APIs are very similar with "Qt.labs.components.native 1.0" module’s API, it is possible
+    to make cross-platform code by using "Qt.labs.components.native 1.0" module import as
+    demonstrated in the examples. However the module is not identical in Symbian and
+    MeeGo platforms. Final published applications should always import one of the following
+    official platform-specific modules:
+
+    \code
+    import com.nokia.symbian 1.1    // Symbian components
+    import com.nokia.meego 1.1      // MeeGo components
+    \endcode
+
+
 */
 
 /*!

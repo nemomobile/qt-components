@@ -39,6 +39,12 @@
 ****************************************************************************/
 
 import QtQuick 1.1
+// Note: This example imports the “Qt.labs.components.native 1.0" module that allows the same
+// Qt Quick Components example code to run as is in both MeeGo 1.2 Harmattan and Symbian platforms
+// during the application development. However, real published applications should not import this
+// module but one of the following platform-specific modules instead:
+// import com.nokia.symbian 1.1    // Symbian components
+// import com.nokia.meego 1.1      // MeeGo components
 import Qt.labs.components.native 1.0
 
 Loader {
