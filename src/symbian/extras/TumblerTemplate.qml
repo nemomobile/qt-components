@@ -206,7 +206,7 @@ Item {
 
                 onClicked: {
                     if (template.view.interactive) {
-                        tumblerColumn.selectedIndex = index;  // got index from delegate
+                        view.currentIndex = index; // select clicked index
                         root.changed(template.index);
                     }
                 }
