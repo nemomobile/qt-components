@@ -84,6 +84,7 @@ CFbsBitmap* CSharedBitmapSubcriber::CreateSharedBitmapL( TBool *aIsMirrored )
 #ifdef Q_DEBUG_SHARED_STATUSBAR
     qDebug() << "CSharedBitmapSubcriber::CreateSharedBitmapL() start";
 #endif
+    Subscribe();
     TInt handle(0);
     User::LeaveIfError( iProperty.Get( handle ) );
 
@@ -114,8 +115,11 @@ CFbsBitmap* CSharedBitmapSubcriber::CreateSharedBitmapL( TBool *aIsMirrored )
 
 void CSharedBitmapSubcriber::Subscribe()
     {
-    iProperty.Subscribe(iStatus);
-    SetActive();
+    if (!IsActive())
+        {
+        iProperty.Subscribe(iStatus);
+        SetActive();
+        }
     }
 
 void CSharedBitmapSubcriber::RunL()

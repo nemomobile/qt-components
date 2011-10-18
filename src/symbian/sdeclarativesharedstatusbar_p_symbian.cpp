@@ -199,13 +199,8 @@ void SDeclarativeSharedStatusBarPrivate::setForeground(bool foreground)
 #ifdef Q_DEBUG_SHARED_STATUSBAR
     qDebug() << "SDeclarativeSharedStatusBarPrivate::setForeground() foreground: " << foreground;
 #endif
-    if (foreground) {
-         if (!subscriber)
-             QT_TRAP_THROWING(subscriber = CSharedBitmapSubcriber::NewL(*this));
-    } else {
-        delete subscriber;
-        subscriber = 0;
-    }
+    if (!foreground)
+        subscriber->Cancel();
 }
 
 void SDeclarativeSharedStatusBarPrivate::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
