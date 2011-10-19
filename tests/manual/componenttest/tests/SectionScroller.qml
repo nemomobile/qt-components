@@ -111,6 +111,7 @@ Item {
         ListElement { name: "Multi-character"; alphabet: "2001, Apr 24" }
         ListElement { name: "Multi-character"; alphabet: "2001, Apr 24" }
         ListElement { name: "Multi-character"; alphabet: "2001, Apr 24" }
+        ListElement { name: "The long line of text is sad because he does not fit on a small screen"; alphabet: "2001, Apr 24" }
 
     }
 
@@ -130,7 +131,9 @@ Item {
                 anchors.leftMargin: platformStyle.paddingLarge
                 anchors.top: parent.top
                 anchors.topMargin: platformStyle.paddingLarge
+                anchors.right: parent.right
                 horizontalAlignment: Text.AlignLeft
+                elide: Text.ElideRight
                 text: name + " (index " + index + ")"
             }
         }
@@ -148,7 +151,9 @@ Item {
                 anchors.leftMargin: platformStyle.paddingSmall
                 anchors.top: parent.top
                 anchors.topMargin: platformStyle.paddingSmall
+                anchors.right: parent.right
                 horizontalAlignment: Text.AlignLeft
+                elide: Text.ElideRight
                 color: platformStyle.colorNormalLight
                 text: section
                 font { bold: true; pointSize: platformStyle.fontSizeLarge }

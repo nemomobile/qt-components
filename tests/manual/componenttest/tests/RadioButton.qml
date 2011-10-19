@@ -50,6 +50,8 @@ Item {
     CheckableGroup { id: group3 }
 
     Column {
+        anchors.fill: parent
+
         Row {
             // Don't mirror ascending number order
             LayoutMirroring.enabled: false
@@ -134,6 +136,11 @@ Item {
                 text: "9"
                 platformExclusiveGroup: group3
             }
+        }
+        RadioButton {
+            id: longTextButton
+            width: parent.width
+            text: "The long line of text is sad because he does not fit on a small screen"
         }
     }
 }

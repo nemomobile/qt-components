@@ -42,6 +42,7 @@ import QtQuick 1.1
 import com.nokia.symbian 1.1
 
 Item {
+    anchors.fill: parent
 
     Column {
         anchors.fill: parent
@@ -71,6 +72,20 @@ Item {
             id: checkBox3
             enabled: checkBox2.checked
             text: checkBox2.checked ? "enabled" : "disabled"
+        }
+
+        CheckBox {
+            id: checkBox4
+            text: "The long line of text is sad because he does not fit on a small screen"
+            width: parent.width
+
+            Rectangle {
+                anchors { left: parent.left; verticalCenter: parent.verticalCenter }
+                width: parent.width
+                height: parent.height
+                color: "#00000000"
+                border.color: "red"
+            }
         }
     }
 }
