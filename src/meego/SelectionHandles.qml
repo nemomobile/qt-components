@@ -222,6 +222,21 @@ Item {
         onCurrentOrientationChanged: Private.adjustPosition(contents)
     }
 
+    function findWindowRoot() {
+        var item = Utils.findRootItem(contents, "windowRoot");
+        if (item.objectName != "windowRoot")
+            item = Utils.findRootItem(contents, "pageStackWindow");
+        return item;
+    }
+
+    Connections {
+       target: findWindowRoot();
+       ignoreUnknownSignals: true
+       onOrientationChangeFinished: {
+           Private.adjustPosition(contents)
+       }
+    }
+
     state: "closed"
 
     states: [
