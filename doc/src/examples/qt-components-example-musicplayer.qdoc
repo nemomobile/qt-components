@@ -68,7 +68,7 @@
     compiled to run in fullscreen mode. Both FULLSCREEN and DOCUMENT_GALLERY
     are enabled for Symbian in musicplayer.pro.
 
-    \snippet demos/musicplayer/main.cpp 0
+    \snippet demos/symbian/musicplayer/main.cpp 0
 
     In addition to the main.cpp file, the application has one C++ class called
     MediaKeysObserver which is used to make media key events of a device
@@ -99,7 +99,7 @@
     the page stack. This way the music player starts directly from the view
     where the user can add songs to the playlist.
 
-    \snippet demos/musicplayer/qml/mainwindow.qml 0
+    \snippet demos/symbian/musicplayer/qml/mainwindow.qml 0
 
     MediaKeysObserver is used in the mainwindow to map the media key events to
     corresponding actions.
@@ -120,7 +120,7 @@
     instance of ToolBarLayout. This ToolBarLayout defines the toolbar for that
     page and automatically positions it's contents.
 
-    \snippet demos/musicplayer/qml/ControlsPage.qml 0
+    \snippet demos/symbian/musicplayer/qml/ControlsPage.qml 0
 
     Inside the ToolBarLayout is a set of ToolButtons with appropriate images or
     text and actions assigned to them. The ToolButtons also have properties
@@ -128,7 +128,7 @@
     checkable, and in case of checkable buttons, if the button is checked or
     not.
 
-    \snippet demos/musicplayer/qml/ControlsPage.qml 2
+    \snippet demos/symbian/musicplayer/qml/ControlsPage.qml 2
 
     The song position indicator can also be used for seeking within a song. It
     is implemented using the Slider component. The maximum value of the slider
@@ -140,7 +140,7 @@
     In order to allow smooth dragging, the seek function only takes effect after
     dragging has finished. This also prevents a binding loop from occurring.
 
-    \snippet demos/musicplayer/qml/ControlsPage.qml 1
+    \snippet demos/symbian/musicplayer/qml/ControlsPage.qml 1
 
     \section1 Playlist component
 
@@ -152,7 +152,7 @@
     ListView element to provide information about the current position in the
     list while scrolling or flicking.
 
-    \snippet demos/musicplayer/qml/Playlist.qml 1
+    \snippet demos/symbian/musicplayer/qml/Playlist.qml 1
 
     \section1 Playlist page
 
@@ -171,13 +171,13 @@
     The CheckBox component is used in the playlist delegate to provide the
     selecting functionality in the remove mode.
 
-    \snippet demos/musicplayer/qml/Playlist.qml 0
+    \snippet demos/symbian/musicplayer/qml/Playlist.qml 0
 
     In the remove mode the PlaylistPage also provides a menu for
     selecting/unselecting all items. The menu is implemented using a Menu
     component populated with MenuItem components.
 
-    \snippet demos/musicplayer/qml/PlaylistPage.qml 1
+    \snippet demos/symbian/musicplayer/qml/PlaylistPage.qml 1
 
     \image example-musicplayer-menu.png
 
@@ -191,7 +191,7 @@
     the two ToolBarLayouts is done by calling the ToolBar's setTools method with
     "replace" transition.
 
-    \snippet demos/musicplayer/qml/PlaylistPage.qml 0
+    \snippet demos/symbian/musicplayer/qml/PlaylistPage.qml 0
 
     \section1 Gallery Page
 
@@ -212,7 +212,7 @@
     path and duration information of all accessible and supported audio files on
     the device.
 
-    \snippet demos/musicplayer/qml/GalleryPage.qml 0
+    \snippet demos/symbian/musicplayer/qml/GalleryPage.qml 0
 
     As the model is not custom made for this demo, we can't just add a
     "selected" property like was done in the playlist. Instead, an additional
@@ -220,7 +220,7 @@
     gallery model. We use the DocumentGalleryModel's onCountChanged signal to
     keep the selection model's item count equal to the gallery model.
 
-    \snippet demos/musicplayer/qml/GalleryPage.qml 1
+    \snippet demos/symbian/musicplayer/qml/GalleryPage.qml 1
 
     \section1 File Picker Page
 

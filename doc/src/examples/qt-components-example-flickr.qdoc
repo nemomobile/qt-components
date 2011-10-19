@@ -58,7 +58,7 @@
     flickr.qml which starts loading the first page and shows a splash screen
     for a short period while network requests to Flickr service are being made.
 
-    \snippet demos/flickr/main.cpp 0
+    \snippet demos/symbian/flickr/main.cpp 0
 
     \section1 flickr.qml
 
@@ -99,7 +99,7 @@
     Window element in flickr.qml. The \c PageStack.replace() function is used similarly in
     the DetailsPage to replace itself with the id \c largeImagePage.
 
-    \snippet demos/flickr/qml/flickr.qml 0
+    \snippet demos/symbian/flickr/qml/flickr.qml 0
 
     \section1 Thumbnail Page
 
@@ -107,7 +107,7 @@
     from Flickr as thumbnails. The ThumbnailPage implements this view, it
     shows the thumbnails differently in portrait and landscape orientations.
 
-    \snippet demos/flickr/qml/ThumbnailPage.qml 0
+    \snippet demos/symbian/flickr/qml/ThumbnailPage.qml 0
 
     The property \c inPortrait is used to control whether a list of
     thumbnails or a grid of thumbnails is loaded by a Loader element.
@@ -147,12 +147,12 @@
     The LargeImagePage shows a ProgressBar while loading an image. Once the image
     is loaded, ProgressBar will be hidden and the actual image is shown.
 
-    \snippet demos/flickr/qml/LargeImagePage.qml 0
+    \snippet demos/symbian/flickr/qml/LargeImagePage.qml 0
 
     The Slider component is used to zoom the image, dragging the Slider handle scales
     the image creating a zoom effect.
 
-    \snippet demos/flickr/qml/LargeImagePage.qml 1
+    \snippet demos/symbian/flickr/qml/LargeImagePage.qml 1
 
     If the zoom level is such that the image is larger than the screen size, scroll
     decorators are visible. ScrollDecorator indicates the part of the image that
@@ -160,7 +160,7 @@
     bound to the id \c flickable, which identifies the Flickable element that
     wraps the image.
 
-    \snippet demos/flickr/qml/LargeImagePage.qml 2
+    \snippet demos/symbian/flickr/qml/LargeImagePage.qml 2
 
     The following image depicts the LargeImagePage component in action, the scroll
     decorators are visible as the user has zoomed in on the image.
