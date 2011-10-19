@@ -57,6 +57,8 @@ CommonDialog {
         MenuItem {
             platformInverted: root.platformInverted
             text: modelData
+            privateSelectionIndicator: selectedIndex == index
+
             onClicked: {
                 selectedIndex = index
                 root.accept()

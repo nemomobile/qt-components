@@ -204,7 +204,7 @@ Item {
     SelectionDialog {
         id: selectionDialog
         titleText: "Dialog Header #1 123456789012345678901234567890"
-        selectedIndex: 1
+        selectedIndex: -1
 
         model: ListModel {
             ListElement { name: "ListTitle #1" }
@@ -215,33 +215,53 @@ Item {
         }
     }
 
+    SelectionDialog {
+        id: selectionDialogWithDefault
+        titleText: "Selection Dialog"
+        selectedIndex: 2
+
+        model: ListModel {
+            ListElement { name: "Select Me!" }
+            ListElement { name: "No, Select Me!" }
+            ListElement { name: "Default Selection" }
+            ListElement { name: "123456789012345678901234567890" }
+            ListElement { name: "Long Item Name #5 Does Not Fit in Portrait" }
+        }
+    }
+
     Column {
         anchors.fill: parent
         anchors.margins: platformStyle.paddingSmall
         spacing: platformStyle.paddingSmall
 
         Button {
-            width: button4.width
-            text: "Dialog 1"
+            width: defaultSelectionButton.width
+            text: "Progress Bar"
             onClicked: dialogWithProgressBar.open()
         }
 
         Button {
-            width: button4.width
-            text: "Dialog 2"
+            width: defaultSelectionButton.width
+            text: "Scroll Bar"
             onClicked: dialogWithScrollBar.open()
         }
 
         Button {
-            width: button4.width
-            text: "Custom dialog"
+            width: defaultSelectionButton.width
+            text: "Custom"
             onClicked: customDialog.open()
         }
 
         Button {
-            id: button4
-            text: "Selection Dialog"
+            width: defaultSelectionButton.width
+            text: "Selection"
             onClicked: selectionDialog.open()
+        }
+
+        Button {
+            id: defaultSelectionButton
+            text: "Selection With Default Value"
+            onClicked: selectionDialogWithDefault.open()
         }
     }
 }
