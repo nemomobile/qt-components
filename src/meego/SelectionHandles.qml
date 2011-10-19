@@ -25,6 +25,7 @@ Item {
     property alias rightSelectionHandle: rightSelectionImage
 
     property bool ignoreClose: false
+    property alias privateRect: rect
 
     onSelectionStartRectChanged: {
         Private.adjustPosition(contents);

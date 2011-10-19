@@ -428,6 +428,7 @@ FocusScope {
                 if ( !SelectionHandles.isOpened(textInput) && textInput.selectedText != "") {
                     SelectionHandles.open( textInput );
                 }
+                SelectionHandles.adjustPosition();
             }
         }
 
@@ -577,6 +578,7 @@ FocusScope {
                     }
                     if (textInput.selectedText != "")
                         SelectionHandles.open( textInput );
+                    SelectionHandles.adjustPosition();
                 }
                 attemptToActivate = false
             }
@@ -590,6 +592,7 @@ FocusScope {
                     magnifier.xCenter = mapToItem(magnifier.sourceItem,mappedPosMf.x,0).x;
                     magnifier.x = mappedPos.x;
                 }
+                SelectionHandles.adjustPosition();
             }
 
             onDoubleClicked: {
