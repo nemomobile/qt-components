@@ -511,11 +511,18 @@ bool MDeclarativeScreen::eventFilter(QObject *o, QEvent *e) {
         if(d->topLevelWidget && d->topLevelWidget->parent() == NULL) { //it's a toplevelwidget
             d->setMinimized(d->topLevelWidget->windowState() & Qt::WindowMinimized);
             if(d->isMinimized()) {
-                //minimized apps are forced to portrait
                 d->allowedOrientationsBackup = d->allowedOrientations;
+
                 //set allowedOrientations manually, because setAllowedOrientations() will not work while minimized
-                d->allowedOrientations = Portrait;
-                setOrientation(Portrait);
+                //minimized apps are forced to portrait or landscape based on maximized state
+                if (!d->allowedOrientationsBackup || (d->allowedOrientationsBackup & Portrait) || 
+                   (d->allowedOrientationsBackup & PortraitInverted)) {
+                    d->allowedOrientations = Portrait;
+                    setOrientation(Portrait);
+                } else {
+                    d->allowedOrientations = Landscape;
+                    setOrientation(Landscape);
+                }
             } else {
                 if(d->allowedOrientationsBackup != Default) {
                     setAllowedOrientations(d->allowedOrientationsBackup);
