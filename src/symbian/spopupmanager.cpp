@@ -44,7 +44,7 @@
 #include <aknappui.h>
 #include <avkon.rsg>
 #if defined(HAVE_SYMBIAN_INTERNAL)
-#include <aknsmallindicator.h>
+#include <AknSmallIndicator.h>
 #endif // HAVE_SYMBIAN_INTERNAL
 #endif // Q_OS_SYMBIAN
 
