@@ -40,20 +40,34 @@
 
     Qt Quick Components for Symbian have been tested using the following compilers:
     \list
-    \o Windows 32/64 bits: VC 2008, MinGW32, GCCE (included in the Qt SDK)
+    \o Windows 32/64 bits: VC 2008, MinGW32, GCCE (included in the \l {Downloads}{Qt SDK})
     \o Linux/Mac OS: GCC, \l {external: Building with Remote Compiler}{Remote Compiler}
     \endlist
 
     The latest \l {Downloads}{Qt SDK} contains the development tools and Qt 
     libraries in a single package. However, if you want to install
     \l {http://qt.nokia.com/downloads/downloads#qt-lib}{Qt libraries}
-    separately, notice that various Qt Quick Components for Symbian releases require the 
-    following Qt versions:
+    separately, notice the Qt version requirements:
     
     \list
-    \o Qt Quick Components 1.1 for Symbian requires Qt 4.7.4 or newer
-    \o Qt Quick Components 1.0 for Symbian requires Qt 4.7.3 or newer
+    \o Qt Quick Components 1.1 for Symbian requires Qt 4.7.4 or newer.
+    \o Qt Quick Components 1.0 for Symbian requires Qt 4.7.3 or newer.
+    \l {Downloads}{Qt SDK}'s 1.1.4 and newer versions do not support 
+    application development using this Qt Quick Components version. 
     \endlist
+    
+    In \l {Downloads}{Qt SDK} version 1.1.4, Qt Quick Components 1.1 for Symbian 
+    is available in the following targets: 
+    \list
+         \o Desktop
+         \o Qt Simulator
+         \o Symbian with the following configurations:
+         \list
+             \o Qt 4.7.4 for Symbian Anna
+             \o Qt 4.7.4 for Symbian Belle
+         \endlist
+     \endlist
+
 
     \note The Symbian toolchain is only available for Windows. Developers using 
     Linux or Mac OS must use the \l {external: Building with Remote Compiler}{Remote 
@@ -63,7 +77,7 @@
 
 \section1 Qt Quick Components for Symbian SIS Packages
 
-On the standard Qt SDK installation, the compiled and signed \c SIS files are 
+On the standard \l {Downloads}{Qt SDK} installation, the compiled and signed \c SIS files are 
 found in \c {<QtSDK installation directory>\Symbian\sis\Symbian_Belle\QtQuickComponents\1.1} 
 directory. These \c SIS files are for development and demonstration purposes. 
 Utilize
@@ -121,7 +135,7 @@ Visit the following guides that demonstrate the components usage and view the ex
 \o \l{components-cookbook}{Common interface designs}
 \o \l{Creating Scalable Applications}{Scalability Guidelines}
 \o \l{Qt Quick Components examples and demos}{Examples and demos}:
-Qt SDK has pre-compiled \c SIS files in the
+\l {Downloads}{Qt SDK} has pre-compiled \c SIS files in the
 \c{<Qt installation directory>\Symbian\sis\Symbian_Belle\QtQuickComponents\1.1} directory.
 \o \l{What's New in the Qt Quick Components for Symbian Release}{What's new in the 1.1 release}
 \endlist
