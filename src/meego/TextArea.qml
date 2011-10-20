@@ -45,6 +45,7 @@ import "UIConstants.js" as UI
 import "EditBubble.js" as Popup
 import "TextAreaHelper.js" as TextAreaHelper
 import "Magnifier.js" as MagnifierPopup
+import "SelectionHandles.js" as SelectionHandles
 
 FocusScope {
     id: root
@@ -128,7 +129,6 @@ FocusScope {
     }
 
     function closeSoftwareInputPanel() {
-        console.log("TextArea's function closeSoftwareInputPanel is deprecated. Use function platformCloseSoftwareInputPanel instead.")
         platformCloseSoftwareInputPanel()
     }
 
@@ -138,7 +138,6 @@ FocusScope {
     }
 
     function openSoftwareInputPanel() {
-        console.log("TextArea's function openSoftwareInputPanel is deprecated. Use function platformOpenSoftwareInputPanel instead.")
         platformOpenSoftwareInputPanel()
     }
 
@@ -169,6 +168,8 @@ FocusScope {
                 if (activeFocus) {
                     platformCloseSoftwareInputPanel();
                     Popup.close(textEdit);
+                    SelectionHandles.close(textEdit);
+
                     __hadFocusBeforeMinimization = true                                                                                                                                                                                           
                     if (root.parent)                                                                                     
                         root.parent.focus = true                                           
@@ -208,8 +209,8 @@ FocusScope {
         } else if (!activeFocus) {
             if (!readOnly)
                 platformCloseSoftwareInputPanel();
-
             Popup.close(textEdit);
+            SelectionHandles.close(textEdit);
             MagnifierPopup.close(); 
         }
     }
@@ -352,6 +353,7 @@ FocusScope {
 
         Component.onDestruction: {
             Popup.close(textEdit);
+            SelectionHandles.close(textEdit);
         }
 
         onTextChanged: {
@@ -361,6 +363,8 @@ FocusScope {
 
             if (textEdit.preedit == "" && Popup.isOpened(textEdit) && !Popup.isChangingInput())
                 Popup.close(textEdit);
+            if (SelectionHandles.isOpened(textEdit) && textEdit.selectedText == "")
+                SelectionHandles.close(textEdit);
         }
 
         Connections {
@@ -390,21 +394,29 @@ FocusScope {
                 TextAreaHelper.repositionFlickable(contentMovingAnimation)
             }
 
-           if (MagnifierPopup.isOpened() &&
-               Popup.isOpened(textEdit)) {
-               Popup.close(textEdit);
-           } else if ((!mouseFilter.attemptToActivate ||
-                textEdit.cursorPosition == textEdit.text.length) &&
-                Popup.isOpened(textEdit)) {
-                Popup.close(textEdit);
-                Popup.open(textEdit,
+           if (MagnifierPopup.isOpened()) {
+               if (Popup.isOpened(textEdit)) {
+                   Popup.close(textEdit);
+               }
+               if (SelectionHandles.isOpened(textEdit)) {
+                   SelectionHandles.close(textEdit);
+               }
+           } else if (!mouseFilter.attemptToActivate ||
+                textEdit.cursorPosition == textEdit.text.length) {
+                if ( Popup.isOpened(textEdit) ) {
+                    Popup.close(textEdit);
+                    Popup.open(textEdit,
                            textEdit.positionToRectangle(textEdit.cursorPosition));
+                }
             }
         }
 
         onSelectedTextChanged: {
             if (Popup.isOpened(textEdit) && !Popup.isChangingInput()) {
                 Popup.close(textEdit);
+            }
+            if (SelectionHandles.isOpened(textEdit)) {
+                SelectionHandles.close(textEdit);
             }
         }
 
@@ -414,6 +426,9 @@ FocusScope {
             onPreeditChanged: {
                 if (Popup.isOpened(textEdit) && !Popup.isChangingInput()) {
                     Popup.close(textEdit);
+                }
+                if (SelectionHandles.isOpened(textEdit)) {
+                    SelectionHandles.close(textEdit);
                 }
             }
 
@@ -525,6 +540,8 @@ FocusScope {
                         Popup.open(textEdit,editBubblePosition);
                         editBubblePosition = null;
                     }
+                    if (textEdit.selectedText != "")
+                        SelectionHandles.open(textEdit);
                 }
             }
             onMousePositionChanged: {
