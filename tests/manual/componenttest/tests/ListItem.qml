@@ -535,6 +535,36 @@ Item {
                 subTitle: "Strings should elide nicely from the end"
                 enabled: true
             }
+
+            SelectionListItem {
+                id: keyHandlingListItem
+                title: activeFocus ? "Press cursor keys" : "Click to set focus"
+                subTitle: "No key pressed yet"
+
+                onClicked: focus = true
+
+                Keys.onPressed:  {
+                    if (event.isAutoRepeat)
+                        return
+                    switch (event.key) {
+                        case Qt.Key_Up:
+                            subTitle = "You pressed up"
+                            break
+                        case Qt.Key_Down:
+                            subTitle = "You pressed down"
+                            break
+                        case Qt.Key_Left:
+                            subTitle = "You pressed left"
+                            break
+                        case Qt.Key_Right:
+                            subTitle = "You pressed right"
+                            break
+                        default:
+                            subTitle = "You pressed a non-cursor key"
+                            break
+                    }
+                }
+            }
         }
     }
 

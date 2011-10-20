@@ -155,7 +155,7 @@ Item {
     }
 
     Keys.onReleased: {
-        if (!event.isAutoRepeat && root.enabled) {
+        if (!event.isAutoRepeat && root.enabled && ListView.view) {
             if (event.key == Qt.Key_Select || event.key == Qt.Key_Return || event.key == Qt.Key_Enter) {
                 event.accepted = true
                 internal.state = "Focused"
@@ -166,24 +166,25 @@ Item {
     Keys.onPressed: {
         if (!event.isAutoRepeat) {
             switch (event.key) {
-                case Qt.Key_Select:
-                case Qt.Key_Enter:
-                case Qt.Key_Return: {
-                    if (symbian.listInteractionMode != Symbian.KeyNavigation)
-                        symbian.listInteractionMode = Symbian.KeyNavigation
-                    else
-                        if (root.enabled) {
-                            highlight.source = privateStyle.imagePath("qtg_fr_list_pressed",
-                                                                      root.platformInverted)
-                            highlight.opacity = 1
-                            releasedEffect.restart()
-                            root.clicked()
-                        }
-                    event.accepted = true
-                    break
-                }
 
-                case Qt.Key_Up: {
+            case Qt.Key_Select:
+            case Qt.Key_Enter:
+            case Qt.Key_Return:
+                if (ListView.view && symbian.listInteractionMode != Symbian.KeyNavigation)
+                    symbian.listInteractionMode = Symbian.KeyNavigation
+                else
+                    if (root.enabled) {
+                        highlight.source = privateStyle.imagePath("qtg_fr_list_pressed",
+                                                                  root.platformInverted)
+                        highlight.opacity = 1
+                        releasedEffect.restart()
+                        root.clicked()
+                    }
+                event.accepted = true
+                break
+
+            case Qt.Key_Up:
+                if (ListView.view) {
                     if (symbian.listInteractionMode != Symbian.KeyNavigation) {
                         symbian.listInteractionMode = Symbian.KeyNavigation
                         internal.state = "Focused"
@@ -191,10 +192,12 @@ Item {
                     } else
                         ListView.view.decrementCurrentIndex()
                     event.accepted = true
-                    break
+                    symbian.privateListItemKeyNavigation(ListView.view)
                 }
+                break
 
-                case Qt.Key_Down: {
+            case Qt.Key_Down:
+                if (ListView.view) {
                     if (symbian.listInteractionMode != Symbian.KeyNavigation) {
                         symbian.listInteractionMode = Symbian.KeyNavigation
                         ListView.view.positionViewAtIndex(index, ListView.Beginning)
@@ -202,17 +205,16 @@ Item {
                     } else
                         ListView.view.incrementCurrentIndex()
                     event.accepted = true
-                    break
+                    symbian.privateListItemKeyNavigation(ListView.view)
                 }
-                default: {
-                    event.accepted = false
-                    break
-                }
+                break
+
+            default:
+                event.accepted = false
+                break
+
             }
         }
-
-        if (event.key == Qt.Key_Up || event.key == Qt.Key_Down)
-            symbian.privateListItemKeyNavigation(ListView.view)
     }
 
     ListView.onRemove: SequentialAnimation {
