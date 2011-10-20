@@ -30,18 +30,18 @@
     \page splitscreen.html
     \ingroup qt-components-pattern-symbian
     \ingroup qt-components-pattern
-    \title Split Screen Software Input Panel and Layout
+    \title Entering Text with Split-view Input
 
-    \brief Software input panel as part of application layout.
+    \brief Split-view input as part of application layout.
 
     Qt Quick Components 1.1 for Symbian replaces the full screen
-    software input panel with a split screen software input panel (\e{SIP}).
-    The split screen SIP covers roughly half of the screen and appears at the
-    bottom of the screen. When designing application layout using version 1.1,
-    the designer should take into account the screen orientation and SIP
+    input panel with a split-view input.
+    The split-view input covers roughly half of the screen and appears at the
+    bottom of the screen. When designing the application layout using version 1.1,
+    the designer should take into account the screen orientation and the split-view input
     visibility. Version 1.1 introduces the \l {InputContext} properties to
     provide the application with additional hints and properties related to
-    SIP. Creating four states may be suitable to handle SIP property and
+    the split-view input. Creating four states may be suitable to handle the split-view input property and
     anchors changes. Adding relevant states to affected items give users a
     flexible way to initiate needed changes. Use animations to make changes
     look smooth. Also, when using \l TextArea or \l TextField component
@@ -68,19 +68,18 @@
 
     The notepad example's layout is not affected by the screen orientation. The
     example's TextArea is anchored from top and bottom to make it flexible. The
-    bottom is anchored to the \l Item that represent software input panels
-    geometry.
+    bottom is anchored to the \l Item that represent split-view input's geometry.
 
     \snippet src/snippets/symbian/snippet-notepad.qml 0
 
-    The \l StatusBar and \l ToolBar components are hidden when the SIP appears.
+    The \l StatusBar and \l ToolBar components are hidden when the split-view input appears.
 
     \snippet src/snippets/symbian/snippet-notepad.qml 1
 
     \snippet src/snippets/symbian/snippet-notepad.qml 2
 
-    Presenting the software input panel as an item is just one way to go. If
-    you are using an x,y based layout or items such as when using a
+    Presenting the split-view input as an item is just one way to go. If
+    you are using an x,y-based layout or items such as when using a
     \l Column or \l Row, use the \l{InputContext::height}{inputContext.height}
     property directly as part of the layout calculation.
 */

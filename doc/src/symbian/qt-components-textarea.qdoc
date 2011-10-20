@@ -40,7 +40,7 @@
     of \l TextEdit to implement the Symbian-style look-and-feel. The clipboard
     support is provided by the \l cut(), \l copy(), and \l paste() functions.
 
-    \sa {Split Screen Software Input Panel and Layout}
+    \sa {Entering Text with Split-view Input}
 
     \section1 TextArea Basic Examples
 

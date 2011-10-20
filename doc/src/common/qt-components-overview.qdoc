@@ -102,7 +102,7 @@
                     \o \l{components-cookbook}{Common interface designs}
                     \o \l{Creating Scalable Applications}{Scalability Guidelines}
                     \o \l{Right-to-left Support}{Right-to-left Support}
-                    \o \l {Split Screen Software Input Panel and Layout} {Split Screen Software Input Panel and Layout}
+                    \o \l {Entering Text with Split-view Input} {Entering Text with Split-view Input}
                 \endlist
             \o
                 \list

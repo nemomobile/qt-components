@@ -31,7 +31,7 @@
     \ingroup qt-components
     \since 1.1
 
-    \brief Provides access to the software input panel's height and visibility
+    \brief Provides access to the split-view input's height and visibility.
 
     An input context is exposed as a context property named \c inputContext. It
     is not possible to instantiate a InputContext object in QML, but the
@@ -40,20 +40,20 @@
     \section1 Basic Usage
     \code
     Item {
-        id: sip
+        id: splitViewInput
         anchors { bottom: parent.bottom; left: parent.left; right: parent.right }
         height: inputContext.visible ? inputContext.height : 0
         Behavior on height { PropertyAnimation { duration: 200 } }
     }
     \endcode
 
-    \sa {Split Screen Software Input Panel and Layout}
+    \sa {Entering Text with Split-view Input}
 */
 
 /*!
     \qmlproperty real InputContext::height
 
-    The vsoftware input panel's height in pixels. The value changes when the
+    The split-view input's height in pixels. The value changes when the
     orientation changes.
 
 */
@@ -61,6 +61,5 @@
 /*!
     \qmlproperty bool InputContext::visible
 
-    The software input panel's visibility. The value changes when the software
-    input panel appears and disappears.
+    The split-view input's visibility. The value changes when the split-view input appears and disappears.
 */

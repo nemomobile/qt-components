@@ -143,7 +143,7 @@ Window {
         id: textArea
 
         anchors {
-            top: filler.bottom; bottom: sip.top
+            top: filler.bottom; bottom: splitViewInput.top
             left: parent.left; right: parent.right;
         }
 
@@ -153,7 +153,7 @@ Window {
     }
 
     Item {
-        id: sip
+        id: splitViewInput
 
         anchors { bottom: parent.bottom; left: parent.left; right: parent.right }
 
@@ -162,12 +162,12 @@ Window {
         states: [
             State {
                 name: "Visible"; when: inputContext.visible
-                PropertyChanges { target: sip; height: inputContext.height }
+                PropertyChanges { target: splitViewInput; height: inputContext.height }
             },
 
             State {
                 name: "Hidden"; when: !inputContext.visible
-                PropertyChanges { target: sip; height: toolBar.height }
+                PropertyChanges { target: splitViewInput; height: toolBar.height }
             }
         ]
     }
