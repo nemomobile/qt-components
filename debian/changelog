@@ -1,3 +1,10 @@
+qt-components (1.2~git20111020-1) maverick; urgency=low
+
+  * Fixes: NB#284254 [TASK] Increase visibility time of the scroll indicator
+  * Fixes: NB#285013 Pre-edit is not activated in QmlComponentGallery TextField and TextArea.
+  
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Thu, 20 Oct 2011 09:45:00 +0300
+
 qt-components (1.2~git20111014-1) maverick; urgency=low
 
   * Fixes: NB#278097 The text in the password is field is shown in Nokia Account
