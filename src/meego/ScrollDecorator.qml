@@ -64,7 +64,7 @@ Item {
 
     // These can also be modified (but probably shouldn't)
     property int __minIndicatorSize: 20
-    property int __hideTimeout: 1000
+    property int __hideTimeout: 1500
 
     property bool __alwaysShowIndicator: true
 
