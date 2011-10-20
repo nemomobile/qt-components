@@ -64,7 +64,7 @@
 \section1 Qt Quick Components for Symbian SIS Packages
 
 On the standard Qt SDK installation, the compiled and signed \c SIS files are 
-found in \c {<QtSDK installation directory>\Symbian\sis\Symbian^3\qt-components} 
+found in \c {<QtSDK installation directory>\Symbian\sis\Symbian_Belle\QtQuickComponents\1.1} 
 directory. These \c SIS files are for development and demonstration purposes. 
 Utilize
 \l {http://www.developer.nokia.com/Community/Wiki/Nokia_Smart_Installer_for_Symbian}
@@ -122,21 +122,9 @@ Visit the following guides that demonstrate the components usage and view the ex
 \o \l{Creating Scalable Applications}{Scalability Guidelines}
 \o \l{Qt Quick Components examples and demos}{Examples and demos}:
 Qt SDK has pre-compiled \c SIS files in the
-\c{<Qt installation directory>\Symbian\sis\Symbian^3\qt-components} directory.
+\c{<Qt installation directory>\Symbian\sis\Symbian_Belle\QtQuickComponents\1.1} directory.
 \o \l{What's New in the Qt Quick Components for Symbian Release}{What's new in the 1.1 release}
 \endlist
-
-
-
-\note
-
-In a normal application development the latest \l {Downloads}{Qt SDK} contains pre-compiled binaries and all 
-required development tools for creating applications that 
-utilize Qt Quick Components for Symbian. However, the README file in the
-\l {https://qt.gitorious.org/qt-components/qt-components}{Qt Quick Components repository}'s
-root directory contains instructions for advanced developers on how to build Qt 
-Quick Components for Symbian from source files.
-
 
 \section1 Additional information
 \list
