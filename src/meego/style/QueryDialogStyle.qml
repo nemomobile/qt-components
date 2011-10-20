@@ -65,14 +65,4 @@ DialogStyle {
     property string messageFontFamily: UI.FONT_FAMILY
     property int messageFontPixelSize: UI.FONT_DEFAULT
     property color messageTextColor: "#ffffff"
-
-    // fader properties
-    property double dim: 0.9
-    property int fadeInDuration: 250 // ms
-    property int fadeOutDuration: 250 // ms
-
-    property int fadeInDelay: 0 // ms
-    property int fadeOutDelay: 100 // ms
-
-
 }

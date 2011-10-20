@@ -44,12 +44,12 @@ import QtQuick 1.1
 Rectangle {
     id: faderBackground
 
-    property double dim: 0.9
-    property int fadeInDuration: 250
-    property int fadeOutDuration: 250
+    property double dim: 1.0
+    property int fadeInDuration: 350
+    property int fadeOutDuration: 350
 
     property int fadeInDelay: 0
-    property int fadeOutDelay: 0
+    property int fadeOutDelay: 175
 
     property int fadeInEasingType: Easing.InQuint
     property int fadeOutEasingType: Easing.OutQuint
@@ -78,6 +78,7 @@ Rectangle {
     // we need the possibility to fetch the red, green, blue components from a color
     // see http://bugreports.qt.nokia.com/browse/QTBUG-14731
     color: background != "" ? "transparent" : Qt.rgba(0.0, 0.0, 0.0, alpha)
+
     state: 'hidden'
 
     anchors.fill: parent
@@ -145,7 +146,7 @@ Rectangle {
             }
         }
     ]
-    
+
     transitions: [
         Transition {
             from: "hidden"; to: "visible"
@@ -170,25 +171,14 @@ Rectangle {
                         }
                     }
                 }
-                PauseAnimation { duration: fadeInDelay }
-
-                NumberAnimation {
-                    properties: "alpha"
-                    duration: faderBackground.fadeInDuration
-                    easing.type: faderBackground.fadeInEasingType;
-                }
+                PropertyAnimation {properties: "alpha"; from: 0.0; to: 1.0; duration: 350; easing.type: Easing.OutCubic; }
             }
         },
         Transition {
             from: "visible"; to: "hidden"
             SequentialAnimation {
                 PauseAnimation { duration: fadeOutDelay }
-
-                NumberAnimation {
-                    properties: "alpha"
-                    duration: faderBackground.fadeOutDuration
-                    easing.type: faderBackground.fadeOutEasingType;
-                }
+                PropertyAnimation {properties: "alpha"; from: 1.0; to: 0.0; duration: 350; easing.type: Easing.OutCubic; }
                 ScriptAction {script: {
                         faderBackground.parent = originalParent;
                     }

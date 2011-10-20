@@ -271,6 +271,9 @@ Dialog {
                 SequentialAnimation {
                     ScriptAction {script: {
                             __fader().state = "hidden";
+                            root.opacity = 1.0;
+                            queryContent.opacity = 1.0
+                            titleField.opacity = 1.0
 
                             statesWrapper.__buttonSaver = buttonColFiller.y
                             root.status = DialogStatus.Closing;
@@ -279,30 +282,21 @@ Dialog {
                     }
 
                     NumberAnimation { target: root; properties: "opacity"; from: 0.0; to: 1.0; duration: 0 }
+                    NumberAnimation { target: queryContent; properties: "opacity"; from: 0.0; to: 1.0; duration: 0 }
+                    NumberAnimation { target: titleField; properties: "opacity"; from: 0.0; to: 1.0; duration: 0 }
 
-                    // With a 100ms delay the background
-                    // fades to alpha 0% (500ms, quint ease out).
-                    // ---> done in the fader
+                    // The closing transition fades out the dialog's content from 100% to 0%,
+                    // scales down the content to 80% anchored in the center over 175msec, quintic ease in,
+                    // then, after a 175ms delay the background fades to alpha 0% (350ms, quintic ease out).
+                    // (background fading is done in Fader.qml)
 
                     ParallelAnimation {
-                        // The closing transition starts with the message dimming to alpha 0% and
-                        // scaling to 80% (anchorpoint in the middle of the message, 100ms, quint
-                        // ease in).
-
-                        // With no delay the buttons fade to alpha 0% and translate 30
-                        // pixels upwards (100ms, quint ease in).
-                        NumberAnimation {target: queryContent; properties: "opacity"; from: 1.0; to: 0.0; duration: 100}
-                        NumberAnimation {target: titleField; properties: "opacity"; from: 1.0; to: 0.0; duration: 100}
-                        NumberAnimation {target: titleScale; properties: "xScale,yScale"; from: 1.0 ; to: 0.8; duration: 100; easing.type: Easing.InQuint}
-                        NumberAnimation {target: queryContent; property: "scale"; from: 1.0 ; to: 0.8; duration: 100; easing.type: Easing.InQuint}
-                        NumberAnimation {target: buttonColFiller; properties: "opacity"; from: 1.0; to: 0.0; duration: 100}
-                        NumberAnimation {target: buttonColFiller
-                            properties: "y"
-                            from: buttonColFiller.y
-                            to: buttonColFiller.y-30
-                            duration: 100
-                            easing.type: Easing.InQuint
-                        }
+                        NumberAnimation {target: queryContent; properties: "opacity"; from: 1.0; to: 0.0; duration: 175}
+                        NumberAnimation {target: titleField; properties: "opacity"; from: 1.0; to: 0.0; duration: 175}
+                        NumberAnimation {target: titleScale; properties: "xScale,yScale"; from: 1.0 ; to: 0.8; duration: 175; easing.type: Easing.InQuint}
+                        NumberAnimation {target: queryContent; property: "scale"; from: 1.0 ; to: 0.8; duration: 175; easing.type: Easing.InQuint}
+                        NumberAnimation {target: buttonColFiller; properties: "opacity"; from: 1.0; to: 0.0; duration: 175}
+                        NumberAnimation {target: buttonColFiller; property: "scale"; from: 1.0 ; to: 0.8; duration: 175; easing.type: Easing.InQuint}
                     }
 
                     ScriptAction {script: {
@@ -336,46 +330,22 @@ Dialog {
                         }
                     }
 
-                    // The opening transition starts by dimming the background to 90% (250ms,
-                    // quint ease in).
-                    // ---> done in the fader
-                    ParallelAnimation {
-                        SequentialAnimation {
+                    // The opening transition fades in from 0% to 100% and at the same time
+                    // scales in the content from 80% to 100%, 350msec, anchored in the center
+                    // cubic ease out). --> Done inside the fader
 
-                            // With a 200ms delay from the beginning the message fades
-                            // from alpha 0% to 100% and scales from 80% to 100% (anchorpoint in the
-                            // middle of the message, 550ms, custom ease).
-                            PauseAnimation { duration: 200 }
-                            ParallelAnimation {
-                                NumberAnimation {target: queryContent; properties: "opacity"; from: 0.0; to: 1.0; duration: 550}
-                                NumberAnimation {target: titleField; properties: "opacity"; from: 0.0; to: 1.0; duration: 550}
-                                NumberAnimation {target: titleScale; properties: "xScale,yScale"; from: 0.8 ; to: 1.0; duration: 550; easing.type: Easing.OutBack}
-                                NumberAnimation {target: queryContent; property: "scale"; from: 0.8 ; to: 1.0; duration: 550; easing.type: Easing.OutBack}
-                            }
-                        }
-                        SequentialAnimation {
-                            // With a 250ms delay from the
-                            // beginning the buttons fade from alpha 0% to 100% and translate 25 pixels
-                            // in Y axis away from their final destination (400ms, custom ease).
-                            PauseAnimation { duration: 250 }
-                            ParallelAnimation {
-                                NumberAnimation {target: buttonColFiller; properties: "opacity"; from: 0.0; to: 1.0; duration: 400; }
-                                NumberAnimation {target: buttonColFiller
-                                    properties: "y"
-                                    from: buttonColFiller.y-25
-                                    to: buttonColFiller.y
-                                    duration: 400
-                                    easing.type: Easing.OutBack
-                                }
-                            }
-                        }
+                    ParallelAnimation {
+                        NumberAnimation {target: queryContent; properties: "opacity"; from: 0.0; to: 1.0; duration: 350; easing.type: Easing.OutCubic; }
+                        NumberAnimation {target: titleField; properties: "opacity"; from: 0.0; to: 1.0; duration: 350; easing.type: Easing.OutCubic; }
+                        NumberAnimation {target: titleScale; properties: "xScale,yScale"; from: 0.8 ; to: 1.0; duration: 350; easing.type: Easing.OutCubic; }
+                        NumberAnimation {target: queryContent; property: "scale"; from: 0.8 ; to: 1.0; duration: 350; easing.type: Easing.OutCubic; }
+                        NumberAnimation {target: buttonColFiller; property: "scale"; from: 0.8 ; to: 1.0; duration: 350; easing.type: Easing.OutCubic; }
+                        NumberAnimation {target: buttonColFiller; properties: "opacity"; from: 0.0; to: 1.0; duration: 350; easing.type: Easing.OutCubic; }
                     }
 
                     ScriptAction {script: {
-
                             // reset button
                             buttonColFiller.y = statesWrapper.__buttonSaver
-
                             root.status = DialogStatus.Open;
                         }
                     }
@@ -383,5 +353,4 @@ Dialog {
             }
         ]
     }
-
 }

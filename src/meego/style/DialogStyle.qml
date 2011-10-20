@@ -57,14 +57,14 @@ Style {
     property int buttonsColumnSpacing: 10
 
     // fader properties
-    property double dim: 0.9
-    property int fadeInDuration: 250 // ms
-    property int fadeOutDuration: 250 // ms
+    property double dim: 1.0
+    property int fadeInDuration: 350 // ms
+    property int fadeOutDuration: 350 // ms
 
     property int fadeInDelay: 0 // ms
-    property int fadeOutDelay: 100 // m
+    property int fadeOutDelay: 175 // ms
 
-    property int fadeInEasingType: Easing.InQuint
-    property int fadeOutEasingType: Easing.OutQuint
+    property int fadeInEasingType: Easing.OutCubic
+    property int fadeOutEasingType: Easing.InQuint
 
 }

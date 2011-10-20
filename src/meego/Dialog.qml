@@ -85,6 +85,14 @@ Popup {
         accepted();
     }
 
+    transform: Scale {
+        id: contentScale
+        xScale: 1.0; yScale: 1.0
+        origin.x:  mapFromItem(root, root.width / 2, root.height / 2).x
+        origin.y: mapFromItem(root, root.width / 2, root.height / 2).y
+
+    }
+
     // this item contains the whole dialog (title bar + content rectangle, button row)
     Item {
         id: backgroundRect
@@ -93,6 +101,9 @@ Popup {
         width: root.width
 
         anchors.centerIn:  root
+
+
+
 
         // center the whole dialog, not just the content field
         transform: Translate {
@@ -128,15 +139,6 @@ Popup {
            anchors.verticalCenter: backgroundRect.verticalCenter
 
            height: childrenRect.height
-
-           transform: Scale {
-                id: contentScale
-                xScale: 1.0; yScale: 1.0
-                origin.x:  mapFromItem(root, root.width / 2, root.height / 2).x
-                origin.y: mapFromItem(root, root.width / 2, root.height / 2).y
-
-            }
-
         }
 
         //button row
@@ -196,6 +198,7 @@ Popup {
                             __fader().state = "hidden";
 
                             backgroundRect.opacity = 1.0;
+                            contentField.opacity = 1.0
                             root.opacity = 1.0
 
                             statesWrapper.__buttonSaver = buttonRow.y
@@ -204,34 +207,21 @@ Popup {
                         }
                     }
 
-                    // With a 100ms delay the background fades to alpha 0% (500ms, quint ease out).
-                    // --> done in the fader
+                    NumberAnimation { target: backgroundRect; properties: "opacity"; from: 0.0; to: 1.0; duration: 0 }
+                    NumberAnimation { target: contentField; properties: "opacity"; from: 0.0; to: 1.0; duration: 0 }
+                    NumberAnimation { target: root; properties: "opacity"; from: 0.0; to: 1.0; duration: 0 }
 
-                    PropertyAnimation { target: root; properties: "opacity"; from: 0.0; to: 1.0; duration: 0 }
-                    PropertyAnimation { target: backgroundRect; properties: "opacity"; from: 0.0; to: 1.0; duration: 0 }
+                    // The closing transition fades out the dialog's content from 100% to 0%,
+                    // scales down the content to 80% anchored in the center over 175msec, quintic ease in,
+                    // then, after a 175ms delay the background fades to alpha 0% (350ms, quintic ease out).
+                    // (background fading is done in Fader.qml)
 
-                    // The closing transition starts with the title and both lines dimming to
-                    // alpha 0% and moving 100 pixels in Y axis towards the center (125ms,
-                    // quint ease in). With no delay the list fades to alpha 0% and scales to
-                    // 80% (anchorpoint in the middle of the list, 100ms, quint ease in).
-                    ParallelAnimation {
-                        PropertyAnimation {target: contentField; properties: "opacity"; from: 1.0; to: 0.0; duration: 100}
-                        PropertyAnimation {target: titleBar; properties: "opacity"; from: 1.0; to: 0.0; duration: 125}
-                        PropertyAnimation {target: contentScale; properties: "xScale,yScale"; from: 1.0 ; to: 0.8; duration: 100; easing.type: Easing.InQuint }
-                        PropertyAnimation {target: buttonRow; properties: "opacity"; from: 1.0; to: 0.0; duration: 125}
-                        PropertyAnimation {target: buttonRow
-                            properties: "anchors.topMargin"
-                            from: 0
-                            to: -100
-                            duration: 125
-                            easing.type: Easing.InQuint
-                        }
-                        PropertyAnimation {target: titleBar
-                            properties: "anchors.topMargin"
-                            from: 0
-                            to: 100
-                            duration: 125
-                            easing.type: Easing.InQuint
+                    SequentialAnimation {
+                        ParallelAnimation {
+                            PropertyAnimation {target: buttonRow; properties: "opacity"; from: 1.0; to: 0.0; duration: 175; easing.type: Easing.InQuint; }
+                            PropertyAnimation {target: titleBar; properties: "opacity"; from: 1.0; to: 0.0; duration: 175; easing.type: Easing.InQuint; }
+                            PropertyAnimation {target: contentField; properties: "opacity"; from: 1.0; to: 0.0; duration: 175; easing.type: Easing.InQuint; }
+                            PropertyAnimation {target: contentScale; properties: "xScale,yScale"; from: 1.0 ; to: 0.8; duration: 175; easing.type: Easing.InQuint; }
                         }
                     }
 
@@ -243,7 +233,6 @@ Popup {
                             backgroundRect = 0.0;
                             root.opacity = 0.0;
                             status = DialogStatus.Closed;
-
                         }
                     }
                 }
@@ -260,58 +249,29 @@ Popup {
                             root.status = DialogStatus.Opening;
                             // UPPERCASE-UGLY, but necessary to avoid flicker
                             root.opacity = 1.0;
+                            backgroundRect.opacity = 1.0;
                             titleBar.opacity = 0.0;
                             contentField.opacity = 0.0;
                             buttonRow.opacity = 0.0;
                         }
                     }
 
-                    // The opening transition starts by dimming the background to 90% (250ms,
-                    // quint ease in). --> Done inside the fader
+                    // The opening transition fades in from 0% to 100% and at the same time
+                    // scales in the content from 80% to 100%, anchored in the center
+                    // cubic ease out). --> Done inside the fader
 
                     ParallelAnimation {
-                        SequentialAnimation {
-                            // a 250ms delay from the beginning
-                            PauseAnimation { duration: 250 }
-                            // the list scales from 80% to 100% and alpha 0%
-                            // to 100% (anchorpoint in the middle of the list, 250ms, expo ease out)
-                            ParallelAnimation {
-                                PropertyAnimation {target: contentField; properties: "opacity"; from: 0.0; to: 1.0; duration: 250}
-                                PropertyAnimation {target: contentScale; properties: "xScale,yScale"; from: 0.8 ; to: 1.0; duration: 250; easing.type: Easing.OutExpo}
-                            }
-                        }
-                        SequentialAnimation {
-                            // a 200ms delay from the beginning
-                            PauseAnimation { duration: 200 }
-                            ParallelAnimation {
-                                //the title and both lines come from alpha 0%
-                                PropertyAnimation {target: buttonRow; properties: "opacity"; from: 0.0; to: 1.0; duration: 450; }
-                                PropertyAnimation {target: titleBar; properties: "opacity"; from: 0.0; to: 1.0; duration: 450; }
-                                // and move towards the edges (40 pixels in Y axis
-                                // away from their final destination, 450ms, custom ease).
-                                PropertyAnimation {target: buttonRow; properties: "anchors.topMargin"
-                                    from: -40
-                                    to: 0
-                                    duration: 450
-                                    easing.type: Easing.OutBack
-                                }
-                                PropertyAnimation {target: titleBar; properties: "anchors.bottomMargin"
-                                    from: 40
-                                    to: 0
-                                    duration: 450
-                                    easing.type: Easing.OutBack
-                                }
-
-                            }
-                        }
+                        PropertyAnimation {target: root; properties: "opacity"; from: 0.0; to: 1.0; duration: 350; easing.type: Easing.OutCubic; }
+                        PropertyAnimation {target: buttonRow; properties: "opacity"; from: 0.0; to: 1.0; duration: 350; easing.type: Easing.OutCubic; }
+                        PropertyAnimation {target: titleBar; properties: "opacity"; from: 0.0; to: 1.0; duration: 350; easing.type: Easing.OutCubic; }
+                        PropertyAnimation {target: contentField; properties: "opacity"; from: 0.0; to: 1.0; duration: 350; easing.type: Easing.OutCubic; }
+                        PropertyAnimation {target: contentScale; properties: "xScale,yScale"; from: 0.8 ; to: 1.0; duration: 350; easing.type: Easing.OutCubic; }
                     }
 
                     ScriptAction {script: {
-
                             // reset button and title bar
                             buttonRow.y = statesWrapper.__buttonSaver
                             titleBar.y   = statesWrapper.__titleSaver
-
                             root.status = DialogStatus.Open;
                         }
                     }
@@ -319,5 +279,4 @@ Popup {
             }
         ]
     }
-
 }
