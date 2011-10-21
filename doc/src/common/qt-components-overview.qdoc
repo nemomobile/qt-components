@@ -106,8 +106,8 @@
                 \endlist
             \o
                 \list
-                    \o \l{Functional List of Symbian Components}{List of the Symbian Components}
-                    \o \l{qt-components}{Components reference}
+                    \o \l{Functional List of Symbian Components}
+                    \o \l{QML Elements of Qt Quick Components}
                     \o \l{Building the Qt Quick components}
                 \endlist
             \o

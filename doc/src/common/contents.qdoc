@@ -28,19 +28,19 @@
     \contentspage {Qt Quick components contents}
     \page contents.html
 
-    \title Qt Quick components table of contents
+    \title Qt Quick Components table of contents
 
     \list
-        \o \l {Introduction to the Qt Quick components}
-        \o \l {All Qt Quick components}
+        \o \l {Introduction to the Qt Quick Components}
+        \o \l {QML Elements of Qt Quick Components}
         \list
-            \o \l {All Symbian-specific Qt Quick components}
+            \o \l {All Symbian-specific Qt Quick Components}
         \endlist
-        \o \l {Qt Quick components examples and demos}
+        \o \l {Qt Quick Components Examples and Demos}
         \o \l {Common Interface Designs}
-        \o \l {Building the Qt Quick components}
+        \o \l {Building the Qt Quick Components}
         \list
-            \o \l {Building the Qt Quick components for Symbian}
+            \o \l {Building the Qt Quick Components for Symbian}
         \endlist
     \endlist
 

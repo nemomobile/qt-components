@@ -29,7 +29,7 @@
     \title What's New in the Qt Quick Components for Symbian Release
 
     \section1 What's new in 1.1
-    Qt Quick Components 1.1 for Symbian uses QtQuick v1.1, which creates
+    Qt Quick Components 1.1 for Symbian uses Qt Quick 1.1, which creates
     a hard dependency to the Qt 4.7.4. The new QtQuick version brings some
     improvements including QML revision control, performance optimizations
     and some bug fixes. Also the new version includes
@@ -42,14 +42,14 @@
     \l {Using Inverted Style with Symbian Components} for more information.
     
     Qt Quick Components 1.1 for Symbian replaces the full screen
-    software input panel with a split screen software input panel.
+    software input panel with a split-view input.
 
     Also some new components are added:
     \list
         \o \l{Label} helps to show a plain text. It fetches the color and the
            font from the style automatically for you.
         \o \l{InputContext} is used to determine the area needed for the
-           Software Input Panel.
+           split-view input.
         \o \l{SearchBox} can be used to filter items in a list view. The
            component is in the Extras module.
         \o \l{PageStackWindow} provides a main window with the page stack support

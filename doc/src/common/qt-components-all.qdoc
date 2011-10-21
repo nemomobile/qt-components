@@ -1,9 +1,11 @@
 /*!
 
 \group qt-components
-\title All Qt Quick components
+\title QML Elements of Qt Quick Components
 
-This is a list of all the Qt Quick components that are available.
+This is a dictionary of all QML elements made available in the Qt Quick Components module.
+To see the QML elements listed by functional area, see topic links below the table.
+
 
 \generatelist related
 
@@ -25,10 +27,6 @@ components.
 
 The Extras Components introduce additional components in addition to the
 components for Symbian or MeeGo.
-
-The Extras set of components are built along with the platform. Therefore,
-building the \l{Building the Qt Quick Components for Symbian}{Symbian
-components} will also build the Extras components for Symbian.
 
 \generatelist related
 
