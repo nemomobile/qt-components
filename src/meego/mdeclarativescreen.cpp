@@ -778,7 +778,16 @@ void MDeclarativeScreen::updatePlatformStatusBarRect(QDeclarativeItem * statusBa
 #ifdef Q_WS_X11
     QWidget * activeWindow = QApplication::activeWindow();
     if(!activeWindow) {
-        return;
+        foreach (QWidget *widget, QApplication::topLevelWidgets()) {
+            if (widget->effectiveWinId() != 0 &&
+                widget->windowType() == Qt::Window) {
+                activeWindow = widget;
+                break;
+            } 
+        }
+
+        if (!activeWindow)
+            return;
     }
 
     QRectF rect(statusBar->mapRectToScene(0, 0, (qreal)statusBar->width(), (qreal)statusBar->height()));
