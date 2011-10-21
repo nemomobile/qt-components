@@ -27,8 +27,8 @@
 /*!
     \page meego-build.html
 
-    \title Building the Qt Quick Components for MeeGo
+    \title Building the Qt Quick Components for MeeGo 1.2 Harmattan
 
-    The instructions to build the Qt Quick Components for MeeGo, please read
+    The instructions to build the Qt Quick Components for MeeGo 1.2 Harmattan, please read
     the \c README file in the root directory.
 */

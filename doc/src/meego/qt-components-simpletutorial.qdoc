@@ -60,7 +60,7 @@
     \endlist
     
     \section2 Main.qml 
-    Application is constructred using the MeeGo specific PageStackWindow that
+    Application is constructred using the MeeGo 1.2 Harmattan-specific PageStackWindow that
     brings the page navigation, toolbar, statusbar and platform common 
     look and feel for free. Main page also declares a common toolbar that is used
     in pages which does not declare their own toolbars.

@@ -61,7 +61,7 @@
     them as follows:    
 
     \code
-    import com.nokia.meego      // MeeGo components
+    import com.nokia.meego      // MeeGo 1.2 Harmattan components
     \endcode
     
     \table

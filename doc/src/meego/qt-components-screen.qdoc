@@ -226,7 +226,7 @@
 /*!
     \qmlproperty bool Screen::covered (meego)
 
-    Meego specific property
+    MeeGo 1.2 Harmattan-specific property
     
     Returns true if the screen is covered.
 */
@@ -234,7 +234,7 @@
 /*!
     \qmlproperty string Screen::orientationString (meego)
 
-    Meego specific property
+    MeeGo 1.2 Harmattan-specific property
     
     Returns the current orientation as a String ("Portrait", "Landscape", "PortraitInverted" or "LandscapeInverted").
 */
@@ -242,7 +242,7 @@
 /*!
     \qmlproperty bool Screen::keyboardOpen (meego)
 
-    Meego specific property
+    MeeGo 1.2 Harmattan-specific property
     
     Returns true if the virtual keyboard is shown on the screen.
 */
@@ -250,7 +250,7 @@
 /*!
     \qmlproperty int Screen::rotation (meego)
 
-    Meego specific property
+    MeeGo 1.2 Harmattan-specific property
     
     Returns the current orientation as angle in degrees.
 */
@@ -258,7 +258,7 @@
 /*!
     \qmlproperty bool Screen::minimized (meego)
 
-    Meego specific property
+    MeeGo 1.2 Harmattan-specific property
     
     Returns true if the application is minimized to the switcher.
 */
@@ -266,7 +266,7 @@
 /*!
     \qmlproperty qvariant Screen::windowState (meego)
 
-    Meego specific property
+    MeeGo 1.2 Harmattan-specific property
 
     An object giving various informations about the state of the windowState.
 
@@ -284,7 +284,7 @@
 /*!
     \qmlproperty bool Screen::allowSwipe (meego)
 
-    Meego specific property
+    MeeGo 1.2 Harmattan-specific property
 
     Allows to switch off the swipe gesture. As a result the user won’t be able
     to close the application and he won't be able to push it to the background.

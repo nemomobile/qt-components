@@ -43,9 +43,9 @@
     \ingroup qt-components
     \since 4.7
     \brief
-    Default window for all MeeGo applciations
+    Default window for all MeeGo 1.2 Harmattan applications
     
-    Applications are constructed using the MeeGo specific PageStackWindow that 
+    Applications are constructed using the MeeGo 1.2 Harmattan-specific PageStackWindow that 
     brings the page navigation, toolbar, statusbar and platform common 
     look and feel. 
     
@@ -64,11 +64,11 @@
     }
     \endcode
     
-    A good example how PageStackWindow is used is found from the MeeGo example
+    A good example how PageStackWindow is used is found from the MeeGo 1.2 Harmattan example
     QmlComponentGallery or the Simple tutorial application that is found from
     front page of API documentation.
     
-    Note that the PageStackWindow as it is now defined is a MeeGo specific element.
+    Note that the PageStackWindow as it is now defined is a MeeGo 1.2 Harmattan-specific element.
 */
 
 /*!

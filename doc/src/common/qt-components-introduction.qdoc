@@ -42,7 +42,7 @@
 
     \section1 Developing Applications with Components
 
-    The components are implemented separately for both Symbian and MeeGo to
+    The components are implemented separately for both Symbian and MeeGo 1.2 Harmattan to
     match the native look and feel of each platform. Components from both sets
     have similar interfaces and many components share a common interface. The
     compatible interfaces allows the developers to share some common code but
@@ -64,7 +64,7 @@
 
     \code
     import com.nokia.symbian 1.1    // Symbian components
-    import com.nokia.meego 1.1      // MeeGo components
+    import com.nokia.meego 1.1      // MeeGo 1.2 Harmattan components
     \endcode
 
     In addition, there are components that are \e extras. They supplement the

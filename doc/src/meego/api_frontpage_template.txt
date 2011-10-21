@@ -11,7 +11,7 @@ applications, you can still use JavaScript and/or Qt C++ for the business
 logic of your application.
 
 === Developing cross-platform applications with the components ===
-The components are implemented separately for both Symbian and MeeGo. 
+The components are implemented separately for both Symbian and MeeGo 1.2 Harmattan. 
 This has been done so that they can be easily made to match the native 
 look and feel of each platform. In order to keep the implementations 
 compatible, there is a common API definition that each implementation 
@@ -45,7 +45,7 @@ You can use the Qt Quick components in your QML application with one of the foll
 imports at the top of your QML document:
 
 <source>
- import com.nokia.meego      // MeeGo components
+ import com.nokia.meego      // MeeGo 1.2 Harmattan components
    _or_
  import com.nokia.symbian    // Symbian components
 </source>

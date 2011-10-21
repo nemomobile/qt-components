@@ -30,10 +30,10 @@
 
     \title Building the Qt Quick Components
 
-    The Qt Quick components source is available on Gitorious here: \l
+    The Qt Quick Components source is available on Gitorious here: \l
     {http://qt.gitorious.org/qt-components}.
 
-    There are Qt Quick components implementations for MeeGo and Symbian devices.
+    There are Qt Quick Components implementations for MeeGo 1.2 Harmattan and Symbian devices.
     Each implementation can be built for the target platform or for desktop
     platforms. The desktop build allows you to build and test applications more
     quickly than using the target device. However, you  still very much need to
@@ -43,7 +43,7 @@
 
     \list
         \o \l {Building the Qt Quick Components for Symbian}
-        \o \l {Building the Qt Quick Components for MeeGo}
+        \o \l {Building the Qt Quick Components for MeeGo 1.2 Harmattan}
     \endlist
 
 */

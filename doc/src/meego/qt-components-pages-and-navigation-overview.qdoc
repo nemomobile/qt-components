@@ -29,7 +29,7 @@
     \page qt-components-pages-and-navigation-overview.html
     \target pagenavigation
     \ingroup qt-components-pattern
-    \title Page Based Application Navigation on MeeGo
+    \title Page Based Application Navigation on MeeGo 1.2 Harmattan
     \brief An application has multiple pages of content and the user needs to
     get from one page to next.
 

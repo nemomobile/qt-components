@@ -53,7 +53,7 @@
     you can still use JavaScript and/or Qt C++ for the business logic of your application.   
 
     \section1 Cross-Platform Development
-    The components are implemented separately for both Symbian and MeeGo. 
+    The components are implemented separately for both Symbian and MeeGo 1.2 Harmattan. 
     This has been done so that they can be easily made to match the native 
     look and feel of each platform. In order to keep the implementations 
     compatible, there is a common API definition that each implementation 
@@ -85,7 +85,7 @@
     imports at the top of your QML document:
 
     \code
-    import com.nokia.meego      // MeeGo components
+    import com.nokia.meego      // MeeGo 1.2 Harmattan components
     \endcode
 
     When using components it is necessary to use Window or PageStackWindow component

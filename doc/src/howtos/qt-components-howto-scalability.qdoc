@@ -329,12 +329,12 @@
     APIs are very similar with "Qt.labs.components.native 1.0" module’s API, it is possible
     to make cross-platform code by using "Qt.labs.components.native 1.0" module import as
     demonstrated in the examples. However the module is not identical in Symbian and
-    MeeGo platforms. Final published applications should always import one of the following
+    MeeGo 1.2 Harmattan platforms. Final published applications should always import one of the following
     official platform-specific modules:
 
     \code
     import com.nokia.symbian 1.1    // Symbian components
-    import com.nokia.meego 1.1      // MeeGo components
+    import com.nokia.meego 1.1      // MeeGo 1.2 Harmattan components
     \endcode
 
 
