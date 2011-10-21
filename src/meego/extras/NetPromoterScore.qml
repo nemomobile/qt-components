@@ -124,7 +124,6 @@ Rectangle {
                 var validator =  internal.emailValidator
                 emailAddressField.validator = validator;
                 var result = emailAddressField.acceptableInput;
-                if (result)emailAddressField.validator = internal.defaultValidator;
                 mouseArea.enabled = !result;
                 invalidEmailLabel.visible = !result;
                 if (!result)isValid = false;
@@ -378,7 +377,7 @@ Rectangle {
 
             TextField {
                 id: emailAddressField
-		objectName: "input_nps_email"
+                objectName: "input_nps_email"
                 width: parent.width
                 inputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhEmailCharactersOnly | Qt.ImhNoAutoUppercase
                 placeholderText: uiString.emailPlaceholderText ||
@@ -387,6 +386,7 @@ Rectangle {
                     actionKeyLabel: uiString.emailSipActionKeyLabel || ""
                     actionKeyHighlighted: !!uiString.emailSipActionKeyLabel
                 }
+                validator: internal.defaultValidator
 
                 Keys.onReturnPressed: {
                     if (internal.validateForm()) {
@@ -403,14 +403,13 @@ Rectangle {
                         enabled = false;
                         invalidEmailLabel.visible = false;
                         emailAddressField.forceActiveFocus();
-                        emailAddressField.validator = internal.defaultValidator;
+                        emailAddressField.validator = internal.emailValidator;
                     }
                 }
 
-                onTextChanged: {
-                    if (invalidEmailLabel.visible) {
-                        invalidEmailLabel.visible = false;
-                        emailAddressField.validator = internal.defaultValidator;
+                onActiveFocusChanged: {
+                    if (activeFocus) {
+                        emailAddressField.validator = internal.emailValidator;
                     }
                 }
             }
