@@ -4,8 +4,6 @@ import com.nokia.symbian 1.1
 Item {
     id: galleryContent
 
-    anchors.fill: parent
-
     Flickable {
         id: flickable
 
@@ -16,7 +14,7 @@ Item {
         SampleColumn {
             id: column
 
-            enabled: galleryContent.parent.columnEnabled
+            enabled: galleryContent.parent ? galleryContent.parent.columnEnabled : true
             anchors {
                 left: parent.left
                 right: parent.right

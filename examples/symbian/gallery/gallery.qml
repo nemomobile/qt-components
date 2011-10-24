@@ -60,7 +60,7 @@ Window {
 
     StatusBar {
         id: statusBar
-        anchors.top: root.top
+        anchors.top: parent.top
         platformInverted: root.childrenInverted
     }
 
@@ -68,7 +68,7 @@ Window {
         id: waitText
 
         anchors.centerIn: parent
-        visible: contentLoader.status != Loader.Ready
+        opacity: contentLoader.status != Loader.Ready ? 1 : 0
         text: "Loading Gallery components ..."
     }
 
@@ -78,41 +78,38 @@ Window {
         property bool columnEnabled: true
 
         scale: 0.3
-        opacity: 0
+        opacity: 0.8
         anchors {
             left: parent.left
             right: parent.right
-            top: statusBar.visible ? statusBar.bottom: parent.top
-            bottom: toolBar.visible ? toolBar.top: parent.bottom
+            top: statusBar.bottom
+            bottom: toolBar.top
         }
 
         onStatusChanged: {
             if (status == Loader.Ready) {
-                scaleAnimation.running = true
-                opacityAnimation.running = true
-            } else if (status == Loader.Error) {
+                scaleAnimation.restart()
+                opacityAnimation.restart()
+            } else if (status == Loader.Error)
                 waitText.text = "Syntax error"
-            }
         }
 
-        PropertyAnimation { id: scaleAnimation; target: contentLoader; properties: "scale"; to: 1; duration: 200 }
-        PropertyAnimation { id: opacityAnimation; target: contentLoader; properties: "opacity"; to: 1; duration: 200 }
+        PropertyAnimation { id: scaleAnimation; target: contentLoader; properties: "scale"; to: 1.0; duration: 800 }
+        PropertyAnimation { id: opacityAnimation; target: contentLoader; properties: "opacity"; to: 1; duration: 800 }
     }
 
-    Component.onCompleted: timer.start()
+    Component.onCompleted: timer.restart()
 
     Timer {
         id: timer
-
+        interval: 1
         repeat: false
-        triggeredOnStart: true
-
         onTriggered: contentLoader.source = Qt.resolvedUrl("galleryContent.qml")
     }
 
     ToolBar {
         id: toolBar
-        anchors.bottom: root.bottom
+        anchors.bottom: parent.bottom
         platformInverted: root.childrenInverted
         tools: ToolBarLayout {
             id: toolBarlayout
