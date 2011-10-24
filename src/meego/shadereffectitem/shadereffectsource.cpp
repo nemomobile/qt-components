@@ -363,7 +363,7 @@ void ShaderEffectSource::updateBackbuffer()
 
     if (size.height() > 0 && size.width() > 0) {
         QGLFramebufferObjectFormat format;
-        format.setAttachment(QGLFramebufferObject::Depth);
+        format.setAttachment(QGLFramebufferObject::CombinedDepthStencil);
         format.setInternalTextureFormat(m_format);
 
         if (!m_fbo) {
