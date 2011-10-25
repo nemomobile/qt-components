@@ -1,8 +1,8 @@
-qt-components (1.2~git20111020-2) maverick; urgency=low
+qt-components (1.2~git20111025-1) maverick; urgency=low
 
-  * UNRELEASED
+  * Fixes: NB#260177 Dialog transitions are incorrect
   
- -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Thu, 20 Oct 2011 15:45:00 +0300
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Tue, 25 Oct 2011 10:30:00 +0300
 
 qt-components (1.2~git20111020-1) maverick; urgency=low
 
