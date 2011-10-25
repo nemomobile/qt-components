@@ -66,10 +66,6 @@ Window {
         }
     }
 
-    onOrientationChangeStarted: {
-        statusBar.orientation = screen.currentOrientation
-    }
-
     Item {
         id: contentArea
 
