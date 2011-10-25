@@ -43,7 +43,32 @@
     applications utilizing QtQuick Components for Symbian use Window as the root
     item.
 
+    The orientation change animation will be fixed in a Qt Quick Components for
+    Symbian release in future. Qt Quick Components version number will not be
+    increased. To make your application future-proof, do not refer to the Window
+    id when you anchor children to the Window - refer to the parent instead.
 
+    Wrong (child anchoring refers to the Window id):
+    \code
+    Window {
+        id: root
+
+        Statusbar { anchors.top: root.top }
+
+        ToolBar { anchors.bottom: root.bottom }
+    }
+    \endcode
+
+    Correct (child anchoring refers to the parent):
+    \code
+    Window {
+        id: root
+
+        Statusbar { anchors.top: parent.top }
+
+        ToolBar { anchors.bottom: parent.bottom }
+    }
+    \endcode
 */
 
 /*!
