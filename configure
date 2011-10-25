@@ -56,7 +56,6 @@ HAVE_XDAMAGE=no
 HAVE_XRANDR=no
 HAVE_CONTEXTSUBSCRIBER=no
 HAVE_MEEGOGRAPHICSSYSTEM=no
-HAVE_SHADER=no
 HAVE_THEMEDAEMON_PROTOCOL_V1=yes
 FORCE_LOCAL_THEME=no
 HAVE_MOBILITY=auto
@@ -108,7 +107,7 @@ while [ "$#" -gt 0 ]; do
         VAL=no
         ;;
     #Qt style yes options
-    -meego|-symbian|-meegotouch|-maliit|-contextsubscriber|-xdamage|-xrandr|-meegographicssystem|-shader|-force-local-theme|-mobility)
+    -meego|-symbian|-meegotouch|-maliit|-contextsubscriber|-xdamage|-xrandr|-meegographicssystem|-force-local-theme|-mobility)
         VAR=`echo $1 | sed 's,^-\(.*\),\1,'`
         VAL=yes
         ;;
@@ -246,13 +245,6 @@ while [ "$#" -gt 0 ]; do
             UNKNOWN_OPT=yes
         fi
         ;;
-    shader)
-        if [ "$VAL" = "yes" ] || [ "$VAL" = "no" ]; then
-            HAVE_SHADER=$VAL
-        else
-            UNKNOWN_OPT=yes
-        fi
-        ;;
     mobility)
         if [ "$VAL" = "yes" ] || [ "$VAL" = "no" ]; then
             HAVE_MOBILITY=$VAL
@@ -326,7 +318,6 @@ fi
 [ "$HAVE_CONTEXTSUBSCRIBER" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG contextsubscriber"
 [ "$HAVE_MEEGOGRAPHICSSYSTEM" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG meegographicssystem"
 [ "$HAVE_THEMEDAEMON_PROTOCOL_V1" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG themedaemonprotocolv1"
-[ "$HAVE_SHADER" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG shader"
 [ "$HAVE_XDAMAGE" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG xdamage"
 [ "$HAVE_XRANDR" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG xrandr"
 [ "$FORCE_LOCAL_THEME" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG force-local-theme"
@@ -361,7 +352,6 @@ if [ "$BUILD_MEEGO_STYLE" = "yes" ]; then
     echo "  XDamage support  ............... $HAVE_XDAMAGE"
     echo "  XRandr support  ................ $HAVE_XRANDR"
     echo "  MeeGo Graphics System support .. $HAVE_MEEGOGRAPHICSSYSTEM"
-    echo "  Shader support ................. $HAVE_SHADER"
     echo "  Force local theme .............. $FORCE_LOCAL_THEME"
 fi
 echo "Symbian Style .................... $BUILD_SYMBIAN_STYLE"
