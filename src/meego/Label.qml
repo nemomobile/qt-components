@@ -53,7 +53,6 @@ Text {
 
     //Deprecated, TODO Remove this at some point
     property alias style: root.platformStyle
-    property color __textColor
 
     property bool platformEnableEditBubble: true
 
@@ -62,6 +61,16 @@ Text {
     color: platformStyle.textColor
 
     wrapMode: Text.Wrap
+
+    QtObject {
+        id: privateApi
+        property color __textColor
+        property bool __textDirection: locale.directionForText !== undefined && locale.directionForText(root.text) === 1 /* Qt::RightToLeft */
+    }
+
+    // Arabic text has to be right-aligned with the exception of one-liner. Due to
+    // aesthetic reasons we align them to the left.
+    horizontalAlignment: !privateApi.__textDirection || root.lineCount === 1 ? Text.AlignLeft : Text.AlignRight
 
     MouseArea {
         id: mouseFilter
@@ -82,7 +91,7 @@ Text {
 
                 // TODO: For every new QML release sync new QML TextEdit properties:
                 clip : root.clip
-                color : __textColor
+                color : privateApi.__textColor
                 font.bold : root.font.bold
                 font.capitalization : root.font.capitalization
                 font.family : root.font.family
@@ -111,7 +120,7 @@ Text {
                         width = root.width;
                         height = root.height;
                     }
-                    __textColor = root.color;
+                    privateApi.__textColor = root.color;
                     root.color = Qt.rgba(0, 0, 0, 0);
                     selectWord();
                     if (platformEnableEditBubble) {
@@ -120,7 +129,7 @@ Text {
                     SelectionHandles.open( selectionTextEdit )
                 }
                 Component.onDestruction: {
-                    root.color = __textColor;
+                    root.color = privateApi.__textColor;
 
                     if (Popup.isOpened(selectionTextEdit)) {
                         Popup.close(selectionTextEdit);
