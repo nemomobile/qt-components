@@ -192,12 +192,14 @@ Dialog {
         spacing: 6
         Button {
             id: acceptButton
+            text: textTranslator.translate("qtn_comm_command_accept");
             onClicked: accept()
             width: (root.width / 2) - 3
             style: ButtonStyle { inverted: true }
         }
         Button {
             id: rejectButton
+            text: textTranslator.translate("qtn_comm_cancel");
             onClicked: reject()
             width: (root.width / 2) - 3
             style: ButtonStyle { inverted: true }
