@@ -64,10 +64,8 @@ Magnifier {
     sourceRect: Qt.rect(0, 0, 0, 0)
     visible: false
     scaleFactor: 1.2
-    maskFileName: root.platformInverted ? ":/graphics_1_1_2/qtg_graf_magnifier_mask_inverse.svg"
-                                        : ":/graphics_1_1_2/qtg_graf_magnifier_mask.svg"
-    overlayFileName: root.platformInverted ? ":/graphics_1_1_2/qtg_graf_magnifier_inverse.svg"
-                                           : ":/graphics_1_1_2/qtg_graf_magnifier.svg"
+    maskFileName: ":/graphics_1_1_2/qtg_graf_magnifier_mask.svg"
+    overlayFileName: ":/graphics_1_1_2/qtg_graf_magnifier.svg"
 
     onContentCenterChanged: internal.updateSourceRect()
 
