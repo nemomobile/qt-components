@@ -1,3 +1,9 @@
+qt-components (1.2~git20111025-2) maverick; urgency=low
+
+  * Preparing for next release
+  
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Tue, 25 Oct 2011 10:31:00 +0300
+
 qt-components (1.2~git20111025-1) maverick; urgency=low
 
   * Fixes: NB#260177 Dialog transitions are incorrect
