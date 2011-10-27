@@ -93,6 +93,7 @@ MouseArea {
         internal.contextMenuWasVisible = touchTools.contextMenu.visible;
         touchTools.contextMenu.hide();
         internal.handleMoved = false;
+        privateStyle.play(Symbian.Editor);
 
         touchTools.handleBegin.viewPortRect = internal.mapViewPortRectToHandle(touchTools.handleBegin);
         touchTools.handleEnd.viewPortRect = internal.mapViewPortRectToHandle(touchTools.handleEnd);
@@ -156,8 +157,10 @@ MouseArea {
 
         if ((internal.pressedHandle != null && internal.handleMoved) ||
            (internal.longTap && !editor.readOnly) ||
-           (internal.pressedHandle != null && internal.longTap))
+           (internal.pressedHandle != null && internal.longTap)) {
+            privateStyle.play(Symbian.PopUp);
             touchTools.contextMenu.show();
+        }
 
         internal.longTap = false;
     }
@@ -185,6 +188,7 @@ MouseArea {
                 if (!editor.readOnly || internal.editorHasSelection)
                     touchTools.magnifier.show();
                 internal.handleMoved = true;
+                privateStyle.play(Symbian.TextSelection);
             }
         }
     }
