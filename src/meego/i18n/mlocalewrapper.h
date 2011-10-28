@@ -53,7 +53,7 @@
 /*
 * This class is a wrapper around MLocale
 *
-* It exports the most common localisation methods, so that
+* It exports the most common localization methods, so that
 * they can used in meegotouch's Qt-Components implementation
 * For information about specific methods, check the MLocale docs
 *
@@ -163,7 +163,7 @@ public:
         NorthAmericanPhoneNumberGrouping
     };
 
-    // without localisation support, an error message is thrown whenever Qml tries to access a method from MLocale
+    // without localization support, an error message is thrown whenever Qml tries to access a method from MLocale
     // this is what we want
 #ifdef HAVE_MEEGOTOUCH
 

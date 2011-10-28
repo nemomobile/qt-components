@@ -84,7 +84,7 @@ public:
 
         QDeclarativeExtensionPlugin::initializeEngine(engine, uri);
 
-        // If plugin was initilized once, do not initialize it again
+        // If plugin was initialized once, do not initialize it again
         if(!engine->imageProvider(QLatin1String("theme"))) {
             engine->addImageProvider(QLatin1String("theme"), new MDeclarativeImageProvider);
 
