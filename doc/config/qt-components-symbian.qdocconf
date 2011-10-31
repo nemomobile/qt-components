@@ -4,7 +4,7 @@ include(qt-cpp-ignore.qdocconf)
 include(qt-html-templates.qdocconf)
 include(qt-defines.qdocconf)
 
-project         = qt-components
+project         = Qt Quick Components
 description     = "Qt Quick Components for Symbian Documentation"
 
 #headerdirs =    $Q_COMPONENTS_SOURCE_TREE/src \

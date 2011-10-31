@@ -107,7 +107,7 @@
     appearance.
 
     The code snippet below illustrates a \l ToolButton that is placed on a \l
-    ToolBar. They both should use the same style since \l the ToolBar provides
+    ToolBar. They both should use the same style since the \l ToolBar provides
     a background for the \l ToolButton. Notice that \l ToolBarLayout does not
     have the \c platformInverted property since it is only a container for
     handling layout of its visual content, that is, one or more \l ToolButton

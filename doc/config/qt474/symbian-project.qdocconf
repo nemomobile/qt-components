@@ -1,4 +1,4 @@
-project         = qt-components
+project         = Qt Quick Components
 description     = "Qt Quick Components for Symbian Documentation"
 
 #headerdirs =    $Q_COMPONENTS_SOURCE_TREE/src \

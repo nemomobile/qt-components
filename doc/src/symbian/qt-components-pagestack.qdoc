@@ -356,9 +356,9 @@
     amount of time and will show up as an interruption in the user interface.
 
     To reduce the amount of time it takes to show the new page, you can use
-    \l PageStack in a particular way: instead of specifying the particular QML
+    PageStack in a particular way: instead of specifying the particular QML
     objects to load, you specify the URL of each page to push or replace. This
-    way, \l PageStack loads the page components for the intermediate pages (not the
+    way, PageStack loads the page components for the intermediate pages (not the
     actual content) and only instantiate the page that becomes active.
 
     \sa Page, {pagenavigation}{Pages and navigation}
@@ -403,7 +403,7 @@
     \qmlproperty variant PageStack::initialPage
     \since 1.1
 
-    Sets the initial page of the \c PageStack. This can be a \l Page instance,
+    Sets the initial page of the PageStack. This can be a \l Page instance,
     component, or an array. Once the construction is completed, the value
     will be pushed onto the stack. 
     

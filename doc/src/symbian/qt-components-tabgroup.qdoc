@@ -46,7 +46,7 @@
     means you anchor it to the bottom of the TabLayout item that contains the
     buttons and then to the sides and bottom of the screen.
 
-    The \l TabGroup and the \l TabBarLayout componenents go hand-in-hand. The
+    The TabGroup and the \l TabBarLayout componenents go hand-in-hand. The
     layout contains the buttons and each button refers to a content page in the
     group. This is illustrated in the following diagram.
 
@@ -80,7 +80,7 @@
 
     \section2 Creating a Blank Tabbed Interface
 
-    The \l TabBarLayout and \l TabGroup go together
+    The \l TabBarLayout and TabGroup go together
 
     \snippet src/snippets/symbian/snippet-tab-interface-dynamic.qml 0
 

@@ -75,7 +75,7 @@
 
     Indicates that the user is pressing this radio button.
 
-    \sa clicked()
+    \sa clicked
 */
 /*!
     \qmlsignal RadioButton::clicked()

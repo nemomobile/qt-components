@@ -45,7 +45,7 @@
     anchors changes. Adding relevant states to affected items give users a
     flexible way to initiate needed changes. Use animations to make changes
     look smooth. Also, when using \l TextArea or \l TextField component
-    near the top of the screen, consider leaving space for the \l Magnifier to
+    near the top of the screen, consider leaving space for the magnifier to
     appear. The magnifier's size is \c{platformStyle.graphicSizeMedium * 2}.
 
     Files:
