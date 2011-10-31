@@ -39,7 +39,6 @@
 ****************************************************************************/
 
 import QtQuick 1.1
-import Qt.labs.components 1.1
 import "." 1.0
 import com.nokia.meego 1.0
 

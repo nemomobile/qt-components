@@ -40,7 +40,6 @@
 
 import QtQuick 1.1
 import "." 1.0
-import Qt.labs.components 1.1
 import "UIConstants.js" as UI
 import "EditBubble.js" as Popup
 import "TextAreaHelper.js" as TextAreaHelper

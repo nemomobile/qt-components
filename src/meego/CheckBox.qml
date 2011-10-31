@@ -39,8 +39,6 @@
 ****************************************************************************/
 
 import QtQuick 1.1
-import Qt.labs.components 1.1
-
 import "UIConstants.js" as UI
 
 ImplicitSizeItem {
