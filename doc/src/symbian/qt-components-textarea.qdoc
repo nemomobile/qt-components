@@ -148,7 +148,7 @@
 
     The text's font information in the TextArea.
 
-    \sa TextEdit::font
+    \sa {http://doc.qt.nokia.com/4.8/qml-textedit.html} {TextEdit}
 
 */
 
@@ -157,7 +157,7 @@
 
     The position of the cursor in a TextArea.
 
-    \sa TextEdit::cursorPosition
+    \sa {http://doc.qt.nokia.com/4.8/qml-textedit.html#cursorPosition-prop}{TextEdit::cursorPosition}
 
 */
 
@@ -196,9 +196,9 @@
     \qmlproperty int TextArea::inputMethodHints
 
     Settings that indicate what kind of input can be accepted by the TextArea.
-    The value is from Qt::InputMethodHints.
+    The value is from \l {http://doc.qt.nokia.com/stable/qwidget.html#inputMethodHints-prop}{Qt::InputMethodHints}.
 
-    \sa TextEdit::inputMethodHints
+    \sa {http://doc.qt.nokia.com/stable/qwidget.html#inputMethodHints-prop}{Qt::InputMethodHints}
 
 */
 
@@ -209,7 +209,7 @@
     with but not edit the TextArea's text. If the value is \c false, the user
     can also edit the text.
 
-    \sa TextEdit::readOnly, enabled
+    \sa {http://doc.qt.nokia.com/4.8/qml-textedit.html#readOnly-prop}{TextEdit::readOnly}, enabled
 */
 
 
@@ -219,7 +219,7 @@
 
     The currently selected text in the text field.
 
-    \sa TextEdit::selectedText
+    \sa {http://doc.qt.nokia.com/4.8/qml-textedit.html#selectedText-prop}{TextEdit::selectedText}
 */
 
 /*!
@@ -227,7 +227,7 @@
 
     The cursor position after the last character in the current selection.
 
-    \sa selectionStart, selectedText, cursorPosition, TextEdit::selectionEnd
+    \sa selectionStart, selectedText, cursorPosition, {http://doc.qt.nokia.com/4.8/qml-textedit.html#selectionEnd-prop}{TextEdit::selectionEnd}
 
 */
 
@@ -236,7 +236,7 @@
 
     The cursor position before the first character in the current selection.
 
-    \sa selectionEnd, selectedText, cursorPosition, TextEdit::selectionStart
+    \sa selectionEnd, selectedText, cursorPosition, {http://doc.qt.nokia.com/4.8/qml-textedit.html#selectionStart-prop}{TextEdit::selectionStart}
 
 */
 
@@ -271,7 +271,7 @@
 
     Copies the currently selected text to the system clipboard.
 
-    \sa paste, cut, TextEdit::copy()
+    \sa paste, cut, {http://doc.qt.nokia.com/4.8/qml-textedit.html#copy-method}{TextEdit::copy()}
 
 */
 
@@ -281,7 +281,7 @@
     Replaces the currently selected text by the contents of the system
     clipboard.
 
-    \sa copy, cut, TextEdit::paste()
+    \sa copy, cut, {http://doc.qt.nokia.com/4.8/qml-textedit.html#paste-method}{TextEdit::paste()}
 */
 
 /*!
@@ -289,7 +289,7 @@
 
     Moves the currently selected text to the system clipboard.
 
-    \sa TextEdit::cut()
+    \sa {http://doc.qt.nokia.com/4.8/qml-textedit.html#cut-method}{TextEdit::cut()}
 */
 
 /*!
@@ -297,7 +297,7 @@
 
     Selects the text from \a start to \a end.
 
-    \sa selectionStart, selectionEnd, TextEdit::select()
+    \sa selectionStart, selectionEnd, {http://doc.qt.nokia.com/4.8/qml-textedit.html#select-method}{TextEdit::select()}
 */
 
 /*!
@@ -305,7 +305,7 @@
 
     Selects all the text in the text field.
 
-    \sa TextEdit::selectAll()
+    \sa {http://doc.qt.nokia.com/4.8/qml-textedit.html#selectAll-method}{TextEdit::selectAll()}
 
 */
 
@@ -314,7 +314,7 @@
 
     Selects the word closest to the current cursor position.
 
-    \sa TextEdit::selectWord()
+    \sa {http://doc.qt.nokia.com/4.8/qml-textedit.html#selectWord-method}{TextEdit::selectWord()}
 
 */
 
@@ -324,7 +324,7 @@
     Returns the character position at \c x pixels from the left edge of the text
     field and \c y pixels from the top edge of the text field.
 
-    \sa TextEdit::positionAt()
+    \sa {http://doc.qt.nokia.com/4.8/qml-textedit.html#positionAt-method}{TextEdit::positionAt()}
 
 */
 
@@ -338,7 +338,7 @@
     This is similar to setting the cursorPosition and then querying the cursor
     rectangle, but the cursorPosition is not changed.
 
-    \sa cursorPosition, TextEdit::positionToRectangle()
+    \sa cursorPosition, {http://doc.qt.nokia.com/4.8/qml-textedit.html#positionToRectangle-method}{TextEdit::positionToRectangle()}
 
 */
 
@@ -348,7 +348,7 @@
     Opens the virtual keyboard for typing. On Symbian-based devices the user can
     open the virtual keyboard by tapping the TextArea.
 
-    \sa closeSoftwareInputPanel, TextEdit::openSoftwareInputPanel()
+    \sa closeSoftwareInputPanel, {http://doc.qt.nokia.com/4.8/qml-textedit.html#openSoftwareInputPanel-method}{TextEdit::openSoftwareInputPanel()}
 */
 
 /*!
@@ -360,7 +360,7 @@
     \note Currently closeSoftwareInputPanel does not work on Symbian. For more information, see \l
     {http://bugreports.qt.nokia.com/browse/QTBUG-20033}{QTBUG-20033}.
 
-    \sa openSoftwareInputPanel, TextEdit::closeSoftwareInputPanel()
+    \sa openSoftwareInputPanel, {http://doc.qt.nokia.com/4.8/qml-textedit.html#closeSoftwareInputPanel-method}{TextEdit::closeSoftwareInputPanel()}
 */
 
 /*!

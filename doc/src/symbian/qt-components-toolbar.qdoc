@@ -38,7 +38,7 @@
     \l{ToolBarLayout} can bind to the \c tools property, manages the positioning
     of the tool components such as a \l{ToolButton}.
 
-    Binding a PageStack's \l{PageStack::}{toolBar} property to a ToolBar will
+    Binding the \l{PageStack::toolbar} property to a ToolBar will
     cause the toolbar to receive the current Page's \l{Page::}{tools} property
     content and bind it to its own \l{ToolBar::}{tools} property. The toolbar
     animates during each page transition as specified by the

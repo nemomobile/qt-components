@@ -167,7 +167,7 @@
 
     See the \l {TextField Basic Examples} section for an example.
 
-    \sa TextInput::validator
+    \sa {http://doc.qt.nokia.com/4.8/qml-textinput.html#validator-prop}{TextInput::validator}
 
 */
 
@@ -187,9 +187,9 @@
     \qmlproperty int TextField::inputMethodHints
 
     Settings that indicate what kind of input the TextField accepts. The
-    possible values are the same as those defined for \l Qt::InputMethodHints.
+    possible values are the same as those defined for \l {http://doc.qt.nokia.com/stable/qwidget.html#inputMethodHints-prop}{Qt::InputMethodHints}.
 
-    \sa TextInput::inputMethodHints
+    \sa {http://doc.qt.nokia.com/stable/qwidget.html#inputMethodHints-prop}{Qt::InputMethodHints}
 
 */
 
@@ -199,7 +199,7 @@
    The maximum permitted length of the text in the TextField. If the text is too
    long, it is truncated at the limit. By default the value is \c 32767.
 
-    \sa TextInput::maximumLength
+    \sa {http://doc.qt.nokia.com/4.8/qml-textinput.html#maximumLength-prop}{TextInput::maximumLength}
 
 */
 
@@ -207,9 +207,9 @@
     \qmlproperty font TextField::font
 
     The text's font information in the TextField. The possible values are the
-    same as those defined for \c {TextInput::font}.
+    same as those defined for \l {http://doc.qt.nokia.com/4.8/qml-textinput.html}{TextInput}.
 
-    \sa TextInput::font
+    \sa {http://doc.qt.nokia.com/4.8/qml-textinput.html}{TextInput}
 
 */
 
@@ -218,7 +218,7 @@
 
     The position of the cursor in a TextField.
 
-    \sa TextInput::cursorPosition
+    \sa {http://doc.qt.nokia.com/4.8/qml-textinput.html#cursorPosition-prop}{TextInput::cursorPosition}
 
 */
 
@@ -230,7 +230,7 @@
     also edit the text.
 
       See the \l {TextField Basic Examples} section for an example.
-    \sa TextInput::readOnly, enabled
+    \sa {http://doc.qt.nokia.com/4.8/qml-textinput.html#readOnly-prop}{TextInput::readOnly}, enabled
 */
 
 /*!
@@ -239,9 +239,9 @@
     Specifies how the text is displayed when the user enters text into
     the TextField.  For example, you can set the echo mode to \c Password so
     that the entered text is shown as asterisks. The possible values are the
-    same as those defined for \c {TextInput::echoMode}.
+    same as those defined for \l {http://doc.qt.nokia.com/4.8/qml-textinput.html#echoMode-prop}{TextInput::echoMode}.
 
-    \sa TextInput::echoMode
+    \sa {http://doc.qt.nokia.com/4.8/qml-textinput.html#echoMode-prop}{TextInput::echoMode}
 
 */
 
@@ -258,7 +258,7 @@
 
     Otherwise the value is \c false.
 
-    \sa inputMask, validator, TextInput::acceptableInput
+    \sa inputMask, validator, {http://doc.qt.nokia.com/4.8/qml-textinput.html#acceptableInput-prop}{TextInput::acceptableInput}
 
 */
 
@@ -269,14 +269,14 @@
     TextField, TextInput, and QLineEdit use the same input mask. See
     \l{QLineEdit::inputMask} for details how to define the input mask.
 
-    \sa acceptableInput, validator, TextInput::inputMask
+    \sa acceptableInput, validator, {http://doc.qt.nokia.com/4.8/qml-textinput.html#inputMask-prop}{TextInput::inputMask}
 */
 
 /*!
     \qmlproperty validator TextField::validator
 
     Allows you to set a validator (\l IntValidator, \l DoubleValidator, or
-    RegExpValidator) for the text field. See \l TextInput::validator for
+    RegExpValidator) for the text field. See \l {http://doc.qt.nokia.com/4.8/qml-textinput.html#validator-prop}{TextInput::validator} for
     details.
 
     \sa acceptableInput, inputMask
@@ -288,7 +288,7 @@
     The currently selected text in the text field.
 
 
-    \sa TextInput::selectedText
+    \sa {http://doc.qt.nokia.com/4.8/qml-textinput.html#selectedText-prop}{TextInput::selectedText}
 */
 
 /*!
@@ -296,7 +296,7 @@
 
     The cursor position after the last character in the current selection.
 
-    \sa selectionStart, selectedText, cursorPosition, TextInput::selectionEnd
+    \sa selectionStart, selectedText, cursorPosition, {http://doc.qt.nokia.com/4.8/qml-textinput.html#selectionEnd-prop}{TextInput::selectionEnd}
 
 */
 
@@ -305,7 +305,7 @@
 
     The cursor position before the first character in the current selection.
 
-    \sa selectionEnd, selectedText, cursorPosition, TextInput::selectionStart
+    \sa selectionEnd, selectedText, cursorPosition, {http://doc.qt.nokia.com/4.8/qml-textinput.html#selectionStart-prop}{TextInput::selectionStart}
 
 */
 
@@ -323,7 +323,7 @@
 
     Copies the currently selected text to the system clipboard.
 
-    \sa paste, cut, TextInput::copy()
+    \sa paste, cut, {http://doc.qt.nokia.com/4.8/qml-textinput.html#copy-method}{TextInput::copy()}
 
 */
 
@@ -333,7 +333,7 @@
     Replaces the currently selected text by the contents of the system
     clipboard.
 
-    \sa copy, cut, TextInput::paste()
+    \sa copy, cut, {http://doc.qt.nokia.com/4.8/qml-textinput.html#paste-method}{TextInput::paste()}
 */
 
 /*!
@@ -341,7 +341,7 @@
 
     Moves the currently selected text to the system clipboard.
 
-    \sa copy, paste, TextInput::cut()
+    \sa copy, paste, {http://doc.qt.nokia.com/4.8/qml-textinput.html#cut-method}{TextInput::cut()}
 */
 
 /*!
@@ -350,7 +350,7 @@
     Selects the text from \a start to \a end.
 
 
-    \sa selectionStart, selectionEnd, TextInput::select()
+    \sa selectionStart, selectionEnd, {http://doc.qt.nokia.com/4.8/qml-textinput.html#select-method}{TextInput::select()}
 */
 
 /*!
@@ -358,7 +358,7 @@
 
     Selects all the text in the text field.
 
-    \sa TextInput::selectAll()
+    \sa {http://doc.qt.nokia.com/4.8/qml-textinput.html#selectAll-method}{TextInput::selectAll()}
 
 */
 
@@ -367,7 +367,7 @@
 
     Selects the word closest to the current cursor position.
 
-    \sa TextInput::selectWord()
+    \sa {http://doc.qt.nokia.com/4.8/qml-textinput.html#selectWord-method}{TextInput::selectWord()}
 
 */
 
@@ -377,7 +377,7 @@
     Returns the character position at \c x pixels from the left edge of the text
     field.
 
-    \sa TextInput::positionAt()
+    \sa {http://doc.qt.nokia.com/4.8/qml-textinput.html#positionAt-method}{TextInput::positionAt()}
 
 */
 
@@ -391,7 +391,7 @@
     This is similar to setting the \c cursorPosition, and then querying the
     cursor rectangle, but the \c cursorPosition is not changed.
 
-    \sa cursorPosition, TextInput::positionToRectangle()
+    \sa cursorPosition, {http://doc.qt.nokia.com/4.8/qml-textinput.html#positionToRectangle-method}{TextInput::positionToRectangle()}
 
 */
 
@@ -401,7 +401,7 @@
     Opens the virtual keyboard for typing. On Symbian-based devices the user can
     open the virtual keyboard by tapping the TextField.
 
-    \sa closeSoftwareInputPanel, TextEdit::openSoftwareInputPanel()
+    \sa closeSoftwareInputPanel, {http://doc.qt.nokia.com/4.8/qml-textinput.html#openSoftwareInputPanel-method}{TextEdit::openSoftwareInputPanel()}
 */
 
 /*!
@@ -413,7 +413,7 @@
     \note Currently closeSoftwareInputPanel does not work on Symbian. For more information, see \l
     {http://bugreports.qt.nokia.com/browse/QTBUG-20033}{QTBUG-20033}.
 
-    \sa openSoftwareInputPanel, TextEdit::closeSoftwareInputPanel()
+    \sa openSoftwareInputPanel, {http://doc.qt.nokia.com/4.8/qml-textinput.html#closeSoftwareInputPanel-method}{TextEdit::closeSoftwareInputPanel()}
 */
 
 /*!
