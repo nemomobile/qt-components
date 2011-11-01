@@ -85,6 +85,7 @@ Dialog {
     title: Text {
         id: title
         objectName: "titleText"
+        text: "Tumbler Dialog"
         visible: text.length > 0
         color: theme.selectionColor
         font { pixelSize: 32; family: C.FONT_FAMILY_BOLD }
@@ -105,6 +106,7 @@ Dialog {
         spacing: 6
         Button {
             id: acceptButton
+            text: textTranslator.translate("qtn_comm_command_accept");
             onClicked: accept()
             width: (root.width / 2) - 3
             style: ButtonStyle { inverted: true }
@@ -112,6 +114,7 @@ Dialog {
         }
         Button {
             id: rejectButton
+            text: textTranslator.translate("qtn_comm_cancel");
             onClicked: reject()
             width: (root.width / 2) - 3
             style: ButtonStyle { inverted: true }
