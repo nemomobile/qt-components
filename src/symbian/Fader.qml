@@ -65,6 +65,8 @@ Item {
             id: mouseEventEater
             anchors.fill: parent
             enabled: fader.opacity != 0.0
+            preventStealing: true
+            onPressed: mouse.accepted = true
             onClicked: root.clicked()
         }
     }
