@@ -129,6 +129,7 @@ Dialog {
     title: Text {
         id: title
         objectName: "title"
+        text: "Pick Time"
         visible: text.length > 0
         color: theme.selectionColor
         font { pixelSize: 32; family: C.FONT_FAMILY_BOLD }

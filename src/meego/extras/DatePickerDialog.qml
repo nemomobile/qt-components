@@ -114,6 +114,7 @@ Dialog {
     title: Text {
         id: title
         objectName: "title"
+        text: "Pick Date"
         visible: text.length > 0
         color: theme.selectionColor
         font { pixelSize: 32; family: C.FONT_FAMILY_BOLD }
@@ -148,7 +149,7 @@ Dialog {
             }
             height: 300
             privateDelayInit: true
-            
+
             TumblerColumn {
                 id: dayColumn
                 items: ListModel {
