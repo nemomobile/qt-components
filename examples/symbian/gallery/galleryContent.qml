@@ -24,6 +24,28 @@ Item {
             childrenInverted: root.childrenInverted
             windowInverted: root.platformInverted
         }
+
+        Connections {
+            target: column
+            onFocusActivated: {
+                internal.lastFocusedY = y
+                internal.positionToFocused()
+            }
+        }
+
+        Connections {
+            target: inputContext
+            onVisibleChanged: internal.positionToFocused()
+        }
+
+        QtObject {
+            id: internal
+            property int lastFocusedY: 0
+
+            function positionToFocused() {
+                flickable.contentY = lastFocusedY - platformStyle.graphicSizeMedium
+            }
+        }
     }
 
     ScrollDecorator {

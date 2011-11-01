@@ -83,7 +83,7 @@ Window {
             left: parent.left
             right: parent.right
             top: statusBar.bottom
-            bottom: toolBar.top
+            bottom: splitViewInput.top
         }
 
         onStatusChanged: {
@@ -105,6 +105,29 @@ Window {
         interval: 1
         repeat: false
         onTriggered: contentLoader.source = Qt.resolvedUrl("galleryContent.qml")
+    }
+
+    Item {
+        id: splitViewInput
+
+        anchors { bottom: parent.bottom; left: parent.left; right: parent.right }
+
+        states: [
+            State {
+                name: "Visible"; when: inputContext.visible
+                PropertyChanges { target: splitViewInput; height: inputContext.height }
+            },
+
+            State {
+                name: "Hidden"; when: toolBar.visible
+                PropertyChanges { target: splitViewInput; height: toolBar.height }
+            },
+
+            State {
+                name: "HiddenInFullScreen"; when: !toolBar.visible
+                PropertyChanges { target: splitViewInput; height: 0 }
+            }
+        ]
     }
 
     ToolBar {

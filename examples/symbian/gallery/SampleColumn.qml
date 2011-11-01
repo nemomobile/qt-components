@@ -50,6 +50,8 @@ Column {
     property bool childrenInverted: false
     property bool windowInverted: false
 
+    signal focusActivated(int y)
+
     spacing: 14
 
     Label {
@@ -70,6 +72,7 @@ Column {
         placeholderText: "TextField"
         width: parent.width - parent.spacing
         platformInverted: column.childrenInverted
+        onActiveFocusChanged: if (activeFocus) column.focusActivated(y)
     }
 
     TextField {
@@ -98,6 +101,7 @@ Column {
                 onClicked: clearable.text = ""
             }
         }
+        onActiveFocusChanged: if (activeFocus) column.focusActivated(y)
     }
 
     TextField {
@@ -143,6 +147,7 @@ Column {
                 onRejected: selectedIndex = -1
             }
         }
+        onActiveFocusChanged: if (activeFocus) column.focusActivated(y)
     }
 
     TextArea {
@@ -150,6 +155,7 @@ Column {
         placeholderText: "This is a\n multiline control."
         width: parent.width - parent.spacing; height: 280
         platformInverted: column.childrenInverted
+        onActiveFocusChanged: if (activeFocus) column.focusActivated(y)
     }
 
     Slider {
