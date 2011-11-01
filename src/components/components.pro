@@ -1,8 +1,8 @@
 include (../../qt-components.pri)
 
-TARGETPATH = Qt/labs/components.1.1
+TARGETPATH = Qt/labs/components
 TEMPLATE = lib
-TARGET = $$qtLibraryTarget(qtcomponentsplugin_1_1_2)
+TARGET = $$qtLibraryTarget(qtcomponentsplugin)
 INCLUDEPATH += $$PWD $$PWD/models
 
 win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release build_all
