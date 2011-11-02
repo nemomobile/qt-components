@@ -42,9 +42,9 @@ import QtQuick 1.1
 import "UIConstants.js" as UI
 
 Style {
-    property url leftSelectionHandle: "image://theme/meegotouch-text-selection-handle-left"
-    property url pressedLeftSelectionHandle: "image://theme/meegotouch-text-selection-handle-left-pressed"
+    property url leftSelectionHandle: "image://theme/meegotouch-text-selection-handle"
+    property url pressedLeftSelectionHandle: "image://theme/meegotouch-text-selection-handle-pressed"
 
-    property url rightSelectionHandle: "image://theme/meegotouch-text-selection-handle-right"
-    property url pressedRightSelectionHandle: "image://theme/meegotouch-text-selection-handle-right-pressed"
+    property url rightSelectionHandle: "image://theme/meegotouch-text-selection-handle"
+    property url pressedRightSelectionHandle: "image://theme/meegotouch-text-selection-handle-pressed"
 }

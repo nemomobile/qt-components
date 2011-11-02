@@ -24,7 +24,6 @@ Item {
     property alias leftSelectionHandle: leftSelectionImage
     property alias rightSelectionHandle: rightSelectionImage
 
-    property bool ignoreClose: false
     property alias privateRect: rect
 
     onSelectionStartRectChanged: {
@@ -43,13 +42,12 @@ Item {
 
         Image { id: leftSelectionImage
               property variant dragStart: Qt.point(0,0); // required for selection across multiple lines
-              property int offset: 0;
+              property int offset: -width/2;
               property int animationDuration: leftSelectionMouseArea.pressed ? 350 : 0
               x: selectionStartPoint.x + offset;
-              y: selectionStartPoint.y + contents.selectionStartRect.height - 4 - rect.fontBaseLine; // vertical offset: 4 pixels
-              source: ( textInput && leftSelectionMouseArea.pressed ) ? platformStyle.pressedLeftSelectionHandle : platformStyle.leftSelectionHandle;
-              state: "normal";
-              transform: Rotation { id: leftHandleRotation; origin.x: 0; origin.y: 0; axis { x: 0; y: 1; z: 0 } angle: 0}
+              y: selectionStartPoint.y + contents.selectionStartRect.height - 10 - rect.fontBaseLine; // vertical offset: 4 pixels
+              source: platformStyle.leftSelectionHandle
+              opacity: leftSelectionMouseArea.pressed ? 0 : (rightSelectionMouseArea.pressed ? 0.7 : 1.0 )
 
               MouseArea {
                   id: leftSelectionMouseArea
@@ -72,67 +70,19 @@ Item {
                       textInput.select(pos,h); // Select by character
                   }
                   onReleased: {
-                      // trim to word selection
-                      ignoreClose = true;
-                      var selectionEnd = textInput.selectionEnd;
-                      textInput.cursorPosition = textInput.selectionStart;
-                      textInput.moveCursorSelection ( selectionEnd, TextEdit.SelectWords );
                       Popup.open(textInput,textInput.positionToRectangle(textInput.cursorPosition));
-                      ignoreClose = false;
                   }
               }
-              states: [
-                  State {
-                      name: "normal"
-                      PropertyChanges { target: leftSelectionImage;
-                          offset: - width + 7; // horizontal offset: 7 pixels
-                          mirror: false
-                      }
-                  },
-                  State {
-                      name: "mirrored"
-                      PropertyChanges { target: leftSelectionImage;
-                          offset: - 7; // horizontal offset: 7 pixels
-                          mirror: true
-                      }
-                  }
-              ]
-              transitions: [
-                  Transition {
-                      from: "normal"; to: "mirrored"
-                      ScriptAction {script: {
-                              leftHandleRotation.origin.x = 7;
-                          }
-                      }
-                      SequentialAnimation {
-                          NumberAnimation {target: leftHandleRotation; property: "angle";
-                                        from: 180.0; to: 0.0; duration: leftSelectionImage.animationDuration}
-                      }
-                  },
-                  Transition {
-                      from: "mirrored"; to: "normal"
-                      SequentialAnimation {
-                          ScriptAction {script: {
-                                  leftHandleRotation.origin.x = leftSelectionImage.width - 7;
-                                  leftSelectionImage.offset = -leftSelectionImage.width + 7;
-                              }
-                          }
-                          NumberAnimation {target: leftHandleRotation; property: "angle";
-                                        from: 180.0; to: 0.0; duration: leftSelectionImage.animationDuration}
-                      }
-                  }
-              ]
         }
 
         Image { id: rightSelectionImage
               property variant dragStart: Qt.point(0,0); // required for selection across multiple lines
-              property int offset: 0;
+              property int offset: -width/2;
               property int animationDuration: rightSelectionMouseArea.pressed ? 350 : 0
               x: selectionEndPoint.x + offset;
-              y: selectionEndPoint.y + contents.selectionEndRect.height - 4 - rect.fontBaseLine; // vertical offset: 4 pixels
-              source: ( textInput && rightSelectionMouseArea.pressed ) ? platformStyle.pressedRightSelectionHandle : platformStyle.rightSelectionHandle;
-              state: "normal";
-              transform: Rotation { id: rightHandleRotation; origin.x: 0; origin.y: 0; axis { x: 0; y: 1; z: 0 } angle: 0}
+              y: selectionEndPoint.y + contents.selectionEndRect.height - 10 - rect.fontBaseLine; // vertical offset: 4 pixels
+              source: platformStyle.rightSelectionHandle;
+              opacity: rightSelectionMouseArea.pressed ? 0 : (leftSelectionMouseArea.pressed ? 0.7 : 1.0 )
 
               MouseArea {
                   id: rightSelectionMouseArea
@@ -156,56 +106,9 @@ Item {
                  }
                  onReleased: {
                       // trim to word selection
-                      ignoreClose = true;
-                      var selectionEnd = textInput.selectionEnd;
-                      textInput.cursorPosition = textInput.selectionStart;
-                      if (textInput == null) return;
-                      textInput.moveCursorSelection ( selectionEnd, TextEdit.SelectWords );
                       Popup.open(textInput,textInput.positionToRectangle(textInput.cursorPosition));
-                      ignoreClose = false;
                  }
              }
-             states: [
-                 State {
-                     name: "normal"
-                     PropertyChanges { target: rightSelectionImage;
-                         offset: - 7; // horizontal offset: 7 pixels
-                         mirror: false;
-                     }
-                 },
-                 State {
-                     name: "mirrored"
-                     PropertyChanges { target: rightSelectionImage;
-                         offset: - width + 7; // horizontal offset: 7 pixels
-                         mirror: true
-                     }
-                 }
-             ]
-             transitions: [
-                 Transition {
-                     from: "mirrored"; to: "normal"
-                     ScriptAction {script: {
-                             rightHandleRotation.origin.x = 7;
-                         }
-                     }
-                     SequentialAnimation {
-                         NumberAnimation {target: rightHandleRotation; property: "angle";
-                                       from: 180.0; to: 0.0; duration: rightSelectionImage.animationDuration}
-                     }
-                 },
-                 Transition {
-                     from: "normal"; to: "mirrored"
-                     SequentialAnimation {
-                         ScriptAction {script: {
-                                 rightHandleRotation.origin.x = rightSelectionImage.width - 7;
-                                 rightSelectionImage.offset = -rightSelectionImage.width + 7;
-                             }
-                         }
-                         NumberAnimation {target: rightHandleRotation; property: "angle";
-                                       from: 180.0; to: 0.0; duration: rightSelectionImage.animationDuration}
-                     }
-                 }
-             ]
         }
     }
 
@@ -257,6 +160,7 @@ Item {
             from: "closed"; to: "opened"
             SequentialAnimation {
                 NumberAnimation {target: rect; property: "opacity";
+                              easing.type: Easing.InOutQuad;
                               from: 0.0; to: 1.0; duration: 350}
             }
         },
@@ -264,6 +168,7 @@ Item {
             from: "opened"; to: "closed"
             SequentialAnimation {
                 NumberAnimation {target: rect; property: "opacity";
+                              easing.type: Easing.InOutQuad;
                               from: 1.0; to: 0.0; duration: 350}
             }
         }
