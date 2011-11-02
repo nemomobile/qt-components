@@ -1,3 +1,9 @@
+qt-components (1.2~git20111102-2) maverick; urgency=low
+
+  * Preparing for next release
+  
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Wed, 02 Nov 2011 13:13:13 +0300
+
 qt-components (1.2~git20111102-1) maverick; urgency=low
 
   * Fixes: NB#288320 - several components are broken in 1.2~git20111020-1+0m7
