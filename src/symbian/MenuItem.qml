@@ -100,7 +100,7 @@ Item {
             right: iconLoader.status == Loader.Ready ? iconLoader.left : parent.right
             rightMargin: iconLoader.status == Loader.Ready ? platformStyle.paddingMedium : privateStyle.scrollBarThickness
         }
-        font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
+        font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeLarge }
         color: internal.textColor()
         horizontalAlignment: Text.AlignLeft
         elide: Text.ElideRight
