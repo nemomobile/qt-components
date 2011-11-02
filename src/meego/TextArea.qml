@@ -82,6 +82,9 @@ FocusScope {
 
     property alias platformPreedit: inputMethodObserver.preedit
 
+    //force a western numeric input panel even when vkb is set to arabic
+    property alias platformWesternNumericInputEnforced: textEdit.westernNumericInputEnforced
+
     onPlatformSipAttributesChanged: {
         platformSipAttributes.registerInputElement(textEdit)
     }
@@ -317,6 +320,10 @@ FocusScope {
         // Exposed for the edit bubble
         property alias preedit: inputMethodObserver.preedit
         property alias preeditCursorPosition: inputMethodObserver.preeditCursorPosition
+
+        //property is evaluated by input method framework
+        property bool westernNumericInputEnforced: false
+        onWesternNumericInputEnforcedChanged: inputContext.update();
 
         x: UI.PADDING_XLARGE
         y: (UI.FIELD_DEFAULT_HEIGHT - font.pixelSize) / 2

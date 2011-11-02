@@ -86,6 +86,9 @@ FocusScope {
 
     property alias platformPreedit: inputMethodObserver.preedit
 
+    //force a western numeric input panel even when vkb is set to arabic
+    property alias platformWesternNumericInputEnforced: textInput.westernNumericInputEnforced
+
     signal accepted
 
     onPlatformSipAttributesChanged: {
@@ -360,6 +363,10 @@ FocusScope {
 
         property alias preedit: inputMethodObserver.preedit
         property alias preeditCursorPosition: inputMethodObserver.preeditCursorPosition
+
+        //property is evaluated by input method framework
+        property bool westernNumericInputEnforced: false
+        onWesternNumericInputEnforcedChanged: inputContext.update();
 
         anchors {verticalCenter: parent.verticalCenter; left: parent.left; right: parent.right}
         anchors.leftMargin: root.platformStyle.paddingLeft
