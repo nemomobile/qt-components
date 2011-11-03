@@ -215,6 +215,9 @@ void SDeclarativeMagnifier::paint(QPainter *painter, const QStyleOptionGraphicsI
 
     Q_D(SDeclarativeMagnifier);
 
+    // Cancel painting if source rectangle has not been set
+    if (d->mSourceRect.size().toSize().isEmpty()) return;
+
     // Do not paint a magnifier inside a magnifier
     static bool inPaint = false;
     if (!inPaint) {

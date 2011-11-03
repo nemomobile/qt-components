@@ -51,10 +51,9 @@ Magnifier {
     property bool platformInverted: false
 
     function show() {
-        internal.show = true;
         parent = AppManager.rootObject();
-        sourceRect = internal.calculateSourceGeometry();
-        internal.calculatePosition();
+        internal.show = true;
+        internal.updateGeometry();
     }
 
     function hide() {
@@ -66,51 +65,30 @@ Magnifier {
     scaleFactor: 1.2
     maskFileName: ":/graphics_1_1_2/qtg_graf_magnifier_mask.svg"
     overlayFileName: ":/graphics_1_1_2/qtg_graf_magnifier.svg"
+    width: internal.magnifierSize
+    height: internal.magnifierSize
 
-    onContentCenterChanged: internal.updateSourceRect()
-
-    onSourceRectChanged: if (internal.show) internal.calculatePosition()
-
-    Connections {
-        target: editor
-        onCursorPositionChanged: internal.updateSourceRect
-    }
+    onContentCenterChanged: internal.updateGeometry()
 
     // Private
     QtObject {
         id: internal
 
-        function updateSourceRect () {
-            if (internal.show)
-                sourceRect = internal.calculateSourceGeometry();
-        }
-
-        function calculatePosition() {
-            width = sourceRect.width * scaleFactor;
-            height = sourceRect.height * scaleFactor;
-
-            var pos = parent.mapFromItem(editor,
-                                         contentCenter.x - width/2,
-                                         contentCenter.y - height - platformStyle.paddingLarge*2);
-
-            root.x = pos.x;
-            root.y = pos.y;
-        }
-
-        // Calculates and returns the source geometry of the content to be magnified in scene coordinates
-        function calculateSourceGeometry() {
-            var magniferSize = Qt.size(platformStyle.graphicSizeMedium * 2, platformStyle.graphicSizeMedium * 2);
-            var sourceSize = Qt.size(magniferSize.width / scaleFactor, magniferSize.height / scaleFactor);
-            var contentCenterScene = editor.mapToItem(null, contentCenter.x, contentCenter.y);
-
-            var rect = Qt.rect(contentCenterScene.x - sourceSize.width / 2,
-                               contentCenterScene.y - sourceSize.height / 2,
-                               sourceSize.width, sourceSize.height);
-            return rect;
-        }
-
+        property int magnifierSize: platformStyle.graphicSizeMedium * 2
+        property int sourceSize: magnifierSize / scaleFactor
         property bool show: false
         property int animationDuration: 250
+
+        function updateGeometry() {
+            if (internal.show) {
+                var pos = parent.mapFromItem(editor, contentCenter.x, contentCenter.y);
+                root.x = pos.x - magnifierSize/2;
+                root.y = Math.max(-magnifierSize*0.4, pos.y - magnifierSize - platformStyle.paddingLarge*2);
+                root.sourceRect = Qt.rect(pos.x - sourceSize / 2,
+                                          pos.y - sourceSize / 2 + Math.min(0, root.y*0.35),
+                                          sourceSize, sourceSize);
+            }
+        }
     }
 
     transformOrigin: Item.Center
