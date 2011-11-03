@@ -163,6 +163,8 @@ Item {
         interactive: false
         visible: flickableArea.height < flickableArea.contentHeight
         anchors {
+            topMargin: platformStyle.paddingMedium
+            bottomMargin: platformStyle.paddingMedium
             top: clipItem.top
             bottom: clipItem.bottom
             right: clipItem.right
