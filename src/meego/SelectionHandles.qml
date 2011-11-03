@@ -35,12 +35,15 @@ Item {
 
     Item {
         id: rect
+        objectName: "selectionHandles"
         // fake baseline since the baseline of a font is not accessible in QML (except for anchors which doesn't work well here):
         property int fontBaseLine: textInput ? textInput.font.pixelSize * 0.16 : 0
 
         z: 1030 // Have the small selection handles above the big copy-paste bubble
 
-        Image { id: leftSelectionImage
+        Image {
+            id: leftSelectionImage
+            objectName: "leftSelectionImage"
               property variant dragStart: Qt.point(0,0); // required for selection across multiple lines
               property int offset: -width/2;
               property int animationDuration: leftSelectionMouseArea.pressed ? 350 : 0
@@ -119,7 +122,9 @@ Item {
               ]
         }
 
-        Image { id: rightSelectionImage
+        Image {
+            id: rightSelectionImage
+            objectName: "rightSelectionImage"
               property variant dragStart: Qt.point(0,0); // required for selection across multiple lines
               property int offset: -width/2;
               property int animationDuration: rightSelectionMouseArea.pressed ? 350 : 0
