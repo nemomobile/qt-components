@@ -177,7 +177,5 @@ function adjustPosition(handles)
     var selectionEndRect = input.positionToRectangle( input.selectionEnd );
 
     handles.selectionStartPoint = viewport.mapFromItem( input, selectionStartRect.x, handles.selectionStartRect.y );
-    handles.leftSelectionHandle.state = (handles.selectionStartPoint.x < handles.leftSelectionHandle.width) ? "mirrored" : "normal";
     handles.selectionEndPoint = viewport.mapFromItem( input, selectionEndRect.x, handles.selectionEndRect.y )
-    handles.rightSelectionHandle.state = (handles.selectionEndPoint.x > findRootItem(input).width - handles.rightSelectionHandle.width) ? "mirrored" : "normal";
 }

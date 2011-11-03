@@ -47,7 +47,7 @@ Item {
               x: selectionStartPoint.x + offset;
               y: selectionStartPoint.y + contents.selectionStartRect.height - 10 - rect.fontBaseLine; // vertical offset: 4 pixels
               source: platformStyle.leftSelectionHandle
-              opacity: leftSelectionMouseArea.pressed ? 0 : (rightSelectionMouseArea.pressed ? 0.7 : 1.0 )
+              property bool pressed: false;
 
               MouseArea {
                   id: leftSelectionMouseArea
@@ -57,6 +57,7 @@ Item {
                           Popup.close(textInput);
                       }
                       leftSelectionImage.dragStart = Qt.point( mouse.x, mouse.y );
+                      leftSelectionImage.pressed = true;
                   }
                   onPositionChanged: {
                       var pixelpos = mapToItem( textInput, mouse.x, mouse.y );
@@ -71,8 +72,51 @@ Item {
                   }
                   onReleased: {
                       Popup.open(textInput,textInput.positionToRectangle(textInput.cursorPosition));
+                      leftSelectionImage.pressed = false;
                   }
               }
+
+              states: [
+                  State {
+                      name: "normal"
+                      when: !leftSelectionImage.pressed && !rightSelectionImage.pressed
+                  },
+                  State {
+                      name: "pressed"
+                      when: leftSelectionImage.pressed
+                  },
+                  State {
+                      name: "otherpressed"
+                      when: rightSelectionImage.pressed
+                  }
+              ]
+
+              transitions: [
+                  Transition {
+                      from: "pressed"; to: "normal"
+                      NumberAnimation {target: leftSelectionImage; property: "opacity";
+                                    easing.type: Easing.InOutQuad;
+                                    from: 0.0; to: 1.0; duration: 350}
+                  },
+                  Transition {
+                      from: "normal"; to: "pressed"
+                      NumberAnimation {target: leftSelectionImage; property: "opacity";
+                                    easing.type: Easing.InOutQuad;
+                                    from: 1.0; to: 0.0; duration: 350}
+                  },
+                  Transition {
+                      from: "otherpressed"; to: "normal"
+                      NumberAnimation {target: leftSelectionImage; property: "opacity";
+                                    easing.type: Easing.InOutQuad;
+                                    from: 0.7; to: 1.0; duration: 350}
+                  },
+                  Transition {
+                      from: "normal"; to: "otherpressed"
+                      NumberAnimation {target: leftSelectionImage; property: "opacity";
+                                    easing.type: Easing.InOutQuad;
+                                    from: 1.0; to: 0.7; duration: 350}
+                  }
+              ]
         }
 
         Image { id: rightSelectionImage
@@ -82,7 +126,7 @@ Item {
               x: selectionEndPoint.x + offset;
               y: selectionEndPoint.y + contents.selectionEndRect.height - 10 - rect.fontBaseLine; // vertical offset: 4 pixels
               source: platformStyle.rightSelectionHandle;
-              opacity: rightSelectionMouseArea.pressed ? 0 : (leftSelectionMouseArea.pressed ? 0.7 : 1.0 )
+              property bool pressed: false;
 
               MouseArea {
                   id: rightSelectionMouseArea
@@ -92,6 +136,7 @@ Item {
                           Popup.close(textInput);
                       }
                       rightSelectionImage.dragStart = Qt.point( mouse.x, mouse.y );
+                      rightSelectionImage.pressed = true;
                   }
                   onPositionChanged: {
                       var pixelpos = mapToItem( textInput, mouse.x, mouse.y );
@@ -107,8 +152,51 @@ Item {
                  onReleased: {
                       // trim to word selection
                       Popup.open(textInput,textInput.positionToRectangle(textInput.cursorPosition));
+                      rightSelectionImage.pressed = false;
                  }
              }
+
+              states: [
+                  State {
+                      name: "normal"
+                      when: !leftSelectionImage.pressed && !rightSelectionImage.pressed
+                  },
+                  State {
+                      name: "pressed"
+                      when: rightSelectionImage.pressed
+                  },
+                  State {
+                      name: "otherpressed"
+                      when: leftSelectionImage.pressed
+                  }
+              ]
+
+              transitions: [
+                  Transition {
+                      from: "pressed"; to: "normal"
+                      NumberAnimation {target: rightSelectionImage; property: "opacity";
+                                    easing.type: Easing.InOutQuad;
+                                    from: 0.0; to: 1.0; duration: 350}
+                  },
+                  Transition {
+                      from: "normal"; to: "pressed"
+                      NumberAnimation {target: rightSelectionImage; property: "opacity";
+                                    easing.type: Easing.InOutQuad;
+                                    from: 1.0; to: 0.0; duration: 350}
+                  },
+                  Transition {
+                      from: "otherpressed"; to: "normal"
+                      NumberAnimation {target: rightSelectionImage; property: "opacity";
+                                    easing.type: Easing.InOutQuad;
+                                    from: 0.7; to: 1.0; duration: 350}
+                  },
+                  Transition {
+                      from: "normal"; to: "otherpressed"
+                      NumberAnimation {target: rightSelectionImage; property: "opacity";
+                                    easing.type: Easing.InOutQuad;
+                                    from: 1.0; to: 0.7; duration: 350}
+                  }
+              ]
         }
     }
 
@@ -158,19 +246,15 @@ Item {
     transitions: [
         Transition {
             from: "closed"; to: "opened"
-            SequentialAnimation {
-                NumberAnimation {target: rect; property: "opacity";
-                              easing.type: Easing.InOutQuad;
-                              from: 0.0; to: 1.0; duration: 350}
-            }
+            NumberAnimation {target: rect; property: "opacity";
+                          easing.type: Easing.InOutQuad;
+                          from: 0.0; to: 1.0; duration: 350}
         },
         Transition {
             from: "opened"; to: "closed"
-            SequentialAnimation {
-                NumberAnimation {target: rect; property: "opacity";
-                              easing.type: Easing.InOutQuad;
-                              from: 1.0; to: 0.0; duration: 350}
-            }
+            NumberAnimation {target: rect; property: "opacity";
+                          easing.type: Easing.InOutQuad;
+                          from: 1.0; to: 0.0; duration: 350}
         }
     ]
 }
