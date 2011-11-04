@@ -74,7 +74,7 @@ QObject* tst_quickcomponentstest::createComponentFromFile(QString const& filenam
     } else {
         usedView = new QDeclarativeView;
     }
-    usedView->setProperty("orientationMethod", 1);
+    //usedView->setProperty("orientationMethod", 1);
 
     usedView->engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
     QDeclarativeComponent component(usedView->engine());
@@ -105,7 +105,7 @@ inline
 QObject* tst_quickcomponentstest::createComponentFromString(QString const &qml, QString *errors, QDeclarativeEngine **engine)
 {
     QDeclarativeView *window = new QDeclarativeView;
-    window->setProperty("orientationMethod", 1);
+    //window->setProperty("orientationMethod", 1);
     if (engine)
         *engine = window->engine();
     window->engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
@@ -124,7 +124,7 @@ inline
 QDeclarativeView* tst_quickcomponentstest::createDeclarativeView(const QString& source)
 {
     QDeclarativeView* view = new QDeclarativeView(0);
-    view->setProperty("orientationMethod", 1);
+    //view->setProperty("orientationMethod", 1);
     view->engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
     view->setSource(QUrl::fromLocalFile(source));
     view->show();
