@@ -88,6 +88,7 @@ FocusScope {
 
     //force a western numeric input panel even when vkb is set to arabic
     property alias platformWesternNumericInputEnforced: textInput.westernNumericInputEnforced
+    property bool platformSelectable: true
 
     signal accepted
 
@@ -440,6 +441,9 @@ FocusScope {
         }
 
         onSelectedTextChanged: {
+            if ( !platformSelectable )
+                textInput.deselect(); // enforce deselection in all cases we didn't think of
+
             if (Popup.isOpened(textInput) && !Popup.isChangingInput()) {
                 Popup.close(textInput);
             }
@@ -513,7 +517,8 @@ FocusScope {
                 // possible pre-edit word have to be commited before selection
                 if (root.activeFocus || root.readOnly) {
                     inputContext.reset()                    
-                    parent.selectByMouse = true
+                    if( platformSelectable )
+                        parent.selectByMouse = true
                     attemptToActivate = false
                 }
             }
@@ -605,7 +610,8 @@ FocusScope {
             onDoubleClicked: {
                 // possible pre-edit word have to be commited before selection
                 inputContext.reset()
-                parent.selectByMouse = true
+                if( platformSelectable )
+                    parent.selectByMouse = true
                 attemptToActivate = false
             }
         }

@@ -84,6 +84,7 @@ FocusScope {
 
     //force a western numeric input panel even when vkb is set to arabic
     property alias platformWesternNumericInputEnforced: textEdit.westernNumericInputEnforced
+    property bool platformSelectable: true
 
     onPlatformSipAttributesChanged: {
         platformSipAttributes.registerInputElement(textEdit)
@@ -418,6 +419,9 @@ FocusScope {
         }
 
         onSelectedTextChanged: {
+            if ( !platformSelectable )
+                textEdit.deselect(); // enforce deselection in all cases we didn't think of
+
             if (Popup.isOpened(textEdit) && !Popup.isChangingInput()) {
                 Popup.close(textEdit);
             }
@@ -480,8 +484,9 @@ FocusScope {
             onHorizontalDrag: {
                 // possible pre-edit word have to be committed before selection
                 if (root.activeFocus || root.readOnly) {
-                    inputContext.reset()                    
-                    parent.selectByMouse = true
+                    inputContext.reset()
+                    if ( platformSelectable )
+                        parent.selectByMouse = true
                     attemptToActivate = false
                 }
             }
@@ -560,7 +565,8 @@ FocusScope {
             onDoubleClicked: {
                 // possible pre-edit word have to be committed before selection
                 inputContext.reset()
-                parent.selectByMouse = true
+                if ( platformSelectable )
+                    parent.selectByMouse = true
                 attemptToActivate = false
             }
         }
