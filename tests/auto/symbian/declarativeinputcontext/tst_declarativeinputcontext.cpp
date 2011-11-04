@@ -107,6 +107,7 @@ void tst_SDeclarativeInputContext::height()
 
     //Switch orientation
     screen->setProperty("allowedOrientations", SDeclarativeScreen::Landscape);
+    QTRY_COMPARE(heightChangedSpy.count(), 1);
 
     int landscapeHeight = m_inputContext->property("height").toInt();
 
@@ -116,21 +117,21 @@ void tst_SDeclarativeInputContext::height()
     QCOMPARE(landscapeHeight, screen->property("height").toInt() * 1/2);
 #endif // Q_OS_SYMBIAN
 
+    qDebug()<<portraitHeight<<landscapeHeight;
     QVERIFY(portraitHeight > landscapeHeight);
-    QCOMPARE(heightChangedSpy.count(), 1);
 
 #ifdef Q_OS_SYMBIAN
     //Switch to portrait
     RProperty::Set( KPSUidAknFep, KAknFepSoftwareInputpanelHeight, 150 );
     screen->setProperty("allowedOrientations", SDeclarativeScreen::Portrait);
+    QTRY_COMPARE(heightChangedSpy.count(), 2);
     QCOMPARE(m_inputContext->property("height").toInt(), 150);
-    QCOMPARE(heightChangedSpy.count(), 2);
 
     //Switch to landscape
     RProperty::Set( KPSUidAknFep, KAknFepSoftwareInputpanelHeight, 120 );
     screen->setProperty("allowedOrientations", SDeclarativeScreen::Landscape);
+    QTRY_COMPARE(heightChangedSpy.count(), 3);
     QCOMPARE(m_inputContext->property("height").toInt(), 120);
-    QCOMPARE(heightChangedSpy.count(), 3);
 
     //Reset
     RProperty::Set( KPSUidAknFep, KAknFepSoftwareInputpanelHeight, 0 );

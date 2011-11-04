@@ -38,37 +38,47 @@
 **
 ****************************************************************************/
 
-#if defined(Q_COMPONENTS_SYMBIAN) && !defined(Q_OS_SYMBIAN) && !defined(Q_WS_SIMULATOR)
-#include "settingswindow.h"
-#endif
-#include "utils.h"
-#include <QApplication>
-#include <QDeclarativeView>
-#include <QDeclarativeEngine>
-#include <QDeclarativeItem>
-#include <QDir>
+#ifndef MSNAPSHOT_H
+#define MSNAPSHOT_H
 
-int main(int argc, char **argv)
+#include <qdeclarativeitem.h>
+#include <qglobal.h>
+#include <qpixmap.h>
+
+class Snapshot : public QDeclarativeItem
 {
-    QApplication app(argc, argv);
+    Q_OBJECT
 
-    qmlRegisterType<FileAccess>("FileAccess", 1, 0, "FileAccess");
-    qmlRegisterType<Settings>("Settings", 1, 0, "Settings");
-    qmlRegisterType<LayoutDirectionSetter>("LayoutDirectionSetter", 1, 0, "LayoutDirectionSetter");
+    Q_PROPERTY(int snapshotWidth READ snapshotWidth WRITE setSnapshotWidth NOTIFY snapshotWidthChanged)
+    Q_PROPERTY(int snapshotHeight READ snapshotHeight WRITE setSnapshotHeight NOTIFY snapshotHeightChanged)
 
-    Settings settings;
-    QDeclarativeView view;
-    view.setProperty("orientationMethod", settings.orientationMethod());
-    view.engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
+public:
+    Snapshot(QDeclarativeItem *parent = 0);
+    virtual ~Snapshot();
 
-#ifndef Q_OS_SYMBIAN
-    QDir::setCurrent(app.applicationDirPath());
+    virtual void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
+
+    int snapshotWidth() const;
+    int snapshotHeight() const;
+
+    void setSnapshotWidth(int width);
+    void setSnapshotHeight(int height);
+
+public Q_SLOTS:
+    void take();
+    void free();
+
+Q_SIGNALS:
+    void snapshotWidthChanged();
+    void snapshotHeightChanged();
+
+private:
+    Q_DISABLE_COPY(Snapshot)
+
+    QPixmap m_snapshot;
+    int m_width;
+    int m_height;
+};
+
+QML_DECLARE_TYPE(Snapshot)
 #endif
-    view.setSource(QUrl::fromLocalFile("main.qml"));
-    view.show();
-
-#if defined(Q_COMPONENTS_SYMBIAN) && !defined(Q_OS_SYMBIAN) && !defined(Q_WS_SIMULATOR)
-    SettingsWindow settingsWindow(&view);
-#endif
-    return app.exec();
-}

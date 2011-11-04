@@ -59,10 +59,10 @@ Item {
 
         var notify = false
         if (!fader) {
-            fader = faderComponent.createObject(visualParent ? visualParent : Utils.rootObject())
+            fader = faderComponent.createObject(visualParent ? visualParent : Utils.visualRoot())
             notify = true
         }
-	
+
         fader.animationDuration = root.animationDuration
         root.parent = fader
         status = DialogStatus.Opening

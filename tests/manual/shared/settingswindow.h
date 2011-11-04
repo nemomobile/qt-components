@@ -58,19 +58,18 @@ public:
     ~SettingsWindow();
 
 private slots:
-    void changeBordersVisibility(int index);
     void changeResolution(int index);
     void displayChanged();
     void userChangedDisplayValues();
     void userEditedDisplayValues();
     void userEditingFinished();
+    void orientationChanged(int index);
 
 private:
     int activeDisplayProfile();
     QComboBox *resolutionComboBox;
     QComboBox *orientationComboBox;
     QComboBox *sensorComboBox;
-    QComboBox *bordersComboBox;
 
     QLineEdit *dpiLineEdit;
     QLineEdit *inchLineEdit;

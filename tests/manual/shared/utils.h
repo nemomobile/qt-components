@@ -77,6 +77,9 @@ public:
     Q_INVOKABLE int orientation() const;
     Q_INVOKABLE void setIndicatorState(int indicatorId, bool on) const;
     Q_INVOKABLE void setTime(int hours, int minutes);
+    // 1 - resize-based, 0 - sensors/transform-based
+    Q_INVOKABLE void setOrientationMethod(int orientationMethod);
+    Q_INVOKABLE int orientationMethod() const;
 };
 
 class LayoutDirectionSetter : public QObject

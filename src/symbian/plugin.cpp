@@ -47,6 +47,7 @@
 #include "sdeclarativeimageprovider.h"
 #include "sdeclarativemaskedimage.h"
 #include "sdeclarativescreen.h"
+#include "sdeclarativescreen_p.h"
 #include "sdeclarativeindicatorcontainer.h"
 #include "sdeclarativenetworkindicator.h"
 #include "sbatteryinfo.h"
@@ -55,12 +56,40 @@
 #include "smousegrabdisabler.h"
 #include "sdeclarativemagnifier.h"
 #include "sdeclarativesharedstatusbar.h"
+#include "ssnapshot.h"
 
 #include <QCoreApplication>
 #include <QtDeclarative>
+#include <QDeclarativeView>
+
 
 static const int VERSION_MAJOR = 1;
 static const int VERSION_MINOR = 0;
+
+static void tryToDisableSystemRotation(const QDeclarativeEngine *engine)
+{
+    QDeclarativeView *declarativeView = 0;
+    const QWidgetList &widgets = QApplication::allWidgets();
+    for (int i = 0; i < widgets.count() && !declarativeView; i++) {
+         QDeclarativeView *tempView = qobject_cast<QDeclarativeView *>(widgets.at(i));
+         if (tempView && tempView->engine() == engine)
+             declarativeView = tempView;
+    }
+
+    if (!declarativeView)
+        return;
+
+    engine->rootContext()->setProperty("declarativeViewPtr", qVariantFromValue(qobject_cast<QObject *>(declarativeView)));
+
+    // If resize mode set from componenttest
+    if (declarativeView->property("orientationMethod").toBool())
+        return;
+// Do not use sensor orientation method with simulator
+#ifndef Q_WS_SIMULATOR
+    declarativeView->setAttribute(Qt::WA_SymbianNoSystemRotation);
+#endif
+}
+
 
 class SymbianPlugin : public QDeclarativeExtensionPlugin
 {
@@ -69,8 +98,10 @@ class SymbianPlugin : public QDeclarativeExtensionPlugin
 public:
 
     void initializeEngine(QDeclarativeEngine *engine, const char *uri) {
+
         QDeclarativeExtensionPlugin::initializeEngine(engine, uri);
         context = engine->rootContext();
+        tryToDisableSystemRotation(engine);
 
         // QVariant.toInt() defaults to zero if QVariant is invalid.
         int versionMajor = context->property("symbianComponentsVersionMajor").toInt();
@@ -148,6 +179,7 @@ public:
         qmlRegisterType<SMouseGrabDisabler>(uri, 1, 1, "MouseGrabDisabler");
         qmlRegisterType<SDeclarativeMagnifier>(uri, 1, 1, "Magnifier");
         qmlRegisterType<SDeclarativeSharedStatusBar>(uri, 1, 1, "SharedStatusBar");
+        qmlRegisterType<Snapshot>(uri, 1, 1, "Snapshot");
         qmlRegisterUncreatableType<SDeclarative>(uri, 1, 1, "Symbian", "");
         qmlRegisterUncreatableType<SDeclarativeScreen>(uri, 1, 1, "Screen", "");
         qmlRegisterUncreatableType<SDialogStatus>(uri, 1, 1, "DialogStatus", "");

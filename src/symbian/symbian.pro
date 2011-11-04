@@ -25,6 +25,9 @@ SOURCES += \
     sdeclarativemaskedimage.cpp \
     sdeclarativescreen.cpp \
     sdeclarativesharedstatusbar.cpp \
+    sdeclarativescreen_p.cpp \
+    sdeclarativescreen_p_resize.cpp \
+    sdeclarativescreen_p_sensor.cpp \
     sdeclarativestyle.cpp \
     sdeclarativestyleinternal.cpp \
     siconpool.cpp \
@@ -34,7 +37,8 @@ SOURCES += \
     sstyleengine.cpp \
     sstylefactory.cpp \
     indicators/sdeclarativeindicatorcontainer.cpp \
-    indicators/sdeclarativenetworkindicator.cpp
+    indicators/sdeclarativenetworkindicator.cpp \
+    ssnapshot.cpp
 
 symbian {
     SOURCES += \
@@ -78,6 +82,8 @@ HEADERS += \
     sdeclarativescreen.h \
     sdeclarativescreen_p.h \
     sdeclarativesharedstatusbar.h \
+    sdeclarativescreen_p_resize.h \
+    sdeclarativescreen_p_sensor.h \
     sdeclarativestyle.h \
     sdeclarativestyleinternal.h \
     siconpool.h \
@@ -88,7 +94,8 @@ HEADERS += \
     sstylefactory.h \
     indicators/sdeclarativeindicatorcontainer.h \
     indicators/sdeclarativenetworkindicator.h \
-    indicators/sdeclarativenetworkindicator_p.h
+    indicators/sdeclarativenetworkindicator_p.h \
+    ssnapshot.h
 
 symbian: {
     HEADERS += \
@@ -188,8 +195,8 @@ symbian {
     LIBS += -lcone // For EikonEnv / CoeEnv
     LIBS += -leikcore // For EikonEnv
     LIBS += -leikcoctl // For CEikStatusPane
-    LIBS += -lavkon // For AknAppui SetOrientationL
     LIBS += -lhal   // For calculating DPI values
+    LIBS += -lavkon // For AknAppui
 
     symbian_internal {
         LIBS += -laknicon // For AknIconUtils
@@ -222,3 +229,7 @@ symbian {
 win32: LIBS += -lpsapi # for allocated memory info
 
 include(../../qml.pri)
+
+
+
+

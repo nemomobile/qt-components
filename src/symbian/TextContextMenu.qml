@@ -50,7 +50,7 @@ Item {
     property bool platformInverted: false
 
     function show() {
-        parent = AppManager.rootObject();
+        parent = AppManager.visualRoot();
         internal.show = true;
         calculatePosition();
     }

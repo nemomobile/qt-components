@@ -38,37 +38,39 @@
 **
 ****************************************************************************/
 
-#if defined(Q_COMPONENTS_SYMBIAN) && !defined(Q_OS_SYMBIAN) && !defined(Q_WS_SIMULATOR)
-#include "settingswindow.h"
-#endif
-#include "utils.h"
-#include <QApplication>
-#include <QDeclarativeView>
-#include <QDeclarativeEngine>
-#include <QDeclarativeItem>
-#include <QDir>
+#ifndef SDECLARATIVESCREEN_P_RESIZE_H
+#define SDECLARATIVESCREEN_P_RESIZE_H
 
-int main(int argc, char **argv)
+#include "sdeclarativescreen.h"
+#include "sdeclarativescreen_p.h"
+#include <QtCore/qpointer.h>
+#include <QtGui/qgraphicsview.h>
+
+QT_FORWARD_DECLARE_CLASS(QDeclarativeEngine)
+QT_FORWARD_DECLARE_CLASS(QDeclarativeView)
+
+class SDeclarativeScreenPrivateResize : public SDeclarativeScreenPrivate
 {
-    QApplication app(argc, argv);
+    Q_OBJECT
+    Q_DECLARE_PUBLIC(SDeclarativeScreen)
 
-    qmlRegisterType<FileAccess>("FileAccess", 1, 0, "FileAccess");
-    qmlRegisterType<Settings>("Settings", 1, 0, "Settings");
-    qmlRegisterType<LayoutDirectionSetter>("LayoutDirectionSetter", 1, 0, "LayoutDirectionSetter");
+public:
+    SDeclarativeScreenPrivateResize(SDeclarativeScreen *qq, QDeclarativeEngine *engine, QDeclarativeView *view);
+    ~SDeclarativeScreenPrivateResize();
 
-    Settings settings;
-    QDeclarativeView view;
-    view.setProperty("orientationMethod", settings.orientationMethod());
-    view.engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
+    void setAllowedOrientations(SDeclarativeScreen::Orientations orientations);
 
 #ifndef Q_OS_SYMBIAN
-    QDir::setCurrent(app.applicationDirPath());
+    void privateSetOrientation(int orientation);
 #endif
-    view.setSource(QUrl::fromLocalFile("main.qml"));
-    view.show();
 
-#if defined(Q_COMPONENTS_SYMBIAN) && !defined(Q_OS_SYMBIAN) && !defined(Q_WS_SIMULATOR)
-    SettingsWindow settingsWindow(&view);
-#endif
-    return app.exec();
-}
+protected:
+    void setScreenSize(QSize size);
+    bool eventFilter(QObject *obj, QEvent *event);
+
+private:
+    bool portraitScreen() const;
+    QSize systemScreenSize();
+};
+
+#endif // SDECLARATIVESCREEN_P_RESIZE_H

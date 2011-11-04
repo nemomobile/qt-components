@@ -127,6 +127,7 @@ void tst_SDeclarativeScreen::changeOrientation()
     QCOMPARE(widthSpy.count(), 1);
     QCOMPARE(heightSpy.count(), 1);
     QCOMPARE(displaySpy.count(), 0); // no "displayChanged" signal
+    screen->setProperty("allowedOrientations", SDeclarativeScreen::Default);
 }
 
 void tst_SDeclarativeScreen::changeScreenSize()
@@ -135,19 +136,24 @@ void tst_SDeclarativeScreen::changeScreenSize()
                               Q_ARG(int, 360),
                               Q_ARG(int, 640),
                               Q_ARG(qreal, 200));
+    QCOMPARE(screen->property("displayWidth").toInt(), 360);
+    QCOMPARE(screen->property("displayHeight").toInt(), 640);
     QCOMPARE(screen->property("width").toInt(), 360);
     QCOMPARE(screen->property("height").toInt(), 640);
     QCOMPARE(screen->property("currentOrientation").toInt(), (int)SDeclarativeScreen::Portrait);
     QCOMPARE(screen->property("dpi").toDouble(), (double)200);
     QCOMPARE(screen->property("displayCategory").toInt(), (int)SDeclarativeScreen::Normal);
     QCOMPARE(screen->property("density").toInt(), (int)SDeclarativeScreen::High);
+
     QMetaObject::invokeMethod(screen, "privateSetDisplay",
                               Q_ARG(int, 640),
                               Q_ARG(int, 360),
                               Q_ARG(qreal, 120));
-    QCOMPARE(screen->property("width").toInt(), 640);
-    QCOMPARE(screen->property("height").toInt(), 360);
-    QCOMPARE(screen->property("currentOrientation").toInt(), (int)SDeclarativeScreen::Landscape);
+    QCOMPARE(screen->property("displayWidth").toInt(), 640);
+    QCOMPARE(screen->property("displayHeight").toInt(), 360);
+    QCOMPARE(screen->property("width").toInt(), 360);
+    QCOMPARE(screen->property("height").toInt(), 640);
+    QCOMPARE(screen->property("currentOrientation").toInt(), (int)SDeclarativeScreen::Portrait);
     QCOMPARE(screen->property("dpi").toDouble(), (double)120);
     QCOMPARE(screen->property("displayCategory").toInt(), (int)SDeclarativeScreen::Large);
     QCOMPARE(screen->property("density").toInt(), (int)SDeclarativeScreen::Low);
@@ -166,8 +172,13 @@ void tst_SDeclarativeScreen::startupOrientation()
 
 void tst_SDeclarativeScreen::initView(const QString &fileName)
 {
-    if (view.isNull())
-        view.reset(tst_quickcomponentstest::createDeclarativeView(fileName));
+    if (view.isNull()) {
+        view.reset(new QDeclarativeView(0));
+        view->setProperty("orientationMethod", 1);
+        view->engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
+        view->setSource(QUrl::fromLocalFile(fileName));
+        view->show();
+    }
     QVERIFY(view);
     QDeclarativeView *v = view.data();
     QString errors;
@@ -187,8 +198,11 @@ void tst_SDeclarativeScreen::initView(const QString &fileName)
 
 void tst_SDeclarativeScreen::twoDeclarativeViews()
 {
-    QDeclarativeView *view2 = tst_quickcomponentstest::createDeclarativeView("tst_declarativescreen.qml");
-    QVERIFY(view2);
+    QDeclarativeView *view2 = new QDeclarativeView(0);
+    view2->setProperty("orientationMethod", 1);
+    view2->engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
+    view2->setSource(QUrl::fromLocalFile("tst_declarativescreen.qml"));
+    view2->show();
 
     // set another top level widget as parent
     QScopedPointer<QMainWindow> rootWindow(new QMainWindow);

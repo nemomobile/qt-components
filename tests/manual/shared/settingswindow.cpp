@@ -62,32 +62,38 @@ struct DisplayProfile {
     qreal dpiValue;
 };
 
-// These are for desktop use only, do not alter the order of the array!
 static const DisplayProfile displayProfilesArray[] = {
     // ~3.47" NHD
-    {"NHD Portrait", 360, 640, 211.7},
-    {"NHD Landscape", 640, 360, 211.7},
+    {"NHD", 360, 640, 211.7},
+    {"NHD", 640, 360, 211.7},
+
     // ~3.17" NHD
-    {"NHD Portrait", 360, 640, 232.0},
-    {"NHD Landscape", 640, 360, 232.0},
+    {"NHD", 360, 640, 232.0},
+    {"NHD", 640, 360, 232.0},
+
     // ~3.95" NHD
-    {"NHD Portrait", 360, 640, 186.1},
-    {"NHD Landscape", 640, 360, 186.1},
+    {"NHD", 360, 640, 186.1},
+    {"NHD", 640, 360, 186.1},
+
     // ~2.46" VGA
-    {"VGA Portrait", 480, 640, 325.6},
-    {"VGA Landscape", 640, 480, 325.6},
+    {"VGA", 480, 640, 325.6},
+    {"VGA", 640, 480, 325.6},
+
     // 3.2" HVGA
-    {"HVGA Portrait", 320, 480, 180},
-    {"HVGA Landscape", 480, 320, 180},
+    {"HVGA", 320, 480, 180},
+    {"HVGA", 480, 320, 180},
+
     // 4.0" WVGA
-    {"WVGA Portrait", 480, 864, 247.1},
-    {"WVGA Landscape", 864, 480, 247.1},
+    {"WVGA", 480, 864, 247.1},
+    {"WVGA", 864, 480, 247.1},
+
     // 7.0" WSVGA
-    {"WSVGA Portrait", 600, 1024, 169},
-    {"WSVGA Landscape", 1024, 600, 169},
+    {"WSVGA", 600, 1024, 169},
+    {"WSVGA", 1024, 600, 169},
+
     // 11" XGA
-    {"XGA Portrait", 768, 1024, 132},
-    {"XGA Landscape", 1024, 768, 132}
+    {"XGA", 768, 1024, 132},
+    {"XGA", 1024, 768, 132},
 };
 
 static const int displayProfilesCount = sizeof(displayProfilesArray) / sizeof(DisplayProfile);
@@ -101,16 +107,6 @@ SettingsWindow::SettingsWindow(QDeclarativeView *view)
 {
 
     QVBoxLayout *boxLayout = new QVBoxLayout(this);
-    QGroupBox *globalGroup = new QGroupBox(tr("Global debug drawing"), this);
-    QFormLayout *globalLayout = new QFormLayout(globalGroup);
-
-    bordersComboBox = new QComboBox(this);
-    bordersComboBox->addItems(QStringList() << tr("Invisible") << tr("Visible"));
-    connect(bordersComboBox, SIGNAL(currentIndexChanged(int)), SLOT(changeBordersVisibility(int)));
-    globalLayout->addRow(tr("&Borders"), bordersComboBox);
-
-    globalGroup->setLayout(globalLayout);
-    boxLayout->addWidget(globalGroup);
 
     resolutionComboBox = new QComboBox(this);
 
@@ -140,7 +136,7 @@ SettingsWindow::SettingsWindow(QDeclarativeView *view)
     resolutionComboBox->setCurrentIndex(activeDisplayProfile());
     connect(resolutionComboBox, SIGNAL(currentIndexChanged(int)), SLOT(changeResolution(int)));
 
-    QGroupBox *resolutionGroup = new QGroupBox(tr("Screen(device) resolution"));
+    QGroupBox *resolutionGroup = new QGroupBox(tr("Device"));
     QFormLayout *resolutionLayout = new QFormLayout();
     resolutionLayout->addRow(tr("&Resolution:"), resolutionComboBox);
     resolutionGroup->setLayout(resolutionLayout);
@@ -166,6 +162,14 @@ SettingsWindow::SettingsWindow(QDeclarativeView *view)
     connect(heightSpinBox, SIGNAL(valueChanged(int)), this, SLOT(userChangedDisplayValues()));
     resolutionLayout->addRow(tr("&Height:"), heightSpinBox);
 
+    orientationComboBox = new QComboBox(this);
+    orientationComboBox->addItem("Portrait");
+    orientationComboBox->addItem("Landscape");
+    orientationComboBox->addItem("PortraitInverted");
+    orientationComboBox->addItem("LandscapeInverted");
+    resolutionLayout->addRow(tr("&Orientation:"), orientationComboBox);
+    connect(orientationComboBox, SIGNAL(currentIndexChanged(int)), SLOT(orientationChanged(int)));
+
     displayChanged();
     connect(screen, SIGNAL(displayChanged()), this, SLOT(displayChanged()), Qt::QueuedConnection);
     connect(screen, SIGNAL(widthChanged()), this, SLOT(displayChanged()), Qt::QueuedConnection);
@@ -187,8 +191,8 @@ int SettingsWindow::activeDisplayProfile()
     for (int i = 0; i < displayProfilesCount; i++) {
         DisplayProfile profile = displayProfilesArray[i];
 
-        if (profile.resolutionWidth == screen->property("width").value<int>()
-            && profile.resolutionHeight == screen->property("height").value<int>()
+        if (profile.resolutionWidth == screen->property("displayWidth").value<int>()
+            && profile.resolutionHeight == screen->property("displayHeight").value<int>()
             && qFuzzyCompare(profile.dpiValue, screen->property("dpi").value<qreal>())) {
             return i;
         }
@@ -196,15 +200,9 @@ int SettingsWindow::activeDisplayProfile()
     return -1;
 }
 
-void SettingsWindow::changeBordersVisibility(int index)
-{
-    bool enableBorders = index > 0;
-    declarativeView->setOptimizationFlag(QGraphicsView::IndirectPainting, enableBorders);
-}
-
 void SettingsWindow::changeResolution(int index)
 {
-    if (index != -1) {
+    if (index != -1 || index != resolutionComboBox->currentIndex()) {
         DisplayProfile profile = displayProfilesArray[index];
         QMetaObject::invokeMethod(screen, "privateSetDisplay",
                                   Q_ARG(int, profile.resolutionWidth),
@@ -220,6 +218,7 @@ void SettingsWindow::displayChanged()
     const int newWidthValue = screen->property("width").value<int>();
     const int newHeightValue = screen->property("height").value<int>();
     const qreal newDpiValue = screen->property("dpi").value<qreal>();
+    const int newOrientationValue = screen->property("currentOrientation").value<int>();
 
     resolutionComboBox->setCurrentIndex(activeDisplayProfile());
 
@@ -232,6 +231,19 @@ void SettingsWindow::displayChanged()
     widthSpinBox->setValue(newWidthValue);
     heightSpinBox->setValue(newHeightValue);
 
+    int newIndex = 0;
+    switch(newOrientationValue) {
+        case 1: newIndex = 0; break;
+        case 2: newIndex = 1; break;
+        case 4: newIndex = 2; break;
+        case 8: newIndex = 3; break;
+    };
+
+    if (newIndex != orientationComboBox->currentIndex()) {
+        disconnect(orientationComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(orientationChanged(int)));
+        orientationComboBox->setCurrentIndex(newIndex);
+        connect(orientationComboBox, SIGNAL(currentIndexChanged(int)), SLOT(orientationChanged(int)));
+    }
     updatingValuesBasedOnDisplayChange = false;
 }
 
@@ -266,4 +278,30 @@ void SettingsWindow::userEditingFinished()
                               Q_ARG(int, heightSpinBox->value()),
                               Q_ARG(qreal, dpi));
 
+}
+
+void SettingsWindow::orientationChanged(int index)
+{
+    /*enum Orientation {
+        Default = 0,
+        Portrait = 1,
+        Landscape = 2,
+        PortraitInverted = 4,
+        LandscapeInverted = 8,
+        All = 15
+    };*/
+
+    if (index != orientationComboBox->currentIndex())
+        return;
+
+    int o;
+    switch(index) {
+        case 0: o = 1; break;
+        case 1: o = 2; break;
+        case 2: o = 4; break;
+        case 3: o = 8; break;
+    };
+
+    QMetaObject::invokeMethod(screen, "privateSetOrientation",
+                              Q_ARG(int, o));
 }

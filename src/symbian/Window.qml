@@ -41,36 +41,135 @@
 import QtQuick 1.1
 import "." 1.1
 
-Item {
+Rectangle {
     id: root
 
-    property bool inPortrait: height > width
+    property bool inPortrait: window.height > window.width
+    default property alias content: window.data
+    property bool platformInverted: false
+    property Item privateWindow: window
+
+    width: screen.privateSensorOrientationMethod() ? screen.displayWidth : screen.width
+    height: screen.privateSensorOrientationMethod() ? screen.displayHeight : screen.height
 
     signal orientationChangeAboutToStart
     signal orientationChangeStarted
     signal orientationChangeFinished
+    signal privateSwitchGeometry
 
-    // Symbian specific API
-    property bool platformInverted: false
+    color: platformInverted ? platformStyle.colorBackgroundInverted
+                            : platformStyle.colorBackground
 
-    width: screen.width > 0 ? screen.width : screen.displayWidth
-    height: screen.height > 0 ? screen.height : screen.displayHeight
+    Snapshot {
+        id: snapshot
 
-    Rectangle {
-        anchors.fill: parent
-        color: platformInverted ? platformStyle.colorBackgroundInverted
-                                : platformStyle.colorBackground
+        property int angle: 0
+        property int statAngle: 0
+
+        anchors.top: parent.top
+        anchors.left: parent.left
+        width: screen.displayWidth
+        height: screen.displayHeight
+        snapshotWidth: screen.displayWidth
+        snapshotHeight: screen.displayHeight
+        opacity: 0
+        smooth: true
     }
 
-    Binding { target: root; property: "height"; value: screen.height; when: screen.height > 0 }
-    Binding { target: root; property: "width"; value: screen.width; when: screen.width > 0 }
+    Item {
+        id: window
+        objectName: "window"
 
-    Connections {
-        target: screen
-        onCurrentOrientationChanged: root.orientationChangeFinished()
-        onPrivateAboutToChangeOrientation: {
-            root.orientationChangeAboutToStart()
-            root.orientationChangeStarted()
+        function setOrientationWithoutAnimation() {
+            root.orientationChangeStarted();
+            root.privateSwitchGeometry()
+            window.rotation = snapshot.angle;
+            root.orientationChangeFinished();
+        }
+
+        anchors.centerIn: parent
+        clip: orientationAnimation.running
+        smooth: !orientationAnimation.running
+
+        Binding { target: window; property: "height"; value: screen.height; when: screen.height > 0 }
+        Binding { target: window; property: "width"; value: screen.width; when: screen.width > 0 }
+
+        Timer {
+            id: asyncOrientation
+
+            property bool animate: false
+
+            triggeredOnStart:  false
+            interval: 1
+            repeat: false
+            onTriggered: {
+                if (asyncOrientation.animate && !inputContext.visible && Qt.application.active)
+                    orientationAnimation.restart();
+                 else
+                    window.setOrientationWithoutAnimation();
+            }
+        }
+
+        Connections {
+            target: screen
+            onPrivateAboutToChangeOrientation: {
+                if (animate && angle == window.rotation)
+                    return;
+
+                orientationAnimation.complete();
+                snapshot.angle = angle;
+                snapshot.statAngle = window.rotation;
+                asyncOrientation.animate = animate;
+                root.orientationChangeAboutToStart();
+
+                if (animate)
+                    asyncOrientation.restart();
+                else
+                    window.setOrientationWithoutAnimation();
+            }
+        }
+
+        SequentialAnimation {
+            id: orientationAnimation;
+
+            ScriptAction { script: { snapshot.take() } }
+            PropertyAction { target: snapshot; property: "opacity"; value: 1.0 }
+            PropertyAction { target: window; property: "opacity"; value: 0.0 }
+            ScriptAction { script: { root.orientationChangeStarted() } }
+
+            ParallelAnimation {
+                PropertyAnimation { target: snapshot; properties: "scale"; to: 0.9; duration: 400 }
+                ScriptAction { script: {root.privateSwitchGeometry() } }
+                PropertyAction { target: window; property: "rotation"; value: snapshot.angle }
+                PropertyAction { target: window; property: "scale"; value: 0.9 }
+            }
+
+            PropertyAction { target: snapshot; property: "opacity"; value: 0.0 }
+            PropertyAction { target: snapshot; property: "scale"; value: 1.0 }
+            PropertyAction { target: window; property: "opacity"; value: 1.0 }
+            ScriptAction { script: { snapshot.take() } }
+            PropertyAction { target: snapshot; property: "opacity"; value: 1.0 }
+            PropertyAction { target: window; property: "opacity"; value: 0.0 }
+
+            ParallelAnimation {
+                RotationAnimation {
+                    target: snapshot;
+                    from: snapshot.statAngle - snapshot.angle;
+                    to: 0;
+                    direction: RotationAnimation.Shortest;
+                    duration: 400;
+                    easing.type: Easing.OutQuad
+                }
+                PropertyAnimation { target: snapshot; properties: "scale"; from:1; to: 1.1; duration: 400 }
+            }
+
+            PropertyAction { target: window; property: "scale"; value: 1.0 }
+            PropertyAction { target: snapshot; property: "opacity"; value: 0.0 }
+            PropertyAction { target: snapshot; property: "scale"; value: 1.0 }
+            PropertyAction { target: snapshot; property: "rotation"; value: 0.0 }
+            ScriptAction { script: { snapshot.free() } }
+            PropertyAction { target: window; property: "opacity"; value: 1.0 }
+            ScriptAction { script: { root.orientationChangeFinished() } }
         }
     }
 }

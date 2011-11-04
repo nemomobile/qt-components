@@ -81,7 +81,7 @@ Item {
 
     onVisibleChanged: {
         if (visible) {
-            root.parent = AppView.rootObject()
+            root.parent = AppView.visualRoot()
             privy.calculatePosition()
             opacity = 1
             privy.targetSceneXChanged.connect(privy.targetMoved)

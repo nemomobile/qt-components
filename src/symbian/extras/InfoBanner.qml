@@ -54,7 +54,7 @@ Item {
     signal clicked
 
     function open() {
-        root.parent = internal.rootObject();
+        root.parent = internal.visualRoot();
         internal.setZOrder();
         var suffix = root.interactive ? "_normal" : ""
         background.source = privateStyle.imagePath("qtg_fr_popup_infobanner" + suffix,
@@ -150,10 +150,17 @@ Item {
         id: internal
 
         function rootObject() {
-            var next = root.parent
+            var next = parent
             while (next && next.parent)
                 next = next.parent
             return next
+        }
+
+        function visualRoot() {
+            var root = rootObject()
+            if(root.hasOwnProperty("privateWindow"))
+                return root.privateWindow
+            return root;
         }
 
         function setZOrder() {

@@ -129,6 +129,20 @@ int Settings::orientation() const {
     return settings.value("orientation").toInt();
 }
 
+void Settings::setOrientationMethod(int orientationMethod)
+{
+    QFileInfo info(QApplication::applicationFilePath());
+    QSettings settings("Nokia", info.baseName());
+    settings.setValue("orientationMethod", orientationMethod);
+}
+
+int Settings::orientationMethod() const
+{
+    QFileInfo info(QApplication::applicationFilePath());
+    QSettings settings("Nokia", info.baseName());
+    return settings.value("orientationMethod").toInt();
+}
+
 void Settings::setIndicatorState(int indicatorId, bool on) const
 {
 #if defined(Q_OS_SYMBIAN) && defined(HAVE_SYMBIAN_INTERNAL)

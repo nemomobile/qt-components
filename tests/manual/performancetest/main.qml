@@ -194,7 +194,7 @@ PageStackWindow {
                     Button {
                         id: toggleFullscreenButton
 
-                        width: mainWindow.width
+                        width: screen.width
                         text: "Toggle Fullscreen"
                         onClicked: {
                             mainWindow.showStatusBar = !mainWindow.showStatusBar
@@ -217,7 +217,7 @@ PageStackWindow {
                             id: testButton
 
                             text: modelData
-                            width: mainWindow.width
+                            width: screen.width
 
                             onClicked: {
                                 buttons.checkedButton = testButton

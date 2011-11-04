@@ -38,37 +38,81 @@
 **
 ****************************************************************************/
 
-#if defined(Q_COMPONENTS_SYMBIAN) && !defined(Q_OS_SYMBIAN) && !defined(Q_WS_SIMULATOR)
-#include "settingswindow.h"
-#endif
-#include "utils.h"
-#include <QApplication>
-#include <QDeclarativeView>
-#include <QDeclarativeEngine>
-#include <QDeclarativeItem>
-#include <QDir>
+#include "ssnapshot.h"
+#include <qpainter.h>
+#include <qgraphicsscene.h>
 
-int main(int argc, char **argv)
+Snapshot::Snapshot(QDeclarativeItem *parent)
+    : QDeclarativeItem(parent)
+    , m_width(0)
+    , m_height(0)
 {
-    QApplication app(argc, argv);
+    setFlag(ItemHasNoContents, false);
+    setFlag(ItemIgnoresParentOpacity, true);
+    setOpacity(0);
+}
 
-    qmlRegisterType<FileAccess>("FileAccess", 1, 0, "FileAccess");
-    qmlRegisterType<Settings>("Settings", 1, 0, "Settings");
-    qmlRegisterType<LayoutDirectionSetter>("LayoutDirectionSetter", 1, 0, "LayoutDirectionSetter");
+Snapshot::~Snapshot()
+{
+}
 
-    Settings settings;
-    QDeclarativeView view;
-    view.setProperty("orientationMethod", settings.orientationMethod());
-    view.engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
+void Snapshot::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+{
+    painter->save();
 
-#ifndef Q_OS_SYMBIAN
-    QDir::setCurrent(app.applicationDirPath());
-#endif
-    view.setSource(QUrl::fromLocalFile("main.qml"));
-    view.show();
+    if (smooth()) {
+        painter->setRenderHint(QPainter::Antialiasing, true);
+        painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
+    } else {
+        painter->setRenderHint(QPainter::Antialiasing, false);
+        painter->setRenderHint(QPainter::SmoothPixmapTransform, false);
+    }
 
-#if defined(Q_COMPONENTS_SYMBIAN) && !defined(Q_OS_SYMBIAN) && !defined(Q_WS_SIMULATOR)
-    SettingsWindow settingsWindow(&view);
-#endif
-    return app.exec();
+    painter->drawPixmap(0, 0, m_snapshot);
+    painter->restore();
+}
+
+void Snapshot::take()
+{
+    QGraphicsScene *s = scene();
+    if (!s)
+        return;
+
+    m_snapshot = QPixmap(width(), height());
+    QPainter painter(&m_snapshot);
+    QRectF r(0, 0, snapshotWidth(), snapshotHeight());
+    s->render(&painter, r, r);
+}
+
+void Snapshot::free()
+{
+    m_snapshot = QPixmap();
+}
+
+void Snapshot::setSnapshotWidth(int width)
+{
+    if (m_width == width)
+        return;
+
+    m_width = width;
+    emit snapshotWidthChanged();
+}
+
+void Snapshot::setSnapshotHeight(int height)
+{
+    if (m_height == height)
+        return;
+
+    m_height = height;
+    emit snapshotHeightChanged();
+}
+
+int Snapshot::snapshotWidth() const
+{
+    return m_width;
+}
+
+int Snapshot::snapshotHeight() const
+{
+    return m_height;
 }

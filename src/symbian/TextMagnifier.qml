@@ -39,6 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 1.1
+import com.nokia.symbian 1.1
 import "AppManager.js" as AppManager
 
 Magnifier {
@@ -51,7 +52,7 @@ Magnifier {
     property bool platformInverted: false
 
     function show() {
-        parent = AppManager.rootObject();
+        parent = AppManager.visualRoot();
         internal.show = true;
         internal.updateGeometry();
     }
@@ -70,9 +71,30 @@ Magnifier {
 
     onContentCenterChanged: internal.updateGeometry()
 
+    Connections {
+        target: screen
+        onCurrentOrientationChanged: internal.orientation()
+    }
+
+    Component.onCompleted: internal.orientation()
+
     // Private
     QtObject {
         id: internal
+
+        function orientation() {
+            if (!screen.privateSensorOrientationMethod())
+                return;
+
+            if (screen.currentOrientation == Screen.Portrait)
+                root.rotation = 0;
+            else if(screen.currentOrientation == Screen.Landscape)
+                root.rotation = -90;
+            else if(screen.currentOrientation == Screen.PortraitInverted)
+                root.rotation = -180;
+            else if(screen.currentOrientation == Screen.LandscapeInverted)
+                root.rotation = 90;
+        }
 
         property int magnifierSize: platformStyle.graphicSizeMedium * 2
         property int sourceSize: magnifierSize / scaleFactor

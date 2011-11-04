@@ -48,17 +48,15 @@ Window {
         id: menu
         objectName: "menu"
 
-        property real itemHeight: height / (menuLayout.children.length - 1)
-
-        height: 200
-
         MenuLayout {
             id: menuLayout
 
-            MenuItem { height: menu.itemHeight; text: "first" }
-            MenuItem { height: menu.itemHeight; text: "second" }
-            MenuItem { height: menu.itemHeight; text: "third" }
-            MenuItem { height: menu.itemHeight; text: "fourth" }
+            MenuItem { text: "first" }
+            MenuItem { text: "second" }
+            MenuItem { text: "third" }
+            MenuItem { text: "fourth" }
+            MenuItem { text: "five" }
+            MenuItem { text: "six" }
         }
     }
 }

@@ -46,41 +46,78 @@
 #include <QtGui/qgraphicsview.h>
 
 QT_FORWARD_DECLARE_CLASS(QDeclarativeEngine)
+QT_FORWARD_DECLARE_CLASS(QDeclarativeView)
 
-class SDeclarativeScreenPrivate
+#ifdef Q_OS_SYMBIAN
+#include <w32std.h>
+class CWsScreenDevice;
+#endif
+
+class SDeclarativeScreenPrivate : public QObject
 {
+    Q_OBJECT
     Q_DECLARE_PUBLIC(SDeclarativeScreen)
-public:
-    SDeclarativeScreenPrivate(SDeclarativeScreen *qq, QDeclarativeEngine *engine);
-    ~SDeclarativeScreenPrivate();
 
-    void updateOrientationAngle();
-    void _q_initView(const QSize &);
-    void _q_updateScreenSize(const QSize &);
-    void _q_desktopResized(int);
-    bool isLandscapeScreen() const;
-    QSize currentScreenSize() const;
-    QSize adjustedSize(const QSize &size) const;
+public:
+    SDeclarativeScreenPrivate(SDeclarativeScreen *qq, QDeclarativeEngine *engine, QDeclarativeView *view);
+    virtual ~SDeclarativeScreenPrivate();
+
+    SDeclarativeScreen::Orientation currentOrientation() const;
+    SDeclarativeScreen::Orientations allowedOrientations() const;
+    virtual void setAllowedOrientations(SDeclarativeScreen::Orientations orientations);
+    QSize screenSize() const;
+    QSize displaySize() const;
+    qreal dpi() const;
+    virtual void privateSetOrientation(int orientation);
+    bool privateSensorOrientationMethod() const;
+
+
+public Q_SLOTS:
+    void initView();
+
+#ifdef Q_WS_SIMULATOR
+    void desktopResized(int screen);
+#endif
+
+protected:
+    void setCurrentOrientation(SDeclarativeScreen::Orientation orientation, bool emitSignal = true);
+    void initScreenSize();
     bool portraitAllowed() const;
     bool landscapeAllowed() const;
+    bool portraitDisplay() const;
+    virtual void setScreenSize(QSize size);
+    virtual void setDisplay(int width, int height, qreal dpi);
 
-public:
+#ifdef Q_OS_SYMBIAN
+    void initDisplaySize();
+    TPixelsTwipsAndRotation screenParams();
+#elif defined(Q_WS_SIMULATOR)
+    void initDisplaySize();
+#endif
+
+    //Data
+    SDeclarativeScreen::Orientation m_currentOrientation;
+    SDeclarativeScreen::Orientations m_allowedOrientations;
+    QSize m_displaySize; // "physical" display
+    QSize m_screenSize;  // "logical" screen
+    qreal m_dpi;
+    int m_initialized : 1;
+
+    QPointer<QDeclarativeView> m_view;
+    QPointer<QDeclarativeEngine> m_engine;
     SDeclarativeScreen *q_ptr;
-    SDeclarativeScreen::Orientation currentOrientation;
-    SDeclarativeScreen::Orientations allowedOrientations;
-    qreal dpi;
-    QSize screenSize;  // "logical" screen
-    QSize displaySize; // "physical" display
-    bool settingDisplay;
-    QPointer<QGraphicsView> gv;
-    bool initCalled;
-    bool initDone;
-    QDeclarativeEngine *engine;
 
     static SDeclarativeScreenPrivate *d_ptr(SDeclarativeScreen *screen) {
         Q_ASSERT(screen);
         return screen->d_func();
     }
+
+private:
+#ifdef Q_OS_SYMBIAN
+    CWsScreenDevice *m_screenDevice;
+    CWsScreenDevice *screenDevice();
+#endif
+
 };
 
 #endif // SDECLARATIVESCREEN_P_H

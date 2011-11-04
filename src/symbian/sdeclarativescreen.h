@@ -49,16 +49,13 @@ QT_FORWARD_DECLARE_CLASS(QDeclarativeEngine)
 class SDeclarativeScreen : public QObject
 {
     Q_OBJECT
-
     Q_PROPERTY(int width READ width NOTIFY widthChanged FINAL)
     Q_PROPERTY(int height READ height NOTIFY heightChanged FINAL)
     Q_PROPERTY(int displayWidth READ displayWidth CONSTANT FINAL)
     Q_PROPERTY(int displayHeight READ displayHeight CONSTANT FINAL)
-
     Q_PROPERTY(int rotation READ rotation NOTIFY currentOrientationChanged FINAL)
     Q_PROPERTY(Orientation currentOrientation READ currentOrientation NOTIFY currentOrientationChanged FINAL)
     Q_PROPERTY(Orientations allowedOrientations READ allowedOrientations WRITE setAllowedOrientations NOTIFY allowedOrientationsChanged FINAL)
-
     Q_PROPERTY(qreal dpi READ dpi CONSTANT FINAL)
     Q_PROPERTY(DisplayCategory displayCategory READ displayCategory CONSTANT FINAL)
     Q_PROPERTY(Density density READ density CONSTANT FINAL)
@@ -99,17 +96,17 @@ public:
     int height() const;
     int displayWidth() const;
     int displayHeight() const;
-
     int rotation() const;
     Orientation currentOrientation() const;
     Orientations allowedOrientations() const;
     void setAllowedOrientations(Orientations orientations);
-
     qreal dpi() const;
     DisplayCategory displayCategory() const;
     Density density() const;
 
     Q_INVOKABLE void privateSetDisplay(int width, int height, qreal dpi);
+    Q_INVOKABLE void privateSetOrientation(int orientation);
+    Q_INVOKABLE bool privateSensorOrientationMethod() const;
 
 Q_SIGNALS:
     void widthChanged();
@@ -117,18 +114,16 @@ Q_SIGNALS:
     void currentOrientationChanged();
     void allowedOrientationsChanged();
     void displayChanged();
-    void privateAboutToChangeOrientation();
-
-protected:
-    bool eventFilter(QObject *obj, QEvent *event);
-    QScopedPointer<SDeclarativeScreenPrivate> d_ptr;
+    void privateAboutToChangeOrientation(int angle, bool animate);
 
 private:
-    Q_PRIVATE_SLOT(d_func(), void _q_initView(const QSize &))
-    Q_PRIVATE_SLOT(d_func(), void _q_updateScreenSize(const QSize &))
-    Q_PRIVATE_SLOT(d_func(), void _q_desktopResized(int))
+    QScopedPointer<SDeclarativeScreenPrivate> d_ptr;
     Q_DISABLE_COPY(SDeclarativeScreen)
     Q_DECLARE_PRIVATE(SDeclarativeScreen)
+
+    // additional private classes, to enable emitting signals
+    friend class SDeclarativeScreenPrivateResize;
+    friend class SDeclarativeScreenPrivateSensor;
 };
 
 QML_DECLARE_TYPE(SDeclarativeScreen)

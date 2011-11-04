@@ -45,6 +45,13 @@ function rootObject() {
     return next
 }
 
+function visualRoot() {
+    var root = rootObject()
+    if(root.hasOwnProperty("privateWindow"))
+        return root.privateWindow
+    return root;
+}
+
 function findParent(child, propertyName) {
     if (!child)
         return null

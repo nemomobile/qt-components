@@ -38,37 +38,68 @@
 **
 ****************************************************************************/
 
-#if defined(Q_COMPONENTS_SYMBIAN) && !defined(Q_OS_SYMBIAN) && !defined(Q_WS_SIMULATOR)
-#include "settingswindow.h"
-#endif
-#include "utils.h"
-#include <QApplication>
+#ifndef SDECLARATIVESCREEN_P_SENSOR_H
+#define SDECLARATIVESCREEN_P_SENSOR_H
+
+#include "sdeclarativescreen.h"
+#include "sdeclarativescreen_p.h"
 #include <QDeclarativeView>
-#include <QDeclarativeEngine>
-#include <QDeclarativeItem>
-#include <QDir>
 
-int main(int argc, char **argv)
+QT_FORWARD_DECLARE_CLASS(QDeclarativeEngine)
+
+
+#ifdef Q_OS_SYMBIAN
+class OrientationListener : public QObject
 {
-    QApplication app(argc, argv);
+    Q_OBJECT
 
-    qmlRegisterType<FileAccess>("FileAccess", 1, 0, "FileAccess");
-    qmlRegisterType<Settings>("Settings", 1, 0, "Settings");
-    qmlRegisterType<LayoutDirectionSetter>("LayoutDirectionSetter", 1, 0, "LayoutDirectionSetter");
+public:
+    OrientationListener(QObject *parent = 0);
+    ~OrientationListener();
 
-    Settings settings;
-    QDeclarativeView view;
-    view.setProperty("orientationMethod", settings.orientationMethod());
-    view.engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
+Q_SIGNALS:
+    void orientationChanged();
 
-#ifndef Q_OS_SYMBIAN
-    QDir::setCurrent(app.applicationDirPath());
+private:
+    static bool symbianEventFilter(void *message, long *result);
+    static OrientationListener *instance;
+};
 #endif
-    view.setSource(QUrl::fromLocalFile("main.qml"));
-    view.show();
 
-#if defined(Q_COMPONENTS_SYMBIAN) && !defined(Q_OS_SYMBIAN) && !defined(Q_WS_SIMULATOR)
-    SettingsWindow settingsWindow(&view);
+class SDeclarativeScreenPrivateSensor : public SDeclarativeScreenPrivate
+{
+
+    Q_OBJECT
+    Q_DECLARE_PUBLIC(SDeclarativeScreen)
+
+public:
+
+    SDeclarativeScreenPrivateSensor(SDeclarativeScreen *qq, QDeclarativeEngine *engine, QDeclarativeView *view);
+    ~SDeclarativeScreenPrivateSensor();
+
+    void setAllowedOrientations(SDeclarativeScreen::Orientations orientations);
+    void privateSetOrientation(int orientation);
+
+
+public Q_SLOTS:
+    void switchGeometry();
+    void viewStatusChanged(QDeclarativeView::Status status);
+
+#ifdef Q_OS_SYMBIAN
+    void orientationChanged();
 #endif
-    return app.exec();
-}
+
+protected:
+    bool eventFilter(QObject *obj, QEvent *event);
+
+private:
+    int m_animate : 1;
+    int m_hasWindow : 1;
+
+#ifdef Q_OS_SYMBIAN
+    SDeclarativeScreen::Orientation systemOrientation();
+    QScopedPointer<OrientationListener> orientationListener;
+#endif
+};
+
+#endif // SDECLARATIVESCREEN_P_H

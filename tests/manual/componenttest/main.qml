@@ -231,7 +231,7 @@ ApplicationWindow {
                     Button {
                         id: toggleFullscreenButton
 
-                        width: mainWindow.width
+                        width: screen.width
                         text: "Toggle Fullscreen"
                         onClicked: {
                             mainWindow.fullScreen = !mainWindow.fullScreen
@@ -265,11 +265,23 @@ ApplicationWindow {
                         checked: false
                         onCheckedChanged: Utils.setItemTreeInversion(mainWindow, checked)
                     }
+                    CheckBox {
+                        id: orientationMethodSetting
+                        anchors.left: parent.left
+                        text: "Next start to resize orientation"
+                        checked: false
+
+                        Component.onDestruction: {
+                            if (checked)
+                                settings.setOrientationMethod(1)
+                            else settings.setOrientationMethod(0)
+                        }
+                    }
 
                     Button {
                         id: pickFromFileButton
 
-                        width: mainWindow.width
+                        width: screen.width
                         text: {
                             // Append qmlpaths to the button label
                             var buttonLabel = "Load from "
@@ -295,7 +307,7 @@ ApplicationWindow {
                             id: testButton
 
                             text: modelData
-                            width: mainWindow.width
+                            width: screen.width
 
                             onClicked: {
                                 internal.checkedButton = testButton
