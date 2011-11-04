@@ -74,6 +74,8 @@ Dialog {
     //Deprecated, TODO Remove this on w13
     property alias style: root.platformStyle
 
+    signal linkActivated(string link)
+
     // the title field consists of the following parts: title string and
     // a close button (which is in fact an image)
     // it can additionally have an icon
@@ -180,6 +182,7 @@ Dialog {
                     color: root.platformStyle.messageTextColor
                     wrapMode: Text.WordWrap
                     text: root.message
+                    onLinkActivated: root.linkActivated(link)
                 }
 
             }

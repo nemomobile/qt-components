@@ -91,3 +91,11 @@
     The text for the title field. 
 */
 
+/*!
+    \qmlsignal Dialog::linkActivated(string link)
+
+    The given message may contain one or more links provided in rich text or html format.
+    The linkActivated signal is emitted when the user taps on one of the links. The link parameter
+    contains the link which has been tapped.
+*/
+
