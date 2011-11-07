@@ -204,14 +204,21 @@ void CSDeclarativeIndicatorDataHandler::UpdateIndicators()
                 {
                 // create new one
                 CSDeclarativeIndicatorData *data = Data( visibleUid );
-                indicator = new SDeclarativeIndicator( data, 0 );
-                indicator->setColor( iContainer->indicatorColor() );
-                QObject::connect( iContainer, SIGNAL(indicatorColorChanged(const QColor&)),
-                                  indicator, SLOT(setColor(const QColor&)) );
-                changed = true;
+                if (data)
+                    {
+                    indicator = new SDeclarativeIndicator( data, 0 );
+                    indicator->setColor( iContainer->indicatorColor() );
+                    QObject::connect( iContainer, SIGNAL(indicatorColorChanged(const QColor&)),
+                                      indicator, SLOT(setColor(const QColor&)) );
+                    changed = true;
+                    }
                 }
-            newIndicatorItems.append( indicator );
-            changed |= indicator->setState( indicatorState.visibleIndicatorStates[i] );
+
+            if (indicator)
+                {
+                newIndicatorItems.append( indicator );
+                changed |= indicator->setState( indicatorState.visibleIndicatorStates[i] );
+                }
             }
         }
 
