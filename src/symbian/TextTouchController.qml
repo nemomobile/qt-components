@@ -196,7 +196,7 @@ MouseArea {
     Connections {
         target: editor
         onTextChanged: internal.onEditorTextChanged()
-        onCursorPositionChanged: touchTools.contextMenu.calculatePosition()
+        onCursorPositionChanged: if (touchTools) touchTools.contextMenu.calculatePosition()
     }
 
     // Private
