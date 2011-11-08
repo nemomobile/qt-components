@@ -51,12 +51,14 @@ Item {
     signal clicked
 
     anchors.fill: parent
+    anchors.bottomMargin: inputContext.visible ? inputContext.height : 0
     state: "Hidden"
 
     Rectangle {
         id: fader
 
-        anchors.fill: parent
+        anchors { top: parent.top; left: parent.left; right: parent.right }
+        height: parent.height + parent.anchors.bottomMargin
         opacity: 0.0
         color: "black"
 

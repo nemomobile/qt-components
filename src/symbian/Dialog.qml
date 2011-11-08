@@ -105,27 +105,46 @@ Item {
         }
 
         function maxWidth() {
-            if (screen.width < screen.height)
-                return screen.width - 2 * platformStyle.paddingMedium
-            else
-                return privateStyle.dialogMaxSize
+            return Math.min(screen.width - 2 * platformStyle.paddingMedium, privateStyle.dialogMaxSize)
         }
 
         function maxHeight() {
-            if (screen.width < screen.height)
-                return privateStyle.dialogMaxSize
-            else
-                return screen.height - 2 * platformStyle.paddingMedium
+            return inputContext.visible
+                    ? Math.min(privateStyle.dialogMaxSize, screen.height-inputContext.height)
+                    : Math.min(privateStyle.dialogMaxSize, screen.height-2*platformStyle.paddingMedium);
         }
 
         function minWidth() {
             return Math.min(screen.displayWidth, screen.displayHeight) - 2 * platformStyle.paddingMedium
         }
 
+        function minHeight() {
+            return inputContext.visible
+                    ? Math.min(privateStyle.dialogMinSize, screen.height-inputContext.height)
+                    : Math.min(privateStyle.dialogMinSize, screen.height-2*platformStyle.paddingMedium);
+        }
+
+        function updateSize() {
+            width = Math.max(Math.min(defaultWidth(), maxWidth()), minWidth())
+            height = Math.max(Math.min(defaultHeight(), maxHeight()), minHeight())
+        }
+
+        Connections { target: inputContext; onVisibleChanged: updateTimer.start() }
+        Connections { target: screen; onHeightChanged: updateTimer.start(); onWidthChanged: updateTimer.start() }
+        Connections { target: root; onHeightChanged: updateTimer.start(); onWidthChanged: updateTimer.start() }
+
+        Component.onCompleted: updateTimer.start()
+
+        Timer {
+            id: updateTimer
+            interval: 1; repeat: false
+            onTriggered: dialog.updateSize()
+        }
+
         onFaderClicked: root.clickedOutside()
 
-        width: Math.max(Math.min(defaultWidth(), maxWidth()), minWidth())
-        height: Math.max(Math.min(defaultHeight(), maxHeight()), privateStyle.dialogMinSize)
+        width: 0 // Defined in updateSize()
+        height: 0 // Defined in updateSize()
 
         state: "Hidden"
         visible: true

@@ -229,39 +229,87 @@ Item {
         }
     }
 
-    Column {
+    CommonDialog {
+        id: textAreaDialog
+        titleText: "TextArea Dialog"
+        buttonTexts:["Ok"]
+        content: TextArea {
+            id: textArea
+            height: textAreaDialog.platformContentMaximumHeight
+            width: textAreaDialog.platformContentMaximumWidth
+            anchors.centerIn: parent
+            placeholderText: "Input"
+        }
+    }
+
+    CommonDialog {
+        id: textFieldDialog
+        titleText: "TextField Dialog"
+        buttonTexts:["Ok"]
+        content: TextField {
+            id: textField
+            width: textFieldDialog.platformContentMaximumWidth - 2*platformStyle.paddingSmall
+            anchors.centerIn: parent
+            placeholderText: "Input"
+        }
+    }
+
+    Flickable {
+        id: buttonFlickable
         anchors.fill: parent
-        anchors.margins: platformStyle.paddingSmall
-        spacing: platformStyle.paddingSmall
+        contentHeight: contentItem.childrenRect.height
+        Component.onCompleted: scrollBar.flickableItem = buttonFlickable
 
-        Button {
-            width: defaultSelectionButton.width
-            text: "Progress Bar"
-            onClicked: dialogWithProgressBar.open()
-        }
+        Column {
+//            anchors.fill: parent
+            anchors.margins: platformStyle.paddingMedium
+            spacing: platformStyle.paddingSmall
 
-        Button {
-            width: defaultSelectionButton.width
-            text: "Scroll Bar"
-            onClicked: dialogWithScrollBar.open()
-        }
+            Button {
+                width: defaultSelectionButton.width
+                text: "Progress Bar"
+                onClicked: dialogWithProgressBar.open()
+            }
 
-        Button {
-            width: defaultSelectionButton.width
-            text: "Custom"
-            onClicked: customDialog.open()
-        }
+            Button {
+                width: defaultSelectionButton.width
+                text: "Scroll Bar"
+                onClicked: dialogWithScrollBar.open()
+            }
 
-        Button {
-            width: defaultSelectionButton.width
-            text: "Selection"
-            onClicked: selectionDialog.open()
-        }
+            Button {
+                width: defaultSelectionButton.width
+                text: "Custom"
+                onClicked: customDialog.open()
+            }
 
-        Button {
-            id: defaultSelectionButton
-            text: "Selection With Default Value"
-            onClicked: selectionDialogWithDefault.open()
+            Button {
+                width: defaultSelectionButton.width
+                text: "Selection"
+                onClicked: selectionDialog.open()
+            }
+
+            Button {
+                id: defaultSelectionButton
+                text: "Selection With Default Value"
+                onClicked: selectionDialogWithDefault.open()
+            }
+
+            Button {
+                width: defaultSelectionButton.width
+                text: "TextArea"
+                onClicked: textAreaDialog.open()
+            }
+
+            Button {
+                width: defaultSelectionButton.width
+                text: "TextField"
+                onClicked: textFieldDialog.open()
+            }
         }
+    }
+    ScrollBar {
+        id: scrollBar
+        anchors { top: buttonFlickable.top; right: buttonFlickable.right }
     }
 }
