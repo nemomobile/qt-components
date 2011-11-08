@@ -298,6 +298,21 @@ bool MDeclarativeInputContext::setPreeditText(const QString &newPreedit, int eve
     return false;
 }
 
+void MDeclarativeInputContext::setWesternNumericInputEnforcedProperty(QObject *obj, bool enforced)
+{
+#ifdef HAVE_MALIIT
+    if (obj) {
+        // Maliit::InputMethodQuery::westernNumericInputEnforced contains some '-' characters;
+        // that means we cannot directly set this property inside Qml
+        obj->setProperty(Maliit::InputMethodQuery::westernNumericInputEnforced, QVariant(enforced));
+        update();
+    }
+#else
+    Q_UNUSED(obj)
+    Q_UNUSED(enforced)
+#endif
+}
+
 void MDeclarativeInputContext::clearClipboard()
 {
     if (qApp->clipboard())

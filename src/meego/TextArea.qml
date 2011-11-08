@@ -324,7 +324,9 @@ FocusScope {
 
         //property is evaluated by input method framework
         property bool westernNumericInputEnforced: false
-        onWesternNumericInputEnforcedChanged: inputContext.update();
+        onWesternNumericInputEnforcedChanged: {
+            inputContext.setWesternNumericInputEnforcedProperty(textInput, westernNumericInputEnforced);
+        }
 
         x: UI.PADDING_XLARGE
         y: (UI.FIELD_DEFAULT_HEIGHT - font.pixelSize) / 2

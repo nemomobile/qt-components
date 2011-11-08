@@ -367,7 +367,9 @@ FocusScope {
 
         //property is evaluated by input method framework
         property bool westernNumericInputEnforced: false
-        onWesternNumericInputEnforcedChanged: inputContext.update();
+        onWesternNumericInputEnforcedChanged: {
+            inputContext.setWesternNumericInputEnforcedProperty(textInput, westernNumericInputEnforced);
+        }
 
         anchors {verticalCenter: parent.verticalCenter; left: parent.left; right: parent.right}
         anchors.leftMargin: root.platformStyle.paddingLeft
