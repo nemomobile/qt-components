@@ -197,6 +197,17 @@
 */
 
 /*!
+    \qmlproperty bool TextField::platformWesternNumericInputEnforced
+
+    In some rare cases it is required  to have a western numeric input panel even
+    when the default input method is set to a language that uses non-western digits
+    (like arabic). This may be the case when the input field expects, for example,
+    credit card numbers.
+    
+    The default is false.
+*/
+
+/*!
     \qmlproperty Component TextField::customSoftwareInputPanel
 
     Replaces the default software input panel with your own.
