@@ -240,6 +240,8 @@ Item {
             name: "opened"
             ParentChange { target: rect; parent: Utils.findRootItem(textInput); }
             PropertyChanges { target: rect; visible: true; }
+            PropertyChanges { target: leftSelectionHandle; pressed: false; }
+            PropertyChanges { target: rightSelectionHandle; pressed: false; }
         },
         State {
             name: "closed"
