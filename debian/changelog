@@ -1,8 +1,8 @@
-qt-components (1.2~git20111102-2) maverick; urgency=low
+qt-components (1.2~git20111109-1) maverick; urgency=low
 
-  * Preparing for next release
+  * Fixes: NB#288710 [TASK] Enforcing western numeric input in qt-components
   
- -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Wed, 02 Nov 2011 13:13:13 +0300
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Wed, 09 Nov 2011 16:11:11 +0300
 
 qt-components (1.2~git20111102-1) maverick; urgency=low
 
