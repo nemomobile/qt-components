@@ -176,6 +176,6 @@ function adjustPosition(handles)
     var selectionStartRect = input.positionToRectangle( input.selectionStart );
     var selectionEndRect = input.positionToRectangle( input.selectionEnd );
 
-    handles.selectionStartPoint = viewport.mapFromItem( input, selectionStartRect.x, handles.selectionStartRect.y );
-    handles.selectionEndPoint = viewport.mapFromItem( input, selectionEndRect.x, handles.selectionEndRect.y )
+    handles.selectionStartPoint = viewport.mapFromItem( input, selectionStartRect.x, selectionStartRect.y );
+    handles.selectionEndPoint = viewport.mapFromItem( input, selectionEndRect.x, selectionEndRect.y )
 }
