@@ -150,7 +150,7 @@ void CSDeclarativeIndicatorDataHandler::LoadIndicatorDataL()
         iIndicatorsData.insert( indicatorData->Uid(), indicatorData );
         }
 
-    CleanupStack::PopAndDestroy( 1 ); // Resource reader
+    CleanupStack::PopAndDestroy();
     }
 
 CSDeclarativeIndicatorData *CSDeclarativeIndicatorDataHandler::Data( TInt aUid ) const

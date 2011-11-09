@@ -205,7 +205,8 @@ void CSDeclarativeIncallIndicator::CreateIncallControlL()
                     }
                 }
             }
-        CleanupStack::PopAndDestroy( 2 ); // newWindowGroups, oldWindowGroups
+        CleanupStack::PopAndDestroy( newWindowGroups );
+        CleanupStack::PopAndDestroy( oldWindowGroups );
 
         iData->iIsForeground = static_cast<CAknAppUi*>( coeEnv->AppUi() )->IsForeground();
 #ifdef Q_DEBUG_INCALL

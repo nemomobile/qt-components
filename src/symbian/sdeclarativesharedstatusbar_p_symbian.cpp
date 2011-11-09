@@ -128,7 +128,6 @@ QPixmap &SDeclarativeSharedStatusBarPrivate::symbianBackgroundPixmapL()
         CFbsBitmapDevice* bitmapDevice = CFbsBitmapDevice::NewL(offScreenBitmap);
         CleanupStack::PushL(bitmapDevice);
         User::LeaveIfError(bitmapDevice->CreateContext(bitmapContext));
-        CleanupStack::PushL(bitmapContext);
 
         // Draw on the bitmap.
         TBool wasDrawn = AknsDrawUtils::DrawFrame(
@@ -141,9 +140,10 @@ QPixmap &SDeclarativeSharedStatusBarPrivate::symbianBackgroundPixmapL()
 
         backgroundPixmap = QPixmap::fromSymbianCFbsBitmap(offScreenBitmap);
 
-        // Cleanup.
-        CleanupStack::PopAndDestroy(3); // bitmapContext, bitmapDevice, offScreenBitmap
-
+        delete bitmapContext;
+        CleanupStack::PopAndDestroy(bitmapDevice);
+        CleanupStack::PopAndDestroy(offScreenBitmap); 
+        
     }
     return backgroundPixmap;
 }
