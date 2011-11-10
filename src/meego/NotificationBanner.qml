@@ -93,6 +93,10 @@ Item {
      */
     function show() {
         parent = __findParent();
+
+        var window = __findWindow();
+        if(window != null) root.pos.y = 8 + window.__statusBarHeight;
+
         animationShow.running = true;
         if (root.timerEnabled)
             sysBannerTimer.restart();
@@ -100,10 +104,21 @@ Item {
 
     function __findParent() {
         var next = parent;
-        while (next && next.parent && next.objectName != "appWindowContent") {
+        while (next && next.parent && next.objectName != "windowContent") {
             next = next.parent;
         }
         return next;
+    }
+
+    function __findWindow() {
+        var result = null;
+        for(var item = parent; item != null; item = item.parent) {
+            if(item.objectName == 'pageStackWindow') {
+                result = item;
+                break;
+            }
+        }
+        return result;
     }
 
     /*
@@ -118,6 +133,8 @@ Item {
     implicitWidth: internal.getBannerWidth()
     x:8; y:8
     scale: 0
+
+    Behavior on y {NumberAnimation {easing.type:Easing.InOutExpo;duration:500}}
 
     BorderImage {
         source: "image://theme/meegotouch-notification-system-background"
@@ -250,6 +267,11 @@ Item {
 
     Component.onCompleted: {
         //__owner = parent;
+        var window = __findWindow();
+        if(window != null) {
+            window.showStatusBarChanged.connect(function() {
+                root.topMargin = 8 + window.__statusBarHeight;
+            });
+        }
     }
 }
-
