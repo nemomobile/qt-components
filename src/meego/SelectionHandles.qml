@@ -3,6 +3,7 @@ import "." 1.0
 import "Utils.js" as Utils
 import "EditBubble.js" as Popup
 import "SelectionHandles.js" as Private
+import "Magnifier.js" as MagnifierPopup
 
 Item {
     id: contents
@@ -43,10 +44,26 @@ Item {
         z: 1030 // Have the small selection handles above the big copy-paste bubble
 
         // Function to calculate whether the handle positions are out of the view area:
-
         function outOfView( rootX, rootY, offset ) {
             var point = contents.mapToItem( textInput, rootX, rootY );
             return (point.x - offset) < 0 || ( textInput != null  && (point.x - offset) > textInput.width );
+        }
+
+        function updateMagnifierPosition( item, posX, posY) {
+            if (!textInput) return;
+            var magnifier = MagnifierPopup.popup;
+            var cursorHeight = textInput.positionToRectangle(0,0).height
+            var yAdjustment = - magnifier.height / 2 - cursorHeight - 70;
+            var mappedPos =  contents.mapFromItem(item, posX - magnifier.width / 2,
+                                       posY);
+
+            magnifier.xCenter = mapToItem(magnifier.sourceItem, posX, 0).x;
+            magnifier.x = mappedPos.x;
+            var minMappedPos = contents.mapFromItem( textInput, 0, 0).y;
+
+            magnifier.yCenter = mapToItem(magnifier.sourceItem, 0, posY - cursorHeight + 50).y
+            magnifier.y = Math.min( Math.max(mappedPos.y, minMappedPos), minMappedPos + textInput.height )
+                          + yAdjustment
         }
 
         Image {
@@ -72,6 +89,8 @@ Item {
                           Popup.close(textInput);
                       }
                       leftSelectionImage.dragStart = Qt.point( mouse.x, mouse.y );
+                      MagnifierPopup.open(textInput);
+                      rect.updateMagnifierPosition(parent,mouse.x,mouse.y)
                   }
                   onPositionChanged: {
                       var pixelpos = mapToItem( textInput, mouse.x, mouse.y );
@@ -85,10 +104,12 @@ Item {
                           pos = h - 1;  // Ensure at minimum one character between selection handles
                       }
                       textInput.select(h,pos); // Select by character
+                      rect.updateMagnifierPosition(parent,mouse.x,mouse.y)
                       privateIgnoreClose = false;
                   }
                   onReleased: {
                       Popup.open(textInput,textInput.positionToRectangle(textInput.cursorPosition));
+                      MagnifierPopup.close();  
                   }
               }
 
@@ -166,6 +187,8 @@ Item {
                           Popup.close(textInput);
                       }
                       rightSelectionImage.dragStart = Qt.point( mouse.x, mouse.y );
+                      MagnifierPopup.open(textInput);
+                      rect.updateMagnifierPosition(parent,mouse.x,mouse.y)
                   }
                   onPositionChanged: {
                       var pixelpos = mapToItem( textInput, mouse.x, mouse.y );
@@ -179,11 +202,12 @@ Item {
                           pos = h + 1;  // Ensure at minimum one character between selection handles
                       }
                       textInput.select(h,pos); // Select by character
-                      privateIgnoreClose = false;
+                      rect.updateMagnifierPosition(parent,mouse.x,mouse.y);
+                      privateIgnoreClose = false;            
                  }
                  onReleased: {
-                      // trim to word selection
                       Popup.open(textInput,textInput.positionToRectangle(textInput.cursorPosition));
+                      MagnifierPopup.close();
                  }
              }
 

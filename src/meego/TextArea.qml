@@ -427,9 +427,6 @@ FocusScope {
                if (Popup.isOpened(textEdit)) {
                    Popup.close(textEdit);
                }
-               if (SelectionHandles.isOpened(textEdit)) {
-                   SelectionHandles.close(textEdit);
-               }
            } else if (!mouseFilter.attemptToActivate ||
                 textEdit.cursorPosition == textEdit.text.length) {
                 if ( Popup.isOpened(textEdit) ) {
