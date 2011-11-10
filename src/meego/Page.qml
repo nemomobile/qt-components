@@ -101,6 +101,12 @@ Item {
         __updateOrientationLock()
     }
 
+    onToolsChanged: {
+        if(tools != null) {
+            tools.visible = true;
+        }
+    }
+
     function __updateOrientationLock() {
         switch (orientationLock) {
         case PageOrientation.Automatic:
@@ -118,6 +124,12 @@ Item {
             // if previously it was not locked, it will be locked to current
             screen.setAllowedOrientations(screen.currentOrientation);
             break
+        }
+    }
+
+    Component.onCompleted: {
+        if(tools != null) {
+            tools.visible = true;
         }
     }
 }
