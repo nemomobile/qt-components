@@ -79,31 +79,25 @@ MouseArea {
             touchToolsLoader.source = "TextTouchTools.qml"
 
         internal.currentTouchPoint = root.mapToItem(editor, mouse.x, mouse.y);
-
-        if (internal.currentTouchPoint.x < 0)
-            internal.currentTouchPoint.x = 0
-
-        if (internal.currentTouchPoint.y < 0)
-            internal.currentTouchPoint.y = 0
-
-        if (internal.tapCounter == 0)
-            internal.touchPoint = internal.currentTouchPoint;
-
+        internal.initialTouchPoint = internal.currentTouchPoint;
+        var hadActiveFocus = editor.activeFocus
         editor.forceActiveFocus();
         internal.contextMenuWasVisible = touchTools.contextMenu.visible;
         touchTools.contextMenu.hide();
         internal.handleMoved = false;
+        internal.selectionPainting = false;
         privateStyle.play(Symbian.Editor);
 
         touchTools.handleBegin.viewPortRect = internal.mapViewPortRectToHandle(touchTools.handleBegin);
         touchTools.handleEnd.viewPortRect = internal.mapViewPortRectToHandle(touchTools.handleEnd);
 
-        internal.pressedHandle = internal.handleForPoint({x: internal.currentTouchPoint.x, y: internal.currentTouchPoint.y});
+        if (hadActiveFocus && internal.hasSelection)
+            internal.pressedHandle = internal.handleForPoint({x: internal.currentTouchPoint.x, y: internal.currentTouchPoint.y});
+        else
+            internal.pressedHandle = null
 
-        if (internal.pressedHandle != null) {
+        if (internal.pressedHandle) {
             internal.handleGrabbed();
-            // Position cursor at the pressed selection handle
-            // TODO: Add bug ID!!
             var tempStart = editor.selectionStart
             var tempEnd = editor.selectionEnd
             if (internal.pressedHandle == touchTools.handleBegin) {
@@ -117,79 +111,84 @@ MouseArea {
     }
 
     onClicked: {
-        ++internal.tapCounter;
-        if (internal.tapCounter == 1) {
-            internal.onSingleTap();
-            clickTimer.start();
-        } else if (internal.tapCounter == 2 && clickTimer.running) {
-            internal.onDoubleTap();
-            clickTimer.restart();
-        } else if (internal.tapCounter == 3 && clickTimer.running)
-            internal.onTripleTap();
+        if (!internal.handleMoved) {
+            editor.deselect();
+            var oldCursorPosition = editor.cursorPosition
+            editor.cursorPosition = editor.positionAt(internal.initialTouchPoint.x, internal.initialTouchPoint.y);
+            if (oldCursorPosition == editor.cursorPosition && !internal.contextMenuWasVisible)
+                touchTools.contextMenu.show();
+            else
+                touchTools.contextMenu.hide();
+
+            if (!editor.readOnly)
+                editor.openSoftwareInputPanel()
+        }
+    }
+
+    onDoubleClicked: {
+        // assume that the 1st click positions the cursor
+        editor.selectWord();
+        touchTools.contextMenu.show();
     }
 
     onPressAndHold: {
-        clickTimer.stop();
-        internal.tapCounter = 0;
-        internal.longTap = true
-        if (!internal.handleMoved) {
-            if (internal.pressedHandle == null) {
-                // position the cursor under the long tap and make the cursor handle grabbed
-                editor.select(editor.cursorPosition, editor.cursorPosition);
-                editor.cursorPosition = editor.positionAt(internal.touchPoint.x,internal.touchPoint.y);
-                internal.pressedHandle = touchTools.handleEnd;
-                if (editor.readOnly)
-                    touchTools.magnifier.hide();
-                internal.handleGrabbed();
-            }
+        if (!internal.handleMoved && !editor.readOnly) {
+            internal.longTap = true
+            // position the cursor under the long tap and make the cursor handle grabbed
+            editor.deselect();
+            editor.cursorPosition = editor.positionAt(internal.initialTouchPoint.x,internal.initialTouchPoint.y);
+            internal.pressedHandle = touchTools.handleEnd;
+            internal.handleGrabbed();
             touchTools.contextMenu.hide();
-        }
-
-        if (!editor.readOnly || internal.editorHasSelection)
             touchTools.magnifier.show();
+        }
     }
 
     onReleased: {
-        touchTools.magnifier.hide();
+        touchTools.magnifier.hide()
+        internal.handleGrabEnded()
 
-        mouseGrabDisabler.setKeepMouseGrab(root, false);
-        internal.forcedSelection = false;
-
-        if ((internal.pressedHandle != null && internal.handleMoved) ||
-           (internal.longTap && !editor.readOnly) ||
-           (internal.pressedHandle != null && internal.longTap)) {
+        if ((internal.longTap && !editor.readOnly) || internal.hasSelection) {
             privateStyle.play(Symbian.PopUp);
             touchTools.contextMenu.show();
         }
-
         internal.longTap = false;
     }
 
     onPositionChanged: {
 
         internal.currentTouchPoint = root.mapToItem(editor, mouse.x, mouse.y);
+        var newPosition = editor.positionAt(internal.currentTouchPoint.x, internal.currentTouchPoint.y);
 
-        if (internal.pressedHandle != null) {
-            internal.hitTestPoint = {x:internal.currentTouchPoint.x, y:internal.currentTouchPoint.y};
-
-            var newPosition = editor.positionAt(internal.hitTestPoint.x, internal.hitTestPoint.y);
+        // Cursor or selection handle is grabbed
+        if (internal.pressedHandle) {
             if (newPosition >= 0 && newPosition != editor.cursorPosition) {
-                if (internal.hasSelection) {
-                    var anchorPos = internal.pressedHandle == touchTools.handleBegin ? editor.selectionEnd
-                                                                                     : editor.selectionStart
-                    if (editor.selectionStart == editor.cursorPosition)
-                        anchorPos = editor.selectionEnd;
-                    else if (editor.selectionEnd == editor.cursorPosition)
-                        anchorPos = editor.selectionStart;
-                    editor.select(anchorPos, newPosition);
-                } else {
+                if (internal.hasSelection)
+                    editor.moveCursorSelection(newPosition, TextEdit.SelectCharacters)
+                else
                     editor.cursorPosition = newPosition;
-                }
-                if (!editor.readOnly || internal.editorHasSelection)
-                    touchTools.magnifier.show();
+                touchTools.contextMenu.hide();
+                touchTools.magnifier.show();
                 internal.handleMoved = true;
                 privateStyle.play(Symbian.TextSelection);
             }
+        }
+        // Update painted selection
+        else if (internal.selectionPainting) {
+            if (editor.cursorPosition != newPosition) privateStyle.play(Symbian.TextSelection)
+            editor.moveCursorSelection(newPosition, TextEdit.SelectWords)
+        }
+        // Begin selection painting
+        else if (Math.abs(internal.currentTouchPoint.x - internal.initialTouchPoint.x) > privateStyle.startDragDistance()) {
+            editor.deselect();
+            editor.cursorPosition = editor.positionAt(internal.initialTouchPoint.x, internal.initialTouchPoint.y);
+            internal.handleGrabbed()
+            internal.selectionPainting = true
+            internal.handleMoved = true
+            editor.moveCursorSelection(newPosition, TextEdit.SelectWords)
+            privateStyle.play(Symbian.TextSelection);
+            touchTools.contextMenu.hide();
+            touchTools.magnifier.show();
         }
     }
 
@@ -209,38 +208,10 @@ MouseArea {
         property bool handleMoved: false
         property bool longTap: false
         property bool contextMenuWasVisible: false
-        property int tapCounter: 0
+        property bool selectionPainting: false
         property variant pressedHandle: null
-        property variant hitTestPoint: Qt.point(0, 0)
-        property variant touchPoint: Qt.point(0, 0)
+        property variant initialTouchPoint: Qt.point(0, 0)
         property variant currentTouchPoint: Qt.point(0, 0)
-
-        function onSingleTap() {
-            if (!internal.handleMoved) {
-                // need to deselect, because if the cursor position doesn't change the selection remains
-                // even after setting to cursorPosition
-                editor.deselect();
-                editor.cursorPosition = editor.positionAt(internal.touchPoint.x, internal.touchPoint.y);
-                if (pressedHandle != null && !contextMenuWasVisible)
-                    touchTools.contextMenu.show();
-                else
-                    touchTools.contextMenu.hide();
-
-                if (!editor.readOnly)
-                    editor.openSoftwareInputPanel()
-            }
-        }
-
-        function onDoubleTap() {
-            // assume that the 1st click positions the cursor
-            editor.selectWord();
-            touchTools.contextMenu.show();
-        }
-
-        function onTripleTap() {
-            editor.selectAll();
-            touchTools.contextMenu.show();
-        }
 
         function onEditorTextChanged() {
             if (touchTools)
@@ -249,9 +220,12 @@ MouseArea {
 
         function handleGrabbed() {
             mouseGrabDisabler.setKeepMouseGrab(root, true);
-            internal.hitTestPoint = {x:internal.currentTouchPoint.x, y:internal.currentTouchPoint.y};
-
             internal.forcedSelection = internal.editorHasSelection;
+        }
+
+        function handleGrabEnded() {
+            mouseGrabDisabler.setKeepMouseGrab(root, false);
+            internal.forcedSelection = false;
         }
 
         function mapViewPortRectToHandle(handle) {
@@ -272,7 +246,7 @@ MouseArea {
                 }
                 if (touchTools.handleEnd.containsPoint(editor.mapToItem(touchTools.handleEnd, point.x, point.y))) {
                     var useArea = true;
-                    if (pressed != null) {
+                    if (pressed) {
                         var distance1 = touchTools.handleBegin.pointDistanceFromCenter(point);
                         var distance2 = touchTools.handleEnd.pointDistanceFromCenter(point);
 
@@ -306,16 +280,6 @@ MouseArea {
         id: mouseGrabDisabler
     }
 
-    Timer {
-        id: clickTimer
-
-        interval: 400; repeat: false
-        onTriggered: {
-            running = false;
-            internal.tapCounter = 0;
-        }
-    }
-
     Connections {
         target: root.editor
         onActiveFocusChanged: {
@@ -323,7 +287,7 @@ MouseArea {
             if (!root.editor.activeFocus) {
                 if (touchTools)
                     touchTools.contextMenu.hide()
-                root.editor.select(root.editor.cursorPosition, root.editor.cursorPosition)
+                root.editor.deselect()
                 root.editor.closeSoftwareInputPanel()
             }
         }
@@ -339,7 +303,8 @@ MouseArea {
                 touchTools.contextMenu.show()
             else if (internal.editorHasSelection)
                 touchTools.contextMenu.hide()
+        } else if (event.key == Qt.Key_Escape) {
+            editor.focus = false
         }
-
     }
 }

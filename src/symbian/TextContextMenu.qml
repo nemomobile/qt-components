@@ -156,7 +156,7 @@ Item {
         Button {
             id: selectAllButton
             iconSource: privateStyle.imagePath("qtg_toolbar_select_all_text", root.platformInverted)
-            visible: !root.copyEnabled
+            visible: !root.cutEnabled
             platformInverted: root.platformInverted
             onClicked: {
                 editor.selectAll()

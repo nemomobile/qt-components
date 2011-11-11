@@ -83,7 +83,7 @@ Item {
         id: magnif
 
         editor: root.controller.editor
-        contentCenter: internal.hitTestPoint
+        contentCenter: internal.currentTouchPoint
         platformInverted: root.controller.platformInverted
 
     }

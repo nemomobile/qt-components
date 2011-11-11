@@ -275,6 +275,7 @@ FocusScopeItem {
             contentWidth: textEdit.model.paintedWidth +
                          (textEdit.wrapMode == TextEdit.NoWrap ? textEdit.cursorRectangle.width : 0)
             interactive: root.enabled
+            flickableDirection: Flickable.VerticalFlick
 
             onHeightChanged: {
                 if(textEdit.cursorVisible || textEdit.cursorPosition == textEdit.selectionEnd)

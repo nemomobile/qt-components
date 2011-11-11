@@ -48,6 +48,7 @@
 
 #include <QObject>
 #include <QFileInfo>
+#include <QApplication>
 
 #ifdef HAVE_MOBILITY
 #include <QFeedbackEffect>
@@ -217,4 +218,9 @@ bool SDeclarativeStyleInternal::isTabBarIcon(const QUrl &url) const
     QString suffix = fileInfo.suffix();
 
     return suffix.toLower() == QLatin1String("svg") || suffix.isEmpty();
+}
+
+int SDeclarativeStyleInternal::startDragDistance() const
+{
+    return QApplication::startDragDistance();
 }
