@@ -42,7 +42,7 @@ import QtQuick 1.1
 import "." 1.0
 import Qt.labs.components 1.1
 
-import "TextAreaHelper.js" as AreaHelper
+import "Utils.js" as Utils
 
 ImplicitSizeItem {
     id: container
@@ -147,7 +147,7 @@ ImplicitSizeItem {
     }
 
     Component.onCompleted: {
-        var flick = AreaHelper.findFlickable()
+        var flick = Utils.findFlickable()
         if (flick)
             internal.flick = flick
     }

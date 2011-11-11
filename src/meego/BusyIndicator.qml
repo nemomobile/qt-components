@@ -41,7 +41,7 @@
 import QtQuick 1.1
 
 import "UIConstants.js" as UI
-import "TextAreaHelper.js" as AreaHelper
+import "Utils.js" as Utils
 
 // ### Display Entered / Exited! Pause animation when not "on display".
 // ### LayoutDirection
@@ -92,7 +92,7 @@ ImplicitSizeItem {
     }
 
     Component.onCompleted: {
-        var flick = AreaHelper.findFlickable()
+        var flick = Utils.findFlickable()
         if (flick)
             internal.flick = flick
     }
