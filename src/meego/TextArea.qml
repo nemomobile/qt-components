@@ -322,8 +322,10 @@ FocusScope {
         property alias preedit: inputMethodObserver.preedit
         property alias preeditCursorPosition: inputMethodObserver.preeditCursorPosition
 
-        //property is evaluated by input method framework
+        // this properties are evaluated by the input method framework
         property bool westernNumericInputEnforced: false
+        property bool suppressInputMethod: !activeFocusOnPress
+
         onWesternNumericInputEnforcedChanged: {
             inputContext.setWesternNumericInputEnforcedProperty(textInput, westernNumericInputEnforced);
         }
