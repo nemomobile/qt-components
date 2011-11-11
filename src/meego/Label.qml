@@ -125,8 +125,8 @@ Text {
                     selectWord();
                     if (platformEnableEditBubble) {
                          Popup.open(selectionTextEdit,selectionTextEdit.positionToRectangle(selectionTextEdit.cursorPosition));
+                         SelectionHandles.open( selectionTextEdit )
                     }
-                    SelectionHandles.open( selectionTextEdit )
                 }
                 Component.onDestruction: {
                     root.color = privateApi.__textColor;

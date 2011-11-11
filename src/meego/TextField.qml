@@ -435,7 +435,8 @@ FocusScope {
                 if ( SelectionHandles.isOpened(textInput) && textInput.selectedText == "") {
                     SelectionHandles.close( textInput );
                 }
-                if ( !SelectionHandles.isOpened(textInput) && textInput.selectedText != "") {
+                if ( !SelectionHandles.isOpened(textInput) && textInput.selectedText != ""
+                     && platformEnableEditBubble == true ) {
                     SelectionHandles.open( textInput );
                 }
                 SelectionHandles.adjustPosition();
