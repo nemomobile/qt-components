@@ -25,6 +25,7 @@ Item {
     property alias rightSelectionHandle: rightSelectionImage
 
     property alias privateRect: rect
+    property bool privateIgnoreClose: false
 
     onSelectionStartRectChanged: {
         Private.adjustPosition(contents);
@@ -69,9 +70,12 @@ Item {
                       var pos = textInput.positionAt(pixelpos.x, ydelta);
                       var h = textInput.selectionEnd;
                       if (pos >= h) {
+                          privateIgnoreClose = true;    // Avoid closing the handles while setting the cursor position
+                          textInput.cursorPosition = h; // proper autoscrolling
+                          privateIgnoreClose = false;
                           pos = h - 1;  // Ensure at minimum one character between selection handles
                       }
-                      textInput.select(pos,h); // Select by character
+                      textInput.select(h,pos); // Select by character
                   }
                   onReleased: {
                       Popup.open(textInput,textInput.positionToRectangle(textInput.cursorPosition));
@@ -150,6 +154,9 @@ Item {
                       var pos = textInput.positionAt(pixelpos.x, ydelta);
                       var h = textInput.selectionStart;
                       if (pos <= h) {
+                          privateIgnoreClose = true;    // Avoid closing the handles while setting the cursor position
+                          textInput.cursorPosition = h; // proper autoscrolling
+                          privateIgnoreClose = false;
                           pos = h + 1;  // Ensure at minimum one character between selection handles
                       }
                       textInput.select(h,pos); // Select by character

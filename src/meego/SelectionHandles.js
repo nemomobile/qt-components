@@ -92,7 +92,7 @@ function close(input)
     if (!popup || !input || popup.textInput != input)
         return false;
 
-    if ( popup.ignoreClose )
+    if ( popup.privateIgnoreClose )
         return false;
 
     return closePopup(popup);
