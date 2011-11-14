@@ -104,10 +104,11 @@ Magnifier {
         function updateGeometry() {
             if (internal.show) {
                 var pos = parent.mapFromItem(editor, contentCenter.x, contentCenter.y);
+                var sourcePos = editor.mapToItem(null, contentCenter.x, contentCenter.y);
                 root.x = pos.x - magnifierSize/2;
                 root.y = Math.max(-magnifierSize*0.4, pos.y - magnifierSize - platformStyle.paddingLarge*2);
-                root.sourceRect = Qt.rect(pos.x - sourceSize / 2,
-                                          pos.y - sourceSize / 2 + Math.min(0, root.y*0.35),
+                root.sourceRect = Qt.rect(sourcePos.x - sourceSize / 2,
+                                          sourcePos.y - sourceSize / 2 + Math.min(0, root.y*0.35),
                                           sourceSize, sourceSize);
             }
         }
