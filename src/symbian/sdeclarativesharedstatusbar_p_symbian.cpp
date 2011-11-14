@@ -201,6 +201,8 @@ void SDeclarativeSharedStatusBarPrivate::setForeground(bool foreground)
 #endif
     if (!foreground)
         subscriber->Cancel();
+    else
+        reset();
 }
 
 void SDeclarativeSharedStatusBarPrivate::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
