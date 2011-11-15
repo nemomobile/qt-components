@@ -46,6 +46,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QCoreApplication>
 #include <qpainter.h>
+#include <QTimer>
 #include <qx11info_x11.h>
 #include <qgraphicsscene.h>
 #include <qdebug.h>
@@ -122,6 +123,7 @@ MDeclarativeStatusBar::MDeclarativeStatusBar(QDeclarativeItem *parent) :
     QDeclarativeItem(parent),
     updatesEnabled(true),
     mousePressed(false),
+    feedbackDelay(false),
     swipeGesture(false),
     mOrientation(MDeclarativeScreen::Portrait)
 {
@@ -202,7 +204,7 @@ void MDeclarativeStatusBar::paint(QPainter *painter, const QStyleOptionGraphicsI
 
         painter->drawPixmap(QPointF(0.0, 0.0), sharedPixmap, sourceRect);
 
-        if (mousePressed) {
+        if (feedbackDelay || mousePressed) {
             painter->save();
             painter->setOpacity(0.6);
             painter->fillRect(QRectF(QPointF(0.0, 0.0), sourceRect.size()), Qt::black);
@@ -330,12 +332,15 @@ void MDeclarativeStatusBar::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     firstPos = event->pos();
     playHapticsFeedback();
-
     if (!mousePressed) {
         mousePressed = true;
         update();
     }
-
+    // When the status bar is being touch at the top edge, in the area that is also active for swipe
+    // the mouse press and release events are delivered directly after each other.
+    // Ensure the visual feedback is there long enough for the user to notice
+    feedbackDelay = true;
+    QTimer::singleShot(200, this, SLOT(disablePressedFeedback()));
 }
 
 void MDeclarativeStatusBar::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -346,9 +351,9 @@ void MDeclarativeStatusBar::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void MDeclarativeStatusBar::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-
-    if (!mousePressed || swipeGesture)
+    if (swipeGesture || !mousePressed) {
         return;
+    }
 
     mousePressed = false;
     update();
@@ -359,6 +364,13 @@ void MDeclarativeStatusBar::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         showStatusIndicatorMenu();
     }
 }
+
+void MDeclarativeStatusBar::disablePressedFeedback()
+{
+    feedbackDelay = false;
+    update();
+}
+
 
 void MDeclarativeStatusBar::showStatusIndicatorMenu()
 {

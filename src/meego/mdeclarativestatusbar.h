@@ -81,6 +81,7 @@ private:
     bool updatesEnabled;
 
     bool mousePressed;
+    bool feedbackDelay;
 
     bool swipeGesture;
 
@@ -109,6 +110,9 @@ private:
 
 Q_SIGNALS:
     void orientationChanged();
+
+private Q_SLOTS:
+    void disablePressedFeedback();
 
 public Q_SLOTS:
     void enablePixmapUpdates();
