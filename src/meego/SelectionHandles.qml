@@ -42,6 +42,13 @@ Item {
 
         z: 1030 // Have the small selection handles above the big copy-paste bubble
 
+        // Function to calculate whether the handle positions are out of the view area:
+
+        function outOfView( rootX, rootY, offset ) {
+            var point = contents.mapToItem( textInput, rootX, rootY );
+            return (point.x - offset) < 0 || ( textInput != null  && (point.x - offset) > textInput.width );
+        }
+
         Image {
             id: leftSelectionImage
             objectName: "leftSelectionImage"
@@ -51,7 +58,9 @@ Item {
               x: selectionStartPoint.x + offset;
               y: selectionStartPoint.y + contents.selectionStartRect.height - 10 - rect.fontBaseLine; // vertical offset: 4 pixels
               source: platformStyle.leftSelectionHandle
-              property bool pressed: false;
+              property bool pressed: leftSelectionMouseArea.pressed;
+              property bool outOfView: rect.outOfView(x, y, offset);
+              onXChanged: outOfView = rect.outOfView(x, y, offset)
 
               MouseArea {
                   id: leftSelectionMouseArea
@@ -61,7 +70,6 @@ Item {
                           Popup.close(textInput);
                       }
                       leftSelectionImage.dragStart = Qt.point( mouse.x, mouse.y );
-                      leftSelectionImage.pressed = true;
                   }
                   onPositionChanged: {
                       var pixelpos = mapToItem( textInput, mouse.x, mouse.y );
@@ -79,22 +87,29 @@ Item {
                   }
                   onReleased: {
                       Popup.open(textInput,textInput.positionToRectangle(textInput.cursorPosition));
-                      leftSelectionImage.pressed = false;
                   }
               }
 
               states: [
                   State {
                       name: "normal"
-                      when: !leftSelectionImage.pressed && !rightSelectionImage.pressed
+                      when: !leftSelectionImage.outOfView && !leftSelectionImage.pressed && !rightSelectionImage.pressed
+                      PropertyChanges { target: leftSelectionImage; opacity: 1.0 }
                   },
                   State {
                       name: "pressed"
-                      when: leftSelectionImage.pressed
+                      when: !leftSelectionImage.outOfView && leftSelectionImage.pressed
+                      PropertyChanges { target: leftSelectionImage; opacity: 0.0 }
                   },
                   State {
                       name: "otherpressed"
-                      when: rightSelectionImage.pressed
+                      when: !leftSelectionImage.outOfView && rightSelectionImage.pressed
+                      PropertyChanges { target: leftSelectionImage; opacity: 0.7 }
+                  },
+                  State {
+                      name: "outofview"
+                      when: leftSelectionImage.outOfView
+                      PropertyChanges { target: leftSelectionImage; opacity: 0.0 }
                   }
               ]
 
@@ -135,7 +150,9 @@ Item {
               x: selectionEndPoint.x + offset;
               y: selectionEndPoint.y + contents.selectionEndRect.height - 10 - rect.fontBaseLine; // vertical offset: 4 pixels
               source: platformStyle.rightSelectionHandle;
-              property bool pressed: false;
+              property bool pressed: rightSelectionMouseArea.pressed;
+              property bool outOfView: rect.outOfView(x, y, offset);
+              onXChanged: outOfView = rect.outOfView(x, y, offset);
 
               MouseArea {
                   id: rightSelectionMouseArea
@@ -145,7 +162,6 @@ Item {
                           Popup.close(textInput);
                       }
                       rightSelectionImage.dragStart = Qt.point( mouse.x, mouse.y );
-                      rightSelectionImage.pressed = true;
                   }
                   onPositionChanged: {
                       var pixelpos = mapToItem( textInput, mouse.x, mouse.y );
@@ -164,22 +180,29 @@ Item {
                  onReleased: {
                       // trim to word selection
                       Popup.open(textInput,textInput.positionToRectangle(textInput.cursorPosition));
-                      rightSelectionImage.pressed = false;
                  }
              }
 
               states: [
                   State {
                       name: "normal"
-                      when: !leftSelectionImage.pressed && !rightSelectionImage.pressed
+                      when:  !rightSelectionImage.outOfView && !leftSelectionImage.pressed && !rightSelectionImage.pressed
+                      PropertyChanges { target: rightSelectionImage; opacity: 1.0 }
                   },
                   State {
                       name: "pressed"
-                      when: rightSelectionImage.pressed
+                      when:  !rightSelectionImage.outOfView && rightSelectionImage.pressed
+                      PropertyChanges { target: rightSelectionImage; opacity: 0.0 }
                   },
                   State {
                       name: "otherpressed"
-                      when: leftSelectionImage.pressed
+                      when: !rightSelectionImage.outOfView && leftSelectionImage.pressed
+                      PropertyChanges { target: rightSelectionImage; opacity: 0.7 }
+                  },
+                  State {
+                      name: "outofview"
+                      when: rightSelectionImage.outOfView
+                      PropertyChanges { target: rightSelectionImage; opacity: 0.0 }
                   }
               ]
 
@@ -247,8 +270,6 @@ Item {
             name: "opened"
             ParentChange { target: rect; parent: Utils.findRootItem(textInput); }
             PropertyChanges { target: rect; visible: true; }
-            PropertyChanges { target: leftSelectionHandle; pressed: false; }
-            PropertyChanges { target: rightSelectionHandle; pressed: false; }
         },
         State {
             name: "closed"
