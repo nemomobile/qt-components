@@ -123,8 +123,8 @@
 "" - "z:\resource\qt\imports\Qt\labs\components\native\qmldir"
 
 ; DEPLOYMENT 1.1 qtcomponentsplugin
-"" - "z:\sys\bin\qtcomponentsplugin_1_1_2.dll"
-"" - "z:\resource\qt\imports\Qt\labs\components.1.1\qtcomponentsplugin_1_1_2.qtplugin"
+"" - "z:\sys\bin\qtcomponentsplugin.dll"
+"" - "z:\resource\qt\imports\Qt\labs\components.1.1\qtcomponentsplugin.qtplugin"
 "" - "z:\resource\qt\imports\Qt\labs\components.1.1\qmldir"
 "" - "z:\resource\qt\imports\Qt\labs\components.1.1\Checkable.qml"
 "" - "z:\resource\qt\imports\Qt\labs\components.1.1\CheckableGroup.qml"

@@ -1,6 +1,6 @@
 include (../../qt-components.pri)
-
-TARGETPATH = Qt/labs/components
+symbian3 { TARGETPATH = Qt/labs/components.1.1 }
+else { TARGETPATH = Qt/labs/components }
 TEMPLATE = lib
 TARGET = $$qtLibraryTarget(qtcomponentsplugin)
 INCLUDEPATH += $$PWD $$PWD/models
@@ -36,6 +36,8 @@ symbian {
 
     package.pkg_prerules += vendor_info
     DEPLOYMENT += package
+
+
 }
 
 HEADERS += qglobalenums.h
