@@ -21,7 +21,6 @@ symbian {
     TARGET.EPOCALLOWDLLDATA = 1
     TARGET.CAPABILITY = ALL -TCB
     TARGET.UID3 = 0x2003DF67
-    MMP_RULES += EXPORTUNFROZEN
     MMP_RULES += SMPSAFE
     VERSION = 10.1.2
 
@@ -37,7 +36,13 @@ symbian {
     package.pkg_prerules += vendor_info
     DEPLOYMENT += package
 
-
+    defBlock = \
+        "$${LITERAL_HASH}ifdef WINSCW" \
+        "DEFFILE  bwins/components.def" \
+        "$${LITERAL_HASH}elif defined EABI" \
+        "DEFFILE  eabi/components.def" \
+        "$${LITERAL_HASH}endif"
+    MMP_RULES += defBlock
 }
 
 HEADERS += qglobalenums.h

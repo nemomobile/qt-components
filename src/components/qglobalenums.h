@@ -51,6 +51,7 @@ class Q_COMPONENTS_EXPORT QGlobals : public QObject
     Q_ENUMS(Globals)
     Q_ENUMS(Position)
 public:
+    explicit QGlobals() {}
     enum Globals { Undefined = -1 };
     enum Position { Left, Top, Right, Bottom };
 };

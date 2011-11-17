@@ -1,0 +1,65 @@
+EXPORTS
+	qt_plugin_query_verification_data @ 1 NONAME
+	qt_plugin_instance @ 2 NONAME
+	?valueForPosition@QRangeModel@@QBEMM@Z @ 3 NONAME ; float QRangeModel::valueForPosition(float) const
+	?minimum@QRangeModel@@QBEMXZ @ 4 NONAME ; float QRangeModel::minimum(void) const
+	?tr@QGlobals@@SA?AVQString@@PBD0@Z @ 5 NONAME ; class QString QGlobals::tr(char const *, char const *)
+	?getStaticMetaObject@QGlobals@@SAABUQMetaObject@@XZ @ 6 NONAME ; struct QMetaObject const & QGlobals::getStaticMetaObject(void)
+	?positionChanged@QRangeModel@@IAEXM@Z @ 7 NONAME ; void QRangeModel::positionChanged(float)
+	?staticMetaObject@QGlobals@@2UQMetaObject@@B @ 8 NONAME ; struct QMetaObject const QGlobals::staticMetaObject
+	?setMaximum@QRangeModel@@QAEXM@Z @ 9 NONAME ; void QRangeModel::setMaximum(float)
+	??0QRangeModel@@IAE@AAVQRangeModelPrivate@@PAVQObject@@@Z @ 10 NONAME ; QRangeModel::QRangeModel(class QRangeModelPrivate &, class QObject *)
+	?toMinimum@QRangeModel@@QAEXXZ @ 11 NONAME ; void QRangeModel::toMinimum(void)
+	?tr@QRangeModel@@SA?AVQString@@PBD0@Z @ 12 NONAME ; class QString QRangeModel::tr(char const *, char const *)
+	?setPositionAtMaximum@QRangeModel@@QAEXM@Z @ 13 NONAME ; void QRangeModel::setPositionAtMaximum(float)
+	?stepSizeChanged@QRangeModel@@IAEXM@Z @ 14 NONAME ; void QRangeModel::stepSizeChanged(float)
+	?positionAtMaximum@QRangeModel@@QBEMXZ @ 15 NONAME ; float QRangeModel::positionAtMaximum(void) const
+	?inverted@QRangeModel@@QBE_NXZ @ 16 NONAME ; bool QRangeModel::inverted(void) const
+	?d_func@QRangeModel@@AAEPAVQRangeModelPrivate@@XZ @ 17 NONAME ; class QRangeModelPrivate * QRangeModel::d_func(void)
+	?setRange@QRangeModel@@QAEXMM@Z @ 18 NONAME ; void QRangeModel::setRange(float, float)
+	?qt_metacast@QGlobals@@UAEPAXPBD@Z @ 19 NONAME ; void * QGlobals::qt_metacast(char const *)
+	??1QRangeModel@@UAE@XZ @ 20 NONAME ; QRangeModel::~QRangeModel(void)
+	?qt_metacall@QRangeModel@@UAEHW4Call@QMetaObject@@HPAPAX@Z @ 21 NONAME ; int QRangeModel::qt_metacall(enum QMetaObject::Call, int, void * *)
+	?positionForValue@QRangeModel@@QBEMM@Z @ 22 NONAME ; float QRangeModel::positionForValue(float) const
+	??1QGlobals@@UAE@XZ @ 23 NONAME ; QGlobals::~QGlobals(void)
+	?setStepSize@QRangeModel@@QAEXM@Z @ 24 NONAME ; void QRangeModel::setStepSize(float)
+	?setPositionRange@QRangeModel@@QAEXMM@Z @ 25 NONAME ; void QRangeModel::setPositionRange(float, float)
+	??_EQGlobals@@UAE@I@Z @ 26 NONAME ; QGlobals::~QGlobals(unsigned int)
+	?value@QRangeModel@@QBEMXZ @ 27 NONAME ; float QRangeModel::value(void) const
+	?setMinimum@QRangeModel@@QAEXM@Z @ 28 NONAME ; void QRangeModel::setMinimum(float)
+	?setPosition@QRangeModel@@QAEXM@Z @ 29 NONAME ; void QRangeModel::setPosition(float)
+	?qt_metacast@QRangeModel@@UAEPAXPBD@Z @ 30 NONAME ; void * QRangeModel::qt_metacast(char const *)
+	?trUtf8@QGlobals@@SA?AVQString@@PBD0H@Z @ 31 NONAME ; class QString QGlobals::trUtf8(char const *, char const *, int)
+	?setPositionAtMinimum@QRangeModel@@QAEXM@Z @ 32 NONAME ; void QRangeModel::setPositionAtMinimum(float)
+	?valueChanged@QRangeModel@@IAEXM@Z @ 33 NONAME ; void QRangeModel::valueChanged(float)
+	?d_func@QRangeModel@@ABEPBVQRangeModelPrivate@@XZ @ 34 NONAME ; class QRangeModelPrivate const * QRangeModel::d_func(void) const
+	?positionAtMinimum@QRangeModel@@QBEMXZ @ 35 NONAME ; float QRangeModel::positionAtMinimum(void) const
+	??0QRangeModel@@QAE@PAVQObject@@@Z @ 36 NONAME ; QRangeModel::QRangeModel(class QObject *)
+	??_EQRangeModel@@UAE@I@Z @ 37 NONAME ; QRangeModel::~QRangeModel(unsigned int)
+	?metaObject@QRangeModel@@UBEPBUQMetaObject@@XZ @ 38 NONAME ; struct QMetaObject const * QRangeModel::metaObject(void) const
+	?staticMetaObject@QRangeModel@@2UQMetaObject@@B @ 39 NONAME ; struct QMetaObject const QRangeModel::staticMetaObject
+	?staticMetaObjectExtraData@QGlobals@@0UQMetaObjectExtraData@@B @ 40 NONAME ; struct QMetaObjectExtraData const QGlobals::staticMetaObjectExtraData
+	?qt_static_metacall@QRangeModel@@CAXPAVQObject@@W4Call@QMetaObject@@HPAPAX@Z @ 41 NONAME ; void QRangeModel::qt_static_metacall(class QObject *, enum QMetaObject::Call, int, void * *)
+	?trUtf8@QRangeModel@@SA?AVQString@@PBD0@Z @ 42 NONAME ; class QString QRangeModel::trUtf8(char const *, char const *)
+	?getStaticMetaObject@QRangeModel@@SAABUQMetaObject@@XZ @ 43 NONAME ; struct QMetaObject const & QRangeModel::getStaticMetaObject(void)
+	?maximum@QRangeModel@@QBEMXZ @ 44 NONAME ; float QRangeModel::maximum(void) const
+	?staticMetaObjectExtraData@QRangeModel@@0UQMetaObjectExtraData@@B @ 45 NONAME ; struct QMetaObjectExtraData const QRangeModel::staticMetaObjectExtraData
+	?positionAtMaximumChanged@QRangeModel@@IAEXM@Z @ 46 NONAME ; void QRangeModel::positionAtMaximumChanged(float)
+	?trUtf8@QGlobals@@SA?AVQString@@PBD0@Z @ 47 NONAME ; class QString QGlobals::trUtf8(char const *, char const *)
+	?tr@QGlobals@@SA?AVQString@@PBD0H@Z @ 48 NONAME ; class QString QGlobals::tr(char const *, char const *, int)
+	?tr@QRangeModel@@SA?AVQString@@PBD0H@Z @ 49 NONAME ; class QString QRangeModel::tr(char const *, char const *, int)
+	?invertedChanged@QRangeModel@@IAEX_N@Z @ 50 NONAME ; void QRangeModel::invertedChanged(bool)
+	?qt_metacall@QGlobals@@UAEHW4Call@QMetaObject@@HPAPAX@Z @ 51 NONAME ; int QGlobals::qt_metacall(enum QMetaObject::Call, int, void * *)
+	?toMaximum@QRangeModel@@QAEXXZ @ 52 NONAME ; void QRangeModel::toMaximum(void)
+	?positionAtMinimumChanged@QRangeModel@@IAEXM@Z @ 53 NONAME ; void QRangeModel::positionAtMinimumChanged(float)
+	?qt_static_metacall@QGlobals@@CAXPAVQObject@@W4Call@QMetaObject@@HPAPAX@Z @ 54 NONAME ; void QGlobals::qt_static_metacall(class QObject *, enum QMetaObject::Call, int, void * *)
+	?stepSize@QRangeModel@@QBEMXZ @ 55 NONAME ; float QRangeModel::stepSize(void) const
+	?trUtf8@QRangeModel@@SA?AVQString@@PBD0H@Z @ 56 NONAME ; class QString QRangeModel::trUtf8(char const *, char const *, int)
+	?maximumChanged@QRangeModel@@IAEXM@Z @ 57 NONAME ; void QRangeModel::maximumChanged(float)
+	?metaObject@QGlobals@@UBEPBUQMetaObject@@XZ @ 58 NONAME ; struct QMetaObject const * QGlobals::metaObject(void) const
+	?position@QRangeModel@@QBEMXZ @ 59 NONAME ; float QRangeModel::position(void) const
+	?setInverted@QRangeModel@@QAEX_N@Z @ 60 NONAME ; void QRangeModel::setInverted(bool)
+	?setValue@QRangeModel@@QAEXM@Z @ 61 NONAME ; void QRangeModel::setValue(float)
+	?minimumChanged@QRangeModel@@IAEXM@Z @ 62 NONAME ; void QRangeModel::minimumChanged(float)
+	??0QGlobals@@QAE@XZ @ 63 NONAME ; QGlobals::QGlobals(void)
+
