@@ -45,10 +45,10 @@ Item {
     id: root
 
     property bool backButton: false
-    property alias placeHolderText: placeHolderText.text
-    property alias searchText: searchTextInput.text
+    property alias placeHolderText: textPanel.placeholderText
+    property alias searchText: textPanel.text
     property bool platformInverted: false
-    property alias maximumLength: searchTextInput.maximumLength
+    property alias maximumLength: textPanel.maximumLength
 
     signal clearClicked()
     signal backClicked()
@@ -62,7 +62,6 @@ Item {
     QtObject {
         id: internal
         property int animationtime: 250
-
     }
 
     BorderImage {
@@ -83,118 +82,43 @@ Item {
         iconSource: privateStyle.imagePath("toolbar-back", root.platformInverted)
         height: privateStyle.tabBarHeightPortrait
         width: privateStyle.tabBarHeightPortrait
-        anchors.left: parent.left
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
+        anchors { left: parent.left; top: parent.top; bottom: parent.bottom }
         visible: backButton
         onClicked: root.backClicked()
     }
 
-    FocusScope {
+    TextField {
         id: textPanel
-        anchors.left: backButton ? backToolButton.right : parent.left
-        anchors.leftMargin: backButton ? 0 : platformStyle.paddingLarge
-        anchors.right: parent.right
-        anchors.rightMargin: platformStyle.paddingLarge
-        anchors.verticalCenter: parent.verticalCenter
-        height: privateStyle.textFieldHeight
-
-        BorderImage {
-            id: frame
-            anchors.fill: parent
-            source: privateStyle.imagePath(
-                        searchTextInput.activeFocus ? "qtg_fr_textfield_highlighted"
-                                                    : "qtg_fr_textfield_editable", root.platformInverted)
-            border {
-                left: platformStyle.borderSizeMedium
-                top: platformStyle.borderSizeMedium
-                right: platformStyle.borderSizeMedium
-                bottom: platformStyle.borderSizeMedium
-            }
-            smooth: true
+        platformLeftMargin: searchIndicator.width + platformStyle.paddingMedium
+        platformRightMargin: (clearButton.opacity > 0 ? clearButton.width : 0) + platformStyle.paddingMedium
+        anchors {
+            left: backButton ? backToolButton.right : parent.left
+            leftMargin: backButton ? 0 : platformStyle.paddingLarge
+            right: parent.right
+            rightMargin: platformStyle.paddingLarge
+            verticalCenter: parent.verticalCenter
         }
+        width: parent.width - parent.spacing
+        platformInverted: root.platformInverted
+        inputMethodHints: Qt.ImhNoPredictiveText
 
         Image {
             id: searchIndicator
-            sourceSize.width: platformStyle.graphicSizeSmall
-            sourceSize.height: platformStyle.graphicSizeSmall
-            fillMode: Image.PreserveAspectFit
-            smooth: true
-            anchors.left: textPanel.left
-            anchors.leftMargin: platformStyle.paddingSmall
-            anchors.verticalCenter: textPanel.verticalCenter
-            source: privateStyle.imagePath("qtg_graf_search_indicator", root.platformInverted)
-        }
-
-        TextInput {
-            id: searchTextInput; objectName: "searchTextInput"
-            anchors.left: searchIndicator.right
-            anchors.leftMargin: platformStyle.paddingSmall
-            anchors.right: clearButton.left
-            anchors.rightMargin: platformStyle.paddingSmall
-            anchors.verticalCenter: textPanel.verticalCenter
-            clip: true
-            color: root.platformInverted ? platformStyle.colorNormalLightInverted
-                                         : platformStyle.colorNormalDark
-            selectByMouse: true
-            selectedTextColor: platformStyle.colorNormalLight
-            selectionColor: platformStyle.colorTextSelection
-            font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
-            activeFocusOnPress: false
-            inputMethodHints: Qt.ImhNoPredictiveText
-            onTextChanged: {
-                if (text) {
-                    clearButton.state = "ClearVisible"
-                } else {
-                    clearButton.state = "ClearHidden"
-                }
-            }
-            onActiveFocusChanged: {
-                if (!searchTextInput.activeFocus) {
-                    searchTextInput.closeSoftwareInputPanel()
-                }
-            }
-        }
-        MouseArea {
-            id: searchMouseArea
+            width: platformStyle.graphicSizeSmall
+            height: platformStyle.graphicSizeSmall
             anchors {
-                left: textPanel.left;
-                right: clearButton.state=="ClearHidden" ? textPanel.right : clearButton.left
-                verticalCenter : textPanel.verticalCenter
+                left: textPanel.left
+                leftMargin: platformStyle.paddingLarge / 2
+                verticalCenter: textPanel.verticalCenter
             }
-            height: textPanel.height
-            onPressed: {
-                if (!searchTextInput.activeFocus) {
-                    searchTextInput.forceActiveFocus()
-                }
-            }
-            onClicked: {
-                searchTextInput.openSoftwareInputPanel()
-                privateStyle.play(Symbian.PopUp)
-            }
-        }
-
-        Text {
-            id: placeHolderText; objectName: "placeHolderText"
-            anchors.left: searchIndicator.right
-            anchors.leftMargin: platformStyle.paddingMedium
-            anchors.right: clearButton.left
-            anchors.rightMargin: platformStyle.paddingMedium
-            anchors.verticalCenter: textPanel.verticalCenter
-            color: root.platformInverted ? platformStyle.colorNormalMidInverted
-                                         : platformStyle.colorNormalMid
-            font: searchTextInput.font
-            visible: (!searchTextInput.activeFocus) && (!searchTextInput.text) && text
+            source: privateStyle.imagePath("qtg_graf_search_indicator", root.platformInverted)
         }
 
         Image {
             id: clearButton; objectName: "clearButton"
             height: platformStyle.graphicSizeSmall
             width: platformStyle.graphicSizeSmall
-            anchors.right: textPanel.right
-            anchors.rightMargin: platformStyle.paddingSmall
-            anchors.verticalCenter: textPanel.verticalCenter
-            state: "ClearHidden"
+            anchors { right: parent.right; margins: platformStyle.paddingMedium; verticalCenter: parent.verticalCenter }
             source: privateStyle.imagePath(
                         clearMouseArea.pressed ? "qtg_graf_textfield_clear_pressed"
                                                : "qtg_graf_textfield_clear_normal", root.platformInverted)
@@ -203,37 +127,26 @@ Item {
                 id: clearMouseArea
                 anchors.fill: parent
                 onClicked: {
-                    searchTextInput.focus = false
-                    searchTextInput.cursorVisible = false
-                    searchTextInput.closeSoftwareInputPanel()
-                    searchTextInput.text = ""
+                    textPanel.focus = false
+                    textPanel.closeSoftwareInputPanel()
+                    textPanel.text = ""
                     root.clearClicked()
-                    clearButton.state = "ClearHidden"
                 }
             }
 
             states: [
-                State {
-                    name: "ClearVisible"
+                State { name: "Visible"; when: textPanel.text
                     PropertyChanges {target: clearButton; opacity: 1}
                 },
-                State {
-                    name: "ClearHidden"
+                State { name: "Hidden"; when: !textPanel.text
                     PropertyChanges {target: clearButton; opacity: 0}
                 }
             ]
-
             transitions: [
-                Transition {
-                    from: "ClearVisible"; to: "ClearHidden"
-                    NumberAnimation { properties: "opacity"; duration: internal.animationtime; easing.type: Easing.Linear }
-                },
-                Transition {
-                    from: "ClearHidden"; to: "ClearVisible"
-                    NumberAnimation { properties: "opacity"; duration: internal.animationtime; easing.type: Easing.Linear }
+                Transition { from: "Visible"; to: "Hidden"; reversible: true
+                    NumberAnimation { properties: "opacity"; duration: internal.animationtime }
                 }
             ]
-
         }
     }
 }
