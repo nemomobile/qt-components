@@ -1,3 +1,9 @@
+qt-components (1.2~git20111118-1) maverick; urgency=low
+
+  * Fixes: NB#290197 Selection draggers are displayed out of range URL bar
+  
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Fri, 18 Nov 2011 10:35:11 +0300
+
 qt-components (1.2~git20111109-1) maverick; urgency=low
 
   * Fixes: NB#288710 [TASK] Enforcing western numeric input in qt-components
