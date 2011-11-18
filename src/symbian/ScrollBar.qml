@@ -107,12 +107,6 @@ Item {
     QtObject {
         id: internal
         property int hideTimeout: 500
-        property int pageStepY: flickableItem ? Math.floor(flickableItem.visibleArea.heightRatio * flickableItem.contentHeight) : NaN
-        property int pageStepX: flickableItem ? Math.floor(flickableItem.visibleArea.widthRatio * flickableItem.contentWidth) : NaN
-        property int handleY: flickableItem ? Math.floor(handle.y / flickableItem.height * flickableItem.contentHeight) : NaN
-        property int handleX: flickableItem ? Math.floor(handle.x / flickableItem.width * flickableItem.contentWidth) : NaN
-        property int maximumY: flickableItem ? Math.floor(Math.min(flickableItem.contentHeight - root.height, flickableItem.contentY)) : NaN
-        property int maximumX: flickableItem ? Math.floor(Math.min(flickableItem.contentWidth - root.width, flickableItem.contentX)) : NaN
         property bool scrollBarNeeded: root.visible && hasScrollableContent()
         //Sets currentSection to empty string when flickableItem.currentSection is null
         property string currentSection: flickableItem ? flickableItem.currentSection || "" : ""
@@ -179,74 +173,16 @@ Item {
             var ratio = orientation == Qt.Vertical ? flickableItem.visibleArea.heightRatio : flickableItem.visibleArea.widthRatio
             return ratio < 1.0 && ratio > 0
         }
-        /**
-         * Does Page by Page movement of flickableItem
-         * when ScrollBar Track is being clicked/pressed
-         *
-         * @see #moveToLongTapPosition
-         */
-        function doPageStep() {
-            if (orientation == Qt.Vertical) {
-                if (trackMouseArea.mouseY > (handle.height / 2 + handle.y)) {
-                    flickableItem.contentY += pageStepY
-                    flickableItem.contentY = maximumY
-                }
-                else if (trackMouseArea.mouseY < (handle.height / 2 + handle.y)) {
-                    flickableItem.contentY -= pageStepY
-                    flickableItem.contentY = Math.max(0, flickableItem.contentY)
-                }
-            } else {
-                if (trackMouseArea.mouseX > (handle.width / 2 + handle.x)) {
-                    flickableItem.contentX += pageStepX
-                    flickableItem.contentX = maximumX
-                }
-                else if (trackMouseArea.mouseX < (handle.width / 2 + handle.x)) {
-                    flickableItem.contentX -= pageStepX
-                    flickableItem.contentX = Math.max(0, flickableItem.contentX)
-                }
-            }
-        }
+
         /**
          * Does movement of flickableItem
          * when ScrollBar Handle is being dragged
          */
         function moveToHandlePosition() {
             if (orientation == Qt.Vertical)
-                flickableItem.contentY = handleY
+                flickableItem.contentY = handle.y / (height-staticHandleLength) * (flickableItem.contentHeight-flickableItem.height)
             else
-                flickableItem.contentX = handleX
-        }
-        /**
-         * Moves flickableItem's content according to given mouseArea movement
-         * when mouseArea is pressed long
-         * Tries to position the handle and content in center of mouse position enough
-         *
-         * @see #doPageStep
-         */
-        function moveToLongTapPosition(mouseArea) {
-            if (orientation == Qt.Vertical) {
-                if (Math.abs(mouseArea.mouseY - (handle.height / 2 + handle.y)) < privateStyle.scrollBarThickness)
-                    return //if change is not remarkable enough, do nothing otherwise it would cause annoying flickering effect
-                if (mouseArea.mouseY > (handle.height / 2 + handle.y)) {
-                    flickableItem.contentY += Math.floor(privateStyle.scrollBarThickness)
-                    flickableItem.contentY = maximumY
-                }
-                else if (mouseArea.mouseY < (handle.height / 2 + handle.y)) {
-                    flickableItem.contentY -= Math.floor(privateStyle.scrollBarThickness)
-                    flickableItem.contentY = Math.floor(Math.max(0, flickableItem.contentY))
-                }
-            } else {
-                if (Math.abs(mouseArea.mouseX - (handle.width / 2 + handle.x)) < privateStyle.scrollBarThickness)
-                    return //if change is not remarkable enough, do nothing otherwise it would cause annoying flickering effect
-                if (mouseArea.mouseX > (handle.width / 2 + handle.x)) {
-                    flickableItem.contentX += Math.floor(privateStyle.scrollBarThickness)
-                    flickableItem.contentX = maximumX
-                }
-                else if (mouseArea.mouseX < (handle.width / 2 + handle.x)) {
-                    flickableItem.contentX -= Math.floor(privateStyle.scrollBarThickness)
-                    flickableItem.contentX = Math.floor(Math.max(0, flickableItem.contentX))
-                }
-            }
+                flickableItem.contentX = handle.x / (width-staticHandleLength) * (flickableItem.contentWidth-flickableItem.width)
         }
 
         function adjustContentPosition(y) {
@@ -263,22 +199,6 @@ Item {
             if (root.privateSectionScroller && flickableItem && flickableItem.model)
                 Sections.initSectionData(flickableItem);
         }
-    }
-
-    BorderImage {
-        id: track
-        objectName: "track"
-        source: privateStyle.imagePath((orientation == Qt.Vertical
-                                        ? "qtg_fr_scrollbar_v_track_normal"
-                                        : "qtg_fr_scrollbar_h_track_normal"),
-                                       root.platformInverted)
-        visible: interactive
-        anchors.fill: parent
-        border.right: orientation == Qt.Horizontal ? 7 : 0
-        border.left: orientation == Qt.Horizontal ? 7 : 0
-        border.top: orientation == Qt.Vertical ? 7 : 0
-        border.bottom: orientation == Qt.Vertical ? 7 : 0
-        onVisibleChanged: { idleEffect.complete(); flashEffect.complete() }
     }
 
     Loader {
@@ -324,14 +244,14 @@ Item {
                     when: (handle.y + (handle.height / 2)) - (sectionScrollBackground.height / 2) < 0
                     AnchorChanges {
                         target: sectionScrollBackground
-                        anchors { verticalCenter: undefined; top: track.top; bottom: undefined }
+                        anchors { verticalCenter: undefined; top: handle.top; bottom: undefined }
                     }
                 },
                 State {
-                    when: (handle.y + (handle.height / 2)) + (sectionScrollBackground.height / 2) >= track.height
+                    when: (handle.y + (handle.height / 2)) + (sectionScrollBackground.height / 2) >= trackMouseArea.height
                     AnchorChanges {
                         target: sectionScrollBackground
-                        anchors { verticalCenter: undefined; top: undefined; bottom: track.bottom }
+                        anchors { verticalCenter: undefined; top: undefined; bottom: handle.bottom }
                     }
                 },
                 State {
@@ -345,35 +265,26 @@ Item {
         }
     }
 
-    // MouseArea for the move content "page by page" by tapping and scroll to press-and-hold position
+    // MouseArea for section scrolling
     MouseArea {
         id: trackMouseArea
         objectName: "trackMouseArea"
-        property bool longPressed: false
-        enabled: root.privateSectionScroller || interactive
+        enabled: root.privateSectionScroller
         anchors {
-            top: root.privateSectionScroller ? parent.top : undefined;
-            bottom: root.privateSectionScroller ? parent.bottom : undefined;
-            right: root.privateSectionScroller ? parent.right : undefined;
-            fill: root.privateSectionScroller ? undefined : (flickableItem ? track : undefined)
+            top: parent.top
+            bottom: parent.bottom
+            right: parent.right
         }
-        width: root.privateSectionScroller ? privateStyle.scrollBarThickness * 3 : undefined
+        width: privateStyle.scrollBarThickness * 3
         drag {
-            target: root.privateSectionScroller ? sectionScrollBackground : undefined
+            target: sectionScrollBackground
             // axis is set XandY to prevent flickable from stealing the mouse event
             // SectionScroller is anchored to the right side of the mouse area so the user
             // won't be able to drag it along the X axis
-            axis: root.privateSectionScroller ? Drag.XandYAxis : 0
-            minimumY: root.privateSectionScroller ? (flickableItem ? flickableItem.y : 0) : 0
-            maximumY: root.privateSectionScroller ? (flickableItem ? (trackMouseArea.height - sectionScrollBackground.height) : 0) : 0
+            axis: Drag.XandYAxis
+            minimumY: flickableItem ? flickableItem.y : 0
+            maximumY: flickableItem ? (trackMouseArea.height - sectionScrollBackground.height) : 0
         }
-
-        onPressAndHold: {
-            if (!root.privateSectionScroller)
-                longPressed = true
-        }
-
-        onReleased: longPressed = false
 
         onPositionChanged: {
             if (root.privateSectionScroller)
@@ -384,13 +295,6 @@ Item {
             if (root.privateSectionScroller && trackMouseArea.pressed)
                 internal.adjustContentPosition(trackMouseArea.mouseY);
         }
-    }
-    Timer {
-        id: pressAndHoldTimer
-        running: trackMouseArea.longPressed
-        interval: 50
-        repeat: true
-        onTriggered: { internal.moveToLongTapPosition(trackMouseArea); privateStyle.play(Symbian.SensitiveSlider) }
     }
 
     BorderImage {
@@ -498,14 +402,6 @@ Item {
                 when: handleMouseArea.pressed
             },
             State {
-                name: "Stepping"
-                when: trackMouseArea.longPressed
-            },
-            State {
-                name: "Step"
-                when: trackMouseArea.pressed && !trackMouseArea.longPressed && !root.privateSectionScroller
-            },
-            State {
                 name: "Indicate"
                 when: (internal.scrollBarNeeded && flickableItem.moving) ||
                       (trackMouseArea.pressed && root.privateSectionScroller)
@@ -518,17 +414,6 @@ Item {
             Transition {
                 to: "Move"
                 ScriptAction { script: privateStyle.play(Symbian.BasicSlider) }
-                ScriptAction { script: indicateEffect.play() }
-            },
-            Transition {
-                to: "Step"
-                ScriptAction { script: internal.doPageStep() }
-                ScriptAction { script: privateStyle.play(Symbian.BasicSlider) }
-                ScriptAction { script: indicateEffect.play() }
-            },
-            Transition {
-                from: "Step"
-                to: "Stepping"
                 ScriptAction { script: indicateEffect.play() }
             },
             Transition {
