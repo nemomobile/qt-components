@@ -126,11 +126,13 @@ Item {
             MouseArea {
                 id: clearMouseArea
                 anchors.fill: parent
+                onPressed: privateStyle.play(Symbian.BasicButton)
                 onClicked: {
                     textPanel.focus = false
                     textPanel.closeSoftwareInputPanel()
                     textPanel.text = ""
                     root.clearClicked()
+                    privateStyle.play(Symbian.BasicButton)
                 }
             }
 
