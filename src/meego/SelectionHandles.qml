@@ -239,8 +239,6 @@ Item {
         target: Utils.findFlickable(textInput)
         onContentXChanged: Private.adjustPosition(contents)
         onContentYChanged: Private.adjustPosition(contents)
-        onMovementEnded: Popup.open(textInput,textInput.positionToRectangle(textInput.cursorPosition));
-
     }
 
     Connections {
