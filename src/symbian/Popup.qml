@@ -119,6 +119,7 @@ Item {
         Fader {
             platformInverted: root.platformInverted
             onClicked: root.faderClicked()
+            popupRect: Qt.rect(root.x, root.y, root.width, root.height)
         }
     }
 }

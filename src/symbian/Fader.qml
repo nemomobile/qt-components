@@ -39,6 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 1.1
+import "RectUtils.js" as RectUtils
 
 Item {
     id: root
@@ -47,6 +48,7 @@ Item {
     property int animationDuration: 500
     property Item visualParent: null
     property bool platformInverted: false // supports inverted, but looks the same
+    property variant popupRect: Qt.rect(0, 0, 0, 0)
 
     signal clicked
 
@@ -68,30 +70,36 @@ Item {
             anchors.fill: parent
             enabled: fader.opacity != 0.0
             preventStealing: true
-            onPressed: mouse.accepted = true
-            onClicked: root.clicked()
+
+            onPressed: {
+                root.state = "Pressed"
+                mouse.accepted = true
+            }
+            onReleased: {
+                if (root.state == "Pressed")
+                    root.clicked()
+                else
+                    root.state = "Visible"
+            }
+            onPositionChanged: {
+                if (RectUtils.rectContainsPoint(popupRect, mouseX, mouseY)
+                        && root.state == "Pressed")
+                    root.state = "Visible"
+            }
         }
     }
 
     states: [
-        State {
-            name: "Visible"
-            PropertyChanges { target: fader; opacity: dimm }
-        },
-        State {
-            name: "Hidden"
-            PropertyChanges { target: fader; opacity: 0.0 }
-        }
+        State { name: "Visible" },
+        State { name: "Hidden" },
+        State { name: "Pressed" }
     ]
 
-    transitions: [
-        Transition {
-            from: "Hidden"; to: "Visible"
-            NumberAnimation { properties: "opacity"; duration: animationDuration; easing.type: Easing.Linear }
-        },
-        Transition {
-            from: "Visible"; to: "Hidden"
-            NumberAnimation { properties: "opacity"; duration: animationDuration; easing.type: Easing.Linear }
-        }
-    ]
+    transitions: Transition {
+        from: "Hidden"
+        to: "Visible"
+        reversible: true
+        PropertyAnimation {
+            target: fader; property: "opacity"; to: dimm; duration: animationDuration; easing.type: Easing.Linear }
+    }
 }
