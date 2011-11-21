@@ -126,7 +126,7 @@ ImplicitSizeItem {
         visible: root.iconSource != ""
     }
 
-    Text {
+    Label {
         id: text
         width: internal.getTextWidth()
         anchors { left: (image.visible ? image.right : parent.left); leftMargin: (image.visible ? 14:16);
