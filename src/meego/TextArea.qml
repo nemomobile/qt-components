@@ -327,7 +327,7 @@ FocusScope {
         property bool suppressInputMethod: !activeFocusOnPress
 
         onWesternNumericInputEnforcedChanged: {
-            inputContext.setWesternNumericInputEnforcedProperty(textInput, westernNumericInputEnforced);
+            inputContext.update();
         }
 
         x: UI.PADDING_XLARGE

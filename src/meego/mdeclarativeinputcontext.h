@@ -77,8 +77,6 @@ public:
 
     Q_INVOKABLE void clearClipboard();
 
-    Q_INVOKABLE void setWesternNumericInputEnforcedProperty(QObject *obj, bool enforced);
-
     bool softwareInputPanelVisible() const;
     QRect softwareInputPanelRect() const;
 

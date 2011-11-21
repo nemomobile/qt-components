@@ -370,7 +370,7 @@ FocusScope {
         property bool suppressInputMethod: !activeFocusOnPress
 
         onWesternNumericInputEnforcedChanged: {
-            inputContext.setWesternNumericInputEnforcedProperty(textInput, westernNumericInputEnforced);
+            inputContext.update();
         }
 
         anchors {verticalCenter: parent.verticalCenter; left: parent.left; right: parent.right}
