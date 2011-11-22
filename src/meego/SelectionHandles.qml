@@ -57,6 +57,7 @@ Item {
               property int animationDuration: leftSelectionMouseArea.pressed ? 350 : 0
               x: selectionStartPoint.x + offset;
               y: selectionStartPoint.y + contents.selectionStartRect.height - 10 - rect.fontBaseLine; // vertical offset: 4 pixels
+              visible: y > Utils.statusBarCoveredHeight( contents );
               source: platformStyle.leftSelectionHandle
               property bool pressed: leftSelectionMouseArea.pressed;
               property bool outOfView: rect.outOfView(x, y, offset);
@@ -149,6 +150,7 @@ Item {
               property int animationDuration: rightSelectionMouseArea.pressed ? 350 : 0
               x: selectionEndPoint.x + offset;
               y: selectionEndPoint.y + contents.selectionEndRect.height - 10 - rect.fontBaseLine; // vertical offset: 4 pixels
+              visible: y > Utils.statusBarCoveredHeight( contents );
               source: platformStyle.rightSelectionHandle;
               property bool pressed: rightSelectionMouseArea.pressed;
               property bool outOfView: rect.outOfView(x, y, offset);
