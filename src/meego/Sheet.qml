@@ -144,7 +144,9 @@ Item {
             // Closed state.
             State {
                 name: "closed"
-                PropertyChanges { target: sheet; y: height; }
+                // consider input panel height when input panel is open
+                PropertyChanges { target: sheet; y: !inputContext.softwareInputPanelVisible
+                                                    ? height : inputContext.softwareInputPanelRect.height + height; }
             }
         ]
 
