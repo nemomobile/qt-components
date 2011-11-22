@@ -174,7 +174,7 @@ Item {
             property int screenWidth: Math.max(screen.width, screen.height)
 
             // Duration of transition animation (in ms)
-            property int transitionDuration: 250
+            property int transitionDuration: 300
 
             // Flag that indicates the container should be cleaned up after the transition has ended.
             property bool cleanupAfterTransition: false
@@ -289,29 +289,29 @@ Item {
                 // Explicit properties for default state.
                 State {
                     name: ""
-                    PropertyChanges { target: container; visible: true; opacity: 1 }
+                    PropertyChanges { target: container; visible: true; }
                 },
                 // Start state for pop entry, end state for push exit.
                 State {
                     name: "Left"
-                    PropertyChanges { target: container; x: -width / 2; opacity: 0 }
+                    PropertyChanges { target: container; x: -width; }
                 },
                 // Start state for pop entry, end state for push exit
                 // when exiting portrait and entering landscape.
                 State {
                     name: "LandscapeLeft"
-                    PropertyChanges { target: container; x: -screenWidth / 2; opacity: 0 }
+                    PropertyChanges { target: container; x: -screenWidth; }
                 },
                 // Start state for push entry, end state for pop exit.
                 State {
                     name: "Right"
-                    PropertyChanges { target: container; x: width / 2; opacity: 0 }
+                    PropertyChanges { target: container; x: width; }
                 },
                 // Start state for push entry, end state for pop exit
                 // when exiting portrait and entering landscape.
                 State {
                     name: "LandscapeRight"
-                    PropertyChanges { target: container; x: screenWidth / 2; opacity: 0 }
+                    PropertyChanges { target: container; x: screenWidth; }
                 },
                 // Inactive state.
                 State {
@@ -326,10 +326,7 @@ Item {
                     from: ""; to: "Left"
                     SequentialAnimation {
                         ScriptAction { script: transitionStarted() }
-                        ParallelAnimation {
-                            PropertyAnimation { properties: "x"; easing.type: Easing.InQuad; duration: transitionDuration }
-                            PropertyAnimation { properties: "opacity"; easing.type: Easing.Linear; duration: transitionDuration }
-                        }
+                        PropertyAnimation { property: "x"; easing.type: Easing.OutQuad; duration: transitionDuration }
                         ScriptAction { script: transitionEnded() }
                     }
                 },
@@ -338,10 +335,7 @@ Item {
                     from: "Left"; to: ""
                     SequentialAnimation {
                         ScriptAction { script: transitionStarted() }
-                        ParallelAnimation {
-                            PropertyAnimation { properties: "x"; easing.type: Easing.OutQuad; duration: transitionDuration }
-                            PropertyAnimation { properties: "opacity"; easing.type: Easing.Linear; duration: transitionDuration }
-                        }
+                        PropertyAnimation { property: "x"; easing.type: Easing.OutQuad; duration: transitionDuration }
                         ScriptAction { script: transitionEnded() }
                     }
                 },
@@ -350,10 +344,7 @@ Item {
                     from: ""; to: "LandscapeLeft"
                     SequentialAnimation {
                         ScriptAction { script: transitionStarted() }
-                        ParallelAnimation {
-                            PropertyAnimation { properties: "x"; easing.type: Easing.InQuad; duration: transitionDuration }
-                            PropertyAnimation { properties: "opacity"; easing.type: Easing.Linear; duration: transitionDuration }
-                        }
+                        PropertyAnimation { property: "x"; easing.type: Easing.OutQuad; duration: transitionDuration }
                         ScriptAction { script: transitionEnded() }
                     }
                 },
@@ -362,10 +353,7 @@ Item {
                     from: "LandscapeLeft"; to: ""
                     SequentialAnimation {
                         ScriptAction { script: transitionStarted() }
-                        ParallelAnimation {
-                            PropertyAnimation { properties: "x"; easing.type: Easing.OutQuad; duration: transitionDuration }
-                            PropertyAnimation { properties: "opacity"; easing.type: Easing.Linear; duration: transitionDuration }
-                        }
+                        PropertyAnimation { property: "x"; easing.type: Easing.OutQuad; duration: transitionDuration }
                         ScriptAction { script: transitionEnded() }
                     }
                 },
@@ -374,13 +362,7 @@ Item {
                     from: ""; to: "Right"
                     SequentialAnimation {
                         ScriptAction { script: transitionStarted() }
-                        ParallelAnimation {
-                            PropertyAnimation { properties: "x"; easing.type: Easing.InQuad; duration: transitionDuration }
-                            PropertyAnimation { properties: "opacity"; easing.type: Easing.Linear; duration: transitionDuration }
-                        }
-                        // Workaround for transition animation bug causing ghost view with page pop transition animation
-                        // TODO: Root cause still unknown
-                        PropertyAnimation {}
+                        PropertyAnimation { property: "x"; easing.type: Easing.OutQuad; duration: transitionDuration }
                         ScriptAction { script: transitionEnded() }
                     }
                 },
@@ -389,10 +371,7 @@ Item {
                     from: "Right"; to: ""
                     SequentialAnimation {
                         ScriptAction { script: transitionStarted() }
-                        ParallelAnimation {
-                            PropertyAnimation { properties: "x"; easing.type: Easing.OutQuad; duration: transitionDuration }
-                            PropertyAnimation { properties: "opacity"; easing.type: Easing.Linear; duration: transitionDuration }
-                        }
+                        PropertyAnimation { property: "x"; easing.type: Easing.OutQuad; duration: transitionDuration }
                         ScriptAction { script: transitionEnded() }
                     }
                 },
@@ -401,13 +380,7 @@ Item {
                     from: ""; to: "LandscapeRight"
                     SequentialAnimation {
                         ScriptAction { script: transitionStarted() }
-                        ParallelAnimation {
-                            PropertyAnimation { properties: "x"; easing.type: Easing.InQuad; duration: transitionDuration }
-                            PropertyAnimation { properties: "opacity"; easing.type: Easing.Linear; duration: transitionDuration }
-                        }
-                        // Workaround for transition animation bug causing ghost view with page pop transition animation
-                        // TODO: Root cause still unknown
-                        PropertyAnimation {}
+                        PropertyAnimation { property: "x"; easing.type: Easing.OutQuad; duration: transitionDuration }
                         ScriptAction { script: transitionEnded() }
                     }
                 },
@@ -416,10 +389,7 @@ Item {
                     from: "LandscapeRight"; to: ""
                     SequentialAnimation {
                         ScriptAction { script: transitionStarted() }
-                        ParallelAnimation {
-                            PropertyAnimation { properties: "x"; easing.type: Easing.OutQuad; duration: transitionDuration }
-                            PropertyAnimation { properties: "opacity"; easing.type: Easing.Linear; duration: transitionDuration }
-                        }
+                        PropertyAnimation { property: "x"; easing.type: Easing.OutQuad; duration: transitionDuration }
                         ScriptAction { script: transitionEnded() }
                     }
                 }

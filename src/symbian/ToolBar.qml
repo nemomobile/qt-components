@@ -101,7 +101,9 @@ Item {
         Item {
             id: item
 
-            anchors.fill: parent
+            anchors.centerIn: parent
+            height: parent.height
+            width: parent.width
 
             // The states correspond to the different possible positions of the item.
             state: "Hidden"
@@ -116,33 +118,33 @@ Item {
                 // Active state
                 State {
                     name: ""
-                    PropertyChanges { target: item; visible: true; opacity: 1 }
+                    PropertyChanges { target: item; visible: true; opacity: 1; anchors.horizontalCenterOffset: 0 }
                 },
 
                 // Start state for pop entry, end state for push exit.
                 State {
                     name: "Prev"
-                    PropertyChanges { target: item; opacity: 0.0 }
+                    PropertyChanges { target: item; visible: true; anchors.horizontalCenterOffset: -root.width }
                 },
                 // Start state for push entry, end state for pop exit.
                 State {
                     name: "Next"
-                    PropertyChanges { target: item; opacity: 0.0 }
+                    PropertyChanges { target: item; visible: true; anchors.horizontalCenterOffset: root.width }
                 },
                 // Start state for replace entry.
                 State {
                     name: "Front"
-                    PropertyChanges { target: item; opacity: 0.0 }
+                    PropertyChanges { target: item; visible: true; opacity: 0.0 }
                 },
                 // End state for replace exit.
                 State {
                     name: "Back"
-                    PropertyChanges { target: item; opacity: 0.0 }
+                    PropertyChanges { target: item; visible: true; opacity: 0.0 }
                 },
                 // Inactive state.
                 State {
                     name: "Hidden"
-                    PropertyChanges { target: item; visible: false }
+                    PropertyChanges { target: item; visible: false; opacity: 1 }
                     StateChangeScript {
                         script: {
                             if (item.tools) {
@@ -161,37 +163,54 @@ Item {
             transitions: [
                 // Pop entry and push exit transition.
                 Transition {
-                    from: "";  to: "Prev";  reversible: true
+                    from: "";  to: "Prev";
                     SequentialAnimation {
-                        PropertyAnimation { properties: "opacity";  easing.type: Easing.InCubic;  duration: priv.transitionDuration / 2 }
-                        PauseAnimation { duration: priv.transitionDuration / 2 }
-                        ScriptAction { script: if (state == "Prev") state = "Hidden" }
+                        PropertyAction { property: "visible"; value: true }
+                        PropertyAnimation { property: "anchors.horizontalCenterOffset";  easing.type: Easing.OutQuad;  duration: priv.transitionDuration }
+                        ScriptAction { script: state = "Hidden" }
+                    }
+                },
+                Transition {
+                    from: "Prev";  to: "";
+                    SequentialAnimation {
+                        PropertyAction { property: "visible"; value: true }
+                        PropertyAnimation { property: "anchors.horizontalCenterOffset";  easing.type: Easing.OutQuad;  duration: priv.transitionDuration }
                     }
                 },
                 // Push entry and pop exit transition.
                 Transition {
-                    from: "";  to: "Next";  reversible: true
+                    from: "";  to: "Next";
                     SequentialAnimation {
-                        PropertyAnimation { properties: "opacity";  easing.type: Easing.InCubic;  duration: priv.transitionDuration / 2 }
-                        PauseAnimation { duration: priv.transitionDuration / 2 }
-                        ScriptAction { script: if (state == "Next") state = "Hidden" }
+                        PropertyAction { property: "visible"; value: true }
+                        PropertyAnimation { property: "anchors.horizontalCenterOffset";  easing.type: Easing.OutQuad;  duration: priv.transitionDuration }
+                        ScriptAction { script: state = "Hidden" }
+                    }
+                },
+                Transition {
+                    from: "Next";  to: "";
+                    SequentialAnimation {
+                        PropertyAction { property: "visible"; value: true }
+                        PropertyAnimation { property: "anchors.horizontalCenterOffset";  easing.type: Easing.OutQuad;  duration: priv.transitionDuration }
                     }
                 },
                 Transition {
                     // Replace entry transition.
                     from: "Front";  to: ""
                     SequentialAnimation {
-                        PropertyAnimation { properties: "opacity";  easing.type: Easing.InOutExpo;  duration: priv.transitionDuration }
+                        PropertyAction { property: "visible"; value: true }
+                        PropertyAnimation { property: "opacity";  easing.type: Easing.Linear;  duration: priv.transitionDuration }
                     }
                 },
                 Transition {
                     // Replace exit transition.
                     from: "";  to: "Back"
                     SequentialAnimation {
-                        PropertyAnimation { properties: "opacity";  easing.type: Easing.InOutExpo;  duration: priv.transitionDuration }
+                        PropertyAction { property: "visible"; value: true }
+                        PropertyAnimation { property: "opacity";  easing.type: Easing.Linear;  duration: priv.transitionDuration }
                         ScriptAction { script: if (state == "Back") state = "Hidden"  }
                     }
                 }
+
             ]
         }
     }
@@ -209,7 +228,7 @@ Item {
         property variant transition
 
         // Duration of transition animation (in ms)
-        property int transitionDuration: 500
+        property int transitionDuration: 300
 
         // Performs a transition between tools in the toolbar.
         function performTransition(transition) {

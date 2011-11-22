@@ -50,6 +50,7 @@ Item {
     property string replaceMode: "set"
     property bool flat: false
     property Item testToolBarLayout : null
+    property Item previousToolBarLayout : null
     property bool platformInverted: false
 
     visible: true
@@ -67,8 +68,9 @@ Item {
         id: internal
 
         function createToolBarLayout(layoutComponent) {
-            if (root.testToolBarLayout)
-                root.testToolBarLayout.destroy()
+            if (root.previousToolBarLayout)
+                root.previousToolBarLayout.destroy()
+            root.previousToolBarLayout = root.testToolBarLayout
             root.testToolBarLayout = layoutComponent.createObject(root, {})
             // manually set inversion mode for dynamically created item tree
             Utils.setItemTreeInversion(root.testToolBarLayout, root.platformInverted)
