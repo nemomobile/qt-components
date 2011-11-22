@@ -149,12 +149,10 @@ function initPage(page, properties) {
     container.page = page;
     container.owner = page.parent;
 
-    if (page.tools !== undefined) {
-        page.toolsChanged.connect(function() {
-            if(page.tools != null) page.tools.visible = true;
-            toolBar.setTools(page.tools);
-        });
-    }
+    page.toolsChanged.connect(function() {
+        if(page.tools != null) page.tools.visible = true;
+        toolBar.setTools(page.tools);
+    });
 
     // the page has to be reparented if
     if (page.parent != container) {
