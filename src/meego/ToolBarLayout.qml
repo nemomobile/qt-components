@@ -52,8 +52,6 @@ Item {
     width: visible && parent ? parent.width : 0
     height: visible && parent ? parent.height : 0
 
-    visible:false
-
     onWidthChanged: Layout.layout()
     onHeightChanged: Layout.layout()
     onChildrenChanged: Layout.childrenChanged()

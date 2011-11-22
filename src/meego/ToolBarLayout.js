@@ -101,20 +101,17 @@ function layout() {
 
     for (i = 0; i < children.length; i++) {
         if (children[i].visible) {
-            var child = children[i];
+            items.push(children[i])
 
             // Center all items vertically
-            child.anchors.verticalCenter = verticalCenter;
-
+            items[0].y = (function() {return height / 2 - items[0].height / 2})
             // Find out which items are expanding
-            if (child.__expanding) {
-                expandingItems.push(child)
+            if (children[i].__expanding) {
+                expandingItems.push(children[i])
             } else {
                 // Calculate the space that fixed size items take
-                widthOthers += child.width;
+                widthOthers += children[i].width;
             }
-
-            items.push(child);
         }
     }
 
