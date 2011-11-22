@@ -1,3 +1,9 @@
+qt-components (1.2~git20111122-2) maverick; urgency=low
+
+  * Fixes: NB#292018 Bottom tool bar is missing for photos in facebook
+  
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Tue, 22 Nov 2011 11:29:00 +0300
+
 qt-components (1.2~git20111122-1) maverick; urgency=low
 
   * Fixes: NB#290197 Selection draggers are displayed out of range URL bar
