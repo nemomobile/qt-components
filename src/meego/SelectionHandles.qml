@@ -77,13 +77,13 @@ Item {
                       if ( ydelta < 0 ) ydelta = 0;  // Avoid jumpy text selection
                       var pos = textInput.positionAt(pixelpos.x, ydelta);
                       var h = textInput.selectionEnd;
+                      privateIgnoreClose = true;    // Avoid closing the handles while setting the cursor position
                       if (pos >= h) {
-                          privateIgnoreClose = true;    // Avoid closing the handles while setting the cursor position
                           textInput.cursorPosition = h; // proper autoscrolling
-                          privateIgnoreClose = false;
                           pos = h - 1;  // Ensure at minimum one character between selection handles
                       }
                       textInput.select(h,pos); // Select by character
+                      privateIgnoreClose = false;
                   }
                   onReleased: {
                       Popup.open(textInput,textInput.positionToRectangle(textInput.cursorPosition));
@@ -169,13 +169,13 @@ Item {
                       if ( ydelta < 0 ) ydelta = 0;  // Avoid jumpy text selection
                       var pos = textInput.positionAt(pixelpos.x, ydelta);
                       var h = textInput.selectionStart;
+                      privateIgnoreClose = true;    // Avoid closing the handles while setting the cursor position
                       if (pos <= h) {
-                          privateIgnoreClose = true;    // Avoid closing the handles while setting the cursor position
                           textInput.cursorPosition = h; // proper autoscrolling
-                          privateIgnoreClose = false;
                           pos = h + 1;  // Ensure at minimum one character between selection handles
                       }
                       textInput.select(h,pos); // Select by character
+                      privateIgnoreClose = false;
                  }
                  onReleased: {
                       // trim to word selection
