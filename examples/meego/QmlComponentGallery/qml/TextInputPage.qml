@@ -160,7 +160,7 @@ Page {
                         placeholderText: "Multi-line text area"
                         text: "This is a\nmultiline\ntext area"
                         // Set the minimum height to be 200
-                        height: Math.max (200, implicitHeight)
+                        height: 200
                     }
 
                     Label {
