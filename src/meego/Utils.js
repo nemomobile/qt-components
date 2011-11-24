@@ -110,7 +110,18 @@ function findRootItemNotificationBanner(item)
   Get the height that is actually covered by the statusbar (0 if the statusbar is not shown.
 */
 function statusBarCoveredHeight(item) {
-    if ( findRootItem(item, "pageStackWindow") != null )
-        return findRootItem(item, "pageStackWindow").__statusBarHeight;
+    var pageStackWindow = findRootItem(item, "pageStackWindow");
+    if ( pageStackWindow != null )
+        return pageStackWindow.__statusBarHeight;
+    return 0
+}
+
+/*
+  Get the height that is actually covered by the statusbar (0 if the statusbar is not shown.
+*/
+function toolBarCoveredHeight(item) {
+    var pageStackWindow = findRootItem(item, "pageStackWindow");
+    if ( pageStackWindow != null && pageStackWindow.showToolBar)
+              return pageStackWindow.platformToolBarHeight
     return 0
 }
