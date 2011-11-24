@@ -90,6 +90,24 @@ FocusScope {
         platformSipAttributes.registerInputElement(textEdit)
     }
 
+    property int __originalHeight: 0;
+    property bool __ignoreHeightChange: false;
+
+    onHeightChanged:{
+        if (!__ignoreHeightChange) __originalHeight = root.height;
+    }
+
+    Connections {
+        target: textEdit
+
+        onHeightChanged: {
+            __ignoreHeightChange = true;
+            root.height = Math.max (__originalHeight, implicitHeight)
+            __ignoreHeightChange = false;
+
+        }
+    }
+
     function copy() {
         textEdit.copy()
     }
