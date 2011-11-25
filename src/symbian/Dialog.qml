@@ -129,11 +129,14 @@ Item {
             height = Math.max(Math.min(defaultHeight(), maxHeight()), minHeight())
         }
 
-        Connections { target: inputContext; onVisibleChanged: updateTimer.start() }
-        Connections { target: screen; onHeightChanged: updateTimer.start(); onWidthChanged: updateTimer.start() }
-        Connections { target: root; onHeightChanged: updateTimer.start(); onWidthChanged: updateTimer.start() }
-
-        Component.onCompleted: updateTimer.start()
+        Connections { target: inputContext
+            onVisibleChanged:   if (dialog.state == "Visible") updateTimer.start() }
+        Connections { target: screen
+            onHeightChanged:    if (dialog.state == "Visible") updateTimer.start()
+            onWidthChanged:     if (dialog.state == "Visible") updateTimer.start() }
+        Connections { target: root
+            onHeightChanged:    if (dialog.state == "Visible") updateTimer.start()
+            onWidthChanged:     if (dialog.state == "Visible") updateTimer.start() }
 
         Timer {
             id: updateTimer
@@ -142,9 +145,6 @@ Item {
         }
 
         onFaderClicked: root.clickedOutside()
-
-        width: 0 // Defined in updateSize()
-        height: 0 // Defined in updateSize()
 
         state: "Hidden"
         visible: true
@@ -248,7 +248,7 @@ Item {
             Transition {
                 from: "Hidden"; to: "Visible"
                 SequentialAnimation {
-                    ScriptAction { script: status = DialogStatus.Opening }
+                    ScriptAction { script: { status = DialogStatus.Opening; dialog.updateSize() }}
                     PropertyAction { target: dialog; property: "visible"; value: true}
                     ParallelAnimation {
                         NumberAnimation {
