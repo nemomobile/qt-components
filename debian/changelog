@@ -1,8 +1,14 @@
-qt-components (1.2~git20111122-3) maverick; urgency=low
+qt-components (1.2~git20111124-2) maverick; urgency=low
 
   * Next release
   
- -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Tue, 22 Nov 2011 13:29:00 +0300
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Thu, 24 Nov 2011 11:05:00 +0300
+
+qt-components (1.2~git20111124-1) maverick; urgency=low
+
+  * Fixes: NB#290197 Selection draggers are displayed out of range URL bar
+  
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Thu, 24 Nov 2011 10:05:00 +0300
 
 qt-components (1.2~git20111122-2) maverick; urgency=low
 
