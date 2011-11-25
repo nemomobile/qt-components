@@ -82,6 +82,18 @@
 */
 
 /*!
+    \qmlproperty int ListDelegate::iconSource
+
+    The source of the icon.
+*/
+
+/*!
+    \qmlproperty int ListDelegate::subtitleText
+
+    The text of the subtitle.
+*/
+
+/*!
     \qmlproperty color ListDelegate::subtitleColor
 
     The color of the subtitle.
@@ -97,6 +109,12 @@
     \qmlproperty int ListDelegate::subtitleWeight
 
     The font weight of the subtitle.
+*/
+
+/*!
+    \qmlproperty int ListDelegate::titleText
+
+    The text of the title.
 */
 
 /*!
