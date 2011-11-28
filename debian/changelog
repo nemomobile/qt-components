@@ -1,3 +1,9 @@
+qt-components (1.2~git20111128-1) maverick; urgency=low
+  
+  * Fixes: NB#291767 TextArea component lacks a Flickable element
+
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Mon, 28 Nov 2011 16:05:00 +0300
+
 qt-components (1.2~git20111124-1) maverick; urgency=low
 
   * Fixes: NB#290197 Selection draggers are displayed out of range URL bar
