@@ -111,7 +111,7 @@ function findRootItemNotificationBanner(item)
 */
 function statusBarCoveredHeight(item) {
     var pageStackWindow = findRootItem(item, "pageStackWindow");
-    if ( pageStackWindow != null )
+    if ( pageStackWindow.objectName == "pageStackWindow" )
         return pageStackWindow.__statusBarHeight;
     return 0
 }
@@ -121,7 +121,7 @@ function statusBarCoveredHeight(item) {
 */
 function toolBarCoveredHeight(item) {
     var pageStackWindow = findRootItem(item, "pageStackWindow");
-    if ( pageStackWindow != null && pageStackWindow.showToolBar)
-              return pageStackWindow.platformToolBarHeight
+    if ( pageStackWindow.objectName == "pageStackWindow" && pageStackWindow.showToolBar)
+        return pageStackWindow.platformToolBarHeight
     return 0
 }
