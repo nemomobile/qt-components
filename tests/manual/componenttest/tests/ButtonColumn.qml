@@ -212,7 +212,7 @@ Item {
                 text: "Dyn.Buttons"
             }
 
-            Row {
+            Column {
                 Button {
                     id: addButton
                     text: "Add Btn"
@@ -371,58 +371,9 @@ Item {
         visible: false
 
         Column {
-            id: toolBtnCol1
-            spacing: 10
-            anchors.left: parent.left
-
-            Label {
-                id: text6
-                anchors.left: parent.left
-                text: "ToolB."
-            }
-
-            ButtonColumn {
-                id: buttonColumn6
-                anchors.left: parent.left
-                exclusive: toggleExclusive4.checked
-
-                ToolButton {
-                    id: tb1
-                    anchors.left: parent.left
-                    objectName: "tb1"
-                    text: "tb1"
-                    onClicked: text6.text = "Clicked " + objectName
-                }
-
-                ToolButton {
-                    id: tb2
-                    anchors.left: parent.left
-                    objectName: "tb2"
-                    text: "tb2"
-                    onClicked: text6.text = "Clicked " + objectName
-                }
-
-                ToolButton {
-                    id: tb3
-                    anchors.left: parent.left
-                    objectName: "tb3"
-                    text: "tb3"
-                    onClicked: text6.text = "Clicked " + objectName
-                }
-            }
-
-            CheckBox {
-                id: toggleExclusive4
-                anchors.left: parent.left
-                checked: true
-                text: "Exclusive"
-            }
-        }
-
-        Column {
             id: toolBtnCol2
             spacing: 10
-            anchors.left: toolBtnCol1.right
+            anchors.left: parent.left
 
             Label {
                 id: text7
@@ -457,50 +408,6 @@ Item {
                     iconSource: "image://theme/:/list7.svg"
                     onClicked: text7.text = "Clicked " + objectName
                 }
-            }
-        }
-
-        Column {
-            id: toolBtnCol3
-            anchors.left: toolBtnCol2.right
-            spacing: 10
-
-            Label {
-                id: text8
-                anchors.left: parent.left
-                text: "Dyn.TB"
-            }
-
-            Row {
-                Button {
-                    id: addToolButton
-                    text: "Add TB"
-
-                    onClicked: {
-                        var invertedString = root.platformInverted ? "; platformInverted: true" : ""
-                        var item = Qt.createQmlObject('import QtQuick 1.1; import com.nokia.symbian 1.1;  ToolButton { text: \"ToolBtn'
-                                                      + buttonColumn8.children.length + '\"' + invertedString + ' }',
-                                                      buttonColumn8, "dynButton");
-                    }
-                }
-
-                Button {
-                    id: delToolButton
-                    text: "Del TB"
-
-                    onClicked: {
-                        for (var i = 0; i < buttonColumn8.children.length; i++) {
-                            if (buttonColumn8.children[i].checked)
-                                buttonColumn8.children[i].destroy();
-                        }
-                    }
-                }
-            }
-
-            ButtonColumn {
-                id: buttonColumn8
-                anchors.left: parent.left
-                width: parent.width
             }
         }
     }
