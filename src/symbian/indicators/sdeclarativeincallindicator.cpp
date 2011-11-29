@@ -58,6 +58,9 @@
 #include <QDebug>
 #endif // Q_DEBUG_INCALL
 
+_LIT( KGLOBALSEARCHMUTEXNAME, "IndicatorMutex*" );
+_LIT( KGLOBALMUTEXNAME, "IndicatorMutex" );
+
 class TSDeclarativeIncallIndicatorPrivate : public QObject
 {
 Q_OBJECT
@@ -119,6 +122,23 @@ void CSDeclarativeIncallIndicator::ConstructL()
     {
     iData.reset( new ( ELeave ) TSDeclarativeIncallIndicatorPrivate( this ) );
     User::LeaveIfNull( iData->iScreen );
+
+    TBuf<256> mutexName;
+    mutexName.Zero();
+    TFindMutex findMutex( KGLOBALSEARCHMUTEXNAME );
+    TInt error = findMutex.Next( mutexName );
+#ifdef Q_DEBUG_INCALL
+    qDebug() << "SDeclarativeIncallIndicator::ConstructL()";
+    qDebug() << "Find mutex errorCode" << error;
+#endif
+    if ( error == KErrNotFound )
+        {
+        User::LeaveIfError( iMutex.CreateGlobal( KGLOBALMUTEXNAME ) );
+        }
+    else
+        {
+        User::LeaveIfError( iMutex.OpenGlobal( mutexName ) );
+        }
     }
 
 CSDeclarativeIncallIndicator::~CSDeclarativeIncallIndicator()
@@ -128,6 +148,7 @@ CSDeclarativeIncallIndicator::~CSDeclarativeIncallIndicator()
         {
         coeEnv->RemoveMessageMonitorObserver( *this );
         }
+    iMutex.Close();
     }
 
 void CSDeclarativeIncallIndicator::CreateIncallControlL()
@@ -199,7 +220,7 @@ void CSDeclarativeIncallIndicator::CreateIncallControlL()
                     TUint32 child = wg->Child();
                     iData->iIncallBubble = reinterpret_cast<CCoeControl*>( child ) ;
 #ifdef Q_DEBUG_INCALL
-                    qDebug() << "CSDeclarativeIncallIndicator::CreateIncallControlL() found iIncallBubble " << (int)iIncallBubble;
+                    qDebug() << "CSDeclarativeIncallIndicator::CreateIncallControlL() found iIncallBubble " << (int)iData->iIncallBubble;
 #endif
                     break;
                     }
@@ -210,13 +231,13 @@ void CSDeclarativeIncallIndicator::CreateIncallControlL()
 
         iData->iIsForeground = static_cast<CAknAppUi*>( coeEnv->AppUi() )->IsForeground();
 #ifdef Q_DEBUG_INCALL
-        qDebug() << "CSDeclarativeIncallIndicator::CreateIncallControlL() iIsForeground " << (int)iIsForeground;
+        qDebug() << "CSDeclarativeIncallIndicator::CreateIncallControlL() iIsForeground " << (int)iData->iIsForeground;
 #endif
         coeEnv->AddMessageMonitorObserverL( *this );
         }
 
 #ifdef Q_DEBUG_INCALL
-    if (!iIncallBubble)
+    if (!iData->iIncallBubble)
         {
         qDebug() << "CSDeclarativeIncallIndicator::CreateIncallControlL() Cannot find iIncallBubble!";
         }
@@ -262,8 +283,16 @@ void CSDeclarativeIncallIndicator::OrientationChanged()
 void CSDeclarativeIncallIndicator::SetFlags( TInt aFlags )
     {
 #ifdef Q_DEBUG_INCALL
+    qDebug() << "CSDeclarativeIncallIndicator::SetFlags called by = " << this;
+#endif
+
+    iMutex.Wait();
+
+#ifdef Q_DEBUG_INCALL
+    qDebug() << "CSDeclarativeIncallIndicator::SetFlags() Locked Mutex ";
     qDebug() << "CSDeclarativeIncallIndicator::SetFlags() flags " << (int)aFlags;
 #endif
+
     if ( aFlags != iData->iFlags )
         {
         iData->iFlags = aFlags;
@@ -294,6 +323,10 @@ void CSDeclarativeIncallIndicator::SetFlags( TInt aFlags )
                 }
             }
         }
+#ifdef Q_DEBUG_INCALL
+    qDebug() << "CSDeclarativeIncallIndicator::SetFlags() Unlocked Mutex ";
+#endif
+    iMutex.Signal();
     }
 
 void CSDeclarativeIncallIndicator::UpdateIncallBubbleVisibility()

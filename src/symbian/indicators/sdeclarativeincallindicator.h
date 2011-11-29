@@ -70,6 +70,7 @@ private:
     void UpdateIncallBubbleVisibility();
 
 private:
+    RMutex iMutex;
     QScopedPointer<TSDeclarativeIncallIndicatorPrivate> iData;
 };
 
