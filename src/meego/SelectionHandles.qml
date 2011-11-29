@@ -57,11 +57,11 @@ Item {
             var mappedPos =  contents.mapFromItem(item, posX - magnifier.width / 2,
                                        posY);
 
-            magnifier.xCenter = textInput.mapToItem(item, posX, 0).x;
+            magnifier.xCenter = textInput.mapFromItem(item, posX, 0).x;
             magnifier.x = mappedPos.x;
             var minMappedPos = contents.mapFromItem( textInput, 0, 0).y;
 
-            magnifier.yCenter = textInput.mapToItem(item, 0, posY - cursorHeight + 50).y
+            magnifier.yCenter = Math.min( textInput.mapFromItem(item, 0, Math.max(posY, 0)).y, textInput.positionToRectangle( textInput.selectionEnd ).y ) + cursorHeight
             magnifier.y = Math.min( Math.max(mappedPos.y, minMappedPos), minMappedPos + textInput.height )
                           + yAdjustment
         }
