@@ -40,6 +40,7 @@
 #include "sdeclarativesharedstatusbar.h"
 #include "sdeclarativesharedstatusbar_p_symbian.h"
 #include "sdeclarativescreen.h"
+#include "sdeclarativeincallindicator.h"
 #include <AknUtils.h>
 #include <akniconconfig.h>
 #include <aknlayoutscalable_avkon2.cdl.h>
@@ -54,7 +55,11 @@
 SDeclarativeSharedStatusBarPrivate::SDeclarativeSharedStatusBarPrivate(SDeclarativeSharedStatusBar *qq)
 : q_ptr(qq), useExtendedApi(false)
 {
-    QT_TRAP_THROWING(subscriber = CSharedBitmapSubcriber::NewL(*this));
+    QT_TRAP_THROWING(
+            bitmapSubscriber.reset( CSharedBitmapSubcriber::NewL( *this ) );
+            statusPaneSubscriber.reset( CSDeclarativeStatusPaneSubscriber::NewL( *this ) );
+            incallIndicator.reset( CSDeclarativeIncallIndicator::NewL() );
+    );
 
     TInt layoutInfoDummy;
     if (RProperty::Get(KOffScreenSPaneUid, KOffScreenLayoutInfo, layoutInfoDummy) == KErrNone)
@@ -62,11 +67,13 @@ SDeclarativeSharedStatusBarPrivate::SDeclarativeSharedStatusBarPrivate(SDeclarat
 
     // request redraw. ignore error.
     RProperty::Set(KOffScreenSPaneUid, KOffScreenUpdater, TInt());
+
+    const TAknIndicatorState& indicatorState = statusPaneSubscriber->IndicatorState();
+    incallIndicator->SetFlags( indicatorState.iIncallBubbleFlags );
 }
 
 SDeclarativeSharedStatusBarPrivate::~SDeclarativeSharedStatusBarPrivate()
 {
-    delete subscriber;
 }
 
 void SDeclarativeSharedStatusBarPrivate::reset()
@@ -86,10 +93,10 @@ QPixmap &SDeclarativeSharedStatusBarPrivate::symbianForegroundPixmapL()
         CFbsBitmap* bitmap = 0;
         if (useExtendedApi) {
             TBool isMirrored;
-            bitmap = subscriber->CreateSharedBitmapL(&isMirrored);
+            bitmap = bitmapSubscriber->CreateSharedBitmapL(&isMirrored);
             mirroredBitmap = bool(isMirrored);
         } else {
-            bitmap = subscriber->CreateSharedBitmapL();
+            bitmap = bitmapSubscriber->CreateSharedBitmapL();
             mirroredBitmap = (bool)AknLayoutUtils::LayoutMirrored();
         }
 
@@ -200,7 +207,7 @@ void SDeclarativeSharedStatusBarPrivate::setForeground(bool foreground)
     qDebug() << "SDeclarativeSharedStatusBarPrivate::setForeground() foreground: " << foreground;
 #endif
     if (!foreground)
-        subscriber->Cancel();
+        bitmapSubscriber->Cancel();
     else
         reset();
 }
@@ -248,3 +255,12 @@ void SDeclarativeSharedStatusBarPrivate::paint(QPainter *painter)
     qDebug() << "SDeclarativeSharedStatusBar::paint() statusbar size: " << q->width() << "x" << q->height() << " bitmap size: " << drawnForegroundPixmap.width() << "x" << drawnForegroundPixmap.height() << " RtL: " << mirroredBitmap;
 #endif
 }
+
+void SDeclarativeSharedStatusBarPrivate::StatusPaneStateChanged( TStatusPaneChangeFlags aChangeFlags )
+    {
+    if ( aChangeFlags&MSDeclarativeStatusPaneSubscriberObverver::EStatusPaneIndicatorsState )
+        {
+        const TAknIndicatorState& indicatorState = statusPaneSubscriber->IndicatorState();
+        incallIndicator->SetFlags( indicatorState.iIncallBubbleFlags );
+        }
+    }

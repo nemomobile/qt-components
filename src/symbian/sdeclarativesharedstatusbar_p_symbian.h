@@ -42,8 +42,12 @@
 
 #include "sdeclarativesharedstatusbar.h"
 #include "ssharedstatusbarsubscriber.h"
+#include <sdeclarativestatuspanedatasubscriber.h>
+
+class CSDeclarativeIncallIndicator;
 
 class SDeclarativeSharedStatusBarPrivate : public MSharedBitmapSubcriberObserver
+                                         , public MSDeclarativeStatusPaneSubscriberObverver
 {
     Q_DECLARE_PUBLIC(SDeclarativeSharedStatusBar)
 
@@ -60,15 +64,21 @@ public:
     void reset();
     QPixmap &symbianForegroundPixmapL();
     QPixmap &symbianBackgroundPixmapL();
-    void SharedBitmapChanged(); // from Symbian observer
+
+    // from MSharedBitmapSubcriberObserver
+    void SharedBitmapChanged();
+
+    // from MSDeclarativeStatusPaneSubscriberObverver
+    void StatusPaneStateChanged( TStatusPaneChangeFlags aChangeFlags );
 
     // useExtendedApi: getters for masked bitmap & layout info. setters for layout change & redraw reqest
     bool useExtendedApi;
-
+    bool mirroredBitmap;
     QPixmap foregroundPixmap;
     QPixmap backgroundPixmap;
-    bool mirroredBitmap;
-    CSharedBitmapSubcriber *subscriber;
+    QScopedPointer<CSharedBitmapSubcriber> bitmapSubscriber;
+    QScopedPointer<CSDeclarativeStatusPaneSubscriber> statusPaneSubscriber;
+    QScopedPointer<CSDeclarativeIncallIndicator> incallIndicator;
 };
 
 #endif // SDECLARATIVESHAREDSTATUSBAR_P_SYMBIAN_H
