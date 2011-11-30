@@ -418,8 +418,15 @@ FocusScope {
                 TextAreaHelper.repositionFlickable(contentMovingAnimation)
             }
 
-            if (Popup.isOpened(textInput) && !Popup.isChangingInput())
-                Popup.close(textInput);
+            if (Popup.isOpened(textInput)) {
+                if (Popup.hasPastingText()) {
+                    inputContext.clearClipboard();
+                    Popup.clearPastingText();
+                }
+                if (!Popup.isChangingInput()) {
+                    Popup.close(textInput);
+                }
+            }
             SelectionHandles.close(textInput);
         }
 

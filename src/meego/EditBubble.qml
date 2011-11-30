@@ -273,18 +273,7 @@ Item {
     Connections {
        target: findWindowRoot();
        ignoreUnknownSignals: true
-       onOrientationChangeFinished: {
-           Private.adjustPosition(bubble)
-       }
+       onOrientationChangeFinished: Private.adjustPosition(bubble)
     }
 
-    Connections {
-        target: textInput
-        onTextChanged: {
-            if (rect.pastingText) {
-                inputContext.clearClipboard();
-                rect.pastingText = false;
-            }
-        }
-    }
 }

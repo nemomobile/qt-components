@@ -251,3 +251,15 @@ function geometry()
 
     return rect;
 }
+
+function hasPastingText()
+{
+    return (popup !== null && popup.privateRect.pastingText);
+}
+
+function clearPastingText()
+{
+    if (popup !== null && popup.privateRect.pastingText) {
+        popup.privateRect.pastingText = false;
+    }
+}

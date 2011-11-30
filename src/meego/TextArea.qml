@@ -391,8 +391,15 @@ FocusScope {
                 TextAreaHelper.repositionFlickable(contentMovingAnimation);
             }
 
-            if (textEdit.preedit == "" && Popup.isOpened(textEdit) && !Popup.isChangingInput())
-                Popup.close(textEdit);
+            if (Popup.isOpened(textEdit)) {
+                if (Popup.hasPastingText()) {
+                    inputContext.clearClipboard();
+                    Popup.clearPastingText();
+                }
+                if (textEdit.preedit == "" && !Popup.isChangingInput()) {
+                    Popup.close(textEdit);
+                }
+            }
             if (SelectionHandles.isOpened(textEdit) && textEdit.selectedText == "")
                 SelectionHandles.close(textEdit);
         }
