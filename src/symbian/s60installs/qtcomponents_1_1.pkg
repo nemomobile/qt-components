@@ -131,8 +131,8 @@
 "../native/qmldir" - "!:\resource\qt\imports\Qt\labs\components\native\qmldir"
 
 ; DEPLOYMENT 1.1 qtcomponentsplugin
-"/epoc32/release/armv5/urel/qtcomponentsplugin_1_1_2.dll" - "!:\sys\bin\qtcomponentsplugin_1_1_2.dll"
-"/epoc32/data/z/resource/qt/imports/Qt/labs/components.1.1/qtcomponentsplugin_1_1_2.qtplugin" - "!:\resource\qt\imports\Qt\labs\components.1.1\qtcomponentsplugin_1_1_2.qtplugin"
+"/epoc32/release/armv5/urel/qtcomponentsplugin.dll" - "!:\sys\bin\qtcomponentsplugin.dll"
+"/epoc32/data/z/resource/qt/imports/Qt/labs/components.1.1/qtcomponentsplugin.qtplugin" - "!:\resource\qt\imports\Qt\labs\components.1.1\qtcomponentsplugin.qtplugin"
 "/epoc32/data/z/resource/qt/imports/Qt/labs/components.1.1/qmldir" - "!:\resource\qt\imports\Qt\labs\components.1.1\qmldir"
 "/epoc32/data/z/resource/qt/imports/Qt/labs/components.1.1/Checkable.qml" - "!:\resource\qt\imports\Qt\labs\components.1.1\Checkable.qml"
 "/epoc32/data/z/resource/qt/imports/Qt/labs/components.1.1/CheckableGroup.qml" - "!:\resource\qt\imports\Qt\labs\components.1.1\CheckableGroup.qml"
