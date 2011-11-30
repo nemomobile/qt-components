@@ -180,8 +180,8 @@ Item {
             border { left: 2; top: 4; right: 2; bottom: 4 }
             anchors.right: parent.right
             y:      verticalIndicator.shouldShow && verticalSizerLoader.status == Loader.Ready ? verticalSizerLoader.item.position : 0
-            height: verticalIndicator.shouldShow && verticalSizerLoader.status == Loader.Ready ?
-                    verticalSizerLoader.item.size - parent.anchors.topMargin - parent.anchors.bottomMargin : 0
+            height: verticalIndicator.shouldShow && verticalSizerLoader.status == Loader.Ready ?                    
+                  Math.max((verticalSizerLoader.item.size - parent.anchors.topMargin - parent.anchors.bottomMargin), __minIndicatorSize) : 0
         }
 
         states: State {
