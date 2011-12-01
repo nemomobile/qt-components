@@ -87,7 +87,13 @@ Style {
     property url disabledBackground: "image://theme/meegotouch-button" + __invertedString + "-background-disabled" + (position ? "-" + position : "")
     property url checkedBackground: "image://theme/" + __colorString + "meegotouch-button" + __invertedString + "-background-selected" + (position ? "-" + position : "")
     property url checkedDisabledBackground: "image://theme/" + __colorString + "meegotouch-button" + __invertedString + "-background-disabled-selected" + (position ? "-" + position : "")
+    
+    // Deprecated, user positive/negative dialog instead
     property url dialog: "image://theme/meegotouch-dialog-button-negative"
     property url pressedDialog:  "image://theme/meegotouch-dialog-button-negative-pressed"
 
+    property url positiveDialog: "image://theme/meegotouch-dialog-button-positive"
+    property url pressedPositiveDialog:  "image://theme/meegotouch-dialog-button-positive-pressed"
+    property url negativeDialog: "image://theme/meegotouch-dialog-button-negative"
+    property url pressedNegativeDialog:  "image://theme/meegotouch-dialog-button-negative-pressed"
 }

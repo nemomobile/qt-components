@@ -70,8 +70,12 @@ ImplicitSizeItem {
 
     property alias font: label.font
 
-    //private property
+    // private property
+    // deprecated, use positive/negative dialog instead
     property bool __dialogButton: false
+
+    property bool __positiveDialogButton: false
+    property bool __negativeDialogButton: false
 
     BorderImage {
         id: background
@@ -79,14 +83,13 @@ ImplicitSizeItem {
         border { left: button.platformStyle.backgroundMarginLeft; top: button.platformStyle.backgroundMarginTop;
                  right: button.platformStyle.backgroundMarginRight; bottom: button.platformStyle.backgroundMarginBottom }
 
-        source:  __dialogButton ? (pressed ? button.platformStyle.pressedDialog : button.platformStyle.dialog) :
-                  !enabled ?
-                  (checked ? button.platformStyle.checkedDisabledBackground : button.platformStyle.disabledBackground) :
-                  pressed ?
-                      button.platformStyle.pressedBackground :
-                  checked ?
-                      button.platformStyle.checkedBackground :
-                      button.platformStyle.background;
+        source: __dialogButton ? (pressed ? button.platformStyle.pressedDialog : button.platformStyle.dialog) :
+                __positiveDialogButton ? (pressed ? button.platformStyle.pressedPositiveDialog : button.platformStyle.positiveDialog) :
+                __negativeDialogButton ? (pressed ? button.platformStyle.pressedNegativeDialog : button.platformStyle.negativeDialog) :
+                !enabled ? (checked ? button.platformStyle.checkedDisabledBackground : button.platformStyle.disabledBackground) :
+                pressed ? button.platformStyle.pressedBackground :
+                checked ? button.platformStyle.checkedBackground :
+                button.platformStyle.background;
     }
 
     Image {

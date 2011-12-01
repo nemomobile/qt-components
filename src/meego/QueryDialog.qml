@@ -226,7 +226,7 @@ Dialog {
                 text: ""
                 onClicked: accept()
                 visible: text != ""
-                __dialogButton: true
+                __positiveDialogButton: true
                 platformStyle: ButtonStyle {inverted: true}
             }
             Button {
@@ -234,7 +234,7 @@ Dialog {
                 text: ""
                 onClicked: reject()
                 visible: text != ""
-                __dialogButton: true
+                __negativeDialogButton: true
                 platformStyle: ButtonStyle {inverted: true}
             }
         }
