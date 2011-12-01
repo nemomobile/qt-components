@@ -364,6 +364,15 @@ public:
     //ToDo: Return Qt::LayoutDirection instead of int; unfortunately this doesn't currently work
     Q_INVOKABLE int directionForText(const QString &text)                     {return (int) MLocale::directionForText(text);}
 
+    Q_INVOKABLE QString fontForCurrentLanguage() {
+         Q_ASSERT(ml);
+         QString language = ml->language();
+         if(language == QLatin1String("fa")) {
+             return QString("Arial");
+         }
+         return QString("Nokia Pure");
+    }
+
 
 Q_SIGNALS:
     void isValidChanged();
