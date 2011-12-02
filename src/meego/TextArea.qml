@@ -76,6 +76,7 @@ FocusScope {
     property Item platformSipAttributes
 
     property bool platformEnableEditBubble: true
+    property bool platformEnableMagnifier: true
 
     property Item platformStyle: TextAreaStyle {}
     property alias style: root.platformStyle
@@ -512,7 +513,8 @@ FocusScope {
 
             onPressAndHold:{
                 // possible pre-edit word have to be commited before showing the magnifier
-                if ((root.text != "" || inputMethodObserver.preedit != "") && root.activeFocus) {
+                if ( platformEnableMagnifier &&
+                     (root.text != "" || inputMethodObserver.preedit != "") && root.activeFocus) {
                     inputContext.reset()
                     attemptToActivate = false
                     parent.selectByMouse = false

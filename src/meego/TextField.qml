@@ -75,6 +75,7 @@ FocusScope {
     property Item platformSipAttributes
 
     property bool platformEnableEditBubble: true
+    property bool platformEnableMagnifier: true
 
     property Item platformStyle: TextFieldStyle {}
 
@@ -530,7 +531,8 @@ FocusScope {
 
             onPressAndHold:{
                 // possible pre-edit word have to be commited before showing the magnifier
-                if ((root.text != "" || inputMethodObserver.preedit != "") && root.activeFocus) {
+                if (platformEnableMagnifier &&
+                    (root.text != "" || inputMethodObserver.preedit != "") && root.activeFocus) {
                     inputContext.reset()
                     attemptToActivate = false
                     MagnifierPopup.open(root);
@@ -544,7 +546,7 @@ FocusScope {
                     magnifier.x = mappedPos.x;
                     magnifier.y = mappedPos.y + yAdjustment;
                     magnifier.yCenter = mapToItem(magnifier.sourceItem,0,mappedPosMf.y).y;
-                    parent.cursorPosition = textInput.positionAt(mouse.x)                    
+                    parent.cursorPosition = textInput.positionAt(mouse.x)
                 }
             }
 
