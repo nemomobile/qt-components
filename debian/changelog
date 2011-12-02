@@ -1,3 +1,9 @@
+qt-components (1.2~git20111202-1) maverick; urgency=low
+
+  * Fixes: NB#293670 Add helper function for getting the font for the current language
+
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Fri, 02 Dec 2011 15:50:00 +0300
+
 qt-components (1.2~git20111128-1) maverick; urgency=low
   
   * Fixes: NB#291767 TextArea component lacks a Flickable element
