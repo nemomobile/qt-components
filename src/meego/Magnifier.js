@@ -96,10 +96,9 @@ function isOpened()
 */
 function close()
 {
-    if (popup){
+    if (popup && popup.active){
         popup.active = false;
-        popup.destroy();
-        popup = null;
+        popup.sourceItem = null;
     }
 }
 
