@@ -63,7 +63,10 @@ Item {
     z: Number.MAX_VALUE
 
     Component.onCompleted: {
-        sourceItem = parent;
+        var isWindowContent = parent.objectName == "windowContent"
+        if (isWindowContent) {
+            sourceItem = parent;
+        }
         declarativeView.setFullViewportMode(root);
     }
 
