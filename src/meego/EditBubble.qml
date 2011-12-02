@@ -64,7 +64,7 @@ Item {
         visible: false
         width: row.width
         height: row.height
-
+        property int positionOffset: 0;
         property int arrowOffset: 0
         property int arrowBorder: platformStyle.arrowMargin
         property bool arrowDown: true
@@ -82,6 +82,11 @@ Item {
         property Item bannerInstance: null
 
         z: 1020
+
+        onPositionOffsetChanged: {
+            if (rect.visible)
+                Private.adjustPosition(bubble);
+        }
 
         onWidthChanged: {
             if (rect.visible)

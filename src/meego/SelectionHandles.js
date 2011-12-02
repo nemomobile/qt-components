@@ -135,6 +135,22 @@ function leftHandleContains( hitPoint )
          return true;
     return false;
 }
+/*
+  Return the geometry of the left selection handle as a rectangle.
+*/
+function leftHandleRect()
+{
+    if (popup == null)
+        return;
+
+    var handle = popup.leftSelectionHandle;
+    var rect = {"left": handle.pos.x,
+        "right": handle.pos.x + handle.width,
+        "top": handle.pos.y,
+        "bottom": handle.pos.y + handle.height};
+
+    return rect;
+}
 
 /*
   Check whether a given point is located inside the area of the right selection handle.
@@ -150,6 +166,22 @@ function rightHandleContains( hitPoint )
          && hitPoint.y < popup.rightSelectionHandle.pos.y + popup.rightSelectionHandle.height )
          return true;
     return false;
+}
+/*
+  Return the geometry of the right selection handle as a rectangle.
+*/
+function rightHandleRect()
+{
+    if (popup == null)
+        return;
+
+    var handle = popup.rightSelectionHandle;
+    var rect = {"left": handle.pos.x,
+        "right": handle.pos.x + handle.width,
+        "top": handle.pos.y,
+        "bottom": handle.pos.y + handle.height};
+
+    return rect;
 }
 
 /*
@@ -178,4 +210,8 @@ function adjustPosition(handles)
 
     handles.selectionStartPoint = viewport.mapFromItem( input, selectionStartRect.x, selectionStartRect.y );
     handles.selectionEndPoint = viewport.mapFromItem( input, selectionEndRect.x, selectionEndRect.y )
+}
+
+function handlesIntersectWith(rect){
+    return ( intersects(rect, leftHandleRect()) || intersects(rect, rightHandleRect()) )
 }

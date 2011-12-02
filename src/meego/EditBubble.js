@@ -187,13 +187,29 @@ function adjustPosition(bubble)
         rect.y = py - SHADOW_SIZE;
         rect.arrowDown = true;
     } else {
-        rect.y = Math.min(Math.max(ipoint.y + irect.height, 0),
-                          fpoint.y + frect.height);
+        if (rect.positionOffset == 0) {
+            rect.y = Math.min(Math.max(ipoint.y + irect.height, 0),
+                              fpoint.y + frect.height);
+        }
+        else {
+            rect.y = Math.max(ipoint.y + irect.height, fpoint.y + frect.height) + rect.positionOffset;
+        }
         rect.arrowDown = false;
     }
 
     var boundX = mid - rect.arrowBorder;
     rect.arrowOffset = Math.min(Math.max(-boundX, px - rect.x), boundX);
+}
+function enableOffset(enabled){
+    if (popup == null)
+        return;
+    popup.privateRect.positionOffset = enabled ? 40 : 0;
+}
+
+function offsetEnabled(){
+    if (popup == null)
+        return false;
+    return popup.privateRect.positionOffset != 0;
 }
 
 function updateButtons(row)

@@ -125,3 +125,8 @@ function toolBarCoveredHeight(item) {
         return pageStackWindow.platformToolBarHeight
     return 0
 }
+
+function intersects(rect1, rect2) {
+    return (rect1.left <= rect2.right && rect2.left <= rect1.right &&
+            rect1.top <= rect2.bottom && rect2.top <= rect1.bottom)
+}

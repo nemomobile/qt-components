@@ -41,7 +41,7 @@ Item {
         // fake baseline since the baseline of a font is not accessible in QML (except for anchors which doesn't work well here):
         property int fontBaseLine: textInput ? textInput.font.pixelSize * 0.16 : 0
 
-        z: 1030 // Have the small selection handles above the big copy-paste bubble
+        z: 1015 // Have the selection handles under the copy-paste bubble
 
         // Function to calculate whether the handle positions are out of the view area:
         function outOfView( rootX, rootY, offset ) {
@@ -108,8 +108,10 @@ Item {
                       privateIgnoreClose = false;
                   }
                   onReleased: {
+                      Popup.enableOffset( false );
                       Popup.open(textInput,textInput.positionToRectangle(textInput.cursorPosition));
-                      MagnifierPopup.close();  
+                      Popup.enableOffset( Private.handlesIntersectWith(Popup.geometry()) );
+                      MagnifierPopup.close();
                   }
               }
 
@@ -206,7 +208,9 @@ Item {
                       privateIgnoreClose = false;            
                  }
                  onReleased: {
+                      Popup.enableOffset( false );
                       Popup.open(textInput,textInput.positionToRectangle(textInput.cursorPosition));
+                      Popup.enableOffset( Private.handlesIntersectWith(Popup.geometry()) );
                       MagnifierPopup.close();
                  }
              }
@@ -266,12 +270,20 @@ Item {
     Connections {
         target: Utils.findFlickable(textInput)
         onContentXChanged: Private.adjustPosition(contents)
-        onContentYChanged: Private.adjustPosition(contents)
+        onContentYChanged: {
+            Popup.enableOffset( false );
+            Popup.enableOffset( Private.handlesIntersectWith(Popup.geometry()) );
+            Private.adjustPosition(contents)
+        }
     }
 
     Connections {
         target: screen
-        onCurrentOrientationChanged: Private.adjustPosition(contents)
+        onCurrentOrientationChanged: {
+            Popup.enableOffset( false );
+            Popup.enableOffset( Private.handlesIntersectWith(Popup.geometry()) );
+            Private.adjustPosition(contents)
+        }
     }
 
     function findWindowRoot() {
@@ -285,6 +297,8 @@ Item {
        target: findWindowRoot();
        ignoreUnknownSignals: true
        onOrientationChangeFinished: {
+           Popup.enableOffset( false );
+           Popup.enableOffset( Private.handlesIntersectWith(Popup.geometry()) );
            Private.adjustPosition(contents)
        }
     }
