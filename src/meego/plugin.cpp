@@ -114,8 +114,9 @@ public:
                 app->setDoubleClickInterval(MEEGOTOUCH_DOUBLETAP_INTERVAL);
             }
 
-            engine->rootContext()->setContextProperty("UiConstants", uiConstants());
-            engine->rootContext()->setContextProperty("locale", new MLocaleWrapper);
+            MLocaleWrapper *locale = new MLocaleWrapper;
+            engine->rootContext()->setContextProperty("locale", locale);
+            engine->rootContext()->setContextProperty("UiConstants", uiConstants(locale));
             qmlRegisterUncreatableType<MLocaleWrapper>(uri, 1, 0, "Locale", "");
         }
     }
@@ -151,7 +152,17 @@ public:
 
     }
 
-    QDeclarativePropertyMap *uiConstants() {
+    QDeclarativePropertyMap *uiConstants(MLocaleWrapper *locale = 0) {
+
+        QString defaultFontFamily      = QLatin1String("Nokia Pure Text");
+        QString defaultFontFamilyLight = QLatin1String("Nokia Pure Text Light");
+
+        // use arial when language is set to farsi
+        if (locale && locale->language() == QLatin1String("fa")) {
+            defaultFontFamily = QLatin1String("Arial");
+            defaultFontFamilyLight = QLatin1String("Arial");
+        }
+
         QDeclarativePropertyMap *uiConstantsData = new QDeclarativePropertyMap();
         uiConstantsData->insert("DefaultMargin", QVariant(16));
         uiConstantsData->insert("ButtonSpacing", QVariant(6));
@@ -168,46 +179,46 @@ public:
         uiConstantsData->insert("GroupHeaderHeight", QVariant(40));
 
         QFont bodyTextFont;
-        bodyTextFont.setFamily("Nokia Pure Text Light");
+        bodyTextFont.setFamily(defaultFontFamilyLight);
         bodyTextFont.setPixelSize(24);
         uiConstantsData->insert("BodyTextFont", QVariant(bodyTextFont));
 
         QFont headerFont;
-        headerFont.setFamily("Nokia Pure Text Light");
+        headerFont.setFamily(defaultFontFamilyLight);
         headerFont.setPixelSize(32);
         uiConstantsData->insert("HeaderFont", QVariant(headerFont));
 
         QFont groupHeaderFont;
-        groupHeaderFont.setFamily("Nokia Pure Text");
+        groupHeaderFont.setFamily(defaultFontFamily);
         groupHeaderFont.setPixelSize(18);
         groupHeaderFont.setBold(true);
         uiConstantsData->insert("GroupHeaderFont", QVariant(groupHeaderFont));
 
         QFont titleFont;
-        titleFont.setFamily("Nokia Pure Text");
+        titleFont.setFamily(defaultFontFamily);
         titleFont.setPixelSize(26);
         titleFont.setBold(true);
         uiConstantsData->insert("TitleFont", QVariant(titleFont));
 
         QFont smallTitleFont;
-        smallTitleFont.setFamily("Nokia Pure Text");
+        smallTitleFont.setFamily(defaultFontFamily);
         smallTitleFont.setPixelSize(24);
         smallTitleFont.setBold(true);
-        uiConstantsData->insert("SmallTitleFont", QVariant(titleFont));
+        uiConstantsData->insert("SmallTitleFont", QVariant(smallTitleFont));
 
         QFont fieldLabelFont;
-        fieldLabelFont.setFamily("Nokia Pure Text Light");
+        fieldLabelFont.setFamily(defaultFontFamilyLight);
         fieldLabelFont.setPixelSize(22);
         uiConstantsData->insert("FieldLabelFont", QVariant(fieldLabelFont));
         uiConstantsData->insert("FieldLabelColor", QVariant(QColor("#505050")));
 
         QFont subTitleFont;
-        subTitleFont.setFamily("Nokia Pure Text Light");
+        subTitleFont.setFamily(defaultFontFamilyLight);
         subTitleFont.setPixelSize(22);
         uiConstantsData->insert("SubtitleFont", QVariant(subTitleFont));
 
         QFont itemInfoFont;
-        itemInfoFont.setFamily("Nokia Pure Text Light");
+        itemInfoFont.setFamily(defaultFontFamilyLight);
         itemInfoFont.setPixelSize(18);
         uiConstantsData->insert("InfoFont", QVariant(itemInfoFont));
 
