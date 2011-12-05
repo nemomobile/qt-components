@@ -45,7 +45,6 @@ import "EditBubble.js" as Private
 
 Item {
     id: bubble
-
     property Item textInput: null
     property bool valid: rect.canCut || rect.canCopy || rect.canPaste
 
@@ -61,7 +60,8 @@ Item {
         id: rect
         flickableDirection: Flickable.HorizontalAndVerticalFlick
         boundsBehavior: Flickable.StopAtBounds
-        visible: false
+        visible: opened && !outOfView
+
         width: row.width
         height: row.height
         property int positionOffset: 0;
@@ -78,7 +78,8 @@ Item {
         property bool canCopy: textSelected && (textInput.echoMode == null || textInput.echoMode == TextInput.Normal)
         property bool canPaste: validInput && (textInput.canPaste && !textInput.readOnly)
         property bool textSelected: validInput && (textInput.selectedText != "")
-
+        property bool opened: false
+        property bool outOfView: false
         property Item bannerInstance: null
 
         z: 1020
@@ -185,6 +186,7 @@ Item {
         }
 
         Image {
+            id: bottomTailBackground
             source: platformStyle.bottomTailBackground
             visible: rect.arrowDown && bubble.valid
 
@@ -194,6 +196,7 @@ Item {
         }
 
         Image {
+            id: topTailBackground
             source: platformStyle.topTailBackground
             visible: !rect.arrowDown && bubble.valid
 
@@ -220,17 +223,17 @@ Item {
         State {
             name: "opened"
             ParentChange { target: rect; parent: Utils.findRootItem(textInput); }
-            PropertyChanges { target: rect; visible: true; opacity: 1.0 }
+            PropertyChanges { target: rect; opened: true; opacity: 1.0 }
         },
         State {
             name: "hidden"
             ParentChange { target: rect; parent: Utils.findRootItem(textInput); }
-            PropertyChanges { target: rect; visible: true; opacity: 0.0; }
+            PropertyChanges { target: rect; opened: true; opacity: 0.0; }
         },
         State {
             name: "closed"
             ParentChange { target: rect; parent: bubble; }
-            PropertyChanges { target: rect; visible: false; }
+            PropertyChanges { target: rect; opened: false; }
         }
     ]
 
@@ -255,7 +258,13 @@ Item {
 
     Connections {
         target: Utils.findFlickable(textInput)
-        onContentYChanged: Private.adjustPosition(bubble)
+        onContentYChanged: {
+            Private.adjustPosition(bubble);
+            var root = findWindowRoot();
+            rect.outOfView = ( ( rect.arrowDown == false // reduce flicker due to changing bubble orientation
+                  && Private.geometry().top < Utils.statusBarCoveredHeight( bubble ) )
+                  || Private.geometry().bottom > screen.platformHeight - Utils.toolBarCoveredHeight ( bubble ) );
+        }
     }
 
     Connections {

@@ -183,7 +183,7 @@ function adjustPosition(bubble)
 
     rect.x = Math.min(Math.max(px, MARGIN_XLARGE - SHADOW_SIZE), viewport.width - rect.width);
 
-    if (py > SHADOW_SIZE) {
+    if (py > SHADOW_SIZE + statusBarCoveredHeight(bubble)) {
         rect.y = py - SHADOW_SIZE;
         rect.arrowDown = true;
     } else {
