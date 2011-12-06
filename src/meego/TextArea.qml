@@ -77,7 +77,7 @@ FocusScope {
 
     property bool platformEnableEditBubble: true
 
-    property Item platformStyle: TextAreaStyle {}
+    property QtObject platformStyle: TextAreaStyle {}
     property alias style: root.platformStyle
 
     property alias platformPreedit: inputMethodObserver.preedit

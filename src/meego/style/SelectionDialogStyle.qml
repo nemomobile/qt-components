@@ -89,7 +89,7 @@ DialogStyle {
 
     Text {
         id: titleText
-        font.family: UI.FONT_FAMILY
+        font.family: __fontFamily()
         font.pixelSize: UI.FONT_XLARGE
         font.capitalization: Font.MixedCase
         font.bold: false
@@ -97,7 +97,7 @@ DialogStyle {
 
     Text {
         id: itemText
-        font.family: UI.FONT_FAMILY
+        font.family: __fontFamily()
         font.pixelSize: UI.FONT_DEFAULT_SIZE
         font.capitalization: Font.MixedCase
         font.bold: true

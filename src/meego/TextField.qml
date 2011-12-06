@@ -76,7 +76,7 @@ FocusScope {
 
     property bool platformEnableEditBubble: true
 
-    property Item platformStyle: TextFieldStyle {}
+    property QtObject platformStyle: TextFieldStyle {}
 
     property alias style: root.platformStyle
 
