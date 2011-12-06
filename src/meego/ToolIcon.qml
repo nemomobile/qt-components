@@ -50,7 +50,9 @@ Item {
 
     // TODO: deprecated
     property alias iconId: root.platformIconId
-    width: 80; height: 64
+    width: 80
+    height: (screen.currentOrientation == Screen.Portrait || screen.currentOrientation == Screen.PortraitInverted) ? 76 : 64
+
     signal clicked
 
     // Styling for the ToolItem
