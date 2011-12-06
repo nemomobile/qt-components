@@ -41,7 +41,7 @@
 import QtQuick 1.1
 import "UIConstants.js" as UI
 
-Item {    
+Style {
     property alias textFont: textProperties.font
     property color textColor: UI.COLOR_FOREGROUND
     property color selectedTextColor: UI.COLOR_INVERTED_FOREGROUND
@@ -67,7 +67,7 @@ Item {
 
     Text {
         id: textProperties
-        font.family: UI.FONT_FAMILY_LIGHT
+        font.family: __fontFamilyLight()
         font.pixelSize: UI.FONT_DEFAULT
         visible: false
     }

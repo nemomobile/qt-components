@@ -43,7 +43,7 @@ import "UIConstants.js" as UI
 
 MenuStyle {
  id: root
-     property string titleFontFamily: UI.FONT_FAMILY
+ property string titleFontFamily: __fontFamily()
      property int titleFontPixelSize: UI.FONT_SMALL
      property int titleFontCapitalization: Font.MixedCase
      property color titleTextColor: "white"
