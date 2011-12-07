@@ -148,9 +148,9 @@ Item {
                 onClicked: {
                     rect.changingText = true;
                     if (textInput.inputMethodComposing) {
-                        var cursorAdjust = textInput.preedit.length - textInput.preeditCursorPosition;
+                        //var cursorAdjust = textInput.preedit.length - textInput.preeditCursorPosition;
                         inputContext.reset();
-                        textInput.cursorPosition -= cursorAdjust;
+                        //textInput.cursorPosition -= cursorAdjust;
                     }
                     rect.pastingText = true;
                     var text = textInput.text;
