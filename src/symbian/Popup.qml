@@ -44,6 +44,8 @@ import "AppManager.js" as Utils
 
 Item {
     id: root
+    // Force popup to be on top of any siblings
+    z: Infinity
 
     property Item visualParent
     property int status: DialogStatus.Closed
@@ -62,6 +64,7 @@ Item {
             fader = faderComponent.createObject(visualParent ? visualParent : Utils.visualRoot())
             notify = true
         }
+        fader.z = root.z
         fader.animationDuration = root.animationDuration
         // Save original parent if not saved
         if (parentCache.oldParent == null)
