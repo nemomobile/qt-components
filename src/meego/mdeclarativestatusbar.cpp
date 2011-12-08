@@ -222,7 +222,7 @@ void MDeclarativeStatusBar::updateXdamageEventSubscription()
     MWindowState * windowState = MWindowState::instance();
     if(windowState->active() && isVisible()) {
         // Subscribe to xdamage events only if there is a need
-        if(pixmapDamage == 0)
+        if(pixmapDamage == 0 && !sharedPixmap.isNull())
             setupXDamageForSharedPixmap();
     } else {
         destroyXDamageForSharedPixmap();
