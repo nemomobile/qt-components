@@ -40,7 +40,7 @@
 
 #include "mdeclarativemousefilter.h"
 #include <QtCore/QEvent>
-#include <QtGui/QGraphicsSceneMouseEvent>
+#include <QGraphicsSceneMouseEvent>
 #include <math.h>
 #include <QGraphicsScene>
 #include <QDebug>
