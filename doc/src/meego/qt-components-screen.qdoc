@@ -93,6 +93,8 @@
 
 /*!
     \qmlproperty int Screen::rotation
+    
+    \readonly
 
     The rotation angle of the (logical content of the) screen, measured counter-clockwise relative
     to the native orientation of the device. If the rotation is zero it means that the screen
@@ -105,6 +107,8 @@
 
 /*!
     \qmlproperty enumeration Screen::currentOrientation
+    
+    \readonly
 
     The current orientation of the screen. The possible values are:
 
@@ -128,6 +132,8 @@
 
 /*!
     \qmlproperty enumeration Screen::allowedOrientations
+    
+    \readonly
 
     The allowed orientations for the screen. The property accepts any combination
     of Screen::Orientations flags. 
@@ -170,6 +176,8 @@
 
 /*!
     \qmlproperty qreal Screen::dpi
+    
+    \readonly
 
     The dots per inch value of the screen. It is assumed that the pixels are square, so in theory
     the value might not be 100% accurate.
@@ -177,6 +185,8 @@
 
 /*!
     \qmlproperty enumeration Screen::displayCategory
+    
+    \readonly
 
     Screen classification based on the physical size (diagonal) of the screen.
 
@@ -207,6 +217,8 @@
 
 /*!
     \qmlproperty enumeration Screen::density
+    
+    \readonly
 
     Screen classification based on the dpi value of the screen.
 
@@ -225,6 +237,8 @@
 
 /*!
     \qmlproperty bool Screen::covered (meego)
+    
+    \readonly
 
     MeeGo 1.2 Harmattan-specific property
     
@@ -233,6 +247,8 @@
 
 /*!
     \qmlproperty string Screen::orientationString (meego)
+    
+    \readonly
 
     MeeGo 1.2 Harmattan-specific property
     
@@ -241,6 +257,8 @@
 
 /*!
     \qmlproperty bool Screen::keyboardOpen (meego)
+    
+    \readonly
 
     MeeGo 1.2 Harmattan-specific property
     
@@ -257,6 +275,8 @@
 
 /*!
     \qmlproperty bool Screen::minimized (meego)
+    
+    \readonly
 
     MeeGo 1.2 Harmattan-specific property
     
@@ -265,6 +285,8 @@
 
 /*!
     \qmlproperty qvariant Screen::windowState (meego)
+    
+    \readonly
 
     MeeGo 1.2 Harmattan-specific property
 
@@ -283,6 +305,8 @@
 
 /*!
     \qmlproperty bool Screen::allowSwipe (meego)
+    
+    \readonly
 
     MeeGo 1.2 Harmattan-specific property
 

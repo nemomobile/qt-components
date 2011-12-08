@@ -58,6 +58,8 @@
 
 /*!
     \qmlproperty bool Theme::inverted
+    
+    \readonly
 
     Theme inverted state (default value is false)
 */

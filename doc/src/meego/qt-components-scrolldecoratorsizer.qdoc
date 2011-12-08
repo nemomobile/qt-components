@@ -83,6 +83,8 @@
 
 /*!
     \qmlproperty int ScrollDecoratorSizer::position
+    
+    \readonly
 
     Description not available
 */
@@ -107,6 +109,8 @@
 
 /*!
     \qmlproperty int ScrollDecoratorSizer::size
+    
+    \readonly
 
     Description not available
 */
