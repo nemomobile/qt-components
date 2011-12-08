@@ -50,6 +50,7 @@
 # include "contextproperty.h"
 # include "contextpropertyinfo.h"
 # include "mservicelistener.h"
+# include <QDebug>
 #endif
 
 #ifdef Q_WS_X11
