@@ -43,7 +43,7 @@
 
 #include "mthemeplugin.h"
 
-MThemePlugin::MThemePlugin(QDeclarativeItem *parent)
+MThemePlugin::MThemePlugin(QObject *parent)
     : QObject(parent)
 {
     m_inverted = false;

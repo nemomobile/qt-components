@@ -42,7 +42,7 @@
 #define MDATETIMEHELPER_H
 
 #include <QObject>
-#include <qdeclarativeitem.h>
+#include <qdeclarative.h>
 
 class MDateTimeHelper : public QObject
 {

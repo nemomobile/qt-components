@@ -41,7 +41,7 @@
 #ifndef MWINDOWSTATE_H
 #define MWINDOWSTATE_H
 
-#include <qdeclarativeitem.h>
+#include <qdeclarative.h>
 
 #ifdef HAVE_MALIIT
 #include <maliit/inputmethod.h>

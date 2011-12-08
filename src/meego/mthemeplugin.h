@@ -41,8 +41,8 @@
 #ifndef MTHEMEPLUGIN_H
 #define MTHEMEPLUGIN_H
 
-#include <qdeclarativeitem.h>
 #include <qglobal.h>
+#include <qdeclarative.h>
 
 class MThemePlugin : public QObject
 {
@@ -54,7 +54,7 @@ class MThemePlugin : public QObject
     Q_PROPERTY(QString selectionColor READ selectionColor NOTIFY selectionColorChanged FINAL)
 
 public:
-    MThemePlugin(QDeclarativeItem *parent = 0);
+    MThemePlugin(QObject *parent = 0);
     virtual ~MThemePlugin();
 
     bool isInverted() const;
