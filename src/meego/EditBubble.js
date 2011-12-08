@@ -241,7 +241,7 @@ function updateButtons(row)
 function geometry()
 {
     if (popup == null)
-        return;
+      return { "left": 0, "right": 0, "top": 0, "bottom": 0 };
 
     var bubbleContent = popup.privateRect;
     var rect = {"left": bubbleContent.pos.x,

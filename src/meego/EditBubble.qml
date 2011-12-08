@@ -269,7 +269,13 @@ Item {
 
     Connections {
         target: screen
-        onCurrentOrientationChanged: Private.adjustPosition(bubble)
+        onCurrentOrientationChanged: {
+            Private.adjustPosition(bubble);
+            var root = findWindowRoot();
+            rect.outOfView = ( ( rect.arrowDown == false // reduce flicker due to changing bubble orientation
+                  && Private.geometry().top < Utils.statusBarCoveredHeight( bubble ) )
+                  || Private.geometry().bottom > screen.platformHeight - Utils.toolBarCoveredHeight ( bubble ) );
+        }
     }
 
     function findWindowRoot() {
@@ -282,7 +288,12 @@ Item {
     Connections {
        target: findWindowRoot();
        ignoreUnknownSignals: true
-       onOrientationChangeFinished: Private.adjustPosition(bubble)
+       onOrientationChangeFinished: {
+           Private.adjustPosition(bubble);
+           var root = findWindowRoot();
+           rect.outOfView = ( ( rect.arrowDown == false // reduce flicker due to changing bubble orientation
+                 && Private.geometry().top < Utils.statusBarCoveredHeight( bubble ) )
+                 || Private.geometry().bottom > screen.platformHeight - Utils.toolBarCoveredHeight ( bubble ) );
+       }
     }
-
 }
