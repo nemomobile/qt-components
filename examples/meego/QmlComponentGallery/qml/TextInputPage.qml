@@ -181,29 +181,13 @@ Page {
                     Label {
                         font: UiConstants.FieldLabelFont
                         color: UiConstants.FieldLabelColor
-                        text: "Plain QML TextInput:"
-                    }
-                    TextInput {
-                        id: textInput
-                        selectionColor: "green"
-                        font.pixelSize: 32; font.bold: true
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        text: "Inline text input"
-                    }
-
-                    Label {
-                        font: UiConstants.FieldLabelFont
-                        color: UiConstants.FieldLabelColor
                         text: "Bottom text field:"
                     }
+
                     TextField {
                         anchors {left: parent.left; right: parent.right;}
                     }
-                    TextEdit {
-                        height: 400;
-                        width: 800;
-                    }
+
                     Label {
                         font: UiConstants.FieldLabelFont
                         color: UiConstants.FieldLabelColor
