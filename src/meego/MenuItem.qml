@@ -77,8 +77,8 @@ Item {
     BorderImage {
        id: backgroundImage
        source:   // !enabled ? root.platformStyle.disabledBackground :
-                  pressed ? root.platformStyle.pressedBackground
-                : root.platformStyle.background
+                 !pressed ? root.platformStyle.background :
+                 (root.platformStyle.__colorString == "") ? root.platformStyle.pressedBackground : root.platformStyle.selectedBackground;
        anchors.fill : root
        border { left: 22; top: 22;
                 right: 22; bottom: 22 }
