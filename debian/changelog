@@ -1,3 +1,10 @@
+qt-components (1.2~git20111209-1) maverick; urgency=low
+
+  * Fixes: NB#293670 Add helper function for getting the font for the current language
+  * Fixes: NB#293496 Long-pressing a TextField/TextArea leads app to hang out
+
+ -- Balaji Chellakani <ext-balaji.chellakani@nokia.com>  Fri, 09 Dec 2011 13:30:00 +0300
+
 qt-components (1.2~git20111202-1) maverick; urgency=low
 
   * Fixes: NB#293670 Add helper function for getting the font for the current language
