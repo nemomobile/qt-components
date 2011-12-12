@@ -147,7 +147,7 @@ Item {
                 return root.platformInverted ? platformStyle.colorNormalLightInverted
                                              : platformStyle.colorNormalLight
         }
-        visible: text
+        visible: !!text
         anchors {
             top: parent.top; bottom: parent.bottom
             left: iconSource != "" ? contentIcon.right : parent.left; right: parent.right
