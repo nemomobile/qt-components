@@ -109,7 +109,7 @@ Rectangle {
         id: internal
 
         property variant defaultValidator:  RegExpValidator{regExp: /.*/}
-        property variant emailValidator: RegExpValidator{regExp: /^\w([a-zA-Z0-9._-]+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/}
+        property variant emailValidator: RegExpValidator{regExp: /^\w([a-zA-Z0-9.!#$%&'*+-\/=?^_`{|}~]+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/}
 
         function validateForm() {
 
