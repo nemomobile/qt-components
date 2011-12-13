@@ -64,7 +64,7 @@ Item {
 
         width: row.width
         height: row.height
-        property int positionOffset: 0;
+        property int positionOffset: 40;
         property int arrowOffset: 0
         property int arrowBorder: platformStyle.arrowMargin
         property bool arrowDown: true
