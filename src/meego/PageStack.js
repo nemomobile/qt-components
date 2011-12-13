@@ -194,6 +194,7 @@ function pop(page, immediate) {
     } else {
         return null;
     }
+    gc();
 }
 
 // Clears the page stack.
