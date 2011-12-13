@@ -213,5 +213,6 @@ function adjustPosition(handles)
 }
 
 function handlesIntersectWith(rect){
+    if ( rect == undefined ) return undefined;
     return ( intersects(rect, leftHandleRect()) || intersects(rect, rightHandleRect()) )
 }
