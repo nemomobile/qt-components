@@ -49,7 +49,7 @@ Item {
     property bool checkable: false
     property bool pressed: (stateGroup.state == "Pressed" || stateGroup.state == "AutoRepeating") && mouseArea.containsMouse
     property alias text: label.text
-    property alias iconSource: icon.source
+    property url iconSource
     property alias font: label.font
 
     signal clicked
@@ -218,6 +218,7 @@ Item {
 
         Image {
             id: icon
+            source: button.iconSource
             sourceSize.width: platformStyle.graphicSizeSmall
             sourceSize.height: platformStyle.graphicSizeSmall
             smooth: true
