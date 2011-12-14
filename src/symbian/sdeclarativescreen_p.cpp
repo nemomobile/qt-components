@@ -48,7 +48,6 @@
 #include <qmath.h>
 #include <qnamespace.h>
 
-
 #ifdef Q_OS_SYMBIAN
 #include <aknappui.h>
 #include <hal.h>
@@ -57,6 +56,10 @@
 #ifdef Q_WS_SIMULATOR
 #include <cmath>
 #endif
+
+#ifdef Q_DEBUG_SCREEN
+#include <QDebug>
+#endif // Q_DEBUG_SCREEN
 
 static const qreal DEFAULT_TWIPS_PER_INCH = 1440.0;
 static const qreal DEFAULT_DPI = 211.7;
@@ -117,6 +120,9 @@ SDeclarativeScreen::Orientation SDeclarativeScreenPrivate::currentOrientation() 
 
 void SDeclarativeScreenPrivate::setCurrentOrientation(SDeclarativeScreen::Orientation orientation, bool emitSignal)
 {
+#ifdef Q_DEBUG_SCREEN
+    qDebug() << "SDeclarativeScreenPrivate::setCurrentOrientation";
+#endif
     Q_Q(SDeclarativeScreen);
     if (m_currentOrientation == orientation)
         return;

@@ -48,6 +48,7 @@
 #include <QDeclarativeView>
 #include <QMainWindow>
 #include <QSignalSpy>
+#include <QScopedPointer>
 
 class tst_SDeclarativeScreen : public QObject
 {
@@ -61,6 +62,8 @@ private slots:
     void startupOrientation();
     void twoDeclarativeViews();
     void graphicsView();
+    void lockedResizeOrientations();
+    void lockedSensorOrientations();
 
 private:
 
@@ -273,6 +276,74 @@ void tst_SDeclarativeScreen::graphicsView()
     // set landscape
     screen2->setProperty("allowedOrientations", SDeclarativeScreen::Landscape);
     QVERIFY(screen2->property("width").toInt() > screen2->property("height").toInt());
+}
+
+void tst_SDeclarativeScreen::lockedResizeOrientations()
+{
+    QScopedPointer<QDeclarativeView> view2;
+    view2.reset(new QDeclarativeView());
+
+    view2->setProperty("orientationMethod", 1);
+    view2->setAttribute(Qt::WA_LockLandscapeOrientation, true);
+    view2->engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
+    view2->setSource(QUrl::fromLocalFile("tst_declarativescreen.qml"));
+    view2->show();
+
+    QVERIFY(view2->rootObject());
+    QObject *screen2 = qVariantValue<QObject *>(view2->engine()->rootContext()->contextProperty("screen"));
+    QVERIFY(screen2);
+
+    QTest::qWait(5); //Give time for the signals
+    QCOMPARE(screen2->property("currentOrientation").toInt(), (int)SDeclarativeScreen::Landscape);
+
+    view2->close();
+
+    view2.reset(new QDeclarativeView());
+    view2->setProperty("orientationMethod", 1);
+    view2->setAttribute(Qt::WA_LockPortraitOrientation, true);
+    view2->engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
+    view2->setSource(QUrl::fromLocalFile("tst_declarativescreen.qml"));
+    view2->show();
+
+    QVERIFY(view2->rootObject());
+    screen2 = qVariantValue<QObject *>(view2->engine()->rootContext()->contextProperty("screen"));
+    QVERIFY(screen2);
+
+    QTest::qWait(5); //Give time for the signals
+    QCOMPARE(screen2->property("currentOrientation").toInt(), (int)SDeclarativeScreen::Portrait);
+}
+
+void tst_SDeclarativeScreen::lockedSensorOrientations()
+{
+    QScopedPointer<QDeclarativeView> view2;
+    view2.reset(new QDeclarativeView());
+
+    view2->setAttribute(Qt::WA_LockLandscapeOrientation, true);
+    view2->engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
+    view2->setSource(QUrl::fromLocalFile("tst_declarativescreen.qml"));
+    view2->show();
+
+    QVERIFY(view2->rootObject());
+    QObject *screen2 = qVariantValue<QObject *>(view2->engine()->rootContext()->contextProperty("screen"));
+    QVERIFY(screen2);
+
+    QTest::qWait(5); //Give time for the signals
+    QCOMPARE(screen2->property("currentOrientation").toInt(), (int)SDeclarativeScreen::Landscape);
+
+    view2->close();
+
+    view2.reset(new QDeclarativeView());
+    view2->setAttribute(Qt::WA_LockPortraitOrientation, true);
+    view2->engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
+    view2->setSource(QUrl::fromLocalFile("tst_declarativescreen.qml"));
+    view2->show();
+
+    QVERIFY(view2->rootObject());
+    screen2 = qVariantValue<QObject *>(view2->engine()->rootContext()->contextProperty("screen"));
+    QVERIFY(screen2);
+
+    QTest::qWait(5); //Give time for the signals
+    QCOMPARE(screen2->property("currentOrientation").toInt(), (int)SDeclarativeScreen::Portrait);
 }
 
 QTEST_MAIN(tst_SDeclarativeScreen)

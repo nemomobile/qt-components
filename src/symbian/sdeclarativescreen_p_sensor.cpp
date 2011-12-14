@@ -52,6 +52,10 @@
 #include <bitstd.h>
 #endif
 
+#ifdef Q_DEBUG_SCREEN
+#include <QDebug>
+#endif // Q_DEBUG_SCREEN
+
 #ifdef Q_OS_SYMBIAN
 const TInt KEikDynamicLayoutVariantSwitch = 0x101F8121;
 OrientationListener *OrientationListener::instance = 0;
@@ -90,12 +94,26 @@ SDeclarativeScreenPrivateSensor::SDeclarativeScreenPrivateSensor(SDeclarativeScr
     if (m_view) {
         m_view->installEventFilter(this);
         connect(m_view, SIGNAL(statusChanged(QDeclarativeView::Status)), this, SLOT(viewStatusChanged(QDeclarativeView::Status)));
+
+        //In case the orientation lock was set in the cpp side
+        if (m_view->testAttribute(Qt::WA_LockLandscapeOrientation)) {
+#ifdef Q_DEBUG_SCREEN
+            qDebug() << "SDeclarativeScreenPrivateSensor - Locking LandscapeOrientation";
+#endif
+            setAllowedOrientations(SDeclarativeScreen::Landscape);
+        } else if (m_view->testAttribute(Qt::WA_LockPortraitOrientation)) {
+#ifdef Q_DEBUG_SCREEN
+            qDebug() << "SDeclarativeScreenPrivateSensor - Locking PortraitOrientation";
+#endif
+            setAllowedOrientations(SDeclarativeScreen::Portrait);
+        }
     }
 
 #ifdef Q_OS_SYMBIAN
     orientationListener.reset(new OrientationListener(qq));
     connect(orientationListener.data(), SIGNAL(orientationChanged()), this, SLOT(orientationChanged()));
 #endif
+
 }
 
 SDeclarativeScreenPrivateSensor::~SDeclarativeScreenPrivateSensor()
@@ -104,6 +122,9 @@ SDeclarativeScreenPrivateSensor::~SDeclarativeScreenPrivateSensor()
 
 void SDeclarativeScreenPrivateSensor::setAllowedOrientations(SDeclarativeScreen::Orientations orientations)
 {
+#ifdef Q_DEBUG_SCREEN
+    qDebug() << "SDeclarativeScreenPrivateSensor::setAllowedOrientations";
+#endif
     SDeclarativeScreenPrivate::setAllowedOrientations(orientations);
 
     if (!m_initialized)
@@ -130,6 +151,9 @@ void SDeclarativeScreenPrivateSensor::setAllowedOrientations(SDeclarativeScreen:
 
 void SDeclarativeScreenPrivateSensor::privateSetOrientation(int orientation)
 {
+#ifdef Q_DEBUG_SCREEN
+    qDebug() << "SDeclarativeScreenPrivateSensor::privateSetOrientation";
+#endif
     Q_Q(SDeclarativeScreen);
 
     if (orientation == SDeclarativeScreen::All)
