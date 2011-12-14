@@ -391,6 +391,7 @@ Rectangle {
                 Keys.onReturnPressed: {
                     if (internal.validateForm()) {
                         platformCloseSoftwareInputPanel();
+                        submit();
                     }
                 }
 
