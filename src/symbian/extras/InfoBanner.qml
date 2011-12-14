@@ -45,7 +45,7 @@ import "Constants.js" as CONSTANTS
 Item {
     id: root
 
-    property alias iconSource: image.source
+    property url iconSource
     property alias text: text.text
     property alias timeout : timer.interval
     property bool interactive : false
@@ -83,6 +83,7 @@ Item {
 
         Image {
             id: image
+            source: root.iconSource
 
             anchors { top: parent.top; topMargin: platformStyle.paddingLarge;
                       left: parent.left; leftMargin:  platformStyle.paddingLarge; }
