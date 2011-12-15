@@ -41,13 +41,13 @@
 import QtQuick 1.1
 import "UIConstants.js" as UI
 
-Item {
-    default property alias children: row.children
+Row{
+    id: row
+
     property bool __expanding: true // Layout hint used but ToolBarLayout
-    Row{
-        id: row
-        width: Math.min(parent.width, childrenRect.width)
-        spacing: UI.PADDING_LARGE
-        anchors.centerIn: parent
-    }
+
+    width: Math.min(parent.width, childrenRect.width)
+    spacing: UI.PADDING_LARGE
+    anchors.verticalCenter: parent.verticalCenter
 }
+
