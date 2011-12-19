@@ -106,8 +106,8 @@ Item {
                     if (root.inPortrait) {
                         windowContent.heightDelta = inputContext.softwareInputPanelRect.width
                     } else {
-                        if (inputContext.softwareInputPanelRect.height < windowContent.height) 
-                            windowContent.heightDelta = inputContext.softwareInputPanelRect.height
+                        if (inputContext.softwareInputPanelRect.height < window.height) 
+                            windowContent.heightDelta = inputContext.softwareInputPanelRect.height                      
                         else 
                             windowContent.heightDelta = 0
                     }
