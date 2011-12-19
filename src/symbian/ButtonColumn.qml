@@ -46,7 +46,7 @@ Column {
 
     // Common public API
     property bool exclusive: true
-    property Item checkedButton
+    property Item checkedButton: null
 
     property int privateDirection: Qt.Vertical
 

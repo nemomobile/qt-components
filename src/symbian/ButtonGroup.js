@@ -43,7 +43,7 @@ var clickHandlers = []
 var visibleButtons = []
 var resizing = false
 var checkingOverallExclusivity = false
-var checkedBtn
+var checkedBtn = null
 
 function create(that) {
     destroy()
