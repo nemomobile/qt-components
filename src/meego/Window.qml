@@ -103,10 +103,14 @@ Item {
                     if(inputContext.customSoftwareInputPanelVisible)
                         return
 
-                    if (root.inPortrait)
+                    if (root.inPortrait) {
                         windowContent.heightDelta = inputContext.softwareInputPanelRect.width
-                    else
-                        windowContent.heightDelta = inputContext.softwareInputPanelRect.height
+                    } else {
+                        if (inputContext.softwareInputPanelRect.height < windowContent.height) 
+                            windowContent.heightDelta = inputContext.softwareInputPanelRect.height
+                        else 
+                            windowContent.heightDelta = 0
+                    }
                 }
             }
         }
