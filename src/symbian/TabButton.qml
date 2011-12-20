@@ -47,7 +47,7 @@ Item {
 
     // Common Public API
     property Item tab
-    property bool checked: internal.tabGroup != null && internal.tabGroup.currentTab == tab
+    property bool checked: internal.tabGroup && internal.tabGroup.currentTab == tab
     property bool pressed: stateGroup.state == "Pressed" && mouseArea.containsMouse
     property alias text: label.text
     property alias iconSource: imageLoader.source
@@ -194,13 +194,13 @@ Item {
         }
         color: {
             if (root.pressed)
-                root.platformInverted ? platformStyle.colorPressedInverted
+                return root.platformInverted ? platformStyle.colorPressedInverted
                                       : platformStyle.colorPressed
             else if (root.checked)
-                root.platformInverted ? platformStyle.colorNormalLightInverted
+                return root.platformInverted ? platformStyle.colorNormalLightInverted
                                       : platformStyle.colorNormalLight
             else
-                root.platformInverted ? platformStyle.colorNormalMidInverted
+                return root.platformInverted ? platformStyle.colorNormalMidInverted
                                       : platformStyle.colorNormalMid
         }
     }

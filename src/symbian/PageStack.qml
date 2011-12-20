@@ -138,7 +138,7 @@ Item {
 
         // Sets the page status.
         function setPageStatus(page, status) {
-            if (page != null) {
+            if (page) {
                 if (page.status !== undefined) {
                     if (status == PageStatus.Active && page.status == PageStatus.Inactive)
                         page.status = PageStatus.Activating;
@@ -397,7 +397,7 @@ Item {
 
             // Cleans up the container and then destroys it.
             function cleanup() {
-                if (page != null) {
+                if (page) {
                     if (page.status == PageStatus.Active)
                         internal.setPageStatus(page, PageStatus.Inactive);
                     if (owner != container) {

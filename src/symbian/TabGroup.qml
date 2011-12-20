@@ -63,7 +63,7 @@ Item {
 
     Component.onCompleted: {
         // Set first tabs as current if currentTab is not set by application
-        if (currentTab == null && containerHost.children[0] && containerHost.children[0].children[0])
+        if (!currentTab && containerHost.children[0] && containerHost.children[0].children[0])
             currentTab = containerHost.children[0].children[0]
         priv.complete = true;
     }
@@ -88,7 +88,7 @@ Item {
                     children[0].height = height
                     // tab content created. set the first tab as current (if not set before, and if
                     // child is added after TabGroup has completed)
-                    if (priv.complete && root.currentTab == null)
+                    if (priv.complete && !root.currentTab)
                         root.currentTab = children[0]
                 }
             }

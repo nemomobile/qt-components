@@ -51,14 +51,13 @@ Item {
 
     Keys.onPressed: {
         if (event.key == Qt.Key_Right || event.key == Qt.Key_Left) {
+            var oldIndex = priv.currentButtonIndex()
             if (event.key == Qt.Key_Right || priv.mirrored) {
-                var oldIndex = priv.currentButtonIndex()
                 if (oldIndex >= 0 && oldIndex < root.children.length - 1) {
                     priv.tabGroup.currentTab = root.children[oldIndex + 1].tab
                     event.accepted = true
                 }
             } else if (event.key == Qt.Key_Left || priv.mirrored) {
-                var oldIndex = priv.currentButtonIndex()
                 if (oldIndex > 0) {
                     priv.tabGroup.currentTab = root.children[oldIndex - 1].tab
                     event.accepted = true
@@ -72,7 +71,7 @@ Item {
     QtObject {
         id: priv
         property Item firstButton: root.children.length > 0 ? root.children[0] : null
-        property Item firstTab: firstButton ? (firstButton.tab != null ? firstButton.tab : null) : null
+        property Item firstTab: firstButton ? (firstButton.tab ? firstButton.tab : null) : null
         property Item tabGroup: firstTab ? (firstTab.parent ? (firstTab.parent.parent ? firstTab.parent.parent.parent : null) : null) : null
         property bool mirrored: root.LayoutMirroring.enabled
 

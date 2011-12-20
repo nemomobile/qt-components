@@ -67,7 +67,7 @@ Item {
         fader.z = root.z
         fader.animationDuration = root.animationDuration
         // Save original parent if not saved
-        if (parentCache.oldParent == null)
+        if (!parentCache.oldParent)
             parentCache.oldParent = parent
         root.parent = fader
         status = DialogStatus.Opening
@@ -99,13 +99,13 @@ Item {
 
     Component.onCompleted: {
         // Save original parent if not saved
-        if (parentCache.oldParent == null)
+        if (!parentCache.oldParent)
             parentCache.oldParent = parent
     }
 
     //if this is not given, application may crash in some cases
     Component.onDestruction: {
-        if (parentCache.oldParent != null) {
+        if (parentCache.oldParent) {
             parent = parentCache.oldParent
         }
     }

@@ -130,7 +130,7 @@ CommonDialog {
 
     onStatusChanged: {
         if (status == DialogStatus.Opening) {
-            if (listView.currentItem != null) {
+            if (listView.currentItem) {
                 listView.currentItem.focus = false
             }
             listView.currentIndex = -1

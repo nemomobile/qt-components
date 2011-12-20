@@ -62,9 +62,9 @@ Item {
     visible: false
     implicitWidth: {
         if (screen.width < screen.height)
-            screen.width - 2 * platformStyle.paddingLarge
+            return screen.width - 2 * platformStyle.paddingLarge
         else
-            privateStyle.dialogMaxSize
+            return privateStyle.dialogMaxSize
     }
 
     Popup {

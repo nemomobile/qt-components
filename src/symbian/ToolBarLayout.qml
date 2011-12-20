@@ -146,7 +146,7 @@ Item {
 
         function layoutChildren() {
             var numChildren = children.length
-            if (parent == null || root.width == 0 || numChildren == 0)
+            if (!parent || root.width == 0 || numChildren == 0)
                 return
 
             for (var i = 0; i < numChildren; ++i) {
@@ -259,8 +259,8 @@ Item {
                 return;
 
             if (childrenRemaining == 1) {
-                var loneChild = children[firstRemainingIndex]
-                var loneChildWidth = buttonWidth(loneChild)
+                loneChild = children[firstRemainingIndex]
+                loneChildWidth = buttonWidth(loneChild)
                 if (isButtonRow(loneChild)) {
                     // ButtonRow should have the override width (but it won't have
                     // been updated yet)
@@ -297,7 +297,7 @@ Item {
                 var curPos = leftMargin + Math.floor(totalRoundingError / 2.0)
 
                 for (var p = 0; p < childrenRemaining; p++) {
-                    var nextChild = children[leftItem != undefined ? p + 1 : p]
+                    nextChild = children[leftItem != undefined ? p + 1 : p]
                     curPos += spacing
                     nextChild.x = curPos
                     curPos += buttonWidth(nextChild)

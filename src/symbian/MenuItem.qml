@@ -161,7 +161,7 @@ Item {
         switch (event.key) {
             case Qt.Key_Select:
             case Qt.Key_Enter:
-            case Qt.Key_Return: {
+            case Qt.Key_Return:
                 if (!event.isAutoRepeat) {
                     if (symbian.listInteractionMode != Symbian.KeyNavigation)
                         symbian.listInteractionMode = Symbian.KeyNavigation
@@ -169,47 +169,42 @@ Item {
                         root.clicked()
                 }
                 break
-            }
 
-            case Qt.Key_Up: {
+            case Qt.Key_Up:
                 if (symbian.listInteractionMode != Symbian.KeyNavigation) {
                     symbian.listInteractionMode = Symbian.KeyNavigation
-                    if (ListView.view != null)
+                    if (ListView.view)
                         ListView.view.positionViewAtIndex(index, ListView.Beginning)
                 } else {
-                    if (ListView.view != null)
+                    if (ListView.view)
                         ListView.view.decrementCurrentIndex()
                     else
                         event.accepted = false
                 }
                 break
-            }
 
-            case Qt.Key_Down: {
+            case Qt.Key_Down:
                 if (symbian.listInteractionMode != Symbian.KeyNavigation) {
                     symbian.listInteractionMode = Symbian.KeyNavigation
-                    if (ListView.view != null)
+                    if (ListView.view)
                         ListView.view.positionViewAtIndex(index, ListView.Beginning)
                 } else {
-                    if (ListView.view != null)
+                    if (ListView.view)
                         ListView.view.incrementCurrentIndex()
                     else
                         event.accepted = false
                 }
                 break
-            }
             case Qt.Key_Left:
-            case Qt.Key_Right: {
+            case Qt.Key_Right:
                 // If this MenuItem belongs to Menu invoke highlight
                 // in other cases consume event but do nothing
-                if (ListView.view == null && symbian.listInteractionMode != Symbian.KeyNavigation)
+                if (!ListView.view && symbian.listInteractionMode != Symbian.KeyNavigation)
                     symbian.listInteractionMode = Symbian.KeyNavigation
                 break
-            }
-            default: {
+            default:
                 event.accepted = false
                 break
-            }
         }
     }
 }
