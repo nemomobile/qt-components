@@ -153,6 +153,15 @@ Item {
 
                 onCheckedChanged: buttonColumn1.exclusive = toggleExclusive.checked
             }
+
+            CheckBox {
+                id: toggleVisible
+                text: "visible"
+                checked: true
+
+                onCheckedChanged: buttonColumn1.visible = toggleVisible.checked
+            }
+
         }
 
         Column {
@@ -269,6 +278,7 @@ Item {
                 anchors.left: parent.left
                 spacing: platformStyle.paddingMedium
                 exclusive: toggleExclusive2.checked
+                visible: toggleVisible2.checked
 
                 CheckBox {
                     id: checkBox1
@@ -301,6 +311,13 @@ Item {
                 text: "exclusive"
                 checked: true
             }
+
+            CheckBox {
+                id: toggleVisible2
+                anchors.left: parent.left
+                text: "visible"
+                checked: true
+            }
         }
     }
 
@@ -327,6 +344,7 @@ Item {
                 spacing: platformStyle.paddingMedium
                 width: parent.width
                 exclusive: toggleExclusive3.checked
+                visible: toggleVisible3.checked
 
                 RadioButton {
                     id: rb1
@@ -359,6 +377,14 @@ Item {
                 checked: true
                 text: "exclusive"
             }
+
+            CheckBox {
+                id: toggleVisible3
+                anchors.left: parent.left
+                text: "visible"
+                checked: true
+            }
+
         }
     }
 

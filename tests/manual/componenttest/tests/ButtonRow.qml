@@ -117,6 +117,7 @@ Item {
             objectName: "buttonRow1"
             width: parent.width
             exclusive: toggleExclusive.checked
+            visible: toggleVisible0.checked
 
             Button {
                 id: b1
@@ -173,6 +174,13 @@ Item {
                         buttonRow1.checkedButton.text = buttonTextField.text
                 }
             }
+        }
+
+        CheckBox {
+            id: toggleVisible0
+            anchors.left: parent.left
+            text: "visible"
+            checked: true
         }
 
         Text {
@@ -400,6 +408,7 @@ Item {
             objectName: "buttonRow4"
             width: parent.width
             exclusive: toggleExclusive3.checked
+            visible: toggleVisible3.checked
 
             CheckBox {
                 id: checkBox1
@@ -429,6 +438,12 @@ Item {
             checked: true
             text: "Exclusive"
         }
+
+        CheckBox {
+            id: toggleVisible3
+            checked: true
+            text: "Visible"
+        }
     }
 
     Column {
@@ -450,6 +465,7 @@ Item {
             objectName: "buttonRow5"
             width: parent.width
             exclusive: toggleExclusive4.checked
+            visible: toggleVisible4.checked
 
             RadioButton {
                 id: rb1
@@ -478,6 +494,12 @@ Item {
             objectName: "toggleExclusive4"
             checked: true
             text: "exclusive"
+        }
+
+        CheckBox {
+            id: toggleVisible4
+            checked: true
+            text: "Visible"
         }
     }
 
@@ -534,6 +556,7 @@ Item {
             objectName: "buttonRow7"
             width: parent.width
             exclusive: toggleExclusive5.checked
+            visible: toggleVisible5.checked
 
             ToolButton {
                 id: tb4
@@ -562,6 +585,12 @@ Item {
             objectName: "toggleExclusive5"
             checked: true
             text: "Exclusive"
+        }
+
+        CheckBox {
+            id: toggleVisible5
+            checked: true
+            text: "Visible"
         }
 
         Text {
