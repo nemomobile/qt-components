@@ -189,12 +189,11 @@ function pop(page, immediate) {
         if (toolBar) {
             toolBar.setTools(tools, immediate ? "set" : "pop");
         }
-
+        gc();
         return oldContainer.page;
     } else {
         return null;
     }
-    gc();
 }
 
 // Clears the page stack.
