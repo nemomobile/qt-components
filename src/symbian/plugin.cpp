@@ -86,7 +86,9 @@ static void tryToDisableSystemRotation(const QDeclarativeEngine *engine)
         return;
 // Do not use sensor orientation method with simulator
 #ifndef Q_WS_SIMULATOR
-    declarativeView->setAttribute(Qt::WA_SymbianNoSystemRotation);
+    // Qt::WA_SymbianNoSystemRotation cannot be set if view is already open
+    if(!declarativeView->isVisible())
+        declarativeView->setAttribute(Qt::WA_SymbianNoSystemRotation);
 #endif
 }
 
