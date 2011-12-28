@@ -388,8 +388,6 @@ FocusScope {
         mouseSelectionMode: TextInput.SelectWords
         focus: true
 
-        onAccepted: { root.accepted() } 
-
         Component.onDestruction: {
             SelectionHandles.close(textInput);
             Popup.close(textInput);
@@ -643,4 +641,6 @@ FocusScope {
             root.parent.focus = true;
         }
     }
+
+    Component.onCompleted: textInput.accepted.connect(accepted)
 }

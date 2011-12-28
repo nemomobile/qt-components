@@ -88,7 +88,6 @@ Rectangle {
         id: mouseEventEater
         anchors.fill: parent
         enabled: faderBackground.alpha != 0.0
-        onClicked: { parent.privateClicked() }
     }
 
     Component {
@@ -147,17 +146,16 @@ Rectangle {
         }
     ]
 
+   // The algorithm for the animation works in the following way:
+   // First:  Check if visualParent property is set; if yes, center the fader in visualParent
+   // Second: If not, center inside window content element
+   // Third:  If no window was found, use root window
     transitions: [
         Transition {
             from: "hidden"; to: "visible"
             //reparent fader whenever it is going to be visible
             SequentialAnimation {
                 ScriptAction {script: {
-                        //console.log("=============00=============");
-                        // the algorithm works in the following way:
-                        // First:  Check if visualParent property is set; if yes, center the fader in visualParent
-                        // Second: If not, center inside window content element
-                        // Third:  If no window was found, use root window
                         originalParent = faderBackground.parent;
                         if (visualParent != null) {
                             faderBackground.parent = visualParent
@@ -165,8 +163,6 @@ Rectangle {
                             var root = findRoot();
                             if (root != null) {
                                 faderBackground.parent = root;
-                            } else {
-                               // console.log("Error: Cannot find root");
                             }
                         }
                     }
@@ -186,6 +182,8 @@ Rectangle {
             }
         }
     ]
+
+    Component.onCompleted: mouseEventEater.clicked.connect(privateClicked)
 }
 
 

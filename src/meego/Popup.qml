@@ -88,6 +88,7 @@ Item {
         parentCache.oldParent = parent;
         fader.parent = parent;
         parent = fader;
+        fader.privateClicked.connect(privateClicked)
     }
 
     //if this is not given, application may crash in some cases
@@ -110,7 +111,6 @@ Item {
 
 
         background: root.__faderBackground
-        onPrivateClicked: root.privateClicked();
 
         MouseArea {
             anchors.fill: parent
