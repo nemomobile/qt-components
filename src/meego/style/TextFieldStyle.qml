@@ -67,7 +67,7 @@ Style {
 
     Text {
         id: textProperties
-        font.family: __fontFamilyLight()
+        font.family: __fontFamilyLight
         font.pixelSize: UI.FONT_DEFAULT
         visible: false
     }

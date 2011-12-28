@@ -55,21 +55,10 @@ QtObject {
 
     // styles must not set font families with referencing to UI.FONT_FAMILY
     // as there may exist languages that request a different font;
-    // use __fontFamily() and __fontFamilyLight instead.
+    // use __fontFamily and __fontFamilyLight instead.
     //
     // app developers should use the UiConstants context property
-    function __fontFamily() {
-        if (locale && locale.language == "fa") {
-            return UI.FONT_FAMILY_FARSI;
-        }
-        return UI.FONT_FAMILY;
-    }
-
-    function __fontFamilyLight() {
-        if (locale && locale.language == "fa") {
-            return UI.FONT_FAMILY_LIGHT_FARSI;
-        }
-        return UI.FONT_FAMILY_LIGHT;
-    }
+    property string __fontFamily: (locale && locale.language == "fa") ? UI.FONT_FAMILY_FARSI : UI.FONT_FAMILY
+    property string __fontFamilyLight: (locale && locale.language == "fa") ? UI.FONT_FAMILY_LIGHT_FARSI : UI.FONT_FAMILY_LIGHT
 
 }
