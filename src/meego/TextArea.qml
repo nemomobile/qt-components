@@ -486,11 +486,16 @@ FocusScope {
 
         MouseFilter {
             id: mouseFilter
-            anchors.fill: parent
-            anchors.leftMargin:  UI.TOUCH_EXPANSION_MARGIN - UI.PADDING_XLARGE
-            anchors.rightMargin:  UI.TOUCH_EXPANSION_MARGIN - UI.PADDING_MEDIUM
-            anchors.topMargin: UI.TOUCH_EXPANSION_MARGIN - (UI.FIELD_DEFAULT_HEIGHT - font.pixelSize) / 2
-            anchors.bottomMargin:  UI.TOUCH_EXPANSION_MARGIN - (UI.FIELD_DEFAULT_HEIGHT - font.pixelSize) / 2
+            anchors {
+                top: parent.top
+                right: parent.right
+                left: parent.left
+                leftMargin:  UI.TOUCH_EXPANSION_MARGIN - UI.PADDING_XLARGE
+                rightMargin:  UI.TOUCH_EXPANSION_MARGIN - UI.PADDING_XLARGE
+                topMargin: UI.TOUCH_EXPANSION_MARGIN - (UI.FIELD_DEFAULT_HEIGHT - font.pixelSize) / 2
+                bottomMargin:  UI.TOUCH_EXPANSION_MARGIN - (UI.FIELD_DEFAULT_HEIGHT - font.pixelSize) / 2
+            }
+            height: root.height - anchors.bottomMargin
 
             property bool attemptToActivate: false
             property bool pressOnPreedit
