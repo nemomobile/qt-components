@@ -105,7 +105,6 @@ FocusScope {
             __ignoreHeightChange = true;
             root.height = Math.max (__originalHeight, implicitHeight)
             __ignoreHeightChange = false;
-
         }
     }
 
@@ -173,12 +172,13 @@ FocusScope {
 
         onActiveChanged: {
             if(platformWindow.active) {
-                if (__hadFocusBeforeMinimization) {                                                                                                         
-                    __hadFocusBeforeMinimization = false                                                                                                      
-                    if (root.parent)                                                                                                                          
-                        root.focus = true                                                                                                                     
-                    else                                                                                                                                      
-                        textInput.focus = true                                                                                                                
+                if (__hadFocusBeforeMinimization) {
+                    __hadFocusBeforeMinimization = false;
+                    if (root.parent) {
+                        root.focus = true;
+                    } else {
+                        textInput.focus = true;
+                    }
                 }
                 if (!readOnly) {
                     if (activeFocus) {
@@ -192,11 +192,12 @@ FocusScope {
                     Popup.close(textEdit);
                     SelectionHandles.close(textEdit);
 
-                    __hadFocusBeforeMinimization = true                                                                                                                                                                                           
-                    if (root.parent)                                                                                     
-                        root.parent.focus = true                                           
-                    else                                                                       
-                        textInput.focus = false
+                    __hadFocusBeforeMinimization = true;
+                    if (root.parent) {
+                        root.parent.focus = true;
+                    } else {
+                        textInput.focus = false;
+                    }
                 }
             }
         }
@@ -209,16 +210,16 @@ FocusScope {
     }
 
     // private
-    property int __preeditDisabledMask: Qt.ImhHiddenText|                       
-                                        Qt.ImhNoPredictiveText|                
-                                        Qt.ImhDigitsOnly|                      
-                                        Qt.ImhFormattedNumbersOnly|             
-                                        Qt.ImhDialableCharactersOnly|           
-                                        Qt.ImhEmailCharactersOnly|              
-                                        Qt.ImhUrlCharactersOnly 
-    
+    property int __preeditDisabledMask: Qt.ImhHiddenText |
+                                        Qt.ImhNoPredictiveText |
+                                        Qt.ImhDigitsOnly |
+                                        Qt.ImhFormattedNumbersOnly |
+                                        Qt.ImhDialableCharactersOnly |
+                                        Qt.ImhEmailCharactersOnly |
+                                        Qt.ImhUrlCharactersOnly
+
     property bool __hadFocusBeforeMinimization: false
-    
+
     implicitWidth: platformStyle.defaultWidth
     implicitHeight: Math.max (UI.FIELD_DEFAULT_HEIGHT,
                               textEdit.height + (UI.FIELD_DEFAULT_HEIGHT - font.pixelSize))
@@ -229,8 +230,9 @@ FocusScope {
             platformOpenSoftwareInputPanel();
             repositionTimer.running = true;
         } else if (!activeFocus) {
-            if (!readOnly)
+            if (!readOnly) {
                 platformCloseSoftwareInputPanel();
+            }
             Popup.close(textEdit);
             SelectionHandles.close(textEdit);
             MagnifierPopup.close(); 
@@ -239,13 +241,13 @@ FocusScope {
 
     BorderImage {
         id: background
-	source: errorHighlight?
-                platformStyle.backgroundError:
+        source: errorHighlight?
+            platformStyle.backgroundError:
             readOnly?
-                platformStyle.backgroundDisabled:
+            platformStyle.backgroundDisabled:
             textEdit.activeFocus? 
-                platformStyle.backgroundSelected:
-                platformStyle.background
+            platformStyle.backgroundSelected:
+            platformStyle.background
 
         anchors.fill: parent
         border.left: root.platformStyle.backgroundCornerMargin; border.top: root.platformStyle.backgroundCornerMargin
@@ -313,7 +315,7 @@ FocusScope {
                 textEdit.forceActiveFocus();
 
                 // activate to preedit and/or move the cursor
-                var preeditDisabled = root.inputMethodHints &                   
+                var preeditDisabled = root.inputMethodHints &
                                       root.__preeditDisabledMask
                 var injectionSucceeded = false;
                 var mappedMousePos = mapToItem(textEdit, mouseX, mouseY);
@@ -377,7 +379,7 @@ FocusScope {
             } else {
                 yAdjustment = 0;
             }
-            magnifier.yCenter = mapToItem(magnifier.sourceItem, 0, posY - cursorHeight + 50).y
+            magnifier.yCenter = mapToItem(magnifier.sourceItem, 0, posY - cursorHeight + 50).y;
             magnifier.y = mappedPos.y + yAdjustment;
         }
 
@@ -400,13 +402,13 @@ FocusScope {
                     Popup.close(textEdit);
                 }
             }
-            if (SelectionHandles.isOpened(textEdit) && textEdit.selectedText == "")
+            if (SelectionHandles.isOpened(textEdit) && textEdit.selectedText == "") {
                 SelectionHandles.close(textEdit);
+            }
         }
 
         Connections {
             target: TextAreaHelper.findFlickable(root.parent)
-
             onContentYChanged: if (root.activeFocus) TextAreaHelper.filteredInputContextUpdate();
             onContentXChanged: if (root.activeFocus) TextAreaHelper.filteredInputContextUpdate();
             onMovementEnded: inputContext.update();
@@ -428,7 +430,7 @@ FocusScope {
 
         onCursorPositionChanged: {
             if(!MagnifierPopup.isOpened() && activeFocus) {
-                TextAreaHelper.repositionFlickable(contentMovingAnimation)
+                TextAreaHelper.repositionFlickable(contentMovingAnimation);
             }
 
            if (MagnifierPopup.isOpened()) {
@@ -439,8 +441,7 @@ FocusScope {
                 textEdit.cursorPosition == textEdit.text.length) {
                 if ( Popup.isOpened(textEdit) ) {
                     Popup.close(textEdit);
-                    Popup.open(textEdit,
-                           textEdit.positionToRectangle(textEdit.cursorPosition));
+                    Popup.open(textEdit, textEdit.positionToRectangle(textEdit.cursorPosition));
                 }
             }
         }
@@ -468,7 +469,6 @@ FocusScope {
                     SelectionHandles.close(textEdit);
                 }
             }
-
         }
 
         Timer {
@@ -504,9 +504,9 @@ FocusScope {
 
             onPressed: {
                 var mousePosition = textEdit.positionAt(mouse.x,mouse.y,TextEdit.CursorOnCharacter);
-                pressOnPreedit = textEdit.cursorPosition==mousePosition
-                var preeditDisabled = root.inputMethodHints &                  
-                                      root.__preeditDisabledMask
+                pressOnPreedit = textEdit.cursorPosition == mousePosition;
+                var preeditDisabled = root.inputMethodHints &
+                                      root.__preeditDisabledMask;
 
                 attemptToActivate = !pressOnPreedit && !root.readOnly && !preeditDisabled && root.activeFocus &&
                                     !(mousePosition == 0 || TextAreaHelper.atSpace(mousePosition - 1) || TextAreaHelper.atSpace(mousePosition));
@@ -516,41 +516,42 @@ FocusScope {
             onHorizontalDrag: {
                 // possible pre-edit word have to be committed before selection
                 if (root.activeFocus || root.readOnly) {
-                    inputContext.reset()
-                    if ( platformSelectable )
-                        parent.selectByMouse = true
-                    attemptToActivate = false
+                    inputContext.reset();
+                    if ( platformSelectable ) {
+                        parent.selectByMouse = true;
+                    }
+                    attemptToActivate = false;
                 }
             }
 
-            onPressAndHold:{
+            onPressAndHold: {
                 // possible pre-edit word have to be commited before showing the magnifier
                 if ( platformEnableMagnifier &&
                      (root.text != "" || inputMethodObserver.preedit != "") && root.activeFocus) {
-                    inputContext.reset()
-                    attemptToActivate = false
-                    parent.selectByMouse = false
+                    inputContext.reset();
+                    attemptToActivate = false;
+                    parent.selectByMouse = false;
                     MagnifierPopup.open(root);
                     var magnifier = MagnifierPopup.popup;
-                    parent.cursorPosition = parent.positionAt(mouse.x,mouse.y)
-                    parent.updateMagnifierPosition(mouse.x,mouse.y)
-                    root.z = Number.MAX_VALUE
+                    parent.cursorPosition = parent.positionAt(mouse.x,mouse.y);
+                    parent.updateMagnifierPosition(mouse.x,mouse.y);
+                    root.z = Number.MAX_VALUE;
                 }
             }
 
-            onReleased:{                
+            onReleased: {
                 if (MagnifierPopup.isOpened()) {
                     MagnifierPopup.close();
                     TextAreaHelper.repositionFlickable(contentMovingAnimation);
                 }
 
-                if (attemptToActivate)
+                if (attemptToActivate) {
                     inputContext.reset();
-
+                }
                 var newCursorPosition = textEdit.positionAt(mouse.x,mouse.y,TextEdit.CursorOnCharacter);
-                if (textEdit.preedit.length == 0)                   
+                if (textEdit.preedit.length == 0) {
                     editBubblePosition = textEdit.positionToRectangle(newCursorPosition);
-
+                }
                 if (attemptToActivate) {
                     var beforeText = textEdit.text;
 
@@ -590,17 +591,18 @@ FocusScope {
             }
             onMousePositionChanged: {
                if (MagnifierPopup.isOpened() && !parent.selectByMouse) {
-                    var pos = textEdit.positionAt (mouse.x,mouse.y)
-                    parent.cursorPosition = pos
+                    var pos = textEdit.positionAt (mouse.x,mouse.y);
+                    parent.cursorPosition = pos;
                     parent.updateMagnifierPosition(mouse.x,mouse.y);
                 }
             }
             onDoubleClicked: {
                 // possible pre-edit word have to be committed before selection
                 inputContext.reset()
-                if ( platformSelectable )
-                    parent.selectByMouse = true
-                attemptToActivate = false
+                if ( platformSelectable ) {
+                    parent.selectByMouse = true;
+                }
+                attemptToActivate = false;
             }
         }
     }
