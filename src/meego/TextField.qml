@@ -106,8 +106,6 @@ FocusScope {
         textInput.activeFocusOnPress = platformCustomSoftwareInputPanel == null
     }
 
-
-
     function copy() {
         textInput.copy()
     }
@@ -117,14 +115,14 @@ FocusScope {
 
         onActiveChanged: {
             if(platformWindow.active) {
-                if (__hadFocusBeforeMinimization) {                                                                                                         
-                    __hadFocusBeforeMinimization = false                                                                                                      
-                    if (root.parent)                                                                                                                          
-                        root.focus = true                                                                                                                     
-                    else                                                                                                                                      
-                        textInput.focus = true                                                                                                                
+                if (__hadFocusBeforeMinimization) {
+                    __hadFocusBeforeMinimization = false
+                    if (root.parent)
+                        root.focus = true
+                    else
+                        textInput.focus = true
                 }
-                
+
                 if (!readOnly) {
                     if (activeFocus) {
                         if (platformCustomSoftwareInputPanel != null) {
@@ -142,11 +140,11 @@ FocusScope {
                     SelectionHandles.close(textInput);
                     if (textInput.selectionStart != textInput.selectionEnd)
                         textInput.deselect();
-                      
-                    __hadFocusBeforeMinimization = true                                                                                                                                                                                           
-                    if (root.parent)                                                                                     
-                        root.parent.focus = true                                           
-                    else                                                                       
+
+                    __hadFocusBeforeMinimization = true
+                    if (root.parent)
+                        root.parent.focus = true
+                    else
                         textInput.focus = false
                 }
             }
@@ -158,7 +156,6 @@ FocusScope {
             }
         }
     }
-
 
     function paste() {
         textInput.paste()
@@ -239,7 +236,7 @@ FocusScope {
                                         Qt.ImhUrlCharactersOnly 
 
     property bool __hadFocusBeforeMinimization: false
-    
+
     implicitWidth: platformStyle.defaultWidth
     implicitHeight: UI.FIELD_DEFAULT_HEIGHT
 
@@ -264,16 +261,15 @@ FocusScope {
             MagnifierPopup.close();
     }
 
-
     BorderImage {
         id: background
-		source: errorHighlight?
-		    platformStyle.backgroundError:
-	        readOnly?
-		    platformStyle.backgroundDisabled:
-		textInput.activeFocus? 
+        source: errorHighlight?
+            platformStyle.backgroundError:
+            readOnly?
+            platformStyle.backgroundDisabled:
+        textInput.activeFocus?
             platformStyle.backgroundSelected:
-		    platformStyle.background
+            platformStyle.background
 
         anchors.fill: parent
         border.left: root.platformStyle.backgroundCornerMargin; border.top: root.platformStyle.backgroundCornerMargin
@@ -283,10 +279,14 @@ FocusScope {
     Text {
         id: prompt
 
-        anchors {verticalCenter: parent.verticalCenter; left: parent.left; right: parent.right}
-        anchors.leftMargin: root.platformStyle.paddingLeft
-        anchors.rightMargin: root.platformStyle.paddingRight
-        anchors.verticalCenterOffset: root.platformStyle.baselineOffset
+        anchors {
+            verticalCenter: parent.verticalCenter
+            left: parent.left
+            right: parent.right
+            leftMargin: root.platformStyle.paddingLeft
+            rightMargin: root.platformStyle.paddingRight
+            verticalCenterOffset: root.platformStyle.baselineOffset
+        }
 
         font: root.platformStyle.textFont
         color: root.platformStyle.promptTextColor
@@ -341,7 +341,7 @@ FocusScope {
 
                 // activate to preedit and/or move the cursor
                 var preeditDisabled = root.inputMethodHints &
-                                      root.__preeditDisabledMask                         
+                                      root.__preeditDisabledMask
                 var injectionSucceeded = false;
                 var newCursorPosition = textInput.positionAt(mapToItem(textInput, mouseX, mouseY).x,TextInput.CursorOnCharacter);
                 if (!preeditDisabled) {
@@ -411,7 +411,7 @@ FocusScope {
             }
         }
 
-        onTextChanged: {            
+        onTextChanged: {
             if(root.activeFocus) {
                 TextAreaHelper.repositionFlickable(contentMovingAnimation)
             }
@@ -466,7 +466,7 @@ FocusScope {
         InputMethodObserver {
             id: inputMethodObserver
 
-            onPreeditChanged: {                
+            onPreeditChanged: {
                 if(root.activeFocus) {
                     TextAreaHelper.repositionFlickable(contentMovingAnimation)
                 }
@@ -494,12 +494,13 @@ FocusScope {
 
         MouseFilter {
             id: mouseFilter
-            anchors.fill: parent
-            anchors.leftMargin:  UI.TOUCH_EXPANSION_MARGIN - root.platformStyle.paddingLeft
-            anchors.rightMargin:  UI.TOUCH_EXPANSION_MARGIN - root.platformStyle.paddingRight
-            anchors.topMargin: UI.TOUCH_EXPANSION_MARGIN - ((root.height - parent.height) / 2)
-            anchors.bottomMargin:  UI.TOUCH_EXPANSION_MARGIN - ((root.height - parent.height) / 2)
-
+            anchors {
+                fill: parent
+                leftMargin:  UI.TOUCH_EXPANSION_MARGIN - root.platformStyle.paddingLeft
+                rightMargin:  UI.TOUCH_EXPANSION_MARGIN - root.platformStyle.paddingRight
+                topMargin: UI.TOUCH_EXPANSION_MARGIN - ((root.height - parent.height) / 2)
+                bottomMargin:  UI.TOUCH_EXPANSION_MARGIN - ((root.height - parent.height) / 2)
+            }
             property bool attemptToActivate: false
             property bool pressOnPreedit: false
             property int oldCursorPosition: 0
