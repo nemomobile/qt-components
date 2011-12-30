@@ -262,15 +262,20 @@ Rectangle {
         }
 
         // Slider error text
-        Label {
-            id: sliderErrorLabel
-            visible: false
-            width: parent.width
-            font.pixelSize: 18
-            color: "#FF3200"
-            horizontalAlignment: uiHorizontalAlignment.selectScore || Text.AlignLeft
-            text:  uiString.selectScore ||
-                   "!!You must select a rating"
+        Item {
+            width: parent.width    
+            height: sliderErrorLabel.height
+            
+            Label {
+                id: sliderErrorLabel
+                visible: false
+                width: parent.width
+                font.pixelSize: 18
+                color: "#FF3200"
+                horizontalAlignment: uiHorizontalAlignment.selectScore || Text.AlignLeft
+                text:  uiString.selectScore ||
+                       "!!You must select a rating"
+            }
         }
 
         Item {
