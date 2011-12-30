@@ -286,6 +286,7 @@ Item {
                                     ListElement { name: "qtg_graf_drill_down_indicator.svg" }
                                     ListElement { name: "qtg_graf_drill_down_indicator" }
                                     ListElement { name: "qrc:/list1.svg" }
+                                    ListElement { name: "qrc:list1.svg" }
                                     ListElement { name: "../images/list1.svg" }
                                     ListElement { name: "http://www.nokia.com/NOKIA_COM_1/Microsites/wayfinder/images/logo_new.gif" }
                                 }

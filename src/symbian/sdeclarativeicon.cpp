@@ -116,10 +116,13 @@ void SDeclarativeIcon::setIconName(const QString &name)
         QString tmpFileName = SDeclarative::resolveIconFileName(fileInfo.fileName());
 
         // SDeclarative::resolveIconFileName did nothing, icon not part of qt-components icon set
-        if (tmpFileName == fileInfo.fileName())
+        if (tmpFileName == fileInfo.fileName()) {
             // remove "/" what comes from QUrl::path()
-            tmpFileName = url.path().remove(0,1);
-
+            if (url.path().startsWith("/"))
+                tmpFileName = url.path().remove(0,1);
+            else
+                tmpFileName = url.path();
+        }
         // If icon is in resource file use :/ to search it from both applications & qt-components resource file
         if (url.scheme() == "qrc" && !tmpFileName.startsWith(QLatin1String(":/")))
             tmpFileName.prepend(QLatin1String(":/"));
