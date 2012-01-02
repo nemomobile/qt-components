@@ -147,6 +147,7 @@ FocusScope {
                     else
                         textInput.focus = false
                 }
+                MagnifierPopup.clean(textInput);
             }
         }
 

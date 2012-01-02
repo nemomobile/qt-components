@@ -199,6 +199,7 @@ FocusScope {
                         textInput.focus = false;
                     }
                 }
+                MagnifierPopup.clean(textEdit);
             }
         }
 

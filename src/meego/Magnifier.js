@@ -92,12 +92,25 @@ function isOpened()
 }
 
 /*
-  Close and destroy the magnifier.
+  Close the magnifier.
 */
 function close()
 {
+    if (popup && popup.active){
+        popup.active = false;
+        popup.sourceItem = null;
+    }
+}
+
+/*
+  Clean the magnifier by destroying it. This should be done only
+  if the application becomes inactive.
+*/
+function clean()
+{
     if (popup){
         popup.active = false;
+        popup.sourceItem = null;
         popup.destroy();
         popup = null;
     }
