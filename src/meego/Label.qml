@@ -65,12 +65,9 @@ Text {
     QtObject {
         id: privateApi
         property color __textColor
-        property bool __textDirection: locale.directionForText !== undefined && locale.directionForText(root.text) === 1 /* Qt::RightToLeft */
     }
 
-    // Arabic text has to be right-aligned with the exception of one-liner. Due to
-    // aesthetic reasons we align them to the left.
-    horizontalAlignment: !privateApi.__textDirection || root.lineCount === 1 ? Text.AlignLeft : Text.AlignRight
+    horizontalAlignment: locale.directionForText !== undefined && locale.directionForText(root.text) === 1 /* Qt::RightToLeft */ ? Text.AlignRight : Text.AlignLeft
 
     MouseArea {
         id: mouseFilter
