@@ -46,6 +46,8 @@ Rectangle {
 
     // Common public API
 
+    property Flickable parentFlickable: null
+
     // Input. Set to true if user is signed in to Nokia account.
     // Account email using agreement is shown if user is signed in.
     // Otherwise email input box is shown instead.
@@ -112,11 +114,18 @@ Rectangle {
         property variant emailValidator: RegExpValidator{regExp: /^\w([a-zA-Z0-9.!#$%&'*+-\/=?^_`{|}~]+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/}
 
         function validateForm() {
-
             var isValid = true;
 
             if (!scoreSlider.touched) {
                 sliderErrorLabel.visible = true;
+
+                // If we've got an assigned parent flickable, then use it to reposition view.
+                if(parentFlickable) {
+                    var nY = root.mapFromItem(questionLabel, 0, 0).y;
+                    parentFlickable.contentY = nY;
+                    
+                }
+
                 isValid = false;
             }
 
@@ -126,6 +135,16 @@ Rectangle {
                 var result = emailAddressField.acceptableInput;
                 mouseArea.enabled = !result;
                 invalidEmailLabel.visible = !result;
+
+                //   If we've got an assigned parent flickable, and there are no
+                // other "previous" validation errors, then use it to reposition
+                // view.
+                if(!result && isValid && parentFlickable) {
+                    var nY = root.mapFromItem(emailAddressPane, 0, 0).y;
+                    parentFlickable.contentY = nY;
+                    emailAddressField.focus = true;
+                }
+
                 if (!result)isValid = false;
             }
 
@@ -173,6 +192,7 @@ Rectangle {
 
         // Question
         Label {
+            id:questionLabel
             width: parent.width
             wrapMode: Text.Wrap
             font.pixelSize: 24
