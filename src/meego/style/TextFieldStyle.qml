@@ -41,7 +41,7 @@
 import QtQuick 1.1
 import "UIConstants.js" as UI
 
-Style {
+Item {
     property alias textFont: textProperties.font
     property color textColor: UI.COLOR_FOREGROUND
     property color selectedTextColor: UI.COLOR_INVERTED_FOREGROUND
@@ -67,8 +67,9 @@ Style {
 
     Text {
         id: textProperties
-        font.family: __fontFamilyLight()
+        font.family: (locale && locale.language == "fa") ? UI.FONT_FAMILY_LIGHT_FARSI : UI.FONT_FAMILY_LIGHT
         font.pixelSize: UI.FONT_DEFAULT
         visible: false
     }
+
 }
