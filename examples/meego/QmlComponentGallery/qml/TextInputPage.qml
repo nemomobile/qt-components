@@ -382,6 +382,9 @@ Page {
                         actionKeyHighlighted: highlightButton.checked
                         actionKeyEnabled: !disableButton.checked
                     }
+                    Keys.onReturnPressed: {
+                        sipAttributesTextField2.forceActiveFocus();
+                    }
                 }
                 ButtonRow {
                     exclusive: false
