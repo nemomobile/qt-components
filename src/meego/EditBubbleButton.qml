@@ -58,16 +58,12 @@ BorderImage {
             platformStyle.backgroundMarginTop +
             platformStyle.backgroundMarginBottom
 
-    source: {
-        if (mouseArea.pressed)
-            return platformStyle.pressedBackground;
-
-        // XXX: meegotouch-text-editor-selected image is missing
-        if (selected && platformStyle.position != "")
-            return platformStyle.checkedBackground;
-        else
-            return platformStyle.background;
-    }
+    // XXX: meegotouch-text-editor-selected image is missing
+    source: mouseArea.pressed ?
+                platformStyle.pressedBackground :
+            (selected && platformStyle.position != "") ?
+                platformStyle.checkedBackground :
+                platformStyle.background
 
     border {
         left: platformStyle.backgroundMarginLeft
