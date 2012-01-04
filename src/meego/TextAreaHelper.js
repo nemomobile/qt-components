@@ -272,8 +272,9 @@ function atWordSeparator(pos, text) {
 var MIN_UPDATE_INTERVAL = 30
 var lastUpdateTime
 function filteredInputContextUpdate() {
-    if (Date.now() - lastUpdateTime > MIN_UPDATE_INTERVAL || !lastUpdateTime) {
+    var date = Date.now();
+    if (date - lastUpdateTime > MIN_UPDATE_INTERVAL || !lastUpdateTime) {
         inputContext.update();
-        lastUpdateTime = Date.now();
+        lastUpdateTime = date;
     }
 }
