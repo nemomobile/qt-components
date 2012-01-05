@@ -94,6 +94,9 @@ CommonDialog {
 
                 Text {
                     id: label
+
+                    LayoutMirroring.enabled: root.LayoutMirroring.enabled
+
                     anchors { right: parent.right; rightMargin: privateStyle.scrollBarThickness }
                     width: flickable.width - privateStyle.scrollBarThickness
                     font { family: platformStyle.fontFamilyRegular; pixelSize: platformStyle.fontSizeMedium }
@@ -102,6 +105,7 @@ CommonDialog {
                     wrapMode: Text.WordWrap
                     text: root.message
                     horizontalAlignment: Text.AlignLeft
+
                 }
             }
 
