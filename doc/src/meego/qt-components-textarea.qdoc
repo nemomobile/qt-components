@@ -254,5 +254,5 @@
 */
 
 /*!
-    Note that inside Flickable item set Flickable's pressDelay property (e.g. to 100) to avoid undesirable effects.
+    Note that if a TextArea is inside a Flickable item then Flickable's pressDelay property should be set (e.g. to 100)to avoid undesirable effects. Otherwise panning a focused TextArea that has lots of text will be difficult.
 */
