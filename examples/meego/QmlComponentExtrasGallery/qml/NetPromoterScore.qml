@@ -84,6 +84,9 @@ Page {
         contentWidth: rect.width
         contentHeight: rect.height
 
+        // To make scrolling the feedback text smoother when it has focus
+        pressDelay: 200
+
         Rectangle {
             id: rect
             width: 480
