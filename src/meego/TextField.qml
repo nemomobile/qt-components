@@ -375,6 +375,8 @@ FocusScope {
             inputContext.update();
         }
 
+        property bool __resetStatusBar: false
+
         anchors {verticalCenter: parent.verticalCenter; left: parent.left; right: parent.right}
         anchors.leftMargin: root.platformStyle.paddingLeft
         anchors.rightMargin: root.platformStyle.paddingRight
@@ -388,6 +390,21 @@ FocusScope {
         selectionColor: root.platformStyle.selectionColor
         mouseSelectionMode: TextInput.SelectWords
         focus: true
+
+        // don't show a status bar when device is in landscape and input panel is open
+        // method is called when input panel changes visibility state or device is rotated
+        function updateStatusBar() {
+            if (inputContext.softwareInputPanelVisible
+                    && typeof showStatusBar !== "undefined" && showStatusBar &&
+                    (screen.currentOrientation == Screen.Landscape
+                     ||  screen.currentOrientation == Screen.LandscapeInverted)) {
+                __resetStatusBar = true;
+                showStatusBar = false;
+            } else if (__resetStatusBar) {
+                __resetStatusBar = false;
+                showStatusBar = true;
+            }
+        }
 
         Component.onDestruction: {
             SelectionHandles.close(textInput);
@@ -409,6 +426,17 @@ FocusScope {
                 if (activeFocus) {
                     repositionTimer.running = true
                 }
+            }
+
+            onSoftwareInputPanelVisibleChanged: {
+                textInput.updateStatusBar();
+            }
+        }
+
+        Connections {
+            target: screen
+            onCurrentOrientationChanged: {
+                textInput.updateStatusBar();
             }
         }
 
