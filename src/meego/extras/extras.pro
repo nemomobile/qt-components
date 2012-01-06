@@ -19,6 +19,7 @@ SOURCES += plugin.cpp mdatetimehelper.cpp
 QML_FILES += \
     qmldir \
     constants.js\
+    Utils.js\
     CountBubble.qml \
     DatePickerDialog.qml \
     InfoBanner.qml \

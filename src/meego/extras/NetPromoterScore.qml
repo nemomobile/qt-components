@@ -40,13 +40,14 @@
 
 import QtQuick 1.1
 import com.nokia.meego 1.0
+import 'Utils.js' as Utils
 
 Rectangle {
     id: root
 
     // Common public API
 
-    property Flickable parentFlickable: null
+    property Flickable parentFlickable: Utils.findFlickable(root);
 
     // Input. Set to true if user is signed in to Nokia account.
     // Account email using agreement is shown if user is signed in.
