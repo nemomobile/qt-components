@@ -627,8 +627,11 @@ FocusScope {
                 // possible pre-edit word have to be committed before selection
                 inputContext.reset()
                 // Ignore doubleclicks which occur outside the smallest rectangle around the full text of the textfield
-                if ( platformSelectable && mouse.x < textEdit.paintedWidth && mouse.y < textEdit.paintedHeight )
-                    parent.selectByMouse = true
+                if (typeof showStatusBar !== "undefined" && locale.directionForText(textEdit.text) === 1 /* RightToLef */) {
+                    if ( platformSelectable && mouse.x > width - textEdit.paintedWidth && mouse.y < textEdit.paintedHeight )
+                        parent.selectByMouse = true;
+                } else if ( platformSelectable && mouse.x < textEdit.paintedWidth && mouse.y < textEdit.paintedHeight )
+                    parent.selectByMouse = true;
                 attemptToActivate = false
             }
         }
