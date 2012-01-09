@@ -103,7 +103,7 @@ Item {
 
     function popPage()
     {
-        return pageStack.pop();
+        return pageStack.pop(undefined, true);
     }
 
     function clearStack()
@@ -113,7 +113,7 @@ Item {
 
     function pushPageArray()
     {
-        return pageStack.push(pages);
+        return pageStack.push(pages, null, true);
     }
 
     function pushPagesForFind()
