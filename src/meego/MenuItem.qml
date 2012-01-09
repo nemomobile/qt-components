@@ -54,9 +54,9 @@ Item {
 
     // platformStyle API
     property Style platformStyle: MenuItemStyle{
-        position: root.parent.children.length == 1 ? ""
-      : root.parent.children[0] == root ? "vertical-top"
-      : root.parent.children[root.parent.children.length-1] == root ? "vertical-bottom"
+        position: __isOnlyVisibleChild() ? ""
+      : __firstVisibleChild() == root ? "vertical-top"
+      : __lastVisibleChild() == root ? "vertical-bottom"
       : "vertical-center"
     }
     property alias style: root.platformStyle // Deprecated
@@ -65,6 +65,37 @@ Item {
     height: ( root.platformStyle.height == 0 ) ?
             root.platformStyle.topMargin + menuText.paintedHeight + root.platformStyle.bottomMargin :
             root.platformStyle.topMargin + root.platformStyle.height + root.platformStyle.bottomMargin
+
+    function __isOnlyVisibleChild() {
+        var childList = root.parent.children;
+        for (var i = 0; i < childList.length; i++) {
+            var child = childList[i];
+            if (child !== root && child.visible)
+                return false;
+        }
+        return root.visible;
+    }
+
+    function __firstVisibleChild() {
+        var childList = root.parent.children;
+        for (var i = 0; i < childList.length; i++) {
+            var child = childList[i];
+            if (child.visible)
+                return child;
+        }
+        return null;
+    }
+
+    function __lastVisibleChild() {
+        var childList = root.parent.children;
+        for (var i = childList.length - 1; i >= 0; i--) {
+            var child = childList[i];
+            if (child.visible)
+                return child;
+        }
+        return null;
+    }
+
 /*
     Rectangle {
        id: backgroundRec
