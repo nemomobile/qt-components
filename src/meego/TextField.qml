@@ -652,7 +652,8 @@ FocusScope {
             onDoubleClicked: {
                 // possible pre-edit word have to be commited before selection
                 inputContext.reset()
-                if( platformSelectable )
+                // Ignore doubleclicks which occur outside the smallest rectangle around the full text of the textfield
+                if ( platformSelectable && mouse.x <= textInput.positionToRectangle( textInput.text.length ).x )
                     parent.selectByMouse = true
                 attemptToActivate = false
             }

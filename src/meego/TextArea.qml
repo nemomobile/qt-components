@@ -626,10 +626,10 @@ FocusScope {
             onDoubleClicked: {
                 // possible pre-edit word have to be committed before selection
                 inputContext.reset()
-                if ( platformSelectable ) {
-                    parent.selectByMouse = true;
-                }
-                attemptToActivate = false;
+                // Ignore doubleclicks which occur outside the smallest rectangle around the full text of the textfield
+                if ( platformSelectable && mouse.x < textEdit.paintedWidth && mouse.y < textEdit.paintedHeight )
+                    parent.selectByMouse = true
+                attemptToActivate = false
             }
         }
     }
