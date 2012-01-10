@@ -1,8 +1,14 @@
-qt-components (1.2~git20111209-2) maverick; urgency=low
+qt-components (1.2~git20120109-2) maverick; urgency=low
 
   * Next release
 
- -- Balaji Chellakani <ext-balaji.chellakani@nokia.com>  Fri, 09 Dec 2011 16:51:00 +0300
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Mon, 09 Jan 2012 14:17:00 +0300
+
+qt-components (1.2~git20120109-1) maverick; urgency=low
+
+  * Fixes: NB#296089 SimpleIRC does not work (chat windows are not visible) with Harmattan PR1.2
+
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Mon, 09 Jan 2012 14:15:00 +0300
 
 qt-components (1.2~git20111209-1) maverick; urgency=low
 
