@@ -218,14 +218,14 @@ Rectangle {
                 font.pixelSize: 24
                 color: "#282828"
                 horizontalAlignment: Text.AlignLeft
-                text: "0"
+                text: locale && typeof locale.formatNumber !== 'undefined' ? locale.formatNumber(0) : '0'
             }
             Label {
                 width: parent.width/2
                 font.pixelSize: 24
                 color: "#282828"
                 horizontalAlignment: Text.AlignRight
-                text: "10"
+                text: locale && typeof locale.formatNumber !== 'undefined' ? locale.formatNumber(10) : '10'
             }
         }
 
