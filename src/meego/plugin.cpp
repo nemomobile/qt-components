@@ -157,11 +157,13 @@ public:
         QString defaultFontFamily      = QLatin1String("Nokia Pure Text");
         QString defaultFontFamilyLight = QLatin1String("Nokia Pure Text Light");
 
+#ifdef HAVE_MEEGOTOUCH
         // use arial when language is set to farsi
         if (locale && locale->language() == QLatin1String("fa")) {
             defaultFontFamily = QLatin1String("Arial");
             defaultFontFamilyLight = QLatin1String("Arial");
         }
+#endif // HAVE_MEEGOTOUCH
 
         QDeclarativePropertyMap *uiConstantsData = new QDeclarativePropertyMap();
         uiConstantsData->insert("DefaultMargin", QVariant(16));
