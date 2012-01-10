@@ -311,4 +311,5 @@ Item {
     onChildrenChanged: internal.layoutChildren()
     onImplicitWidthChanged: internal.layoutChildren()
     onImplicitHeightChanged: internal.layoutChildren()
+    onWidthChanged: internal.layoutChildren()
 }
