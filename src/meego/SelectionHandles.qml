@@ -89,7 +89,8 @@ Item {
                           Popup.close(textInput);
                       }
                       leftSelectionImage.dragStart = Qt.point( mouse.x, mouse.y );
-                      MagnifierPopup.open(textInput);
+                      var sourceItem = textInput.parent != undefined ? textInput.parent : textInput
+                      MagnifierPopup.open(sourceItem);
                       rect.updateMagnifierPosition(parent,mouse.x,mouse.y)
                   }
                   onPositionChanged: {
@@ -189,7 +190,8 @@ Item {
                           Popup.close(textInput);
                       }
                       rightSelectionImage.dragStart = Qt.point( mouse.x, mouse.y );
-                      MagnifierPopup.open(textInput);
+                      var sourceItem = textInput.parent != undefined ? textInput.parent : textInput
+                      MagnifierPopup.open(sourceItem);
                       rect.updateMagnifierPosition(parent,mouse.x,mouse.y)
                   }
                   onPositionChanged: {
