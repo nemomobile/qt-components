@@ -79,6 +79,7 @@ Rectangle {
     Item {
         id: window
         objectName: "window"
+        rotation: -screen.rotation
 
         function setOrientationWithoutAnimation() {
             root.orientationChangeStarted();
