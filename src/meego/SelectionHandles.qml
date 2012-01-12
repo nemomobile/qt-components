@@ -46,7 +46,7 @@ Item {
         // Function to calculate whether the handle positions are out of the view area:
         function outOfView( rootX, rootY, offset ) {
             var point = contents.mapToItem( textInput, rootX, rootY );
-            return (point.x - offset) < 0 || ( textInput != null  && (point.x - offset) > textInput.width );
+            return (point.x - offset) < 0 || ( textInput != null  && (point.x - offset) > textInput.width + 5);
         }
 
         function updateMagnifierPosition( item, posX, posY) {
@@ -109,6 +109,12 @@ Item {
                       privateIgnoreClose = false;
                   }
                   onReleased: {
+                      Popup.enableOffset( false );
+                      Popup.open(textInput,textInput.positionToRectangle(textInput.cursorPosition));
+                      Popup.enableOffset( Private.handlesIntersectWith(Popup.geometry()) );
+                      MagnifierPopup.close();
+                  }
+                  onExited: {
                       Popup.enableOffset( false );
                       Popup.open(textInput,textInput.positionToRectangle(textInput.cursorPosition));
                       Popup.enableOffset( Private.handlesIntersectWith(Popup.geometry()) );
@@ -214,6 +220,12 @@ Item {
                       Popup.open(textInput,textInput.positionToRectangle(textInput.cursorPosition));
                       Popup.enableOffset( Private.handlesIntersectWith(Popup.geometry()) );
                       MagnifierPopup.close();
+                 }
+                 onExited: {
+                     Popup.enableOffset( false );
+                     Popup.open(textInput,textInput.positionToRectangle(textInput.cursorPosition));
+                     Popup.enableOffset( Private.handlesIntersectWith(Popup.geometry()) );
+                     MagnifierPopup.close();
                  }
              }
 
