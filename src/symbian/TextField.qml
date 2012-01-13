@@ -199,6 +199,7 @@ FocusScope {
                     opacity: 0
                 }
 
+                horizontalAlignment: TextInput.AlignLeft
                 activeFocusOnPress: false
                 cursorVisible: activeFocus && selectionStart == selectionEnd
                 enabled: root.enabled
@@ -265,6 +266,7 @@ FocusScope {
                                          : platformStyle.colorNormalMid
             font: textInput.font
             visible: (!textInput.activeFocus || readOnly) && !textInput.text && text
+            horizontalAlignment: textInput.horizontalAlignment
         }
 
     }
