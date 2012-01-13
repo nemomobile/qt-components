@@ -39,7 +39,7 @@
 ****************************************************************************/
 /*!
     \qmlclass PageIndicator
-    \inherits ImplicitSizeItem
+    \inherits Item
     \ingroup qt-components-extras
     \since 4.7
     \brief PageIndicator indicates the page user is currently viewing 

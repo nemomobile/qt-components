@@ -39,7 +39,7 @@
 ****************************************************************************/
 /*!
     \qmlclass Button
-    \inherits ImplicitSizeItem
+    \inherits Item
     \ingroup qt-components
     \since 4.7
 

@@ -39,7 +39,7 @@
 ****************************************************************************/
 /*!
     \qmlclass TextArea
-    \inherits ImplicitSizeItem
+    \inherits Item
     \ingroup qt-components
     \since 4.7
     \brief The TextArea item displays multiple lines of editable formatted text

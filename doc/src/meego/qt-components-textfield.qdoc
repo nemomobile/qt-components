@@ -39,7 +39,7 @@
 ****************************************************************************/
 /*!
     \qmlclass TextField
-    \inherits ImplicitSizeItem
+    \inherits Item
     \ingroup qt-components
     \since 4.7
     \brief The TextField element displays a single line of editable plain text

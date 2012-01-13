@@ -39,7 +39,7 @@
 ****************************************************************************/
 /*!
     \qmlclass Tumbler
-    \inherits ImplicitSizeItem
+    \inherits Item
     \ingroup qt-components-extras
     \since 4.7
     \brief Tumbler is a one or more column widget where selection is done by sliding
