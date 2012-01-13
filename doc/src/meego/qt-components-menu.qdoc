@@ -39,7 +39,7 @@
 ****************************************************************************/
 /*!
     \qmlclass Menu
-    \inherits Popup
+    \inherits Item
     \ingroup qt-components
     \since 4.7
 
