@@ -46,14 +46,14 @@
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
+
     QDeclarativeView view;
 #ifdef Q_OS_SYMBIAN
     view.rootContext()->setContextProperty("desktop", false);
 #else
     view.rootContext()->setContextProperty("desktop", true);
-    QDir::setCurrent(app.applicationDirPath());
 #endif
-    view.setSource(QUrl::fromLocalFile("scalefm.qml"));
+    view.setSource(QUrl("qrc:/core/scalefm.qml"));
     view.show();
     return app.exec();
 }

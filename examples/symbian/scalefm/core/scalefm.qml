@@ -40,8 +40,8 @@
 
 import QtQuick 1.1
 import com.nokia.symbian 1.1
-import "core"
-import "core/StyleLoader.js" as StyleLoader
+
+import "StyleLoader.js" as StyleLoader
 
 PageStackWindow {
     id: window

@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>DatePickerDialog.qml</file>
+        <file>InfoBannerPage.qml</file>
+        <file>main.qml</file>
+        <file>RatingIndicator.qml</file>
+        <file>TimePickerDialog.qml</file>
+        <file>Tumbler.qml</file>
+        <file>TumblerDialog.qml</file>
+    </qresource>
+    <qresource prefix="/assets">
+        <file alias="info_banner_thumbnail.png">assets/info_banner_thumbnail.png</file>
+    </qresource>
+</RCC>

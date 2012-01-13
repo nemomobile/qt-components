@@ -22,4 +22,19 @@
         <file alias="qtg_small_favorite.svg">resources/graphics/qtg_small_favorite.svg</file>
         <file alias="qtg_small_star_non_favourited.svg">resources/graphics/qtg_small_star_non_favourited.svg</file>
     </qresource>
+    <qresource prefix="/">
+        <file>core/DisplaySelectionDialog.qml</file>
+        <file>core/FrequencyStrip.qml</file>
+        <file>core/MagnifyingTool.qml</file>
+        <file>core/MobileView.qml</file>
+        <file>core/RadioConsole.qml</file>
+        <file>core/RadioControls.qml</file>
+        <file>core/scalefm.qml</file>
+        <file>core/StationListItem.qml</file>
+        <file>core/StationListView.qml</file>
+        <file>core/StationModel.qml</file>
+        <file>core/StyleLoader.js</file>
+        <file>core/TabletView.qml</file>
+        <file>core/ViewContainer.qml</file>
+    </qresource>
 </RCC>

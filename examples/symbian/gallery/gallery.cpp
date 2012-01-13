@@ -48,16 +48,10 @@
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
-
     qmlRegisterType<LayoutDirectionSetter>("LayoutDirectionSetter", 1, 0, "LayoutDirectionSetter");
 
     QDeclarativeView view;
-
-#ifndef Q_OS_SYMBIAN
-    QDir::setCurrent(app.applicationDirPath());
-#endif
-
-    view.setSource(QUrl::fromLocalFile("gallery.qml"));
+    view.setSource(QUrl("qrc:/gallery.qml"));
     view.show();
     return app.exec();
 }

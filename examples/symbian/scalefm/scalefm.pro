@@ -3,30 +3,25 @@ TEMPLATE = app
 QT += declarative
 CONFIG += qt-components
 CONFIG -= app_bundle
-win32:DESTDIR = $$OUT_PWD
 
 SOURCES += src/scalefm.cpp
+RESOURCES += scalefm.qrc
 
 symbian {
-    TARGET.EPOCALLOWDLLDATA = 1
-    TARGET.UID3 = 0x2003DE90
-    TARGET.EPOCHEAPSIZE = 0x1000 0xF00000
-    TARGET.CAPABILITY = ReadDeviceData SwEvent WriteDeviceData
-    scalefm_qmls.sources = *.qml
-    scalefm_core.sources = core/*.qml core/*.js
-    scalefm_core.path = core
-    DEPLOYMENT += scalefm_qmls scalefm_core
-    BLD_INF_RULES.prj_exports += "scalefm.iby $$CORE_APP_LAYER_IBY_EXPORT_PATH(scalefm.iby)"
-    VERSION = 10.1.2
+    CONFIG(symbian_internal) {
+        TARGET.UID3 = 0x2003DE90
+        TARGET.EPOCALLOWDLLDATA = 1
+        BLD_INF_RULES.prj_exports += "scalefm.iby $$CORE_APP_LAYER_IBY_EXPORT_PATH(scalefm.iby)"
+        VERSION = 10.1.2
 
-    stubsis = \
-        "START EXTENSION app-services.buildstubsis" \
-        "OPTION SISNAME scalefm_stub" \
-        "OPTION SRCDIR ."\
-        "END"
-    BLD_INF_RULES.prj_extensions = stubsis
+        stubsis = \
+            "START EXTENSION app-services.buildstubsis" \
+            "OPTION SISNAME scalefm_stub" \
+            "OPTION SRCDIR ."\
+            "END"
+        BLD_INF_RULES.prj_extensions = stubsis
 
-    vendor_info = \
+        vendor_info = \
             " " \
             "; Localised Vendor name" \
             "%{\"Nokia\"}" \
@@ -34,17 +29,17 @@ symbian {
             "; Unique Vendor name" \
             ":\"Nokia\"" \
             " "
-
-    header = "$${LITERAL_HASH}{\"scalefm\"},(0x2003DE90),1,1,2,TYPE=SA,RU"
-    package.pkg_prerules += vendor_info header
-    DEPLOYMENT += package
+        header = "$${LITERAL_HASH}{\"scalefm\"},(0x2003DE90),1,1,2,TYPE=SA,RU"
+        package.pkg_prerules += vendor_info header
+        DEPLOYMENT += package
+    } else {
+        TARGET.UID3 = 0xE0000022
+    }
+    TARGET.EPOCHEAPSIZE = 0x1000 0xF00000
 }
 
-RESOURCES += \
-    scalefm.qrc
-
 OTHER_FILES += \
-    scalefm.qml \
+    core/scalefm.qml \
     core/DisplaySelectionDialog.qml \
     core/FrequencyStrip.qml \
     core/MagnifyingTool.qml \
