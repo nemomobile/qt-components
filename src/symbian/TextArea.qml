@@ -311,6 +311,7 @@ FocusScopeItem {
                         value: privy.wrapWidth
                     }
                 }
+                horizontalAlignment: TextEdit.AlignLeft
                 activeFocusOnPress: false
                 enabled: root.enabled
                 focus: true
