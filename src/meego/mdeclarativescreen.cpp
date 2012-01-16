@@ -39,6 +39,7 @@
 ****************************************************************************/
 
 #include <QApplication>
+#include <QDeclarativeItem>
 #include <QWindowStateChangeEvent>
 
 #include "mdeclarativescreen.h"
@@ -491,7 +492,7 @@ QString MDeclarativeScreenPrivate::topEdgeValue() const {
     return top;
 }
 
-MDeclarativeScreen::MDeclarativeScreen(QDeclarativeItem *parent)
+MDeclarativeScreen::MDeclarativeScreen(QObject *parent)
         : QObject(parent),
         d(new MDeclarativeScreenPrivate(this))
 {

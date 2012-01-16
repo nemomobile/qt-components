@@ -41,7 +41,6 @@
 #ifndef MDECLARATIVESCREEN_H
 #define MDECLARATIVESCREEN_H
 
-#include <qdeclarativeitem.h>
 #include <qglobal.h>
 #include <QDesktopWidget>
 #include <QPointer>
@@ -49,6 +48,7 @@
 
 #define MEEGOTOUCH_DOUBLETAP_INTERVAL 325
 
+class QDeclarativeItem;
 class MDeclarativeScreenPrivate;
 class MWindowState;
 
@@ -197,7 +197,7 @@ Q_SIGNALS:
     void physicalDisplayChanged();
 
 private:
-    MDeclarativeScreen(QDeclarativeItem *parent = 0);
+    MDeclarativeScreen(QObject *parent = 0);
     Q_DISABLE_COPY(MDeclarativeScreen)
     Q_PRIVATE_SLOT(d, void _q_isCoveredChanged())
     Q_PRIVATE_SLOT(d, void _q_updateOrientationAngle())
