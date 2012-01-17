@@ -65,6 +65,11 @@
 #include <X11/extensions/Xrandr.h>
 #endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+# include <QWindow>
+# include <QScreen>
+#endif
+
 static const qreal CATEGORY_SMALL_LIMIT  = 3.2;
 static const qreal CATEGORY_MEDIUM_LIMIT = 4.5;
 static const qreal CATEGORY_LARGE_LIMIT  = 7.0;
@@ -123,6 +128,8 @@ public:
 
 #ifdef Q_WS_X11
     WId windowId;
+#elif QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    QWeakPointer<QWindow> window;
 #endif
 
 #ifdef HAVE_CONTEXTSUBSCRIBER
@@ -305,6 +312,23 @@ void MDeclarativeScreenPrivate::updateX11OrientationAngleProperty()
         return;
 
     writeX11OrientationAngleProperty(windowId, q->rotation());
+#elif QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    if (!window)
+        return;
+
+    Qt::ScreenOrientation o = Qt::UnknownOrientation;
+    switch (q->rotation()) {
+    case 0: o = Qt::LandscapeOrientation; break;
+    case 90: o = Qt::InvertedPortraitOrientation; break;
+    case 180: o = Qt::InvertedLandscapeOrientation; break;
+    case 270: o = Qt::PortraitOrientation; break;
+    default:
+        qCritical() << "MDeclarativeScreen has invalid orientation set.";
+    }
+    if (o != Qt::UnknownOrientation) {
+        qCritical() << "Setting orientation";
+        window.data()->setOrientation(o);
+    }
 #endif
 }
 
@@ -446,6 +470,30 @@ void MDeclarativeScreenPrivate::_q_updateOrientationAngle()
         keyboardOpen = open;
         emit q->keyboardOpenChanged();
     }
+#elif QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    QScreen* screen = QGuiApplication::primaryScreen();
+    if (window)
+        screen = window.data()->screen();
+    Qt::ScreenOrientation orientation = screen->currentOrientation();
+    switch (orientation) {
+    case Qt::LandscapeOrientation:
+        if (allowedOrientations & MDeclarativeScreen::Landscape)
+            newOrientation = MDeclarativeScreen::Landscape;
+        break;
+    case Qt::PortraitOrientation:
+        if (allowedOrientations & MDeclarativeScreen::Portrait)
+            newOrientation = MDeclarativeScreen::Portrait;
+        break;
+    case Qt::InvertedLandscapeOrientation:
+        if (allowedOrientations & MDeclarativeScreen::LandscapeInverted)
+            newOrientation = MDeclarativeScreen::LandscapeInverted;
+        break;
+    case Qt::InvertedPortraitOrientation:
+        if (allowedOrientations & MDeclarativeScreen::PortraitInverted)
+            newOrientation = MDeclarativeScreen::PortraitInverted;
+        break;
+    case Qt::UnknownOrientation: break;
+    }
 #endif
 
     //only set the new orientation if it is a valid one
@@ -510,8 +558,28 @@ MDeclarativeScreen::~MDeclarativeScreen()
 bool MDeclarativeScreen::eventFilter(QObject *o, QEvent *e) {
     if(e->type() == QEvent::WindowStateChange) {
         d->topLevelWidget = qobject_cast<QWidget*>(o);
+        bool haveWindow = false;
         if(d->topLevelWidget && d->topLevelWidget->parent() == NULL) { //it's a toplevelwidget
             d->setMinimized(d->topLevelWidget->windowState() & Qt::WindowMinimized);
+            haveWindow = true;
+        } else {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+            QWindow* w = qobject_cast<QWindow*>(o);
+            if (!d->window) {
+                d->window = w;
+                connect(w->screen(), SIGNAL(currentOrientationChanged(Qt::ScreenOrientation)),
+                        this, SLOT(_q_updateOrientationAngle()));
+            }
+            if (d->window) {
+                d->setMinimized(d->window.data()->windowState() & Qt::WindowMinimized);
+                haveWindow = true;
+            }
+#else
+            qCritical() << "State change event from foreign window";
+#endif
+        }
+
+        if (haveWindow) {
             if(d->isMinimized()) {
                 d->allowedOrientationsBackup = d->allowedOrientations;
 
@@ -534,8 +602,6 @@ bool MDeclarativeScreen::eventFilter(QObject *o, QEvent *e) {
                         setOrientation(d->physicalOrientation());
                 }
             }
-        } else {
-            qCritical() << "State change event from foreign window";
         }
     }
     return QObject::eventFilter(o, e);
