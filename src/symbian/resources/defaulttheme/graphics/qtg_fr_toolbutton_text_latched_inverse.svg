@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="110px" height="50px" viewBox="0 0 110 50" enable-background="new 0 0 110 50" xml:space="preserve">
+<path fill="#1080DD" d="M21,45C6.047,45,1,39.953,1,25S6.047,5,21,5h68c14.953,0,20,5.047,20,20s-5.047,20-20,20H21z"/>
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="251" y1="-250" x2="251" y2="-210.1081" gradientTransform="matrix(1 0 0 -1 -196 -205)">
+	<stop  offset="0" style="stop-color:#FFFFFF"/>
+	<stop  offset="1" style="stop-color:#FFFFFF;stop-opacity:0"/>
+</linearGradient>
+<path fill="url(#SVGID_1_)" fill-opacity="0.15" d="M21,45C6.047,45,1,39.953,1,25S6.047,5,21,5h68c14.953,0,20,5.047,20,20
+	s-5.047,20-20,20H21z"/>
+<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="251" y1="-250.2383" x2="251" y2="-210.474" gradientTransform="matrix(1 0 0 -1 -196 -205)">
+	<stop  offset="0" style="stop-color:#FFFFFF"/>
+	<stop  offset="1" style="stop-color:#FFFFFF;stop-opacity:0"/>
+</linearGradient>
+<path fill="url(#SVGID_2_)" fill-opacity="0.1" d="M89,5H21C6.047,5,1,10.047,1,25s5.047,20,20,20h68c14.953,0,20-5.047,20-20
+	S103.953,5,89,5z M89,44H21C6.617,44,2,39.383,2,25S6.617,6,21,6h68c14.383,0,19,4.617,19,19S103.383,44,89,44z"/>
+<path fill="#FFFFFF" fill-opacity="0.3" d="M21,45C6.047,45,1,39.953,1,25S6.047,5,21,5h68c14.953,0,20,5.047,20,20s-5.047,20-20,20
+	H21z"/>
+<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="251" y1="-209" x2="251" y2="-250.9405" gradientTransform="matrix(1 0 0 -1 -196 -205)">
+	<stop  offset="0" style="stop-color:#000000"/>
+	<stop  offset="0.0057" style="stop-color:#000000"/>
+	<stop  offset="1" style="stop-color:#000000;stop-opacity:0"/>
+</linearGradient>
+<path fill="url(#SVGID_3_)" d="M89,4H21C5.441,4,0,9.446,0,25c0,15.561,5.441,21,21,21h68c15.559,0,21-5.439,21-21
+	C110,9.446,104.559,4,89,4z M89,45H21C6.047,45,1,39.953,1,25S6.047,5,21,5h68c14.953,0,20,5.047,20,20S103.953,45,89,45z"/>
+<rect fill="none" width="110" height="50"/>
+</svg>
