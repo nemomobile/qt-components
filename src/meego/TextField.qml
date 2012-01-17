@@ -260,18 +260,25 @@ FocusScope {
 
         if (!activeFocus)
             MagnifierPopup.close();
+        background.source = pickBackground();
+    }
+
+    function pickBackground() {
+        if (errorHighlight) {
+            return platformStyle.backgroundError;
+        }
+        if (textInput.activeFocus) {
+            return platformStyle.backgroundSelected;
+        }
+        if (readOnly) {
+            return platformStyle.backgroundDisabled;
+        }
+        return platformStyle.background;
     }
 
     BorderImage {
         id: background
-        source: errorHighlight?
-            platformStyle.backgroundError:
-            readOnly?
-            platformStyle.backgroundDisabled:
-        textInput.activeFocus?
-            platformStyle.backgroundSelected:
-            platformStyle.background
-
+        source: pickBackground();
         anchors.fill: parent
         border.left: root.platformStyle.backgroundCornerMargin; border.top: root.platformStyle.backgroundCornerMargin
         border.right: root.platformStyle.backgroundCornerMargin; border.bottom: root.platformStyle.backgroundCornerMargin
