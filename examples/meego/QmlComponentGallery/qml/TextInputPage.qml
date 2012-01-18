@@ -104,12 +104,23 @@ Page {
 
                             visible: custom.activeFocus
 
-                            Text {
-                                font.pointSize: 14
-                                color: "darkgrey"
-                                anchors {fill: parent; margins: 10}
-                                wrapMode: "Wrap"
-                                text: "You can show elements on TextField activeFocus change: \n" + custom.text
+                            Flickable {
+                                anchors.fill: parent
+                                anchors.margins: 10
+                                clip: true
+                                contentWidth: suggestionBubble.width
+                                contentHeight: suggestionBubble.height
+                                contentY:  Math.max(0, suggestionBubbleText.height - height)
+                                flickableDirection: Flickable.VerticalFlick
+                                Text {
+                                    id: suggestionBubbleText
+                                    width: parent.width
+                                    font.pointSize: 14
+                                    color: "darkgrey"
+                                    onLineHeightChanged: console.log(lineHeight);
+                                    wrapMode: Text.WordWrap
+                                    text: "You can show elements on TextField activeFocus change: \n" + custom.text
+                                }
                             }
                         }
 
