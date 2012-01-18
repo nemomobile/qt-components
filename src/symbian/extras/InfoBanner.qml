@@ -44,7 +44,8 @@ import "Constants.js" as CONSTANTS
 
 Item {
     id: root
-
+    z: Infinity
+    
     property url iconSource
     property alias text: text.text
     property alias timeout : timer.interval
@@ -54,8 +55,7 @@ Item {
     signal clicked
 
     function open() {
-        root.parent = internal.visualRoot();
-        internal.setZOrder();
+        root.parent = internal.rootObject();
         var suffix = root.interactive ? "_normal" : ""
         background.source = privateStyle.imagePath("qtg_fr_popup_infobanner" + suffix,
                                                    root.platformInverted)
@@ -155,23 +155,6 @@ Item {
             while (next && next.parent)
                 next = next.parent
             return next
-        }
-
-        function visualRoot() {
-            var root = rootObject()
-            if(root.hasOwnProperty("privateWindow"))
-                return root.privateWindow
-            return root;
-        }
-
-        function setZOrder() {
-            if (root.parent) {
-                var maxZ = 0;
-                var siblings = root.parent.children;
-                for (var i = 0; i < siblings.length; ++i)
-                    maxZ = Math.max(maxZ, siblings[i].z);
-                root.z = maxZ + 1;
-            }
         }
 
         function bannerHeight() {
