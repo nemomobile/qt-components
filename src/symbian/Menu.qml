@@ -63,12 +63,13 @@ Item {
         id: popup
         objectName: "OptionsMenu"
 
-        y: screen.height - popup.height
+        y: (root.height ? root.height : screen.height) - popup.height
+
         animationDuration: 200
         state: "Hidden"
         visible: status != DialogStatus.Closed
         enabled: status == DialogStatus.Open
-        width: screen.width
+        width: root.width ? root.width : screen.width
         height: menuContainer.height
         clip: true
         platformInverted: root.platformInverted
@@ -98,6 +99,12 @@ Item {
                           rightMargin: platformStyle.paddingLarge }
                 platformInverted: root.platformInverted
                 onItemClicked: popup.close()
+
+                // Use root size as menu size as screen size if explicitly set.
+                // This is a workaround for situations when application locks screen
+                // and handles rotations itself, which may lead to invalid screen sizes.
+                screenWidth: root.width ? root.width : screen.width
+                screenHeight: root.height ? root.height : screen.height
             }
 
             BorderImage {

@@ -48,6 +48,9 @@ Item {
     property Popup containingPopup: null
     property bool platformInverted: false
 
+    property int screenHeight: screen.height
+    property int screenWidth: screen.width
+
     signal itemClicked()
 
     height: flickableArea.height
@@ -57,7 +60,7 @@ Item {
         // Add padding to align content area top and bottom with rounded background graphics.
         // Optionsmenu uses mask, thus no padding needed
         property int clipMargin: containingPopup.objectName == "OptionsMenu" ? 0 : platformStyle.paddingSmall
-        property int preferredHeight: privateStyle.menuItemHeight * ((screen.width < screen.height) ? 5 : 3)
+        property int preferredHeight: privateStyle.menuItemHeight * ((screenWidth < screenHeight) ? 5 : 3)
     }
 
     BorderImage {
