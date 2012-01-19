@@ -39,6 +39,7 @@
 ****************************************************************************/
 
 #include <QApplication>
+#include <QDebug>
 #include <QDeclarativeItem>
 #include <QWindowStateChangeEvent>
 
@@ -51,7 +52,6 @@
 # include "contextproperty.h"
 # include "contextpropertyinfo.h"
 # include "mservicelistener.h"
-# include <QDebug>
 #endif
 
 #ifdef Q_WS_X11
