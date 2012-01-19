@@ -47,7 +47,9 @@
 #include <QCoreApplication>
 #include <qpainter.h>
 #include <QTimer>
-#include <qx11info_x11.h>
+#if defined(Q_WS_X11)
+   #include <qx11info_x11.h>
+#endif
 #include <qgraphicsscene.h>
 #include <qdebug.h>
 #include "mwindowstate.h"
