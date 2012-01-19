@@ -54,6 +54,21 @@
 #include <qdebug.h>
 #include "mwindowstate.h"
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+   #include <QtQuick/qsgnode.h>
+   #include <QtQuick/qsggeometry.h>
+   #include <QtQuick/qsgtexturematerial.h>
+   #include <QtQuick/qsgflatcolormaterial.h>
+   #include <QtQuick/qquickcanvas.h>
+   #include <qguiapplication.h>
+   #include <qplatformnativeinterface_qpa.h>
+   #if defined(QT_OPENGL_ES_2)
+      #include <EGL/egl.h>
+      #include <EGL/eglext.h>
+      #include <GLES2/gl2ext.h>
+   #endif
+#endif
+
 #ifdef HAVE_DBUS
    #include <QDBusInterface>
    #include <QDBusServiceWatcher>
@@ -62,7 +77,16 @@
 
 #ifdef HAVE_XDAMAGE
    #include <X11/extensions/Xdamage.h>
+
+   #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+      #include <X11/Xlib-xcb.h>
+      #include <xcb/xcb.h>
+      #include <xcb/damage.h>
+   #endif
 #endif
+
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
 
 static const int STATUSBAR_HEIGHT = 36;
 
@@ -99,6 +123,19 @@ static int handleXError(Display *, XErrorEvent *)
 static bool x11EventFilter(void *message, long *result)
 {
 #ifdef HAVE_XDAMAGE
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    xcb_generic_event_t *event = (xcb_generic_event_t *)message;
+    if ((event->response_type & ~0x80) == xDamageEventBase + XDamageNotify) {
+        xcb_damage_notify_event_t *xevent = (xcb_damage_notify_event_t *) event;
+
+        // notify status bar
+        MDeclarativeStatusBar *statusBar = damageMap.value(xevent->damage);
+        if (statusBar) {
+            statusBar->update();
+            return true;
+        }
+    }
+#else
     XEvent *event = (XEvent *)message;
 
     if (event->type == xDamageEventBase + XDamageNotify) {
@@ -111,6 +148,7 @@ static bool x11EventFilter(void *message, long *result)
             return true;
         }
     }
+#endif
 #else
     Q_UNUSED(message);
 #endif
@@ -121,13 +159,67 @@ static bool x11EventFilter(void *message, long *result)
         return false;
 }
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) && !defined(QT_OPENGL_ES_2)
+static QImage qimageFromXImage(XImage* xi)
+{
+    QImage::Format format = QImage::Format_ARGB32_Premultiplied;
+    if (xi->depth == 24)
+        format = QImage::Format_RGB32;
+    else if (xi->depth == 16)
+        format = QImage::Format_RGB16;
+
+    QImage image = QImage(reinterpret_cast<uchar*>(xi->data), xi->width, xi->height, xi->bytes_per_line, format).copy();
+
+    // we may have to swap the byte order
+    if ((QSysInfo::ByteOrder == QSysInfo::LittleEndian && xi->byte_order == MSBFirst)
+        || (QSysInfo::ByteOrder == QSysInfo::BigEndian && xi->byte_order == LSBFirst)) {
+
+        for (int i = 0; i < image.height(); i++) {
+            if (xi->depth == 16) {
+                ushort* p = reinterpret_cast<ushort*>(image.scanLine(i));
+                ushort* end = p + image.width();
+                while (p < end) {
+                    *p = ((*p << 8) & 0xff00) | ((*p >> 8) & 0x00ff);
+                    p++;
+                }
+            } else {
+                uint* p = reinterpret_cast<uint*>(image.scanLine(i));
+                uint* end = p + image.width();
+                while (p < end) {
+                    *p = ((*p << 24) & 0xff000000) | ((*p << 8) & 0x00ff0000)
+                         | ((*p >> 8) & 0x0000ff00) | ((*p >> 24) & 0x000000ff);
+                    p++;
+                }
+            }
+        }
+    }
+
+    // fix-up alpha channel
+    if (format == QImage::Format_RGB32) {
+        QRgb* p = reinterpret_cast<QRgb*>(image.bits());
+        for (int y = 0; y < xi->height; ++y) {
+            for (int x = 0; x < xi->width; ++x)
+                p[x] |= 0xff000000;
+            p += xi->bytes_per_line / 4;
+        }
+    }
+
+    return image;
+}
+#endif
+
 MDeclarativeStatusBar::MDeclarativeStatusBar(QDeclarativeItem *parent) :
     QDeclarativeItem(parent),
     updatesEnabled(true),
     mousePressed(false),
     feedbackDelay(false),
     swipeGesture(false),
-    mOrientation(MDeclarativeScreen::Portrait)
+    sharedPixmapHandle(0),
+    pixmapDamage(0),
+    mOrientation(MDeclarativeScreen::Portrait),
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    updateSharedTexture(false)
+#endif
 {
     setFlag(QGraphicsItem::ItemHasNoContents, false);
     setAcceptedMouseButtons(Qt::LeftButton);
@@ -135,13 +227,15 @@ MDeclarativeStatusBar::MDeclarativeStatusBar(QDeclarativeItem *parent) :
     setZValue(1010);
     setImplicitHeight(STATUSBAR_HEIGHT);
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     if (!filterRegistered) {
         ::oldEventFilter = QCoreApplication::instance()->setEventFilter(x11EventFilter);
 #ifdef HAVE_XDAMAGE
-        XDamageQueryExtension(QX11Info::display(), &xDamageEventBase, &xDamageErrorBase);
+        XDamageQueryExtension(display(), &xDamageEventBase, &xDamageErrorBase);
 #endif
         filterRegistered = true;
     }
+#endif
 
 #ifdef HAVE_DBUS
     if (QDBusConnection::sessionBus().interface()->isServiceRegistered(PIXMAP_PROVIDER_DBUS_SERVICE))
@@ -177,6 +271,83 @@ MDeclarativeStatusBar::~MDeclarativeStatusBar()
     destroyXDamageForSharedPixmap();
 }
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+QSGNode* MDeclarativeStatusBar::updatePaintNode(QSGNode* oldNode, UpdatePaintNodeData*)
+{
+    QSGGeometryNode* node = static_cast<QSGGeometryNode*>(oldNode);
+    if (!node) {
+        node = new QSGGeometryNode;
+        node->setFlags(QSGNode::OwnsGeometry | QSGNode::OwnsMaterial | QSGNode::OwnsOpaqueMaterial);
+        node->setGeometry(new QSGGeometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 4));
+    }
+
+    if (!sharedPixmapHandle) {
+        node->setMaterial(new QSGFlatColorMaterial);
+        node->setOpaqueMaterial(new QSGFlatColorMaterial);
+        node->markDirty(QSGNode::DirtyMaterial);
+        return node;
+    }
+
+    if (!sharedTexture || updateSharedTexture) {
+        node->setMaterial(new QSGTextureMaterial);
+        node->setOpaqueMaterial(new QSGTextureMaterial);
+
+#if defined(QT_OPENGL_ES_2)
+        static PFNGLEGLIMAGETARGETTEXTURE2DOESPROC glEGLImageTargetTexture2DOES = (PFNGLEGLIMAGETARGETTEXTURE2DOESPROC)eglGetProcAddress("glEGLImageTargetTexture2DOES");
+        static PFNEGLCREATEIMAGEKHRPROC eglCreateImageKHR = (PFNEGLCREATEIMAGEKHRPROC) eglGetProcAddress("eglCreateImageKHR");
+        static PFNEGLDESTROYIMAGEKHRPROC eglDestroyImageKHR = (PFNEGLDESTROYIMAGEKHRPROC) eglGetProcAddress("eglDestroyImageKHR");
+        static PFNEGLQUERYIMAGENOKPROC eglQueryImageNOK = (PFNEGLQUERYIMAGENOKPROC) eglGetProcAddress("eglQueryImageNOK");
+
+        const EGLint attribs[] = { EGL_IMAGE_PRESERVED_KHR, EGL_TRUE, EGL_NONE };
+
+        EGLDisplay eglDpy = eglGetDisplay((EGLNativeDisplayType)display());
+        EGLImageKHR img = eglCreateImageKHR(eglDpy, EGL_NO_CONTEXT, EGL_NATIVE_PIXMAP_KHR, (EGLClientBuffer)sharedPixmapHandle, attribs);
+
+        GLuint textureId;
+        glGenTextures(1, &textureId);
+        glBindTexture(GL_TEXTURE_2D, textureId);
+        glEGLImageTargetTexture2DOES(GL_TEXTURE_2D, (GLeglImageOES)img);
+
+        GLint width = 0;
+        GLint height = 0;
+        eglQueryImageNOK(eglDpy, img, EGL_WIDTH, &width);
+        eglQueryImageNOK(eglDpy, img, EGL_HEIGHT, &height);
+
+        sharedTexture.reset(canvas()->createTextureFromId(textureId, QSize(width, height), QQuickCanvas::TextureOwnsGLTexture));
+
+        eglDestroyImageKHR(eglDpy, img);
+#else
+        Display* dpy = display();
+        Window dummy1;
+        int x, y;
+        unsigned int width, height, borderwidth, depth;
+        XGetGeometry(dpy, sharedPixmapHandle, &dummy1, &x, &y, &width, &height, &borderwidth, &depth);
+        XImage* xi = XGetImage(dpy, sharedPixmapHandle, 0, 0, width, height, ULONG_MAX, ZPixmap);
+        QImage img = qimageFromXImage(xi);
+        XDestroyImage(xi);
+        sharedTexture.reset(canvas()->createTextureFromImage(img));
+#endif
+
+        static_cast<QSGTextureMaterial*>(node->material())->setTexture(sharedTexture.data());
+        static_cast<QSGOpaqueTextureMaterial*>(node->opaqueMaterial())->setTexture(sharedTexture.data());
+        node->markDirty(QSGNode::DirtyMaterial);
+        updateSharedTexture = false;
+    }
+
+    QRectF sourceRect;
+    sourceRect = QRectF(0, 0, width(), height());
+    if (mOrientation == MDeclarativeScreen::Portrait || mOrientation == MDeclarativeScreen::PortraitInverted)
+        sourceRect.moveTop(height());
+    sourceRect = sharedTexture.data()->convertToNormalizedSourceRect(sourceRect);
+
+    QRect targetRect(x(), y(), width(), height());
+
+    QSGGeometry::updateTexturedRectGeometry(node->geometry(), targetRect, sourceRect);
+    node->markDirty(QSGNode::DirtyGeometry);
+
+    return node;
+}
+#else
 void MDeclarativeStatusBar::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
     QT_TRY {
@@ -218,6 +389,7 @@ void MDeclarativeStatusBar::paint(QPainter *painter, const QStyleOptionGraphicsI
     }
 
 }
+#endif
 
 void MDeclarativeStatusBar::updateXdamageEventSubscription()
 {
@@ -237,7 +409,7 @@ void MDeclarativeStatusBar::updateSharedPixmap()
     if ((!updatesEnabled)||(!isPixmapProviderOnline))
         return;
 
-    if (!sharedPixmap.isNull()) {
+    if (sharedPixmapHandle) {
         setupXDamageForSharedPixmap();
     }
 }
@@ -245,8 +417,8 @@ void MDeclarativeStatusBar::updateSharedPixmap()
 void MDeclarativeStatusBar::setupXDamageForSharedPixmap()
 {
 #ifdef HAVE_XDAMAGE
-    Q_ASSERT(!sharedPixmap.isNull());
-    pixmapDamage = XDamageCreate(QX11Info::display(), sharedPixmap.handle(), XDamageReportRawRectangles);
+    Q_ASSERT(sharedPixmapHandle);
+    pixmapDamage = XDamageCreate(display(), (Drawable)sharedPixmapHandle, XDamageReportRawRectangles);
     damageMap.insert(pixmapDamage, this);
 #endif
 }
@@ -256,7 +428,7 @@ void MDeclarativeStatusBar::destroyXDamageForSharedPixmap()
 #ifdef HAVE_XDAMAGE
     if (pixmapDamage) {
         damageMap.remove(pixmapDamage);
-        XDamageDestroy(QX11Info::display(), pixmapDamage);
+        XDamageDestroy(display(), pixmapDamage);
         pixmapDamage = 0;
     }
 #endif
@@ -298,16 +470,19 @@ void MDeclarativeStatusBar::sharedPixmapHandleReceived(QDBusPendingCallWatcher *
         return;
     }
 
+    sharedPixmapHandle = reply;
 #ifdef Q_WS_X11
-    quint32 tmp = reply;
-    sharedPixmap = QPixmap::fromX11Pixmap(tmp, QPixmap::ExplicitlyShared);
+    sharedPixmap = QPixmap::fromX11Pixmap(sharedPixmapHandle, QPixmap::ExplicitlyShared);
 #endif
 
     setImplicitWidth(sharedPixmap.size().width());
     updateSharedPixmap();
     call->deleteLater();
 
-#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    updateSharedTexture = true;
+    update();
+#else
     // Fix for NB276546
     if (scene()) {
       scene()->update();
@@ -333,9 +508,41 @@ void MDeclarativeStatusBar::handlePixmapProviderOffline()
     destroyXDamageForSharedPixmap();
 }
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+void MDeclarativeStatusBar::mousePressEvent(QMouseEvent *event)
+{
+    handleMousePressEvent(event->localPos());
+}
+
+void MDeclarativeStatusBar::mouseMoveEvent(QMouseEvent *event)
+{
+    handleMouseMoveEvent(event->localPos());
+}
+
+void MDeclarativeStatusBar::mouseReleaseEvent(QMouseEvent *event)
+{
+    handleMouseReleaseEvent(event->localPos());
+}
+#else
 void MDeclarativeStatusBar::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    firstPos = event->pos();
+    handleMousePressEvent(event->pos());
+}
+
+void MDeclarativeStatusBar::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    handleMouseMoveEvent(event->pos());
+}
+
+void MDeclarativeStatusBar::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    handleMouseReleaseEvent(event->pos());
+}
+#endif
+
+void MDeclarativeStatusBar::handleMousePressEvent(const QPointF& pos)
+{
+    firstPos = pos;
     playHapticsFeedback();
     if (!mousePressed) {
         mousePressed = true;
@@ -348,13 +555,13 @@ void MDeclarativeStatusBar::mousePressEvent(QGraphicsSceneMouseEvent *event)
     QTimer::singleShot(200, this, SLOT(disablePressedFeedback()));
 }
 
-void MDeclarativeStatusBar::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+void MDeclarativeStatusBar::handleMouseMoveEvent(const QPointF& pos)
 {
-    if(swipeGesture && firstPos.y() /* ### + style()->swipeThreshold()*/ + 25 < event->pos().y())
+    if(swipeGesture && firstPos.y() /* ### + style()->swipeThreshold()*/ + 25 < pos.y())
         showStatusIndicatorMenu();
 }
 
-void MDeclarativeStatusBar::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void MDeclarativeStatusBar::handleMouseReleaseEvent(const QPointF& pos)
 {
     if (swipeGesture || !mousePressed) {
         return;
@@ -365,9 +572,39 @@ void MDeclarativeStatusBar::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
     QRectF rect = boundingRect();
     rect.adjust(-30, -30, 30, 30);
-    if(rect.contains(event->pos())) {
+    if(rect.contains(pos)) {
         showStatusIndicatorMenu();
     }
+}
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+void MDeclarativeStatusBar::itemChange(ItemChange change, const ItemChangeData& changeData)
+{
+    if (change == ItemSceneChange) {
+        if (!filterRegistered) {
+            QPlatformNativeInterface* iface = QGuiApplication::platformNativeInterface();
+            ::oldEventFilter = iface->setEventFilter(QByteArrayLiteral("xcb_generic_event_t"), x11EventFilter);
+#ifdef HAVE_XDAMAGE
+            if (!XDamageQueryExtension(display(), &xDamageEventBase, &xDamageErrorBase))
+                qCritical() << "Could not find X damage extension on display. Status bar updates will not work.";
+#endif
+            filterRegistered = true;
+        }
+    }
+    QQuickItem::itemChange(change, changeData);
+}
+#endif
+
+Display* MDeclarativeStatusBar::display() const
+{
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    if (!canvas())
+        return 0;
+    QPlatformNativeInterface* iface = QGuiApplication::platformNativeInterface();
+    return (Display*)iface->nativeResourceForWindow("display", canvas());
+#else
+    return QX11Info::display();
+#endif
 }
 
 void MDeclarativeStatusBar::disablePressedFeedback()

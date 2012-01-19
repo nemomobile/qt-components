@@ -59,6 +59,11 @@
 # include <QX11Info>
 # include <X11/Xatom.h>
 # include <X11/Xlib.h>
+#elif QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+# include <X11/Xatom.h>
+# include <X11/Xlib.h>
+# include <qplatformnativeinterface_qpa.h>
+# include <QtQuick/qquickitem.h>
 #endif
 
 #ifdef HAVE_XRANDR
@@ -875,6 +880,30 @@ MDeclarativeScreen::Density MDeclarativeScreen::density() const {
     Display *dpy = QX11Info::display();
     Atom a = XInternAtom(dpy, "_MEEGOTOUCH_MSTATUSBAR_GEOMETRY", False);
     Window w = activeWindow->effectiveWinId();
+    if(data[3] == 0)
+        XDeleteProperty(dpy, w, a);
+    else
+        XChangeProperty(dpy, w, a, XA_CARDINAL, 32, PropModeReplace, (unsigned char*)data, 4);
+#elif QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    if (!d->window)
+        return;
+    QPlatformNativeInterface* iface = QGuiApplication::platformNativeInterface();
+    Display *dpy = (Display*)iface->nativeResourceForWindow("display", d->window.data());
+    if (!dpy)
+        return;
+
+    QRectF rect(statusBar->mapRectToScene(QRect(qreal(0), qreal(0), (qreal)statusBar->width(), (qreal)statusBar->height())));
+    unsigned long data[4] = {0};
+
+    if(statusBar->y() >= 0) {
+        data[0] = 0;
+        data[1] = 0;
+        data[2] = rect.width();
+        data[3] = rect.height();
+    }
+
+    Atom a = XInternAtom(dpy, "_MEEGOTOUCH_MSTATUSBAR_GEOMETRY", False);
+    Window w = d->window.data()->winId();
     if(data[3] == 0)
         XDeleteProperty(dpy, w, a);
     else

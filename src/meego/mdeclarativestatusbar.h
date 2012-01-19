@@ -45,6 +45,12 @@
 #include <mdeclarativescreen.h>
 #include <qglobal.h>
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#include <QtQuick/qsgtexture.h>
+#include <qscopedpointer.h>
+#endif
+
+typedef struct _XDisplay Display;
 class QPixmap;
 class QDBusServiceWatcher;
 class QDBusPendingCallWatcher;
@@ -67,18 +73,35 @@ public:
     void setOrientation(MDeclarativeScreen::Orientation o);
     MDeclarativeScreen::Orientation orientation() const;
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    virtual QSGNode* updatePaintNode(QSGNode* oldNode, UpdatePaintNodeData*);
+#else
     virtual void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
+#endif
 
 public Q_SLOTS:
     void updateXdamageEventSubscription();
 
 protected:
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    virtual void itemChange(ItemChange change, const ItemChangeData& changeData);
+    virtual void mousePressEvent(QMouseEvent *event);
+    virtual void mouseMoveEvent(QMouseEvent *event);
+    virtual void mouseReleaseEvent(QMouseEvent *event);
+#else
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+#endif
 
 private:
+    void handleMousePressEvent(const QPointF& pos);
+    void handleMouseMoveEvent(const QPointF& pos);
+    void handleMouseReleaseEvent(const QPointF& pos);
+
     Q_DISABLE_COPY(MDeclarativeStatusBar)
+
+    Display* display() const;
 
     bool updatesEnabled;
 
@@ -106,9 +129,15 @@ private:
     void destroyXDamageForSharedPixmap();
 
     QPixmap sharedPixmap;
-    Qt::HANDLE pixmapDamage;
+    uint sharedPixmapHandle;
+    uint pixmapDamage;
 
     MDeclarativeScreen::Orientation mOrientation;
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    QScopedPointer<QSGTexture> sharedTexture;
+    bool updateSharedTexture;
+#endif
 
 Q_SIGNALS:
     void orientationChanged();

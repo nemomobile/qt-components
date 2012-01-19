@@ -69,6 +69,8 @@ contains(MOBILITY_CONFIG, systeminfo) {
     DEFINES += HAVE_SYSTEMINFO
 }
 
+contains(QT_CONFIG, opengles2): CONFIG += egl
+
 SOURCES += \
     plugin.cpp \
     mdeclarativestatusbar.cpp \
