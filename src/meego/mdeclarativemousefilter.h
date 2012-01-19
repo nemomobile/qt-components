@@ -43,6 +43,8 @@
 
 #include <QDeclarativeItem>
 
+class QGraphicsSceneMouseEvent;
+
 class MDeclarativeMouseEvent : public QObject
 {
     Q_OBJECT

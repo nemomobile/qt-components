@@ -43,6 +43,8 @@
 
 #include <QDeclarativeItem>
 
+class QGraphicsSceneMouseEvent;
+
 class MInverseMouseArea : public QDeclarativeItem
 {
     Q_OBJECT
