@@ -40,7 +40,7 @@
 
 #include <QtTest/QtTest>
 #include <QtTest/QSignalSpy>
-#include <QtDeclarative/qdeclarativecontext.h>
+#include <qdeclarativecontext.h>
 #include <QDeclarativeView>
 #include <QTextOption>
 #include <QFontDatabase>

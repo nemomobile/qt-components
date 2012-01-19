@@ -39,9 +39,9 @@
 ****************************************************************************/
 
 #include "apicheckbase.h"
-#include <QtDeclarative/qdeclarativeengine.h>
-#include <QtDeclarative/qdeclarativecomponent.h>
-#include <QtDeclarative/qdeclarativecontext.h>
+#include <qdeclarativeengine.h>
+#include <qdeclarativecomponent.h>
+#include <qdeclarativecontext.h>
 
 ApiCheckBase::ApiCheckBase(QDeclarativeEngine *engine, const QString &module)
     : QObject(),

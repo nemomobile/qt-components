@@ -45,10 +45,9 @@
 
 #include <QDeclarativeItem>
 
-#include <QtDeclarative/qdeclarativecontext.h>
-#include <QtDeclarative/qdeclarativecomponent.h>
-#include <QtDeclarative/qdeclarativeview.h>
-//#include <QtDeclarative/qdeclarativeitem.h>
+#include <qdeclarativecontext.h>
+#include <qdeclarativecomponent.h>
+#include <qdeclarativeview.h>
 
 #include "tst_quickcomponentstest.h"
 

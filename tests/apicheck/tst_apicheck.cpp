@@ -39,8 +39,8 @@
 ****************************************************************************/
 
 #include <QtTest/QtTest>
-#include <QtDeclarative/qdeclarativeview.h>
-#include <QtDeclarative/qdeclarativeengine.h>
+#include <qdeclarativeview.h>
+#include <qdeclarativeengine.h>
 
 #include "slider/apicheck_slider.h"
 #include "button/apicheck_button.h"

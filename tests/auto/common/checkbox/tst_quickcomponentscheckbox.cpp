@@ -40,8 +40,8 @@
 
 #include <QtTest/QtTest>
 #include <QtTest/QSignalSpy>
-#include <QtDeclarative/qdeclarativecontext.h>
-#include <QtDeclarative/qdeclarativeview.h>
+#include <qdeclarativecontext.h>
+#include <qdeclarativeview.h>
 
 #include "tst_quickcomponentstest.h"
 
