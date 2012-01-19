@@ -163,6 +163,8 @@ public:
             defaultFontFamily = QLatin1String("Arial");
             defaultFontFamilyLight = QLatin1String("Arial");
         }
+#else
+        Q_UNUSED(locale);
 #endif // HAVE_MEEGOTOUCH
 
         QDeclarativePropertyMap *uiConstantsData = new QDeclarativePropertyMap();
