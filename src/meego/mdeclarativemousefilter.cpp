@@ -84,7 +84,7 @@ bool MDeclarativeMouseFilter::sceneEvent(QEvent *event)
         QGraphicsSceneMouseEvent *me = static_cast <QGraphicsSceneMouseEvent *>(event);
         clampMousePosition(me);
 
-        QPointF mappedPos = static_cast<QGraphicsItem*>(parentItem())->mapFromItem(this, me->pos().x(), me->pos().y());
+        QPointF mappedPos = static_cast<QGraphicsItem*>(parentItem())->mapFromItem(this, me->pos());
         MDeclarativeMouseEvent mdme(mappedPos);
         emit doubleClicked(&mdme);
         if (mdme.isFiltered())
@@ -95,7 +95,7 @@ bool MDeclarativeMouseFilter::sceneEvent(QEvent *event)
         QGraphicsSceneMouseEvent *me = static_cast <QGraphicsSceneMouseEvent *>(event);
         clampMousePosition(me);
 
-        QPointF mappedPos = static_cast<QGraphicsItem*>(parentItem())->mapFromItem(this, me->pos().x(), me->pos().y());
+        QPointF mappedPos = static_cast<QGraphicsItem*>(parentItem())->mapFromItem(this, me->pos());
         lastPos.setX(mappedPos.x());
         lastPos.setY(mappedPos.y());
         setKeepMouseGrab(true);
@@ -120,7 +120,7 @@ bool MDeclarativeMouseFilter::sceneEvent(QEvent *event)
 
         clampMousePosition(me);
 
-        QPointF mappedPos = static_cast<QGraphicsItem*>(parentItem())->mapFromItem(this, me->pos().x(), me->pos().y());
+        QPointF mappedPos = static_cast<QGraphicsItem*>(parentItem())->mapFromItem(this, me->pos());
         lastPos.setX(mappedPos.x());
         lastPos.setY(mappedPos.y());
         MDeclarativeMouseEvent mdme(mappedPos);
@@ -162,7 +162,7 @@ bool MDeclarativeMouseFilter::sceneEvent(QEvent *event)
         QGraphicsSceneMouseEvent *me = static_cast <QGraphicsSceneMouseEvent *>(event);
         clampMousePosition(me);
 
-        QPointF mappedPos = static_cast<QGraphicsItem*>(parentItem())->mapFromItem(this, me->pos().x(), me->pos().y());
+        QPointF mappedPos = static_cast<QGraphicsItem*>(parentItem())->mapFromItem(this, me->pos());
         MDeclarativeMouseEvent mdme(mappedPos);
 
         emit released(&mdme);
