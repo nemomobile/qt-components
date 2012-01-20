@@ -64,6 +64,7 @@ Item {
             magnifier.yCenter = Math.min( textInput.mapFromItem(item, 0, Math.max(posY, 0)).y, textInput.positionToRectangle( textInput.selectionEnd ).y ) + cursorHeight
             magnifier.y = Math.min( Math.max(mappedPos.y, minMappedPos), minMappedPos + textInput.height )
                           + yAdjustment
+            if ( magnifier.y < 0 ) magnifier.y += ( magnifier.height / 3 + cursorHeight - 30 );
         }
 
         Image {
