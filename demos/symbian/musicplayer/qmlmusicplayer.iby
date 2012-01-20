@@ -1,0 +1,12 @@
+#ifndef QMLMUSICPLAYER_IBY
+#define QMLMUSICPLAYER_IBY
+
+#include <bldvariant.hrh>
+
+S60_APP_EXE(musicplayer)
+S60_APP_RESOURCE(musicplayer)
+
+// Application registration file.
+data=DATAZ_\private\10003a3f\import\apps\musicplayer_reg.rsc      \private\10003a3f\import\apps\musicplayer_reg.rsc
+
+#endif // QMLMUSICPLAYER_IBY

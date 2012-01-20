@@ -1,0 +1,12 @@
+#ifndef QMLFLICKR_IBY
+#define QMLFLICKR_IBY
+
+#include <bldvariant.hrh>
+
+S60_APP_EXE(flickr)
+S60_APP_RESOURCE(flickr)
+
+// Application registration file.
+data=DATAZ_\private\10003a3f\import\apps\flickr_reg.rsc      \private\10003a3f\import\apps\flickr_reg.rsc
+
+#endif // QMLFLICKR_IBY
