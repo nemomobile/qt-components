@@ -47,6 +47,7 @@ CommonDialog {
 
     // Common API
     property alias model: selectionListView.model
+    property int deselectedIndex: -1   // read & write
     property int selectedIndex: -1   // read & write
     //property string titleText: "Selection Dialog"
 
@@ -65,7 +66,10 @@ CommonDialog {
                 MouseArea {
                     id: delegateMouseArea
                     anchors.fill: parent;
-                    onPressed: selectedIndex = index;
+                    onPressed: {
+                        deselectedIndex = selectedIndex;
+                        selectedIndex = index;
+                    }
                     onClicked:  accept();
                 }
 
