@@ -48,7 +48,7 @@ function initSectionData(list) {
     var current = "";
     var prop = list.section.property;
 
-    for (var i = 0, count = list.model.count; i < count; i++) {
+    for (var i = 0, count = (typeof list.model.count === 'undefined' ? list.model.length : list.model.count); i < count; i++) {
         var item = list.model.get(i);
         if (item[prop] !== current) {
             current = item[prop];
