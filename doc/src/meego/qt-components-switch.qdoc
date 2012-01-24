@@ -49,7 +49,7 @@
     
     \code
     Switch {
-        id: switch
+        id: mySwitch
         checked: true
     }    
     \endcode
