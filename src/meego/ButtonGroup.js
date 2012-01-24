@@ -243,7 +243,7 @@ function create(s, p) {
     updateButtons();
     self.checkedButtonChanged.connect(checkedButtonChanged);
     self.childrenChanged.connect(updateButtons);
-    self.exclusiveChanged.connect(Private.updateButtons);
+    self.exclusiveChanged.connect(updateButtons);
     self.widthChanged.connect(resizeChildren);
 }
 
@@ -251,6 +251,7 @@ function destroy() {
     if (self) {
         self.checkedButtonChanged.disconnect(checkedButtonChanged);
         self.childrenChanged.disconnect(updateButtons);
+        self.exclusiveChanged.disconnect(updateButtons);
         self.widthChanged.disconnect(resizeChildren);
         self = undefined;
     }
