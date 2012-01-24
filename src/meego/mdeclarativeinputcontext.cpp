@@ -50,6 +50,9 @@
 #ifdef HAVE_MALIIT
 #include <maliit/inputmethod.h>
 #include <maliit/preeditinjectionevent.h>
+#elif QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#include <QInputPanel>
+#include <QGuiApplication>
 #endif
 
 #include "mdeclarativeinputcontext.h"
@@ -60,6 +63,9 @@ public:
     MDeclarativeInputContextPrivate(MDeclarativeInputContext *qq);
     ~MDeclarativeInputContextPrivate();
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    void _q_updateKeyboardRectangle();
+#endif
     void _q_sipChanged(const QRect &);
     void _q_checkMicroFocusHint();
 
@@ -95,12 +101,23 @@ MDeclarativeInputContextPrivate::MDeclarativeInputContextPrivate(MDeclarativeInp
     simulateSip = false;
     QObject::connect(Maliit::InputMethod::instance(), SIGNAL(areaChanged(const QRect &)),
                      q, SLOT(_q_sipChanged(const QRect &)));
+#elif QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    simulateSip = false;
+    QObject::connect(qApp->inputPanel(), SIGNAL(keyboardRectangleChanged()),
+                     q, SLOT(_q_updateKeyboardRectangle()));
 #endif
 }
 
 MDeclarativeInputContextPrivate::~MDeclarativeInputContextPrivate()
 {
 }
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+void MDeclarativeInputContextPrivate::_q_updateKeyboardRectangle()
+{
+    _q_sipChanged(qApp->inputPanel()->keyboardRectangle().toRect());
+}
+#endif
 
 void MDeclarativeInputContextPrivate::_q_sipChanged(const QRect &rect)
 {
@@ -121,6 +138,9 @@ void MDeclarativeInputContextPrivate::_q_sipChanged(const QRect &rect)
 
 void MDeclarativeInputContext::updateMicroFocus()
 {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    d->microFocus = qApp->inputPanel()->cursorRectangle();
+#else
     if (QWidget *widget = QApplication::focusWidget()) {
         QVariant v = widget->inputMethodQuery(Qt::ImMicroFocus);
         if (!v.toRectF().isValid()) {
@@ -134,6 +154,7 @@ void MDeclarativeInputContext::updateMicroFocus()
     } else {
         d->microFocus = QRectF(-1, -1, -1, -1);
     }
+#endif
 }
 
 MDeclarativeInputContext::MDeclarativeInputContext(QDeclarativeItem *parent)
@@ -186,7 +207,7 @@ bool MDeclarativeInputContext::softwareInputPanelVisible() const
 
 QRect MDeclarativeInputContext::softwareInputPanelRect() const
 {
-#ifdef HAVE_MALIIT
+#if defined(HAVE_MALIIT) || QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     return d->sipRect;
 #else
     return QRect(d->sipSimulationRect);
