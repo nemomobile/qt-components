@@ -39,6 +39,8 @@
 ****************************************************************************/
 
 import QtQuick 1.1
+import "." 1.0
+
 import "EditBubble.js" as Popup
 import "UIConstants.js" as UI
 import "SelectionHandles.js" as SelectionHandles

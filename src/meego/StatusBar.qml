@@ -39,7 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 1.1
-
+import "." 1.0
 
 StatusBarInternal {
     id: statusBar

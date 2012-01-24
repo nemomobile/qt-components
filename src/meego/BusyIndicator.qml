@@ -39,6 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 1.1
+import "." 1.0
 
 import "UIConstants.js" as UI
 import "Utils.js" as Utils
