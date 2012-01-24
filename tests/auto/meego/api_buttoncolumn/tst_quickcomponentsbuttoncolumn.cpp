@@ -83,7 +83,7 @@ void tst_quickcomponentsbuttoncolumn::exclusive()
 void tst_quickcomponentsbuttoncolumn::checkedButton()
 {
     // get ButtonColumn first Button child
-    QDeclarativeItem* buttonObject = qobject_cast<QDeclarativeItem*>(componentObject->findChild<QObject*>(QString("button_0")));
+    QDeclarativeItem* buttonObject = componentObject->findChild<QDeclarativeItem*>(QString("button_0"));
     QVERIFY2(buttonObject, "Error, ButtonColumn has no button inside");
 
     // convert it to Variant, in order to set the checkedButton property correctly

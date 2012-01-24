@@ -62,7 +62,7 @@ bool MDeclarativeIMObserver::sceneEventFilter(QGraphicsItem * watched, QEvent * 
         QInputMethodEvent *ime = static_cast<QInputMethodEvent*>(event);
 		QString newPreedit = ime->preeditString();
 		
-        QGraphicsObject *g = qobject_cast<QGraphicsObject*>(parentItem());
+        QGraphicsObject *g = parentObject();
         if (g != 0 && g->property("maximumLength").isValid()) {
             int maximumTextLength = g->property("maximumLength").toInt();
             int textLength = g->property("text").toString().length();
