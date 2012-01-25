@@ -52,7 +52,7 @@ Popup {
         function open()
         function close()
 
-        property QDeclarativeItem* visualParent
+        property Item visualParent
         property int status
     */
 
