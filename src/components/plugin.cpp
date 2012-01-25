@@ -50,8 +50,8 @@ class QtComponentsPlugin : public QDeclarativeExtensionPlugin
 public:
     void registerTypes(const char *uri) {
         Q_ASSERT(uri == QLatin1String("Qt.labs.components"));
-        qmlRegisterType<QGlobals>(uri, 1, 1, "Globals");
-        qmlRegisterType<QRangeModel>(uri, 1, 1, "RangeModel");
+        qmlRegisterType<QGlobals>(uri, SINCE_VERSION(1, 1), "Globals");
+        qmlRegisterType<QRangeModel>(uri, SINCE_VERSION(1, 1), "RangeModel");
     }
 };
 

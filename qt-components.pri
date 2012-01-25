@@ -3,6 +3,8 @@
     load(mobilityconfig, true):CONFIG += mobility
 }
 
+INCLUDEPATH += $$PWD/src/components
+
 CONFIG += qt-components depend_includepath qt-components_build
 
 unix:!symbian {
