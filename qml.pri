@@ -51,6 +51,13 @@ NATIVE_FILES -= qmldir
             POST_TARGETDEPS += $$target
         }
     }
+
+    equals(QT_MAJOR_VERSION, 5) {
+        bump_qml_version.commands = $$bumpQmlVersion($$Q_COMPONENTS_BUILD_TREE/imports, 2.0)
+        for(post_targetdep, POST_TARGETDEPS): bump_qml_version.depends += $${post_targetdep}
+        QMAKE_EXTRA_TARGETS += bump_qml_version
+        POST_TARGETDEPS += bump_qml_version
+    }
 }
 
 OTHER_FILES += $$QML_FILES
@@ -116,4 +123,18 @@ install_native {
 
         INSTALLS += native_target native_qmlfiles native_qmlimages
     }
+}
+
+equals(QT_MAJOR_VERSION, 5) {
+    bump_qml_version_installed.CONFIG += no_path
+    bump_qml_version_installed.commands = test -d $$[QT_INSTALL_IMPORTS]
+
+    for(install, INSTALLS) {
+        isEmpty($${install}.files): next()
+
+        bump_qml_version_installed.depends += install_$${install}
+        bump_qml_version_installed.commands += && $$bumpQmlVersion($$eval($${install}.path), 2.0)
+    }
+
+    INSTALLS += bump_qml_version_installed
 }

@@ -100,8 +100,13 @@ signals:
 public slots:
 
 protected:
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+    virtual bool event(QEvent *event);
+    void itemChange(ItemChange, const ItemChangeData &);
+#else
     virtual bool sceneEvent(QEvent *event);
     QVariant itemChange(GraphicsItemChange, const QVariant &);
+#endif
     void timerEvent(QTimerEvent *);
     void clampMousePosition(QGraphicsSceneMouseEvent *me);
 

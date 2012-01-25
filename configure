@@ -92,6 +92,18 @@ if [ $? -eq 0 ]; then
     pkg-config --exists xrandr && HAVE_XRANDR=yes
 fi
 
+QT_MAJOR_VERSION=$($QMAKE -query QT_VERSION | cut -d "." -f 1)
+if [ $QT_MAJOR_VERSION -eq 5 ]; then
+    BUILD_DEMOS=no
+    BUILD_EXTRAS=yes
+    BUILD_TESTS=no
+    HAVE_MEEGOTOUCH=no
+    HAVE_MALIIT=no
+    HAVE_XDAMAGE=no
+    HAVE_CONTEXTSUBSCRIBER=no
+    FORCE_LOCAL_THEME=yes
+fi
+
 #-------------------------------------------------------------------------------
 # parse command line arguments
 #-------------------------------------------------------------------------------

@@ -66,8 +66,10 @@
 
 #include "kernel/common.h"
 
-#include "shadereffectitem/shadereffectitem.h"
-#include "shadereffectitem/shadereffectsource.h"
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
+   #include "shadereffectitem/shadereffectitem.h"
+   #include "shadereffectitem/shadereffectsource.h"
+#endif
 
 #include "i18n/mlocalewrapper.h"
 
@@ -105,9 +107,10 @@ public:
             engine->rootContext()->setContextProperty("textTranslator", new MTextTranslator);
             qmlRegisterUncreatableType<MTextTranslator>(uri, SINCE_VERSION(1, 0), "TextTranslator", "");
 
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
             engine->rootContext()->setContextProperty("declarativeView", new MDeclarativeView());
             qmlRegisterUncreatableType<MDeclarativeView>(uri, SINCE_VERSION(1, 0), "DeclarativeView", "");
-
+#endif
 
             // Disable cursor blinking + make double tapping work the way it is done in lmt.
             QApplication *app = qobject_cast<QApplication*>(QApplication::instance());
@@ -126,7 +129,9 @@ public:
     void registerTypes(const char *uri) {
         Q_ASSERT(uri == QLatin1String("com.meego") || uri == QLatin1String("com.nokia.meego") || uri == QLatin1String("Qt.labs.components.native"));
         qmlRegisterType<MDeclarativeStatusBar>(uri, SINCE_VERSION(1, 0), "StatusBarInternal");
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
         qmlRegisterType<MSnapshot>(uri, SINCE_VERSION(1, 0), "Snapshot");
+#endif
 
         qmlRegisterUncreatableType<MPageStatus>(uri, SINCE_VERSION(1, 0), "PageStatus", "");
         qmlRegisterUncreatableType<MDialogStatus>(uri, SINCE_VERSION(1, 0), "DialogStatus", "");
@@ -137,7 +142,9 @@ public:
 
         // Custom primitives
         qmlRegisterType<MDeclarativeImplicitSizeItem>(uri, SINCE_VERSION(1, 0), "ImplicitSizeItem");
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
         qmlRegisterType<MDeclarativeMaskedItem>(uri, SINCE_VERSION(1, 0), "MaskedItem");
+#endif
         qmlRegisterType<MInverseMouseArea>(uri, SINCE_VERSION(1, 0), "InverseMouseArea");
         qmlRegisterType<MDeclarativeMouseFilter>(uri, SINCE_VERSION(1, 0), "MouseFilter");
         qmlRegisterType<MDeclarativeMouseEvent>(uri, SINCE_VERSION(1, 0), "MMouseEvent");
@@ -146,9 +153,11 @@ public:
 
         qmlRegisterType<MScrollDecoratorSizer>(uri, SINCE_VERSION(1, 0), "ScrollDecoratorSizerCPP");
 
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
         // shader effect item (to be removed when fully supported in QML)
         qmlRegisterType<ShaderEffectItem>(uri, SINCE_VERSION(1, 0), "ShaderEffectItem");
         qmlRegisterType<ShaderEffectSource>(uri, SINCE_VERSION(1, 0), "ShaderEffectSource");
+#endif
 
         qmlRegisterType<MInverseMouseArea>(uri, SINCE_VERSION(1, 0), "InverseMouseArea");
 

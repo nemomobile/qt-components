@@ -69,13 +69,23 @@ void MDeclarativeImplicitSizeItem::setImplicitHeightNotify(const qreal height)
 
 bool MDeclarativeImplicitSizeItem::platformFocusable() const
 {
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+    Q_ASSERT_X(false, "MDeclarativeImplicitSizeItem", "platformFocusable is deprecated");
+    return true;
+#else
     return flags() & QGraphicsItem::ItemIsFocusable;
+#endif
 }
 
 void MDeclarativeImplicitSizeItem::setPlatformFocusable(bool shouldFocus)
 {
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+    Q_UNUSED(shouldFocus);
+    Q_ASSERT_X(false, "MDeclarativeImplicitSizeItem", "setPlatformFocusable is deprecated");
+#else
     if (shouldFocus != platformFocusable()) {
         setFlag(ItemIsFocusable, shouldFocus);
         emit platformFocusableChanged();
     }
+#endif
 }

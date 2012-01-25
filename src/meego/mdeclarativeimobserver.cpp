@@ -94,9 +94,20 @@ bool MDeclarativeIMObserver::sceneEventFilter(QGraphicsItem * watched, QEvent * 
         }
     }
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+    Q_UNUSED(watched)
+    return false; // FIXME: How do we deal with this?
+#else
     return QDeclarativeItem::sceneEventFilter(watched,event);
+#endif
 }
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+void MDeclarativeIMObserver::itemChange(ItemChange, const ItemChangeData &)
+{
+    // FIXME: How do we deal with this?
+}
+#else
 QVariant MDeclarativeIMObserver::itemChange(GraphicsItemChange c, const QVariant &v)
 {
     if(c==QGraphicsItem::ItemParentHasChanged || c== QGraphicsItem::ItemSceneHasChanged){
@@ -104,3 +115,5 @@ QVariant MDeclarativeIMObserver::itemChange(GraphicsItemChange c, const QVariant
     }
     return v;
 }
+#endif
+

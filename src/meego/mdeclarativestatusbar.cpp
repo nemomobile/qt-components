@@ -307,12 +307,15 @@ void MDeclarativeStatusBar::sharedPixmapHandleReceived(QDBusPendingCallWatcher *
     updateSharedPixmap();
     call->deleteLater();
 
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
     // Fix for NB276546
     if (scene()) {
       scene()->update();
     } else {
       qWarning() << "MDeclarativeStatusBar::sharedPixmapHandleReceived: scene is NULL!";
     }
+#endif
+
 #else
     Q_UNUSED(call)
 #endif

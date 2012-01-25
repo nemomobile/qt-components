@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2012 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
@@ -38,20 +38,14 @@
 **
 ****************************************************************************/
 
-#ifndef COMMON_H
-#define COMMON_H
-#if defined(QT_BUILD_COMPONENTS_LIB)
-# define Q_COMPONENTS_EXPORT Q_DECL_EXPORT
-#else
-# define Q_COMPONENTS_EXPORT Q_DECL_IMPORT
-#endif
+import QtQuick 2.0
 
-#ifndef SINCE_VERSION
-# if QT_VERSION >= 0x050000
-#   define SINCE_VERSION(major, minor) 2, 0
-# else
-#   define SINCE_VERSION(major, minor) major, minor
-# endif
-#endif
+Item {
+    property int snapshotHeight
+    property int snapshotWidth
 
-#endif // COMMON_H
+    function take() {}
+    function free() {}
+
+    // FIXME: Make this actually do something
+}

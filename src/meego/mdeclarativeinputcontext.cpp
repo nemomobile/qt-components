@@ -248,10 +248,18 @@ QDeclarativeItem * MDeclarativeInputContext::customSoftwareInputPanelTextField()
     return d->sipVkbTextField;
 }
 
+#if QT_VERSION >= 0x050000
+void MDeclarativeInputContext::setCustomSoftwareInputPanelTextField(QQuickItem * item)
+#else
 void MDeclarativeInputContext::setCustomSoftwareInputPanelTextField(QDeclarativeItem * item)
+#endif
 {
     if(d->sipVkbTextField != item) {
+#if QT_VERSION >= 0x050000
+        d->sipVkbTextField = static_cast<QDeclarativeItem*>(item);
+#else
         d->sipVkbTextField = item;
+#endif
         emit customSoftwareInputPanelTextFieldChanged();
     }
 }

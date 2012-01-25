@@ -234,6 +234,37 @@ QML_FILES = \
         Magnifier.qml \
         Magnifier.js
 
+equals(QT_MAJOR_VERSION, 5) {
+    # Tweaks sources and headers for Qt5
+
+    QML_FILES += \
+        MaskedItem.qml \
+        Snapshot.qml
+
+    SOURCES -= \
+        msnapshot.cpp \
+        mdeclarativemaskeditem.cpp \
+        mdeclarativeview.cpp \
+        mx11wrapper.cpp \
+        shadereffectitem/shadereffect.cpp \
+        shadereffectitem/shadereffectitem.cpp \
+        shadereffectitem/shadereffectsource.cpp \
+        shadereffectitem/shadereffectbuffer.cpp \
+        shadereffectitem/scenegraph/qsggeometry.cpp
+
+
+    HEADERS -= \
+        msnapshot.h \
+        mdeclarativemaskeditem.h \
+        mdeclarativeview.h \
+        shadereffectitem/glfunctions.h \
+        shadereffectitem/shadereffect.h \
+        shadereffectitem/shadereffectitem.h \
+        shadereffectitem/shadereffectsource.h \
+        shadereffectitem/shadereffectbuffer.h \
+        shadereffectitem/scenegraph/qsggeometry.h
+}
+
 include(../../qml.pri)
 
 OTHER_FILES +=

@@ -77,7 +77,11 @@ void MInverseMouseArea::setEnabled(bool enabled)
     }
 }
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+void MInverseMouseArea::itemChange(ItemChange change, const ItemChangeData &data)
+#else
 QVariant MInverseMouseArea::itemChange(GraphicsItemChange change, const QVariant &value)
+#endif
 {
     switch (change) {
     case QGraphicsItem::ItemSceneChange: {
@@ -88,8 +92,12 @@ QVariant MInverseMouseArea::itemChange(GraphicsItemChange change, const QVariant
 
         m_pressed = false;
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+        if (QQuickCanvas *newScene = data.canvas) {
+#else
         if (value.canConvert<QGraphicsScene *>()) {
             QGraphicsScene *newScene = value.value<QGraphicsScene *>();
+#endif
 
             if (newScene)
                 newScene->installEventFilter(this);
@@ -105,11 +113,16 @@ QVariant MInverseMouseArea::itemChange(GraphicsItemChange change, const QVariant
         break;
     }
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+    QQuickItem::itemChange(change, data);
+#else
     return QDeclarativeItem::itemChange(change, value);
+#endif
 }
 
 bool MInverseMouseArea::isClickedOnSoftwareInputPanel(QGraphicsSceneMouseEvent *event) const
 {
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
     QGraphicsItem * item = scene()->itemAt(event->scenePos());
     while(item != NULL) {
         QDeclarativeItem * declItem = dynamic_cast<QDeclarativeItem *>(item);
@@ -118,6 +131,11 @@ bool MInverseMouseArea::isClickedOnSoftwareInputPanel(QGraphicsSceneMouseEvent *
 
         item = item->parentItem();
     }
+#else
+    Q_UNUSED(event);
+
+    // FIXME: How do we solve this with Qt5?
+#endif
 
     return false;
 }
@@ -133,7 +151,12 @@ bool MInverseMouseArea::eventFilter(QObject *obj, QEvent *ev)
         QGraphicsSceneMouseEvent *me = static_cast<QGraphicsSceneMouseEvent *>(ev);
         QPointF mappedPos = mapToRootItem(me->scenePos());
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+        m_pressed = !isUnderMouse() && !isClickedOnSoftwareInputPanel(me);
+#else
         m_pressed = !contains(mapFromScene(me->scenePos())) && !isClickedOnSoftwareInputPanel(me);
+#endif
+
         if (m_pressed)
             emit pressedOutside(mappedPos.x(), mappedPos.y());
         break;

@@ -68,7 +68,11 @@ public slots:
 
 protected:
     bool sceneEventFilter(QGraphicsItem * watched, QEvent * event);
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+    void itemChange(ItemChange, const ItemChangeData &);
+#else
     QVariant itemChange(GraphicsItemChange c, const QVariant &v);
+#endif
 
 private:
     QString m_preedit;

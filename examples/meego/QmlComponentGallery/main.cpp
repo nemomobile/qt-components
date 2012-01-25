@@ -38,9 +38,14 @@
 **
 ****************************************************************************/
 
-#include <QtDeclarative>
+#include <QApplication>
+#include <QDeclarativeView>
+#include <QDir>
+#include <QVariant>
 
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
 #include "fpsdeclarativeview.h"
+#endif
 
 int main(int argc, char **argv)
 {
@@ -50,8 +55,11 @@ int main(int argc, char **argv)
 
     QDir::setCurrent(app.applicationDirPath());
 
-    // QDeclarativeView window;
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+    QDeclarativeView window;
+#else
     FPSDeclarativeView window;
+#endif
     window.setSource(QUrl("qrc:/main.qml"));
 
 #ifdef __arm__

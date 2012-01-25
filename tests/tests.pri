@@ -3,6 +3,8 @@ include (../qt-components.pri)
 QT += declarative
 CONFIG -= app_bundle
 
+equals(QT_MAJOR_VERSION, 5): QT += widgets quick
+
 INCLUDEPATH += $$Q_COMPONENTS_SOURCE_TREE/tests/shared
 
 #Symbian Qt versions 4.7 and older use double quotes. Qt version 4.8 onwards use single quote. Desktop use single quotes.

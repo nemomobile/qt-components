@@ -32,6 +32,8 @@ meego {
     # than assuming that the application or another library will bring
     # in the necessary symbols at run time.
     contains(QMAKE_LFLAGS, "-Wl,--no-undefined"):LIBS += $${QMAKE_LIBS_X11}
+
+    equals(QT_MAJOR_VERSION, 5): include(src/compat/compat.pri)
 }
 
 # Transition flag for aligning screen api's width/height/displayWidth/displayHeight

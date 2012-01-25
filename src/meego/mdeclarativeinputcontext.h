@@ -92,7 +92,11 @@ public:
     void setCustomSoftwareInputPanelVisible(bool visible);
 
     QDeclarativeItem * customSoftwareInputPanelTextField() const;
+#if QT_VERSION >= 0x050000
+    void setCustomSoftwareInputPanelTextField(QQuickItem * item);
+#else
     void setCustomSoftwareInputPanelTextField(QDeclarativeItem * item);
+#endif
 
 Q_SIGNALS:
     void softwareInputPanelVisibleChanged();

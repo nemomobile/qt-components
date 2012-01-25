@@ -773,7 +773,11 @@ MDeclarativeScreen::Density MDeclarativeScreen::density() const {
         return ExtraHigh;
 }
 
-void MDeclarativeScreen::updatePlatformStatusBarRect(QDeclarativeItem * statusBar)
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+    void MDeclarativeScreen::updatePlatformStatusBarRect(QQuickItem * statusBar)
+#else
+    void MDeclarativeScreen::updatePlatformStatusBarRect(QDeclarativeItem * statusBar)
+#endif
 {
     Q_UNUSED(statusBar);
 

@@ -3,6 +3,7 @@
 #include <QDeclarativeView>
 #include <QtTest>
 
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
 // Copied from qt/tests/shared/util.h
 // Functions and macros that really need to be in QTestLib
 // Will try to wait for the condition while allowing event processing
@@ -32,6 +33,8 @@
         } \
         QCOMPARE(__expr, __expected); \
     } while(0)
+
+#endif
 
 namespace tst_quickcomponentstest
 {
@@ -128,6 +131,11 @@ QDeclarativeView* tst_quickcomponentstest::createDeclarativeView(const QString& 
     view->engine()->addImportPath(Q_COMPONENTS_BUILD_TREE"/imports");
     view->setSource(QUrl::fromLocalFile(source));
     view->show();
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+    view->requestActivateWindow();
+#else
     QApplication::setActiveWindow(view);
+#endif
     return view;
 }
