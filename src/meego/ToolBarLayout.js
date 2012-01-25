@@ -91,7 +91,7 @@ function cleanup() {
 // Main layout function
 function layout() {
 
-    if (parent === null || width === 0)
+    if (parent === null || width === 0 || children === undefined)
         return;
 
     var i;
