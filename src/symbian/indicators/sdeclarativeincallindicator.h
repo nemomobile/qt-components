@@ -72,6 +72,7 @@ private:
 private:
     RMutex iMutex;
     QScopedPointer<TSDeclarativeIncallIndicatorPrivate> iData;
+    TBool iMessageMonitorObserverAdded;
 };
 
 #endif //CSDECLARATIVEINCALLINDICATOR_H

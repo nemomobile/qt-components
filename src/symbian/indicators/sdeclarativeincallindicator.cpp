@@ -115,6 +115,7 @@ CSDeclarativeIncallIndicator* CSDeclarativeIncallIndicator::NewL()
     }
 
 CSDeclarativeIncallIndicator::CSDeclarativeIncallIndicator()
+    : iMessageMonitorObserverAdded( EFalse )
     {
     }
 
@@ -233,7 +234,11 @@ void CSDeclarativeIncallIndicator::CreateIncallControlL()
 #ifdef Q_DEBUG_INCALL
         qDebug() << "CSDeclarativeIncallIndicator::CreateIncallControlL() iIsForeground " << (int)iData->iIsForeground;
 #endif
-        coeEnv->AddMessageMonitorObserverL( *this );
+        if( !iMessageMonitorObserverAdded )
+            {
+            coeEnv->AddMessageMonitorObserverL( *this );
+            iMessageMonitorObserverAdded = ETrue;
+            }
         }
 
 #ifdef Q_DEBUG_INCALL
