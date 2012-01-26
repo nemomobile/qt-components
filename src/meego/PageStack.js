@@ -199,7 +199,7 @@ function pop(page, immediate) {
         if (toolBar) {
             toolBar.setTools(tools, immediate ? "set" : "pop");
         }
-        gc();
+        /*gc();*/
         return oldContainer.page;
     } else {
         return null;
