@@ -57,10 +57,6 @@ class QDBusPendingCallWatcher;
 class QGraphicsSceneMouseEvent;
 class QStyleOptionGraphicsItem;
 
-#if !defined(Q_WS_MAC) && !defined(Q_WS_WIN)
-   #define HAVE_DBUS
-#endif
-
 class MDeclarativeStatusBar : public QDeclarativeItem
 {
     Q_OBJECT
