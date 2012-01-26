@@ -21,17 +21,14 @@ desktop.files = qmlcomponentgallery.desktop
 desktop.path = $$INSTALL_PREFIX/share/applications
 
 equals(QT_MAJOR_VERSION, 5) {
-    copied_qrc_file = $$OUT_PWD/qml/qmlfiles_copy.qrc
+    copied_qrc_file = $$OUT_PWD/qml2/qmlfiles.qrc
 
     # Prevent qmake from complaining about missing qrc file
-    system($$QMAKE_MKDIR $$OUT_PWD/qml && touch $$copied_qrc_file )
+    system($$QMAKE_MKDIR $$OUT_PWD/qml2 && touch $$copied_qrc_file )
 
-    copy_qml_files.commands = $$QMAKE_COPY_DIR $$PWD/qml $$OUT_PWD
+    copy_qml_files.commands = $$QMAKE_COPY_DIR $$PWD/qml/* $$OUT_PWD/qml2
 
-    # Prevent qmake from being confused and choosing the qrc file from the source dir
-    copy_qml_files.commands += && $$QMAKE_MOVE $$OUT_PWD/qml/qmlfiles.qrc $$copied_qrc_file
-
-    rewrite_qml_files.commands = $$bumpQmlVersion($$OUT_PWD/qml, 2.0)
+    rewrite_qml_files.commands = $$bumpQmlVersion($$OUT_PWD/qml2, 2.0)
     rewrite_qml_files.depends = copy_qml_files
 
     QMAKE_EXTRA_TARGETS += copy_qml_files rewrite_qml_files
