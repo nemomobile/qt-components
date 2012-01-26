@@ -55,11 +55,15 @@ MLocalThemeDaemonClient::MLocalThemeDaemonClient(const QString &path, QObject *p
         if (m_path.isEmpty()) {
             //qWarning() << "No theme path is provided for MLocalThemeDaemonClient";
 
+#if defined(THEME_DIR)
+            m_path = THEME_DIR;
+#else
             #ifdef Q_OS_WIN
             m_path = "c:\\";
             #else
             m_path = "/usr/share/themes";
             #endif
+#endif
         }
 
         m_path += QDir::separator()
