@@ -288,7 +288,9 @@ void MDeclarativeScreenPrivate::initContextSubscriber()
                      q, SLOT(_q_updateOrientationAngle()));
 #endif
     //initiating the variables to current orientation
+#ifdef __ARMEL__
     _q_updateOrientationAngle();
+#endif
     _q_isCoveredChanged();
     updateX11OrientationAngleProperty();
     _q_updateIsTvConnected();
