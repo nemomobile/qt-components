@@ -216,9 +216,9 @@ MDeclarativeStatusBar::MDeclarativeStatusBar(QDeclarativeItem *parent) :
     swipeGesture(false),
     sharedPixmapHandle(0),
     pixmapDamage(0),
-    mOrientation(MDeclarativeScreen::Portrait),
+    mOrientation(MDeclarativeScreen::Portrait)
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-    updateSharedTexture(false)
+    , updateSharedTexture(false)
 #endif
 {
     setFlag(QGraphicsItem::ItemHasNoContents, false);
