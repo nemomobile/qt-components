@@ -323,7 +323,7 @@ void MDeclarativeScreenPrivate::updateX11OrientationAngleProperty()
     if (!window)
         return;
 
-    Qt::ScreenOrientation o = Qt::UnknownOrientation;
+    Qt::ScreenOrientation o = Qt::PrimaryOrientation;
     switch (q->rotation()) {
     case 0: o = Qt::LandscapeOrientation; break;
     case 90: o = Qt::InvertedPortraitOrientation; break;
@@ -332,9 +332,8 @@ void MDeclarativeScreenPrivate::updateX11OrientationAngleProperty()
     default:
         qCritical() << "MDeclarativeScreen has invalid orientation set.";
     }
-    if (o != Qt::UnknownOrientation) {
-        qCritical() << "Setting orientation";
-        window.data()->setOrientation(o);
+    if (o != Qt::PrimaryOrientation) {
+        window.data()->reportContentOrientationChange(o);
     }
 #endif
 }
@@ -481,7 +480,7 @@ void MDeclarativeScreenPrivate::_q_updateOrientationAngle()
     QScreen* screen = QGuiApplication::primaryScreen();
     if (window)
         screen = window.data()->screen();
-    Qt::ScreenOrientation orientation = screen->currentOrientation();
+    Qt::ScreenOrientation orientation = screen->orientation();
     switch (orientation) {
     case Qt::LandscapeOrientation:
         if (allowedOrientations & MDeclarativeScreen::Landscape)
@@ -499,7 +498,7 @@ void MDeclarativeScreenPrivate::_q_updateOrientationAngle()
         if (allowedOrientations & MDeclarativeScreen::PortraitInverted)
             newOrientation = MDeclarativeScreen::PortraitInverted;
         break;
-    case Qt::UnknownOrientation: break;
+    case Qt::PrimaryOrientation: break;
     }
 #endif
 
