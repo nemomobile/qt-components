@@ -164,8 +164,9 @@ function repositionFlickable(animation) {
         }
 
         // If overpanned, set contentY to max possible value (reached bottom)
-        if(newContentY > flickable.contentHeight - flickable.height)
-            newContentY = flickable.contentHeight - flickable.height
+        // Leave some additional space for the selection handles.
+        if(newContentY > flickable.contentHeight + 40 - flickable.height)
+            newContentY = flickable.contentHeight + 40 - flickable.height
 
         // If overpanned, set contentY to min possible value (reached top)
         if(newContentY < 0)

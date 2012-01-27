@@ -443,6 +443,9 @@ FocusScope {
         Connections {
             target: screen
             onCurrentOrientationChanged: {
+                if(root.activeFocus) {
+                    TextAreaHelper.repositionFlickable(contentMovingAnimation)
+                }
                 textInput.updateStatusBar();
             }
         }
