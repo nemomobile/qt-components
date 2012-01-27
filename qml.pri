@@ -4,7 +4,9 @@ DESTDIR = $$Q_COMPONENTS_BUILD_TREE/imports/$$member(TARGETPATH, 0)
 NATIVE_FILES = $$QML_FILES native/qmldir
 NATIVE_FILES -= qmldir
 
-!symbian {
+!debug_and_release|CONFIG(release, debug|release): CONFIG += copy_qml_files
+
+!symbian:copy_qml_files {
     for(qmlfile, QML_FILES) {
         ARGUMENTS = $$_PRO_FILE_PWD_/$$qmlfile $$DESTDIR
         target = copy_$$lower($$basename(qmlfile))
@@ -77,15 +79,19 @@ for(targetpath, $$list($$unique(TARGETPATH))) {
         INSTALLS += $${qmltarget}
     }
 
-    qmlfiles = qmlfiles_$$replace(targetpath, /, _)
-    eval($${qmlfiles}.files = $$QML_FILES)
-    eval($${qmlfiles}.path = $$installpath)
+    !debug_and_release|CONFIG(release, debug|release) {
+        # Only install these files once if debug_and_release
 
-    qmlimages = qmlimages_$$replace(targetpath, /, _)
-    eval($${qmlimages}.files = $$QML_IMAGES)
-    eval($${qmlimages}.path = $$installpath/images)
+        qmlfiles = qmlfiles_$$replace(targetpath, /, _)
+        eval($${qmlfiles}.files = $$QML_FILES)
+        eval($${qmlfiles}.path = $$installpath)
 
-    INSTALLS += $${qmlfiles} $${qmlimages}
+        qmlimages = qmlimages_$$replace(targetpath, /, _)
+        eval($${qmlimages}.files = $$QML_IMAGES)
+        eval($${qmlimages}.path = $$installpath/images)
+
+        INSTALLS += $${qmlfiles} $${qmlimages}
+    }
 
     symbian {
         pluginstub.sources = $$symbianRemoveSpecialCharacters($$basename(TARGET)).dll
@@ -115,17 +121,22 @@ install_native {
         native_target.files = $$DESTDIR/$(TARGET)
         native_target.path = $$[QT_INSTALL_IMPORTS]/Qt/labs/components/native
 
-        native_qmlfiles.files = $$NATIVE_FILES
-        native_qmlfiles.path = $$[QT_INSTALL_IMPORTS]/Qt/labs/components/native
+        INSTALLS += native_target
 
-        native_qmlimages.files = $$QML_IMAGES
-        native_qmlimages.path = $$[QT_INSTALL_IMPORTS]/Qt/labs/components/native/images
+        !debug_and_release|CONFIG(release, debug|release) {
+            # Only install these files once if debug_and_release
+            native_qmlfiles.files = $$NATIVE_FILES
+            native_qmlfiles.path = $$[QT_INSTALL_IMPORTS]/Qt/labs/components/native
 
-        INSTALLS += native_target native_qmlfiles native_qmlimages
+            native_qmlimages.files = $$QML_IMAGES
+            native_qmlimages.path = $$[QT_INSTALL_IMPORTS]/Qt/labs/components/native/images
+
+            INSTALLS += native_qmlfiles native_qmlimages
+        }
     }
 }
 
-equals(QT_MAJOR_VERSION, 5) {
+equals(QT_MAJOR_VERSION, 5):if(!debug_and_release|CONFIG(release, debug|release)) {
     bump_qml_version_installed.CONFIG += no_path
     bump_qml_version_installed.commands = test -d $$[QT_INSTALL_IMPORTS]
 
