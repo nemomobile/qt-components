@@ -54,16 +54,16 @@
 # include "mservicelistener.h"
 #endif
 
-#ifdef Q_WS_X11
+#ifdef HAVE_XLIB
   // These includes conflict with some of Qt's types, so should be kept last
-# include <QX11Info>
 # include <X11/Xatom.h>
 # include <X11/Xlib.h>
-#elif QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-# include <X11/Xatom.h>
-# include <X11/Xlib.h>
-# include <qplatformnativeinterface_qpa.h>
-# include <QtQuick/qquickitem.h>
+# if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#  include <qplatformnativeinterface_qpa.h>
+#  include <QtQuick/qquickitem.h>
+# else
+#  include <QX11Info>
+# endif
 #endif
 
 #ifdef HAVE_XRANDR
@@ -853,7 +853,8 @@ MDeclarativeScreen::Density MDeclarativeScreen::density() const {
 {
     Q_UNUSED(statusBar);
 
-#ifdef Q_WS_X11
+#ifdef HAVE_XLIB
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     QWidget * activeWindow = QApplication::activeWindow();
     if(!activeWindow) {
         foreach (QWidget *widget, QApplication::topLevelWidgets()) {
@@ -867,33 +868,13 @@ MDeclarativeScreen::Density MDeclarativeScreen::density() const {
         if (!activeWindow)
             return;
     }
+#endif
 
-    QRectF rect(statusBar->mapRectToScene(0, 0, (qreal)statusBar->width(), (qreal)statusBar->height()));
-    unsigned long data[4] = {0};
-
-    if(statusBar->y() >= 0) {
-        data[0] = 0;
-        data[1] = 0;
-        data[2] = rect.width();
-        data[3] = rect.height();
-    }
-
-    Display *dpy = QX11Info::display();
-    Atom a = XInternAtom(dpy, "_MEEGOTOUCH_MSTATUSBAR_GEOMETRY", False);
-    Window w = activeWindow->effectiveWinId();
-    if(data[3] == 0)
-        XDeleteProperty(dpy, w, a);
-    else
-        XChangeProperty(dpy, w, a, XA_CARDINAL, 32, PropModeReplace, (unsigned char*)data, 4);
-#elif QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-    if (!d->window)
-        return;
-    QPlatformNativeInterface* iface = QGuiApplication::platformNativeInterface();
-    Display *dpy = (Display*)iface->nativeResourceForWindow("display", d->window.data());
+    Display *dpy = display();
     if (!dpy)
         return;
 
-    QRectF rect(statusBar->mapRectToScene(QRect(qreal(0), qreal(0), (qreal)statusBar->width(), (qreal)statusBar->height())));
+    QRectF rect(statusBar->mapRectToScene(QRectF(qreal(0), qreal(0), qreal(statusBar->width()), qreal(statusBar->height()))));
     unsigned long data[4] = {0};
 
     if(statusBar->y() >= 0) {
@@ -904,7 +885,13 @@ MDeclarativeScreen::Density MDeclarativeScreen::density() const {
     }
 
     Atom a = XInternAtom(dpy, "_MEEGOTOUCH_MSTATUSBAR_GEOMETRY", False);
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     Window w = d->window.data()->winId();
+#else
+    Window w = activeWindow->effectiveWinId();
+#endif
+
     if(data[3] == 0)
         XDeleteProperty(dpy, w, a);
     else
@@ -961,5 +948,18 @@ void MDeclarativeScreen::setAllowSwipe(bool enabled)
     }
 }
 
+#if HAVE_XLIB
+Display* MDeclarativeScreen::display() const
+{
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    if (!d->window)
+        return 0;
+    QPlatformNativeInterface* iface = QGuiApplication::platformNativeInterface();
+    return (Display*)iface->nativeResourceForWindow("display", d->window.data());
+#else
+    return QX11Info::display();
+#endif
+}
+#endif
 
 #include "moc_mdeclarativescreen.cpp"

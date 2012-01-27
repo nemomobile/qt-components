@@ -231,7 +231,8 @@ MDeclarativeStatusBar::MDeclarativeStatusBar(QDeclarativeItem *parent) :
     if (!filterRegistered) {
         ::oldEventFilter = QCoreApplication::instance()->setEventFilter(x11EventFilter);
 #ifdef HAVE_XDAMAGE
-        XDamageQueryExtension(display(), &xDamageEventBase, &xDamageErrorBase);
+        MDeclarativeScreen* screen = MDeclarativeScreen::instance();
+        XDamageQueryExtension(screen->display(), &xDamageEventBase, &xDamageErrorBase);
 #endif
         filterRegistered = true;
     }
@@ -292,6 +293,9 @@ QSGNode* MDeclarativeStatusBar::updatePaintNode(QSGNode* oldNode, UpdatePaintNod
         node->setMaterial(new QSGTextureMaterial);
         node->setOpaqueMaterial(new QSGTextureMaterial);
 
+#if defined(HAVE_XLIB)
+        MDeclarativeScreen* screen = MDeclarativeScreen::instance();
+
 #if defined(QT_OPENGL_ES_2)
         static PFNGLEGLIMAGETARGETTEXTURE2DOESPROC glEGLImageTargetTexture2DOES = (PFNGLEGLIMAGETARGETTEXTURE2DOESPROC)eglGetProcAddress("glEGLImageTargetTexture2DOES");
         static PFNEGLCREATEIMAGEKHRPROC eglCreateImageKHR = (PFNEGLCREATEIMAGEKHRPROC) eglGetProcAddress("eglCreateImageKHR");
@@ -300,7 +304,7 @@ QSGNode* MDeclarativeStatusBar::updatePaintNode(QSGNode* oldNode, UpdatePaintNod
 
         const EGLint attribs[] = { EGL_IMAGE_PRESERVED_KHR, EGL_TRUE, EGL_NONE };
 
-        EGLDisplay eglDpy = eglGetDisplay((EGLNativeDisplayType)display());
+        EGLDisplay eglDpy = eglGetDisplay((EGLNativeDisplayType)screen->display());
         EGLImageKHR img = eglCreateImageKHR(eglDpy, EGL_NO_CONTEXT, EGL_NATIVE_PIXMAP_KHR, (EGLClientBuffer)sharedPixmapHandle, attribs);
 
         GLuint textureId;
@@ -317,7 +321,7 @@ QSGNode* MDeclarativeStatusBar::updatePaintNode(QSGNode* oldNode, UpdatePaintNod
 
         eglDestroyImageKHR(eglDpy, img);
 #else
-        Display* dpy = display();
+        Display* dpy = screen->display();
         Window dummy1;
         int x, y;
         unsigned int width, height, borderwidth, depth;
@@ -327,6 +331,7 @@ QSGNode* MDeclarativeStatusBar::updatePaintNode(QSGNode* oldNode, UpdatePaintNod
         XDestroyImage(xi);
         sharedTexture.reset(canvas()->createTextureFromImage(img));
 #endif
+#endif // HAVE_XLIB
 
         static_cast<QSGTextureMaterial*>(node->material())->setTexture(sharedTexture.data());
         static_cast<QSGOpaqueTextureMaterial*>(node->opaqueMaterial())->setTexture(sharedTexture.data());
@@ -418,7 +423,8 @@ void MDeclarativeStatusBar::setupXDamageForSharedPixmap()
 {
 #ifdef HAVE_XDAMAGE
     Q_ASSERT(sharedPixmapHandle);
-    pixmapDamage = XDamageCreate(display(), (Drawable)sharedPixmapHandle, XDamageReportRawRectangles);
+    MDeclarativeScreen* screen = MDeclarativeScreen::instance();
+    pixmapDamage = XDamageCreate(screen->display(), (Drawable)sharedPixmapHandle, XDamageReportRawRectangles);
     damageMap.insert(pixmapDamage, this);
 #endif
 }
@@ -428,7 +434,8 @@ void MDeclarativeStatusBar::destroyXDamageForSharedPixmap()
 #ifdef HAVE_XDAMAGE
     if (pixmapDamage) {
         damageMap.remove(pixmapDamage);
-        XDamageDestroy(display(), pixmapDamage);
+        MDeclarativeScreen* screen = MDeclarativeScreen::instance();
+        XDamageDestroy(screen->display(), pixmapDamage);
         pixmapDamage = 0;
     }
 #endif
@@ -585,7 +592,8 @@ void MDeclarativeStatusBar::itemChange(ItemChange change, const ItemChangeData& 
             QPlatformNativeInterface* iface = QGuiApplication::platformNativeInterface();
             ::oldEventFilter = iface->setEventFilter(QByteArrayLiteral("xcb_generic_event_t"), x11EventFilter);
 #ifdef HAVE_XDAMAGE
-            if (!XDamageQueryExtension(display(), &xDamageEventBase, &xDamageErrorBase))
+            MDeclarativeScreen* screen = MDeclarativeScreen::instance();
+            if (!XDamageQueryExtension(screen->display(), &xDamageEventBase, &xDamageErrorBase))
                 qCritical() << "Could not find X damage extension on display. Status bar updates will not work.";
 #endif
             filterRegistered = true;
@@ -594,22 +602,6 @@ void MDeclarativeStatusBar::itemChange(ItemChange change, const ItemChangeData& 
     QQuickItem::itemChange(change, changeData);
 }
 #endif
-
-Display* MDeclarativeStatusBar::display() const
-{
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-    static Display* display = 0;
-    if (!display) {
-        if (!canvas())
-            return 0;
-        QPlatformNativeInterface* iface = QGuiApplication::platformNativeInterface();
-        display = (Display*)iface->nativeResourceForWindow("display", canvas());
-    }
-    return display;
-#else
-    return QX11Info::display();
-#endif
-}
 
 void MDeclarativeStatusBar::disablePressedFeedback()
 {

@@ -73,6 +73,8 @@ contains(QT_CONFIG, dbus): DEFINES += HAVE_DBUS
 
 contains(QT_CONFIG, opengles2): CONFIG += egl
 
+contains(QT_CONFIG, xlib): DEFINES += HAVE_XLIB
+
 SOURCES += \
     plugin.cpp \
     mdeclarativestatusbar.cpp \

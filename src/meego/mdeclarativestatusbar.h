@@ -50,7 +50,6 @@
 #include <qscopedpointer.h>
 #endif
 
-typedef struct _XDisplay Display;
 class QPixmap;
 class QDBusServiceWatcher;
 class QDBusPendingCallWatcher;
@@ -96,8 +95,6 @@ private:
     void handleMouseReleaseEvent(const QPointF& pos);
 
     Q_DISABLE_COPY(MDeclarativeStatusBar)
-
-    Display* display() const;
 
     bool updatesEnabled;
 

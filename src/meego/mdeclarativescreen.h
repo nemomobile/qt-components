@@ -52,6 +52,10 @@ class QDeclarativeItem;
 class MDeclarativeScreenPrivate;
 class MWindowState;
 
+#if defined(HAVE_XLIB)
+typedef struct _XDisplay Display;
+#endif
+
 class MDeclarativeScreen : public QObject
 {
     Q_OBJECT
@@ -177,6 +181,10 @@ public:
     Density density() const;
 
     MWindowState * windowState() const;
+
+#if defined(HAVE_XLIB)
+    Display* display() const;
+#endif
 
     Orientations platformPhysicalDisplayOrientation() const;
 
