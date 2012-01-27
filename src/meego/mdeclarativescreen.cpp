@@ -573,7 +573,7 @@ bool MDeclarativeScreen::eventFilter(QObject *o, QEvent *e) {
             QWindow* w = qobject_cast<QWindow*>(o);
             if (!d->window) {
                 d->window = w;
-                connect(w->screen(), SIGNAL(currentOrientationChanged(Qt::ScreenOrientation)),
+                connect(w->screen(), SIGNAL(orientationChanged(Qt::ScreenOrientation)),
                         this, SLOT(_q_updateOrientationAngle()));
             }
             if (d->window) {
