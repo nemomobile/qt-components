@@ -598,10 +598,14 @@ void MDeclarativeStatusBar::itemChange(ItemChange change, const ItemChangeData& 
 Display* MDeclarativeStatusBar::display() const
 {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-    if (!canvas())
-        return 0;
-    QPlatformNativeInterface* iface = QGuiApplication::platformNativeInterface();
-    return (Display*)iface->nativeResourceForWindow("display", canvas());
+    static Display* display = 0;
+    if (!display) {
+        if (!canvas())
+            return 0;
+        QPlatformNativeInterface* iface = QGuiApplication::platformNativeInterface();
+        display = (Display*)iface->nativeResourceForWindow("display", canvas());
+    }
+    return display;
 #else
     return QX11Info::display();
 #endif
