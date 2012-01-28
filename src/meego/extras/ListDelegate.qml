@@ -60,6 +60,10 @@ Item {
     property color subtitleColor: theme.inverted ? UI.LIST_SUBTITLE_COLOR_INVERTED : UI.LIST_SUBTITLE_COLOR
     property color subtitleColorPressed: theme.inverted ? UI.LIST_SUBTITLE_COLOR_PRESSED_INVERTED : UI.LIST_SUBTITLE_COLOR_PRESSED
 
+    property string iconSource: model.iconSource ? model.iconSource : ""
+    property string titleText: model.title
+    property string subtitleText: model.subtitle
+
     height: UI.LIST_ITEM_HEIGHT
     width: parent.width
 
@@ -79,10 +83,10 @@ Item {
 
         Image {
             anchors.verticalCenter: parent.verticalCenter
-            visible: model.iconSource ? true : false
+            visible: listItem.iconSource ? true : false
             width: UI.LIST_ICON_SIZE
             height: UI.LIST_ICON_SIZE
-            source: model.iconSource ? model.iconSource : ""
+            source: listItem.iconSource ? listItem.iconSource : ""
         }
 
         Column {
@@ -90,7 +94,7 @@ Item {
 
             Label {
                 id: mainText
-                text: model.title
+                text: listItem.titleText
                 font.family: listItem.titleFont
                 font.weight: listItem.titleWeight
                 font.pixelSize: listItem.titleSize
@@ -99,7 +103,7 @@ Item {
 
             Label {
                 id: subText
-                text: model.subtitle ? model.subtitle : ""
+                text: listItem.subtitleText ? listItem.subtitleText : ""
                 font.family: listItem.subtitleFont
                 font.weight: listItem.subtitleWeight
                 font.pixelSize: listItem.subtitleSize
