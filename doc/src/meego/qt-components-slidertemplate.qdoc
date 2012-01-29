@@ -63,13 +63,13 @@
 /*!
     \qmlproperty real SliderTemplate::maximumValue
 
-    Maximum value that is choosed with the slider.
+    Maximum value that is chosen with the slider.
 */
 
 /*!
     \qmlproperty real SliderTemplate::minimumValue
 
-    Minimum value that is choosed with the slider.
+    Minimum value that is chosen with the slider.
 */
 
 /*!
@@ -111,7 +111,7 @@
     Position of the value indicator.
     Possible values:
     \list
-    \o In orizzontal - "Left" or "Right" (default "Left")
+    \o In horizontal - "Left" or "Right" (default "Left")
     \o In vertical - "Top" or "Bottom" (default "Top")
     \endlist
 */
