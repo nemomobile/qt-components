@@ -5,7 +5,7 @@ TEMPLATE = lib
 TARGET = $$qtLibraryTarget(meegoextrasplugin)
 INCLUDEPATH += $$PWD
 
-win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release
+win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release build_all
 CONFIG += qt plugin
 QT += declarative network
 
