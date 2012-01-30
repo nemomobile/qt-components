@@ -159,7 +159,7 @@ static bool x11EventFilter(void *message, long *result)
         return false;
 }
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) && !defined(QT_OPENGL_ES_2)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) && defined(HAVE_XLIB) && !defined(QT_OPENGL_ES_2)
 static QImage qimageFromXImage(XImage* xi)
 {
     QImage::Format format = QImage::Format_ARGB32_Premultiplied;
