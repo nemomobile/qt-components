@@ -70,11 +70,14 @@ OrientationListener::OrientationListener(QObject *parent)
 
 OrientationListener::~OrientationListener()
 {
+    instance = 0;
 }
 
 bool OrientationListener::symbianEventFilter(void *message, long *result)
 {
     Q_UNUSED(result);
+    if (!instance)
+        return false;
     QSymbianEvent *symbianEvent = static_cast<QSymbianEvent *>(message);
 
     if (symbianEvent
