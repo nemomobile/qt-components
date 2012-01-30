@@ -22,8 +22,9 @@
 
 #include "qgraphicsitem.h"
 
-struct CompatQGraphicsObject : public CompatQGraphicsItem
+class CompatQGraphicsObject : public CompatQGraphicsItem
 {
+public:
     CompatQGraphicsObject(CompatQGraphicsObject *parent = 0) : CompatQGraphicsItem(parent) {}
 };
 

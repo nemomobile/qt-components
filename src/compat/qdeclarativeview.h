@@ -22,8 +22,9 @@
 
 #include <QtQuick/QQuickView>
 
-struct CompatQDeclarativeView : public QQuickView
+class CompatQDeclarativeView : public QQuickView
 {
+public:
     CompatQDeclarativeView(QWindow *parent = 0) : QQuickView(parent) {}
 };
 

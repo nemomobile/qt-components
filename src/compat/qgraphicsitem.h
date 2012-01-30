@@ -26,8 +26,9 @@
 
 class CompatQGraphicsObject;
 
-struct CompatQGraphicsItem : public QQuickItem
+class CompatQGraphicsItem : public QQuickItem
 {
+public:
     CompatQGraphicsItem(CompatQGraphicsItem *parent = 0) : QQuickItem(parent) {}
 
     enum DeprecatedGraphicsItemFlags {

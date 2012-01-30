@@ -22,8 +22,9 @@
 
 #include "qgraphicsobject.h"
 
-struct CompatQDeclarativeItem : public CompatQGraphicsObject
+class CompatQDeclarativeItem : public CompatQGraphicsObject
 {
+public:
     CompatQDeclarativeItem(CompatQDeclarativeItem *parent = 0) : CompatQGraphicsObject(parent) {}
 
     void setZValue(qreal value) { setZ(value); }

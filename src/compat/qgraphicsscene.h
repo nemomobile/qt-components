@@ -22,7 +22,7 @@
 
 #include <QtQuick/QQuickCanvas>
 
-struct CompatQGraphicsScene : public QQuickCanvas
+class CompatQGraphicsScene : public QQuickCanvas
 {
 };
 
