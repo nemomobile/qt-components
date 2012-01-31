@@ -64,6 +64,9 @@ Item {
     property string titleText: model.title
     property string subtitleText: model.subtitle
 
+    property string iconId
+    property bool iconVisible: false
+
     height: UI.LIST_ITEM_HEIGHT
     width: parent.width
 
@@ -120,4 +123,23 @@ Item {
             listItem.clicked();
         }
     }
+
+    Image {
+        function handleIconId() {
+            var prefix = "icon-m-"
+            // check if id starts with prefix and use it as is
+            // otherwise append prefix and use the inverted version if required
+            if (iconId.indexOf(prefix) !== 0)
+                iconId =  prefix.concat(iconId).concat(theme.inverted ?  "-inverse" : "");
+            return "image://theme/" + iconId;
+        }
+
+        visible: iconVisible
+        source: iconId ? handleIconId() : ""
+        anchors {
+            right: parent.right;
+            verticalCenter: parent.verticalCenter;
+        }
+    }
+
 }

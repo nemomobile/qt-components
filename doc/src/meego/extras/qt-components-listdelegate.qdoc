@@ -94,6 +94,20 @@
 */
 
 /*!
+    \qmlproperty string ListDelegate::iconId
+
+    ID of the icon used on the right side.
+*/
+
+/*!
+    \qmlproperty bool ListDelegate::iconVisible
+
+    Property default is \c false
+
+    Toggles the visibility of the icon on the right side.
+*/
+
+/*!
     \qmlproperty color ListDelegate::subtitleColor
 
     The color of the subtitle.
