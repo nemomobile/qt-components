@@ -74,6 +74,7 @@ static const char qt_emptyAttributeName[] = "";
     \ingroup qmlshadersplugin
     \brief The ShaderEffectItem object alters the output of given item with OpenGL shaders.
     \inherits Item
+    \internal
 
     ShaderEffectItem is available in the \bold{Qt.labs.shaders 1.0} module.
     \e {Elements in the Qt.labs module are not guaranteed to remain compatible
