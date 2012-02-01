@@ -57,6 +57,12 @@ Item {
     Component.onCompleted: setupTest(testId)
     onReInitModelChanged: initializeModel()
 
+    Loader {
+        id: memoryDisplay
+        visible: displayMemory
+        source: visible ? "qrc:/MemoryDisplay.qml" : ""
+    }
+
     BusyIndicator {
         id: busyIndicator
         visible: !listModel.initialized
@@ -70,6 +76,7 @@ Item {
     ListView {
         id: listView
         anchors.fill: parent
+        anchors.topMargin: memoryDisplay.visible ? memoryDisplay.height : 0
         opacity: !listModel.initialized ? 0 : 1
         focus: true
         clip: true

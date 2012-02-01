@@ -44,13 +44,13 @@ import com.nokia.symbian 1.1
 Rectangle {
     id: background
     width: screen.width
-    height: platformStyle.graphicsSizeMedium
+    height: platformStyle.graphicSizeMedium
     color: "black"
 
     ProgressBar {
         id: memoryUsageBar
         anchors.fill: parent
-        height: platformStyle.graphicsSizeMedium
+        height: platformStyle.graphicSizeMedium
         minimumValue: 0
         maximumValue: 67108864 // 64 MB
         value: symbian.privateAllocatedMemory()
