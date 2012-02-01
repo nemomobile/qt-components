@@ -50,7 +50,7 @@ class SDeclarativeImageProviderPrivate
 public:
     SDeclarativeImageProviderPrivate(SDeclarativeImageProvider *qq);
     SDeclarativeImageProvider *q_ptr;
-    QScopedPointer<QDeclarativeImageProvider> sharedImageProvider;
+    QDeclarativeImageProvider *sharedImageProvider;
 };
 
 SDeclarativeImageProviderPrivate::SDeclarativeImageProviderPrivate(SDeclarativeImageProvider *qq)
@@ -63,7 +63,7 @@ SDeclarativeImageProviderPrivate::SDeclarativeImageProviderPrivate(SDeclarativeI
             (CreateImageProviderFuncPtr) QLibrary::resolve("qtuisharedimageprovider", "1");
 
     if (createSharedImageProvider)
-        sharedImageProvider.reset(createSharedImageProvider());
+        sharedImageProvider = createSharedImageProvider();
 }
 
 SDeclarativeImageProvider::SDeclarativeImageProvider() :
