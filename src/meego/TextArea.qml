@@ -40,6 +40,7 @@
 
 import QtQuick 1.1
 import "." 1.0
+import "Utils.js" as Utils
 import "UIConstants.js" as UI
 import "EditBubble.js" as Popup
 import "TextAreaHelper.js" as TextAreaHelper
@@ -435,7 +436,7 @@ FocusScope {
         }
 
         Connections {
-            target: TextAreaHelper.findFlickable(root.parent)
+            target: Utils.findFlickable(root.parent)
             onContentYChanged: if (root.activeFocus) TextAreaHelper.filteredInputContextUpdate();
             onContentXChanged: if (root.activeFocus) TextAreaHelper.filteredInputContextUpdate();
             onMovementEnded: inputContext.update();

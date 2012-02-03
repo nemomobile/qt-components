@@ -38,19 +38,6 @@
 **
 ****************************************************************************/
 
-function findFlickable(component) {
-    var nextParent = component
-    var flickableItem = null
-    while(nextParent) {
-        if(nextParent.flicking !== undefined && nextParent.flickableDirection !== undefined)
-            flickableItem = nextParent
-
-        nextParent = nextParent.parent
-    }
-    if (flickableItem) return flickableItem
-    return null
-}
-
 function animateContentY(animation, flickable, newContentY) {
     animation.target = flickable
     animation.to = newContentY
@@ -93,7 +80,7 @@ function repositionFlickable(animation) {
     if(mf.x == -1 && mf.y == -1)
         return
 
-    var object = findFlickable(parent)
+    var object = Utils.findFlickable(parent)
 
     if(object){
         var flickable = object
