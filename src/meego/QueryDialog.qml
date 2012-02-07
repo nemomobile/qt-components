@@ -243,7 +243,9 @@ Dialog {
             id: buttonCol
             anchors.top: parent.top
             anchors.topMargin: root.platformStyle.buttonTopMargin
-            spacing: root.platformStyle.buttonsColumnSpacing
+            // "+1" to avoid fuzziness to address an off-by-one error that seems to affect the upper line of the button row
+            // This is an optimization for this particular theme and might stop working work if other parameters are changed.
+            spacing: root.platformStyle.buttonsColumnSpacing + 1
 
             height: (acceptButton.text  == "" ? 0 : acceptButton.height)
                     + (rejectButton.text == "" ? 0 : rejectButton.height)
