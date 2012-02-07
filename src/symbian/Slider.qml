@@ -270,6 +270,7 @@ Item {
                 return
 
             var point = null
+            var rootPoint = null
             if (orientation == Qt.Horizontal) {
                 point = root.mapFromItem(track, handle.x + handle.width / 2 - valueIndicator.item.width / 2, 0)
 
@@ -286,8 +287,13 @@ Item {
                 else if (valueIndicatorRightEdge.x > rightStop)
                     point.x = root.mapFromItem(null, rightStop - valueIndicator.item.width, 0).x
 
+                rootPoint = root.mapToItem(null, track.x, track.y)
                 valueIndicator.item.x = Math.round(point.x)
-                valueIndicator.item.y = Math.round(point.y - valueIndicator.spacing - valueIndicator.item.height)
+                // Check if valueIndicator would be outside of screen, in which case it's shown below the slider
+                if (Math.round(rootPoint.y - valueIndicator.spacing - valueIndicator.item.height) >= 0)
+                    valueIndicator.item.y = Math.round(point.y - valueIndicator.spacing - valueIndicator.item.height)
+                else
+                    valueIndicator.item.y = Math.round(point.y + track.height + valueIndicator.spacing)
             } else {
                 point = root.mapFromItem(track, 0, handle.y + handle.height / 2 - valueIndicator.item.height / 2)
                 valueIndicator.item.x = Math.round(point.x - valueIndicator.spacing - valueIndicator.item.width)
