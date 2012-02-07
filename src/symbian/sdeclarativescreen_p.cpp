@@ -291,7 +291,9 @@ void SDeclarativeScreenPrivate::initDisplaySize()
         m_displaySize = QSize(pixelsX, pixelsY);
     }
 #endif // __WINS__
+#ifdef S60_V54_OR_HIGHER
     iAvkonAppUi->SetExtendedOrientationCompatible(ETrue);
+#endif
 }
 
 TPixelsTwipsAndRotation SDeclarativeScreenPrivate::screenParams()

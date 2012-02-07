@@ -224,6 +224,10 @@ symbian {
 
     package.pkg_prerules += vendor_info
     DEPLOYMENT += package
+
+    exists($${EPOCROOT}epoc32/release/winscw/udeb/z/system/install/series60v5.4.sis) {
+        DEFINES += S60_V54_OR_HIGHER
+    }
 }
 
 win32: LIBS += -lpsapi # for allocated memory info
