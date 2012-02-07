@@ -1,3 +1,9 @@
+qt-components (1.3~git20120207-1) maverick; urgency=low
+
+  * Fixes: NB#293742 Text pasted in incorrect location in TextField and TextArea
+
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Tue, 07 Feb 2012 10:00:00 +0300
+
 qt-components (1.3~git20120130-1) maverick; urgency=low
 
   * Initial 1.3 version
