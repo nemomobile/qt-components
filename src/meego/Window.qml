@@ -60,6 +60,29 @@ Item {
     signal orientationChangeStarted
     signal orientationChangeFinished
 
+    // Quick & coarse rotation consistent with MTF
+    function __beginTransformation() {
+        snapshot.take();
+        snapshot.opacity = 1.0;
+        snapshotRotation.angle = -window.rotation;
+        snapshot.smooth = false; 
+        platformWindow.animating = true;
+        root.orientationChangeAboutToStart();
+    }
+
+    function __continueTransformation() {
+        windowContent.opacity = 0.0;
+        root.orientationChangeStarted();
+    }
+
+    function __endTransformation() {
+        windowRotation.angle = 0
+        snapshot.free();
+        root.orientationChangeFinished();
+        platformWindow.animating = false;
+    }
+
+
     Rectangle {
         id: background
         anchors.fill: parent
@@ -219,26 +242,11 @@ Item {
             to:   (screen.minimized || !screen.isDisplayLandscape ? "disabled" : (inputContext.softwareInputPanelVisible ? "disabled" : "*"))
             SequentialAnimation {
                 alwaysRunToEnd: true
-
-                ScriptAction {
-                    script: {
-                        snapshot.take();
-                        snapshot.opacity = 1.0;
-                        snapshotRotation.angle = -window.rotation;
-                        snapshot.smooth = false; // Quick & coarse rotation consistent with MTF
-                        platformWindow.animating = true;
-                        root.orientationChangeAboutToStart();
-                    }
-                }
+                ScriptAction { script: __beginTransformation() }
                 PropertyAction { target: window; properties: "portrait"; }
                 PropertyAction { target: window; properties: "width"; }
                 PropertyAction { target: window; properties: "height"; }
-                ScriptAction {
-                    script: {
-                        windowContent.opacity = 0.0;
-                        root.orientationChangeStarted();
-                    }
-                }
+                ScriptAction { script: __continueTransformation() }
                 ParallelAnimation {
                     NumberAnimation { target: windowContent; property: "opacity";
                                       to: 1.0; easing.type: Easing.InOutExpo; duration: 600; }
@@ -252,14 +260,7 @@ Item {
                                         direction: RotationAnimation.Shortest;
                                         easing.type: Easing.InOutExpo; duration: 600; }
                 }
-                ScriptAction {
-                    script: {
-                        windowRotation.angle = 0
-                        snapshot.free();
-                        root.orientationChangeFinished();
-                        platformWindow.animating = false;
-                    }
-                }
+                ScriptAction { script: __endTransformation() }
             }
         }
         ]

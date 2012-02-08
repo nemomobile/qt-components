@@ -76,6 +76,39 @@ Dialog {
 
     signal linkActivated(string link)
 
+    function __beginTransformationToHidden() {
+        __fader().state = "hidden";
+        root.opacity = 1.0;
+        queryContent.opacity = 1.0
+        titleField.opacity = 1.0
+        statesWrapper.__buttonSaver = buttonColFiller.y
+        root.status = DialogStatus.Closing;
+    }
+
+    // reset button and make sure, root isn't visible
+    function __endTransformationToHidden() {
+        buttonColFiller.y = statesWrapper.__buttonSaver
+        root.opacity = 0.0;
+        status = DialogStatus.Closed;
+    }
+
+    function __beginTransformationToVisible() {
+        __fader().state = "visible";
+        statesWrapper.__buttonSaver = buttonColFiller.y
+ 
+       root.status = DialogStatus.Opening;
+       root.opacity = 1.0
+       titleField.opacity = 0.0
+       queryContent.opacity = 0.0
+       buttonColFiller.opacity = 0.0
+    }
+
+    function __endTransformationToVisible() {
+        // reset button
+        buttonColFiller.y = statesWrapper.__buttonSaver
+        root.status = DialogStatus.Open;
+    }
+
     // the title field consists of the following parts: title string and
     // a close button (which is in fact an image)
     // it can additionally have an icon
@@ -103,9 +136,7 @@ Dialog {
                     anchors.horizontalCenter: titleBarIconField.horizontalCenter
                     source: ""
                 }
-
             }
-
 
             Item {
                 id: titleBarTextField
@@ -138,7 +169,6 @@ Dialog {
                 origin.x: mapFromItem(queryContent, queryContent.width / 2, queryContent.height / 2).x
                 origin.y: mapFromItem(queryContent, queryContent.width / 2, queryContent.height / 2).y
             }
-
         }
     }
 
@@ -272,17 +302,7 @@ Dialog {
             Transition {
                 from: "__query__visible"; to: "__query__hidden"
                 SequentialAnimation {
-                    ScriptAction {script: {
-                            __fader().state = "hidden";
-                            root.opacity = 1.0;
-                            queryContent.opacity = 1.0
-                            titleField.opacity = 1.0
-
-                            statesWrapper.__buttonSaver = buttonColFiller.y
-                            root.status = DialogStatus.Closing;
-
-                        }
-                    }
+                    ScriptAction {script: __beginTransformationToHidden()}
 
                     NumberAnimation { target: root; properties: "opacity"; from: 0.0; to: 1.0; duration: 0 }
                     NumberAnimation { target: queryContent; properties: "opacity"; from: 0.0; to: 1.0; duration: 0 }
@@ -302,36 +322,14 @@ Dialog {
                         NumberAnimation {target: buttonColFiller; property: "scale"; from: 1.0 ; to: 0.8; duration: 175; easing.type: Easing.InQuint}
                     }
 
-                    ScriptAction {script: {
-
-                            // reset button
-                            buttonColFiller.y = statesWrapper.__buttonSaver
-
-                            // make sure, root isn't visible:
-                            root.opacity = 0.0;
-                            status = DialogStatus.Closed;
-
-                        }
-                    }
+                    ScriptAction {script: __endTransformationToHidden()}
 
                 }
             },
             Transition {
                 from: "__query__hidden"; to: "__query__visible"
                 SequentialAnimation {
-                    ScriptAction {script: {
-                            __fader().state = "visible";
-
-                            statesWrapper.__buttonSaver = buttonColFiller.y
-
-                            root.status = DialogStatus.Opening;
-                            // UPPERCASE-UGLY, but necessary to avoid flicker
-                            root.opacity = 1.0
-                            titleField.opacity = 0.0
-                            queryContent.opacity = 0.0
-                            buttonColFiller.opacity = 0.0
-                        }
-                    }
+                    ScriptAction {script: __beginTransformationToVisible()}
 
                     // The opening transition fades in from 0% to 100% and at the same time
                     // scales in the content from 80% to 100%, 350msec, anchored in the center
@@ -346,12 +344,7 @@ Dialog {
                         NumberAnimation {target: buttonColFiller; properties: "opacity"; from: 0.0; to: 1.0; duration: 350; easing.type: Easing.OutCubic; }
                     }
 
-                    ScriptAction {script: {
-                            // reset button
-                            buttonColFiller.y = statesWrapper.__buttonSaver
-                            root.status = DialogStatus.Open;
-                        }
-                    }
+                    ScriptAction {script: __endTransformationToVisible()}
                 }
             }
         ]

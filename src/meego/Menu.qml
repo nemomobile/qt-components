@@ -54,15 +54,23 @@ AbstractMenu {
     }
 */
 
+    function __beginTransformationToHidden() {
+        __fader().state = "hidden";
+        root.status = DialogStatus.Closing;
+    }
+
+    function __beginTransformationToVisible() {
+        __fader().state = "visible";
+        root.status = DialogStatus.Opening;
+        __menuPane.anchors.rightMargin = 0;
+        __menuPane.anchors.bottomMargin = 0;
+    }
+
     __statesWrapper.transitions: [
         Transition {
             from: "visible"; to: "hidden"
             SequentialAnimation {
-                ScriptAction {script: {
-                        __fader().state = "hidden";
-                        root.status = DialogStatus.Closing;
-                    }
-                }
+                ScriptAction {script: __beginTransformationToHidden()}
 
                 NumberAnimation {target: __menuPane;
                                  property: screen.currentOrientation == Screen.Portrait ? "anchors.bottomMargin" : "anchors.rightMargin";
@@ -73,22 +81,13 @@ AbstractMenu {
                 NumberAnimation {target: __menuPane; property: "opacity";
                                  from: 1.0; to: 0.0; duration: 0}
 
-                ScriptAction {script: {
-                        status = DialogStatus.Closed;
-                    }
-                }
+                ScriptAction {script: status = DialogStatus.Closed}
             }
         },
         Transition {
             from: "hidden"; to: "visible"
             SequentialAnimation {
-                ScriptAction {script: {
-                        __fader().state = "visible";
-                        root.status = DialogStatus.Opening;
-                        __menuPane.anchors.rightMargin = 0;
-                        __menuPane.anchors.bottomMargin = 0;
-                    }
-                }
+                ScriptAction {script: __beginTransformationToVisible()}
 
                 NumberAnimation {target: __menuPane;
                                  property: screen.currentOrientation == Screen.Portrait ? "anchors.bottomMargin" : "anchors.rightMargin";
@@ -96,10 +95,7 @@ AbstractMenu {
                                  from: screen.currentOrientation == Screen.Portrait ? -__menuPane.height : -__menuPane.width;
                                  to: 0; duration: 350}
 
-                ScriptAction {script: {
-                        status = DialogStatus.Open;
-                    }
-                }
+                ScriptAction {script: status = DialogStatus.Open }
             }
         }
     ]
