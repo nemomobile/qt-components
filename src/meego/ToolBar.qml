@@ -223,6 +223,15 @@ Item {
             // The owner of the tools.
             property Item owner: null
 
+            // re-parent back to original owner and reset the container
+            function __transformToHidden() {
+                if (container.tools) {
+                    tools.visible = false;
+                    tools.parent = owner;
+                    container.tools = container.owner = null;
+                }
+            }
+
             states: [
                 // Start state for pop entry, end state for push exit.
                 State {
@@ -248,18 +257,7 @@ Item {
                 State {
                     name: "hidden"
                     PropertyChanges { target: container; visible: false }
-                    StateChangeScript {
-                        script: {
-                            if (container.tools) {
-                                // re-parent back to original owner
-                                tools.visible = false;
-                                tools.parent = owner;
-
-                                // reset container
-                                container.tools = container.owner = null;
-                            }
-                        }
-                    }
+                    StateChangeScript { script: __transformToHidden() }
                 }
             ]
 
@@ -270,7 +268,7 @@ Item {
                     SequentialAnimation {
                         PropertyAnimation { properties: "x,opacity"; easing.type: Easing.InCubic; duration: platformStyle.contentTransitionDuration / 2 }
                         PauseAnimation { duration: platformStyle.contentTransitionDuration / 2 }
-                        ScriptAction { script: if (state == "left") state = "hidden"; }
+                        ScriptAction { script: if (state == "left") state = "hidden" }
                     }
                 },
                 // Push entry and pop exit transition.
@@ -279,7 +277,7 @@ Item {
                     SequentialAnimation {
                         PropertyAnimation { properties: "x,opacity"; easing.type: Easing.InCubic; duration: platformStyle.contentTransitionDuration / 2 }
                         PauseAnimation { duration: platformStyle.contentTransitionDuration / 2 }
-                        ScriptAction { script: if (state == "right") state = "hidden"; }
+                        ScriptAction { script: if (state == "right") state = "hidden" }
                     }
                 },
                 Transition {
@@ -294,7 +292,7 @@ Item {
                     from: ""; to: "back";
                     SequentialAnimation {
                         PropertyAnimation { properties: "scale,opacity"; easing.type: Easing.InOutExpo; duration: platformStyle.contentTransitionDuration }
-                        ScriptAction { script: if (state == "back") state = "hidden"; }
+                        ScriptAction { script: if (state == "back") state = "hidden" }
                     }
                 }
             ]
