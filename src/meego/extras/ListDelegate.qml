@@ -62,7 +62,7 @@ Item {
 
     property string iconSource: model.iconSource ? model.iconSource : ""
     property string titleText: model.title
-    property string subtitleText: model.subtitle
+    property string subtitleText: model.subtitle ? model.subtitle : ""
 
     property string iconId
     property bool iconVisible: false
