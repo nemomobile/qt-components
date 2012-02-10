@@ -424,7 +424,7 @@ void MDeclarativeStatusBar::setupXDamageForSharedPixmap()
 #ifdef HAVE_XDAMAGE
     Q_ASSERT(sharedPixmapHandle);
     MDeclarativeScreen* screen = MDeclarativeScreen::instance();
-    pixmapDamage = XDamageCreate(screen->display(), (Drawable)sharedPixmapHandle, XDamageReportRawRectangles);
+    pixmapDamage = XDamageCreate(screen->display(this), (Drawable)sharedPixmapHandle, XDamageReportRawRectangles);
     damageMap.insert(pixmapDamage, this);
 #endif
 }
@@ -593,7 +593,7 @@ void MDeclarativeStatusBar::itemChange(ItemChange change, const ItemChangeData& 
             ::oldEventFilter = iface->setEventFilter(QByteArrayLiteral("xcb_generic_event_t"), x11EventFilter);
 #ifdef HAVE_XDAMAGE
             MDeclarativeScreen* screen = MDeclarativeScreen::instance();
-            if (!XDamageQueryExtension(screen->display(), &xDamageEventBase, &xDamageErrorBase))
+            if (!XDamageQueryExtension(screen->display(this), &xDamageEventBase, &xDamageErrorBase))
                 qCritical() << "Could not find X damage extension on display. Status bar updates will not work.";
 #endif
             filterRegistered = true;

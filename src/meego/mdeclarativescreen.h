@@ -183,7 +183,7 @@ public:
     MWindowState * windowState() const;
 
 #if defined(HAVE_XLIB)
-    Display* display() const;
+    Display* display(QDeclarativeItem* item = 0) const;
 #endif
 
     Orientations platformPhysicalDisplayOrientation() const;
