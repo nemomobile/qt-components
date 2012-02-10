@@ -57,11 +57,11 @@ Item {
 
     Connections {
         target: privateStyle
-        onLayoutParametersChanged: internal.layoutChildren()
+        onLayoutParametersChanged: delayedLayout.start()
     }
     Connections {
         target: screen
-        onCurrentOrientationChanged: internal.layoutChildren()
+        onCurrentOrientationChanged: delayedLayout.start()
     }
 
     QtObject {
@@ -306,10 +306,16 @@ Item {
         }
     }
 
+    Timer {
+        id: delayedLayout
+        interval: 1
+        onTriggered: internal.layoutChildren()
+    }
+
     Component.onCompleted: internal.layoutChildren()
     onParentChanged: internal.layoutChildren()
     onChildrenChanged: internal.layoutChildren()
-    onImplicitWidthChanged: internal.layoutChildren()
-    onImplicitHeightChanged: internal.layoutChildren()
-    onWidthChanged: internal.layoutChildren()
+    onImplicitWidthChanged: delayedLayout.start()
+    onImplicitHeightChanged: delayedLayout.start()
+    onWidthChanged: delayedLayout.start()
 }
