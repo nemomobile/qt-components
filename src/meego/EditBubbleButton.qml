@@ -47,6 +47,7 @@ BorderImage {
     signal clicked()
     property alias text: label.text
     property bool selected: false
+    smooth: true
 
     property Style platformStyle: EditBubbleButtonStyle {}
 
