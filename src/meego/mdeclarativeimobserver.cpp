@@ -40,7 +40,9 @@
 
 #include "mdeclarativeimobserver.h"
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 #include <QInputContext>
+#endif
 #include <QInputMethodEvent>
 #include <QApplication>
 #include <QGraphicsObject>
@@ -54,6 +56,7 @@ MDeclarativeIMObserver::MDeclarativeIMObserver(QDeclarativeItem *parent) :
 
 bool MDeclarativeIMObserver::sceneEventFilter(QGraphicsItem * watched, QEvent * event)
 {
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     if (event->type()==QEvent::InputMethod) {        
         if (m_omitInputMethodEvents) {
             return true;
@@ -94,11 +97,10 @@ bool MDeclarativeIMObserver::sceneEventFilter(QGraphicsItem * watched, QEvent * 
         }
     }
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+    return QDeclarativeItem::sceneEventFilter(watched,event);
+#else
     Q_UNUSED(watched)
     return false; // FIXME: How do we deal with this?
-#else
-    return QDeclarativeItem::sceneEventFilter(watched,event);
 #endif
 }
 

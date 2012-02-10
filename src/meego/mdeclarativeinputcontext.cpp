@@ -40,18 +40,21 @@
 
 #include <QApplication>
 #include <QMouseEvent>
-#include <QInputContext>
 #include <QInputMethodEvent>
 #include <QTimer>
 #include <QRect>
 #include <QClipboard>
 #include <QDebug>
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+#include <QInputContext>
+#endif
+
 #ifdef HAVE_MALIIT
 #include <maliit/inputmethod.h>
 #include <maliit/preeditinjectionevent.h>
 #elif QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-#include <QInputPanel>
+#include <QInputMethod>
 #include <QGuiApplication>
 #endif
 
@@ -103,7 +106,7 @@ MDeclarativeInputContextPrivate::MDeclarativeInputContextPrivate(MDeclarativeInp
                      q, SLOT(_q_sipChanged(const QRect &)));
 #elif QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     simulateSip = false;
-    QObject::connect(qApp->inputPanel(), SIGNAL(keyboardRectangleChanged()),
+    QObject::connect(qApp->inputMethod(), SIGNAL(keyboardRectangleChanged()),
                      q, SLOT(_q_updateKeyboardRectangle()));
 #endif
 }
@@ -115,7 +118,7 @@ MDeclarativeInputContextPrivate::~MDeclarativeInputContextPrivate()
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 void MDeclarativeInputContextPrivate::_q_updateKeyboardRectangle()
 {
-    _q_sipChanged(qApp->inputPanel()->keyboardRectangle().toRect());
+    _q_sipChanged(qApp->inputMethod()->keyboardRectangle().toRect());
 }
 #endif
 
@@ -139,7 +142,7 @@ void MDeclarativeInputContextPrivate::_q_sipChanged(const QRect &rect)
 void MDeclarativeInputContext::updateMicroFocus()
 {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-    d->microFocus = qApp->inputPanel()->cursorRectangle();
+    d->microFocus = qApp->inputMethod()->cursorRectangle();
 #else
     if (QWidget *widget = QApplication::focusWidget()) {
         QVariant v = widget->inputMethodQuery(Qt::ImMicroFocus);
@@ -216,14 +219,22 @@ QRect MDeclarativeInputContext::softwareInputPanelRect() const
 
 void MDeclarativeInputContext::reset()
 {
+#if defined(HAVE_MALIIT) || QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    qApp->inputMethod()->reset();
+#else
     QInputContext *ic = qApp->inputContext();
     if (ic) ic->reset();
+#endif
 }
 
 void MDeclarativeInputContext::update()
 {
+#if defined(HAVE_MALIIT) || QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    qApp->inputMethod()->update(Qt::ImQueryAll);
+#else
     QInputContext *ic = qApp->inputContext();
     if (ic) ic->update();
+#endif
 }
 
 
