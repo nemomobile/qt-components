@@ -361,9 +361,6 @@ FocusScope {
             inputContext.update();
         }
 
-
-        property bool __resetStatusBar: false
-
         x: UI.PADDING_XLARGE
         y: (UI.FIELD_DEFAULT_HEIGHT - font.pixelSize) / 2
         width: parent.width - UI.PADDING_XLARGE * 2
@@ -377,21 +374,6 @@ FocusScope {
         wrapMode: TextEdit.Wrap
         persistentSelection: false
         focus: true
-
-        // don't show a status bar when device is in landscape and input panel is open
-        // method is called when input panel changes visibility state or device is rotated
-        function updateStatusBar() {
-            if (inputContext.softwareInputPanelVisible
-                    && typeof showStatusBar !== "undefined"  && showStatusBar &&
-                    (screen.currentOrientation == Screen.Landscape
-                     ||  screen.currentOrientation == Screen.LandscapeInverted)) {
-                __resetStatusBar = true;
-                showStatusBar = false;
-            } else if (__resetStatusBar) {
-                __resetStatusBar = false;
-                showStatusBar = true;
-            }
-        }
 
         function updateMagnifierPosition(posX, posY) {
             var yAdjustment = 0
@@ -448,19 +430,11 @@ FocusScope {
             onSoftwareInputPanelVisibleChanged: {
                 if (activeFocus)
                     TextAreaHelper.repositionFlickable(contentMovingAnimation);
-                textEdit.updateStatusBar();
             }
 
             onSoftwareInputPanelRectChanged: {
                 if (activeFocus)
                     TextAreaHelper.repositionFlickable(contentMovingAnimation);
-            }
-        }
-
-        Connections {
-            target: screen
-            onCurrentOrientationChanged: {
-                textEdit.updateStatusBar();
             }
         }
 
