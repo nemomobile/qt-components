@@ -53,6 +53,17 @@ Dialog {
     property alias acceptButtonText: acceptButton.text
     property alias rejectButtonText: rejectButton.text
 
+    property Button acceptButton: acceptButton
+    property Button rejectButton: rejectButton
+
+    property bool defaultIsAccept: true
+    property bool defaultIsReject: false
+
+    //   Only one property can be true, but both can be false, so we only change
+    // the other property if one of them were set to true.
+    onDefaultIsAcceptChanged: if(defaultIsAccept) defaultIsReject = false;
+    onDefaultIsRejectChanged: if(defaultIsReject) defaultIsAccept = false;
+
     //ToDo
     property alias icon: iconImage.source
 
@@ -258,7 +269,8 @@ Dialog {
                 text: ""
                 onClicked: accept()
                 visible: text != ""
-                __positiveDialogButton: true
+                __positiveDialogButton: root.defaultIsAccept
+                __negativeDialogButton: !root.defaultIsAccept
                 platformStyle: ButtonStyle {inverted: true}
             }
             Button {
@@ -266,7 +278,8 @@ Dialog {
                 text: ""
                 onClicked: reject()
                 visible: text != ""
-                __negativeDialogButton: true
+                __positiveDialogButton: root.defaultIsReject
+                __negativeDialogButton: !root.defaultIsReject
                 platformStyle: ButtonStyle {inverted: true}
             }
         }
