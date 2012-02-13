@@ -62,6 +62,14 @@
 #include <QtDeclarative>
 #include <QDeclarativeView>
 
+#if defined(Q_OS_SYMBIAN)
+#include <e32cmn.h>
+
+static const TSecureId KLegacyRotationUids [] = {0x20043643, 0x200412F0, 0xE7D7AA2F,
+                                                 0x200009EE, 0x20043644, 0x200431D8,
+                                                 0x200431D9, 0x200431D7, 0x200444FE,
+                                                 0x2004450C, 0x20044504};
+#endif
 
 static const int VERSION_MAJOR = 1;
 static const int VERSION_MINOR = 0;
@@ -84,6 +92,16 @@ static void tryToDisableSystemRotation(const QDeclarativeEngine *engine)
     // If resize mode set from componenttest
     if (declarativeView->property("orientationMethod").toBool())
         return;
+
+#if defined(Q_OS_SYMBIAN)
+    // Do not use sensor orientation for UIDs in list
+    TSecureId currentUID = RThread().SecureId();
+    for (int i = 0; i < sizeof(KLegacyRotationUids); i++) {
+        if (KLegacyRotationUids[i] == currentUID)
+            return;
+    }
+#endif
+
 // Do not use sensor orientation method with simulator
 #ifndef Q_WS_SIMULATOR
     // Qt::WA_SymbianNoSystemRotation cannot be set if view is already open
