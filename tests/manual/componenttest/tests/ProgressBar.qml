@@ -120,5 +120,14 @@ Item {
             text: "Min / Restore"
             onClicked: horizontalBar.state == "full" ? horizontalBar.state = "empty" : horizontalBar.state = "full"
         }
+
+        Button {
+            id: indeterminateButton
+
+            text: "Indeterminate"
+            checkable: true
+            checked: false
+            onCheckedChanged: horizontalBar.indeterminate = checked
+        }
     }
 }

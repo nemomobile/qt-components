@@ -118,7 +118,7 @@ Item {
 
                     NumberAnimation on x {
                         loops: Animation.Infinite
-                        running: true
+                        running: Qt.application.active && root.indeterminate
                         from: 0
                         to: -indeterminateImage.height // see indeterminateImage.width
                         easing.type: Easing.Linear
