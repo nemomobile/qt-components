@@ -63,6 +63,11 @@ FocusScope {
     property int itemCellHeight: privateStyle.buttonSize
     property int headingHeight: platformStyle.fontSizeSmall
 
+    Connections {
+        target: platformPopupManager
+        onPopupStackDepthChanged: if (platformPopupManager.popupStackDepth == 0) root.forceActiveFocus()
+    }
+
     InfoBanner {
         id: info
         interactive: true
