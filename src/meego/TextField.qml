@@ -560,7 +560,7 @@ FocusScope {
                     var yAdjustment = -mapFromItem(magnifier.__rootElement, 0, 0).y < magnifier.height / 2.5 ? magnifier.height / 2.5 + mapFromItem(magnifier.__rootElement, 0,0).y : 0
                     magnifier.x = mappedPos.x;
                     magnifier.y = mappedPos.y + yAdjustment;
-                    magnifier.yCenter = mapToItem(magnifier.sourceItem,0,mappedPosMf.y).y;
+                    magnifier.yCenter = Math.round(mapToItem(magnifier.sourceItem,0,mappedPosMf.y).y);
                     parent.cursorPosition = textInput.positionAt(mouse.x)
                 }
             }
