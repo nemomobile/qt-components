@@ -144,7 +144,7 @@ equals(QT_MAJOR_VERSION, 5):if(!debug_and_release|CONFIG(release, debug|release)
         isEmpty($${install}.files): next()
 
         bump_qml_version_installed.depends += install_$${install}
-        bump_qml_version_installed.commands += && $$bumpQmlVersion($$eval($${install}.path), 2.0)
+        bump_qml_version_installed.commands += && $$bumpQmlVersion(\$\(INSTALL_ROOT\)$$eval($${install}.path), 2.0)
     }
 
     INSTALLS += bump_qml_version_installed
