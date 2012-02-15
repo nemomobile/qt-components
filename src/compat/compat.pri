@@ -26,6 +26,8 @@ DEFINES += \
     QDeclarativeItem=CompatQDeclarativeItem \
     QDeclarativeView=CompatQDeclarativeView
 
+UNAME = $$system(uname)
+equals(UNAME, Darwin): CONFIG += building_on_mac
 
 defineReplace(replaceRecursivly) {
     root = $$1
@@ -33,10 +35,10 @@ defineReplace(replaceRecursivly) {
     pattern = $$3
 
     SED = sed -i
-    macx: SED += \"\"
+    building_on_mac: SED += \"\"
 
     XARGS = xargs
-    !mac: XARGS += -r
+    !building_on_mac: XARGS += -r
 
     return(find $${root} -name \"$${files}\" -type f -print0 | $$XARGS -0 perl -p -i -e \'$${pattern}\')
 }
