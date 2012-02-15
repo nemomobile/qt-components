@@ -74,8 +74,9 @@ Page {
                     }
                     TextField {
                         anchors {left: parent.left; right: parent.right;}
-                        placeholderText: "Default text"
+                        placeholderText: "Default text2"
                         maximumLength: 80
+                        inputMethodHints: Qt.ImhNoPredictiveText
 
                         onAccepted: { console.log("accepted signal triggered") }
 
