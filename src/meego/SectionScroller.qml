@@ -82,7 +82,7 @@ Item {
             drag.maximumY: listView.y + listView.height - tooltip.height
 
             onPressed: {
-                mouseDownTimer.restart()
+                mouseDownTimer.start()
             }
 
             onReleased: {
