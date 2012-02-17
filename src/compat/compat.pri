@@ -26,8 +26,7 @@ DEFINES += \
     QDeclarativeItem=CompatQDeclarativeItem \
     QDeclarativeView=CompatQDeclarativeView
 
-UNAME = $$system(uname)
-equals(UNAME, Darwin): CONFIG += building_on_mac
+equals(QMAKE_HOST.os, Darwin): CONFIG += building_on_mac
 
 defineReplace(replaceRecursivly) {
     root = $$1
