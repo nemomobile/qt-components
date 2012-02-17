@@ -68,7 +68,7 @@ Item {
             property bool up: true
             property int shift: 30
 
-            height: 60
+            height: 150
             width: parent.width - 40
             text: ""
             x: 20
