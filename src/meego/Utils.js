@@ -111,7 +111,7 @@ function findRootItemNotificationBanner(item)
 */
 function statusBarCoveredHeight(item) {
     var pageStackWindow = findRootItem(item, "pageStackWindow");
-    if ( pageStackWindow.objectName == "pageStackWindow" )
+    if ( pageStackWindow.objectName == "pageStackWindow" && pageStackWindow.__statusBarHeight != undefined )
         return pageStackWindow.__statusBarHeight;
     return 0
 }
