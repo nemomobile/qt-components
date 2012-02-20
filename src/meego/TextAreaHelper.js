@@ -37,6 +37,7 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
+Qt.include('Utils.js');
 
 function animateContentY(animation, flickable, newContentY) {
     animation.target = flickable
@@ -74,21 +75,35 @@ function getMargin() {
 }
 
 function repositionFlickable(animation) {
+    var flickable = Utils.findFlickable(parent)
+
     inputContext.updateMicroFocus()
-    var mf = inputContext.microFocus
 
-    if(mf.x == -1 && mf.y == -1)
-        return
-
-    var object = Utils.findFlickable(parent)
-
-    if(object){
-        var flickable = object
-
+    if(flickable) {
         // Specifies area from bottom and top when repositioning should be triggered
         var margin = getMargin()
         var newContentY = flickable.contentY
         var flickableY = locateFlickableY(flickable)
+
+        var mf = inputContext.microFocus
+
+        if(mf.x == -1 && mf.y == -1) {
+            /* This is to calculate read-only text area/field positions as
+            they're not handled by micro-focus. */
+            var window = findRootItem(root, 'contentArea');
+            var vf = window.mapFromItem(root, 0, 0);
+
+            mf = {x: vf.x, y: vf.y, width: root.width, height: root.height};
+
+            if(screen.currentOrientation == Screen.Landscape) {
+                mf.y += root.height / 2;
+            } else if(screen.currentOrientation == Screen.Portrait) {
+                mf.x += root.height / 2;
+            }
+
+            // Probably never happens, but should stop regressions if it does.
+            if (!root.readOnly) return;
+        }
 
         switch(screen.currentOrientation) {
         case Screen.Landscape:

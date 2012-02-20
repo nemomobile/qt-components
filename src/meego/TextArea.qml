@@ -181,11 +181,12 @@ FocusScope {
                         textInput.focus = true;
                     }
                 }
-                if (!readOnly) {
-                    if (activeFocus) {
+                if (activeFocus) {
+                    if (!readOnly) {
                         platformOpenSoftwareInputPanel();
-                        repositionTimer.running = true;
                     }
+
+                    repositionTimer.running = true;
                 }
             } else {
                 if (activeFocus) {
@@ -227,9 +228,11 @@ FocusScope {
                               textEdit.height + (UI.FIELD_DEFAULT_HEIGHT - font.pixelSize))
 
     onActiveFocusChanged: {
-        if (activeFocus &&
-            !readOnly) {
-            platformOpenSoftwareInputPanel();
+        if (activeFocus) {
+            if (!readOnly) {
+                platformOpenSoftwareInputPanel();
+            }
+
             repositionTimer.running = true;
         } else if (!activeFocus) {
             if (!readOnly) {

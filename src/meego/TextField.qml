@@ -124,15 +124,14 @@ FocusScope {
                         textInput.focus = true
                 }
 
-                if (!readOnly) {
-                    if (activeFocus) {
-                        if (platformCustomSoftwareInputPanel != null) {
-                            platformOpenSoftwareInputPanel();
-                        } else {
-                            inputContext.simulateSipOpen();
-                        }
-                        repositionTimer.running = true;
+                if (activeFocus) {
+                    if (!readOnly && platformCustomSoftwareInputPanel != null) {
+                        platformOpenSoftwareInputPanel();
+                    } else {
+                        inputContext.simulateSipOpen();
                     }
+
+                    repositionTimer.running = true;
                 }
             } else {
                 if (activeFocus) {
@@ -243,20 +242,18 @@ FocusScope {
     implicitHeight: UI.FIELD_DEFAULT_HEIGHT
 
     onActiveFocusChanged: {
-        if (!readOnly) {
-            if (activeFocus) {
-                if (platformCustomSoftwareInputPanel != null) {
-                    platformOpenSoftwareInputPanel();
-                } else {
-                    inputContext.simulateSipOpen();
-                }
-
-                repositionTimer.running = true;
-            } else {                
-                platformCloseSoftwareInputPanel();
-                Popup.close(textInput);
-                SelectionHandles.close(textInput);
+        if (activeFocus) {
+            if (!readOnly && platformCustomSoftwareInputPanel != null) {
+                platformOpenSoftwareInputPanel();
+            } else {
+                inputContext.simulateSipOpen();
             }
+
+            repositionTimer.running = true;
+        } else {                
+            platformCloseSoftwareInputPanel();
+            Popup.close(textInput);
+            SelectionHandles.close(textInput);
         }
 
         if (!activeFocus)
