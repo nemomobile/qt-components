@@ -46,8 +46,13 @@ Item {
 
     Component.onCompleted: priv.layoutChildren()
     onChildrenChanged: priv.layoutChildren()
-    onWidthChanged: priv.layoutChildren()
-    onHeightChanged: priv.layoutChildren()
+    onWidthChanged: delayedLayout.start();
+    onHeightChanged: delayedLayout.start();
+
+    Connections {
+        target: screen
+        onCurrentOrientationChanged: delayedLayout.start()
+    }
 
     Keys.onPressed: {
         if (event.key == Qt.Key_Right || event.key == Qt.Key_Left) {
@@ -67,6 +72,12 @@ Item {
     }
 
     focus: true
+
+    Timer {
+        id: delayedLayout
+        interval: 1
+        onTriggered: priv.layoutChildren()
+    }
 
     QtObject {
         id: priv
