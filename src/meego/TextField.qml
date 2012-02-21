@@ -401,8 +401,17 @@ FocusScope {
         // don't show a status bar when device is in landscape and input panel is open
         // method is called when input panel changes visibility state or device is rotated
         function updateStatusBar() {
+
+            // QTBUG-21864: Qt5 implements the 'typeof' operator in a way that throws
+            // ReferenceError, while it should really return "undefined".
+            var statusBarVariableDefined = false;
+            try {
+                statusBarVariableDefined = (typeof showStatusBar !== "undefined")
+            } catch(e) {
+            }
+
             if (inputContext.softwareInputPanelVisible
-                    && typeof showStatusBar !== "undefined" && showStatusBar &&
+                    && statusBarVariableDefined && showStatusBar &&
                     (screen.currentOrientation == Screen.Landscape
                      ||  screen.currentOrientation == Screen.LandscapeInverted)) {
                 __resetStatusBar = true;
