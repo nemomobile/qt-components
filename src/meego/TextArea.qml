@@ -174,6 +174,7 @@ FocusScope {
         onActiveChanged: {
             if(platformWindow.active) {
                 if (__hadFocusBeforeMinimization) {
+                    textEdit.persistentSelection = textEdit.savePersistentSelection
                     __hadFocusBeforeMinimization = false;
                     if (root.parent) {
                         root.focus = true;
@@ -182,6 +183,8 @@ FocusScope {
                     }
                 }
                 if (activeFocus) {
+                    Popup.open(textEdit);
+                    SelectionHandles.open(textEdit);
                     if (!readOnly) {
                         platformOpenSoftwareInputPanel();
                     }
@@ -190,6 +193,8 @@ FocusScope {
                 }
             } else {
                 if (activeFocus) {
+                    textEdit.savePersistentSelection = textEdit.persistentSelection
+                    textEdit.persistentSelection = true
                     platformCloseSoftwareInputPanel();
                     Popup.close(textEdit);
                     SelectionHandles.close(textEdit);
@@ -359,6 +364,10 @@ FocusScope {
         // this properties are evaluated by the input method framework
         property bool westernNumericInputEnforced: false
         property bool suppressInputMethod: !activeFocusOnPress
+        // We are extra careful about compatibility with prior versions, so
+        // instead of setting persistentSelection directly we store its state so
+        // that we get its original state back once the window has focus again.
+        property bool savePersistentSelection: false
 
         onWesternNumericInputEnforcedChanged: {
             inputContext.update();
