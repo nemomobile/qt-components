@@ -45,11 +45,15 @@
 #include <mdeclarativescreen.h>
 #include <qglobal.h>
 
+#include "feedbackplayer.h"
+
+
 class QPixmap;
 class QDBusServiceWatcher;
 class QDBusPendingCallWatcher;
 class QGraphicsSceneMouseEvent;
 class QStyleOptionGraphicsItem;
+class FeedbackPlayer;
 
 #if !defined(Q_WS_MAC) && !defined(Q_WS_WIN)
    #define HAVE_DBUS
@@ -79,7 +83,6 @@ protected:
 
 private:
     Q_DISABLE_COPY(MDeclarativeStatusBar)
-
     bool updatesEnabled;
 
     bool mousePressed;
@@ -91,9 +94,6 @@ private:
      * Displays the status indicator menu.
      */
     void showStatusIndicatorMenu();
-
-    // Perform the haptic feedback
-    void playHapticsFeedback();
 
     //! position of mouse button press(firstPos) and position of last point of mouse move(lastPos)
     QPointF firstPos, lastPos;
@@ -109,6 +109,8 @@ private:
     Qt::HANDLE pixmapDamage;
 
     MDeclarativeScreen::Orientation mOrientation;
+
+    FeedbackPlayer *feedbackPlayer;
 
 Q_SIGNALS:
     void orientationChanged();

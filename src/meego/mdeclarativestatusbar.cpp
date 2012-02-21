@@ -53,6 +53,7 @@
 #include <qgraphicsscene.h>
 #include <qdebug.h>
 #include "mwindowstate.h"
+#include "feedbackplayer.h"
 
 #ifdef HAVE_DBUS
    #include <QDBusInterface>
@@ -127,7 +128,8 @@ MDeclarativeStatusBar::MDeclarativeStatusBar(QDeclarativeItem *parent) :
     mousePressed(false),
     feedbackDelay(false),
     swipeGesture(false),
-    mOrientation(MDeclarativeScreen::Portrait)
+    mOrientation(MDeclarativeScreen::Portrait), 
+    feedbackPlayer(new FeedbackPlayer(this))
 {
     setFlag(QGraphicsItem::ItemHasNoContents, false);
     setAcceptedMouseButtons(Qt::LeftButton);
@@ -167,6 +169,11 @@ MDeclarativeStatusBar::MDeclarativeStatusBar(QDeclarativeItem *parent) :
     MWindowState * windowState = MWindowState::instance();
     connect(windowState, SIGNAL(activeChanged()), this, SLOT(updateXdamageEventSubscription()));
     connect(this, SIGNAL(visibleChanged()), this, SLOT(updateXdamageEventSubscription()));
+
+    if (!feedbackPlayer->init("qt-components")) {
+        delete feedbackPlayer;
+        feedbackPlayer = 0;
+    }
 }
 
 MDeclarativeStatusBar::~MDeclarativeStatusBar()
@@ -175,6 +182,7 @@ MDeclarativeStatusBar::~MDeclarativeStatusBar()
     disconnect(windowState, SIGNAL(activeChanged()), this, SLOT(updateXdamageEventSubscription()));
 
     destroyXDamageForSharedPixmap();
+    delete feedbackPlayer;
 }
 
 void MDeclarativeStatusBar::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
@@ -333,7 +341,10 @@ void MDeclarativeStatusBar::handlePixmapProviderOffline()
 void MDeclarativeStatusBar::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     firstPos = event->pos();
-    playHapticsFeedback();
+    
+    if (feedbackPlayer)
+        feedbackPlayer->sendPlaybackRequest(FeedbackPlayer::Press);
+
     if (!mousePressed) {
         mousePressed = true;
         update();
@@ -357,6 +368,9 @@ void MDeclarativeStatusBar::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         return;
     }
 
+    if (feedbackPlayer)
+        feedbackPlayer->sendPlaybackRequest(FeedbackPlayer::Release);
+
     mousePressed = false;
     update();
 
@@ -373,7 +387,6 @@ void MDeclarativeStatusBar::disablePressedFeedback()
     update();
 }
 
-
 void MDeclarativeStatusBar::showStatusIndicatorMenu()
 {
 #ifdef HAVE_DBUS
@@ -381,13 +394,6 @@ void MDeclarativeStatusBar::showStatusIndicatorMenu()
     interface.call(QDBus::NoBlock, "open");
 #endif
 }
-
-void MDeclarativeStatusBar::playHapticsFeedback()
-{
-//    style()->pressFeedback().play();
-}
-
-
 
 void MDeclarativeStatusBar::setOrientation(MDeclarativeScreen::Orientation o)
 {

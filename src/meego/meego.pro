@@ -96,7 +96,8 @@ SOURCES += \
     shadereffectitem/shadereffectitem.cpp \
     shadereffectitem/shadereffectsource.cpp \
     shadereffectitem/shadereffectbuffer.cpp \
-    shadereffectitem/scenegraph/qsggeometry.cpp
+    shadereffectitem/scenegraph/qsggeometry.cpp \
+    feedbackplayer.cpp
 
 HEADERS += \
     mdeclarativestatusbar.h \
@@ -129,7 +130,8 @@ HEADERS += \
     shadereffectitem/shadereffectitem.h \
     shadereffectitem/shadereffectsource.h \
     shadereffectitem/shadereffectbuffer.h \
-    shadereffectitem/scenegraph/qsggeometry.h
+    shadereffectitem/scenegraph/qsggeometry.h \
+    feedbackplayer.h
                             
 
 QML_FILES = \
