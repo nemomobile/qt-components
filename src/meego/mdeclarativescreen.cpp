@@ -952,13 +952,15 @@ void MDeclarativeScreen::setAllowSwipe(bool enabled)
 Display* MDeclarativeScreen::display(QDeclarativeItem* item) const
 {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    static Display* lastKnownDisplay = 0;
     QWindow* window = d->window.data();
     if (!window && item)
         window = item->canvas();
-    if (!window)
-        return 0;
-    QPlatformNativeInterface* iface = QGuiApplication::platformNativeInterface();
-    return (Display*)iface->nativeResourceForWindow("display", d->window.data());
+    if (window) {
+        QPlatformNativeInterface* iface = QGuiApplication::platformNativeInterface();
+        lastKnownDisplay = (Display*)iface->nativeResourceForWindow("display", d->window.data());
+    }
+    return lastKnownDisplay;
 #else
     Q_UNUSED(item)
     return QX11Info::display();
