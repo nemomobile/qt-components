@@ -65,10 +65,9 @@
 #if defined(Q_OS_SYMBIAN)
 #include <e32cmn.h>
 
-static const TSecureId KLegacyRotationUids [] = {0x20043643, 0x200412F0, 0xE7D7AA2F,
-                                                 0x200009EE, 0x20043644, 0x200431D8,
-                                                 0x200431D9, 0x200431D7, 0x200444FE,
-                                                 0x2004450C, 0x20044504};
+static const TSecureId KLegacyRotationUids [] = {0x20043643, 0x200412F0, 0x20043644,
+                                                 0x200431D8, 0x200431D9, 0x200431D7,
+                                                 0x200444FE, 0x2004450C, 0x20044504};
 #endif
 
 static const int VERSION_MAJOR = 1;
