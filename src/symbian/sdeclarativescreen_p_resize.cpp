@@ -84,7 +84,7 @@ void SDeclarativeScreenPrivateResize::setScreenSize(QSize size)
 
     // Fallback
     if (size.isEmpty())
-        size = systemScreenSize();
+        size = enforceFixedOrientation(systemScreenSize());
 
     if (size.isEmpty() || size == m_screenSize)
         return;
@@ -106,12 +106,12 @@ void SDeclarativeScreenPrivateResize::setScreenSize(QSize size)
     setCurrentOrientation(portraitScreen() ? SDeclarativeScreen::Portrait : SDeclarativeScreen::Landscape);
 }
 
+
 void SDeclarativeScreenPrivateResize::setAllowedOrientations(SDeclarativeScreen::Orientations orientations)
 {
 #ifdef Q_DEBUG_SCREEN
-    qDebug() << "SDeclarativeScreenPrivateResize::setAllowedOrientations";
+    qDebug() << "SDeclarativeScreenPrivateResize::setAllowedOrientations" << orientations;
 #endif
-
     SDeclarativeScreenPrivate::setAllowedOrientations(orientations);
 
     if (!m_initialized)
@@ -125,7 +125,7 @@ void SDeclarativeScreenPrivateResize::setAllowedOrientations(SDeclarativeScreen:
     else if (!portraitAllowed() && landscapeAllowed() && m_view)
         m_view->setAttribute(Qt::WA_LockLandscapeOrientation, true);
 
-    setScreenSize(systemScreenSize());
+    setScreenSize(enforceFixedOrientation(systemScreenSize()));
 #else
 
     QSize newScreenSize = m_displaySize;
@@ -159,6 +159,15 @@ QSize SDeclarativeScreenPrivateResize::systemScreenSize()
 #else
     return (m_screenSize.isEmpty()) ? m_displaySize : m_screenSize;
 #endif
+}
+
+QSize SDeclarativeScreenPrivateResize::enforceFixedOrientation(QSize size)
+{
+    if ((size.width() <= size.height() && !portraitAllowed()) 
+        || (size.width() > size.height() && !landscapeAllowed())) {
+        size.transpose();
+    }
+    return size;
 }
 
 #ifndef Q_OS_SYMBIAN

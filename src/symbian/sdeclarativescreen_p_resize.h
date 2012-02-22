@@ -71,6 +71,7 @@ protected:
 private:
     bool portraitScreen() const;
     QSize systemScreenSize();
+    QSize enforceFixedOrientation(QSize size);
 };
 
 #endif // SDECLARATIVESCREEN_P_RESIZE_H
