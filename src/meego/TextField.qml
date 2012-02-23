@@ -118,6 +118,7 @@ FocusScope {
             if(platformWindow.active) {
                 if (__hadFocusBeforeMinimization) {
                     __hadFocusBeforeMinimization = false
+                    textInput.select( __priorSelectionStart, __priorSelectionEnd )
                     if (root.parent)
                         root.focus = true
                     else
@@ -125,6 +126,8 @@ FocusScope {
                 }
 
                 if (activeFocus) {
+                    Popup.open(textInput);
+                    SelectionHandles.open(textInput);
                     if (!readOnly && platformCustomSoftwareInputPanel != null) {
                         platformOpenSoftwareInputPanel();
                     } else {
@@ -135,6 +138,8 @@ FocusScope {
                 }
             } else {
                 if (activeFocus) {
+                    __priorSelectionStart = selectionStart
+                    __priorSelectionEnd = selectionEnd
                     platformCloseSoftwareInputPanel();
                     Popup.close(textInput);
                     SelectionHandles.close(textInput);
@@ -237,6 +242,8 @@ FocusScope {
                                         Qt.ImhUrlCharactersOnly 
 
     property bool __hadFocusBeforeMinimization: false
+    property int __priorSelectionStart
+    property int __priorSelectionEnd
 
     implicitWidth: platformStyle.defaultWidth
     implicitHeight: UI.FIELD_DEFAULT_HEIGHT
