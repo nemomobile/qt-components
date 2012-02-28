@@ -128,7 +128,7 @@ Item {
                 anchors.fill: parent
                 onPressed: privateStyle.play(Symbian.BasicButton)
                 onClicked: {
-                    textPanel.focus = false
+                    clearMouseArea.forceActiveFocus()
                     textPanel.closeSoftwareInputPanel()
                     textPanel.text = ""
                     root.clearClicked()
