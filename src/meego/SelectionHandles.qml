@@ -28,12 +28,9 @@ Item {
     property alias privateRect: rect
     property bool privateIgnoreClose: false
 
-    onSelectionStartRectChanged: {
-        Private.adjustPosition(contents);
-    }
-    onSelectionEndRectChanged: {
-        Private.adjustPosition(contents);
-    }
+    onSelectionStartRectChanged: Private.adjustPosition(contents)
+
+    onSelectionEndRectChanged: Private.adjustPosition(contents)
 
     Item {
         id: rect
