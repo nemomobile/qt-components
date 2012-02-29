@@ -126,8 +126,10 @@ FocusScope {
                 }
 
                 if (activeFocus) {
-                    Popup.open(textInput);
-                    SelectionHandles.open(textInput);
+                    if ( Popup.isOpened() )
+                        Popup.open(textInput, textInput.positionToRectangle(textInput.cursorPosition));
+                    if (textInput.selectionStart != textInput.selectionEnd)
+                        SelectionHandles.open(textInput);
                     if (!readOnly && platformCustomSoftwareInputPanel != null) {
                         platformOpenSoftwareInputPanel();
                     } else {

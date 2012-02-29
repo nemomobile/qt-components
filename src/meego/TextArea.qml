@@ -183,8 +183,10 @@ FocusScope {
                     }
                 }
                 if (activeFocus) {
-                    Popup.open(textEdit);
-                    SelectionHandles.open(textEdit);
+                    if ( Popup.isOpened() )
+                        Popup.open(textEdit, textEdit.positionToRectangle(textEdit.cursorPosition))
+                    if (textEdit.selectionStart != textEdit.selectionEnd)
+                        SelectionHandles.open(textEdit);
                     if (!readOnly) {
                         platformOpenSoftwareInputPanel();
                     }
