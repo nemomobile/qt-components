@@ -61,8 +61,7 @@ SDeclarativeInputContextPrivate::~SDeclarativeInputContextPrivate()
 qreal SDeclarativeInputContextPrivate::height() const
 {
     qreal tmpHeight = 0;
-    if (m_screen->currentOrientation() == SDeclarativeScreen::Portrait
-     || m_screen->currentOrientation() == SDeclarativeScreen::PortraitInverted)
+    if (m_screen->height() >= m_screen->width())
         tmpHeight = m_touchInput->PortraitHeight();
     else
         tmpHeight = m_touchInput->LandscapeHeight();
