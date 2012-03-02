@@ -126,9 +126,9 @@ FocusScope {
                 }
 
                 if (activeFocus) {
-                    if ( Popup.isOpened() )
+                    if ( Popup.isOpened() && platformEnableEditBubble )
                         Popup.open(textInput, textInput.positionToRectangle(textInput.cursorPosition));
-                    if (textInput.selectionStart != textInput.selectionEnd)
+                    if (textInput.selectionStart != textInput.selectionEnd && platformEnableEditBubble)
                         SelectionHandles.open(textInput);
                     if (!readOnly && platformCustomSoftwareInputPanel != null) {
                         platformOpenSoftwareInputPanel();
@@ -450,7 +450,7 @@ FocusScope {
             } else if (!mouseFilter.attemptToActivate ||
                 textInput.cursorPosition == textInput.text.length) {
                 if ( Popup.isOpened(textInput) &&
-                !Popup.isChangingInput()) {
+                !Popup.isChangingInput() && platformEnableEditBubble) {
                     Popup.close(textInput);
                     Popup.open(textInput,
                         textInput.positionToRectangle(textInput.cursorPosition));

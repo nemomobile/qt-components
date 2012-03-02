@@ -183,9 +183,9 @@ FocusScope {
                     }
                 }
                 if (activeFocus) {
-                    if ( Popup.isOpened() )
+                    if ( Popup.isOpened() && platformEnableEditBubble )
                         Popup.open(textEdit, textEdit.positionToRectangle(textEdit.cursorPosition))
-                    if (textEdit.selectionStart != textEdit.selectionEnd)
+                    if (textEdit.selectionStart != textEdit.selectionEnd && platformEnableEditBubble)
                         SelectionHandles.open(textEdit);
                     if (!readOnly) {
                         platformOpenSoftwareInputPanel();
@@ -463,7 +463,7 @@ FocusScope {
                }
            } else if (!mouseFilter.attemptToActivate ||
                 textEdit.cursorPosition == textEdit.text.length) {
-                if ( Popup.isOpened(textEdit) ) {
+                if ( Popup.isOpened(textEdit) && platformEnableEditBubble) {
                     Popup.close(textEdit);
                     Popup.open(textEdit, textEdit.positionToRectangle(textEdit.cursorPosition));
                 }
