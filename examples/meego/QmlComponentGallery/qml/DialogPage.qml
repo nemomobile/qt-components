@@ -416,10 +416,12 @@ Page {
         ToolBarLayout {
             id: tabTools
             ToolIcon {
+                id: toolIcon 
                 iconId: "toolbar-back"
                 onClicked: tabGroup.currentTab.depth > 1 ? tabGroup.currentTab.pop() : pageStack.pop()
             }
             ButtonRow {
+                anchors {left: toolIcon.right; right: parent.right}
                 TabButton {
                     text: "Dialogs"
                     tab: dialogTab
