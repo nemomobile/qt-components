@@ -189,8 +189,8 @@ Item {
             if (y < 0 || y > trackMouseArea.height)
                 return;
 
-            var sect = Sections.closestSection(y / trackMouseArea.height);
-            var idx = Sections.indexOf(sect);
+            var sect = Sections.closestSection(flickableItem, y / trackMouseArea.height);
+            var idx = Sections.indexOf(flickableItem, sect);
             currentSection = sect;
             flickableItem.positionViewAtIndex(idx, ListView.Beginning);
         }
