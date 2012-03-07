@@ -428,7 +428,7 @@ FocusScope {
 
         onTextChanged: {
             if(root.activeFocus) {
-                inputContext.updateMicroFocus();
+                TextAreaHelper.repositionFlickable(contentMovingAnimation)
             }
 
             if (Popup.isOpened(textInput)) {
@@ -483,7 +483,7 @@ FocusScope {
 
             onPreeditChanged: {
                 if(root.activeFocus) {
-                    inputContext.updateMicroFocus();
+                    TextAreaHelper.repositionFlickable(contentMovingAnimation)
                 }
 
                 if (Popup.isOpened(textInput) && !Popup.isChangingInput()) {
