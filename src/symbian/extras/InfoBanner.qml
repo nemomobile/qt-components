@@ -55,7 +55,7 @@ Item {
     signal clicked
 
     function open() {
-        root.parent = internal.rootObject();
+        root.parent = internal.visualRoot();
         var suffix = root.interactive ? "_normal" : ""
         background.source = privateStyle.imagePath("qtg_fr_popup_infobanner" + suffix,
                                                    root.platformInverted)
@@ -155,6 +155,13 @@ Item {
             while (next && next.parent)
                 next = next.parent
             return next
+        }
+
+        function visualRoot() {
+            var root = rootObject()
+            if (root.hasOwnProperty("privateWindow"))
+                return root.privateWindow;
+            return root;
         }
 
         function bannerHeight() {
