@@ -193,6 +193,9 @@ Popup {
 
         state: __statesWrapper.state
 
+        // Acts as debounce during orientation change.
+        Behavior on height {NumberAnimation {duration:1}}
+
         BorderImage {
            id: backgroundImage
            source: // !enabled ? root.platformStyle.disabledBackground :
