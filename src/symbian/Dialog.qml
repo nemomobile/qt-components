@@ -146,8 +146,6 @@ Item {
 
         onFaderClicked: root.clickedOutside()
 
-        Component.onDestruction: status = DialogStatus.Closed
-
         state: "Hidden"
         visible: true
         anchors.centerIn: parent

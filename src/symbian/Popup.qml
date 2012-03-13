@@ -105,6 +105,7 @@ Item {
 
     //if this is not given, application may crash in some cases
     Component.onDestruction: {
+        status = DialogStatus.Closed
         if (parentCache.oldParent) {
             parent = parentCache.oldParent
         }
