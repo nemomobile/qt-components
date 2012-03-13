@@ -150,6 +150,9 @@ Item {
 
             if (root.y < privy.spacing)
                 root.y = privy.spacing
+
+            root.x = Math.round(root.x)
+            root.y = Math.round(root.y)
         }
     }
 
