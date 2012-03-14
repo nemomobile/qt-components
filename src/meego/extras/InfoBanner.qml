@@ -131,11 +131,11 @@ ImplicitSizeItem {
         width: internal.getTextWidth()
         anchors { left: (image.visible ? image.right : parent.left); leftMargin: (image.visible ? 14:16);
             top: parent.top; topMargin: internal.getTopMargin(); bottom: parent.bottom }
-        color: "white"
+        color: platformStyle.textColor
         wrapMode: Text.Wrap
         verticalAlignment: Text.AlignHCenter
-        font.pixelSize: UI.FONT_DEFAULT_SIZE
-        font.family: UI.FONT_FAMILY
+        font.family: platformStyle.fontFamily
+        font.pixelSize: platformStyle.fontPixelSize
         font.letterSpacing: UI.INFO_BANNER_LETTER_SPACING
         maximumLineCount: 3
         elide: Text.ElideRight
