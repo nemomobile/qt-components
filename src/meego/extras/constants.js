@@ -69,6 +69,10 @@ var FONT_FAMILY_LIGHT = "Nokia Pure Text Light";
 var FONT_DEFAULT_SIZE = 24;
 var FONT_LIGHT_SIZE = 22;
 
+// we use a fallback font when language is set to farsi
+var FONT_FAMILY_FARSI = "Arial"
+var FONT_FAMILY_LIGHT_FARSI = "Arial"
+
 /* TUMBLER properties */
 var TUMBLER_COLOR_TEXT = "#FFFFFF";
 var TUMBLER_COLOR_LABEL = "#8C8C8C";
