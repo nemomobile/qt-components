@@ -131,7 +131,7 @@ ImplicitSizeItem {
         width: internal.getTextWidth()
         anchors { left: (image.visible ? image.right : parent.left); leftMargin: (image.visible ? 14:16);
             top: parent.top; topMargin: internal.getTopMargin(); bottom: parent.bottom }
-        color: platformStyle.textColor
+        color: "white"
         wrapMode: Text.Wrap
         verticalAlignment: Text.AlignHCenter
         font.family: platformStyle.fontFamily
