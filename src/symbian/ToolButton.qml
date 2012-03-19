@@ -127,6 +127,7 @@ Item {
             leftMargin: !text ? 0 : 2 * platformStyle.paddingMedium
         }
         smooth: true
+        opacity: !root.enabled ? 0.5 : 1
     }
 
     Text {
