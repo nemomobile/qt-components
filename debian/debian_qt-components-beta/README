@@ -1,0 +1,96 @@
+Introduction
+------------
+This folder contains debian packaging files for Qt Components Beta installation.
+Qt Components Beta is just a new debian packaging name for Qt Components allowing
+installation of any version of Qt Components on an environment with an existing
+installation of Qt Components. This is a requirement if user wants to install a
+custom version of Qt Components on a MeeGo device.
+
+Build instructions
+------------------
+replace the qt-components/debian folder with this folder, i.e.
+run these in qt-components folder:
+
+mv ./debian ./debian_original
+cp -r ./debian_original/debian_qt-components-beta ./debian
+
+Then build with running this from qt-components folder:
+
+dpkg-buildpackage -rfakeroot -j3
+
+If build is successful you should have bunch of qt-components-beta*.deb packages 
+in parent folder.
+
+Installation on a MeeGo device
+------------------------------
+DISCLAIMER: although these instructions have been tested on several devices with 
+different base images this is still a somewhat dangerous operation. Use at own 
+risk. Really!
+
+1) On device set security -> developer mode and reboot as requested
+2) Connect device via USB to host computer and select sdk mode
+3) On host computer run 
+
+sudo ifconfig usb0 192.168.2.14
+
+(if you lose the usb connection just rerun this, all terminal connections 
+are restored without a need to reconnect)
+
+4) Connect to 
+
+ssh root@192.168.2.15
+
+password: rootme
+
+5) On host copy the debian packages to device with 
+
+scp *.deb root@192.168.2.15:/opt
+
+6) On device run 
+
+export AEGIS_FIXED_ORIGIN=com.nokia.maemo
+
+This allows user to install custom debian packages
+
+7) On device install the packages with
+
+dpkg -i --force-depends qt-components-beta_*.deb
+
+(You only need to install the main qt components package)
+
+8) On device run 
+
+aegis-su -r tcb echo 0 >/sys/kernel/security/digsig/enabled
+
+This allows the device to run custom binaries
+
+9) Reboot the device
+
+The device is now using qt-components-beta instead of the default qt components
+
+
+Uninstallation
+--------------
+Tun on device: 
+
+dpkg -r qt-components-beta
+
+
+Implementation notes
+--------------------
+The qt components beta debian package installs this version of qt components
+to folder
+
+/opt/qt-components-beta/usr/lib/qt4/imports
+
+The default qt components is overriden by setting environment variable
+QML_IMPORT_PATH=/opt/qt-components-beta/usr/lib/qt4/imports
+
+in 
+
+/etc/profile.d/qt-components-beta.sh
+
+This script is executed during device boot by
+
+/etc/profile
+

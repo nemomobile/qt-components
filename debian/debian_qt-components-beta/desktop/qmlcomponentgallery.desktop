@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=0.0
+Name=QMLComponentGallery
+GenericName=QMLComponentGallery
+Comment=private QMLComponentGallery
+Exec=/usr/bin/single-instance /usr/bin/QmlComponentGallery
+Terminal=false
+Type=Application
+

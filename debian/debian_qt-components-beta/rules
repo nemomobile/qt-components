@@ -1,0 +1,31 @@
+#!/usr/bin/make -f
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/rules/patchsys-quilt.mk
+include /usr/share/cdbs/1/class/autotools.mk
+
+DEB_DH_INSTALL_SOURCEDIR = debian/tmp
+DEB_MAKE_INSTALL_TARGET = install INSTALL_ROOT=$(DEB_DESTDIR)/opt/qt-components-beta #INSTALL_ROOT=$(DEB_DESTDIR)
+
+DEB_CONFIGURE_NORMAL_ARGS = -meego -maliit -contextsubscriber -meegographicssystem -config harmattan -xrandr
+
+# Doesn't generate .postinst and .postrm files
+DEB_DH_MAKESHLIBS_ARGS_ALL = -n
+
+DEB_DBG_PACKAGE_qt-components-beta = qt-components-beta-dbg
+
+clean::
+	find . -name "Makefile" -exec rm -rf {} \;
+	rm -rf libs
+	rm -f .qmake.cache
+
+build/qt-components-beta::
+	mkdir -p debian/tmp/opt/qt-components-beta
+	cp debian/script/*.sh debian/tmp/opt/qt-components-beta
+
+build/qt-components-beta-examples::
+	mkdir -p debian/tmp/opt/qt-components-beta/usr/share/applications
+	cp debian/desktop/*.desktop debian/tmp/opt/qt-components-beta/usr/share/applications
+
+build/qt-components-beta-tests::
+	mkdir -p debian/tmp/opt/qt-components-beta/usr/share/qt-components-tests
+	cp tests/auto/meego/tests-meego.xml debian/tmp/opt/qt-components-beta/usr/share/qt-components-tests/tests.xml
