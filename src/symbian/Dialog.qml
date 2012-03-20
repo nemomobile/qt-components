@@ -165,7 +165,10 @@ Item {
         Item {
             id: titleBar
 
-            height: platformStyle.graphicSizeSmall + 2 * platformStyle.paddingLarge
+            height: ((screen.width > screen.height) && inputContext.visible
+                && (inputContext.height > screen.height * 0.53))
+                    ? 0 // In landscape mode with a large VKB open we need to hide the title
+                    : platformStyle.graphicSizeSmall + 2 * platformStyle.paddingLarge
             anchors {
                 top: parent.top
                 left: parent.left
