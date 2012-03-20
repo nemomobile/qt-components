@@ -197,6 +197,7 @@ symbian {
     LIBS += -leikcoctl // For CEikStatusPane
     LIBS += -lhal   // For calculating DPI values
     LIBS += -lavkon // For AknAppui
+    LIBS += -lfeatmgr
 
     symbian_internal {
         LIBS += -laknicon // For AknIconUtils

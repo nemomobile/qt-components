@@ -59,8 +59,13 @@ SDeclarativeScreenPrivateResize::SDeclarativeScreenPrivateResize( SDeclarativeSc
     if (m_view) {
         m_view->installEventFilter(this);
 
+        bool landscapeLock = false;
+#ifdef Q_OS_SYMBIAN
+        landscapeLock = deviceSupportsOnlyLandscape();
+#endif
+
         //In case the orientation lock was set in the cpp side
-        if (m_view->testAttribute(Qt::WA_LockLandscapeOrientation)) {
+        if (m_view->testAttribute(Qt::WA_LockLandscapeOrientation) || landscapeLock) {
 #ifdef Q_DEBUG_SCREEN
             qDebug() << "SDeclarativeScreenPrivateResize - LockingLandscapeOrientation";
 #endif
@@ -112,6 +117,12 @@ void SDeclarativeScreenPrivateResize::setAllowedOrientations(SDeclarativeScreen:
 #ifdef Q_DEBUG_SCREEN
     qDebug() << "SDeclarativeScreenPrivateResize::setAllowedOrientations" << orientations;
 #endif
+
+#if defined(Q_OS_SYMBIAN)
+    if((orientations != SDeclarativeScreen::Landscape) && deviceSupportsOnlyLandscape())
+        return;
+#endif
+
     SDeclarativeScreenPrivate::setAllowedOrientations(orientations);
 
     if (!m_initialized)

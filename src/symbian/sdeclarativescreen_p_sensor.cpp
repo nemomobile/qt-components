@@ -98,8 +98,13 @@ SDeclarativeScreenPrivateSensor::SDeclarativeScreenPrivateSensor(SDeclarativeScr
         m_view->installEventFilter(this);
         connect(m_view, SIGNAL(statusChanged(QDeclarativeView::Status)), this, SLOT(viewStatusChanged(QDeclarativeView::Status)));
 
+        bool landscapeLock = false;
+#ifdef Q_OS_SYMBIAN
+        landscapeLock = deviceSupportsOnlyLandscape();
+#endif
+
         //In case the orientation lock was set in the cpp side
-        if (m_view->testAttribute(Qt::WA_LockLandscapeOrientation)) {
+        if (m_view->testAttribute(Qt::WA_LockLandscapeOrientation) || landscapeLock) {
 #ifdef Q_DEBUG_SCREEN
             qDebug() << "SDeclarativeScreenPrivateSensor - Locking LandscapeOrientation";
 #endif
@@ -128,6 +133,12 @@ void SDeclarativeScreenPrivateSensor::setAllowedOrientations(SDeclarativeScreen:
 #ifdef Q_DEBUG_SCREEN
     qDebug() << "SDeclarativeScreenPrivateSensor::setAllowedOrientations";
 #endif
+
+#if defined(Q_OS_SYMBIAN)
+    if((orientations != SDeclarativeScreen::Landscape) && deviceSupportsOnlyLandscape())
+        return;
+#endif
+
     SDeclarativeScreenPrivate::setAllowedOrientations(orientations);
 
     if (!m_initialized)
@@ -225,13 +236,15 @@ SDeclarativeScreen::Orientation SDeclarativeScreenPrivateSensor::systemOrientati
     TPixelsTwipsAndRotation params = screenParams();
 
     if (params.iRotation == CFbsBitGc::EGraphicsOrientationNormal)
-        return SDeclarativeScreen::Portrait;
+        return portraitDisplay() ? SDeclarativeScreen::Portrait : SDeclarativeScreen::Landscape;
     else if (params.iRotation == CFbsBitGc::EGraphicsOrientationRotated90)
-        return SDeclarativeScreen::Landscape;
+        return portraitDisplay() ? SDeclarativeScreen::Landscape : SDeclarativeScreen::PortraitInverted;
+    else if (params.iRotation == CFbsBitGc::EGraphicsOrientationRotated180)
+        return portraitDisplay() ? SDeclarativeScreen::PortraitInverted : SDeclarativeScreen::LandscapeInverted;
     else if (params.iRotation == CFbsBitGc::EGraphicsOrientationRotated270)
-        return SDeclarativeScreen::LandscapeInverted;
+        return portraitDisplay() ? SDeclarativeScreen::LandscapeInverted : SDeclarativeScreen::Portrait;
 
-    return SDeclarativeScreen::Portrait;
+    return portraitDisplay() ? SDeclarativeScreen::Portrait : SDeclarativeScreen::Landscape;
 }
 #endif
 
