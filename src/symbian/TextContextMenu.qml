@@ -49,6 +49,11 @@ Item {
     property bool cutEnabled: false
     property bool platformInverted: false
 
+    x: 0
+    y: 0
+    z: Infinity
+    visible: false
+
     function show() {
         parent = AppManager.visualRoot();
         internal.show = true;
@@ -88,9 +93,6 @@ Item {
             internal.editorSceneYChanged.disconnect(internal.editorMoved)
         }
     }
-
-    x: 0; y: 0
-    visible: false
 
     Binding { target: internal; property: "editorSceneX"; value: AppManager.sceneX(root.editor); when: root.visible && (root.editor != null) }
     Binding { target: internal; property: "editorSceneY"; value: AppManager.sceneY(root.editor); when: root.visible && (root.editor != null) }

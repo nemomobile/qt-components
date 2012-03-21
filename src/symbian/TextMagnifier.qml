@@ -68,6 +68,7 @@ Magnifier {
     overlayFileName: ":/graphics_1_1_2/qtg_graf_magnifier.svg"
     width: internal.magnifierSize
     height: internal.magnifierSize
+    z: Infinity
 
     onContentCenterChanged: internal.updateGeometry()
 
