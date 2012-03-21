@@ -39,6 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 1.1
+import com.nokia.meego 1.0
 import "constants.js" as C
 
 Item {
@@ -48,6 +49,8 @@ Item {
     property Item tumblerColumn
     property int index: -1
     property Item view: viewContainer.item
+
+    property Style platformStyle: LabelStyle{}
 
     opacity: enabled ? C.TUMBLER_OPACITY_FULL : C.TUMBLER_OPACITY
     width: childrenRect.width
@@ -170,7 +173,7 @@ Item {
                 elide: Text.ElideRight
                 horizontalAlignment: "AlignHCenter"
                 color: C.TUMBLER_COLOR_TEXT
-                font { family: C.FONT_FAMILY_BOLD; pixelSize: C.FONT_DEFAULT_SIZE }
+                font { family: platformStyle.fontFamily; pixelSize: platformStyle.fontPixelSize }
                 anchors { fill: parent; margins: C.TUMBLER_MARGIN }
 
                 MouseArea {
