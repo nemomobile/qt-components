@@ -379,7 +379,7 @@ FocusScope {
         y: (UI.FIELD_DEFAULT_HEIGHT - font.pixelSize) / 2
         width: parent.width - UI.PADDING_XLARGE * 2
 
-        font: root.platformStyle.textFont
+        //font: root.platformStyle.textFont
         color: root.platformStyle.textColor
         selectByMouse: false
         selectedTextColor: root.platformStyle.selectedTextColor

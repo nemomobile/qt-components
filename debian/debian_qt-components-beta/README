@@ -71,19 +71,19 @@ The device is now using qt-components-beta instead of the default qt components
 
 Uninstallation
 --------------
-Tun on device: 
+Turn on device: 
 
 dpkg -r qt-components-beta
 
+The default version of Qt Components is now used. A reboot is not required.
 
 Implementation notes
 --------------------
-The qt components beta debian package installs this version of qt components
-to folder
+The Qt Components Beta debian package installs Qt Components to folder
 
 /opt/qt-components-beta/usr/lib/qt4/imports
 
-The default qt components is overriden by setting environment variable
+The default Qt Components is overriden by setting environment variable
 QML_IMPORT_PATH=/opt/qt-components-beta/usr/lib/qt4/imports
 
 in 
