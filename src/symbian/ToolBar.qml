@@ -75,7 +75,8 @@ Item {
                     : ((inputContext.visible && (inputContext.height > (screen.height * 0.53)) && anchors.top) ? 0 : privateStyle.toolBarHeightLandscape)
 
     onImplicitHeightChanged: {
-        tools.visible = (root.implicitHeight > 0) || (root.height > 0)
+        if(tools)
+            tools.visible = (root.implicitHeight > 0) || (root.height > 0)
     }
 
     BorderImage {
