@@ -405,7 +405,7 @@ ApplicationWindow {
 
         Page {
             id: testPage
-            orientationLock: PageOrientation.Automatic
+            orientationLock: screen.allowedOrientations
 
             Flickable {
                 id: testPageGroup
@@ -434,7 +434,7 @@ ApplicationWindow {
 
         Page {
             id: testPage
-            orientationLock: PageOrientation.Automatic
+            orientationLock: screen.allowedOrientations
 
             Rectangle {
                 anchors { left: parent.left; top: parent.top }
