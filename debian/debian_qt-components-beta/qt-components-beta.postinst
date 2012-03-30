@@ -3,7 +3,7 @@
 set -e
 
 mkdir -p /etc/profile.d
-cp qt-components-beta/qt-components-beta.sh /etc/profile.d
+cp /opt/qt-components-beta/qt-components-beta.sh /etc/profile.d
 . /opt/qt-components-beta/set_etc_profile.sh
 . /etc/profile
 
