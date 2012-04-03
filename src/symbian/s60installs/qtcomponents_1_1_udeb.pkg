@@ -10,7 +10,7 @@
 (0x2002AC89), 1, 2, 0, {"QtMobility"}
 
 ; DEPLOYMENT 1.1 symbianplugin, note that this includes the native import
-"/epoc32/release/armv5/urel/symbianplugin_1_1_2.dll" - "!:\sys\bin\symbianplugin_1_1_2.dll"
+"/epoc32/release/armv5/udeb/symbianplugin_1_1_2.dll" - "!:\sys\bin\symbianplugin_1_1_2.dll"
 "/epoc32/data/z/resource/qt/imports/com/nokia/symbian.1.1/symbianplugin_1_1_2.qtplugin" - "!:\resource\qt\imports\com\nokia\symbian.1.1\symbianplugin_1_1_2.qtplugin"
 "/epoc32/data/z/resource/qt/imports/com/nokia/symbian.1.1/qmldir" - "!:\resource\qt\imports\com\nokia\symbian.1.1\qmldir"
 "/epoc32/data/z/resource/qt/imports/com/nokia/symbian.1.1/ApplicationWindow.qml" - "!:\resource\qt\imports\com\nokia\symbian.1.1\ApplicationWindow.qml"
@@ -131,7 +131,7 @@
 "../native/qmldir" - "!:\resource\qt\imports\Qt\labs\components\native\qmldir"
 
 ; DEPLOYMENT 1.1 qtcomponentsplugin
-"/epoc32/release/armv5/urel/qtcomponentsplugin.dll" - "!:\sys\bin\qtcomponentsplugin.dll"
+"/epoc32/release/armv5/udeb/qtcomponentsplugin.dll" - "!:\sys\bin\qtcomponentsplugin.dll"
 "/epoc32/data/z/resource/qt/imports/Qt/labs/components.1.1/qtcomponentsplugin.qtplugin" - "!:\resource\qt\imports\Qt\labs\components.1.1\qtcomponentsplugin.qtplugin"
 "/epoc32/data/z/resource/qt/imports/Qt/labs/components.1.1/qmldir" - "!:\resource\qt\imports\Qt\labs\components.1.1\qmldir"
 "/epoc32/data/z/resource/qt/imports/Qt/labs/components.1.1/Checkable.qml" - "!:\resource\qt\imports\Qt\labs\components.1.1\Checkable.qml"
@@ -139,7 +139,7 @@
 "/epoc32/data/z/resource/qt/imports/Qt/labs/components.1.1/CheckableGroup.js" - "!:\resource\qt\imports\Qt\labs\components.1.1\CheckableGroup.js"
 
 ; DEPLOYMENT 1.1 symbianextrasplugin
-"/epoc32/release/armv5/urel/symbianextrasplugin_1_1_2.dll" - "!:\sys\bin\symbianextrasplugin_1_1_2.dll"
+"/epoc32/release/armv5/udeb/symbianextrasplugin_1_1_2.dll" - "!:\sys\bin\symbianextrasplugin_1_1_2.dll"
 "/epoc32/data/z/resource/qt/imports/com/nokia/extras.1.1/symbianextrasplugin_1_1_2.qtplugin" - "!:\resource\qt\imports\com\nokia\extras.1.1\symbianextrasplugin_1_1_2.qtplugin"
 "/epoc32/data/z/resource/qt/imports/com/nokia/extras.1.1/qmldir" - "!:\resource\qt\imports\com\nokia\extras.1.1\qmldir"
 "/epoc32/data/z/resource/qt/imports/com/nokia/extras.1.1/Constants.js" - "!:\resource\qt\imports\com\nokia\extras.1.1\Constants.js"
@@ -156,7 +156,7 @@
 "/epoc32/data/z/resource/qt/imports/com/nokia/extras.1.1/TumblerTemplate.qml" - "!:\resource\qt\imports\com\nokia\extras.1.1\TumblerTemplate.qml"
 
 ; DEPLOYMENT 1.0 symbianplugin, no native included as the latest i.e. 1.1 includes native imports
-"/epoc32/release/armv5/urel/symbianplugin_1_0.dll" - "!:\sys\bin\symbianplugin_1_0.dll"
+"/epoc32/release/armv5/udeb/symbianplugin_1_0.dll" - "!:\sys\bin\symbianplugin_1_0.dll"
 "/epoc32/data/z/resource/qt/imports/com/nokia/symbian/symbianplugin_1_0.qtplugin" - "!:\resource\qt\imports\com\nokia\symbian\symbianplugin_1_0.qtplugin"
 "/epoc32/data/z/resource/qt/imports/com/nokia/symbian/qmldir" - "!:\resource\qt\imports\com\nokia\symbian\qmldir"
 "/epoc32/data/z/resource/qt/imports/com/nokia/symbian/ApplicationWindow.qml" - "!:\resource\qt\imports\com\nokia\symbian\ApplicationWindow.qml"
@@ -214,7 +214,7 @@
 
 
 ; DEPLOYMENT 1.0 qtcomponentsplugin
-"/epoc32/release/armv5/urel/qtcomponentsplugin_1_0.dll" - "!:\sys\bin\qtcomponentsplugin_1_0.dll"
+"/epoc32/release/armv5/udeb/qtcomponentsplugin_1_0.dll" - "!:\sys\bin\qtcomponentsplugin_1_0.dll"
 "/epoc32/data/z/resource/qt/imports/Qt/labs/components/qtcomponentsplugin_1_0.qtplugin" - "!:\resource\qt\imports\Qt\labs\components\qtcomponentsplugin_1_0.qtplugin"
 "/epoc32/data/z/resource/qt/imports/Qt/labs/components/qmldir" - "!:\resource\qt\imports\Qt\labs\components\qmldir"
 "/epoc32/data/z/resource/qt/imports/Qt/labs/components/Checkable.qml" - "!:\resource\qt\imports\Qt\labs\components\Checkable.qml"
@@ -222,7 +222,7 @@
 "/epoc32/data/z/resource/qt/imports/Qt/labs/components/CheckableGroup.js" - "!:\resource\qt\imports\Qt\labs\components\CheckableGroup.js"
 
 ; DEPLOYMENT 1.0 symbianextrasplugin
-"/epoc32/release/armv5/urel/symbianextrasplugin_1_0.dll" - "!:\sys\bin\symbianextrasplugin_1_0.dll"
+"/epoc32/release/armv5/udeb/symbianextrasplugin_1_0.dll" - "!:\sys\bin\symbianextrasplugin_1_0.dll"
 "/epoc32/data/z/resource/qt/imports/com/nokia/extras/symbianextrasplugin_1_0.qtplugin" - "!:\resource\qt\imports\com\nokia\extras\symbianextrasplugin_1_0.qtplugin"
 "/epoc32/data/z/resource/qt/imports/com/nokia/extras/qmldir" - "!:\resource\qt\imports\com\nokia\extras\qmldir"
 "/epoc32/data/z/resource/qt/imports/com/nokia/extras/Constants.js" - "!:\resource\qt\imports\com\nokia\extras\Constants.js"

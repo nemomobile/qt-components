@@ -1,5 +1,9 @@
+; This package file is for creating a SIS package for SmartInstaller. The only
+; difference is the NR flag that needs to be specified for SmartInstaller
+; installation.
+
 &EN
-#{"Qt Quick components for Symbian"},(0x200346DE),1,1,2,TYPE=SA,RU
+#{"Qt Quick components for Symbian"},(0x200346DE),1,1,2,TYPE=SA,RU,NR
 %{"Nokia"}
 :"Nokia"
 [0x20022E6D], 0, 0, 0, {"S60ProductID"}
