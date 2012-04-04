@@ -87,14 +87,7 @@ Magnifier {
             if (!screen.privateSensorOrientationMethod())
                 return;
 
-            if (screen.currentOrientation == Screen.Portrait)
-                root.rotation = 0;
-            else if(screen.currentOrientation == Screen.Landscape)
-                root.rotation = -90;
-            else if(screen.currentOrientation == Screen.PortraitInverted)
-                root.rotation = -180;
-            else if(screen.currentOrientation == Screen.LandscapeInverted)
-                root.rotation = 90;
+            root.rotation = screen.rotation
         }
 
         property int magnifierSize: platformStyle.graphicSizeMedium * 2
