@@ -54,6 +54,7 @@ Dialog {
     onButtonTextsChanged: {
         for (var i = buttonRow.children.length; i > 0; --i) {
             buttonRow.children[i - 1].destroy()
+            buttonRow.children[i - 1].parent = null
         }
         for (var j = 0; j < buttonTexts.length; ++j) {
             var button = buttonComponent.createObject(buttonRow)
