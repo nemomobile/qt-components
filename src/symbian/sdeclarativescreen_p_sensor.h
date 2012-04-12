@@ -45,6 +45,10 @@
 #include "sdeclarativescreen_p.h"
 #include <QDeclarativeView>
 
+#ifdef Q_OS_SYMBIAN
+#include <QCoreApplication>
+#endif
+
 QT_FORWARD_DECLARE_CLASS(QDeclarativeEngine)
 
 
@@ -54,15 +58,22 @@ class OrientationListener : public QObject
     Q_OBJECT
 
 public:
-    OrientationListener(QObject *parent = 0);
+    static OrientationListener *getCountedInstance();
+    static void deleteCountedInstance();
+
+private:
+    OrientationListener();
     ~OrientationListener();
+    static bool symbianEventFilter(void *message, long *result);
 
 Q_SIGNALS:
     void orientationChanged();
 
 private:
-    static bool symbianEventFilter(void *message, long *result);
+    // Data
+    static int userCount;
     static OrientationListener *instance;
+    static QCoreApplication::EventFilter previousEventFilter;
 };
 #endif
 
@@ -98,7 +109,6 @@ private:
 
 #ifdef Q_OS_SYMBIAN
     SDeclarativeScreen::Orientation systemOrientation();
-    QScopedPointer<OrientationListener> orientationListener;
 #endif
 };
 

@@ -59,33 +59,54 @@
 #ifdef Q_OS_SYMBIAN
 const TInt KEikDynamicLayoutVariantSwitch = 0x101F8121;
 OrientationListener *OrientationListener::instance = 0;
+QCoreApplication::EventFilter OrientationListener::previousEventFilter = 0;
+int OrientationListener::userCount = 0;
 
-OrientationListener::OrientationListener(QObject *parent)
-    : QObject(parent)
+OrientationListener::OrientationListener()
 {
-    Q_ASSERT(!instance);
-    instance = this;
-    QApplication::instance()->setEventFilter(symbianEventFilter);
+    previousEventFilter = QApplication::instance()->setEventFilter(symbianEventFilter);
 }
 
 OrientationListener::~OrientationListener()
 {
-    instance = 0;
+    if (previousEventFilter)
+        QApplication::instance()->setEventFilter(previousEventFilter);
+    previousEventFilter = 0;
+}
+
+OrientationListener *OrientationListener::getCountedInstance()
+{
+    if(!instance)
+        instance = new OrientationListener();
+    userCount++;
+    return instance;
+}
+
+void OrientationListener::deleteCountedInstance()
+{
+    userCount--;
+    if(userCount < 1) {
+        delete instance;
+        instance = 0;
+    }
 }
 
 bool OrientationListener::symbianEventFilter(void *message, long *result)
 {
-    Q_UNUSED(result);
-    if (!instance)
-        return false;
-    QSymbianEvent *symbianEvent = static_cast<QSymbianEvent *>(message);
+    if (instance) {
+        QSymbianEvent *symbianEvent = static_cast<QSymbianEvent *>(message);
 
-    if (symbianEvent
-     && symbianEvent->type() == QSymbianEvent::ResourceChangeEvent
-     && symbianEvent->resourceChangeType() == KEikDynamicLayoutVariantSwitch)
-        instance->emit orientationChanged();
+        if (symbianEvent
+                && symbianEvent->type() == QSymbianEvent::ResourceChangeEvent
+                && symbianEvent->resourceChangeType() == KEikDynamicLayoutVariantSwitch)
+            instance->emit orientationChanged();
+    }
 
-    return false;
+    bool returnValue = false;
+    // Use the previous event filter to provide us with a return value, if it exists.
+    if (previousEventFilter)
+        returnValue = previousEventFilter(message, result);
+    return returnValue;
 }
 #endif
 
@@ -118,14 +139,16 @@ SDeclarativeScreenPrivateSensor::SDeclarativeScreenPrivateSensor(SDeclarativeScr
     }
 
 #ifdef Q_OS_SYMBIAN
-    orientationListener.reset(new OrientationListener(qq));
-    connect(orientationListener.data(), SIGNAL(orientationChanged()), this, SLOT(orientationChanged()));
+    connect(OrientationListener::getCountedInstance(), SIGNAL(orientationChanged()), this, SLOT(orientationChanged()));
 #endif
 
 }
 
 SDeclarativeScreenPrivateSensor::~SDeclarativeScreenPrivateSensor()
 {
+#if defined(Q_OS_SYMBIAN)
+    OrientationListener::deleteCountedInstance();
+#endif
 }
 
 void SDeclarativeScreenPrivateSensor::setAllowedOrientations(SDeclarativeScreen::Orientations orientations)
