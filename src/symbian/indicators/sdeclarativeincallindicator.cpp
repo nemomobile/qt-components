@@ -124,6 +124,9 @@ void CSDeclarativeIncallIndicator::ConstructL()
     iData.reset( new ( ELeave ) TSDeclarativeIncallIndicatorPrivate( this ) );
     User::LeaveIfNull( iData->iScreen );
 
+    iCoeEnv = CCoeEnv::Static();
+    User::LeaveIfNull( iCoeEnv );
+
     TBuf<256> mutexName;
     mutexName.Zero();
     TFindMutex findMutex( KGLOBALSEARCHMUTEXNAME );
@@ -144,11 +147,7 @@ void CSDeclarativeIncallIndicator::ConstructL()
 
 CSDeclarativeIncallIndicator::~CSDeclarativeIncallIndicator()
     {
-    CCoeEnv* coeEnv = CCoeEnv::Static();
-    if ( coeEnv )
-        {
-        coeEnv->RemoveMessageMonitorObserver( *this );
-        }
+    iCoeEnv->RemoveMessageMonitorObserver( *this );
     iMutex.Close();
     }
 
@@ -171,30 +170,33 @@ void CSDeclarativeIncallIndicator::CreateIncallControlL()
         qDebug() << "CSDeclarativeIncallIndicator::CreateIncallControlL() Cannot create CAknIndicatorContainer!";
         }
 #endif
+    }
 
-    if (!iData->iIncallBubble)
+
+CCoeControl* CSDeclarativeIncallIndicator::GetInCallBubbleL()
+    {
+    if(!iData->iControl)
         {
-        // When setting the visible flag on for the first time, the CIncallStatusBubble
-        // instance in created. Internally it creates new window group and window.
-        CCoeEnv* coeEnv = CCoeEnv::Static();
-        RWsSession& wsSession = coeEnv->WsSession();
+        return 0;
+        }
 
-        CArrayFixFlat<TInt>* oldWindowGroups = new ( ELeave ) CArrayFixFlat<TInt>( 2 );
-        CleanupStack::PushL( oldWindowGroups );
-        CArrayFixFlat<TInt>* newWindowGroups = new ( ELeave ) CArrayFixFlat<TInt>( 2 );
-        CleanupStack::PushL( newWindowGroups );
+    // When setting the visible flag on for the first time, the CIncallStatusBubble
+    // instance in created. Internally it creates new window group and window.
+    RWsSession& wsSession = iCoeEnv->WsSession();
 
-        User::LeaveIfError( wsSession.WindowGroupList( oldWindowGroups ) );
-        iData->iControl->SetIncallBubbleFlags( EAknStatusBubbleVisible );
-        User::LeaveIfError( wsSession.WindowGroupList( newWindowGroups ) );
+    CArrayFixFlat<TInt>* oldWindowGroups = new ( ELeave ) CArrayFixFlat<TInt>( 2 );
+    CleanupStack::PushL( oldWindowGroups );
+    CArrayFixFlat<TInt>* newWindowGroups = new ( ELeave ) CArrayFixFlat<TInt>( 2 );
+    CleanupStack::PushL( newWindowGroups );
 
-#ifdef Q_DEBUG_INCALL
-        if ( newWindowGroups->Count() - 1 != oldWindowGroups->Count() )
-            {
-            qDebug() << "CSDeclarativeIncallIndicator::CreateIncallControlL() mismatch old" << (int)oldWindowGroups->Count() << " new " << (int)newWindowGroups->Count();
-            }
-#endif
+    User::LeaveIfError( wsSession.WindowGroupList( oldWindowGroups ) );
+    iData->iControl->SetIncallBubbleFlags( iData->iFlags|EAknStatusBubbleVisible );
+    User::LeaveIfError( wsSession.WindowGroupList( newWindowGroups ) );
 
+    CCoeControl *inCallBubble = 0;
+
+    if ( newWindowGroups->Count() - 1 == oldWindowGroups->Count() )
+        {
         // find the one that does not match - that is the new window group
         for (TInt newIndex = 0; newIndex < newWindowGroups->Count(); newIndex++)
             {
@@ -219,7 +221,7 @@ void CSDeclarativeIncallIndicator::CreateIncallControlL()
                 if ( wg && wg->Child() )
                     {
                     TUint32 child = wg->Child();
-                    iData->iIncallBubble = reinterpret_cast<CCoeControl*>( child ) ;
+                    inCallBubble = reinterpret_cast<CCoeControl*>( child ) ;
 #ifdef Q_DEBUG_INCALL
                     qDebug() << "CSDeclarativeIncallIndicator::CreateIncallControlL() found iIncallBubble " << (int)iData->iIncallBubble;
 #endif
@@ -227,26 +229,18 @@ void CSDeclarativeIncallIndicator::CreateIncallControlL()
                     }
                 }
             }
-        CleanupStack::PopAndDestroy( newWindowGroups );
-        CleanupStack::PopAndDestroy( oldWindowGroups );
-
-        iData->iIsForeground = static_cast<CAknAppUi*>( coeEnv->AppUi() )->IsForeground();
-#ifdef Q_DEBUG_INCALL
-        qDebug() << "CSDeclarativeIncallIndicator::CreateIncallControlL() iIsForeground " << (int)iData->iIsForeground;
-#endif
-        if( !iMessageMonitorObserverAdded )
-            {
-            coeEnv->AddMessageMonitorObserverL( *this );
-            iMessageMonitorObserverAdded = ETrue;
-            }
         }
-
-#ifdef Q_DEBUG_INCALL
-    if (!iData->iIncallBubble)
+    else
         {
-        qDebug() << "CSDeclarativeIncallIndicator::CreateIncallControlL() Cannot find iIncallBubble!";
-        }
+#ifdef Q_DEBUG_INCALL
+        qDebug() << "CSDeclarativeIncallIndicator::CreateIncallControlL() mismatch old" << (int)oldWindowGroups->Count() << " new " << (int)newWindowGroups->Count();
 #endif
+        }
+    CleanupStack::PopAndDestroy( newWindowGroups );
+    CleanupStack::PopAndDestroy( oldWindowGroups );
+
+    return inCallBubble;
+
     }
 
 void CSDeclarativeIncallIndicator::MonitorWsMessage( const TWsEvent& aEvent )
@@ -255,6 +249,14 @@ void CSDeclarativeIncallIndicator::MonitorWsMessage( const TWsEvent& aEvent )
         {
         case KAknFullOrPartialForegroundGained:
             iData->iIsForeground = ETrue;
+            // Fetch bubble and make it visible in case it hasn't been because
+            // it has been in background before.
+            if( !iData->iIncallBubble )
+                {
+                iMutex.Wait();
+                TRAP_IGNORE( iData->iIncallBubble = GetInCallBubbleL() );
+                iMutex.Signal();
+                }
             UpdateIncallBubbleVisibility();
             break;
 
@@ -291,6 +293,7 @@ void CSDeclarativeIncallIndicator::SetFlags( TInt aFlags )
     qDebug() << "CSDeclarativeIncallIndicator::SetFlags called by = " << this;
 #endif
 
+    iData->iIsForeground = static_cast<CAknAppUi*>( iCoeEnv->AppUi() )->IsForeground();
     iMutex.Wait();
 
 #ifdef Q_DEBUG_INCALL
@@ -302,24 +305,44 @@ void CSDeclarativeIncallIndicator::SetFlags( TInt aFlags )
         {
         iData->iFlags = aFlags;
 
-        if ( !iData->iIncallBubble && (aFlags&EAknStatusBubbleVisible) )
+        // Create controls and observer if bubble should be visible
+        if ( !iData->iIncallBubble && (aFlags&EAknStatusBubbleVisible))
             {
             TRAP_IGNORE( CreateIncallControlL() );
+
+            if( iData->iIsForeground )
+                {
+                TRAP_IGNORE( iData->iIncallBubble = GetInCallBubbleL() );
+                }
+
+            if( !iMessageMonitorObserverAdded )
+                {
+                iCoeEnv->AddMessageMonitorObserverL( *this );
+                iMessageMonitorObserverAdded = ETrue;
+                }
             }
 
-        if ( iData->iIncallBubble )
+        if ( iData->iControl )
             {
+            // Do not set visibility flag if bubble hasn't been found yet
+            if( !iData->iIncallBubble )
+                {
+                aFlags = aFlags&(~EAknStatusBubbleVisible);
+                }
+
             iData->iControl->SetIncallBubbleFlags( aFlags );
-            if ( !(aFlags&EAknStatusBubbleVisible) )
+
+            // Set iIncallBubble to NULL if bubble shouldn't be visible
+            if ( !(iData->iFlags&EAknStatusBubbleVisible) )
                 {
 #ifdef Q_DEBUG_INCALL
                 qDebug() << "CSDeclarativeIncallIndicator::SetFlags() nulling iIncallBubble";
 #endif
                 iData->iIncallBubble = NULL;
-                CCoeEnv* coeEnv = CCoeEnv::Static();
-                if ( coeEnv )
+                if (iMessageMonitorObserverAdded)
                     {
-                    coeEnv->RemoveMessageMonitorObserver( *this );
+                    iCoeEnv->RemoveMessageMonitorObserver( *this );
+                    iMessageMonitorObserverAdded = EFalse;
                     }
                 }
             else
@@ -338,7 +361,7 @@ void CSDeclarativeIncallIndicator::UpdateIncallBubbleVisibility()
     {
     if ( iData->iIncallBubble )
         {
-        if ( (iData->iFlags&EAknStatusBubbleVisible) && iData->iIsForeground)
+        if ( (iData->iFlags&EAknStatusBubbleVisible) && iData->iIsForeground )
             {
 #ifdef Q_DEBUG_INCALL
              qDebug() << "CSDeclarativeIncallIndicator::UpdateIncallBubbleVisibility() visible with new size";
