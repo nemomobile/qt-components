@@ -64,8 +64,8 @@ Magnifier {
     sourceRect: Qt.rect(0, 0, 0, 0)
     visible: false
     scaleFactor: 1.2
-    maskFileName: ":/graphics_1_1_2/qtg_graf_magnifier_mask.svg"
-    overlayFileName: ":/graphics_1_1_2/qtg_graf_magnifier.svg"
+    maskFileName: ":/graphics_1_1_3/qtg_graf_magnifier_mask.svg"
+    overlayFileName: ":/graphics_1_1_3/qtg_graf_magnifier.svg"
     width: internal.magnifierSize
     height: internal.magnifierSize
     z: Infinity
