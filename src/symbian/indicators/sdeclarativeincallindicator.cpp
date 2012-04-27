@@ -317,7 +317,7 @@ void CSDeclarativeIncallIndicator::SetFlags( TInt aFlags )
 
             if( !iMessageMonitorObserverAdded )
                 {
-                iCoeEnv->AddMessageMonitorObserverL( *this );
+                TRAP_IGNORE( iCoeEnv->AddMessageMonitorObserverL( *this ) );
                 iMessageMonitorObserverAdded = ETrue;
                 }
             }
