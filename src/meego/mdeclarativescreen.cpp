@@ -75,6 +75,8 @@
 # include <QScreen>
 #endif
 
+#undef Bool
+
 static const qreal CATEGORY_SMALL_LIMIT  = 3.2;
 static const qreal CATEGORY_MEDIUM_LIMIT = 4.5;
 static const qreal CATEGORY_LARGE_LIMIT  = 7.0;
