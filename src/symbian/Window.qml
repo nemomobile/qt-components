@@ -88,6 +88,11 @@ Rectangle {
             root.orientationChangeFinished();
         }
 
+        // Modulo function that works with negative numbers
+        function mod(a, n) {
+            return ((a % n) + n) % n;
+        }
+
         anchors.centerIn: parent
         clip: orientationAnimation.running
         smooth: !orientationAnimation.running
@@ -114,7 +119,7 @@ Rectangle {
         Connections {
             target: screen
             onPrivateAboutToChangeOrientation: {
-                if (animate && angle == window.rotation)
+                if (animate && (window.mod(angle, 360) == window.mod(window.rotation, 360)))
                     return;
 
                 orientationAnimation.complete();
