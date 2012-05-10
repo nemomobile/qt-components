@@ -218,7 +218,10 @@ void SDeclarativeScreenPrivateSensor::privateSetOrientation(int orientation)
     // starts orientation change in Window.qml
     if (m_hasWindow) {
         q->emit privateAboutToChangeOrientation(rotation, m_animate);
-        if (!m_animate) m_animate = 1;
+        if(m_view)
+            m_animate = !m_view->property("sensorRotationAnimationDisabled").toBool();
+        else
+            m_animate = 1;
     }
 
     if (!m_animate || !m_hasWindow) switchGeometry();
