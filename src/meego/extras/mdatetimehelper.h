@@ -42,7 +42,12 @@
 #define MDATETIMEHELPER_H
 
 #include <QObject>
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#include <qqml.h>
+#else
 #include <qdeclarative.h>
+#endif
 
 class MDateTimeHelper : public QObject
 {

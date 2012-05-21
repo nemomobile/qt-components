@@ -59,7 +59,7 @@
 # include <X11/Xatom.h>
 # include <X11/Xlib.h>
 # if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-#  include <qplatformnativeinterface_qpa.h>
+#  include <QtGui/qpa/qplatformnativeinterface.h>
 #  include <QtQuick/qquickitem.h>
 # else
 #  include <QX11Info>

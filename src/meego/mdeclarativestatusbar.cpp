@@ -61,7 +61,7 @@
    #include <QtQuick/qsgflatcolormaterial.h>
    #include <QtQuick/qquickcanvas.h>
    #include <qguiapplication.h>
-   #include <qplatformnativeinterface_qpa.h>
+   #include <QtGui/qpa/qplatformnativeinterface.h>
    #if defined(QT_OPENGL_ES_2)
       #include <EGL/egl.h>
       #include <EGL/eglext.h>

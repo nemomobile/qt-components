@@ -41,7 +41,13 @@
 #ifndef MDECLARATIVEIMAGEPROVIDER_H
 #define MDECLARATIVEIMAGEPROVIDER_H
 
+#include <qglobal.h>
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#include <qquickimageprovider.h>
+#else
 #include <qdeclarativeimageprovider.h>
+#endif
 
 class MAbstractThemeDaemonClient;
 

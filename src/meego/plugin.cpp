@@ -61,7 +61,13 @@
 #include "mdeclarativeimobserver.h"
 #include "mdeclarativeview.h"
 #include "mtoolbarvisibility.h"
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#include <QQmlPropertyMap>
+#else
 #include <QDeclarativePropertyMap>
+#endif
+
 #include <QFont>
 
 #include "kernel/common.h"

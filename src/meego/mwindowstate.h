@@ -41,7 +41,13 @@
 #ifndef MWINDOWSTATE_H
 #define MWINDOWSTATE_H
 
+#include <qglobal.h>
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#include <qqml.h>
+#else
 #include <qdeclarative.h>
+#endif
 
 #ifdef HAVE_MALIIT
 #include <maliit/inputmethod.h>
