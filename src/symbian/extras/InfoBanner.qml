@@ -87,7 +87,8 @@ Item {
 
             anchors { top: parent.top; topMargin: platformStyle.paddingLarge;
                       left: parent.left; leftMargin:  platformStyle.paddingLarge; }
-            sourceSize { width: platformStyle.graphicSizeSmall; height: platformStyle.graphicSizeSmall }
+            // set only width for souceSize, height gets calulated automatically so that aspect ratio is preserved
+            sourceSize.width: platformStyle.graphicSizeSmall
             visible: source != ""
         }
 
@@ -171,8 +172,12 @@ Item {
         }
 
         function textTopMargin() {
-            if (image.visible)
-                return platformStyle.paddingLarge + image.height / 2 - privateStyle.fontHeight(text.font) / 2;
+            if (image.visible) {
+                var margin = platformStyle.paddingLarge + image.height / 2 - privateStyle.fontHeight(text.font) / 2;
+                // round down to integer; non-integer margin makes text blurry in landscape mode,
+                // especially when OpenGL paint engine is being used
+                return Math.floor(margin);
+            }
             return platformStyle.paddingLarge;
         }
 
