@@ -386,7 +386,7 @@ void CSDeclarativeIncallIndicator::IncallBubbleSizeChanged()
         TAknLayoutRect layoutRect;
         TAknWindowLineLayout layout;
         TRect screenRect( TPoint(), TSize( (TInt)iData->iScreen->width(), (TInt)iData->iScreen->height() ) );
-        if ( iData->iScreen->currentOrientation() & (SDeclarativeScreen::Landscape | SDeclarativeScreen::LandscapeInverted) )
+        if ( Layout_Meta_Data::IsLandscapeOrientation() )
             {
             layout =
                 AknLayoutScalable_Apps::popup_call_status_window( 6 ).LayoutLine();
