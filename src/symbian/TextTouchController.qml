@@ -52,6 +52,8 @@ MouseArea {
     property real editorScrolledY: 0
     property bool copyEnabled: false
     property bool cutEnabled: false
+    property bool selectAllEnabled: false
+    property bool selectWordEnabled: false
     property bool platformInverted: false
 
     enabled: !editor.inputMethodComposing
@@ -82,7 +84,6 @@ MouseArea {
         internal.initialTouchPoint = internal.currentTouchPoint;
         var hadActiveFocus = editor.activeFocus
         editor.forceActiveFocus();
-        internal.contextMenuWasVisible = touchTools.contextMenu.visible;
         touchTools.contextMenu.hide();
         internal.handleMoved = false;
         internal.selectionPainting = false;
@@ -113,12 +114,8 @@ MouseArea {
     onClicked: {
         if (!internal.handleMoved) {
             editor.deselect();
-            var oldCursorPosition = editor.cursorPosition
             editor.cursorPosition = editor.positionAt(internal.initialTouchPoint.x, internal.initialTouchPoint.y);
-            if (oldCursorPosition == editor.cursorPosition && !internal.contextMenuWasVisible)
-                touchTools.contextMenu.show();
-            else
-                touchTools.contextMenu.hide();
+            touchTools.contextMenu.hide();
 
             if (!editor.readOnly)
                 editor.openSoftwareInputPanel()
@@ -132,15 +129,20 @@ MouseArea {
     }
 
     onPressAndHold: {
-        if (!internal.handleMoved && !editor.readOnly) {
+        if (!internal.handleMoved) {
             internal.longTap = true
             // position the cursor under the long tap and make the cursor handle grabbed
             editor.deselect();
             editor.cursorPosition = editor.positionAt(internal.initialTouchPoint.x,internal.initialTouchPoint.y);
-            internal.pressedHandle = touchTools.handleEnd;
-            internal.handleGrabbed();
-            touchTools.contextMenu.hide();
-            touchTools.magnifier.show();
+            if (!editor.readOnly) {
+                internal.pressedHandle = touchTools.handleEnd;
+                internal.handleGrabbed();
+                touchTools.contextMenu.hide();
+                touchTools.magnifier.show();
+            } else {
+                privateStyle.play(Symbian.PopUp);
+                touchTools.contextMenu.show();
+            }
         }
     }
 
@@ -195,7 +197,13 @@ MouseArea {
     Connections {
         target: editor
         onTextChanged: internal.onEditorTextChanged()
-        onCursorPositionChanged: if (touchTools) touchTools.contextMenu.calculatePosition()
+        onCursorPositionChanged: {
+            if (touchTools) {
+                if (!editor.selectedText)
+                    touchTools.contextMenu.hide()
+                touchTools.contextMenu.calculatePosition()
+            }
+        }
     }
 
     // Private
@@ -207,7 +215,6 @@ MouseArea {
         property bool editorHasSelection: editor.selectionStart != editor.selectionEnd
         property bool handleMoved: false
         property bool longTap: false
-        property bool contextMenuWasVisible: false
         property bool selectionPainting: false
         property variant pressedHandle: null
         property variant initialTouchPoint: Qt.point(0, 0)

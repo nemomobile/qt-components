@@ -244,6 +244,10 @@ FocusScope {
                                  && textInput.echoMode === TextInput.Normal
                     cutEnabled: !textInput.readOnly && textInput.selectionStart != textInput.selectionEnd
                                 && textInput.echoMode === TextInput.Normal
+                    selectAllEnabled: textInput.selectionStart == textInput.selectionEnd
+                                      && textInput.text.length > 0
+                    selectWordEnabled: textInput.selectionStart == textInput.selectionEnd
+                                       && textInput.text.length > 0
                     platformInverted: root.platformInverted
                     Component.onCompleted: flick.movementEnded.connect(touchController.flickEnded)
                     Connections { target: screen; onCurrentOrientationChanged: touchController.updateGeometry() }

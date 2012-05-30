@@ -361,6 +361,8 @@ FocusScopeItem {
                     editorScrolledY: flick.contentY - (container.verticalMargins / 2)
                     copyEnabled: textEdit.selectedText
                     cutEnabled: !textEdit.readOnly && textEdit.selectedText
+                    selectAllEnabled: !textEdit.selectedText && textEdit.text.length > 0
+                    selectWordEnabled: !textEdit.selectedText && textEdit.text.length > 0
                     platformInverted: root.platformInverted
                     Component.onCompleted: flick.movementEnded.connect(touchController.flickEnded)
                     Connections { target: screen; onCurrentOrientationChanged: touchController.updateGeometry() }
