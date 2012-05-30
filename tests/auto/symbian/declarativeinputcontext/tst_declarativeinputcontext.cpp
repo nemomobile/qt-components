@@ -90,6 +90,12 @@ void tst_SDeclarativeInputContext::defaultPropertyValues()
 
 void tst_SDeclarativeInputContext::height()
 {
+    // Open VKB
+    QGraphicsObject *textField = m_view->rootObject()->findChild<QGraphicsObject*>("textField");
+    QVERIFY(textField);
+    textField->setFocus(Qt::OtherFocusReason);
+    QVERIFY2(QMetaObject::invokeMethod(textField, "openSoftwareInputPanel"), "Could not openSoftwareInputPanel");
+
     QObject *screen = qVariantValue<QObject *>(m_view->engine()->rootContext()->contextProperty("screen"));
     QVERIFY(screen);
 
@@ -108,7 +114,6 @@ void tst_SDeclarativeInputContext::height()
     //Switch orientation
     screen->setProperty("allowedOrientations", SDeclarativeScreen::Landscape);
     QTRY_COMPARE(heightChangedSpy.count(), 1);
-
     int landscapeHeight = m_inputContext->property("height").toInt();
 
 #ifdef Q_OS_SYMBIAN
@@ -117,28 +122,35 @@ void tst_SDeclarativeInputContext::height()
     QCOMPARE(landscapeHeight, screen->property("height").toInt() * 1/2);
 #endif // Q_OS_SYMBIAN
 
-    qDebug()<<portraitHeight<<landscapeHeight;
     QVERIFY(portraitHeight > landscapeHeight);
 
 #ifdef Q_OS_SYMBIAN
     //Switch to portrait
     RProperty::Set( KPSUidAknFep, KAknFepSoftwareInputpanelHeight, 150 );
     screen->setProperty("allowedOrientations", SDeclarativeScreen::Portrait);
+    QCoreApplication::sendPostedEvents();
     QTRY_COMPARE(heightChangedSpy.count(), 2);
-    QCOMPARE(m_inputContext->property("height").toInt(), 150);
+    QVERIFY(m_inputContext->property("height").toInt() > 350);
 
     //Switch to landscape
     RProperty::Set( KPSUidAknFep, KAknFepSoftwareInputpanelHeight, 120 );
     screen->setProperty("allowedOrientations", SDeclarativeScreen::Landscape);
     QTRY_COMPARE(heightChangedSpy.count(), 3);
-    QCOMPARE(m_inputContext->property("height").toInt(), 120);
+    QVERIFY(m_inputContext->property("height").toInt() > 120);
 
     //Reset
     RProperty::Set( KPSUidAknFep, KAknFepSoftwareInputpanelHeight, 0 );
+    QVERIFY2(QMetaObject::invokeMethod(textField, "closeSoftwareInputPanel"), "Could not closeSoftwareInputPanel");
 #endif // Q_OS_SYMBIAN
 
     //Switch back to portrait
     screen->setProperty("allowedOrientations", SDeclarativeScreen::Portrait);
+
+    QGraphicsObject *defocus = m_view->rootObject()->findChild<QGraphicsObject*>("defocus");
+    QVERIFY(defocus);
+    defocus->setFocus(Qt::OtherFocusReason);
+
+    QApplication::processEvents();
 }
 
 void tst_SDeclarativeInputContext::visible()
@@ -152,6 +164,7 @@ void tst_SDeclarativeInputContext::visible()
     QVERIFY(defocus);
     QVERIFY(closeIC);
 
+    QTest::qWait(500);
     QSignalSpy visibleChangedSpy(m_inputContext, SIGNAL(visibleChanged()));
 
     //Make sure that input panel is not reguested on focus gain
@@ -196,14 +209,8 @@ void tst_SDeclarativeInputContext::visible()
     // Request input panel close
     QVERIFY2(QMetaObject::invokeMethod(textArea, "closeSoftwareInputPanel"), "Could not closeSoftwareInputPanel");
     QApplication::processEvents();
-#ifdef Q_OS_SYMBIAN
-    QEXPECT_FAIL("", "Missing implementation from qcoefepinputcontext_s60, http://bugreports.qt.nokia.com/browse/QTBUG-20153", Continue);
-#endif // Q_OS_SYMBIAN
     QTRY_COMPARE(visibleChangedSpy.count(), 6);
 
-#ifdef Q_OS_SYMBIAN
-    QEXPECT_FAIL("", "Missing implementation from qcoefepinputcontext_s60, http://bugreports.qt.nokia.com/browse/QTBUG-20153", Continue);
-#endif // Q_OS_SYMBIAN
     QCOMPARE(m_inputContext->property("visible").toBool(), false);
 }
 

@@ -47,6 +47,8 @@ Item {
     width: 400
     height: 600
 
+    property bool portrait: screen.width < screen.height
+
     ToolBar {
         tools: ToolBarLayout {
             objectName: "toolBarLayout1"

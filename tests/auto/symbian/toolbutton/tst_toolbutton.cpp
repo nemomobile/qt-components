@@ -183,7 +183,15 @@ void tst_toolbutton::implicitSize()
     QCOMPARE(iconImplicitWidth > 5, true);
     QCOMPARE(iconImplicitHeight > 5, true);
     QCOMPARE(iconImplicitWidth < textImplicitWidth, true);
-    QCOMPARE(iconImplicitHeight, textImplicitHeight);
+
+    QGraphicsObject* rootItem = qobject_cast<QGraphicsObject*>(componentObject);
+    QVERIFY(rootItem);
+    if(rootItem->property("portrait").toBool()) {
+        QCOMPARE(iconImplicitHeight > textImplicitHeight, true);
+    }
+    else {
+        QCOMPARE(iconImplicitHeight, textImplicitHeight);
+    }
 }
 
 QTEST_MAIN(tst_toolbutton)
