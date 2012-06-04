@@ -168,21 +168,21 @@ void SDeclarativeScreenPrivateSensor::setAllowedOrientations(SDeclarativeScreen:
         return;
 
     if (portraitAllowed() && landscapeAllowed()) {
-        if (m_view)
-            m_view->setAttribute(Qt::WA_AutoOrientation, true);
 #ifdef Q_OS_SYMBIAN
         privateSetOrientation(systemOrientation());
 #else
         privateSetOrientation(portraitDisplay() ? SDeclarativeScreen::Portrait : SDeclarativeScreen::Landscape);
 #endif
+        if (m_view)
+            m_view->setAttribute(Qt::WA_AutoOrientation, true);
     } else if (portraitAllowed() && !landscapeAllowed()) {
         if (m_view)
-            m_view->setAttribute(Qt::WA_LockPortraitOrientation, true);
-        privateSetOrientation(SDeclarativeScreen::Portrait);
+            privateSetOrientation(SDeclarativeScreen::Portrait);
+            m_view->setAttribute(Qt::WA_LockPortraitOrientation, true);    
     } else if (!portraitAllowed() && landscapeAllowed()) {
-        if (m_view)
-            m_view->setAttribute(Qt::WA_LockLandscapeOrientation, true);
         privateSetOrientation(SDeclarativeScreen::Landscape);
+        if (m_view)
+            m_view->setAttribute(Qt::WA_LockLandscapeOrientation, true);    
     }
 }
 
