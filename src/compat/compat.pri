@@ -23,7 +23,12 @@ DEFINES += \
     QGraphicsItem=CompatQGraphicsItem \
     QGraphicsObject=CompatQGraphicsObject \
     QGraphicsScene=CompatQGraphicsScene \
+    QDeclarativeComponent=QQmlComponent \
+    QDeclarativeEngine=QQmlEngine \
+    QDeclarativeExtensionPlugin=QQmlExtensionPlugin \
+    QDeclarativeImageProvider=QQmlImageProvider \
     QDeclarativeItem=CompatQDeclarativeItem \
+    QDeclarativePropertyMap=QQmlPropertyMap \
     QDeclarativeView=CompatQDeclarativeView
 
 equals(QMAKE_HOST.os, Darwin): CONFIG += building_on_mac
