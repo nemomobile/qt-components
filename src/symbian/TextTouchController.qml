@@ -76,6 +76,19 @@ MouseArea {
             touchTools.contextMenu.hide();
     }
 
+    function ensureTouchToolsOnTop() {
+        // ensure that the touch tools (text context menu and magnigier glass) are always on top
+        var p = parent
+        while ( p != null ) {
+            if (p.z == touchTools.contextMenu.z) {
+                touchToolsLoader.source = ""
+                touchToolsLoader.source = "TextTouchTools.qml"
+                break
+            }
+            p = p.parent
+        }
+    }
+
     onPressed: {
         if (!touchTools)
             touchToolsLoader.source = "TextTouchTools.qml"
@@ -203,6 +216,11 @@ MouseArea {
                     touchTools.contextMenu.hide()
                 touchTools.contextMenu.calculatePosition()
             }
+        }
+        onVisibleChanged: {
+            // check that touch tools are on top of the editor
+            if (touchTools && editor.visible)
+                ensureTouchToolsOnTop()
         }
     }
 

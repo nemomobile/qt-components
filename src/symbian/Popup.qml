@@ -44,8 +44,8 @@ import "AppManager.js" as Utils
 
 Item {
     id: root
-    // Force popup to be on top of siblings (exception Magnifier)
-    z: 1000000
+    // Force popup to be on top of siblings (exception Magnifier and TextContextMenu)
+    z: Infinity
 
     property Item visualParent
     property int status: DialogStatus.Closed
