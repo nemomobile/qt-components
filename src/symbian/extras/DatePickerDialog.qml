@@ -119,7 +119,7 @@ CommonDialog {
                 items: ListModel {
                     id: yearList
                 }
-                selectedIndex: 0
+                selectedIndex: yearList.length > 0 ? internal.year - yearList.get(0).value : 0
                 privateResizeToFit: true
             }
         }
@@ -131,13 +131,39 @@ CommonDialog {
     onButtonClicked: (acceptButtonText && index == 0) ? accept() : reject()
 
     onMinimumYearChanged: {
-        internal.updateYearList()
+        if (!internal.surpassUpdate) {
+            internal.year = root.year
+            internal.minYear = root.minimumYear
+            
+            if (internal.minYear < 0)
+                internal.minYear = internal.currentYear;
+            else if (internal.minYear > root.maximumYear)
+                internal.minYear = root.maximumYear;
+
+            internal.updateYearList()
+            internal.validateDate()
+            internal.year = internal.year < internal.minYear ? internal.minYear : 
+                            (internal.year > root.maximumYear ? root.maximumYear :internal.year) 
+        }
     }
     onMaximumYearChanged: {
+        internal.minYear = root.minimumYear
+        
+        if (root.maximumYear < 0)
+            root.maximumYear = internal.currentYear + 20;
+        else if (root.maximumYear < internal.minYear)
+            root.maximumYear = internal.minYear;
+
         internal.updateYearList()
+        internal.validateDate()
+        internal.year = internal.year > root.maximumYear ? root.maximumYear : 
+                        (internal.year < internal.minYear ? internal.minYear : internal.year)
+        if (internal.minYear < 0)
+            root.minimumYear = internal.currentYear
     }
     onStatusChanged: {
         if (status == DialogStatus.Opening) {
+            TH.saveIndex(tumbler);
             if (!internal.initialised)
                 internal.initializeDataModels();
             internal.resetYear()
@@ -145,16 +171,38 @@ CommonDialog {
             internal.resetDay()
             TH.saveIndex(tumbler)
             TH.restoreIndex(tumbler)
+            if (internal.year > 0)
+                yearColumn.selectedIndex = internal.year - yearList.get(0).value;
+            tumbler._handleTumblerChanges(2);
+            dayColumn.selectedIndex = root.day - 1;
+        }
+        if (status == DialogStatus.Closing) {
+            internal.surpassUpdate = true
+            if (internal.surpassUpdate) {
+                root.year = internal.year
+                root.minimumYear = internal.minYear
+            }
+            internal.surpassUpdate = false
         }
     }
     onDayChanged: {
-        internal.resetDay()
+        internal.validateDate()
+        if (dayColumn.items.length > root.day - 1)
+            dayColumn.selectedIndex = root.day - 1
     }
     onMonthChanged: {
-        internal.resetMonth()
+        internal.validateDate()
+        monthColumn.selectedIndex = root.month - 1
     }
     onYearChanged: {
-        internal.resetYear()
+        if (!internal.surpassUpdate) {
+            internal.year = root.year
+            internal.validateDate()
+            internal.year = internal.year < internal.minYear ? internal.minYear : 
+                                  (internal.year > root.maximumYear ? root.maximumYear : internal.year)
+            if (internal.initialised)
+                yearColumn.selectedIndex = internal.year - yearList.get(0).value  
+        }
     }
     onAccepted: {
         tumbler.privateForceUpdate();
@@ -174,11 +222,14 @@ CommonDialog {
         id: internal
 
         property variant initialised: false
+        property int year
+        property int minYear
+        property bool surpassUpdate: false
+        property int currentYear: new Date().getFullYear();
 
         function initializeDataModels() {
-            var currentYear = new Date().getFullYear();
-            minimumYear = minimumYear ? minimumYear : currentYear;
-            maximumYear = maximumYear ? maximumYear : currentYear + 20;
+            minimumYear = minimumYear ? minimumYear : internal.currentYear;
+            maximumYear = maximumYear ? maximumYear : internal.currentYear + 20;
 
             // ensure sane minimum & maximum year
             if (maximumYear < minimumYear)
@@ -187,7 +238,7 @@ CommonDialog {
             for (var y = minimumYear; y <= maximumYear; ++y)
                 yearList.append({"value" : y}) // year
 
-            var nDays = dateTime.daysInMonth(root.year, root.month);
+            var nDays = dateTime.daysInMonth(internal.year, root.month);
             for (var d = 1; d <= nDays; ++d)
                 dayList.append({"value" : d})  // day
             for (var m = 1; m <= 12; ++m)
@@ -205,10 +256,27 @@ CommonDialog {
             if (internal.initialised) {
                 var tmp = yearColumn.selectedIndex;
                 yearList.clear();
-                for (var i = root.minimumYear; i <= root.maximumYear; ++i)
+                for (var i = internal.minYear; i <= root.maximumYear; ++i)
                     yearList.append({"value" : i})
-                yearColumn.selectedIndex = tmp;
+                if (tmp < yearList.count) {
+                    yearColumn.selectedIndex = 0;
+                    yearColumn.selectedIndex = tmp;
+                }
             }
+        }
+
+        function validateDate() {
+            if (internal.year < 0){
+                internal.year = new Date().getFullYear()
+                if (maximumYear < internal.year)
+                    root.maximumYear = internal.currentYear + 20;
+                if (minimumYear > internal.year)
+                    internal.minYear = internal.currentYear;
+            }
+            
+            root.month = Math.max(1, Math.min(12, root.month))
+            var d = dateTime.daysInMonth(internal.year, root.month);
+            root.day = Math.max(1, Math.min(d, root.day))
         }
 
         function updateButtonTexts() {
