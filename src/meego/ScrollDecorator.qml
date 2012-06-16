@@ -55,12 +55,12 @@ Item {
       */
     property Flickable flickableItem
 
-    property int __topPageMargin: 0
-    property int __bottomPageMargin: 0
-    property int __leftPageMargin: 0
-    property int __rightPageMargin: 0
-    property bool __hasPageWidth : false
-    property bool __hasPageHeight: false
+    property var __topPageMargin: function() { return 0; }
+    property var __bottomPageMargin: function() { return 0; }
+    property var __leftPageMargin: function() { return 0; }
+    property var __rightPageMargin: function() { return 0; }
+    property var __hasPageWidth : function() { return false; }
+    property var __hasPageHeight: function() { return false; }
 
     // These can also be modified (but probably shouldn't)
     property int __minIndicatorSize: 20
@@ -157,11 +157,11 @@ Item {
         property bool shouldShow: flickableItem != null && ((__alwaysShowIndicator && privateApi.canFlick(Flickable.VerticalFlick)) && (flickableItem.height > 0 && flickableItem.contentHeight > flickableItem.height))
         opacity: 0
         anchors.right: parent.right
-        anchors.rightMargin: UI.SCROLLDECORATOR_LONG_MARGIN - (__hasPageWidth ? __rightPageMargin : 0)
+        anchors.rightMargin: UI.SCROLLDECORATOR_LONG_MARGIN - (__hasPageWidth() ? __rightPageMargin() : 0)
         anchors.top: parent.top
-        anchors.topMargin: UI.SCROLLDECORATOR_SHORT_MARGIN - (__hasPageWidth ? __topPageMargin : 0)
+        anchors.topMargin: UI.SCROLLDECORATOR_SHORT_MARGIN - (__hasPageWidth() ? __topPageMargin() : 0)
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: UI.SCROLLDECORATOR_SHORT_MARGIN - (__hasPageWidth ? __bottomPageMargin : 0)
+        anchors.bottomMargin: UI.SCROLLDECORATOR_SHORT_MARGIN - (__hasPageWidth() ? __bottomPageMargin() : 0)
 
         onShouldShowChanged: {
             if (shouldShow)
@@ -207,11 +207,11 @@ Item {
         property bool shouldShow: flickableItem != null && ((__alwaysShowIndicator && privateApi.canFlick(Flickable.HorizontalFlick)) && (flickableItem.width > 0 && flickableItem.contentWidth > flickableItem.width))
         opacity: 0
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: UI.SCROLLDECORATOR_LONG_MARGIN - (__hasPageHeight  ? __bottomPageMargin : 0)
+        anchors.bottomMargin: UI.SCROLLDECORATOR_LONG_MARGIN - (__hasPageHeight() ? __bottomPageMargin() : 0)
         anchors.right: parent.right
-        anchors.rightMargin: UI.SCROLLDECORATOR_SHORT_MARGIN - (__hasPageHeight  ? __rightPageMargin : 0)
+        anchors.rightMargin: UI.SCROLLDECORATOR_SHORT_MARGIN - (__hasPageHeight() ? __rightPageMargin() : 0)
         anchors.left: parent.left
-        anchors.leftMargin: UI.SCROLLDECORATOR_SHORT_MARGIN - (__hasPageHeight  ? __leftPageMargin : 0)
+        anchors.leftMargin: UI.SCROLLDECORATOR_SHORT_MARGIN - (__hasPageHeight() ? __leftPageMargin() : 0)
 
         onShouldShowChanged: {
             if (shouldShow)
