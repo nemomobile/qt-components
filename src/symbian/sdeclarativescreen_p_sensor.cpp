@@ -69,8 +69,7 @@ OrientationListener::OrientationListener()
 
 OrientationListener::~OrientationListener()
 {
-    if (previousEventFilter)
-        QApplication::instance()->setEventFilter(previousEventFilter);
+    QApplication::instance()->setEventFilter(previousEventFilter);
     previousEventFilter = 0;
 }
 
