@@ -67,7 +67,7 @@ private:
     static bool symbianEventFilter(void *message, long *result);
 
 Q_SIGNALS:
-    void orientationChanged();
+    void orientationEvent();
 
 private:
     // Data
@@ -97,7 +97,7 @@ public Q_SLOTS:
     void viewStatusChanged(QDeclarativeView::Status status);
 
 #ifdef Q_OS_SYMBIAN
-    void orientationChanged();
+    void syncOrientationWithSystem();
 #endif
 
 protected:

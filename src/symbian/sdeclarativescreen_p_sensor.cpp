@@ -95,10 +95,26 @@ bool OrientationListener::symbianEventFilter(void *message, long *result)
     if (instance) {
         QSymbianEvent *symbianEvent = static_cast<QSymbianEvent *>(message);
 
-        if (symbianEvent
-                && symbianEvent->type() == QSymbianEvent::ResourceChangeEvent
-                && symbianEvent->resourceChangeType() == KEikDynamicLayoutVariantSwitch)
-            instance->emit orientationChanged();
+        if (symbianEvent) {
+            // Make the Screen sync its orientation with system orientation on two events:
+            // layout switch and app gaining foreground.
+            // The layout switch event is gained when the application rect has changed. If
+            // the application is in background, this is not necessarily in sync with the
+            // changes of "global" system orientation. For this reason, the system orientation
+            // needs to be checked also when foreground is gained.
+            if (symbianEvent->type() == QSymbianEvent::ResourceChangeEvent
+                && symbianEvent->resourceChangeType() == KEikDynamicLayoutVariantSwitch) {
+                instance->emit orientationEvent();
+            } else if (symbianEvent->type() == QSymbianEvent::WindowServerEvent) {
+                const TWsEvent *wsEvent = symbianEvent->windowServerEvent();
+                if (wsEvent && wsEvent->Type() == EEventWindowVisibilityChanged) {
+                    const TWsVisibilityChangedEvent *visEvent = wsEvent->VisibilityChanged();
+                    if (visEvent && visEvent->iFlags & TWsVisibilityChangedEvent::EFullyVisible) {
+                        instance->emit orientationEvent();
+                    }
+                }
+            }
+        }
     }
 
     bool returnValue = false;
@@ -138,7 +154,7 @@ SDeclarativeScreenPrivateSensor::SDeclarativeScreenPrivateSensor(SDeclarativeScr
     }
 
 #ifdef Q_OS_SYMBIAN
-    connect(OrientationListener::getCountedInstance(), SIGNAL(orientationChanged()), this, SLOT(orientationChanged()));
+    connect(OrientationListener::getCountedInstance(), SIGNAL(orientationEvent()), this, SLOT(syncOrientationWithSystem()));
 #endif
 
 }
@@ -245,7 +261,7 @@ bool SDeclarativeScreenPrivateSensor::eventFilter(QObject *obj, QEvent *event)
 }
 
 #ifdef Q_OS_SYMBIAN
-void SDeclarativeScreenPrivateSensor::orientationChanged()
+void SDeclarativeScreenPrivateSensor::syncOrientationWithSystem()
 {
     Q_Q(SDeclarativeScreen);
 
