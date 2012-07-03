@@ -82,3 +82,9 @@ void SDeclarativeInputContextPrivate::VisibleChanged()
     Q_Q(SDeclarativeInputContext);
     q->emit visibleChanged();
 }
+
+void SDeclarativeInputContextPrivate::HeightChanged()
+{
+    Q_Q(SDeclarativeInputContext);
+    q->emit heightChanged();
+}

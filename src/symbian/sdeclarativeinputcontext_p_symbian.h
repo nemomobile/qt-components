@@ -69,6 +69,7 @@ public:
 
     // from MTouchInputStateObserver
     virtual void VisibleChanged();
+    virtual void HeightChanged();
 };
 
 #endif // SDECLARATIVEINPUTCONTEXT_P_SYMBIAN_H
