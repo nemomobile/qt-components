@@ -375,4 +375,8 @@
         <file alias="layouts/640_360_230.params">resources/layouts/640_360_230.params</file>
         <file alias="layouts/640_480_325.params">resources/layouts/640_480_325.params</file>
     </qresource>
+    <qresource prefix="/graphics_1_1">
+        <file alias="qtg_graf_magnifier.svg">resources/defaulttheme/graphics/qtg_graf_magnifier.svg</file>
+        <file alias="qtg_graf_magnifier_mask.svg">resources/defaulttheme/graphics/qtg_graf_magnifier_mask.svg</file>
+    </qresource>
 </RCC>
