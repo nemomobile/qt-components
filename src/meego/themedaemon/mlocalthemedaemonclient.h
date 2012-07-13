@@ -47,6 +47,10 @@
 #include <QPixmap>
 #include <QString>
 
+#ifdef HAVE_MLITE
+#include <mgconfitem.h>
+#endif
+
 class QDir;
 /**
  * \brief Allows to request pixmaps from a local themedaemon server.
@@ -109,6 +113,10 @@ private:
     QList<ImageDirNode> m_imageDirNodes;
 
     QHash<QString, QString> m_filenameHash;
+
+#ifdef HAVE_MLITE
+    MGConfItem themeItem;
+#endif
 
     friend uint qHash(const MLocalThemeDaemonClient::PixmapIdentifier &id);
     friend class tst_MLocalThemeDaemonClient; // Unit tests

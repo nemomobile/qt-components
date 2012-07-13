@@ -49,9 +49,14 @@ MLocalThemeDaemonClient::MLocalThemeDaemonClient(const QString &path, QObject *p
     m_path(path),
     m_pixmapCache(),
     m_imageDirNodes()
+#ifdef HAVE_MLITE
+    , themeItem("/meegotouch/theme/name")
+#endif
 {
+    qDebug() << Q_FUNC_INFO << "Path is: " << m_path;
     if (m_path.isEmpty()) {
         m_path = qgetenv("M_THEME_DIR");
+        qDebug() << Q_FUNC_INFO << "Path is: " << m_path;
         if (m_path.isEmpty()) {
             //qWarning() << "No theme path is provided for MLocalThemeDaemonClient";
 
@@ -61,15 +66,28 @@ MLocalThemeDaemonClient::MLocalThemeDaemonClient(const QString &path, QObject *p
             m_path = "/usr/share/themes";
             #endif
         }
+        qDebug() << Q_FUNC_INFO << "Path is: " << m_path;
+
+#ifdef HAVE_MLITE
+        qDebug() << Q_FUNC_INFO << "Theme: " << themeItem.value("blanco").toString();
+#else
+        qDebug() << Q_FUNC_INFO << "Theme: blanco (hardcoded)";
+#endif
 
         m_path += QDir::separator()
+#ifndef HAVE_MLITE
                 + QLatin1String("blanco") + QDir::separator()
+#else
+                + themeItem.value("blanco").toString() + QDir::separator()
+#endif
                 + QLatin1String("meegotouch");
     }
+        qDebug() << Q_FUNC_INFO << "Path is: " << m_path;
 
     if (m_path.endsWith(QDir::separator())) {
         m_path.truncate(m_path.length() - 1);
     }
+        qDebug() << Q_FUNC_INFO << "Path is: " << m_path;
 
     m_imageDirNodes.append(ImageDirNode("icons" , QStringList() << ".svg" << ".png" << ".jpg"));
     m_imageDirNodes.append(ImageDirNode(QLatin1String("images") + QDir::separator() + QLatin1String("theme"), QStringList() << ".png" << ".jpg"));

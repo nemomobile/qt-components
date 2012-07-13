@@ -17,6 +17,13 @@ QT += declarative network opengl
     CONFIG += link_pkgconfig
 }
 
+packagesExist(mlite) {
+    PKGCONFIG += mlite
+    DEFINES+=HAVE_MLITE
+} else {
+    warning("mlite is not available; theme detection won't work")
+}
+
 meegotouch {
     DEFINES += HAVE_MEEGOTOUCH
 }
