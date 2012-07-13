@@ -119,7 +119,7 @@ public:
             MLocaleWrapper *locale = new MLocaleWrapper;
             engine->rootContext()->setContextProperty("locale", locale);
             engine->rootContext()->setContextProperty("UiConstants", uiConstants(locale));
-            qmlRegisterUncreatableType<MLocaleWrapper>(uri, SINCE_VERSION(1, 0), "Locale", "");
+            qmlRegisterUncreatableType<MLocaleWrapper>(uri, 1, 0, "Locale", "");
         }
     }
 
@@ -159,15 +159,11 @@ public:
         QString defaultFontFamily      = QLatin1String("Nokia Pure Text");
         QString defaultFontFamilyLight = QLatin1String("Nokia Pure Text Light");
 
-#ifdef HAVE_MEEGOTOUCH
         // use arial when language is set to farsi
         if (locale && locale->language() == QLatin1String("fa")) {
             defaultFontFamily = QLatin1String("Arial");
             defaultFontFamilyLight = QLatin1String("Arial");
         }
-#else
-        Q_UNUSED(locale);
-#endif // HAVE_MEEGOTOUCH
 
         QDeclarativePropertyMap *uiConstantsData = new QDeclarativePropertyMap();
         uiConstantsData->insert("DefaultMargin", QVariant(16));

@@ -106,6 +106,7 @@ FocusScope {
             __ignoreHeightChange = true;
             root.height = Math.max (__originalHeight, implicitHeight)
             __ignoreHeightChange = false;
+
         }
     }
 

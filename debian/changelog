@@ -1,26 +1,21 @@
-qt-components (1.3~git20120215-2) maverick; urgency=low
+qt-components (1.3~git20120215-1) maverick; urgency=low
 
-  * Next release
+  * Fixes: NB#297391 Invisible model data content in the (Multi)SelectionDialog
+  * Fixes: NB#286120 QueryDialog can be closed without pressing any buttons
 
- -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Wed, 15 Feb 2012 08:59:00 +0300
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Wed, 15 Feb 2012 08:57:00 +0300
 
-qt-components (1.3~git20120207-2) maverick; urgency=low
+qt-components (1.3~git20120207-1) maverick; urgency=low
 
-  * Next release
+  * Fixes: NB#293742 Text pasted in incorrect location in TextField and TextArea
 
- -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Wed, 08 Feb 2012 11:45:00 +0300
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Tue, 07 Feb 2012 10:00:00 +0300
 
-qt-components (1.3~git20120130-2) maverick; urgency=low
+qt-components (1.3~git20120130-1) maverick; urgency=low
 
-  * Towards next release
+  * Initial 1.3 version
 
- -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Mon, 30 Jan 2012 12:31:00 +0300
-
-qt-components (1.2~git20120109-2) maverick; urgency=low
-
-  * Next release
-
- -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Mon, 09 Jan 2012 14:17:00 +0300
+ -- Joonas Reynders <ext-joonas.n.reynders@nokia.com>  Mon, 30 Jan 2012 12:30:00 +0300
 
 qt-components (1.2~git20120109-1) maverick; urgency=low
 
@@ -33,7 +28,7 @@ qt-components (1.2~git20111209-1) maverick; urgency=low
   * Fixes: NB#293670 Add helper function for getting the font for the current language
   * Fixes: NB#293496 Long-pressing a TextField/TextArea leads app to hang out
 
- -- Balaji Chellakani <ext-balaji.chellakani@nokia.com>  Fri, 09 Dec 2011 16:50:00 +0300
+ -- Balaji Chellakani <ext-balaji.chellakani@nokia.com>  Fri, 09 Dec 2011 13:30:00 +0300
 
 qt-components (1.2~git20111202-1) maverick; urgency=low
 

@@ -48,6 +48,6 @@ Style {
     property color selectionColor: theme.selectionColor
 
     // Font
-    property string fontFamily: __fontFamily
+    property string fontFamily: __fontFamily()
     property int fontPixelSize: UI.FONT_DEFAULT_SIZE
 }
