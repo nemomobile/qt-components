@@ -69,7 +69,7 @@ public:
      *               by the define THEME_DIR is used.
      * \param parent Parent object.
      */
-    MLocalThemeDaemonClient(const QString &path = QString(), QObject *parent = 0);
+    MLocalThemeDaemonClient(QObject *parent = 0);
     virtual ~MLocalThemeDaemonClient();
 
     /**
@@ -106,7 +106,6 @@ private:
         QStringList suffixList;
     };
 
-    QString m_path;
     QHash<PixmapIdentifier, QPixmap> m_pixmapCache;
     QList<ImageDirNode> m_imageDirNodes;
 
