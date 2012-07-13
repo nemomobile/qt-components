@@ -84,8 +84,6 @@ private:
      */
     QImage readImage(const QString &id) const;
 
-    static QString findFileRecursively(const QDir& rootDir, const QString& name);
-
     void buildHash(const QDir& rootDir, const QStringList& nameFilter);
 
     /**

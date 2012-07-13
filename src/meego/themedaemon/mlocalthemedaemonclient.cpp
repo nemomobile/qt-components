@@ -154,23 +154,6 @@ QImage MLocalThemeDaemonClient::readImage(const QString &id) const
     return QImage();
 }
 
-QString MLocalThemeDaemonClient::findFileRecursively(const QDir& rootDir, const QString& name)
-{
-    QStringList files = rootDir.entryList(QStringList(name));
-    if(files.length() > 0)
-        return rootDir.filePath(files[0]);
-
-    QStringList dirList = rootDir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
-    foreach(const QString nextDirString, dirList){
-        QDir nextDir(rootDir.absolutePath() + QDir::separator() + nextDirString);
-        QString nextFile = findFileRecursively(nextDir, name);
-        if(!nextFile.isNull())
-            return nextFile;
-    }
-
-    return QString();
-}
-
 void MLocalThemeDaemonClient::buildHash(const QDir& rootDir, const QStringList& nameFilter)
 {
     QDir rDir = rootDir;
