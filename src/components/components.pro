@@ -7,7 +7,7 @@ INCLUDEPATH += $$PWD $$PWD/models
 
 win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release build_all
 CONFIG += qt plugin
-QT += declarative
+QT += quick
 
 DEFINES += QT_BUILD_COMPONENTS_LIB
 

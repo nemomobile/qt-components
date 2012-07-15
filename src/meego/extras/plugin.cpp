@@ -44,6 +44,7 @@
 class MeeGoExtrasPlugin : public QDeclarativeExtensionPlugin
 {
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID "com.nokia.extras" FILE "com.nokia.meego.components.extras.json")
 public:
     void initializeEngine(QDeclarativeEngine *engine, const char *uri) {
         QDeclarativeExtensionPlugin::initializeEngine(engine, uri);
@@ -57,4 +58,3 @@ public:
 
 #include "plugin.moc"
 
-Q_EXPORT_PLUGIN2(meegoextrasplugin, MeeGoExtrasPlugin);

@@ -10,7 +10,7 @@ force-local-theme: DEFINES+=FORCE_LOCAL_THEME
 
 win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release build_all
 CONFIG += qt plugin copy_native install_native
-QT += declarative network opengl
+QT += network opengl
 !win32:!macx: QT += dbus
 
 !win32:!embedded:!mac:!symbian {
@@ -242,7 +242,7 @@ QML_FILES = \
 
 equals(QT_MAJOR_VERSION, 5) {
     # Tweaks sources and headers for Qt5
-    QT += gui-private
+    QT += gui-private quick
 
     QML_FILES += \
         MaskedItem.qml \
@@ -270,6 +270,8 @@ equals(QT_MAJOR_VERSION, 5) {
         shadereffectitem/shadereffectsource.h \
         shadereffectitem/shadereffectbuffer.h \
         shadereffectitem/scenegraph/qsggeometry.h
+} else {
+    QT += declarative
 }
 
 include(../../qml.pri)

@@ -1,12 +1,12 @@
 TEMPLATE = app
-QT += declarative
 target.path = $$INSTALL_PREFIX/bin
 
 equals(QT_MAJOR_VERSION, 5) {
     include(../../../src/compat/compat.pri)
-    QT += widgets
+    QT += widgets quick
 } else {
     include(../util/util.pri)
+    QT += declarative
 }
 
 CONFIG -= app_bundle

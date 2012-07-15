@@ -46,6 +46,7 @@
 class QtComponentsPlugin : public QDeclarativeExtensionPlugin
 {
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID "com.nokia.components" FILE "com.nokia.components.json")
 
 public:
     void registerTypes(const char *uri) {
@@ -57,4 +58,3 @@ public:
 
 #include "plugin.moc"
 
-Q_EXPORT_PLUGIN2(qtcomponentsplugin, QtComponentsPlugin);
