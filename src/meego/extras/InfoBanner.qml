@@ -134,8 +134,8 @@ ImplicitSizeItem {
         color: "white"
         wrapMode: Text.Wrap
         verticalAlignment: Text.AlignHCenter
-        font.pixelSize: UI.FONT_DEFAULT_SIZE
-        font.family: UI.FONT_FAMILY
+        font.family: platformStyle.fontFamily
+        font.pixelSize: platformStyle.fontPixelSize
         font.letterSpacing: UI.INFO_BANNER_LETTER_SPACING
         maximumLineCount: 3
         elide: Text.ElideRight

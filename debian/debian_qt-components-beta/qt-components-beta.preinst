@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -e
+
+rm -rf /opt/qt-components-beta/usr/lib/qt4/imports/com/nokia/meego
+rm -rf /opt/qt-components-beta/usr/lib/qt4/imports/com/nokia/extras
+rm -rf /opt/qt-components-beta/usr/lib/qt4/imports/com/meego
+rm -rf /opt/qt-components-beta/usr/lib/qt4/imports/Qt/labs/components

@@ -47,12 +47,21 @@ Item {
     property Item editor: null
     property bool copyEnabled: false
     property bool cutEnabled: false
+    property bool selectAllEnabled: false
+    property bool selectWordEnabled: false
     property bool platformInverted: false
 
+    x: 0
+    y: 0
+    z: Infinity
+    visible: false
+
     function show() {
-        parent = AppManager.visualRoot();
-        internal.show = true;
-        calculatePosition();
+        if (row.enabledButtonCount() > 0) {
+            parent = AppManager.visualRoot();
+            internal.show = true;
+            calculatePosition();
+        }
     }
 
     function hide() {
@@ -88,9 +97,6 @@ Item {
             internal.editorSceneYChanged.disconnect(internal.editorMoved)
         }
     }
-
-    x: 0; y: 0
-    visible: false
 
     Binding { target: internal; property: "editorSceneX"; value: AppManager.sceneX(root.editor); when: root.visible && (root.editor != null) }
     Binding { target: internal; property: "editorSceneY"; value: AppManager.sceneY(root.editor); when: root.visible && (root.editor != null) }
@@ -137,6 +143,16 @@ Item {
             return count
         }
 
+        function enabledButtonCount() {
+            var count = 0
+            if (root.selectWordEnabled) ++count
+            if (root.selectAllEnabled) ++count
+            if (root.copyEnabled) ++count
+            if (root.cutEnabled) ++count
+            if (editor.canPaste) ++count
+            return count
+        }
+
         exclusive: false
         width: Math.round(privateStyle.buttonSize * 2) * visibleButtonCount()
 
@@ -146,7 +162,7 @@ Item {
         Button {
             id: selectButton
             iconSource: privateStyle.imagePath("qtg_toolbar_select_word", root.platformInverted)
-            visible: !root.copyEnabled
+            visible: root.selectWordEnabled
             platformInverted: root.platformInverted
             onClicked: {
                 editor.selectWord()
@@ -156,7 +172,7 @@ Item {
         Button {
             id: selectAllButton
             iconSource: privateStyle.imagePath("qtg_toolbar_select_all_text", root.platformInverted)
-            visible: !root.cutEnabled
+            visible: root.selectAllEnabled
             platformInverted: root.platformInverted
             onClicked: {
                 editor.selectAll()

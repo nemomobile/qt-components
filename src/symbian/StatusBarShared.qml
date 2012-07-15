@@ -48,7 +48,11 @@ SharedStatusBar {
 
     Connections {
         target: screen
-        onCurrentOrientationChanged: sharedStatusBar.setOrientation(screen.currentOrientation)
+        onCurrentOrientationChanged: {
+            sharedStatusBar.setOrientation(screen.currentOrientation)
+            mouseArea.width = sharedStatusBar.width;
+            mouseArea.height = sharedStatusBar.height;
+        }
     }
 
     Connections {

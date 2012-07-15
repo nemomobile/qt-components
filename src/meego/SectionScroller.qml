@@ -67,7 +67,7 @@ Item {
     Rectangle {
         id: container
         color: "transparent"
-        width: 35
+        width: 80
         height: listView.height
         x: listView.x + listView.width - width
         property bool dragging: false
@@ -82,7 +82,7 @@ Item {
             drag.maximumY: listView.y + listView.height - tooltip.height
 
             onPressed: {
-                mouseDownTimer.restart()
+                mouseDownTimer.start()
             }
 
             onReleased: {
@@ -104,109 +104,40 @@ Item {
                     tooltip.positionAtY(dragArea.mouseY);
                 }
             }
+            states: [
+                State {
+                    name: "dragging"; when: container.dragging
+                    PropertyChanges { target: container; color: Qt.rgba(1, 1, 1, 0.5) }
+                }
+            ]
         }
         Item {
             id: tooltip
             objectName: "popup"
             opacity: container.dragging ? 1 : 0
             anchors.right: parent.right
-            anchors.rightMargin: 50
-            width: childrenRect.width
+            width: listView.width
             height: childrenRect.height
 
             function positionAtY(yCoord) {
                 tooltip.y = Math.max(dragArea.drag.minimumY, Math.min(yCoord - tooltip.height/2, dragArea.drag.maximumY));
             }
 
-            BorderImage {
+            Rectangle {
                 id: background
-                width: childrenRect.width// + 20
+                width: parent.width
                 height: childrenRect.height// + 20
                 anchors.left: parent.left
-                source: platformStyle.backgroundImage
-                border { left: 4; top: 4; right: 4; bottom: 4 }
-
-                Column {
-                    width: Math.max(previousSectionLabel.width, currentSectionLabel.width, nextSectionLabel.width)
-                    height: childrenRect.height
-
-                    SectionScrollerLabel {
-                        id: previousSectionLabel
-                        objectName: "previousSectionLabel"
-                        text: internal.prevSection
-                        highlighted: internal.curSect === text
-                        up: !internal.down
-                    }
-
-                    Image {
-                        objectName: "divider1"
-                        source: platformStyle.dividerImage
-                        width: parent.width
-                        height: 1
-                        anchors.horizontalCenter: parent.horizontalCenter
-                    }
+                color: Qt.rgba(0, 0, 0, 0.5)
 
                     SectionScrollerLabel {
                         id: currentSectionLabel
                         objectName: "currentSectionLabel"
                         text: internal.currentSection
-                        highlighted: internal.curSect === text
-                        up: !internal.down
-                    }
-
-                    Image {
-                        objectName: "divider2"
-                        source: platformStyle.dividerImage
-                        width: parent.width
-                        height: 1
-                        anchors.horizontalCenter: parent.horizontalCenter
-                    }
-
-                    SectionScrollerLabel {
-                        id: nextSectionLabel
-                        objectName: "nextSectionLabel"
-                        text: internal.nextSection
-                        highlighted: internal.curSect === text
+                        highlighted: true
                         up: !internal.down
                     }
                 }
-            }
-
-            Image {
-                id: arrow
-                objectName: "arrow"
-                width: 8
-                height: 16
-                anchors.left: background.right
-                property int threshold: currentSectionLabel.height
-                property int yInitial: background.y + background.height/2 - height/2
-                y: getYPosition()
-                source: platformStyle.arrowImage
-
-                function getYPosition() {
-                    var v = internal.curPos;
-                    var adjust = v === "first" ? -threshold :
-                                v === "last" ? threshold : 0;
-
-                    return yInitial + adjust;
-                }
-
-                states: [
-                    State {
-                        when: root.dragging && dragArea.mouseY < (root.listView.y + threshold)
-                        PropertyChanges {
-                            target: arrow
-                            y: yInitial - threshold
-                        }
-                    }
-                ]
-
-                Behavior on y {
-                    NumberAnimation {
-                        duration: 100
-                    }
-                }
-            }
 
             states: [
                 State {
@@ -219,16 +150,8 @@ Item {
                     name: "atTop"
                     when: internal.curPos === "first"
                     PropertyChanges {
-                        target: previousSectionLabel
-                        text: internal.currentSection
-                    }
-                    PropertyChanges {
                         target: currentSectionLabel
                         text: internal.nextSection
-                    }
-                    PropertyChanges {
-                        target: nextSectionLabel
-                        text: Sections.getNextSection(internal.nextSection)
                     }
                 },
 
@@ -237,16 +160,8 @@ Item {
                     name: "atBottom"
                     when: internal.curPos === "last"
                     PropertyChanges {
-                        target: previousSectionLabel
-                        text: Sections.getPreviousSection(internal.prevSection)
-                    }
-                    PropertyChanges {
                         target: currentSectionLabel
                         text: internal.prevSection
-                    }
-                    PropertyChanges {
-                        target: nextSectionLabel
-                        text: internal.currentSection
                     }
                 }
             ]

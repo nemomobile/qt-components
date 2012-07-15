@@ -1,0 +1,17 @@
+interface: qt-components-beta
+type: qml
+scope: Nokia MeeGo
+state: experimental
+dev-pkg: qt-components-beta-dev
+doc-type: qtdoc
+api-file-format: 1.0
+qml-project-file: qt-components.pro
+
+interface: qt-components-beta-extras
+type: qml
+scope: Nokia MeeGo
+state: experimental
+dev-pkg: qt-components-beta-dev
+doc-type: qtdoc
+api-file-format: 1.0
+qml-project-file: qt-components.pro

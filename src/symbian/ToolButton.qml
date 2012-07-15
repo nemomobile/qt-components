@@ -65,10 +65,6 @@ Item {
     signal platformReleased
     signal platformPressAndHold
 
-    onFlatChanged: {
-        background.visible = !flat || (checkableItem.enabled && checkableItem.checked && !internal.isButtonRow(parent))
-    }
-
     implicitWidth: {
         if (!text)
             return internal.iconButtonWidth()
@@ -98,7 +94,7 @@ Item {
         }
         smooth: true
         anchors.fill: parent
-        visible: !flat
+        visible: !flat || highlight.opacity > 0 || (checkableItem.enabled && checkableItem.checked && !internal.isButtonRow(parent))
 
         BorderImage {
             id: highlight
@@ -127,6 +123,7 @@ Item {
             leftMargin: !text ? 0 : 2 * platformStyle.paddingMedium
         }
         smooth: true
+        opacity: !root.enabled ? 0.5 : 1
     }
 
     Text {
@@ -215,9 +212,6 @@ Item {
             } else if (checkableItem.enabled && !checkableItem.checked) {
                 privateStyle.play(Symbian.BasicButton)
             }
-
-            if (flat)
-                background.visible = true
             highlight.source = privateStyle.imagePath(internal.imageName() + "pressed", root.platformInverted)
             label.scale = 0.95
             contentIcon.scale = 0.95
@@ -370,11 +364,6 @@ Item {
                 easing.type: Easing.Linear
                 duration: 150
             }
-        }
-        PropertyAction {
-            target: background
-            property: "visible"
-            value: false
         }
     }
 

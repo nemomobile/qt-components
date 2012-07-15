@@ -224,6 +224,7 @@ Item {
             smooth: true
             anchors.top: parent.top
             anchors.horizontalCenter: parent.horizontalCenter
+            opacity: !button.enabled ? 0.5 : 1
         }
         Text {
             id: label

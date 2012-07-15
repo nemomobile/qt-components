@@ -127,7 +127,7 @@ Item {
         anchors { left: parent.left; right: icon.left;
             leftMargin: UI.INDENT_DEFAULT; rightMargin: UI.INDENT_DEFAULT;
             verticalCenter: parent.verticalCenter }
-        font { family: UI.FONT_FAMILY; pixelSize: UI.FONT_DEFAULT_SIZE;
+        font { family: platformStyle.fontFamily; pixelSize: platformStyle.fontPixelSize;
             bold: UI.FONT_BOLD_BUTTON; capitalization: tumblerbutton.style.fontCapitalization }
         text: tumblerbutton.text
         color: (mouse.pressed) ? 

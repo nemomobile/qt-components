@@ -73,8 +73,22 @@ Item {
         }
     }
 
+    Timer {
+        id: dirtyTimer
+        interval: 100
+        running: false
+        onTriggered: {
+            Sections.initSectionData(listView);
+            internal.modelDirty = false;
+        }
+    }
+
+    Component.onDestruction: Sections.removeSectionData(listView)
+
     QtObject {
         id: internal
+
+        property bool modelDirty: false
 
         function initDirtyObserver() {
             Sections.initSectionData(listView);

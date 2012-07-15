@@ -39,14 +39,16 @@
     to layout the application's content differently depending on the screen's
     orientation. When the user rotates the screen, Window sends various signals
     at different phases of the rotation. Window handles also the resizing of the
-    screen and possible transitions when the orientation changes. Normally all
-    applications utilizing QtQuick Components for Symbian use Window as the root
-    item.
+    screen and possible transitions when the orientation changes. Applications 
+    utilizing QtQuick Components for Symbian should use Window as the root
+    item. The Window component should not be used as a child item.
 
-    The orientation change animation will be fixed in a Qt Quick Components for
-    Symbian release in future. Qt Quick Components version number will not be
-    increased. To make your application future-proof, do not refer to the Window
-    id when you anchor children to the Window - refer to the parent instead.
+    From Nokia Belle Feature Pack 1 onwards, the included Qt Quick Components
+    for Symbian will include a new Window implementation that enables
+    orientation change animations. Qt Quick Components version number will not
+    be increased. To make your application future-proof, do not refer to the
+    Window id when you anchor children to the Window - refer to the parent
+    instead.
 
     Wrong (child anchoring refers to the Window id):
     \code

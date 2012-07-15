@@ -2,7 +2,7 @@ include (../../qt-components.pri)
 
 TARGETPATH = com/nokia/symbian.1.1
 TEMPLATE = lib
-TARGET = $$qtLibraryTarget(symbianplugin_1_1_2)
+TARGET = $$qtLibraryTarget(symbianplugin_1_1_3)
 INCLUDEPATH += $$PWD $$PWD/indicators
 
 win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release build_all
@@ -197,6 +197,7 @@ symbian {
     LIBS += -leikcoctl // For CEikStatusPane
     LIBS += -lhal   // For calculating DPI values
     LIBS += -lavkon // For AknAppui
+    LIBS += -lfeatmgr
 
     symbian_internal {
         LIBS += -laknicon // For AknIconUtils
@@ -224,6 +225,10 @@ symbian {
 
     package.pkg_prerules += vendor_info
     DEPLOYMENT += package
+
+    exists($${EPOCROOT}epoc32/release/winscw/udeb/z/system/install/series60v5.4.sis) {
+        DEFINES += S60_V54_OR_HIGHER
+    }
 }
 
 win32: LIBS += -lpsapi # for allocated memory info

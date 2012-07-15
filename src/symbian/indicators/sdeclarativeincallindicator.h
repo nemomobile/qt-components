@@ -66,6 +66,7 @@ private:
     CSDeclarativeIncallIndicator();
     void ConstructL();
     void CreateIncallControlL();
+    CCoeControl* GetInCallBubbleL();
     void IncallBubbleSizeChanged();
     void UpdateIncallBubbleVisibility();
 
@@ -73,6 +74,7 @@ private:
     RMutex iMutex;
     QScopedPointer<TSDeclarativeIncallIndicatorPrivate> iData;
     TBool iMessageMonitorObserverAdded;
+    CCoeEnv* iCoeEnv;
 };
 
 #endif //CSDECLARATIVEINCALLINDICATOR_H

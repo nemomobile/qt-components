@@ -34,7 +34,9 @@
     a time.
 
     A section scroller is a component that allows the user to scroll through
-    a list by one section at a time.  The sections are defined in the list.
+    a list by one section at a time.  When dragging the scrollbar, the list
+    jumps one section at a time while indicating the current section with a
+    popup. The sections are defined in the list.
 
     \code
     Item {
@@ -50,6 +52,7 @@
         ListView {
             id: list
             anchors.fill: parent
+            section.property: "alphabet"
             ...
         }
 
@@ -61,9 +64,10 @@
 */
 
 /*!
-    \qmlproperty  ListView SectionScroller::listView
+    \qmlproperty ListView SectionScroller::listView
 
-    The ListView that this section scroller is attached to.
+    The ListView that this section scroller is attached to. The ListView must
+    be divided into sections using its \c section attached property.
 
 */
 

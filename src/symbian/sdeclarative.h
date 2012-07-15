@@ -132,7 +132,7 @@ public:
         QString fileName = iconName;
         if (fileName.startsWith(QLatin1String("qtg")) ||
                 fileName.startsWith(QLatin1String("toolbar-"))) {
-            fileName.prepend(QLatin1String(":/graphics_1_1_2/"));
+            fileName.prepend(QLatin1String(":/graphics_1_1_3/"));
 
             if (fileName.lastIndexOf(QLatin1Char('.')) == -1)
                 fileName.append(QLatin1String(".svg"));

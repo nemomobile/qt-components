@@ -37,19 +37,7 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
-function findFlickable(component) {
-    var nextParent = component
-    var flickableItem = null
-    while(nextParent) {
-        if(nextParent.flicking !== undefined && nextParent.flickableDirection !== undefined)
-            flickableItem = nextParent
-
-        nextParent = nextParent.parent
-    }
-    if (flickableItem) return flickableItem
-    return null
-}
+Qt.include('Utils.js');
 
 function animateContentY(animation, flickable, newContentY) {
     animation.target = flickable
@@ -87,21 +75,35 @@ function getMargin() {
 }
 
 function repositionFlickable(animation) {
+    var flickable = Utils.findFlickable(parent)
+
     inputContext.updateMicroFocus()
-    var mf = inputContext.microFocus
 
-    if(mf.x == -1 && mf.y == -1)
-        return
-
-    var object = findFlickable(parent)
-
-    if(object){
-        var flickable = object
-
+    if(flickable) {
         // Specifies area from bottom and top when repositioning should be triggered
         var margin = getMargin()
         var newContentY = flickable.contentY
         var flickableY = locateFlickableY(flickable)
+
+        var mf = inputContext.microFocus
+
+        if(mf.x == -1 && mf.y == -1) {
+            /* This is to calculate read-only text area/field positions as
+            they're not handled by micro-focus. */
+            var window = findRootItem(root, 'contentArea');
+            var vf = window.mapFromItem(root, 0, 0);
+
+            mf = {x: vf.x, y: vf.y, width: root.width, height: root.height};
+
+            if(screen.currentOrientation == Screen.Landscape) {
+                mf.y += root.height / 2;
+            } else if(screen.currentOrientation == Screen.Portrait) {
+                mf.x += root.height / 2;
+            }
+
+            // Probably never happens, but should stop regressions if it does.
+            if (!root.readOnly) return;
+        }
 
         switch(screen.currentOrientation) {
         case Screen.Landscape:
@@ -164,8 +166,9 @@ function repositionFlickable(animation) {
         }
 
         // If overpanned, set contentY to max possible value (reached bottom)
-        if(newContentY > flickable.contentHeight - flickable.height)
-            newContentY = flickable.contentHeight - flickable.height
+        // Leave some additional space for the selection handles.
+        if(newContentY > flickable.contentHeight + 40 - flickable.height)
+            newContentY = flickable.contentHeight + 40 - flickable.height
 
         // If overpanned, set contentY to min possible value (reached top)
         if(newContentY < 0)

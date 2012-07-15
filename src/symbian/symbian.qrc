@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/graphics_1_1_2">
+    <qresource prefix="/graphics_1_1_3">
         <file alias="qtg_fr_pushbutton_pressed.svg">resources/defaulttheme/graphics/qtg_fr_pushbutton_pressed.svg</file>
         <file alias="qtg_fr_pushbutton_normal.svg">resources/defaulttheme/graphics/qtg_fr_pushbutton_normal.svg</file>
         <file alias="qtg_fr_pushbutton_latched.svg">resources/defaulttheme/graphics/qtg_fr_pushbutton_latched.svg</file>
@@ -374,5 +374,9 @@
         <file alias="layouts/640_360_210.params">resources/layouts/640_360_210.params</file>
         <file alias="layouts/640_360_230.params">resources/layouts/640_360_230.params</file>
         <file alias="layouts/640_480_325.params">resources/layouts/640_480_325.params</file>
+    </qresource>
+    <qresource prefix="/graphics_1_1">
+        <file alias="qtg_graf_magnifier.svg">resources/defaulttheme/graphics/qtg_graf_magnifier.svg</file>
+        <file alias="qtg_graf_magnifier_mask.svg">resources/defaulttheme/graphics/qtg_graf_magnifier_mask.svg</file>
     </qresource>
 </RCC>

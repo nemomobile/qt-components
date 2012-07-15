@@ -1146,6 +1146,7 @@ Item {
             }
 
             ToolButton {
+                onClicked: stack.push(secondPage)
                 iconSource: "toolbar-menu"
             }
 
@@ -1177,6 +1178,7 @@ Item {
             }
 
             ToolButton {
+                onClicked: stack.push(secondPage)
                 iconSource: "toolbar-menu"
             }
 
@@ -1213,6 +1215,7 @@ Item {
             }
 
             ToolButton {
+                onClicked: stack.push(secondPage)
                 iconSource: "toolbar-menu"
             }
 
@@ -1239,6 +1242,7 @@ Item {
             }
 
             ToolButton {
+                onClicked: stack.push(secondPage)
                 iconSource: "toolbar-menu"
             }
 
@@ -1274,6 +1278,7 @@ Item {
             }
 
             ToolButton {
+                onClicked: stack.push(secondPage)
                 iconSource: "toolbar-menu"
             }
 
@@ -1314,6 +1319,7 @@ Item {
             }
 
             ToolButton {
+                onClicked: stack.push(secondPage)
                 iconSource: "toolbar-menu"
             }
 
@@ -1615,6 +1621,7 @@ Item {
             }
 
             ToolButton {
+                onClicked: stack.push(secondPage)
                 iconSource: "toolbar-menu"
             }
         }
@@ -1648,6 +1655,7 @@ Item {
             }
 
             ToolButton {
+                onClicked: stack.push(secondPage)
                 iconSource: "toolbar-menu"
             }
         }
@@ -1726,6 +1734,7 @@ Item {
             }
 
             ToolButton {
+                onClicked: stack.push(secondPage)
                 iconSource: "toolbar-menu"
             }
         }
@@ -1771,6 +1780,7 @@ Item {
             }
 
             ToolButton {
+                onClicked: stack.push(secondPage)
                 iconSource: "toolbar-menu"
             }
         }

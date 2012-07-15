@@ -77,28 +77,30 @@ void tst_quickcomponentsstatusbar::initTestCase()
     statusBar = view->rootObject()->findChild<QGraphicsObject*>("statusBar");
     QVERIFY(statusBar);
     priv = view->rootObject()->findChild<QObject*>("priv");
-    QVERIFY(priv);
 }
 
 void tst_quickcomponentsstatusbar::signalWidth()
 {
-    QVariant returnedValue = 0;
-    int signalLevel = 0;
-    QMetaObject::invokeMethod(priv, "signalWidthPercentage",
-                              Q_RETURN_ARG(QVariant, returnedValue),
-                              Q_ARG(QVariant, signalLevel));
-    float percentage = returnedValue.toFloat();
-    signalLevel = 50;
-    QMetaObject::invokeMethod(priv, "signalWidthPercentage",
-                              Q_RETURN_ARG(QVariant, returnedValue),
-                              Q_ARG(QVariant, signalLevel));
-    QVERIFY(percentage < returnedValue.toFloat());
-    percentage = returnedValue.toFloat();
-    signalLevel = 100;
-    QMetaObject::invokeMethod(priv, "signalWidthPercentage",
-                              Q_RETURN_ARG(QVariant, returnedValue),
-                              Q_ARG(QVariant, signalLevel));
-    QVERIFY(percentage < returnedValue.toFloat());
+    // Only test if Default (NOT shared) status bar is used
+    if(priv) {
+        QVariant returnedValue = 0;
+        int signalLevel = 0;
+        QMetaObject::invokeMethod(priv, "signalWidthPercentage",
+                                Q_RETURN_ARG(QVariant, returnedValue),
+                                Q_ARG(QVariant, signalLevel));
+        float percentage = returnedValue.toFloat();
+        signalLevel = 50;
+        QMetaObject::invokeMethod(priv, "signalWidthPercentage",
+                                 Q_RETURN_ARG(QVariant, returnedValue),
+                                Q_ARG(QVariant, signalLevel));
+        QVERIFY(percentage < returnedValue.toFloat());
+        percentage = returnedValue.toFloat();
+        signalLevel = 100;
+        QMetaObject::invokeMethod(priv, "signalWidthPercentage",
+                                  Q_RETURN_ARG(QVariant, returnedValue),
+                                  Q_ARG(QVariant, signalLevel));
+        QVERIFY(percentage < returnedValue.toFloat());
+    }
 }
 
 void tst_quickcomponentsstatusbar::position()

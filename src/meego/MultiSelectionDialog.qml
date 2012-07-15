@@ -191,7 +191,9 @@ CommonDialog {
     buttons: Item {
         id: buttonRowFiller
         width: parent.width
-        height:  childrenRect.height //+ root.platformStyle.buttonsTopMargin
+        // "+1" to avoid fuzziness to address an off-by-one error that seems to affect the upper line of the button row
+        // This is an optimization for this particular theme and might stop working work if other parameters are changed.
+        height:  childrenRect.height + 1 //+ root.platformStyle.buttonsTopMargin
         y: root.platformStyle.buttonsTopMargin
 
         onWidthChanged: {

@@ -85,6 +85,49 @@ Popup {
         accepted();
     }
 
+    function __beginTransformationToHidden() {
+        __fader().state = "hidden";
+
+        backgroundRect.opacity = 1.0;
+        contentField.opacity = 1.0
+        root.opacity = 1.0
+
+        statesWrapper.__buttonSaver = buttonRow.y
+        statesWrapper.__titleSaver = titleBar.y
+        root.status = DialogStatus.Closing;
+    }
+
+    // reset button and title bar
+    // make sure, root isn't visible
+    function __endTransformationToHidden() {
+        buttonRow.y = statesWrapper.__buttonSaver
+        titleBar.y = statesWrapper.__titleSaver
+        backgroundRect = 0.0;
+        root.opacity = 0.0;
+        status = DialogStatus.Closed;
+    }
+
+    function __beginTransformationToVisible() {
+        __fader().state = "visible";
+        statesWrapper.__buttonSaver = buttonRow.y
+        statesWrapper.__titleSaver = titleBar.y
+
+        root.status = DialogStatus.Opening;
+        // UPPERCASE-UGLY, but necessary to avoid flicker
+        root.opacity = 1.0;
+        backgroundRect.opacity = 1.0;
+        titleBar.opacity = 0.0;
+        contentField.opacity = 0.0;
+        buttonRow.opacity = 0.0;
+    }
+
+    // reset button and title bar   
+    function __endTransformationToVisible() {
+        buttonRow.y = statesWrapper.__buttonSaver
+        titleBar.y   = statesWrapper.__titleSaver
+        root.status = DialogStatus.Open;
+    }
+
     transform: Scale {
         id: contentScale
         xScale: 1.0; yScale: 1.0
@@ -101,9 +144,6 @@ Popup {
         width: root.width
 
         anchors.centerIn:  root
-
-
-
 
         // center the whole dialog, not just the content field
         transform: Translate {
@@ -194,18 +234,7 @@ Popup {
             Transition {
                 from: "visible"; to: "hidden"
                 SequentialAnimation {
-                    ScriptAction {script: {
-                            __fader().state = "hidden";
-
-                            backgroundRect.opacity = 1.0;
-                            contentField.opacity = 1.0
-                            root.opacity = 1.0
-
-                            statesWrapper.__buttonSaver = buttonRow.y
-                            statesWrapper.__titleSaver = titleBar.y
-                            root.status = DialogStatus.Closing;
-                        }
-                    }
+                    ScriptAction {script: __beginTransformationToHidden()}
 
                     NumberAnimation { target: backgroundRect; properties: "opacity"; from: 0.0; to: 1.0; duration: 0 }
                     NumberAnimation { target: contentField; properties: "opacity"; from: 0.0; to: 1.0; duration: 0 }
@@ -225,36 +254,13 @@ Popup {
                         }
                     }
 
-                    ScriptAction {script: {
-                            // reset button and title bar
-                            buttonRow.y = statesWrapper.__buttonSaver
-                            titleBar.y = statesWrapper.__titleSaver
-                            // make sure, root isn't visible:
-                            backgroundRect = 0.0;
-                            root.opacity = 0.0;
-                            status = DialogStatus.Closed;
-                        }
-                    }
+                    ScriptAction {script: __endTransformationToHidden()}
                 }
             },
             Transition {
                 from: "hidden"; to: "visible"
                 SequentialAnimation {
-                    ScriptAction {script: {
-                            __fader().state = "visible";
-
-                            statesWrapper.__buttonSaver = buttonRow.y
-                            statesWrapper.__titleSaver = titleBar.y
-
-                            root.status = DialogStatus.Opening;
-                            // UPPERCASE-UGLY, but necessary to avoid flicker
-                            root.opacity = 1.0;
-                            backgroundRect.opacity = 1.0;
-                            titleBar.opacity = 0.0;
-                            contentField.opacity = 0.0;
-                            buttonRow.opacity = 0.0;
-                        }
-                    }
+                    ScriptAction {script: __beginTransformationToVisible()}           
 
                     // The opening transition fades in from 0% to 100% and at the same time
                     // scales in the content from 80% to 100%, anchored in the center
@@ -268,13 +274,7 @@ Popup {
                         PropertyAnimation {target: contentScale; properties: "xScale,yScale"; from: 0.8 ; to: 1.0; duration: 350; easing.type: Easing.OutCubic; }
                     }
 
-                    ScriptAction {script: {
-                            // reset button and title bar
-                            buttonRow.y = statesWrapper.__buttonSaver
-                            titleBar.y   = statesWrapper.__titleSaver
-                            root.status = DialogStatus.Open;
-                        }
-                    }
+                    ScriptAction {script: __endTransformationToVisible()}
                 }
             }
         ]

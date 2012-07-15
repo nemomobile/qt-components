@@ -77,11 +77,12 @@ void tst_datepickerdialog::year()
     QCOMPARE(componentObject->property("year").toInt(), 0);
     componentObject->setProperty("year", 2011);
     QCOMPARE(componentObject->property("year").toInt(), 2011);
+    componentObject->setProperty("minimumYear", 2011);
+    componentObject->setProperty("maximumYear", 2031);
 
     // Out of bound
     componentObject->setProperty("year", -2);
-    QEXPECT_FAIL("", "Will fix in Qt Components 1.1 release, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-764", Continue);
-    QCOMPARE(componentObject->property("month").toInt(), 0);
+    QCOMPARE(componentObject->property("year").toInt(), componentObject->property("year").toInt());
 }
 
 void tst_datepickerdialog::month()
@@ -93,10 +94,8 @@ void tst_datepickerdialog::month()
 
     // Out of bound
     componentObject->setProperty("month", -2);
-    QEXPECT_FAIL("", "Will fix in Qt Components 1.1 release, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-764", Continue);
     QCOMPARE(componentObject->property("month").toInt(), 1);
     componentObject->setProperty("month", 15);
-    QEXPECT_FAIL("", "Will fix in Qt Components 1.1 release, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-764", Continue);
     QCOMPARE(componentObject->property("month").toInt(), 12);
 }
 
@@ -109,17 +108,14 @@ void tst_datepickerdialog::day()
 
     // Out of bound
     componentObject->setProperty("day", -2);
-    QEXPECT_FAIL("", "Will fix in Qt Components 1.1 release, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-764", Continue);
     QCOMPARE(componentObject->property("day").toInt(), 1);
     componentObject->setProperty("day", 40);
-    QEXPECT_FAIL("", "Will fix in Qt Components 1.1 release, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-764", Continue);
-    QCOMPARE(componentObject->property("day").toInt(), 5);
+    QCOMPARE(componentObject->property("day").toInt(), 31);
 
     // Leap year
     componentObject->setProperty("month", 2);
     componentObject->setProperty("year", 2012);
     componentObject->setProperty("day", 31);
-    QEXPECT_FAIL("", "Will fix in Qt Components 1.1 release, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-764", Continue);
     QCOMPARE(componentObject->property("day").toInt(), 29);
 }
 
@@ -130,10 +126,12 @@ void tst_datepickerdialog::minimumYear()
     QCOMPARE(componentObject->property("minimumYear").toInt(), 1990);
 
     // Out of bound
-    componentObject->setProperty("minimumYear", 1990);
+    componentObject->setProperty("year", 2012);
+    QCOMPARE(componentObject->property("year").toInt(), 2012);
     componentObject->setProperty("year", 1980);
-    QEXPECT_FAIL("", "Will fix in Qt Components 1.1 release, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-764", Continue);
-    QCOMPARE(componentObject->property("year").toInt(), 1990);
+    componentObject->setProperty("status", 2);
+    QCOMPARE(componentObject->property("year").toInt(), componentObject->property("minimumYear").toInt());
+    componentObject->setProperty("status", 3);
 }
 
 void tst_datepickerdialog::maximumYear()
@@ -143,10 +141,11 @@ void tst_datepickerdialog::maximumYear()
     QCOMPARE(componentObject->property("maximumYear").toInt(), 2050);
 
     // Out of bound
-    componentObject->setProperty("maximumYear", 2020);
-    componentObject->setProperty("year", 2030);
-    QEXPECT_FAIL("", "Will fix in Qt Components 1.1 release, http://bugreports.qt.nokia.com/browse/QTCOMPONENTS-764", Continue);
-    QCOMPARE(componentObject->property("year").toInt(), 2020);
+    componentObject->setProperty("year", 2012);
+    QCOMPARE(componentObject->property("year").toInt(), 2012);
+    componentObject->setProperty("year", 2060);
+    componentObject->setProperty("status", 2);
+    QCOMPARE(componentObject->property("year").toInt(), componentObject->property("maximumYear").toInt());
 }
 
 void tst_datepickerdialog::acceptButtonText()

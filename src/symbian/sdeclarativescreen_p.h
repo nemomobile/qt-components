@@ -91,6 +91,7 @@ protected:
 #ifdef Q_OS_SYMBIAN
     void initDisplaySize();
     TPixelsTwipsAndRotation screenParams();
+    bool deviceSupportsOnlyLandscape();
 #elif defined(Q_WS_SIMULATOR)
     void initDisplaySize();
 #endif

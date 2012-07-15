@@ -92,8 +92,17 @@ void tst_toolbarlayout::layouting1()
     qreal wN = toolButton1_N->property("width").toReal();
 
     // check hardwired positions (depends on the margins)
-    QCOMPARE(x0, 24.0);
-    QCOMPARE(xN, 926.0);
+    QGraphicsObject* rootItem = qobject_cast<QGraphicsObject*>(componentObject.data());
+    QVERIFY(rootItem);
+    if(rootItem->property("portrait").toBool()) {
+        QCOMPARE(x0, 0.0);
+        QCOMPARE(xN, 940.0);
+    }
+    else {
+        QCOMPARE(x0, 24.0);
+        QCOMPARE(xN, 926.0);
+    }
+
 
     // check that the right and left item occupy the same space
     QCOMPARE(x0 + w0, w - xN);

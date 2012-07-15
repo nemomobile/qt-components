@@ -223,6 +223,7 @@ FocusScope {
                 }
 
                 onCursorPositionChanged: flick.ensureVisible(textInput.cursorRectangle)
+                onWidthChanged: flick.ensureVisible(textInput.cursorRectangle)
 
                 Keys.forwardTo: touchController
 
@@ -240,7 +241,13 @@ FocusScope {
                     editorScrolledX: flick.contentX - container.anchors.leftMargin - flick.tiny
                     editorScrolledY: 0
                     copyEnabled: textInput.selectionStart != textInput.selectionEnd
+                                 && textInput.echoMode === TextInput.Normal
                     cutEnabled: !textInput.readOnly && textInput.selectionStart != textInput.selectionEnd
+                                && textInput.echoMode === TextInput.Normal
+                    selectAllEnabled: textInput.selectionStart == textInput.selectionEnd
+                                      && textInput.text.length > 0
+                    selectWordEnabled: textInput.selectionStart == textInput.selectionEnd
+                                       && textInput.text.length > 0
                     platformInverted: root.platformInverted
                     Component.onCompleted: flick.movementEnded.connect(touchController.flickEnded)
                     Connections { target: screen; onCurrentOrientationChanged: touchController.updateGeometry() }

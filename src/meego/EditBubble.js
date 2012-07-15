@@ -91,8 +91,10 @@ function open(input,position)
     // need to set before checking capabilities
     popup.textInput = input;
 
-    if (popup.valid)
+    if (popup.valid) {
         popup.state = "opened";
+        popup.privateRect.outOfView = false;
+    }
     else
         popup.textInput = null;
 

@@ -116,7 +116,7 @@ Item {
 
         Item {
             width: privy.landscape ? grid.width / 2 : grid.width
-            height: privy.landscape ? grid.height : grid.height / 2
+            height: privy.landscape ? grid.height - 20 : grid.height / 2 - 20
 
             Rectangle {
                 width: indicators.implicitWidth

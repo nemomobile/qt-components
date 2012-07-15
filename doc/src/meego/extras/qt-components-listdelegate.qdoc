@@ -82,6 +82,32 @@
 */
 
 /*!
+    \qmlproperty int ListDelegate::iconSource
+
+    The source of the icon.
+*/
+
+/*!
+    \qmlproperty int ListDelegate::subtitleText
+
+    The text of the subtitle.
+*/
+
+/*!
+    \qmlproperty string ListDelegate::iconId
+
+    ID of the icon used on the right side.
+*/
+
+/*!
+    \qmlproperty bool ListDelegate::iconVisible
+
+    Property default is \c false
+
+    Toggles the visibility of the icon on the right side.
+*/
+
+/*!
     \qmlproperty color ListDelegate::subtitleColor
 
     The color of the subtitle.
@@ -97,6 +123,12 @@
     \qmlproperty int ListDelegate::subtitleWeight
 
     The font weight of the subtitle.
+*/
+
+/*!
+    \qmlproperty int ListDelegate::titleText
+
+    The text of the title.
 */
 
 /*!

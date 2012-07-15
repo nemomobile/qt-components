@@ -8,8 +8,8 @@ define SYMBIANEXTRAS_PLUGIN_DIR com\nokia\extras.1.1
 REM QT
 
 // Symbian extras plugin
-file=ABI_DIR\BUILD_DIR\symbianextrasplugin_1_1_2.dll                                           SHARED_LIB_DIR\symbianextrasplugin_1_1_2.dll PAGED
-data=ZRESOURCE\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\symbianextrasplugin_1_1_2.qtplugin          RESOURCE_FILES_DIR\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\symbianextrasplugin_1_1_2.qtplugin
+file=ABI_DIR\BUILD_DIR\symbianextrasplugin_1_1_3.dll                                           SHARED_LIB_DIR\symbianextrasplugin_1_1_3.dll PAGED
+data=ZRESOURCE\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\symbianextrasplugin_1_1_3.qtplugin          RESOURCE_FILES_DIR\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\symbianextrasplugin_1_1_3.qtplugin
 data=ZRESOURCE\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\qmldir                                      RESOURCE_FILES_DIR\qt\imports\SYMBIANEXTRAS_PLUGIN_DIR\qmldir
 
 // Symbian extras QML components

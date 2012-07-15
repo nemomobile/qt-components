@@ -81,6 +81,7 @@ void tst_Window::initTestCase()
 void tst_Window::orientationChange()
 {
     QCOMPARE(screen->property("currentOrientation").toInt(), static_cast<int>(SDeclarativeScreen::Portrait));
+    QCoreApplication::sendPostedEvents();
     QVERIFY(!window->property("inLandscape").toBool());
     QVERIFY(window->property("inPortrait").toBool());
 

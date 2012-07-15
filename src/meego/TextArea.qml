@@ -40,6 +40,7 @@
 
 import QtQuick 1.1
 import "." 1.0
+import "Utils.js" as Utils
 import "UIConstants.js" as UI
 import "EditBubble.js" as Popup
 import "TextAreaHelper.js" as TextAreaHelper
@@ -105,6 +106,7 @@ FocusScope {
             __ignoreHeightChange = true;
             root.height = Math.max (__originalHeight, implicitHeight)
             __ignoreHeightChange = false;
+
         }
     }
 
@@ -173,6 +175,7 @@ FocusScope {
         onActiveChanged: {
             if(platformWindow.active) {
                 if (__hadFocusBeforeMinimization) {
+                    textEdit.persistentSelection = textEdit.savePersistentSelection
                     __hadFocusBeforeMinimization = false;
                     if (root.parent) {
                         root.focus = true;
@@ -180,14 +183,21 @@ FocusScope {
                         textInput.focus = true;
                     }
                 }
-                if (!readOnly) {
-                    if (activeFocus) {
+                if (activeFocus) {
+                    if ( Popup.isOpened() && platformEnableEditBubble )
+                        Popup.open(textEdit, textEdit.positionToRectangle(textEdit.cursorPosition))
+                    if (textEdit.selectionStart != textEdit.selectionEnd && platformEnableEditBubble)
+                        SelectionHandles.open(textEdit);
+                    if (!readOnly) {
                         platformOpenSoftwareInputPanel();
-                        repositionTimer.running = true;
                     }
+
+                    repositionTimer.running = true;
                 }
             } else {
                 if (activeFocus) {
+                    textEdit.savePersistentSelection = textEdit.persistentSelection
+                    textEdit.persistentSelection = true
                     platformCloseSoftwareInputPanel();
                     Popup.close(textEdit);
                     SelectionHandles.close(textEdit);
@@ -226,9 +236,11 @@ FocusScope {
                               textEdit.height + (UI.FIELD_DEFAULT_HEIGHT - font.pixelSize))
 
     onActiveFocusChanged: {
-        if (activeFocus &&
-            !readOnly) {
-            platformOpenSoftwareInputPanel();
+        if (activeFocus) {
+            if (!readOnly) {
+                platformOpenSoftwareInputPanel();
+            }
+
             repositionTimer.running = true;
         } else if (!activeFocus) {
             if (!readOnly) {
@@ -355,13 +367,14 @@ FocusScope {
         // this properties are evaluated by the input method framework
         property bool westernNumericInputEnforced: false
         property bool suppressInputMethod: !activeFocusOnPress
+        // We are extra careful about compatibility with prior versions, so
+        // instead of setting persistentSelection directly we store its state so
+        // that we get its original state back once the window has focus again.
+        property bool savePersistentSelection: false
 
         onWesternNumericInputEnforcedChanged: {
             inputContext.update();
         }
-
-
-        property bool __resetStatusBar: false
 
         x: UI.PADDING_XLARGE
         y: (UI.FIELD_DEFAULT_HEIGHT - font.pixelSize) / 2
@@ -376,21 +389,6 @@ FocusScope {
         wrapMode: TextEdit.Wrap
         persistentSelection: false
         focus: true
-
-        // don't show a status bar when device is in landscape and input panel is open
-        // method is called when input panel changes visibility state or device is rotated
-        function updateStatusBar() {
-            if (inputContext.softwareInputPanelVisible
-                    && typeof showStatusBar !== "undefined"  && showStatusBar &&
-                    (screen.currentOrientation == Screen.Landscape
-                     ||  screen.currentOrientation == Screen.LandscapeInverted)) {
-                __resetStatusBar = true;
-                showStatusBar = false;
-            } else if (__resetStatusBar) {
-                __resetStatusBar = false;
-                showStatusBar = true;
-            }
-        }
 
         function updateMagnifierPosition(posX, posY) {
             var yAdjustment = 0
@@ -435,7 +433,7 @@ FocusScope {
         }
 
         Connections {
-            target: TextAreaHelper.findFlickable(root.parent)
+            target: Utils.findFlickable(root.parent)
             onContentYChanged: if (root.activeFocus) TextAreaHelper.filteredInputContextUpdate();
             onContentXChanged: if (root.activeFocus) TextAreaHelper.filteredInputContextUpdate();
             onMovementEnded: inputContext.update();
@@ -447,19 +445,11 @@ FocusScope {
             onSoftwareInputPanelVisibleChanged: {
                 if (activeFocus)
                     TextAreaHelper.repositionFlickable(contentMovingAnimation);
-                textEdit.updateStatusBar();
             }
 
             onSoftwareInputPanelRectChanged: {
                 if (activeFocus)
                     TextAreaHelper.repositionFlickable(contentMovingAnimation);
-            }
-        }
-
-        Connections {
-            target: screen
-            onCurrentOrientationChanged: {
-                textEdit.updateStatusBar();
             }
         }
 
@@ -474,7 +464,7 @@ FocusScope {
                }
            } else if (!mouseFilter.attemptToActivate ||
                 textEdit.cursorPosition == textEdit.text.length) {
-                if ( Popup.isOpened(textEdit) ) {
+                if ( Popup.isOpened(textEdit) && platformEnableEditBubble) {
                     Popup.close(textEdit);
                     Popup.open(textEdit, textEdit.positionToRectangle(textEdit.cursorPosition));
                 }

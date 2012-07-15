@@ -84,29 +84,22 @@ Item {
 
         z: 1020
 
-        onPositionOffsetChanged: {
-            if (rect.visible)
-                Private.adjustPosition(bubble);
-        }
+        onPositionOffsetChanged: if (rect.visible) Private.adjustPosition(bubble)
 
-        onWidthChanged: {
-            if (rect.visible)
-                Private.adjustPosition(bubble);
-        }
+        onWidthChanged: if (rect.visible) Private.adjustPosition(bubble)
 
-        onHeightChanged: {
-            if (rect.visible)
-                Private.adjustPosition(bubble);
-        }
+        onHeightChanged: if (rect.visible) Private.adjustPosition(bubble)
 
         onVisibleChanged: {                                                         
-            if (visible == true &&                                                  
-                buttonPaste.visible == true &&                                      
-                buttonCut.visible == false &&                                       
-                buttonCopy.visible == false) {                                      
-                autoHideoutTimer.running = true                                     
-            } else if (autoHideoutTimer.running == true) {                                                                
-                autoHideoutTimer.running = false                                    
+            if (visible == true) {
+                if (buttonPaste.visible == true &&
+                    buttonCut.visible == false &&
+                    buttonCopy.visible == false) {
+                    autoHideoutTimer.running = true
+                }
+                Private.adjustPosition(bubble)
+            } else if (autoHideoutTimer.running == true) {
+                autoHideoutTimer.running = false
             }                                                                       
         }            
 
@@ -237,30 +230,30 @@ Item {
         }
     ]
 
-    transitions: [                                                          
-        Transition {                                                        
-            from: "opened"; to: "hidden";                                         
-            reversible: false                                               
-            SequentialAnimation {                                           
-                NumberAnimation {                                           
-                    target: rect                                            
-                    properties: "opacity"                                   
-                    duration: 1000                                          
-                }                                                           
-                ScriptAction {                                              
-                    script: {                                               
-                        Private.closePopup(bubble);                         
-                    }                                                       
-                }                                                           
-            }                                                               
-        }                                                                   
-    ]  
+    transitions: [
+        Transition {
+            from: "opened"; to: "hidden";
+            reversible: false
+            SequentialAnimation {
+                NumberAnimation {
+                    target: rect
+                    properties: "opacity"
+                    duration: 1000
+                }
+                ScriptAction {
+                    script: {
+                        Private.closePopup(bubble);
+                    }
+                }
+            }
+        }
+    ]
 
     Connections {
         target: Utils.findFlickable(textInput)
         onContentYChanged: {
-            Private.adjustPosition(bubble);
-            var root = findWindowRoot();
+            if (rect.visible)
+                Private.adjustPosition(bubble);
             rect.outOfView = ( ( rect.arrowDown == false // reduce flicker due to changing bubble orientation
                   && Private.geometry().top < Utils.statusBarCoveredHeight( bubble ) )
                   || Private.geometry().bottom > screen.platformHeight - Utils.toolBarCoveredHeight ( bubble ) );
@@ -270,8 +263,8 @@ Item {
     Connections {
         target: screen
         onCurrentOrientationChanged: {
-            Private.adjustPosition(bubble);
-            var root = findWindowRoot();
+            if (rect.visible)
+                Private.adjustPosition(bubble);
             rect.outOfView = ( ( rect.arrowDown == false // reduce flicker due to changing bubble orientation
                   && Private.geometry().top < Utils.statusBarCoveredHeight( bubble ) )
                   || Private.geometry().bottom > screen.platformHeight - Utils.toolBarCoveredHeight ( bubble ) );
@@ -290,7 +283,6 @@ Item {
        ignoreUnknownSignals: true
        onOrientationChangeFinished: {
            Private.adjustPosition(bubble);
-           var root = findWindowRoot();
            rect.outOfView = ( ( rect.arrowDown == false // reduce flicker due to changing bubble orientation
                  && Private.geometry().top < Utils.statusBarCoveredHeight( bubble ) )
                  || Private.geometry().bottom > screen.platformHeight - Utils.toolBarCoveredHeight ( bubble ) );

@@ -5,7 +5,7 @@
 define NATIVE_PLUGIN_DIR Qt\labs\components\native
 
 // Symbian plugin to Native
-data=ZRESOURCE\qt\imports\NATIVE_PLUGIN_DIR\symbianplugin_1_1_2.qtplugin           RESOURCE_FILES_DIR\qt\imports\NATIVE_PLUGIN_DIR\symbianplugin_1_1_2.qtplugin
+data=ZRESOURCE\qt\imports\NATIVE_PLUGIN_DIR\symbianplugin_1_1_3.qtplugin           RESOURCE_FILES_DIR\qt\imports\NATIVE_PLUGIN_DIR\symbianplugin_1_1_3.qtplugin
 data=ZRESOURCE\qt\imports\NATIVE_PLUGIN_DIR\qmldir                                 RESOURCE_FILES_DIR\qt\imports\NATIVE_PLUGIN_DIR\qmldir
 
 // Symbian QML components to Native

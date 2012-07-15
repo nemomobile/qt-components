@@ -48,8 +48,16 @@ Page {
     anchors.margins: UiConstants.DefaultMargin
 
     tools: ToolBarLayout {
-        ToolIcon { iconId: "toolbar-back"; onClicked: pageStack.pop(); }
+      
+        ToolIcon { 
+          id: toolIcon 
+          iconId: "toolbar-back" 
+          onClicked: pageStack.pop()
+        }
+                 
         ButtonRow {
+          anchors {left: toolIcon.right; right: parent.right}
+            
             platformStyle: TabButtonStyle { }
             TabButton {
                 text: "Tab1"

@@ -55,7 +55,7 @@ Item {
     signal clicked
 
     function open() {
-        root.parent = internal.rootObject();
+        root.parent = internal.visualRoot();
         var suffix = root.interactive ? "_normal" : ""
         background.source = privateStyle.imagePath("qtg_fr_popup_infobanner" + suffix,
                                                    root.platformInverted)
@@ -87,7 +87,8 @@ Item {
 
             anchors { top: parent.top; topMargin: platformStyle.paddingLarge;
                       left: parent.left; leftMargin:  platformStyle.paddingLarge; }
-            sourceSize { width: platformStyle.graphicSizeSmall; height: platformStyle.graphicSizeSmall }
+            // set only width for souceSize, height gets calulated automatically so that aspect ratio is preserved
+            sourceSize.width: platformStyle.graphicSizeSmall
             visible: source != ""
         }
 
@@ -157,6 +158,13 @@ Item {
             return next
         }
 
+        function visualRoot() {
+            var root = rootObject()
+            if (root.hasOwnProperty("privateWindow"))
+                return root.privateWindow;
+            return root;
+        }
+
         function bannerHeight() {
             if (text.paintedHeight > privateStyle.fontHeight(text.font))
                 return textTopMargin() + text.paintedHeight + platformStyle.paddingLarge;
@@ -164,8 +172,12 @@ Item {
         }
 
         function textTopMargin() {
-            if (image.visible)
-                return platformStyle.paddingLarge + image.height / 2 - privateStyle.fontHeight(text.font) / 2;
+            if (image.visible) {
+                var margin = platformStyle.paddingLarge + image.height / 2 - privateStyle.fontHeight(text.font) / 2;
+                // round down to integer; non-integer margin makes text blurry in landscape mode,
+                // especially when OpenGL paint engine is being used
+                return Math.floor(margin);
+            }
             return platformStyle.paddingLarge;
         }
 

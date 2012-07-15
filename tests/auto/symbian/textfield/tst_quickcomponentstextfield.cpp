@@ -44,7 +44,11 @@
 #include <QDeclarativeContext>
 #include "tst_quickcomponentstest.h"
 
+#ifdef Q_OS_SYMBIAN
+static const QString EDITOR_STYLE_FONT = "Nokia Sans S60,-1,20,5,50,0,0,0,0,0";
+#else
 static const QString EDITOR_STYLE_FONT = "Nokia Sans,-1,20,5,50,0,0,0,0,0";
+#endif
 
 class tst_quickcomponentstextfield : public QObject
 {
@@ -95,7 +99,7 @@ void tst_quickcomponentstextfield::defaultPropertyValues()
     QVERIFY(textField->property("placeholderText").isValid());
     QVERIFY(textField->property("placeholderText").toString().isEmpty());
     QVERIFY(placeHolder->property("font").isValid());
-    QCOMPARE(placeHolder->property("font").toString(), EDITOR_STYLE_FONT);
+    QVERIFY(placeHolder->property("font").toString() == EDITOR_STYLE_FONT);
 
     QVERIFY(textField->property("inputMethodHints").isValid());
     QCOMPARE(textField->property("inputMethodHints").toInt(), int(Qt::ImhNone));
@@ -261,11 +265,15 @@ void tst_quickcomponentstextfield::cursorRectangle()
                                        "Could not call positionToRectangle");
 
     QVERIFY(m_view->scene()->inputMethodQuery(Qt::ImMicroFocus).isValid());
-    QEXPECT_FAIL("", "inputMethodQuery(Qt::ImMicroFocus) returns quite wide cursor rectangle for TextInput, http://bugreports.qt.nokia.com/browse/QTBUG-18343", Continue);
-    QCOMPARE(m_view->scene()->inputMethodQuery(Qt::ImMicroFocus), cursorRect);
+    // Compare x, width and height properties as y property is not set in positionToRectangle()
+    QCOMPARE(m_view->scene()->inputMethodQuery(Qt::ImMicroFocus).toRectF().x(), cursorRect.toRectF().x());
+    QCOMPARE(m_view->scene()->inputMethodQuery(Qt::ImMicroFocus).toRectF().width(), cursorRect.toRectF().width());
+    QCOMPARE(m_view->scene()->inputMethodQuery(Qt::ImMicroFocus).toRectF().height(), cursorRect.toRectF().height());
+
     QVERIFY(QApplication::focusWidget()->inputMethodQuery(Qt::ImMicroFocus).isValid());
-    QEXPECT_FAIL("", "inputMethodQuery(Qt::ImMicroFocus) returns quite wide cursor rectangle for TextInput, http://bugreports.qt.nokia.com/browse/QTBUG-18343", Continue);
-    QCOMPARE(QApplication::focusWidget()->inputMethodQuery(Qt::ImMicroFocus), cursorRect);
+    QCOMPARE(QApplication::focusWidget()->inputMethodQuery(Qt::ImMicroFocus).toRectF().x(), cursorRect.toRectF().x());
+    QCOMPARE(QApplication::focusWidget()->inputMethodQuery(Qt::ImMicroFocus).toRectF().width(), cursorRect.toRectF().width());
+    QCOMPARE(QApplication::focusWidget()->inputMethodQuery(Qt::ImMicroFocus).toRectF().height(), cursorRect.toRectF().height());
 }
 
 void tst_quickcomponentstextfield::placeholderText()

@@ -71,7 +71,7 @@ void CTouchInput::ConstructL()
     {
     CActiveScheduler::Add( this );
     User::LeaveIfError( iTouchInputState.Attach( KPSUidAknFep, KAknFepTouchInputActive ) );
-    User::LeaveIfError( iProposedHeight.Attach( KPSUidAknFep, KAknFepSoftwareInputpanelHeight ) );
+    iHeightWatcher = CHeightWatcher::NewL( *this, iObserver );
     Subscribe();
     }
 
@@ -79,7 +79,7 @@ CTouchInput::~CTouchInput()
     {
     Cancel();
     iTouchInputState.Close();
-    iProposedHeight.Close();
+    delete iHeightWatcher;
     }
 
 TBool CTouchInput::Visible() const
@@ -162,7 +162,75 @@ void CTouchInput::Subscribe()
 
 TInt CTouchInput::ProposedHeight()
     {
+    return iHeightWatcher->ProposedHeight();
+    }
+
+
+CHeightWatcher* CHeightWatcher::NewL( CTouchInput& aTouchInput, MTouchInputStateObserver& aObserver )
+    {
+    CHeightWatcher* self = new ( ELeave ) CHeightWatcher( aTouchInput, aObserver );
+    CleanupStack::PushL( self );
+    self->ConstructL();
+    CleanupStack::Pop( self );
+    return self;
+    }
+
+CHeightWatcher::CHeightWatcher( CTouchInput& aTouchInput, MTouchInputStateObserver& aObserver )
+    : CActive( EPriorityLow )
+    , iTouchInput( aTouchInput )
+    , iObserver ( aObserver )
+    , iNotifiedHeight( KErrNotReady )
+    {
+    }
+
+void CHeightWatcher::ConstructL()
+    {
+    CActiveScheduler::Add( this );
+    User::LeaveIfError( iProposedHeight.Attach( KPSUidAknFep, KAknFepSoftwareInputpanelHeight ) );
+    Subscribe();
+    }
+
+CHeightWatcher::~CHeightWatcher()
+    {
+    Cancel();
+    iProposedHeight.Close();
+    }
+
+TInt CHeightWatcher::ProposedHeight()
+    {
     TInt value = KErrNotReady;
     iProposedHeight.Get( value );
-    return value == 0 ? KErrNotReady : value;
+    value = value == 0 ? KErrNotReady : value;
+    iNotifiedHeight = value;
+    return value;
+    }
+
+void CHeightWatcher::RunL()
+    {
+    // Cannot leave so no need to implement RunError method; if error, do nothing.
+    if ( iStatus.Int() == KErrNone )
+        {
+        Subscribe();
+        TInt newHeight = KErrNotReady;
+        TInt err = iProposedHeight.Get( newHeight );
+        if ( !err && newHeight && newHeight != iNotifiedHeight && iTouchInput.Visible() )
+            {
+            iNotifiedHeight = newHeight;
+            iObserver.HeightChanged();
+            }
+        }
+    }
+
+void CHeightWatcher::DoCancel()
+    {
+    iProposedHeight.Cancel();
+    }
+
+void CHeightWatcher::Subscribe()
+    {
+    if ( !IsActive() )
+        {
+        iProposedHeight.Subscribe(iStatus);
+        SetActive();
+        }
     }

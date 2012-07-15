@@ -59,30 +59,69 @@
 #ifdef Q_OS_SYMBIAN
 const TInt KEikDynamicLayoutVariantSwitch = 0x101F8121;
 OrientationListener *OrientationListener::instance = 0;
+QCoreApplication::EventFilter OrientationListener::previousEventFilter = 0;
+int OrientationListener::userCount = 0;
 
-OrientationListener::OrientationListener(QObject *parent)
-    : QObject(parent)
+OrientationListener::OrientationListener()
 {
-    Q_ASSERT(!instance);
-    instance = this;
-    QApplication::instance()->setEventFilter(symbianEventFilter);
+    previousEventFilter = QApplication::instance()->setEventFilter(symbianEventFilter);
 }
 
 OrientationListener::~OrientationListener()
 {
+    QApplication::instance()->setEventFilter(previousEventFilter);
+    previousEventFilter = 0;
+}
+
+OrientationListener *OrientationListener::getCountedInstance()
+{
+    if(!instance)
+        instance = new OrientationListener();
+    userCount++;
+    return instance;
+}
+
+void OrientationListener::deleteCountedInstance()
+{
+    userCount--;
+    if(userCount < 1) {
+        delete instance;
+        instance = 0;
+    }
 }
 
 bool OrientationListener::symbianEventFilter(void *message, long *result)
 {
-    Q_UNUSED(result);
-    QSymbianEvent *symbianEvent = static_cast<QSymbianEvent *>(message);
+    if (instance) {
+        QSymbianEvent *symbianEvent = static_cast<QSymbianEvent *>(message);
 
-    if (symbianEvent
-     && symbianEvent->type() == QSymbianEvent::ResourceChangeEvent
-     && symbianEvent->resourceChangeType() == KEikDynamicLayoutVariantSwitch)
-        instance->emit orientationChanged();
+        if (symbianEvent) {
+            // Make the Screen sync its orientation with system orientation on two events:
+            // layout switch and app gaining foreground.
+            // The layout switch event is gained when the application rect has changed. If
+            // the application is in background, this is not necessarily in sync with the
+            // changes of "global" system orientation. For this reason, the system orientation
+            // needs to be checked also when foreground is gained.
+            if (symbianEvent->type() == QSymbianEvent::ResourceChangeEvent
+                && symbianEvent->resourceChangeType() == KEikDynamicLayoutVariantSwitch) {
+                instance->emit orientationEvent();
+            } else if (symbianEvent->type() == QSymbianEvent::WindowServerEvent) {
+                const TWsEvent *wsEvent = symbianEvent->windowServerEvent();
+                if (wsEvent && wsEvent->Type() == EEventWindowVisibilityChanged) {
+                    const TWsVisibilityChangedEvent *visEvent = wsEvent->VisibilityChanged();
+                    if (visEvent && visEvent->iFlags & TWsVisibilityChangedEvent::EFullyVisible) {
+                        instance->emit orientationEvent();
+                    }
+                }
+            }
+        }
+    }
 
-    return false;
+    bool returnValue = false;
+    // Use the previous event filter to provide us with a return value, if it exists.
+    if (previousEventFilter)
+        returnValue = previousEventFilter(message, result);
+    return returnValue;
 }
 #endif
 
@@ -95,8 +134,13 @@ SDeclarativeScreenPrivateSensor::SDeclarativeScreenPrivateSensor(SDeclarativeScr
         m_view->installEventFilter(this);
         connect(m_view, SIGNAL(statusChanged(QDeclarativeView::Status)), this, SLOT(viewStatusChanged(QDeclarativeView::Status)));
 
+        bool landscapeLock = false;
+#ifdef Q_OS_SYMBIAN
+        landscapeLock = deviceSupportsOnlyLandscape();
+#endif
+
         //In case the orientation lock was set in the cpp side
-        if (m_view->testAttribute(Qt::WA_LockLandscapeOrientation)) {
+        if (m_view->testAttribute(Qt::WA_LockLandscapeOrientation) || landscapeLock) {
 #ifdef Q_DEBUG_SCREEN
             qDebug() << "SDeclarativeScreenPrivateSensor - Locking LandscapeOrientation";
 #endif
@@ -110,14 +154,16 @@ SDeclarativeScreenPrivateSensor::SDeclarativeScreenPrivateSensor(SDeclarativeScr
     }
 
 #ifdef Q_OS_SYMBIAN
-    orientationListener.reset(new OrientationListener(qq));
-    connect(orientationListener.data(), SIGNAL(orientationChanged()), this, SLOT(orientationChanged()));
+    connect(OrientationListener::getCountedInstance(), SIGNAL(orientationEvent()), this, SLOT(syncOrientationWithSystem()));
 #endif
 
 }
 
 SDeclarativeScreenPrivateSensor::~SDeclarativeScreenPrivateSensor()
 {
+#if defined(Q_OS_SYMBIAN)
+    OrientationListener::deleteCountedInstance();
+#endif
 }
 
 void SDeclarativeScreenPrivateSensor::setAllowedOrientations(SDeclarativeScreen::Orientations orientations)
@@ -125,6 +171,12 @@ void SDeclarativeScreenPrivateSensor::setAllowedOrientations(SDeclarativeScreen:
 #ifdef Q_DEBUG_SCREEN
     qDebug() << "SDeclarativeScreenPrivateSensor::setAllowedOrientations";
 #endif
+
+#if defined(Q_OS_SYMBIAN)
+    if((orientations != SDeclarativeScreen::Landscape) && deviceSupportsOnlyLandscape())
+        return;
+#endif
+
     SDeclarativeScreenPrivate::setAllowedOrientations(orientations);
 
     if (!m_initialized)
@@ -141,10 +193,10 @@ void SDeclarativeScreenPrivateSensor::setAllowedOrientations(SDeclarativeScreen:
     } else if (portraitAllowed() && !landscapeAllowed()) {
         if (m_view)
             m_view->setAttribute(Qt::WA_LockPortraitOrientation, true);
-        privateSetOrientation(SDeclarativeScreen::Portrait);
+            privateSetOrientation(SDeclarativeScreen::Portrait);
     } else if (!portraitAllowed() && landscapeAllowed()) {
         if (m_view)
-            m_view->setAttribute(Qt::WA_LockLandscapeOrientation, true);
+            m_view->setAttribute(Qt::WA_LockLandscapeOrientation, true);    
         privateSetOrientation(SDeclarativeScreen::Landscape);
     }
 }
@@ -181,7 +233,10 @@ void SDeclarativeScreenPrivateSensor::privateSetOrientation(int orientation)
     // starts orientation change in Window.qml
     if (m_hasWindow) {
         q->emit privateAboutToChangeOrientation(rotation, m_animate);
-        if (!m_animate) m_animate = 1;
+        if(m_view)
+            m_animate = !m_view->property("sensorRotationAnimationDisabled").toBool();
+        else
+            m_animate = 1;
     }
 
     if (!m_animate || !m_hasWindow) switchGeometry();
@@ -206,7 +261,7 @@ bool SDeclarativeScreenPrivateSensor::eventFilter(QObject *obj, QEvent *event)
 }
 
 #ifdef Q_OS_SYMBIAN
-void SDeclarativeScreenPrivateSensor::orientationChanged()
+void SDeclarativeScreenPrivateSensor::syncOrientationWithSystem()
 {
     Q_Q(SDeclarativeScreen);
 
@@ -222,13 +277,15 @@ SDeclarativeScreen::Orientation SDeclarativeScreenPrivateSensor::systemOrientati
     TPixelsTwipsAndRotation params = screenParams();
 
     if (params.iRotation == CFbsBitGc::EGraphicsOrientationNormal)
-        return SDeclarativeScreen::Portrait;
+        return portraitDisplay() ? SDeclarativeScreen::Portrait : SDeclarativeScreen::Landscape;
     else if (params.iRotation == CFbsBitGc::EGraphicsOrientationRotated90)
-        return SDeclarativeScreen::Landscape;
+        return portraitDisplay() ? SDeclarativeScreen::Landscape : SDeclarativeScreen::PortraitInverted;
+    else if (params.iRotation == CFbsBitGc::EGraphicsOrientationRotated180)
+        return portraitDisplay() ? SDeclarativeScreen::PortraitInverted : SDeclarativeScreen::LandscapeInverted;
     else if (params.iRotation == CFbsBitGc::EGraphicsOrientationRotated270)
-        return SDeclarativeScreen::LandscapeInverted;
+        return portraitDisplay() ? SDeclarativeScreen::LandscapeInverted : SDeclarativeScreen::Portrait;
 
-    return SDeclarativeScreen::Portrait;
+    return portraitDisplay() ? SDeclarativeScreen::Portrait : SDeclarativeScreen::Landscape;
 }
 #endif
 

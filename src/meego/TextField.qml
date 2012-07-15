@@ -40,6 +40,7 @@
 
 import QtQuick 1.1
 import "." 1.0
+import "Utils.js" as Utils
 import "UIConstants.js" as UI
 import "EditBubble.js" as Popup
 import "TextAreaHelper.js" as TextAreaHelper
@@ -117,24 +118,30 @@ FocusScope {
             if(platformWindow.active) {
                 if (__hadFocusBeforeMinimization) {
                     __hadFocusBeforeMinimization = false
+                    textInput.select( __priorSelectionStart, __priorSelectionEnd )
                     if (root.parent)
                         root.focus = true
                     else
                         textInput.focus = true
                 }
 
-                if (!readOnly) {
-                    if (activeFocus) {
-                        if (platformCustomSoftwareInputPanel != null) {
-                            platformOpenSoftwareInputPanel();
-                        } else {
-                            inputContext.simulateSipOpen();
-                        }
-                        repositionTimer.running = true;
+                if (activeFocus) {
+                    if ( Popup.isOpened() && platformEnableEditBubble )
+                        Popup.open(textInput, textInput.positionToRectangle(textInput.cursorPosition));
+                    if (textInput.selectionStart != textInput.selectionEnd && platformEnableEditBubble)
+                        SelectionHandles.open(textInput);
+                    if (!readOnly && platformCustomSoftwareInputPanel != null) {
+                        platformOpenSoftwareInputPanel();
+                    } else {
+                        inputContext.simulateSipOpen();
                     }
+
+                    repositionTimer.running = true;
                 }
             } else {
                 if (activeFocus) {
+                    __priorSelectionStart = selectionStart
+                    __priorSelectionEnd = selectionEnd
                     platformCloseSoftwareInputPanel();
                     Popup.close(textInput);
                     SelectionHandles.close(textInput);
@@ -237,25 +244,25 @@ FocusScope {
                                         Qt.ImhUrlCharactersOnly 
 
     property bool __hadFocusBeforeMinimization: false
+    property int __priorSelectionStart
+    property int __priorSelectionEnd
 
     implicitWidth: platformStyle.defaultWidth
     implicitHeight: UI.FIELD_DEFAULT_HEIGHT
 
     onActiveFocusChanged: {
-        if (!readOnly) {
-            if (activeFocus) {
-                if (platformCustomSoftwareInputPanel != null) {
-                    platformOpenSoftwareInputPanel();
-                } else {
-                    inputContext.simulateSipOpen();
-                }
-
-                repositionTimer.running = true;
-            } else {                
-                platformCloseSoftwareInputPanel();
-                Popup.close(textInput);
-                SelectionHandles.close(textInput);
+        if (activeFocus) {
+            if (!readOnly && platformCustomSoftwareInputPanel != null) {
+                platformOpenSoftwareInputPanel();
+            } else {
+                inputContext.simulateSipOpen();
             }
+
+            repositionTimer.running = true;
+        } else {                
+            platformCloseSoftwareInputPanel();
+            Popup.close(textInput);
+            SelectionHandles.close(textInput);
         }
 
         if (!activeFocus)
@@ -382,8 +389,6 @@ FocusScope {
             inputContext.update();
         }
 
-        property bool __resetStatusBar: false
-
         anchors {verticalCenter: parent.verticalCenter; left: parent.left; right: parent.right}
         anchors.leftMargin: root.platformStyle.paddingLeft
         anchors.rightMargin: root.platformStyle.paddingRight
@@ -398,37 +403,13 @@ FocusScope {
         mouseSelectionMode: TextInput.SelectWords
         focus: true
 
-        // don't show a status bar when device is in landscape and input panel is open
-        // method is called when input panel changes visibility state or device is rotated
-        function updateStatusBar() {
-
-            // QTBUG-21864: Qt5 implements the 'typeof' operator in a way that throws
-            // ReferenceError, while it should really return "undefined".
-            var statusBarVariableDefined = false;
-            try {
-                statusBarVariableDefined = (typeof showStatusBar !== "undefined")
-            } catch(e) {
-            }
-
-            if (inputContext.softwareInputPanelVisible
-                    && statusBarVariableDefined && showStatusBar &&
-                    (screen.currentOrientation == Screen.Landscape
-                     ||  screen.currentOrientation == Screen.LandscapeInverted)) {
-                __resetStatusBar = true;
-                showStatusBar = false;
-            } else if (__resetStatusBar) {
-                __resetStatusBar = false;
-                showStatusBar = true;
-            }
-        }
-
         Component.onDestruction: {
             SelectionHandles.close(textInput);
             Popup.close(textInput);
         }
 
         Connections {
-            target: TextAreaHelper.findFlickable(root.parent)
+            target: Utils.findFlickable(root.parent)
 
             onContentYChanged: if (root.activeFocus) TextAreaHelper.filteredInputContextUpdate();
             onContentXChanged: if (root.activeFocus) TextAreaHelper.filteredInputContextUpdate();
@@ -442,17 +423,6 @@ FocusScope {
                 if (activeFocus) {
                     repositionTimer.running = true
                 }
-            }
-
-            onSoftwareInputPanelVisibleChanged: {
-                textInput.updateStatusBar();
-            }
-        }
-
-        Connections {
-            target: screen
-            onCurrentOrientationChanged: {
-                textInput.updateStatusBar();
             }
         }
 
@@ -480,7 +450,7 @@ FocusScope {
             } else if (!mouseFilter.attemptToActivate ||
                 textInput.cursorPosition == textInput.text.length) {
                 if ( Popup.isOpened(textInput) &&
-                !Popup.isChangingInput()) {
+                !Popup.isChangingInput() && platformEnableEditBubble) {
                     Popup.close(textInput);
                     Popup.open(textInput,
                         textInput.positionToRectangle(textInput.cursorPosition));
@@ -596,7 +566,7 @@ FocusScope {
                     var yAdjustment = -mapFromItem(magnifier.__rootElement, 0, 0).y < magnifier.height / 2.5 ? magnifier.height / 2.5 + mapFromItem(magnifier.__rootElement, 0,0).y : 0
                     magnifier.x = mappedPos.x;
                     magnifier.y = mappedPos.y + yAdjustment;
-                    magnifier.yCenter = mapToItem(magnifier.sourceItem,0,mappedPosMf.y).y;
+                    magnifier.yCenter = Math.round(mapToItem(magnifier.sourceItem,0,mappedPosMf.y).y);
                     parent.cursorPosition = textInput.positionAt(mouse.x)
                 }
             }

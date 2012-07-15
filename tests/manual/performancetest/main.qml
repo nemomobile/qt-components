@@ -50,6 +50,7 @@ PageStackWindow {
     objectName: "mainWindow"
 
     property Menu memoryToolsMenu
+    property bool displayMemory: false
 
     // For TDriver tests - setting component name to this property will open the corresponding
     // component page "automatically"
@@ -81,12 +82,6 @@ PageStackWindow {
 
         // Directories from where qmlfiles can be loaded
         property variant qmlPaths: []
-    }
-
-    Loader {
-        id: memoryDisplay
-        visible: false
-        source: visible ? "qrc:/MemoryDisplay.qml" : ""
     }
 
     ToolBarLayout {
@@ -137,6 +132,12 @@ PageStackWindow {
                 return internal.testFilesPath + file
             }
 
+            Loader {
+                id: memoryDisplay
+                visible: displayMemory
+                source: visible ? "qrc:/MemoryDisplay.qml" : ""
+            }
+
             Flickable {
                 id: flickable
 
@@ -145,6 +146,7 @@ PageStackWindow {
                 contentHeight: buttons.height
                 contentWidth: parent.width
                 flickableDirection: Flickable.VerticalFlick
+                clip: true
 
                 Column {
                     id: buttons
@@ -247,10 +249,17 @@ PageStackWindow {
 
                                     orientationLock: PageOrientation.Automatic
 
+                                    Loader {
+                                        id: memoryDisplay
+                                        visible: displayMemory
+                                        source: visible ? "qrc:/MemoryDisplay.qml" : ""
+                                    }
+
                                     Rectangle {
                                         anchors { left: parent.left; top: parent.top }
+                                        anchors.topMargin: memoryDisplay.visible ? memoryDisplay.height : 0
                                         width: parent.width
-                                        height: parent.height
+                                        height: parent.height - (memoryDisplay.visible ? memoryDisplay.height : 0)
                                         color: "#1000FF00"
 
                                         Loader {
@@ -277,7 +286,7 @@ PageStackWindow {
                 MenuItem { text: "Clear icon caches"; onClicked: symbian.privateClearIconCaches() }
                 MenuItem { text: "Clear component cache"; onClicked: symbian.privateClearComponentCache() }
                 MenuItem { text: "Run garbage collector"; onClicked: gc() }
-                MenuItem { text: "Toggle memory display"; onClicked: { memoryDisplay.visible = !memoryDisplay.visible } }
+                MenuItem { text: "Toggle memory display"; onClicked: { displayMemory = !displayMemory } }
             }
         }
     }

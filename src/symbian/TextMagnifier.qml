@@ -64,10 +64,11 @@ Magnifier {
     sourceRect: Qt.rect(0, 0, 0, 0)
     visible: false
     scaleFactor: 1.2
-    maskFileName: ":/graphics_1_1_2/qtg_graf_magnifier_mask.svg"
-    overlayFileName: ":/graphics_1_1_2/qtg_graf_magnifier.svg"
+    maskFileName: ":/graphics_1_1_3/qtg_graf_magnifier_mask.svg"
+    overlayFileName: ":/graphics_1_1_3/qtg_graf_magnifier.svg"
     width: internal.magnifierSize
     height: internal.magnifierSize
+    z: Infinity
 
     onContentCenterChanged: internal.updateGeometry()
 
@@ -86,14 +87,7 @@ Magnifier {
             if (!screen.privateSensorOrientationMethod())
                 return;
 
-            if (screen.currentOrientation == Screen.Portrait)
-                root.rotation = 0;
-            else if(screen.currentOrientation == Screen.Landscape)
-                root.rotation = -90;
-            else if(screen.currentOrientation == Screen.PortraitInverted)
-                root.rotation = -180;
-            else if(screen.currentOrientation == Screen.LandscapeInverted)
-                root.rotation = 90;
+            root.rotation = screen.rotation
         }
 
         property int magnifierSize: platformStyle.graphicSizeMedium * 2

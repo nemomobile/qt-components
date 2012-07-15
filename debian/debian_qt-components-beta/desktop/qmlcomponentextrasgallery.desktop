@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=0.0
+Name=QMLComponentExtrasGallery
+GenericName=QMLComponentExtrasGallery
+Comment=private QMLComponentExtrasGallery
+Exec=/usr/bin/QmlComponentExtrasGallery
+Terminal=false
+Type=Application
+

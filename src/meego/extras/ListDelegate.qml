@@ -50,15 +50,22 @@ Item {
 
     property int titleSize: UI.LIST_TILE_SIZE
     property int titleWeight: Font.Bold
-    property string titleFont: UI.FONT_FAMILY
+    property string titleFont: (locale && locale.language == "fa") ? UI.FONT_FAMILY_FARSI : UI.FONT_FAMILY
     property color titleColor: theme.inverted ? UI.LIST_TITLE_COLOR_INVERTED : UI.LIST_TITLE_COLOR
     property color titleColorPressed: theme.inverted ? UI.LIST_TITLE_COLOR_PRESSED_INVERTED : UI.LIST_TITLE_COLOR_PRESSED
 
     property int subtitleSize: UI.LIST_SUBTILE_SIZE
     property int subtitleWeight: Font.Normal
-    property string subtitleFont: UI.FONT_FAMILY_LIGHT
+    property string subtitleFont: (locale && locale.language == "fa") ? UI.FONT_FAMILY_LIGHT_FARSI : UI.FONT_FAMILY_LIGHT
     property color subtitleColor: theme.inverted ? UI.LIST_SUBTITLE_COLOR_INVERTED : UI.LIST_SUBTITLE_COLOR
     property color subtitleColorPressed: theme.inverted ? UI.LIST_SUBTITLE_COLOR_PRESSED_INVERTED : UI.LIST_SUBTITLE_COLOR_PRESSED
+
+    property string iconSource: model.iconSource ? model.iconSource : ""
+    property string titleText: model.title
+    property string subtitleText: model.subtitle ? model.subtitle : ""
+
+    property string iconId
+    property bool iconVisible: false
 
     height: UI.LIST_ITEM_HEIGHT
     width: parent.width
@@ -79,10 +86,10 @@ Item {
 
         Image {
             anchors.verticalCenter: parent.verticalCenter
-            visible: model.iconSource ? true : false
+            visible: listItem.iconSource ? true : false
             width: UI.LIST_ICON_SIZE
             height: UI.LIST_ICON_SIZE
-            source: model.iconSource ? model.iconSource : ""
+            source: listItem.iconSource ? listItem.iconSource : ""
         }
 
         Column {
@@ -90,7 +97,7 @@ Item {
 
             Label {
                 id: mainText
-                text: model.title
+                text: listItem.titleText
                 font.family: listItem.titleFont
                 font.weight: listItem.titleWeight
                 font.pixelSize: listItem.titleSize
@@ -99,7 +106,7 @@ Item {
 
             Label {
                 id: subText
-                text: model.subtitle ? model.subtitle : ""
+                text: listItem.subtitleText ? listItem.subtitleText : ""
                 font.family: listItem.subtitleFont
                 font.weight: listItem.subtitleWeight
                 font.pixelSize: listItem.subtitleSize
@@ -116,4 +123,23 @@ Item {
             listItem.clicked();
         }
     }
+
+    Image {
+        function handleIconId() {
+            var prefix = "icon-m-"
+            // check if id starts with prefix and use it as is
+            // otherwise append prefix and use the inverted version if required
+            if (iconId.indexOf(prefix) !== 0)
+                iconId =  prefix.concat(iconId).concat(theme.inverted ?  "-inverse" : "");
+            return "image://theme/" + iconId;
+        }
+
+        visible: iconVisible
+        source: iconId ? handleIconId() : ""
+        anchors {
+            right: parent.right;
+            verticalCenter: parent.verticalCenter;
+        }
+    }
+
 }

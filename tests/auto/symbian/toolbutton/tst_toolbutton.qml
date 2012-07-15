@@ -42,6 +42,8 @@ import QtQuick 1.1
 import com.nokia.symbian 1.1
 
 Item {
+    property bool portrait: screen.width < screen.height
+
     width: 800
     height: 300
 

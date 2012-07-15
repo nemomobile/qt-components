@@ -47,6 +47,15 @@ function initialize(list) {
 
 function initSectionData(list) {
     if (!list || !list.model) return;
+
+    // give an ability to provide custom initializers for C++ models
+    if (list.customSectionScrollerDataHandler) {
+        var ret = list.customSectionScrollerDataHandler();
+        sectionData = ret.sectionData;
+        _sections = ret._sections;
+        return;
+    }
+
     sectionData = [];
     _sections = [];
     var current = "",

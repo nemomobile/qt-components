@@ -47,7 +47,7 @@ Column {
     ListItem {
          id: listItem1
          Column {
-             anchors.fill: listItem1.padding
+             anchors.fill: listItem1.paddingItem
              ListItemText {
                  id: titleText
                  mode: listItem1.mode
@@ -69,7 +69,7 @@ Column {
         id: listItem2
 
         ListItemText {
-            anchors.fill: listItem2.padding
+            anchors.fill: listItem2.paddingItem
             role: "Title"
             mode: listItem2.mode
             text: "Hello world!"

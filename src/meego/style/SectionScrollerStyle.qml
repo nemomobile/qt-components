@@ -43,7 +43,7 @@ import "UIConstants.js" as UI
 Style {
 
     // Font
-    property int fontPixelSize: UI.FONT_XXSMALL
+    property int fontPixelSize: 100
     property bool fontBoldProperty: true
 
     // Color

@@ -124,7 +124,7 @@ Item {
 
     Button {
         id: bgButton
-        parent: internal.rootObject()
+        parent: internal.visualRoot()
         visible: false
         z: 500
         platformInverted: container.platformInverted
@@ -139,6 +139,13 @@ Item {
             while (next && next.parent)
                 next = next.parent
             return next
+        }
+
+        function visualRoot() {
+            var root = rootObject()
+            if (root.hasOwnProperty("privateWindow"))
+                return root.privateWindow;
+            return root;
         }
     }
 }

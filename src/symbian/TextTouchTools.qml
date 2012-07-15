@@ -77,6 +77,8 @@ Item {
         platformInverted: root.controller.platformInverted
         copyEnabled: root.controller.copyEnabled
         cutEnabled: root.controller.cutEnabled
+        selectAllEnabled: root.controller.selectAllEnabled
+        selectWordEnabled: root.controller.selectWordEnabled
     }
 
     TextMagnifier {

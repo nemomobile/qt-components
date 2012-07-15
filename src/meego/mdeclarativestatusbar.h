@@ -49,12 +49,14 @@
 #include <QtQuick/qsgtexture.h>
 #include <qscopedpointer.h>
 #endif
+#include "feedbackplayer.h"
 
 class QPixmap;
 class QDBusServiceWatcher;
 class QDBusPendingCallWatcher;
 class QGraphicsSceneMouseEvent;
 class QStyleOptionGraphicsItem;
+class FeedbackPlayer;
 
 class MDeclarativeStatusBar : public QDeclarativeItem
 {
@@ -95,7 +97,6 @@ private:
     void handleMouseReleaseEvent(const QPointF& pos);
 
     Q_DISABLE_COPY(MDeclarativeStatusBar)
-
     bool updatesEnabled;
 
     bool mousePressed;
@@ -107,9 +108,6 @@ private:
      * Displays the status indicator menu.
      */
     void showStatusIndicatorMenu();
-
-    // Perform the haptic feedback
-    void playHapticsFeedback();
 
     //! position of mouse button press(firstPos) and position of last point of mouse move(lastPos)
     QPointF firstPos, lastPos;
@@ -127,6 +125,7 @@ private:
 
     MDeclarativeScreen::Orientation mOrientation;
 
+    FeedbackPlayer *feedbackPlayer;
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     QScopedPointer<QSGTexture> sharedTexture;
     bool updateSharedTexture;

@@ -47,7 +47,7 @@ Item {
 
     // Common Public API
     property Item tab
-    property bool checked: internal.tabGroup && internal.tabGroup.currentTab == tab
+    property bool checked: !!internal.tabGroup && (internal.tabGroup.currentTab == tab)
     property bool pressed: stateGroup.state == "Pressed" && mouseArea.containsMouse
     property alias text: label.text
     property alias iconSource: imageLoader.source
@@ -64,7 +64,7 @@ Item {
         id: internal
 
         property Item tabGroup: Utils.findParent(tab, "currentTab")
-        property bool portrait: screen.currentOrientation == Screen.Portrait || screen.currentOrientation == Screen.PortraitInverted
+        property bool portrait: screen.width < screen.height
 
         function press() {
             privateStyle.play(Symbian.BasicButton)

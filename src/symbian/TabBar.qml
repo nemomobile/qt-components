@@ -48,7 +48,10 @@ Item {
     property bool platformInverted: false
 
     implicitWidth: Math.max(50, screen.width)
-    implicitHeight: screen.width < screen.height ? privateStyle.tabBarHeightPortrait : privateStyle.tabBarHeightLandscape
+    // Hide tabbar in landscape if VKB that covers over half the screen is open
+    implicitHeight: screen.width < screen.height
+                    ? privateStyle.tabBarHeightPortrait
+                    : ((inputContext.visible && (inputContext.height > (screen.height * 0.53))) ? 0 : privateStyle.tabBarHeightLandscape)
 
     BorderImage {
         anchors.fill: parent
@@ -57,6 +60,7 @@ Item {
     }
 
     TabBarLayout {
+        visible: (root.implicitHeight > 0) || (root.height > 0)
         id: tabBarLayout
         anchors.fill: parent
     }

@@ -28,12 +28,9 @@ Item {
     property alias privateRect: rect
     property bool privateIgnoreClose: false
 
-    onSelectionStartRectChanged: {
-        Private.adjustPosition(contents);
-    }
-    onSelectionEndRectChanged: {
-        Private.adjustPosition(contents);
-    }
+    onSelectionStartRectChanged: Private.adjustPosition(contents)
+
+    onSelectionEndRectChanged: Private.adjustPosition(contents)
 
     Item {
         id: rect
@@ -64,6 +61,7 @@ Item {
             magnifier.yCenter = Math.min( textInput.mapFromItem(item, 0, Math.max(posY, 0)).y, textInput.positionToRectangle( textInput.selectionEnd ).y ) + cursorHeight
             magnifier.y = Math.min( Math.max(mappedPos.y, minMappedPos), minMappedPos + textInput.height )
                           + yAdjustment
+            if ( magnifier.y < 0 ) magnifier.y += ( magnifier.height / 3 + cursorHeight - 30 );
         }
 
         Image {
@@ -74,8 +72,7 @@ Item {
               property int animationDuration: leftSelectionMouseArea.pressed ? 350 : 0
               x: selectionStartPoint.x + offset;
               y: selectionStartPoint.y + contents.selectionStartRect.height - 10 - rect.fontBaseLine; // vertical offset: 4 pixels
-              visible: y > Utils.statusBarCoveredHeight( contents )
-                    && y < screen.platformHeight - Utils.toolBarCoveredHeight ( contents );
+              visible: y > Utils.statusBarCoveredHeight( contents );
               source: platformStyle.leftSelectionHandle
               property bool pressed: leftSelectionMouseArea.pressed;
               property bool outOfView: rect.outOfView(x, y, offset);
@@ -105,7 +102,6 @@ Item {
                           pos = h - 1;  // Ensure at minimum one character between selection handles
                       }
                       textInput.select(h,pos); // Select by character
-                      rect.updateMagnifierPosition(parent,mouse.x,mouse.y)
                       privateIgnoreClose = false;
                   }
                   onReleased: {
@@ -181,8 +177,7 @@ Item {
               property int animationDuration: rightSelectionMouseArea.pressed ? 350 : 0
               x: selectionEndPoint.x + offset;
               y: selectionEndPoint.y + contents.selectionEndRect.height - 10 - rect.fontBaseLine; // vertical offset: 4 pixels
-              visible: y > Utils.statusBarCoveredHeight( contents )
-                    && y < screen.platformHeight - Utils.toolBarCoveredHeight ( contents );
+              visible: y > Utils.statusBarCoveredHeight( contents );
               source: platformStyle.rightSelectionHandle;
               property bool pressed: rightSelectionMouseArea.pressed;
               property bool outOfView: rect.outOfView(x, y, offset);
@@ -212,8 +207,7 @@ Item {
                           pos = h + 1;  // Ensure at minimum one character between selection handles
                       }
                       textInput.select(h,pos); // Select by character
-                      rect.updateMagnifierPosition(parent,mouse.x,mouse.y);
-                      privateIgnoreClose = false;            
+                      privateIgnoreClose = false;
                  }
                  onReleased: {
                       Popup.enableOffset( false );

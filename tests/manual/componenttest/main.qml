@@ -405,15 +405,16 @@ ApplicationWindow {
 
         Page {
             id: testPage
-            orientationLock: PageOrientation.Automatic
+            orientationLock: screen.allowedOrientations
 
             Flickable {
                 id: testPageGroup
 
                 anchors.fill: parent
+                anchors.topMargin: memoryDisplay.visible ? memoryDisplay.height : 0
                 contentWidth: width
-                contentHeight: 1.2 * screen.height
-                flickableDirection:Flickable.AutoFlickDirection
+                contentHeight: 1.3 * screen.height - (memoryDisplay.visible ? memoryDisplay.height : 0)
+                flickableDirection:Flickable.VerticalFlick
 
                 Loader {
                     id: loader
@@ -433,12 +434,13 @@ ApplicationWindow {
 
         Page {
             id: testPage
-            orientationLock: PageOrientation.Automatic
+            orientationLock: screen.allowedOrientations
 
             Rectangle {
                 anchors { left: parent.left; top: parent.top }
+                anchors.topMargin: memoryDisplay.visible ? memoryDisplay.height : 0
                 width: if (internal.fillEnabled) parent.width
-                height: if (internal.fillEnabled) parent.height
+                height: if (internal.fillEnabled) parent.height - (memoryDisplay.visible ? memoryDisplay.height : 0)
                 color: "transparent"
                 border.color: "steelblue"
                 border.width: internal.dragEnabled ? 2 : 0

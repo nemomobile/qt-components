@@ -47,7 +47,10 @@ class MTouchInputStateObserver
 {
 public:
     virtual void VisibleChanged() = 0;
+    virtual void HeightChanged() = 0;
 };
+
+class CHeightWatcher;
 
 class CTouchInput : public CActive
 {
@@ -69,11 +72,39 @@ private:
 
 private:
     RProperty iTouchInputState;
-    RProperty iProposedHeight;
     MTouchInputStateObserver& iObserver;
     TBool iVisible;
     TReal iPortraitHeight;
     TReal iLandscapeHeight;
+    CHeightWatcher* iHeightWatcher;
+};
+
+
+// Helper class for CTouchInput for observing input panel height changes
+class CHeightWatcher : public CActive
+{
+    // Only CTouchInput class should instantiate this class
+    friend class CTouchInput;
+
+public:
+    virtual ~CHeightWatcher();
+
+private:
+    static CHeightWatcher* NewL( CTouchInput& aTouchInput, MTouchInputStateObserver& aObserver );
+    TInt ProposedHeight();
+
+private:
+    CHeightWatcher( CTouchInput& aTouchInput, MTouchInputStateObserver& aObserver );
+    void ConstructL();
+    void RunL();
+    void DoCancel();
+    void Subscribe();
+
+private:
+    CTouchInput& iTouchInput;
+    MTouchInputStateObserver& iObserver;
+    RProperty iProposedHeight;
+    TInt iNotifiedHeight;
 };
 
 #endif // CTOUCHINPUT_H

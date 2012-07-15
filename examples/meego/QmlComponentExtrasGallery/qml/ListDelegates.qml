@@ -91,8 +91,6 @@ Page {
                 anchors.rightMargin: 50
                 width:  buttonText == "x" ? 150 : implicitWidth
             }
-
-            onClicked: { openFile(model.page); }
         }
     }
 }

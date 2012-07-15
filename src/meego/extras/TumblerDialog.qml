@@ -75,6 +75,7 @@ Dialog {
      */
     property alias rejectButtonText: rejectButton.text
 
+
     // TODO do not dismiss the dialog when empty area is clicked
     style: DialogStyle {
         titleBarHeight: 48
@@ -82,13 +83,16 @@ Dialog {
         rightMargin: screen.currentOrientation == Screen.Portrait || screen.currentOrientation == Screen.PortraitInverted ? 16 : 215
         centered: true
     }
+
+    LabelStyle{ id: labelStyle }
+
     title: Text {
         id: title
         objectName: "titleText"
         text: "Tumbler Dialog"
         visible: text.length > 0
         color: theme.selectionColor
-        font { pixelSize: 32; family: C.FONT_FAMILY_BOLD }
+        font { pixelSize: 32; family: labelStyle.fontFamily }
         elide: Text.ElideRight
     }
     content: Item {

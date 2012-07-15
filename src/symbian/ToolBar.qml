@@ -69,9 +69,15 @@ Item {
     LayoutMirroring.childrenInherit: true
 
     implicitWidth: Math.max(50, screen.width)
+    // Hide toolbar in landscape if VKB that covers over half the screen is open
     implicitHeight: (screen.width < screen.height)
-        ? privateStyle.toolBarHeightPortrait
-        : privateStyle.toolBarHeightLandscape
+                    ? privateStyle.toolBarHeightPortrait
+                    : ((inputContext.visible && (inputContext.height > (screen.height * 0.53)) && anchors.top) ? 0 : privateStyle.toolBarHeightLandscape)
+
+    onImplicitHeightChanged: {
+        if(tools)
+            tools.visible = (root.implicitHeight > 0) || (root.height > 0)
+    }
 
     BorderImage {
         id: background

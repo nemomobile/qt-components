@@ -94,7 +94,6 @@ function updateButtons() {
             if (checkedButton && params.exclusive)
                 checkedButton.checked = false;
             checkedButton = item;
-            item.checked = true;
         }
 
         if (isButton(item)) {

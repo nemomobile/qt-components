@@ -51,6 +51,7 @@
 #ifdef Q_OS_SYMBIAN
 #include <aknappui.h>
 #include <hal.h>
+#include <featmgr.h>
 #endif
 
 #ifdef Q_WS_SIMULATOR
@@ -291,7 +292,9 @@ void SDeclarativeScreenPrivate::initDisplaySize()
         m_displaySize = QSize(pixelsX, pixelsY);
     }
 #endif // __WINS__
+#ifdef S60_V54_OR_HIGHER
     iAvkonAppUi->SetExtendedOrientationCompatible(ETrue);
+#endif
 }
 
 TPixelsTwipsAndRotation SDeclarativeScreenPrivate::screenParams()
@@ -312,6 +315,14 @@ CWsScreenDevice *SDeclarativeScreenPrivate::screenDevice()
         m_screenDevice = coeEnv->ScreenDevice();
 
     return m_screenDevice;
+}
+
+bool SDeclarativeScreenPrivate::deviceSupportsOnlyLandscape() {
+    // Do not allow other orientations than landscape for VGA touch devices.
+    if (FeatureManager::FeatureSupported(FfNativeLandscapeDisplayOrientation))
+        return true;
+
+    return false;
 }
 
 #elif defined(Q_WS_SIMULATOR)

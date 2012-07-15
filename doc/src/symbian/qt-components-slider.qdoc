@@ -152,8 +152,8 @@
 /*! \qmlproperty bool Slider::inverted
 
     Inverts the progression of the slider. When \c false, the positive
-    progression is from left to right or bottom to top. Setting the property to
-    \c true will switch the progression from right to left or top to bottom.
+    progression is from left to right or top to bottom. Setting the property to
+    \c true will switch the progression from right to left or bottom to top.
 
     The default value is \c false.
 */

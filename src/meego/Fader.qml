@@ -128,6 +128,17 @@ Rectangle {
         return next;
     }
 
+   function __transformToHidden() {
+       originalParent = faderBackground.parent;
+       if (visualParent != null) {
+           faderBackground.parent = visualParent
+       } else {
+           var root = findRoot();
+           if (root != null) {
+               faderBackground.parent = root;
+           }
+       }
+   }
 
     states: [
         State {
@@ -155,18 +166,7 @@ Rectangle {
             from: "hidden"; to: "visible"
             //reparent fader whenever it is going to be visible
             SequentialAnimation {
-                ScriptAction {script: {
-                        originalParent = faderBackground.parent;
-                        if (visualParent != null) {
-                            faderBackground.parent = visualParent
-                        } else {
-                            var root = findRoot();
-                            if (root != null) {
-                                faderBackground.parent = root;
-                            }
-                        }
-                    }
-                }
+                ScriptAction {script: __transformToHidden()}
                 PropertyAnimation {properties: "alpha"; from: 0.0; to: 1.0; duration: 350; easing.type: Easing.OutCubic; }
             }
         },
@@ -175,10 +175,7 @@ Rectangle {
             SequentialAnimation {
                 PauseAnimation { duration: fadeOutDelay }
                 PropertyAnimation {properties: "alpha"; from: 1.0; to: 0.0; duration: 350; easing.type: Easing.OutCubic; }
-                ScriptAction {script: {
-                        faderBackground.parent = originalParent;
-                    }
-                }
+                ScriptAction {script: faderBackground.parent = originalParent}
             }
         }
     ]

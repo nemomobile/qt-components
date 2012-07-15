@@ -74,8 +74,9 @@ Page {
                     }
                     TextField {
                         anchors {left: parent.left; right: parent.right;}
-                        placeholderText: "Default text"
+                        placeholderText: "Default text2"
                         maximumLength: 80
+                        inputMethodHints: Qt.ImhNoPredictiveText
 
                         onAccepted: { console.log("accepted signal triggered") }
 
@@ -446,10 +447,12 @@ Page {
         ToolBarLayout {
             id: tabTools
             ToolIcon {
+                id: toolIcon 
                 iconId: "toolbar-back"
                 onClicked: tabGroup.currentTab.depth > 1 ? tabGroup.currentTab.pop() : pageStack.pop()
             }
             ButtonRow {
+                anchors {left: toolIcon.right; right: parent.right}
                 TabButton {
                     text: "Showcase"
                     tab: showcaseTab

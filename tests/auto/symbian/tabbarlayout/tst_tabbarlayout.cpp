@@ -90,6 +90,9 @@ void tst_tabbarlayout::layoutingDefault()
     // set initial size
     tabLayout1->setProperty("width", 50);
     tabLayout1->setProperty("height", 50);
+    // Tabbarlayout is updated asynchronously so process event loop.
+    QTest::qWait(250);
+    QCoreApplication::processEvents();
 
     // check button1
     QCOMPARE(button1->pos(), QPointF(0,0));

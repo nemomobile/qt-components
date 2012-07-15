@@ -52,12 +52,36 @@ Item {
 
     // Read only property true if window is in portrait
     property alias inPortrait: window.portrait
+    property string __previousOrientationString
 
     objectName: "windowRoot"
 
     signal orientationChangeAboutToStart
     signal orientationChangeStarted
     signal orientationChangeFinished
+
+    // Quick & coarse rotation consistent with MTF
+    function __beginTransformation() {
+        snapshot.take();
+        snapshot.opacity = 1.0;
+        snapshotRotation.angle = -window.rotation;
+        snapshot.smooth = false; 
+        platformWindow.animating = true;
+        root.orientationChangeAboutToStart();
+    }
+
+    function __continueTransformation() {
+        windowContent.opacity = 0.0;
+        root.orientationChangeStarted();
+    }
+
+    function __endTransformation() {
+        windowRotation.angle = 0
+        snapshot.free();
+        root.orientationChangeFinished();
+        platformWindow.animating = false;
+    }
+
 
     Rectangle {
         id: background
@@ -69,9 +93,18 @@ Item {
         id: window
         property bool portrait
 
+    	function rotationAngle( prevOrient, orient ) {
+            if ( prevOrient == orient ) return 0;
+            return ( (prevOrient == "Landscape" && orient == "LandscapeInverted" )
+                                              || (prevOrient == "LandscapeInverted" && orient == "Landscape" )
+                                              || (prevOrient == "Portrait" && orient == "PortraitInverted" )
+                                              || (prevOrient == "PortraitInverted" && orient == "Portrait" ) ) ? 180 : 90;
+        }
+
         Component.onCompleted: {
             width = screen.platformWidth;
             height = screen.platformHeight;
+            __previousOrientationString = window.state;
         }
 
         anchors.centerIn : parent
@@ -209,26 +242,11 @@ Item {
             to:   (screen.minimized || !screen.isDisplayLandscape ? "disabled" : (inputContext.softwareInputPanelVisible ? "disabled" : "*"))
             SequentialAnimation {
                 alwaysRunToEnd: true
-
-                ScriptAction {
-                    script: {
-                        snapshot.take();
-                        snapshot.opacity = 1.0;
-                        snapshotRotation.angle = -window.rotation;
-                        snapshot.smooth = false; // Quick & coarse rotation consistent with MTF
-                        platformWindow.animating = true;
-                        root.orientationChangeAboutToStart();
-                    }
-                }
+                ScriptAction { script: __beginTransformation() }
                 PropertyAction { target: window; properties: "portrait"; }
                 PropertyAction { target: window; properties: "width"; }
                 PropertyAction { target: window; properties: "height"; }
-                ScriptAction {
-                    script: {
-                        windowContent.opacity = 0.0;
-                        root.orientationChangeStarted();
-                    }
-                }
+                ScriptAction { script: __continueTransformation() }
                 ParallelAnimation {
                     NumberAnimation { target: windowContent; property: "opacity";
                                       to: 1.0; easing.type: Easing.InOutExpo; duration: 600; }
@@ -237,19 +255,12 @@ Item {
                     PropertyAction { target: windowRotation; properties: "origin.x"; }
                     PropertyAction { target: windowRotation; properties: "origin.y"; }
                     RotationAnimation { target: windowRotation; property: "angle";
-                                        from: -screen.rotationDirection * 90;
+                                        from: -screen.rotationDirection * window.rotationAngle(__previousOrientationString, window.state);
                                         to: 0;
                                         direction: RotationAnimation.Shortest;
                                         easing.type: Easing.InOutExpo; duration: 600; }
                 }
-                ScriptAction {
-                    script: {
-                        windowRotation.angle = 0
-                        snapshot.free();
-                        root.orientationChangeFinished();
-                        platformWindow.animating = false;
-                    }
-                }
+                ScriptAction { script: __endTransformation() }
             }
         }
         ]
@@ -311,4 +322,5 @@ Item {
             }
         }
     }
+    onOrientationChangeFinished: __previousOrientationString = screen.orientationString;
 }

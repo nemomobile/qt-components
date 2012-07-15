@@ -88,16 +88,12 @@ StatusBarInternal {
         reversible: true
         SequentialAnimation {
             ScriptAction {
-                script: {
-                    updatePlatformStatusBarTimer.running = true
-                }
+                script: updatePlatformStatusBarTimer.running = true
             }
             PropertyAnimation { target: statusBar; properties: "anchors.topMargin"; easing.type: Easing.InOutExpo; duration: 500 }
             PropertyAnimation { target: statusBar; properties: "visible"; }
             ScriptAction {
-                script: {
-                    updatePlatformStatusBarTimer.running = true;
-                }
+                script: updatePlatformStatusBarTimer.running = true
             }
         }
     }
