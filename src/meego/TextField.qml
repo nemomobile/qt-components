@@ -213,7 +213,7 @@ FocusScope {
             inputContext.customSoftwareInputPanelComponent = null
             inputContext.customSoftwareInputPanelTextField = null
         } else {
-            textInput.closeSoftwareInputPanel();
+            Qt.inputMethod.hide();
         }
     }
 
@@ -229,7 +229,7 @@ FocusScope {
             inputContext.customSoftwareInputPanelComponent = platformCustomSoftwareInputPanel
             inputContext.customSoftwareInputPanelVisible = true
         } else {
-            textInput.openSoftwareInputPanel();
+            Qt.inputMethod.show();
         }
     }
 

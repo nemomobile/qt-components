@@ -157,7 +157,7 @@ FocusScope {
 
     function platformCloseSoftwareInputPanel() {
         inputContext.simulateSipClose();
-        textEdit.closeSoftwareInputPanel();
+        Qt.inputMethod.hide();
     }
 
     function openSoftwareInputPanel() {
@@ -166,7 +166,7 @@ FocusScope {
 
     function platformOpenSoftwareInputPanel() {
         inputContext.simulateSipOpen();
-        textEdit.openSoftwareInputPanel();
+        Qt.inputMethod.show();
     }
 
     Connections {
