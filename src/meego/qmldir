@@ -29,6 +29,7 @@ MenuStyle 1.0 MenuStyle.qml
 MenuItemStyle 1.0 MenuItemStyle.qml
 MouseAreaDebug 1.0 MouseAreaDebug.qml
 Page 1.0 Page.qml
+PageHeader 1.2 PageHeader.qml
 PageStack 1.0 PageStack.qml
 PageStackWindow 1.0 PageStackWindow.qml
 PageStackWindowStyle 1.0 PageStackWindowStyle.qml

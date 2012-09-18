@@ -182,6 +182,7 @@ QML_FILES = \
         MouseAreaDebug.qml \
         NotificationBanner.qml \
         Page.qml \
+        PageHeader.qml \
         PageStack.qml \
         PageStack.js \
         PageStackWindow.qml \
