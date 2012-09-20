@@ -66,7 +66,7 @@ function openSheet(sheet, properties) {
             throw new Error("Error while loading sheet: " + sheetComp.errorString());
         } else {
             // instantiate sheet from component
-            sheet = sheetComp.createObject(container, properties || {});
+            sheet = sheetComp.createObject(root, properties || {});
         }
 
         // if we instantiate the sheet, we must clean it up
