@@ -68,6 +68,12 @@ function openSheet(sheet, properties) {
             // instantiate sheet from component
             sheet = sheetComp.createObject(container, properties || {});
         }
+
+        // if we instantiate the sheet, we must clean it up
+        sheet.statusChanged.connect(function() {
+            if (sheet.status == DialogStatus.Closed)
+                sheet.destroy()
+        })
     } else {
         // copy properties to the page
         for (var prop in properties) {
