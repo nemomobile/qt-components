@@ -66,6 +66,30 @@ Item {
     // The number of ongoing transitions.
     property int __ongoingTransitionCount: 0
 
+    // Opens a dialog.
+    // The dialog can be defined as a component, item or string.
+    // If an item is used then the sheet will get re-parented.
+    // If a string is used then it is interpreted as a url that is used to load
+    // a dialog component.
+    //
+    // The properties argument is optional and allows defining a map of properties to set on the dialog.
+    // Returns the dialog instance.
+    function openDialog(dialog, properties) {
+        return Engine.openSheet(dialog, properties)
+    }
+
+    // Opens a sheet.
+    // The sheet can be defined as a component, item or string.
+    // If an item is used then the sheet will get re-parented.
+    // If a string is used then it is interpreted as a url that is used to load
+    // a sheet component.
+    //
+    // The properties argument is optional and allows defining a map of properties to set on the sheet.
+    // Returns the sheet instance.
+    function openSheet(sheet, properties) {
+        return Engine.openSheet(sheet, properties)
+    }
+
     // Pushes a page on the stack.
     // The page can be defined as a component, item or string.
     // If an item is used then the page will get re-parented.
