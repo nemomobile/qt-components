@@ -560,25 +560,29 @@ MDeclarativeScreen::~MDeclarativeScreen()
 }
 
 bool MDeclarativeScreen::eventFilter(QObject *o, QEvent *e) {
+     if (e->type() != QEvent::WindowStateChange)
+        goto out;
+
     d->topLevelWidget = qobject_cast<QWidget*>(o);
-    if (!d->topLevelWidget || d->topLevelWidget->parent() != NULL) {
+    if(d->topLevelWidget && d->topLevelWidget->parent() == NULL) { //it's a toplevelwidget
+        d->setMinimized(d->topLevelWidget->windowState() & Qt::WindowMinimized);
+    } else {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
         QWindow* w = qobject_cast<QWindow*>(o);
-        if (!w)
-            qCritical() << "State change event from foreign window";
         if (!d->window) {
             d->window = w;
-            connect(w->screen(), SIGNAL(orientationChanged(Qt::ScreenOrientation)),
+            connect(w->screen(), SIGNAL(currentOrientationChanged(Qt::ScreenOrientation)),
                     this, SLOT(_q_updateOrientationAngle()));
         }
         if (d->window)
             d->setMinimized(d->window.data()->windowState() & Qt::WindowMinimized);
+        else
+            qCritical() << "State change event from foreign window";
 #else
         qCritical() << "State change event from foreign window";
 #endif
     }
 
-    d->setMinimized(d->topLevelWidget->windowState() & Qt::WindowMinimized);
     if (!d->isMinimized()) {
         //if the current sensor's value is allowed, switch to it
         if(d->physicalOrientation() & allowedOrientations())
