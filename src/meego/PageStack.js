@@ -49,6 +49,44 @@ function getDepth() {
     return pageStack.length;
 }
 
+function openSheet(sheet, properties) {
+    var sheetComp;
+    if (sheet.createObject) {
+        // sheet defined as component
+        sheetComp = sheet;
+    } else if (typeof sheet == "string") {
+        // sheet defined as string (a url)
+        sheetComp = componentCache[sheet];
+        if (!sheetComp) {
+            sheetComp = componentCache[sheet] = Qt.createComponent(sheet);
+        }
+    }
+    if (sheetComp) {
+        if (sheetComp.status == Component.Error) {
+            throw new Error("Error while loading sheet: " + sheetComp.errorString());
+        } else {
+            // instantiate sheet from component
+            sheet = sheetComp.createObject(root, properties || {});
+        }
+
+        // if we instantiate the sheet, we must clean it up
+        sheet.statusChanged.connect(function() {
+            if (sheet.status == DialogStatus.Closed)
+                sheet.destroy()
+        })
+    } else {
+        // copy properties to the page
+        for (var prop in properties) {
+            if (properties.hasOwnProperty(prop)) {
+                sheet[prop] = properties[prop];
+            }
+        }
+    }
+
+    sheet.open()
+    return sheet
+}
+
 // Pushes a page on the stack.
 function push(page, properties, replace, immediate) {
     // page order sanity check

@@ -110,7 +110,6 @@ public:
     MDeclarativeScreen::Orientation orientation;
     MDeclarativeScreen::Orientation finalOrientation;
     MDeclarativeScreen::Orientations allowedOrientations;
-    MDeclarativeScreen::Orientations allowedOrientationsBackup;
     MDeclarativeScreen::Direction rotationDirection;
 
     bool isCovered;
@@ -458,6 +457,9 @@ void MDeclarativeScreenPrivate::_q_updateOrientationAngle()
     MDeclarativeScreen::Orientation newOrientation = MDeclarativeScreen::Default;
 
 #ifdef HAVE_CONTEXTSUBSCRIBER
+    if (isMinimized())
+        return; // ignore sensor changes when minimized, we'll fix window orientation when it is restored
+
     QString edge = topEdgeValue();
     bool open = keyboardOpenProperty.value().toBool();
 
@@ -564,54 +566,33 @@ MDeclarativeScreen::~MDeclarativeScreen()
 }
 
 bool MDeclarativeScreen::eventFilter(QObject *o, QEvent *e) {
-    if(e->type() == QEvent::WindowStateChange) {
-        d->topLevelWidget = qobject_cast<QWidget*>(o);
-        bool haveWindow = false;
-        if(d->topLevelWidget && d->topLevelWidget->parent() == NULL) { //it's a toplevelwidget
-            d->setMinimized(d->topLevelWidget->windowState() & Qt::WindowMinimized);
-            haveWindow = true;
-        } else {
+    d->topLevelWidget = qobject_cast<QWidget*>(o);
+    if (!d->topLevelWidget || d->topLevelWidget->parent() != NULL) {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-            QWindow* w = qobject_cast<QWindow*>(o);
-            if (!d->window) {
-                d->window = w;
-                connect(w->screen(), SIGNAL(orientationChanged(Qt::ScreenOrientation)),
-                        this, SLOT(_q_updateOrientationAngle()));
-            }
-            if (d->window) {
-                d->setMinimized(d->window.data()->windowState() & Qt::WindowMinimized);
-                haveWindow = true;
-            }
-#else
+        QWindow* w = qobject_cast<QWindow*>(o);
+        if (!w)
             qCritical() << "State change event from foreign window";
+        if (!d->window) {
+            d->window = w;
+            connect(w->screen(), SIGNAL(orientationChanged(Qt::ScreenOrientation)),
+                    this, SLOT(_q_updateOrientationAngle()));
+        }
+        if (d->window) {
+            d->setMinimized(d->window.data()->windowState() & Qt::WindowMinimized);
+            haveWindow = true;
+        }
+#else
+        qCritical() << "State change event from foreign window";
 #endif
-        }
-
-        if (haveWindow) {
-            if(d->isMinimized()) {
-                d->allowedOrientationsBackup = d->allowedOrientations;
-
-                //set allowedOrientations manually, because setAllowedOrientations() will not work while minimized
-                //minimized apps are forced to portrait or landscape based on maximized state
-                if (!d->allowedOrientationsBackup || (d->allowedOrientationsBackup & Portrait) || 
-                   (d->allowedOrientationsBackup & PortraitInverted)) {
-                    d->allowedOrientations = Portrait;
-                    setOrientation(Portrait);
-                } else {
-                    d->allowedOrientations = Landscape;
-                    setOrientation(Landscape);
-                }
-            } else {
-                if(d->allowedOrientationsBackup != Default) {
-                    setAllowedOrientations(d->allowedOrientationsBackup);
-                    //if the current sensor's value is allowed, switch to it
-
-                    if(d->physicalOrientation() & allowedOrientations())
-                        setOrientation(d->physicalOrientation());
-                }
-            }
-        }
     }
+
+    d->setMinimized(d->topLevelWidget->windowState() & Qt::WindowMinimized);
+    if (!d->isMinimized()) {
+        //if the current sensor's value is allowed, switch to it
+        if(d->physicalOrientation() & allowedOrientations())
+            setOrientation(d->physicalOrientation());
+    }
+out:
     return QObject::eventFilter(o, e);
 }
 
@@ -672,8 +653,7 @@ MDeclarativeScreen::Orientation MDeclarativeScreen::currentOrientation() const
 }
 
 void MDeclarativeScreen::setAllowedOrientations(Orientations orientation) {
-    if (d->allowedOrientations == orientation
-        || d->isMinimized()) //fixed portrait when minimized, no change possible!
+    if (d->allowedOrientations == orientation)
         return;
 
     d->allowedOrientations = orientation;

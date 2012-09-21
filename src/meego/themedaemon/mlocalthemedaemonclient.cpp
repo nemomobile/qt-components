@@ -44,46 +44,55 @@
 #include <QDebug>
 #include <QDir>
 
-MLocalThemeDaemonClient::MLocalThemeDaemonClient(const QString &path, QObject *parent) :
+MLocalThemeDaemonClient::MLocalThemeDaemonClient(QObject *parent) :
     MAbstractThemeDaemonClient(parent),
-    m_path(path),
     m_pixmapCache(),
     m_imageDirNodes()
-{
-    if (m_path.isEmpty()) {
-        m_path = qgetenv("M_THEME_DIR");
-        if (m_path.isEmpty()) {
-            //qWarning() << "No theme path is provided for MLocalThemeDaemonClient";
-
-#if defined(THEME_DIR)
-            m_path = THEME_DIR;
-#else
-            #ifdef Q_OS_WIN
-            m_path = "c:\\";
-            #else
-            m_path = "/usr/share/themes";
-            #endif
+#ifdef HAVE_MLITE
+    , themeItem("/meegotouch/theme/name")
 #endif
-        }
+{
+    QStringList themeRoots;
+    QString themeRoot;
 
-        m_path += QDir::separator()
-                + QLatin1String("blanco") + QDir::separator()
-                + QLatin1String("meegotouch");
+    themeRoot = qgetenv("M_THEME_DIR");
+    if (themeRoot.isEmpty()) {
+#if defined(THEME_DIR)
+        themeRoot = THEME_DIR;
+#else
+# ifdef Q_OS_WIN
+        themeRoot = "c:\\";
+# else
+        themeRoot = "/usr/share/themes";
+# endif
+#endif
     }
 
-    if (m_path.endsWith(QDir::separator())) {
-        m_path.truncate(m_path.length() - 1);
+    // we must always fallback to blanco for assets we don't provide in the custom theme
+    themeRoots += themeRoot + QDir::separator() + QLatin1String("blanco") + QDir::separator() + QLatin1String("meegotouch");
+
+#ifdef HAVE_MLITE
+    // custom theme will be searched after blanco, meaning it will override assets from there
+    qDebug() << Q_FUNC_INFO << "Theme: " << themeItem.value("blanco").toString();
+    themeRoots += themeRoot + QDir::separator() + themeItem.value("blanco").toString() + QDir::separator() + QLatin1String("meegotouch");
+#else
+    qDebug() << Q_FUNC_INFO << "Theme: blanco (hardcoded)";
+#endif
+
+    for (int i = 0; i < themeRoots.size(); ++i) {
+        if (themeRoots.at(i).endsWith(QDir::separator()))
+            themeRoots[i].truncate(themeRoots.at(i).length() - 1);
+
+        buildHash(themeRoots.at(i) + QDir::separator() + "icons", QStringList() << "*.svg" << "*.png" << "*.jpg");
+        buildHash(themeRoots.at(i) + QDir::separator() + "images" + QDir::separator() + "theme", QStringList() << "*.png" << "*.jpg");
+        buildHash(themeRoots.at(i) + QDir::separator() + "images" + QDir::separator() + "backgrounds", QStringList() << "*.png" << "*.jpg");
     }
 
     m_imageDirNodes.append(ImageDirNode("icons" , QStringList() << ".svg" << ".png" << ".jpg"));
     m_imageDirNodes.append(ImageDirNode(QLatin1String("images") + QDir::separator() + QLatin1String("theme"), QStringList() << ".png" << ".jpg"));
     m_imageDirNodes.append(ImageDirNode(QLatin1String("images") + QDir::separator() + QLatin1String("backgrounds"), QStringList() << ".png" << ".jpg"));
 
-    buildHash(m_path + QDir::separator() + "icons", QStringList() << "*.svg" << "*.png" << "*.jpg");
-    buildHash(m_path + QDir::separator() + "images" + QDir::separator() + "theme", QStringList() << "*.png" << "*.jpg");
-    buildHash(m_path + QDir::separator() + "images" + QDir::separator() + "backgrounds", QStringList() << "*.png" << "*.jpg");
-
-    qDebug() << "LocalThemeDaemonClient: Looking for assets in" << m_path;
+    qDebug() << "LocalThemeDaemonClient: Looking for assets in" << themeRoots;
 }
 
 MLocalThemeDaemonClient::~MLocalThemeDaemonClient()
@@ -140,34 +149,19 @@ QImage MLocalThemeDaemonClient::readImage(const QString &id) const
     return QImage();
 }
 
-QString MLocalThemeDaemonClient::findFileRecursively(const QDir& rootDir, const QString& name)
-{
-    QStringList files = rootDir.entryList(QStringList(name));
-    if(files.length() > 0)
-        return rootDir.filePath(files[0]);
-
-    QStringList dirList = rootDir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
-    foreach(const QString nextDirString, dirList){
-        QDir nextDir(rootDir.absolutePath() + QDir::separator() + nextDirString);
-        QString nextFile = findFileRecursively(nextDir, name);
-        if(!nextFile.isNull())
-            return nextFile;
-    }
-
-    return QString();
-}
-
 void MLocalThemeDaemonClient::buildHash(const QDir& rootDir, const QStringList& nameFilter)
 {
+    // XXX: this code is wildly inefficient, we should be able to do it
+    // with a single loop over files & dirs
     QDir rDir = rootDir;
     rDir.setNameFilters(nameFilter);
     QStringList files = rDir.entryList(QDir::Files);
-    foreach (const QString filename, files) {
+    foreach (const QString &filename, files) {
         m_filenameHash.insert(filename, rootDir.absolutePath());
     }
 
     QStringList dirList = rootDir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
-    foreach(const QString nextDirString, dirList){
+    foreach(const QString &nextDirString, dirList){
         QDir nextDir(rootDir.absolutePath() + QDir::separator() + nextDirString);
         buildHash(nextDir, nameFilter);
     }

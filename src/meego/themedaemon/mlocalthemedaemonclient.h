@@ -47,6 +47,10 @@
 #include <QPixmap>
 #include <QString>
 
+#ifdef HAVE_MLITE
+#include <mgconfitem.h>
+#endif
+
 class QDir;
 /**
  * \brief Allows to request pixmaps from a local themedaemon server.
@@ -65,7 +69,7 @@ public:
      *               by the define THEME_DIR is used.
      * \param parent Parent object.
      */
-    MLocalThemeDaemonClient(const QString &path = QString(), QObject *parent = 0);
+    MLocalThemeDaemonClient(QObject *parent = 0);
     virtual ~MLocalThemeDaemonClient();
 
     /**
@@ -79,8 +83,6 @@ private:
      * by m_imageDirNodes.
      */
     QImage readImage(const QString &id) const;
-
-    static QString findFileRecursively(const QDir& rootDir, const QString& name);
 
     void buildHash(const QDir& rootDir, const QStringList& nameFilter);
 
@@ -104,11 +106,14 @@ private:
         QStringList suffixList;
     };
 
-    QString m_path;
     QHash<PixmapIdentifier, QPixmap> m_pixmapCache;
     QList<ImageDirNode> m_imageDirNodes;
 
     QHash<QString, QString> m_filenameHash;
+
+#ifdef HAVE_MLITE
+    MGConfItem themeItem;
+#endif
 
     friend uint qHash(const MLocalThemeDaemonClient::PixmapIdentifier &id);
     friend class tst_MLocalThemeDaemonClient; // Unit tests

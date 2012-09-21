@@ -59,6 +59,9 @@ Item {
     property alias acceptButton: acceptButton
     property alias rejectButton: rejectButton
 
+    property alias acceptButtonEnabled: acceptButton.enabled
+    property alias rejectButtonEnabled: rejectButton.enabled
+
     signal accepted
     signal rejected
 

@@ -165,7 +165,12 @@ public:
 
     // without localization support, an error message is thrown whenever Qml tries to access a method from MLocale
     // this is what we want
-#ifdef HAVE_MEEGOTOUCH
+    //
+    // except for language, which will break compile without meegotouch, because
+    // someone used it outside QML...
+#ifndef HAVE_MEEGOTOUCH
+    QString language() const { return QString(); }
+#else // HAVE_MEEGOTOUCH
 
 
     Q_INVOKABLE void setLocale(QString localeName)
