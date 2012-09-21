@@ -46,7 +46,7 @@
 #include <qglobal.h>
 
 MDeclarativeImageProvider::MDeclarativeImageProvider() :
-    QDeclarativeImageProvider(QDeclarativeImageProvider::Pixmap),
+    QQuickImageProvider(QQuickImageProvider::Pixmap),
     m_themeDaemonClient(0)
 {
     bool useRemoteThemeDaemon = qgetenv("M_FORCE_LOCAL_THEME").isEmpty();
