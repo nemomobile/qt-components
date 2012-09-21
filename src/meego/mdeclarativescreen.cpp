@@ -118,8 +118,6 @@ public:
 
     QPointer<QWidget> topLevelWidget;
 
-    QCoreApplication::EventFilter oldEventFilter;
-
     QSize displaySize;
     QSize screenSize;
 
@@ -135,7 +133,7 @@ public:
 #ifdef Q_WS_X11
     WId windowId;
 #elif QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-    QWeakPointer<QWindow> window;
+    QPointer<QWindow> window;
 #endif
 
 #ifdef HAVE_CONTEXTSUBSCRIBER
@@ -183,6 +181,7 @@ static void writeX11OrientationAngleProperty(WId id, int angle)
 
 bool x11EventFilter(void *message, long *result)
 {
+#warning "orientation angle property broken on Qt 5"
 #ifdef Q_WS_X11
     XEvent *event = (XEvent *)message;
 
@@ -195,10 +194,7 @@ bool x11EventFilter(void *message, long *result)
     }
 #endif
 
-    if (gScreenPrivate->oldEventFilter) {
-        return gScreenPrivate->oldEventFilter(message, result);
-    } else
-        return false;
+    return false;
 }
 
 MDeclarativeScreenPrivate::MDeclarativeScreenPrivate(MDeclarativeScreen *qq)
@@ -216,7 +212,6 @@ MDeclarativeScreenPrivate::MDeclarativeScreenPrivate(MDeclarativeScreen *qq)
     , keyboardOpen(false)
     , isTvConnected(false)
     , topLevelWidget(0)
-    , oldEventFilter(0)
     , allowSwipe(true)
 #ifdef Q_WS_X11
     , windowId(0)
@@ -238,7 +233,6 @@ MDeclarativeScreenPrivate::MDeclarativeScreenPrivate(MDeclarativeScreen *qq)
     // TODO: Could use QDesktopWidget, but what about on host PC?
     displaySize = QSize(480, 854);
 #endif
-    oldEventFilter = QCoreApplication::instance()->setEventFilter(x11EventFilter);
     //Q_ASSERT(gScreenPrivate == 0);
     gScreenPrivate = this;
 
@@ -577,10 +571,8 @@ bool MDeclarativeScreen::eventFilter(QObject *o, QEvent *e) {
             connect(w->screen(), SIGNAL(orientationChanged(Qt::ScreenOrientation)),
                     this, SLOT(_q_updateOrientationAngle()));
         }
-        if (d->window) {
+        if (d->window)
             d->setMinimized(d->window.data()->windowState() & Qt::WindowMinimized);
-            haveWindow = true;
-        }
 #else
         qCritical() << "State change event from foreign window";
 #endif

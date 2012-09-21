@@ -109,7 +109,6 @@ static int xDamageErrorBase = 0;
 #endif
 
 static bool filterRegistered = false;
-QCoreApplication::EventFilter oldEventFilter = 0;
 #ifdef HAVE_XDAMAGE
 static QHash<Damage, MDeclarativeStatusBar *> damageMap;
 #endif
@@ -154,10 +153,7 @@ static bool x11EventFilter(void *message, long *result)
     Q_UNUSED(message);
 #endif
 
-    if (oldEventFilter) {
-        return oldEventFilter(message, result);
-    } else
-        return false;
+    return false;
 }
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) && defined(HAVE_XLIB) && !defined(QT_OPENGL_ES_2)
@@ -601,6 +597,7 @@ void MDeclarativeStatusBar::handleMouseReleaseEvent(const QPointF& pos)
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 void MDeclarativeStatusBar::itemChange(ItemChange change, const ItemChangeData& changeData)
 {
+#if 0
     if (change == ItemSceneChange) {
         if (!filterRegistered) {
             QPlatformNativeInterface* iface = QGuiApplication::platformNativeInterface();
@@ -613,6 +610,8 @@ void MDeclarativeStatusBar::itemChange(ItemChange change, const ItemChangeData& 
             filterRegistered = true;
         }
     }
+#warning "status bar updates broken in Qt 5 port"
+#endif
     QQuickItem::itemChange(change, changeData);
 }
 #endif
