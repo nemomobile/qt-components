@@ -105,30 +105,34 @@ Item {
         State {
             name: "hidden"
             when: privateVisibility == ToolBarVisibility.Hidden || tools == null
-            PropertyChanges { target: root; height: 0; }
+            PropertyChanges { target: root; height: 0; visible: false; }
         },
         State {
             name: "HiddenImmediately"
             when: privateVisibility == ToolBarVisibility.HiddenImmediately
-            PropertyChanges { target: root; height: 0; }
+            PropertyChanges { target: root; height: 0; visible: false; }
         },
         State {
             name: ""
             when: !(privateVisibility == ToolBarVisibility.Visible || tools == null)
-            PropertyChanges { target: root; height: bgImage.height }
+            PropertyChanges { target: root; height: bgImage.height; visible: true; }
         }
-
     ]
 
-    transitions: [
-        // Transition between active and inactive states.
-        Transition {
-            from: ""; to: "hidden"; reversible: true
-            ParallelAnimation {
-                PropertyAnimation { properties: "height"; easing.type: Easing.InOutExpo; duration: platformStyle.visibilityTransitionDuration }
+    // Transition between active and inactive states.
+    transitions: Transition {
+        from: ""; to: "hidden"; reversible: true;
+        SequentialAnimation {
+            PropertyAnimation {
+                properties: "height";
+                easing.type: Easing.InOutExpo;
+                duration: platformStyle.visibilityTransitionDuration;
+            }
+            PropertyAction {
+                properties: "visible";
             }
         }
-    ]
+    }
 
     // The current set of tools.
     property Item tools: null
@@ -236,21 +240,25 @@ Item {
                 // Start state for pop entry, end state for push exit.
                 State {
                     name: "left"
+                    PropertyChanges { target: container; visible: true }
                     PropertyChanges { target: container; x: -30; opacity: 0.0 }
                 },
                 // Start state for push entry, end state for pop exit.
                 State {
                     name: "right"
+                    PropertyChanges { target: container; visible: true }
                     PropertyChanges { target: container; x: 30; opacity: 0.0 }
                 },
                 // Start state for replace entry.
                 State {
                     name: "front"
+                    PropertyChanges { target: container; visible: true }
                     PropertyChanges { target: container; scale: 1.25; opacity: 0.0 }
                 },
                 // End state for replace exit.
                 State {
                     name: "back"
+                    PropertyChanges { target: container; visible: true }
                     PropertyChanges { target: container; scale: 0.85; opacity: 0.0 }
                 },
                 // Inactive state.
