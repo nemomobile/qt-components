@@ -304,7 +304,8 @@ QSGNode* MDeclarativeStatusBar::updatePaintNode(QSGNode* oldNode, UpdatePaintNod
         static PFNGLEGLIMAGETARGETTEXTURE2DOESPROC glEGLImageTargetTexture2DOES = (PFNGLEGLIMAGETARGETTEXTURE2DOESPROC)eglGetProcAddress("glEGLImageTargetTexture2DOES");
         static PFNEGLCREATEIMAGEKHRPROC eglCreateImageKHR = (PFNEGLCREATEIMAGEKHRPROC) eglGetProcAddress("eglCreateImageKHR");
         static PFNEGLDESTROYIMAGEKHRPROC eglDestroyImageKHR = (PFNEGLDESTROYIMAGEKHRPROC) eglGetProcAddress("eglDestroyImageKHR");
-        static PFNEGLQUERYIMAGENOKPROC eglQueryImageNOK = (PFNEGLQUERYIMAGENOKPROC) eglGetProcAddress("eglQueryImageNOK");
+        typedef EGLBoolean (EGLAPIENTRY *eglQueryImageNOKFunc)(EGLDisplay, EGLImageKHR, EGLint, EGLint*);
+        static eglQueryImageNOKFunc eglQueryImageNOK = (eglQueryImageNOKFunc)eglGetProcAddress("eglQueryImageNOK");
 
         const EGLint attribs[] = { EGL_IMAGE_PRESERVED_KHR, EGL_TRUE, EGL_NONE };
 
