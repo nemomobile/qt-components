@@ -640,7 +640,7 @@ FocusScope {
     InverseMouseArea {
         anchors.fill: parent
         anchors.margins: UI.TOUCH_EXPANSION_MARGIN
-        enabled: root.activeFocus
+        enabled: textEdit.activeFocus
 
         onClickedOutside: {
             if (Popup.isOpened(textEdit) && ((mouseX > Popup.geometry().left && mouseX < Popup.geometry().right) &&
