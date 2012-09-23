@@ -104,7 +104,15 @@ Popup {
         titleBar.y = statesWrapper.__titleSaver
         backgroundRect = 0.0;
         root.opacity = 0.0;
-        status = DialogStatus.Closed;
+        // DialogStatus.Closed is set when Fader has finished its job
+    }
+
+    Connections {
+        target: __fader()
+        onAlphaChanged: {
+            if (status == DialogStatus.Closing && __fader().alpha == 0.0)
+                status = DialogStatus.Closed
+        }
     }
 
     function __beginTransformationToVisible() {
