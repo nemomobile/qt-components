@@ -64,21 +64,20 @@ CommonDialog {
                 anchors.left: parent.left
                 anchors.right: parent.right
 
-    // Legacy. "name" used to be the role which was used by delegate
-    // "modelData" available for JS array and for models with one role
-    // C++ models have "display" role available always
-   function __setItemText() {
-       try {
-           itemText.text = name
-       } catch(err) {
-           try {
-               itemText.text = modelData
-           } catch (err) {
-               itemText.text = display
-           }
-       }
-   }
-
+                // Legacy. "name" used to be the role which was used by delegate
+                // "modelData" available for JS array and for models with one role
+                // C++ models have "display" role available always
+                function __setItemText() {
+                    try {
+                        itemText.text = name
+                    } catch(err) {
+                        try {
+                            itemText.text = modelData
+                        } catch (err) {
+                            itemText.text = display
+                        }
+                    }
+                }
 
                 MouseArea {
                     id: delegateMouseArea
