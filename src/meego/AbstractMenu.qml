@@ -190,6 +190,7 @@ Popup {
                 /* Landscape */ parent.height - platformStyle.topMargin - platformStyle.bottomMargin - __statusBarDelta
         anchors.bottom: parent.bottom
         anchors.right: parent.right
+        visible: opacity != 0.0
 
         state: __statesWrapper.state
 
