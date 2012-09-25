@@ -54,11 +54,11 @@ defineReplace(bumpQmlVersion) {
     replacement = $${LITERAL_DOLLAR}$${LITERAL_DOLLAR}{1}$${version}$${LITERAL_DOLLAR}$${LITERAL_DOLLAR}{2}
 
     # QML files
-    pattern = (^import\\s.*)1\\.[0|1](.*)$${LITERAL_DOLLAR}$${LITERAL_DOLLAR}
+    pattern = (^import\\s.*)1\\.[0|1|2](.*)$${LITERAL_DOLLAR}$${LITERAL_DOLLAR}
     command = $$replaceRecursivly($$root, *.qml, s/$${pattern}/$${replacement}/g)
 
     # qmldir
-    pattern = (\\s+)1\\.[0|1](\\s+)
+    pattern = (\\s+)1\\.[0|1|2](\\s+)
     command += && $$replaceRecursivly($$root, qmldir, s/$${pattern}/$${replacement}/g)
 
     return($$command)
