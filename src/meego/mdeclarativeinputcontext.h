@@ -41,7 +41,7 @@
 #ifndef MDECLARATIVEINPUTCONTEXT_H
 #define MDECLARATIVEINPUTCONTEXT_H
 
-#include <QDeclarativeItem>
+#include <QQuickItem>
 #include <QEvent>
 
 #include "mdeclarativescreen.h"
@@ -53,15 +53,15 @@ class MDeclarativeInputContext : public QObject
     Q_OBJECT
 
 public:
-    MDeclarativeInputContext(QDeclarativeItem *parent = 0);
+    MDeclarativeInputContext(QQuickItem *parent = 0);
     virtual ~MDeclarativeInputContext();
 
     Q_PROPERTY(bool softwareInputPanelVisible READ softwareInputPanelVisible NOTIFY softwareInputPanelVisibleChanged FINAL)
     Q_PROPERTY(QRect softwareInputPanelRect READ softwareInputPanelRect NOTIFY softwareInputPanelRectChanged FINAL)
     Q_PROPERTY(QRectF microFocus READ microFocus NOTIFY microFocusChanged) //TODO: will be removed on w13 - remove "NOTIFY microFocusChanged"
     Q_PROPERTY(QVariant softwareInputPanelEvent READ softwareInputPanelEvent WRITE setSoftwareInputPanelEvent NOTIFY softwareInputPanelEventChanged)
-    Q_PROPERTY(QDeclarativeComponent* customSoftwareInputPanelComponent READ customSoftwareInputPanelComponent WRITE setCustomSoftwareInputPanelComponent NOTIFY customSoftwareInputPanelComponentChanged)
-    Q_PROPERTY(QDeclarativeItem* customSoftwareInputPanelTextField WRITE setCustomSoftwareInputPanelTextField NOTIFY customSoftwareInputPanelTextFieldChanged)
+    Q_PROPERTY(QQmlComponent* customSoftwareInputPanelComponent READ customSoftwareInputPanelComponent WRITE setCustomSoftwareInputPanelComponent NOTIFY customSoftwareInputPanelComponentChanged)
+    Q_PROPERTY(QQuickItem* customSoftwareInputPanelTextField WRITE setCustomSoftwareInputPanelTextField NOTIFY customSoftwareInputPanelTextFieldChanged)
     Q_PROPERTY(bool customSoftwareInputPanelVisible READ customSoftwareInputPanelVisible WRITE setCustomSoftwareInputPanelVisible NOTIFY customSoftwareInputPanelVisibleChanged)
     QRectF microFocus() const;
 
@@ -71,7 +71,7 @@ public:
     Q_INVOKABLE void update();
     Q_INVOKABLE bool setPreeditText(const QString &newPreedit, int eventCursorPosition, int replacementStart, int replacementLength);
 
-    Q_INVOKABLE QDeclarativeItem * targetInputFor(QDeclarativeComponent *customSoftwareInputPanelComponent);
+    Q_INVOKABLE QQuickItem * targetInputFor(QQmlComponent *customSoftwareInputPanelComponent);
     Q_INVOKABLE void simulateSipOpen();
     Q_INVOKABLE void simulateSipClose();
 
@@ -83,20 +83,16 @@ public:
     QVariant softwareInputPanelEvent() const;
     void setSoftwareInputPanelEvent(const QVariant& event);
 
-    QDeclarativeComponent *customSoftwareInputPanelComponent() const;
-    void setCustomSoftwareInputPanelComponent(QDeclarativeComponent * component);
+    QQmlComponent *customSoftwareInputPanelComponent() const;
+    void setCustomSoftwareInputPanelComponent(QQmlComponent *component);
 
     static void setKeyboardOrientation(MDeclarativeScreen::Orientation orientation);
 
     bool customSoftwareInputPanelVisible() const;
     void setCustomSoftwareInputPanelVisible(bool visible);
 
-    QDeclarativeItem * customSoftwareInputPanelTextField() const;
-#if QT_VERSION >= 0x050000
-    void setCustomSoftwareInputPanelTextField(QQuickItem * item);
-#else
-    void setCustomSoftwareInputPanelTextField(QDeclarativeItem * item);
-#endif
+    QQuickItem *customSoftwareInputPanelTextField() const;
+    void setCustomSoftwareInputPanelTextField(QQuickItem *item);
 
 Q_SIGNALS:
     void softwareInputPanelVisibleChanged();

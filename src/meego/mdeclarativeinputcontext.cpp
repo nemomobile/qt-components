@@ -85,8 +85,8 @@ public:
 
     QRectF microFocus;
     QVariant sipEvent;
-    QDeclarativeComponent *sipVkbComponent;
-    QDeclarativeItem *sipVkbTextField;
+    QQmlComponent *sipVkbComponent;
+    QQuickItem *sipVkbTextField;
 };
 
 MDeclarativeInputContextPrivate::MDeclarativeInputContextPrivate(MDeclarativeInputContext *qq)
@@ -160,7 +160,7 @@ void MDeclarativeInputContext::updateMicroFocus()
 #endif
 }
 
-MDeclarativeInputContext::MDeclarativeInputContext(QDeclarativeItem *parent)
+MDeclarativeInputContext::MDeclarativeInputContext(QQuickItem *parent)
     : QObject(parent),
       d(new MDeclarativeInputContextPrivate(this))
 {
@@ -249,12 +249,12 @@ void MDeclarativeInputContext::setSoftwareInputPanelEvent(const QVariant& event)
     emit softwareInputPanelEventChanged();
 }
 
-QDeclarativeComponent *MDeclarativeInputContext::customSoftwareInputPanelComponent() const
+QQmlComponent *MDeclarativeInputContext::customSoftwareInputPanelComponent() const
 {
     return d->sipVkbComponent;
 }
 
-void MDeclarativeInputContext::setCustomSoftwareInputPanelComponent(QDeclarativeComponent * component)
+void MDeclarativeInputContext::setCustomSoftwareInputPanelComponent(QQmlComponent * component)
 {
     if(d->sipVkbComponent != component) {
         d->sipVkbComponent = component;
@@ -275,20 +275,20 @@ void MDeclarativeInputContext::setCustomSoftwareInputPanelVisible(bool visible)
     }
 }
 
-QDeclarativeItem * MDeclarativeInputContext::customSoftwareInputPanelTextField() const
+QQuickItem *MDeclarativeInputContext::customSoftwareInputPanelTextField() const
 {
     return d->sipVkbTextField;
 }
 
 #if QT_VERSION >= 0x050000
-void MDeclarativeInputContext::setCustomSoftwareInputPanelTextField(QQuickItem * item)
+void MDeclarativeInputContext::setCustomSoftwareInputPanelTextField(QQuickItem *item)
 #else
-void MDeclarativeInputContext::setCustomSoftwareInputPanelTextField(QDeclarativeItem * item)
+void MDeclarativeInputContext::setCustomSoftwareInputPanelTextField(QQuickItem *item)
 #endif
 {
     if(d->sipVkbTextField != item) {
 #if QT_VERSION >= 0x050000
-        d->sipVkbTextField = static_cast<QDeclarativeItem*>(item);
+        d->sipVkbTextField = static_cast<QQuickItem*>(item);
 #else
         d->sipVkbTextField = item;
 #endif
@@ -296,7 +296,7 @@ void MDeclarativeInputContext::setCustomSoftwareInputPanelTextField(QDeclarative
     }
 }
 
-QDeclarativeItem * MDeclarativeInputContext::targetInputFor(QDeclarativeComponent *sipVkbComponent)
+QQuickItem *MDeclarativeInputContext::targetInputFor(QQmlComponent *sipVkbComponent)
 {
     if(sipVkbComponent)
         return customSoftwareInputPanelTextField();
