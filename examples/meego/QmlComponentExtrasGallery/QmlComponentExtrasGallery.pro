@@ -1,5 +1,5 @@
 TEMPLATE = app
-QT += declarative
+QT += quick
 
 CONFIG -= app_bundle
 

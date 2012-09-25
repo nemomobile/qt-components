@@ -38,17 +38,14 @@
 **
 ****************************************************************************/
 
-#include <QtDeclarative>
+#include <QtQuick>
+#include <QGuiApplication>
 
 int main(int argc, char **argv)
 {
-    QApplication app(argc, argv);
-
-    app.setProperty("NoMStyle", true);
-
+    QGuiApplication app(argc, argv);
     QDir::setCurrent(app.applicationDirPath());
-
-    QDeclarativeView window;
+    QQuickView window;
 
     window.setSource(QUrl("qrc:/main.qml"));
 
