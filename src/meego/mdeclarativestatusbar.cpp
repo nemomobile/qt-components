@@ -56,7 +56,7 @@
 #include "feedbackplayer.h"
 
 #ifdef HAVE_DBUS
-   #include <QDBusInterface>
+   #include <QDBusMessage>
    #include <QDBusServiceWatcher>
    #include <QDBusConnectionInterface>
 #endif
@@ -276,12 +276,13 @@ void MDeclarativeStatusBar::querySharedPixmapFromProvider()
 {
     if (!updatesEnabled)
         return;
-#ifdef HAVE_DBUS
-    QDBusInterface interface(PIXMAP_PROVIDER_DBUS_SERVICE, PIXMAP_PROVIDER_DBUS_PATH, PIXMAP_PROVIDER_DBUS_INTERFACE,
-                             QDBusConnection::sessionBus());
-    QDBusPendingCall asyncCall =  interface.asyncCall(PIXMAP_PROVIDER_DBUS_SHAREDPIXMAP_CALL);
-    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(asyncCall, this);
 
+#ifdef HAVE_DBUS
+    QDBusMessage message = QDBusMessage::createMethodCall(PIXMAP_PROVIDER_DBUS_SERVICE, PIXMAP_PROVIDER_DBUS_PATH,
+                            PIXMAP_PROVIDER_DBUS_INTERFACE, PIXMAP_PROVIDER_DBUS_SHAREDPIXMAP_CALL);
+    QDBusPendingCall asyncCall = QDBusConnection::sessionBus().asyncCall(message);
+
+    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(asyncCall, this);
     connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)),
             this, SLOT(sharedPixmapHandleReceived(QDBusPendingCallWatcher*)));
 #endif
@@ -378,8 +379,9 @@ void MDeclarativeStatusBar::disablePressedFeedback()
 void MDeclarativeStatusBar::showStatusIndicatorMenu()
 {
 #ifdef HAVE_DBUS
-    QDBusInterface interface(STATUS_INDICATOR_MENU_DBUS_SERVICE, STATUS_INDICATOR_MENU_DBUS_PATH, STATUS_INDICATOR_MENU_DBUS_INTERFACE, QDBusConnection::sessionBus());
-    interface.call(QDBus::NoBlock, "open");
+    QDBusMessage message = QDBusMessage::createMethodCall(STATUS_INDICATOR_MENU_DBUS_SERVICE, STATUS_INDICATOR_MENU_DBUS_PATH,
+                            STATUS_INDICATOR_MENU_DBUS_INTERFACE, "open");
+    QDBusConnection::sessionBus().asyncCall(message);
 #endif
 }
 
