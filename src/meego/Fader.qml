@@ -167,14 +167,14 @@ Rectangle {
             //reparent fader whenever it is going to be visible
             SequentialAnimation {
                 ScriptAction {script: __transformToHidden()}
-                PropertyAnimation {properties: "alpha"; from: 0.0; to: 1.0; duration: 350; easing.type: Easing.OutCubic; }
+                PropertyAnimation {properties: "alpha"; from: 0.0; to: dim; duration: 350; easing.type: Easing.OutCubic; }
             }
         },
         Transition {
             from: "visible"; to: "hidden"
             SequentialAnimation {
                 PauseAnimation { duration: fadeOutDelay }
-                PropertyAnimation {properties: "alpha"; from: 1.0; to: 0.0; duration: 350; easing.type: Easing.OutCubic; }
+                PropertyAnimation {properties: "alpha"; from: dim; to: 0.0; duration: 350; easing.type: Easing.OutCubic; }
                 ScriptAction {script: faderBackground.parent = originalParent}
             }
         }
