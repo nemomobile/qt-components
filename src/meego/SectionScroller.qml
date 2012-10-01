@@ -208,20 +208,14 @@ Item {
                 }
             }
 
-            if (listView.model.countChanged)
-                listView.model.countChanged.connect(dirtyObserver);
-
+            // TODO: on model changing, these should also be disconnected.
             if (listView.model.itemsChanged)
                 listView.model.itemsChanged.connect(dirtyObserver);
-
-            if (listView.model.itemsInserted)
-                listView.model.itemsInserted.connect(dirtyObserver);
 
             if (listView.model.itemsMoved)
                 listView.model.itemsMoved.connect(dirtyObserver);
 
-            if (listView.model.itemsRemoved)
-                listView.model.itemsRemoved.connect(dirtyObserver);
+            listView.countChanged.connect(dirtyObserver)
         }
 
         function adjustContentPosition(y) {
