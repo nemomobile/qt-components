@@ -9,10 +9,6 @@ win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release
 CONFIG += qt plugin
 QT += declarative network
 
-meegotouch {
-    DEFINES += HAVE_MEEGOTOUCH
-}
-
 HEADERS += mdatetimehelper.h
 SOURCES += plugin.cpp mdatetimehelper.cpp
 

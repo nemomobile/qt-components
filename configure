@@ -50,7 +50,6 @@ BUILD_DEMOS=yes
 BUILD_EXAMPLES=yes
 BUILD_EXTRAS=yes
 BUILD_TESTS=yes
-HAVE_MEEGOTOUCH=no
 HAVE_MALIIT=no
 HAVE_XDAMAGE=no
 HAVE_XRANDR=no
@@ -85,7 +84,6 @@ CONFIG_PRF="$BUILD_TREE/features/qt-components-config.prf"
 # Test for pkg-config enabled dependencies
 which pkg-config > /dev/null
 if [ $? -eq 0 ]; then
-    pkg-config --exists meegotouch && HAVE_MEEGOTOUCH=yes
     pkg-config --exists maliit-1.0 && HAVE_MALIIT=yes
     pkg-config --atleast-version=0.5.25 contextsubscriber-1.0 && HAVE_CONTEXTSUBSCRIBER=yes
     pkg-config --exists xdamage && HAVE_XDAMAGE=yes
@@ -107,7 +105,7 @@ while [ "$#" -gt 0 ]; do
         VAL=no
         ;;
     #Qt style yes options
-    -meego|-symbian|-meegotouch|-maliit|-contextsubscriber|-xdamage|-xrandr|-meegographicssystem|-force-local-theme|-mobility)
+    -meego|-symbian|-maliit|-contextsubscriber|-xdamage|-xrandr|-meegographicssystem|-force-local-theme|-mobility)
         VAR=`echo $1 | sed 's,^-\(.*\),\1,'`
         VAL=yes
         ;;
@@ -203,13 +201,6 @@ while [ "$#" -gt 0 ]; do
         QMAKE_DEBUG="$QMAKE_DEBUG -d"
         ;;
     # autodetection overrides
-    meegotouch)
-        if [ "$VAL" = "yes" ] || [ "$VAL" = "no" ]; then
-            HAVE_MEEGOTOUCH=$VAL
-        else
-            UNKNOWN_OPT=yes
-        fi
-        ;;
     maliit)
         if [ "$VAL" = "yes" ] || [ "$VAL" = "no" ]; then
             HAVE_MALIIT=$VAL
@@ -283,9 +274,6 @@ Additional options:
  evaluation succeeds, the feature is included. Here is a short explanation
  of each option:
 
-    -no-meegotouch ........... Do not compile MeeGo Touch framework support
- +  -meegotouch .............. Compile MeeGo Touch framework support
-
     -no-maliit ............... Do not complile Maliit framework support
  +  -maliit .................. Compile Maliit framework support
 
@@ -313,7 +301,6 @@ fi
 [ "$BUILD_EXTRAS" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG extras"
 [ "$BUILD_TESTS" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG tests"
 
-[ "$HAVE_MEEGOTOUCH" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG meegotouch"
 [ "$HAVE_MALIIT" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG maliit"
 [ "$HAVE_CONTEXTSUBSCRIBER" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG contextsubscriber"
 [ "$HAVE_MEEGOGRAPHICSSYSTEM" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG meegographicssystem"
@@ -346,7 +333,6 @@ echo "Qt Components build configuration:"
 echo "Configuration ....................$QMAKE_CONFIG"
 echo "MeeGo Style ...................... $BUILD_MEEGO_STYLE"
 if [ "$BUILD_MEEGO_STYLE" = "yes" ]; then
-    echo "  MeeGo Touch support  ........... $HAVE_MEEGOTOUCH"
     echo "  Maliit support ................. $HAVE_MALIIT"
     echo "  ContextSubscriber support  ..... $HAVE_CONTEXTSUBSCRIBER"
     echo "  XDamage support  ............... $HAVE_XDAMAGE"
