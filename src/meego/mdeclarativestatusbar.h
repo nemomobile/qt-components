@@ -99,7 +99,6 @@ private:
     QPointF firstPos, lastPos;
 
     void updateSharedPixmap();
-    bool isPixmapProviderOnline;
     QDBusServiceWatcher *dbusWatcher;
     void querySharedPixmapFromProvider();
     void setupXDamageForSharedPixmap();
