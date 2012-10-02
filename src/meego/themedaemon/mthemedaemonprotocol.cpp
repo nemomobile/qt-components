@@ -41,6 +41,7 @@
 #include "mthemedaemonprotocol.h"
 #include <QHash>
 #include <QtEndian>
+#include <QDir>
 
 using namespace M::MThemeDaemonProtocol;
 
