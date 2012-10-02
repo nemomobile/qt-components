@@ -80,6 +80,7 @@ Item {
             drag.axis: Drag.YAxis
             drag.minimumY: listView.y
             drag.maximumY: listView.y + listView.height - tooltip.height
+            preventStealing: true
 
             onPressed: {
                 mouseDownTimer.start()
