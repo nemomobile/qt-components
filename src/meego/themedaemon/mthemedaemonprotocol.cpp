@@ -44,11 +44,7 @@
 
 using namespace M::MThemeDaemonProtocol;
 
-#ifdef HAVE_THEMEDAEMON_PROTOCOL_V1
-    const QString M::MThemeDaemonProtocol::ServerAddress = "/var/run/m.mthemedaemon";
-#else
-    const QString M::MThemeDaemonProtocol::ServerAddress = "m.mthemedaemon";
-#endif
+const QString M::MThemeDaemonProtocol::ServerAddress = QDir::homePath() + "/.m.mthemedaemon";
 
 static const int SOCKET_DELAY_MS = 15000;
 
