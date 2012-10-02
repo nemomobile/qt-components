@@ -76,10 +76,10 @@ Item {
             id: dragArea
             objectName: "dragArea"
             anchors.fill: parent
-            drag.target: tooltip
-            drag.axis: Drag.YAxis
-            drag.minimumY: listView.y
-            drag.maximumY: listView.y + listView.height - tooltip.height
+            // we manage the drag in positionAtY ourselves, because we 
+            // have some extra requirements about positioning
+            drag.minimumY: 0
+            drag.maximumY: listView.height - tooltip.height
             preventStealing: true
 
             onPressed: {
@@ -93,6 +93,7 @@ Item {
 
             onPositionChanged: {
                 internal.adjustContentPosition(dragArea.mouseY);
+                tooltip.positionAtY(dragArea.mouseY);
             }
 
             Timer {
