@@ -46,9 +46,7 @@ Item {
     width: screen.displayWidth
     height: screen.displayHeight
 
-    // Deprecated: Inefficient and not useful
-    property variant color
-    onColorChanged: console.log("Window.color is deprecated and will not work");
+    property alias color: background.color
 
     default property alias content: windowContent.data
 
@@ -82,6 +80,13 @@ Item {
         snapshot.free();
         root.orientationChangeFinished();
         platformWindow.animating = false;
+    }
+
+
+    Rectangle {
+        id: background
+        anchors.fill: parent
+        color: "black"
     }
 
     Item {
