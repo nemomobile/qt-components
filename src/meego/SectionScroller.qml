@@ -64,12 +64,17 @@ Item {
     //Deprecated, TODO Remove this on w13
     property alias style: root.platformStyle
 
-    Item {
+    MouseArea {
         id: container
         width: 80
         height: listView.height
         x: listView.x + listView.width - width
         property bool dragging: false
+        // we manage the drag in positionAtY ourselves, because we 
+        // have some extra requirements about positioning
+        drag.minimumY: 0
+        drag.maximumY: listView.height - tooltip.height
+        preventStealing: true
 
         Rectangle {
             id: sidebar
@@ -89,39 +94,28 @@ Item {
             }
         }
 
-        MouseArea {
-            id: dragArea
-            objectName: "dragArea"
-            anchors.fill: parent
-            // we manage the drag in positionAtY ourselves, because we 
-            // have some extra requirements about positioning
-            drag.minimumY: 0
-            drag.maximumY: listView.height - tooltip.height
-            preventStealing: true
+        onPressed: {
+            mouseDownTimer.start()
+        }
 
-            onPressed: {
-                mouseDownTimer.start()
-            }
+        onReleased: {
+            container.dragging = false;
+            mouseDownTimer.stop()
+        }
 
-            onReleased: {
-                container.dragging = false;
-                mouseDownTimer.stop()
-            }
+        onPositionChanged: {
+            internal.adjustContentPosition(container.mouseY);
+            tooltip.positionAtY(container.mouseY);
+        }
 
-            onPositionChanged: {
-                internal.adjustContentPosition(dragArea.mouseY);
-                tooltip.positionAtY(dragArea.mouseY);
-            }
+        Timer {
+            id: mouseDownTimer
+            interval: 150
 
-            Timer {
-                id: mouseDownTimer
-                interval: 150
-
-                onTriggered: {
-                    container.dragging = true;
-                    internal.adjustContentPosition(dragArea.mouseY);
-                    tooltip.positionAtY(dragArea.mouseY);
-                }
+            onTriggered: {
+                container.dragging = true;
+                internal.adjustContentPosition(container.mouseY);
+                tooltip.positionAtY(container.mouseY);
             }
         }
         Item {
@@ -133,7 +127,7 @@ Item {
             height: childrenRect.height
 
             function positionAtY(yCoord) {
-                tooltip.y = Math.max(dragArea.drag.minimumY, Math.min(yCoord - tooltip.height/2, dragArea.drag.maximumY));
+                tooltip.y = Math.max(container.drag.minimumY, Math.min(yCoord - tooltip.height/2, container.drag.maximumY));
             }
 
             Rectangle {
@@ -232,10 +226,10 @@ Item {
         }
 
         function adjustContentPosition(y) {
-            if (y < 0 || y > dragArea.height) return;
+            if (y < 0 || y > container.height) return;
 
             internal.down = (y > internal.oldY);
-            var sect = Sections.getClosestSection((y / dragArea.height), internal.down);
+            var sect = Sections.getClosestSection((y / container.height), internal.down);
             internal.oldY = y;
             if (internal.curSect != sect) {
                 internal.curSect = sect;
