@@ -64,13 +64,30 @@ Item {
     //Deprecated, TODO Remove this on w13
     property alias style: root.platformStyle
 
-    Rectangle {
+    Item {
         id: container
-        color: "transparent"
         width: 80
         height: listView.height
         x: listView.x + listView.width - width
         property bool dragging: false
+
+        Rectangle {
+            id: sidebar
+            anchors.fill: parent
+            color: Qt.rgba(1, 1, 1, 0.5)
+            opacity: 0
+
+            states: [
+                State {
+                    name: "dragging"; when: container.dragging
+                    PropertyChanges { target: sidebar; opacity: 1.0 }
+                }
+            ]
+
+            Behavior on opacity {
+                NumberAnimation { duration: 100 }
+            }
+        }
 
         MouseArea {
             id: dragArea
@@ -106,12 +123,6 @@ Item {
                     tooltip.positionAtY(dragArea.mouseY);
                 }
             }
-            states: [
-                State {
-                    name: "dragging"; when: container.dragging
-                    PropertyChanges { target: container; color: Qt.rgba(1, 1, 1, 0.5) }
-                }
-            ]
         }
         Item {
             id: tooltip
