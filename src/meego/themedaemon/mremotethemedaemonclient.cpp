@@ -52,7 +52,6 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <sys/types.h>
-#include <unistd.h>
 #include <stdio.h>
 #include <sys/mman.h>
 #include <sys/msg.h>
@@ -62,6 +61,8 @@
 
 #ifdef Q_OS_WIN
 #include <qt_windows.h>
+#else
+#include <unistd.h>
 #endif
 
 using namespace M::MThemeDaemonProtocol;
