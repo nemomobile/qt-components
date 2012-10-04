@@ -426,6 +426,18 @@ FocusScope {
             }
         }
 
+        // FIXME: HACK: this is working around QTBUG-25644, FocusScope's signals
+        // aren't correctly emitted
+        onFocusChanged: {
+            root.focusChanged(root.focus)
+        }
+
+        // FIXME: HACK: this is working around QTBUG-25644, FocusScope's signals
+        // aren't correctly emitted
+        onActiveFocusChanged: {
+            root.activeFocusChanged(root.activeFocus)
+        }
+
         onTextChanged: {
             if(root.activeFocus) {
                 TextAreaHelper.repositionFlickable(contentMovingAnimation)
