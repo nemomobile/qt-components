@@ -39,7 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 1.1
-import com.nokia.meego 1.1
+import com.nokia.meego 1.2
 
 Page {
     id: labelsPage
@@ -55,19 +55,18 @@ Page {
         anchors.fill: parent
         Column {
             id: col
-            Label { text: "Plain label"; platformSelectable: true; }
-            Label { text: "<a href=\"http://www.nokia.com\">Invert</a> label via link"; platformSelectable: false;
+            SelectableLabel { text: "Plain label"; }
+            Label { text: "<a href=\"http://www.nokia.com\">Invert</a> label via link"; 
                     onLinkActivated: platformStyle.inverted = !platformStyle.inverted; }
-            Label { text: "Bold label"; font.bold: true; platformSelectable: true; }
-            Label { text: "Italic label"; font.italic: true; platformSelectable: true; }
-            Label { text: "Large label"; font.pixelSize: 100;  platformSelectable: true; }
+            SelectableLabel { text: "Bold label"; font.bold: true; }
+            SelectableLabel { text: "Italic label"; font.italic: true; }
+            SelectableLabel { text: "Large label"; font.pixelSize: 100;  }
 
-            Label {
+            SelectableLabel {
                 id: coloredLabel
                 text: "Large label with MouseArea"
                 width: parent.width
                 font.pixelSize: 48
-                platformSelectable: true
                 color: Qt.rgba(1.0, 0.5, 0.5, 1.0)
                 wrapMode: Text.WordWrap
 
@@ -81,17 +80,16 @@ Page {
 
             }
 
-            Label { text: "Red label"; color: "red"; platformSelectable: true; }
-            Label { text: "Elided labels are too long"; font.italic: true; width: 200; elide: Text.ElideRight; platformSelectable: true; }
+            SelectableLabel { text: "Red label"; color: "red"; }
+            SelectableLabel { text: "Elided labels are too long"; font.italic: true; width: 200; elide: Text.ElideRight; }
             Label { text: "Unselectable plain label <br>" }
-            Label {
+            SelectableLabel {
                 text: "<b>Wrapping label with a lot of text:</b> The quick brown fox jumps over the lazy dog. \
                 The quick brown fox jumps over the lazy dog. <br>The quick brown fox jumps over the lazy dog. \
                 The quick brown fox jumps over the lazy dog."
                 font.pixelSize: 30
                 wrapMode: Text.Wrap
                 width: labelsPage.width
-                platformSelectable: true            
             }
 
         }
