@@ -372,6 +372,18 @@ FocusScope {
         // that we get its original state back once the window has focus again.
         property bool savePersistentSelection: false
 
+        // FIXME: HACK: this is working around QTBUG-25644, FocusScope's signals
+        // aren't correctly emitted
+        onActiveFocusChanged: {
+            root.activeFocusChanged(root.activeFocus)
+        }
+
+        // FIXME: HACK: this is working around QTBUG-25644, FocusScope's signals
+        // aren't correctly emitted
+        onFocusChanged: {
+            root.focusChanged(root.focus)
+        }
+
         onWesternNumericInputEnforcedChanged: {
             inputContext.update();
         }
