@@ -119,10 +119,9 @@ Item {
 
         //when the sheet is part of a page do nothing
         //when the sheet is a direct child of a PageStackWindow, consider the status bar
-        property int statusBarOffset: (typeof __isPage != "undefined") ? 0
-                                     : (typeof __statusBarHeight == "undefined") ? 0
-                                     :  __statusBarHeight
-        
+        property int statusBarOffset: (parent.objectName != "windowContent") ? 0
+                                       : (typeof __statusBarHeight == "undefined") ? 0
+                                       : __statusBarHeight
         width: parent.width
         height: parent.height - statusBarOffset
 
