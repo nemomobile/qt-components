@@ -21,6 +21,7 @@ SelectionDialog 1.0 SelectionDialog.qml
 MultiSelectionDialog 1.0 MultiSelectionDialog.qml
 SelectionDialogStyle 1.0 SelectionDialogStyle.qml
 Label 1.0 Label.qml
+SelectableLabel 1.2 SelectableLabel.qml
 LabelStyle 1.0 LabelStyle.qml
 Menu 1.0 Menu.qml
 MenuLayout 1.0 MenuLayout.qml

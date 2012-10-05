@@ -169,6 +169,7 @@ QML_FILES = \
         style/MenuStyle.qml \
         Fader.qml \
         Label.qml \
+        SelectableLabel.qml \
         style/LabelStyle.qml \
         AbstractMenu.qml \
         Menu.qml \
