@@ -113,15 +113,15 @@ Item {
             PropertyChanges { target: root; height: 0; visible: false; }
         },
         State {
-            name: ""
-            when: !(privateVisibility == ToolBarVisibility.Visible || tools == null)
+            name: "visible"
+            when: (privateVisibility == ToolBarVisibility.Visible && tools != null)
             PropertyChanges { target: root; height: bgImage.height; visible: true; }
         }
     ]
 
     // Transition between active and inactive states.
     transitions: Transition {
-        from: ""; to: "hidden"; reversible: true;
+        from: "visible"; to: "hidden"; reversible: true;
         SequentialAnimation {
             PropertyAnimation {
                 properties: "height";
@@ -182,7 +182,7 @@ Item {
 
         // select container states based on the transition animation
         var transitions = {
-            "set":      { "new": "",        "old": "hidden" },
+            "set":      { "new": "default",        "old": "hidden" },
             "push":     { "new": "right",   "old": "left" },
             "pop":      { "new": "left",    "old": "right" },
             "replace":  { "new": "front",   "old": "back" }
@@ -203,7 +203,7 @@ Item {
         __currentContainer.state = animation["old"];
         if (tools) {
             container.state = animation["new"];
-            container.state = "";
+            container.state = "default";
         }
 
         __currentContainer = container;
@@ -261,6 +261,11 @@ Item {
                     PropertyChanges { target: container; visible: true }
                     PropertyChanges { target: container; scale: 0.85; opacity: 0.0 }
                 },
+                State {
+                    name: "default"
+                    PropertyChanges { target: container; visible: true }
+                    PropertyChanges { target: container; scale: 1.0; opacity: 1.0; x: 0.0 }
+                },
                 // Inactive state.
                 State {
                     name: "hidden"
@@ -272,7 +277,7 @@ Item {
             transitions: [
                 // Pop entry and push exit transition.
                 Transition {
-                    from: ""; to: "left"; reversible: true
+                    from: "default"; to: "left"; reversible: true
                     SequentialAnimation {
                         PropertyAnimation { properties: "x,opacity"; easing.type: Easing.InCubic; duration: platformStyle.contentTransitionDuration / 2 }
                         PauseAnimation { duration: platformStyle.contentTransitionDuration / 2 }
@@ -281,7 +286,7 @@ Item {
                 },
                 // Push entry and pop exit transition.
                 Transition {
-                    from: ""; to: "right"; reversible: true
+                    from: "default"; to: "right"; reversible: true
                     SequentialAnimation {
                         PropertyAnimation { properties: "x,opacity"; easing.type: Easing.InCubic; duration: platformStyle.contentTransitionDuration / 2 }
                         PauseAnimation { duration: platformStyle.contentTransitionDuration / 2 }
@@ -290,14 +295,14 @@ Item {
                 },
                 Transition {
                     // Replace entry transition.
-                    from: "front"; to: "";
+                    from: "front"; to: "default";
                     SequentialAnimation {
                         PropertyAnimation { properties: "scale,opacity"; easing.type: Easing.InOutExpo; duration: platformStyle.contentTransitionDuration }
                     }
                 },
                 Transition {
                     // Replace exit transition.
-                    from: ""; to: "back";
+                    from: "default"; to: "back";
                     SequentialAnimation {
                         PropertyAnimation { properties: "scale,opacity"; easing.type: Easing.InOutExpo; duration: platformStyle.contentTransitionDuration }
                         ScriptAction { script: if (state == "back") state = "hidden" }
