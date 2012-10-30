@@ -44,7 +44,7 @@
 #include <QDebug>
 #include <QDir>
 
-MLocalThemeDaemonClient::MLocalThemeDaemonClient(QObject *parent) :
+MLocalThemeDaemonClient::MLocalThemeDaemonClient(const QString &testPath, QObject *parent) :
     MAbstractThemeDaemonClient(parent),
     m_pixmapCache(),
     m_imageDirNodes()
@@ -53,7 +53,7 @@ MLocalThemeDaemonClient::MLocalThemeDaemonClient(QObject *parent) :
 #endif
 {
     QStringList themeRoots;
-    QString themeRoot;
+    QString themeRoot = testPath;
 
     themeRoot = qgetenv("M_THEME_DIR");
     if (themeRoot.isEmpty()) {

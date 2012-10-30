@@ -69,7 +69,7 @@ public:
      *               by the define THEME_DIR is used.
      * \param parent Parent object.
      */
-    MLocalThemeDaemonClient(QObject *parent = 0);
+    MLocalThemeDaemonClient(const QString &testPath = QString(), QObject *parent = 0);
     virtual ~MLocalThemeDaemonClient();
 
     /**
