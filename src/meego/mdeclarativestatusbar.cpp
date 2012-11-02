@@ -181,12 +181,6 @@ MDeclarativeStatusBar::~MDeclarativeStatusBar()
 void MDeclarativeStatusBar::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
     QT_TRY {
-
-        if (sharedPixmap.isNull()) {
-            MDeclarativeStatusBar *view = const_cast<MDeclarativeStatusBar *>(this);
-            view->querySharedPixmapFromProvider();
-        }
-
         if (sharedPixmap.isNull()) {
             painter->fillRect(boundingRect(), Qt::black);
             return;
@@ -291,16 +285,17 @@ void MDeclarativeStatusBar::querySharedPixmapFromProvider()
 void MDeclarativeStatusBar::sharedPixmapHandleReceived(QDBusPendingCallWatcher * call)
 {
 #ifdef HAVE_DBUS
+    bool pixmapWasNull = sharedPixmap.isNull();
     QDBusPendingReply<quint32> reply = *call;
     if (reply.isError()) {
         qWarning() << "MDeclarativeStatusBar" << reply.error().message();
-        return;
-    }
-
+        sharedPixmap = QPixmap();
+    } else {
 #ifdef Q_WS_X11
-    quint32 tmp = reply;
-    sharedPixmap = QPixmap::fromX11Pixmap(tmp, QPixmap::ExplicitlyShared);
+        quint32 tmp = reply;
+        sharedPixmap = QPixmap::fromX11Pixmap(tmp, QPixmap::ExplicitlyShared);
 #endif
+    }
 
     setImplicitWidth(sharedPixmap.size().width());
     updateSharedPixmap();
@@ -312,9 +307,18 @@ void MDeclarativeStatusBar::sharedPixmapHandleReceived(QDBusPendingCallWatcher *
     } else {
       qWarning() << "MDeclarativeStatusBar::sharedPixmapHandleReceived: scene is NULL!";
     }
+
+    if (sharedPixmap.isNull() != pixmapWasNull) {
+        emit hasPixmapChanged();
+    }
 #else
     Q_UNUSED(call)
 #endif
+}
+
+bool MDeclarativeStatusBar::hasPixmap() const
+{
+    return !sharedPixmap.isNull();
 }
 
 void MDeclarativeStatusBar::handlePixmapProviderOnline()
