@@ -63,6 +63,7 @@ class MDeclarativeStatusBar : public QDeclarativeItem
 {
     Q_OBJECT
     Q_PROPERTY(MDeclarativeScreen::Orientation orientation READ orientation WRITE setOrientation NOTIFY orientationChanged)
+    Q_PROPERTY(bool hasPixmap READ hasPixmap NOTIFY hasPixmapChanged)
 
 public:
     MDeclarativeStatusBar(QDeclarativeItem *parent = 0);
@@ -72,6 +73,8 @@ public:
     MDeclarativeScreen::Orientation orientation() const;
 
     virtual void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
+
+    bool hasPixmap() const;
 
 public Q_SLOTS:
     void updateXdamageEventSubscription();
@@ -113,6 +116,7 @@ private:
 
 Q_SIGNALS:
     void orientationChanged();
+    void hasPixmapChanged();
 
 private Q_SLOTS:
     void disablePressedFeedback();
