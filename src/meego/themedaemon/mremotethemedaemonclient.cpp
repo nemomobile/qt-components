@@ -366,7 +366,7 @@ void MRemoteThemeDaemonClient::initializePriority(const QString &applicationName
             qCritical() << "Themedaemon replied with error packet:\n" << errorString->string << "\nExiting.";
             exit(EXIT_FAILURE);
         } else {
-            qCritical() << "Received unexpected packet from themedaemon. Exiting.";
+            qCritical() << "Received unexpected packet (type " << (int)packet.type() << " from themedaemon. Exiting.";
             exit(EXIT_FAILURE);
         }
     }
