@@ -82,7 +82,11 @@ MLocalThemeDaemonClient::MLocalThemeDaemonClient(const QString &testPath, QObjec
         qDebug() << Q_FUNC_INFO << "Theme: " << themeItem.value("blanco").toString();
         themeRoots += themeRoot + QDir::separator() + themeItem.value("blanco").toString() + QDir::separator() + QLatin1String("meegotouch");
 #else
-        qDebug() << Q_FUNC_INFO << "Theme: blanco (hardcoded)";
+# if !defined(THEME_NAME)
+#  define THEME_NAME "blanco"
+# endif
+        qDebug() << Q_FUNC_INFO << "Theme: " << THEME_NAME << " (hardcoded)";
+        themeRoots += themeRoot + QDir::separator() + QLatin1String(THEME_NAME) + QDir::separator() + QLatin1String("meegotouch");
 #endif
     } else {
         qDebug() << Q_FUNC_INFO << "Theme: test mode: " << themeRoot;
