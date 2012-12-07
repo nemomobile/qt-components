@@ -1,8 +1,7 @@
 /****************************************************************************
 **
+** Copyright (C) 2012 Robin Burchell <robin+mer@viroteck.net>
 ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the Qt Components project.
 **
@@ -64,52 +63,59 @@ Item {
     //Deprecated, TODO Remove this on w13
     property alias style: root.platformStyle
 
-    Rectangle {
+    MouseArea {
         id: container
-        color: "transparent"
         width: 80
         height: listView.height
         x: listView.x + listView.width - width
         property bool dragging: false
+        // we manage the drag in positionAtY ourselves, because we 
+        // have some extra requirements about positioning
+        drag.minimumY: 0
+        drag.maximumY: listView.height - tooltip.height
+        preventStealing: true
 
-        MouseArea {
-            id: dragArea
-            objectName: "dragArea"
+        Rectangle {
+            id: sidebar
             anchors.fill: parent
-            drag.target: tooltip
-            drag.axis: Drag.YAxis
-            drag.minimumY: listView.y
-            drag.maximumY: listView.y + listView.height - tooltip.height
+            color: Qt.rgba(1, 1, 1, 0.5)
+            opacity: 0
 
-            onPressed: {
-                mouseDownTimer.start()
-            }
-
-            onReleased: {
-                container.dragging = false;
-                mouseDownTimer.stop()
-            }
-
-            onPositionChanged: {
-                internal.adjustContentPosition(dragArea.mouseY);
-            }
-
-            Timer {
-                id: mouseDownTimer
-                interval: 150
-
-                onTriggered: {
-                    container.dragging = true;
-                    internal.adjustContentPosition(dragArea.mouseY);
-                    tooltip.positionAtY(dragArea.mouseY);
-                }
-            }
             states: [
                 State {
                     name: "dragging"; when: container.dragging
-                    PropertyChanges { target: container; color: Qt.rgba(1, 1, 1, 0.5) }
+                    PropertyChanges { target: sidebar; opacity: 1.0 }
                 }
             ]
+
+            Behavior on opacity {
+                NumberAnimation { duration: 100 }
+            }
+        }
+
+        onPressed: {
+            mouseDownTimer.start()
+        }
+
+        onReleased: {
+            container.dragging = false;
+            mouseDownTimer.stop()
+        }
+
+        onPositionChanged: {
+            internal.adjustContentPosition(container.mouseY);
+            tooltip.positionAtY(container.mouseY);
+        }
+
+        Timer {
+            id: mouseDownTimer
+            interval: 150
+
+            onTriggered: {
+                container.dragging = true;
+                internal.adjustContentPosition(container.mouseY);
+                tooltip.positionAtY(container.mouseY);
+            }
         }
         Item {
             id: tooltip
@@ -120,7 +126,7 @@ Item {
             height: childrenRect.height
 
             function positionAtY(yCoord) {
-                tooltip.y = Math.max(dragArea.drag.minimumY, Math.min(yCoord - tooltip.height/2, dragArea.drag.maximumY));
+                tooltip.y = Math.max(container.drag.minimumY, Math.min(yCoord - tooltip.height/2, container.drag.maximumY));
             }
 
             Rectangle {
@@ -208,27 +214,21 @@ Item {
                 }
             }
 
-            if (listView.model.countChanged)
-                listView.model.countChanged.connect(dirtyObserver);
-
+            // TODO: on model changing, these should also be disconnected.
             if (listView.model.itemsChanged)
                 listView.model.itemsChanged.connect(dirtyObserver);
-
-            if (listView.model.itemsInserted)
-                listView.model.itemsInserted.connect(dirtyObserver);
 
             if (listView.model.itemsMoved)
                 listView.model.itemsMoved.connect(dirtyObserver);
 
-            if (listView.model.itemsRemoved)
-                listView.model.itemsRemoved.connect(dirtyObserver);
+            listView.countChanged.connect(dirtyObserver)
         }
 
         function adjustContentPosition(y) {
-            if (y < 0 || y > dragArea.height) return;
+            if (y < 0 || y > container.height) return;
 
             internal.down = (y > internal.oldY);
-            var sect = Sections.getClosestSection((y / dragArea.height), internal.down);
+            var sect = Sections.getClosestSection((y / container.height), internal.down);
             internal.oldY = y;
             if (internal.curSect != sect) {
                 internal.curSect = sect;

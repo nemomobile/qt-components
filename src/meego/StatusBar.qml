@@ -50,7 +50,7 @@ StatusBarInternal {
     property bool __completed: false
 
     states: State {
-        name: "hide"; when: showStatusBar==false
+        name: "hide"; when: showStatusBar==false || statusBar.hasPixmap==false
         PropertyChanges { target: statusBar; anchors.topMargin: -statusBar.height; visible: false}
     }
 

@@ -71,7 +71,7 @@
 #endif
 
 #ifdef HAVE_DBUS
-   #include <QDBusInterface>
+   #include <QDBusMessage>
    #include <QDBusServiceWatcher>
    #include <QDBusConnectionInterface>
 #endif
@@ -237,13 +237,6 @@ MDeclarativeStatusBar::MDeclarativeStatusBar(QDeclarativeItem *parent) :
 #endif
 
 #ifdef HAVE_DBUS
-    if (QDBusConnection::sessionBus().interface()->isServiceRegistered(PIXMAP_PROVIDER_DBUS_SERVICE))
-        isPixmapProviderOnline = true;
-    else
-#endif
-        isPixmapProviderOnline = false;
-
-#ifdef HAVE_DBUS
     dbusWatcher = new QDBusServiceWatcher( PIXMAP_PROVIDER_DBUS_SERVICE , QDBusConnection::sessionBus(),
                                            QDBusServiceWatcher::WatchForRegistration|QDBusServiceWatcher::WatchForUnregistration,
                                            this );
@@ -361,12 +354,6 @@ QSGNode* MDeclarativeStatusBar::updatePaintNode(QSGNode* oldNode, UpdatePaintNod
 void MDeclarativeStatusBar::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
     QT_TRY {
-
-        if (sharedPixmap.isNull()) {
-            MDeclarativeStatusBar *view = const_cast<MDeclarativeStatusBar *>(this);
-            view->querySharedPixmapFromProvider();
-        }
-
         if (sharedPixmap.isNull()) {
             painter->fillRect(boundingRect(), Qt::black);
             return;
@@ -416,12 +403,9 @@ void MDeclarativeStatusBar::updateXdamageEventSubscription()
 void MDeclarativeStatusBar::updateSharedPixmap()
 {
     destroyXDamageForSharedPixmap();
-    if ((!updatesEnabled)||(!isPixmapProviderOnline))
-        return;
 
-    if (sharedPixmapHandle) {
+    if (updatesEnabled && sharedPixmapHandle)
         setupXDamageForSharedPixmap();
-    }
 }
 
 void MDeclarativeStatusBar::setupXDamageForSharedPixmap()
@@ -460,14 +444,15 @@ void MDeclarativeStatusBar::disablePixmapUpdates()
 
 void MDeclarativeStatusBar::querySharedPixmapFromProvider()
 {
-    if (!updatesEnabled || !isPixmapProviderOnline)
+    if (!updatesEnabled)
         return;
-#ifdef HAVE_DBUS
-    QDBusInterface interface(PIXMAP_PROVIDER_DBUS_SERVICE, PIXMAP_PROVIDER_DBUS_PATH, PIXMAP_PROVIDER_DBUS_INTERFACE,
-                             QDBusConnection::sessionBus());
-    QDBusPendingCall asyncCall =  interface.asyncCall(PIXMAP_PROVIDER_DBUS_SHAREDPIXMAP_CALL);
-    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(asyncCall, this);
 
+#ifdef HAVE_DBUS
+    QDBusMessage message = QDBusMessage::createMethodCall(PIXMAP_PROVIDER_DBUS_SERVICE, PIXMAP_PROVIDER_DBUS_PATH,
+                            PIXMAP_PROVIDER_DBUS_INTERFACE, PIXMAP_PROVIDER_DBUS_SHAREDPIXMAP_CALL);
+    QDBusPendingCall asyncCall = QDBusConnection::sessionBus().asyncCall(message);
+
+    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(asyncCall, this);
     connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)),
             this, SLOT(sharedPixmapHandleReceived(QDBusPendingCallWatcher*)));
 #endif
@@ -476,6 +461,7 @@ void MDeclarativeStatusBar::querySharedPixmapFromProvider()
 void MDeclarativeStatusBar::sharedPixmapHandleReceived(QDBusPendingCallWatcher * call)
 {
 #ifdef HAVE_DBUS
+    bool pixmapWasNull = sharedPixmap.isNull();
     QDBusPendingReply<quint32> reply = *call;
     if (reply.isError()) {
         qWarning() << "MDeclarativeStatusBar" << reply.error().message();
@@ -483,10 +469,6 @@ void MDeclarativeStatusBar::sharedPixmapHandleReceived(QDBusPendingCallWatcher *
     }
 
     sharedPixmapHandle = reply;
-#ifdef Q_WS_X11
-    sharedPixmap = QPixmap::fromX11Pixmap(sharedPixmapHandle, QPixmap::ExplicitlyShared);
-#endif
-
     setImplicitWidth(sharedPixmap.size().width());
     updateSharedPixmap();
     call->deleteLater();
@@ -501,22 +483,23 @@ void MDeclarativeStatusBar::sharedPixmapHandleReceived(QDBusPendingCallWatcher *
     } else {
       qWarning() << "MDeclarativeStatusBar::sharedPixmapHandleReceived: scene is NULL!";
     }
-#endif
-
 #else
     Q_UNUSED(call)
 #endif
 }
 
+bool MDeclarativeStatusBar::hasPixmap() const
+{
+    return !sharedPixmap.isNull();
+}
+
 void MDeclarativeStatusBar::handlePixmapProviderOnline()
 {
-    isPixmapProviderOnline = true;
     querySharedPixmapFromProvider();
 }
 
 void MDeclarativeStatusBar::handlePixmapProviderOffline()
 {
-    isPixmapProviderOnline = false;
     destroyXDamageForSharedPixmap();
 }
 
@@ -626,8 +609,9 @@ void MDeclarativeStatusBar::disablePressedFeedback()
 void MDeclarativeStatusBar::showStatusIndicatorMenu()
 {
 #ifdef HAVE_DBUS
-    QDBusInterface interface(STATUS_INDICATOR_MENU_DBUS_SERVICE, STATUS_INDICATOR_MENU_DBUS_PATH, STATUS_INDICATOR_MENU_DBUS_INTERFACE, QDBusConnection::sessionBus());
-    interface.call(QDBus::NoBlock, "open");
+    QDBusMessage message = QDBusMessage::createMethodCall(STATUS_INDICATOR_MENU_DBUS_SERVICE, STATUS_INDICATOR_MENU_DBUS_PATH,
+                            STATUS_INDICATOR_MENU_DBUS_INTERFACE, "open");
+    QDBusConnection::sessionBus().asyncCall(message);
 #endif
 }
 

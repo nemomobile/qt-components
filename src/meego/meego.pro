@@ -24,10 +24,6 @@ packagesExist(mlite) {
     warning("mlite is not available; theme detection won't work")
 }
 
-meegotouch {
-    DEFINES += HAVE_MEEGOTOUCH
-}
-
 maliit {
     DEFINES += HAVE_MALIIT
     PKGCONFIG += maliit-1.0
@@ -179,6 +175,7 @@ QML_FILES = \
         style/MenuStyle.qml \
         Fader.qml \
         Label.qml \
+        SelectableLabel.qml \
         style/LabelStyle.qml \
         AbstractMenu.qml \
         Menu.qml \

@@ -41,15 +41,15 @@
 import QtQuick 1.1
 import "." 1.0
 
-Item {
+MouseArea {
     id: root
 
     width: parent ? parent.width : 0
     height: parent ? parent.height : 0
 
-    property alias title: titleBar.children 
+    property alias title: header.children 
     property alias content: contentField.children
-    property alias buttons: buttonRow.children
+    property alias buttons: header.children
     property Item visualParent
     property int status: DialogStatus.Closed
 
@@ -109,20 +109,14 @@ Item {
         return undefined;
     }
 
-    MouseArea {
-        id: blockMouseInput
-        anchors.fill: parent
-    }
-    
     Item {
         id: sheet
 
         //when the sheet is part of a page do nothing
         //when the sheet is a direct child of a PageStackWindow, consider the status bar
-        property int statusBarOffset: (typeof __isPage != "undefined") ? 0
-                                     : (typeof __statusBarHeight == "undefined") ? 0
-                                     :  __statusBarHeight
-        
+        property int statusBarOffset: (parent.objectName != "windowContent") ? 0
+                                       : (typeof __statusBarHeight == "undefined") ? 0
+                                       : __statusBarHeight
         width: parent.width
         height: parent.height - statusBarOffset
 
@@ -174,61 +168,46 @@ Item {
         ]
         
         BorderImage {
+            id: contentField
             source: platformStyle.background
             width: parent.width
             anchors.top: header.bottom
             anchors.bottom: parent.bottom
-            Item {
-                id: contentField
-                anchors.fill: parent
-            }
         }
 
-        Item {
+        BorderImage {
             id: header
             width: parent.width
-            height: headerBackground.height
-            BorderImage {
-                id: headerBackground
-                border {
-                    left: platformStyle.headerBackgroundMarginLeft
-                    right: platformStyle.headerBackgroundMarginRight
-                    top: platformStyle.headerBackgroundMarginTop
-                    bottom: platformStyle.headerBackgroundMarginBottom
-                }
-                source: platformStyle.headerBackground
-                width: header.width
+            border {
+                left: platformStyle.headerBackgroundMarginLeft
+                right: platformStyle.headerBackgroundMarginRight
+                top: platformStyle.headerBackgroundMarginTop
+                bottom: platformStyle.headerBackgroundMarginBottom
             }
-            Item {
-                id: buttonRow
-                anchors.fill: parent
-                SheetButton {
-                    id: rejectButton
-                    objectName: "rejectButton"
-                    anchors.left: parent.left
-                    anchors.leftMargin: root.platformStyle.rejectButtonLeftMargin
-                    anchors.verticalCenter: parent.verticalCenter
-                    visible: text != ""
-                    onClicked: close()
-                }
-                SheetButton {
-                    id: acceptButton
-                    objectName: "acceptButton"
-                    anchors.right: parent.right
-                    anchors.rightMargin: root.platformStyle.acceptButtonRightMargin
-                    anchors.verticalCenter: parent.verticalCenter
-                    platformStyle: SheetButtonAccentStyle { }
-                    visible: text != ""     
-                    onClicked: close()
-                }
-                Component.onCompleted: {
-                    acceptButton.clicked.connect(accepted)
-                    rejectButton.clicked.connect(rejected)
-                }
+            source: platformStyle.headerBackground
+
+            SheetButton {
+                id: rejectButton
+                objectName: "rejectButton"
+                anchors.left: parent.left
+                anchors.leftMargin: root.platformStyle.rejectButtonLeftMargin
+                anchors.verticalCenter: parent.verticalCenter
+                visible: text != ""
+                onClicked: close()
             }
-            Item {
-                id: titleBar
-                anchors.fill: parent
+            SheetButton {
+                id: acceptButton
+                objectName: "acceptButton"
+                anchors.right: parent.right
+                anchors.rightMargin: root.platformStyle.acceptButtonRightMargin
+                anchors.verticalCenter: parent.verticalCenter
+                platformStyle: SheetButtonAccentStyle { }
+                visible: text != ""     
+                onClicked: close()
+            }
+            Component.onCompleted: {
+                acceptButton.clicked.connect(accepted)
+                rejectButton.clicked.connect(rejected)
             }
         }
     }

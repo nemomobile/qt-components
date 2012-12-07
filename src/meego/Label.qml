@@ -41,172 +41,18 @@
 import QtQuick 1.1
 import "." 1.0
 
-import "EditBubble.js" as Popup
-import "UIConstants.js" as UI
-import "SelectionHandles.js" as SelectionHandles
-
 Text {
     id: root
 
     // Common public API
-    property bool platformSelectable: false
     // Styling for the Label
     property Style platformStyle: LabelStyle{}
 
-    //Deprecated, TODO Remove this at some point
-    property alias style: root.platformStyle
-
-    property bool platformEnableEditBubble: true
 
     font.family: platformStyle.fontFamily
     font.pixelSize: platformStyle.fontPixelSize
     color: platformStyle.textColor
-
     wrapMode: Text.Wrap
 
-    QtObject {
-        id: privateApi
-        property color __textColor
-    }
-
     horizontalAlignment: locale.directionForText !== undefined && locale.directionForText(root.text) === 1 /* Qt::RightToLeft */ ? Text.AlignRight : Text.AlignLeft
-
-    MouseArea {
-        id: mouseFilter
-        anchors.fill: parent
-
-        enabled: platformSelectable
-
-        Component {
-            id: textSelectionComponent
-
-            TextEdit {
-                id: selectionTextEdit
-
-                property bool canPaste: false
-
-                readOnly: true
-                selectByMouse: true
-
-                // TODO: For every new QML release sync new QML TextEdit properties:
-                clip : root.clip
-                color : privateApi.__textColor
-                font.bold : root.font.bold
-                font.capitalization : root.font.capitalization
-                font.family : root.font.family
-                font.italic : root.font.italic
-                font.letterSpacing : root.font.letterSpacing
-                font.pixelSize : root.font.pixelSize
-                font.pointSize : root.font.pointSize
-                font.strikeout : root.font.strikeout
-                font.underline : root.font.underline
-                font.weight : root.font.weight
-                font.wordSpacing : root.font.wordSpacing
-                horizontalAlignment : root.horizontalAlignment
-                smooth : root.smooth
-                text : root.text
-                textFormat : root.textFormat
-                verticalAlignment : root.verticalAlignment
-                wrapMode : root.wrapMode
-
-                mouseSelectionMode : TextEdit.SelectWords
-
-                selectedTextColor : platformStyle.selectedTextColor
-                selectionColor : platformStyle.selectionColor
-
-                Component.onCompleted: {
-                    if ( root.elide == Text.ElideNone ) {
-                        width = root.width;
-                        height = root.height;
-                    }
-                    privateApi.__textColor = root.color;
-                    root.color = Qt.rgba(0, 0, 0, 0);
-                    selectWord();
-                    if (platformEnableEditBubble) {
-                         Popup.open(selectionTextEdit,selectionTextEdit.positionToRectangle(selectionTextEdit.cursorPosition));
-                         SelectionHandles.open( selectionTextEdit )
-                    }
-                }
-                Component.onDestruction: {
-                    root.color = privateApi.__textColor;
-
-                    if (Popup.isOpened(selectionTextEdit)) {
-                        Popup.close(selectionTextEdit);
-                    }
-                    if (SelectionHandles.isOpened(selectionTextEdit)) {
-                        SelectionHandles.close(selectionTextEdit);
-                    }
-                }
-
-                onSelectedTextChanged: {
-                    if (selectionTextEdit.selectionStart == selectionTextEdit.selectionEnd) {
-                        selectionTextEdit.selectWord();
-                    }
-                    if (Popup.isOpened(selectionTextEdit)) {
-                        Popup.close(selectionTextEdit);
-                    }
-                }
-
-                MouseFilter {
-                    id: mouseSelectionFilter
-                    anchors.fill: parent
-
-                    onFinished: {
-                        if (platformEnableEditBubble) {
-                            Popup.open(selectionTextEdit,selectionTextEdit.positionToRectangle(selectionTextEdit.cursorPosition));
-                        }
-                    }
-                }
-
-                InverseMouseArea {
-                    anchors.fill: parent
-                    enabled: textSelectionLoader.sourceComponent != undefined
-
-                    onPressedOutside: { // Pressed instead of Clicked to prevent selection overlap
-                        if (Popup.isOpened(selectionTextEdit) && ((mouseX > Popup.geometry().left && mouseX < Popup.geometry().right) &&
-                                                       (mouseY > Popup.geometry().top && mouseY < Popup.geometry().bottom))) {
-                            return
-                        }
-                        if (SelectionHandles.isOpened(selectionTextEdit)) {
-                            if (SelectionHandles.leftHandleContains(Qt.point(mouseX, mouseY))) {
-                                return
-                            }
-                            if (SelectionHandles.rightHandleContains(Qt.point(mouseX, mouseY))) {
-                                return
-                            }
-                        }
-                        textSelectionLoader.sourceComponent = undefined;
-                    }
-                    onClickedOutside: { // Handles Copy click
-                        if (SelectionHandles.isOpened(selectionTextEdit) &&
-                            ( SelectionHandles.leftHandleContains(Qt.point(mouseX, mouseY)) ||
-                              SelectionHandles.rightHandleContains(Qt.point(mouseX, mouseY)) ) ) {
-                            return
-                        }
-                        if (Popup.isOpened(selectionTextEdit) && ((mouseX > Popup.geometry().left && mouseX < Popup.geometry().right) &&
-                                                       (mouseY > Popup.geometry().top && mouseY < Popup.geometry().bottom))) {
-                            textSelectionLoader.sourceComponent = undefined;
-                            return;
-                        }
-                    }
-                }
-            }
-        }
-        Loader {
-          id: textSelectionLoader
-        }
-
-        onPressAndHold:{
-            if (root.platformSelectable == false) return; // keep old behavior if selection is not requested
-
-            textSelectionLoader.sourceComponent = textSelectionComponent;
-
-            // select word that is covered by long press:
-            var cursorPos = textSelectionLoader.item.positionAt(mouse.x, mouse.y);
-            textSelectionLoader.item.cursorPosition = cursorPos;
-            if (platformEnableEditBubble) {
-                Popup.open(textSelectionLoader.item,textSelectionLoader.item.positionToRectangle(textSelectionLoader.item.cursorPosition));
-            }
-        }
-    }
 }

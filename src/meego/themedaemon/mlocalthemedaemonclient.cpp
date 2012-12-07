@@ -44,7 +44,7 @@
 #include <QDebug>
 #include <QDir>
 
-MLocalThemeDaemonClient::MLocalThemeDaemonClient(QObject *parent) :
+MLocalThemeDaemonClient::MLocalThemeDaemonClient(const QString &testPath, QObject *parent) :
     MAbstractThemeDaemonClient(parent),
     m_pixmapCache(),
     m_imageDirNodes()
@@ -53,9 +53,14 @@ MLocalThemeDaemonClient::MLocalThemeDaemonClient(QObject *parent) :
 #endif
 {
     QStringList themeRoots;
-    QString themeRoot;
+    QString themeRoot = testPath;
+    bool testMode = false;
 
-    themeRoot = qgetenv("M_THEME_DIR");
+    if (themeRoot.isEmpty())
+        themeRoot = qgetenv("M_THEME_DIR");
+    else
+        testMode = true;
+
     if (themeRoot.isEmpty()) {
 #if defined(THEME_DIR)
         themeRoot = THEME_DIR;
@@ -68,16 +73,25 @@ MLocalThemeDaemonClient::MLocalThemeDaemonClient(QObject *parent) :
 #endif
     }
 
-    // we must always fallback to blanco for assets we don't provide in the custom theme
-    themeRoots += themeRoot + QDir::separator() + QLatin1String("blanco") + QDir::separator() + QLatin1String("meegotouch");
+    if (testMode == false) {
+        // we must always fallback to blanco for assets we don't provide in the custom theme
+        themeRoots += themeRoot + QDir::separator() + QLatin1String("blanco") + QDir::separator() + QLatin1String("meegotouch");
 
 #ifdef HAVE_MLITE
-    // custom theme will be searched after blanco, meaning it will override assets from there
-    qDebug() << Q_FUNC_INFO << "Theme: " << themeItem.value("blanco").toString();
-    themeRoots += themeRoot + QDir::separator() + themeItem.value("blanco").toString() + QDir::separator() + QLatin1String("meegotouch");
+        // custom theme will be searched after blanco, meaning it will override assets from there
+        qDebug() << Q_FUNC_INFO << "Theme: " << themeItem.value("blanco").toString();
+        themeRoots += themeRoot + QDir::separator() + themeItem.value("blanco").toString() + QDir::separator() + QLatin1String("meegotouch");
 #else
-    qDebug() << Q_FUNC_INFO << "Theme: blanco (hardcoded)";
+# if !defined(THEME_NAME)
+#  define THEME_NAME "blanco"
+# endif
+        qDebug() << Q_FUNC_INFO << "Theme: " << THEME_NAME << " (hardcoded)";
+        themeRoots += themeRoot + QDir::separator() + QLatin1String(THEME_NAME) + QDir::separator() + QLatin1String("meegotouch");
 #endif
+    } else {
+        qDebug() << Q_FUNC_INFO << "Theme: test mode: " << themeRoot;
+        themeRoots += themeRoot;
+    }
 
     for (int i = 0; i < themeRoots.size(); ++i) {
         if (themeRoots.at(i).endsWith(QDir::separator()))

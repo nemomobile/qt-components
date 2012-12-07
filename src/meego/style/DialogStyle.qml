@@ -57,7 +57,7 @@ Style {
     property int buttonsColumnSpacing: 10
 
     // fader properties
-    property double dim: 1.0
+    property double dim: 0.9
     property int fadeInDuration: 350 // ms
     property int fadeOutDuration: 350 // ms
 

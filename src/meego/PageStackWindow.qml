@@ -47,7 +47,7 @@ Window {
     property bool showStatusBar: true
     property bool showToolBar: true
     property variant initialPage
-    property alias pageStack: stack
+    property alias pageStack: contentArea
     property Style platformStyle: PageStackWindowStyle{}
     property alias platformToolBarHeight: toolBar.height // read-only
 
@@ -92,15 +92,11 @@ Window {
         anchors.bottom: parent.bottom
 
         // content area
-        Item {
+        PageStack {
             id: contentArea
             anchors { top: parent.top; left: parent.left; right: parent.right; bottom: parent.bottom; }
             anchors.bottomMargin: toolBar.visible || (toolBar.opacity==1)? toolBar.height : 0
-            PageStack {
-                id: stack
-                anchors.fill: parent
-                toolBar: toolBar
-            }
+            toolBar: toolBar
         }
 
         Item {

@@ -52,7 +52,6 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <sys/types.h>
-#include <unistd.h>
 #include <stdio.h>
 #include <sys/mman.h>
 #include <sys/msg.h>
@@ -62,6 +61,8 @@
 
 #ifdef Q_OS_WIN
 #include <qt_windows.h>
+#else
+#include <unistd.h>
 #endif
 
 using namespace M::MThemeDaemonProtocol;
@@ -365,7 +366,7 @@ void MRemoteThemeDaemonClient::initializePriority(const QString &applicationName
             qCritical() << "Themedaemon replied with error packet:\n" << errorString->string << "\nExiting.";
             exit(EXIT_FAILURE);
         } else {
-            qCritical() << "Received unexpected packet from themedaemon. Exiting.";
+            qCritical() << "Received unexpected packet (type " << (int)packet.type() << " from themedaemon. Exiting.";
             exit(EXIT_FAILURE);
         }
     }
