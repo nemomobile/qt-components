@@ -5,7 +5,7 @@ SUBDIRS=            \
 #    qrangemodel
 
 meego {
-   !win32:!macx:SUBDIRS += mlocalthemedaemonclient \
+   !win32:!macx:!qnx:SUBDIRS += mlocalthemedaemonclient \
                     mremotethemedaemonclient \
                     mwindowstate
 
