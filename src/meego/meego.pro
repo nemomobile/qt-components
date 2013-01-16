@@ -11,7 +11,10 @@ force-local-theme: DEFINES+=FORCE_LOCAL_THEME
 win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release build_all
 CONFIG += qt plugin copy_native install_native
 QT += declarative network opengl
-!win32:!macx: QT += dbus
+!win32:!macx:!qnx {
+    QT += dbus
+    DEFINES += HAVE_DBUS
+}
 
 !win32:!embedded:!mac:!symbian {
     CONFIG += link_pkgconfig

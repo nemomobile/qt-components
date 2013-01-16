@@ -55,10 +55,6 @@ class QGraphicsSceneMouseEvent;
 class QStyleOptionGraphicsItem;
 class FeedbackPlayer;
 
-#if !defined(Q_WS_MAC) && !defined(Q_WS_WIN)
-   #define HAVE_DBUS
-#endif
-
 class MDeclarativeStatusBar : public QDeclarativeItem
 {
     Q_OBJECT
