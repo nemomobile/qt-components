@@ -39,11 +39,11 @@ at the end of the .pro file.
           <step expected_result="0">cd /usr/lib/qt-components-tests/auto/meego/tst_quickcomponentstextarea; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_quickcomponentstextarea -xml</step>
       </case>
 
-      <case name="mlocalthemedaemonclient" type="Functional" description="Unit tests for mlocalthemedaemonclient" level="Component" timeout="20">
-          <step expected_result="0">cd /usr/lib/qt-components-tests/auto/meego/mlocalthemedaemonclient; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./mlocalthemedaemonclient</step>
+      <case name="tst_localthemedaemonclient" type="Functional" description="Unit tests for mlocalthemedaemonclient" level="Component" timeout="20">
+          <step expected_result="0">cd /usr/lib/qt-components-tests/auto/meego/tst_localthemedaemonclient; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_localthemedaemonclient</step>
       </case>
-      <case name="mremotethemedaemonclient" type="Functional" description="Unit tests for mremotethemedaemonclient" level="Component" timeout="100">
-          <step expected_result="0">cd /usr/lib/qt-components-tests/auto/meego/mremotethemedaemonclient; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./mremotethemedaemonclient -xml</step>
+      <case name="tst_remotethemedaemonclient" type="Functional" description="Unit tests for mremotethemedaemonclient" level="Component" timeout="100">
+          <step expected_result="0">cd /usr/lib/qt-components-tests/auto/meego/tst_remotethemedaemonclient; LD_LIBRARY_PATH=/usr/lib/qt4/imports/Qt/labs/components ./tst_remotethemedaemonclient -xml</step>
       </case>
 
 <!--

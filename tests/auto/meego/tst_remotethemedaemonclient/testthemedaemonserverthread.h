@@ -37,13 +37,56 @@
  **
  ****************************************************************************/
 
-#include "mabstractthemedaemonclient.h"
+#ifndef MTESTTHEMEDAEMONSERVERTHREAD_H
+#define MTESTTHEMEDAEMONSERVERTHREAD_H
 
-MAbstractThemeDaemonClient::MAbstractThemeDaemonClient(QObject *parent) :
-    QObject(parent)
-{
-}
+#include <QHash>
+#include <QString>
+#include <QThread>
 
-MAbstractThemeDaemonClient::~MAbstractThemeDaemonClient()
+#include <themedaemon/mthemedaemonprotocol.h>
+
+class QPixmap;
+
+/**
+ * \brief Thread that runs the test-themedaemon-server.
+ *
+ * Used for testing the MThemeDaemonClient which uses sockets to
+ * communicate with the themedaemon-server.
+ */
+class TestThemeDaemonServerThread : public QThread
 {
-}
+    Q_OBJECT
+
+public:
+    /**
+     * \param serverAddress Address of the server where the client will be connected to.
+     * \param parent        Parent object.
+     */
+    TestThemeDaemonServerThread(const QString &serverAddress, QObject *parent = 0);
+
+    virtual ~TestThemeDaemonServerThread();
+
+    /**
+     * \return The number of cached pixmaps after the themedaemon-server has send
+     *         the most used pixmaps. Is a helper method for the unit tests to verify
+     *         whether the themedaemon client has cached the most used pixmaps.
+     */
+    int cachedMostUsedPixmapsCount() const;
+
+protected:
+    virtual void run();
+
+private:
+    /**
+     * Creates a pixmap with the ID \a imageId and the size \a size and adds
+     * it to m_pixmapCache.
+     */
+    void createPixmap(const QString &imageId, const QSize &size = QSize());
+
+    QString m_serverAddress;
+    QHash<M::MThemeDaemonProtocol::PixmapIdentifier, const QPixmap*> m_pixmapCache;
+};
+
+#endif
+

@@ -37,13 +37,53 @@
  **
  ****************************************************************************/
 
-#include "mabstractthemedaemonclient.h"
+#ifndef MTESTTHEMEDAEMONSERVER_H
+#define MTESTTHEMEDAEMONSERVER_H
 
-MAbstractThemeDaemonClient::MAbstractThemeDaemonClient(QObject *parent) :
-    QObject(parent)
-{
-}
+#include <QHash>
+#include <QObject>
+#include <QLocalServer>
 
-MAbstractThemeDaemonClient::~MAbstractThemeDaemonClient()
+#include <themedaemon/mthemedaemonprotocol.h>
+
+class QDataStream;
+class QPixmap;
+
+/**
+ * \brief Test implementation of the themedaemon server from libmeegotouch.
+ *
+ * Implements the core behavior of the themedaemon server to be able to test the
+ * themedaemon client implemented by MRemoteThemeDaemonClient.
+ */
+class TestThemeDaemonServer : public QObject
 {
-}
+    Q_OBJECT
+
+public:
+    /**
+     * \param serverAddress Address of the server where the client will be connected to.
+     * \param pixmapCache   List of available pixmaps that may get requested by the client.
+     * \param parent        Parent object.
+     */
+    TestThemeDaemonServer(const QString &serverAddress,
+                          QHash<M::MThemeDaemonProtocol::PixmapIdentifier, const QPixmap*> pixmapCache,
+                          QObject *parent = 0);
+
+    virtual ~TestThemeDaemonServer();
+
+private slots:
+    void slotClientConnected();
+    void slotClientDataAvailable();
+
+private:
+    void sendMostUsedPixmaps(QDataStream &stream, quint64 sequenceNumber);
+
+    bool m_protocolVersionExchanged;
+    bool m_clientRegistered;
+    QString m_serverAddress;
+    QLocalServer* m_server;
+    QHash<M::MThemeDaemonProtocol::PixmapIdentifier, const QPixmap*> m_pixmapCache;
+};
+
+#endif
+

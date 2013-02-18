@@ -5,8 +5,8 @@ SUBDIRS=            \
 #    qrangemodel
 
 meego {
-   !win32:!macx:!qnx:SUBDIRS += mlocalthemedaemonclient \
-                    mremotethemedaemonclient \
+   !win32:!macx:!qnx:SUBDIRS += tst_localthemedaemonclient \
+                    tst_remotethemedaemonclient \
                     mwindowstate
 
     # FIXME: although ostensibly generic API tests, these currently
