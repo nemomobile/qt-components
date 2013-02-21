@@ -120,10 +120,6 @@ public:
 
     MDeclarativeScreen::Orientations physicalDisplayOrientation() const { return _physicalDisplayOrientation; }
 
-#ifdef Q_WS_X11
-    WId windowId;
-#endif
-
 #ifdef HAVE_CONTEXTSUBSCRIBER
     ContextProperty topEdgeProperty;
     ContextProperty remoteTopEdgeProperty;
@@ -140,51 +136,13 @@ private:
     MDeclarativeScreen::Orientations _physicalDisplayOrientation;
 };
 
-static MDeclarativeScreen *self = 0;
-static MDeclarativeScreenPrivate *gScreenPrivate = 0;
-
 MDeclarativeScreen* MDeclarativeScreen::instance()
 {
+    static MDeclarativeScreen *self = 0;
+
     if (!self)
         self = new MDeclarativeScreen();
     return self;
-}
-
-#ifdef Q_WS_X11
-// This writes the orientation angle of into the X11 window property,
-// which makes OS dialogs coming on top follow the app orientation
-static void writeX11OrientationAngleProperty(WId id, int angle)
-{
-    Display *display = QX11Info::display();
-
-    if (!display)
-        return;
-
-    Atom orientationAngleAtom = XInternAtom(display, "_MEEGOTOUCH_ORIENTATION_ANGLE", False);
-
-    XChangeProperty(display, id, orientationAngleAtom, XA_CARDINAL, 32,
-                    PropModeReplace, (unsigned char*)&angle, 1);
-}
-#endif
-
-bool x11EventFilter(void *message, long *result)
-{
-#ifdef Q_WS_X11
-    XEvent *event = (XEvent *)message;
-
-    Q_UNUSED(result);
-
-    if (event->type == MapNotify) {
-        XMapEvent * xevent = (XMapEvent*) event;
-        gScreenPrivate->windowId = xevent->window;
-        writeX11OrientationAngleProperty(xevent->window, gScreenPrivate->rotation());
-    }
-#endif
-
-    if (gScreenPrivate->oldEventFilter) {
-        return gScreenPrivate->oldEventFilter(message, result);
-    } else
-        return false;
 }
 
 MDeclarativeScreenPrivate::MDeclarativeScreenPrivate(MDeclarativeScreen *qq)
@@ -204,9 +162,6 @@ MDeclarativeScreenPrivate::MDeclarativeScreenPrivate(MDeclarativeScreen *qq)
     , topLevelWidget(0)
     , oldEventFilter(0)
     , allowSwipe(true)
-#ifdef Q_WS_X11
-    , windowId(0)
-#endif
 #ifdef HAVE_CONTEXTSUBSCRIBER
     , topEdgeProperty("Screen.TopEdge")
     , remoteTopEdgeProperty("RemoteScreen.TopEdge")
@@ -224,9 +179,6 @@ MDeclarativeScreenPrivate::MDeclarativeScreenPrivate(MDeclarativeScreen *qq)
     // TODO: Could use QDesktopWidget, but what about on host PC?
     displaySize = QSize(480, 854);
 #endif
-    oldEventFilter = QCoreApplication::instance()->setEventFilter(x11EventFilter);
-    //Q_ASSERT(gScreenPrivate == 0);
-    gScreenPrivate = this;
 
     initPhysicalDisplayOrientation();
 }
@@ -300,10 +252,18 @@ void MDeclarativeScreenPrivate::updateScreenSize() {
 void MDeclarativeScreenPrivate::updateX11OrientationAngleProperty()
 {
 #ifdef Q_WS_X11
-    if (!windowId)
+    if (!topLevelWidget)
         return;
 
-    writeX11OrientationAngleProperty(windowId, q->rotation());
+    // This writes the orientation angle of into the X11 window property,
+    // which makes OS dialogs coming on top follow the app orientation
+    Display *display = QX11Info::display();
+    Atom orientationAngleAtom = XInternAtom(display, "_MEEGOTOUCH_ORIENTATION_ANGLE", False);
+
+    int angle = q->rotation();
+
+    XChangeProperty(display, topLevelWidget->effectiveWinId(), orientationAngleAtom, XA_CARDINAL, 32,
+                    PropModeReplace, (unsigned char*)&angle, 1);
 #endif
 }
 
@@ -513,6 +473,8 @@ bool MDeclarativeScreen::eventFilter(QObject *o, QEvent *e) {
     if (e->type() != QEvent::WindowStateChange)
         goto out;
 
+    // TODO: technically this is all sorts of stupid if we want to support
+    // multiple top level windows
     d->topLevelWidget = qobject_cast<QWidget*>(o);
     if (!d->topLevelWidget) {
         qCritical() << Q_FUNC_INFO << "State change event from foreign window";
@@ -528,6 +490,9 @@ bool MDeclarativeScreen::eventFilter(QObject *o, QEvent *e) {
         if(d->physicalOrientation() & allowedOrientations())
             setOrientation(d->physicalOrientation());
     }
+
+    // TODO: technically we should only do this on initial show
+    d->updateX11OrientationAngleProperty();
 out:
     return QObject::eventFilter(o, e);
 }
@@ -566,6 +531,7 @@ void MDeclarativeScreen::setOrientation(Orientation o)
 #endif
         if (!(d->allowedOrientations & o))
             return;
+
         newOrientation = o;
 #ifdef HAVE_CONTEXTSUBSCRIBER
     }
