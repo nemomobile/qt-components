@@ -67,7 +67,7 @@ Item {
 
     Text {
         id: textProperties
-        font.family: (locale && locale.language == "fa") ? UI.FONT_FAMILY_LIGHT_FARSI : UI.FONT_FAMILY_LIGHT
+        font.family: UiConstants.DefaultFontFamilyLight
         font.pixelSize: UI.FONT_DEFAULT
         visible: false
     }
