@@ -71,7 +71,7 @@
 /*!
     \qmlproperty string ButtonStyle::fontFamily
 
-    Property default value is \c UI.FONT_FAMILY.
+    Property default value is \c UiConstants.DefaultFontFamily.
 
     Defines the font family for the button.
 */

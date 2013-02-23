@@ -40,7 +40,6 @@
 
 import QtQuick 1.1
 import com.nokia.meego 1.0
-import "constants.js" as C
 import "TumblerIndexHelper.js" as TH
 
 /*
@@ -117,7 +116,7 @@ Dialog {
         text: "Pick Date"
         visible: text.length > 0
         color: theme.selectionColor
-        font { pixelSize: 32; family: C.FONT_FAMILY_BOLD }
+        font { pixelSize: 32; family: UiConstants.DefaultFontFamilyBold }
         elide: Text.ElideRight
     }
     content: Item {

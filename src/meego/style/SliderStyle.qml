@@ -43,7 +43,7 @@ import "UIConstants.js" as UI
 
 Style {
     // Font
-    property string fontFamily: __fontFamily()
+    property string fontFamily: UiConstants.DefaultFontFamily
     property int fontPixelSize: UI.FONT_DEFAULT_SIZE
 
     // Color

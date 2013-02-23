@@ -52,24 +52,4 @@ QtObject {
     // which isn't allowed by QtObject; this fix makes this possible
     default property alias children: styleClass.__defaultPropertyFix
     property list<QtObject> __defaultPropertyFix: [Item {}] //QML doesn't allow an empty list here
-
-    // styles must not set font families with referencing to UI.FONT_FAMILY
-    // as there may exist languages that request a different font;
-    // use __fontFamily() and __fontFamilyLight instead.
-    //
-    // app developers should use the UiConstants context property
-    function __fontFamily() {
-        if (locale && locale.language == "fa") {
-            return UI.FONT_FAMILY_FARSI;
-        }
-        return UI.FONT_FAMILY;
-    }
-
-    function __fontFamilyLight() {
-        if (locale && locale.language == "fa") {
-            return UI.FONT_FAMILY_LIGHT_FARSI;
-        }
-        return UI.FONT_FAMILY_LIGHT;
-    }
-
 }
