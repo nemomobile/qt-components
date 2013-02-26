@@ -40,7 +40,6 @@
 
 import QtQuick 1.1
 import com.nokia.meego 1.0
-import "constants.js" as C
 
 /*
    Class: CountBubble
@@ -77,7 +76,7 @@ ImplicitSizeItem {
         height: parent.height
         y:1
         color: largeSized ? "#FFFFFF" : "black"
-        font.family: C.FONT_FAMILY
+        font.family: UiConstants.DefaultFontFamily
         anchors.horizontalCenter: parent.horizontalCenter
         verticalAlignment: Text.AlignVCenter
         font.pixelSize: largeSized ? 22:18

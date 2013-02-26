@@ -166,6 +166,9 @@ public:
         }
 
         QDeclarativePropertyMap *uiConstantsData = new QDeclarativePropertyMap();
+        uiConstantsData->insert("DefaultFontFamily", defaultFontFamily);
+        uiConstantsData->insert("DefaultFontFamilyLight", defaultFontFamilyLight);
+        uiConstantsData->insert("DefaultFontFamilyBold", "Nokia Pure Text Bold");
         uiConstantsData->insert("DefaultMargin", QVariant(16));
         uiConstantsData->insert("ButtonSpacing", QVariant(6));
         uiConstantsData->insert("HeaderDefaultHeightPortrait", QVariant(72));

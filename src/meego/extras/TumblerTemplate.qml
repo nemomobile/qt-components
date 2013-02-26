@@ -156,7 +156,7 @@ Item {
             elide: Text.ElideRight
             horizontalAlignment: "AlignHCenter"
             color: C.TUMBLER_COLOR_LABEL
-            font { family: C.FONT_FAMILY_LIGHT; pixelSize: C.FONT_LIGHT_SIZE }
+            font { family: UiConstants.DefaultFontFamilyLight; pixelSize: C.FONT_LIGHT_SIZE }
             anchors { fill: parent; margins: C.TUMBLER_MARGIN}
         }
     }

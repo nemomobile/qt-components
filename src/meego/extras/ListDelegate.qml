@@ -50,13 +50,13 @@ Item {
 
     property int titleSize: UI.LIST_TILE_SIZE
     property int titleWeight: Font.Bold
-    property string titleFont: (locale && locale.language == "fa") ? UI.FONT_FAMILY_FARSI : UI.FONT_FAMILY
+    property string titleFont: UiConstants.DefaultFontFamily
     property color titleColor: theme.inverted ? UI.LIST_TITLE_COLOR_INVERTED : UI.LIST_TITLE_COLOR
     property color titleColorPressed: theme.inverted ? UI.LIST_TITLE_COLOR_PRESSED_INVERTED : UI.LIST_TITLE_COLOR_PRESSED
 
     property int subtitleSize: UI.LIST_SUBTILE_SIZE
     property int subtitleWeight: Font.Normal
-    property string subtitleFont: (locale && locale.language == "fa") ? UI.FONT_FAMILY_LIGHT_FARSI : UI.FONT_FAMILY_LIGHT
+    property string subtitleFont: UiConstants.DefaultFontFamilyLight
     property color subtitleColor: theme.inverted ? UI.LIST_SUBTITLE_COLOR_INVERTED : UI.LIST_SUBTITLE_COLOR
     property color subtitleColorPressed: theme.inverted ? UI.LIST_SUBTITLE_COLOR_PRESSED_INVERTED : UI.LIST_SUBTITLE_COLOR_PRESSED
 
