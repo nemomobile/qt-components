@@ -40,27 +40,15 @@ import QtQuick 1.1
 import com.nokia.meego 1.2
 
 Label {
-    property Item _windowContent
-
     enabled: false
     opacity: enabled ? 1.0 : 0.0
     anchors.horizontalCenter: parent.horizontalCenter
     horizontalAlignment: Text.AlignHCenter
-    width: _windowContent.width - UiConstants.DefaultMargin * 2
-    y: (_windowContent.height - height) / 2
+    width: parent.width - UiConstants.DefaultMargin * 2
+    y: (parent.height - height) / 2
     x: UiConstants.DefaultMargin
     wrapMode: Text.Wrap
     color: theme.inverted ? "#8c8c8c" : "#848284"
     font.family: UiConstants.DefaultFontFamilyLight
     font.pixelSize: 85
-
-    Component.onCompleted: {
-        var next = parent;
-        while (next && next.parent
-               && next.objectName != "appWindowContent"
-               && next.objectName != "windowContent") {
-            next = next.parent;
-        }
-        _windowContent = next
-    }
 }
