@@ -1,4 +1,8 @@
 plugin meegoplugin
+SelectableLabel 1.2 SelectableLabel.qml
+PageHeader 1.2 PageHeader.qml
+ViewPlaceholder 1.2 ViewPlaceholder.qml
+
 ApplicationWindow 1.0 ApplicationWindow.qml
 ApplicationWindowStyle 1.0 ApplicationWindowStyle.qml
 BusyIndicator 1.0 BusyIndicator.qml
@@ -21,7 +25,6 @@ SelectionDialog 1.0 SelectionDialog.qml
 MultiSelectionDialog 1.0 MultiSelectionDialog.qml
 SelectionDialogStyle 1.0 SelectionDialogStyle.qml
 Label 1.0 Label.qml
-SelectableLabel 1.2 SelectableLabel.qml
 LabelStyle 1.0 LabelStyle.qml
 Menu 1.0 Menu.qml
 MenuLayout 1.0 MenuLayout.qml
@@ -30,7 +33,6 @@ MenuStyle 1.0 MenuStyle.qml
 MenuItemStyle 1.0 MenuItemStyle.qml
 MouseAreaDebug 1.0 MouseAreaDebug.qml
 Page 1.0 Page.qml
-PageHeader 1.2 PageHeader.qml
 PageStack 1.0 PageStack.qml
 PageStackWindow 1.0 PageStackWindow.qml
 PageStackWindowStyle 1.0 PageStackWindowStyle.qml

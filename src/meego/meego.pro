@@ -236,6 +236,7 @@ QML_FILES = \
         Switch.qml \
         style/SwitchStyle.qml \
         UIConstants.js \
+        ViewPlaceholder.qml \
         Window.qml \
         SipSimulator.qml \
         SoftwareInputPanel.qml \
