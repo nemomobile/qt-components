@@ -42,11 +42,8 @@ import QtQuick 1.1
 import com.nokia.meego 1.0
 import "constants.js" as UI
 
-Item {
+MouseArea {
     id: listItem
-
-    signal clicked
-    property alias pressed: mouseArea.pressed
 
     property int titleSize: UI.LIST_TILE_SIZE
     property int titleWeight: Font.Bold
@@ -76,7 +73,7 @@ Item {
         // Fill page porders
         anchors.leftMargin: -UI.MARGIN_XLARGE
         anchors.rightMargin: -UI.MARGIN_XLARGE
-        visible: mouseArea.pressed
+        visible: listItem.pressed
         source: theme.inverted ? "image://theme/meegotouch-panel-inverted-background-pressed" : "image://theme/meegotouch-panel-background-pressed"
     }
 
@@ -101,7 +98,7 @@ Item {
                 font.family: listItem.titleFont
                 font.weight: listItem.titleWeight
                 font.pixelSize: listItem.titleSize
-                color: mouseArea.pressed ? listItem.titleColorPressed : listItem.titleColor
+                color: listItem.pressed ? listItem.titleColorPressed : listItem.titleColor
             }
 
             Label {
@@ -110,17 +107,10 @@ Item {
                 font.family: listItem.subtitleFont
                 font.weight: listItem.subtitleWeight
                 font.pixelSize: listItem.subtitleSize
-                color: mouseArea.pressed ? listItem.subtitleColorPressed : listItem.subtitleColor
+                color: listItem.pressed ? listItem.subtitleColorPressed : listItem.subtitleColor
 
                 visible: text != ""
             }
-        }
-    }
-    MouseArea {
-        id: mouseArea;
-        anchors.fill: parent
-        onClicked: {
-            listItem.clicked();
         }
     }
 
