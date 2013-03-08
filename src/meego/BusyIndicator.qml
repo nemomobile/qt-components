@@ -69,14 +69,17 @@ ImplicitSizeItem {
     Image {
         id: spinner
         property int index: 1
-        // This is re-evaluated for each frame. Could be optimized by calculating the sources separately is js
-        source: root.platformStyle.spinnerFrames + "_" + root.implicitWidth + "_" + index
+        source: "image://theme/meego-busyindicator" + (theme.inverted ? "-inverted" : "")
         smooth: true
+        height: root.height
+        width: root.width
 
-        NumberAnimation on index {
-            from: 1; to: root.platformStyle.numberOfFrames
+        NumberAnimation on rotation {
+            from: 0; to: 360
             duration: root.platformStyle.period
             running: root.running && root.visible && Qt.application.active && !internal.offScreen
+            target: spinner
+            property: "rotation"
             loops: Animation.Infinite
         }
     }
