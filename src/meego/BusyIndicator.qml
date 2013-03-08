@@ -69,7 +69,7 @@ ImplicitSizeItem {
     Image {
         id: spinner
         property int index: 1
-        source: "image://theme/meego-busyindicator" + (theme.inverted ? "-inverted" : "")
+        source: "image://theme/nemomobile-busyindicator" + (theme.inverted ? "-inverted" : "")
         smooth: true
         height: root.height
         width: root.width
