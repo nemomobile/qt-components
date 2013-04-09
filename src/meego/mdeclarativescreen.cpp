@@ -173,12 +173,9 @@ MDeclarativeScreenPrivate::MDeclarativeScreenPrivate(MDeclarativeScreen *qq)
 #endif
     , minimized(false)
 {
-#ifdef __ARMEL__
-    displaySize = QSize(854, 480);
-#else
-    // TODO: Could use QDesktopWidget, but what about on host PC?
-    displaySize = QSize(480, 854);
-#endif
+    //With this patch we do not care about QtCreator, we always run as screen sizes on devices
+    QDesktopWidget dw;
+    displaySize = QSize(dw.width(), dw.height());
 
     initPhysicalDisplayOrientation();
 }
