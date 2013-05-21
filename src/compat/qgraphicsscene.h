@@ -20,9 +20,9 @@
 #ifndef QGRAPHICSSCENE_H
 #define QGRAPHICSSCENE_H
 
-#include <QtQuick/QQuickCanvas>
+#include <QtQuick/QQuickWindow>
 
-class CompatQGraphicsScene : public QQuickCanvas
+class CompatQGraphicsScene : public QQuickWindow
 {
 };
 

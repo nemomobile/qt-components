@@ -51,10 +51,7 @@ BUILD_EXAMPLES=yes
 BUILD_EXTRAS=yes
 BUILD_TESTS=yes
 HAVE_MALIIT=no
-HAVE_XDAMAGE=no
-HAVE_XRANDR=no
 HAVE_CONTEXTSUBSCRIBER=no
-HAVE_MEEGOGRAPHICSSYSTEM=no
 HAVE_THEMEDAEMON_PROTOCOL_V1=yes
 FORCE_LOCAL_THEME=no
 HAVE_MOBILITY=auto
@@ -86,8 +83,6 @@ which pkg-config > /dev/null
 if [ $? -eq 0 ]; then
     pkg-config --exists maliit-1.0 && HAVE_MALIIT=yes
     pkg-config --atleast-version=0.5.25 contextsubscriber-1.0 && HAVE_CONTEXTSUBSCRIBER=yes
-    pkg-config --exists xdamage && HAVE_XDAMAGE=yes
-    pkg-config --exists xrandr && HAVE_XRANDR=yes
 fi
 
 QT_MAJOR_VERSION=$($QMAKE -query QT_VERSION | cut -d "." -f 1)
@@ -116,7 +111,7 @@ while [ "$#" -gt 0 ]; do
         VAL=no
         ;;
     #Qt style yes options
-    -meego|-symbian|-maliit|-contextsubscriber|-xdamage|-xrandr|-meegographicssystem|-force-local-theme|-mobility)
+    -meego|-symbian|-maliit|-contextsubscriber|-force-local-theme|-mobility)
         VAR=`echo $1 | sed 's,^-\(.*\),\1,'`
         VAL=yes
         ;;
@@ -226,27 +221,6 @@ while [ "$#" -gt 0 ]; do
             UNKNOWN_OPT=yes
         fi
         ;;
-    meegographicssystem)
-        if [ "$VAL" = "yes" ] || [ "$VAL" = "no" ]; then
-            HAVE_MEEGOGRAPHICSSYSTEM=$VAL
-        else
-            UNKNOWN_OPT=yes
-        fi
-        ;;
-    xdamage)
-        if [ "$VAL" = "yes" ] || [ "$VAL" = "no" ]; then
-            HAVE_XDAMAGE=$VAL
-        else
-            UNKNOWN_OPT=yes
-        fi
-        ;;
-    xrandr)
-        if [ "$VAL" = "yes" ] || [ "$VAL" = "no" ]; then
-            HAVE_XRANDR=$VAL
-        else
-            UNKNOWN_OPT=yes
-        fi
-        ;;
     mobility)
         if [ "$VAL" = "yes" ] || [ "$VAL" = "no" ]; then
             HAVE_MOBILITY=$VAL
@@ -291,12 +265,6 @@ Additional options:
     -no-contextsubscriber .... Do not compile Context Subscriber support
  +  -contextsubscriber ....... Compile Context Subscriber support
 
-    -no-xdamage .............. Do not compile XDamage support
- +  -xdamage ................. Compile XDamage support
-
-    -no-meegographicssystem .. Do not compile MeeGo graphics system support
-    -meegographicssystem ..... Compile MeeGo graphics system support
-
     -no-mobility ............. Do not compile Qt Mobility support
  +  -mobility ................ Compile Qt Mobility support
 
@@ -314,10 +282,7 @@ fi
 
 [ "$HAVE_MALIIT" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG maliit"
 [ "$HAVE_CONTEXTSUBSCRIBER" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG contextsubscriber"
-[ "$HAVE_MEEGOGRAPHICSSYSTEM" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG meegographicssystem"
 [ "$HAVE_THEMEDAEMON_PROTOCOL_V1" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG themedaemonprotocolv1"
-[ "$HAVE_XDAMAGE" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG xdamage"
-[ "$HAVE_XRANDR" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG xrandr"
 [ "$FORCE_LOCAL_THEME" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG force-local-theme"
 
 [ "$HAVE_MOBILITY" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG mobility"
@@ -346,9 +311,6 @@ echo "MeeGo Style ...................... $BUILD_MEEGO_STYLE"
 if [ "$BUILD_MEEGO_STYLE" = "yes" ]; then
     echo "  Maliit support ................. $HAVE_MALIIT"
     echo "  ContextSubscriber support  ..... $HAVE_CONTEXTSUBSCRIBER"
-    echo "  XDamage support  ............... $HAVE_XDAMAGE"
-    echo "  XRandr support  ................ $HAVE_XRANDR"
-    echo "  MeeGo Graphics System support .. $HAVE_MEEGOGRAPHICSSYSTEM"
     echo "  Force local theme .............. $FORCE_LOCAL_THEME"
 fi
 echo "Symbian Style .................... $BUILD_SYMBIAN_STYLE"

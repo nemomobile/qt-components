@@ -45,6 +45,7 @@
 #include <QDesktopWidget>
 #include <QPointer>
 #include <QVector3D>
+#include <QQuickItem>
 
 #define MEEGOTOUCH_DOUBLETAP_INTERVAL 325
 
@@ -141,11 +142,7 @@ public:
     static MDeclarativeScreen* instance();
     virtual ~MDeclarativeScreen();
 
-#if QT_VERSION >= 0x050000
     Q_INVOKABLE void updatePlatformStatusBarRect(QQuickItem * statusBar);
-#else
-    Q_INVOKABLE void updatePlatformStatusBarRect(QDeclarativeItem * statusBar);
-#endif
 
     Orientation currentOrientation() const;
 

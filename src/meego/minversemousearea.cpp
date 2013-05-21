@@ -93,7 +93,7 @@ QVariant MInverseMouseArea::itemChange(GraphicsItemChange change, const QVariant
         m_pressed = false;
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-        if (QQuickCanvas *newScene = data.window) {
+        if (QQuickWindow *newScene = data.window) {
 #else
         if (value.canConvert<QGraphicsScene *>()) {
             QGraphicsScene *newScene = value.value<QGraphicsScene *>();

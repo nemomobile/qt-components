@@ -41,10 +41,8 @@
 #include <QtDeclarative>
 #include <QApplication>
 
-#include "mdeclarativestatusbar.h"
 #include "mdeclarativescreen.h"
 #include "mdeclarativeinputcontext.h"
-#include "msnapshot.h"
 #include "mpagestatus.h"
 #include "mdialogstatus.h"
 #include "mpageorientation.h"
@@ -135,11 +133,6 @@ public:
 
     void registerTypes(const char *uri) {
         Q_ASSERT(uri == QLatin1String("com.meego") || uri == QLatin1String("com.nokia.meego") || uri == QLatin1String("Qt.labs.components.native"));
-        qmlRegisterType<MDeclarativeStatusBar>(uri, SINCE_VERSION(1, 0), "StatusBarInternal");
-#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
-        qmlRegisterType<MSnapshot>(uri, SINCE_VERSION(1, 0), "Snapshot");
-#endif
-
         qmlRegisterUncreatableType<MPageStatus>(uri, SINCE_VERSION(1, 0), "PageStatus", "");
         qmlRegisterUncreatableType<MDialogStatus>(uri, SINCE_VERSION(1, 0), "DialogStatus", "");
         qmlRegisterUncreatableType<MWindowState>(uri, SINCE_VERSION(1, 0), "WindowState","");

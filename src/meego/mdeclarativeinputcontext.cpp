@@ -322,7 +322,7 @@ void MDeclarativeInputContext::simulateSipClose()
 
 bool MDeclarativeInputContext::setPreeditText(const QString &newPreedit, int eventCursorPosition, int replacementStart, int replacementLength)
 {
-#ifdef HAVE_MALIIT
+#if defined(HAVE_MALIIT) && QT_VERSION < 0x050000
     QInputContext *ic = qApp->inputContext();
     if (ic) {
         Maliit::PreeditInjectionEvent event(newPreedit, eventCursorPosition);

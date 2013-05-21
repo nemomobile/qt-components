@@ -130,7 +130,7 @@ public:
 
     MDeclarativeScreen::Orientations physicalDisplayOrientation() const { return _physicalDisplayOrientation; }
 
-#elif QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     QPointer<QWindow> window;
 #endif
 

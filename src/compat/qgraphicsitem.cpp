@@ -32,5 +32,5 @@ CompatQGraphicsObject* CompatQGraphicsItem::parentObject() const
 
 CompatQGraphicsScene* CompatQGraphicsItem::scene() const
 {
-    return static_cast<CompatQGraphicsScene*>(canvas());
+    return static_cast<CompatQGraphicsScene*>(window());
 }

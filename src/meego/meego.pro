@@ -20,8 +20,8 @@ QT += network opengl
     CONFIG += link_pkgconfig
 }
 
-packagesExist(mlite) {
-    PKGCONFIG += mlite
+packagesExist(mlite5) {
+    PKGCONFIG += mlite5
     DEFINES+=HAVE_MLITE
 } else {
     warning("mlite is not available; theme detection won't work")
@@ -77,15 +77,15 @@ contains(MOBILITY_CONFIG, systeminfo) {
 
 contains(QT_CONFIG, dbus): DEFINES += HAVE_DBUS
 
-contains(QT_CONFIG, opengles2): CONFIG += egl
-
-contains(QT_CONFIG, xlib): DEFINES += HAVE_XLIB
+#contains(QT_CONFIG, opengles2) {
+#    CONFIG += egl 
+#    PKGCONFIG += bcm_host 
+#}
+#contains(QT_CONFIG, xlib): DEFINES += HAVE_XLIB
 
 SOURCES += \
     plugin.cpp \
-    mdeclarativestatusbar.cpp \
     mdeclarativescreen.cpp \
-    msnapshot.cpp \
     minversemousearea.cpp \
     mdeclarativeinputcontext.cpp \
     mdeclarativeimageprovider.cpp \
@@ -112,10 +112,8 @@ SOURCES += \
     feedbackplayer.cpp
 
 HEADERS += \
-    mdeclarativestatusbar.h \
     mdeclarativescreen.h \
     mdialogstatus.h \
-    msnapshot.h \
     mpagestatus.h \
     minversemousearea.h \
     mdeclarativeinputcontext.h \
@@ -260,7 +258,6 @@ equals(QT_MAJOR_VERSION, 5) {
         Snapshot.qml
 
     SOURCES -= \
-        msnapshot.cpp \
         mdeclarativemaskeditem.cpp \
         mdeclarativeview.cpp \
         mx11wrapper.cpp \
@@ -272,7 +269,6 @@ equals(QT_MAJOR_VERSION, 5) {
 
 
     HEADERS -= \
-        msnapshot.h \
         mdeclarativemaskeditem.h \
         mdeclarativeview.h \
         shadereffectitem/glfunctions.h \
