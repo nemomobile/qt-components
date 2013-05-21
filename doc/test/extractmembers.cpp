@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
 
     // Parse the qml file
     QDeclarativeEngine* qmlEngine = new QDeclarativeEngine();
-    qmlEngine->addPluginPath("../../imports/com/nokia/symbian"); // component's own imports specified fully so point directly to import folder where dll built to
+//    qmlEngine->addPluginPath("../../imports/com/nokia/symbian"); // component's own imports specified fully so point directly to import folder where dll built to
     //qmlEngine->addImportPath("../../imports");
     QDeclarativeComponent* qmlComponent = new QDeclarativeComponent(qmlEngine, QUrl::fromLocalFile(qmlfile.filePath()));
     if (qmlComponent->isError()) {

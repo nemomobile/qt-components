@@ -1,7 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file alias="memory_card.svg">images/memory_card.svg</file>
-        <file alias="MemoryDisplay.qml">../shared/MemoryDisplay.qml</file>
-        <file alias="list1.svg">images/list1.svg</file>
-    </qresource>
-</RCC>

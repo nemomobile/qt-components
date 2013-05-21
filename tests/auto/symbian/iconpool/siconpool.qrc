@@ -1,8 +1,0 @@
-<!DOCTYPE RCC><RCC version="1.0">
-<qresource>
-    <file alias="p1.png" >p1.png</file>
-    <file alias="p2.png" >p2.png</file>
-    <file alias="s1.svg" >s1.svg</file>
-    <file alias="s2.svg" >s2.svg</file>       
-</qresource>
-</RCC>

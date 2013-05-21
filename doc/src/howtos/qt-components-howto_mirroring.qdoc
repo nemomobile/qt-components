@@ -36,8 +36,6 @@
 
         \o \l { QML Right-to-left Support }
 
-        \o \l { Symbian QML Components Right-to-left Support }
-
         \o \l { Component-specific Notes }
 
         \o \l { Common Things Required for Enabling Application's UI Mirroring }
@@ -54,64 +52,12 @@
 
     Most right-to-left language speakers expect that the application content is 
     aligned to the right. Therefore they read and scan text and content in the 
-    right-to-left order. This page summarizes the right-to-left support - that 
-    is, the "mirroring" - implemented in Symbian QML components. It also 
-    provides some hints for developing an application that supports right-to-left UI.
+    right-to-left order.
 
     \section1 QML Right-to-left Support
     
     QML provides the right-to-left support in QtQuick 1.1. For more information,
     see \l http://doc.qt.nokia.com/4.7-snapshot/qml-righttoleft.html
-
-    \section1 Symbian QML Components Right-to-left Support
-
-    The right-to-left (RTL) support in Symbian QML components is enabled by 
-    setting the \c LayoutMirroring.enabled property to \c true. The application 
-    needs to enable it to indicate that it supports the RTL user interface.
-    
-    The context property \c symbian.rightToLeftDisplayLanguage can be used to
-    enable RTL in the application when the current display language is
-    right-to-left. The following code snippet illustrates this. Because the
-    \c childrenInherited property is \c true, the alignment value is inherited
-    to all child elements - except those child elements whose alignment property
-    is explicitly set.
-    
-    Enabling right-to-left UI in the application's main QML file:
-
-    \snippet src/snippets/symbian/snippet-layout-mirroring.qml 0
-
-    Other possibility is to bind the LayoutMirroring.enabled property to the
-    value of Qt.application.layoutDirection property, which by default determines
-    the layout direction from the active language translation file. It requires, however,
-    that the dedicated translation string literal QT_LAYOUT_DIRECTION is translated to either
-    "LTR" or "RTL" in the QApplication scope. For more information, see \l
-    http://doc.qt.nokia.com/4.7-snapshot/qml-righttoleft.html
-
-    The Symbian QML components implement RTL as it is specified in the platform 
-    style. This means mainly the following:
-    
-    \list
-
-    \o The horizontal flow of the content, for example the horizontal 
-    position of text and icon inside the component, is mirrored.
-
-    \o Texts and icons are mirrored.
-    
-    \o In some cases the icon itself, for example an arrow-type icon, is 
-    mirrored.
-    
-    \endlist
-    
-    The following components are not mirrored due to their nature:
-
-    \list
-        \o ProgressBar
-        \o Slider
-        \o Switch; only the positions of text and graphics on the screen are 
-        mirrored but not the switch's graphics
-        \o ToolBar
-        \o Tumbler
-    \endlist
 
     \section1 Component-specific Notes
     
