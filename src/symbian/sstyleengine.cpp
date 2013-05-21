@@ -70,7 +70,7 @@ public:
 
     void init();
     bool updateLayoutParameters();
-    void loadParameters(const QString &filePath, ParameterType type);
+    bool loadParameters(const QString &filePath, ParameterType type);
     void resolveFont();    
     void _q_displayChanged();
 
@@ -101,17 +101,20 @@ bool SStyleEnginePrivate::updateLayoutParameters()
     if (displayConfig != newDisplayConfig) {
         layoutParameters.clear();
         QString layoutFile = QLatin1String(":/params/layouts/") + newDisplayConfig + QLatin1String(".params");
-        if (QFile::exists(layoutFile))
-            loadParameters(layoutFile, ParameterType_Integer);
-        else
+
+        qDebug() << "DISPLAY: Trying to load:" << layoutFile;
+        if (!loadParameters(layoutFile, ParameterType_Integer)) {
+            qDebug() << "DISPLAY: Loading fallback.params";
             loadParameters(QLatin1String(":/params/layouts/fallback.params"), ParameterType_Unit);
+        }
+
         displayConfig = newDisplayConfig;
         return true;
     }
     return false;
 }
 
-void SStyleEnginePrivate::loadParameters(const QString &filePath, ParameterType type)
+bool SStyleEnginePrivate::loadParameters(const QString &filePath, ParameterType type)
 {
     qreal unit(0.0);
     if (type == ParameterType_Unit) {
@@ -147,8 +150,10 @@ void SStyleEnginePrivate::loadParameters(const QString &filePath, ParameterType 
                 continue;
 
             int colonId = line.indexOf(QLatin1Char(':'));
-            if (colonId < 0)
-                return;
+            if (colonId < 0) {
+                qWarning() << "SStyleEngine: malformed line " << line << " of " << filePath;
+                return false;
+            }
 
             QVariant value;
             QString valueStr = line.mid(colonId + 1).trimmed();
@@ -173,7 +178,10 @@ void SStyleEnginePrivate::loadParameters(const QString &filePath, ParameterType 
             }
         }
         file.close();
+        return true;
     }
+
+    return false;
 }
 
 void SStyleEnginePrivate::resolveFont()

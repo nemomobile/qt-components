@@ -1,42 +1,41 @@
 /****************************************************************************
-**
-** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
-**
-** This file is part of the Qt Components project.
-**
-** $QT_BEGIN_LICENSE:BSD$
-** You may use this file under the terms of the BSD license as follows:
-**
-** "Redistribution and use in source and binary forms, with or without
-** modification, are permitted provided that the following conditions are
-** met:
-**   * Redistributions of source code must retain the above copyright
-**     notice, this list of conditions and the following disclaimer.
-**   * Redistributions in binary form must reproduce the above copyright
-**     notice, this list of conditions and the following disclaimer in
-**     the documentation and/or other materials provided with the
-**     distribution.
-**   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
-**     the names of its contributors may be used to endorse or promote
-**     products derived from this software without specific prior written
-**     permission.
-**
-** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+ **
+ ** Copyright (C) 2013 Jolla Ltd.
+ ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+ **
+ ** This file is part of the Qt Components project.
+ **
+ ** $QT_BEGIN_LICENSE:BSD$
+ ** You may use this file under the terms of the BSD license as follows:
+ **
+ ** "Redistribution and use in source and binary forms, with or without
+ ** modification, are permitted provided that the following conditions are
+ ** met:
+ **   * Redistributions of source code must retain the above copyright
+ **     notice, this list of conditions and the following disclaimer.
+ **   * Redistributions in binary form must reproduce the above copyright
+ **     notice, this list of conditions and the following disclaimer in
+ **     the documentation and/or other materials provided with the
+ **     distribution.
+ **   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
+ **     the names of its contributors may be used to endorse or promote
+ **     products derived from this software without specific prior written
+ **     permission.
+ **
+ ** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ ** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ ** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+ ** $QT_END_LICENSE$
+ **
+ ****************************************************************************/
 
 #ifndef MTHEMEDAEMONPROTOCOL_H
 #define MTHEMEDAEMONPROTOCOL_H
@@ -52,10 +51,7 @@ namespace M
 {
     namespace MThemeDaemonProtocol
     {
-#ifdef HAVE_THEMEDAEMON_PROTOCOL_V1
         const qint32 protocolVersion = 1;
-#endif
-
         extern const QString ServerAddress;
 
         struct PacketData {
@@ -68,7 +64,7 @@ namespace M
             enum PacketType {
                 // Initial packet type
                 Unknown                             = 0,
-#ifdef HAVE_THEMEDAEMON_PROTOCOL_V1
+
                 // Packet which must be sent by the client to the daemon after
                 // sending the protocol version and before doing any other
                 // communication.
@@ -82,12 +78,6 @@ namespace M
                 // protocol version. If the client wants to continue it must use
                 // the protocol version sent by the themedaemon from now on.
                 ProtocolVersionPacket               = 2,
-#else
-                // Packet which must be sent by the client to the daemon before asking
-                // anything else. The type of the data is StringPacketData
-                // and should contain the name of the client.
-                RequestRegistrationPacket           = 1,
-#endif
 
                 // The client tells the daemon that it will use a specific
                 // package. It does not expect an answer as it already
@@ -183,11 +173,7 @@ namespace M
 
             Qt::HANDLE xHandle;
             Qt::HANDLE eglHandle;
-#ifdef HAVE_THEMEDAEMON_PROTOCOL_V1
             QByteArray shmHandle;
-#else
-            QString shmHandle;
-#endif
             QSize size;
             QImage::Format format;
             int numBytes;
@@ -308,18 +294,10 @@ namespace M
     }
 }
 
-#ifdef HAVE_THEMEDAEMON_PROTOCOL_V1
-    QDataStream &operator<<(QDataStream &stream, const M::MThemeDaemonProtocol::Packet &packet);
-    void writePacketData(QDataStream &stream, const M::MThemeDaemonProtocol::Packet &packet);
-    QDataStream &operator>>(QDataStream &stream, M::MThemeDaemonProtocol::Packet &packet);
-    void readPacketData(QDataStream &stream, M::MThemeDaemonProtocol::Packet &packet);
-#else
-    QString readQString(QDataStream &stream);
-    QStringList readQStringList(QDataStream &stream);
-
-    QDataStream &operator<<(QDataStream &stream, const M::MThemeDaemonProtocol::Packet &packet);
-    QDataStream &operator>>(QDataStream &stream, M::MThemeDaemonProtocol::Packet &packet);
-#endif
+QDataStream &operator<<(QDataStream &stream, const M::MThemeDaemonProtocol::Packet &packet);
+void writePacketData(QDataStream &stream, const M::MThemeDaemonProtocol::Packet &packet);
+QDataStream &operator>>(QDataStream &stream, M::MThemeDaemonProtocol::Packet &packet);
+void readPacketData(QDataStream &stream, M::MThemeDaemonProtocol::Packet &packet);
 
 QDataStream &operator<<(QDataStream &stream, const M::MThemeDaemonProtocol::PixmapHandlePacketData &handle);
 QDataStream &operator>>(QDataStream &stream, M::MThemeDaemonProtocol::PixmapHandlePacketData &handle);

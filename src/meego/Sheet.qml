@@ -48,7 +48,7 @@ MouseArea {
     height: parent ? parent.height : 0
 
     property alias title: header.children 
-    property alias content: contentField.children
+    default property alias content: contentField.data
     property alias buttons: header.children
     property Item visualParent
     property int status: DialogStatus.Closed

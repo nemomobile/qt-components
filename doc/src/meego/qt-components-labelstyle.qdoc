@@ -70,7 +70,7 @@
 /*!
     \qmlproperty string LabelStyle::fontFamily
 
-    Property default value is \c UI.FONT_FAMILY
+    Property default value is \c UiConstants.DefaultFontFamily.
 
     Font family.
 */

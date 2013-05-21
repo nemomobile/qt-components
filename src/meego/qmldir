@@ -74,3 +74,8 @@ ToolItem 1.1 ToolItem.qml
 ToolIcon 1.1 ToolIcon.qml
 ToolItemStyle 1.1 ToolItemStyle.qml
 Window 1.1 Window.qml
+
+SelectableLabel 1.2 SelectableLabel.qml
+PageHeader 1.2 PageHeader.qml
+ViewPlaceholder 1.2 ViewPlaceholder.qml
+

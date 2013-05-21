@@ -42,21 +42,18 @@ import QtQuick 1.1
 import com.nokia.meego 1.0
 import "constants.js" as UI
 
-Item {
+MouseArea {
     id: listItem
-
-    signal clicked
-    property alias pressed: mouseArea.pressed
 
     property int titleSize: UI.LIST_TILE_SIZE
     property int titleWeight: Font.Bold
-    property string titleFont: (locale && locale.language == "fa") ? UI.FONT_FAMILY_FARSI : UI.FONT_FAMILY
+    property string titleFont: UiConstants.DefaultFontFamily
     property color titleColor: theme.inverted ? UI.LIST_TITLE_COLOR_INVERTED : UI.LIST_TITLE_COLOR
     property color titleColorPressed: theme.inverted ? UI.LIST_TITLE_COLOR_PRESSED_INVERTED : UI.LIST_TITLE_COLOR_PRESSED
 
     property int subtitleSize: UI.LIST_SUBTILE_SIZE
     property int subtitleWeight: Font.Normal
-    property string subtitleFont: (locale && locale.language == "fa") ? UI.FONT_FAMILY_LIGHT_FARSI : UI.FONT_FAMILY_LIGHT
+    property string subtitleFont: UiConstants.DefaultFontFamilyLight
     property color subtitleColor: theme.inverted ? UI.LIST_SUBTITLE_COLOR_INVERTED : UI.LIST_SUBTITLE_COLOR
     property color subtitleColorPressed: theme.inverted ? UI.LIST_SUBTITLE_COLOR_PRESSED_INVERTED : UI.LIST_SUBTITLE_COLOR_PRESSED
 
@@ -76,7 +73,7 @@ Item {
         // Fill page porders
         anchors.leftMargin: -UI.MARGIN_XLARGE
         anchors.rightMargin: -UI.MARGIN_XLARGE
-        visible: mouseArea.pressed
+        visible: listItem.pressed
         source: theme.inverted ? "image://theme/meegotouch-panel-inverted-background-pressed" : "image://theme/meegotouch-panel-background-pressed"
     }
 
@@ -89,7 +86,7 @@ Item {
             visible: listItem.iconSource ? true : false
             width: UI.LIST_ICON_SIZE
             height: UI.LIST_ICON_SIZE
-            source: listItem.iconSource ? listItem.iconSource : ""
+            source: listItem.iconSource
         }
 
         Column {
@@ -101,26 +98,19 @@ Item {
                 font.family: listItem.titleFont
                 font.weight: listItem.titleWeight
                 font.pixelSize: listItem.titleSize
-                color: mouseArea.pressed ? listItem.titleColorPressed : listItem.titleColor
+                color: listItem.pressed ? listItem.titleColorPressed : listItem.titleColor
             }
 
             Label {
                 id: subText
-                text: listItem.subtitleText ? listItem.subtitleText : ""
+                text: listItem.subtitleText
                 font.family: listItem.subtitleFont
                 font.weight: listItem.subtitleWeight
                 font.pixelSize: listItem.subtitleSize
-                color: mouseArea.pressed ? listItem.subtitleColorPressed : listItem.subtitleColor
+                color: listItem.pressed ? listItem.subtitleColorPressed : listItem.subtitleColor
 
                 visible: text != ""
             }
-        }
-    }
-    MouseArea {
-        id: mouseArea;
-        anchors.fill: parent
-        onClicked: {
-            listItem.clicked();
         }
     }
 

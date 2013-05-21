@@ -1,8 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2013 Robin Burchell <robin+nemo@viroteck.net>
 **
 ** This file is part of the Qt Components project.
 **
@@ -38,53 +36,19 @@
 **
 ****************************************************************************/
 
-#ifndef MTESTTHEMEDAEMONSERVER_H
-#define MTESTTHEMEDAEMONSERVER_H
+import QtQuick 1.1
+import com.nokia.meego 1.2
 
-#include <QHash>
-#include <QObject>
-#include <QLocalServer>
-
-#include <themedaemon/mthemedaemonprotocol.h>
-
-class QDataStream;
-class QPixmap;
-
-/**
- * \brief Test implementation of the themedaemon server from libmeegotouch.
- *
- * Implements the core behavior of the themedaemon server to be able to test the
- * themedaemon client implemented by MRemoteThemeDaemonClient.
- */
-class TestThemeDaemonServer : public QObject
-{
-    Q_OBJECT
-
-public:
-    /**
-     * \param serverAddress Address of the server where the client will be connected to.
-     * \param pixmapCache   List of available pixmaps that may get requested by the client.
-     * \param parent        Parent object.
-     */
-    TestThemeDaemonServer(const QString &serverAddress,
-                          QHash<M::MThemeDaemonProtocol::PixmapIdentifier, const QPixmap*> pixmapCache,
-                          QObject *parent = 0);
-
-    virtual ~TestThemeDaemonServer();
-
-private slots:
-    void slotClientConnected();
-    void slotClientDataAvailable();
-
-private:
-    void sendMostUsedPixmaps(QDataStream &stream, quint64 sequenceNumber);
-
-    bool m_protocolVersionExchanged;
-    bool m_clientRegistered;
-    QString m_serverAddress;
-    QLocalServer* m_server;
-    QHash<M::MThemeDaemonProtocol::PixmapIdentifier, const QPixmap*> m_pixmapCache;
-};
-
-#endif
-
+Label {
+    enabled: false
+    opacity: enabled ? 1.0 : 0.0
+    anchors.horizontalCenter: parent.horizontalCenter
+    horizontalAlignment: Text.AlignHCenter
+    width: parent.width - UiConstants.DefaultMargin * 2
+    y: (parent.height - height) / 2
+    x: UiConstants.DefaultMargin
+    wrapMode: Text.Wrap
+    color: theme.inverted ? "#8c8c8c" : "#848284"
+    font.family: UiConstants.DefaultFontFamilyLight
+    font.pixelSize: 85
+}
