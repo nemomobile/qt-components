@@ -17,9 +17,10 @@ PkgConfigBR:
     - Qt5Gui
     - Qt5Quick
     - Qt5Qml
+    - Qt5DBus
 #    - contextsubscriber-1.0
 #    - maliit-1.0
-#    - mlite
+    - mlite5
 Configure: none
 Builder: make
 RunFdupes:
