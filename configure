@@ -45,7 +45,6 @@ SOURCE_TREE=`cd "$SOURCE_TREE"; /bin/pwd`
 INSTALL_PREFIX=/usr
 
 BUILD_MEEGO_STYLE=no
-BUILD_DEMOS=yes
 BUILD_EXAMPLES=yes
 BUILD_EXTRAS=yes
 BUILD_TESTS=yes
@@ -84,7 +83,6 @@ fi
 
 QT_MAJOR_VERSION=$($QMAKE -query QT_VERSION | cut -d "." -f 1)
 if [ $QT_MAJOR_VERSION -eq 5 ]; then
-    BUILD_DEMOS=no
     BUILD_EXTRAS=yes
     BUILD_TESTS=no
     HAVE_MEEGOTOUCH=no
@@ -147,10 +145,6 @@ while [ "$#" -gt 0 ]; do
         ;;
     nomake)
         case "$1" in
-        demos)
-            BUILD_DEMOS=no
-            shift
-            ;;
         examples)
             BUILD_EXAMPLES=no
             shift
@@ -171,9 +165,6 @@ while [ "$#" -gt 0 ]; do
         ;;
     make)
         case "$1" in
-        demos)
-            BUILD_DEMOS=yes
-            ;;
         examples)
             BUILD_EXAMPLES=yes
             ;;
@@ -233,7 +224,7 @@ Configure options:
     -meego ................... Build MeeGo Style
     -config (config) ......... Configuration options recognized by qmake
     -make (part) ............. Add part to the list of parts to be built at
-                               make time (available parts: demos examples extras tests)
+                               make time (available parts: examples extras tests)
     -nomake (part) ........... Exclude part from the list of parts to be built
 
 Additional options:
@@ -257,7 +248,6 @@ EOF
 fi
 
 [ "$BUILD_MEEGO_STYLE" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG meego"
-[ "$BUILD_DEMOS" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG demos"
 [ "$BUILD_EXAMPLES" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG examples"
 [ "$BUILD_EXTRAS" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG extras"
 [ "$BUILD_TESTS" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG tests"
@@ -291,7 +281,6 @@ if [ "$BUILD_MEEGO_STYLE" = "yes" ]; then
     echo "  Force local theme .............. $FORCE_LOCAL_THEME"
 fi
 echo "Extras ........................... $BUILD_EXTRAS"
-echo "Demos ............................ $BUILD_DEMOS"
 echo "Examples ......................... $BUILD_EXAMPLES"
 echo "Tests ............................ $BUILD_TESTS"
 echo

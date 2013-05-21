@@ -46,8 +46,6 @@ release/
 /doc/html
 /imports/
 /features/*config.prf
-/demos/flickr/flickr
-/demos/musicplayer/musicplayer
 /examples/native/focus/focus
 /examples/meego/QmlComponentGallery/QmlComponentGallery
 /examples/meego/QmlComponentExtrasGallery/QmlComponentExtrasGallery
