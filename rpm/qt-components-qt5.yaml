@@ -1,4 +1,4 @@
-Name: qt-components
+Name: qt-components-qt5
 Summary: Qt Quick UX Components
 Version: 1.4.9
 Release: 1
@@ -13,17 +13,13 @@ Description: The Harmattan Qt Quick UX Components
 PkgBR:
     - desktop-file-utils
 PkgConfigBR:
-    - QtCore >= 4.7.0
-    - QtGui
-    - QtOpenGL
-    - xrandr
-    - xdamage
-    - x11
-    - contextsubscriber-1.0
-    - maliit-1.0
-    - mlite
-Requires:
-    - mthemedaemon
+    - Qt5Core
+    - Qt5Gui
+    - Qt5Quick
+    - Qt5Qml
+#    - contextsubscriber-1.0
+#    - maliit-1.0
+#    - mlite
 Configure: none
 Builder: make
 RunFdupes:
