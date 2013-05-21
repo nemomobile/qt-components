@@ -7,7 +7,7 @@ INCLUDEPATH += $$PWD/src/components
 
 CONFIG += qt-components depend_includepath qt-components_build
 
-unix:!symbian {
+unix {
     CONFIG(release, debug|release) {
         OBJECTS_DIR = .release
         MOC_DIR = .release

@@ -2,7 +2,7 @@ This source tree contains the Qt Quick Components project.
 
 Building
 ========
-configure (for compiling specific component sets add '-meego' or '-symbian')
+configure
 make
 make install
 
@@ -13,20 +13,8 @@ The project is divided into:
 and also (for the time being) two QML modules for component sets implemented using those components
 
 - com.meego: components from MeeGo Touch UI library,
-- com.nokia.symbian: set of UI components for Symbian.
 
 The lib will install in QTDIR/lib, while the modules will go to QTDIR/imports.
-
-Build dependencies
-==================
-- MeeGo components set currently requires Qt 4.7.0
-- Symbian components set currently requires Qt 4.7.4
-
-Optional dependencies
-=====================
-- MeeGo Touch (for some features of the the com.meego module)
-  -- On desktop, download and install: libmeegotouch & meegotouch-theme from http://meego.gitorious.org/meegotouch
-  -- NOTE: meegotouch is already available if you are compiling inside scratchbox with a maemo6 target setup
 
 Coding Style
 ==================
@@ -38,23 +26,6 @@ Coding Styles
 - QML: http://doc.qt.nokia.com/4.7/qml-coding-conventions.html
 - JS: https://developer.mozilla.org/En/Developer_Guide/Coding_Style
 
-Running on Desktop
-==================
-- Pass -graphicssystem native
-- On mac, running tests require prefixing the path to the libqtcomponentsplugin.dylib: 
-   "DYLD_LIBRARY_PATH=/Developer/depot/qt/imports/Qt/labs/components/ make check"
-
-Building the Documentation
-==================
-
-To generate the Symbian components documentation:
-configure -symbian
-make docs
-
-This will generate HTML files in the doc/html directory. Also, a qch file will
-be generated in the doc/qch directory. This qch file can be loaded in
-Qt Assistant or Qt Creator.
-
 Build instructions for MeeGoTouch (quickstart)
 ==============================================
 (After trying to install things in a different prefix,
@@ -62,17 +33,10 @@ Build instructions for MeeGoTouch (quickstart)
 
 You will need these projects:
 git://gitorious.org/meegotouch/meegotouch-theme.git
-git://gitorious.org/meegotouch/libmeegotouch.git
 git@gitorious.org:qt-components/qt-components.git
 
 1: meegotouch-theme: qmake PREFIX=/usr/local/ && sudo make install
 
-2: libmeegotouch:
-   ./configure --prefix=/usr
- Make sure that you configure with dbus. If it doesn't pick up qt's dbus:
-   export PKG_CONFIG_PATH=$QTDIR/lib/pkgconfig
-   make install
-
-3: qt-components: ./configure -meego && make install
+2: qt-components: ./configure -meego && make install
      (installs into your current binary qt path)
      or use dpkg-buildpackage to make a .deb package

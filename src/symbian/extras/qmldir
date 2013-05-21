@@ -1,9 +1,0 @@
-plugin symbianextrasplugin_1_1_3
-DatePickerDialog 1.1 DatePickerDialog.qml
-InfoBanner 1.1 InfoBanner.qml
-RatingIndicator 1.1 RatingIndicator.qml
-SearchBox 1.1 SearchBox.qml
-TimePickerDialog 1.1 TimePickerDialog.qml
-Tumbler 1.1 Tumbler.qml
-TumblerColumn 1.1 TumblerColumn.qml
-TumblerDialog 1.1 TumblerDialog.qml

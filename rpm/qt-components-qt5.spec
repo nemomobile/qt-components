@@ -80,15 +80,15 @@ desktop-file-install --delete-original       \
 
 %files
 %defattr(-,root,root,-)
-%{_libdir}/qt4/imports/Qt/labs/*
-%{_libdir}/qt4/imports/com/meego/*
-%{_libdir}/qt4/imports/com/nokia/*
+%{_libdir}/qt5/imports/Qt/labs/*
+%{_libdir}/qt5/imports/com/meego/*
+%{_libdir}/qt5/imports/com/nokia/*
 # >> files
 # << files
 
 %files devel
 %defattr(-,root,root,-)
-%{_datadir}/qt4/mkspecs/*
+%{_datadir}/qt5/mkspecs/*
 # >> files devel
 # << files devel
 

@@ -37,30 +37,26 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-/*!
-    \page qt-components-meego-introduction.html
-    \group qt-components
-    \title Qt-Components
-    \ingroup groups
-    
-    \title Introduction to the Qt Quick components
-    
-    The Qt Quick components are built on top of Qt Quick and provide native-look 
-    user interface elements for your QML-based applications. They are bundled together as 
-    a module that you can import into your QML file. Once you have imported the 
-    components module, you can use the components just as you would use standard 
-    QML elements such as Rectangle and Text. As with normal QML applications, 
-    you can still use JavaScript and/or Qt C++ for the business logic of your application.   
 
-    \section1 Using the Components 
-    You can use the Qt Quick components in your QML application with one of the following 
-    imports at the top of your QML document:
+#include <QtDeclarative>
+#include <QDeclarativeView>
+#include <QApplication>
 
-    \code
-    import com.nokia.meego      // MeeGo 1.2 Harmattan components
-    \endcode
+int main(int argc, char **argv)
+{
+    QApplication app(argc, argv);
 
-    When using components it is necessary to use Window or PageStackWindow component
-    as a base component for the application. If those are not used some of the features
-    provided by the Qt Quick Components does not work.
-*/
+    app.setProperty("NoMStyle", true);
+
+    QDir::setCurrent(app.applicationDirPath());
+
+    QDeclarativeView window;
+    window.setSource(QUrl("qrc:/main.qml"));
+#ifdef __arm__
+    window.showFullScreen();
+#else
+    window.show();
+#endif
+
+    return app.exec();
+}

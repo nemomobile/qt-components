@@ -414,9 +414,6 @@ void tst_quickcomponentstextarea::positionAt()
     QVERIFY2(QMetaObject::invokeMethod(componentObject, "positionAt",
                                        Q_RETURN_ARG(QVariant, retVal), Q_ARG(QVariant, mappedWidth.x()),
                                        Q_ARG(QVariant, mappedWidth.y())), "Could not call positionAt");
-#ifdef Q_OS_SYMBIAN
-    QEXPECT_FAIL("", "Flickable inside Symbian TextArea breaks mapTo/From functions", Continue);
-#endif
     QCOMPARE(text.left(retVal.toInt()), text);
 }
 
@@ -451,9 +448,6 @@ void tst_quickcomponentstextarea::positionToRectangle()
     // the 'x' of the rectangle should be the same as the width of the text
     // until the position returned
     QFontMetrics fm(mfont);
-#ifdef Q_COMPONENTS_SYMBIAN
-    QEXPECT_FAIL("", "Flickable inside Symbian TextArea breaks mapTo/From functions", Continue);
-#endif
     QCOMPARE((int)root->mapRectToItem(textEdit, retVal.toRectF()).x(), fm.width(text.left(retValPos.toInt())));
 
     // the position shouldn't have changed

@@ -45,7 +45,6 @@ SOURCE_TREE=`cd "$SOURCE_TREE"; /bin/pwd`
 INSTALL_PREFIX=/usr
 
 BUILD_MEEGO_STYLE=no
-BUILD_SYMBIAN_STYLE=no
 BUILD_DEMOS=yes
 BUILD_EXAMPLES=yes
 BUILD_EXTRAS=yes
@@ -54,8 +53,6 @@ HAVE_MALIIT=no
 HAVE_CONTEXTSUBSCRIBER=no
 HAVE_THEMEDAEMON_PROTOCOL_V1=yes
 FORCE_LOCAL_THEME=no
-HAVE_MOBILITY=auto
-HAVE_SYMBIAN_INTERNAL=no
 QMAKE_CONFIG=
 QMAKE_DEBUG=
 OPT_HELP=no
@@ -111,7 +108,7 @@ while [ "$#" -gt 0 ]; do
         VAL=no
         ;;
     #Qt style yes options
-    -meego|-symbian|-maliit|-contextsubscriber|-force-local-theme|-mobility)
+    -meego|-maliit|-contextsubscriber|-force-local-theme|-mobility)
         VAR=`echo $1 | sed 's,^-\(.*\),\1,'`
         VAL=yes
         ;;
@@ -147,12 +144,6 @@ while [ "$#" -gt 0 ]; do
         ;;
     force-local-theme)
         FORCE_LOCAL_THEME=yes
-        ;;
-    symbian)
-        BUILD_SYMBIAN_STYLE=yes
-        ;;
-    symbian-internal)
-        HAVE_SYMBIAN_INTERNAL=yes
         ;;
     nomake)
         case "$1" in
@@ -221,13 +212,6 @@ while [ "$#" -gt 0 ]; do
             UNKNOWN_OPT=yes
         fi
         ;;
-    mobility)
-        if [ "$VAL" = "yes" ] || [ "$VAL" = "no" ]; then
-            HAVE_MOBILITY=$VAL
-        else
-            UNKNOWN_OPT=yes
-        fi
-        ;;
     *)
         UNKNOWN_OPT=yes
         ;;
@@ -241,13 +225,12 @@ done
 
 if [ "$OPT_HELP" = "yes" ]; then
     cat << EOF
-Usage:  configure [-meego] [-symbian] [-config <config>]
+Usage:  configure [-meego] [-config <config>]
     [-make <part>] [-nomake <part>] [-help]
 
 Configure options:
 
     -meego ................... Build MeeGo Style
-    -symbian ................. Build Symbian Style
     -config (config) ......... Configuration options recognized by qmake
     -make (part) ............. Add part to the list of parts to be built at
                                make time (available parts: demos examples extras tests)
@@ -274,7 +257,6 @@ EOF
 fi
 
 [ "$BUILD_MEEGO_STYLE" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG meego"
-[ "$BUILD_SYMBIAN_STYLE" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG symbian3"
 [ "$BUILD_DEMOS" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG demos"
 [ "$BUILD_EXAMPLES" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG examples"
 [ "$BUILD_EXTRAS" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG extras"
@@ -284,11 +266,6 @@ fi
 [ "$HAVE_CONTEXTSUBSCRIBER" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG contextsubscriber"
 [ "$HAVE_THEMEDAEMON_PROTOCOL_V1" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG themedaemonprotocolv1"
 [ "$FORCE_LOCAL_THEME" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG force-local-theme"
-
-[ "$HAVE_MOBILITY" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG mobility"
-[ "$HAVE_MOBILITY" = "no" ] && QMAKE_CONFIG="$QMAKE_CONFIG no_mobility"
-
-[ "$HAVE_SYMBIAN_INTERNAL" = "yes" ] && QMAKE_CONFIG="$QMAKE_CONFIG symbian_internal"
 
 echo "CONFIG +=$QMAKE_CONFIG" > $CONFIG_PRF
 echo "Q_COMPONENTS_SOURCE_TREE = $SOURCE_TREE" > $QMAKE_CACHE
@@ -312,11 +289,6 @@ if [ "$BUILD_MEEGO_STYLE" = "yes" ]; then
     echo "  Maliit support ................. $HAVE_MALIIT"
     echo "  ContextSubscriber support  ..... $HAVE_CONTEXTSUBSCRIBER"
     echo "  Force local theme .............. $FORCE_LOCAL_THEME"
-fi
-echo "Symbian Style .................... $BUILD_SYMBIAN_STYLE"
-if [ "$BUILD_SYMBIAN_STYLE" = "yes" ]; then
-    echo "  Qt Mobility support ............ $HAVE_MOBILITY"
-    echo "  Symbian internal SDK ........... $HAVE_SYMBIAN_INTERNAL"
 fi
 echo "Extras ........................... $BUILD_EXTRAS"
 echo "Demos ............................ $BUILD_DEMOS"

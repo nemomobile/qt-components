@@ -42,7 +42,6 @@ HTML.postheader         = " <div class=\"header\" id=\"qtdocheader\">\n" \
 			  "          <div  id=\"list001\" class=\"list\">\n" \
 			  "          <ul id=\"ul001\" >\n" \
 			  "              <li class=\"defaultLink\"><a href=\"qt-components-introduction.html\">Introduction</a></li>\n" \
-			  "              <li class=\"defaultLink\"><a href=\"symbian-components-functional.html\">Symbian Components</a></li>\n" \
 			  "              <li class=\"defaultLink\"><a href=\"qt-components-extras.html\">Extras Components</a></li>\n" \
 			  "			   <li class=\"defaultLink\"><a href=\"qt-components-examples.html\">Examples and Demos</a></li> \n" \
 			  "            </ul> \n" \
@@ -55,7 +54,6 @@ HTML.postheader         = " <div class=\"header\" id=\"qtdocheader\">\n" \
 			  "            <ul id=\"ul002\" >\n" \
 			  "			   <li class=\"defaultLink\"><a href=\"qt-components-build.html\">Installation Instructions</a></li> \n" \
 			  "			   <li class=\"defaultLink\"><a href=\"qt-components-pages-and-navigation-overview.html\">Page and PageStack Navigation</a></li> \n" \
-			  "			   <li class=\"defaultLink\"><a href=\"qt-components-pattern.html\">Symbian UI Design</a></li> \n" \
 			  "			   <li class=\"defaultLink\"><a href=\"qt-components-scalability-guidelines-contents.html\">Creating Scalable Applications</a></li> \n" \
 			  "            </ul>  \n" \
 			  "          </div>\n" \

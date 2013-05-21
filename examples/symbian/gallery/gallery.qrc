@@ -1,9 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file alias="close_stop.svg">images/close_stop.svg</file>
-        <file alias="ok.svg">images/ok.svg</file>
-        <file>gallery.qml</file>
-        <file>galleryContent.qml</file>
-        <file>SampleColumn.qml</file>
-    </qresource>
-</RCC>

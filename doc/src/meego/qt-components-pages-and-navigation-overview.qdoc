@@ -163,41 +163,6 @@
     }
     \endcode
 
-    You can use \l TabBarLayout, and \l TabBar in Symbian, to layout buttons for
-    a stand-alone tool bar. In this case, the you must position the
-    \l TabBarLayout.
-
-    \code
-    TabBarLayout {
-        anchors.top: parent.top
-        width: parent.width
-        TabButton {...}
-        TabButton {...}
-    }
-    \endcode
-
-    The tab content is managed by the \l TabGroup component whose child items
-    are content items.
-
-    \code
-    TabGroup {
-        anchors {...} // user needs to layout the tab group
-        Page { id: tab1Content }
-        Page { id: tab2Content }
-    }
-    \endcode
-
-    The button and the content items are linked together with the TabButton's \c
-    tab property.
-
-    \code
-    TabButton { id: tab1Button; tab: tab1Content }
-    \endcode
-
-    Once the linking is established, the TabButton and TabGroup components
-    manage the tab content switching and also highlight the corresponding tab
-    button.
-
     \section2 Dynamic Tab Handling
 
     In most cases, the tab count is static. Therefore, you can statically

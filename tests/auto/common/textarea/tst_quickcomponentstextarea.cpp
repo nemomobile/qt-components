@@ -117,10 +117,7 @@ void tst_quickcomponentstextarea::initTestCase()
     // this is a safe assumption for symbian and meego components as these tests
     // aims to test the features of those two platforms components.
     root = qobject_cast<QGraphicsObject*>(componentObject);
-#ifdef Q_COMPONENTS_SYMBIAN
-    // Symbian style has two TextEdit instances. Find with objectName.
-    textEdit = componentObject->findChild<QGraphicsObject*>("textEdit");
-#else
+
     // Assuming TextEdit is a direct child of TextArea.
     const QObjectList list = componentObject->children();
     foreach (QObject *obj, list) {
@@ -129,7 +126,6 @@ void tst_quickcomponentstextarea::initTestCase()
             break;
         }
     }
-#endif
 
     QVERIFY(root);
     QVERIFY(textEdit);

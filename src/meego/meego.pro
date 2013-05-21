@@ -16,7 +16,7 @@ QT += network opengl
     DEFINES += HAVE_DBUS
 }
 
-!win32:!embedded:!mac:!symbian {
+!win32:!embedded:!mac {
     CONFIG += link_pkgconfig
 }
 
