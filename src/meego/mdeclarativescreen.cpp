@@ -53,6 +53,8 @@
 # include "mservicelistener.h"
 #endif
 
+#include <QGuiApplication>
+
 #ifdef HAVE_XLIB
   // These includes conflict with some of Qt's types, so should be kept last
 # include <X11/Xatom.h>
