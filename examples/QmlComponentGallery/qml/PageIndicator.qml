@@ -40,94 +40,63 @@
 
 import QtQuick 2.0
 import com.nokia.meego 2.0
-import com.nokia.extras 2.0
 
 Page {
     id: container
     anchors.margins: UiConstants.DefaultMargin
     tools: commonTools
 
-    property int index: -1
+    Column {
+        id: controls
+        x: 350
+
+        Button {
+            id: nextButton
+            text: "Next page"
+            onClicked: { indicator.currentPage++ }
+        }
+        Button {
+            id: previousButton
+            text: "Previous page"
+            onClicked: { indicator.currentPage-- }
+        }
+        Button {
+            id: addTotal
+            text: "Increase total pages"
+            onClicked: { indicator.totalPages++ }
+        }
+        Button {
+            id: removeTotal
+            text: "Decrease total pages"
+            onClicked: { indicator.totalPages-- }
+        }
+        Button {
+            id: negativeButton
+            text: "Inverted visual"
+            onClicked: { theme.inverted = true }
+        }
+        Button {
+            id: positiveButton
+            text: "Normal visual"
+            onClicked: { theme.inverted = false }
+        }
+    }
 
     Item {
-        anchors {
-            top: parent.top
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-        }
+        id: r1
 
-        Button {
-            id: tumblerButton
-            anchors.top: parent.top
-            anchors.topMargin: 10
-            text: "Default Time Picker"
-            width: 300
-            height: 35
-            onClicked: launchDialog()
-        }
+        width: 200
+        height: 50
 
-        Button {
-            id: todayButton
-            anchors.top: tumblerButton.bottom
-            anchors.topMargin: 10
-            text: "4:05pm (12)"
-            width: 300
-            height: 35
-            onClicked: launchDialog(16, 5, DateTime.TwelveHours, DateTime.All)
-        }
+        x: 100;
+        y: 100;
 
-        Button {
-            id: dateButton
-            anchors.top: todayButton.bottom
-            anchors.topMargin: 10
-            text: "16:10 (24)"
-            width: 300
-            height: 35
-            onClicked: launchDialog(16, 10, DateTime.TwentyFourHours, DateTime.All)
-        }
-
-        Button {
-            id: noSecondsButton
-            anchors.top: dateButton.bottom
-            anchors.topMargin: 10
-            text: "13:18 (No seconds)"
-            width: 300
-            height: 35
-            onClicked: launchDialog(13, 18, DateTime.TwentyFourHours, DateTime.Hours | DateTime.Minutes)
-        }
-
-        Label {
-            id: result
-            anchors.top: noSecondsButton.bottom
-            anchors.topMargin: 10
+        PageIndicator {
+            id: indicator
+            objectName: "pageIndicatorObject"
+            currentPage: 2
+            totalPages: 3
         }
     }
 
-    function launchDialog(hour, minute, hoursMode, fields) {
-        if (hour) {
-            tDialog.hour = hour;
-            tDialog.minute = minute;
-            tDialog.second = 0;
-        }
-        if (hoursMode != undefined) {
-            tDialog.hourMode = hoursMode;
-        }
-        if (fields != undefined) {
-            tDialog.fields = fields;
-        }
-        tDialog.open();
-    }
-
-    function callbackFunction() {
-        result.text = tDialog.hour + ":" + (tDialog.minute < 10 ? "0" : "" ) + tDialog.minute  + ":" + (tDialog.second < 10 ? "0" : "") + tDialog.second;
-    }
-
-    TimePickerDialog {
-        id: tDialog
-        titleText: "Time"
-        acceptButtonText: "Ok"
-        rejectButtonText: "Cancel"
-        onAccepted: callbackFunction()
-    }
 }

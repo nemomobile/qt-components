@@ -44,7 +44,5 @@ SubPackages:
       Description: |
           Provides test applications showcasing Qt Components widgets.
       Files:
-          - "%{_bindir}/QmlComponentExtrasGallery"
           - "%{_bindir}/QmlComponentGallery5"
-          - "%{_datadir}/applications/qmlcomponentextrasgallery.desktop"
           - "%{_datadir}/applications/qmlcomponentgallery.desktop"

@@ -85,6 +85,7 @@ contains(QT_CONFIG, dbus): DEFINES += HAVE_DBUS
 
 SOURCES += \
     plugin.cpp \
+    mdatetimehelper.cpp \
     mdeclarativescreen.cpp \
     minversemousearea.cpp \
     mdeclarativeinputcontext.cpp \
@@ -112,6 +113,7 @@ SOURCES += \
     feedbackplayer.cpp
 
 HEADERS += \
+    mdatetimehelper.h \
     mdeclarativescreen.h \
     mdialogstatus.h \
     mpagestatus.h \
@@ -146,6 +148,31 @@ HEADERS += \
 
 QML_FILES = \
         qmldir \
+        constants.js\
+        CountBubble.qml \
+        DatePickerDialog.qml \
+        InfoBanner.qml \
+        ListDelegate.qml \
+        ListButton.qml \
+        style/ListButtonStyle.qml \
+        MoreIndicator.qml \
+        NetPromoterScore.qml \
+        PageIndicator.qml \
+        RatingIndicator.qml \
+        SystemBanner.qml \
+        TimePickerDialog.qml \
+        Tumbler.qml \
+        TumblerNew.qml \
+        TumblerDialogNew.qml \
+        Tumbler.js \
+        TumblerColumn.qml \
+        TumblerIndexHelper.js \
+        TumblerTemplate.qml \
+        TumblerButton.qml \
+        style/TumblerButtonStyle.qml \
+        TumblerDialog.qml \
+        style/NegativeButtonStyle.qml \
+        style/PositiveButtonStyle.qml \
         ApplicationWindow.qml \
         style/ApplicationWindowStyle.qml \
         BusyIndicator.qml \

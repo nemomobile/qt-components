@@ -39,7 +39,6 @@
 ****************************************************************************/
 import QtQuick 2.0
 import com.nokia.meego 2.0
-import com.nokia.extras 2.0
 import "NetPromoterScore.js" as NPS
 
 Page {

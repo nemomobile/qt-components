@@ -59,6 +59,7 @@
 #include "mdeclarativeimobserver.h"
 #include "mdeclarativeview.h"
 #include "mtoolbarvisibility.h"
+#include "mdatetimehelper.h"
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <QQmlPropertyMap>
@@ -95,6 +96,7 @@ public:
 
         // If plugin was initialized once, do not initialize it again
         if(!engine->imageProvider(QLatin1String("theme"))) {
+            engine->rootContext()->setContextProperty("dateTime", new MDateTimeHelper(engine->rootContext()));
             engine->addImageProvider(QLatin1String("theme"), new MDeclarativeImageProvider);
 
             engine->rootContext()->setContextProperty("screen", MDeclarativeScreen::instance());
@@ -133,6 +135,7 @@ public:
 
     void registerTypes(const char *uri) {
         Q_ASSERT(uri == QLatin1String("com.meego") || uri == QLatin1String("com.nokia.meego") || uri == QLatin1String("Qt.labs.components.native"));
+        qmlRegisterUncreatableType<MDateTimeHelper>(uri, SINCE_VERSION(1, 0), "DateTime", "");
         qmlRegisterUncreatableType<MPageStatus>(uri, SINCE_VERSION(1, 0), "PageStatus", "");
         qmlRegisterUncreatableType<MDialogStatus>(uri, SINCE_VERSION(1, 0), "DialogStatus", "");
         qmlRegisterUncreatableType<MWindowState>(uri, SINCE_VERSION(1, 0), "WindowState","");

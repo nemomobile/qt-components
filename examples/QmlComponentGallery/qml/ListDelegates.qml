@@ -40,91 +40,55 @@
 
 import QtQuick 2.0
 import com.nokia.meego 2.0
-import com.nokia.extras 2.0
 
 Page {
-    id: container
+    id: listdelegatesPage
     anchors.margins: UiConstants.DefaultMargin
+
     tools: commonTools
 
-    Column {
-        id: controls
-        x: 350
-
-        Button {
-            id: addButton
-            text: "Increase rating"
-            onClicked: { indicator.ratingValue++ }
+    ListModel {
+        id: pagesModel
+        ListElement {
+            title: "Test 1"
+            buttonText: "Click"
+            subtitle: "This is subtitle 1"
         }
-        Button {
-            id: removeButton
-            text: "Decrease rating"
-            onClicked: { indicator.ratingValue-- }
+        ListElement {
+            title: "Test 2"
+            buttonText: "Click Me"
+            subtitle: "This is subtitle 2"
         }
-        Button {
-            id: addCount
-            text: "Increase votes counted"
-            onClicked: { indicator.count++ }
+        ListElement {
+            title: "Test 3"
+            buttonText: "Click"
+            subtitle: "This is subtitle 3"
         }
-        Button {
-            id: removeCount
-            text: "Decrease votes counted"
-            onClicked: { indicator.count-- }
-        }
-        Button {
-            id: negativeButton
-            text: "Inverted visual"
-            onClicked: { theme.inverted = true }
-        }
-
-        Button {
-            id: positiveButton
-            text: "Normal visual"
-            onClicked: { theme.inverted = false }
+        ListElement {
+            title: "Test 4"
+            buttonText: "x"
+            subtitle: "This is subtitle 3"
         }
     }
 
-    Column {
-        id: indicators
-        x: 25
-        y: 100
-        spacing: 10
+    ListView {
+        anchors.fill: parent
+        model: pagesModel
 
-        Text {
-            id: t1
-            text: "Rating indicator with vote count"
-            font.pointSize: 14
-        }
+        delegate: ListDelegate {
+            Image {
+                source: "image://theme/icon-m-common-drilldown-arrow" + (theme.inverted ? "-inverse" : "")
+                anchors.right: parent.right;
 
-        Item {
-            id: r1
-            width: 200
-            height:  50
-
-            RatingIndicator {
-                id: indicator
-                objectName: "indicator1Object"
-                ratingValue: 3
-                maximumValue: 5
-                count: 3
+                anchors.verticalCenter: parent.verticalCenter
             }
-        }
-
-        Text {
-            id: t2
-            text: "Rating indicator without vote count"
-            font.pointSize: 14
-        }
-
-        Item {
-            id: r2
-            width: 200
-            height: 50
-
-            RatingIndicator {
-                id: i2
-                maximumValue: 5
-                ratingValue: 3
+            ListButton {
+                text: buttonText
+                style: ListButtonStyle {}
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                anchors.rightMargin: 50
+                width:  buttonText == "x" ? 150 : implicitWidth
             }
         }
     }

@@ -38,65 +38,102 @@
 **
 ****************************************************************************/
 
-#include "mdatetimehelper.h"
-#include <QDate>
-#include <QLocale>
-#if defined(Q_OS_WIN)
-#include <qt_windows.h>
-#elif defined(HAVE_MEEGOTOUCH)
-#include <MLocale>
-#endif
+import QtQuick 2.0
+import com.nokia.meego 2.0
 
-MDateTimeHelper::MDateTimeHelper(QObject *parent) : QObject(parent) 
-{
-}
+Page {
+    id: container
+    anchors.margins: UiConstants.DefaultMargin
+    tools: commonTools
 
-MDateTimeHelper::~MDateTimeHelper() 
-{
-}
+    Text {
+        id: txt1
+        text:"Small count bubbles"
+        font.pixelSize: 22
+    }
 
-QString MDateTimeHelper::shortMonthName(int month) 
-{
-    return QDate::shortMonthName(month);
-}
+    Text {
+        id: txt2
+        anchors.top: column1.bottom; anchors.topMargin: 40
+        text:"Large count bubbles"
+        font.pixelSize: 22
+    }
 
-bool MDateTimeHelper::isLeapYear(int year) 
-{
-    return QDate::isLeapYear(year);
-}
+    Text {
+        id: txt3
+        anchors.left: txt1.right; anchors.leftMargin: 60
+        text:"Use slider to change count bubble value"
+        font.pixelSize: 22
+    }
 
-int MDateTimeHelper::daysInMonth(int year, int month) 
-{
-    return QDate(year, month, 1).daysInMonth();
-}
+    Column {
+        id: column1
+        spacing: 5
 
-int MDateTimeHelper::currentYear() 
-{
-    return QDate::currentDate().year();
-}
+        anchors.top: txt1.bottom
 
-QString MDateTimeHelper::amText()
-{
-    return QLocale().amText();
-}
+        CountBubble{
+            objectName: "countBubbleObject"
+            value: 9
+        }
 
-QString MDateTimeHelper::pmText()
-{
-    return QLocale().pmText();
-}
+        CountBubble{
+            id: cb3
+            value: 99
+        }
 
-int MDateTimeHelper::hourMode()
-{
-    bool format12h = false;
-#if defined(Q_OS_WIN)
-    wchar_t data[10];
-    GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, data, 10);
-    format12h = QString::fromWCharArray(data).startsWith(QLatin1Char('h'));
-#elif defined(HAVE_MEEGOTOUCH)
-    format12h = (MLocale().timeFormat24h() == MLocale::TwelveHourTimeFormat24h ? true :
-                (MLocale().timeFormat24h() == MLocale::TwentyFourHourTimeFormat24h ? false :
-                MLocale().defaultTimeFormat24h() == MLocale::TwelveHourTimeFormat24h));
-#endif
-    return format12h ? TwelveHours : TwentyFourHours;
+        CountBubble{
+            value: 999
+        }
+    }
+
+    Column {
+        id: column2
+        spacing: 5
+        x: txt2.x
+
+        anchors.top: txt2.bottom
+
+        CountBubble{
+            value: 9
+            largeSized: true
+        }
+
+        CountBubble{
+            id: cb4
+            value: 99
+            largeSized: true
+        }
+
+        CountBubble{
+            value: 999
+            largeSized: true
+        }
+    }
+
+    Column {
+        id: column3
+        anchors.left: txt3.left
+        y: column1.y
+        spacing: 5
+        CountBubble{
+            id: cb1
+            value: slider1.value
+        }
+
+        CountBubble{
+            id: cb2
+            value: cb1.value
+            largeSized: true
+        }
+    }
+
+    Slider {
+        id: slider1
+        width: 400
+        x: column3.x + 45
+        anchors {top: txt3.bottom; topMargin: 40}
+        stepSize: 1
+        maximumValue: 999
+    }
 }
-#include "moc_mdatetimehelper.cpp"

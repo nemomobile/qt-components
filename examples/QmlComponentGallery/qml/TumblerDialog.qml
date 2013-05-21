@@ -40,101 +40,98 @@
 
 import QtQuick 2.0
 import com.nokia.meego 2.0
-import com.nokia.extras 2.0
 
 Page {
     id: container
     anchors.margins: UiConstants.DefaultMargin
     tools: commonTools
 
-    Text {
-        id: txt1
-        text:"Small count bubbles"
-        font.pixelSize: 22
-    }
-
-    Text {
-        id: txt2
-        anchors.top: column1.bottom; anchors.topMargin: 40
-        text:"Large count bubbles"
-        font.pixelSize: 22
-    }
-
-    Text {
-        id: txt3
-        anchors.left: txt1.right; anchors.leftMargin: 60
-        text:"Use slider to change count bubble value"
-        font.pixelSize: 22
-    }
-
-    Column {
-        id: column1
-        spacing: 5
-
-        anchors.top: txt1.bottom
-
-        CountBubble{
-            objectName: "countBubbleObject"
-            value: 9
+    Item {
+        anchors {
+            margins: 16
+            top: parent.top
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
         }
 
-        CountBubble{
-            id: cb3
-            value: 99
-        }
-
-        CountBubble{
-            value: 999
+        TumblerButton {
+            id: tumblerButton
+            anchors.top: parent.top
+            anchors.topMargin: 10
+            width: 206
+            text: "Open Tumbler"
+            onClicked: launchDialog()
         }
     }
 
-    Column {
-        id: column2
-        spacing: 5
-        x: txt2.x
+    function launchDialog() {
+        console.log("main::launchDialog");
+        tDialog.open();
+    }
 
-        anchors.top: txt2.bottom
+    function callbackFunction() {
+        tumblerButton.text =
+            dayList.get(dayColumn.selectedIndex).value + " " +
+            monthList.get(monthColumn.selectedIndex).value + " " +
+            yearList.get(yearColumn.selectedIndex).value;
+    }
 
-        CountBubble{
-            value: 9
-            largeSized: true
+    TumblerDialog {
+        id: tDialog
+        titleText: "Date of birth"
+        acceptButtonText: "Ok"
+        rejectButtonText: "Cancel"
+        columns: [ dayColumn, monthColumn, yearColumn ]
+        onAccepted: callbackFunction()
+    }
+
+    function initializeDataModels() {
+        for (var year = 2000; year <= 2020; year++) {
+            yearList.append({"value" : year});
         }
 
-        CountBubble{
-            id: cb4
-            value: 99
-            largeSized: true
-        }
-
-        CountBubble{
-            value: 999
-            largeSized: true
+        for (var day = 1; day <= 31; day++) {
+            dayList.append({"value" : day});
         }
     }
 
-    Column {
-        id: column3
-        anchors.left: txt3.left
-        y: column1.y
-        spacing: 5
-        CountBubble{
-            id: cb1
-            value: slider1.value
-        }
-
-        CountBubble{
-            id: cb2
-            value: cb1.value
-            largeSized: true
-        }
+    Component.onCompleted: {
+        initializeDataModels();
     }
 
-    Slider {
-        id: slider1
-        width: 400
-        x: column3.x + 45
-        anchors {top: txt3.bottom; topMargin: 40}
-        stepSize: 1
-        maximumValue: 999
+    TumblerColumn {
+        id: dayColumn
+        items: ListModel { id: dayList }
+        label: "DAY"
+        selectedIndex: 21
+    }
+
+    TumblerColumn {
+        id: monthColumn
+        items: ListModel {
+            id: monthList
+            ListElement { value: "Jan" }
+            ListElement { value: "Feb" }
+            ListElement { value: "Mar" }
+            ListElement { value: "Apr" }
+            ListElement { value: "May" }
+            ListElement { value: "Jun" }
+            ListElement { value: "Jul" }
+            ListElement { value: "Aug" }
+            ListElement { value: "Sep" }
+            ListElement { value: "Oct" }
+            ListElement { value: "Nov" }
+            ListElement { value: "Dec" }
+        }
+        label: "MONTH"
+        selectedIndex: 9
+    }
+
+    TumblerColumn {
+        id: yearColumn
+        items: ListModel { id: yearList }
+        label: "YEAR"
+        selectedIndex: 10
     }
 }

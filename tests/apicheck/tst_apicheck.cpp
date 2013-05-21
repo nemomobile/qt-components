@@ -94,15 +94,6 @@ int main(int argc, char *argv[])
         module = args.takeAt(moduleIdx++);
     }
 
-    // extras module
-    QString extrasModule("com.nokia.extras 1.1");
-    int extrasModuleIdx = args.indexOf("-extrasModule");
-
-    if (extrasModuleIdx != -1) {
-        args.removeAt(extrasModuleIdx);
-        extrasModule = args.takeAt(extrasModuleIdx++);
-    }
-
     // check for import path
     QString importPath(Q_COMPONENTS_BUILD_TREE"/imports");
     int pathIdx = args.indexOf("-importpath");
@@ -122,7 +113,7 @@ int main(int argc, char *argv[])
     ApiCheckButtonRow buttonRow(engine, module);
     ApiCheckCheckBox checkbox(engine, module);
     ApiCheckDialog dialog(engine, module);
-    ApiCheckInfoBanner infoBanner(engine, extrasModule);
+    ApiCheckInfoBanner infoBanner(engine, module);
     ApiCheckTextField textField(engine, module);
     ApiCheckRadioButton radioButton(engine, module);
     ApiCheckProgressBar progressBar(engine, module);
@@ -139,17 +130,17 @@ int main(int argc, char *argv[])
     ApiCheckContextMenu contextMenu(engine, module);
     ApiCheckMenu menu(engine, module);
     ApiCheckMenuItem menuItem(engine, module);
-    ApiCheckRatingIndicator ratingIndicator(engine, extrasModule);
+    ApiCheckRatingIndicator ratingIndicator(engine, module);
     ApiCheckSwitch switchButton(engine, module);
     ApiCheckScreen screen(engine, module);
-    ApiCheckTumbler tumbler(engine, extrasModule);
-    ApiCheckTumblerColumn tumblerColumn(engine, extrasModule);
-    ApiCheckTumblerDialog tumblerDialog(engine, extrasModule);
+    ApiCheckTumbler tumbler(engine, module);
+    ApiCheckTumblerColumn tumblerColumn(engine, module);
+    ApiCheckTumblerDialog tumblerDialog(engine, module);
     ApiCheckQueryDialog querydialog(engine, module);
     ApiCheckSelectionDialog selectiondialog(engine, module);
-    ApiCheckDatePickerDialog datepickerdialog(engine, extrasModule);
-    ApiCheckTimePickerDialog timepickerdialog(engine, extrasModule);
-    ApiCheckSearchBox searchbox(engine, extrasModule);
+    ApiCheckDatePickerDialog datepickerdialog(engine, module);
+    ApiCheckTimePickerDialog timepickerdialog(engine, module);
+    ApiCheckSearchBox searchbox(engine, module);
 
     QStringList failures;
     if (QTest::qExec(&slider, args)) failures.append("slider");

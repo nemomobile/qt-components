@@ -3,6 +3,5 @@
 ######################################################################
 
 TEMPLATE=subdirs
-SUBDIRS += QmlComponentGallery \
-           QmlComponentExtrasGallery
+SUBDIRS += QmlComponentGallery
 

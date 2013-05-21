@@ -38,23 +38,93 @@
 **
 ****************************************************************************/
 
-#include <QtDeclarative>
-#include "mdatetimehelper.h"
+import QtQuick 2.0
+import com.nokia.meego 2.0
 
-class MeeGoExtrasPlugin : public QDeclarativeExtensionPlugin
-{
-    Q_OBJECT
-    Q_PLUGIN_METADATA(IID "com.nokia.extras")
-public:
-    void initializeEngine(QDeclarativeEngine *engine, const char *uri) {
-        QDeclarativeExtensionPlugin::initializeEngine(engine, uri);
-        engine->rootContext()->setContextProperty("dateTime", new MDateTimeHelper(engine->rootContext()));
+Page {
+    id: container
+    anchors.margins: UiConstants.DefaultMargin
+    tools: commonTools
+
+    Column {
+        id: controls
+        x: 350
+
+        Button {
+            id: addButton
+            text: "Increase rating"
+            onClicked: { indicator.ratingValue++ }
+        }
+        Button {
+            id: removeButton
+            text: "Decrease rating"
+            onClicked: { indicator.ratingValue-- }
+        }
+        Button {
+            id: addCount
+            text: "Increase votes counted"
+            onClicked: { indicator.count++ }
+        }
+        Button {
+            id: removeCount
+            text: "Decrease votes counted"
+            onClicked: { indicator.count-- }
+        }
+        Button {
+            id: negativeButton
+            text: "Inverted visual"
+            onClicked: { theme.inverted = true }
+        }
+
+        Button {
+            id: positiveButton
+            text: "Normal visual"
+            onClicked: { theme.inverted = false }
+        }
     }
 
-    void registerTypes(const char *uri) {
-        qmlRegisterUncreatableType<MDateTimeHelper>(uri, 1, 0, "DateTime", "");
+    Column {
+        id: indicators
+        x: 25
+        y: 100
+        spacing: 10
+
+        Text {
+            id: t1
+            text: "Rating indicator with vote count"
+            font.pointSize: 14
+        }
+
+        Item {
+            id: r1
+            width: 200
+            height:  50
+
+            RatingIndicator {
+                id: indicator
+                objectName: "indicator1Object"
+                ratingValue: 3
+                maximumValue: 5
+                count: 3
+            }
+        }
+
+        Text {
+            id: t2
+            text: "Rating indicator without vote count"
+            font.pointSize: 14
+        }
+
+        Item {
+            id: r2
+            width: 200
+            height: 50
+
+            RatingIndicator {
+                id: i2
+                maximumValue: 5
+                ratingValue: 3
+            }
+        }
     }
-};
-
-#include "plugin.moc"
-
+}

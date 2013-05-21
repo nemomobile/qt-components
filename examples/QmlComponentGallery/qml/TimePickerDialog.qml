@@ -40,12 +40,13 @@
 
 import QtQuick 2.0
 import com.nokia.meego 2.0
-import com.nokia.extras 2.0
 
 Page {
     id: container
     anchors.margins: UiConstants.DefaultMargin
     tools: commonTools
+
+    property int index: -1
 
     Item {
         anchors {
@@ -59,8 +60,8 @@ Page {
             id: tumblerButton
             anchors.top: parent.top
             anchors.topMargin: 10
-            text: "Launch Dialog"
-            width: 206
+            text: "Default Time Picker"
+            width: 300
             height: 35
             onClicked: launchDialog()
         }
@@ -69,60 +70,63 @@ Page {
             id: todayButton
             anchors.top: tumblerButton.bottom
             anchors.topMargin: 10
-            text: "Launch Today"
-            width: 206
+            text: "4:05pm (12)"
+            width: 300
             height: 35
-            onClicked: launchDialogToToday()
+            onClicked: launchDialog(16, 5, DateTime.TwelveHours, DateTime.All)
         }
 
         Button {
             id: dateButton
             anchors.top: todayButton.bottom
             anchors.topMargin: 10
-            text: "Launch Oct 22, 10"
-            width: 206
+            text: "16:10 (24)"
+            width: 300
             height: 35
-            onClicked: launchDate(2010, 10, 22)
+            onClicked: launchDialog(16, 10, DateTime.TwentyFourHours, DateTime.All)
+        }
+
+        Button {
+            id: noSecondsButton
+            anchors.top: dateButton.bottom
+            anchors.topMargin: 10
+            text: "13:18 (No seconds)"
+            width: 300
+            height: 35
+            onClicked: launchDialog(13, 18, DateTime.TwentyFourHours, DateTime.Hours | DateTime.Minutes)
         }
 
         Label {
             id: result
-            anchors.top: dateButton.bottom
+            anchors.top: noSecondsButton.bottom
             anchors.topMargin: 10
         }
     }
 
-    function launchDialog() {
-        console.log("main::launchDialog");
-        tDialog.open();
-    }
-
-    function launchDialogToToday() {
-        console.log("main::launchDialogToToday");
-        var d = new Date();
-        tDialog.year = d.getFullYear();
-        tDialog.month = d.getMonth() + 1; // month is 0 based in Date()
-        tDialog.day = d.getDate();
-        tDialog.open();
-    }
-
-    function launchDate(year, month, date) {
-        console.log("main::launchDialog");
-        tDialog.minimumYear = year - 10;
-        tDialog.maximumYear = year + 10;
-        tDialog.year = year;
-        tDialog.month = month;
-        tDialog.day = date;
+    function launchDialog(hour, minute, hoursMode, fields) {
+        if (hour) {
+            tDialog.hour = hour;
+            tDialog.minute = minute;
+            tDialog.second = 0;
+        }
+        if (hoursMode != undefined) {
+            tDialog.hourMode = hoursMode;
+        }
+        if (fields != undefined) {
+            tDialog.fields = fields;
+        }
         tDialog.open();
     }
 
     function callbackFunction() {
-        result.text = tDialog.year + " " + tDialog.month + " " + tDialog.day
+        result.text = tDialog.hour + ":" + (tDialog.minute < 10 ? "0" : "" ) + tDialog.minute  + ":" + (tDialog.second < 10 ? "0" : "") + tDialog.second;
     }
 
-    DatePickerDialog {
+    TimePickerDialog {
         id: tDialog
-        titleText: "Date of birth"
+        titleText: "Time"
+        acceptButtonText: "Ok"
+        rejectButtonText: "Cancel"
         onAccepted: callbackFunction()
     }
 }

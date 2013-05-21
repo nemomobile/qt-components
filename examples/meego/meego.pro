@@ -3,12 +3,5 @@
 ######################################################################
 
 TEMPLATE=subdirs
-SUBDIRS += QmlComponentGallery \
-           QmlComponentExtrasGallery \
-	   TutorialApplication
+SUBDIRS += QmlComponentGallery
 
-
-equals(QT_MAJOR_VERSION, 5) {
-    # Disabled until we've ported them
-    SUBDIRS -= QmlComponentExtrasGallery TutorialApplication
-}

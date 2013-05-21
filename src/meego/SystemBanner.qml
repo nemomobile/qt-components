@@ -38,66 +38,12 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
-import com.nokia.meego 2.0
-import com.nokia.extras 2.0
+import QtQuick 1.1
+import com.nokia.meego 1.0
+import "constants.js" as UI
 
-Page {
-    id: container
-    anchors.margins: UiConstants.DefaultMargin
-    tools: commonTools
-
-    Column {
-        id: controls
-        x: 350
-
-        Button {
-            id: nextButton
-            text: "Next page"
-            onClicked: { indicator.currentPage++ }
-        }
-        Button {
-            id: previousButton
-            text: "Previous page"
-            onClicked: { indicator.currentPage-- }
-        }
-        Button {
-            id: addTotal
-            text: "Increase total pages"
-            onClicked: { indicator.totalPages++ }
-        }
-        Button {
-            id: removeTotal
-            text: "Decrease total pages"
-            onClicked: { indicator.totalPages-- }
-        }
-        Button {
-            id: negativeButton
-            text: "Inverted visual"
-            onClicked: { theme.inverted = true }
-        }
-        Button {
-            id: positiveButton
-            text: "Normal visual"
-            onClicked: { theme.inverted = false }
-        }
-    }
-
-    Item {
-        id: r1
-
-        width: 200
-        height: 50
-
-        x: 100;
-        y: 100;
-
-        PageIndicator {
-            id: indicator
-            objectName: "pageIndicatorObject"
-            currentPage: 2
-            totalPages: 3
-        }
-    }
-
+InfoBanner
+{
+    
 }
+

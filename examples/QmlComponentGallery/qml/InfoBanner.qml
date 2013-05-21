@@ -40,7 +40,6 @@
 
 import QtQuick 2.0
 import com.nokia.meego 2.0
-import com.nokia.extras 2.0
 
 Page {
     id: container

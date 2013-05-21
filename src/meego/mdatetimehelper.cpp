@@ -38,13 +38,65 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.1
-import com.nokia.meego 1.0
-import com.nokia.extras 1.1
-import "constants.js" as UI
+#include "mdatetimehelper.h"
+#include <QDate>
+#include <QLocale>
+#if defined(Q_OS_WIN)
+#include <qt_windows.h>
+#elif defined(HAVE_MEEGOTOUCH)
+#include <MLocale>
+#endif
 
-InfoBanner
+MDateTimeHelper::MDateTimeHelper(QObject *parent) : QObject(parent) 
 {
-    
+}
+
+MDateTimeHelper::~MDateTimeHelper() 
+{
+}
+
+QString MDateTimeHelper::shortMonthName(int month) 
+{
+    return QDate::shortMonthName(month);
+}
+
+bool MDateTimeHelper::isLeapYear(int year) 
+{
+    return QDate::isLeapYear(year);
+}
+
+int MDateTimeHelper::daysInMonth(int year, int month) 
+{
+    return QDate(year, month, 1).daysInMonth();
+}
+
+int MDateTimeHelper::currentYear() 
+{
+    return QDate::currentDate().year();
+}
+
+QString MDateTimeHelper::amText()
+{
+    return QLocale().amText();
+}
+
+QString MDateTimeHelper::pmText()
+{
+    return QLocale().pmText();
+}
+
+int MDateTimeHelper::hourMode()
+{
+    bool format12h = false;
+#if defined(Q_OS_WIN)
+    wchar_t data[10];
+    GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, data, 10);
+    format12h = QString::fromWCharArray(data).startsWith(QLatin1Char('h'));
+#elif defined(HAVE_MEEGOTOUCH)
+    format12h = (MLocale().timeFormat24h() == MLocale::TwelveHourTimeFormat24h ? true :
+                (MLocale().timeFormat24h() == MLocale::TwentyFourHourTimeFormat24h ? false :
+                MLocale().defaultTimeFormat24h() == MLocale::TwelveHourTimeFormat24h));
+#endif
+    return format12h ? TwelveHours : TwentyFourHours;
 }
 

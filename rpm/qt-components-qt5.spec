@@ -97,9 +97,7 @@ desktop-file-install --delete-original       \
 
 %files gallery
 %defattr(-,root,root,-)
-%{_bindir}/QmlComponentExtrasGallery
 %{_bindir}/QmlComponentGallery5
-%{_datadir}/applications/qmlcomponentextrasgallery.desktop
 %{_datadir}/applications/qmlcomponentgallery.desktop
 # >> files gallery
 # << files gallery

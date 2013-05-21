@@ -38,23 +38,36 @@
 **
 ****************************************************************************/
 
-#include <QtQuick>
-#include <QGuiApplication>
+import QtQuick 2.0
+import com.nokia.meego 2.0
 
-int main(int argc, char **argv)
-{
-    QGuiApplication app(argc, argv);
-    QDir::setCurrent(app.applicationDirPath());
-    QQuickView window;
+Page {
+    id: container
+    anchors.margins: UiConstants.DefaultMargin
+    tools: commonTools
 
-    window.setSource(QUrl("qrc:/main.qml"));
+    Column {
+        x: 100;
+        y: 100;
+        spacing: 20
 
-#ifdef __arm__
-    window.showFullScreen();
-#else
-    window.show();
-#endif
-    
-    return app.exec();
+        Text {
+            text: "More indicator is just an image element, there is no behavior associated with it"
+            width: 400
+            wrapMode: Text.WordWrap
+            font.pointSize: 14
+        }
+
+        Rectangle {
+            width: 200
+            height: 50
+            color: "#f0f1f2"
+
+            MoreIndicator {
+                id: indicator
+                objectName: "indicatorObject"
+                anchors.centerIn: parent
+            }
+        }
+    }
 }
-

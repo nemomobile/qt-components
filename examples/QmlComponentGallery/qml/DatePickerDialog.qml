@@ -40,7 +40,6 @@
 
 import QtQuick 2.0
 import com.nokia.meego 2.0
-import com.nokia.extras 2.0
 
 Page {
     id: container
@@ -49,20 +48,46 @@ Page {
 
     Item {
         anchors {
-            margins: 16
             top: parent.top
             left: parent.left
             right: parent.right
             bottom: parent.bottom
         }
 
-        TumblerButton {
+        Button {
             id: tumblerButton
             anchors.top: parent.top
             anchors.topMargin: 10
+            text: "Launch Dialog"
             width: 206
-            text: "Open Tumbler"
+            height: 35
             onClicked: launchDialog()
+        }
+
+        Button {
+            id: todayButton
+            anchors.top: tumblerButton.bottom
+            anchors.topMargin: 10
+            text: "Launch Today"
+            width: 206
+            height: 35
+            onClicked: launchDialogToToday()
+        }
+
+        Button {
+            id: dateButton
+            anchors.top: todayButton.bottom
+            anchors.topMargin: 10
+            text: "Launch Oct 22, 10"
+            width: 206
+            height: 35
+            onClicked: launchDate(2010, 10, 22)
+        }
+
+        Label {
+            id: result
+            anchors.top: dateButton.bottom
+            anchors.topMargin: 10
         }
     }
 
@@ -71,68 +96,32 @@ Page {
         tDialog.open();
     }
 
-    function callbackFunction() {
-        tumblerButton.text =
-            dayList.get(dayColumn.selectedIndex).value + " " +
-            monthList.get(monthColumn.selectedIndex).value + " " +
-            yearList.get(yearColumn.selectedIndex).value;
+    function launchDialogToToday() {
+        console.log("main::launchDialogToToday");
+        var d = new Date();
+        tDialog.year = d.getFullYear();
+        tDialog.month = d.getMonth() + 1; // month is 0 based in Date()
+        tDialog.day = d.getDate();
+        tDialog.open();
     }
 
-    TumblerDialog {
+    function launchDate(year, month, date) {
+        console.log("main::launchDialog");
+        tDialog.minimumYear = year - 10;
+        tDialog.maximumYear = year + 10;
+        tDialog.year = year;
+        tDialog.month = month;
+        tDialog.day = date;
+        tDialog.open();
+    }
+
+    function callbackFunction() {
+        result.text = tDialog.year + " " + tDialog.month + " " + tDialog.day
+    }
+
+    DatePickerDialog {
         id: tDialog
         titleText: "Date of birth"
-        acceptButtonText: "Ok"
-        rejectButtonText: "Cancel"
-        columns: [ dayColumn, monthColumn, yearColumn ]
         onAccepted: callbackFunction()
-    }
-
-    function initializeDataModels() {
-        for (var year = 2000; year <= 2020; year++) {
-            yearList.append({"value" : year});
-        }
-
-        for (var day = 1; day <= 31; day++) {
-            dayList.append({"value" : day});
-        }
-    }
-
-    Component.onCompleted: {
-        initializeDataModels();
-    }
-
-    TumblerColumn {
-        id: dayColumn
-        items: ListModel { id: dayList }
-        label: "DAY"
-        selectedIndex: 21
-    }
-
-    TumblerColumn {
-        id: monthColumn
-        items: ListModel {
-            id: monthList
-            ListElement { value: "Jan" }
-            ListElement { value: "Feb" }
-            ListElement { value: "Mar" }
-            ListElement { value: "Apr" }
-            ListElement { value: "May" }
-            ListElement { value: "Jun" }
-            ListElement { value: "Jul" }
-            ListElement { value: "Aug" }
-            ListElement { value: "Sep" }
-            ListElement { value: "Oct" }
-            ListElement { value: "Nov" }
-            ListElement { value: "Dec" }
-        }
-        label: "MONTH"
-        selectedIndex: 9
-    }
-
-    TumblerColumn {
-        id: yearColumn
-        items: ListModel { id: yearList }
-        label: "YEAR"
-        selectedIndex: 10
     }
 }

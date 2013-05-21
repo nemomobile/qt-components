@@ -40,7 +40,6 @@
 
 import QtQuick 2.0
 import com.nokia.meego 2.0
-import com.nokia.extras 2.0
 
 Page {
     id: listPage
@@ -160,6 +159,66 @@ Page {
             page: "VisibilityPage.qml"
             title: "Visibility"
             subtitle: "Window state notifications"
+        }
+        ListElement {
+            page: "CountBubble.qml"
+            title: "CountBubble"
+            subtitle: "Indicates current count"
+        }
+        ListElement {
+            page: "NetPromoterScore.qml"
+            title: "NetPromoterScore"
+            subtitle: "Shows net promotion query page"
+        }
+        ListElement {
+            page: "PageIndicator.qml"
+            title: "PageIndicator"
+            subtitle: "Indicates total & current pages"
+        }
+        ListElement {
+            page: "RatingIndicator.qml"
+            title: "RatingIndicator"
+            subtitle: "Indicates ratings"
+        }
+        ListElement {
+            page: "ListDelegates.qml"
+            title: "List Delegates"
+            subtitle: "Various List Delegates"
+        }
+        ListElement {
+            page: "MoreIndicator.qml"
+            title: "MoreIndicator"
+            subtitle: "Indicates that there are more contents"
+        }
+        ListElement {
+            page: "StyledButtons.qml"
+            title: "StyledButtons"
+            subtitle: "Buttons with different styles"
+        }
+        ListElement {
+            page: "InfoBanner.qml"
+            title: "InfoBanner"
+            subtitle: "Shows information to user"
+        }
+        ListElement {
+            page: "Tumbler.qml"
+            title: "Tumbler"
+            subtitle: "A date tumbler"
+        }
+        ListElement {
+            page: "TumblerDialog.qml"
+            title: "TumblerDialog"
+            subtitle: "A date tumbler dialog"
+        }
+        ListElement {
+            page: "DatePickerDialog.qml"
+            title: "DatePickerDialog"
+            subtitle: "A date picker dialog"
+        }
+        ListElement {
+            page: "TimePickerDialog.qml"
+            title: "TimePickerDialog"
+            subtitle: "A time picker dialog"
         }
     }
 
