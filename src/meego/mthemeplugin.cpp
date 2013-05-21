@@ -38,8 +38,7 @@
 **
 ****************************************************************************/
 
-#include <QApplication>
-#include <QPointer>
+#include <QObject>
 
 #include "mthemeplugin.h"
 

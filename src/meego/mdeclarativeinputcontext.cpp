@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-#include <QApplication>
+#include <QGuiApplication>
 #include <QMouseEvent>
 #include <QInputMethodEvent>
 #include <QTimer>

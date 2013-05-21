@@ -38,14 +38,14 @@
 **
 ****************************************************************************/
 
-#include <QApplication>
+#include <QGuiApplication>
 #include <QQuickView>
 #include <QDir>
 #include <QVariant>
 
 int main(int argc, char **argv)
 {
-    QApplication app(argc, argv);
+    QGuiApplication app(argc, argv);
 
     QQuickView window;
     window.setSource(QUrl("qrc:/main.qml"));

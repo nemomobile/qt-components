@@ -44,7 +44,7 @@
 #include <QInputContext>
 #endif
 #include <QInputMethodEvent>
-#include <QApplication>
+#include <QGuiApplication>
 #include <QGraphicsObject>
 
 MDeclarativeIMObserver::MDeclarativeIMObserver(QDeclarativeItem *parent) :
