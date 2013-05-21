@@ -56,7 +56,7 @@ Rectangle {
     }
 
     Component.onCompleted: {
-        statusBar.orientation = screen.currentOrientation
+        //statusBar.orientation = screen.currentOrientation
         screen.updatePlatformStatusBarRect(statusBar)
         __completed = true;
     }
