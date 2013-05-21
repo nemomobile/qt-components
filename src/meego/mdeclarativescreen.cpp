@@ -187,8 +187,7 @@ MDeclarativeScreenPrivate::MDeclarativeScreenPrivate(MDeclarativeScreen *qq)
     , minimized(false)
 {
     //With this patch we do not care about QtCreator, we always run as screen sizes on devices
-    QDesktopWidget dw;
-    displaySize = QSize(dw.width(), dw.height());
+    displaySize = QGuiApplication::primaryScreen()->size();
 
     initPhysicalDisplayOrientation();
 }
@@ -308,25 +307,8 @@ void MDeclarativeScreenPrivate::_q_updateIsTvConnected()
 qreal MDeclarativeScreenPrivate::dpi() const
 {
     static qreal dpi = 0;
-#if defined(Q_WS_X11) && defined(HAVE_XRANDR)
-    if (!dpi) {
-        int physicalHeight = 0;
-        XRRScreenResources *sr;
-        sr = XRRGetScreenResources(QX11Info::display(), RootWindow(QX11Info::display(), 0));
-        if (sr->noutput) {
-            XRROutputInfo *output = XRRGetOutputInfo(QX11Info::display(),sr,sr->outputs[0]);
-            if (output->crtc) {
-               physicalHeight = output->mm_height;
-            }
-            XRRFreeOutputInfo(output);
-        }
-        XRRFreeScreenResources(sr);
-        dpi = QDesktopWidget().screenGeometry().height() / (physicalHeight / 25.4);
-    }
-#else
     if (!dpi)
-        dpi = QDesktopWidget().physicalDpiX();
-#endif
+        dpi = QGuiApplication::primaryScreen()->logicalDotsPerInchX(); // XXX: logical vs physical?
     return dpi;
 }
 
@@ -752,8 +734,8 @@ int MDeclarativeScreen::dpi() const {
 }
 
 MDeclarativeScreen::DisplayCategory MDeclarativeScreen::displayCategory() const {
-    const int w = QApplication::desktop()->screenGeometry().width();
-    const int h = QApplication::desktop()->screenGeometry().height();
+    const int w = QGuiApplication::primaryScreen()->size().width();
+    const int h = QGuiApplication::primaryScreen()->size().height();
     const qreal diagonal = sqrt(static_cast<qreal>(w * w + h * h)) / dpi();
     if (diagonal < CATEGORY_SMALL_LIMIT)
         return Small;
