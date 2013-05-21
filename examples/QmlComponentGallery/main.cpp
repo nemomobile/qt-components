@@ -38,28 +38,16 @@
 **
 ****************************************************************************/
 
-#include <QApplication>
-#include <QDeclarativeView>
+#include <QGuiApplication>
+#include <QQuickView>
 #include <QDir>
 #include <QVariant>
 
-#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
-#include "fpsdeclarativeview.h"
-#endif
-
 int main(int argc, char **argv)
 {
-    QApplication app(argc, argv);
+    QGuiApplication app(argc, argv);
 
-    app.setProperty("NoMStyle", true);
-
-    QDir::setCurrent(app.applicationDirPath());
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-    QDeclarativeView window;
-#else
-    FPSDeclarativeView window;
-#endif
+    QQuickView window;
     window.setSource(QUrl("qrc:/main.qml"));
 
 #ifdef __arm__

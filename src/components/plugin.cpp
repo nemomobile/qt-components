@@ -46,7 +46,7 @@
 class QtComponentsPlugin : public QDeclarativeExtensionPlugin
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "com.nokia.components" FILE "com.nokia.components.json")
+    Q_PLUGIN_METADATA(IID "com.nokia.components")
 
 public:
     void registerTypes(const char *uri) {

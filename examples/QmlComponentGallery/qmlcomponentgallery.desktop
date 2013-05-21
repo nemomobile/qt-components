@@ -2,7 +2,7 @@
 Name=QMLComponentGallery
 GenericName=QMLComponentGallery
 Comment=private QMLComponentGallery
-Exec=/usr/bin/single-instance /usr/bin/QmlComponentGallery
+Exec=/usr/bin/single-instance /usr/bin/QmlComponentGallery5
 Terminal=false
 Type=Application
 

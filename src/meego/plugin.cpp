@@ -80,7 +80,7 @@
 class MeeGoPlugin : public QDeclarativeExtensionPlugin
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "com.nokia.meego" FILE "com.nokia.meego.components.json")
+    Q_PLUGIN_METADATA(IID "com.nokia.meego")
 
 public:
     void initializeEngine(QDeclarativeEngine *engine, const char *uri) {
