@@ -38,7 +38,6 @@
 **
 ****************************************************************************/
 
-#include <QApplication>
 #include <QDebug>
 #include <QDeclarativeItem>
 #include <QWindowStateChangeEvent>

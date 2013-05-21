@@ -2,7 +2,7 @@ TEMPLATE = app
 equals(QT_MAJOR_VERSION, 4): QT += declarative
 equals(QT_MAJOR_VERSION, 5) {
     include(../../src/compat/compat.pri)
-    QT += quick widgets
+    QT += quick
 }
 target.path = $$INSTALL_PREFIX/bin
 

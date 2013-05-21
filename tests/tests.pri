@@ -3,7 +3,7 @@ include (../qt-components.pri)
 QT += declarative
 CONFIG -= app_bundle
 
-equals(QT_MAJOR_VERSION, 5): QT += widgets quick
+equals(QT_MAJOR_VERSION, 5): QT += quick
 
 INCLUDEPATH += $$Q_COMPONENTS_SOURCE_TREE/tests/shared
 
