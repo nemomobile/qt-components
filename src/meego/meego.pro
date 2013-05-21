@@ -251,7 +251,7 @@ QML_FILES = \
 
 equals(QT_MAJOR_VERSION, 5) {
     # Tweaks sources and headers for Qt5
-    QT += gui-private quick
+    QT += quick
 
     QML_FILES += \
         MaskedItem.qml \
