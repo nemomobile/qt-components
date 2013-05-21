@@ -64,11 +64,11 @@ NATIVE_FILES -= qmldir
 
 OTHER_FILES += $$QML_FILES
 
-target.path = $$[QT_INSTALL_IMPORTS]/$$member(TARGETPATH, 0)
+target.path = $$[QT_INSTALL_QML]/$$member(TARGETPATH, 0)
 INSTALLS += target
 
 for(targetpath, $$list($$unique(TARGETPATH))) {
-    installpath = $$[QT_INSTALL_IMPORTS]/$$targetpath
+    installpath = $$[QT_INSTALL_QML]/$$targetpath
     installpath = $$replace(installpath, \\\\, /)
     !isEqual(targetpath, $$member(TARGETPATH, 0)) {
         qmltarget = qmltarget_$$replace(targetpath, /, _)
@@ -119,17 +119,17 @@ install_native {
     } else {
         native_target.CONFIG += no_check_exist executable
         native_target.files = $$DESTDIR/$(TARGET)
-        native_target.path = $$[QT_INSTALL_IMPORTS]/Qt/labs/components/native
+        native_target.path = $$[QT_INSTALL_QML]/Qt/labs/components/native
 
         INSTALLS += native_target
 
         !debug_and_release|CONFIG(release, debug|release) {
             # Only install these files once if debug_and_release
             native_qmlfiles.files = $$NATIVE_FILES
-            native_qmlfiles.path = $$[QT_INSTALL_IMPORTS]/Qt/labs/components/native
+            native_qmlfiles.path = $$[QT_INSTALL_QML]/Qt/labs/components/native
 
             native_qmlimages.files = $$QML_IMAGES
-            native_qmlimages.path = $$[QT_INSTALL_IMPORTS]/Qt/labs/components/native/images
+            native_qmlimages.path = $$[QT_INSTALL_QML]/Qt/labs/components/native/images
 
             INSTALLS += native_qmlfiles native_qmlimages
         }

@@ -25,9 +25,9 @@ Builder: make
 RunFdupes:
     - "%{_libdir}"
 Files:
-    - "%{_libdir}/qt5/imports/Qt/labs/*"
-    - "%{_libdir}/qt5/imports/com/meego/*"
-    - "%{_libdir}/qt5/imports/com/nokia/*"
+    - "%{_libdir}/qt5/qml/Qt/labs/*"
+    - "%{_libdir}/qt5/qml/com/meego/*"
+    - "%{_libdir}/qt5/qml/com/nokia/*"
 SubPackages:
     - Name: devel
       Summary: Qt UX Components Devel

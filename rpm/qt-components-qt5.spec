@@ -54,7 +54,8 @@ Provides test applications showcasing Qt Components widgets.
 %build
 # >> build pre
 export QT_SELECT=5
-./configure -meego -nomake tests -maliit
+./configure -meego -nomake tests
+#-maliit
 # << build pre
 
 
@@ -80,9 +81,9 @@ desktop-file-install --delete-original       \
 
 %files
 %defattr(-,root,root,-)
-%{_libdir}/qt5/imports/Qt/labs/*
-%{_libdir}/qt5/imports/com/meego/*
-%{_libdir}/qt5/imports/com/nokia/*
+%{_libdir}/qt5/qml/Qt/labs/*
+%{_libdir}/qt5/qml/com/meego/*
+%{_libdir}/qt5/qml/com/nokia/*
 # >> files
 # << files
 
