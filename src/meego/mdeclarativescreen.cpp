@@ -71,6 +71,10 @@
 #include <X11/extensions/Xrandr.h>
 #endif
 
+#ifdef HAVE_MLITE
+#include <mgconfitem.h>
+#endif
+
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 # include <QWindow>
 # include <QScreen>
@@ -121,6 +125,7 @@ public:
 
     QSize displaySize;
     QSize screenSize;
+    int frameBufferRotation;
 
     bool allowSwipe;
 
@@ -175,6 +180,7 @@ MDeclarativeScreenPrivate::MDeclarativeScreenPrivate(MDeclarativeScreen *qq)
     , keyboardOpen(false)
     , isTvConnected(false)
     , topLevelWidget(0)
+    , frameBufferRotation(0)
     , allowSwipe(true)
 #ifdef HAVE_CONTEXTSUBSCRIBER
     , topEdgeProperty("Screen.TopEdge")
@@ -191,6 +197,20 @@ MDeclarativeScreenPrivate::MDeclarativeScreenPrivate(MDeclarativeScreen *qq)
     displaySize = QGuiApplication::primaryScreen()->size();
 
     initPhysicalDisplayOrientation();
+
+#ifdef HAVE_MLITE
+    MGConfItem rotationConfiguration("/desktop/jolla/components/screen_rotation_angle");
+    QVariant rotationAngle(rotationConfiguration.value());
+    if (rotationAngle.isValid()) {
+        // Do not permit non-integral values - only multiples of 90 are valid
+        int angle = rotationAngle.toInt();
+        if ((angle % 90) != 0) {
+            qWarning("Invalid screenOrientation angle configured: %d", angle);
+        } else {
+            frameBufferRotation = angle;
+        }
+    }
+#endif
 }
 
 MDeclarativeScreenPrivate::~MDeclarativeScreenPrivate()
@@ -825,6 +845,11 @@ bool MDeclarativeScreen::isPortrait() const
 
 bool MDeclarativeScreen::isDisplayLandscape() const {
     return platformPhysicalDisplayOrientation() & Landscape;
+}
+
+int MDeclarativeScreen::frameBufferRotation() const
+{
+    return d->frameBufferRotation;
 }
 
 void MDeclarativeScreen::setAllowSwipe(bool enabled)
