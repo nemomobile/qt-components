@@ -138,6 +138,8 @@ public:
 
     Q_PROPERTY(bool isDisplayLandscape READ isDisplayLandscape NOTIFY physicalDisplayChanged FINAL)
 
+    Q_PROPERTY(int frameBufferRotation READ frameBufferRotation CONSTANT FINAL)
+
 public:
     static MDeclarativeScreen* instance();
     virtual ~MDeclarativeScreen();
@@ -172,6 +174,7 @@ public:
     bool isPortrait() const;
 
     bool isDisplayLandscape() const;
+    int frameBufferRotation() const;
 
     int dpi() const;
     DisplayCategory displayCategory() const;
