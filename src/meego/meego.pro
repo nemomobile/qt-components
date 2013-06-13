@@ -109,8 +109,7 @@ SOURCES += \
     shadereffectitem/shadereffectitem.cpp \
     shadereffectitem/shadereffectsource.cpp \
     shadereffectitem/shadereffectbuffer.cpp \
-    shadereffectitem/scenegraph/qsggeometry.cpp \
-    feedbackplayer.cpp
+    shadereffectitem/scenegraph/qsggeometry.cpp
 
 HEADERS += \
     mdatetimehelper.h \
@@ -142,8 +141,7 @@ HEADERS += \
     shadereffectitem/shadereffectitem.h \
     shadereffectitem/shadereffectsource.h \
     shadereffectitem/shadereffectbuffer.h \
-    shadereffectitem/scenegraph/qsggeometry.h \
-    feedbackplayer.h
+    shadereffectitem/scenegraph/qsggeometry.h
                             
 
 QML_FILES = \
