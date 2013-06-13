@@ -45,15 +45,11 @@
 #include <mdeclarativescreen.h>
 #include <qglobal.h>
 
-#include "feedbackplayer.h"
-
-
 class QPixmap;
 class QDBusServiceWatcher;
 class QDBusPendingCallWatcher;
 class QGraphicsSceneMouseEvent;
 class QStyleOptionGraphicsItem;
-class FeedbackPlayer;
 
 class MDeclarativeStatusBar : public QDeclarativeItem
 {
@@ -107,8 +103,6 @@ private:
     Qt::HANDLE pixmapDamage;
 
     MDeclarativeScreen::Orientation mOrientation;
-
-    FeedbackPlayer *feedbackPlayer;
 
 Q_SIGNALS:
     void orientationChanged();
