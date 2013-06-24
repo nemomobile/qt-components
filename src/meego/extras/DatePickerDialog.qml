@@ -87,7 +87,7 @@ Dialog {
      * Property: maximumYear
      * [int] Optional, the maximum year shown on the tumbler. This property should
      *       only be set once during construction. If the value is not specified,
-     *       it is default to current year + 20.
+     *       it is default to current year + 100.
      */
     property int maximumYear: dateTime.currentYear() + 100
 
