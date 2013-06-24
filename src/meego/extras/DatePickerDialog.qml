@@ -89,7 +89,7 @@ Dialog {
      *       only be set once during construction. If the value is not specified,
      *       it is default to current year + 20.
      */
-    property int maximumYear: dateTime.currentYear() + 20
+    property int maximumYear: dateTime.currentYear() + 100
 
     /*
      * Property: acceptButtonText
