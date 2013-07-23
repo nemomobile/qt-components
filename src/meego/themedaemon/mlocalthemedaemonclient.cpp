@@ -144,19 +144,23 @@ QPixmap MLocalThemeDaemonClient::requestPixmap(const QString &id, const QSize &r
 
 QImage MLocalThemeDaemonClient::readImage(const QString &id) const
 {
-    foreach (const ImageDirNode &imageDirNode, m_imageDirNodes) {
-        foreach (const QString &suffix, imageDirNode.suffixList) {
+    if (!id.isEmpty()) {
+        foreach (const ImageDirNode &imageDirNode, m_imageDirNodes) {
+            foreach (const QString &suffix, imageDirNode.suffixList) {
 
-            QString imageFilePathString = m_filenameHash.value(id + suffix);
-            if (!imageFilePathString.isNull()) {
-                imageFilePathString.append(QDir::separator() + id + suffix);
-            }
+                QString imageFilePathString = m_filenameHash.value(id + suffix);
+                if (!imageFilePathString.isNull()) {
+                    imageFilePathString.append(QDir::separator() + id + suffix);
 
-            QImage image(imageFilePathString);
-            if (!image.isNull()) {
-                return image;
+                    QImage image(imageFilePathString);
+                    if (!image.isNull()) {
+                        return image;
+                    }
+                }
             }
         }
+
+        qDebug() << "Unknown theme image:" << id;
     }
 
     return QImage();
