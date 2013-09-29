@@ -143,8 +143,8 @@ public:
 
     QDeclarativePropertyMap *uiConstants(MLocaleWrapper *locale = 0) {
 
-        QString defaultFontFamily      = QLatin1String("Nokia Pure Text");
-        QString defaultFontFamilyLight = QLatin1String("Nokia Pure Text Light");
+        QString defaultFontFamily      = QLatin1String("Open Sans");
+        QString defaultFontFamilyLight = QLatin1String("Open Sans");
 
         // use arial when language is set to farsi
         if (locale && locale->language() == QLatin1String("fa")) {

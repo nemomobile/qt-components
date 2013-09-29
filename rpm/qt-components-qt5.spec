@@ -24,6 +24,7 @@ BuildRequires:  pkgconfig(Qt5DBus)
 BuildRequires:  pkgconfig(mlite5)
 BuildRequires:  desktop-file-utils
 BuildRequires:  fdupes
+Requires: google-opensans-fonts
 
 %description
 The Harmattan Qt Quick UX Components
