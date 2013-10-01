@@ -47,11 +47,7 @@
 #endif
 
 #ifndef SINCE_VERSION
-# if QT_VERSION >= 0x050000
 #   define SINCE_VERSION(major, minor) 2, 0
-# else
-#   define SINCE_VERSION(major, minor) major, minor
-# endif
 #endif
 
 #endif // COMMON_H

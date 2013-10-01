@@ -125,11 +125,7 @@ public:
 #endif
     }
 
-#if QT_VERSION >= 0x050000
     Q_INVOKABLE void registerInputElement(QQuickItem *element) const {
-#else
-    Q_INVOKABLE void registerInputElement(QDeclarativeItem *element) const {
-#endif
 #ifdef HAVE_MALIIT
         if (element)
             element->setProperty("meego-inputmethod-attribute-extension-id", extension.id());
