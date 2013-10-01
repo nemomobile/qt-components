@@ -46,14 +46,10 @@
 #include <QClipboard>
 #include <QDebug>
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-#include <QInputContext>
-#endif
-
 #ifdef HAVE_MALIIT
 #include <maliit/inputmethod.h>
 #include <maliit/preeditinjectionevent.h>
-#elif QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#else
 #include <QInputMethod>
 #include <QGuiApplication>
 #endif
@@ -66,9 +62,7 @@ public:
     MDeclarativeInputContextPrivate(MDeclarativeInputContext *qq);
     ~MDeclarativeInputContextPrivate();
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     void _q_updateKeyboardRectangle();
-#endif
     void _q_sipChanged(const QRect &);
     void _q_checkMicroFocusHint();
 
@@ -104,7 +98,7 @@ MDeclarativeInputContextPrivate::MDeclarativeInputContextPrivate(MDeclarativeInp
     simulateSip = false;
     QObject::connect(Maliit::InputMethod::instance(), SIGNAL(areaChanged(const QRect &)),
                      q, SLOT(_q_sipChanged(const QRect &)));
-#elif QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#else
     simulateSip = false;
     QObject::connect(qApp->inputMethod(), SIGNAL(keyboardRectangleChanged()),
                      q, SLOT(_q_updateKeyboardRectangle()));
@@ -115,12 +109,10 @@ MDeclarativeInputContextPrivate::~MDeclarativeInputContextPrivate()
 {
 }
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 void MDeclarativeInputContextPrivate::_q_updateKeyboardRectangle()
 {
     _q_sipChanged(qApp->inputMethod()->keyboardRectangle().toRect());
 }
-#endif
 
 void MDeclarativeInputContextPrivate::_q_sipChanged(const QRect &rect)
 {
@@ -141,23 +133,7 @@ void MDeclarativeInputContextPrivate::_q_sipChanged(const QRect &rect)
 
 void MDeclarativeInputContext::updateMicroFocus()
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     d->microFocus = qApp->inputMethod()->cursorRectangle();
-#else
-    if (QWidget *widget = QApplication::focusWidget()) {
-        QVariant v = widget->inputMethodQuery(Qt::ImMicroFocus);
-        if (!v.toRectF().isValid()) {
-            d->microFocus = QRectF(-1, -1, -1, -1);
-            return;
-        }
-        QRectF mf = v.toRectF();
-        if (mf != d->microFocus) {
-            d->microFocus = mf;
-        }
-    } else {
-        d->microFocus = QRectF(-1, -1, -1, -1);
-    }
-#endif
 }
 
 MDeclarativeInputContext::MDeclarativeInputContext(QQuickItem *parent)
@@ -210,31 +186,17 @@ bool MDeclarativeInputContext::softwareInputPanelVisible() const
 
 QRect MDeclarativeInputContext::softwareInputPanelRect() const
 {
-#if defined(HAVE_MALIIT) || QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     return d->sipRect;
-#else
-    return QRect(d->sipSimulationRect);
-#endif
 }
 
 void MDeclarativeInputContext::reset()
 {
-#if defined(HAVE_MALIIT) || QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     qApp->inputMethod()->reset();
-#else
-    QInputContext *ic = qApp->inputContext();
-    if (ic) ic->reset();
-#endif
 }
 
 void MDeclarativeInputContext::update()
 {
-#if defined(HAVE_MALIIT) || QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     qApp->inputMethod()->update(Qt::ImQueryAll);
-#else
-    QInputContext *ic = qApp->inputContext();
-    if (ic) ic->update();
-#endif
 }
 
 
@@ -280,18 +242,10 @@ QQuickItem *MDeclarativeInputContext::customSoftwareInputPanelTextField() const
     return d->sipVkbTextField;
 }
 
-#if QT_VERSION >= 0x050000
 void MDeclarativeInputContext::setCustomSoftwareInputPanelTextField(QQuickItem *item)
-#else
-void MDeclarativeInputContext::setCustomSoftwareInputPanelTextField(QQuickItem *item)
-#endif
 {
     if(d->sipVkbTextField != item) {
-#if QT_VERSION >= 0x050000
         d->sipVkbTextField = static_cast<QQuickItem*>(item);
-#else
-        d->sipVkbTextField = item;
-#endif
         emit customSoftwareInputPanelTextFieldChanged();
     }
 }
@@ -322,19 +276,11 @@ void MDeclarativeInputContext::simulateSipClose()
 
 bool MDeclarativeInputContext::setPreeditText(const QString &newPreedit, int eventCursorPosition, int replacementStart, int replacementLength)
 {
-#if defined(HAVE_MALIIT) && QT_VERSION < 0x050000
-    QInputContext *ic = qApp->inputContext();
-    if (ic) {
-        Maliit::PreeditInjectionEvent event(newPreedit, eventCursorPosition);
-        event.setReplacement(replacementStart, replacementLength);
-        return ic->filterEvent(&event);
-    }
-#else
+    // FIXME: How do we deal with this?
     Q_UNUSED(newPreedit)
     Q_UNUSED(eventCursorPosition)
     Q_UNUSED(replacementStart)
     Q_UNUSED(replacementLength)
-#endif
     return false;
 }
 

@@ -107,9 +107,7 @@ Q_SIGNALS:
 private:
     Q_DISABLE_COPY(MDeclarativeInputContext)
 
-#if QT_VERSION >= 0x050000
     Q_PRIVATE_SLOT(d, void _q_updateKeyboardRectangle())
-#endif
     Q_PRIVATE_SLOT(d, void _q_sipChanged(const QRect &))
 
     friend class MDeclarativeInputContextPrivate;

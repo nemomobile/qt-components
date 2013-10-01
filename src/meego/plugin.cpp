@@ -61,20 +61,10 @@
 #include "mtoolbarvisibility.h"
 #include "mdatetimehelper.h"
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <QQmlPropertyMap>
-#else
-#include <QDeclarativePropertyMap>
-#endif
-
 #include <QFont>
 
 #include "kernel/common.h"
-
-#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
-   #include "shadereffectitem/shadereffectitem.h"
-   #include "shadereffectitem/shadereffectsource.h"
-#endif
 
 #include "i18n/mlocalewrapper.h"
 
@@ -114,11 +104,6 @@ public:
             engine->rootContext()->setContextProperty("textTranslator", new MTextTranslator);
             qmlRegisterUncreatableType<MTextTranslator>(uri, SINCE_VERSION(1, 0), "TextTranslator", "");
 
-#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
-            engine->rootContext()->setContextProperty("declarativeView", new MDeclarativeView());
-            qmlRegisterUncreatableType<MDeclarativeView>(uri, SINCE_VERSION(1, 0), "DeclarativeView", "");
-#endif
-
             // Disable cursor blinking + make double tapping work the way it is done in lmt.
             QApplication *app = qobject_cast<QApplication*>(QApplication::instance());
             if (app) {
@@ -145,9 +130,6 @@ public:
 
         // Custom primitives
         qmlRegisterType<MDeclarativeImplicitSizeItem>(uri, SINCE_VERSION(1, 0), "ImplicitSizeItem");
-#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
-        qmlRegisterType<MDeclarativeMaskedItem>(uri, SINCE_VERSION(1, 0), "MaskedItem");
-#endif
         qmlRegisterType<MInverseMouseArea>(uri, SINCE_VERSION(1, 0), "InverseMouseArea");
         qmlRegisterType<MDeclarativeMouseFilter>(uri, SINCE_VERSION(1, 0), "MouseFilter");
         qmlRegisterType<MDeclarativeMouseEvent>(uri, SINCE_VERSION(1, 0), "MMouseEvent");
@@ -155,13 +137,6 @@ public:
         qmlRegisterType<MDeclarativeIMObserver>(uri, SINCE_VERSION(1, 0), "InputMethodObserver");
 
         qmlRegisterType<MScrollDecoratorSizer>(uri, SINCE_VERSION(1, 0), "ScrollDecoratorSizerCPP");
-
-#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
-        // shader effect item (to be removed when fully supported in QML)
-        qmlRegisterType<ShaderEffectItem>(uri, SINCE_VERSION(1, 0), "ShaderEffectItem");
-        qmlRegisterType<ShaderEffectSource>(uri, SINCE_VERSION(1, 0), "ShaderEffectSource");
-#endif
-
         qmlRegisterType<MInverseMouseArea>(uri, SINCE_VERSION(1, 0), "InverseMouseArea");
 
     }

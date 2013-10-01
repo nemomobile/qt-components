@@ -59,12 +59,7 @@ public:
 
 protected:
     bool eventFilter(QObject *obj, QEvent *ev);
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
     void itemChange(ItemChange change, const ItemChangeData &data);
-#else
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-#endif
 
 private:
     bool isClickedOnSoftwareInputPanel(QGraphicsSceneMouseEvent *event) const;
