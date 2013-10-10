@@ -40,9 +40,6 @@
 
 #include "mdeclarativeimobserver.h"
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-#include <QInputContext>
-#endif
 #include <QInputMethodEvent>
 #include <QGuiApplication>
 #include <QGraphicsObject>
@@ -56,66 +53,11 @@ MDeclarativeIMObserver::MDeclarativeIMObserver(QDeclarativeItem *parent) :
 
 bool MDeclarativeIMObserver::sceneEventFilter(QGraphicsItem * watched, QEvent * event)
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    if (event->type()==QEvent::InputMethod) {        
-        if (m_omitInputMethodEvents) {
-            return true;
-        }
-
-        QInputMethodEvent *ime = static_cast<QInputMethodEvent*>(event);
-		QString newPreedit = ime->preeditString();
-		
-        QGraphicsObject *g = parentObject();
-        if (g != 0 && g->property("maximumLength").isValid()) {
-            int maximumTextLength = g->property("maximumLength").toInt();
-            int textLength = g->property("text").toString().length();
-            int selectedTextLength = g->property("selectedText").toString().length();
-            if (textLength == maximumTextLength &&
-                newPreedit.length() - ime->replacementLength() > 0 &&
-                selectedTextLength == 0) {
-                    m_omitInputMethodEvents = true;
-                    QInputContext *ic = qApp->inputContext();
-                    ic->reset();
-                    m_omitInputMethodEvents = false;
-                    return true;
-            }				
-        }
-
-        if (newPreedit!=m_preedit) {
-            m_preedit = newPreedit;
-            emit preeditChanged();
-        }
-        
-        QList<QInputMethodEvent::Attribute> attributes = ime->attributes();
-        QList<QInputMethodEvent::Attribute>::iterator i;
-        for (i = attributes.begin(); i != attributes.end(); ++i) {
-            QInputMethodEvent::Attribute attribute = *i;
-            if (attribute.type == QInputMethodEvent::Cursor) {
-                m_preeditCursorPosition = attribute.start;
-                emit preeditCursorPositionChanged();
-            }
-        }
-    }
-
-    return QDeclarativeItem::sceneEventFilter(watched,event);
-#else
     Q_UNUSED(watched)
     return false; // FIXME: How do we deal with this?
-#endif
 }
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
 void MDeclarativeIMObserver::itemChange(ItemChange, const ItemChangeData &)
 {
     // FIXME: How do we deal with this?
 }
-#else
-QVariant MDeclarativeIMObserver::itemChange(GraphicsItemChange c, const QVariant &v)
-{
-    if(c==QGraphicsItem::ItemParentHasChanged || c== QGraphicsItem::ItemSceneHasChanged){
-        parentItem()->installSceneEventFilter(this);
-    }
-    return v;
-}
-#endif
-

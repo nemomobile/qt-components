@@ -59,12 +59,8 @@
   // These includes conflict with some of Qt's types, so should be kept last
 # include <X11/Xatom.h>
 # include <X11/Xlib.h>
-# if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #  include <QtGui/qpa/qplatformnativeinterface.h>
 #  include <QtQuick/qquickitem.h>
-# else
-#  include <QX11Info>
-# endif
 #endif
 
 #ifdef HAVE_XRANDR
@@ -75,10 +71,8 @@
 #include <mgconfitem.h>
 #endif
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 # include <QWindow>
 # include <QScreen>
-#endif
 
 #undef Bool
 
@@ -136,9 +130,7 @@ public:
 
     MDeclarativeScreen::Orientations physicalDisplayOrientation() const { return _physicalDisplayOrientation; }
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     QPointer<QWindow> window;
-#endif
 
 #ifdef HAVE_CONTEXTSUBSCRIBER
     ContextProperty topEdgeProperty;
@@ -233,29 +225,16 @@ void MDeclarativeScreenPrivate::initPhysicalDisplayOrientation()
 
 void MDeclarativeScreenPrivate::initContextSubscriber()
 {
-#ifdef HAVE_CONTEXTSUBSCRIBER
-    //waiting for properties to synchronize
-    topEdgeProperty.waitForSubscription();
-    isCoveredProperty.waitForSubscription();
-    keyboardOpenProperty.waitForSubscription();
-    videoRouteProperty.waitForSubscription();
-    remoteTopEdgeListener.startListening(true);
+    QScreen* screen = QGuiApplication::primaryScreen();
+    if (window)
+        screen = window.data()->screen();
+    if (screen) {
+        QObject::connect(screen, SIGNAL(orientationChanged(Qt::ScreenOrientation)),
+                         q, SLOT(_q_updateOrientationAngle()));
+    } else {
+        qWarning() << "No valid QScreen found, rotation will not work!";
+    }
 
-    QObject::connect(&topEdgeProperty, SIGNAL(valueChanged()),
-                     q, SLOT(_q_updateOrientationAngle()));
-    QObject::connect(&remoteTopEdgeProperty, SIGNAL(valueChanged()),
-                     q, SLOT(_q_updateOrientationAngle()));
-    QObject::connect(&keyboardOpenProperty, SIGNAL(valueChanged()),
-                     q, SLOT(_q_updateOrientationAngle()));
-    QObject::connect(&isCoveredProperty, SIGNAL(valueChanged()),
-                     q, SLOT(_q_isCoveredChanged()));
-    QObject::connect(&videoRouteProperty, SIGNAL(valueChanged()),
-                     q, SLOT(_q_updateIsTvConnected()));
-    QObject::connect(&remoteTopEdgeListener, SIGNAL(nameAppeared()),
-                     q, SLOT(_q_updateOrientationAngle()));
-    QObject::connect(&remoteTopEdgeListener, SIGNAL(nameDisappeared()),
-                     q, SLOT(_q_updateOrientationAngle()));
-#endif
     //initiating the variables to current orientation
 #ifdef __ARMEL__
     _q_updateOrientationAngle();
@@ -302,27 +281,12 @@ void MDeclarativeScreenPrivate::updateX11OrientationAngleProperty()
 
 void MDeclarativeScreenPrivate::_q_isCoveredChanged()
 {
-#ifdef HAVE_CONTEXTSUBSCRIBER
-    bool covered = isCoveredProperty.value().toBool();
-
-    if (isCovered != covered) {
-        qDebug() << "MDeclarativeScreenPrivate" << "Covered:" << covered;
-
-        isCovered = covered;
-        emit q->coveredChanged();
-    }
-#endif
+    //FIXME how is this handled?
 }
 
 void MDeclarativeScreenPrivate::_q_updateIsTvConnected()
 {
-#ifdef HAVE_CONTEXTSUBSCRIBER
-    QString value = videoRouteProperty.value().toString();
-
-    isTvConnected = (value == "tvout" ||
-                     value == "builtinandtvout");
-    _q_updateOrientationAngle();
-#endif
+    //FIXME how is this handled?
 }
 
 qreal MDeclarativeScreenPrivate::dpi() const
@@ -378,21 +342,36 @@ int MDeclarativeScreenPrivate::rotation() const
     return angle;
 }
 
-MDeclarativeScreen::Orientation MDeclarativeScreenPrivate::physicalOrientation() const {
+MDeclarativeScreen::Orientation MDeclarativeScreenPrivate::physicalOrientation() const
+{
     MDeclarativeScreen::Orientation o = MDeclarativeScreen::Default;
-#ifdef HAVE_CONTEXTSUBSCRIBER
-    QString topEdge = topEdgeValue();
+    QScreen *screen = QGuiApplication::primaryScreen();
+    if (window)
+        screen = window.data()->screen();
 
-    if (topEdge == "top") {
-        o = MDeclarativeScreen::Landscape;
-    } else if (topEdge == "left") {
-        o = MDeclarativeScreen::Portrait;
-    } else if (topEdge == "right") {
-        o = MDeclarativeScreen::PortraitInverted;
-    } else if (topEdge == "bottom") {
-        o = MDeclarativeScreen::LandscapeInverted;
+    if (screen) {
+        Qt::ScreenOrientation orientation = screen->orientation();
+
+        switch (orientation) {
+        case Qt::LandscapeOrientation: {
+                o = MDeclarativeScreen::Landscape;
+                break;
+            }
+        case Qt::PortraitOrientation: {
+                o = MDeclarativeScreen::Portrait;
+                break;
+            }
+        case Qt::InvertedLandscapeOrientation: {
+                o = MDeclarativeScreen::LandscapeInverted;
+                break;
+            }
+        case Qt::InvertedPortraitOrientation: {
+                o = MDeclarativeScreen::PortraitInverted;
+                break;
+            }
+        case Qt::PrimaryOrientation: break;
+        }
     }
-#endif
     return o;
 }
 
@@ -400,34 +379,10 @@ void MDeclarativeScreenPrivate::_q_updateOrientationAngle()
 {
     MDeclarativeScreen::Orientation newOrientation = MDeclarativeScreen::Default;
 
-#ifdef HAVE_CONTEXTSUBSCRIBER
-    if (isMinimized())
-        return; // ignore sensor changes when minimized, we'll fix window orientation when it is restored
-
-    QString edge = topEdgeValue();
-    bool open = keyboardOpenProperty.value().toBool();
-
-    //HW Keyboard open or TV connected causes a switch to landscape, but only if this is allowed
-    if ((open || isTvConnected) && allowedOrientations & MDeclarativeScreen::Landscape) {
-        newOrientation = MDeclarativeScreen::Landscape;
-    } else if (edge == "top" && (allowedOrientations & MDeclarativeScreen::Landscape)) {
-        newOrientation = MDeclarativeScreen::Landscape;
-    } else if (edge == "left" && (allowedOrientations & MDeclarativeScreen::Portrait)) {
-        newOrientation = MDeclarativeScreen::Portrait;
-    } else if (edge == "right" && (allowedOrientations & MDeclarativeScreen::PortraitInverted)) {
-        newOrientation = MDeclarativeScreen::PortraitInverted;
-    } else if (edge == "bottom" && (allowedOrientations & MDeclarativeScreen::LandscapeInverted)) {
-        newOrientation = MDeclarativeScreen::LandscapeInverted;
-    }
-
-    if (open != keyboardOpen) {
-        keyboardOpen = open;
-        emit q->keyboardOpenChanged();
-    }
-#elif QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-    QScreen* screen = QGuiApplication::primaryScreen();
+    QScreen *screen = QGuiApplication::primaryScreen();
     if (window)
         screen = window.data()->screen();
+
     Qt::ScreenOrientation orientation = screen->orientation();
     switch (orientation) {
     case Qt::LandscapeOrientation:
@@ -448,10 +403,9 @@ void MDeclarativeScreenPrivate::_q_updateOrientationAngle()
         break;
     case Qt::PrimaryOrientation: break;
     }
-#endif
 
     //only set the new orientation if it is a valid one
-    if(newOrientation != MDeclarativeScreen::Default) {
+    if (newOrientation != MDeclarativeScreen::Default) {
         q->setOrientation(newOrientation);
     }
 }
@@ -475,23 +429,12 @@ bool MDeclarativeScreenPrivate::isMinimized() const {
 }
 
 bool MDeclarativeScreenPrivate::isRemoteScreenPresent() const {
-    bool present = false;
-#ifdef HAVE_CONTEXTSUBSCRIBER
-    QString remoteTopEdge = remoteTopEdgeProperty.value().toString();
-    bool remoteTopEdgePresent = (remoteTopEdgeListener.isServicePresent() == MServiceListener::Present);
-    present = remoteTopEdgePresent && !remoteTopEdge.isEmpty();
-#endif
-    return present;
+    //FIXME how is this handled?
+    return false;
 }
 
 QString MDeclarativeScreenPrivate::topEdgeValue() const {
-    QString top; // Empty string simulates MDeclarativeScreen::Default orientation
-#ifdef HAVE_CONTEXTSUBSCRIBER
-    QString topEdge = topEdgeProperty.value().toString();
-    QString remoteTopEdge = remoteTopEdgeProperty.value().toString();
-    top = isRemoteScreenPresent() ? remoteTopEdge : topEdge;
-#endif
-    return top;
+    return QString(); // Empty string simulates MDeclarativeScreen::Default orientation
 }
 
 MDeclarativeScreen::MDeclarativeScreen(QObject *parent)
@@ -519,7 +462,6 @@ bool MDeclarativeScreen::eventFilter(QObject *o, QEvent *e) {
     if(d->topLevelWidget && d->topLevelWidget->parent() == NULL) { //it's a toplevelwidget
         d->setMinimized(d->topLevelWidget->windowState() & Qt::WindowMinimized);
     } else {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
         QWindow* w = qobject_cast<QWindow*>(o);
         if (!d->window) {
             d->window = w;
@@ -530,9 +472,6 @@ bool MDeclarativeScreen::eventFilter(QObject *o, QEvent *e) {
             d->setMinimized(d->window.data()->windowState() & Qt::WindowMinimized);
         else
             qCritical() << "State change event from foreign window";
-#else
-        qCritical() << "State change event from foreign window";
-#endif
     }
 
     if (!d->isMinimized()) {
@@ -779,31 +718,11 @@ MDeclarativeScreen::Density MDeclarativeScreen::density() const {
         return ExtraHigh;
 }
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-    void MDeclarativeScreen::updatePlatformStatusBarRect(QQuickItem * statusBar)
-#else
-    void MDeclarativeScreen::updatePlatformStatusBarRect(QDeclarativeItem * statusBar)
-#endif
+void MDeclarativeScreen::updatePlatformStatusBarRect(QQuickItem * statusBar)
 {
     Q_UNUSED(statusBar);
 
 #ifdef HAVE_XLIB
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QWidget * activeWindow = QApplication::activeWindow();
-    if(!activeWindow) {
-        foreach (QWidget *widget, QApplication::topLevelWidgets()) {
-            if (widget->effectiveWinId() != 0 &&
-                widget->windowType() == Qt::Window) {
-                activeWindow = widget;
-                break;
-            } 
-        }
-
-        if (!activeWindow)
-            return;
-    }
-#endif
-
     Display *dpy = display();
     if (!dpy)
         return;
@@ -820,11 +739,7 @@ MDeclarativeScreen::Density MDeclarativeScreen::density() const {
 
     Atom a = XInternAtom(dpy, "_MEEGOTOUCH_MSTATUSBAR_GEOMETRY", False);
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     Window w = d->window.data()->winId();
-#else
-    Window w = activeWindow->effectiveWinId();
-#endif
 
     if(data[3] == 0)
         XDeleteProperty(dpy, w, a);
@@ -890,7 +805,6 @@ void MDeclarativeScreen::setAllowSwipe(bool enabled)
 #if HAVE_XLIB
 Display* MDeclarativeScreen::display(QDeclarativeItem* item) const
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     static Display* lastKnownDisplay = 0;
     QWindow* window = d->window.data();
     if (!window && item)
@@ -900,10 +814,6 @@ Display* MDeclarativeScreen::display(QDeclarativeItem* item) const
         lastKnownDisplay = (Display*)iface->nativeResourceForWindow("display", d->window.data());
     }
     return lastKnownDisplay;
-#else
-    Q_UNUSED(item)
-    return QX11Info::display();
-#endif
 }
 #endif
 

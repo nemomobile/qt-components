@@ -42,12 +42,7 @@
 #define QGLOBALENUMS_H
 
 #include <QtCore/qobject.h>
-
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <QtQml/qqml.h>
-#else
-#include <QtDeclarative/qdeclarative.h>
-#endif
 
 #include <kernel/common.h>
 
