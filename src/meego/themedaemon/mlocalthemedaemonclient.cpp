@@ -132,10 +132,10 @@ MLocalThemeDaemonClient::MLocalThemeDaemonClient(const QString &testPath, QObjec
         if (themeRoots.at(i).endsWith(QDir::separator()))
             themeRoots[i].truncate(themeRoots.at(i).length() - 1);
 
-        buildHash(themeRoots.at(i) + QDir::separator() + "icons", QStringList() << "*.svg" << "*.png" << "*.jpg");
+        buildHash(themeRoots.at(i) + QDir::separator() + "icons", QStringList() << "*.png" << "*.svg" << "*.jpg");
     }
 
-    m_imageDirNodes.append(ImageDirNode("icons" , QStringList() << ".svg" << ".png" << ".jpg"));
+    m_imageDirNodes.append(ImageDirNode("icons" , QStringList() << ".png" << ".svg" << ".jpg"));
 
     qDebug() << "LocalThemeDaemonClient: Looking for assets in" << themeRoots;
 }
