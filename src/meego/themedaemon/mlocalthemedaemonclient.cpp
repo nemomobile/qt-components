@@ -43,11 +43,11 @@
 #include <QDebug>
 #include <QDir>
 #include <QSettings>
+#include <QFileInfo>
 
 MLocalThemeDaemonClient::MLocalThemeDaemonClient(const QString &testPath, QObject *parent) :
     MAbstractThemeDaemonClient(parent),
-    m_pixmapCache(),
-    m_imageDirNodes()
+    m_pixmapCache()
 #ifdef HAVE_MLITE
     , themeItem("/meegotouch/theme/name")
 #endif
@@ -135,8 +135,6 @@ MLocalThemeDaemonClient::MLocalThemeDaemonClient(const QString &testPath, QObjec
         buildHash(themeRoots.at(i) + QDir::separator() + "icons", QStringList() << "*.svg" << "*.png" << "*.jpg");
     }
 
-    m_imageDirNodes.append(ImageDirNode("icons" , QStringList() << ".svg" << ".png" << ".jpg"));
-
     qDebug() << "LocalThemeDaemonClient: Looking for assets in" << themeRoots;
 }
 
@@ -177,18 +175,11 @@ QPixmap MLocalThemeDaemonClient::requestPixmap(const QString &id, const QSize &r
 QImage MLocalThemeDaemonClient::readImage(const QString &id) const
 {
     if (!id.isEmpty()) {
-        foreach (const ImageDirNode &imageDirNode, m_imageDirNodes) {
-            foreach (const QString &suffix, imageDirNode.suffixList) {
-
-                QString imageFilePathString = m_filenameHash.value(id + suffix);
-                if (!imageFilePathString.isNull()) {
-                    imageFilePathString.append(QDir::separator() + id + suffix);
-
-                    QImage image(imageFilePathString);
-                    if (!image.isNull()) {
-                        return image;
-                    }
-                }
+        QString imageFilePathString = m_filenameHash.value(id);
+        if (!imageFilePathString.isNull()) {
+            QImage image(imageFilePathString);
+            if (!image.isNull()) {
+                return image;
             }
         }
 
@@ -206,7 +197,8 @@ void MLocalThemeDaemonClient::buildHash(const QDir& rootDir, const QStringList& 
     rDir.setNameFilters(nameFilter);
     QStringList files = rDir.entryList(QDir::Files);
     foreach (const QString &filename, files) {
-        m_filenameHash.insert(filename, rootDir.absolutePath());
+        QFileInfo fi(filename);
+        m_filenameHash.insert(fi.baseName(), rootDir.absolutePath() + QDir::separator() + filename);
     }
 
     QStringList dirList = rootDir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
@@ -234,12 +226,6 @@ bool MLocalThemeDaemonClient::PixmapIdentifier::operator==(const PixmapIdentifie
 bool MLocalThemeDaemonClient::PixmapIdentifier::operator!=(const PixmapIdentifier &other) const
 {
     return imageId != other.imageId || size != other.size;
-}
-
-MLocalThemeDaemonClient::ImageDirNode::ImageDirNode(const QString &directory, const QStringList &suffixList) :
-    directory(directory),
-    suffixList(suffixList)
-{
 }
 
 uint qHash(const MLocalThemeDaemonClient::PixmapIdentifier &id)
