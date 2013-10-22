@@ -78,8 +78,7 @@ public:
 
 private:
     /**
-     * Reads the image \a id from the available directories specified
-     * by m_imageDirNodes.
+     * Reads the image \a id from the built hash map
      */
     QImage readImage(const QString &id) const;
 
@@ -98,16 +97,7 @@ private:
         bool operator!=(const PixmapIdentifier &other) const;
     };
 
-    struct ImageDirNode
-    {
-        ImageDirNode(const QString &directory, const QStringList &suffixList);
-        QString directory;
-        QStringList suffixList;
-    };
-
     QHash<PixmapIdentifier, QPixmap> m_pixmapCache;
-    QList<ImageDirNode> m_imageDirNodes;
-
     QHash<QString, QString> m_filenameHash;
 
 #ifdef HAVE_MLITE
