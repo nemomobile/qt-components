@@ -267,10 +267,10 @@ void MDeclarativeScreenPrivate::updateX11OrientationAngleProperty()
 
     Qt::ScreenOrientation o = Qt::PrimaryOrientation;
     switch (q->rotation()) {
-    case 0: o = Qt::LandscapeOrientation; break;
-    case 90: o = Qt::InvertedPortraitOrientation; break;
-    case 180: o = Qt::InvertedLandscapeOrientation; break;
-    case 270: o = Qt::PortraitOrientation; break;
+    case MDeclarativeScreen::LandscapeAngle: o = Qt::LandscapeOrientation; break;
+    case MDeclarativeScreen::PortraitInvertedAngle: o = Qt::InvertedPortraitOrientation; break;
+    case MDeclarativeScreen::LandscapeInvertedAngle: o = Qt::InvertedLandscapeOrientation; break;
+    case MDeclarativeScreen::PortraitAngle: o = Qt::PortraitOrientation; break;
     default:
         qCritical() << "MDeclarativeScreen has invalid orientation set.";
     }
