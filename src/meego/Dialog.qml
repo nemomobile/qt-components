@@ -102,7 +102,6 @@ Popup {
     function __endTransformationToHidden() {
         buttonRow.y = statesWrapper.__buttonSaver
         titleBar.y = statesWrapper.__titleSaver
-        backgroundRect = 0.0;
         root.opacity = 0.0;
         // DialogStatus.Closed is set when Fader has finished its job
     }
