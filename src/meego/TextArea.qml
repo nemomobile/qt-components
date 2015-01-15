@@ -70,6 +70,9 @@ FocusScope {
     // Property enableSoftwareInputPanel is DEPRECATED
     property alias enableSoftwareInputPanel: textEdit.activeFocusOnPress
 
+    property alias paintedWidth: textEdit.paintedWidth
+    property alias paintedHeight: textEdit.paintedHeight
+    
     property alias inputMethodHints: textEdit.inputMethodHints
 
     property bool errorHighlight: false
@@ -215,7 +218,7 @@ FocusScope {
 
         onAnimatingChanged: {
             if (!platformWindow.animating && root.activeFocus) {
-                TextAreaHelper.repositionFlickable(contentMovingAnimation);
+                TextAreaHelper.repositionFlickable(contentMovingAnimationX, contentMovingAnimationY);
             }
         }
     }
@@ -231,7 +234,7 @@ FocusScope {
 
     property bool __hadFocusBeforeMinimization: false
 
-    implicitWidth: platformStyle.defaultWidth
+    implicitWidth: Math.max(platformStyle.defaultWidth, textEdit.width)
     implicitHeight: Math.max (UI.FIELD_DEFAULT_HEIGHT,
                               textEdit.height + (UI.FIELD_DEFAULT_HEIGHT - font.pixelSize))
 
@@ -390,8 +393,7 @@ FocusScope {
 
         x: UI.PADDING_XLARGE
         y: (UI.FIELD_DEFAULT_HEIGHT - font.pixelSize) / 2
-        width: parent.width - UI.PADDING_XLARGE * 2
-
+        
         font: root.platformStyle.textFont
         color: root.platformStyle.textColor
         selectByMouse: false
@@ -427,7 +429,7 @@ FocusScope {
 
         onTextChanged: {
             if(root.activeFocus) {
-                TextAreaHelper.repositionFlickable(contentMovingAnimation);
+                TextAreaHelper.repositionFlickable(contentMovingAnimationX, contentMovingAnimationY);
             }
 
             if (Popup.isOpened(textEdit)) {
@@ -456,18 +458,18 @@ FocusScope {
 
             onSoftwareInputPanelVisibleChanged: {
                 if (activeFocus)
-                    TextAreaHelper.repositionFlickable(contentMovingAnimation);
+                    TextAreaHelper.repositionFlickable(contentMovingAnimationX, contentMovingAnimationY);
             }
 
             onSoftwareInputPanelRectChanged: {
                 if (activeFocus)
-                    TextAreaHelper.repositionFlickable(contentMovingAnimation);
+                    TextAreaHelper.repositionFlickable(contentMovingAnimationX, contentMovingAnimationY);
             }
         }
 
         onCursorPositionChanged: {
             if(!MagnifierPopup.isOpened() && activeFocus) {
-                TextAreaHelper.repositionFlickable(contentMovingAnimation);
+                TextAreaHelper.repositionFlickable(contentMovingAnimationX, contentMovingAnimationY);
             }
 
            if (MagnifierPopup.isOpened()) {
@@ -511,11 +513,18 @@ FocusScope {
         Timer {
             id: repositionTimer
             interval: 350
-            onTriggered: TextAreaHelper.repositionFlickable(contentMovingAnimation)
+            onTriggered: TextAreaHelper.repositionFlickable(contentMovingAnimationX, contentMovingAnimationY);
         }
 
         PropertyAnimation {
-            id: contentMovingAnimation
+            id: contentMovingAnimationX
+            property: "contentX"
+            duration: 200
+            easing.type: Easing.InOutCubic
+        }
+
+        PropertyAnimation {
+            id: contentMovingAnimationY
             property: "contentY"
             duration: 200
             easing.type: Easing.InOutCubic
@@ -579,7 +588,7 @@ FocusScope {
             onReleased: {
                 if (MagnifierPopup.isOpened()) {
                     MagnifierPopup.close();
-                    TextAreaHelper.repositionFlickable(contentMovingAnimation);
+                    TextAreaHelper.repositionFlickable(contentMovingAnimationX, contentMovingAnimationY);
                 }
 
                 if (attemptToActivate) {

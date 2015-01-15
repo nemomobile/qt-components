@@ -44,6 +44,11 @@ function animateContentY(animation, flickable, newContentY) {
     animation.to = newContentY
     animation.running = true
 }
+function animateContentX(animation, flickable, newContentX) {
+    animation.target = flickable
+    animation.to = newContentX
+    animation.running = true
+}
 
 function locateFlickableY(flickable) {
     switch(screen.currentOrientation) {
@@ -74,7 +79,7 @@ function getMargin() {
     return 0
 }
 
-function repositionFlickable(animation) {
+function repositionFlickable(animationX, animationY) {
     var flickable = Utils.findFlickable(parent)
 
     inputContext.updateMicroFocus()
@@ -83,7 +88,9 @@ function repositionFlickable(animation) {
         // Specifies area from bottom and top when repositioning should be triggered
         var margin = getMargin()
         var newContentY = flickable.contentY
+        var newContentX = flickable.contentX
         var flickableY = locateFlickableY(flickable)
+        var flickableX = locateFlickableX(flickable)
 
         var mf = inputContext.microFocus
 
@@ -118,7 +125,17 @@ function repositionFlickable(animation) {
                 dY += flickable.height / 2
                 newContentY -= dY
             }
-
+            if(flickableX + flickable.width  - mf.width - margin < mf.x) {
+                // Find dY just to make textfield visible
+                var dX = mf.x - flickableX - flickable.width
+                // Center textfield
+                dX += flickable.width / 2
+                newContentX += dX
+            } else if(flickableX + margin > mf.x) {
+                var dX = flickableX - mf.x
+                dX += flickable.width / 2
+                newContentX -= dX
+            }
             break
 
         case Screen.LandscapeInverted:
@@ -133,7 +150,14 @@ function repositionFlickable(animation) {
                 dY += flickable.height / 2 - mf.height / 2
                 newContentY -= dY
             }
-
+            if(flickableX + flickable.width - mf.width - margin < invertedMfX) {
+                var dX = invertedMfX - flickableX - flickable.width
+                dX += flickable.width / 2 + mf.width / 2
+            } else if(flickableX + margin > invertedMfX){
+                var dX = flickableX - invertedMfX
+                dX += flickable.width / 2 - mf.width / 2
+                newContentX -= dX
+            }
             break
 
         case Screen.Portrait:
@@ -146,7 +170,9 @@ function repositionFlickable(animation) {
                 dY += flickable.height / 2
                 newContentY -= dY
             }
-
+            if(flickable.width - margin < invertedMfY) {
+                newContentX += invertedMfY - (flickable.width / 2)
+            } 
             break
 
         case Screen.PortraitInverted:
@@ -161,7 +187,15 @@ function repositionFlickable(animation) {
                 dY += flickable.height / 2 - mf.height
                 newContentY -= dY
             }
-
+            if(flickableX + flickable.width - mf.height - margin < invertedMfY) {
+                var dX = invertedMfY - flickableX - flickable.width + mf.width
+                dY += flickable.height / 2 + mf.height
+                newContentX += dX
+            } else if(flickableX + margin > invertedMfY){
+                var dX = flickableX - invertedMfY
+                dX += flickable.width / 2 - mf.width
+                newContentX -= dX
+            }
             break
         }
 
@@ -169,13 +203,19 @@ function repositionFlickable(animation) {
         // Leave some additional space for the selection handles.
         if(newContentY > flickable.contentHeight + 40 - flickable.height)
             newContentY = flickable.contentHeight + 40 - flickable.height
-
+        if(newContentX > flickable.contentWidth - flickable.width)
+            newContentX = flickable.contentWidth - flickable.width
         // If overpanned, set contentY to min possible value (reached top)
         if(newContentY < 0)
             newContentY = 0
-
+        if(newContentX < 0)
+            newContentX = 0
+            
         if(newContentY != flickable.contentY) {
             animateContentY(animation, flickable, newContentY)
+        }
+        if(newContentX != flickable.contentX) {
+            animateContentX(animationX, flickable, newContentX)
         }
     }
 }
