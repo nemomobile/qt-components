@@ -104,7 +104,7 @@ Item {
     function __updateOrientationLock() {
         switch (orientationLock) {
         case PageOrientation.Automatic:
-            screen.setAllowedOrientations(Screen.Portrait | Screen.Landscape);
+            screen.setAllowedOrientations(Screen.Portrait | Screen.Landscape | Screen.PortraitInverted | Screen.LandscapeInverted);
             break
         case PageOrientation.LockPortrait:
             screen.setAllowedOrientations(Screen.Portrait);
