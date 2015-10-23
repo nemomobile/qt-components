@@ -1,8 +1,0 @@
-!load(qt-components-config.prf) {
-    error(Please run configure.)
-}
-
-meego {
-    DEFINES += Q_COMPONENTS_MEEGO
-}
-
